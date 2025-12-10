@@ -1,14 +1,14 @@
 package thaumcraft.common.entities.projectile;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.codechicken.lib.math.MathHelper;
 import thaumcraft.common.Thaumcraft;
@@ -19,11 +19,11 @@ public class EntityShockOrb extends EntityThrowable {
    public int area = 4;
    public int damage = 5;
 
-   public EntityShockOrb(World par1World) {
+   public EntityShockOrb(Level par1World) {
       super(par1World);
    }
 
-   public EntityShockOrb(World par1World, EntityLivingBase par2EntityLiving) {
+   public EntityShockOrb(Level par1World, EntityLivingBase par2EntityLiving) {
       super(par1World, par2EntityLiving);
    }
 
@@ -42,9 +42,9 @@ public class EntityShockOrb extends EntityThrowable {
             return true;
       }
    }
-   protected void onImpact(MovingObjectPosition mop) {
-      if (!this.worldObj.isRemote) {
-         for(Entity e : EntityUtils.getEntitiesInRange(this.worldObj, this.posX, this.posY, this.posZ, this, Entity.class, this.area)) {
+   protected void onImpact(HitResult mop) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         for(Entity e : EntityUtils.getEntitiesInRange(this.level(), this.posX, this.posY, this.posZ, this, Entity.class, this.area)) {
 
             if (EntityUtils.canEntityBeSeen(this, e)
                     && canEarthShockHurt(e)
@@ -61,20 +61,20 @@ public class EntityShockOrb extends EntityThrowable {
                     + this.rand.nextInt(this.area)
                     - this.rand.nextInt(this.area);
             while (
-                    this.worldObj.isAirBlock(xx, yy, zz)
+                    this.level().isAirBlock(xx, yy, zz)
                     && (yy > MathHelper.floor_double(this.posY) - this.area)
             ) {
                yy -= 1;
             }
 
-            if (this.worldObj.isAirBlock(xx, yy + 1, zz) && !this.worldObj.isAirBlock(xx, yy, zz) && this.worldObj.getBlock(xx, yy + 1, zz) != ConfigBlocks.blockAiry && EntityUtils.canEntityBeSeen(this, (double)xx + (double)0.5F, (double)yy + (double)1.5F, (double)zz + (double)0.5F)) {
-               this.worldObj.setBlock(xx, yy + 1, zz, ConfigBlocks.blockAiry, 10, 3);
+            if (this.level().isAirBlock(xx, yy + 1, zz) && !this.level().isAirBlock(xx, yy, zz) && this.level().getBlock(xx, yy + 1, zz) != ConfigBlocks.blockAiry && EntityUtils.canEntityBeSeen(this, (double)xx + (double)0.5F, (double)yy + (double)1.5F, (double)zz + (double)0.5F)) {
+               this.level().setBlock(xx, yy + 1, zz, ConfigBlocks.blockAiry, 10, 3);
             }
          }
       }
 
-      Thaumcraft.proxy.burst(this.worldObj, this.posX, this.posY, this.posZ, 3.0F);
-      this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "thaumcraft:shock", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+      Thaumcraft.proxy.burst(this.level(), this.posX, this.posY, this.posZ, 3.0F);
+      this.level().playSoundEffect(this.posX, this.posY, this.posZ, "thaumcraft:shock", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
       this.setDead();
    }
 
@@ -104,7 +104,7 @@ public class EntityShockOrb extends EntityThrowable {
                this.motionX *= 0.9;
                this.motionY *= 0.9;
                this.motionZ *= 0.9;
-               this.worldObj.playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+               this.level().playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
             }
 
             return true;

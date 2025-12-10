@@ -2,8 +2,8 @@ package thaumcraft.client.renderers.entity;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
 
 public class RenderPechBlast extends Render {

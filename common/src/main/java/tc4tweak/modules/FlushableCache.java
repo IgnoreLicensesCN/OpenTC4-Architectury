@@ -1,6 +1,5 @@
 package tc4tweak.modules;
 
-import gnu.trove.map.TIntObjectMap;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -33,10 +32,6 @@ public abstract class FlushableCache<E> {
         enabled = false;
     }
 
-    protected static <T, C extends TIntObjectMap<T>> C mergeTIntObjectMap(C lhs, C rhs) {
-        lhs.putAll(rhs);
-        return lhs;
-    }
 
     protected void populate(boolean doCreate) {
         if (doCreate || cache == null)

@@ -23,8 +23,8 @@ public class TileArcanePressurePlate extends TileOwned {
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      if (this.worldObj != null && this.worldObj.isRemote) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null && (Platform.getEnvironment() == Env.CLIENT)) {
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       }
 
    }

@@ -1,4 +1,4 @@
-package simpleutils;
+package com.linearity.opentc4.simpleutils;
 
 import java.util.Collections;
 import java.util.List;

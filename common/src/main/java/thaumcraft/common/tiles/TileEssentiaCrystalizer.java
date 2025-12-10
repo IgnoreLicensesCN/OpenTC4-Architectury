@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,7 +18,7 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemCrystalEssence;
+import thaumcraft.common.items.misc.ItemCrystalEssence;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.awt.*;
@@ -94,7 +94,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
            if (this.aspect == null) {
                --am;
                this.aspect = tt;
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                this.markDirty();
            }
 
@@ -105,7 +105,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.aspect != null && am == 1) {
          this.aspect = null;
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
       } else {
@@ -188,13 +188,13 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (++this.count % 5 == 0 && !this.gettingPower()) {
             if (this.aspect == null) {
                this.fillReservoir();
                this.progress = 0;
             } else {
-               this.progress += 1 + VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.EARTH, Math.min(20, Math.max(1, (200 - this.progress) / 2))) * 2;
+               this.progress += 1 + VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.EARTH, Math.min(20, Math.max(1, (200 - this.progress) / 2))) * 2;
             }
          }
 
@@ -202,7 +202,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
             this.eject();
             this.aspect = null;
             this.progress = 0;
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.markDirty();
          }
       } else {
@@ -258,14 +258,14 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
 
          if (this.venting > 0) {
             --this.venting;
-            float fx = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-            float fz = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-            float fy = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-            float fx2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-            float fz2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-            float fy2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
+            float fx = 0.1F - this.level().rand.nextFloat() * 0.2F;
+            float fz = 0.1F - this.level().rand.nextFloat() * 0.2F;
+            float fy = 0.1F - this.level().rand.nextFloat() * 0.2F;
+            float fx2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+            float fz2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+            float fy2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
             int color = 16777215;
-            Thaumcraft.proxy.drawVentParticles(this.worldObj, (float)this.xCoord + 0.5F + fx + (float)this.facing.getOpposite().offsetX / 2.1F, (float)this.yCoord + 0.5F + fy + (float)this.facing.getOpposite().offsetY / 2.1F, (float)this.zCoord + 0.5F + fz + (float)this.facing.getOpposite().offsetZ / 2.1F, (float)this.facing.getOpposite().offsetX / 4.0F + fx2, (float)this.facing.getOpposite().offsetY / 4.0F + fy2, (float)this.facing.getOpposite().offsetZ / 4.0F + fz2, color);
+            Thaumcraft.proxy.drawVentParticles(this.level(), (float)this.xCoord + 0.5F + fx + (float)this.facing.getOpposite().offsetX / 2.1F, (float)this.yCoord + 0.5F + fy + (float)this.facing.getOpposite().offsetY / 2.1F, (float)this.zCoord + 0.5F + fz + (float)this.facing.getOpposite().offsetZ / 2.1F, (float)this.facing.getOpposite().offsetX / 4.0F + fx2, (float)this.facing.getOpposite().offsetY / 4.0F + fy2, (float)this.facing.getOpposite().offsetZ / 4.0F + fz2, color);
          }
       }
 
@@ -273,7 +273,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
 
    public boolean receiveClientEvent(int i, int j) {
       if (i >= 0) {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             this.venting = 7;
          }
 
@@ -286,7 +286,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    public void eject() {
       ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, 1, 0);
       ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).add(this.aspect, 1));
-      TileEntity inventory = this.worldObj.getTileEntity(this.xCoord + this.facing.getOpposite().offsetX, this.yCoord + this.facing.getOpposite().offsetY, this.zCoord + this.facing.getOpposite().offsetZ);
+      TileEntity inventory = this.level().getTileEntity(this.xCoord + this.facing.getOpposite().offsetX, this.yCoord + this.facing.getOpposite().offsetY, this.zCoord + this.facing.getOpposite().offsetZ);
       if (inventory instanceof IInventory) {
          stack = InventoryUtils.placeItemStackIntoInventory(stack, (IInventory)inventory, this.facing.ordinal(), true);
       }
@@ -295,20 +295,20 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
          this.spawnItem(stack);
       }
 
-      this.worldObj.playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.25F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
+      this.level().playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.25F, 2.6F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.8F);
    }
 
    public boolean spawnItem(ItemStack stack) {
-      EntityItem ie2 = new EntityItem(this.worldObj, (double)this.xCoord + (double)0.5F + (double)this.facing.getOpposite().offsetX * 0.65, (double)this.yCoord + (double)0.5F + (double)this.facing.getOpposite().offsetY * 0.65, (double)this.zCoord + (double)0.5F + (double)this.facing.getOpposite().offsetZ * 0.65, stack);
+      EntityItem ie2 = new EntityItem(this.level(), (double)this.xCoord + (double)0.5F + (double)this.facing.getOpposite().offsetX * 0.65, (double)this.yCoord + (double)0.5F + (double)this.facing.getOpposite().offsetY * 0.65, (double)this.zCoord + (double)0.5F + (double)this.facing.getOpposite().offsetZ * 0.65, stack);
       ie2.motionX = (float)this.facing.getOpposite().offsetX * 0.04F;
       ie2.motionY = (float)this.facing.getOpposite().offsetY * 0.04F;
       ie2.motionZ = (float)this.facing.getOpposite().offsetZ * 0.04F;
-      this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, 0);
-      return this.worldObj.spawnEntityInWorld(ie2);
+      this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, 0);
+      return this.level().spawnEntityInWorld(ie2);
    }
 
    void fillReservoir() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.facing);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
          if (!ic.canOutputTo(this.facing.getOpposite())) {
@@ -328,6 +328,6 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    }
 
    public boolean gettingPower() {
-      return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+      return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
    }
 }

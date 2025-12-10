@@ -1,10 +1,12 @@
 package thaumcraft.api;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author azanor
@@ -13,42 +15,59 @@ import net.minecraft.tileentity.TileEntity;
  * the nbt data within readCustomNBT / writeCustomNBT will be sent to the client when the tile
  * updates. Apart from all the normal TE data that gets sent that is.
  */
-public class TileThaumcraft extends TileEntity {
+public class TileThaumcraft extends BlockEntity {
+    protected final BlockEntityType<?> type;
+    public TileThaumcraft(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
+        this.type = blockEntityType;
+    }
 
     //NBT stuff
 
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        readCustomNBT(nbttagcompound);
+    public void load(CompoundTag CompoundTag) {
+        super.load(CompoundTag);
+        readCustomNBT(CompoundTag);
     }
 
-    public void readCustomNBT(NBTTagCompound nbttagcompound) {
+    public void readCustomNBT(CompoundTag CompoundTag) {
         //TODO
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
-        writeCustomNBT(nbttagcompound);
+    public void saveAdditional(CompoundTag CompoundTag) {
+        super.saveAdditional(CompoundTag);
+        writeCustomNBT(CompoundTag);
     }
 
-    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
+    public void writeCustomNBT(CompoundTag CompoundTag) {
         //TODO
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        writeCustomNBT(tag);  // 只同步自定义 NBT
+        return tag;
     }
 
     //Client Packet stuff
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        this.writeCustomNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -999, nbttagcompound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        this.readCustomNBT(pkt.func_148857_g());
-    }
+//    @Override
+//    public Packet getDescriptionPacket() {
+//        CompoundTag CompoundTag = new CompoundTag();
+//        this.writeCustomNBT(CompoundTag);
+//        return new S35PacketUpdateBlockEntity(this.xCoord, this.yCoord, this.zCoord, -999, CompoundTag);
+//    }
+//
+//    @Override
+//    public void onDataPacket(NetworkManager net, S35PacketUpdateBlockEntity pkt) {
+//        super.onDataPacket(net, pkt);
+//        this.readCustomNBT(pkt.func_148857_g());
+//    }
 
 }

@@ -1,13 +1,14 @@
 package thaumcraft.common.tiles;
 
-import java.util.List;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
+
+import java.util.List;
 
 public class TileLifter extends TileEntity {
    private int counter = 0;
@@ -27,16 +28,16 @@ public class TileLifter extends TileEntity {
          this.requiresUpdate = false;
          int max = 10;
 
-         for(int count = 1; this.worldObj.getBlock(this.xCoord, this.yCoord - count, this.zCoord) == ConfigBlocks.blockLifter && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord - count, this.zCoord); max += 10) {
+         for(int count = 1; this.level().getBlock(this.xCoord, this.yCoord - count, this.zCoord) == ConfigBlocks.blockLifter && !this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord - count, this.zCoord); max += 10) {
             ++count;
          }
 
-         for(this.rangeAbove = 0; this.rangeAbove < max && !this.worldObj.getBlock(this.xCoord, this.yCoord + 1 + this.rangeAbove, this.zCoord).isOpaqueCube(); ++this.rangeAbove) {
+         for(this.rangeAbove = 0; this.rangeAbove < max && !this.level().getBlock(this.xCoord, this.yCoord + 1 + this.rangeAbove, this.zCoord).isOpaqueCube(); ++this.rangeAbove) {
          }
       }
 
       if (this.rangeAbove > 0 && !this.gettingPower()) {
-         List<Entity> targets = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 1 + this.rangeAbove, this.zCoord + 1));
+         List<Entity> targets = this.level().getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 1 + this.rangeAbove, this.zCoord + 1));
          if (!targets.isEmpty()) {
             for(Entity e : targets) {
                if (e instanceof EntityItem || e.canBePushed() || e instanceof EntityHorse) {
@@ -57,6 +58,6 @@ public class TileLifter extends TileEntity {
    }
 
    public boolean gettingPower() {
-      return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) || this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord + 1, this.zCoord);
+      return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) || this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord + 1, this.zCoord);
    }
 }

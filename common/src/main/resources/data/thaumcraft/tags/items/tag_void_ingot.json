@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "thaumcraft_tag:ingot/void"
+    "thaumcraft:void_ingot"
   ]
 }

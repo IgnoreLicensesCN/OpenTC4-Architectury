@@ -1,4 +1,4 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.ConfigBlocks;
 

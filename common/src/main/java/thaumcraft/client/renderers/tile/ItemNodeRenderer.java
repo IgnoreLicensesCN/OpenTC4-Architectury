@@ -2,10 +2,10 @@ package thaumcraft.client.renderers.tile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
@@ -37,7 +37,7 @@ public class ItemNodeRenderer implements IItemRenderer {
    public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
       if (type == ItemRenderType.ENTITY) {
          GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
-      } else if (type == ItemRenderType.EQUIPPED && data[1] instanceof EntityPlayer) {
+      } else if (type == ItemRenderType.EQUIPPED && data[1] instanceof Player) {
          GL11.glTranslatef(0.0F, 0.0F, -0.5F);
       }
 

@@ -1,6 +1,6 @@
 package thaumcraft.api.expands.warp.listeners;
 
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 
 public abstract class GettingWarpDelayListener implements Comparable<GettingWarpDelayListener>{
     public final int priority;

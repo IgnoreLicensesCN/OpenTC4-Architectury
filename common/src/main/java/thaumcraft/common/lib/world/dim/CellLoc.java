@@ -46,7 +46,7 @@ public class CellLoc implements Comparable<CellLoc> {
       return f * f + f2 * f2;
    }
 
-   public float getDistanceSquaredToChunkCoordinates(CellLoc c) {
+   public float getDistanceSquaredToChunkPos(CellLoc c) {
       return this.getDistanceSquared(c.x, c.z);
    }
 

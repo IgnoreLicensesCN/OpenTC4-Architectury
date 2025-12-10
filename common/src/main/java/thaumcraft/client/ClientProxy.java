@@ -1,6 +1,6 @@
 package thaumcraft.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -14,12 +14,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import java.awt.Color;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,15 +28,15 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,217 +53,37 @@ import tc4tweak.modules.researchBrowser.BrowserPaging;
 import tc4tweak.modules.researchBrowser.DrawResearchCompletionCounter;
 import tc4tweak.modules.researchBrowser.ThaumonomiconIndexSearcher;
 import tc4tweak.network.NetworkedConfiguration;
-import thaumcraft.client.fx.ParticleEngine;
-import thaumcraft.client.fx.beams.FXArc;
-import thaumcraft.client.fx.beams.FXBeam;
-import thaumcraft.client.fx.beams.FXBeamBore;
-import thaumcraft.client.fx.beams.FXBeamPower;
-import thaumcraft.client.fx.beams.FXBeamWand;
+import net.minecraft.client.Minecraft;
+import thaumcraft.client.fx.beams.*;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.fx.other.FXBlockWard;
-import thaumcraft.client.fx.particles.FXBlockRunes;
-import thaumcraft.client.fx.particles.FXBoreParticles;
-import thaumcraft.client.fx.particles.FXBoreSparkle;
-import thaumcraft.client.fx.particles.FXBreaking;
-import thaumcraft.client.fx.particles.FXBubble;
-import thaumcraft.client.fx.particles.FXBurst;
-import thaumcraft.client.fx.particles.FXDrop;
-import thaumcraft.client.fx.particles.FXEssentiaTrail;
-import thaumcraft.client.fx.particles.FXGeneric;
-import thaumcraft.client.fx.particles.FXSmokeSpiral;
-import thaumcraft.client.fx.particles.FXSmokeTrail;
-import thaumcraft.client.fx.particles.FXSpark;
-import thaumcraft.client.fx.particles.FXSparkle;
-import thaumcraft.client.fx.particles.FXSparkleTrail;
-import thaumcraft.client.fx.particles.FXSwarm;
-import thaumcraft.client.fx.particles.FXVent;
-import thaumcraft.client.fx.particles.FXWisp;
-import thaumcraft.client.fx.particles.FXWispArcing;
-import thaumcraft.client.fx.particles.FXWispEG;
+import thaumcraft.client.fx.particles.*;
 import thaumcraft.client.gui.*;
 import thaumcraft.client.lib.ClientTickEventsFML;
-import thaumcraft.client.renderers.block.BlockArcaneFurnaceRenderer;
-import thaumcraft.client.renderers.block.BlockCandleRenderer;
-import thaumcraft.client.renderers.block.BlockChestHungryRenderer;
-import thaumcraft.client.renderers.block.BlockCosmeticOpaqueRenderer;
-import thaumcraft.client.renderers.block.BlockCrystalRenderer;
-import thaumcraft.client.renderers.block.BlockCustomOreRenderer;
-import thaumcraft.client.renderers.block.BlockEldritchRenderer;
-import thaumcraft.client.renderers.block.BlockEssentiaReservoirRenderer;
-import thaumcraft.client.renderers.block.BlockGasRenderer;
-import thaumcraft.client.renderers.block.BlockJarRenderer;
-import thaumcraft.client.renderers.block.BlockLifterRenderer;
-import thaumcraft.client.renderers.block.BlockLootCrateRenderer;
-import thaumcraft.client.renderers.block.BlockLootUrnRenderer;
-import thaumcraft.client.renderers.block.BlockMetalDeviceRenderer;
-import thaumcraft.client.renderers.block.BlockStoneDeviceRenderer;
-import thaumcraft.client.renderers.block.BlockTableRenderer;
-import thaumcraft.client.renderers.block.BlockTaintFibreRenderer;
-import thaumcraft.client.renderers.block.BlockTaintRenderer;
-import thaumcraft.client.renderers.block.BlockTubeRenderer;
-import thaumcraft.client.renderers.block.BlockWardedRenderer;
-import thaumcraft.client.renderers.block.BlockWoodenDeviceRenderer;
-import thaumcraft.client.renderers.entity.RenderAlumentum;
-import thaumcraft.client.renderers.entity.RenderAspectOrb;
-import thaumcraft.client.renderers.entity.RenderBrainyZombie;
-import thaumcraft.client.renderers.entity.RenderCultist;
-import thaumcraft.client.renderers.entity.RenderCultistPortal;
-import thaumcraft.client.renderers.entity.RenderDart;
-import thaumcraft.client.renderers.entity.RenderEldritchCrab;
-import thaumcraft.client.renderers.entity.RenderEldritchGolem;
-import thaumcraft.client.renderers.entity.RenderEldritchGuardian;
-import thaumcraft.client.renderers.entity.RenderEldritchOrb;
-import thaumcraft.client.renderers.entity.RenderElectricOrb;
-import thaumcraft.client.renderers.entity.RenderEmber;
-import thaumcraft.client.renderers.entity.RenderExplosiveOrb;
-import thaumcraft.client.renderers.entity.RenderFallingTaint;
-import thaumcraft.client.renderers.entity.RenderFireBat;
-import thaumcraft.client.renderers.entity.RenderFollowingItem;
-import thaumcraft.client.renderers.entity.RenderFrostShard;
-import thaumcraft.client.renderers.entity.RenderGolemBase;
-import thaumcraft.client.renderers.entity.RenderGolemBobber;
-import thaumcraft.client.renderers.entity.RenderInhabitedZombie;
-import thaumcraft.client.renderers.entity.RenderMindSpider;
-import thaumcraft.client.renderers.entity.RenderPech;
-import thaumcraft.client.renderers.entity.RenderPechBlast;
-import thaumcraft.client.renderers.entity.RenderPrimalArrow;
-import thaumcraft.client.renderers.entity.RenderPrimalOrb;
-import thaumcraft.client.renderers.entity.RenderSpecialItem;
-import thaumcraft.client.renderers.entity.RenderTaintChicken;
-import thaumcraft.client.renderers.entity.RenderTaintCow;
-import thaumcraft.client.renderers.entity.RenderTaintCreeper;
-import thaumcraft.client.renderers.entity.RenderTaintPig;
-import thaumcraft.client.renderers.entity.RenderTaintSheep;
-import thaumcraft.client.renderers.entity.RenderTaintSpider;
-import thaumcraft.client.renderers.entity.RenderTaintSpore;
-import thaumcraft.client.renderers.entity.RenderTaintSporeSwarmer;
-import thaumcraft.client.renderers.entity.RenderTaintSwarm;
-import thaumcraft.client.renderers.entity.RenderTaintVillager;
-import thaumcraft.client.renderers.entity.RenderTaintacle;
-import thaumcraft.client.renderers.entity.RenderThaumicSlime;
-import thaumcraft.client.renderers.entity.RenderTravelingTrunk;
-import thaumcraft.client.renderers.entity.RenderWisp;
-import thaumcraft.client.renderers.item.ItemBannerRenderer;
-import thaumcraft.client.renderers.item.ItemBowBoneRenderer;
-import thaumcraft.client.renderers.item.ItemThaumometerRenderer;
-import thaumcraft.client.renderers.item.ItemTrunkSpawnerRenderer;
-import thaumcraft.client.renderers.item.ItemWandRenderer;
-import thaumcraft.client.renderers.models.entities.ModelEldritchGolem;
-import thaumcraft.client.renderers.models.entities.ModelEldritchGuardian;
-import thaumcraft.client.renderers.models.entities.ModelGolem;
-import thaumcraft.client.renderers.models.entities.ModelPech;
-import thaumcraft.client.renderers.models.entities.ModelTaintSheep1;
-import thaumcraft.client.renderers.models.entities.ModelTaintSheep2;
-import thaumcraft.client.renderers.models.entities.ModelTrunk;
-import thaumcraft.client.renderers.tile.ItemJarFilledRenderer;
-import thaumcraft.client.renderers.tile.ItemJarNodeRenderer;
-import thaumcraft.client.renderers.tile.ItemNodeRenderer;
-import thaumcraft.client.renderers.tile.TileAlchemyFurnaceAdvancedRenderer;
-import thaumcraft.client.renderers.tile.TileAlembicRenderer;
-import thaumcraft.client.renderers.tile.TileArcaneBoreBaseRenderer;
-import thaumcraft.client.renderers.tile.TileArcaneBoreRenderer;
-import thaumcraft.client.renderers.tile.TileArcaneLampRenderer;
-import thaumcraft.client.renderers.tile.TileArcaneWorkbenchRenderer;
-import thaumcraft.client.renderers.tile.TileBannerRenderer;
-import thaumcraft.client.renderers.tile.TileBellowsRenderer;
-import thaumcraft.client.renderers.tile.TileCentrifugeRenderer;
-import thaumcraft.client.renderers.tile.TileChestHungryRenderer;
-import thaumcraft.client.renderers.tile.TileCrucibleRenderer;
-import thaumcraft.client.renderers.tile.TileCrystalRenderer;
-import thaumcraft.client.renderers.tile.TileDeconstructionTableRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchCapRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchCrabSpawnerRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchCrystalRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchLockRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchNothingRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchObeliskRenderer;
-import thaumcraft.client.renderers.tile.TileEldritchPortalRenderer;
-import thaumcraft.client.renderers.tile.TileEssentiaCrystalizerRenderer;
-import thaumcraft.client.renderers.tile.TileEssentiaReservoirRenderer;
-import thaumcraft.client.renderers.tile.TileEtherealBloomRenderer;
-import thaumcraft.client.renderers.tile.TileFluxScrubberRenderer;
-import thaumcraft.client.renderers.tile.TileFocalManipulatorRenderer;
-import thaumcraft.client.renderers.tile.TileHoleRenderer;
-import thaumcraft.client.renderers.tile.TileInfusionPillarRenderer;
-import thaumcraft.client.renderers.tile.TileJarRenderer;
-import thaumcraft.client.renderers.tile.TileMagicWorkbenchChargerRenderer;
-import thaumcraft.client.renderers.tile.TileManaPodRenderer;
-import thaumcraft.client.renderers.tile.TileMirrorRenderer;
-import thaumcraft.client.renderers.tile.TileNodeConverterRenderer;
-import thaumcraft.client.renderers.tile.TileNodeEnergizedRenderer;
-import thaumcraft.client.renderers.tile.TileNodeRenderer;
-import thaumcraft.client.renderers.tile.TileNodeStabilizerRenderer;
-import thaumcraft.client.renderers.tile.TilePedestalRenderer;
-import thaumcraft.client.renderers.tile.TileResearchTableRenderer;
-import thaumcraft.client.renderers.tile.TileRunicMatrixRenderer;
-import thaumcraft.client.renderers.tile.TileTableRenderer;
-import thaumcraft.client.renderers.tile.TileThaumatoriumRenderer;
-import thaumcraft.client.renderers.tile.TileTubeBufferRenderer;
-import thaumcraft.client.renderers.tile.TileTubeOnewayRenderer;
-import thaumcraft.client.renderers.tile.TileTubeValveRenderer;
-import thaumcraft.client.renderers.tile.TileVisRelayRenderer;
-import thaumcraft.client.renderers.tile.TileWandPedestalRenderer;
-import thaumcraft.client.renderers.tile.TileWardedRenderer;
+import thaumcraft.client.renderers.block.*;
+import thaumcraft.client.renderers.entity.*;
+import thaumcraft.client.renderers.item.*;
+import thaumcraft.client.renderers.models.entities.*;
+import thaumcraft.client.renderers.tile.*;
 import thaumcraft.common.CommonProxy;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.entities.EntityFallingTaint;
-import thaumcraft.common.entities.EntityFollowingItem;
-import thaumcraft.common.entities.EntityItemGrate;
-import thaumcraft.common.entities.EntityPermanentItem;
-import thaumcraft.common.entities.EntitySpecialItem;
+import thaumcraft.common.entities.*;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EntityGolemBobber;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
-import thaumcraft.common.entities.monster.EntityBrainyZombie;
-import thaumcraft.common.entities.monster.EntityCultistCleric;
-import thaumcraft.common.entities.monster.EntityCultistKnight;
-import thaumcraft.common.entities.monster.EntityEldritchCrab;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.entities.monster.EntityFireBat;
-import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
-import thaumcraft.common.entities.monster.EntityInhabitedZombie;
-import thaumcraft.common.entities.monster.EntityMindSpider;
-import thaumcraft.common.entities.monster.EntityPech;
-import thaumcraft.common.entities.monster.EntityTaintChicken;
-import thaumcraft.common.entities.monster.EntityTaintCow;
-import thaumcraft.common.entities.monster.EntityTaintCreeper;
-import thaumcraft.common.entities.monster.EntityTaintPig;
-import thaumcraft.common.entities.monster.EntityTaintSheep;
-import thaumcraft.common.entities.monster.EntityTaintSpider;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
-import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
-import thaumcraft.common.entities.monster.EntityTaintSwarm;
-import thaumcraft.common.entities.monster.EntityTaintVillager;
-import thaumcraft.common.entities.monster.EntityTaintacle;
-import thaumcraft.common.entities.monster.EntityTaintacleSmall;
-import thaumcraft.common.entities.monster.EntityThaumicSlime;
-import thaumcraft.common.entities.monster.EntityWisp;
-import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
-import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
-import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
-import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
-import thaumcraft.common.entities.monster.boss.EntityTaintacleGiant;
-import thaumcraft.common.entities.projectile.EntityAlumentum;
-import thaumcraft.common.entities.projectile.EntityBottleTaint;
-import thaumcraft.common.entities.projectile.EntityDart;
-import thaumcraft.common.entities.projectile.EntityEldritchOrb;
-import thaumcraft.common.entities.projectile.EntityEmber;
-import thaumcraft.common.entities.projectile.EntityExplosiveOrb;
-import thaumcraft.common.entities.projectile.EntityFrostShard;
-import thaumcraft.common.entities.projectile.EntityGolemOrb;
-import thaumcraft.common.entities.projectile.EntityPechBlast;
-import thaumcraft.common.entities.projectile.EntityPrimalArrow;
-import thaumcraft.common.entities.projectile.EntityPrimalOrb;
-import thaumcraft.common.entities.projectile.EntityShockOrb;
-import thaumcraft.common.items.wands.WandManager;
+import thaumcraft.common.entities.monster.*;
+import thaumcraft.common.entities.monster.boss.*;
+import thaumcraft.common.entities.projectile.*;
 import thaumcraft.common.lib.events.KeyHandler;
-import thaumcraft.common.lib.research.PlayerKnowledge;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
+
+import java.awt.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import static tc4tweak.ClientUtils.postponed;
 
@@ -292,7 +106,7 @@ public class ClientProxy extends CommonProxy {
       FMLCommonHandler.instance().bus().register(new KeyHandler());
    }
 
-   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+   public Object getClientGuiElement(int ID, Player player, World world, int x, int y, int z) {
       if (world instanceof WorldClient) {
          switch (ID) {
             case 0:
@@ -351,8 +165,8 @@ public class ClientProxy extends CommonProxy {
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemJarFilled, new ItemJarFilledRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemJarNode, new ItemJarNodeRenderer());
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemNodeRenderer());
-      MinecraftForgeClient.registerItemRenderer(ConfigItems.itemThaumometer, new ItemThaumometerRenderer());
-      MinecraftForgeClient.registerItemRenderer(ConfigItems.itemWandCasting, new ItemWandRenderer());
+      MinecraftForgeClient.registerItemRenderer(ThaumcraftItems.THAUMOMETER, new ItemThaumometerRenderer());
+      MinecraftForgeClient.registerItemRenderer(ConfigItems.WandCastingItem, new ItemWandRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemTrunkSpawner, new ItemTrunkSpawnerRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemBowBone, new ItemBowBoneRenderer());
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockWoodenDevice), new ItemBannerRenderer());
@@ -532,12 +346,12 @@ public class ClientProxy extends CommonProxy {
 
       for(int a = 0; a < Thaumcraft.proxy.particleCount(count); ++a) {
          if (c == -9999) {
-            r = 0.33F + world.rand.nextFloat() * 0.67F;
-            g = 0.33F + world.rand.nextFloat() * 0.67F;
-            b = 0.33F + world.rand.nextFloat() * 0.67F;
+            r = 0.33F + world.getRandom().nextFloat() * 0.67F;
+            g = 0.33F + world.getRandom().nextFloat() * 0.67F;
+            b = 0.33F + world.getRandom().nextFloat() * 0.67F;
          }
 
-         Thaumcraft.proxy.drawGenericParticles(world, (float)x - 0.1F + world.rand.nextFloat() * 1.2F, (float)y - 0.1F + world.rand.nextFloat() * 1.2F, (float)z - 0.1F + world.rand.nextFloat() * 1.2F, 0.0F, (double)world.rand.nextFloat() * 0.02, 0.0F, r - 0.2F + world.rand.nextFloat() * 0.4F, g - 0.2F + world.rand.nextFloat() * 0.4F, b - 0.2F + world.rand.nextFloat() * 0.4F, 0.9F, false, 112, 9, 1, 5 + world.rand.nextInt(8), world.rand.nextInt(10), 0.7F + world.rand.nextFloat() * 0.4F);
+         Thaumcraft.proxy.drawGenericParticles(world, (float)x - 0.1F + world.getRandom().nextFloat() * 1.2F, (float)y - 0.1F + world.getRandom().nextFloat() * 1.2F, (float)z - 0.1F + world.getRandom().nextFloat() * 1.2F, 0.0F, (double)world.getRandom().nextFloat() * 0.02, 0.0F, r - 0.2F + world.getRandom().nextFloat() * 0.4F, g - 0.2F + world.getRandom().nextFloat() * 0.4F, b - 0.2F + world.getRandom().nextFloat() * 0.4F, 0.9F, false, 112, 9, 1, 5 + world.getRandom().nextInt(8), world.getRandom().nextInt(10), 0.7F + world.getRandom().nextFloat() * 0.4F);
       }
 
    }
@@ -547,7 +361,8 @@ public class ClientProxy extends CommonProxy {
          FXSparkle fx = new FXSparkle(this.getClientWorld(), x, y, z, size, color, 6);
          fx.noClip = true;
          fx.setGravity(gravity);
-         ParticleEngine.instance.addEffect(this.getClientWorld(), fx);
+         Minecraft.getInstance().particleEngine.add(fx);
+
       }
 
    }
@@ -556,7 +371,8 @@ public class ClientProxy extends CommonProxy {
       if (this.getClientWorld() != null && this.getClientWorld().rand.nextInt(6) < this.particleCount(2)) {
          FXSparkle fx = new FXSparkle(this.getClientWorld(), x, y, z, 1.5F, color, 6);
          fx.noClip = true;
-         ParticleEngine.instance.addEffect(this.getClientWorld(), fx);
+         Minecraft.getInstance().particleEngine.add(fx);
+
       }
 
    }
@@ -566,7 +382,8 @@ public class ClientProxy extends CommonProxy {
          FXSpark fx = new FXSpark(this.getClientWorld(), x, y, z, size);
          fx.setRBGColorF(r, g, b);
          fx.setAlphaF(a);
-         ParticleEngine.instance.addEffect(this.getClientWorld(), fx);
+         Minecraft.getInstance().particleEngine.add(fx);
+
       }
 
    }
@@ -575,7 +392,8 @@ public class ClientProxy extends CommonProxy {
       FXSmokeSpiral fx = new FXSmokeSpiral(this.getClientWorld(), x, y, z, rad, start, miny);
       Color c = new Color(color);
       fx.setRBGColorF((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F);
-      ParticleEngine.instance.addEffect(world, fx);
+      Minecraft.getInstance().particleEngine.add(fx);
+
    }
 
    public void crucibleBoilSound(World world, int xCoord, int yCoord, int zCoord) {
@@ -584,16 +402,17 @@ public class ClientProxy extends CommonProxy {
 
    public void crucibleBoil(World world, int xCoord, int yCoord, int zCoord, TileCrucible tile, int j) {
       for(int a = 0; a < this.particleCount(1); ++a) {
-         FXBubble fb = new FXBubble(world, (float)xCoord + 0.2F + world.rand.nextFloat() * 0.6F, (float)yCoord + 0.1F + tile.getFluidHeight(), (float)zCoord + 0.2F + world.rand.nextFloat() * 0.6F, 0.0F, 0.0F, 0.0F, 3);
+         FXBubble fb = new FXBubble(world, (float)xCoord + 0.2F + world.getRandom().nextFloat() * 0.6F, (float)yCoord + 0.1F + tile.getFluidHeight(), (float)zCoord + 0.2F + world.getRandom().nextFloat() * 0.6F, 0.0F, 0.0F, 0.0F, 3);
          if (tile.aspects.size() == 0) {
             fb.setRBGColorF(1.0F, 1.0F, 1.0F);
          } else {
-            Color color = new Color(tile.aspects.getAspects()[world.rand.nextInt(tile.aspects.getAspects().length)].getColor());
+            Color color = new Color(tile.aspects.getAspects()[world.getRandom().nextInt(tile.aspects.getAspects().length)].getColor());
             fb.setRBGColorF((float)color.getRed() / 255.0F, (float)color.getGreen() / 255.0F, (float)color.getBlue() / 255.0F);
          }
 
          fb.bubblespeed = 0.003 * (double)j;
-         ParticleEngine.instance.addEffect(world, fb);
+         Minecraft.getInstance().particleEngine.add(fb);
+
       }
 
    }
@@ -601,27 +420,31 @@ public class ClientProxy extends CommonProxy {
    public void crucibleBubble(World world, float x, float y, float z, float cr, float cg, float cb) {
       FXBubble fb = new FXBubble(world, x, y, z, 0.0F, 0.0F, 0.0F, 1);
       fb.setRBGColorF(cr, cg, cb);
-      ParticleEngine.instance.addEffect(world, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void crucibleFroth(World world, float x, float y, float z) {
       FXBubble fb = new FXBubble(world, x, y, z, 0.0F, 0.0F, 0.0F, -4);
       fb.setRBGColorF(0.5F, 0.5F, 0.7F);
       fb.setFroth();
-      ParticleEngine.instance.addEffect(world, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void crucibleFrothDown(World world, float x, float y, float z) {
       FXBubble fb = new FXBubble(world, x, y, z, 0.0F, 0.0F, 0.0F, -4);
       fb.setRBGColorF(0.5F, 0.5F, 0.7F);
       fb.setFroth2();
-      ParticleEngine.instance.addEffect(world, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void wispFX(World worldObj, double posX, double posY, double posZ, float f, float g, float h, float i) {
       FXWisp ef = new FXWisp(worldObj, posX, posY, posZ, f, g, h, i);
       ef.setGravity(0.02F);
-      ParticleEngine.instance.addEffect(worldObj, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
    }
 
    public void wispFX2(World worldObj, double posX, double posY, double posZ, float size, int type, boolean shrink, boolean clip, float gravity) {
@@ -629,13 +452,15 @@ public class ClientProxy extends CommonProxy {
       ef.setGravity(gravity);
       ef.shrink = shrink;
       ef.noClip = clip;
-      ParticleEngine.instance.addEffect(worldObj, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
    }
 
    public void wispFXEG(World worldObj, double posX, double posY, double posZ, Entity target) {
       for(int a = 0; a < this.particleCount(1); ++a) {
          FXWispEG ef = new FXWispEG(worldObj, posX, posY, posZ, target);
-         ParticleEngine.instance.addEffect(worldObj, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       }
 
    }
@@ -644,26 +469,29 @@ public class ClientProxy extends CommonProxy {
       FXWisp ef = new FXWisp(worldObj, posX, posY, posZ, posX2, posY2, posZ2, size, type);
       ef.setGravity(gravity);
       ef.shrink = shrink;
-      ParticleEngine.instance.addEffect(worldObj, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
    }
 
    public void wispFX4(World worldObj, double posX, double posY, double posZ, Entity target, int type, boolean shrink, float gravity) {
       FXWisp ef = new FXWisp(worldObj, posX, posY, posZ, target, type);
       ef.setGravity(gravity);
       ef.shrink = shrink;
-      ParticleEngine.instance.addEffect(worldObj, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
    }
 
    public void burst(World worldObj, double sx, double sy, double sz, float size) {
       FXBurst ef = new FXBurst(worldObj, sx, sy, sz, size);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(ef);
+      Minecraft.getInstance().particleEngine.add(ef);
    }
 
    public void sourceStreamFX(World worldObj, double sx, double sy, double sz, float tx, float ty, float tz, int tagColor) {
       Color c = new Color(tagColor);
       FXWispArcing ef = new FXWispArcing(worldObj, tx, ty, tz, sx, sy, sz, 0.1F, (float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F);
       ef.setGravity(0.0F);
-      ParticleEngine.instance.addEffect(worldObj, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
    }
 
    public void bolt(World worldObj, Entity sourceEntity, Entity targetedEntity) {
@@ -687,7 +515,7 @@ public class ClientProxy extends CommonProxy {
       bolt.finalizeBolt();
    }
 
-   public void excavateFX(int x, int y, int z, EntityPlayer p, int bi, int md, int progress) {
+   public void excavateFX(int x, int y, int z, Player p, int bi, int md, int progress) {
       RenderGlobal rg = Minecraft.getMinecraft().renderGlobal;
       rg.destroyBlockPartially(p.getEntityId(), x, y, z, progress);
    }
@@ -700,10 +528,10 @@ public class ClientProxy extends CommonProxy {
       beamcon.setEndMod(endmod);
       beamcon.setReverse(reverse);
       beamcon.setPulse(false);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+      Minecraft.getInstance().particleEngine.add(beamcon);
    }
 
-   public Object beamCont(World worldObj, EntityPlayer p, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
+   public FXBeamWand beamCont(World worldObj, Player p, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
       FXBeamWand beamcon = null;
       Color c = new Color(color);
       if (input instanceof FXBeamWand) {
@@ -719,7 +547,7 @@ public class ClientProxy extends CommonProxy {
          beamcon.setType(type);
          beamcon.setEndMod(endmod);
          beamcon.setReverse(reverse);
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+         Minecraft.getInstance().particleEngine.add(beamcon);
       }
 
       return beamcon;
@@ -741,7 +569,7 @@ public class ClientProxy extends CommonProxy {
          beamcon.setType(type);
          beamcon.setEndMod(endmod);
          beamcon.setReverse(reverse);
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+         Minecraft.getInstance().particleEngine.add(beamcon);
       }
 
       return beamcon;
@@ -750,29 +578,33 @@ public class ClientProxy extends CommonProxy {
    public void boreDigFx(World worldObj, int x, int y, int z, int x2, int y2, int z2, Block bi, int md) {
       if (worldObj.rand.nextInt(10) == 0) {
          FXBoreSparkle fb = new FXBoreSparkle(worldObj, (float)x + worldObj.rand.nextFloat(), (float)y + worldObj.rand.nextFloat(), (float)z + worldObj.rand.nextFloat(), (double)x2 + (double)0.5F, (double)y2 + (double)0.5F, (double)z2 + (double)0.5F);
-         ParticleEngine.instance.addEffect(worldObj, fb);
+         Minecraft.getInstance().particleEngine.add(fb);
+
       } else {
          FXBoreParticles fb = (new FXBoreParticles(worldObj, (float)x + worldObj.rand.nextFloat(), (float)y + worldObj.rand.nextFloat(), (float)z + worldObj.rand.nextFloat(), (double)x2 + (double)0.5F, (double)y2 + (double)0.5F, (double)z2 + (double)0.5F, bi, worldObj.rand.nextInt(6), md)).applyColourMultiplier(x, y, z);
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+         Minecraft.getInstance().particleEngine.add(fb);
       }
 
    }
 
    public void essentiaTrailFx(World worldObj, int x, int y, int z, int x2, int y2, int z2, int count, int color, float scale) {
       FXEssentiaTrail fb = new FXEssentiaTrail(worldObj, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, (double)x2 + (double)0.5F, (double)y2 + (double)0.5F, (double)z2 + (double)0.5F, count, color, scale);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void soulTrail(World world, Entity source, Entity target, float r, float g, float b) {
       for(int a = 0; a < this.particleCount(2); ++a) {
-         if (world.rand.nextInt(10) == 0) {
-            FXSparkleTrail st = new FXSparkleTrail(world, source.posX - (double)(source.width / 2.0F) + (double)(world.rand.nextFloat() * source.width), source.posY + (double)(world.rand.nextFloat() * source.height), source.posZ - (double)(source.width / 2.0F) + (double)(world.rand.nextFloat() * source.width), target, r, g, b);
+         if (world.getRandom().nextInt(10) == 0) {
+            FXSparkleTrail st = new FXSparkleTrail(world, source.posX - (double)(source.width / 2.0F) + (double)(world.getRandom().nextFloat() * source.width), source.posY + (double)(world.getRandom().nextFloat() * source.height), source.posZ - (double)(source.width / 2.0F) + (double)(world.getRandom().nextFloat() * source.width), target, r, g, b);
             st.noClip = true;
-            ParticleEngine.instance.addEffect(world, st);
+            Minecraft.getInstance().particleEngine.add(st);
+
          } else {
-            FXSmokeTrail st = new FXSmokeTrail(world, source.posX - (double)(source.width / 2.0F) + (double)(world.rand.nextFloat() * source.width), source.posY + (double)(world.rand.nextFloat() * source.height), source.posZ - (double)(source.width / 2.0F) + (double)(world.rand.nextFloat() * source.width), target, r, g, b);
+            FXSmokeTrail st = new FXSmokeTrail(world, source.posX - (double)(source.width / 2.0F) + (double)(world.getRandom().nextFloat() * source.width), source.posY + (double)(world.getRandom().nextFloat() * source.height), source.posZ - (double)(source.width / 2.0F) + (double)(world.getRandom().nextFloat() * source.width), target, r, g, b);
             st.noClip = true;
-            ParticleEngine.instance.addEffect(world, st);
+            Minecraft.getInstance().particleEngine.add(st);
+
          }
       }
 
@@ -793,33 +625,35 @@ public class ClientProxy extends CommonProxy {
       float qz = facingZ == 0 ? (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.5F : (float)facingZ * worldObj.rand.nextFloat();
       fb.motionX = 0.15F * qx;
       fb.motionZ = 0.15F * qz;
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+      Minecraft.getInstance().particleEngine.add(fb);
    }
 
    public void blockRunes(World world, double x, double y, double z, float r, float g, float b, int dur, float grav) {
       FXBlockRunes fb = new FXBlockRunes(world, x + (double)0.5F, y + (double)0.5F, z + (double)0.5F, r, g, b, dur);
       fb.setGravity(grav);
-      ParticleEngine.instance.addEffect(world, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void blockWard(World world, double x, double y, double z, ForgeDirection side, float f, float f1, float f2) {
       FXBlockWard fb = new FXBlockWard(world, x + (double)0.5F, y + (double)0.5F, z + (double)0.5F, side, f, f1, f2);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+      Minecraft.getInstance().particleEngine.add(fb);
    }
 
    public Object swarmParticleFX(World worldObj, Entity targetedEntity, float f1, float f2, float pg) {
       FXSwarm fx = new FXSwarm(worldObj, targetedEntity.posX + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), targetedEntity.posY + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), targetedEntity.posZ + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), targetedEntity, 0.8F + worldObj.rand.nextFloat() * 0.2F, worldObj.rand.nextFloat() * 0.4F, 1.0F - worldObj.rand.nextFloat() * 0.2F, f1, f2, pg);
-      ParticleEngine.instance.addEffect(worldObj, fx);
+      Minecraft.getInstance().particleEngine.add(fx);
+
       return fx;
    }
 
    public void splooshFX(Entity e) {
-      float f = e.worldObj.rand.nextFloat() * (float)Math.PI * 2.0F;
-      float f1 = e.worldObj.rand.nextFloat() * 0.5F + 0.5F;
+      float f = e.level().rand.nextFloat() * (float)Math.PI * 2.0F;
+      float f1 = e.level().rand.nextFloat() * 0.5F + 0.5F;
       float f2 = MathHelper.sin(f) * 2.0F * 0.5F * f1;
       float f3 = MathHelper.cos(f) * 2.0F * 0.5F * f1;
-      FXBreaking fx = new FXBreaking(e.worldObj, e.posX + (double)f2, e.posY + (double)(e.worldObj.rand.nextFloat() * e.height), e.posZ + (double)f3, Items.slime_ball);
-      if (e.worldObj.rand.nextBoolean()) {
+      FXBreaking fx = new FXBreaking(e.level(), e.posX + (double)f2, e.posY + (double)(e.level().rand.nextFloat() * e.height), e.posZ + (double)f3, Items.slime_ball);
+      if (e.level().rand.nextBoolean()) {
          fx.setRBGColorF(0.6F, 0.0F, 0.3F);
          fx.setAlphaF(0.4F);
       } else {
@@ -827,8 +661,8 @@ public class ClientProxy extends CommonProxy {
          fx.setAlphaF(0.6F);
       }
 
-      fx.setParticleMaxAge((int)(66.0F / (e.worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+      fx.setParticleMaxAge((int)(66.0F / (e.level().rand.nextFloat() * 0.9F + 0.1F)));
+      Minecraft.getInstance().particleEngine.add(fx);
    }
 
    public void splooshFX(World worldObj, int x, int y, int z) {
@@ -846,12 +680,12 @@ public class ClientProxy extends CommonProxy {
       }
 
       fx.setParticleMaxAge((int)(66.0F / (worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+      Minecraft.getInstance().particleEngine.add(fx);
    }
 
    public void taintsplosionFX(Entity e) {
-      FXBreaking fx = new FXBreaking(e.worldObj, e.posX, e.posY + (double)(e.worldObj.rand.nextFloat() * e.height), e.posZ, Items.slime_ball);
-      if (e.worldObj.rand.nextBoolean()) {
+      FXBreaking fx = new FXBreaking(e.level(), e.posX, e.posY + (double)(e.level().rand.nextFloat() * e.height), e.posZ, Items.slime_ball);
+      if (e.level().rand.nextBoolean()) {
          fx.setRBGColorF(0.6F, 0.0F, 0.3F);
          fx.setAlphaF(0.4F);
       } else {
@@ -867,8 +701,8 @@ public class ClientProxy extends CommonProxy {
       fx.motionX = fx.motionX / (double)f1 * (double)f * 0.9640000000596046;
       fx.motionY = fx.motionY / (double)f1 * (double)f * 0.9640000000596046 + (double)0.1F;
       fx.motionZ = fx.motionZ / (double)f1 * (double)f * 0.9640000000596046;
-      fx.setParticleMaxAge((int)(66.0F / (e.worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+      fx.setParticleMaxAge((int)(66.0F / (e.level().rand.nextFloat() * 0.9F + 0.1F)));
+      Minecraft.getInstance().particleEngine.add(fx);
    }
 
    public void tentacleAriseFX(Entity e) {
@@ -877,62 +711,62 @@ public class ClientProxy extends CommonProxy {
       int zz = MathHelper.floor_double(e.posZ);
 
       for(int j = 0; (float)j < 2.0F * e.height; ++j) {
-         float f = e.worldObj.rand.nextFloat() * (float)Math.PI * e.height;
-         float f1 = e.worldObj.rand.nextFloat() * 0.5F + 0.5F;
+         float f = e.level().rand.nextFloat() * (float)Math.PI * e.height;
+         float f1 = e.level().rand.nextFloat() * 0.5F + 0.5F;
          float f2 = MathHelper.sin(f) * e.height * 0.25F * f1;
          float f3 = MathHelper.cos(f) * e.height * 0.25F * f1;
-         FXBreaking fx = new FXBreaking(e.worldObj, e.posX + (double)f2, e.posY, e.posZ + (double)f3, Items.slime_ball);
+         FXBreaking fx = new FXBreaking(e.level(), e.posX + (double)f2, e.posY, e.posZ + (double)f3, Items.slime_ball);
          fx.setRBGColorF(0.4F, 0.0F, 0.4F);
          fx.setAlphaF(0.5F);
-         fx.setParticleMaxAge((int)(66.0F / (e.worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
-         if (!e.worldObj.isAirBlock(xx, yy, zz)) {
-            f = e.worldObj.rand.nextFloat() * (float)Math.PI * e.height;
-            f1 = e.worldObj.rand.nextFloat() * 0.5F + 0.5F;
+         fx.setParticleMaxAge((int)(66.0F / (e.level().rand.nextFloat() * 0.9F + 0.1F)));
+         Minecraft.getInstance().particleEngine.add(fx);
+         if (!e.level().isAirBlock(xx, yy, zz)) {
+            f = e.level().rand.nextFloat() * (float)Math.PI * e.height;
+            f1 = e.level().rand.nextFloat() * 0.5F + 0.5F;
             f2 = MathHelper.sin(f) * e.height * 0.25F * f1;
             f3 = MathHelper.cos(f) * e.height * 0.25F * f1;
-            EntityDiggingFX fx2 = (new EntityDiggingFX(e.worldObj, e.posX + (double)f2, e.posY, e.posZ + (double)f3, 0.0F, 0.0F, 0.0F, e.worldObj.getBlock(xx, yy, zz), e.worldObj.getBlockMetadata(xx, yy, zz), 1)).applyColourMultiplier(xx, yy, zz);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx2);
+            EntityDiggingFX fx2 = (new EntityDiggingFX(e.level(), e.posX + (double)f2, e.posY, e.posZ + (double)f3, 0.0F, 0.0F, 0.0F, e.level().getBlock(xx, yy, zz), e.level().getBlockMetadata(xx, yy, zz), 1)).applyColourMultiplier(xx, yy, zz);
+            Minecraft.getInstance().particleEngine.add(fx2);
          }
       }
 
    }
 
    public void slimeJumpFX(Entity e, int i) {
-      float f = e.worldObj.rand.nextFloat() * (float)Math.PI * 2.0F;
-      float f1 = e.worldObj.rand.nextFloat() * 0.5F + 0.5F;
+      float f = e.level().rand.nextFloat() * (float)Math.PI * 2.0F;
+      float f1 = e.level().rand.nextFloat() * 0.5F + 0.5F;
       float f2 = MathHelper.sin(f) * (float)i * 0.5F * f1;
       float f3 = MathHelper.cos(f) * (float)i * 0.5F * f1;
-      FXBreaking fx = new FXBreaking(e.worldObj, e.posX + (double)f2, (e.boundingBox.minY + e.boundingBox.maxY) / (double)2.0F, e.posZ + (double)f3, Items.slime_ball);
+      FXBreaking fx = new FXBreaking(e.level(), e.posX + (double)f2, (e.boundingBox.minY + e.boundingBox.maxY) / (double)2.0F, e.posZ + (double)f3, Items.slime_ball);
       fx.setRBGColorF(0.7F, 0.0F, 1.0F);
       fx.setAlphaF(0.4F);
-      fx.setParticleMaxAge((int)(66.0F / (e.worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+      fx.setParticleMaxAge((int)(66.0F / (e.level().rand.nextFloat() * 0.9F + 0.1F)));
+      Minecraft.getInstance().particleEngine.add(fx);
    }
 
    public void dropletFX(World world, float i, float j, float k, float r, float g, float b) {
       FXDrop obj = new FXDrop(world, i, j, k, r, g, b);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(obj);
+      Minecraft.getInstance().particleEngine.add(obj);
    }
 
    public void taintLandFX(Entity e) {
-      float f = e.worldObj.rand.nextFloat() * (float)Math.PI * 2.0F;
-      float f1 = e.worldObj.rand.nextFloat() * 0.5F + 0.5F;
+      float f = e.level().rand.nextFloat() * (float)Math.PI * 2.0F;
+      float f1 = e.level().rand.nextFloat() * 0.5F + 0.5F;
       float f2 = MathHelper.sin(f) * 2.0F * 0.5F * f1;
       float f3 = MathHelper.cos(f) * 2.0F * 0.5F * f1;
-      if (e.worldObj.isRemote) {
-         FXBreaking fx = new FXBreaking(e.worldObj, e.posX + (double)f2, (e.boundingBox.minY + e.boundingBox.maxY) / (double)2.0F, e.posZ + (double)f3, Items.slime_ball);
+      if (e.level().isRemote) {
+         FXBreaking fx = new FXBreaking(e.level(), e.posX + (double)f2, (e.boundingBox.minY + e.boundingBox.maxY) / (double)2.0F, e.posZ + (double)f3, Items.slime_ball);
          fx.setRBGColorF(0.1F, 0.0F, 0.1F);
          fx.setAlphaF(0.4F);
-         fx.setParticleMaxAge((int)(66.0F / (e.worldObj.rand.nextFloat() * 0.9F + 0.1F)));
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+         fx.setParticleMaxAge((int)(66.0F / (e.level().rand.nextFloat() * 0.9F + 0.1F)));
+         Minecraft.getInstance().particleEngine.add(fx);
       }
 
    }
 
    public void hungryNodeFX(World worldObj, int sourceX, int sourceY, int sourceZ, int targetX, int targetY, int targetZ, Block block, int md) {
       FXBoreParticles fb = (new FXBoreParticles(worldObj, (float)sourceX + worldObj.rand.nextFloat(), (float)sourceY + worldObj.rand.nextFloat(), (float)sourceZ + worldObj.rand.nextFloat(), (double)targetX + (double)0.5F, (double)targetY + (double)0.5F, (double)targetZ + (double)0.5F, block, worldObj.rand.nextInt(6), md)).applyColourMultiplier(sourceX, sourceY, sourceZ);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+      Minecraft.getInstance().particleEngine.add(fb);
    }
 
    public void drawInfusionParticles1(World worldObj, double x, double y, double z, int x2, int y2, int z2, Item id, int md) {
@@ -941,31 +775,34 @@ public class ClientProxy extends CommonProxy {
       fb.motionX = (float)worldObj.rand.nextGaussian() * 0.03F;
       fb.motionY = (float)worldObj.rand.nextGaussian() * 0.03F;
       fb.motionZ = (float)worldObj.rand.nextGaussian() * 0.03F;
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+      Minecraft.getInstance().particleEngine.add(fb);
    }
 
    public void drawInfusionParticles2(World worldObj, double x, double y, double z, int x2, int y2, int z2, Block id, int md) {
       FXBoreParticles fb = (new FXBoreParticles(worldObj, x, y, z, (double)x2 + (double)0.5F, (double)y2 - (double)0.5F, (double)z2 + (double)0.5F, id, worldObj.rand.nextInt(6), md)).applyColourMultiplier(x2, y2, z2);
       fb.setAlphaF(0.3F);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+      Minecraft.getInstance().particleEngine.add(fb);
    }
 
    public void drawInfusionParticles3(World worldObj, double x, double y, double z, int x2, int y2, int z2) {
       FXBoreSparkle fb = new FXBoreSparkle(worldObj, x, y, z, (double)x2 + (double)0.5F, (double)y2 - (double)0.5F, (double)z2 + (double)0.5F);
       fb.setRBGColorF(0.4F + worldObj.rand.nextFloat() * 0.2F, 0.2F, 0.6F + worldObj.rand.nextFloat() * 0.3F);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void drawInfusionParticles4(World worldObj, double x, double y, double z, int x2, int y2, int z2) {
       FXBoreSparkle fb = new FXBoreSparkle(worldObj, x, y, z, (double)x2 + (double)0.5F, (double)y2 - (double)0.5F, (double)z2 + (double)0.5F);
       fb.setRBGColorF(0.2F, 0.6F + worldObj.rand.nextFloat() * 0.3F, 0.3F);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void drawVentParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, int color) {
       FXVent fb = new FXVent(worldObj, x, y, z, x2, y2, z2, color);
       fb.setAlphaF(0.4F);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void drawGenericParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, float r, float g, float b, float alpha, boolean loop, int start, int num, int inc, int age, int delay, float scale) {
@@ -976,14 +813,16 @@ public class ClientProxy extends CommonProxy {
       fb.setLoop(loop);
       fb.setParticles(start, num, inc);
       fb.setScale(scale);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public void drawVentParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, int color, float scale) {
       FXVent fb = new FXVent(worldObj, x, y, z, x2, y2, z2, color);
       fb.setAlphaF(0.4F);
       fb.setScale(scale);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
    }
 
    public Object beamPower(World worldObj, double px, double py, double pz, double tx, double ty, double tz, float r, float g, float b, boolean pulse, Object input) {
@@ -997,7 +836,7 @@ public class ClientProxy extends CommonProxy {
          beamcon.setPulse(pulse, r, g, b);
       } else {
          beamcon = new FXBeamPower(worldObj, px, py, pz, tx, ty, tz, r, g, b, 8);
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+         Minecraft.getInstance().particleEngine.add(beamcon);
       }
 
       return beamcon;
@@ -1011,10 +850,10 @@ public class ClientProxy extends CommonProxy {
       String s = "iconcrack_" + Item.getIdFromItem(ConfigItems.itemBottleTaint) + "_" + 0;
 
       for(int k1 = 0; k1 < 8; ++k1) {
-         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.rand.nextGaussian() * 0.15, world.rand.nextDouble() * 0.2, world.rand.nextGaussian() * 0.15);
+         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);
       }
 
-      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.rand.nextFloat() * 0.1F + 0.9F, false);
+      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F, false);
    }
 
    public void arcLightning(World world, double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
@@ -1022,9 +861,10 @@ public class ClientProxy extends CommonProxy {
       ef2.setGravity(0.0F);
       ef2.noClip = true;
       ef2.setRBGColorF(r, g, b);
-      ParticleEngine.instance.addEffect(world, ef2);
+      Minecraft.getInstance().particleEngine.add(ef2);
+
       FXArc efa = new FXArc(world, x, y, z, tx, ty, tz, r, g, b, h);
-      FMLClientHandler.instance().getClient().effectRenderer.addEffect(efa);
+      Minecraft.getInstance().particleEngine.add(efa);
    }
 
 
@@ -1163,7 +1003,7 @@ public class ClientProxy extends CommonProxy {
 
    @SubscribeEvent
    public void onWorldLoad(WorldEvent.Load e) {
-      if (e.world.isRemote)
+      if (e.(Platform.getEnvironment() == Env.CLIENT))
          CommonUtils.sortResearchCategories(false);
    }
 
@@ -1172,7 +1012,7 @@ public class ClientProxy extends CommonProxy {
       if (ConfigurationHandler.INSTANCE.isAddTooltip() && e.itemStack != null) {
          if (e.itemStack.getItem() == ConfigItems.itemResearchNotes)
             e.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("tc4tweaks.enabled_scrolling"));
-         else if (e.itemStack.getItem() == ConfigItems.itemWandCasting) {
+         else if (e.itemStack.getItem() == ConfigItems.WandCastingItem) {
             if (!ConfigurationHandler.INSTANCE.isCheckWorkbenchRecipes() || !NetworkedConfiguration.isCheckWorkbenchRecipes()) {
                e.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tc4tweaks.disable_vanilla"));
             }

@@ -5,21 +5,21 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 
 public class EntityEldritchCrab extends EntityMob {
-   public EntityEldritchCrab(World par1World) {
+   public EntityEldritchCrab(Level par1World) {
       super(par1World);
       this.setSize(0.8F, 0.6F);
       this.experienceValue = 6;
@@ -31,7 +31,7 @@ public class EntityEldritchCrab extends EntityMob {
       this.tasks.addTask(7, new EntityAIWander(this, 0.8));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
       this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityCultist.class, 0, true));
    }
 
@@ -60,7 +60,7 @@ public class EntityEldritchCrab extends EntityMob {
    }
 
    public IEntityLivingData onSpawnWithEgg(IEntityLivingData livingData) {
-      if (this.worldObj.difficultySetting == EnumDifficulty.HARD) {
+      if (this.level().difficultySetting == Difficulty.HARD) {
          this.setHelm(true);
       } else {
          this.setHelm(this.rand.nextFloat() < 0.33F);
@@ -68,8 +68,8 @@ public class EntityEldritchCrab extends EntityMob {
 
       if (livingData == null) {
          livingData = new EntitySpider.GroupData();
-         if (this.worldObj.difficultySetting == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * this.worldObj.func_147462_b(this.posX, this.posY, this.posZ)) {
-            ((EntitySpider.GroupData)livingData).func_111104_a(this.worldObj.rand);
+         if (this.level().difficultySetting == Difficulty.HARD && this.level().rand.nextFloat() < 0.1F * this.level().func_147462_b(this.posX, this.posY, this.posZ)) {
+            ((EntitySpider.GroupData)livingData).func_111104_a(this.level().rand);
          }
       }
 
@@ -111,7 +111,7 @@ public class EntityEldritchCrab extends EntityMob {
          this.mountEntity(this.getAITarget());
       }
 
-      if (!this.worldObj.isRemote && this.ridingEntity != null && this.attackTime <= 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.ridingEntity != null && this.attackTime <= 0) {
          this.attackTime = 10 + this.rand.nextInt(10);
          this.attackEntityAsMob(this.ridingEntity);
          if (this.ridingEntity != null && (double)this.rand.nextFloat() < 0.2) {
@@ -135,7 +135,7 @@ public class EntityEldritchCrab extends EntityMob {
 
    public boolean attackEntityAsMob(Entity p_70652_1_) {
       if (super.attackEntityAsMob(p_70652_1_)) {
-         this.playSound("thaumcraft:crabclaw", 1.0F, 0.9F + this.worldObj.rand.nextFloat() * 0.2F);
+         this.playSound("thaumcraft:crabclaw", 1.0F, 0.9F + this.level().rand.nextFloat() * 0.2F);
          return true;
       } else {
          return false;

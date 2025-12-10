@@ -6,13 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockLoot;
@@ -37,10 +37,10 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
       this.tasks.addTask(3, new AIAttackOnCollide(this, EntityLivingBase.class, 1.1, false));
       this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.8));
       this.tasks.addTask(7, new EntityAIWander(this, 0.8));
-      this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
       this.setSize(1.75F, 3.5F);
       this.isImmuneToFire = true;
    }
@@ -123,36 +123,36 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
          int i = MathHelper.floor_double(this.posX);
          int j = MathHelper.floor_double(this.posY - (double)0.2F - (double)this.yOffset);
          int k = MathHelper.floor_double(this.posZ);
-         Block block = this.worldObj.getBlock(i, j, k);
+         Block block = this.level().getBlock(i, j, k);
          if (block.getMaterial() != Material.air) {
-            this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(i, j, k), this.posX + ((double)this.rand.nextFloat() - (double)0.5F) * (double)this.width, this.boundingBox.minY + 0.1, this.posZ + ((double)this.rand.nextFloat() - (double)0.5F) * (double)this.width, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + this.level().getBlockMetadata(i, j, k), this.posX + ((double)this.rand.nextFloat() - (double)0.5F) * (double)this.width, this.boundingBox.minY + 0.1, this.posZ + ((double)this.rand.nextFloat() - (double)0.5F) * (double)this.width, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
          }
 
-         if (!this.worldObj.isRemote && block instanceof BlockLoot) {
-            this.worldObj.func_147480_a(i, j, k, true);
+         if (Platform.getEnvironment() != Env.CLIENT && block instanceof BlockLoot) {
+            this.level().func_147480_a(i, j, k, true);
          }
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int i = MathHelper.floor_double(this.posX + this.motionX);
          int j = MathHelper.floor_double(this.boundingBox.minY);
          int k = MathHelper.floor_double(this.posZ + this.motionZ);
-         Block block = this.worldObj.getBlock(i, j, k);
-         float h = block.getBlockHardness(this.worldObj, i, j, k);
+         Block block = this.level().getBlock(i, j, k);
+         float h = block.getBlockHardness(this.level(), i, j, k);
          if (h >= 0.0F && h <= 0.15F) {
-            this.worldObj.func_147480_a(i, j, k, true);
+            this.level().func_147480_a(i, j, k, true);
          }
       }
 
    }
 
    public boolean attackEntityFrom(DamageSource source, float damage) {
-      if (!this.worldObj.isRemote && damage > this.getHealth() && !this.isHeadless()) {
+      if (Platform.getEnvironment() != Env.CLIENT && damage > this.getHealth() && !this.isHeadless()) {
          this.setHeadless(true);
          this.spawnTimer = 100;
          double xx = MathHelper.cos(this.rotationYaw % 360.0F / 180.0F * (float)Math.PI) * 0.75F;
          double zz = MathHelper.sin(this.rotationYaw % 360.0F / 180.0F * (float)Math.PI) * 0.75F;
-         this.worldObj.createExplosion(this, this.posX + xx, this.posY + (double)this.getEyeHeight(), this.posZ + zz, 2.0F, false);
+         this.level().createExplosion(this, this.posX + xx, this.posY + (double)this.getEyeHeight(), this.posZ + zz, 2.0F, false);
          this.makeHeadless();
          return false;
       } else {
@@ -169,7 +169,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
          return false;
       } else {
          this.attackTimer = 10;
-         this.worldObj.setEntityState(this, (byte)4);
+         this.level().setEntityState(this, (byte)4);
          boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue() * 0.75F);
          if (flag) {
             target.motionY += 0.2000000059604645;
@@ -187,7 +187,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
          this.beamCharge -= 15 + this.rand.nextInt(5);
          this.getLookHelper().setLookPosition(entitylivingbase.posX, entitylivingbase.boundingBox.minY + (double)(entitylivingbase.height / 2.0F), entitylivingbase.posZ, 30.0F, 30.0F);
          Vec3 v = this.getLook(1.0F);
-         EntityGolemOrb blast = new EntityGolemOrb(this.worldObj, this, entitylivingbase, false);
+         EntityGolemOrb blast = new EntityGolemOrb(this.level(), this, entitylivingbase, false);
          blast.posX += v.xCoord;
          blast.posZ += v.zCoord;
          blast.setPosition(blast.posX, blast.posY, blast.posZ);
@@ -196,7 +196,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
          double d2 = entitylivingbase.posZ + entitylivingbase.motionZ - this.posZ;
          blast.setThrowableHeading(d0, d1, d2, 0.66F, 5.0F);
          this.playSound("thaumcraft:egattack", 1.0F, 1.0F + this.rand.nextFloat() * 0.1F);
-         this.worldObj.spawnEntityInWorld(blast);
+         this.level().spawnEntityInWorld(blast);
       }
 
    }
@@ -218,16 +218,16 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
             int by = MathHelper.floor_double(this.posY);
             int bz = MathHelper.floor_double(this.posZ + deltaZ);
 
-            for(int c = 0; c < 5 && this.worldObj.isAirBlock(bx, by, bz); --by) {
+            for(int c = 0; c < 5 && this.level().isAirBlock(bx, by, bz); --by) {
                ++c;
             }
 
-            if (this.worldObj.isAirBlock(bx, by + 1, bz) && !this.worldObj.isAirBlock(bx, by, bz)) {
+            if (this.level().isAirBlock(bx, by + 1, bz) && !this.level().isAirBlock(bx, by, bz)) {
                this.ax = bx;
                this.ay = by;
                this.az = bz;
                this.arcing = 8 + this.rand.nextInt(5);
-               this.worldObj.playSound(this.posX, this.posY, this.posZ, "thaumcraft:jacobs", 0.8F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F, false);
+               this.level().playSound(this.posX, this.posY, this.posZ, "thaumcraft:jacobs", 0.8F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F, false);
             }
          }
       } else {
@@ -238,7 +238,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
 
    public void onUpdate() {
       if (this.getSpawnTimer() == 150) {
-         this.worldObj.setEntityState(this, (byte)18);
+         this.level().setEntityState(this, (byte)18);
       }
 
       if (this.getSpawnTimer() > 0) {
@@ -246,7 +246,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
       }
 
       super.onUpdate();
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          if (this.isHeadless()) {
             this.rotationPitch = 0.0F;
             float f1 = MathHelper.cos(-this.renderYawOffset * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -257,12 +257,12 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
             if (this.rand.nextInt(20) == 0) {
                float a = (this.rand.nextFloat() - this.rand.nextFloat()) / 2.0F;
                float b = (this.rand.nextFloat() - this.rand.nextFloat()) / 2.0F;
-               Thaumcraft.proxy.spark((float)(this.posX + v.xCoord + (double)a), (float)this.posY + this.getEyeHeight() - 0.25F, (float)(this.posZ + v.zCoord + (double)b), 0.3F, 0.65F + this.rand.nextFloat() * 0.1F, 1.0F, 1.0F, 0.8F);
+               ClientFXUtils.spark((float)(this.posX + v.xCoord + (double)a), (float)this.posY + this.getEyeHeight() - 0.25F, (float)(this.posZ + v.zCoord + (double)b), 0.3F, 0.65F + this.rand.nextFloat() * 0.1F, 1.0F, 1.0F, 0.8F);
             }
 
-            Thaumcraft.proxy.drawVentParticles(this.worldObj, (double)((float)this.posX) + v.xCoord * 0.66, (float)this.posY + this.getEyeHeight() - 0.75F, (double)((float)this.posZ) + v.zCoord * 0.66, 0.0F, 0.001, 0.0F, 5592405, 4.0F);
+            Thaumcraft.proxy.drawVentParticles(this.level(), (double)((float)this.posX) + v.xCoord * 0.66, (float)this.posY + this.getEyeHeight() - 0.75F, (double)((float)this.posZ) + v.zCoord * 0.66, 0.0F, 0.001, 0.0F, 5592405, 4.0F);
             if (this.arcing > 0) {
-               Thaumcraft.proxy.arcLightning(this.worldObj, this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, (double)this.ax + (double)0.5F, this.ay + 1, (double)this.az + (double)0.5F, 0.65F + this.rand.nextFloat() * 0.1F, 1.0F, 1.0F, 1.0F - (float)this.arcing / 10.0F);
+               Thaumcraft.proxy.arcLightning(this.level(), this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, (double)this.ax + (double)0.5F, this.ay + 1, (double)this.az + (double)0.5F, 0.65F + this.rand.nextFloat() * 0.1F, 1.0F, 1.0F, 1.0F - (float)this.arcing / 10.0F);
                --this.arcing;
             }
          }
@@ -273,7 +273,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
 
          if (this.isHeadless() && this.chargingBeam) {
             ++this.beamCharge;
-            this.worldObj.setEntityState(this, (byte)19);
+            this.level().setEntityState(this, (byte)19);
             if (this.beamCharge == 150) {
                this.chargingBeam = false;
             }

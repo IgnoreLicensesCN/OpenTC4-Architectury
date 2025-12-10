@@ -1,15 +1,15 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
+
 public abstract class NodeAspectGenerator implements Comparable<NodeAspectGenerator> {
     public final int priority;
     public NodeAspectGenerator(int priority) {
@@ -21,5 +21,5 @@ public abstract class NodeAspectGenerator implements Comparable<NodeAspectGenera
         return Integer.compare(priority, o.priority);
     }
 
-    public abstract AspectList getNodeAspects(World world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small, AspectList previous, NodeType type,@Nullable NodeModifier modifier);
+    public abstract AspectList getNodeAspects(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small, AspectList previous, NodeType type,@Nullable NodeModifier modifier);
 }

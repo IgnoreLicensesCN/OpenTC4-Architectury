@@ -1,7 +1,8 @@
 package thaumcraft.api.expands.worldgen.node.consts;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.expands.worldgen.node.CreateNodeContext;
 import thaumcraft.api.expands.worldgen.node.listeners.CreateNodeListener;
 import thaumcraft.common.config.ConfigBlocks;
@@ -10,12 +11,13 @@ import thaumcraft.common.tiles.TileNode;
 public class CreateNodeListeners {
     public static CreateNodeListener DEFAULT_NODE_CREATOR = new CreateNodeListener(0) {
         @Override
-        public boolean onCreateNode(World world, CreateNodeContext context) {
-            if (world.isAirBlock(context.x, context.y, context.z)) {
+        public boolean onCreateNode(Level world, CreateNodeContext context) {
+            if (world.getBlockState(new BlockPos(context.x, context.y, context.z)).isAir()) {
                 world.setBlock(context.x, context.y, context.z, ConfigBlocks.blockAiry, 0, 0);
             }
 
-            TileEntity te = world.getTileEntity(context.x, context.y, context.z);
+            BlockEntity te = world.getBlockEntity(new BlockPos(context.x, context.y, context.z));
+            if (te == null) {return }
             if (te instanceof TileNode) {
                 TileNode tileNode = (TileNode) te;
                 tileNode.setNodeType(context.nodeType);
@@ -23,7 +25,11 @@ public class CreateNodeListeners {
                 tileNode.setAspects(context.aspects);
             }
 
-            world.markBlockForUpdate(context.x, context.y, context.z);
+            world.sendBlockUpdated(
+                    new BlockPos(context.x, context.y, context.z),
+                    te.getBlockState(),
+                    te.getBlockState(),
+                    3);//idk what to use just put 3
             return false;
         }
     };

@@ -1,7 +1,8 @@
 package thaumcraft.api.expands.aspects.item;
 
-import net.minecraft.item.*;
-import simpleutils.ListenerManager;
+import net.minecraft.world.item.*;
+import org.jetbrains.annotations.NotNull;
+import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -12,7 +13,7 @@ import static thaumcraft.api.expands.aspects.item.consts.BonusTagForItemListener
 
 public class ItemAspectBonusTagsCalculator {
 
-    public static final ListenerManager<BonusTagForItemListener> BonusTagForItemListenerManager = new ListenerManager<>();
+    public static final ListenerManager<@NotNull BonusTagForItemListener> BonusTagForItemListenerManager = new ListenerManager<>();
 
 
     public static void init(){
@@ -41,7 +42,7 @@ public class ItemAspectBonusTagsCalculator {
         UnmodifiableAspectList sourceTagsView = new UnmodifiableAspectList(sourceTags);
 
         if (sourceTags != null) {
-            for (Aspect tag : sourceTags.getAspects()) {
+            for (Aspect tag : sourceTags.getAspectTypes()) {
                 if (tag != null) {
                     aspects.add(tag, sourceTags.getAmount(tag));
                 }

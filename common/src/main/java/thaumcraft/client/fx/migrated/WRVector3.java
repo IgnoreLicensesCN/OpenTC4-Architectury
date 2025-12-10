@@ -1,8 +1,8 @@
-package thaumcraft.client.fx;
+package thaumcraft.client.fx.migrated;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class WRVector3 {
    public float x;
@@ -15,14 +15,15 @@ public class WRVector3 {
       this.z = (float)z;
    }
 
-   public WRVector3(TileEntity tile) {
-      this.x = (float)tile.xCoord + 0.5F;
-      this.y = (float)tile.yCoord + 0.5F;
-      this.z = (float)tile.zCoord + 0.5F;
+   public WRVector3(BlockEntity tile) {
+      var tilePos = tile.getBlockPos();
+      this.x = (float)tilePos.getX() + 0.5F;
+      this.y = (float)tilePos.getY() + 0.5F;
+      this.z = (float)tilePos.getZ() + 0.5F;
    }
 
    public WRVector3(Entity entity) {
-      this(entity.posX, entity.posY, entity.posZ);
+      this(entity.getX(), entity.getY(), entity.getZ());
    }
 
    public WRVector3 add(WRVector3 vec) {
@@ -106,7 +107,7 @@ public class WRVector3 {
    }
 
    public Vec3 toVec3D() {
-      return Vec3.createVectorHelper(this.x, this.y, this.z);
+      return new Vec3(this.x, this.y, this.z);
    }
 
    public static WRVector3 getPerpendicular(WRVector3 vec) {

@@ -4,15 +4,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -47,7 +47,7 @@ public class ItemJarFilled extends Item implements IEssentiaContainerItem {
       return par1;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       AspectList aspects = this.getAspects(stack);
       addAspectDescriptionToList(aspects,player,list);
 
@@ -68,7 +68,7 @@ public class ItemJarFilled extends Item implements IEssentiaContainerItem {
       return stack.getItemDamage() == 3 ? super.getUnlocalizedName(stack) + ".void" : super.getUnlocalizedName(stack);
    }
 
-   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+   public boolean onItemUse(ItemStack stack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       Block block = world.getBlock(x, y, z);
       if (block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
          side = 1;
@@ -133,7 +133,7 @@ public class ItemJarFilled extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
       if (!world.setBlock(x, y, z, ConfigBlocks.blockJar, metadata, 3)) {
          return false;
       } else {

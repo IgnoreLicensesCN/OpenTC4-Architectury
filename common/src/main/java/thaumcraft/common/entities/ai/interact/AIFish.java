@@ -3,16 +3,16 @@ package thaumcraft.common.entities.ai.interact;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFishFood.FishType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.item.ItemFishFood.FishType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.FurnaceRecipes;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomFishable;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.Config;
@@ -39,7 +39,7 @@ public class AIFish extends EntityAIBase {
 
    public AIFish(EntityGolemBase par1EntityCreature) {
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
       this.distance = (float)MathHelper.ceiling_float_int(this.theGolem.getRange() / 2.0F);
    }
@@ -76,7 +76,7 @@ public class AIFish extends EntityAIBase {
                }
             }
 
-            this.theWorld.playSoundAtEntity(this.theGolem, "random.bow", 0.5F, 0.4F / (this.theWorld.rand.nextFloat() * 0.4F + 0.8F));
+            this.theWorld.playSoundAtEntity(this.theGolem, "random.bow", 0.5F, 0.4F / (this.theworld.getRandom().nextFloat() * 0.4F + 0.8F));
             this.bobber = new EntityGolemBobber(this.theWorld, this.theGolem, x, y, z);
             return this.theWorld.spawnEntityInWorld(this.bobber);
          }
@@ -93,10 +93,10 @@ public class AIFish extends EntityAIBase {
       if (this.target != null) {
          this.theGolem.getLookHelper().setLookPosition(this.target.xCoord + (double)0.5F, this.target.yCoord + (double)1.0F, this.target.zCoord + (double)0.5F, 30.0F, 30.0F);
          float chance = this.quality + (float)this.theGolem.getGolemStrength() * 1.5E-4F;
-         if (this.theWorld.rand.nextFloat() < chance) {
+         if (this.theworld.getRandom().nextFloat() < chance) {
             this.theGolem.startRightArmTimer();
             int qq = 1;
-            if (this.theGolem.getUpgradeAmount(0) > 0 && this.theWorld.rand.nextInt(10) < this.theGolem.getUpgradeAmount(0)) {
+            if (this.theGolem.getUpgradeAmount(0) > 0 && this.theworld.getRandom().nextInt(10) < this.theGolem.getUpgradeAmount(0)) {
                ++qq;
             }
 
@@ -115,9 +115,9 @@ public class AIFish extends EntityAIBase {
                }
 
                entityitem.delayBeforeCanPickup = 20;
-               double d1 = this.theGolem.posX + (double)this.theWorld.rand.nextFloat() - (double)this.theWorld.rand.nextFloat() - this.target.xCoord + (double)0.5F;
+               double d1 = this.theGolem.posX + (double)this.theworld.getRandom().nextFloat() - (double)this.theworld.getRandom().nextFloat() - this.target.xCoord + (double)0.5F;
                double d3 = this.theGolem.posY - this.target.yCoord + (double)1.0F;
-               double d5 = this.theGolem.posZ + (double)this.theWorld.rand.nextFloat() - (double)this.theWorld.rand.nextFloat() - this.target.zCoord + (double)0.5F;
+               double d5 = this.theGolem.posZ + (double)this.theworld.getRandom().nextFloat() - (double)this.theworld.getRandom().nextFloat() - this.target.zCoord + (double)0.5F;
                double d7 = MathHelper.sqrt_double(d1 * d1 + d3 * d3 + d5 * d5);
                double d9 = 0.1;
                entityitem.motionX = d1 * d9;
@@ -127,8 +127,8 @@ public class AIFish extends EntityAIBase {
             }
 
             if (this.bobber != null) {
-               this.bobber.playSound("random.splash", 0.15F, 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.4F);
-               ((WorldServer)this.theWorld).func_147487_a("splash", this.bobber.posX, this.bobber.posY + (double)0.5F, this.bobber.posZ, 20 + this.theWorld.rand.nextInt(20), 0.1F, 0.0F, 0.1F, 0.0F);
+               this.bobber.playSound("random.splash", 0.15F, 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.4F);
+               ((WorldServer)this.theWorld).func_147487_a("splash", this.bobber.posX, this.bobber.posY + (double)0.5F, this.bobber.posZ, 20 + this.theworld.getRandom().nextInt(20), 0.1F, 0.0F, 0.1F, 0.0F);
                this.bobber.setDead();
             }
 
@@ -148,7 +148,7 @@ public class AIFish extends EntityAIBase {
    }
 
    public void startExecuting() {
-      this.count = 300 + this.theWorld.rand.nextInt(200);
+      this.count = 300 + this.theworld.getRandom().nextInt(200);
       this.theGolem.startRightArmTimer();
    }
 
@@ -169,7 +169,7 @@ public class AIFish extends EntityAIBase {
    }
 
    private ItemStack getFishingResult() {
-      float f = this.theWorld.rand.nextFloat();
+      float f = this.theworld.getRandom().nextFloat();
       float f1 = 0.1F - (float)this.theGolem.getUpgradeAmount(5) * 0.025F;
       float f2 = 0.05F + (float)this.theGolem.getUpgradeAmount(4) * 0.0125F;
       int x = (int)this.target.xCoord;
@@ -197,14 +197,14 @@ public class AIFish extends EntityAIBase {
       f1 = MathHelper.clamp_float(f1, 0.0F, 1.0F);
       f2 = MathHelper.clamp_float(f2, 0.0F, 1.0F);
       if (f < f1) {
-         return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theWorld.rand, LOOTCRAP)).func_150708_a(this.theWorld.rand);
+         return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theworld.getRandom(), LOOTCRAP)).func_150708_a(this.theworld.getRandom());
       } else {
          f -= f1;
          if (f < f2) {
-            return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theWorld.rand, LOOTRARE)).func_150708_a(this.theWorld.rand);
+            return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theworld.getRandom(), LOOTRARE)).func_150708_a(this.theworld.getRandom());
          } else {
             float var10000 = f - f2;
-            return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theWorld.rand, LOOTFISH)).func_150708_a(this.theWorld.rand);
+            return ((WeightedRandomFishable)WeightedRandom.getRandomItem(this.theworld.getRandom(), LOOTFISH)).func_150708_a(this.theworld.getRandom());
          }
       }
    }

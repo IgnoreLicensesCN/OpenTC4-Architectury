@@ -1,16 +1,16 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityChest;
+import net.minecraft.world.level.block.entity.BlockEntityMobSpawner;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.BlockUtils;
 
@@ -19,7 +19,7 @@ import java.util.Random;
 public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
    static final byte[] otherCoordPairs = new byte[]{2, 0, 0, 1, 2, 1};
    Random rand = new Random();
-   World worldObj;
+   Level worldObj;
    int[] basePos = new int[]{0, 0, 0};
    int heightLimit = 0;
    int height;
@@ -117,9 +117,9 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
              if (!(var15 > (double) (par4 * par4))) {
                  try {
                      var11[var9] = var10[var9] + var13;
-                     Block block = this.worldObj.getBlock(var11[0], var11[1], var11[2]);
-                     if ((block == Blocks.air || block == ConfigBlocks.blockMagicalLeaves) && (block == null || block.canBeReplacedByLeaves(this.worldObj, var11[0], var11[1], var11[2]))) {
-                         this.setBlockAndNotifyAdequately(this.worldObj, var11[0], var11[1], var11[2], par6, 0);
+                     Block block = this.level().getBlock(var11[0], var11[1], var11[2]);
+                     if ((block == Blocks.air || block == ConfigBlocks.blockMagicalLeaves) && (block == null || block.canBeReplacedByLeaves(this.level(), var11[0], var11[1], var11[2]))) {
+                         this.setBlockAndNotifyAdequately(this.level(), var11[0], var11[1], var11[2], par6, 0);
                      }
                  } catch (Exception ignored) {
                  }
@@ -208,7 +208,7 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
                }
             }
 
-            this.setBlockAndNotifyAdequately(this.worldObj, var14[0], var14[1], var14[2], par3, var17);
+            this.setBlockAndNotifyAdequately(this.level(), var14[0], var14[1], var14[2], par3, var17);
          }
       }
 
@@ -304,7 +304,7 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
             var13[var7] = MathHelper.floor_double((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
 
             try {
-               Block var16 = this.worldObj.getBlock(var13[0], var13[1], var13[2]);
+               Block var16 = this.level().getBlock(var13[0], var13[1], var13[2]);
                if (var16 != Blocks.air && var16 != ConfigBlocks.blockMagicalLeaves) {
                   break;
                }
@@ -321,8 +321,8 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
       int[] var2 = new int[]{this.basePos[0] + x, this.basePos[1] + this.heightLimit - 1, this.basePos[2] + z};
 
       try {
-         Block var3 = this.worldObj.getBlock(this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z);
-         boolean isSoil = var3.canSustainPlant(this.worldObj, this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z, ForgeDirection.UP, (BlockSapling)Blocks.sapling);
+         Block var3 = this.level().getBlock(this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z);
+         boolean isSoil = var3.canSustainPlant(this.level(), this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z, Direction.UP, (BlockSapling)Blocks.sapling);
          if (!isSoil) {
             return false;
          } else {
@@ -344,8 +344,8 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
    public void setScale(double par1, double par3, double par5) {
    }
 
-   public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5, boolean spiders) {
-      this.worldObj = par1World;
+   public boolean generate(Level par1World, Random par2Random, int par3, int par4, int par5, boolean spiders) {
+      this.level() = par1World;
       long var6 = par2Random.nextLong();
       this.rand.setSeed(var6);
       this.basePos[0] = par3;
@@ -394,8 +394,8 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
          this.generateLeafNodeBases();
          this.generateTrunk();
          if (spiders) {
-            this.worldObj.setBlock(par3, par4 - 1, par5, Blocks.mob_spawner, 0, 3);
-            TileEntityMobSpawner var14 = (TileEntityMobSpawner)par1World.getTileEntity(par3, par4 - 1, par5);
+            this.level().setBlock(par3, par4 - 1, par5, Blocks.mob_spawner, 0, 3);
+            BlockEntityMobSpawner var14 = (BlockEntityMobSpawner)par1World.getBlockEntity(par3, par4 - 1, par5);
             if (var14 != null) {
                var14.func_145881_a().setEntityName("CaveSpider");
 
@@ -404,12 +404,12 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
                   int yy = par4 + par2Random.nextInt(10);
                   int zz = par5 - 7 + par2Random.nextInt(14);
                   if (par1World.isAirBlock(xx, yy, zz) && (BlockUtils.isBlockTouching(par1World, xx, yy, zz, ConfigBlocks.blockMagicalLeaves) || BlockUtils.isBlockTouching(par1World, xx, yy, zz, ConfigBlocks.blockMagicalLog))) {
-                     this.worldObj.setBlock(xx, yy, zz, Blocks.web, 0, 3);
+                     this.level().setBlock(xx, yy, zz, Blocks.web, 0, 3);
                   }
                }
 
                par1World.setBlock(par3, par4 - 2, par5, Blocks.chest, 0, 3);
-               TileEntityChest var16 = (TileEntityChest)par1World.getTileEntity(par3, par4 - 2, par5);
+               BlockEntityChest var16 = (BlockEntityChest)par1World.getBlockEntity(par3, par4 - 2, par5);
                if (var16 != null) {
                   ChestGenHooks loot = ChestGenHooks.getInfo("dungeonChest");
                   WeightedRandomChestContent.generateChestContents(this.rand, loot.getItems(this.rand), var16, loot.getCount(this.rand));

@@ -6,15 +6,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
@@ -111,7 +111,7 @@ public class BlockMagicalLeaves extends Block implements IShearable {
     }
 
     @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+    public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
         byte var7 = 1;
         int var8 = var7 + 1;
         if (par1World.checkChunksExist(par2 - var8, par3 - var8, par4 - var8, par2 + var8, par3 + var8, par4 + var8)) {
@@ -130,8 +130,8 @@ public class BlockMagicalLeaves extends Block implements IShearable {
     }
 
     @Override
-    public void updateTick(World par1World, int x, int y, int z, Random par5Random) {
-        if (!par1World.isRemote) {
+    public void updateTick(Level par1World, int x, int y, int z, Random par5Random) {
+        if (!(Platform.getEnvironment() == Env.CLIENT)) {
             int metadata = par1World.getBlockMetadata(x, y, z);
             if ((metadata & 8) != 0 && (metadata & 4) == 0) {
                 byte chunksRadius = 4;
@@ -223,7 +223,7 @@ public class BlockMagicalLeaves extends Block implements IShearable {
     }
 
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+    public void randomDisplayTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
         if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !World.doesBlockHaveSolidTopSurface(par1World, par2, par3 - 1, par4) && par5Random.nextInt(15) == 1) {
             double var6 = (float) par2 + par5Random.nextFloat();
             double var8 = (double) par3 - 0.05;
@@ -233,29 +233,29 @@ public class BlockMagicalLeaves extends Block implements IShearable {
 
         int md = par1World.getBlockMetadata(par2, par3, par4);
         if ((md & 1) == 1 && par5Random.nextInt(500) == 0) {
-            Thaumcraft.proxy.sparkle((float) par2 + 0.5F + par1World.rand.nextFloat() - par1World.rand.nextFloat(), (float) par3 + 0.5F + par1World.rand.nextFloat() - par1World.rand.nextFloat(), (float) par4 + 0.5F + par1World.rand.nextFloat() - par1World.rand.nextFloat(), 2.0F, 7, 0.0F);
+            ClientFXUtils.sparkle((float) par2 + 0.5F + par1world.getRandom().nextFloat() - par1world.getRandom().nextFloat(), (float) par3 + 0.5F + par1world.getRandom().nextFloat() - par1world.getRandom().nextFloat(), (float) par4 + 0.5F + par1world.getRandom().nextFloat() - par1world.getRandom().nextFloat(), 2.0F, 7, 0.0F);
         }
 
     }
 
-    private void removeLeaves(World par1World, int par2, int par3, int par4) {
+    private void removeLeaves(Level par1World, int par2, int par3, int par4) {
         this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
         par1World.setBlockToAir(par2, par3, par4);
     }
 
-    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int meta, float par6, int par7) {
-        if (!par1World.isRemote && (meta & 8) != 0 && (meta & 4) == 0) {
-            if ((meta & 1) == 0 && par1World.rand.nextInt(200) == 0) {
+    public void dropBlockAsItemWithChance(Level par1World, int par2, int par3, int par4, int meta, float par6, int par7) {
+        if (!(Platform.getEnvironment() == Env.CLIENT) && (meta & 8) != 0 && (meta & 4) == 0) {
+            if ((meta & 1) == 0 && par1world.getRandom().nextInt(200) == 0) {
                 this.dropBlockAsItem(par1World, par2, par3, par4, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0));
-            } else if ((meta & 1) == 1 && par1World.rand.nextInt(250) == 0) {
+            } else if ((meta & 1) == 1 && par1world.getRandom().nextInt(250) == 0) {
                 this.dropBlockAsItem(par1World, par2, par3, par4, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1));
             }
         }
 
     }
 
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
-        super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
+    public void harvestBlock(Level par1World, Player par2Player, int par3, int par4, int par5, int par6) {
+        super.harvestBlock(par1World, par2Player, par3, par4, par5, par6);
     }
 
     public int damageDropped(int par1) {
@@ -292,7 +292,7 @@ public class BlockMagicalLeaves extends Block implements IShearable {
         return true;
     }
 
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(HitResult target, World world, int x, int y, int z) {
         int md = world.getBlockMetadata(x, y, z);
         return new ItemStack(this, 1, md & 1);
     }

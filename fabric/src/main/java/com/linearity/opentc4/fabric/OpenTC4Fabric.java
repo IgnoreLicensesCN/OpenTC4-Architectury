@@ -1,16 +1,29 @@
 package com.linearity.opentc4.fabric;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.PlatformUniqueUtils;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.world.item.ItemStack;
 
 public final class OpenTC4Fabric implements ModInitializer {
     @Override
     public void onInitialize() {
+        PlatformUniqueUtilsFabric platformUniqueUtilsFabric = new PlatformUniqueUtilsFabric();
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            platformUniqueUtilsFabric.server = server;
+            OpenTC4.onServerStarting();
+        });
+        ClientLifecycleEvents.CLIENT_STARTED.register(client->{
+
+            OpenTC4.onClientStarting();
+        });
         // This code runs as soon as Minecraft is in a mod-load-ready state.
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
 
         // Run our common setup.
-        OpenTC4.init();
+        OpenTC4.init(platformUniqueUtilsFabric);
     }
 }

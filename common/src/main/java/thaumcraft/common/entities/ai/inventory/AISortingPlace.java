@@ -2,7 +2,7 @@ package thaumcraft.common.entities.ai.inventory;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,7 +33,7 @@ public class AISortingPlace extends EntityAIBase {
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
 
-         for(IInventory te : GolemHelper.getMarkedContainersAdjacentToGolem(this.theGolem.worldObj, this.theGolem)) {
+         for(IInventory te : GolemHelper.getMarkedContainersAdjacentToGolem(this.theGolem.level(), this.theGolem)) {
             TileEntity tile = (TileEntity)te;
             if (tile != null && (tile.xCoord != cX || tile.yCoord != cY || tile.zCoord != cZ)) {
                for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, (byte)-1)) {
@@ -93,7 +93,7 @@ public class AISortingPlace extends EntityAIBase {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = this.theGolem.worldObj.getTileEntity(this.xx, this.yy, this.zz);
+      TileEntity tile = this.theGolem.level().getTileEntity(this.xx, this.yy, this.zz);
       if (tile != null && (tile.xCoord != cX || tile.yCoord != cY || tile.zCoord != cZ)) {
          IInventory te = (IInventory)tile;
 

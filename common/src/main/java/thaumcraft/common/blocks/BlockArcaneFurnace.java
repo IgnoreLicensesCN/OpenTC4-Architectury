@@ -6,20 +6,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -248,7 +248,7 @@ public class BlockArcaneFurnace extends BlockContainer {
 
    }
 
-   private void restoreBlocks(World par1World, int par2, int par3, int par4) {
+   private void restoreBlocks(Level par1World, int par2, int par3, int par4) {
       for(int yy = -1; yy <= 1; ++yy) {
          for(int xx = -1; xx <= 1; ++xx) {
             for(int zz = -1; zz <= 1; ++zz) {
@@ -266,7 +266,7 @@ public class BlockArcaneFurnace extends BlockContainer {
 
    }
 
-   public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
+   public void onNeighborBlockChange(Level par1World, int par2, int par3, int par4, Block par5) {
       int meta = par1World.getBlockMetadata(par2, par3, par4);
       if (meta == 0) {
          for(int yy = -1; yy <= 1; ++yy) {
@@ -289,7 +289,7 @@ public class BlockArcaneFurnace extends BlockContainer {
    }
 
    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-      if (meta == 0 && !world.isRemote) {
+      if (meta == 0 && Platform.getEnvironment() != Env.CLIENT) {
          TileEntity te = world.getTileEntity(x, y, z);
          if (te instanceof TileArcaneFurnace) {
             Entity newentity = EntityList.createEntityByName("Blaze", world);
@@ -303,7 +303,7 @@ public class BlockArcaneFurnace extends BlockContainer {
       super.onBlockPreDestroy(world, x, y, z, meta);
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       if (par1World.getBlockMetadata(par2, par3, par4) == 0) {
          this.restoreBlocks(par1World, par2, par3, par4);
       }
@@ -340,7 +340,7 @@ public class BlockArcaneFurnace extends BlockContainer {
    }
 
    @SideOnly(Side.CLIENT)
-   public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+   public void randomDisplayTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
       if (par1World.getBlockMetadata(par2, par3, par4) == 0 && par1World.getBlock(par2, par3 + 1, par4).getMaterial() == Material.air && !par1World.getBlock(par2, par3 + 1, par4).isOpaqueCube()) {
          for(int a = 0; a < 3; ++a) {
             double var7 = (float)par2 + par5Random.nextFloat();
@@ -364,10 +364,10 @@ public class BlockArcaneFurnace extends BlockContainer {
       return null;
    }
 
-   public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
+   public boolean onBlockEventReceived(Level par1World, int par2, int par3, int par4, int par5, int par6) {
       if (par5 == 1) {
-         if (par1World.isRemote) {
-            Thaumcraft.proxy.blockSparkle(par1World, par2, par3, par4, 16736256, 5);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            ClientFXUtils.blockSparkle(par1World, par2, par3, par4, 16736256, 5);
          }
 
          return true;

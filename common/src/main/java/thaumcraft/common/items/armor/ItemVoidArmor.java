@@ -3,14 +3,14 @@ package thaumcraft.common.items.armor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IWarpingGear;
@@ -58,26 +58,26 @@ public class ItemVoidArmor extends ItemArmor implements IRepairable, IRunicArmor
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 16)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.VOID_INGOT,1)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
    public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
       super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_);
-      if (!world.isRemote && stack.isItemDamaged() && entity.ticksExisted % 20 == 0 && entity instanceof EntityLivingBase) {
+      if (Platform.getEnvironment() != Env.CLIENT && stack.isItemDamaged() && entity.ticksExisted % 20 == 0 && entity instanceof EntityLivingBase) {
          stack.damageItem(-1, (EntityLivingBase)entity);
       }
 
    }
 
-   public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
+   public void onArmorTick(World world, Player player, ItemStack armor) {
       super.onArmorTick(world, player, armor);
-      if (!world.isRemote && armor.getItemDamage() > 0 && player.ticksExisted % 20 == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && armor.getItemDamage() > 0 && player.ticksExisted % 20 == 0) {
          armor.damageItem(-1, player);
       }
 
    }
 
-   public int getWarp(ItemStack itemstack, EntityPlayer player) {
+   public int getWarp(ItemStack itemstack, Player player) {
       return 1;
    }
 }

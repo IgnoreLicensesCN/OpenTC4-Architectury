@@ -1,8 +1,8 @@
 package thaumcraft.api.expands.warp;
 
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class WarpEvent implements Comparable<WarpEvent> {
     public final int warpRequired;
@@ -25,7 +25,7 @@ public abstract class WarpEvent implements Comparable<WarpEvent> {
     }
 
     @Override
-    public int compareTo(@Nonnull WarpEvent o) {
+    public int compareTo(@NotNull WarpEvent o) {
         int warpRequiredCompared = Integer.compare(this.warpRequired, o.warpRequired);
         if (warpRequiredCompared == 0) {
             return Integer.compare(this.weight, o.weight);

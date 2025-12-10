@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
@@ -31,11 +31,11 @@ public class TileNodeStabilizerRenderer extends TileEntitySpecialRenderer {
       int bright = 20;
       Block blockType = getBlockTypeSafely(tile);
       if (blockType != null) {
-         if (tile.hasWorldObj() && tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 10) {
+         if (tile.hasWorldObj() && tile.getLevel().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 10) {
             lock = 2;
          }
 
-         bright = blockType.getMixedBrightnessForBlock(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+         bright = blockType.getMixedBrightnessForBlock(tile.getLevel(), tile.xCoord, tile.yCoord, tile.zCoord);
       } else {
          lock = tile.lock;
       }
@@ -49,7 +49,7 @@ public class TileNodeStabilizerRenderer extends TileEntitySpecialRenderer {
 
       for(int a = 0; a < 4; ++a) {
          GL11.glPushMatrix();
-         if (tile.getWorldObj() != null) {
+         if (tile.getLevel() != null) {
             int k = bright % 65536;
             int l = bright / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
@@ -64,7 +64,7 @@ public class TileNodeStabilizerRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(1.0F, 0.2F, 0.2F, 1.0F);
          }
 
-         if (tile.getWorldObj() != null) {
+         if (tile.getLevel() != null) {
             float scale = MathHelper.sin((float)(Minecraft.getMinecraft().renderViewEntity.ticksExisted + a * 5) / 3.0F) * 0.1F + 0.9F;
             int j = 50 + (int)(170.0F * (float)tile.count / 37.0F * scale);
             int k = j % 65536;

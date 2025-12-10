@@ -1,13 +1,13 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.Random;
@@ -24,7 +24,7 @@ public class WorldGenSilverwoodTrees extends WorldGenAbstractTree {
       this.randomTreeHeight = randomTreeHeight;
    }
 
-   public boolean generate(World world, Random random, int x, int y, int z) {
+   public boolean generate(Level world, Random random, int x, int y, int z) {
       int height = random.nextInt(this.randomTreeHeight) + this.minTreeHeight;
       boolean flag = true;
       if (y >= 1 && y + height + 1 <= 256) {
@@ -56,7 +56,7 @@ public class WorldGenSilverwoodTrees extends WorldGenAbstractTree {
             return false;
          } else {
             Block block1 = world.getBlock(x, y - 1, z);
-            boolean isSoil = block1.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, (BlockSapling)Blocks.sapling);
+            boolean isSoil = block1.canSustainPlant(world, x, y - 1, z, Direction.UP, (BlockSapling)Blocks.sapling);
             if (isSoil && y < 256 - height - 1) {
                block1.onPlantGrow(world, x, y - 1, z, x, y, z);
                int start = y + height - 5;

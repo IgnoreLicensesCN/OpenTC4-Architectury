@@ -1,12 +1,13 @@
 package thaumcraft.client.renderers.item;
 
-import com.linearity.fabrictests.CommonProxy;
-import com.linearity.fabrictests.mixinaccessor.ItemRendererAccessor;
-import com.linearity.renderutils.ItemRenderer;
+import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
+import com.linearity.opentc4.OpenTC4CommonProxy;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import dev.architectury.platform.Platform;
+import net.fabricmc.api.EnvType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -19,14 +20,15 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ThaumometerItemRenderer implements ItemRenderer {
+public class ThaumometerItemRenderer implements ThaumcraftItemRenderer {
 
     public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer();
 
-    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");
+//    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");//loaded
     private static final ResourceLocation SCAN_SCREEN = new ResourceLocation("thaumcraft", "textures/item/scanscreen.png");
 
 
+    //TODO:Render aspects.
     @Override
     public void render(ItemStack stack, ItemDisplayContext context, boolean bl, PoseStack poseStack,
                        MultiBufferSource bufferSource, int light, int overlay, BakedModel bakedModel) {
@@ -36,8 +38,10 @@ public class ThaumometerItemRenderer implements ItemRenderer {
 //                context != ItemDisplayContext.GUI) {
 //            return;
 //        }
-
-        var player = CommonProxy.INSTANCE.getPlayer();
+        if (Platform.getEnv() != EnvType.CLIENT) {
+            return;
+        }
+        var player = OpenTC4CommonProxy.INSTANCE.getLocalPlayer();
         switch (context){
             case FIRST_PERSON_RIGHT_HAND,FIRST_PERSON_LEFT_HAND -> {
                 if (player != null) {
@@ -148,7 +152,8 @@ public class ThaumometerItemRenderer implements ItemRenderer {
                 .uv2(0xF000F0) // 或传入 render() 的 light
                 .normal(0f, 0f, 1f) // 面向正
                 .endVertex();
-        consumer.vertex(poseStack.last().pose(), width/2, height/2, 0f).color(1f,1f,1f, alpha).uv(1f,1f)
+        consumer.vertex(poseStack.last().pose(), width/2, height/2, 0f).color(1f,1f,1f, alpha)
+                .uv(1f,1f)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(0xF000F0) // 或传入 render() 的 light
                 .normal(0f, 0f, 1f) // 面向正

@@ -66,7 +66,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
                am -= added;
            }
 
-           this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+           this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
            this.markDirty();
        }
        return am;
@@ -80,7 +80,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
             this.amount = 0;
          }
 
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
       } else {
@@ -167,14 +167,14 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote && ++this.count % 5 == 0 && this.amount < this.maxAmount) {
+      if (Platform.getEnvironment() != Env.CLIENT && ++this.count % 5 == 0 && this.amount < this.maxAmount) {
          this.fillJar();
       }
 
    }
 
    void fillJar() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
          if (!ic.canOutputTo(ForgeDirection.DOWN)) {
@@ -201,6 +201,6 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
    @Override
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+      this.level().func_147479_m(this.xCoord, this.yCoord, this.zCoord);
    }
 }

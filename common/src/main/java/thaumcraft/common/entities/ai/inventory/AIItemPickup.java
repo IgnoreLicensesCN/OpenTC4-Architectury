@@ -1,14 +1,15 @@
 package thaumcraft.common.entities.ai.inventory;
 
-import java.util.List;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.lib.utils.InventoryUtils;
+
+import java.util.List;
 
 public class AIItemPickup extends EntityAIBase {
    private EntityGolemBase theGolem;
@@ -27,7 +28,7 @@ public class AIItemPickup extends EntityAIBase {
    private boolean findItem() {
       double range = Double.MAX_VALUE;
       float dmod = this.theGolem.getRange();
-      List<Entity> targets = this.theGolem.worldObj.getEntitiesWithinAABBExcludingEntity(this.theGolem, AxisAlignedBB.getBoundingBox(this.theGolem.getHomePosition().posX, this.theGolem.getHomePosition().posY, this.theGolem.getHomePosition().posZ, this.theGolem.getHomePosition().posX + 1, this.theGolem.getHomePosition().posY + 1, this.theGolem.getHomePosition().posZ + 1).expand(dmod, dmod, dmod));
+      List<Entity> targets = this.theGolem.level().getEntitiesWithinAABBExcludingEntity(this.theGolem, AxisAlignedBB.getBoundingBox(this.theGolem.getHomePosition().posX, this.theGolem.getHomePosition().posY, this.theGolem.getHomePosition().posZ, this.theGolem.getHomePosition().posX + 1, this.theGolem.getHomePosition().posY + 1, this.theGolem.getHomePosition().posZ + 1).expand(dmod, dmod, dmod));
       if (targets.isEmpty()) {
          return false;
       } else {
@@ -89,7 +90,7 @@ public class AIItemPickup extends EntityAIBase {
       }
 
       if (amount != 0) {
-         this.targetEntity.worldObj.playSoundAtEntity(this.targetEntity, "random.pop", 0.2F, ((this.targetEntity.worldObj.rand.nextFloat() - this.targetEntity.worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+         this.targetEntity.level().playSoundAtEntity(this.targetEntity, "random.pop", 0.2F, ((this.targetEntity.level().rand.nextFloat() - this.targetEntity.level().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
       }
    }
 

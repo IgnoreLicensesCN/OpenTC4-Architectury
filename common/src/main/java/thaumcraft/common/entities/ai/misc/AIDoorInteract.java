@@ -2,11 +2,11 @@ package thaumcraft.common.entities.ai.misc;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 public abstract class AIDoorInteract extends EntityAIBase {
@@ -83,7 +83,7 @@ public abstract class AIDoorInteract extends EntityAIBase {
    }
 
    private Block findUsableDoor(int par1, int par2, int par3) {
-      Block var4 = this.theEntity.worldObj.getBlock(par1, par2, par3);
+      Block var4 = this.theEntity.level().getBlock(par1, par2, par3);
       return var4 != Blocks.wooden_door && var4 != Blocks.fence_gate ? Block.getBlockById(0) : var4;
    }
 }

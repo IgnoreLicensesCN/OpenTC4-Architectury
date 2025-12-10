@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.entities.ContainerPech;
@@ -51,6 +51,6 @@ public class GuiPech extends GuiContainer {
    }
 
    private void playButton() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:pech_dice", 0.5F, 0.95F + this.mc.renderViewEntity.worldObj.rand.nextFloat() * 0.1F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:pech_dice", 0.5F, 0.95F + this.mc.renderViewEntity.level().rand.nextFloat() * 0.1F, false);
    }
 }

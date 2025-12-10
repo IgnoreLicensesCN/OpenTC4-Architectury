@@ -5,17 +5,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.renderers.models.entities.ModelPech;
 import thaumcraft.common.config.ConfigItems;
@@ -85,7 +85,7 @@ public class RenderPech extends RenderLiving {
                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             } else if (itemstack.getItem().isFull3D()) {
                float f2 = 0.625F;
-               if (itemstack.getItem() == ConfigItems.itemWandCasting) {
+               if (itemstack.getItem() == ConfigItems.WandCastingItem) {
                   GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                }
 

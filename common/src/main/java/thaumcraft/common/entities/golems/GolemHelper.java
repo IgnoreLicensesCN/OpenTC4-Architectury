@@ -1,23 +1,15 @@
 package thaumcraft.common.entities.golems;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -26,6 +18,10 @@ import thaumcraft.common.tiles.TileJarFillable;
 import thaumcraft.common.tiles.TileJarFillableVoid;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class GolemHelper {
    public static final double ADJACENT_RANGE = 4.0F;
@@ -38,7 +34,7 @@ public class GolemHelper {
 
       for(Marker marker : golem.getMarkers()) {
          TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-         if (marker.dim == world.provider.dimensionId && te instanceof IInventory) {
+         if (marker.dim == world.dimension() && te instanceof IInventory) {
             results.add((IInventory)te);
             if (InventoryUtils.getDoubleChest(te) != null) {
                results.add(InventoryUtils.getDoubleChest(te));
@@ -69,7 +65,7 @@ public class GolemHelper {
       ArrayList<ChunkCoordinates> results = new ArrayList<>();
 
       for(Marker marker : golem.getMarkers()) {
-         if ((marker.color == color || color == -1) && (golem.worldObj.getTileEntity(marker.x, marker.y, marker.z) == null || !(golem.worldObj.getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory)) && golem.getDistanceSq((double)marker.x + (double)0.5F, (double)marker.y + (double)0.5F, (double)marker.z + (double)0.5F) < (double)4.0F) {
+         if ((marker.color == color || color == -1) && (golem.level().getTileEntity(marker.x, marker.y, marker.z) == null || !(golem.level().getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory)) && golem.getDistanceSq((double)marker.x + (double)0.5F, (double)marker.y + (double)0.5F, (double)marker.z + (double)0.5F) < (double)4.0F) {
             results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
          }
       }
@@ -128,7 +124,7 @@ public class GolemHelper {
    }
 
    public static List<Integer> getMarkedSides(EntityGolemBase golem, TileEntity tile, byte color) {
-      return getMarkedSides(golem, tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj().provider.dimensionId, color);
+      return getMarkedSides(golem, tile.xCoord, tile.yCoord, tile.zCoord, tile.getLevel().dimension(), color);
    }
 
    public static List<Integer> getMarkedSides(EntityGolemBase golem, int x, int y, int z, int dim, byte color) {
@@ -199,7 +195,7 @@ public class GolemHelper {
 
          return qr;
       } else {
-         TileEntity tile = golem.worldObj.getTileEntity(cX, cY, cZ);
+         TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
          if (tile == null) {
             return null;
          } else {
@@ -268,7 +264,7 @@ public class GolemHelper {
 
    public static ChunkCoordinates findJarWithRoom(EntityGolemBase golem) {
       ChunkCoordinates dest = null;
-      World world = golem.worldObj;
+      World world = golem.level();
       float dmod = golem.getRange();
       dmod *= dmod;
       ArrayList<TileEntity> jars = new ArrayList<>();
@@ -276,16 +272,16 @@ public class GolemHelper {
 
       for(Marker marker : golem.getMarkers()) {
          TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-         if (marker.dim == world.provider.dimensionId && te instanceof TileJarFillable) {
+         if (marker.dim == world.dimension() && te instanceof TileJarFillable) {
             if (te.getDistanceFrom(golem.getHomePosition().posX, golem.getHomePosition().posY, golem.getHomePosition().posZ) <= (double)dmod) {
                jars.add(te);
             }
-         } else if (marker.dim == world.provider.dimensionId && te instanceof TileEssentiaReservoir) {
+         } else if (marker.dim == world.dimension() && te instanceof TileEssentiaReservoir) {
             TileEssentiaReservoir res = (TileEssentiaReservoir)te;
             if (res.getSuctionAmount(res.facing) > 0 && (res.getSuctionType(res.facing) == null || res.getSuctionType(res.facing) == golem.essentia) && te.getDistanceFrom(golem.getHomePosition().posX, golem.getHomePosition().posY, golem.getHomePosition().posZ) <= (double)dmod) {
                others.add(te);
             }
-         } else if (marker.dim == world.provider.dimensionId && te instanceof IEssentiaTransport) {
+         } else if (marker.dim == world.dimension() && te instanceof IEssentiaTransport) {
             IEssentiaTransport trans = (IEssentiaTransport)te;
             if (golem.essentia != null && golem.essentiaAmount > 0 && trans.canInputFrom(ForgeDirection.getOrientation(marker.side)) && trans.getSuctionAmount(ForgeDirection.getOrientation(marker.side)) > 0 && (trans.getSuctionType(ForgeDirection.getOrientation(marker.side)) == null || trans.getSuctionType(ForgeDirection.getOrientation(marker.side)) == golem.essentia) && te.getDistanceFrom(golem.getHomePosition().posX, golem.getHomePosition().posY, golem.getHomePosition().posZ) <= (double)dmod) {
                others.add(te);
@@ -379,7 +375,7 @@ public class GolemHelper {
    }
 
    private static void getConnectedJars(TileJarFillable jar) {
-      World world = jar.getWorldObj();
+      World world = jar.getLevel();
 
       for(int dir = 0; dir < 6; ++dir) {
          ForgeDirection fd = ForgeDirection.getOrientation(dir);
@@ -414,7 +410,7 @@ public class GolemHelper {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = golem.worldObj.getTileEntity(cX, cY, cZ);
+      TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
       if (tile instanceof IFluidHandler) {
          IFluidHandler fluidhandler = (IFluidHandler)tile;
          Iterator<Integer> i$ = getReggedLiquids().iterator();
@@ -465,7 +461,7 @@ public class GolemHelper {
       var10000 = home.posZ - facing.offsetZ;
       float dmod = golem.getRange();
       ChunkCoordinates v = null;
-      ArrayList<IFluidHandler> fluidhandlers = getMarkedFluidHandlers(ls, golem.worldObj, golem);
+      ArrayList<IFluidHandler> fluidhandlers = getMarkedFluidHandlers(ls, golem.level(), golem);
       double dd = Double.MAX_VALUE;
       if (fluidhandlers != null) {
          for(IFluidHandler fluidhandler : fluidhandlers) {
@@ -481,7 +477,7 @@ public class GolemHelper {
       }
 
       if (v == null) {
-         ArrayList<ChunkCoordinates> inworld = getMarkedFluidBlocks(ls, golem.worldObj, golem);
+         ArrayList<ChunkCoordinates> inworld = getMarkedFluidBlocks(ls, golem.level(), golem);
          dd = Double.MAX_VALUE;
          if (inworld != null) {
             for(ChunkCoordinates coord : inworld) {
@@ -504,7 +500,7 @@ public class GolemHelper {
 
       for(Marker marker : golem.getMarkers()) {
          TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-         if (marker.dim == world.provider.dimensionId && te instanceof IFluidHandler && golem.getDistanceSq((double) te.xCoord + (double) 0.5F, (double) te.yCoord + (double) 0.5F, (double) te.zCoord + (double) 0.5F) < (double) 4.0F) {
+         if (marker.dim == world.dimension() && te instanceof IFluidHandler && golem.getDistanceSq((double) te.xCoord + (double) 0.5F, (double) te.yCoord + (double) 0.5F, (double) te.zCoord + (double) 0.5F) < (double) 4.0F) {
             FluidStack fs = ((IFluidHandler)te).drain(ForgeDirection.getOrientation(marker.side), new FluidStack(ls.getFluid(), 1), false);
             if (fs != null && fs.amount > 0) {
                results.add(marker);
@@ -520,7 +516,7 @@ public class GolemHelper {
 
       for(Marker marker : golem.getMarkers()) {
          TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-         if (marker.dim == world.provider.dimensionId && te instanceof IFluidHandler) {
+         if (marker.dim == world.dimension() && te instanceof IFluidHandler) {
             FluidStack fs = ((IFluidHandler)te).drain(ForgeDirection.getOrientation(marker.side), new FluidStack(ls.getFluid(), 1), false);
             if (fs != null && fs.amount > 0) {
                results.add((IFluidHandler)te);
@@ -536,7 +532,7 @@ public class GolemHelper {
 
       for(Marker marker : golem.getMarkers()) {
          Block bi = world.getBlock(marker.x, marker.y, marker.z);
-         if (marker.dim == world.provider.dimensionId && FluidRegistry.getFluid(ls.getFluidID()).getBlock() == bi) {
+         if (marker.dim == world.dimension() && FluidRegistry.getFluid(ls.getFluidID()).getBlock() == bi) {
             if (bi instanceof BlockFluidBase && ((BlockFluidBase)bi).canDrain(world, marker.x, marker.y, marker.z)) {
                results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
             } else if (ls.getFluidID() == FluidRegistry.WATER.getID() || ls.getFluidID() == FluidRegistry.LAVA.getID()) {
@@ -615,9 +611,9 @@ public class GolemHelper {
    public static boolean findSomethingUseCore(EntityGolemBase golem, ItemStack itemToMatch) {
       for(byte col : golem.getColorsMatching(itemToMatch)) {
          for(Marker marker : golem.getMarkers()) {
-            if ((marker.color == col || col == -1) && (!golem.getToggles()[0] || golem.worldObj.isAirBlock(marker.x, marker.y, marker.z)) && (golem.getToggles()[0] || !golem.worldObj.isAirBlock(marker.x, marker.y, marker.z))) {
+            if ((marker.color == col || col == -1) && (!golem.getToggles()[0] || golem.level().isAirBlock(marker.x, marker.y, marker.z)) && (golem.getToggles()[0] || !golem.level().isAirBlock(marker.x, marker.y, marker.z))) {
                ForgeDirection opp = ForgeDirection.getOrientation(marker.side);
-               if (golem.worldObj.isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
+               if (golem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
                   return true;
                }
             }
@@ -632,7 +628,7 @@ public class GolemHelper {
       ArrayList<Byte> matchingColors = golem.getColorsMatching(itemToMatch);
 
       for(byte color : matchingColors) {
-         ArrayList<IInventory> markers = getContainersWithRoom(golem.worldObj, golem, color, itemToMatch);
+         ArrayList<IInventory> markers = getContainersWithRoom(golem.level(), golem, color, itemToMatch);
          if (!markers.isEmpty()) {
             ForgeDirection i$1 = ForgeDirection.getOrientation(golem.homeFacing);
             ChunkCoordinates marker = golem.getHomePosition();
@@ -653,7 +649,7 @@ public class GolemHelper {
 
       for(byte color : matchingColors) {
          for(Marker marker1 : golem.getMarkers()) {
-            if ((marker1.color == color || color == -1) && (golem.worldObj.getTileEntity(marker1.x, marker1.y, marker1.z) == null || !(golem.worldObj.getTileEntity(marker1.x, marker1.y, marker1.z) instanceof IInventory))) {
+            if ((marker1.color == color || color == -1) && (golem.level().getTileEntity(marker1.x, marker1.y, marker1.z) == null || !(golem.level().getTileEntity(marker1.x, marker1.y, marker1.z) instanceof IInventory))) {
                return true;
             }
          }
@@ -664,7 +660,7 @@ public class GolemHelper {
    }
 
    public static boolean findSomethingSortCore(EntityGolemBase golem, ItemStack itemToMatch) {
-      ArrayList<IInventory> markers = getContainersWithRoom(golem.worldObj, golem, (byte)-1, itemToMatch);
+      ArrayList<IInventory> markers = getContainersWithRoom(golem.level(), golem, (byte)-1, itemToMatch);
       if (!markers.isEmpty()) {
          ForgeDirection i$1 = ForgeDirection.getOrientation(golem.homeFacing);
          ChunkCoordinates marker = golem.getHomePosition();
@@ -722,7 +718,7 @@ public class GolemHelper {
             case 10:
                return findSomethingSortCore(golem, stack);
             default:
-               golem.worldObj.getTileEntity(cX, cY, cZ);
+               golem.level().getTileEntity(cX, cY, cZ);
                ArrayList<ItemStack> neededList = getItemsNeeded(golem, golem.getUpgradeAmount(5) > 0);
                if (neededList != null && !neededList.isEmpty()) {
                   for(ItemStack ss : neededList) {
@@ -802,7 +798,7 @@ public class GolemHelper {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = golem.worldObj.getTileEntity(cX, cY, cZ);
+      TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
       if (tile instanceof IInventory) {
          int[] aint = null;
          ArrayList<ItemStack> out = new ArrayList<>();

@@ -1,22 +1,24 @@
 package thaumcraft.common.lib.utils;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.Player;
-import net.minecraft.entity.player.ServerPlayer;
-import net.minecraft.item.ItemStack;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.EntityItem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.event.ForgeEventFactory;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityFollowingItem;
@@ -33,11 +35,11 @@ public class BlockUtils {
    static int lastz = 0;
    static double lastdistance = 0.0F;
 
-   public static boolean harvestBlock(World world, Player player, int x, int y, int z) {
+   public static boolean harvestBlock(Level world, Player player, int x, int y, int z) {
       return harvestBlock(world, player, x, y, z, false, 0);
    }
 
-   public static boolean harvestBlock(World world, Player player, int x, int y, int z, boolean followItem, int color) {
+   public static boolean harvestBlock(Level world, Player player, int x, int y, int z, boolean followItem, int color) {
       Block block = world.getBlock(x, y, z);
       int i1 = world.getBlockMetadata(x, y, z);
       if (block.getBlockHardness(world, x, y, z) < 0.0F) {
@@ -79,32 +81,32 @@ public class BlockUtils {
    }
 
    public static ArrayList[] getBlockEventList(WorldServer world) {
-      if (!blockEventCache.containsKey(world.provider.dimensionId)) {
+      if (!blockEventCache.containsKey(world.dimension())) {
          try {
-            blockEventCache.put(world.provider.dimensionId,
+            blockEventCache.put(world.dimension(),
                     ReflectionHelper.getPrivateValue(WorldServer.class, world, new String[]{"field_147490_S"}));
          } catch (Exception var2) {
             return null;
          }
       }
 
-      return blockEventCache.get(world.provider.dimensionId);
+      return blockEventCache.get(world.dimension());
    }
 
-   public static ItemStack createStackedBlock(Block block, int md) {
-      ItemStack dropped = null;
+//   public static ItemStack createStackedBlock(Block block) {
+//      ItemStack dropped = null;
+//
+//      try {
+//         Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"createStackedBlock", "func_149644_j"}, Integer.TYPE);
+//         dropped = (ItemStack)m.invoke(block);
+//      } catch (Exception var4) {
+//         Thaumcraft.log.warn("Could not invoke net.minecraft.block.Block method createStackedBlock");
+//      }
+//
+//      return dropped;
+//   }
 
-      try {
-         Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"createStackedBlock", "func_149644_j"}, Integer.TYPE);
-         dropped = (ItemStack)m.invoke(block, md);
-      } catch (Exception var4) {
-         Thaumcraft.log.warn("Could not invoke net.minecraft.block.Block method createStackedBlock");
-      }
-
-      return dropped;
-   }
-
-   public static void dropBlockAsItem(World world, int x, int y, int z, ItemStack stack, Block block) {
+   public static void dropBlockAsItem(Level world, int x, int y, int z, ItemStack stack, Block block) {
       try {
          Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"dropBlockAsItem", "func_149642_a"}, World.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, ItemStack.class);
          m.invoke(block, world, x, y, z, stack);
@@ -114,13 +116,13 @@ public class BlockUtils {
 
    }
 
-   public static void dropBlockAsItemWithChance(World world, Block block, int x, int y, int z, int meta, float dropchance, int fortune, Player player) {
-      if (!world.isRemote && !world.restoringBlockSnapshots) {
+   public static void dropBlockAsItemWithChance(Level world, Block block, int x, int y, int z, int meta, float dropchance, int fortune, Player player) {
+      if (Platform.getEnvironment() != Env.CLIENT && !world.restoringBlockSnapshots) {
          ArrayList<ItemStack> items = block.getDrops(world, x, y, z, meta, fortune);
          dropchance = ForgeEventFactory.fireBlockHarvesting(items, world, block, x, y, z, meta, fortune, dropchance, false, player);
 
          for(ItemStack item : items) {
-            if (world.rand.nextFloat() <= dropchance) {
+            if (world.getRandom().nextFloat() <= dropchance) {
                dropBlockAsItem(world, x, y, z, item, block);
             }
          }
@@ -128,9 +130,9 @@ public class BlockUtils {
 
    }
 
-   public static void destroyBlockPartially(World world, int par1, int par2, int par3, int par4, int par5) {
+   public static void destroyBlockPartially(Level world, int par1, int par2, int par3, int par4, int par5) {
       for(ServerPlayer ServerPlayer : (List<ServerPlayer>)MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
-         if (ServerPlayer != null && ServerPlayer.worldObj == MinecraftServer.getServer().getEntityWorld() && ServerPlayer.getEntityId() != par1) {
+         if (ServerPlayer != null && ServerPlayer.level() == MinecraftServer.getServer().getEntityWorld() && ServerPlayer.getEntityId() != par1) {
             double d0 = (double)par2 - ServerPlayer.posX;
             double d1 = (double)par3 - ServerPlayer.posY;
             double d2 = (double)par4 - ServerPlayer.posZ;
@@ -142,7 +144,7 @@ public class BlockUtils {
 
    }
 
-   public static boolean removeBlock(World world, int par1, int par2, int par3, Player player) {
+   public static boolean removeBlock(Level world, int par1, int par2, int par3, Player player) {
       Block block = world.getBlock(par1, par2, par3);
       int l = world.getBlockMetadata(par1, par2, par3);
       if (block != null) {
@@ -157,7 +159,7 @@ public class BlockUtils {
       return flag;
    }
 
-   public static void findBlocks(World world, int x, int y, int z, Block block) {
+   public static void findBlocks(Level world, int x, int y, int z, Block block) {
       int count = 0;
 
       for(int xx = -2; xx <= 2; ++xx) {
@@ -195,11 +197,11 @@ public class BlockUtils {
 
    }
 
-   public static boolean breakFurthestBlock(World world, int x, int y, int z, Block block, Player player) {
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player) {
       return breakFurthestBlock(world, x, y, z, block, player, false, 0);
    }
 
-   public static boolean breakFurthestBlock(World world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
       lastx = x;
       lasty = y;
       lastz = z;
@@ -213,7 +215,7 @@ public class BlockUtils {
          for(int xx = -3; xx <= 3; ++xx) {
             for(int yy = -3; yy <= 3; ++yy) {
                for(int zz = -3; zz <= 3; ++zz) {
-                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.rand.nextInt(150));
+                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.getRandom().nextInt(150));
                }
             }
          }
@@ -222,8 +224,8 @@ public class BlockUtils {
       return worked;
    }
 
-   public static MovingObjectPosition getTargetBlock(World world, double x, double y, double z, float yaw, float pitch, boolean par3, double range) {
-      Vec3 var13 = Vec3.createVectorHelper(x, y, z);
+   public static HitResult getTargetBlock(Level world, double x, double y, double z, float yaw, float pitch, boolean par3, double range) {
+      Vec3 var13 = new Vec3(x, y, z);
       float var14 = MathHelper.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
       float var15 = MathHelper.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
       float var16 = -MathHelper.cos(-pitch * ((float)Math.PI / 180F));
@@ -234,14 +236,14 @@ public class BlockUtils {
       return world.func_147447_a(var13, var23, par3, !par3, false);
    }
 
-   public static MovingObjectPosition getTargetBlock(World world, Entity entity, boolean par3) {
+   public static HitResult getTargetBlock(Level world, Entity entity, boolean par3) {
       float var4 = 1.0F;
       float var5 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * var4;
       float var6 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * var4;
       double var7 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)var4;
       double var9 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)var4 + 1.62 - (double)entity.yOffset;
       double var11 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)var4;
-      Vec3 var13 = Vec3.createVectorHelper(var7, var9, var11);
+      Vec3 var13 = new Vec3(var7, var9, var11);
       float var14 = MathHelper.cos(-var6 * ((float)Math.PI / 180F) - (float)Math.PI);
       float var15 = MathHelper.sin(-var6 * ((float)Math.PI / 180F) - (float)Math.PI);
       float var16 = -MathHelper.cos(-var5 * ((float)Math.PI / 180F));
@@ -279,17 +281,17 @@ public class BlockUtils {
       return count >= amount;
    }
 
-   public static List<EntityItem> getContentsOfBlock(World world, int x, int y, int z) {
+   public static List<EntityItem> getContentsOfBlock(Level world, int x, int y, int z) {
        return (List<EntityItem>)world.getEntitiesWithinAABB(
                EntityItem.class,
                AxisAlignedBB.getBoundingBox(x, y, z, (double)x + (double)1.0F, (double)y + (double)1.0F, (double)z + (double)1.0F)
        );
    }
 
-   public static int countExposedSides(World world, int x, int y, int z) {
+   public static int countExposedSides(Level world, int x, int y, int z) {
       int count = 0;
 
-      for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for(Direction dir : Direction.VALID_DIRECTIONS) {
          if (world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
             ++count;
          }
@@ -298,13 +300,13 @@ public class BlockUtils {
       return count;
    }
 
-   public static boolean isBlockExposed(World world, int x, int y, int z) {
+   public static boolean isBlockExposed(Level world, int x, int y, int z) {
       return !world.getBlock(x, y, z + 1).isOpaqueCube() || !world.getBlock(x, y, z - 1).isOpaqueCube() || !world.getBlock(x + 1, y, z).isOpaqueCube() || !world.getBlock(x - 1, y, z).isOpaqueCube() || !world.getBlock(x, y + 1, z).isOpaqueCube() || !world.getBlock(x, y - 1, z).isOpaqueCube();
    }
 
-   public static boolean isAdjacentToSolidBlock(World world, int x, int y, int z) {
+   public static boolean isAdjacentToSolidBlock(Level world, int x, int y, int z) {
       for(int a = 0; a < 6; ++a) {
-         ForgeDirection d = ForgeDirection.getOrientation(a);
+         Direction d = Direction.getOrientation(a);
          if (world.isSideSolid(x + d.offsetX, y + d.offsetY, z + d.offsetZ, d.getOpposite())) {
             return true;
          }

@@ -2,18 +2,14 @@ package thaumcraft.common.items.armor;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-
-import java.util.HashMap;
-
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
@@ -24,16 +20,17 @@ import thaumcraft.common.lib.network.misc.PacketFlyToServer;
 import thaumcraft.common.lib.utils.Utils;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 
 import static baubles.api.expanded.BaubleExpandedSlots.getTypeFromBaubleType;
-import static simpleutils.bauble.BaubleUtils.forEachBaubleWithBaubleType;
+import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBaubleWithBaubleType;
 
 public class Hover {
     public static final int EFFICIENCY = 360;
     static HashMap<Integer, Boolean> hovering = new HashMap<>();
     static HashMap<Integer, Long> timing = new HashMap<>();
 
-    public static boolean toggleHover(EntityPlayer player, int playerId, @Nonnull ItemStack armor) {
+    public static boolean toggleHover(Player player, int playerId, @Nonnull ItemStack armor) {
         boolean hover = hovering.get(playerId) != null && hovering.get(playerId);
         short fuel = 0;
         if (armor.hasTagCompound() && armor.stackTagCompound.hasKey("jar")) {
@@ -50,9 +47,9 @@ public class Hover {
             return false;
         } else {
             hovering.put(playerId, !hover);
-            if (player.worldObj.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                 PacketHandler.INSTANCE.sendToServer(new PacketFlyToServer(player, !hover));
-                player.worldObj.playSound(player.posX, player.posY, player.posZ, !hover ? "thaumcraft:hhon" : "thaumcraft:hhoff", 0.33F, 1.0F, false);
+                player.level().playSound(player.posX, player.posY, player.posZ, !hover ? "thaumcraft:hhon" : "thaumcraft:hhoff", 0.33F, 1.0F, false);
             }
 
             return !hover;
@@ -67,18 +64,18 @@ public class Hover {
         return hovering.containsKey(playerId) ? hovering.get(playerId) : false;
     }
 
-    public static void handleHoverArmor(EntityPlayer player, ItemStack armor) {
+    public static void handleHoverArmor(Player player, ItemStack armor) {
         if (hovering.get(player.getEntityId()) == null && armor.hasTagCompound() && armor.stackTagCompound.hasKey("hover")) {
             hovering.put(player.getEntityId(), armor.stackTagCompound.getByte("hover") == 1);
-            if (player.worldObj.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                 PacketHandler.INSTANCE.sendToServer(new PacketFlyToServer(player, armor.stackTagCompound.getByte("hover") == 1));
             }
         }
 
         boolean hover = hovering.get(player.getEntityId()) != null && hovering.get(player.getEntityId());
-        World world = player.worldObj;
+        World world = player.level();
         player.capabilities.isFlying = hover;
-        if (world.isRemote && player instanceof EntityPlayerSP) {
+        if ((Platform.getEnvironment() == Env.CLIENT) && player instanceof LocalPlayer) {
             if (hover && expendCharge(player, armor)) {
                 long currenttime = System.currentTimeMillis();
                 long time = 0L;
@@ -89,7 +86,7 @@ public class Hover {
                 if (time < currenttime) {
                     time = currenttime + 1200L;
                     timing.put(player.getEntityId(), time);
-                    player.worldObj.playSound(player.posX, player.posY, player.posZ, "thaumcraft:jacobs", 0.05F, 1.0F + player.worldObj.rand.nextFloat() * 0.05F, false);
+                    player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:jacobs", 0.05F, 1.0F + player.level().rand.nextFloat() * 0.05F, false);
                 }
 
                 int haste = EnchantmentHelper.getEnchantmentLevel(Config.enchHaste.effectId, armor);
@@ -124,8 +121,8 @@ public class Hover {
             }
 
             if (hover && expendCharge(player, armor)) {
-                if (player instanceof EntityPlayerMP) {
-                    Utils.resetFloatCounter((EntityPlayerMP) player);
+                if (player instanceof ServerPlayer) {
+                    Utils.resetFloatCounter((ServerPlayer) player);
                 }
 
                 player.fallDistance = 0.0F;
@@ -148,7 +145,7 @@ public class Hover {
 
     }
 
-    public static boolean expendCharge(EntityPlayer player, ItemStack is) {
+    public static boolean expendCharge(Player player, ItemStack is) {
         if (is.hasTagCompound() && is.stackTagCompound.hasKey("jar")) {
             ItemStack jar = ItemStack.loadItemStackFromNBT(is.stackTagCompound.getCompoundTag("jar"));
             short fuel = 0;

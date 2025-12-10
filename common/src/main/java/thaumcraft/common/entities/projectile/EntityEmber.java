@@ -6,23 +6,23 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 
 public class EntityEmber extends EntityThrowable implements IEntityAdditionalSpawnData {
    public int duration = 20;
    public int firey = 0;
    public float damage = 1.0F;
 
-   public EntityEmber(World par1World) {
+   public EntityEmber(Level par1World) {
       super(par1World);
    }
 
-   public EntityEmber(World par1World, EntityLivingBase par2EntityLiving, float scatter) {
+   public EntityEmber(Level par1World, EntityLivingBase par2EntityLiving, float scatter) {
       super(par1World, par2EntityLiving);
       this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), scatter);
    }
@@ -67,8 +67,8 @@ public class EntityEmber extends EntityThrowable implements IEntityAdditionalSpa
       this.duration = data.readByte();
    }
 
-   protected void onImpact(MovingObjectPosition mop) {
-      if (!this.worldObj.isRemote) {
+   protected void onImpact(HitResult mop) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (mop.entityHit != null) {
             if (!mop.entityHit.isImmuneToFire() && mop.entityHit.attackEntityFrom((new EntityDamageSourceIndirect("fireball", this, this.getThrower())).setFireDamage(), this.damage)) {
                mop.entityHit.setFire(3 + this.firey);
@@ -97,8 +97,8 @@ public class EntityEmber extends EntityThrowable implements IEntityAdditionalSpa
                   ++i;
             }
 
-            if (this.worldObj.isAirBlock(i, j, k)) {
-               this.worldObj.setBlock(i, j, k, Blocks.fire);
+            if (this.level().isAirBlock(i, j, k)) {
+               this.level().setBlock(i, j, k, Blocks.fire);
             }
          }
       }

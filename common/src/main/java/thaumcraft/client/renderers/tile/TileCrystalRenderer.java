@@ -1,18 +1,19 @@
 package thaumcraft.client.renderers.tile;
 
-import java.awt.Color;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCrystal;
 import thaumcraft.common.blocks.BlockCustomOreItem;
 import thaumcraft.common.tiles.TileCrystal;
+
+import java.awt.*;
+import java.util.Random;
 
 public class TileCrystalRenderer extends TileEntitySpecialRenderer {
    private ModelCrystal model = new ModelCrystal();
@@ -40,7 +41,7 @@ public class TileCrystalRenderer extends TileEntitySpecialRenderer {
    }
 
    private void drawCrystal(int ori, float x, float y, float z, float a1, float a2, Random rand, int color, float size) {
-      EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+      Player p = Minecraft.getMinecraft().thePlayer;
       float shade = MathHelper.sin((float)(p.ticksExisted + rand.nextInt(10)) / (5.0F + rand.nextFloat())) * 0.075F + 0.925F;
       Color c = new Color(color);
       float r = (float)c.getRed() / 220.0F;

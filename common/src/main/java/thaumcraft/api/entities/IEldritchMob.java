@@ -1,5 +1,7 @@
 package thaumcraft.api.entities;
 
-public interface IEldritchMob {
+import net.minecraft.world.entity.monster.Enemy;
+
+public interface IEldritchMob extends Enemy {
 
 }

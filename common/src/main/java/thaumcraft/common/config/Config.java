@@ -4,12 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingManager;
+import net.minecraft.world.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -35,6 +35,7 @@ import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
 import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.equipment.ItemElementalAxe;
 import thaumcraft.common.lib.enchantment.EnchantmentHaste;
@@ -509,20 +510,20 @@ public class Config {
             ai.addVis(amulet, a, rand.nextInt(5), true);
         }
 
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemResource, 1, 18), 2500, 0);
+        ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.GOLD_COIN), 2500, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.diamond), 10, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.emerald), 15, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), 10, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), 10, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), 10, 0);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemResource, 2, 18), 2250, 1);
+        ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.GOLD_COIN, 2), 2250, 1);
 
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.nether_star), 1, 2);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemResource, 3, 18), 2000, 2);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemEldritchObject, 1, 3), 1, 2);
+        ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.GOLD_COIN, 3), 2000, 2);
+        ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.PRIME_PEARL), 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.diamond), 50, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.emerald), 75, 1, 2);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemResource, 1, 9), 25, 0, 1, 2);
+        ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), 25, 0, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.gold_ingot), 100, 0, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.ender_pearl), 100, 0, 1, 2);
 
@@ -573,8 +574,8 @@ public class Config {
             }
         }
 
-        ItemStack[] commonLoot = new ItemStack[]{new ItemStack(ConfigItems.itemLootbag, 1, 0), new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 6)};
-        ItemStack[] uncommonLoot = new ItemStack[]{new ItemStack(ConfigItems.itemLootbag, 1, 1), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new ItemStack(ConfigItems.itemResource, 1, 9)};
+        ItemStack[] commonLoot = new ItemStack[]{new ItemStack(ConfigItems.itemLootbag, 1, 0), new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), new ItemStack(ThaumcraftItems.AMBER_GEM)};
+        ItemStack[] uncommonLoot = new ItemStack[]{new ItemStack(ConfigItems.itemLootbag, 1, 1), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)};
         ItemStack[] rareLoot = new ItemStack[]{
                 new ItemStack(ConfigItems.itemLootbag, 1, 2),
                 new ItemStack(ConfigItems.itemThaumonomicon), new ItemStack(ConfigItems.itemSwordThaumium, 1, 0), new ItemStack(ConfigItems.itemPickThaumium, 1, 0), new ItemStack(ConfigItems.itemAxeThaumium, 1, 0), new ItemStack(ConfigItems.itemHoeThaumium, 1, 0), new ItemStack(ConfigItems.itemRingRunic, 1, 0), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 3), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 4), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 5), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 6), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 7), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 8), amulet};
@@ -599,7 +600,7 @@ public class Config {
             ChestGenHooks.addItem("strongholdLibrary", new WeightedRandomChestContent(is, 1, 2, 3));
         }
 
-        ChestGenHooks.addItem("strongholdLibrary", new WeightedRandomChestContent(new ItemStack(ConfigItems.itemResource, 1, 9), 3, 6, 20));
+        ChestGenHooks.addItem("strongholdLibrary", new WeightedRandomChestContent(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), 3, 6, 20));
 
         for (ItemStack is : rareLoot) {
             ChestGenHooks.addItem("dungeonChest", new WeightedRandomChestContent(is, 1, 1, 1));
@@ -611,7 +612,7 @@ public class Config {
             ChestGenHooks.addItem("strongholdLibrary", new WeightedRandomChestContent(is, 1, 1, 1));
         }
 
-        ChestGenHooks.addItem("villageBlacksmith", new WeightedRandomChestContent(new ItemStack(ConfigItems.itemResource, 1, 2), 1, 3, 10));
+        ChestGenHooks.addItem("villageBlacksmith", new WeightedRandomChestContent(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), 1, 3, 10));
     }
 
     public static void initModCompatibility() {

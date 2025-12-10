@@ -1,19 +1,13 @@
 package thaumcraft.client.lib;
 
 import com.google.common.collect.Maps;
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -24,20 +18,20 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.util.JsonException;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
@@ -46,13 +40,20 @@ import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.relics.ItemSanityChecker;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.TileInfusionMatrix;
+
+import java.awt.*;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ClientTickEventsFML {
    public static GuiResearchPopup researchPopup = null;
@@ -90,7 +91,7 @@ public class ClientTickEventsFML {
             }
 
             Minecraft mc = Minecraft.getMinecraft();
-            if (event.player.getItemInUse() != null && event.player.getItemInUse().getItem() instanceof ItemWandCasting) {
+            if (event.player.getItemInUse() != null && event.player.getItemInUse().getItem() instanceof WandCastingItem) {
                event.player.setItemInUse(event.player.inventory.getCurrentItem(), event.player.getItemInUseCount());
             }
 
@@ -249,8 +250,8 @@ public class ClientTickEventsFML {
    public void renderTick(TickEvent.RenderTickEvent event) {
       Minecraft mc = FMLClientHandler.instance().getClient();
       World world = mc.theWorld;
-      if (event.phase != Phase.START && Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      if (event.phase != Phase.START && Minecraft.getMinecraft().renderViewEntity instanceof Player) {
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          long time = System.currentTimeMillis();
          if (researchPopup == null) {
             researchPopup = new GuiResearchPopup(mc);
@@ -272,7 +273,7 @@ public class ClientTickEventsFML {
             }
 
             if (player.inventory.getCurrentItem() != null) {
-               if (player.inventory.getCurrentItem().getItem() instanceof ItemWandCasting) {
+               if (player.inventory.getCurrentItem().getItem() instanceof WandCastingItem) {
                   this.renderCastingWandHud(event.renderTickTime, player, time, player.inventory.getCurrentItem());
                } else if (player.inventory.getCurrentItem().getItem() instanceof ItemSanityChecker) {
                   this.renderSanityHud(event.renderTickTime, player, time);
@@ -284,7 +285,7 @@ public class ClientTickEventsFML {
    }
 
    @SideOnly(Side.CLIENT)
-   private void renderSanityHud(Float partialTicks, EntityPlayer player, long time) {
+   private void renderSanityHud(Float partialTicks, Player player, long time) {
       Minecraft mc = Minecraft.getMinecraft();
       GL11.glPushMatrix();
       ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft(), mc.displayWidth, mc.displayHeight);
@@ -354,9 +355,9 @@ public class ClientTickEventsFML {
    }
 
    @SideOnly(Side.CLIENT)
-   private void renderCastingWandHud(Float partialTicks, EntityPlayer player, long time, ItemStack wandstack) {
+   private void renderCastingWandHud(Float partialTicks, Player player, long time, ItemStack wandstack) {
       Minecraft mc = Minecraft.getMinecraft();
-      ItemWandCasting wand = (ItemWandCasting)wandstack.getItem();
+      WandCastingItem wand = (WandCastingItem)wandstack.getItem();
       if (this.oldvals.get(player.inventory.currentItem) == null) {
          this.oldvals.put(player.inventory.currentItem, wand.getAllVis(wandstack));
       } else if (this.nextsync <= time) {
@@ -486,7 +487,7 @@ public class ClientTickEventsFML {
    }
 
    @SideOnly(Side.CLIENT)
-   public void renderRunicArmorBar(float partialTicks, EntityPlayer player, long time) {
+   public void renderRunicArmorBar(float partialTicks, Player player, long time) {
       Minecraft mc = Minecraft.getMinecraft();
       float total = (float)((Integer[])Thaumcraft.instance.runicEventHandler.runicInfo.get(player.getEntityId()))[0];
       float current = (float) Thaumcraft.instance.runicEventHandler.runicCharge.get(player.getEntityId());
@@ -528,7 +529,7 @@ public class ClientTickEventsFML {
    }
 
    @SideOnly(Side.CLIENT)
-   public void renderHoverHUD(float partialTicks, EntityPlayer player, long time, ItemStack armor) {
+   public void renderHoverHUD(float partialTicks, Player player, long time, ItemStack armor) {
       Minecraft mc = Minecraft.getMinecraft();
       GL11.glPushMatrix();
       ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft(), mc.displayWidth, mc.displayHeight);
@@ -594,7 +595,7 @@ public class ClientTickEventsFML {
    }
 
    @SideOnly(Side.CLIENT)
-   public void renderWandTradeHud(float partialTicks, EntityPlayer player, long time, ItemStack picked) {
+   public void renderWandTradeHud(float partialTicks, Player player, long time, ItemStack picked) {
       Minecraft mc = Minecraft.getMinecraft();
       int amount = this.lastCount;
       if (player.inventory.inventoryChanged || !picked.isItemEqual(this.lastItem)) {
@@ -643,7 +644,7 @@ public class ClientTickEventsFML {
       GL11.glPopMatrix();
    }
 
-   public void renderAspectsInGui(GuiContainer gui, EntityPlayer player) {
+   public void renderAspectsInGui(GuiContainer gui, Player player) {
       Minecraft mc = FMLClientHandler.instance().getClient();
       ScaledResolution var13 = new ScaledResolution(Minecraft.getMinecraft(), mc.displayWidth, mc.displayHeight);
       int var14 = var13.getScaledWidth();

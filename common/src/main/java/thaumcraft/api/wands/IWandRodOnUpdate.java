@@ -1,7 +1,7 @@
 package thaumcraft.api.wands;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 
@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
  * update tick. 
  *
  */
+@Deprecated(forRemoval = true)
 public interface IWandRodOnUpdate {
 	void onUpdate(ItemStack itemstack, Player player);
 }

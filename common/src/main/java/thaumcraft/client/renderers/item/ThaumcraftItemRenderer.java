@@ -1,4 +1,4 @@
-package com.linearity.renderutils;
+package thaumcraft.client.renderers.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -6,7 +6,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public interface ItemRenderer {
+public interface ThaumcraftItemRenderer {
     public void render(
             ItemStack itemStack,
             ItemDisplayContext itemDisplayContext,

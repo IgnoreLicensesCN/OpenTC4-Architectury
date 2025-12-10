@@ -1,7 +1,5 @@
 package thaumcraft.common.lib.utils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,7 @@ public class TCVec3Pool {
 
    }
 
-   @SideOnly(Side.CLIENT)
+//   @SideOnly(Side.CLIENT)
    public void clearAndFreeCache() {
       if (!this.skipCache()) {
          this.nextFreeSpace = 0;

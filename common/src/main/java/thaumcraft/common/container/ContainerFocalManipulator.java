@@ -1,10 +1,10 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.tiles.TileFocalManipulator;
 
@@ -28,19 +28,19 @@ public class ContainerFocalManipulator extends Container {
 
    }
 
-   public boolean enchantItem(EntityPlayer p, int button) {
+   public boolean enchantItem(Player p, int button) {
       if (button >= 0 && !this.table.startCraft(button, p)) {
-         this.table.getWorldObj().playSoundEffect(this.table.xCoord, this.table.yCoord, this.table.zCoord, "thaumcraft:craftfail", 0.33F, 1.0F);
+         this.table.getLevel().playSoundEffect(this.table.xCoord, this.table.yCoord, this.table.zCoord, "thaumcraft:craftfail", 0.33F, 1.0F);
       }
 
       return false;
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.table.isUseableByPlayer(par1EntityPlayer);
+   public boolean canInteractWith(Player par1Player) {
+      return this.table.isUseableByPlayer(par1Player);
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -72,7 +72,7 @@ public class ContainerFocalManipulator extends Container {
             return null;
          }
 
-         slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+         slot.onPickupFromSlot(par1Player, itemstack1);
       }
 
       return itemstack;

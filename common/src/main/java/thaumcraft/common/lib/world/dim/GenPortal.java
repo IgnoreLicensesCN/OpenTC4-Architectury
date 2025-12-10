@@ -1,14 +1,14 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.Random;
 
 public class GenPortal extends GenCommon {
-   static void generatePortal(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generatePortal(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -69,10 +69,10 @@ public class GenPortal extends GenCommon {
 //      }
 //
 //      for(int g = 0; g < 5; ++g) {
-//         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, ForgeDirection.NORTH, cell);
-//         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, ForgeDirection.SOUTH, cell);
-//         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, ForgeDirection.EAST, cell);
-//         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, ForgeDirection.WEST, cell);
+//         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, Direction.NORTH, cell);
+//         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
+//         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, Direction.EAST, cell);
+//         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, Direction.WEST, cell);
 //      }
 //
 //      GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
@@ -88,30 +88,30 @@ public class GenPortal extends GenCommon {
 //         }
 //      }
 //
-//      placeBlock(world, x + 5, y + 3, z + 5, 10, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 4, y + 3, z + 5, 10, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 5, y + 3, z + 4, 10, ForgeDirection.WEST, cell);
-//      placeBlock(world, x + 5, y + 8, z + 5, 11, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 4, y + 8, z + 5, 11, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 5, y + 8, z + 4, 11, ForgeDirection.WEST, cell);
-//      placeBlock(world, x + 12, y + 3, z + 5, 10, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 11, y + 3, z + 5, 10, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 11, y + 3, z + 4, 10, ForgeDirection.EAST, cell);
-//      placeBlock(world, x + 12, y + 8, z + 5, 11, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 11, y + 8, z + 5, 11, ForgeDirection.NORTH, cell);
-//      placeBlock(world, x + 11, y + 8, z + 4, 11, ForgeDirection.EAST, cell);
-//      placeBlock(world, x + 5, y + 3, z + 11, 10, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 4, y + 3, z + 11, 10, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 5, y + 3, z + 12, 10, ForgeDirection.WEST, cell);
-//      placeBlock(world, x + 5, y + 8, z + 11, 11, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 4, y + 8, z + 11, 11, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 5, y + 8, z + 12, 11, ForgeDirection.WEST, cell);
-//      placeBlock(world, x + 12, y + 3, z + 11, 10, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 11, y + 3, z + 11, 10, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 11, y + 3, z + 12, 10, ForgeDirection.EAST, cell);
-//      placeBlock(world, x + 12, y + 8, z + 11, 11, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 11, y + 8, z + 11, 11, ForgeDirection.SOUTH, cell);
-//      placeBlock(world, x + 11, y + 8, z + 12, 11, ForgeDirection.EAST, cell);
+//      placeBlock(world, x + 5, y + 3, z + 5, 10, Direction.NORTH, cell);
+//      placeBlock(world, x + 4, y + 3, z + 5, 10, Direction.NORTH, cell);
+//      placeBlock(world, x + 5, y + 3, z + 4, 10, Direction.WEST, cell);
+//      placeBlock(world, x + 5, y + 8, z + 5, 11, Direction.NORTH, cell);
+//      placeBlock(world, x + 4, y + 8, z + 5, 11, Direction.NORTH, cell);
+//      placeBlock(world, x + 5, y + 8, z + 4, 11, Direction.WEST, cell);
+//      placeBlock(world, x + 12, y + 3, z + 5, 10, Direction.NORTH, cell);
+//      placeBlock(world, x + 11, y + 3, z + 5, 10, Direction.NORTH, cell);
+//      placeBlock(world, x + 11, y + 3, z + 4, 10, Direction.EAST, cell);
+//      placeBlock(world, x + 12, y + 8, z + 5, 11, Direction.NORTH, cell);
+//      placeBlock(world, x + 11, y + 8, z + 5, 11, Direction.NORTH, cell);
+//      placeBlock(world, x + 11, y + 8, z + 4, 11, Direction.EAST, cell);
+//      placeBlock(world, x + 5, y + 3, z + 11, 10, Direction.SOUTH, cell);
+//      placeBlock(world, x + 4, y + 3, z + 11, 10, Direction.SOUTH, cell);
+//      placeBlock(world, x + 5, y + 3, z + 12, 10, Direction.WEST, cell);
+//      placeBlock(world, x + 5, y + 8, z + 11, 11, Direction.SOUTH, cell);
+//      placeBlock(world, x + 4, y + 8, z + 11, 11, Direction.SOUTH, cell);
+//      placeBlock(world, x + 5, y + 8, z + 12, 11, Direction.WEST, cell);
+//      placeBlock(world, x + 12, y + 3, z + 11, 10, Direction.SOUTH, cell);
+//      placeBlock(world, x + 11, y + 3, z + 11, 10, Direction.SOUTH, cell);
+//      placeBlock(world, x + 11, y + 3, z + 12, 10, Direction.EAST, cell);
+//      placeBlock(world, x + 12, y + 8, z + 11, 11, Direction.SOUTH, cell);
+//      placeBlock(world, x + 11, y + 8, z + 11, 11, Direction.SOUTH, cell);
+//      placeBlock(world, x + 11, y + 8, z + 12, 11, Direction.EAST, cell);
 
       //generated text with java
       {
@@ -2565,26 +2565,26 @@ public class GenPortal extends GenCommon {
          placeBlock(world, x + 14, y + 3, z + 14, 19, cell);
          placeBlock(world, x + 14, y + 4, z + 14, 19, cell);
          placeBlock(world, x + 14, y + 5, z + 14, 19, cell);
-         placeBlock(world, x + 6, y + 2, z + 4, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 6, y + 2, z + 12, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 6, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 6, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 7, y + 2, z + 4, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 7, y + 2, z + 12, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 7, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 7, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 8, y + 2, z + 4, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 8, y + 2, z + 12, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 8, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 8, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 9, y + 2, z + 4, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 9, y + 2, z + 12, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 9, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 9, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 10, y + 2, z + 4, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 10, y + 2, z + 12, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 10, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 10, 10,ForgeDirection.WEST, cell);
+         placeBlock(world, x + 6, y + 2, z + 4, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 6, y + 2, z + 12, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 6, 10,Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 6, 10,Direction.WEST, cell);
+         placeBlock(world, x + 7, y + 2, z + 4, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 7, y + 2, z + 12, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 7, 10,Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 7, 10,Direction.WEST, cell);
+         placeBlock(world, x + 8, y + 2, z + 4, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 8, y + 2, z + 12, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 8, 10,Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 8, 10,Direction.WEST, cell);
+         placeBlock(world, x + 9, y + 2, z + 4, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 9, y + 2, z + 12, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 9, 10,Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 9, 10,Direction.WEST, cell);
+         placeBlock(world, x + 10, y + 2, z + 4, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 10, y + 2, z + 12, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 10, 10,Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 10, 10,Direction.WEST, cell);
          GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
          placeBlock(world, x + 3, y + 1, z + 3, 9, cell);
          placeBlock(world, x + 3, y + 2, z + 3, 9, cell);
@@ -2762,30 +2762,30 @@ public class GenPortal extends GenCommon {
          placeBlock(world, x + 13, y + 9, z + 13, 9, cell);
          placeBlock(world, x + 13, y + 10, z + 13, 9, cell);
          placeBlock(world, x + 13, y + 11, z + 13, 9, cell);
-         placeBlock(world, x + 5, y + 3, z + 5, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 4, y + 3, z + 5, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 5, y + 3, z + 4, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 5, y + 8, z + 5, 11,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 4, y + 8, z + 5, 11,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 5, y + 8, z + 4, 11,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 12, y + 3, z + 5, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 11, y + 3, z + 5, 10,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 11, y + 3, z + 4, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 12, y + 8, z + 5, 11,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 11, y + 8, z + 5, 11,ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 11, y + 8, z + 4, 11,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 5, y + 3, z + 11, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 4, y + 3, z + 11, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 5, y + 3, z + 12, 10,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 5, y + 8, z + 11, 11,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 4, y + 8, z + 11, 11,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 5, y + 8, z + 12, 11,ForgeDirection.WEST, cell);
-         placeBlock(world, x + 12, y + 3, z + 11, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 11, y + 3, z + 11, 10,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 11, y + 3, z + 12, 10,ForgeDirection.EAST, cell);
-         placeBlock(world, x + 12, y + 8, z + 11, 11,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 11, y + 8, z + 11, 11,ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 11, y + 8, z + 12, 11,ForgeDirection.EAST, cell);
+         placeBlock(world, x + 5, y + 3, z + 5, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 4, y + 3, z + 5, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 5, y + 3, z + 4, 10,Direction.WEST, cell);
+         placeBlock(world, x + 5, y + 8, z + 5, 11,Direction.NORTH, cell);
+         placeBlock(world, x + 4, y + 8, z + 5, 11,Direction.NORTH, cell);
+         placeBlock(world, x + 5, y + 8, z + 4, 11,Direction.WEST, cell);
+         placeBlock(world, x + 12, y + 3, z + 5, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 11, y + 3, z + 5, 10,Direction.NORTH, cell);
+         placeBlock(world, x + 11, y + 3, z + 4, 10,Direction.EAST, cell);
+         placeBlock(world, x + 12, y + 8, z + 5, 11,Direction.NORTH, cell);
+         placeBlock(world, x + 11, y + 8, z + 5, 11,Direction.NORTH, cell);
+         placeBlock(world, x + 11, y + 8, z + 4, 11,Direction.EAST, cell);
+         placeBlock(world, x + 5, y + 3, z + 11, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 4, y + 3, z + 11, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 5, y + 3, z + 12, 10,Direction.WEST, cell);
+         placeBlock(world, x + 5, y + 8, z + 11, 11,Direction.SOUTH, cell);
+         placeBlock(world, x + 4, y + 8, z + 11, 11,Direction.SOUTH, cell);
+         placeBlock(world, x + 5, y + 8, z + 12, 11,Direction.WEST, cell);
+         placeBlock(world, x + 12, y + 3, z + 11, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 11, y + 3, z + 11, 10,Direction.SOUTH, cell);
+         placeBlock(world, x + 11, y + 3, z + 12, 10,Direction.EAST, cell);
+         placeBlock(world, x + 12, y + 8, z + 11, 11,Direction.SOUTH, cell);
+         placeBlock(world, x + 11, y + 8, z + 11, 11,Direction.SOUTH, cell);
+         placeBlock(world, x + 11, y + 8, z + 12, 11,Direction.EAST, cell);
          world.notifyBlockChange(x + 3, y + 1, z + 3, Blocks.air);
          world.notifyBlockChange(x + 3, y + 2, z + 3, Blocks.air);
          world.notifyBlockChange(x + 3, y + 3, z + 3, Blocks.air);

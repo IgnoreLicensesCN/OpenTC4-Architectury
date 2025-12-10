@@ -6,8 +6,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.Player;
-import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -38,8 +38,8 @@ public class EventHandlerNetwork {
 
    @SubscribeEvent
    public void clientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-      if (Thaumcraft.proxy.getClientWorld() != null && Minecraft.getMinecraft().thePlayer != null) {
-         GuiResearchBrowser.completedResearch.put(Minecraft.getMinecraft().thePlayer.getCommandSenderName(), new ArrayList());
+      if (Thaumcraft.getClientWorld() != null && Minecraft.getMinecraft().thePlayer != null) {
+         GuiResearchBrowser.completedResearch.put(Minecraft.getMinecraft().thePlayer.getName().getString(), new ArrayList());
          Thaumcraft.log.info("Resetting research to defaults.");
       }
 
@@ -47,7 +47,7 @@ public class EventHandlerNetwork {
 
    @SubscribeEvent
    public void clientLogsOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-      if (Thaumcraft.proxy.getClientWorld() != null) {
+      if (Thaumcraft.getClientWorld() != null) {
          Config.allowCheatSheet = Config.CallowCheatSheet;
          Config.wardedStone = Config.CwardedStone;
          Config.allowMirrors = Config.CallowMirrors;

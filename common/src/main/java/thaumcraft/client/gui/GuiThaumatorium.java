@@ -2,16 +2,17 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerThaumatorium;
 import thaumcraft.common.tiles.TileThaumatorium;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class GuiThaumatorium extends GuiContainer {
@@ -19,7 +20,7 @@ public class GuiThaumatorium extends GuiContainer {
    private ContainerThaumatorium container = null;
    private int index = 0;
    private int lastSize = 0;
-   private EntityPlayer player = null;
+   private Player player = null;
    int startAspect = 0;
 
    public GuiThaumatorium(InventoryPlayer par1InventoryPlayer, TileThaumatorium par2TileEntityFurnace) {
@@ -263,10 +264,10 @@ public class GuiThaumatorium extends GuiContainer {
    }
 
    private void playButtonSelect() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhon", 0.3F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhon", 0.3F, 1.0F, false);
    }
 
    private void playButtonClick() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
    }
 }

@@ -1,9 +1,13 @@
 package thaumcraft.common.lib.utils;
 
+import net.minecraft.util.RandomSource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
+//not 0xffffff hex,it's for research
 public class HexUtils {
    static final int[][] NEIGHBOURS = new int[][]{{1, 0}, {1, -1}, {0, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
@@ -33,7 +37,7 @@ public class HexUtils {
       return new CubicHex(rx, ry, rz);
    }
 
-   public static ArrayList getRing(int radius) {
+   public static List<Hex> getRing(int radius) {
       Hex h = new Hex(0, 0);
 
       for(int k = 0; k < radius; ++k) {
@@ -52,9 +56,9 @@ public class HexUtils {
       return ring;
    }
 
-   public static ArrayList distributeRingRandomly(int radius, int entries, Random random) {
-      ArrayList<Hex> ring = getRing(radius);
-      ArrayList<Hex> results = new ArrayList<>();
+   public static List<Hex> distributeRingRandomly(int radius, int entries, RandomSource random) {
+      List<Hex> ring = getRing(radius);
+      List<Hex> results = new ArrayList<>();
       float spacing = (float)ring.size() / (float)entries;
       random.nextInt(ring.size());
       float pos = 0.0F;
@@ -67,7 +71,7 @@ public class HexUtils {
       return results;
    }
 
-   public static HashMap generateHexes(int radius) {
+   public static HashMap<String, Hex> generateHexes(int radius) {
       HashMap<String, Hex> results = new HashMap<>();
       Hex h = new Hex(0, 0);
       results.put(h.toString(), h);

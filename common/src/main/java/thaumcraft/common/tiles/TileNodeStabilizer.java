@@ -23,9 +23,9 @@ public class TileNodeStabilizer extends TileEntity {
 
    public void updateEntity() {
       super.updateEntity();
-      if (this.worldObj.isRemote && this.yCoord < this.worldObj.provider.getHeight() - 1) {
-         int md = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
-         if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) == ConfigBlocks.blockAiry && (md == 0 || md == 5) && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.yCoord < this.level().provider.getHeight() - 1) {
+         int md = this.level().getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
+         if (this.level().getBlock(this.xCoord, this.yCoord + 1, this.zCoord) == ConfigBlocks.blockAiry && (md == 0 || md == 5) && !this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
             if (this.count < 37) {
                ++this.count;
             }

@@ -1,11 +1,11 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import thaumcraft.common.items.ItemBathSalts;
+import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.items.misc.ItemBathSalts;
 import thaumcraft.common.tiles.TileSpa;
 
 public class ContainerSpa extends Container {
@@ -28,7 +28,7 @@ public class ContainerSpa extends Container {
 
    }
 
-   public boolean enchantItem(EntityPlayer p, int button) {
+   public boolean enchantItem(Player p, int button) {
       if (button == 1) {
          this.spa.toggleMix();
       }
@@ -36,11 +36,11 @@ public class ContainerSpa extends Container {
       return false;
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.spa.isUseableByPlayer(par1EntityPlayer);
+   public boolean canInteractWith(Player par1Player) {
+      return this.spa.isUseableByPlayer(par1Player);
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       ItemStack stack = null;
       Slot slotObject = (Slot)this.inventorySlots.get(slot);
       if (slotObject != null && slotObject.getHasStack()) {

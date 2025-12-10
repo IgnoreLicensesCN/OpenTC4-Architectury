@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockArcaneDoor;
 import thaumcraft.common.config.ConfigBlocks;
@@ -90,7 +90,7 @@ public class ItemKey extends Item {
                   ItemStack st = new ItemStack(ConfigItems.itemKey, 1, itemstack.getItemDamage());
                   st.setTagInfo("location", new NBTTagString(loc));
                   st.setTagInfo("type", new NBTTagByte(type));
-                  if (!player.inventory.addItemStackToInventory(st) && !world.isRemote) {
+                  if (!player.inventory.addItemStackToInventory(st) && Platform.getEnvironment() != Env.CLIENT) {
                      world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, st));
                   }
 
@@ -98,7 +98,7 @@ public class ItemKey extends Item {
                      --itemstack.stackSize;
                   }
 
-                  if (!world.isRemote) {
+                  if (Platform.getEnvironment() != Env.CLIENT) {
                      switch (type) {
                         case 0:
                            player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key1")));
@@ -124,7 +124,7 @@ public class ItemKey extends Item {
                }
 
                world.markBlockForUpdate(x, y + mod, z);
-               if (!world.isRemote) {
+               if (Platform.getEnvironment() != Env.CLIENT) {
                   switch (type) {
                      case 0:
                         player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key3") + (itemstack.getItemDamage() == 0 ? "" : StatCollector.translateToLocal("tc.key4"))));
@@ -141,7 +141,7 @@ public class ItemKey extends Item {
                }
 
                player.swingItem();
-            } else if (!world.isRemote) {
+            } else if (Platform.getEnvironment() != Env.CLIENT) {
                if (!loc.equals(itemstack.stackTagCompound.getString("location"))) {
                   player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key7")));
                } else {
@@ -150,7 +150,7 @@ public class ItemKey extends Item {
             }
          }
 
-         return !world.isRemote;
+         return Platform.getEnvironment() != Env.CLIENT;
       } else {
          return true;
       }

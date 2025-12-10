@@ -8,18 +8,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
@@ -69,7 +69,7 @@ public class BlockCosmeticOpaque extends BlockContainer {
       return ConfigBlocks.blockCosmeticOpaqueRI;
    }
 
-   public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
       int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
       if (md == 2) {
          float f = (float)target.hitVec.xCoord - (float)target.blockX;
@@ -210,7 +210,7 @@ public class BlockCosmeticOpaque extends BlockContainer {
 
    public void onBlockPlacedBy(World w, int x, int y, int z, EntityLivingBase p, ItemStack is) {
       TileEntity tile = w.getTileEntity(x, y, z);
-      if (tile instanceof TileOwned && p instanceof EntityPlayer) {
+      if (tile instanceof TileOwned && p instanceof Player) {
          ((TileOwned)tile).owner = p.getCommandSenderName();
          tile.markDirty();
       }

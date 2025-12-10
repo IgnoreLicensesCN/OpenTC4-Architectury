@@ -7,18 +7,18 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -130,7 +130,7 @@ public class BlockTaintFibres extends Block {
    }
 
    public void updateTick(World world, int x, int y, int z, Random random) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int md = world.getBlockMetadata(x, y, z);
          taintBiomeSpread(world, x, y, z, random, this);
          if (md == 0 && isOnlyAdjacentToTaint(world, x, y, z) || world.getBiomeGenForCoords(x, z).biomeID != Config.biomeTaintID) {
@@ -176,10 +176,10 @@ public class BlockTaintFibres extends Block {
    public static boolean spreadFibres(World world, int x, int y, int z) {
       Block bi = world.getBlock(x, y, z);
       if (BlockUtils.isAdjacentToSolidBlock(world, x, y, z) && !isOnlyAdjacentToTaint(world, x, y, z) && !world.getBlock(x, y, z).getMaterial().isLiquid() && (world.isAirBlock(x, y, z) || bi.isReplaceable(world, x, y, z) || bi instanceof BlockFlower || bi.isLeaves(world, x, y, z))) {
-         if (world.rand.nextInt(10) == 0 && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, ForgeDirection.UP)) {
-            if (world.rand.nextInt(10) < 9) {
+         if (world.getRandom().nextInt(10) == 0 && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, ForgeDirection.UP)) {
+            if (world.getRandom().nextInt(10) < 9) {
                world.setBlock(x, y, z, ConfigBlocks.blockTaintFibres, 1, 3);
-            } else if (world.rand.nextInt(12) < 10) {
+            } else if (world.getRandom().nextInt(12) < 10) {
                world.setBlock(x, y, z, ConfigBlocks.blockTaintFibres, 2, 3);
             } else {
                world.setBlock(x, y, z, ConfigBlocks.blockTaintFibres, 3, 3);
@@ -245,10 +245,10 @@ public class BlockTaintFibres extends Block {
 
    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
       world.getBlockMetadata(i, j, k);
-      if (!world.isRemote && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
-         if (entity instanceof EntityPlayer && world.rand.nextInt(1000) == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
+         if (entity instanceof Player && world.getRandom().nextInt(1000) == 0) {
             ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 80, 0, false));
-         } else if (!(entity instanceof EntityPlayer) && world.rand.nextInt(500) == 0) {
+         } else if (!(entity instanceof Player) && world.getRandom().nextInt(500) == 0) {
             ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 160, 0, false));
          }
       }
@@ -258,8 +258,8 @@ public class BlockTaintFibres extends Block {
    @SideOnly(Side.CLIENT)
    public boolean onBlockEventReceived(World world, int x, int y, int z, int id, int cd) {
       if (id == 1) {
-         if (world.isRemote) {
-            world.playSound(x, y, z, "thaumcraft:roots", 0.1F, 0.9F + world.rand.nextFloat() * 0.2F, false);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            world.playSound(x, y, z, "thaumcraft:roots", 0.1F, 0.9F + world.getRandom().nextFloat() * 0.2F, false);
          }
 
          return true;
@@ -292,7 +292,7 @@ public class BlockTaintFibres extends Block {
       return true;
    }
 
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       return null;
    }
 
@@ -342,7 +342,7 @@ public class BlockTaintFibres extends Block {
       return false;
    }
 
-   public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
       boolean biome = par1World.getBiomeGenForCoords(par2, par4).biomeID == Config.biomeTaintID;
       return biome && super.canPlaceBlockAt(par1World, par2, par3, par4);
    }

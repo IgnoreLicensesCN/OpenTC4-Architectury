@@ -3,13 +3,13 @@ package thaumcraft.common.items.armor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.common.Thaumcraft;
@@ -45,9 +45,9 @@ public class ItemBootsTraveller extends ItemArmor implements IRepairable, IRunic
       return 0;
    }
 
-   public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+   public void onArmorTick(World world, Player player, ItemStack itemStack) {
       if (!player.capabilities.isFlying && player.moveForward > 0.0F) {
-         if (player.worldObj.isRemote && !player.isSneaking()) {
+         if ((Platform.getEnvironment() == Env.CLIENT) && !player.isSneaking()) {
             if (!Thaumcraft.instance.entityEventHandler.prevStep.containsKey(player.getEntityId())) {
                Thaumcraft.instance.entityEventHandler.prevStep.put(player.getEntityId(), player.stepHeight);
             }

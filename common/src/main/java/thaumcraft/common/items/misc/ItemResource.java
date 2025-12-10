@@ -1,15 +1,15 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +17,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -113,22 +113,22 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 
    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
       super.onUpdate(stack, world, entity, par4, par5);
-      if (!entity.worldObj.isRemote && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12) && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead() && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.rand.nextInt(4321) <= stack.stackSize) {
+      if (Platform.getEnvironment() != Env.CLIENT && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12) && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead() && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.getRandom().nextInt(4321) <= stack.stackSize) {
          ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 120, 0, false));
          if (entity instanceof Player) {
             String s = StatCollector.translateToLocal("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
             ((Player)entity).addChatMessage(new ChatComponentTranslation(s));
             InventoryUtils.consumeInventoryItem((Player)entity, stack.getItem(), stack.getItemDamage());
          }
-      } else if (!entity.worldObj.isRemote && stack.getItemDamage() == 15) {
-         int r = world.rand.nextInt(20000);
+      } else if (Platform.getEnvironment() != Env.CLIENT && stack.getItemDamage() == 15) {
+         int r = world.getRandom().nextInt(20000);
          if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("blurb")) {
             stack.stackTagCompound.removeTag("blurb");
          }
 
          if (r < 20) {
             Aspect aspect = null;
-            switch (world.rand.nextInt(6)) {
+            switch (world.getRandom().nextInt(6)) {
                case 0:
                   aspect = Aspect.AIR;
                   break;
@@ -232,7 +232,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
          }
 
          world.playSoundAtEntity(player, "random.bow", 0.3F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             world.spawnEntityInWorld(new EntityAlumentum(world, player));
          }
       } else if (itemstack.getItemDamage() == 9) {
@@ -240,9 +240,9 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
             --itemstack.stackSize;
          }
 
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             for(Aspect a : Aspect.getPrimalAspects()) {
-               short q = (short)(world.rand.nextInt(2) + 1);
+               short q = (short)(world.getRandom().nextInt(2) + 1);
                Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), a, q);
                ResearchManager.scheduleSave(player);
                PacketHandler.INSTANCE.sendTo(new PacketAspectPool(a.getTag(), q, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), a)), (ServerPlayer)player);

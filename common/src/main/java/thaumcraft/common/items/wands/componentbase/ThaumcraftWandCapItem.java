@@ -1,19 +1,12 @@
-package thaumcraft.common.items.wands;
+package thaumcraft.common.items.wands.componentbase;
 
-import com.linearity.opentc4.datautils.SimplePair;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.WandCapPropertiesOwner;
 import thaumcraft.api.wands.WandComponentNameOwner;
-import thaumcraft.api.wands.WandSpellEventListenable;
-import thaumcraft.api.wands.WandSpellEventType;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 //i say why not set wand cap properties here?you just put resourceKey into wand then find item.

@@ -7,26 +7,26 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.api.nodes.INode;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
 import thaumcraft.client.fx.particles.FXSparkle;
 import thaumcraft.client.lib.UtilsFX;
@@ -35,7 +35,7 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.projectile.EntityShockOrb;
-import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.*;
 
@@ -63,7 +63,7 @@ public class BlockAiry extends BlockContainer {
    }
 
    @SideOnly(Side.CLIENT)
-   public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
       int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
       if ((md == 0 || md == 5) && worldObj.rand.nextBoolean()) {
          UtilsFX.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
@@ -148,7 +148,7 @@ public class BlockAiry extends BlockContainer {
 
    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
       int metadata = world.getBlockMetadata(x, y, z);
-      if (metadata == 4 && par7Entity instanceof EntityLivingBase && !(par7Entity instanceof EntityPlayer)) {
+      if (metadata == 4 && par7Entity instanceof EntityLivingBase && !(par7Entity instanceof Player)) {
          int a = 1;
          if (world.getBlock(x, y - a, z) != ConfigBlocks.blockCosmeticSolid) {
             ++a;
@@ -171,7 +171,7 @@ public class BlockAiry extends BlockContainer {
          for(int a = 1; a < 3; ++a) {
             TileEntity te = world.getTileEntity(x, y - a, z);
             if (te instanceof TileWardingStone) {
-               return te.getWorldObj().isBlockIndirectlyGettingPowered(x, y - a, z);
+               return te.getLevel().isBlockIndirectlyGettingPowered(x, y - a, z);
             }
          }
       }
@@ -184,7 +184,7 @@ public class BlockAiry extends BlockContainer {
       return metadata != 4 && metadata != 12 ? null : super.getCollisionBoundingBoxFromPool(world, x, y, z);
    }
 
-   public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getSelectedBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       int md = par1World.getBlockMetadata(par2, par3, par4);
       return md != 0 && md != 2 && md != 3 && md != 4 && md != 5 && md != 10 && md != 11 && md != 12 ? super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4) : AxisAlignedBB.getBoundingBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
    }
@@ -218,8 +218,8 @@ public class BlockAiry extends BlockContainer {
       return md == 1 ? ConfigItems.itemResource : Item.getItemById(0);
    }
 
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
-      if (par5 == 0 && !par1World.isRemote) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
+      if (par5 == 0 && !(Platform.getEnvironment() == Env.CLIENT)) {
          TileEntity te = par1World.getTileEntity(par2, par3, par4);
          if (te instanceof INode && ((INode) te).getAspects().size() > 0) {
             for(Aspect aspect : ((INode)te).getAspects().getAspects()) {
@@ -235,7 +235,7 @@ public class BlockAiry extends BlockContainer {
          }
       }
 
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
    }
 
    @SideOnly(Side.CLIENT)
@@ -245,7 +245,8 @@ public class BlockAiry extends BlockContainer {
          FXSparkle ef2 = new FXSparkle(w, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (float)i + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)j + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)k + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, 1.0F, 6, 3);
          ef2.setGravity(0.05F);
          ef2.noClip = true;
-         ParticleEngine.instance.addEffect(w, ef2);
+         Minecraft.getInstance().particleEngine.add(ef2);
+
       } else if (md == 2 && r.nextInt(500) == 0) {
          int x1 = i + r.nextInt(3) - r.nextInt(3);
          int y1 = j + r.nextInt(3) - r.nextInt(3);
@@ -264,7 +265,8 @@ public class BlockAiry extends BlockContainer {
             ef.setRBGColorF(0.3F - w.rand.nextFloat() * 0.1F, 0.0F, 0.5F + w.rand.nextFloat() * 0.2F);
          }
 
-         ParticleEngine.instance.addEffect(w, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
          if (r.nextInt(50) == 0) {
             w.playSound(i, j, k, "thaumcraft:jacobs", 0.5F, 1.0F + (r.nextFloat() - r.nextFloat()) * 0.2F, false);
          }
@@ -294,8 +296,8 @@ public class BlockAiry extends BlockContainer {
    }
 
    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-      if (stack.getItemDamage() == 0 && entity instanceof EntityPlayer) {
-         ThaumcraftWorldGenerator.createRandomNodeAt(world, x, y, z, world.rand, false, false, false);
+      if (stack.getItemDamage() == 0 && entity instanceof Player) {
+         ThaumcraftWorldGenerator.createRandomNodeAt(world, x, y, z, world.getRandom(), false, false, false);
       }
 
       super.onBlockPlacedBy(world, x, y, z, entity, stack);
@@ -324,14 +326,14 @@ public class BlockAiry extends BlockContainer {
    }
 
    public static void explodify(World world, int x, int y, int z) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          world.setBlockToAir(x, y, z);
          world.createExplosion(null, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 3.0F, false);
 
          for(int a = 0; a < 50; ++a) {
-            int xx = x + world.rand.nextInt(8) - world.rand.nextInt(8);
-            int yy = y + world.rand.nextInt(8) - world.rand.nextInt(8);
-            int zz = z + world.rand.nextInt(8) - world.rand.nextInt(8);
+            int xx = x + world.getRandom().nextInt(8) - world.getRandom().nextInt(8);
+            int yy = y + world.getRandom().nextInt(8) - world.getRandom().nextInt(8);
+            int zz = z + world.getRandom().nextInt(8) - world.getRandom().nextInt(8);
             if (world.isAirBlock(xx, yy, zz)) {
                if (yy < y) {
                   world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGoo, 8, 3);
@@ -347,21 +349,21 @@ public class BlockAiry extends BlockContainer {
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
       int md = world.getBlockMetadata(x, y, z);
       if (md == 10 && entity instanceof EntityLivingBase && EntityShockOrb.canEarthShockHurt(entity)) {
-         entity.attackEntityFrom(DamageSource.magic, (float)(1 + world.rand.nextInt(2)));
+         entity.attackEntityFrom(DamageSource.magic, (float)(1 + world.getRandom().nextInt(2)));
          entity.motionX *= 0.8;
          entity.motionZ *= 0.8;
-         if (!world.isRemote && world.rand.nextInt(100) == 0) {
+         if (Platform.getEnvironment() != Env.CLIENT && world.getRandom().nextInt(100) == 0) {
             world.setBlockToAir(x, y, z);
          }
       } else if (md == 11 && !(entity instanceof IEldritchMob)) {
-         if (world.rand.nextInt(100) == 0) {
+         if (world.getRandom().nextInt(100) == 0) {
             entity.attackEntityFrom(DamageSource.wither, 1.0F);
          }
 
          entity.motionX *= 0.66;
          entity.motionZ *= 0.66;
-         if (entity instanceof EntityPlayer) {
-            ((EntityPlayer)entity).addExhaustion(0.05F);
+         if (entity instanceof Player) {
+            ((Player)entity).addExhaustion(0.05F);
          }
 
          if (entity instanceof EntityLivingBase) {
@@ -375,7 +377,7 @@ public class BlockAiry extends BlockContainer {
    public void updateTick(World world, int x, int y, int z, Random rand) {
       super.updateTick(world, x, y, z, rand);
       int md = world.getBlockMetadata(x, y, z);
-      if ((md == 10 || md == 11) && !world.isRemote) {
+      if ((md == 10 || md == 11) && Platform.getEnvironment() != Env.CLIENT) {
          world.setBlockToAir(x, y, z);
       }
 

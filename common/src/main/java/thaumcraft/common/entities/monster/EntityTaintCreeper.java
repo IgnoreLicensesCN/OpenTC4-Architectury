@@ -1,18 +1,18 @@
 package thaumcraft.common.entities.monster;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -31,16 +31,16 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
    private int fuseTime = 30;
    private int explosionRadius = 3;
 
-   public EntityTaintCreeper(World par1World) {
+   public EntityTaintCreeper(Level par1World) {
       super(par1World);
       this.tasks.addTask(1, new EntityAISwimming(this));
       this.tasks.addTask(2, new AICreeperSwell(this));
       this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0F, 1.2));
       this.tasks.addTask(4, new AIAttackOnCollide(this, 1.0F, false));
       this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-      this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(6, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(6, new EntityAILookIdle(this));
-      this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
       this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
    }
 
@@ -107,10 +107,10 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
    }
 
    protected void dropFewItems(boolean flag, int i) {
-      if (this.worldObj.rand.nextBoolean()) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+      if (this.level().rand.nextBoolean()) {
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
       } else {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 12), this.height / 2.0F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
       }
 
    }
@@ -120,7 +120,7 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
          this.lastActiveTime = this.timeSinceIgnited;
          int var1 = this.getCreeperState();
          if (var1 > 0 && this.timeSinceIgnited == 0) {
-            this.worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+            this.level().playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
          }
 
          this.timeSinceIgnited += var1;
@@ -130,9 +130,9 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
 
          if (this.timeSinceIgnited >= 30) {
             this.timeSinceIgnited = 30;
-            if (!this.worldObj.isRemote) {
-               this.worldObj.createExplosion(this, this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 1.5F, false);
-               List ents = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(6.0F, 6.0F, 6.0F));
+            if (Platform.getEnvironment() != Env.CLIENT) {
+               this.level().createExplosion(this, this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 1.5F, false);
+               List ents = this.level().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(6.0F, 6.0F, 6.0F));
                if (!ents.isEmpty()) {
                   for(Object ent : ents) {
                      EntityLivingBase el = (EntityLivingBase)ent;
@@ -149,10 +149,10 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
                for(int a = 0; a < 10; ++a) {
                   int xx = x + (int)((this.rand.nextFloat() - this.rand.nextFloat()) * 5.0F);
                   int zz = z + (int)((this.rand.nextFloat() - this.rand.nextFloat()) * 5.0F);
-                  if (this.worldObj.rand.nextBoolean() && this.worldObj.getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
-                     Utils.setBiomeAt(this.worldObj, xx, zz, ThaumcraftWorldGenerator.biomeTaint);
-                     if (this.worldObj.isBlockNormalCubeDefault(xx, y - 1, zz, false) && this.worldObj.getBlock(xx, y, zz).isReplaceable(this.worldObj, xx, y, zz)) {
-                        this.worldObj.setBlock(xx, y, zz, ConfigBlocks.blockTaintFibres, 0, 3);
+                  if (this.level().rand.nextBoolean() && this.level().getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
+                     Utils.setBiomeAt(this.level(), xx, zz, ThaumcraftWorldGenerator.biomeTaint);
+                     if (this.level().isBlockNormalCubeDefault(xx, y - 1, zz, false) && this.level().getBlock(xx, y, zz).isReplaceable(this.level(), xx, y, zz)) {
+                        this.level().setBlock(xx, y, zz, ConfigBlocks.blockTaintFibres, 0, 3);
                      }
                   }
                }
@@ -171,7 +171,7 @@ public class EntityTaintCreeper extends EntityMob implements ITaintedMob {
 
    public void onLivingUpdate() {
       super.onLivingUpdate();
-      if (this.worldObj.isRemote && this.ticksExisted < 5) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.ticksExisted < 5) {
          for(int a = 0; a < Thaumcraft.proxy.particleCount(10); ++a) {
             Thaumcraft.proxy.splooshFX(this);
          }

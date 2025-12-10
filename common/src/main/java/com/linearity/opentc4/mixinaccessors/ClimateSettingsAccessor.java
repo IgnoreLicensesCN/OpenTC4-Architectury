@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixinaccessors;
 
 public interface ClimateSettingsAccessor {
     boolean opentc4$hasPrecipitation();

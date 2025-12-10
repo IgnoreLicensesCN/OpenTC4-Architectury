@@ -2,16 +2,15 @@ package thaumcraft.common.lib.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.Player;
-import net.minecraft.entity.player.ServerPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EntityMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import com.linearity.opentc4.utils.StatCollector;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -34,20 +33,21 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.HashMap;
 
-import static simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
+//TODO
 public class EventHandlerRunic {
-   public HashMap<Integer,Integer> runicCharge = new HashMap<>();
-   private HashMap<Integer,Long> nextCycle = new HashMap<>();
-   private HashMap<Integer,Integer> lastCharge = new HashMap<>();
-   public HashMap<Integer,Integer[]> runicInfo = new HashMap<>();
+   public HashMap<String,Integer> runicCharge = new HashMap<>();
+   private HashMap<String,Long> nextCycle = new HashMap<>();
+   private HashMap<String,Integer> lastCharge = new HashMap<>();
+   public HashMap<String,Integer[]> runicInfo = new HashMap<>();
    private HashMap<String,Long> upgradeCooldown = new HashMap<>();
    public boolean isDirty = true;
    private int rechargeDelay = 0;
 
    @SubscribeEvent
    public void livingTick(LivingEvent.LivingUpdateEvent event) {
-      if (!event.entity.worldObj.isRemote && event.entity instanceof Player) {
+      if (Platform.getEnvironment() != Env.CLIENT && event.entity instanceof Player) {
          Player player = (Player)event.entity;
          if (this.isDirty || player.ticksExisted % 40 == 0) {
             final int[] max = {0};
@@ -69,16 +69,16 @@ public class EventHandlerRunic {
                   IRunicArmor armor = (IRunicArmor)stack.getItem();
                   int amount = getFinalCharge(stack);
                   if (item instanceof ItemRingRunic) {
-                     switch (stack.getItemDamage()) {
+                     switch (stack.getDamageValue()) {
                         case 2:
                            ++charged[0];
                            break;
                         case 3:
                            ++healing[0];
                      }
-                  } else if (item instanceof ItemAmuletRunic && stack.getItemDamage() == 1) {
+                  } else if (item instanceof ItemAmuletRunic && stack.getDamageValue() == 1) {
                      ++emergency[0];
-                  } else if (item instanceof ItemGirdleRunic && stack.getItemDamage() == 1) {
+                  } else if (item instanceof ItemGirdleRunic && stack.getDamageValue() == 1) {
                      ++kinetic[0];
                   }
 
@@ -143,7 +143,7 @@ public class EventHandlerRunic {
       if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof Player) {
          Player leecher = (Player)event.source.getSourceOfDamage();
          ItemStack helm = leecher.inventory.armorInventory[3];
-         if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 2 && leecher.worldObj.rand.nextFloat() < event.ammount / 12.0F) {
+         if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 2 && leecher.getRandom().nextFloat() < event.ammount / 12.0F) {
             leecher.heal(1.0F);
          }
       }
@@ -151,12 +151,12 @@ public class EventHandlerRunic {
       if (event.entity instanceof Player) {
          long time = System.currentTimeMillis();
          Player player = (Player)event.entity;
-         if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof EntityLivingBase) {
-            EntityLivingBase attacker = (EntityLivingBase)event.source.getSourceOfDamage();
+         if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
+            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
             ItemStack helm = player.inventory.armorInventory[3];
-            if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 1 && player.worldObj.rand.nextFloat() < event.ammount / 10.0F) {
+            if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 1 && player.getRandom().nextFloat() < event.ammount / 10.0F) {
                try {
-                  attacker.addPotionEffect(new PotionEffect(Potion.wither.getId(), 80));
+                  attacker.addEffect(new MobEffectInstance(Potion.wither.getId(), 80));
                } catch (Exception ignored) {
                }
             }
@@ -180,7 +180,7 @@ public class EventHandlerRunic {
                target = -3;
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.worldObj.provider.dimensionId, event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
             int charge = this.runicCharge.get(player.getEntityId());
             if ((float)charge > event.ammount) {
                charge = (int)((float)charge - event.ammount);
@@ -193,7 +193,7 @@ public class EventHandlerRunic {
             String key = player.getEntityId() + ":" + 2;
             if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[2] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
                this.upgradeCooldown.put(key, time + 20000L);
-               player.worldObj.newExplosion(player, player.posX, player.posY + (double)(player.height / 2.0F), player.posZ, 1.5F + (float)((Integer[])this.runicInfo.get(player.getEntityId()))[2] * 0.5F, false, false);
+               player.level().newExplosion(player, player.posX, player.posY + (double)(player.height / 2.0F), player.posZ, 1.5F + (float)((Integer[])this.runicInfo.get(player.getEntityId()))[2] * 0.5F, false, false);
             }
 
             key = player.getEntityId() + ":" + 3;
@@ -201,12 +201,12 @@ public class EventHandlerRunic {
                this.upgradeCooldown.put(key, time + 20000L);
                synchronized(player) {
                   try {
-                     player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 240, ((Integer[])this.runicInfo.get(player.getEntityId()))[3]));
+                     player.addEffect(new MobEffectInstance(Potion.regeneration.id, 240, ((Integer[])this.runicInfo.get(player.getEntityId()))[3]));
                   } catch (Exception ignored) {
                   }
                }
 
-               player.worldObj.playSoundAtEntity(player, "thaumcraft:runicShieldEffect", 1.0F, 1.0F);
+               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_effect", 1.0F, 1.0F);
             }
 
             key = player.getEntityId() + ":" + 4;
@@ -215,7 +215,7 @@ public class EventHandlerRunic {
                int t = 8 * ((Integer[])this.runicInfo.get(player.getEntityId()))[4];
                charge = Math.min(((Integer[])this.runicInfo.get(player.getEntityId()))[0], t);
                this.isDirty = true;
-               player.worldObj.playSoundAtEntity(player, "thaumcraft:runicShieldCharge", 1.0F, 1.0F);
+               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_charge", 1.0F, 1.0F);
             }
 
             if (charge <= 0) {
@@ -225,9 +225,9 @@ public class EventHandlerRunic {
             this.runicCharge.put(player.getEntityId(), charge);
             PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
          }
-      } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
+      } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
          EntityMob mob = (EntityMob)event.entity;
-         int t = (int)((EntityMob)event.entity).getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+         int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
          if ((t == 5 || event.entity instanceof IEldritchMob) && mob.getAbsorptionAmount() > 0.0F) {
             int target = -1;
             if (event.source.getEntity() != null) {
@@ -242,19 +242,19 @@ public class EventHandlerRunic {
                target = -3;
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.worldObj.provider.dimensionId, event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
-            event.entity.worldObj.playSoundEffect(event.entity.posX, event.entity.posY, event.entity.posZ, "thaumcraft:runicShieldEffect", 0.66F, 1.1F + event.entity.worldObj.rand.nextFloat() * 0.1F);
-         } else if (t >= 0 && ChampionModifier.mods[t].type == 2 && event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof EntityLivingBase) {
-            EntityLivingBase attacker = (EntityLivingBase)event.source.getSourceOfDamage();
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
+            event.entity.level().playSoundEffect(event.entity.posX, event.entity.posY, event.entity.posZ, "thaumcraft:runic_shield_effect", 0.66F, 1.1F + event.entity.getRandom().nextFloat() * 0.1F);
+         } else if (t >= 0 && ChampionModifier.mods[t].type == 2 && event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
+            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
             event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, attacker, event.source, event.ammount);
          }
       }
 
-      if (event.ammount > 0.0F && event.source.getSourceOfDamage() != null && event.entity instanceof EntityLivingBase && event.source.getSourceOfDamage() instanceof EntityMob && ((EntityMob)event.source.getSourceOfDamage()).getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
+      if (event.ammount > 0.0F && event.source.getSourceOfDamage() != null && event.entity instanceof LivingEntity && event.source.getSourceOfDamage() instanceof EntityMob && ((EntityMob)event.source.getSourceOfDamage()).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
          EntityMob mob = (EntityMob)event.source.getSourceOfDamage();
-         int t = (int)mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+         int t = (int)mob.getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
          if (ChampionModifier.mods[t].type == 1) {
-            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (EntityLivingBase)event.entity, event.source, event.ammount);
+            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (LivingEntity)event.entity, event.source, event.ammount);
          }
       }
 

@@ -1,8 +1,9 @@
 package truetyper;
 
-import java.awt.Font;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+
+import java.awt.*;
 
 public class FontLoader {
    public static TrueTypeFont loadSystemFont(String name, float defSize, boolean antialias) {

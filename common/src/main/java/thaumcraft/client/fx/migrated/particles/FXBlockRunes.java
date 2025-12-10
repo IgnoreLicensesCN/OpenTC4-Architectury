@@ -1,12 +1,12 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 
 public class FXBlockRunes extends ThaumcraftParticle {

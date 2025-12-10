@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -97,12 +97,12 @@ public class TileAlembicRenderer extends TileEntitySpecialRenderer {
       }
 
       GL11.glPopMatrix();
-      if (tile.getWorldObj() != null) {
+      if (tile.getLevel() != null) {
          UtilsFX.bindTexture("textures/models/Bore.png");
 
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (tile.canOutputTo(dir)) {
-               TileEntity te = ThaumcraftApiHelper.getConnectableTile(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, dir);
+               TileEntity te = ThaumcraftApiHelper.getConnectableTile(tile.getLevel(), tile.xCoord, tile.yCoord, tile.zCoord, dir);
                if (te instanceof IEssentiaTransport && !(te instanceof TileTube)) {
                   GL11.glPushMatrix();
                   GL11.glTranslatef((float)par2 + 0.5F, (float)par4, (float)par6 + 0.5F);

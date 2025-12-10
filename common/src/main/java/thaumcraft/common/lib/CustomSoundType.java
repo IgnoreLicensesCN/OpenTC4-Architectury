@@ -1,6 +1,6 @@
 package thaumcraft.common.lib;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 public class CustomSoundType extends Block.SoundType {
    public CustomSoundType(String par1Str, float par2, float par3) {

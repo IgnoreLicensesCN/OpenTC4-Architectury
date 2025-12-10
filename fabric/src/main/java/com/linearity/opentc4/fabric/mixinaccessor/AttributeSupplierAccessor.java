@@ -1,4 +1,4 @@
-package com.linearity.opentc4.fabric.mixin;
+package com.linearity.opentc4.fabric.mixinaccessor;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;

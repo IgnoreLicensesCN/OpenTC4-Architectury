@@ -2,9 +2,9 @@ package thaumcraft.client.renderers.models.entities;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 
 public class ModelEldritchGolem extends ModelBase {

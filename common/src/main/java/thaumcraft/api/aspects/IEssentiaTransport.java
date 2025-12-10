@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects;
 
-import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraft.core.Direction;
 
 /**
  * @author Azanor
@@ -14,21 +14,21 @@ public interface IEssentiaTransport {
 	 * @param face
 	 * @return
 	 */
-    boolean isConnectable(ForgeDirection face);
+    boolean isConnectable(Direction face);
 	
 	/**
 	 * Is this side used to input essentia?
 	 * @param face
 	 * @return
 	 */
-	boolean canInputFrom(ForgeDirection face);
+	boolean canInputFrom(Direction face);
 	
 	/**
 	 * Is this side used to output essentia?
 	 * @param face
 	 * @return
 	 */
-	boolean canOutputTo(ForgeDirection face);
+	boolean canOutputTo(Direction face);
 			
 	/**
 	 * Sets the amount of suction this block will apply
@@ -42,7 +42,7 @@ public interface IEssentiaTransport {
 	 * @return
 	 * 		a return type of null indicates the suction is untyped and the first thing available will be drawn
 	 */
-    Aspect getSuctionType(ForgeDirection face);
+    Aspect getSuctionType(Direction face);
 	
 	/**
 	 * Returns the strength of suction this block is applying. 
@@ -50,33 +50,33 @@ public interface IEssentiaTransport {
 	 * 		the location from where the suction is being checked
 	 * @return
 	 */
-    int getSuctionAmount(ForgeDirection face);
+    int getSuctionAmount(Direction face);
 	
 	/**
 	 * remove the specified amount of essentia from this transport tile
 	 * @return how much was actually taken
 	 */
-    int takeEssentia(Aspect aspect, int amount, ForgeDirection face);
+    int takeEssentia(Aspect aspect, int amount, Direction face);
 	
 	/**
 	 * add the specified amount of essentia to this transport tile
 	 * @return how much was actually added
 	 */
-    int addEssentia(Aspect aspect, int amount, ForgeDirection face);
+    int addEssentia(Aspect aspect, int amount, Direction face);
 	
 	/**
 	 * What type of essentia this contains
 	 * @param face
 	 * @return
 	 */
-    Aspect getEssentiaType(ForgeDirection face);
+    Aspect getEssentiaType(Direction face);
 	
 	/**
 	 * How much essentia this block contains
 	 * @param face
 	 * @return
 	 */
-    int getEssentiaAmount(ForgeDirection face);
+    int getEssentiaAmount(Direction face);
 	
 	
 

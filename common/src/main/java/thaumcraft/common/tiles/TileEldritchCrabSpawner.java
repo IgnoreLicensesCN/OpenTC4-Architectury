@@ -24,24 +24,24 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
    public void updateEntity() {
       super.updateEntity();
       if (this.ticks == 0) {
-         this.ticks = this.worldObj.rand.nextInt(500);
+         this.ticks = this.level().rand.nextInt(500);
       }
 
       ++this.ticks;
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          --this.count;
          if (this.count < 0) {
-            this.count = 50 + this.worldObj.rand.nextInt(50);
+            this.count = 50 + this.level().rand.nextInt(50);
          } else {
             if (this.count == 15 && this.isActivated() && !this.maxEntitiesReached()) {
-               this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 0);
-               this.worldObj.playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.5F, 1.0F);
+               this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 0);
+               this.level().playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.5F, 1.0F);
             }
 
             if (this.count <= 0 && this.isActivated() && !this.maxEntitiesReached()) {
-               this.count = 150 + this.worldObj.rand.nextInt(100);
+               this.count = 150 + this.level().rand.nextInt(100);
                this.spawnCrab();
-               this.worldObj.playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:gore", 0.5F, 1.0F);
+               this.level().playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:gore", 0.5F, 1.0F);
             }
          }
       } else if (this.venting > 0) {
@@ -50,7 +50,7 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
          for(int a = 0; a < 3; ++a) {
             this.drawVent();
          }
-      } else if (this.worldObj.rand.nextInt(20) == 0) {
+      } else if (this.level().rand.nextInt(20) == 0) {
          this.drawVent();
       }
 
@@ -58,13 +58,13 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
 
    void drawVent() {
       ForgeDirection dir = ForgeDirection.getOrientation(this.facing);
-      float fx = 0.15F - this.worldObj.rand.nextFloat() * 0.3F;
-      float fz = 0.15F - this.worldObj.rand.nextFloat() * 0.3F;
-      float fy = 0.15F - this.worldObj.rand.nextFloat() * 0.3F;
-      float fx2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-      float fz2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-      float fy2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-      Thaumcraft.proxy.drawVentParticles(this.worldObj, (float)this.xCoord + 0.5F + fx + (float)dir.offsetX / 2.1F, (float)this.yCoord + 0.5F + fy + (float)dir.offsetY / 2.1F, (float)this.zCoord + 0.5F + fz + (float)dir.offsetZ / 2.1F, (float)dir.offsetX / 3.0F + fx2, (float)dir.offsetY / 3.0F + fy2, (float)dir.offsetZ / 3.0F + fz2, 10061994, 2.0F);
+      float fx = 0.15F - this.level().rand.nextFloat() * 0.3F;
+      float fz = 0.15F - this.level().rand.nextFloat() * 0.3F;
+      float fy = 0.15F - this.level().rand.nextFloat() * 0.3F;
+      float fx2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+      float fz2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+      float fy2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+      Thaumcraft.proxy.drawVentParticles(this.level(), (float)this.xCoord + 0.5F + fx + (float)dir.offsetX / 2.1F, (float)this.yCoord + 0.5F + fy + (float)dir.offsetY / 2.1F, (float)this.zCoord + 0.5F + fz + (float)dir.offsetZ / 2.1F, (float)dir.offsetX / 3.0F + fx2, (float)dir.offsetY / 3.0F + fy2, (float)dir.offsetZ / 3.0F + fz2, 10061994, 2.0F);
    }
 
    public boolean receiveClientEvent(int i, int j) {
@@ -77,17 +77,17 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
    }
 
    private boolean maxEntitiesReached() {
-      List ents = this.worldObj.getEntitiesWithinAABB(EntityEldritchCrab.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, (double)this.xCoord + (double)1.0F, (double)this.yCoord + (double)1.0F, (double)this.zCoord + (double)1.0F).expand(32.0F, 32.0F, 32.0F));
+      List ents = this.level().getEntitiesWithinAABB(EntityEldritchCrab.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, (double)this.xCoord + (double)1.0F, (double)this.yCoord + (double)1.0F, (double)this.zCoord + (double)1.0F).expand(32.0F, 32.0F, 32.0F));
       return ents.size() > 5;
    }
 
    public boolean isActivated() {
-      return this.worldObj.getClosestPlayer((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, 16.0F) != null;
+      return this.level().getClosestPlayer((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, 16.0F) != null;
    }
 
    private void spawnCrab() {
       ForgeDirection dir = ForgeDirection.getOrientation(this.facing);
-      EntityEldritchCrab crab = new EntityEldritchCrab(this.worldObj);
+      EntityEldritchCrab crab = new EntityEldritchCrab(this.level());
       double x = this.xCoord + dir.offsetX;
       double y = this.yCoord + dir.offsetY;
       double z = this.zCoord + dir.offsetZ;
@@ -97,7 +97,7 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
       crab.motionX = (float)dir.offsetX * 0.2F;
       crab.motionY = (float)dir.offsetY * 0.2F;
       crab.motionZ = (float)dir.offsetZ * 0.2F;
-      this.worldObj.spawnEntityInWorld(crab);
+      this.level().spawnEntityInWorld(crab);
    }
 
    @SideOnly(Side.CLIENT)
@@ -111,7 +111,7 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
 
    public void setFacing(byte face) {
       this.facing = face;
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       this.markDirty();
    }
 

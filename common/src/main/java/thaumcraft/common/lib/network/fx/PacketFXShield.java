@@ -1,14 +1,14 @@
 package thaumcraft.common.lib.network.fx;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.entity.Entity;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.client.fx.other.FXShieldRunes;
 import thaumcraft.common.Thaumcraft;
 
@@ -36,12 +36,12 @@ public class PacketFXShield implements IMessage, IMessageHandler<PacketFXShield,
 
    @SideOnly(Side.CLIENT)
    public IMessage onMessage(PacketFXShield message, MessageContext ctx) {
-      Entity p = Thaumcraft.proxy.getClientWorld().getEntityByID(message.source);
-      if (p != null && Thaumcraft.proxy.getClientWorld() != null) {
+      Entity p = Thaumcraft.getClientWorld().getEntityByID(message.source);
+      if (p != null && Thaumcraft.getClientWorld() != null) {
          float pitch = 0.0F;
          float yaw = 0.0F;
          if (message.target >= 0) {
-            Entity t = Thaumcraft.proxy.getClientWorld().getEntityByID(message.target);
+            Entity t = Thaumcraft.getClientWorld().getEntityByID(message.target);
             if (t != null) {
                double d0 = p.posX - t.posX;
                double d1 = (p.boundingBox.minY + p.boundingBox.maxY) / (double)2.0F - (t.boundingBox.minY + t.boundingBox.maxY) / (double)2.0F;
@@ -56,19 +56,19 @@ public class PacketFXShield implements IMessage, IMessageHandler<PacketFXShield,
                yaw = 0.0F;
             }
 
-            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.proxy.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, yaw, pitch);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, yaw, pitch);
+            Minecraft.getInstance().particleEngine.add(fb);
          } else if (message.target == -1) {
-            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.proxy.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 90.0F);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
-            fb = new FXShieldRunes(Thaumcraft.proxy.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 270.0F);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 90.0F);
+            Minecraft.getInstance().particleEngine.add(fb);
+            fb = new FXShieldRunes(Thaumcraft.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 270.0F);
+            Minecraft.getInstance().particleEngine.add(fb);
          } else if (message.target == -2) {
-            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.proxy.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 270.0F);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 270.0F);
+            Minecraft.getInstance().particleEngine.add(fb);
          } else if (message.target == -3) {
-            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.proxy.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 90.0F);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+            FXShieldRunes fb = new FXShieldRunes(Thaumcraft.getClientWorld(), p.posX, p.posY, p.posZ, p, 8, 0.0F, 90.0F);
+            Minecraft.getInstance().particleEngine.add(fb);
          }
 
          return null;

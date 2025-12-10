@@ -1,16 +1,17 @@
 package thaumcraft.client.renderers.models.gear;
 
-import java.util.HashMap;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.items.armor.ItemFortressArmor;
+
+import java.util.HashMap;
 
 public class ModelFortressArmor extends ModelBiped {
    ModelRenderer OrnamentL;

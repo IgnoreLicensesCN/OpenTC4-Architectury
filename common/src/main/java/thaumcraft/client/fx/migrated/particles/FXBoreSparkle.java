@@ -1,18 +1,12 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 public class FXBoreSparkle extends ThaumcraftParticle {
 

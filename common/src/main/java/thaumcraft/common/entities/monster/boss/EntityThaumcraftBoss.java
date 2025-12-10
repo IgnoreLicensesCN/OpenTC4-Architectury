@@ -1,21 +1,21 @@
 package thaumcraft.common.entities.monster.boss;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -100,14 +100,14 @@ public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData 
          this.setAnger(this.getAnger() - 1);
       }
 
-      if (this.worldObj.isRemote && this.rand.nextInt(15) == 0 && this.getAnger() > 0) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.rand.nextInt(15) == 0 && this.getAnger() > 0) {
          double d0 = this.rand.nextGaussian() * 0.02;
          double d1 = this.rand.nextGaussian() * 0.02;
          double d2 = this.rand.nextGaussian() * 0.02;
-         this.worldObj.spawnParticle("angryVillager", this.posX + (double)(this.rand.nextFloat() * this.width) - (double)this.width / (double)2.0F, this.boundingBox.minY + (double)this.height + (double)this.rand.nextFloat() * (double)0.5F, this.posZ + (double)(this.rand.nextFloat() * this.width) - (double)this.width / (double)2.0F, d0, d1, d2);
+         this.level().spawnParticle("angryVillager", this.posX + (double)(this.rand.nextFloat() * this.width) - (double)this.width / (double)2.0F, this.boundingBox.minY + (double)this.height + (double)this.rand.nextFloat() * (double)0.5F, this.posZ + (double)(this.rand.nextFloat() * this.width) - (double)this.width / (double)2.0F, d0, d1, d2);
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.ticksExisted % 30 == 0) {
             this.heal(1.0F);
          }
@@ -123,11 +123,11 @@ public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData 
             for(Integer ei : this.aggro.keySet()) {
                int ca = this.aggro.get(ei);
                if (ca > ad + 25 && (double)ca > (double)ad * 1.1 && ca > ld) {
-                  newTarget = this.worldObj.getEntityByID(hei);
+                  newTarget = this.level().getEntityByID(hei);
                   if (newTarget != null && !newTarget.isDead && !(this.getDistanceSqToEntity(newTarget) > (double)16384.0F)) {
                      hei = ei;
                      ld = ei;
-                     if (newTarget instanceof EntityPlayer) {
+                     if (newTarget instanceof Player) {
                         ++players;
                      }
                   } else {
@@ -207,7 +207,7 @@ public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData 
    }
 
    protected void dropFewItems(boolean flag, int fortune) {
-      EntityUtils.entityDropSpecialItem(this, new ItemStack(ConfigItems.itemEldritchObject, 1, 3), this.height / 2.0F);
+      EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItems.PRIME_PEARL), this.height / 2.0F);
       this.entityDropItem(new ItemStack(ConfigItems.itemLootbag, 1, 2), 1.5F);
    }
 
@@ -216,7 +216,7 @@ public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData 
    }
 
    public boolean attackEntityFrom(DamageSource source, float damage) {
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (source.getEntity() != null && source.getEntity() instanceof EntityLivingBase) {
             int target = source.getEntity().getEntityId();
             int ad = (int)damage;
@@ -237,8 +237,8 @@ public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData 
                } catch (Exception ignored) {
                }
 
-               if (source.getEntity() != null && source.getEntity() instanceof EntityPlayer) {
-                  ((EntityPlayer)source.getEntity()).addChatMessage(new ChatComponentText(this.getCommandSenderName() + " " + StatCollector.translateToLocal("tc.boss.enrage")));
+               if (source.getEntity() != null && source.getEntity() instanceof Player) {
+                  ((Player)source.getEntity()).addChatMessage(new ChatComponentText(this.getCommandSenderName() + " " + StatCollector.translateToLocal("tc.boss.enrage")));
                }
             }
 

@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.world.item.ItemBlock;
 
 public class BlockFluxGasItem extends ItemBlock {
    public BlockFluxGasItem(Block i) {

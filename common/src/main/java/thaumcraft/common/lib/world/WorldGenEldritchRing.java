@@ -1,11 +1,11 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.tiles.TileBanner;
@@ -23,7 +23,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
       return new Block[]{Blocks.stone, Blocks.sand, Blocks.packed_ice, Blocks.grass, Blocks.gravel, Blocks.dirt};
    }
 
-   public boolean LocationIsValidSpawn(World world, int i, int j, int k) {
+   public boolean LocationIsValidSpawn(Level world, int i, int j, int k) {
       int distanceToAir = 0;
 
       for(Block checkID = world.getBlock(i, j, k); checkID != Blocks.air; checkID = world.getBlock(i, j + distanceToAir, k)) {
@@ -54,7 +54,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
        return false;
    }
 
-   public boolean generate(World world, Random rand, int i, int j, int k) {
+   public boolean generate(Level world, Random rand, int i, int j, int k) {
       if (this.LocationIsValidSpawn(world, i - 3, j, k - 3)
               && this.LocationIsValidSpawn(world, i, j, k)
               && this.LocationIsValidSpawn(world, i + 3, j, k)
@@ -86,7 +86,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
                      world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);
                      world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
                      int r = rand.nextInt(10);
-                     TileEntity te = world.getTileEntity(x, j + 1, z);
+                     BlockEntity te = world.getBlockEntity(x, j + 1, z);
                      if (te instanceof TileEldritchAltar) {
                         TileEldritchAltar altar = (TileEldritchAltar) te;
                         switch (r) {
@@ -98,9 +98,9 @@ public class WorldGenEldritchRing extends WorldGenerator {
                               altar.setSpawnType((byte)0);
 
                               for(int a = 2; a < 6; ++a) {
-                                 ForgeDirection dir = ForgeDirection.getOrientation(a);
+                                 Direction dir = Direction.getOrientation(a);
                                  world.setBlock(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3, ConfigBlocks.blockWoodenDevice, 8, 3);
-                                 TileEntity probablyBanner = world.getTileEntity(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
+                                 BlockEntity probablyBanner = world.getBlockEntity(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
                                  if (probablyBanner instanceof TileBanner) {
                                     TileBanner banner = (TileBanner) probablyBanner;
                                     banner.setFacing(bannerFaceFromDirection(a));

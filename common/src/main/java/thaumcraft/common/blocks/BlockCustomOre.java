@@ -7,16 +7,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
@@ -60,7 +60,7 @@ public class BlockCustomOre extends Block {
       }
    }
 
-   public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
+   public boolean canSilkHarvest(World world, Player player, int x, int y, int z, int metadata) {
       return true;
    }
 
@@ -81,7 +81,7 @@ public class BlockCustomOre extends Block {
    }
 
    @SideOnly(Side.CLIENT)
-   public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
       int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
       if (md != 0 && md < 6) {
          UtilsFX.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, md);
@@ -109,9 +109,9 @@ public class BlockCustomOre extends Block {
       if (md == 0) {
          ret.add(new ItemStack(ConfigBlocks.blockCustomOre, 1, 0));
       } else if (md == 7) {
-         ret.add(new ItemStack(ConfigItems.itemResource, 1 + world.rand.nextInt(fortune + 1), 6));
+         ret.add(new ItemStack(ConfigItems.itemResource, 1 + world.getRandom().nextInt(fortune + 1), 6));
       } else {
-         int q = 1 + world.rand.nextInt(2 + fortune);
+         int q = 1 + world.getRandom().nextInt(2 + fortune);
 
          for(int a = 0; a < q; ++a) {
             ret.add(new ItemStack(ConfigItems.itemShard, 1, md - 1));

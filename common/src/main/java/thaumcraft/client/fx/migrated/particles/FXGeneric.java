@@ -1,16 +1,12 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import org.jetbrains.annotations.NotNull;
-
-import static thaumcraft.client.fx.particles.migrated.particles.FXDrop.loadSprite;
+import thaumcraft.client.fx.migrated.Particles;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 public class FXGeneric extends ThaumcraftParticle {
-    public static final TextureAtlasSprite PARTICLE_SPRITE = loadSprite("thaumcraft", "particle/particles.png");
 
     boolean loop = false;
     int delay = 0;
@@ -28,7 +24,7 @@ public class FXGeneric extends ThaumcraftParticle {
         this.yd = yy;
         this.zd = zz;
         this.hasPhysics = false;
-        this.setSprite(PARTICLE_SPRITE);
+        this.setSprite(Particles.PARTICLE_SPRITE);
     }
 
     public void setMaxAge(int max, int delay) {

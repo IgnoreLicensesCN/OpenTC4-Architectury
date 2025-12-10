@@ -3,19 +3,19 @@ package thaumcraft.common.items.wands.foci;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 
 public class ItemFocusPech extends ItemFocusBasic {
    IIcon depthIcon = null;
@@ -45,12 +45,12 @@ public class ItemFocusPech extends ItemFocusBasic {
       return 250;
    }
 
-   public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer p, MovingObjectPosition mob) {
-      ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+   public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult mob) {
+      WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       EntityPechBlast blast = new EntityPechBlast(world, p, wand.getFocusPotency(itemstack), wand.getFocusExtend(itemstack), this.isUpgradedWith(wand.getFocusItem(itemstack), nightshade));
-      if (!world.isRemote && wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
+      if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
          world.spawnEntityInWorld(blast);
-         world.playSoundAtEntity(blast, "thaumcraft:ice", 0.4F, 1.0F + world.rand.nextFloat() * 0.1F);
+         world.playSoundAtEntity(blast, "thaumcraft:ice", 0.4F, 1.0F + world.getRandom().nextFloat() * 0.1F);
       }
 
       p.swingItem();

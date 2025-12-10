@@ -3,13 +3,13 @@ package thaumcraft.common.entities.projectile;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -24,11 +24,11 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
    boolean seeker = false;
    int oi = 0;
 
-   public EntityPrimalOrb(World par1World) {
+   public EntityPrimalOrb(Level par1World) {
       super(par1World);
    }
 
-   public EntityPrimalOrb(World par1World, EntityLivingBase par2EntityLiving, boolean seeker) {
+   public EntityPrimalOrb(Level par1World, EntityLivingBase par2EntityLiving, boolean seeker) {
       super(par1World, par2EntityLiving);
       this.seeker = seeker;
       this.oi = par2EntityLiving.getEntityId();
@@ -55,15 +55,15 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
    public void onUpdate() {
       ++this.count;
       if (this.isInsideOfMaterial(Material.portal)) {
-         this.onImpact(new MovingObjectPosition(this));
+         this.onImpact(new HitResult(this));
       }
 
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          for(int a = 0; a < 6; ++a) {
-            Thaumcraft.proxy.wispFX4(this.worldObj, (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F, (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F, (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F, this, a, true, 0.0F);
+            Thaumcraft.proxy.wispFX4(this.level(), (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, this, a, true, 0.0F);
          }
 
-         Thaumcraft.proxy.wispFX2(this.worldObj, this.posX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.posY + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.posZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), 0.1F, this.rand.nextInt(6), true, true, 0.0F);
+         Thaumcraft.proxy.wispFX2(this.level(), this.posX + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.posY + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.posZ + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), 0.1F, this.rand.nextInt(6), true, true, 0.0F);
       }
 
       Random rr = new Random(this.getEntityId() + this.count);
@@ -73,7 +73,7 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
             this.motionY += (rr.nextFloat() - rr.nextFloat()) * 0.01F;
             this.motionZ += (rr.nextFloat() - rr.nextFloat()) * 0.01F;
          } else {
-            List<Entity> l = EntityUtils.getEntitiesInRange(this.worldObj, this.posX, this.posY, this.posZ, this, EntityLivingBase.class, 16.0F);
+            List<Entity> l = EntityUtils.getEntitiesInRange(this.level(), this.posX, this.posY, this.posZ, this, EntityLivingBase.class, 16.0F);
             double d = Double.MAX_VALUE;
             Entity t = null;
 
@@ -112,19 +112,19 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
 
    }
 
-   protected void onImpact(MovingObjectPosition mop) {
-      if (this.worldObj.isRemote) {
+   protected void onImpact(HitResult mop) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          for(int a = 0; a < 6; ++a) {
             for(int b = 0; b < 6; ++b) {
-               float fx = (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.5F;
-               float fy = (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.5F;
-               float fz = (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.5F;
-               Thaumcraft.proxy.wispFX3(this.worldObj, this.posX + (double)fx, this.posY + (double)fy, this.posZ + (double)fz, this.posX + (double)(fx * 10.0F), this.posY + (double)(fy * 10.0F), this.posZ + (double)(fz * 10.0F), 0.4F, b, true, 0.05F);
+               float fx = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.5F;
+               float fy = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.5F;
+               float fz = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.5F;
+               Thaumcraft.proxy.wispFX3(this.level(), this.posX + (double)fx, this.posY + (double)fy, this.posZ + (double)fz, this.posX + (double)(fx * 10.0F), this.posY + (double)(fy * 10.0F), this.posZ + (double)(fz * 10.0F), 0.4F, b, true, 0.05F);
             }
          }
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          float specialchance = 1.0F;
          float expl = 2.0F;
          if (mop.typeOfHit == MovingObjectType.BLOCK && this.isInsideOfMaterial(Material.portal)) {
@@ -132,12 +132,12 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
             specialchance = 10.0F;
          }
 
-         this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, expl, true);
+         this.level().createExplosion(null, this.posX, this.posY, this.posZ, expl, true);
          if (!this.seeker && (float)this.rand.nextInt(100) <= specialchance) {
             if (this.rand.nextBoolean()) {
                this.taintSplosion();
             } else {
-               ThaumcraftWorldGenerator.createRandomNodeAt(this.worldObj, mop.blockX, mop.blockY, mop.blockZ, this.rand, false, false, true);
+               ThaumcraftWorldGenerator.createRandomNodeAt(this.level(), mop.blockX, mop.blockY, mop.blockZ, this.rand, false, false, true);
             }
          }
 
@@ -154,11 +154,11 @@ public class EntityPrimalOrb extends EntityThrowable implements IEntityAdditiona
       for(int a = 0; a < 10; ++a) {
          int xx = x + (int)(this.rand.nextFloat() - this.rand.nextFloat() * 6.0F);
          int zz = z + (int)(this.rand.nextFloat() - this.rand.nextFloat() * 6.0F);
-         if (this.rand.nextBoolean() && this.worldObj.getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
-            Utils.setBiomeAt(this.worldObj, xx, zz, ThaumcraftWorldGenerator.biomeTaint);
-            int yy = this.worldObj.getHeightValue(xx, zz);
-            if (!this.worldObj.isAirBlock(xx, yy - 1, zz)) {
-               this.worldObj.setBlock(xx, yy, zz, ConfigBlocks.blockTaintFibres, 0, 3);
+         if (this.rand.nextBoolean() && this.level().getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
+            Utils.setBiomeAt(this.level(), xx, zz, ThaumcraftWorldGenerator.biomeTaint);
+            int yy = this.level().getHeightValue(xx, zz);
+            if (!this.level().isAirBlock(xx, yy - 1, zz)) {
+               this.level().setBlock(xx, yy, zz, ConfigBlocks.blockTaintFibres, 0, 3);
             }
          }
       }

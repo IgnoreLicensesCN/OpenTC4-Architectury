@@ -7,18 +7,18 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.world.level.Level;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSlimyBubble;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileAlchemyFurnaceAdvanced;
@@ -109,7 +109,7 @@ public class BlockAlchemyFurnace extends BlockContainer {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-        if (!world.isRemote) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
             int metadata = world.getBlockMetadata(i, j, k);
             if (metadata == 0) {
                 TileAlchemyFurnaceAdvanced tile = (TileAlchemyFurnaceAdvanced) world.getTileEntity(i, j, k);
@@ -118,7 +118,7 @@ public class BlockAlchemyFurnace extends BlockContainer {
                         && tile.process(((EntityItem) entity).getEntityItem())) {
                     ItemStack s = ((EntityItem) entity).getEntityItem();
                     --s.stackSize;
-                    world.playSoundAtEntity(entity, "thaumcraft:bubble", 0.2F, 1.0F + world.rand.nextFloat() * 0.4F);
+                    world.playSoundAtEntity(entity, "thaumcraft:bubble", 0.2F, 1.0F + world.getRandom().nextFloat() * 0.4F);
                     if (s.stackSize <= 0) {
                         entity.setDead();
                     } else {
@@ -201,7 +201,7 @@ public class BlockAlchemyFurnace extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block bl, int md) {
-        if (!world.isRemote) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
             if (md != 0) {
                forEachBlockInStruct((xOffset, yOffset, zOffset) -> {
                   Block blockCurrent = world.getBlock(x + xOffset, y + yOffset, z + zOffset);
@@ -225,7 +225,7 @@ public class BlockAlchemyFurnace extends BlockContainer {
                      ) {
                         int m = world.getBlockMetadata(x + xOffset, y + yOffset, z + zOffset);
                         world.setBlock(x + xOffset, y + yOffset, z + zOffset,
-                                Block.getBlockFromItem(BlockAlchemyFurnace.this.getItemDropped(m, world.rand, 0)), BlockAlchemyFurnace.this.damageDropped(m), 3);
+                                Block.getBlockFromItem(BlockAlchemyFurnace.this.getItemDropped(m, world.getRandom(), 0)), BlockAlchemyFurnace.this.damageDropped(m), 3);
 
                      }
                      return false;
@@ -246,7 +246,8 @@ public class BlockAlchemyFurnace extends BlockContainer {
                 FXSlimyBubble ef = new FXSlimyBubble(world, (float) x + rand.nextFloat(), y + 1, (float) z + rand.nextFloat(), 0.06F + rand.nextFloat() * 0.06F);
                 ef.setAlphaF(0.8F);
                 ef.setRBGColorF(0.6F - rand.nextFloat() * 0.2F, 0.0F, 0.6F + rand.nextFloat() * 0.2F);
-                ParticleEngine.instance.addEffect(world, ef);
+                Minecraft.getInstance().particleEngine.add(ef);
+
                 if (rand.nextInt(50) == 0) {
                     double var21 = (float) x + rand.nextFloat();
                     double var22 = (double) y + this.maxY;
@@ -259,7 +260,8 @@ public class BlockAlchemyFurnace extends BlockContainer {
                 FXSlimyBubble ef2 = new FXSlimyBubble(world, (double) x - 0.6 + (double) rand.nextFloat() * 0.2 + (double) (q * 2), y + 2, (double) z - 0.6 + (double) rand.nextFloat() * 0.2 + (double) (w * 2), 0.06F + rand.nextFloat() * 0.06F);
                 ef2.setAlphaF(0.8F);
                 ef2.setRBGColorF(0.6F - rand.nextFloat() * 0.2F, 0.0F, 0.6F + rand.nextFloat() * 0.2F);
-                ParticleEngine.instance.addEffect(world, ef2);
+                Minecraft.getInstance().particleEngine.add(ef2);
+
             }
         }
 

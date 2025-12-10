@@ -1,16 +1,8 @@
 package thaumcraft.client.lib;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
+import com.mojang.blaze3d.systems.RenderSystem;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -22,22 +14,29 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Timer;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.*;
+import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXScorch;
 import thaumcraft.client.fx.particles.FXSparkle;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static tc4tweak.ClientUtils.fieldParticleTexture;
 
@@ -48,7 +47,7 @@ public class UtilsFX {
    public static int[] connectedTextureRefByID = new int[]{0, 0, 6, 6, 0, 0, 6, 6, 3, 3, 19, 15, 3, 3, 19, 15, 1, 1, 18, 18, 1, 1, 13, 13, 2, 2, 23, 31, 2, 2, 27, 14, 0, 0, 6, 6, 0, 0, 6, 6, 3, 3, 19, 15, 3, 3, 19, 15, 1, 1, 18, 18, 1, 1, 13, 13, 2, 2, 23, 31, 2, 2, 27, 14, 4, 4, 5, 5, 4, 4, 5, 5, 17, 17, 22, 26, 17, 17, 22, 26, 16, 16, 20, 20, 16, 16, 28, 28, 21, 21, 46, 42, 21, 21, 43, 38, 4, 4, 5, 5, 4, 4, 5, 5, 9, 9, 30, 12, 9, 9, 30, 12, 16, 16, 20, 20, 16, 16, 28, 28, 25, 25, 45, 37, 25, 25, 40, 32, 0, 0, 6, 6, 0, 0, 6, 6, 3, 3, 19, 15, 3, 3, 19, 15, 1, 1, 18, 18, 1, 1, 13, 13, 2, 2, 23, 31, 2, 2, 27, 14, 0, 0, 6, 6, 0, 0, 6, 6, 3, 3, 19, 15, 3, 3, 19, 15, 1, 1, 18, 18, 1, 1, 13, 13, 2, 2, 23, 31, 2, 2, 27, 14, 4, 4, 5, 5, 4, 4, 5, 5, 17, 17, 22, 26, 17, 17, 22, 26, 7, 7, 24, 24, 7, 7, 10, 10, 29, 29, 44, 41, 29, 29, 39, 33, 4, 4, 5, 5, 4, 4, 5, 5, 9, 9, 30, 12, 9, 9, 30, 12, 7, 7, 24, 24, 7, 7, 10, 10, 8, 8, 36, 35, 8, 8, 34, 11};
    public static float[] lightBrightnessTable = null;
    private static Map textureSizeCache = new HashMap<>();
-   static Map boundTextures = new HashMap<>();
+   static Map<String,ResourceLocation> boundTextures = new HashMap<>();
    static DecimalFormat myFormatter = new DecimalFormat("#######.##");
 
    public static float getBrightnessFromLight(int light) {
@@ -66,7 +65,7 @@ public class UtilsFX {
    }
 
    public static void infusedStoneSparkle(World world, int x, int y, int z, int md) {
-      if (world.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          int color = 0;
          switch (md) {
             case 1:
@@ -89,15 +88,16 @@ public class UtilsFX {
          }
 
          for(int a = 0; a < Thaumcraft.proxy.particleCount(3); ++a) {
-            FXSparkle fx = new FXSparkle(world, (float)x + world.rand.nextFloat(), (float)y + world.rand.nextFloat(), (float)z + world.rand.nextFloat(), 1.75F, color == -1 ? world.rand.nextInt(5) : color, 3 + world.rand.nextInt(3));
+            FXSparkle fx = new FXSparkle(world, (float)x + world.getRandom().nextFloat(), (float)y + world.getRandom().nextFloat(), (float)z + world.getRandom().nextFloat(), 1.75F, color == -1 ? world.getRandom().nextInt(5) : color, 3 + world.getRandom().nextInt(3));
             fx.setGravity(0.1F);
-            ParticleEngine.instance.addEffect(world, fx);
+            Minecraft.getInstance().particleEngine.add(fx);
+
          }
 
       }
    }
 
-   public static void shootFire(World world, EntityPlayer p, boolean offset, int range, boolean lance) {
+   public static void shootFire(World world, Player p, boolean offset, int range, boolean lance) {
       Vec3 vec3d = p.getLook((float)range);
       double px = p.posX - (double)(MathHelper.cos(p.rotationYaw / 180.0F * 3.141593F) * 0.1F);
       double py = p.posY - (double)0.08F;
@@ -107,7 +107,7 @@ public class UtilsFX {
       }
 
       for(int q = 0; q < 3; ++q) {
-         FXScorch ef = new FXScorch(p.worldObj, px, py, pz, vec3d, (float)range, lance);
+         FXScorch ef = new FXScorch(p.level(), px, py, pz, vec3d, (float)range, lance);
          ef.posX += vec3d.xCoord * (double)0.3F;
          ef.posY += vec3d.yCoord * (double)0.3F;
          ef.posZ += vec3d.zCoord * (double)0.3F;
@@ -117,20 +117,21 @@ public class UtilsFX {
          ef.posX += vec3d.xCoord * (double)0.3F;
          ef.posY += vec3d.yCoord * (double)0.3F;
          ef.posZ += vec3d.zCoord * (double)0.3F;
-         ParticleEngine.instance.addEffect(world, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       }
 
    }
 
    public static void renderFacingQuad(double px, double py, double pz, float angle, float scale, float alpha, int frames, int cframe, float partialTicks, int color) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getInstance().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          float arX = ActiveRenderInfo.rotationX;
          float arZ = ActiveRenderInfo.rotationZ;
          float arYZ = ActiveRenderInfo.rotationYZ;
          float arXY = ActiveRenderInfo.rotationXY;
          float arXZ = ActiveRenderInfo.rotationXZ;
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+         Player player = (Player)Minecraft.getInstance().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
          double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
          double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -167,14 +168,14 @@ public class UtilsFX {
    }
 
    public static void renderFacingStrip(double px, double py, double pz, float angle, float scale, float alpha, int frames, int strip, int frame, float partialTicks, int color) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getInstance().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          float arX = ActiveRenderInfo.rotationX;
          float arZ = ActiveRenderInfo.rotationZ;
          float arYZ = ActiveRenderInfo.rotationYZ;
          float arXY = ActiveRenderInfo.rotationXY;
          float arXZ = ActiveRenderInfo.rotationXZ;
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+         Player player = (Player)Minecraft.getInstance().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
          double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
          double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -211,7 +212,7 @@ public class UtilsFX {
    }
 
    public static void renderAnimatedQuad(float scale, float alpha, int frames, int cframe, float partialTicks, int color) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getInstance().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          tessellator.startDrawingQuads();
          tessellator.setBrightness(220);
@@ -231,7 +232,7 @@ public class UtilsFX {
    }
 
    public static void renderAnimatedQuadStrip(float scale, float alpha, int frames, int strip, int cframe, float partialTicks, int color) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getInstance().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          tessellator.startDrawingQuads();
          tessellator.setBrightness(220);
@@ -327,7 +328,7 @@ public class UtilsFX {
    }
 
    public static void renderQuadCenteredFromTexture(ResourceLocation texture, float scale, float red, float green, float blue, int brightness, int blend, float opacity) {
-      Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+      Minecraft.getInstance().renderEngine.bindTexture(texture);
       renderQuadCenteredFromTexture(scale, red, green, blue, brightness, blend, opacity);
    }
 
@@ -385,9 +386,9 @@ public class UtilsFX {
 
    public static void renderQuadFromIcon(boolean isBlock, IIcon icon, float scale, float red, float green, float blue, int brightness, int blend, float opacity) {
       if (isBlock) {
-         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+         Minecraft.getInstance().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
       } else {
-         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+         Minecraft.getInstance().renderEngine.bindTexture(TextureMap.locationItemsTexture);
       }
 
       Tessellator tessellator = Tessellator.instance;
@@ -416,9 +417,9 @@ public class UtilsFX {
 
    public static void renderQuadCenteredFromIcon(boolean isBlock, IIcon icon, float scale, float red, float green, float blue, int brightness, int blend, float opacity) {
       if (isBlock) {
-         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+         Minecraft.getInstance().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
       } else {
-         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+         Minecraft.getInstance().renderEngine.bindTexture(TextureMap.locationItemsTexture);
       }
 
       Tessellator tessellator = Tessellator.instance;
@@ -449,7 +450,7 @@ public class UtilsFX {
          return (Integer)textureSizeCache.get(s);
       } else {
          try {
-            InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("thaumcraft", s)).getInputStream();
+            InputStream inputstream = Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("thaumcraft", s)).getInputStream();
             if (inputstream == null) {
                throw new Exception("Image not found: " + s);
             } else {
@@ -470,7 +471,7 @@ public class UtilsFX {
          return (Integer)textureSizeCache.get(Arrays.asList(s, dv));
       } else {
          try {
-            InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("thaumcraft", s)).getInputStream();
+            InputStream inputstream = Minecraft.getInstance().getResourceManager().getResource(new ResourceLocation("thaumcraft", s)).getInputStream();
             if (inputstream == null) {
                throw new Exception("Image not found: " + s);
             } else {
@@ -489,39 +490,29 @@ public class UtilsFX {
    public static int getBrightnessForRender(Entity entity, double x, double z) {
       int var2 = MathHelper.floor_double(x);
       int var3 = MathHelper.floor_double(z);
-      if (entity.worldObj.blockExists(var2, 0, var3)) {
+      if (entity.level().blockExists(var2, 0, var3)) {
          double var4 = (entity.boundingBox.maxY - entity.boundingBox.minY) * 0.66;
          int var6 = MathHelper.floor_double(entity.posY - (double)entity.yOffset + var4);
-         return entity.worldObj.getLightBrightnessForSkyBlocks(var2, var6, var3, 2);
+         return entity.level().getLightBrightnessForSkyBlocks(var2, var6, var3, 2);
       } else {
          return 0;
       }
    }
 
    public static void bindTexture(String texture) {
-      ResourceLocation rl = null;
-      if (boundTextures.containsKey(texture)) {
-         rl = (ResourceLocation)boundTextures.get(texture);
-      } else {
-         rl = new ResourceLocation("thaumcraft", texture);
-      }
-
-      Minecraft.getMinecraft().renderEngine.bindTexture(rl);
+      ResourceLocation rl = boundTextures.computeIfAbsent(texture, t -> new ResourceLocation("thaumcraft", t));
+      RenderSystem.setShaderTexture(0, rl);
    }
 
    public static void bindTexture(String mod, String texture) {
-      ResourceLocation rl = null;
-      if (boundTextures.containsKey(mod + ":" + texture)) {
-         rl = (ResourceLocation)boundTextures.get(mod + ":" + texture);
-      } else {
-         rl = new ResourceLocation(mod, texture);
-      }
+      String key = mod + ":" + texture;
+      ResourceLocation rl = boundTextures.computeIfAbsent(key, t -> new ResourceLocation(mod, t));
 
-      Minecraft.getMinecraft().renderEngine.bindTexture(rl);
+      RenderSystem.setShaderTexture(0, rl);
    }
 
    public static void bindTexture(ResourceLocation resource) {
-      Minecraft.getMinecraft().renderEngine.bindTexture(resource);
+      RenderSystem.setShaderTexture(0, resource);
    }
 
    public static void drawTag(int x, int y, Aspect aspect, float amount, int bonus, double z, int blend, float alpha) {
@@ -542,7 +533,7 @@ public class UtilsFX {
 
    public static void drawTag(double x, double y, Aspect aspect, float amount, int bonus, double z, int blend, float alpha, boolean bw) {
       if (aspect != null) {
-         Minecraft mc = Minecraft.getMinecraft();
+         Minecraft mc = Minecraft.getInstance();
          Color color = new Color(aspect.getColor());
          GL11.glPushMatrix();
          GL11.glDisable(2896);
@@ -550,7 +541,7 @@ public class UtilsFX {
          GL11.glEnable(GL11.GL_BLEND);
          GL11.glBlendFunc(770, blend);
          GL11.glPushMatrix();
-         mc.renderEngine.bindTexture(aspect.getImage());
+         RenderSystem.setShaderTexture(0, aspect.getImage());
          if (!bw) {
             GL11.glColor4f((float)color.getRed() / 255.0F, (float)color.getGreen() / 255.0F, (float)color.getBlue() / 255.0F, alpha);
          } else {
@@ -744,7 +735,7 @@ public class UtilsFX {
    }
 
    public static void drawFloatyLine(double x, double y, double z, double x2, double y2, double z2, float partialTicks, int color, String texture, float speed, float distance, float width) {
-      EntityLivingBase player = Minecraft.getMinecraft().renderViewEntity;
+      EntityLivingBase player = Minecraft.getInstance().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -904,15 +895,16 @@ public class UtilsFX {
    }
 
    public static ResourceLocation getParticleTexture() {
-      try {
-         if (fieldParticleTexture == null)
-            fieldParticleTexture = ReflectionHelper.findField(
-                    EffectRenderer.class,
-                    "particleTextures", "b", "field_110737_b");
-         return (ResourceLocation) fieldParticleTexture.get(null);
-      } catch (Exception ignored) {
-         return null;
-      }
+      return new ResourceLocation("thaumcraft", "particle/particles.png");
+//      try {
+//         if (fieldParticleTexture == null)
+//            fieldParticleTexture = ReflectionHelper.findField(
+//                    EffectRenderer.class,
+//                    "particleTextures", "b", "field_110737_b");
+//         return (ResourceLocation) fieldParticleTexture.get(null);
+//      } catch (Exception ignored) {
+//         return null;
+//      }
 //      try {
 //         return ReflectionHelper.getPrivateValue(
 //

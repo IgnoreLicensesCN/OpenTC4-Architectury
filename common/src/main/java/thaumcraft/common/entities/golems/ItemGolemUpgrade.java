@@ -4,10 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import thaumcraft.common.Thaumcraft;
@@ -53,7 +53,7 @@ public class ItemGolemUpgrade extends Item {
       return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player par2Player, List list, boolean par4) {
       list.add(StatCollector.translateToLocal("item.ItemGolemUpgrade." + stack.getItemDamage() + ".desc"));
    }
 

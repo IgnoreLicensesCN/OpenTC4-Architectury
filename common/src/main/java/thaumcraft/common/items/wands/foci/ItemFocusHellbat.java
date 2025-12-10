@@ -3,13 +3,13 @@ package thaumcraft.common.items.wands.foci;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -17,7 +17,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityFireBat;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 public class ItemFocusHellbat extends ItemFocusBasic {
@@ -57,9 +57,9 @@ public class ItemFocusHellbat extends ItemFocusBasic {
       return this.iconOrnament;
    }
 
-   public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer player, MovingObjectPosition movingobjectposition) {
-      ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
-      Entity pointedEntity = EntityUtils.getPointedEntity(player.worldObj, player, 32.0F, EntityFireBat.class);
+   public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player player, HitResult HitResult) {
+      WandCastingItem wand = (WandCastingItem)itemstack.getItem();
+      Entity pointedEntity = EntityUtils.getPointedEntity(player.level(), player, 32.0F, EntityFireBat.class);
       double px = player.posX;
       double py = player.posY;
       double pz = player.posZ;
@@ -72,8 +72,8 @@ public class ItemFocusHellbat extends ItemFocusBasic {
       py += vec3d.yCoord * (double)0.5F;
       pz += vec3d.zCoord * (double)0.5F;
       if (pointedEntity instanceof EntityLivingBase) {
-         if (!world.isRemote) {
-            if (pointedEntity instanceof EntityPlayer && !MinecraftServer.getServer().isPVPEnabled()) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
+            if (pointedEntity instanceof Player && !MinecraftServer.getServer().isPVPEnabled()) {
                return itemstack;
             }
 
@@ -98,9 +98,9 @@ public class ItemFocusHellbat extends ItemFocusBasic {
 
             if (wand.consumeAllVis(itemstack, player, this.getVisCost(itemstack), true, false) && world.spawnEntityInWorld(firebat)) {
                world.playAuxSFX(2004, (int)px, (int)py, (int)pz, 0);
-               world.playSoundAtEntity(firebat, "thaumcraft:ice", 0.2F, 0.95F + world.rand.nextFloat() * 0.1F);
+               world.playSoundAtEntity(firebat, "thaumcraft:ice", 0.2F, 0.95F + world.getRandom().nextFloat() * 0.1F);
             } else {
-               world.playSoundAtEntity(player, "thaumcraft:wandfail", 0.1F, 0.8F + world.rand.nextFloat() * 0.1F);
+               world.playSoundAtEntity(player, "thaumcraft:wandfail", 0.1F, 0.8F + world.getRandom().nextFloat() * 0.1F);
             }
          }
 
@@ -139,7 +139,7 @@ public class ItemFocusHellbat extends ItemFocusBasic {
       }
    }
 
-   public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
+   public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
       return !type.equals(vampirebats) || ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "VAMPBAT");
    }
 

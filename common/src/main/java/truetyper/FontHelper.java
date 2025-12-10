@@ -1,11 +1,12 @@
 package truetyper;
 
-import java.nio.FloatBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+
+import java.nio.FloatBuffer;
 
 public class FontHelper {
    private static final String formatEscape = "§";

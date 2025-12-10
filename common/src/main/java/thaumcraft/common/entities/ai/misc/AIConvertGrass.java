@@ -3,9 +3,9 @@ package thaumcraft.common.entities.ai.misc;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -17,7 +17,7 @@ public class AIConvertGrass extends EntityAIBase {
 
    public AIConvertGrass(EntityLiving par1EntityLiving) {
       this.entity = par1EntityLiving;
-      this.world = par1EntityLiving.worldObj;
+      this.world = par1EntityLiving.level();
       this.setMutexBits(7);
    }
 

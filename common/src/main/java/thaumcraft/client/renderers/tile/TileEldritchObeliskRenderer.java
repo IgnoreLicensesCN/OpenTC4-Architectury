@@ -1,8 +1,5 @@
 package thaumcraft.client.renderers.tile;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -12,13 +9,16 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 
@@ -65,11 +65,11 @@ public class TileEldritchObeliskRenderer extends TileEntitySpecialRenderer {
       String tempTex2 = this.t5;
       Block blockType = getBlockTypeSafely(te);
       if (blockType != null) {
-         int j = blockType.getMixedBrightnessForBlock(te.getWorldObj(), te.xCoord, te.yCoord + 5, te.zCoord);
+         int j = blockType.getMixedBrightnessForBlock(te.getLevel(), te.xCoord, te.yCoord + 5, te.zCoord);
          int k = j % 65536;
          int l = j / 65536;
          OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
-         if (te.hasWorldObj() && te.getWorldObj().provider.dimensionId == Config.dimensionOuterId) {
+         if (te.hasWorldObj() && te.getLevel().dimension() == Config.dimensionOuterId) {
             tempTex1 = this.t6;
             tempTex2 = this.t7;
          }

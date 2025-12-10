@@ -2,13 +2,13 @@ package tc4tweak.modules.hudNotif;
 
 import cpw.mods.fml.client.config.GuiButtonExt;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import tc4tweak.ConfigurationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import tc4tweak.ConfigurationHandler;
 import thaumcraft.client.lib.PlayerNotifications;
 
 import java.util.List;

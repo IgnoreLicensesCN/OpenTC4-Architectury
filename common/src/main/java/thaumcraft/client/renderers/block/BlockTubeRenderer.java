@@ -1,7 +1,6 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import java.awt.Color;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -12,12 +11,9 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.blocks.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileBellows;
-import thaumcraft.common.tiles.TileCentrifuge;
-import thaumcraft.common.tiles.TileEssentiaCrystalizer;
-import thaumcraft.common.tiles.TileTube;
-import thaumcraft.common.tiles.TileTubeFilter;
-import thaumcraft.common.tiles.TileTubeValve;
+import thaumcraft.common.tiles.*;
+
+import java.awt.*;
 
 public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

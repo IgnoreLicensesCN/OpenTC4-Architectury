@@ -1,11 +1,11 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityChest;
+import net.minecraft.world.level.block.entity.BlockEntityMobSpawner;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.config.ConfigBlocks;
@@ -17,7 +17,7 @@ public class WorldGenHilltopStones extends WorldGenerator {
       return new Block[]{Blocks.stone, Blocks.grass, Blocks.dirt};
    }
 
-   public boolean LocationIsValidSpawn(World world, int i, int j, int k) {
+   public boolean LocationIsValidSpawn(Level world, int i, int j, int k) {
        if (j >= 85) {
            int distanceToAir = 0;
 
@@ -50,7 +50,7 @@ public class WorldGenHilltopStones extends WorldGenerator {
        return false;
    }
 
-   public boolean generate(World world, Random rand, int i, int j, int k) {
+   public boolean generate(Level world, Random rand, int i, int j, int k) {
       if (this.LocationIsValidSpawn(world, i - 2, j, k - 2) && this.LocationIsValidSpawn(world, i, j, k) && this.LocationIsValidSpawn(world, i + 2, j, k) && this.LocationIsValidSpawn(world, i + 2, j, k + 2) && this.LocationIsValidSpawn(world, i, j, k + 2)) {
          Block replaceBlock = world.getBiomeGenForCoords(i, k).topBlock;
          boolean genVines = !world.getBiomeGenForCoords(i, k).getEnableSnow();
@@ -78,14 +78,14 @@ public class WorldGenHilltopStones extends WorldGenerator {
                            ChestGenHooks info1 = ChestGenHooks.getInfo("dungeonChest");
                            ChestGenHooks info2 = ChestGenHooks.getInfo("dungeonChest");
                            world.setBlock(x, j + y + 1, z, Blocks.chest, 0, 3);
-                           TileEntityChest chest = (TileEntityChest)world.getTileEntity(x, j + y + 1, z);
+                           BlockEntityChest chest = (BlockEntityChest)world.getBlockEntity(x, j + y + 1, z);
                            if (chest != null) {
                               WeightedRandomChestContent.generateChestContents(rand, info1.getItems(rand), chest, info1.getCount(rand));
                               WeightedRandomChestContent.generateChestContents(rand, info2.getItems(rand), chest, info2.getCount(rand));
                            }
 
                            world.setBlock(x, j + y - 1, z, Blocks.mob_spawner, 0, 3);
-                           TileEntityMobSpawner var12 = (TileEntityMobSpawner)world.getTileEntity(x, j + y - 1, z);
+                           BlockEntityMobSpawner var12 = (BlockEntityMobSpawner)world.getBlockEntity(x, j + y - 1, z);
                            if (var12 != null) {
                               var12.func_145881_a().setEntityName("Thaumcraft.Wisp");
                            }
@@ -126,7 +126,7 @@ public class WorldGenHilltopStones extends WorldGenerator {
       }
    }
 
-   private void growVines(World par1World, int par2, int par3, int par4, int par5) {
+   private void growVines(Level par1World, int par2, int par3, int par4, int par5) {
       this.setBlockAndNotifyAdequately(par1World, par2, par3, par4, Blocks.vine, par5);
       int var6 = 4;
 

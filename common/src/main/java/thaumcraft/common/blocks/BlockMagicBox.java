@@ -7,11 +7,11 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileMagicBox;
@@ -52,24 +52,24 @@ public class BlockMagicBox extends BlockContainer {
    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       InventoryUtils.dropItems(par1World, par2, par3, par4);
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
-   public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
+   public boolean onBlockActivated(Level par1World, int par2, int par3, int par4, Player par5Player, int par6, float par7, float par8, float par9) {
       Object var10 = par1World.getTileEntity(par2, par3, par4);
       if (var10 == null) {
          return true;
-      } else if (par1World.isRemote) {
+      } else if ((Platform.getEnvironment() == Env.CLIENT)) {
          return true;
       } else {
-         par5EntityPlayer.openGui(Thaumcraft.instance, 18, par1World, par2, par3, par4);
+         par5Player.openGui(Thaumcraft.instance, 18, par1World, par2, par3, par4);
          return true;
       }
    }
 
-   public TileEntity createNewTileEntity(World par1World, int m) {
+   public TileEntity createNewTileEntity(Level par1World, int m) {
       return new TileMagicBox();
    }
 }

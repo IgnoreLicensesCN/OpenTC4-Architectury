@@ -14,9 +14,9 @@ public class TileTubeBufferRenderer extends TileEntitySpecialRenderer {
 
    public void renderEntityAt(TileTubeBuffer buffer, double x, double y, double z, float fq) {
       UtilsFX.bindTexture("textures/models/valve.png");
-      if (buffer.getWorldObj() != null) {
+      if (buffer.getLevel() != null) {
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (buffer.chokedSides[dir.ordinal()] != 0 && buffer.openSides[dir.ordinal()] && ThaumcraftApiHelper.getConnectableTile(buffer.getWorldObj(), buffer.xCoord, buffer.yCoord, buffer.zCoord, dir) != null) {
+            if (buffer.chokedSides[dir.ordinal()] != 0 && buffer.openSides[dir.ordinal()] && ThaumcraftApiHelper.getConnectableTile(buffer.getLevel(), buffer.xCoord, buffer.yCoord, buffer.zCoord, dir) != null) {
                GL11.glPushMatrix();
                GL11.glTranslated(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F);
                if (dir.getOpposite().offsetY == 0) {

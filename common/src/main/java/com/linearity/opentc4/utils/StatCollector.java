@@ -1,4 +1,4 @@
-package com.linearity.opentc4;
+package com.linearity.opentc4.utils;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;

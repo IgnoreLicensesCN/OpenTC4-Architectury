@@ -1,7 +1,7 @@
 package thaumcraft.api;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 
@@ -17,6 +17,6 @@ public interface IGoggles {
 	/*
 	 * If this method returns true things like block essentia contents will be shown.
 	 */
-    boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player);
+    boolean showIngamePopups(ItemStack itemstack, LivingEntity player);
 
 }

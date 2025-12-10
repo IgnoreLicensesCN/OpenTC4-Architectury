@@ -2,11 +2,11 @@ package thaumcraft.common.entities.ai.fluid;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -25,7 +25,7 @@ public class AILiquidGoto extends EntityAIBase {
 
    public AILiquidGoto(EntityGolemBase par1EntityCreature) {
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
    }
 
@@ -43,7 +43,7 @@ public class AILiquidGoto extends EntityAIBase {
                for(int xx = -1; xx <= 1; ++xx) {
                   for(int zz = -1; zz <= 1; ++zz) {
                      double dd2 = this.theGolem.getDistance(var1.xCoord + (double)xx, this.waterY, var1.zCoord + (double)zz);
-                     if (dd2 < dd && this.theGolem.worldObj.isBlockNormalCubeDefault((int)var1.xCoord + xx, (int)this.waterY, (int)var1.zCoord + zz, true)) {
+                     if (dd2 < dd && this.theGolem.level().isBlockNormalCubeDefault((int)var1.xCoord + xx, (int)this.waterY, (int)var1.zCoord + zz, true)) {
                         this.waterX = var1.xCoord + (double)xx;
                         this.waterZ = var1.zCoord + (double)zz;
                         dd = dd2;

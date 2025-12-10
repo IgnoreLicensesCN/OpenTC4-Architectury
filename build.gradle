@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
@@ -17,6 +19,7 @@ subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.github.johnrengelman.shadow' // Shadow 插件
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
@@ -34,6 +37,7 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+        implementation 'net.sf.trove4j:trove4j:3.0.3' // Trove4j
     }
 
     java {
@@ -48,6 +52,21 @@ subprojects {
 
     tasks.withType(JavaCompile).configureEach {
         it.options.release = 17
+    }
+// ShadowJar 配置：打包 Trove4j 并 relocate
+    tasks.named('shadowJar', ShadowJar) {
+        archiveClassifier.set('') // 覆盖默认 jar
+        from sourceSets.main.output
+        configurations = [project.configurations.implementation]
+
+        // relocate trove 避免冲突
+        relocate 'gnu.trove', 'yourmod.libs.gnu.trove'
+    }
+
+    // 确保 remapJar 使用 shadowJar 的输出
+    tasks.named('remapJar') {
+        dependsOn tasks.named('shadowJar')
+        archiveFile.set(tasks.named('shadowJar').get().archiveFile)
     }
 
     // Configure Maven publishing.

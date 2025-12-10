@@ -2,7 +2,7 @@ package thaumcraft.common.entities.ai.combat;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.AxisAlignedBB;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class AIHurtByTarget extends AITarget {
       if (this.entityCallsForHelp) {
          for(EntityLiving var3 : (List<EntityLiving>)
                  this.taskOwner
-                         .worldObj
+                         .level()
                          .getEntitiesWithinAABB(
                                  this.taskOwner.getClass(),
                                  AxisAlignedBB.getBoundingBox(this.taskOwner.posX, this.taskOwner.posY, this.taskOwner.posZ, this.taskOwner.posX + (double)1.0F, this.taskOwner.posY + (double)1.0F, this.taskOwner.posZ + (double)1.0F)
@@ -46,7 +46,7 @@ public class AIHurtByTarget extends AITarget {
    }
 
    public void resetTask() {
-      if (this.taskOwner.getAttackTarget() != null && this.taskOwner.getAttackTarget() instanceof EntityPlayer && ((EntityPlayer)this.taskOwner.getAttackTarget()).capabilities.disableDamage) {
+      if (this.taskOwner.getAttackTarget() != null && this.taskOwner.getAttackTarget() instanceof Player && ((Player)this.taskOwner.getAttackTarget()).capabilities.disableDamage) {
          this.taskOwner.setAttackTarget(null);
          super.resetTask();
       }

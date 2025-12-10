@@ -1,4 +1,4 @@
-package com.linearity.opentc4.fabric.mixin;
+package com.linearity.opentc4.mixin;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

@@ -7,9 +7,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -81,7 +81,7 @@ public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear,
    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return stack.getItemDamage() >= 3 && stack.getItemDamage() <= 8 && Aspect.getPrimalAspects().get(stack.getItemDamage() - 3) == aspect ? 1 : 0;
    }
 
@@ -98,7 +98,7 @@ public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear,
       }
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.getItemDamage() >= 3 && stack.getItemDamage() <= 8) {
          Aspect aspect = Aspect.getPrimalAspects().get(stack.getItemDamage() - 3);
          list.add(EnumChatFormatting.DARK_PURPLE + aspect.getName() + " " + StatCollector.translateToLocal("tc.discount") + ": 1%");

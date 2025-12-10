@@ -7,16 +7,16 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +24,7 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.*;
 
@@ -252,8 +252,8 @@ public class BlockStoneDevice extends BlockContainer {
    public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
       TileEntity te = world.getTileEntity(x, y, z);
       if (!(te instanceof TilePedestal) && !(te instanceof TileAlchemyFurnace)) {
-         if (te instanceof TileWandPedestal && ((TileWandPedestal) te).getAspects() != null && ((TileWandPedestal) te).getStackInSlot(0) != null && ((TileWandPedestal) te).getStackInSlot(0).getItem() instanceof ItemWandCasting) {
-            ItemWandCasting wand = (ItemWandCasting)((TileWandPedestal)te).getStackInSlot(0).getItem();
+         if (te instanceof TileWandPedestal && ((TileWandPedestal) te).getAspects() != null && ((TileWandPedestal) te).getStackInSlot(0) != null && ((TileWandPedestal) te).getStackInSlot(0).getItem() instanceof WandCastingItem) {
+            WandCastingItem wand = (WandCastingItem)((TileWandPedestal)te).getStackInSlot(0).getItem();
             float r = (float)wand.getAllVis(((TileWandPedestal)te).getStackInSlot(0)).visSize() / ((float)wand.getMaxVis(((TileWandPedestal)te).getStackInSlot(0)) * 6.0F);
             return MathHelper.floor_float(r * 14.0F) + 1;
          } else {
@@ -268,7 +268,7 @@ public class BlockStoneDevice extends BlockContainer {
       return null;
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       InventoryUtils.dropItems(par1World, par2, par3, par4);
       TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
       if (tileEntity instanceof TileInfusionMatrix && ((TileInfusionMatrix) tileEntity).crafting) {
@@ -307,8 +307,8 @@ public class BlockStoneDevice extends BlockContainer {
 
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
-      if (world.isRemote) {
+   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          return true;
       } else {
          int metadata = world.getBlockMetadata(x, y, z);
@@ -321,7 +321,7 @@ public class BlockStoneDevice extends BlockContainer {
                TilePedestal ped = (TilePedestal)tileEntity;
                if (ped.getStackInSlot(0) != null) {
                   InventoryUtils.dropItemsAtEntity(world, x, y, z, player);
-                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.5F);
+                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 1.5F);
                   return true;
                }
 
@@ -335,7 +335,7 @@ public class BlockStoneDevice extends BlockContainer {
                   }
 
                   player.inventory.markDirty();
-                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.6F);
+                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 1.6F);
                   return true;
                }
             }
@@ -356,11 +356,11 @@ public class BlockStoneDevice extends BlockContainer {
                   InventoryUtils.dropItemsAtEntity(world, x, y, z, player);
                   world.markBlockForUpdate(x, y, z);
                   ped.markDirty();
-                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.5F);
+                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 1.5F);
                   return true;
                }
 
-               if (player.getCurrentEquippedItem() != null && (player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting || player.getCurrentEquippedItem().getItem() instanceof ItemAmuletVis)) {
+               if (player.getCurrentEquippedItem() != null && (player.getCurrentEquippedItem().getItem() instanceof WandCastingItem || player.getCurrentEquippedItem().getItem() instanceof ItemAmuletVis)) {
                   ItemStack i = player.getCurrentEquippedItem().copy();
                   i.stackSize = 1;
                   ped.setInventorySlotContents(0, i);
@@ -372,7 +372,7 @@ public class BlockStoneDevice extends BlockContainer {
                   player.inventory.markDirty();
                   world.markBlockForUpdate(x, y, z);
                   ped.markDirty();
-                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 1.6F);
+                  world.playSoundEffect(x, y, z, "random.pop", 0.2F, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 1.6F);
                   return true;
                }
             }
@@ -401,7 +401,7 @@ public class BlockStoneDevice extends BlockContainer {
                      player.inventoryContainer.detectAndSendChanges();
                      tile.markDirty();
                      world.markBlockForUpdate(x, y, z);
-                     world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
+                     world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F);
                   }
                } else {
                   player.openGui(Thaumcraft.instance, 19, world, x, y, z);
@@ -411,7 +411,7 @@ public class BlockStoneDevice extends BlockContainer {
             } else if (metadata == 13 && tileEntity instanceof TileFocalManipulator && !player.isSneaking()) {
                if (ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "FOCALMANIPULATION")) {
                   player.openGui(Thaumcraft.instance, 20, world, x, y, z);
-               } else if (!world.isRemote) {
+               } else if (Platform.getEnvironment() != Env.CLIENT) {
                   player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + StatCollector.translateToLocal("tc.researchmissing")));
                }
 
@@ -458,10 +458,10 @@ public class BlockStoneDevice extends BlockContainer {
       super.setBlockBoundsBasedOnState(world, i, j, k);
    }
 
-   public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
+   public boolean onBlockEventReceived(Level par1World, int par2, int par3, int par4, int par5, int par6) {
       if (par5 == 1) {
-         if (par1World.isRemote) {
-            Thaumcraft.proxy.blockSparkle(par1World, par2, par3, par4, 11960575, 2);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            ClientFXUtils.blockSparkle(par1World, par2, par3, par4, 11960575, 2);
             par1World.playAuxSFX(2001, par2, par3, par4, Block.getIdFromBlock(Blocks.stonebrick));
          }
 

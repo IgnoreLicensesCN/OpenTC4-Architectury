@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBrain;
@@ -104,7 +104,7 @@ public class TileJarRenderer extends TileEntitySpecialRenderer {
       if (this.field_147501_a.field_147553_e != null) {
          GL11.glPushMatrix();
          GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-         World world = te.getWorldObj();
+         World world = te.getLevel();
          RenderBlocks renderBlocks = new RenderBlocks();
          GL11.glDisable(2896);
          float level = (float)te.amount / (float)te.maxAmount * 0.625F;
@@ -116,8 +116,8 @@ public class TileJarRenderer extends TileEntitySpecialRenderer {
          }
 
          int bright = 200;
-         if (te.getWorldObj() != null) {
-            bright = Math.max(200, ConfigBlocks.blockJar.getMixedBrightnessForBlock(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord));
+         if (te.getLevel() != null) {
+            bright = Math.max(200, ConfigBlocks.blockJar.getMixedBrightnessForBlock(te.getLevel(), te.xCoord, te.yCoord, te.zCoord));
          }
 
          t.setBrightness(bright);

@@ -1,26 +1,17 @@
 package thaumcraft.common.entities.monster.boss;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AICultistHurtByTarget;
@@ -43,10 +34,10 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
       this.tasks.addTask(3, new AIAttackOnCollide(this, EntityLivingBase.class, 1.1, false));
       this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.8));
       this.tasks.addTask(7, new EntityAIWander(this, 0.8));
-      this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new AICultistHurtByTarget(this, true));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
       this.experienceValue = 40;
    }
 
@@ -93,7 +84,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
       this.setCurrentItemOrArmor(3, new ItemStack(ConfigItems.itemChestCultistLeaderPlate));
       this.setCurrentItemOrArmor(2, new ItemStack(ConfigItems.itemLegsCultistLeaderPlate));
       this.setCurrentItemOrArmor(1, new ItemStack(ConfigItems.itemBootsCultist));
-      if (this.worldObj.difficultySetting == EnumDifficulty.EASY) {
+      if (this.level().difficultySetting == Difficulty.EASY) {
          this.setCurrentItemOrArmor(0, new ItemStack(ConfigItems.itemSwordVoid));
       } else {
          this.setCurrentItemOrArmor(0, new ItemStack(ConfigItems.itemSwordCrimson));
@@ -102,7 +93,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
    }
 
    protected void enchantEquipment() {
-      float f = this.worldObj.func_147462_b(this.posX, this.posY, this.posZ);
+      float f = this.level().func_147462_b(this.posX, this.posY, this.posZ);
       if (this.getHeldItem() != null && this.rand.nextFloat() < 0.5F * f) {
          EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), (int)(7.0F + f * (float)this.rand.nextInt(22)));
       }
@@ -138,7 +129,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
    protected void updateAITasks() {
       super.updateAITasks();
 
-      for(Entity e : EntityUtils.getEntitiesInRange(this.worldObj, this.posX, this.posY, this.posZ, this, EntityCultist.class, 8.0F)) {
+      for(Entity e : EntityUtils.getEntitiesInRange(this.level(), this.posX, this.posY, this.posZ, this, EntityCultist.class, 8.0F)) {
          try {
             if (e instanceof EntityCultist && !((EntityCultist)e).isPotionActive(Potion.regeneration.id)) {
                ((EntityCultist)e).addPotionEffect(new PotionEffect(Potion.regeneration.id, 60, 1));
@@ -153,7 +144,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
       if (this.canEntityBeSeen(entitylivingbase)) {
          this.swingItem();
          this.getLookHelper().setLookPosition(entitylivingbase.posX, entitylivingbase.boundingBox.minY + (double)(entitylivingbase.height / 2.0F), entitylivingbase.posZ, 30.0F, 30.0F);
-         EntityGolemOrb blast = new EntityGolemOrb(this.worldObj, this, entitylivingbase, true);
+         EntityGolemOrb blast = new EntityGolemOrb(this.level(), this, entitylivingbase, true);
          blast.posX += blast.motionX / (double)2.0F;
          blast.posZ += blast.motionZ / (double)2.0F;
          blast.setPosition(blast.posX, blast.posY, blast.posZ);
@@ -162,7 +153,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
          double d2 = entitylivingbase.posZ - this.posZ;
          blast.setThrowableHeading(d0, d1 + (double)2.0F, d2, 0.66F, 3.0F);
          this.playSound("thaumcraft:egattack", 1.0F, 1.0F + this.rand.nextFloat() * 0.1F);
-         this.worldObj.spawnEntityInWorld(blast);
+         this.level().spawnEntityInWorld(blast);
       }
 
    }

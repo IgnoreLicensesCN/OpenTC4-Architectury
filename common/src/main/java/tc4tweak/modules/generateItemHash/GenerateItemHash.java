@@ -1,9 +1,7 @@
 package tc4tweak.modules.generateItemHash;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 
 import java.util.Arrays;
@@ -13,12 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static thaumcraft.api.ThaumcraftApi.groupedObjectTags;
+import static thaumcraft.api.ThaumcraftApi.objectTags;
 
 public class GenerateItemHash {
     private static final String DEFAULT_NAMESPACE = "oops:";
     private static final int DEFAULT_NAMESPACE_HASH_BASE = DEFAULT_NAMESPACE.hashCode() * 31;
-    private static final CustomItemStacks customItemStacksCache = new CustomItemStacks();
     private static final RangedObjectTags rangedObjectTags = new RangedObjectTags();
     private static final ThreadLocal<StringBuilder> buffer = ThreadLocal.withInitial(StringBuilder::new);
 
@@ -35,9 +32,9 @@ public class GenerateItemHash {
      * give hash as if the whole thing was a string: {@code (earlierString+Integer.toString(number)).hashCode()}
      *
      * @param hash   {@code earlierString.hashCode()}
-     * @param number the number part
+//     * @param number the number part
      */
-    private static int updateHash(int hash, int number) {
+    private static int updateHash(int hash) {
         // AbstractStringBuilder.append(int) is the only way to call into JDK's optimized int toString implementation
         // using a mutable buffer we control.
         // Integer.getChars() requires allocation and I hate it.
@@ -45,7 +42,6 @@ public class GenerateItemHash {
         // not to mention the GC savings
         StringBuilder buffer = GenerateItemHash.buffer.get();
         buffer.delete(0, buffer.length());
-        buffer.append(number);
         return updateHash(hash, buffer);
     }
 
@@ -72,96 +68,101 @@ public class GenerateItemHash {
      * ALERT!!!
      * This hashCode is persisted across server restarts. Changing it means all scanned data will be lost!
      */
-    public static int generateItemHash(Item item, int meta) {
-        ItemStack t = new ItemStack(item, 1, meta);
-
-        try {
-            if (t.isItemStackDamageable() || !t.getHasSubtypes()) {
-                meta = -1;
-            }
-        } catch (Exception ignored) {
-        }
-
-        List<Object> key = Arrays.asList(item, meta);
-        final int[] value = groupedObjectTags.get(key);
-        if (value != null) {
-            meta = value[0];
-        }
-
-        key.set(1, meta);
-        if (ThaumcraftApi.objectTags.containsKey(key)) {
-            return hash(item, meta, t);
-        }
-
-        // NOTE!! This block does not function 100% the same as vanilla TC4, but this SHOULD be the correct way to handle
-        // it.
-        // nobody uses ranged object tag specification anyway
-        if (rangedObjectTags.isEnabled()) {
-            List<int[]> ints = rangedObjectTags.getCache().get(item);
-            if (ints != null) {
-                for (int[] range : ints) {
-                    Arrays.sort(range);
-                    if (Arrays.binarySearch(range, meta) >= 0) {
-                        return hash(item, t, range);
-                    }
-                }
-            }
-        } else {
-            for (List<?> l : ThaumcraftApi.objectTags.keySet()) {
-                String name = ((Item) l.get(0)).getUnlocalizedName();
-                // this is probably not correct, but vanilla TC4 does it.
-                if (l.get(1) instanceof int[] && (Item.itemRegistry.getObject(name) == item || Block.blockRegistry.getObject(name) == Block.getBlockFromItem(item))) {
-                    int[] range = (int[]) l.get(1);
-                    Arrays.sort(range);
-                    if (Arrays.binarySearch(range, meta) >= 0) {
-                        return hash(item, t, range);
-                    }
-                }
-            }
-        }
-
-        if (meta == -1) {
-            for (int i = 0; i < 16; i++) {
-                key.set(1, i);
-                if (ThaumcraftApi.objectTags.containsKey(key))
-                    return hash(item, i, t);
-            }
-        }
-        return hash(item, meta, t);
+    public static int generateItemHash(Item item) {
+        return hash(item,item.getDefaultInstance());
+//        ItemStack t = new ItemStack(item);
+//
+////        try {
+////            if (t.isItemStackDamageable() || !t.getHasSubtypes()) {
+////                meta = -1;
+////            }
+////        } catch (Exception ignored) {
+////        }
+//
+//        Item key = item;
+////        final int[] value = objectTags.get(key);
+////        if (value != null) {
+////            meta = value[0];
+////        }
+//
+////        key.set(1, meta);
+//        if (objectTags.containsKey(key)) {
+//            return hash(item, t);
+//        }
+//
+//        // NOTE!! This block does not function 100% the same as vanilla TC4, but this SHOULD be the correct way to handle
+//        // it.
+//        // nobody uses ranged object tag specification anyway
+//        if (rangedObjectTags.isEnabled()) {
+//            List<int[]> ints = rangedObjectTags.getCache().get(item);
+//            if (ints != null) {
+//                for (int[] range : ints) {
+//                    Arrays.sort(range);
+//                    if (Arrays.binarySearch(range, meta) >= 0) {
+//                        return hash(item, t, range);
+//                    }
+//                }
+//            }
+//        } else {
+//            for (Item l: objectTags.keySet()) {
+//                String name = l.arch$registryName().toString();
+//                // this is probably not correct, but vanilla TC4 does it.
+//                if (l.get(1) instanceof int[]
+//                        && (Item.itemRegistry.getObject(name) == item
+//                        || Block.blockRegistry.getObject(name) == Block.getBlockFromItem(item))
+//                ) {
+//                    int[] range = (int[]) l.get(1);
+//                    Arrays.sort(range);
+//                    if (Arrays.binarySearch(range, meta) >= 0) {
+//                        return hash(item, t, range);
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (meta == -1) {
+//            for (int i = 0; i < 16; i++) {
+//                key.set(1, i);
+//                if (objectTags.containsKey(key))
+//                    return hash(item, i, t);
+//            }
+//        }
+//        return hash(item, meta, t);
     }
 
-    private static int hash(Item item, ItemStack t, int[] range) {
-        int hash = getUniqueIdentifierHash(item, t);
+//    private static int hash(Item item, ItemStack t, int[] range) {
+//        int hash = getUniqueIdentifierHash(item, t);
+//
+//        for (int r : range) {
+//            hash = updateHash(updateHashColon(hash);
+//        }
+//
+//        return hash;
+//    }
 
-        for (int r : range) {
-            hash = updateHash(updateHashColon(hash), r);
-        }
-
-        return hash;
-    }
-
-    private static int hash(Item item, int meta, ItemStack t) {
-        return updateHash(updateHashColon(getUniqueIdentifierHash(item, t)), meta);
+    private static int hash(Item item, ItemStack t) {
+        return updateHash(updateHashColon(getUniqueIdentifierHash(item, t)));
     }
 
     private static int getUniqueIdentifierHash(Item item, ItemStack t) {
-        if (customItemStacksCache.isEnabled()) {
-            String name = Item.itemRegistry.getNameForObject(item);
-            if (name == null)
-                return DEFAULT_NAMESPACE_HASH_BASE;
-            if (customItemStacksCache.getCache().contains(name))
-                return t.getUnlocalizedName().hashCode();
-            return name.hashCode();
-        } else {
-            try {
-                GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(item);
-                if (ui == null)
-                    return t.getUnlocalizedName().hashCode();
-                return updateHash(updateHashColon(ui.modId.hashCode()), ui.name);
-            } catch (Exception e) {
-                return DEFAULT_NAMESPACE_HASH_BASE;
-            }
-        }
+//        if (customItemStacksCache.isEnabled()) {
+//            String name = item.arch$registryName().toString();//Item.itemRegistry.getNameForObject(item);
+//            if (name == null)
+//                return DEFAULT_NAMESPACE_HASH_BASE;
+//            if (customItemStacksCache.getCache().contains(name))
+//                return name.hashCode();
+//            return name.hashCode();
+//        } else {
+//            try {
+//                GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(item);
+//                if (ui == null)
+//                    return t.getUnlocalizedName().hashCode();
+//                return updateHash(updateHashColon(ui.modId.hashCode()), ui.name);
+//            } catch (Exception e) {
+//                return DEFAULT_NAMESPACE_HASH_BASE;
+//            }
+//        }
+        return String.valueOf(item.arch$registryName()).hashCode();
     }
 
     public static void onNewObjectTag(List<?> key) {

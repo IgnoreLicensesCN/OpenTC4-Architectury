@@ -2,9 +2,9 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -33,7 +33,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
    private TileMagicBox getInventory() {
       TileEntity tile = null;
       if (this.master != null) {
-         tile = this.worldObj.getTileEntity(this.master.x, this.master.y, this.master.z);
+         tile = this.level().getTileEntity(this.master.x, this.master.y, this.master.z);
       }
 
       return tile instanceof TileMagicBox ? (TileMagicBox)tile : this;
@@ -101,7 +101,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
 
    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
       super.readFromNBT(par1NBTTagCompound);
-      NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+      NBTTagList var2 = par1NBTTagCompound.getTagList("ThaumcraftItems", 10);
       this.boxContents = new ArrayList<>();
 
       for(int var3 = 0; var3 < var2.tagCount(); ++var3) {
@@ -134,7 +134,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
            }
        }
 
-      par1NBTTagCompound.setTag("Items", var2);
+      par1NBTTagCompound.setTag("ThaumcraftItems", var2);
    }
 
    public void writeCustomNBT(NBTTagCompound par1NBTTagCompound) {
@@ -149,8 +149,8 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void updateEntity() {
@@ -189,7 +189,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
    }
 
    public void sort() {
-      if (this.getWorldObj() != null && this.sorting >= 0) {
+      if (this.getLevel() != null && this.sorting >= 0) {
          boolean done = false;
 
          while(!done) {
@@ -293,7 +293,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
       if (list.size() < 1024) {
          for(int a = 0; a < 6; ++a) {
             ForgeDirection dir = ForgeDirection.getOrientation(a);
-            TileEntity tile = this.worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+            TileEntity tile = this.level().getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
             if (tile instanceof TileMagicBox) {
                WorldCoordinates wc = new WorldCoordinates(tile);
                if (!list.contains(wc)) {

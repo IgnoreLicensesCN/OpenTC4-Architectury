@@ -1,18 +1,20 @@
 package thaumcraft.api.expands;
 
+import com.linearity.opentc4.utils.CompoundTagHelper;
+import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.LinkedHashMap;
+import java.util.function.BiFunction;
 
 public class UnmodifiableAspectList extends AspectList {
 
+    public static final AspectList EMPTY = new UnmodifiableAspectList(new AspectList());
+
     public UnmodifiableAspectList(AspectList viewingList) {
-        if (viewingList == null) {
-            this.aspects = new LinkedHashMap<>();
-        }
-        else {
-            this.aspects = viewingList.aspects;
+        if (viewingList != null) {
+            this.aspects.putAll(viewingList.getAspects());
         }
     }
 
@@ -53,6 +55,25 @@ public class UnmodifiableAspectList extends AspectList {
 
     @Override
     public boolean reduce(Aspect key, int amount) throws RuntimeException {
+        throw new RuntimeException("Unmodifiable!");
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        throw new RuntimeException("Unmodifiable!");
+    }
+
+    @Override
+    public void load(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+        throw new RuntimeException("Unmodifiable!");
+    }
+
+    public void putAllAspects(AspectList aspects) {
+        throw new RuntimeException("Unmodifiable!");
+    }
+
+    @Override
+    public void replaceAll(BiFunction<Aspect, Integer, Integer> biFunction) {
         throw new RuntimeException("Unmodifiable!");
     }
 }

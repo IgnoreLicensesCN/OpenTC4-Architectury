@@ -1,17 +1,18 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import java.awt.Color;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.BlockCustomOre;
 import thaumcraft.common.blocks.BlockCustomOreItem;
 import thaumcraft.common.config.ConfigBlocks;
+
+import java.awt.*;
 
 public class BlockCustomOreRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

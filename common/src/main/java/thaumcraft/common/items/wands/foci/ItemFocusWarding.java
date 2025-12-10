@@ -5,13 +5,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
@@ -21,7 +21,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
@@ -78,11 +78,11 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       return cost.copy();
    }
 
-   public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer player, MovingObjectPosition mop) {
-      ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+   public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player player, HitResult mop) {
+      WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       player.swingItem();
-      if (!world.isRemote && mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
-         String key = mop.blockX + ":" + mop.blockY + ":" + mop.blockZ + ":" + world.provider.dimensionId;
+      if (Platform.getEnvironment() != Env.CLIENT && mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
+         String key = mop.blockX + ":" + mop.blockY + ":" + mop.blockZ + ":" + world.dimension();
          if (delay.containsKey(key) && delay.get(key) > System.currentTimeMillis()) {
             return itemstack;
          }
@@ -109,7 +109,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
                      tw.light = (byte)ll;
                      tw.owner = player.getCommandSenderName().hashCode();
                      world.markBlockForUpdate(c.x, c.y, c.z);
-                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.provider.dimensionId, c.x, c.y, c.z, 32.0F));
+                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
                   }
                }
             }
@@ -125,7 +125,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
                      if (tw2.owner == player.getCommandSenderName().hashCode()) {
                         world.setBlock(c.x, c.y, c.z, tw2.block, tw2.blockMd, 3);
                         world.markBlockForUpdate(c.x, c.y, c.z);
-                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.provider.dimensionId, c.x, c.y, c.z, 32.0F));
+                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
                      }
                   }
                }
@@ -155,7 +155,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       }
    }
 
-   public boolean canApplyUpgrade(ItemStack focusstack, EntityPlayer player, FocusUpgradeType type, int rank) {
+   public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
       return !type.equals(FocusUpgradeType.enlarge) || this.isUpgradedWith(focusstack, FocusUpgradeType.architect);
    }
 
@@ -163,9 +163,9 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge);
    }
 
-   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, EntityPlayer player) {
+   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
       ArrayList<BlockCoordinates> out = new ArrayList<>();
-      ItemWandCasting wand = (ItemWandCasting)stack.getItem();
+      WandCastingItem wand = (WandCastingItem)stack.getItem();
       wand.getFocus(stack);
       this.checked.clear();
       boolean tiles = false;
@@ -193,7 +193,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       return out;
    }
 
-   public void checkNeighbours(World world, int x, int y, int z, BlockCoordinates pos, int side, int sizeX, int sizeY, int sizeZ, ArrayList list, EntityPlayer player, boolean tiles) {
+   public void checkNeighbours(World world, int x, int y, int z, BlockCoordinates pos, int side, int sizeX, int sizeY, int sizeZ, ArrayList list, Player player, boolean tiles) {
       if (!this.checked.contains(pos)) {
          this.checked.add(pos);
          switch (side) {
@@ -265,7 +265,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       }
    }
 
-   public boolean showAxis(ItemStack stack, World world, EntityPlayer player, int side, EnumAxis axis) {
+   public boolean showAxis(ItemStack stack, World world, Player player, int side, EnumAxis axis) {
       int dim = WandManager.getAreaDim(stack);
       if (dim == 0) {
          return true;

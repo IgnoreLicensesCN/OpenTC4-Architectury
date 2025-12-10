@@ -1,8 +1,8 @@
 package tc4tweak.modules.researchBrowser;
 
+import org.lwjgl.opengl.GL11;
 import tc4tweak.ClientUtils;
 import tc4tweak.ConfigurationHandler;
-import org.lwjgl.opengl.GL11;
 import thaumcraft.client.gui.GuiResearchBrowser;
 
 public class DrawResearchBrowserBorders {

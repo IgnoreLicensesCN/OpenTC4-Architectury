@@ -7,26 +7,26 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.tiles.TileNode;
 import thaumcraft.common.tiles.TileWardingStone;
 
@@ -228,8 +228,8 @@ public class BlockCosmeticSolid extends Block {
       if (world.getBlock(x, y, z) == this) {
          int md = world.getBlockMetadata(x, y, z);
          if (md == 2 && e instanceof EntityLivingBase) {
-            if (world.isRemote) {
-               Thaumcraft.proxy.blockSparkle(world, x, y, z, 32768, 5);
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
+               ClientFXUtils.blockSparkle(world, x, y, z, 32768, 5);
             }
 
             ((EntityLivingBase)e).addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 40, 1));
@@ -265,9 +265,9 @@ public class BlockCosmeticSolid extends Block {
       return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
    }
 
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
       if (par1World.getBlock(par2, par3, par4) == this) {
-         if (par5 == 8 && !par1World.isRemote) {
+         if (par5 == 8 && !(Platform.getEnvironment() == Env.CLIENT)) {
             TileEntity te = par1World.getTileEntity(par2, par3, par4);
             if (te instanceof INode && ((INode) te).getAspects().size() > 0) {
                for(Aspect aspect : ((INode)te).getAspects().getAspects()) {
@@ -283,7 +283,7 @@ public class BlockCosmeticSolid extends Block {
             }
          }
 
-         super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+         super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
       }
    }
 
@@ -293,18 +293,18 @@ public class BlockCosmeticSolid extends Block {
          if (md == 3) {
             if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
                for(int a = 0; a < Thaumcraft.proxy.particleCount(2); ++a) {
-                  Thaumcraft.proxy.blockRunes(world, x, (float)y + 0.7F, z, 0.2F + world.rand.nextFloat() * 0.4F, world.rand.nextFloat() * 0.3F, 0.8F + world.rand.nextFloat() * 0.2F, 20, -0.02F);
+                  Thaumcraft.blockRunes(world, x, (float)y + 0.7F, z, 0.2F + world.getRandom().nextFloat() * 0.4F, world.getRandom().nextFloat() * 0.3F, 0.8F + world.getRandom().nextFloat() * 0.2F, 20, -0.02F);
                }
             } else if (world.getBlock(x, y + 1, z) != ConfigBlocks.blockAiry && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z) || world.getBlock(x, y + 2, z) != ConfigBlocks.blockAiry && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z)) {
                for(int a = 0; a < Thaumcraft.proxy.particleCount(3); ++a) {
-                  Thaumcraft.proxy.blockRunes(world, x, (float)y + 0.7F, z, 0.9F + world.rand.nextFloat() * 0.1F, world.rand.nextFloat() * 0.3F, world.rand.nextFloat() * 0.3F, 24, -0.02F);
+                  Thaumcraft.blockRunes(world, x, (float)y + 0.7F, z, 0.9F + world.getRandom().nextFloat() * 0.1F, world.getRandom().nextFloat() * 0.3F, world.getRandom().nextFloat() * 0.3F, 24, -0.02F);
                }
             } else {
                List<Entity> list = (List<Entity>)world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(1.0F, 1.0F, 1.0F));
                if (!list.isEmpty()) {
                   for(Entity entity : list) {
-                     if (entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
-                        Thaumcraft.proxy.blockRunes(world, x, (float)y + 0.6F + world.rand.nextFloat() * Math.max(0.8F, entity.getEyeHeight()), z, 0.6F + world.rand.nextFloat() * 0.4F, 0.0F, 0.3F + world.rand.nextFloat() * 0.7F, 20, 0.0F);
+                     if (entity instanceof EntityLivingBase && !(entity instanceof Player)) {
+                        Thaumcraft.blockRunes(world, x, (float)y + 0.6F + world.getRandom().nextFloat() * Math.max(0.8F, entity.getEyeHeight()), z, 0.6F + world.getRandom().nextFloat() * 0.4F, 0.0F, 0.3F + world.getRandom().nextFloat() * 0.7F, 20, 0.0F);
                         break;
                      }
                   }

@@ -8,14 +8,14 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gnu.trove.map.TObjectDoubleMap;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gnu.trove.set.hash.TIntHashSet;
-import tc4tweak.config.StringOrderingEntry;
-import tc4tweak.modules.FlushableCache;
-import tc4tweak.modules.researchBrowser.BrowserPaging;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
+import tc4tweak.config.StringOrderingEntry;
+import tc4tweak.modules.FlushableCache;
+import tc4tweak.modules.researchBrowser.BrowserPaging;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.Thaumcraft;
 

@@ -1,24 +1,73 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated;
 
+import com.linearity.opentc4.OpenTC4CommonProxy;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.nodes.IRevealer;
 
 import java.util.function.Predicate;
 
-import static thaumcraft.client.fx.particles.migrated.particles.FXGeneric.PARTICLE_SPRITE;
+import static thaumcraft.client.fx.migrated.Particles.PARTICLE_SPRITE;
 
 public abstract class ThaumcraftParticle extends TextureSheetParticle {
 
+    public double getXD(){
+        return xd;
+    }
+    public double getYD(){
+        return yd;
+    }
+    public double getZD(){
+        return zd;
+    }
+
+    public boolean isDead(){
+        return removed;
+    }
+
+    public double entityHeight(Entity entity) {
+        var boundingBox = entity.getBoundingBox();
+        return boundingBox.maxY - boundingBox.minY;
+    }
+
+    public float getOpModViaPlayer(float defaultValue) {
+        var v = OpenTC4CommonProxy.INSTANCE.getLocalPlayer();
+        if (v != null) {
+            var equippeds = v.getArmorSlots();
+
+            for (var equipped:equippeds) {
+                if (equipped.getItem() instanceof IRevealer){
+                    return 1.0F;
+                }
+            }
+
+            if (v.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof IRevealer){
+                return 1.0F;
+            }
+            if (v.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof IRevealer){
+                return 1.0F;
+            }
+        }
+        return defaultValue;
+    }
     protected Player getClosestPlayerToEntity(Level level, float searchDistance) {
         return level.getNearestPlayer(x,y,z,searchDistance,false);
     }
@@ -52,7 +101,7 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
         this.yd = par3;
         this.zd = par5;
     }
-    public void removeIfTooFar(){
+    public boolean removeIfTooFar(){
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             // 可见距离，根据 fancyGraphics 调整
@@ -66,8 +115,10 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
             double distSq = distX * distX + distY * distY + distZ * distZ;
             if (distSq > visibleDistance * visibleDistance) {
                 this.remove();
+                return true;
             }
         }
+        return false;
 
     }
 
@@ -185,13 +236,13 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
     public void setAlphaF(float a) {
         this.alpha = a;
     }
-    public void setXD(float x) {
+    public void setXD(double x) {
         this.xd = x;
     }
-    public void setYD(float y) {
+    public void setYD(double y) {
         this.yd = y;
     }
-    public void setZD(float z) {
+    public void setZD(double z) {
         this.zd = z;
     }
     public void setScale(float scale) {
@@ -213,5 +264,58 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
 
     public void moveEntity(double x, double y, double z) {
         move(x, y, z);
+    }
+
+
+    protected void renderBakedModel(PoseStack pose, VertexConsumer vc, float alpha, BakedModel model) {
+        RandomSource rand = RandomSource.create(42);
+        PoseStack.Pose entry = pose.last();
+        float[] colors = new float[]{
+                1.0F, 1.0F, 1.0F, alpha,
+                1.0F, 1.0F, 1.0F, alpha,
+                1.0F, 1.0F, 1.0F, alpha,
+                1.0F, 1.0F, 1.0F, alpha
+        };
+
+        int fullBright = LightTexture.FULL_BRIGHT;
+        int[] lights = new int[]{
+                fullBright, fullBright, fullBright, fullBright
+        };
+
+        for (Direction dir : Direction.values()) {
+            for (BakedQuad quad : model.getQuads(null, dir, rand)) {
+                vc.putBulkData(
+                        entry,
+                        quad,
+                        colors,
+                        1.0F, 1.0F, 1.0F,
+                        lights,
+                        OverlayTexture.NO_OVERLAY,
+                        false
+                );
+            }
+        }
+
+        for (BakedQuad quad : model.getQuads(null, null, rand)) {
+            vc.putBulkData(
+                    entry,
+                    quad,
+                    colors,
+                    1.0F, 1.0F, 1.0F,
+                    lights,
+                    OverlayTexture.NO_OVERLAY,
+                    false
+            );
+        }
+    }
+    public void setPosition(double x,double y,double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    public void setVelocity(double x, double y, double z) {
+        this.xd = x;
+        this.yd = y;
+        this.zd = z;
     }
 }

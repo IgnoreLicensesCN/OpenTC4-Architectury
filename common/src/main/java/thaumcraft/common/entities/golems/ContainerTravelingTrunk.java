@@ -1,11 +1,11 @@
 package thaumcraft.common.entities.golems;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ContainerTravelingTrunk extends Container {
    private InventoryTrunk mobInv;
@@ -34,10 +34,10 @@ public class ContainerTravelingTrunk extends Container {
       }
 
       trunk.setOpen(true);
-      trunk.worldObj.playSoundAtEntity(trunk, "random.chestopen", 0.5F, trunk.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+      trunk.level().playSoundAtEntity(trunk, "random.chestopen", 0.5F, trunk.level().rand.nextFloat() * 0.1F + 0.9F);
    }
 
-   public boolean enchantItem(EntityPlayer par1EntityPlayer, int button) {
+   public boolean enchantItem(Player par1Player, int button) {
       if (button == 1) {
          this.trunk.setStay(!this.trunk.getStay());
          return true;
@@ -46,7 +46,7 @@ public class ContainerTravelingTrunk extends Container {
       }
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -70,13 +70,13 @@ public class ContainerTravelingTrunk extends Container {
       return itemstack;
    }
 
-   public boolean canInteractWith(EntityPlayer entityplayer) {
+   public boolean canInteractWith(Player Player) {
       return true;
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
       this.trunk.setOpen(false);
-      this.trunk.worldObj.playSoundAtEntity(this.trunk, "random.chestclosed", 0.5F, this.trunk.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+      this.trunk.level().playSoundAtEntity(this.trunk, "random.chestclosed", 0.5F, this.trunk.level().rand.nextFloat() * 0.1F + 0.9F);
    }
 }

@@ -4,11 +4,11 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AICultistHurtByTarget;
@@ -22,10 +22,10 @@ public class EntityCultistKnight extends EntityCultist {
       this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
       this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.8));
       this.tasks.addTask(7, new EntityAIWander(this, 0.8));
-      this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new AICultistHurtByTarget(this, true));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
    }
 
    protected void applyEntityAttributes() {
@@ -38,7 +38,7 @@ public class EntityCultistKnight extends EntityCultist {
       this.setCurrentItemOrArmor(3, new ItemStack(ConfigItems.itemChestCultistPlate));
       this.setCurrentItemOrArmor(2, new ItemStack(ConfigItems.itemLegsCultistPlate));
       this.setCurrentItemOrArmor(1, new ItemStack(ConfigItems.itemBootsCultist));
-      if (this.rand.nextFloat() < (this.worldObj.difficultySetting == EnumDifficulty.HARD ? 0.05F : 0.01F)) {
+      if (this.rand.nextFloat() < (this.level().difficultySetting == Difficulty.HARD ? 0.05F : 0.01F)) {
          int i = this.rand.nextInt(5);
          if (i == 0) {
             this.setCurrentItemOrArmor(0, new ItemStack(ConfigItems.itemSwordVoid));
@@ -56,7 +56,7 @@ public class EntityCultistKnight extends EntityCultist {
    }
 
    protected void enchantEquipment() {
-      float f = this.worldObj.func_147462_b(this.posX, this.posY, this.posZ);
+      float f = this.level().func_147462_b(this.posX, this.posY, this.posZ);
       if (this.getHeldItem() != null && this.rand.nextFloat() < 0.25F * f) {
          EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), (int)(5.0F + f * (float)this.rand.nextInt(18)));
       }

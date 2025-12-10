@@ -1,7 +1,6 @@
 package thaumcraft.client.renderers.entity;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import java.util.Random;
+
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
@@ -9,13 +8,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.entities.EntitySpecialItem;
+
+import java.util.Random;
 
 public class RenderSpecialItem extends Render {
    private RenderBlocks renderBlocks = new RenderBlocks();
@@ -85,7 +86,7 @@ public class RenderSpecialItem extends Render {
       ri.setRenderManager(RenderManager.instance);
       ItemStack var10 = par1EntityItem.getEntityItem();
       if (var10 != null) {
-         EntityItem ei = new EntityItem(par1EntityItem.worldObj, par1EntityItem.posX, par1EntityItem.posY, par1EntityItem.posZ, var10);
+         EntityItem ei = new EntityItem(par1EntityItem.level(), par1EntityItem.posX, par1EntityItem.posY, par1EntityItem.posZ, var10);
          ei.age = par1EntityItem.age;
          ei.hoverStart = par1EntityItem.hoverStart;
          ri.doRender(ei, par2, par4, par6, par8, par9);

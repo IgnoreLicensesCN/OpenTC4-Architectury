@@ -6,22 +6,23 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityFallingTaint;
@@ -120,7 +121,7 @@ public class BlockTaint extends Block {
    }
 
    public void updateTick(World world, int x, int y, int z, Random random) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int md = world.getBlockMetadata(x, y, z);
          if (md == 2) {
             return;
@@ -170,7 +171,7 @@ public class BlockTaint extends Block {
                      EntityTaintSporeSwarmer spore = new EntityTaintSporeSwarmer(world);
                      spore.setLocationAndAngles((float)x + 0.5F, y, (float)z + 0.5F, 0.0F, 0.0F);
                      world.spawnEntityInWorld(spore);
-                     world.playSoundAtEntity(spore, "thaumcraft:roots", 0.1F, 0.9F + world.rand.nextFloat() * 0.2F);
+                     world.playSoundAtEntity(spore, "thaumcraft:roots", 0.1F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                   }
                } else {
                   boolean doIt = world.getBlock(x, y + 1, z) == this;
@@ -185,12 +186,12 @@ public class BlockTaint extends Block {
                   }
 
                   if (doIt) {
-                     world.setBlock(x, y, z, ConfigBlocks.blockFluxGoo, ((BlockFluxGoo)ConfigBlocks.blockFluxGoo).getQuanta(), 3);
+                     world.setBlock(x, y, z, ConfigBlocks.blockFluxGoo, ((FluxGooBlock)ConfigBlocks.blockFluxGoo).getQuanta(), 3);
                   }
                }
             }
          } else if (md == 0 && random.nextInt(20) == 0) {
-            world.setBlock(x, y, z, ConfigBlocks.blockFluxGoo, ((BlockFluxGoo)ConfigBlocks.blockFluxGoo).getQuanta(), 3);
+            world.setBlock(x, y, z, ConfigBlocks.blockFluxGoo, ((FluxGooBlock)ConfigBlocks.blockFluxGoo).getQuanta(), 3);
          } else if (md == 1 && random.nextInt(10) == 0) {
             world.setBlock(x, y, z, Blocks.dirt, 0, 3);
          }
@@ -206,11 +207,11 @@ public class BlockTaint extends Block {
       return 0;
    }
 
-   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+   public ItemStack getPickBlock(HitResult target, World world, int x, int y, int z) {
       return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
    }
 
-   public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
+   public boolean canSilkHarvest(World world, Player player, int x, int y, int z, int metadata) {
       return metadata == 2 || super.canSilkHarvest(world, player, x, y, z, metadata);
    }
 
@@ -258,12 +259,12 @@ public class BlockTaint extends Block {
       }
    }
 
-   private boolean tryToFall(World par1World, int x, int y, int z, int x2, int y2, int z2) {
+   private boolean tryToFall(Level par1World, int x, int y, int z, int x2, int y2, int z2) {
       int md = par1World.getBlockMetadata(x, y, z);
       if (canFallBelow(par1World, x2, y2 - 1, z2) && y2 >= 0) {
          byte b0 = 32;
          if (par1World.checkChunksExist(x2 - b0, y2 - b0, z2 - b0, x2 + b0, y2 + b0, z2 + b0)) {
-            if (!par1World.isRemote) {
+            if (!(Platform.getEnvironment() == Env.CLIENT)) {
                EntityFallingTaint entityfalling = new EntityFallingTaint(par1World, (float)x2 + 0.5F, (float)y2 + 0.5F, (float)z2 + 0.5F, this, md, x, y, z);
                this.onStartFalling(entityfalling);
                par1World.spawnEntityInWorld(entityfalling);
@@ -288,10 +289,10 @@ public class BlockTaint extends Block {
    public void onEntityWalking(World world, int i, int j, int k, Entity entity) {
       int md = world.getBlockMetadata(i, j, k);
       if (md != 2) {
-         if (!world.isRemote && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
-            if (entity instanceof EntityPlayer && world.rand.nextInt(100) == 0) {
+         if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
+            if (entity instanceof Player && world.getRandom().nextInt(100) == 0) {
                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 80, 0, false));
-            } else if (!(entity instanceof EntityPlayer) && world.rand.nextInt(20) == 0) {
+            } else if (!(entity instanceof Player) && world.getRandom().nextInt(20) == 0) {
                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 160, 0, false));
             }
          }
@@ -303,22 +304,22 @@ public class BlockTaint extends Block {
    protected void onStartFalling(EntityFallingTaint entityfalling) {
    }
 
-   public void onFinishFalling(World par1World, int par2, int par3, int par4, int par5) {
+   public void onFinishFalling(Level par1World, int par2, int par3, int par4, int par5) {
    }
 
    @SideOnly(Side.CLIENT)
    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
       int md = world.getBlockMetadata(i, j, k);
       if (md == 0 && world.isAirBlock(i, j - 1, k) && random.nextInt(10) == 0) {
-         Thaumcraft.proxy.dropletFX(world, (float)i + 0.1F + world.rand.nextFloat() * 0.8F, (float)j, (float)k + 0.1F + world.rand.nextFloat() * 0.8F, 0.3F, 0.1F, 0.8F);
+         Thaumcraft.proxy.dropletFX(world, (float)i + 0.1F + world.getRandom().nextFloat() * 0.8F, (float)j, (float)k + 0.1F + world.getRandom().nextFloat() * 0.8F, 0.3F, 0.1F, 0.8F);
       }
 
    }
 
    public boolean onBlockEventReceived(World world, int x, int y, int z, int id, int cd) {
       if (id == 1) {
-         if (world.isRemote) {
-            world.playSound(x, y, z, "thaumcraft:roots", 0.1F, 0.9F + world.rand.nextFloat() * 0.2F, false);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            world.playSound(x, y, z, "thaumcraft:roots", 0.1F, 0.9F + world.getRandom().nextFloat() * 0.2F, false);
          }
 
          return true;

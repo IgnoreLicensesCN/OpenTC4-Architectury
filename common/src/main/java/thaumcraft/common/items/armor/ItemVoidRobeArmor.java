@@ -2,34 +2,31 @@ package thaumcraft.common.items.armor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.EnumAction;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ISpecialArmor;
-import thaumcraft.api.IGoggles;
-import thaumcraft.api.IRepairable;
-import thaumcraft.api.IRunicArmor;
-import thaumcraft.api.IVisDiscountGear;
-import thaumcraft.api.IWarpingGear;
+import thaumcraft.api.*;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.client.renderers.models.gear.ModelRobe;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
+
+import java.util.List;
 
 public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicArmor, IVisDiscountGear, IGoggles, IRevealer, ISpecialArmor, IWarpingGear {
    public IIcon iconHelm;
@@ -65,26 +62,26 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
       return EnumRarity.epic;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
       super.addInformation(stack, player, list, par4);
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 16)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.VOID_INGOT,1)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
    public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
       super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_);
-      if (!world.isRemote && stack.isItemDamaged() && entity.ticksExisted % 20 == 0 && entity instanceof EntityLivingBase) {
+      if (Platform.getEnvironment() != Env.CLIENT && stack.isItemDamaged() && entity.ticksExisted % 20 == 0 && entity instanceof EntityLivingBase) {
          stack.damageItem(-1, (EntityLivingBase)entity);
       }
 
    }
 
-   public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
+   public void onArmorTick(World world, Player player, ItemStack armor) {
       super.onArmorTick(world, player, armor);
-      if (!world.isRemote && armor.getItemDamage() > 0 && player.ticksExisted % 20 == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && armor.getItemDamage() > 0 && player.ticksExisted % 20 == 0) {
          armor.damageItem(-1, player);
       }
 
@@ -104,7 +101,7 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
       return type == 0;
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return 5;
    }
 
@@ -138,8 +135,8 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
          this.model.isChild = entityLiving.isChild();
          this.model.aimedBow = false;
          this.model.heldItemRight = entityLiving.getHeldItem() != null ? 1 : 0;
-         if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).getItemInUseDuration() > 0) {
-            EnumAction enumaction = ((EntityPlayer)entityLiving).getItemInUse().getItemUseAction();
+         if (entityLiving instanceof Player && ((Player)entityLiving).getItemInUseDuration() > 0) {
+            EnumAction enumaction = ((Player)entityLiving).getItemInUse().getItemUseAction();
             if (enumaction == EnumAction.block) {
                this.model.heldItemRight = 3;
             } else if (enumaction == EnumAction.bow) {
@@ -214,7 +211,7 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
       return new ISpecialArmor.ArmorProperties(priority, ratio, armor.getMaxDamage() + 1 - armor.getItemDamage());
    }
 
-   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+   public int getArmorDisplay(Player player, ItemStack armor, int slot) {
       return this.damageReduceAmount;
    }
 
@@ -225,8 +222,8 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
 
    }
 
-   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-      if (!world.isRemote && world.getBlock(x, y, z) == Blocks.cauldron && world.getBlockMetadata(x, y, z) > 0) {
+   public boolean onItemUseFirst(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+      if (Platform.getEnvironment() != Env.CLIENT && world.getBlock(x, y, z) == Blocks.cauldron && world.getBlockMetadata(x, y, z) > 0) {
          this.removeColor(stack);
          world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) - 1, 2);
          world.func_147453_f(x, y, z, Blocks.cauldron);
@@ -236,7 +233,7 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicA
       }
    }
 
-   public int getWarp(ItemStack itemstack, EntityPlayer player) {
+   public int getWarp(ItemStack itemstack, Player player) {
       return 2;
    }
 }

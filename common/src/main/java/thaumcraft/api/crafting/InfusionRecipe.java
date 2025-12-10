@@ -1,14 +1,19 @@
 package thaumcraft.api.crafting;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
-import tc4tweak.ConfigurationHandler;
+import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
+import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
+import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 /**
  * <p>i have to say it's a fool idea to write like this.</p>
@@ -21,56 +26,63 @@ import java.util.ArrayList;
  * </p>
  * --IgnoreLicensesCN
  * **/
-public class InfusionRecipe
+public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample
 {
 	protected AspectList aspects;
 	protected String research;
-	private ItemStack[] components;
-	private ItemStack recipeInput;
-	protected Object recipeOutput;
+	private final RecipeItemMatcher[] components;
+	private final RecipeItemMatcher recipeInput;
+	private final RecipeItemMatcher recipeOutputMatcher;
+//	protected Object recipeOutput;
+
+	//the last in ItemStack[] will be in center
+	protected Function<ItemStack[],ItemStack> recipeOutputGenerator;
 	protected int instability;
 	
-	public InfusionRecipe(String research, Object output, int inst,
-			AspectList aspects2, ItemStack input, ItemStack[] recipe) {
+	public InfusionRecipe(String research,Function<ItemStack[],ItemStack> recipeOutputGenerator, int inst,
+			AspectList aspects2, RecipeItemMatcher input, RecipeItemMatcher[] recipe,RecipeItemMatcher outputMatcher) {
 		this.research = research;
-		this.recipeOutput = output;
+//		this.recipeOutput = output;
+		this.recipeOutputGenerator = recipeOutputGenerator;
 		this.recipeInput = input;
 		this.aspects = aspects2;
 		this.components = recipe;
+		this.componentsSampleArr = new ItemStack[components.length];
+		this.recipeInputSampleArr = new ItemStack[components.length + 1];
 		this.instability = inst;
+		this.recipeOutputMatcher = outputMatcher;
 	}
 
 	/**
      * Used to check if a recipe matches current crafting inventory
      * @param player 
      */
-	public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, Player player) {
-		if (getRecipeInput()==null) return false;
+	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player) {
+
 			
-		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), research)) {
+		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), research)) {
     		return false;
     	}
-		
-		ItemStack i2 = central.copy();
-		if (getRecipeInput().getItemDamage()==OreDictionary.WILDCARD_VALUE) {
-			i2.setItemDamage(OreDictionary.WILDCARD_VALUE);
+
+		if (input.size() != components.length) {
+			return false;
 		}
 		
-		if (!areItemStacksEqual(i2, getRecipeInput(), true)) return false;
-		
-		ArrayList<ItemStack> ii = new ArrayList<>();
+		ItemStack i2 = central.copy();
+		if (!recipeInput.matches(i2)) {
+			return false;
+		}
+
+		List<ItemStack> ii = new ArrayList<>();
 		for (ItemStack is:input) {
 			ii.add(is.copy());
 		}
 		
-		for (ItemStack comp:getComponents()) {
+		for (RecipeItemMatcher matcher:components) {
 			boolean b=false;
 			for (int a=0;a<ii.size();a++) {
 				 i2 = ii.get(a).copy();
-				if (comp.getItemDamage()==OreDictionary.WILDCARD_VALUE) {
-					i2.setItemDamage(OreDictionary.WILDCARD_VALUE);
-				}
-				if (areItemStacksEqual(i2, comp,true)) {
+				if (matcher.matches(i2)) {
 					ii.remove(a);
 					b=true;
 					break;
@@ -81,47 +93,47 @@ public class InfusionRecipe
 		return ii.isEmpty();
     }
 	
-	public static boolean areItemStacksEqual(ItemStack playerInput, ItemStack recipeSpec, boolean fuzzy)
-    {
-		if (playerInput == null) {
-			return recipeSpec == null;
-		}
-		if (recipeSpec == null) return false;
-		if (!ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec)) return false;
-		if (fuzzy) {
-			if (ConfigurationHandler.INSTANCE.getInfusionOreDictMode().test(playerInput, recipeSpec)) {
-				return true;
-			}
-		}
-
-		return playerInput.getItem() == recipeSpec.getItem() &&
-				(playerInput.getItemDamage() == recipeSpec.getItemDamage() || recipeSpec.getItemDamage() == 32767) &&
-				playerInput.stackSize <= playerInput.getMaxStackSize();
-//		if (playerInput==null && recipeSpec!=null) return false;
-//		if (playerInput!=null && recipeSpec==null) return false;
-//		if (playerInput==null && recipeSpec==null) return true;
-//
-//		//nbt
-//		boolean t1=ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec);
-//		if (!t1) return false;
-//
+//	public static boolean areItemStacksEqual(ItemStack playerInput, ItemStack recipeSpec, boolean fuzzy)
+//    {
+//		if (playerInput == null) {
+//			return recipeSpec == null;
+//		}
+//		if (recipeSpec == null) return false;
+//		if (!ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec)) return false;
 //		if (fuzzy) {
-//			int od = OreDictionary.getOreID(playerInput);
-//			if (od!=-1) {
-//				ItemStack[] ores = OreDictionary.getOres(od).toArray(new ItemStack[]{});
-//				if (ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{recipeSpec}, ores))
-//					return true;
+//			if (ConfigurationHandler.INSTANCE.getInfusionOreDictMode().test(playerInput, recipeSpec)) {
+//				return true;
 //			}
 //		}
 //
-//		//damage
-//		boolean damage = playerInput.getItemDamage() == recipeSpec.getItemDamage() ||
-//				recipeSpec.getItemDamage() == OreDictionary.WILDCARD_VALUE;
-//
-//        return playerInput.getItem() == recipeSpec.getItem() && (damage && playerInput.stackSize <= playerInput.getMaxStackSize());
-    }
+//		return playerInput.getItem() == recipeSpec.getItem() &&
+//				(playerInput.getDamageValue() == recipeSpec.getDamageValue() || recipeSpec.getDamageValue() == 32767) &&
+//				playerInput.getCount() <= playerInput.getMaxStackSize();
+////		if (playerInput==null && recipeSpec!=null) return false;
+////		if (playerInput!=null && recipeSpec==null) return false;
+////		if (playerInput==null && recipeSpec==null) return true;
+////
+////		//nbt
+////		boolean t1=ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec);
+////		if (!t1) return false;
+////
+////		if (fuzzy) {
+////			int od = OreDictionary.getOreID(playerInput);
+////			if (od!=-1) {
+////				ItemStack[] ores = OreDictionary.getOres(od).toArray(new ItemStack[]{});
+////				if (ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{recipeSpec}, ores))
+////					return true;
+////			}
+////		}
+////
+////		//damage
+////		boolean damage = playerInput.getDamageValue() == recipeSpec.getDamageValue() ||
+////				recipeSpec.getDamageValue() == OreDictionary.WILDCARD_VALUE;
+////
+////        return playerInput.getItem() == recipeSpec.getItem() && (damage && playerInput.stackSize <= playerInput.getMaxStackSize());
+//    }
 	   
-    public Object getRecipeOutput() {
+    public ItemStack getRecipeOutput() {
 		return getRecipeOutput(this.getRecipeInput());
     }
     
@@ -138,15 +150,25 @@ public class InfusionRecipe
     }
     
 	public ItemStack getRecipeInput() {
-		return recipeInput;
+		return pickByTime(recipeInput.getAvailableItemStackSample());
+//		List<ItemStack> sample = recipeInput.getAvailableItemStackSample();
+//		return sample.get(indexByTime(sample.size()));
 	}
 
+	private final ItemStack[] componentsSampleArr;
 	public ItemStack[] getComponents() {
-		return components;
+		for (int i=0;i<components.length;i++) {
+			componentsSampleArr[i] = pickByTime(components[i].getAvailableItemStackSample());
+		}
+		return componentsSampleArr;
 	}
 	
-	public Object getRecipeOutput(ItemStack input) {
-		return recipeOutput;
+	public ItemStack getRecipeOutput(ItemStack input) {
+		recipeInputSampleArr[recipeInputSampleArr.length-1] = input;
+		for (int i=0;i<components.length;i++) {
+			recipeInputSampleArr[i] = pickByTime(components[i].getAvailableItemStackSample());
+		}
+		return recipeOutputGenerator.apply(recipeInputSampleArr);
     }
     
     public AspectList getAspects(ItemStack input) {
@@ -156,4 +178,24 @@ public class InfusionRecipe
     public int getInstability(ItemStack input) {
 		return instability;
     }
+
+	private final ItemStack[] recipeInputSampleArr;
+	@Override
+	public ItemStack[] getInputSample() {
+		recipeInputSampleArr[recipeInputSampleArr.length-1] = getRecipeInput();
+		for (int i=0;i<components.length;i++) {
+			recipeInputSampleArr[i] = pickByTime(components[i].getAvailableItemStackSample());
+		}
+		return recipeInputSampleArr;
+	}
+
+	@Override
+	public ItemStack[] getOutputSample(ItemStack[] inputSample) {
+		return new ItemStack[0];
+	}
+
+	@Override
+	public boolean matchViaOutput(ItemStack res) {
+		return recipeOutputMatcher.matches(res);
+	}
 }

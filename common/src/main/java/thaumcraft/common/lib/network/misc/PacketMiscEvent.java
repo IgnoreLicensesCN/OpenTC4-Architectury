@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.client.lib.RenderEventHandler;
 
@@ -38,7 +38,7 @@ public class PacketMiscEvent implements IMessage, IMessageHandler<PacketMiscEven
       switch (message.type) {
          case 0:
             ClientTickEventsFML.warpVignette = 100;
-            p.worldObj.playSound(p.posX, p.posY, p.posZ, "thaumcraft:heartbeat", 1.0F, 1.0F, false);
+            p.level().playSound(p.posX, p.posY, p.posZ, "thaumcraft:heartbeat", 1.0F, 1.0F, false);
             break;
          case 1:
             RenderEventHandler.fogFiddled = true;

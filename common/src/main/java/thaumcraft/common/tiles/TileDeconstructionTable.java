@@ -2,9 +2,9 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import thaumcraft.api.TileThaumcraft;
@@ -82,7 +82,7 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
       this.aspect = Aspect.getAspect(nbttagcompound.getString("Aspect"));
-      NBTTagList nbttaglist = nbttagcompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbttagcompound.getTagList("ThaumcraftItems", 10);
       this.itemStacks = new ItemStack[this.getSizeInventory()];
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -111,7 +111,7 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
          }
       }
 
-      nbttagcompound.setTag("Items", nbttaglist);
+      nbttagcompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public void readFromNBT(NBTTagCompound nbtCompound) {
@@ -145,7 +145,7 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
 
    public void updateEntity() {
       boolean flag1 = false;
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.breaktime == 0 && this.canBreak()) {
             this.breaktime = 40;
             flag1 = true;
@@ -164,7 +164,7 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
       }
 
       if (flag1) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 
@@ -185,8 +185,8 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
          AspectList al = ThaumcraftCraftingManager.getObjectTags(this.itemStacks[0]);
          al = ThaumcraftCraftingManager.getBonusTags(this.itemStacks[0], al);
          AspectList primals = ResearchManager.reduceToPrimals(al);
-         if (this.worldObj.rand.nextInt(80) < primals.visSize()) {
-            this.aspect = primals.getAspects()[this.worldObj.rand.nextInt(primals.getAspects().length)];
+         if (this.level().rand.nextInt(80) < primals.visSize()) {
+            this.aspect = primals.getAspects()[this.level().rand.nextInt(primals.getAspects().length)];
          }
 
          --this.itemStacks[0].stackSize;
@@ -197,8 +197,8 @@ public class TileDeconstructionTable extends TileThaumcraft implements ISidedInv
 
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {

@@ -7,23 +7,24 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.world.level.Level;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemEldritchObject;
+import thaumcraft.common.items.misc.EldritchEyeItem;
+import thaumcraft.common.items.misc.RunedTabletItem;
 import thaumcraft.common.tiles.*;
 
 import java.util.ArrayList;
@@ -168,7 +169,7 @@ public class BlockEldritch extends BlockContainer {
    public ArrayList getDrops(World world, int x, int y, int z, int md, int fortune) {
       ArrayList<ItemStack> ret = new ArrayList<>();
       if (md == 5) {
-         ret.add(new ItemStack(ConfigItems.itemResource, 1, 9));
+         ret.add(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT));
          return ret;
       } else {
          return super.getDrops(world, x, y, z, md, fortune);
@@ -176,7 +177,7 @@ public class BlockEldritch extends BlockContainer {
    }
 
    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-      if (!world.isRemote && meta < 4) {
+      if (Platform.getEnvironment() != Env.CLIENT && meta < 4) {
          for(int xx = x - 3; xx <= x + 3; ++xx) {
             for(int yy = y - 2; yy <= y + 2; ++yy) {
                for(int zz = z - 3; zz <= z + 3; ++zz) {
@@ -221,9 +222,10 @@ public class BlockEldritch extends BlockContainer {
       }
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);
-      if (metadata == 0 && !world.isRemote && !player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemEldritchObject && player.getHeldItem().getItemDamage() == 0) {
+      //TODO:Split these two into different class.
+      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof EldritchEyeItem eyeItem) {
          TileEntity te = world.getTileEntity(x, y, z);
          if (te instanceof TileEldritchAltar) {
             TileEldritchAltar tile = (TileEldritchAltar)te;
@@ -243,16 +245,17 @@ public class BlockEldritch extends BlockContainer {
          }
       }
 
-      if (metadata == 8 && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemEldritchObject && player.inventory.getCurrentItem().getItemDamage() == 2) {
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileEldritchLock && ((TileEldritchLock) te).count < 0) {
-            ((TileEldritchLock)te).count = 0;
-            world.markBlockForUpdate(x, y, z);
-            te.markDirty();
-            --player.getHeldItem().stackSize;
-            world.playSoundEffect(x, y, z, "thaumcraft:runicShieldCharge", 1.0F, 1.0F);
-         }
-      }
+//      if (metadata == 8 && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof RunedTabletItem) {
+//         //TODO:Migrate this "door-opening" logic to RunedTabletItem
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileEldritchLock && ((TileEldritchLock) te).count < 0) {
+//            ((TileEldritchLock)te).count = 0;
+//            world.markBlockForUpdate(x, y, z);
+//            te.markDirty();
+//            --player.getHeldItem().stackSize;
+//            world.playSoundEffect(x, y, z, "thaumcraft:runic_shield_charge", 1.0F, 1.0F);
+//         }
+//      }
 
       return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
    }
@@ -269,13 +272,14 @@ public class BlockEldritch extends BlockContainer {
          FXSpark ef = new FXSpark(w, (float)i + w.rand.nextFloat(), (float)j + w.rand.nextFloat(), (float)k + w.rand.nextFloat(), 0.5F);
          ef.setRBGColorF(0.65F + w.rand.nextFloat() * 0.1F, 1.0F, 1.0F);
          ef.setAlphaF(0.8F);
-         ParticleEngine.instance.addEffect(w, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       } else if (md == 10) {
          int x = i + r.nextInt(2) - r.nextInt(2);
          int y = j + r.nextInt(2) - r.nextInt(2);
          int z = k + r.nextInt(2) - r.nextInt(2);
          if (w.isAirBlock(x, y, z)) {
-            Thaumcraft.proxy.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
+            Thaumcraft.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
          }
       }
 

@@ -1,17 +1,30 @@
 package com.linearity.opentc4.forge;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.PlatformUniqueUtils;
 import dev.architectury.platform.forge.EventBuses;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(OpenTC4.MOD_ID)
 public final class OpenTC4Forge {
+
+    static PlatformUniqueUtilsForge platformUniqueUtilsForge = new PlatformUniqueUtilsForge();
+
     public OpenTC4Forge() {
         // Submit our event bus to let Architectury API register our content on the right time.
         EventBuses.registerModEventBus(OpenTC4.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
 
         // Run our common setup.
-        OpenTC4.init();
+        OpenTC4.init(platformUniqueUtilsForge);
     }
+    @SubscribeEvent
+    public static void onServerStarting(FMLClientSetupEvent event) {
+        OpenTC4.onClientStarting();
+    }
+
 }

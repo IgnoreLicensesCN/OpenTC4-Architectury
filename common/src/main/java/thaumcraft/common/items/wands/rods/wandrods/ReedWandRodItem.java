@@ -5,16 +5,16 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.CraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsWandRod;
-import thaumcraft.common.items.wands.ThaumcraftAspectRegenWandRodItem;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
 import java.util.Collections;
 import java.util.Map;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
-public class BoneWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, CraftingCostAspectOwner {
-    public BoneWandRodItem() {
-        super(new Properties(), Map.of(Aspect.ENTROPY,7));
+public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, CraftingCostAspectOwner {
+    public ReedWandRodItem() {
+        super(new Properties(), Map.of(Aspect.AIR,7));
     }
 
     private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(75));

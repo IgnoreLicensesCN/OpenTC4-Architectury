@@ -1,6 +1,6 @@
 package thaumcraft.client.lib;
 
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 
 public class QuadHelper {

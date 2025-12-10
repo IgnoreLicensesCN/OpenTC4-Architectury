@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -128,7 +128,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
       if (itemstack.getItemDamage() == 0 && bi == ConfigBlocks.blockMetalDevice && md == 1) {
          TileAlembic tile = (TileAlembic)world.getTileEntity(x, y, z);
          if (tile.amount >= 8) {
-            if (world.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                player.swingItem();
                return false;
             }
@@ -151,7 +151,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
       if (itemstack.getItemDamage() == 0 && bi == ConfigBlocks.blockJar && (md == 0 || md == 3)) {
          TileJarFillable tile = (TileJarFillable)world.getTileEntity(x, y, z);
          if (tile.amount >= 8) {
-            if (world.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                player.swingItem();
                return false;
             }
@@ -178,7 +178,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
          if (itemstack.getItemDamage() != 0 && bi == ConfigBlocks.blockJar && (md == 0 || md == 3)) {
             TileJarFillable tile = (TileJarFillable)world.getTileEntity(x, y, z);
             if (tile.amount <= tile.maxAmount - 8 && tile.doesContainerAccept(aspect)) {
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   player.swingItem();
                   return false;
                }

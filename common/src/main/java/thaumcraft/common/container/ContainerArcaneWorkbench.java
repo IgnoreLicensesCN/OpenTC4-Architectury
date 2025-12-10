@@ -1,14 +1,14 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingManager;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.tiles.TileArcaneWorkbench;
 
@@ -52,13 +52,13 @@ public class ContainerArcaneWorkbench extends Container {
 
       this.tileEntity.setInventorySlotContentsSoftly(
               9,
-              getNormalCraftingRecipeOutput(CraftingManager.getInstance(),ic, this.tileEntity.getWorldObj())
+              getNormalCraftingRecipeOutput(CraftingManager.getInstance(),ic, this.tileEntity.getLevel())
       );
       if (this.tileEntity.getStackInSlot(9) == null
               && this.tileEntity.getStackInSlot(10) != null
-              && this.tileEntity.getStackInSlot(10).getItem() instanceof ItemWandCasting
+              && this.tileEntity.getStackInSlot(10).getItem() instanceof WandCastingItem
       ) {
-         ItemWandCasting wand = (ItemWandCasting)this.tileEntity.getStackInSlot(10).getItem();
+         WandCastingItem wand = (WandCastingItem)this.tileEntity.getStackInSlot(10).getItem();
          if (wand.consumeAllVisCrafting(
                  this.tileEntity.getStackInSlot(10), this.ip.player,
                  ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.tileEntity, this.ip.player), false)) {
@@ -68,19 +68,19 @@ public class ContainerArcaneWorkbench extends Container {
 
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
-      if (!this.tileEntity.getWorldObj().isRemote) {
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
+      if (Platform.getEnvironment() != Env.CLIENT) {
          this.tileEntity.eventHandler = null;
       }
 
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.tileEntity.getWorldObj().getTileEntity(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord) == this.tileEntity && par1EntityPlayer.getDistanceSq((double) this.tileEntity.xCoord + (double) 0.5F, (double) this.tileEntity.yCoord + (double) 0.5F, (double) this.tileEntity.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean canInteractWith(Player par1Player) {
+      return this.tileEntity.getLevel().getTileEntity(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord) == this.tileEntity && par1Player.getDistanceSq((double) this.tileEntity.xCoord + (double) 0.5F, (double) this.tileEntity.yCoord + (double) 0.5F, (double) this.tileEntity.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1) {
+   public ItemStack transferStackInSlot(Player par1Player, int par1) {
       ItemStack var2 = null;
       Slot var3 = (Slot)this.inventorySlots.get(par1);
       if (var3 != null && var3.getHasStack()) {
@@ -93,7 +93,7 @@ public class ContainerArcaneWorkbench extends Container {
 
             var3.onSlotChange(var4, var2);
          } else if (par1 >= 11 && par1 < 38) {
-            if (var4.getItem() instanceof ItemWandCasting && !((ItemWandCasting)var4.getItem()).isStaff(var4)) {
+            if (var4.getItem() instanceof WandCastingItem && !((WandCastingItem)var4.getItem()).isStaff(var4)) {
                if (!this.mergeItemStack(var4, 1, 2, false)) {
                   return null;
                }
@@ -103,7 +103,7 @@ public class ContainerArcaneWorkbench extends Container {
                return null;
             }
          } else if (par1 >= 38 && par1 < 47) {
-            if (var4.getItem() instanceof ItemWandCasting && !((ItemWandCasting)var4.getItem()).isStaff(var4)) {
+            if (var4.getItem() instanceof WandCastingItem && !((WandCastingItem)var4.getItem()).isStaff(var4)) {
                if (!this.mergeItemStack(var4, 1, 2, false)) {
                   return null;
                }
@@ -132,7 +132,7 @@ public class ContainerArcaneWorkbench extends Container {
       return var2;
    }
 
-   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
+   public ItemStack slotClick(int par1, int par2, int par3, Player par4Player) {
       if (par3 == 4) {
          par2 = 1;
       } else {
@@ -141,7 +141,7 @@ public class ContainerArcaneWorkbench extends Container {
          }
 
       }
-       return super.slotClick(par1, par2, par3, par4EntityPlayer);
+       return super.slotClick(par1, par2, par3, par4Player);
    }
 
    public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot) {

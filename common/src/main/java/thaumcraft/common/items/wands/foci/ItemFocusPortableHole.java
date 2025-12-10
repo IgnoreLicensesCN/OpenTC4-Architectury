@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -19,7 +19,7 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.tiles.TileHole;
 
 public class ItemFocusPortableHole extends ItemFocusBasic {
@@ -62,18 +62,18 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
          }
 
          world.markBlockForUpdate(ii, jj, kk);
-         Thaumcraft.proxy.blockSparkle(world, ii, jj, kk, 4194368, 1);
+         ClientFXUtils.blockSparkle(world, ii, jj, kk, 4194368, 1);
          return true;
       } else {
          return false;
       }
    }
 
-   public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer player, MovingObjectPosition mop) {
-      ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+   public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player player, HitResult mop) {
+      WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       if (mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
-         if (world.provider.dimensionId == Config.dimensionOuterId) {
-            if (!world.isRemote) {
+         if (world.dimension() == Config.dimensionOuterId) {
+            if (Platform.getEnvironment() != Env.CLIENT) {
                world.playSoundEffect((double)mop.blockX + (double)0.5F, (double)mop.blockY + (double)0.5F, (double)mop.blockZ + (double)0.5F, "thaumcraft:wandfail", 1.0F, 1.0F);
             }
 
@@ -128,7 +128,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
          }
 
          player.swingItem();
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             world.playSoundEffect((double)mop.blockX + (double)0.5F, (double)mop.blockY + (double)0.5F, (double)mop.blockZ + (double)0.5F, "mob.endermen.portal", 1.0F, 1.0F);
          }
       }

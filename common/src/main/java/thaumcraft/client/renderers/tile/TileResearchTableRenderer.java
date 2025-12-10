@@ -25,7 +25,7 @@ public class TileResearchTableRenderer extends TileEntitySpecialRenderer {
 
    public void renderTileEntityAt(TileResearchTable table, double par2, double par4, double par6, float par8) {
       int md = 0;
-      if (table.getWorldObj() != null) {
+      if (table.getLevel() != null) {
          md = table.getBlockMetadata();
       }
 

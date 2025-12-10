@@ -1,19 +1,19 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.ItemResearchNotes;
+import thaumcraft.common.items.misc.ItemResearchNotes;
 import thaumcraft.common.tiles.TileResearchTable;
 
 public class ContainerResearchTable extends Container {
    public TileResearchTable tileEntity;
    String[] aspects;
-   EntityPlayer player;
+   Player player;
 
    public ContainerResearchTable(InventoryPlayer iinventory, TileResearchTable iinventory1) {
       this.player = iinventory.player;
@@ -37,18 +37,18 @@ public class ContainerResearchTable extends Container {
 
    }
 
-   public boolean enchantItem(EntityPlayer par1EntityPlayer, int button) {
+   public boolean enchantItem(Player par1Player, int button) {
       if (button == 1) {
          return true;
       } else if (button == 5) {
-         this.tileEntity.duplicate(par1EntityPlayer);
+         this.tileEntity.duplicate(par1Player);
          return true;
       } else {
          return false;
       }
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       ItemStack stack = null;
       Slot slotObject = (Slot)this.inventorySlots.get(slot);
       if (slotObject != null && slotObject.getHasStack()) {
@@ -135,7 +135,7 @@ public class ContainerResearchTable extends Container {
       return var5;
    }
 
-   public boolean canInteractWith(EntityPlayer player) {
+   public boolean canInteractWith(Player player) {
       return this.tileEntity.isUseableByPlayer(player);
    }
 }

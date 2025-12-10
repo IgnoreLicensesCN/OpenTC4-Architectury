@@ -19,7 +19,7 @@ public class TileJarFillableVoid extends TileJarFillable {
            }
 
            if (up) {
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                this.markDirty();
            }
 
@@ -36,7 +36,7 @@ public class TileJarFillableVoid extends TileJarFillable {
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote && ++this.count % 5 == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && ++this.count % 5 == 0) {
          this.fillJar();
       }
 

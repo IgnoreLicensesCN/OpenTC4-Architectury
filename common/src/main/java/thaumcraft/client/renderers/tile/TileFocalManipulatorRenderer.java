@@ -7,9 +7,9 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
@@ -29,13 +29,13 @@ public class TileFocalManipulatorRenderer extends TileEntitySpecialRenderer {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.tableModel.renderAll();
       GL11.glPopMatrix();
-      if (table.getWorldObj() != null && table.getStackInSlot(0) != null && table.getStackInSlot(0).getItem() instanceof ItemFocusBasic) {
+      if (table.getLevel() != null && table.getStackInSlot(0) != null && table.getStackInSlot(0).getItem() instanceof ItemFocusBasic) {
          float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
          GL11.glPushMatrix();
          GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 1.0F, (float)par6 + 0.5F);
          GL11.glRotatef(ticks % 360.0F, 0.0F, 1.0F, 0.0F);
          ItemStack is = table.getStackInSlot(0).copy();
-         this.entityitem = new EntityItem(table.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
+         this.entityitem = new EntityItem(table.getLevel(), 0.0F, 0.0F, 0.0F, is);
          this.entityitem.hoverStart = MathHelper.sin(ticks / 14.0F) * 0.2F + 0.2F;
          RenderItem.renderInFrame = true;
          RenderManager.instance.renderEntityWithPosYaw(this.entityitem, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);

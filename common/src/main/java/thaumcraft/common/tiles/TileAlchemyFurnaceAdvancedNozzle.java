@@ -26,7 +26,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
          this.facing = null;
 
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if (tile instanceof TileAlchemyFurnaceAdvanced) {
                this.facing = dir.getOpposite();
                this.furnace = (TileAlchemyFurnaceAdvanced)tile;
@@ -55,7 +55,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
          this.furnace.aspects.remove(tt, am);
          this.furnace.markDirty();
          this.furnace.vis = this.furnace.aspects.visSize();
-         this.worldObj.markBlockForUpdate(this.furnace.xCoord, this.furnace.yCoord, this.furnace.zCoord);
+         this.level().markBlockForUpdate(this.furnace.xCoord, this.furnace.yCoord, this.furnace.zCoord);
          return true;
       } else {
          return false;

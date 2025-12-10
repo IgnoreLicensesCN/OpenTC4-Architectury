@@ -7,15 +7,15 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.crafting.IInfusionStabiliser;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -62,11 +62,12 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
       int md = world.getBlockMetadata(i, j, k);
       if (md <= 6 && random.nextInt(17) == 0) {
-         FXSpark ef = new FXSpark(world, (double)i + 0.3 + (double)(world.rand.nextFloat() * 0.4F), (double)j + 0.3 + (double)(world.rand.nextFloat() * 0.4F), (double)k + 0.3 + (double)(world.rand.nextFloat() * 0.4F), 0.2F + random.nextFloat() * 0.1F);
+         FXSpark ef = new FXSpark(world, (double)i + 0.3 + (double)(world.getRandom().nextFloat() * 0.4F), (double)j + 0.3 + (double)(world.getRandom().nextFloat() * 0.4F), (double)k + 0.3 + (double)(world.getRandom().nextFloat() * 0.4F), 0.2F + random.nextFloat() * 0.1F);
          Color c = new Color(md == 6 ? BlockCustomOreItem.colors[random.nextInt(6) + 1] : BlockCustomOreItem.colors[md + 1]);
          ef.setRBGColorF((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F);
          ef.setAlphaF(0.8F);
-         ParticleEngine.instance.addEffect(world, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       }
 
    }

@@ -1,7 +1,7 @@
 package thaumcraft.api.wands;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.LinkedHashMap;
@@ -13,6 +13,7 @@ import java.util.List;
  * @author Azanor
  *
  */
+@Deprecated(forRemoval = true)
 public class WandCap {
 
 	private String tag;

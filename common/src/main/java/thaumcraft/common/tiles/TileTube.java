@@ -1,17 +1,15 @@
 package thaumcraft.common.tiles;
 
-import java.util.List;
-import java.util.Random;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -24,6 +22,9 @@ import thaumcraft.codechicken.lib.vec.Cuboid6;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
+
+import java.util.List;
+import java.util.Random;
 
 public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWandable {
    public ForgeDirection facing;
@@ -103,10 +104,10 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       }
 
       if (this.count == 0) {
-         this.count = this.worldObj.rand.nextInt(10);
+         this.count = this.level().rand.nextInt(10);
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.venting <= 0) {
             if (++this.count % 2 == 0) {
                this.calculateSuction(null, false, false);
@@ -127,7 +128,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
          double fx = -MathHelper.sin(ry / 180.0F * (float)Math.PI) * MathHelper.cos(rp / 180.0F * (float)Math.PI);
          double fz = MathHelper.cos(ry / 180.0F * (float)Math.PI) * MathHelper.cos(rp / 180.0F * (float)Math.PI);
          double fy = -MathHelper.sin(rp / 180.0F * (float)Math.PI);
-         Thaumcraft.proxy.drawVentParticles(this.worldObj, (double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, fx / (double)5.0F, fy / (double)5.0F, fx / (double)5.0F, this.ventColor);
+         Thaumcraft.proxy.drawVentParticles(this.level(), (double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, fx / (double)5.0F, fy / (double)5.0F, fx / (double)5.0F, this.ventColor);
       }
 
    }
@@ -141,7 +142,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
          try {
             loc = ForgeDirection.getOrientation(dir);
             if ((!directional || this.facing == loc.getOpposite()) && this.isConnectable(loc)) {
-               TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, loc);
+               TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
                   IEssentiaTransport ic = (IEssentiaTransport)te;
                   if ((filter == null || ic.getSuctionType(loc.getOpposite()) == null || ic.getSuctionType(loc.getOpposite()) == filter) && (filter != null || this.getEssentiaAmount(loc) <= 0 || ic.getSuctionType(loc.getOpposite()) == null || this.getEssentiaType(loc) == ic.getSuctionType(loc.getOpposite())) && (filter == null || this.getEssentiaAmount(loc) <= 0 || this.getEssentiaType(loc) == null || ic.getSuctionType(loc.getOpposite()) == null || this.getEssentiaType(loc) == ic.getSuctionType(loc.getOpposite()))) {
@@ -170,7 +171,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
          try {
             loc = ForgeDirection.getOrientation(dir);
             if (this.isConnectable(loc)) {
-               TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, loc);
+               TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
                   IEssentiaTransport ic = (IEssentiaTransport)te;
                   int suck = ic.getSuctionAmount(loc.getOpposite());
@@ -180,7 +181,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
                         c = Config.aspectOrder.indexOf(this.suctionType);
                      }
 
-                     this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTube, 1, c);
+                     this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTube, 1, c);
                      this.venting = 40;
                   }
                }
@@ -198,7 +199,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
             try {
                loc = ForgeDirection.getOrientation(dir);
                if ((!directional || this.facing != loc.getOpposite()) && this.isConnectable(loc)) {
-                  TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, loc);
+                  TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                   if (te != null) {
                      IEssentiaTransport ic = (IEssentiaTransport)te;
                      if (ic.canOutputTo(loc.getOpposite()) && (this.getSuctionType(null) == null || this.getSuctionType(null) == ic.getEssentiaType(loc.getOpposite()) || ic.getEssentiaType(loc.getOpposite()) == null) && this.getSuctionAmount(null) > ic.getSuctionAmount(loc.getOpposite()) && this.getSuctionAmount(null) >= ic.getMinimumSuction()) {
@@ -212,8 +213,8 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
 
                         int am = this.addEssentia(a, ic.takeEssentia(a, 1, loc.getOpposite()), loc);
                         if (am > 0) {
-                           if (this.worldObj.rand.nextInt(100) == 0) {
-                              this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTube, 0, 0);
+                           if (this.level().rand.nextInt(100) == 0) {
+                              this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTube, 0, 0);
                            }
 
                            return;
@@ -296,17 +297,17 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
 
    public boolean receiveClientEvent(int i, int j) {
       if (i == 0) {
-         if (this.worldObj.isRemote) {
-            this.worldObj.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:creak", 1.0F, 1.3F + this.worldObj.rand.nextFloat() * 0.2F, false);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:creak", 1.0F, 1.3F + this.level().rand.nextFloat() * 0.2F, false);
          }
 
          return true;
       } else if (i != 1) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             if (this.venting <= 0) {
-               this.worldObj.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.1F, 1.0F + this.worldObj.rand.nextFloat() * 0.1F, false);
+               this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.1F, 1.0F + this.level().rand.nextFloat() * 0.1F, false);
             }
 
             this.venting = 50;
@@ -321,17 +322,17 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       }
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
-      MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
+      HitResult hit = RayTracer.retraceBlock(world, player, x, y, z);
        if (hit != null) {
            if (hit.subHit >= 0 && hit.subHit < 6) {
-               player.worldObj.playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+               player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
                player.swingItem();
                this.markDirty();
                world.markBlockForUpdate(x, y, z);
                this.openSides[hit.subHit] = !this.openSides[hit.subHit];
                ForgeDirection dir = ForgeDirection.getOrientation(hit.subHit);
-               TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+               TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
                if (tile instanceof TileTube) {
                    ((TileTube) tile).openSides[dir.getOpposite().ordinal()] = this.openSides[hit.subHit];
                    world.markBlockForUpdate(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
@@ -340,7 +341,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
            }
 
            if (hit.subHit == 6) {
-               player.worldObj.playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+               player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
                player.swingItem();
                int a = this.facing.ordinal();
                this.markDirty();
@@ -364,23 +365,23 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
        return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
-   public MovingObjectPosition rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, MovingObjectPosition fullblock) {
+   public HitResult rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, HitResult fullblock) {
       return fullblock;
    }
 
    protected boolean canConnectSide(int side) {
       ForgeDirection dir = ForgeDirection.getOrientation(side);
-      TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+      TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
       return tile instanceof IEssentiaTransport;
    }
 
@@ -417,6 +418,6 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    @Override
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+      this.level().func_147479_m(this.xCoord, this.yCoord, this.zCoord);
    }
 }

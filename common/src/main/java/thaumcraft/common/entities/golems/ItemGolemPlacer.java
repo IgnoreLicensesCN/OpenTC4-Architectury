@@ -5,16 +5,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
 import java.util.Arrays;
@@ -76,7 +76,7 @@ public class ItemGolemPlacer extends Item {
       return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player par2Player, List list, boolean par4) {
       if (stack.hasTagCompound()) {
          if (stack.stackTagCompound.hasKey("core")) {
             list.add(StatCollector.translateToLocal("item.ItemGolemCore.name") + ": §6" + StatCollector.translateToLocal("item.ItemGolemCore." + stack.stackTagCompound.getByte("core") + ".name"));
@@ -145,12 +145,12 @@ public class ItemGolemPlacer extends Item {
        return super.getShareTag();
    }
 
-   public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+   public boolean doesSneakBypassUse(World world, int x, int y, int z, Player player) {
       return true;
    }
 
-   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int side, float par8, float par9, float par10) {
-      if (!world.isRemote && !player.isSneaking()) {
+   public boolean onItemUseFirst(ItemStack stack, Player player, World world, int par4, int par5, int par6, int side, float par8, float par9, float par10) {
+      if (Platform.getEnvironment() != Env.CLIENT && !player.isSneaking()) {
          Block var11 = world.getBlock(par4, par5, par6);
          par4 += Facing.offsetsXForSide[side];
          par5 += Facing.offsetsYForSide[side];
@@ -178,12 +178,12 @@ public class ItemGolemPlacer extends Item {
 
    }
 
-   public boolean spawnCreature(World par0World, double par2, double par4, double par6, int side, ItemStack stack, EntityPlayer player) {
+   public boolean spawnCreature(World par0World, double par2, double par4, double par6, int side, ItemStack stack, Player player) {
       boolean adv = stack.hasTagCompound() && stack.stackTagCompound.hasKey("advanced");
 
        EntityGolemBase golem = new EntityGolemBase(par0World, EnumGolemType.getType(stack.getItemDamage()), adv);
       if (golem != null) {
-         golem.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
+         golem.setLocationAndAngles(par2, par4, par6, par0world.getRandom().nextFloat() * 360.0F, 0.0F);
          golem.playLivingSound();
          golem.setHomeArea(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 32);
          if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("core")) {

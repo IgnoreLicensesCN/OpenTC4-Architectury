@@ -2,30 +2,30 @@ package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 
 public class EntityFireBat extends EntityMob {
    private ChunkCoordinates currentFlightTarget;
-   public EntityPlayer owner = null;
+   public Player owner = null;
    public int damBonus = 0;
 
-   public EntityFireBat(World par1World) {
+   public EntityFireBat(Level par1World) {
       super(par1World);
       this.setSize(0.5F, 0.9F);
       this.setIsBatHanging(true);
@@ -165,8 +165,8 @@ public class EntityFireBat extends EntityMob {
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote && this.getIsExplosive()) {
-         Thaumcraft.proxy.drawGenericParticles(this.worldObj, this.prevPosX + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), this.prevPosZ + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 0.8F, false, 151, 9, 1, 7 + this.rand.nextInt(5), 0, 1.0F + this.rand.nextFloat() * 0.5F);
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.getIsExplosive()) {
+         Thaumcraft.proxy.drawGenericParticles(this.level(), this.prevPosX + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), this.prevPosZ + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F), 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 0.8F, false, 151, 9, 1, 7 + this.rand.nextInt(5), 0, 1.0F + this.rand.nextFloat() * 0.5F);
       }
 
       if (this.getIsBatHanging()) {
@@ -176,9 +176,9 @@ public class EntityFireBat extends EntityMob {
          this.motionY *= 0.6F;
       }
 
-      if (this.worldObj.isRemote && !this.getIsVampire()) {
-         this.worldObj.spawnParticle("smoke", this.prevPosX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), 0.0F, 0.0F, 0.0F);
-         this.worldObj.spawnParticle("flame", this.prevPosX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), 0.0F, 0.0F, 0.0F);
+      if ((Platform.getEnvironment() == Env.CLIENT) && !this.getIsVampire()) {
+         this.level().spawnParticle("smoke", this.prevPosX + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), 0.0F, 0.0F, 0.0F);
+         this.level().spawnParticle("flame", this.prevPosX + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F), 0.0F, 0.0F, 0.0F);
       }
 
    }
@@ -186,17 +186,17 @@ public class EntityFireBat extends EntityMob {
    protected void updateEntityActionState() {
       super.updateEntityActionState();
       if (this.getIsBatHanging()) {
-         if (!this.worldObj.isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
+         if (!this.level().isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
             this.setIsBatHanging(false);
-            this.worldObj.playAuxSFXAtEntity(null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+            this.level().playAuxSFXAtEntity(null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
          } else {
             if (this.rand.nextInt(200) == 0) {
                this.rotationYawHead = (float)this.rand.nextInt(360);
             }
 
-            if (this.worldObj.getClosestPlayerToEntity(this, 4.0F) != null) {
+            if (this.level().getClosestPlayerToEntity(this, 4.0F) != null) {
                this.setIsBatHanging(false);
-               this.worldObj.playAuxSFXAtEntity(null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+               this.level().playAuxSFXAtEntity(null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
             }
          }
       } else {
@@ -205,7 +205,7 @@ public class EntityFireBat extends EntityMob {
                this.attackEntityFrom(DamageSource.generic, 2.0F);
             }
 
-            if (this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1)) {
+            if (this.currentFlightTarget != null && (!this.level().isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1)) {
                this.currentFlightTarget = null;
             }
 
@@ -223,7 +223,7 @@ public class EntityFireBat extends EntityMob {
             float var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
             this.moveForward = 0.5F;
             this.rotationYaw += var8;
-            if (this.rand.nextInt(100) == 0 && this.worldObj.isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
+            if (this.rand.nextInt(100) == 0 && this.level().isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
                this.setIsBatHanging(true);
             }
          } else if (this.entityToAttack != null) {
@@ -239,7 +239,7 @@ public class EntityFireBat extends EntityMob {
             this.rotationYaw += var8;
          }
 
-         if (this.entityToAttack instanceof EntityPlayer && ((EntityPlayer)this.entityToAttack).capabilities.disableDamage) {
+         if (this.entityToAttack instanceof Player && ((Player)this.entityToAttack).capabilities.disableDamage) {
             this.entityToAttack = null;
          }
       }
@@ -266,7 +266,7 @@ public class EntityFireBat extends EntityMob {
 
    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
       if (!this.isEntityInvulnerable() && !par1DamageSource.isFireDamage() && !par1DamageSource.isExplosion()) {
-         if (!this.worldObj.isRemote && this.getIsBatHanging()) {
+         if (Platform.getEnvironment() != Env.CLIENT && this.getIsBatHanging()) {
             this.setIsBatHanging(false);
          }
 
@@ -291,11 +291,11 @@ public class EntityFireBat extends EntityMob {
          }
 
          this.attackTime = 20;
-         if ((this.getIsExplosive() || this.worldObj.rand.nextInt(10) == 0) && !this.worldObj.isRemote && !this.getIsDevil()) {
+         if ((this.getIsExplosive() || this.level().rand.nextInt(10) == 0) && Platform.getEnvironment() != Env.CLIENT && !this.getIsDevil()) {
             par1Entity.hurtResistantTime = 0;
-            this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 1.5F + (this.getIsExplosive() ? (float)this.damBonus * 0.33F : 0.0F), false, false);
+            this.level().newExplosion(this, this.posX, this.posY, this.posZ, 1.5F + (this.getIsExplosive() ? (float)this.damBonus * 0.33F : 0.0F), false, false);
             this.setDead();
-         } else if (!this.getIsVampire() && !this.worldObj.rand.nextBoolean()) {
+         } else if (!this.getIsVampire() && !this.level().rand.nextBoolean()) {
             par1Entity.setFire(this.getIsSummoned() ? 4 : 2);
          } else {
             double mx = par1Entity.motionX;
@@ -308,14 +308,14 @@ public class EntityFireBat extends EntityMob {
             par1Entity.motionZ = mz;
          }
 
-         this.worldObj.playSoundAtEntity(this, "mob.bat.hurt", 0.5F, 0.9F + this.worldObj.rand.nextFloat() * 0.2F);
+         this.level().playSoundAtEntity(this, "mob.bat.hurt", 0.5F, 0.9F + this.level().rand.nextFloat() * 0.2F);
       }
 
    }
 
    protected Entity findPlayerToAttack() {
       double var1 = 12.0F;
-      return this.getIsSummoned() ? null : this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
+      return this.getIsSummoned() ? null : this.level().getClosestVulnerablePlayerToEntity(this, var1);
    }
 
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -334,7 +334,7 @@ public class EntityFireBat extends EntityMob {
       int var1 = MathHelper.floor_double(this.boundingBox.minY);
       int var2 = MathHelper.floor_double(this.posX);
       int var3 = MathHelper.floor_double(this.posZ);
-      int var4 = this.worldObj.getBlockLightValue(var2, var1, var3);
+      int var4 = this.level().getBlockLightValue(var2, var1, var3);
       byte var5 = 7;
       return var4 <= this.rand.nextInt(var5) && super.getCanSpawnHere();
    }

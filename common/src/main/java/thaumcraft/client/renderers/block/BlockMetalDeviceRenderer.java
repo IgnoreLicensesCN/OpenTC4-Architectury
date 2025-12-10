@@ -10,11 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.BlockMetalDevice;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileAlembic;
-import thaumcraft.common.tiles.TileBrainbox;
-import thaumcraft.common.tiles.TileCrucible;
-import thaumcraft.common.tiles.TileMagicWorkbenchCharger;
-import thaumcraft.common.tiles.TileVisRelay;
+import thaumcraft.common.tiles.*;
 
 public class BlockMetalDeviceRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

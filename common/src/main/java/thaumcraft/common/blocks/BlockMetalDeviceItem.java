@@ -1,11 +1,11 @@
 package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
@@ -25,7 +25,7 @@ public class BlockMetalDeviceItem extends ItemBlock {
       return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
    }
 
-   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+   public boolean onItemUse(ItemStack stack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       if (stack.getItemDamage() != 0 && stack.getItemDamage() != 1 && stack.getItemDamage() != 2 && stack.getItemDamage() != 3 && stack.getItemDamage() != 5 && stack.getItemDamage() != 6 && stack.getItemDamage() != 7 && stack.getItemDamage() != 8 && stack.getItemDamage() != 9 && stack.getItemDamage() != 13 && stack.getItemDamage() != 14) {
          Block bi = world.getBlock(x, y, z);
          int md = world.getBlockMetadata(x, y, z);
@@ -87,7 +87,7 @@ public class BlockMetalDeviceItem extends ItemBlock {
       }
    }
 
-   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
       boolean ret = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
       if (metadata == 7) {
          TileArcaneLamp tile = (TileArcaneLamp)world.getTileEntity(x, y, z);

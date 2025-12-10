@@ -3,7 +3,7 @@ package thaumcraft.common.entities.ai.misc;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 

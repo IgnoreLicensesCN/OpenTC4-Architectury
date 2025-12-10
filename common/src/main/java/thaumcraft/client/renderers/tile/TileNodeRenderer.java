@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
@@ -21,7 +21,7 @@ import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.relics.ItemThaumometer;
+import thaumcraft.common.items.relics.ThaumometerItem;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
 
@@ -177,14 +177,14 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
          EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
          boolean condition = false;
          boolean depthIgnore = false;
-         if (viewer instanceof EntityPlayer) {
+         if (viewer instanceof Player) {
             if (tile != null && tile instanceof TileJarNode) {
                condition = true;
                size = 0.7F;
-            } else if (((EntityPlayer)viewer).inventory.armorItemInSlot(3) != null && ((EntityPlayer)viewer).inventory.armorItemInSlot(3).getItem() instanceof IRevealer && ((IRevealer)((EntityPlayer)viewer).inventory.armorItemInSlot(3).getItem()).showNodes(((EntityPlayer)viewer).inventory.armorItemInSlot(3), viewer)) {
+            } else if (((Player)viewer).inventory.armorItemInSlot(3) != null && ((Player)viewer).inventory.armorItemInSlot(3).getItem() instanceof IRevealer && ((IRevealer)((Player)viewer).inventory.armorItemInSlot(3).getItem()).showNodes(((Player)viewer).inventory.armorItemInSlot(3), viewer)) {
                condition = true;
                depthIgnore = true;
-            } else if (((EntityPlayer)viewer).inventory.getCurrentItem() != null && ((EntityPlayer)viewer).inventory.getCurrentItem().getItem() instanceof ItemThaumometer && UtilsFX.isVisibleTo(0.44F, viewer, tile.xCoord, tile.yCoord, tile.zCoord)) {
+            } else if (((Player)viewer).inventory.getCurrentItem() != null && ((Player)viewer).inventory.getCurrentItem().getItem() instanceof ThaumometerItem && UtilsFX.isVisibleTo(0.44F, viewer, tile.xCoord, tile.yCoord, tile.zCoord)) {
                condition = true;
                depthIgnore = true;
                viewDistance = 48.0F;
@@ -194,17 +194,17 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
          renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
          if (tile instanceof TileNode && ((TileNode)tile).drainEntity != null && ((TileNode)tile).drainCollision != null) {
             Entity drainEntity = ((TileNode)tile).drainEntity;
-            if (drainEntity instanceof EntityPlayer && !((EntityPlayer)drainEntity).isUsingItem()) {
+            if (drainEntity instanceof Player && !((Player)drainEntity).isUsingItem()) {
                ((TileNode)tile).drainEntity = null;
                ((TileNode)tile).drainCollision = null;
                return;
             }
 
-            MovingObjectPosition drainCollision = ((TileNode)tile).drainCollision;
+            HitResult drainCollision = ((TileNode)tile).drainCollision;
             GL11.glPushMatrix();
             float f10 = 0.0F;
-            int iiud = ((EntityPlayer)drainEntity).getItemInUseDuration();
-            if (drainEntity instanceof EntityPlayer) {
+            int iiud = ((Player)drainEntity).getItemInUseDuration();
+            if (drainEntity instanceof Player) {
                f10 = MathHelper.sin((float)iiud / 10.0F) * 10.0F;
             }
 

@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelZombieVillager;
 import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 

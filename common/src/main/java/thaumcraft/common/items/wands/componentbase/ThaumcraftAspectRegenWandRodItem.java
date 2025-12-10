@@ -1,4 +1,4 @@
-package thaumcraft.common.items.wands;
+package thaumcraft.common.items.wands.componentbase;
 
 import com.linearity.opentc4.datautils.SimplePair;
 import net.minecraft.world.entity.Entity;

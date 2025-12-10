@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.network.fx;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import thaumcraft.client.fx.beams.FXBeam;
 
 import java.awt.*;
@@ -54,7 +54,7 @@ public class PacketFXBeamPulse implements IMessage, IMessageHandler<PacketFXBeam
          beamcon.setType(1);
          beamcon.setReverse(true);
          beamcon.setPulse(true);
-         FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+         Minecraft.getInstance().particleEngine.add(beamcon);
       }
 
       return null;

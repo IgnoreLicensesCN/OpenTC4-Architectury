@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,9 +9,9 @@ import net.minecraft.init.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 
@@ -37,37 +37,37 @@ public class ItemBucketPure extends Item {
 
    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, Player p_77659_3_) {
       boolean flag = true;
-      MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(p_77659_2_, p_77659_3_, flag);
-       if (movingobjectposition != null) {
-           if (movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
-               int i = movingobjectposition.blockX;
-               int j = movingobjectposition.blockY;
-               int k = movingobjectposition.blockZ;
-               if (movingobjectposition.sideHit == 0) {
+      HitResult HitResult = this.getHitResultFromPlayer(p_77659_2_, p_77659_3_, flag);
+       if (HitResult != null) {
+           if (HitResult.typeOfHit == MovingObjectType.BLOCK) {
+               int i = HitResult.blockX;
+               int j = HitResult.blockY;
+               int k = HitResult.blockZ;
+               if (HitResult.sideHit == 0) {
                    --j;
                }
 
-               if (movingobjectposition.sideHit == 1) {
+               if (HitResult.sideHit == 1) {
                    ++j;
                }
 
-               if (movingobjectposition.sideHit == 2) {
+               if (HitResult.sideHit == 2) {
                    --k;
                }
 
-               if (movingobjectposition.sideHit == 3) {
+               if (HitResult.sideHit == 3) {
                    ++k;
                }
 
-               if (movingobjectposition.sideHit == 4) {
+               if (HitResult.sideHit == 4) {
                    --i;
                }
 
-               if (movingobjectposition.sideHit == 5) {
+               if (HitResult.sideHit == 5) {
                    ++i;
                }
 
-               if (!p_77659_3_.canPlayerEdit(i, j, k, movingobjectposition.sideHit, p_77659_1_)) {
+               if (!p_77659_3_.canPlayerEdit(i, j, k, HitResult.sideHit, p_77659_1_)) {
                    return p_77659_1_;
                }
 
@@ -86,7 +86,7 @@ public class ItemBucketPure extends Item {
       if (!world.isAirBlock(x, y, z) && !flag) {
          return false;
       } else {
-         if (!world.isRemote && flag && !material.isLiquid()) {
+         if (Platform.getEnvironment() != Env.CLIENT && flag && !material.isLiquid()) {
             world.func_147480_a(x, y, z, true);
          }
 

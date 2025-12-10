@@ -1,11 +1,11 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityChest;
+import net.minecraft.world.level.block.entity.BlockEntityMobSpawner;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.config.ConfigBlocks;
@@ -17,7 +17,7 @@ public class WorldGenMound extends WorldGenerator {
       return new Block[]{Blocks.stone, Blocks.grass, Blocks.dirt};
    }
 
-   public static boolean LocationIsValidSpawn(World world, int i, int j, int k) {
+   public static boolean LocationIsValidSpawn(Level world, int i, int j, int k) {
       int distanceToAir = 0;
 
       for(Block checkID = world.getBlock(i, j, k); checkID != Blocks.air; checkID = world.getBlock(i, j + distanceToAir, k)) {
@@ -48,10 +48,10 @@ public class WorldGenMound extends WorldGenerator {
        return false;
    }
 
-   public boolean generate(World world, Random rand, int i, int j, int k) {
+   public boolean generate(Level world, Random rand, int i, int j, int k) {
       return generateStatic(world, rand, i, j, k);
    }
-   public static boolean generateStatic(World world, Random rand, int i, int j, int k) {
+   public static boolean generateStatic(Level world, Random rand, int i, int j, int k) {
       if (LocationIsValidSpawn(world, i + 9, j + 9, k + 9) && LocationIsValidSpawn(world, i, j + 9, k) && LocationIsValidSpawn(world, i + 18, j + 9, k) && LocationIsValidSpawn(world, i + 18, j + 9, k + 18) && LocationIsValidSpawn(world, i, j + 9, k + 18)) {
          world.setBlock(i, j + 8, k + 4, Blocks.dirt);
          world.setBlock(i, j + 8, k + 5, Blocks.dirt);
@@ -1555,7 +1555,7 @@ public class WorldGenMound extends WorldGenerator {
       }
    }
 
-   public static boolean generate2(World world, Random rand, int i, int j, int k) {
+   public static boolean generate2(Level world, Random rand, int i, int j, int k) {
       world.setBlock(i + 16, j + 10, k + 15, Blocks.grass);
       world.setBlock(i + 16, j + 11, k + 3, Blocks.grass);
       world.setBlock(i + 16, j + 11, k + 4, Blocks.dirt);
@@ -2507,10 +2507,10 @@ public class WorldGenMound extends WorldGenerator {
       ChestGenHooks info3 = ChestGenHooks.getInfo("dungeonChest");
       float rr = rand.nextFloat();
       int md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
-      world.setBlock(i + 9, j + 1, k + 7, world.rand.nextFloat() < 0.3F ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3);
+      world.setBlock(i + 9, j + 1, k + 7, world.getRandom().nextFloat() < 0.3F ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3);
       rr = rand.nextFloat();
       md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
-      world.setBlock(i + 9, j + 1, k + 11, world.rand.nextFloat() < 0.3F ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3);
+      world.setBlock(i + 9, j + 1, k + 11, world.getRandom().nextFloat() < 0.3F ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3);
       if (rand.nextInt(3) == 0) {
          world.setBlock(i + 10, j + 1, k + 9, Blocks.trapped_chest);
          world.setBlock(i + 10, j - 1, k + 9, Blocks.tnt);
@@ -2518,7 +2518,7 @@ public class WorldGenMound extends WorldGenerator {
          world.setBlock(i + 10, j + 1, k + 9, Blocks.chest);
       }
 
-      TileEntityChest chest = (TileEntityChest)world.getTileEntity(i + 10, j + 1, k + 9);
+      BlockEntityChest chest = (BlockEntityChest)world.getBlockEntity(i + 10, j + 1, k + 9);
       if (chest != null) {
          WeightedRandomChestContent.generateChestContents(rand, info3.getItems(rand), chest, info3.getCount(rand));
          if (rand.nextInt(5) == 0) {
@@ -2528,12 +2528,12 @@ public class WorldGenMound extends WorldGenerator {
 
       world.setBlock(i + 4, j + 5, k + 4, Blocks.mob_spawner);
       world.setBlock(i + 4, j + 5, k + 14, Blocks.mob_spawner);
-      TileEntityMobSpawner var12 = (TileEntityMobSpawner)world.getTileEntity(i + 4, j + 5, k + 4);
+      BlockEntityMobSpawner var12 = (BlockEntityMobSpawner)world.getBlockEntity(i + 4, j + 5, k + 4);
       if (var12 != null) {
          var12.func_145881_a().setEntityName("Skeleton");
       }
 
-      var12 = (TileEntityMobSpawner)world.getTileEntity(i + 4, j + 5, k + 14);
+      var12 = (BlockEntityMobSpawner)world.getBlockEntity(i + 4, j + 5, k + 14);
       if (var12 != null) {
          var12.func_145881_a().setEntityName("Zombie");
       }

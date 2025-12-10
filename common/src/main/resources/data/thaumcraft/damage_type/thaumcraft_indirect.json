@@ -1,0 +1,8 @@
+{
+  "message_id": "thaumcraft_indirect",
+  "scaling": "when_caused_by_living_non_player",
+  "exhaustion": 0.1,
+  "bypass_armor": false,
+  "fire": false,
+  "magic": true
+}

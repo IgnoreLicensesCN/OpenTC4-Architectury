@@ -5,15 +5,14 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import tc4tweak.ClientUtils;
-import tc4tweak.CommonUtils;
-import tc4tweak.ConfigurationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
-import tc4tweak.api.BrowserPagingAPI;
+import tc4tweak.ClientUtils;
+import tc4tweak.CommonUtils;
+import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.client.gui.GuiResearchBrowser;
@@ -254,40 +253,4 @@ public class BrowserPaging {
         }
     }
 
-    public static class APIImpl implements BrowserPagingAPI {
-        @Override
-        public Map<String, ResearchCategoryList> getTabsOnCurrentPage(GuiResearchBrowser gui, String player) {
-            return BrowserPaging.getTabsOnCurrentPage(player);
-        }
-
-        @Override
-        public void setPage(GuiResearchBrowser gui, int page) {
-            BrowserPaging.setPage(page);
-        }
-
-        @Override
-        public void moveNextPage(GuiResearchBrowser gui) {
-            nextPage();
-        }
-
-        @Override
-        public void movePreviousPage(GuiResearchBrowser gui) {
-            prevPage();
-        }
-
-        @Override
-        public int getCurrentPage(GuiResearchBrowser gui) {
-            return currentPageIndex;
-        }
-
-        @Override
-        public int getTotalPages(GuiResearchBrowser gui) {
-            return maxPageIndex;
-        }
-
-        @Override
-        public int getTabsPerPage(GuiResearchBrowser gui) {
-            return getTabPerSide() * 2;
-        }
-    }
 }

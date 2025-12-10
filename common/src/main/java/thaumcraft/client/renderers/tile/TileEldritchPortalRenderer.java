@@ -4,9 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
@@ -17,7 +17,7 @@ public class TileEldritchPortalRenderer extends TileEntitySpecialRenderer {
 
    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
       GL11.glPushMatrix();
-      if (te.getWorldObj() != null) {
+      if (te.getLevel() != null) {
          this.renderPortal((TileEldritchPortal)te, x, y, z, f);
       }
 
@@ -37,14 +37,14 @@ public class TileEldritchPortalRenderer extends TileEntitySpecialRenderer {
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 771);
       GL11.glColor4f(1.0F, 0.0F, 1.0F, 1.0F);
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getMinecraft().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          float arX = ActiveRenderInfo.rotationX;
          float arZ = ActiveRenderInfo.rotationZ;
          float arYZ = ActiveRenderInfo.rotationYZ;
          float arXY = ActiveRenderInfo.rotationXY;
          float arXZ = ActiveRenderInfo.rotationXZ;
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double var10000 = player.prevPosX + (player.posX - player.prevPosX) * (double)f;
          var10000 = player.prevPosY + (player.posY - player.prevPosY) * (double)f;
          var10000 = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)f;

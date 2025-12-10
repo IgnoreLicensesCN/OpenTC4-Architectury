@@ -1,10 +1,10 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.tiles.TileMagicBox;
 
 public class ContainerMagicBox extends Container {
@@ -19,7 +19,7 @@ public class ContainerMagicBox extends Container {
       par2IInventory.openInventory();
       this.bindBoxInventory(0);
       this.bindPlayerInventory();
-      if (this.box.getWorldObj() != null && this.box.getWorldObj().isRemote) {
+      if (this.box.getLevel() != null && this.box.getLevel().isRemote) {
          TileMagicBox var10000 = this.box;
          TileMagicBox.tc = this;
       }
@@ -55,11 +55,11 @@ public class ContainerMagicBox extends Container {
       this.bindPlayerInventory();
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.box.isUseableByPlayer(par1EntityPlayer);
+   public boolean canInteractWith(Player par1Player) {
+      return this.box.isUseableByPlayer(par1Player);
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -83,8 +83,8 @@ public class ContainerMagicBox extends Container {
       return itemstack;
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
       this.box.closeInventory();
    }
 }

@@ -8,9 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
@@ -91,9 +91,9 @@ public class BlockEssentiaReservoir extends BlockContainer {
             world.createExplosion(null, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F, false);
 
             for(int a = 0; a < 50; ++a) {
-               int xx = x + world.rand.nextInt(5) - world.rand.nextInt(5);
-               int yy = y + world.rand.nextInt(5) - world.rand.nextInt(5);
-               int zz = z + world.rand.nextInt(5) - world.rand.nextInt(5);
+               int xx = x + world.getRandom().nextInt(5) - world.getRandom().nextInt(5);
+               int yy = y + world.getRandom().nextInt(5) - world.getRandom().nextInt(5);
+               int zz = z + world.getRandom().nextInt(5) - world.getRandom().nextInt(5);
                if (world.isAirBlock(xx, yy, zz)) {
                   if (yy < y) {
                      world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGoo, 8, 3);

@@ -1,27 +1,27 @@
 package thaumcraft.common.lib.events;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.Player;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.Keys;
 import thaumcraft.common.entities.golems.ItemGolemBell;
 import thaumcraft.common.items.armor.Hover;
 import thaumcraft.common.items.armor.ItemHoverHarness;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketFocusChangeToServer;
 import thaumcraft.common.lib.network.misc.PacketItemKeyToServer;
 
+import static com.linearity.opentc4.OpenTC4.platformUtils;
+
 public class KeyHandler {
-   public KeyBinding keyF = Keys.keyF;
-   public KeyBinding keyH = Keys.keyH;
-   public KeyBinding keyG = Keys.keyG;
+   public KeyMapping keyF = Keys.keyF;
+   public KeyMapping keyH = Keys.keyH;
+   public KeyMapping keyG = Keys.keyG;
    private boolean keyPressedF = false;
    private boolean keyPressedH = false;
    private boolean keyPressedG = false;
@@ -32,33 +32,43 @@ public class KeyHandler {
    public static long lastPressG = 0L;
 
    public KeyHandler() {
-      ClientRegistry.registerKeyBinding(this.keyF);
-      ClientRegistry.registerKeyBinding(this.keyH);
-      ClientRegistry.registerKeyBinding(this.keyG);
-   }
+      platformUtils.registerKeyBinding(keyF);
+      platformUtils.registerKeyBinding(keyH);
+      platformUtils.registerKeyBinding(keyG);
+      platformUtils.registerClientTickStartEvent(() -> {
+         {
+            Minecraft mc = Minecraft.getInstance();
+            if (this.keyF.isDown()) {
 
-   @SideOnly(Side.CLIENT)
-   @SubscribeEvent
-   public void playerTick(TickEvent.PlayerTickEvent event) {
-      if (event.side != Side.SERVER) {
-         if (event.phase == Phase.START) {
-            if (this.keyF.getIsKeyPressed()) {
-               if (FMLClientHandler.instance().getClient().inGameHasFocus) {
-                  Player player = event.player;
+               if (mc.isWindowActive() && mc.screen == null) {
+                  Player player = mc.player;
                   if (player != null) {
                      if (!this.keyPressedF) {
                         lastPressF = System.currentTimeMillis();
                         radialLock = false;
                      }
 
-                     if (!radialLock && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemWandCasting && !((ItemWandCasting)player.getHeldItem().getItem()).isSceptre(player.getHeldItem())) {
-                        if (player.isSneaking()) {
+                     ItemStack holdItemStack = player.getMainHandItem();
+                     Item holdItem = holdItemStack.getItem();
+                     if (!radialLock && !holdItemStack.isEmpty() && holdItem instanceof WandCastingItem && !((WandCastingItem)holdItem).isSceptre(holdItemStack)) {
+                        if (player.isCrouching()) {
                            PacketHandler.INSTANCE.sendToServer(new PacketFocusChangeToServer(player, "REMOVE"));
                         } else {
                            radialActive = true;
                         }
-                     } else if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemGolemBell && !this.keyPressedF) {
+                     } else if (!holdItemStack.isEmpty() && holdItem instanceof ItemGolemBell && !this.keyPressedF) {
                         PacketHandler.INSTANCE.sendToServer(new PacketItemKeyToServer(player, 0));
+                     }else {
+                        holdItemStack = player.getOffhandItem();
+                        if (!radialLock && !holdItemStack.isEmpty() && holdItem instanceof WandCastingItem && !((WandCastingItem)holdItem).isSceptre(holdItemStack)) {
+                           if (player.isCrouching()) {
+                              PacketHandler.INSTANCE.sendToServer(new PacketFocusChangeToServer(player, "REMOVE"));
+                           } else {
+                              radialActive = true;
+                           }
+                        } else if (!holdItemStack.isEmpty() && holdItem instanceof ItemGolemBell && !this.keyPressedF) {
+                           PacketHandler.INSTANCE.sendToServer(new PacketItemKeyToServer(player, 0));
+                        }
                      }
                   }
 
@@ -73,16 +83,17 @@ public class KeyHandler {
                this.keyPressedF = false;
             }
 
-            if (this.keyH.getIsKeyPressed()) {
-               if (FMLClientHandler.instance().getClient().inGameHasFocus) {
-                  Player player = event.player;
+            if (this.keyH.isDown()) {
+               if (mc.isWindowActive() && mc.screen == null) {
+                  Player player = mc.player;
                   if (player != null) {
                      if (!this.keyPressedH) {
                         lastPressH = System.currentTimeMillis();
                      }
+                     ItemStack chestArmor = player.getItemBySlot(EquipmentSlot.CHEST);
 
-                     if (player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() instanceof ItemHoverHarness && !this.keyPressedH) {
-                        Hover.toggleHover(player, player.getEntityId(), player.inventory.armorItemInSlot(2));
+                     if (chestArmor.getItem() instanceof ItemHoverHarness && !this.keyPressedH) {
+                        Hover.toggleHover(player, player.getEntityId(), chestArmor);
                      }
                   }
 
@@ -96,9 +107,9 @@ public class KeyHandler {
                this.keyPressedH = false;
             }
 
-            if (this.keyG.getIsKeyPressed()) {
-               if (FMLClientHandler.instance().getClient().inGameHasFocus) {
-                  Player player = event.player;
+            if (this.keyG.isDown()) {
+               if (mc.isWindowActive() && mc.screen == null) {
+                  Player player = mc.player;
                   if (player != null && !this.keyPressedG) {
                      lastPressG = System.currentTimeMillis();
                      PacketHandler.INSTANCE.sendToServer(new PacketItemKeyToServer(player, 1));
@@ -114,7 +125,7 @@ public class KeyHandler {
                this.keyPressedG = false;
             }
          }
-
-      }
+      });
    }
+
 }

@@ -2,17 +2,18 @@ package thaumcraft.client.renderers.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.blocks.BlockCustomOreItem;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class RenderPrimalArrow extends Render {

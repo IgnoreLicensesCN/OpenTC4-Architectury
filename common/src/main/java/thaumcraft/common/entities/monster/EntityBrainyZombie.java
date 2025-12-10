@@ -5,9 +5,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 
 public class EntityBrainyZombie extends EntityZombie {
@@ -42,12 +42,12 @@ public class EntityBrainyZombie extends EntityZombie {
 
    protected void dropFewItems(boolean flag, int i) {
       for(int a = 0; a < 3; ++a) {
-         if (this.worldObj.rand.nextBoolean()) {
+         if (this.level().rand.nextBoolean()) {
             this.dropItem(Items.rotten_flesh, 1);
          }
       }
 
-      if (this.worldObj.rand.nextInt(10) - i <= 4) {
+      if (this.level().rand.nextInt(10) - i <= 4) {
          this.entityDropItem(new ItemStack(ConfigItems.itemZombieBrain), 1.5F);
       }
 

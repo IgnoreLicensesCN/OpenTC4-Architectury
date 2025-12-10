@@ -6,13 +6,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
@@ -63,7 +63,7 @@ public class ItemElementalAxe extends ItemAxe implements IRepairable {
 
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 2)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     @Override
@@ -77,14 +77,14 @@ public class ItemElementalAxe extends ItemAxe implements IRepairable {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
+    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, Player p_77659_3_) {
         p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
         return p_77659_1_;
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-        ArrayList<Entity> stuff = EntityUtils.getEntitiesInRange(player.worldObj, player.posX, player.posY, player.posZ, player, EntityItem.class, 10.0F);
+    public void onUsingTick(ItemStack stack, Player player, int count) {
+        ArrayList<Entity> stuff = EntityUtils.getEntitiesInRange(player.level(), player.posX, player.posY, player.posZ, player, EntityItem.class, 10.0F);
         if (stuff != null && !stuff.isEmpty()) {
             for (Entity e : stuff) {
                 if ((!(e instanceof EntityFollowingItem) || ((EntityFollowingItem) e).target == null) && !e.isDead && e instanceof EntityItem) {
@@ -123,7 +123,7 @@ public class ItemElementalAxe extends ItemAxe implements IRepairable {
                         e.motionZ = -0.35;
                     }
 
-                    Thaumcraft.proxy.crucibleBubble(player.worldObj, (float) e.posX + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.125F, (float) e.posY + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.125F, (float) e.posZ + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
+                    Thaumcraft.proxy.crucibleBubble(player.level(), (float) e.posX + (player.level().rand.nextFloat() - player.level().rand.nextFloat()) * 0.125F, (float) e.posY + (player.level().rand.nextFloat() - player.level().rand.nextFloat()) * 0.125F, (float) e.posZ + (player.level().rand.nextFloat() - player.level().rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
                 }
             }
         }
@@ -131,13 +131,13 @@ public class ItemElementalAxe extends ItemAxe implements IRepairable {
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
-        World world = player.worldObj;
+    public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, Player player) {
+        World world = player.level();
         Block bi = world.getBlock(x, y, z);
         if (!player.isSneaking() && Utils.isWoodLog(world, x, y, z)) {
-            if (!world.isRemote) {
+            if (Platform.getEnvironment() != Env.CLIENT) {
                 BlockUtils.breakFurthestBlock(world, x, y, z, bi, player, true, 10);
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockBubble(x, y, z, (new Color(0.33F, 0.33F, 1.0F)).getRGB()), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockBubble(x, y, z, (new Color(0.33F, 0.33F, 1.0F)).getRGB()), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
                 world.playSoundEffect(x, y, z, "thaumcraft:bubble", 0.15F, 1.0F);
             }
 

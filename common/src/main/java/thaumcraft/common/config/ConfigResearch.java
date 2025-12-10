@@ -1,39 +1,37 @@
 package thaumcraft.common.config;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.IArcaneRecipe;
-import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
-import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.*;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.blocks.ItemJarNode;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ConfigResearch {
    public static ItemStack wand = null;
    public static HashMap<String,Object> recipes = new HashMap<>();
 
    public static void init() {
-      wand = new ItemStack(ConfigItems.itemWandCasting, 1, 0);
-      ((ItemWandCasting)wand.getItem()).setCap(wand, ConfigItems.WAND_CAP_IRON);
-      ((ItemWandCasting)wand.getItem()).setRod(wand, ConfigItems.WAND_ROD_WOOD);
+      wand = new ItemStack(ConfigItems.WandCastingItem, 1, 0);
+      ((WandCastingItem)wand.getItem()).setCap(wand, ConfigItems.WAND_CAP_IRON);
+      ((WandCastingItem)wand.getItem()).setRod(wand, ConfigItems.WAND_ROD_WOOD);
       initCategories();
       initBasicResearch();
       initThaumaturgyResearch();
@@ -99,11 +97,11 @@ public class ConfigResearch {
          al1.add(as, cost);
       }
 
-      ItemStack sceptre1 = new ItemStack(ConfigItems.itemWandCasting, 1, cost);
-      ((ItemWandCasting)sceptre1.getItem()).setCap(sceptre1, ConfigItems.WAND_CAP_IRON);
-      ((ItemWandCasting)sceptre1.getItem()).setRod(sceptre1, ConfigItems.WAND_ROD_WOOD);
+      ItemStack sceptre1 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
+      ((WandCastingItem)sceptre1.getItem()).setCap(sceptre1, ConfigItems.WAND_CAP_IRON);
+      ((WandCastingItem)sceptre1.getItem()).setRod(sceptre1, ConfigItems.WAND_ROD_WOOD);
       sceptre1.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r1 = new ShapedArcaneRecipe("SCEPTRE", sceptre1, al1, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_IRON.getItem(), 'R', ConfigItems.WAND_ROD_WOOD.getItem(), 'F', new ItemStack(ConfigItems.itemResource, 1, 15));
+      ShapedArcaneRecipe r1 = new ShapedArcaneRecipe("SCEPTRE", sceptre1, al1, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_IRON.getItem(), 'R', ConfigItems.WAND_ROD_WOOD.getItem(), 'F', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1));
       scer.add(r1);
       cost = (int)((float)(ConfigItems.WAND_CAP_GOLD.getCraftCost() * ConfigItems.WAND_ROD_GREATWOOD.getCraftCost()) * 1.5F);
 
@@ -111,11 +109,11 @@ public class ConfigResearch {
          al2.add(as, cost);
       }
 
-      ItemStack sceptre2 = new ItemStack(ConfigItems.itemWandCasting, 1, cost);
-      ((ItemWandCasting)sceptre2.getItem()).setCap(sceptre2, ConfigItems.WAND_CAP_GOLD);
-      ((ItemWandCasting)sceptre2.getItem()).setRod(sceptre2, ConfigItems.WAND_ROD_GREATWOOD);
+      ItemStack sceptre2 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
+      ((WandCastingItem)sceptre2.getItem()).setCap(sceptre2, ConfigItems.WAND_CAP_GOLD);
+      ((WandCastingItem)sceptre2.getItem()).setRod(sceptre2, ConfigItems.WAND_ROD_GREATWOOD);
       sceptre2.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r2 = new ShapedArcaneRecipe("SCEPTRE", sceptre2, al2, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_GOLD.getItem(), 'R', ConfigItems.WAND_ROD_GREATWOOD.getItem(), 'F', new ItemStack(ConfigItems.itemResource, 1, 15));
+      ShapedArcaneRecipe r2 = new ShapedArcaneRecipe("SCEPTRE", sceptre2, al2, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_GOLD.getItem(), 'R', ConfigItems.WAND_ROD_GREATWOOD.getItem(), 'F', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1));
       scer.add(r2);
       cost = (int)((float)(ConfigItems.WAND_CAP_THAUMIUM.getCraftCost() * ConfigItems.WAND_ROD_SILVERWOOD.getCraftCost()) * 1.5F);
 
@@ -123,11 +121,11 @@ public class ConfigResearch {
          al3.add(as, cost);
       }
 
-      ItemStack sceptre3 = new ItemStack(ConfigItems.itemWandCasting, 1, cost);
-      ((ItemWandCasting)sceptre3.getItem()).setCap(sceptre3, ConfigItems.WAND_CAP_THAUMIUM);
-      ((ItemWandCasting)sceptre3.getItem()).setRod(sceptre3, ConfigItems.WAND_ROD_SILVERWOOD);
+      ItemStack sceptre3 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
+      ((WandCastingItem)sceptre3.getItem()).setCap(sceptre3, ConfigItems.WAND_CAP_THAUMIUM);
+      ((WandCastingItem)sceptre3.getItem()).setRod(sceptre3, ConfigItems.WAND_ROD_SILVERWOOD);
       sceptre3.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r3 = new ShapedArcaneRecipe("SCEPTRE", sceptre3, al3, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_THAUMIUM.getItem(), 'R', ConfigItems.WAND_ROD_SILVERWOOD.getItem(), 'F', new ItemStack(ConfigItems.itemResource, 1, 15));
+      ShapedArcaneRecipe r3 = new ShapedArcaneRecipe("SCEPTRE", sceptre3, al3, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_THAUMIUM.getItem(), 'R', ConfigItems.WAND_ROD_SILVERWOOD.getItem(), 'F', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1));
       scer.add(r3);
       (new ResearchItem("SCEPTRE", "THAUMATURGY", (new AspectList()).add(Aspect.TOOL, 6).add(Aspect.CRAFT, 6).add(Aspect.TREE, 6).add(Aspect.MAGIC, 9), 0, 4, 3, sceptre3)).setPages(new ResearchPage("tc.research_page.SCEPTRE.1"), new ResearchPage(scer.toArray(new IArcaneRecipe[0]))).setConcealed().setParents("ROD_silverwood").registerResearchItem();
       (new ResearchItem("ROD_greatwood_staff", "THAUMATURGY", (new AspectList()).add(Aspect.TOOL, 3).add(Aspect.TREE, 6).add(Aspect.MAGIC, 3), -1, 7, 1, new ItemStack(ConfigItems.itemWandRod, 1, 50))).setPages(new ResearchPage("tc.research_page.ROD_greatwood_staff.1"), new ResearchPage("tc.research_page.ROD_greatwood_staff.2"), new ResearchPage((IArcaneRecipe)recipes.get("WandRodGreatwoodStaff"))).setParents("ROD_silverwood").registerResearchItem();
@@ -151,13 +149,13 @@ public class ConfigResearch {
    }
 
    private static void initArtificeResearch() {
-      (new ResearchItem("BASICARTIFACE", "ARTIFICE", new AspectList(), 0, 1, 0, new ItemStack(ConfigItems.itemResource, 1, 15))).setPages(new ResearchPage("tc.research_page.BASICARTIFACE.1"), new ResearchPage((IArcaneRecipe)recipes.get("PrimalCharm")), new ResearchPage((IRecipe)recipes.get("MundaneAmulet")), new ResearchPage((IRecipe)recipes.get("MundaneRing")), new ResearchPage((IRecipe)recipes.get("MundaneBelt")), new ResearchPage((IArcaneRecipe)recipes.get("MirrorGlass"))).setStub().setRound().setAutoUnlock().registerResearchItem();
+      (new ResearchItem("BASICARTIFACE", "ARTIFICE", new AspectList(), 0, 1, 0, new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1))).setPages(new ResearchPage("tc.research_page.BASICARTIFACE.1"), new ResearchPage((IArcaneRecipe)recipes.get("PrimalCharm")), new ResearchPage((IRecipe)recipes.get("MundaneAmulet")), new ResearchPage((IRecipe)recipes.get("MundaneRing")), new ResearchPage((IRecipe)recipes.get("MundaneBelt")), new ResearchPage((IArcaneRecipe)recipes.get("MirrorGlass"))).setStub().setRound().setAutoUnlock().registerResearchItem();
       (new ResearchItem("ARCANESTONE", "ARTIFICE", new AspectList(), 5, -2, 0, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6))).setPages(new ResearchPage("tc.research_page.ARCANESTONE.1"), new ResearchPage((IArcaneRecipe)recipes.get("ArcaneStone1")), new ResearchPage((IRecipe)recipes.get("ArcaneStone2")), new ResearchPage((IRecipe)recipes.get("ArcaneStone3")), new ResearchPage((IRecipe)recipes.get("ArcaneStone4"))).setStub().setAutoUnlock().setRound().registerResearchItem();
       (new ResearchItem("GRATE", "ARTIFICE", new AspectList(), 2, -1, 0, new ItemStack(ConfigBlocks.blockMetalDevice, 1, 5))).setPages(new ResearchPage("tc.research_page.GRATE.1"), new ResearchPage((IRecipe)recipes.get("Grate"))).setStub().setAutoUnlock().setRound().registerResearchItem();
       (new ResearchItem("TABLE", "ARTIFICE", new AspectList(), 0, -1, 0, new ItemStack(ConfigBlocks.blockTable))).setPages(new ResearchPage("tc.research_page.TABLE.1"), new ResearchPage((IRecipe)recipes.get("Table"))).setStub().setAutoUnlock().setRound().registerResearchItem();
       (new ResearchItem("ARCTABLE", "ARTIFICE", new AspectList(), -1, -3, 0, new ItemStack(ConfigBlocks.blockTable, 1, 15))).setPages(new ResearchPage("tc.research_page.ARCTABLE.1"), new ResearchPage((List)recipes.get("ArcTable"))).setStub().setAutoUnlock().setRound().setParents("TABLE").registerResearchItem();
       (new ResearchItem("RESTABLE", "ARTIFICE", new AspectList(), 1, -3, 0, new ItemStack(ConfigBlocks.blockTable, 1, 1))).setPages(new ResearchPage("tc.research_page.RESTABLE.1"), new ResearchPage((List)recipes.get("ResTable"))).setStub().setAutoUnlock().setRound().setParents("TABLE").registerResearchItem();
-      (new ResearchItem("THAUMOMETER", "ARTIFICE", new AspectList(), 2, 1, 0, new ItemStack(ConfigItems.itemThaumometer))).setStub().setAutoUnlock().setRound().setPages(new ResearchPage("tc.research_page.THAUMOMETER.1"), new ResearchPage((IRecipe)recipes.get("Thaumometer"))).registerResearchItem();
+      (new ResearchItem("THAUMOMETER", "ARTIFICE", new AspectList(), 2, 1, 0, new ItemStack(ThaumcraftItems.THAUMOMETER))).setStub().setAutoUnlock().setRound().setPages(new ResearchPage("tc.research_page.THAUMOMETER.1"), new ResearchPage((IRecipe)recipes.get("Thaumometer"))).registerResearchItem();
       (new ResearchItem("PAVETRAVEL", "ARTIFICE", (new AspectList()).add(Aspect.TRAVEL, 3).add(Aspect.EARTH, 3).add(Aspect.FLIGHT, 3), 4, -4, 1, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 2))).setPages(new ResearchPage("tc.research_page.PAVETRAVEL.1"), new ResearchPage((IArcaneRecipe)recipes.get("PaveTravel"))).setParents("ARCANESTONE").setSecondary().registerResearchItem();
       (new ResearchItem("PAVEWARD", "ARTIFICE", (new AspectList()).add(Aspect.MOTION, 3).add(Aspect.TRAP, 3).add(Aspect.BEAST, 3), 6, -4, 1, new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 3))).setPages(new ResearchPage("tc.research_page.PAVEWARD.1"), new ResearchPage((IArcaneRecipe)recipes.get("PaveWard")), new ResearchPage("tc.research_page.PAVEWARD.2")).setParents("ARCANESTONE").setSecondary().registerResearchItem();
       (new ResearchItem("GOGGLES", "ARTIFICE", (new AspectList()).add(Aspect.SENSES, 3).add(Aspect.AURA, 3).add(Aspect.MAGIC, 3), 4, 1, 1, new ItemStack(ConfigItems.itemGoggles))).setPages(new ResearchPage("tc.research_page.GOGGLES.1"), new ResearchPage((IArcaneRecipe)recipes.get("Goggles"))).setParents("THAUMOMETER").setConcealed().registerResearchItem();
@@ -169,7 +167,7 @@ public class ConfigResearch {
       (new ResearchItem("INFERNALFURNACE", "ARTIFICE", (new AspectList()).add(Aspect.FIRE, 6).add(Aspect.METAL, 3).add(Aspect.CRAFT, 3).add(Aspect.AURA, 3), -4, -1, 2, new ResourceLocation("thaumcraft", "textures/misc/r_infernalfurnace.png"))).setPages(new ResearchPage("tc.research_page.INFERNALFURNACE.1"), new ResearchPage((List)recipes.get("InfernalFurnace")), new ResearchPage("tc.research_page.INFERNALFURNACE.2")).setParents("NITOR", "ALUMENTUM").setConcealed().registerResearchItem();
       ThaumcraftApi.addWarpToResearch("INFERNALFURNACE", 2);
       (new ResearchItem("BELLOWS", "ARTIFICE", (new AspectList()).add(Aspect.AIR, 6).add(Aspect.MECHANISM, 3).add(Aspect.MOTION, 3), -6, -2, 1, new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 0))).setPages(new ResearchPage("tc.research_page.BELLOWS.1"), new ResearchPage((IArcaneRecipe)recipes.get("Bellows")), new ResearchPage("tc.research_page.BELLOWS.2")).setParents("INFERNALFURNACE").setSecondary().setConcealed().registerResearchItem();
-      (new ResearchItem("ENCHFABRIC", "ARTIFICE", (new AspectList()).add(Aspect.CLOTH, 3).add(Aspect.MAGIC, 3), 0, 3, 1, new ItemStack(ConfigItems.itemResource, 1, 7))).setPages(new ResearchPage("tc.research_page.ENCHFABRIC.1"), new ResearchPage((IArcaneRecipe)recipes.get("EnchantedFabric")), new ResearchPage("tc.research_page.ENCHFABRIC.2"), new ResearchPage((IArcaneRecipe)recipes.get("RobeChest")), new ResearchPage((IArcaneRecipe)recipes.get("RobeLegs")), new ResearchPage((IArcaneRecipe)recipes.get("RobeBoots"))).setSecondary().registerResearchItem();
+      (new ResearchItem("ENCHFABRIC", "ARTIFICE", (new AspectList()).add(Aspect.CLOTH, 3).add(Aspect.MAGIC, 3), 0, 3, 1, new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC))).setPages(new ResearchPage("tc.research_page.ENCHFABRIC.1"), new ResearchPage((IArcaneRecipe)recipes.get("EnchantedFabric")), new ResearchPage("tc.research_page.ENCHFABRIC.2"), new ResearchPage((IArcaneRecipe)recipes.get("RobeChest")), new ResearchPage((IArcaneRecipe)recipes.get("RobeLegs")), new ResearchPage((IArcaneRecipe)recipes.get("RobeBoots"))).setSecondary().registerResearchItem();
       (new ResearchItem("INFUSION", "ARTIFICE", (new AspectList()).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 3).add(Aspect.CRAFT, 6), -4, 5, 2, new ItemStack(ConfigBlocks.blockStoneDevice, 1, 2))).setPages(new ResearchPage("tc.research_page.INFUSION.1"), new ResearchPage((IArcaneRecipe)recipes.get("InfusionMatrix")), new ResearchPage((IArcaneRecipe)recipes.get("ArcanePedestal")), new ResearchPage("tc.research_page.INFUSION.2"), new ResearchPage((List)recipes.get("InfusionAltar")), new ResearchPage("tc.research_page.INFUSION.3"), new ResearchPage("tc.research_page.INFUSION.4"), new ResearchPage("tc.research_page.INFUSION.5")).setParents("DISTILESSENTIA").setConcealed().registerResearchItem();
       (new ResearchItem("FLUXSCRUB", "ARTIFICE", (new AspectList()).add(Aspect.MAGIC, 3).add(Aspect.TRAP, 3).add(Aspect.AIR, 3).add(Aspect.WATER, 3), -8, -3, 1, new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14))).setPages(new ResearchPage("tc.research_page.FLUXSCRUB.1"), new ResearchPage((IArcaneRecipe)recipes.get("FluxScrubber"))).setParentsHidden("INFUSION").setParents("VISPOWER", "BELLOWS", "TUBES").setSecondary().registerResearchItem();
       (new ResearchItem("RUNICARMOR", "ARTIFICE", (new AspectList()).add(Aspect.ARMOR, 6).add(Aspect.AIR, 3).add(Aspect.MAGIC, 3).add(Aspect.ENERGY, 3).add(Aspect.MIND, 3), 3, 4, 3, new ItemStack(ConfigItems.itemRingRunic, 1, 1))).setPages(new ResearchPage("tc.research_page.RUNICARMOR.1"), new ResearchPage("tc.research_page.RUNICARMOR.2"), new ResearchPage((InfusionRecipe)recipes.get("RunicRing")), new ResearchPage((InfusionRecipe)recipes.get("RunicAmulet")), new ResearchPage((InfusionRecipe)recipes.get("RunicGirdle"))).setParentsHidden("INFUSION").setParents("ENCHFABRIC").setConcealed().registerResearchItem();
@@ -244,7 +242,7 @@ public class ConfigResearch {
          (new ResearchItem("WARDEDARCANA", "ARTIFICE", (new AspectList()).add(Aspect.TOOL, 6).add(Aspect.MIND, 3).add(Aspect.MECHANISM, 3).add(Aspect.ARMOR, 3), -5, -4, 2, new ItemStack(ConfigItems.itemArcaneDoor))).setPages(new ResearchPage("tc.research_page.WARDEDARCANA.1"), new ResearchPage((IArcaneRecipe)recipes.get("ArcaneDoor")), new ResearchPage("tc.research_page.WARDEDARCANA.2"), new ResearchPage((IArcaneRecipe)recipes.get("IronKey")), new ResearchPage((IArcaneRecipe)recipes.get("GoldKey")), new ResearchPage("tc.research_page.WARDEDARCANA.3"), new ResearchPage((IArcaneRecipe)recipes.get("ArcanePressurePlate")), new ResearchPage("tc.research_page.WARDEDARCANA.4"), new ResearchPage((IArcaneRecipe)recipes.get("WardedGlass"))).setParents("THAUMIUM").registerResearchItem();
       }
 
-      (new ResearchItem("JARBRAIN", "ARTIFICE", (new AspectList()).add(Aspect.HUNGER, 3).add(Aspect.MIND, 3).add(Aspect.UNDEAD, 3).add(Aspect.GREED, 3), -5, 9, 2, new ItemStack(ConfigBlocks.blockJar, 1, 1))).setPages(new ResearchPage("tc.research_page.JARBRAIN.1"), new ResearchPage((InfusionRecipe)recipes.get("JarBrain"))).setParents("INFUSION").setHidden().setItemTriggers(new ItemStack(ConfigItems.itemResource, 1, 3)).setEntityTriggers("Thaumcraft.BrainyZombie", "Thaumcraft.GiantBrainyZombie").registerResearchItem();
+      (new ResearchItem("JARBRAIN", "ARTIFICE", (new AspectList()).add(Aspect.HUNGER, 3).add(Aspect.MIND, 3).add(Aspect.UNDEAD, 3).add(Aspect.GREED, 3), -5, 9, 2, new ItemStack(ConfigBlocks.blockJar, 1, 1))).setPages(new ResearchPage("tc.research_page.JARBRAIN.1"), new ResearchPage((InfusionRecipe)recipes.get("JarBrain"))).setParents("INFUSION").setHidden().setItemTriggers(new ItemStack(QUICK_SILVER)).setEntityTriggers("Thaumcraft.BrainyZombie", "Thaumcraft.GiantBrainyZombie").registerResearchItem();
       ThaumcraftApi.addWarpToResearch("JARBRAIN", 3);
       ThaumcraftApi.addWarpToItem(new ItemStack(ConfigBlocks.blockJar, 1, 1), 1);
       (new ResearchItem("INFUSIONENCHANTMENT", "ARTIFICE", (new AspectList()).add(Aspect.MAGIC, 6).add(Aspect.MIND, 3).add(Aspect.WEAPON, 3).add(Aspect.ARMOR, 3).add(Aspect.TOOL, 3), -6, 11, 3, new ResourceLocation("thaumcraft", "textures/misc/r_enchant.png"))).setPages(new ResearchPage("tc.research_page.INFUSIONENCHANTMENT.1"), new ResearchPage("tc.research_page.INFUSIONENCHANTMENT.2"), new ResearchPage("tc.research_page.INFUSIONENCHANTMENT.3"), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnchRepair")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnchHaste")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch0")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch1")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch2")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch3")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch4")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch5")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch6")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch7")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch8")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch9")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch10")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch11")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch12")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch13")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch14")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch15")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch16")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch17")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch18")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch19")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch20")), new ResearchPage((InfusionEnchantmentRecipe)recipes.get("InfEnch21"))).setConcealed().setParents("JARBRAIN").registerResearchItem();
@@ -266,8 +264,8 @@ public class ConfigResearch {
       }
 
       (new ResearchItem("CRUCIBLE", "ALCHEMY", new AspectList(), 0, 0, 0, new ItemStack(ConfigBlocks.blockMetalDevice, 1, 0))).setPages(new ResearchPage("tc.research_page.CRUCIBLE.1"), new ResearchPage("tc.research_page.CRUCIBLE.2"), new ResearchPage("tc.research_page.CRUCIBLE.3"), new ResearchPage((List)recipes.get("Crucible")), new ResearchPage("tc.research_page.CRUCIBLE.4"), new ResearchPage(cruc.toArray(new CrucibleRecipe[0])), new ResearchPage("tc.research_page.CRUCIBLE.5"), new ResearchPage(new ItemStack(ConfigItems.itemShard, 1, 6))).setStub().setAutoUnlock().registerResearchItem();
-      (new ResearchItem("NITOR", "ALCHEMY", (new AspectList()).add(Aspect.LIGHT, 3).add(Aspect.FIRE, 1), 2, -1, 1, new ItemStack(ConfigItems.itemResource, 1, 1))).setPages(new ResearchPage("tc.research_page.NITOR.1"), new ResearchPage((CrucibleRecipe)recipes.get("Nitor"))).setParents("CRUCIBLE").registerResearchItem();
-      (new ResearchItem("ALUMENTUM", "ALCHEMY", (new AspectList()).add(Aspect.ENERGY, 3).add(Aspect.FIRE, 1), 2, 1, 1, new ItemStack(ConfigItems.itemResource, 1, 0))).setPages(new ResearchPage("tc.research_page.ALUMENTUM.1"), new ResearchPage((CrucibleRecipe)recipes.get("Alumentum"))).setParents("CRUCIBLE").registerResearchItem();
+      (new ResearchItem("NITOR", "ALCHEMY", (new AspectList()).add(Aspect.LIGHT, 3).add(Aspect.FIRE, 1), 2, -1, 1, new ItemStack(ThaumcraftItems.NITOR))).setPages(new ResearchPage("tc.research_page.NITOR.1"), new ResearchPage((CrucibleRecipe)recipes.get("Nitor"))).setParents("CRUCIBLE").registerResearchItem();
+      (new ResearchItem("ALUMENTUM", "ALCHEMY", (new AspectList()).add(Aspect.ENERGY, 3).add(Aspect.FIRE, 1), 2, 1, 1, new ItemStack(ThaumcraftItems.ALUMENTUM))).setPages(new ResearchPage("tc.research_page.ALUMENTUM.1"), new ResearchPage((CrucibleRecipe)recipes.get("Alumentum"))).setParents("CRUCIBLE").registerResearchItem();
       (new ResearchItem("ALCHEMICALDUPLICATION", "ALCHEMY", (new AspectList()).add(Aspect.MAGIC, 3).add(Aspect.GREED, 3).add(Aspect.CRAFT, 3), -4, 0, 1, new ResourceLocation("thaumcraft", "textures/misc/r_alchmult.png"))).setPages(new ResearchPage("tc.research_page.ALCHEMICALDUPLICATION.1"), new ResearchPage((CrucibleRecipe)recipes.get("AltGunpowder")), new ResearchPage((CrucibleRecipe)recipes.get("AltSlime")), new ResearchPage((CrucibleRecipe)recipes.get("AltClay")), new ResearchPage((CrucibleRecipe)recipes.get("AltGlowstone")), new ResearchPage((CrucibleRecipe)recipes.get("AltInk"))).setConcealed().setSecondary().setParents("TALLOW").registerResearchItem();
       (new ResearchItem("ALCHEMICALMANUFACTURE", "ALCHEMY", (new AspectList()).add(Aspect.MAGIC, 3).add(Aspect.EXCHANGE, 3).add(Aspect.CRAFT, 3), -5, -2, 1, new ResourceLocation("thaumcraft", "textures/misc/r_alchman.png"))).setPages(new ResearchPage("tc.research_page.ALCHEMICALMANUFACTURE.1"), new ResearchPage((CrucibleRecipe)recipes.get("AltWeb")), new ResearchPage((CrucibleRecipe)recipes.get("AltMossyCobble")), new ResearchPage((CrucibleRecipe)recipes.get("AltIce"))).setConcealed().setSecondary().setParents("ALCHEMICALDUPLICATION").registerResearchItem();
       (new ResearchItem("ENTROPICPROCESSING", "ALCHEMY", (new AspectList()).add(Aspect.MAGIC, 1).add(Aspect.ENTROPY, 3).add(Aspect.CRAFT, 1), -6, 1, 1, new ResourceLocation("thaumcraft", "textures/misc/r_alchent.png"))).setPages(new ResearchPage("tc.research_page.ENTROPICPROCESSING.1"), new ResearchPage((CrucibleRecipe)recipes.get("AltCrackedBrick")), new ResearchPage((CrucibleRecipe)recipes.get("AltBonemeal"))).setConcealed().setSecondary().setParents("ALCHEMICALDUPLICATION").registerResearchItem();
@@ -277,7 +275,7 @@ public class ConfigResearch {
       (new ResearchItem("BOTTLETAINT", "ALCHEMY", (new AspectList()).add(Aspect.TAINT, 5).add(Aspect.MAGIC, 3).add(Aspect.ENTROPY, 1).add(Aspect.WATER, 1), -8, 1, 2, new ItemStack(ConfigItems.itemBottleTaint))).setPages(new ResearchPage("tc.research_page.BOTTLETAINT.1"), new ResearchPage((CrucibleRecipe)recipes.get("BottleTaint"))).setHidden().setAspectTriggers(Aspect.TAINT).setParents("ENTROPICPROCESSING").registerResearchItem();
       ThaumcraftApi.addWarpToResearch("BOTTLETAINT", 2);
       ThaumcraftApi.addWarpToItem(new ItemStack(ConfigItems.itemBottleTaint), 1);
-      (new ResearchItem("THAUMIUM", "ALCHEMY", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.MAGIC, 3), -1, 3, 1, new ItemStack(ConfigItems.itemResource, 1, 2))).setPages(new ResearchPage("tc.research_page.THAUMIUM.1"), new ResearchPage((CrucibleRecipe)recipes.get("Thaumium")), new ResearchPage((IRecipe)recipes.get("ThaumiumAxe")), new ResearchPage((IRecipe)recipes.get("ThaumiumSword")), new ResearchPage((IRecipe)recipes.get("ThaumiumPick")), new ResearchPage((IRecipe)recipes.get("ThaumiumShovel")), new ResearchPage((IRecipe)recipes.get("ThaumiumHoe")), new ResearchPage((IRecipe)recipes.get("ThaumiumHelm")), new ResearchPage((IRecipe)recipes.get("ThaumiumChest")), new ResearchPage((IRecipe)recipes.get("ThaumiumLegs")), new ResearchPage((IRecipe)recipes.get("ThaumiumBoots"))).setHidden().setAspectTriggers(Aspect.METAL).setParents("CRUCIBLE").registerResearchItem();
+      (new ResearchItem("THAUMIUM", "ALCHEMY", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.MAGIC, 3), -1, 3, 1, new ItemStack(ThaumcraftItems.THAUMIUM_INGOT))).setPages(new ResearchPage("tc.research_page.THAUMIUM.1"), new ResearchPage((CrucibleRecipe)recipes.get("Thaumium")), new ResearchPage((IRecipe)recipes.get("ThaumiumAxe")), new ResearchPage((IRecipe)recipes.get("ThaumiumSword")), new ResearchPage((IRecipe)recipes.get("ThaumiumPick")), new ResearchPage((IRecipe)recipes.get("ThaumiumShovel")), new ResearchPage((IRecipe)recipes.get("ThaumiumHoe")), new ResearchPage((IRecipe)recipes.get("ThaumiumHelm")), new ResearchPage((IRecipe)recipes.get("ThaumiumChest")), new ResearchPage((IRecipe)recipes.get("ThaumiumLegs")), new ResearchPage((IRecipe)recipes.get("ThaumiumBoots"))).setHidden().setAspectTriggers(Aspect.METAL).setParents("CRUCIBLE").registerResearchItem();
       (new ResearchItem("PUREIRON", "ALCHEMY", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.ORDER, 3), -2, 5, 1, new ItemStack(ConfigItems.itemNugget, 1, 16))).setPages(new ResearchPage("tc.research_page.PUREIRON.1"), new ResearchPage((CrucibleRecipe)recipes.get("PureIron"))).setConcealed().setParents("THAUMIUM").registerResearchItem();
       (new ResearchItem("PUREGOLD", "ALCHEMY", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.ORDER, 2).add(Aspect.GREED, 1), -4, 3, 1, new ItemStack(ConfigItems.itemNugget, 1, 31))).setPages(new ResearchPage("tc.research_page.PUREGOLD.1"), new ResearchPage((CrucibleRecipe)recipes.get("PureGold"))).setConcealed().setSecondary().setParents("PUREIRON").registerResearchItem();
       if (Config.foundCopperOre && Config.foundCopperIngot) {
@@ -314,7 +312,7 @@ public class ConfigResearch {
          (new ResearchItem("TRANSLEAD", "ALCHEMY", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.EXCHANGE, 2).add(Aspect.ORDER, 1), 0, 9, 1, new ItemStack(ConfigItems.itemNugget, 1, 4))).setPages(new ResearchPage("tc.research_page.TRANSLEAD.1"), new ResearchPage((CrucibleRecipe)recipes.get("TransLead"))).setConcealed().setSecondary().setParents("TRANSIRON").registerResearchItem();
       }
 
-      (new ResearchItem("TALLOW", "ALCHEMY", (new AspectList()).add(Aspect.FLESH, 3).add(Aspect.MAGIC, 1), -2, 0, 1, new ItemStack(ConfigItems.itemResource, 1, 4))).setPages(new ResearchPage("tc.research_page.TALLOW.1"), new ResearchPage((CrucibleRecipe)recipes.get("Tallow")), new ResearchPage((IRecipe)recipes.get("TallowCandle"))).setParents("CRUCIBLE").registerResearchItem();
+      (new ResearchItem("TALLOW", "ALCHEMY", (new AspectList()).add(Aspect.FLESH, 3).add(Aspect.MAGIC, 1), -2, 0, 1, new ItemStack(ThaumcraftItems.MAGIC_TALLOW))).setPages(new ResearchPage("tc.research_page.TALLOW.1"), new ResearchPage((CrucibleRecipe)recipes.get("Tallow")), new ResearchPage((IRecipe)recipes.get("TallowCandle"))).setParents("CRUCIBLE").registerResearchItem();
       (new ResearchItem("ETHEREALBLOOM", "ALCHEMY", (new AspectList()).add(Aspect.MAGIC, 1).add(Aspect.PLANT, 6).add(Aspect.HEAL, 3).add(Aspect.TAINT, 6), -2, -3, 2, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 4))).setPages(new ResearchPage("tc.research_page.ETHEREALBLOOM.1"), new ResearchPage((CrucibleRecipe)recipes.get("EtherealBloom")), new ResearchPage("tc.research_page.ETHEREALBLOOM.2")).setHidden().setAspectTriggers(Aspect.TAINT).setConcealed().setParents("CRUCIBLE").registerResearchItem();
       (new ResearchItem("BATHSALTS", "ALCHEMY", (new AspectList()).add(Aspect.MIND, 3).add(Aspect.AURA, 3).add(Aspect.ORDER, 3).add(Aspect.HEAL, 3), -4, -4, 2, new ItemStack(ConfigItems.itemBathSalts))).setPages(new ResearchPage("tc.research_page.BATHSALTS.1"), new ResearchPage((CrucibleRecipe)recipes.get("BathSalts"))).setHidden().registerResearchItem();
       (new ResearchItem("SANESOAP", "ALCHEMY", (new AspectList()).add(Aspect.MIND, 5).add(Aspect.ORDER, 5).add(Aspect.HEAL, 5).add(Aspect.ELDRITCH, 5), -3, -6, 1, new ItemStack(ConfigItems.itemSanitySoap))).setPages(new ResearchPage("tc.research_page.SANESOAP.1"), new ResearchPage((CrucibleRecipe)recipes.get("SaneSoap"))).setParents("BATHSALTS").registerResearchItem();
@@ -389,7 +387,7 @@ public class ConfigResearch {
       (new ResearchItem("NODES", "BASICS", new AspectList(), -2, 0, 0, new ResourceLocation("thaumcraft", "textures/misc/r_nodes.png"))).setPages(new ResearchPage("tc.research_page.NODES.1"), new ResearchPage("tc.research_page.NODES.2"), new ResearchPage("tc.research_page.NODES.3")).setStub().setRound().setAutoUnlock().registerResearchItem();
       (new ResearchItem("WARP", "BASICS", new AspectList(), 0, 2, 0, new ResourceLocation("thaumcraft", "textures/misc/r_warp.png"))).setPages(new ResearchPage("tc.research_page.WARP.1"), new ResearchPage("tc.research_page.WARP.2"), new ResearchPage("tc.research_page.WARP.3")).setStub().setRound().setAutoUnlock().registerResearchItem();
       (new ResearchItem("RESEARCH", "BASICS", new AspectList(), 2, 0, 0, new ItemStack(ConfigItems.itemInkwell))).setPages(new ResearchPage("tc.research_page.RESEARCH.1"), new ResearchPage("tc.research_page.RESEARCH.2"), new ResearchPage((IRecipe)recipes.get("Thaumometer")), new ResearchPage("tc.research_page.RESEARCH.3"), new ResearchPage("tc.research_page.RESEARCH.4"), new ResearchPage((IRecipe)recipes.get("Scribe1")), new ResearchPage((IRecipe)recipes.get("Scribe2")), new ResearchPage((IRecipe)recipes.get("Scribe3")), new ResearchPage("tc.research_page.RESEARCH.5"), new ResearchPage("tc.research_page.RESEARCH.6"), new ResearchPage("tc.research_page.RESEARCH.7"), new ResearchPage("tc.research_page.RESEARCH.8"), new ResearchPage("tc.research_page.RESEARCH.9"), new ResearchPage("tc.research_page.RESEARCH.10"), new ResearchPage("tc.research_page.RESEARCH.11"), new ResearchPage("tc.research_page.RESEARCH.12")).setAutoUnlock().setStub().setRound().registerResearchItem();
-      (new ResearchItem("KNOWFRAG", "BASICS", new AspectList(), 3, -2, 0, new ItemStack(ConfigItems.itemResource, 1, 9))).setPages(new ResearchPage("tc.research_page.KNOWFRAG.1"), new ResearchPage((IRecipe)recipes.get("KnowFrag"))).setStub().setRound().setAutoUnlock().setParents("RESEARCH").registerResearchItem();
+      (new ResearchItem("KNOWFRAG", "BASICS", new AspectList(), 3, -2, 0, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT))).setPages(new ResearchPage("tc.research_page.KNOWFRAG.1"), new ResearchPage((IRecipe)recipes.get("KnowFrag"))).setStub().setRound().setAutoUnlock().setParents("RESEARCH").registerResearchItem();
       (new ResearchItem("THAUMONOMICON", "BASICS", new AspectList(), 1, -2, 0, new ItemStack(ConfigItems.itemThaumonomicon))).setPages(new ResearchPage("tc.research_page.THAUMONOMICON.1"), new ResearchPage((List)recipes.get("Thaumonomicon"))).setAutoUnlock().setStub().setRound().setParents("RESEARCH").registerResearchItem();
       ArrayList<IRecipe> rc = new ArrayList<>();
 
@@ -412,14 +410,29 @@ public class ConfigResearch {
       (new ResearchItem("RESEARCHER2", "BASICS", (new AspectList()).add(Aspect.MIND, 6).add(Aspect.ORDER, 3).add(Aspect.SENSES, 3).add(Aspect.MAGIC, 3), 3, 3, 2, new ResourceLocation("thaumcraft", "textures/misc/r_researcher2.png"))).setPages(new ResearchPage("tc.research_page.RESEARCHER2.1")).setRound().setSpecial().setParents("RESEARCHER1").registerResearchItem();
       ThaumcraftApi.addWarpToResearch("RESEARCHER2", 1);
       (new ResearchItem("RESEARCHDUPE", "BASICS", (new AspectList()).add(Aspect.MIND, 6).add(Aspect.EXCHANGE, 3).add(Aspect.SENSES, 3).add(Aspect.GREED, 3).add(Aspect.CRAFT, 3), 4, 5, 3, new ResourceLocation("thaumcraft", "textures/misc/r_resdupe.png"))).setPages(new ResearchPage("tc.research_page.RESEARCHDUPE.1")).setRound().setParents("RESEARCHER2").registerResearchItem();
-      (new ResearchItem("CRIMSON", "BASICS", new AspectList(), 0, 4, 0, new ItemStack(ConfigItems.itemEldritchObject, 1, 1))).setPages(new ResearchPage("tc.research_page.CRIMSON.1")).setStub().setHidden().setRound().setSpecial().registerResearchItem();
+      (new ResearchItem("CRIMSON", "BASICS", new AspectList(), 0, 4, 0, new ItemStack(ThaumcraftItems.CRIMSON_RITES))).setPages(new ResearchPage("tc.research_page.CRIMSON.1")).setStub().setHidden().setRound().setSpecial().registerResearchItem();
       ThaumcraftApi.addWarpToResearch("CRIMSON", 3);
    }
 
    private static void initEldritchResearch() {
       (new ResearchItem("ELDRITCHMINOR", "ELDRITCH", new AspectList(), 1, 0, 0, new ResourceLocation("thaumcraft", "textures/misc/r_eldritchminor.png"))).setPages(new ResearchPage("tc.research_page.ELDRITCHMINOR.1"), new ResearchPage((CrucibleRecipe)recipes.get("VoidSeed"))).setHidden().setRound().setSpecial().registerResearchItem();
       (new ResearchItem("ELDRITCHMAJOR", "ELDRITCH", new AspectList(), -1, 0, 0, new ResourceLocation("thaumcraft", "textures/misc/r_eldritchmajor.png"))).setPages(new ResearchPage("tc.research_page.ELDRITCHMAJOR.1"), new ResearchPage("tc.research_page.ELDRITCHMAJOR.2")).setStub().setHidden().setRound().setSpecial().registerResearchItem();
-      (new ResearchItem("OCULUS", "ELDRITCH", (new AspectList()).add(Aspect.MIND, 3).add(Aspect.DARKNESS, 3).add(Aspect.EXCHANGE, 3).add(Aspect.TRAVEL, 6).add(Aspect.ELDRITCH, 6), -2, 2, 1, new ItemStack(ConfigItems.itemEldritchObject, 1, 0))).setPages(new ResearchPage("tc.research_page.OCULUS.1"), new ResearchPage((InfusionRecipe)recipes.get("EldritchEye")), new ResearchPage("tc.research_page.OCULUS.2")).setRound().setConcealed().setParents("CRIMSON", "ELDRITCHMAJOR").setSpecial().registerResearchItem();
+      new ResearchItem(
+              "OCULUS",
+              "ELDRITCH",
+              new AspectList()
+                      .add(Aspect.MIND, 3)
+                      .add(Aspect.DARKNESS, 3)
+                      .add(Aspect.EXCHANGE, 3)
+                      .add(Aspect.TRAVEL, 6)
+                      .add(Aspect.ELDRITCH, 6)
+              , -2, 2, 1,
+              new ItemStack(ThaumcraftItems.ELDRITCH_EYE))
+              .setPages(new ResearchPage("tc.research_page.OCULUS.1")
+                      , new ResearchPage((InfusionRecipe)recipes.get("EldritchEye")),
+                      new ResearchPage("tc.research_page.OCULUS.2"))
+              .setRound().setConcealed().setParents("CRIMSON", "ELDRITCHMAJOR").setSpecial().registerResearchItem();
+
       ThaumcraftApi.addWarpToResearch("OCULUS", 6);
       (new ResearchItem("ENTEROUTER", "ELDRITCH", new AspectList(), -3, 4, 1, new ResourceLocation("thaumcraft", "textures/misc/r_outer.png"))).setPages(new ResearchPage("tc.research_page.ENTEROUTER.1")).setStub().setHidden().setRound().setParents("OCULUS").registerResearchItem();
       (new ResearchItem("OUTERREV", "ELDRITCH", (new AspectList()).add(Aspect.ELDRITCH, 4).add(Aspect.MIND, 4), -5, 3, 1, new ResourceLocation("thaumcraft", "textures/misc/r_outerrev.png"))).setPages(new ResearchPage("tc.research_page.OUTERREV.1")).setItemTriggers(new ItemStack(ConfigBlocks.blockEldritch, 1, 5), new ItemStack(ConfigBlocks.blockEldritch, 1, 10)).setLost().setSecondary().setSpecial().setParents("ENTEROUTER").registerResearchItem();
@@ -427,12 +440,12 @@ public class ConfigResearch {
               (new AspectList()).add(Aspect.AIR, 8).add(Aspect.EARTH, 8).add(Aspect.FIRE, 8).add(Aspect.WATER, 8).add(Aspect.ORDER, 8).add(Aspect.ENTROPY, 8),
               0, 4,
               1,
-              new ItemStack(ConfigItems.itemEldritchObject, 1, 3))
+              new ItemStack(ThaumcraftItems.PRIME_PEARL))
       ).setPages(
               new ResearchPage("tc.research_page.PRIMPEARL.1"),
               new ResearchPage("tc.research_page.PRIMPEARL.2")
       )
-              .setItemTriggers(new ItemStack(ConfigItems.itemEldritchObject, 1, 3))
+              .setItemTriggers(new ItemStack(ThaumcraftItems.PRIME_PEARL))
               .setLost()
               .setSecondary()
               .setSpecial()
@@ -443,7 +456,7 @@ public class ConfigResearch {
       (new ResearchItem("ADVALCHEMYFURNACE", "ELDRITCH", (new AspectList()).add(Aspect.AURA, 1).add(Aspect.MAGIC, 1).add(Aspect.ORDER, 1).add(Aspect.ENTROPY, 1), -2, 6, 1, new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3))).setPages(new ResearchPage("tc.research_page.ADVALCHEMYFURNACE.1"), new ResearchPage((IArcaneRecipe)recipes.get("AdvAlchemyConstruct")), new ResearchPage("tc.research_page.ADVALCHEMYFURNACE.2"), new ResearchPage((List)recipes.get("AdvAlchemyFurnace"))).setSecondary().setParents("PRIMPEARL", "DISTILESSENTIA", "VISPOWER").registerResearchItem();
       (new ResearchItem("PRIMALCRUSHER", "ELDRITCH", (new AspectList()).add(Aspect.MINE, 6).add(Aspect.TOOL, 6).add(Aspect.ENTROPY, 6).add(Aspect.VOID, 6).add(Aspect.WEAPON, 6).add(Aspect.ELDRITCH, 6).add(Aspect.GREED, 6), 2, 5, 2, new ItemStack(ConfigItems.itemPrimalCrusher))).setPages(new ResearchPage("tc.research_page.PRIMALCRUSHER.1"), new ResearchPage((InfusionRecipe)recipes.get("PrimalCrusher")), new ResearchPage("tc.research_page.PRIMALCRUSHER.2")).setConcealed().setParents("PRIMPEARL").setParentsHidden("VOIDMETAL", "ELEMENTALPICK", "ELEMENTALSHOVEL").registerResearchItem();
       (new ResearchItem("SANITYCHECK", "ELDRITCH", (new AspectList()).add(Aspect.MIND, 5).add(Aspect.ELDRITCH, 3).add(Aspect.SENSES, 5), 2, 2, 1, new ItemStack(ConfigItems.itemSanityChecker))).setPages(new ResearchPage("tc.research_page.SANITYCHECK.1"), new ResearchPage((InfusionRecipe)recipes.get("SanityCheck"))).setParents("ELDRITCHMINOR").registerResearchItem();
-      (new ResearchItem("VOIDMETAL", "ELDRITCH", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.ELDRITCH, 3).add(Aspect.DARKNESS, 3).add(Aspect.VOID, 5), 2, -2, 2, new ItemStack(ConfigItems.itemResource, 1, 16))).setPages(new ResearchPage("tc.research_page.VOIDMETAL.1"), new ResearchPage((CrucibleRecipe)recipes.get("VoidMetal")), new ResearchPage("tc.research_page.VOIDMETAL.2"), new ResearchPage((IRecipe)recipes.get("VoidAxe")), new ResearchPage((IRecipe)recipes.get("VoidSword")), new ResearchPage((IRecipe)recipes.get("VoidPick")), new ResearchPage((IRecipe)recipes.get("VoidShovel")), new ResearchPage((IRecipe)recipes.get("VoidHoe")), new ResearchPage((IRecipe)recipes.get("VoidHelm")), new ResearchPage((IRecipe)recipes.get("VoidChest")), new ResearchPage((IRecipe)recipes.get("VoidLegs")), new ResearchPage((IRecipe)recipes.get("VoidBoots"))).setParents("THAUMIUM", "ELDRITCHMINOR").registerResearchItem();
+      (new ResearchItem("VOIDMETAL", "ELDRITCH", (new AspectList()).add(Aspect.METAL, 3).add(Aspect.ELDRITCH, 3).add(Aspect.DARKNESS, 3).add(Aspect.VOID, 5), 2, -2, 2, new ItemStack(ThaumcraftItems.VOID_INGOT,1))).setPages(new ResearchPage("tc.research_page.VOIDMETAL.1"), new ResearchPage((CrucibleRecipe)recipes.get("VoidMetal")), new ResearchPage("tc.research_page.VOIDMETAL.2"), new ResearchPage((IRecipe)recipes.get("VoidAxe")), new ResearchPage((IRecipe)recipes.get("VoidSword")), new ResearchPage((IRecipe)recipes.get("VoidPick")), new ResearchPage((IRecipe)recipes.get("VoidShovel")), new ResearchPage((IRecipe)recipes.get("VoidHoe")), new ResearchPage((IRecipe)recipes.get("VoidHelm")), new ResearchPage((IRecipe)recipes.get("VoidChest")), new ResearchPage((IRecipe)recipes.get("VoidLegs")), new ResearchPage((IRecipe)recipes.get("VoidBoots"))).setParents("THAUMIUM", "ELDRITCHMINOR").registerResearchItem();
       (new ResearchItem("ESSENTIARESERVOIR", "ELDRITCH", (new AspectList()).add(Aspect.WATER, 5).add(Aspect.VOID, 3).add(Aspect.EXCHANGE, 3).add(Aspect.MAGIC, 5).add(Aspect.VOID, 5), 4, -3, 2, new ItemStack(ConfigBlocks.blockEssentiaReservoir))).setPages(new ResearchPage("tc.research_page.ESSENTIARESERVOIR.1"), new ResearchPage((InfusionRecipe)recipes.get("EssentiaReservoir")), new ResearchPage("tc.research_page.ESSENTIARESERVOIR.2")).setParents("VOIDMETAL", "CENTRIFUGE", "INFUSION").registerResearchItem();
       (new ResearchItem("CAP_void", "ELDRITCH", (new AspectList()).add(Aspect.VOID, 5).add(Aspect.ELDRITCH, 5).add(Aspect.TOOL, 3).add(Aspect.MAGIC, 3).add(Aspect.AURA, 3), 5, -1, 3, new ItemStack(ConfigItems.itemWandCap, 1, 7))).setPages(new ResearchPage("tc.research_page.CAP_void.1"), new ResearchPage((IArcaneRecipe)recipes.get("WandCapVoidInert")), new ResearchPage((InfusionRecipe)recipes.get("WandCapVoid"))).setConcealed().setParents("CAP_thaumium", "VOIDMETAL").registerResearchItem();
       ThaumcraftApi.addWarpToResearch("CAP_void", 1);

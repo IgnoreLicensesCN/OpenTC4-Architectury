@@ -1,15 +1,15 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.TileThaumcraft;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 
 import static tc4tweak.ClientUtils.lastUpdate;
 import static tc4tweak.ClientUtils.postponed;
@@ -65,14 +65,14 @@ public class TileMagicWorkbench extends TileThaumcraft implements IInventory, IS
              this.eventHandler.onCraftMatrixChanged(this);
           }
           this.markDirty();
-          this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
           return var3;
       } else {
          return null;
       }
    }
    public static void updateCraftingMatrix(TileMagicWorkbench self) {
-      if (!self.getWorldObj().isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          self.eventHandler.onCraftMatrixChanged(self);
          return;
       }
@@ -89,7 +89,7 @@ public class TileMagicWorkbench extends TileThaumcraft implements IInventory, IS
    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
       this.stackList[par1] = par2ItemStack;
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       if (this.eventHandler != null) {
          this.eventHandler.onCraftMatrixChanged(this);
          updateCraftingMatrix(this);//TODO:Verify if it is right,from TC4Tweaks
@@ -105,7 +105,7 @@ public class TileMagicWorkbench extends TileThaumcraft implements IInventory, IS
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+   public boolean isUseableByPlayer(Player par1Player) {
       return true;
    }
 
@@ -154,10 +154,10 @@ public class TileMagicWorkbench extends TileThaumcraft implements IInventory, IS
 
    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
       if (i == 10 && itemstack != null) {
-         if (!(itemstack.getItem() instanceof ItemWandCasting)) {
+         if (!(itemstack.getItem() instanceof WandCastingItem)) {
             return false;
          } else {
-            ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+            WandCastingItem wand = (WandCastingItem)itemstack.getItem();
             return !wand.isStaff(itemstack);
          }
       } else {
@@ -170,8 +170,8 @@ public class TileMagicWorkbench extends TileThaumcraft implements IInventory, IS
    }
 
    public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-      if (i == 10 && itemstack != null && itemstack.getItem() instanceof ItemWandCasting) {
-         ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+      if (i == 10 && itemstack != null && itemstack.getItem() instanceof WandCastingItem) {
+         WandCastingItem wand = (WandCastingItem)itemstack.getItem();
          return !wand.isStaff(itemstack);
       } else {
          return false;

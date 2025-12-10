@@ -2,8 +2,8 @@ package thaumcraft.common.lib.world.biomes;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityInhabitedZombie;
@@ -30,7 +30,7 @@ public class BiomeGenEldritch extends BiomeGenBase {
       return 0;
    }
 
-   public void decorate(World world, Random random, int x, int z) {
+   public void decorate(Level world, Random random, int x, int z) {
    }
 
    public BiomeGenBase createMutation() {

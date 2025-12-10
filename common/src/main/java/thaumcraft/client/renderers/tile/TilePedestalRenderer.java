@@ -6,17 +6,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.tiles.TilePedestal;
 
 @SideOnly(Side.CLIENT)
 public class TilePedestalRenderer extends TileEntitySpecialRenderer {
    public void renderTileEntityAt(TilePedestal ped, double par2, double par4, double par6, float par8) {
-      if (ped != null && ped.getWorldObj() != null && ped.getStackInSlot(0) != null) {
+      if (ped != null && ped.getLevel() != null && ped.getStackInSlot(0) != null) {
          EntityItem entityitem = null;
          float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
          GL11.glPushMatrix();
@@ -31,7 +31,7 @@ public class TilePedestalRenderer extends TileEntitySpecialRenderer {
 
          ItemStack is = ped.getStackInSlot(0).copy();
          is.stackSize = 1;
-         entityitem = new EntityItem(ped.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
+         entityitem = new EntityItem(ped.getLevel(), 0.0F, 0.0F, 0.0F, is);
          entityitem.hoverStart = 0.0F;
          RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
          if (!Minecraft.isFancyGraphicsEnabled()) {

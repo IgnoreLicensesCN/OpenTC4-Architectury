@@ -6,11 +6,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import thaumcraft.api.TileThaumcraft;
@@ -67,7 +67,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
    public void updateEntity() {
       ++this.counter;
       int prevheat = this.heat;
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.bellows < 0) {
             this.getBellows();
          }
@@ -77,22 +77,22 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
                --this.heat;
             }
          } else {
-            Material mat = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord).getMaterial();
-            Block bi = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
-            int md = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord);
+            Material mat = this.level().getBlock(this.xCoord, this.yCoord - 1, this.zCoord).getMaterial();
+            Block bi = this.level().getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
+            int md = this.level().getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord);
             if (mat == Material.lava || mat == Material.fire || bi == ConfigBlocks.blockAiry && md == 1) {
                if (this.heat < 200) {
                   this.heat = (short)(this.heat + 1 + this.bellows * 2);
                   if (prevheat < 151 && this.heat >= 151) {
                      this.markDirty();
-                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                     this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   }
                }
             } else if (this.heat > 0) {
                --this.heat;
                if (this.heat == 149) {
                   this.markDirty();
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                }
             }
          }
@@ -106,15 +106,15 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             this.counter = 0L;
             if (this.tagAmount() > 0) {
                int s = this.aspects.getAspects().length;
-               Aspect a = this.aspects.getAspects()[this.worldObj.rand.nextInt(s)];
+               Aspect a = this.aspects.getAspects()[this.level().rand.nextInt(s)];
                if (a.isPrimal()) {
-                  a = this.aspects.getAspects()[this.worldObj.rand.nextInt(s)];
+                  a = this.aspects.getAspects()[this.level().rand.nextInt(s)];
                }
 
                this.tank.drain(2, true);
                this.aspects.remove(a, 1);
                if (!a.isPrimal()) {
-                  if (this.worldObj.rand.nextBoolean()) {
+                  if (this.level().rand.nextBoolean()) {
                      this.aspects.add(a.getComponents()[0], 1);
                   } else {
                      this.aspects.add(a.getComponents()[1], 1);
@@ -125,13 +125,13 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             }
 
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
       } else if (this.tank.getFluidAmount() > 0) {
          this.drawEffects();
       }
 
-      if (this.worldObj.isRemote && prevheat < 151 && this.heat >= 151) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && prevheat < 151 && this.heat >= 151) {
          ++this.heat;
       }
 
@@ -139,22 +139,22 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
 
    private void drawEffects() {
       if (this.heat > 150) {
-         Thaumcraft.proxy.crucibleFroth(this.worldObj, (float)this.xCoord + 0.2F + this.worldObj.rand.nextFloat() * 0.6F, (float)this.yCoord + this.getFluidHeight(), (float)this.zCoord + 0.2F + this.worldObj.rand.nextFloat() * 0.6F);
+         Thaumcraft.proxy.crucibleFroth(this.level(), (float)this.xCoord + 0.2F + this.level().rand.nextFloat() * 0.6F, (float)this.yCoord + this.getFluidHeight(), (float)this.zCoord + 0.2F + this.level().rand.nextFloat() * 0.6F);
          if (this.tagAmount() > 100) {
             for(int a = 0; a < 2; ++a) {
-               Thaumcraft.proxy.crucibleFrothDown(this.worldObj, (float)this.xCoord, (float)(this.yCoord + 1), (float)this.zCoord + this.worldObj.rand.nextFloat());
-               Thaumcraft.proxy.crucibleFrothDown(this.worldObj, (float)(this.xCoord + 1), (float)(this.yCoord + 1), (float)this.zCoord + this.worldObj.rand.nextFloat());
-               Thaumcraft.proxy.crucibleFrothDown(this.worldObj, (float)this.xCoord + this.worldObj.rand.nextFloat(), (float)(this.yCoord + 1), (float)this.zCoord);
-               Thaumcraft.proxy.crucibleFrothDown(this.worldObj, (float)this.xCoord + this.worldObj.rand.nextFloat(), (float)(this.yCoord + 1), (float)(this.zCoord + 1));
+               Thaumcraft.proxy.crucibleFrothDown(this.level(), (float)this.xCoord, (float)(this.yCoord + 1), (float)this.zCoord + this.level().rand.nextFloat());
+               Thaumcraft.proxy.crucibleFrothDown(this.level(), (float)(this.xCoord + 1), (float)(this.yCoord + 1), (float)this.zCoord + this.level().rand.nextFloat());
+               Thaumcraft.proxy.crucibleFrothDown(this.level(), (float)this.xCoord + this.level().rand.nextFloat(), (float)(this.yCoord + 1), (float)this.zCoord);
+               Thaumcraft.proxy.crucibleFrothDown(this.level(), (float)this.xCoord + this.level().rand.nextFloat(), (float)(this.yCoord + 1), (float)(this.zCoord + 1));
             }
          }
       }
 
-      if (this.worldObj.rand.nextInt(6) == 0 && this.aspects.size() > 0) {
-         int color = this.aspects.getAspects()[this.worldObj.rand.nextInt(this.aspects.size())].getColor() - 16777216;
-         int x = 5 + this.worldObj.rand.nextInt(22);
-         int y = 5 + this.worldObj.rand.nextInt(22);
-         this.delay = this.worldObj.rand.nextInt(10);
+      if (this.level().rand.nextInt(6) == 0 && this.aspects.size() > 0) {
+         int color = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.size())].getColor() - 16777216;
+         int x = 5 + this.level().rand.nextInt(22);
+         int y = 5 + this.level().rand.nextInt(22);
+         this.delay = this.level().rand.nextInt(10);
          this.prevcolor = color;
          this.prevx = x;
          this.prevy = y;
@@ -162,35 +162,35 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
          float r = (float)c.getRed() / 255.0F;
          float g = (float)c.getGreen() / 255.0F;
          float b = (float)c.getBlue() / 255.0F;
-         Thaumcraft.proxy.crucibleBubble(this.worldObj, (float)this.xCoord + (float)x / 32.0F + 0.015625F, (float)this.yCoord + 0.05F + this.getFluidHeight(), (float)this.zCoord + (float)y / 32.0F + 0.015625F, r, g, b);
+         Thaumcraft.proxy.crucibleBubble(this.level(), (float)this.xCoord + (float)x / 32.0F + 0.015625F, (float)this.yCoord + 0.05F + this.getFluidHeight(), (float)this.zCoord + (float)y / 32.0F + 0.015625F, r, g, b);
       }
 
    }
 
    public void spill() {
-      if (this.worldObj.rand.nextInt(4) == 0) {
-         if (this.worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
-            if (this.worldObj.rand.nextBoolean()) {
-               this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGas, 0, 3);
+      if (this.level().rand.nextInt(4) == 0) {
+         if (this.level().isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
+            if (this.level().rand.nextBoolean()) {
+               this.level().setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGas, 0, 3);
             } else {
-               this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGoo, 0, 3);
+               this.level().setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGoo, 0, 3);
             }
          } else {
-            Block bi = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-            int md = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
+            Block bi = this.level().getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+            int md = this.level().getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
             if (bi == ConfigBlocks.blockFluxGoo && md < 7) {
-               this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGoo, md + 1, 3);
+               this.level().setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGoo, md + 1, 3);
             } else if (bi == ConfigBlocks.blockFluxGas && md < 7) {
-               this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGas, md + 1, 3);
+               this.level().setBlock(this.xCoord, this.yCoord + 1, this.zCoord, ConfigBlocks.blockFluxGas, md + 1, 3);
             } else {
-               int x = -1 + this.worldObj.rand.nextInt(3);
-               int y = -1 + this.worldObj.rand.nextInt(3);
-               int z = -1 + this.worldObj.rand.nextInt(3);
-               if (this.worldObj.isAirBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z)) {
-                  if (this.worldObj.rand.nextBoolean()) {
-                     this.worldObj.setBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, ConfigBlocks.blockFluxGas, 0, 3);
+               int x = -1 + this.level().rand.nextInt(3);
+               int y = -1 + this.level().rand.nextInt(3);
+               int z = -1 + this.level().rand.nextInt(3);
+               if (this.level().isAirBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z)) {
+                  if (this.level().rand.nextBoolean()) {
+                     this.level().setBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, ConfigBlocks.blockFluxGas, 0, 3);
                   } else {
-                     this.worldObj.setBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, ConfigBlocks.blockFluxGoo, 0, 3);
+                     this.level().setBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, ConfigBlocks.blockFluxGoo, 0, 3);
                   }
                }
             }
@@ -209,8 +209,8 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
 
          this.aspects = new AspectList();
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
       }
 
    }
@@ -226,11 +226,11 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
          }
 
          items.stackSize -= spitout.stackSize;
-         EntitySpecialItem entityitem = new EntitySpecialItem(this.worldObj, (float)this.xCoord + 0.5F, (float)this.yCoord + 0.71F, (float)this.zCoord + 0.5F, spitout);
+         EntitySpecialItem entityitem = new EntitySpecialItem(this.level(), (float)this.xCoord + 0.5F, (float)this.yCoord + 0.71F, (float)this.zCoord + 0.5F, spitout);
          entityitem.motionY = 0.1F;
-         entityitem.motionX = first ? (double)0.0F : (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.01F);
-         entityitem.motionZ = first ? (double)0.0F : (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.01F);
-         this.worldObj.spawnEntityInWorld(entityitem);
+         entityitem.motionX = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
+         entityitem.motionZ = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
+         this.level().spawnEntityInWorld(entityitem);
          first = false;
       } while(items.stackSize > 0);
 
@@ -248,7 +248,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
          CrucibleRecipe rc = ThaumcraftCraftingManager.findMatchingCrucibleRecipe(username, this.aspects, item);
          if (rc != null && this.tank.getFluidAmount() > 0) {
             ItemStack out = rc.getRecipeOutput().copy();
-            EntityPlayer p = this.worldObj.getPlayerEntityByName(username);
+            Player p = this.level().getPlayerEntityByName(username);
             if (p != null) {
                FMLCommonHandler.instance().firePlayerCraftingEvent(p, out, new InventoryFake(new ItemStack[]{item}));
             }
@@ -264,9 +264,9 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             ot = ThaumcraftCraftingManager.getBonusTags(item, ot);
             if (ot == null || ot.size() == 0) {
                entity.motionY = 0.35F;
-               entity.motionX = (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F;
-               entity.motionZ = (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F;
-               this.worldObj.playSoundAtEntity(entity, "random.pop", 0.2F, (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.7F + 1.0F);
+               entity.motionX = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F;
+               entity.motionZ = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F;
+               this.level().playSoundAtEntity(entity, "random.pop", 0.2F, (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.7F + 1.0F);
                return;
             }
 
@@ -281,14 +281,14 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       }
 
       if (bubble) {
-         this.worldObj.playSoundAtEntity(entity, "thaumcraft:bubble", 0.2F, 1.0F + this.worldObj.rand.nextFloat() * 0.4F);
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 1);
+         this.level().playSoundAtEntity(entity, "thaumcraft:bubble", 0.2F, 1.0F + this.level().rand.nextFloat() * 0.4F);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 1);
       }
 
       if (event) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
       }
 
       if (stacksize <= 0) {
@@ -331,32 +331,32 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
    public AspectList takeRandomFromSource() {
       AspectList output = new AspectList();
       if (this.aspects.size() > 0) {
-         Aspect tag = this.aspects.getAspects()[this.worldObj.rand.nextInt(this.aspects.getAspects().length)];
+         Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
          output.add(tag, 1);
          this.aspects.remove(tag, 1);
       }
 
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       return output;
    }
 
    public boolean receiveClientEvent(int i, int j) {
       if (i == 1) {
-         if (this.worldObj.isRemote) {
-            Thaumcraft.proxy.blockSparkle(this.worldObj, this.xCoord, this.yCoord, this.zCoord, -9999, 5);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            ClientFXUtils.blockSparkle(this.level(), this.xCoord, this.yCoord, this.zCoord, -9999, 5);
          }
 
          return true;
       } else if (i != 2) {
          return super.receiveClientEvent(i, j);
       } else {
-         Thaumcraft.proxy.crucibleBoilSound(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-         if (this.worldObj.isRemote) {
+         ClientFXUtils.crucibleBoilSound(this.level(), this.xCoord, this.yCoord, this.zCoord);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int q = 0; q < 10; ++q) {
-               int x = 5 + this.worldObj.rand.nextInt(22);
-               int y = 5 + this.worldObj.rand.nextInt(22);
-               Thaumcraft.proxy.crucibleBoil(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this, j);
+               int x = 5 + this.level().rand.nextInt(22);
+               int y = 5 + this.level().rand.nextInt(22);
+               Thaumcraft.proxy.crucibleBoil(this.level(), this.xCoord, this.yCoord, this.zCoord, this, j);
             }
          }
 
@@ -371,8 +371,8 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
          ForgeDirection dir = ForgeDirection.getOrientation(a);
          int xx = this.xCoord + dir.offsetX;
          int zz = this.zCoord + dir.offsetZ;
-         Block bi = this.worldObj.getBlock(xx, this.yCoord, zz);
-         int md = this.worldObj.getBlockMetadata(xx, this.yCoord, zz);
+         Block bi = this.level().getBlock(xx, this.yCoord, zz);
+         int md = this.level().getBlockMetadata(xx, this.yCoord, zz);
          if (bi == ConfigBlocks.blockWoodenDevice && md == 0) {
             ++this.bellows;
          }
@@ -386,7 +386,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       } else {
          if (doFill) {
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
 
          return this.tank.fill(resource, doFill);
@@ -397,7 +397,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       if (resource != null && resource.isFluidEqual(this.tank.getFluid())) {
          if (doDrain) {
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
 
          return this.tank.drain(resource.amount, doDrain);
@@ -422,22 +422,22 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return new FluidTankInfo[]{this.tank.getInfo()};
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
       return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
-      if (!world.isRemote && player.isSneaking()) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
+      if (Platform.getEnvironment() != Env.CLIENT && player.isSneaking()) {
          this.spillRemnants();
       }
 
       return wandstack;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
    @SideOnly(Side.CLIENT)

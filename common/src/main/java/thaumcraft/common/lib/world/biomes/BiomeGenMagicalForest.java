@@ -2,15 +2,15 @@ package thaumcraft.common.lib.world.biomes;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockFlower;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.monster.EntityEnderman;
+import net.minecraft.world.entity.monster.EntityWitch;
+import net.minecraft.world.entity.passive.EntityHorse;
+import net.minecraft.world.entity.passive.EntityWolf;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.*;
 import thaumcraft.common.config.Config;
@@ -82,13 +82,13 @@ public class BiomeGenMagicalForest extends BiomeGenBase {
       return 30702;
    }
 
-   public void decorate(World world, Random random, int x, int z) {
+   public void decorate(Level world, Random random, int x, int z) {
       int k = random.nextInt(3);
 
       for(int l = 0; l < k; ++l) {
          int i1 = x + random.nextInt(16) + 8;
          int j1 = z + random.nextInt(16) + 8;
-         int k1 = world.getHeightValue(i1, j1);
+         int k1 = world.getHeight(Heightmap.Types.WORLD_SURFACE,i1, j1);
          blobs.generate(world, random, i1, k1, j1);
       }
 
@@ -96,7 +96,7 @@ public class BiomeGenMagicalForest extends BiomeGenBase {
          for(int var18 = 0; var18 < 4; ++var18) {
             int i1 = x + var16 * 4 + 1 + 8 + random.nextInt(3);
             int j1 = z + var18 * 4 + 1 + 8 + random.nextInt(3);
-            int k1 = world.getHeightValue(i1, j1);
+            int k1 = world.getHeight(Heightmap.Types.WORLD_SURFACE,i1, j1);
             if (random.nextInt(40) == 0) {
                WorldGenBigMushroom worldgenbigmushroom = new WorldGenBigMushroom();
                worldgenbigmushroom.generate(world, random, i1, k1, j1);
@@ -119,7 +119,7 @@ public class BiomeGenMagicalForest extends BiomeGenBase {
          int zz = z + random.nextInt(16);
 
          int yy;
-         for(yy = world.getHeightValue(xx, zz); yy > 50 && world.getBlock(xx, yy, zz) != Blocks.grass; --yy) {
+         for(yy = world.getHeight(Heightmap.Types.WORLD_SURFACE,xx, zz); yy > 50 && world.getBlock(xx, yy, zz) != Blocks.grass; --yy) {
          }
 
          Block l1 = world.getBlock(xx, yy, zz);

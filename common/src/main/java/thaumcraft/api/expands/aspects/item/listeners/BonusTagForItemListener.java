@@ -1,15 +1,13 @@
 package thaumcraft.api.expands.aspects.item.listeners;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.expands.UnmodifiableAspectList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@ParametersAreNonnullByDefault
 public abstract class BonusTagForItemListener implements Comparable<BonusTagForItemListener> {
 
     public final int priority;
@@ -17,10 +15,10 @@ public abstract class BonusTagForItemListener implements Comparable<BonusTagForI
         this.priority = priority;
     }
 
-    public abstract void onItem(@Nullable Item item, ItemStack itemstack, UnmodifiableAspectList sourceTags, AspectList currentAspects);
+    public abstract void onItem(@NotNull Item item,@NotNull ItemStack itemstack,@NotNull  UnmodifiableAspectList sourceTags,@NotNull  AspectList currentAspects);
 
     @Override
-    public int compareTo(@Nonnull BonusTagForItemListener o) {
+    public int compareTo(@NotNull BonusTagForItemListener o) {
         return Integer.compare(priority, o.priority);
     }
 }

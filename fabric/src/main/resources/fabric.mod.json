@@ -14,6 +14,9 @@
   "icon": "assets/opentc4/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "com.linearity.opentc4.client.OpenTC4DataGenerator"
+    ],
     "main": [
       "com.linearity.opentc4.fabric.OpenTC4Fabric"
     ],
@@ -22,7 +25,8 @@
     ]
   },
   "mixins": [
-    "opentc4.mixins.json"
+    "opentc4.mixins.json",
+    "opentc4fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.18.1",

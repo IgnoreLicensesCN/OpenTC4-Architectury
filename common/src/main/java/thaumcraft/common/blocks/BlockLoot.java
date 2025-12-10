@@ -6,11 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -82,10 +82,10 @@ public class BlockLoot extends Block {
 
    public ArrayList getDrops(World world, int x, int y, int z, int md, int fortune) {
       ArrayList<ItemStack> ret = new ArrayList<>();
-      int q = 1 + md + world.rand.nextInt(3);
+      int q = 1 + md + world.getRandom().nextInt(3);
 
       for(int a = 0; a < q; ++a) {
-         ItemStack is = Utils.generateLoot(md, world.rand);
+         ItemStack is = Utils.generateLoot(md, world.getRandom());
          if (is != null) {
             ret.add(is.copy());
          }

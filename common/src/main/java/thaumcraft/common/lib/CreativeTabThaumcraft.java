@@ -3,7 +3,7 @@ package thaumcraft.common.lib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import thaumcraft.common.config.ConfigItems;
 
 public final class CreativeTabThaumcraft extends CreativeTabs {
@@ -13,6 +13,6 @@ public final class CreativeTabThaumcraft extends CreativeTabs {
 
    @SideOnly(Side.CLIENT)
    public Item getTabIconItem() {
-      return ConfigItems.itemWandCasting;
+      return ConfigItems.WandCastingItem;
    }
 }

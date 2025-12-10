@@ -7,18 +7,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemTool;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.EnumHelper;
 import thaumcraft.api.IRepairable;
@@ -68,7 +68,7 @@ public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarping
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 15)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
    private boolean isEffectiveAgainst(Block block) {
@@ -81,10 +81,10 @@ public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarping
       return false;
    }
 
-   public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) {
-      MovingObjectPosition movingobjectposition = BlockUtils.getTargetBlock(player.worldObj, player, true);
-      if (movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
-         this.side = movingobjectposition.sideHit;
+   public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, Player player) {
+      HitResult HitResult = BlockUtils.getTargetBlock(player.level(), player, true);
+      if (HitResult != null && HitResult.typeOfHit == MovingObjectType.BLOCK) {
+         this.side = HitResult.sideHit;
       }
 
       return super.onBlockStartBreak(itemstack, X, Y, Z, player);
@@ -94,7 +94,7 @@ public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarping
       if (ent.isSneaking()) {
          return super.onBlockDestroyed(stack, world, bi, x, y, z, ent);
       } else {
-         if (!ent.worldObj.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             int md = world.getBlockMetadata(x, y, z);
             if (ForgeHooks.isToolEffective(stack, bi, md) || this.isEffectiveAgainst(bi)) {
                for(int aa = -1; aa <= 1; ++aa) {
@@ -113,12 +113,12 @@ public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarping
                         yy = bb;
                      }
 
-                     if (!(ent instanceof EntityPlayer) || world.canMineBlock((EntityPlayer)ent, x + xx, y + yy, z + zz)) {
+                     if (!(ent instanceof Player) || world.canMineBlock((Player)ent, x + xx, y + yy, z + zz)) {
                         Block bl = world.getBlock(x + xx, y + yy, z + zz);
                         md = world.getBlockMetadata(x + xx, y + yy, z + zz);
                         if (bl.getBlockHardness(world, x + xx, y + yy, z + zz) >= 0.0F && (ForgeHooks.isToolEffective(stack, bl, md) || this.isEffectiveAgainst(bl))) {
                            stack.damageItem(1, ent);
-                           BlockUtils.harvestBlock(world, (EntityPlayer)ent, x + xx, y + yy, z + zz, true, 2);
+                           BlockUtils.harvestBlock(world, (Player)ent, x + xx, y + yy, z + zz, true, 2);
                         }
                      }
                   }
@@ -134,7 +134,7 @@ public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarping
       return 20;
    }
 
-   public int getWarp(ItemStack itemstack, EntityPlayer player) {
+   public int getWarp(ItemStack itemstack, Player player) {
       return 2;
    }
 

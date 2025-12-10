@@ -4,13 +4,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.Player;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import thaumcraft.common.entities.golems.ItemGolemBell;
 import thaumcraft.common.items.equipment.ItemElementalShovel;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 
 public class PacketItemKeyToServer implements IMessage, IMessageHandler<PacketItemKeyToServer,IMessage> {
@@ -22,7 +22,7 @@ public class PacketItemKeyToServer implements IMessage, IMessageHandler<PacketIt
    }
 
    public PacketItemKeyToServer(Player player, int key) {
-      this.dim = player.worldObj.provider.dimensionId;
+      this.dim = player.level().dimension();
       this.playerid = player.getEntityId();
       this.key = (byte)key;
    }
@@ -40,7 +40,7 @@ public class PacketItemKeyToServer implements IMessage, IMessageHandler<PacketIt
    }
 
    public IMessage onMessage(PacketItemKeyToServer message, MessageContext ctx) {
-      World world = DimensionManager.getWorld(message.dim);
+      Level world = DimensionManager.getWorld(message.dim);
        if (world != null) {
            Entity player = world.getEntityByID(message.playerid);
            if (player instanceof Player && ((Player) player).getHeldItem() != null) {
@@ -48,7 +48,7 @@ public class PacketItemKeyToServer implements IMessage, IMessageHandler<PacketIt
                    ItemGolemBell.resetMarkers(((Player) player).getHeldItem(), world, (Player) player);
                }
 
-               if (message.key == 1 && ((Player) player).getHeldItem().getItem() instanceof ItemWandCasting) {
+               if (message.key == 1 && ((Player) player).getHeldItem().getItem() instanceof WandCastingItem) {
                    WandManager.toggleMisc(((Player) player).getHeldItem(), world, (Player) player);
                }
 

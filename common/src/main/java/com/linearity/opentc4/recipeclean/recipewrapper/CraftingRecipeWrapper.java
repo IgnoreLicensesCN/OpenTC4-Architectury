@@ -1,4 +1,4 @@
 package com.linearity.opentc4.recipeclean.recipewrapper;
 
-public class CraftingRecipeWrapper {
+public abstract class CraftingRecipeWrapper implements RecipeInAndOutSampler{
 }

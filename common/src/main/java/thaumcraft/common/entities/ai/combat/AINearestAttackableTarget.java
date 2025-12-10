@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.combat;
 
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -36,7 +36,7 @@ public class AINearestAttackableTarget extends EntityAITarget {
       if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
          return false;
       } else {
-         List<Entity> var5 = (List<Entity>)this.taskOwner.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
+         List<Entity> var5 = (List<Entity>)this.taskOwner.level().selectEntitiesWithinAABB(EntityLivingBase.class, this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
          var5.sort(this.theNearestAttackableTargetSorter);
 
          for(Entity var3 : var5) {

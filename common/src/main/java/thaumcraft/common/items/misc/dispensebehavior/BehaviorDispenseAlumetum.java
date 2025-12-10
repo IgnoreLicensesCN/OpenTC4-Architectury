@@ -1,19 +1,13 @@
-package thaumcraft.common.items.misc;
-
-package thaumcraft.common.items.misc;
+package thaumcraft.common.items.misc.dispensebehavior;
 
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.DispenserBlock;
 import thaumcraft.common.entities.projectile.EntityAlumentum;
 
 public class BehaviorDispenseAlumentum extends AbstractProjectileDispenseBehavior {

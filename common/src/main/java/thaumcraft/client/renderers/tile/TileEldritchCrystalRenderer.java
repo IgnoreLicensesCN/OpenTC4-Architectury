@@ -5,10 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
@@ -26,8 +26,8 @@ public class TileEldritchCrystalRenderer extends TileEntitySpecialRenderer {
 
    public void renderTileEntityAt(TileCrystal tile, double par2, double par4, double par6, float par8) {
       GL11.glPushMatrix();
-      this.translateFromOrientation(par2, par4, par6, tile.orientation, (tile.getWorldObj() == null ? 0 : tile.hashCode()) % 4);
-      EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+      this.translateFromOrientation(par2, par4, par6, tile.orientation, (tile.getLevel() == null ? 0 : tile.hashCode()) % 4);
+      Player p = Minecraft.getMinecraft().thePlayer;
       UtilsFX.bindTexture("textures/blocks/crust.png");
       this.model.renderPart("Base");
       float shade = MathHelper.sin((float)p.ticksExisted / 6.0F) * 0.075F + 0.925F;

@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,20 +20,19 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ScanResult;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketScannedToServerC2S;
 import thaumcraft.common.lib.research.ScanManager;
-import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static thaumcraft.common.ThaumcraftSounds.CAMERA_TICKS;
 
-public class ItemThaumometer extends Item {
+public class ThaumometerItem extends Item {
    ScanResult startScan = null;
 
-   public ItemThaumometer() {
+   public ThaumometerItem() {
       super(new Properties().stacksTo(1));
    }
 
@@ -76,7 +74,7 @@ public class ItemThaumometer extends Item {
             return null;
          }
       } else {
-         HitResult mop = EntityUtils.getMovingObjectPositionFromPlayer(p.level(), p, true);
+         HitResult mop = EntityUtils.getHitResultFromPlayer(p.level(), p, true);
          if (mop instanceof BlockHitResult blockHitResult && mop.getType() != HitResult.Type.MISS) {
             var pos = blockHitResult.getBlockPos();
             BlockEntity tile = world.getBlockEntity(pos);
@@ -157,15 +155,18 @@ public class ItemThaumometer extends Item {
          onUsingTick(itemStack,player,count);
       }
    }
-
+   private final AtomicInteger counter = new AtomicInteger(0);
    public void onUsingTick(ItemStack stack, Player p, int count) {//TODO:migrate
+      count = counter.decrementAndGet();
       var localPlayer = Minecraft.getInstance().player;
       if (p.level().isClientSide() && localPlayer != null && Objects.equals(localPlayer.getName().getString(),p.getName().getString())) {
          ScanResult scan = this.doScan(stack, p.level(), p, count);
          if (scan != null && scan.equals(this.startScan)) {
             if (count <= 5) {
                this.startScan = null;
-               p.stopUsingItem();
+
+               counter.set(25);
+//               p.stopUsingItem();
                if (ScanManager.completeScan(p, scan, "@")) {
                   new PacketScannedToServerC2S(scan, p, "@").sendToServer();
                }
@@ -186,9 +187,9 @@ public class ItemThaumometer extends Item {
       super.releaseUsing(itemStack, level, livingEntity, i);
       this.startScan = null;
    }
-   
+
    @Override
    public int getUseDuration(ItemStack stack) {
-      return 25; // 总使用时间
+      return Integer.MAX_VALUE;
    }
 }

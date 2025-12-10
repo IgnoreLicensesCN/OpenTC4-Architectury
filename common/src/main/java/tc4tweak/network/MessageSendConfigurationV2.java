@@ -5,14 +5,14 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.CompoundTag;
 import tc4tweak.ConfigurationHandler;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class MessageSendConfigurationV2 implements IMessage,  IMessageHandler<MessageSendConfigurationV2, IMessage>  {
-    private NBTTagCompound tag;
+    private CompoundTag tag;
 
     public MessageSendConfigurationV2() {
-        tag = new NBTTagCompound();
+        tag = new CompoundTag();
         // yeah I said NBT is an unfortunate piece of tech, but it does give us a bit of flexibility over network
         // protocol
         tag.setBoolean("sj", ConfigurationHandler.INSTANCE.isSmallerJars());

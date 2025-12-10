@@ -1,7 +1,7 @@
 package thaumcraft.api.expands.worldgen.node;
 
-import net.minecraft.world.World;
-import simpleutils.ListenerManager;
+import net.minecraft.world.level.Level;
+import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.expands.worldgen.node.listeners.*;
@@ -50,7 +50,7 @@ public class NodeGenerationManager {
     /**
      * will be called when generating nodes
      */
-    public static boolean generateWildNodes(World world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+    public static boolean generateWildNodes(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
         for (DoGenerateCondition condition : doGenerateConditionsManager.getListeners()) {
             if (!condition.check(world, random, chunkX, chunkZ, auraGen, newGen)) {
                 return false;
@@ -83,7 +83,7 @@ public class NodeGenerationManager {
             }
         }
     }
-    public static void createRandomNodeAt(World world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
+    public static void createRandomNodeAt(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
         tryInitAspects();
         NodeType type = NodeType.NORMAL;
         for (NodeTypePicker picker : nodeTypePickerManager.getListeners()) {
@@ -103,7 +103,7 @@ public class NodeGenerationManager {
         createNodeAt(world,new CreateNodeContext(type,modifier,x,y,z,nodeAspects));
     }
 
-    public static void createNodeAt(World world,CreateNodeContext context) {
+    public static void createNodeAt(Level world,CreateNodeContext context) {
         for (CreateNodeListener listener : createNodeListenerManager.getListeners()) {
             if (listener.onCreateNode(world, context)) {
                 break;

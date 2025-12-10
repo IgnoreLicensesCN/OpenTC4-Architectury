@@ -2,13 +2,13 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -78,7 +78,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
       }
 
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       return am;
    }
 
@@ -96,7 +96,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
          }
 
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return true;
       } else {
          return false;
@@ -125,9 +125,9 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
 
    public void getAppearance() {
       this.aboveAlembic = false;
-       this.aboveFurnace = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ConfigBlocks.blockStoneDevice && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) == 0;
+       this.aboveFurnace = this.level().getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ConfigBlocks.blockStoneDevice && this.level().getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) == 0;
 
-      if (this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ConfigBlocks.blockMetalDevice && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) == this.getBlockMetadata()) {
+      if (this.level().getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ConfigBlocks.blockMetalDevice && this.level().getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord) == this.getBlockMetadata()) {
          this.aboveAlembic = true;
       }
 
@@ -138,25 +138,25 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
       this.getAppearance();
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
        if (side > 1) {
            this.facing = side;
            this.fd = ForgeDirection.getOrientation(this.facing);
-           this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+           this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
            player.swingItem();
            this.markDirty();
        }
        return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
    public boolean isConnectable(ForgeDirection face) {

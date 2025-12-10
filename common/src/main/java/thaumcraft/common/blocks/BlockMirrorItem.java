@@ -5,16 +5,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileMirror;
@@ -53,9 +53,9 @@ public class BlockMirrorItem extends ItemBlock {
       return super.getUnlocalizedName() + "." + d;
    }
 
-   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+   public boolean onItemUseFirst(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
       if (world.getBlock(x, y, z) == ConfigBlocks.blockMirror) {
-         if (world.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             player.swingItem();
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
          }
@@ -69,10 +69,10 @@ public class BlockMirrorItem extends ItemBlock {
                st.setTagInfo("linkX", new NBTTagInt(tm.xCoord));
                st.setTagInfo("linkY", new NBTTagInt(tm.yCoord));
                st.setTagInfo("linkZ", new NBTTagInt(tm.zCoord));
-               st.setTagInfo("linkDim", new NBTTagInt(world.provider.dimensionId));
-               st.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.provider.dimensionId).getDimensionName()));
+               st.setTagInfo("linkDim", new NBTTagInt(world.dimension()));
+               st.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                world.playSoundEffect(x, y, z, "thaumcraft:jar", 1.0F, 2.0F);
-               if (!player.inventory.addItemStackToInventory(st) && !world.isRemote) {
+               if (!player.inventory.addItemStackToInventory(st) && Platform.getEnvironment() != Env.CLIENT) {
                   world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, st));
                }
 
@@ -93,10 +93,10 @@ public class BlockMirrorItem extends ItemBlock {
                st.setTagInfo("linkX", new NBTTagInt(tm.xCoord));
                st.setTagInfo("linkY", new NBTTagInt(tm.yCoord));
                st.setTagInfo("linkZ", new NBTTagInt(tm.zCoord));
-               st.setTagInfo("linkDim", new NBTTagInt(world.provider.dimensionId));
-               st.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.provider.dimensionId).getDimensionName()));
+               st.setTagInfo("linkDim", new NBTTagInt(world.dimension()));
+               st.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                world.playSoundEffect(x, y, z, "thaumcraft:jar", 1.0F, 2.0F);
-               if (!player.inventory.addItemStackToInventory(st) && !world.isRemote) {
+               if (!player.inventory.addItemStackToInventory(st) && Platform.getEnvironment() != Env.CLIENT) {
                   world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, st));
                }
 
@@ -114,9 +114,9 @@ public class BlockMirrorItem extends ItemBlock {
       return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
    }
 
-   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
       boolean ret = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-      if (ret && !world.isRemote) {
+      if (ret && Platform.getEnvironment() != Env.CLIENT) {
          if (metadata <= 5) {
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof TileMirror && stack.hasTagCompound()) {
@@ -159,7 +159,7 @@ public class BlockMirrorItem extends ItemBlock {
    }
 
    @SideOnly(Side.CLIENT)
-   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+   public void addInformation(ItemStack item, Player par2Player, List list, boolean par4) {
       if (item.hasTagCompound()) {
          int lx = item.stackTagCompound.getInteger("linkX");
          int ly = item.stackTagCompound.getInteger("linkY");

@@ -1,12 +1,12 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
-import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-public class FXSpark extends ThaumcraftParticle{
+public class FXSpark extends ThaumcraftParticle {
 
     int particle = 0;
     boolean flip = false;

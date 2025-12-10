@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerArcaneWorkbench;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.tiles.TileArcaneWorkbench;
 
@@ -43,9 +43,9 @@ public class GuiArcaneWorkbench extends GuiContainer {
         int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         GL11.glDisable(GL11.GL_BLEND);
-        ItemWandCasting wand = null;
-        if (this.tileEntity.getStackInSlot(10) != null && this.tileEntity.getStackInSlot(10).getItem() instanceof ItemWandCasting) {
-            wand = (ItemWandCasting) this.tileEntity.getStackInSlot(10).getItem();
+        WandCastingItem wand = null;
+        if (this.tileEntity.getStackInSlot(10) != null && this.tileEntity.getStackInSlot(10).getItem() instanceof WandCastingItem) {
+            wand = (WandCastingItem) this.tileEntity.getStackInSlot(10).getItem();
         }
 
         AspectList cost = null;

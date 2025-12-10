@@ -1,54 +1,13 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.texture.SpriteContents;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.io.InputStream;
+import thaumcraft.client.fx.migrated.Particles;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 public class FXDrop extends ThaumcraftParticle {
-    private static final TextureAtlasSprite DROP112;
-    private static final TextureAtlasSprite DROP113;
-    private static final TextureAtlasSprite DROP114;
-
-    static {
-        // ResourceLocation 可以随便写，只是标识用
-        DROP112 = loadSprite( "thaumcraft", "particle/drop112.png");
-        DROP113 = loadSprite( "thaumcraft", "particle/drop113.png");
-        DROP114 = loadSprite("thaumcraft", "particle/drop114.png");
-    }
-    @Contract("_, _ -> new")
-    static @NotNull TextureAtlasSprite loadSprite(String modid, String path) {
-        ResourceLocation rl = new ResourceLocation(modid, path);
-        try (InputStream is = FXDrop.class.getClassLoader().getResourceAsStream("assets/"+modid+"/textures/"+path)) {
-            if (is == null) throw new IOException("Cannot find resource: "+ modid +":" + path);
-            NativeImage image = NativeImage.read(is);
-            FrameSize frameSize = new FrameSize(image.getWidth(), image.getHeight());
-            SpriteContents spriteContents = new SpriteContents(
-                    rl,
-                    frameSize,
-                    image,
-                    null // 如果没有动画元数据
-            );
-            return new TextureAtlasSprite(rl, spriteContents, image.getWidth(), image.getHeight(), 0, 0){};
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-//            OpenTC4.LOGGER.error(e);
-//            e.printStackTrace();
-//            return new TextureAtlasSprite(rl, null, 8, 8, 0, 0){};
-        }
-    }
-
 
 
     int bobTimer;
@@ -72,9 +31,9 @@ public class FXDrop extends ThaumcraftParticle {
             this.xd *= 0.02;
             this.yd *= 0.02;
             this.zd *= 0.02;
-            setSprite(DROP113);
+            setSprite(Particles.DROP113);
         } else {
-            setSprite(DROP112);
+            setSprite(Particles.DROP112);
         }
         this.move(this.xd, this.yd, this.zd);
         this.xd *= 0.98F;
@@ -85,7 +44,7 @@ public class FXDrop extends ThaumcraftParticle {
         }
 
         if (this.onGround) {
-            setSprite(DROP114);
+            setSprite(Particles.DROP114);
             this.xd *= 0.7F;
             this.zd *= 0.7F;
         }

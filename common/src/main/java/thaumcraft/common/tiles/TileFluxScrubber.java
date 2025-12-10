@@ -1,8 +1,6 @@
 package thaumcraft.common.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import java.util.ArrayList;
-import java.util.Collections;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +12,9 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTransport {
    public int essentia = 0;
@@ -29,13 +30,13 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
 
    public void updateEntity() {
       if (this.count == 0) {
-         this.count = this.worldObj.rand.nextInt(1000);
+         this.count = this.level().rand.nextInt(1000);
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.charges >= 4) {
             this.charges -= 4;
-            if (this.worldObj.rand.nextInt(4) == 0) {
+            if (this.level().rand.nextInt(4) == 0) {
                ++this.essentia;
                if (this.essentia > 4) {
                   this.essentia = 4;
@@ -46,7 +47,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
          }
 
          if (this.power < 5) {
-            this.power += VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.AIR, 10);
+            this.power += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.AIR, 10);
          }
 
          if (this.power >= 5) {
@@ -57,7 +58,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
    }
 
    boolean isFlux(int x, int y, int z) {
-      Material mat = this.worldObj.getBlock(x, y, z).getMaterial();
+      Material mat = this.level().getBlock(x, y, z).getMaterial();
       return mat == Config.fluxGoomaterial;
    }
 
@@ -72,7 +73,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
             }
          }
 
-         Collections.shuffle(this.checklist, this.worldObj.rand);
+         Collections.shuffle(this.checklist, this.level().rand);
       }
 
       int x = 0;
@@ -86,16 +87,16 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
          y = this.checklist.get(0).y;
          z = this.checklist.get(0).z;
          this.checklist.remove(0);
-         if (!this.worldObj.isAirBlock(x, y, z) && this.isFlux(x, y, z) && this.getDistanceFrom((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F) < (double)(distance * distance)) {
+         if (!this.level().isAirBlock(x, y, z) && this.isFlux(x, y, z) && this.getDistanceFrom((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F) < (double)(distance * distance)) {
             this.power -= 5;
-            int lmd = this.worldObj.getBlockMetadata(x, y, z);
+            int lmd = this.level().getBlockMetadata(x, y, z);
             if (lmd > 0) {
-               this.worldObj.setBlockMetadataWithNotify(x, y, z, lmd - 1, 3);
+               this.level().setBlockMetadataWithNotify(x, y, z, lmd - 1, 3);
             } else {
-               this.worldObj.setBlockToAir(x, y, z);
+               this.level().setBlockToAir(x, y, z);
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, 14483711), new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, 14483711), new NetworkRegistry.TargetPoint(this.level().dimension(), x, y, z, 32.0F));
             ++this.charges;
             this.markDirty();
             return;

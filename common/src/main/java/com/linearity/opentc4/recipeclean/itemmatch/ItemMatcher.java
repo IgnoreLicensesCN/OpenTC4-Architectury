@@ -1,19 +1,52 @@
-package com.linearity.opentc4.recipeclean;
+package com.linearity.opentc4.recipeclean.itemmatch;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.lib.utils.InventoryUtils;
+import org.jetbrains.annotations.NotNull;
 
-import static com.linearity.opentc4.utils.Vanilla1710Utils.setIgnoresDamage;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class IgnoresDamageItemStackMatcher extends RecipeItemMatcher {
-    private final ItemStack stack;
-    public IgnoresDamageItemStackMatcher(final ItemStack stack) {
-        this.stack = stack.copy();
-        setIgnoresDamage(this.stack,true);
+public class ItemMatcher extends RecipeItemMatcher {
+    private static final Map<Item, ItemMatcher> cache = new ConcurrentHashMap<>();
+    private final Item item;
+    private final List<ItemStack> sample;
+    private ItemMatcher(final Item item) {
+        this.item = item;
+        this.sample = List.of(new ItemStack(item));
+    }
+
+
+
+    @Override
+    public boolean matches(@NotNull ItemStack stack) {
+        return Objects.equals(this.item, stack.getItem());
     }
 
     @Override
-    public boolean matches(ItemStack stack) {
-        return InventoryUtils.areItemStacksEqual(this.stack,stack,true,false);
+    public @NotNull List<ItemStack> getAvailableItemStackSample() {
+        return this.sample;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ItemMatcher that)) return false;
+        return Objects.equals(item, that.item);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(item);
+    }
+
+    public static @NotNull ItemMatcher of(@NotNull final ItemStack stack){
+        return of(stack.getItem());
+    }
+
+    public static @NotNull ItemMatcher of(@NotNull final Item item) {
+        return cache.computeIfAbsent(item, ItemMatcher::new);
     }
 }

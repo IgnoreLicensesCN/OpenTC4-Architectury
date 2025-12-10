@@ -37,7 +37,7 @@ public class PacketFXBlockSparkle implements IMessage, IMessageHandler<PacketFXB
    }
 
    public IMessage onMessage(PacketFXBlockSparkle message, MessageContext ctx) {
-      Thaumcraft.proxy.blockSparkle(Thaumcraft.proxy.getClientWorld(), message.x, message.y, message.z, message.color, 7);
+      Thaumcraft.blockSparkle(Thaumcraft.getClientWorld(), message.x, message.y, message.z, message.color, 7);
       return null;
    }
 }

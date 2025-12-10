@@ -4,14 +4,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.EnumAction;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
@@ -93,8 +93,8 @@ public class ItemCultistPlateArmor extends ItemArmor implements IRepairable, IRu
          this.model.isChild = entityLiving.isChild();
          this.model.aimedBow = false;
          this.model.heldItemRight = entityLiving.getHeldItem() != null ? 1 : 0;
-         if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).getItemInUseDuration() > 0) {
-            EnumAction enumaction = ((EntityPlayer)entityLiving).getItemInUse().getItemUseAction();
+         if (entityLiving instanceof Player && ((Player)entityLiving).getItemInUseDuration() > 0) {
+            EnumAction enumaction = ((Player)entityLiving).getItemInUse().getItemUseAction();
             if (enumaction == EnumAction.block) {
                this.model.heldItemRight = 3;
             } else if (enumaction == EnumAction.bow) {

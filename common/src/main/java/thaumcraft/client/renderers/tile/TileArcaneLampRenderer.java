@@ -1,6 +1,6 @@
 package thaumcraft.client.renderers.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,7 @@ public class TileArcaneLampRenderer extends TileEntitySpecialRenderer {
    public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
       if (tileentity == null){return;}
       Minecraft mc = FMLClientHandler.instance().getClient();
-      if (tileentity.getWorldObj() != null) {
+      if (tileentity.getLevel() != null) {
          ForgeDirection dir = ForgeDirection.DOWN;
          if (tileentity instanceof TileArcaneLamp) {
             dir = ((TileArcaneLamp)tileentity).facing;
@@ -31,7 +31,7 @@ public class TileArcaneLampRenderer extends TileEntitySpecialRenderer {
 
          GL11.glPushMatrix();
          UtilsFX.bindTexture("textures/models/Bore.png");
-         if (tileentity.getWorldObj().getTileEntity(tileentity.xCoord + dir.offsetX, tileentity.yCoord + dir.offsetY, tileentity.zCoord + dir.offsetZ) instanceof TileArcaneBoreBase) {
+         if (tileentity.getLevel().getTileEntity(tileentity.xCoord + dir.offsetX, tileentity.yCoord + dir.offsetY, tileentity.zCoord + dir.offsetZ) instanceof TileArcaneBoreBase) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)x + 0.5F + (float)dir.offsetX, (float)y + (float)dir.offsetY, (float)z + 0.5F + (float)dir.offsetZ);
             switch (dir.getOpposite().ordinal()) {

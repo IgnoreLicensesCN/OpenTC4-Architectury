@@ -2,31 +2,25 @@ package thaumcraft.common.entities.projectile;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.util.*;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.damagesource.DamageSourceIndirectThaumcraftEntity;
+
+import java.util.List;
 
 public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEntityAdditionalSpawnData {
     private int xTile = -1;
@@ -64,7 +58,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         this.shootingEntityId = data.readInt();
     }
 
-    public EntityPrimalArrow(World par1World) {
+    public EntityPrimalArrow(Level par1World) {
         super(par1World);
         this.inTile = Blocks.air;
         this.inData = 0;
@@ -76,7 +70,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityPrimalArrow(World par1World, double par2, double par4, double par6) {
+    public EntityPrimalArrow(Level par1World, double par2, double par4, double par6) {
         super(par1World);
         this.inTile = Blocks.air;
         this.inData = 0;
@@ -90,7 +84,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         this.yOffset = 0.0F;
     }
 
-    public EntityPrimalArrow(World par1World, EntityLivingBase par2EntityLivingBase, float par3, int type) {
+    public EntityPrimalArrow(Level par1World, EntityLivingBase par2EntityLivingBase, float par3, int type) {
         super(par1World);
         this.inTile = Blocks.air;
         this.inData = 0;
@@ -120,7 +114,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+    public void onCollideWithPlayer(Player par1Player) {
     }
 
     public void onUpdate() {
@@ -131,10 +125,10 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
             this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, f) * (double) 180.0F / Math.PI);
         }
 
-        Block i = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-        if (!i.isAir(this.worldObj, this.xTile, this.yTile, this.zTile)) {
-            i.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB axisalignedbb = i.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+        Block i = this.level().getBlock(this.xTile, this.yTile, this.zTile);
+        if (!i.isAir(this.level(), this.xTile, this.yTile, this.zTile)) {
+            i.setBlockBoundsBasedOnState(this.level(), this.xTile, this.yTile, this.zTile);
+            AxisAlignedBB axisalignedbb = i.getCollisionBoundingBoxFromPool(this.level(), this.xTile, this.yTile, this.zTile);
             if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
                 this.inGround = true;
             }
@@ -145,8 +139,8 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         }
 
         if (this.inGround) {
-            Block j = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-            int k = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+            Block j = this.level().getBlock(this.xTile, this.yTile, this.zTile);
+            int k = this.level().getBlockMetadata(this.xTile, this.yTile, this.zTile);
             if (j == this.inTile && k == this.inData) {
                 ++this.ticksInGround;
                 if (this.ticksInGround == 100) {
@@ -164,15 +158,15 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
             ++this.ticksInAir;
             Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
             Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.func_147447_a(vec3, vec31, false, true, false);
+            HitResult HitResult = this.level().func_147447_a(vec3, vec31, false, true, false);
             vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
             vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            if (movingobjectposition != null) {
-                vec31 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            if (HitResult != null) {
+                vec31 = Vec3.createVectorHelper(HitResult.hitVec.xCoord, HitResult.hitVec.yCoord, HitResult.hitVec.zCoord);
             }
 
             Entity entity = null;
-            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0F, 1.0F, 1.0F));
+            List list = this.level().getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0F, 1.0F, 1.0F));
             double d0 = 0.0F;
 
             for (Object o : list) {
@@ -180,9 +174,9 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                 if (entity1.canBeCollidedWith() && (entity1.getEntityId() != this.shootingEntityId || this.ticksInAir >= 5)) {
                     float f1 = 0.3F;
                     AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(f1, f1, f1);
-                    MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec31);
-                    if (movingobjectposition1 != null) {
-                        double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
+                    HitResult HitResult1 = axisalignedbb1.calculateIntercept(vec3, vec31);
+                    if (HitResult1 != null) {
+                        double d1 = vec3.distanceTo(HitResult1.hitVec);
                         if (d1 < d0 || d0 == (double) 0.0F) {
                             entity = entity1;
                             d0 = d1;
@@ -192,25 +186,25 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
             }
 
             if (entity != null) {
-                movingobjectposition = new MovingObjectPosition(entity);
+                HitResult = new HitResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit instanceof EntityPlayer) {
-                EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
-                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
-                    movingobjectposition = null;
+            if (HitResult != null && HitResult.entityHit instanceof Player) {
+                Player Player = (Player) HitResult.entityHit;
+                if (Player.capabilities.disableDamage || this.shootingEntity instanceof Player && !((Player) this.shootingEntity).canAttackPlayer(Player)) {
+                    HitResult = null;
                 }
             }
 
-            if (movingobjectposition != null) {
-                if (movingobjectposition.entityHit != null) {
-                    if (this.inflictDamage(movingobjectposition)) {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase) {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
+            if (HitResult != null) {
+                if (HitResult.entityHit != null) {
+                    if (this.inflictDamage(HitResult)) {
+                        if (HitResult.entityHit instanceof EntityLivingBase) {
+                            EntityLivingBase entitylivingbase = (EntityLivingBase) HitResult.entityHit;
                             if (this.knockbackStrength > 0) {
                                 float f3 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
                                 if (f3 > 0.0F) {
-                                    movingobjectposition.entityHit.addVelocity(this.motionX * (double) this.knockbackStrength * (double) 0.6F / (double) f3, 0.1, this.motionZ * (double) this.knockbackStrength * (double) 0.6F / (double) f3);
+                                    HitResult.entityHit.addVelocity(this.motionX * (double) this.knockbackStrength * (double) 0.6F / (double) f3, 0.1, this.motionZ * (double) this.knockbackStrength * (double) 0.6F / (double) f3);
                                 }
                             }
 
@@ -219,13 +213,13 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                                 EnchantmentHelper.func_151385_b((EntityLivingBase) this.shootingEntity, entitylivingbase);
                             }
 
-                            if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP) {
-                                ((EntityPlayerMP) this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
+                            if (this.shootingEntity != null && HitResult.entityHit != this.shootingEntity && HitResult.entityHit instanceof Player && this.shootingEntity instanceof ServerPlayer) {
+                                ((ServerPlayer) this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
                             }
                         }
 
                         this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-                        if (!(movingobjectposition.entityHit instanceof EntityEnderman)) {
+                        if (!(HitResult.entityHit instanceof EntityEnderman)) {
                             this.setDead();
                         }
                     } else {
@@ -237,14 +231,14 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                         this.ticksInAir = 0;
                     }
                 } else {
-                    this.xTile = movingobjectposition.blockX;
-                    this.yTile = movingobjectposition.blockY;
-                    this.zTile = movingobjectposition.blockZ;
-                    this.inTile = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-                    this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = (float) (movingobjectposition.hitVec.xCoord - this.posX);
-                    this.motionY = (float) (movingobjectposition.hitVec.yCoord - this.posY);
-                    this.motionZ = (float) (movingobjectposition.hitVec.zCoord - this.posZ);
+                    this.xTile = HitResult.blockX;
+                    this.yTile = HitResult.blockY;
+                    this.zTile = HitResult.blockZ;
+                    this.inTile = this.level().getBlock(this.xTile, this.yTile, this.zTile);
+                    this.inData = this.level().getBlockMetadata(this.xTile, this.yTile, this.zTile);
+                    this.motionX = (float) (HitResult.hitVec.xCoord - this.posX);
+                    this.motionY = (float) (HitResult.hitVec.yCoord - this.posY);
+                    this.motionZ = (float) (HitResult.hitVec.zCoord - this.posZ);
                     float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / (double) f2 * (double) 0.05F;
                     this.posY -= this.motionY / (double) f2 * (double) 0.05F;
@@ -253,15 +247,15 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                     this.inGround = true;
                     this.arrowShake = 7;
                     this.setIsCritical(false);
-                    if (this.inTile.isAir(this.worldObj, this.xTile, this.yTile, this.zTile)) {
-                        this.inTile.onEntityCollidedWithBlock(this.worldObj, this.xTile, this.yTile, this.zTile, this);
+                    if (this.inTile.isAir(this.level(), this.xTile, this.yTile, this.zTile)) {
+                        this.inTile.onEntityCollidedWithBlock(this.level(), this.xTile, this.yTile, this.zTile, this);
                     }
                 }
             }
 
             if (this.getIsCritical()) {
                 for (int var22 = 0; var22 < 4; ++var22) {
-                    this.worldObj.spawnParticle("crit", this.posX + this.motionX * (double) var22 / (double) 4.0F, this.posY + this.motionY * (double) var22 / (double) 4.0F, this.posZ + this.motionZ * (double) var22 / (double) 4.0F, -this.motionX, -this.motionY + 0.2, -this.motionZ);
+                    this.level().spawnParticle("crit", this.posX + this.motionX * (double) var22 / (double) 4.0F, this.posY + this.motionY * (double) var22 / (double) 4.0F, this.posZ + this.motionZ * (double) var22 / (double) 4.0F, -this.motionX, -this.motionY + 0.2, -this.motionZ);
                 }
             }
 
@@ -293,7 +287,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
             if (this.isInWater()) {
                 for (int j1 = 0; j1 < 4; ++j1) {
                     float f3 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double) f3, this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX, this.motionY, this.motionZ);
+                    this.level().spawnParticle("bubble", this.posX - this.motionX * (double) f3, this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX, this.motionY, this.motionZ);
                 }
 
                 f4 = 0.8F;
@@ -309,7 +303,7 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
 
     }
 
-    public boolean inflictDamage(MovingObjectPosition movingobjectposition) {
+    public boolean inflictDamage(HitResult HitResult) {
         float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
         int i1 = MathHelper.ceiling_double_int((double) f2 * this.getDamage());
         int fire = this.isBurning() && this.type != 2 ? 5 : 0;
@@ -335,12 +329,12 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                 }
                 break;
             case 2:
-                if (movingobjectposition.entityHit instanceof EntityLivingBase) {
-                    ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 200, 4));
+                if (HitResult.entityHit instanceof EntityLivingBase) {
+                    ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 200, 4));
                 }
             case 5:
-                if (this.type == 5 && movingobjectposition.entityHit instanceof EntityLivingBase) {
-                    ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.wither.id, 100));
+                if (this.type == 5 && HitResult.entityHit instanceof EntityLivingBase) {
+                    ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.wither.id, 100));
                 }
             case 3:
             default:
@@ -357,16 +351,16 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
                     damagesource = (new DamageSourceIndirectThaumcraftEntity("orderarrow", this, this.shootingEntity)).setDamageBypassesArmor().setMagicDamage().setProjectile();
                 }
 
-                if (movingobjectposition.entityHit instanceof EntityLivingBase) {
-                    ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 200, 4));
+                if (HitResult.entityHit instanceof EntityLivingBase) {
+                    ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 200, 4));
                 }
         }
 
-        if (fire > 0 && !(movingobjectposition.entityHit instanceof EntityEnderman)) {
-            movingobjectposition.entityHit.setFire(fire);
+        if (fire > 0 && !(HitResult.entityHit instanceof EntityEnderman)) {
+            HitResult.entityHit.setFire(fire);
         }
 
-        return movingobjectposition.entityHit.attackEntityFrom(damagesource, (float) i1);
+        return HitResult.entityHit.attackEntityFrom(damagesource, (float) i1);
     }
 
     public double getDamage() {

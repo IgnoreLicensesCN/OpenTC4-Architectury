@@ -1,9 +1,8 @@
 package thaumcraft.common.entities.ai.inventory;
 
-import java.util.ArrayList;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -11,6 +10,8 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;
+
+import java.util.ArrayList;
 
 public class AIHomeTake extends EntityAIBase {
    private EntityGolemBase theGolem;
@@ -29,7 +30,7 @@ public class AIHomeTake extends EntityAIBase {
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
-         TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+         TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
          boolean repeat = true;
          boolean didRepeat = false;
 

@@ -1,26 +1,39 @@
 package thaumcraft.common.items.wands.wandcaps;
 
-import com.linearity.opentc4.datautils.SimplePair;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.wands.ThaumcraftWandCapItem;
+import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.WandUtils;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
-public class CopperWandCapItem extends ThaumcraftWandCapItem {//itemWandCap:3
-    public CopperWandCapItem() {
+public class SilverWandCapItem extends ThaumcraftWandCapItem implements CraftingCostAspectOwner {//itemWandCap:4
+    public SilverWandCapItem() {
         super(new Properties());
     }
 
 
     @Override
     public float getBaseCostModifier() {
-        return 1.1f;
+        return 1f;
     }
 
-    private final List<SimplePair<Aspect,Float>> specialCostModifierAspects = List.of(new SimplePair<>(Aspect.ORDER,1.f),new SimplePair<>(Aspect.ENTROPY,1.f));
+    private final Map<Aspect,Float> specialCostModifierAspects = Map.of(
+            Aspect.AIR,.95f,
+            Aspect.EARTH,.95f,
+            Aspect.FIRE,.95f,
+            Aspect.WATER,.95f
+    );
     @Override
-    public List<SimplePair<Aspect, Float>> getSpecialCostModifierAspects() {
+    public @NotNull Map<Aspect,Float> getSpecialCostModifierAspects() {
         return specialCostModifierAspects;
     }
 
+    private final Map<Aspect,Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(4));
+    @Override
+    public Map<Aspect, Integer> getCraftingCostAspect() {
+        return cost;
+    }
 }

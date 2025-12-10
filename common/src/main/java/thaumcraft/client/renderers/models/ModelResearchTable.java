@@ -1,9 +1,10 @@
 package thaumcraft.client.renderers.models;
 
-import java.awt.Color;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class ModelResearchTable extends ModelBase {
    ModelRenderer Top;

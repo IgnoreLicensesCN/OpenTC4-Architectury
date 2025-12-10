@@ -7,6 +7,18 @@ architectury {
     fabric()
 }
 
+repositories {
+
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://maven.ladysnake.org/releases'
+    }
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -30,9 +42,13 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
 
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+    modImplementation "dev.emi:trinkets:3.7.1"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+
+    compileOnly fileTree(dir: 'libs/compileOnly', include: ['*.jar'])
+    implementation fileTree(dir: 'libs/implementation', include: ['*.jar'])
 }
 
 processResources {

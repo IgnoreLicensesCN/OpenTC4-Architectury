@@ -4,12 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -25,7 +25,7 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemResearchNotes;
+import thaumcraft.common.items.misc.ItemResearchNotes;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -37,7 +37,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
    public ItemStack[] contents = new ItemStack[2];
    public AspectList bonusAspects = new AspectList();
    int nextRecalc = 0;
-   EntityPlayer researcher = null;
+   Player researcher = null;
    public ResearchNoteData data = null;
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
@@ -95,10 +95,10 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote && this.nextRecalc++ > 600) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.nextRecalc++ > 600) {
          this.nextRecalc = 0;
          this.recalculateBonus();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 
@@ -121,7 +121,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
 
    }
 
-   public void placeAspect(int q, int r, Aspect aspect, EntityPlayer player) {
+   public void placeAspect(int q, int r, Aspect aspect, Player player) {
       if (this.data == null) {
          this.gatherResults();
       }
@@ -134,24 +134,24 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
             ResearchManager.HexEntry he = null;
             if (aspect != null) {
                he = new ResearchManager.HexEntry(aspect, 2);
-               if (r2 && this.worldObj.rand.nextFloat() < 0.1F) {
-                  this.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F);
+               if (r2 && this.level().rand.nextFloat() < 0.1F) {
+                  this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                } else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
                   this.bonusAspects.remove(aspect, 1);
-                  player.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.markDirty();
                } else {
                   Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)-1);
                   ResearchManager.scheduleSave(player);
-                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (EntityPlayerMP)player);
+                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
                }
             } else {
-               float f = this.worldObj.rand.nextFloat();
+               float f = this.level().rand.nextFloat();
                if (this.data.hexEntries.get(hex.toString()).aspect != null && (r1 && f < 0.25F || r2 && f < 0.5F)) {
-                  this.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F);
+                  this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                   Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect, (short)1);
                   ResearchManager.scheduleSave(player);
-                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexEntries.get(hex.toString()).aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect)), (EntityPlayerMP)player);
+                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexEntries.get(hex.toString()).aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect)), (ServerPlayer)player);
                }
 
                he = new ResearchManager.HexEntry(null, 0);
@@ -161,120 +161,120 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
             this.data.hexes.put(hex.toString(), hex);
             ResearchManager.updateData(this.contents[1], this.data);
             ResearchManager.consumeInkFromTable(this.contents[0], true);
-            if (!this.worldObj.isRemote && ResearchManager.checkResearchCompletion(this.contents[1], this.data, player.getCommandSenderName())) {
+            if (Platform.getEnvironment() != Env.CLIENT && ResearchManager.checkResearchCompletion(this.contents[1], this.data, player.getCommandSenderName())) {
                this.contents[1].setItemDamage(64);
-               this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
+               this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
             }
          }
 
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
    }
 
    private void recalculateBonus() {
-      if (!this.worldObj.isDaytime() && this.worldObj.getBlockLightValue(this.xCoord, this.yCoord + 1, this.zCoord) < 4 && !this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && this.worldObj.rand.nextInt(20) == 0) {
+      if (!this.level().isDaytime() && this.level().getBlockLightValue(this.xCoord, this.yCoord + 1, this.zCoord) < 4 && !this.level().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && this.level().rand.nextInt(20) == 0) {
          this.bonusAspects.merge(Aspect.ENTROPY, 1);
       }
 
-      if ((float)this.yCoord > (float)this.worldObj.getActualHeight() * 0.5F && this.worldObj.rand.nextInt(20) == 0) {
+      if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.5F && this.level().rand.nextInt(20) == 0) {
          this.bonusAspects.merge(Aspect.AIR, 1);
       }
 
-      if ((float)this.yCoord > (float)this.worldObj.getActualHeight() * 0.66F && this.worldObj.rand.nextInt(20) == 0) {
+      if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.66F && this.level().rand.nextInt(20) == 0) {
          this.bonusAspects.merge(Aspect.AIR, 1);
       }
 
-      if ((float)this.yCoord > (float)this.worldObj.getActualHeight() * 0.75F && this.worldObj.rand.nextInt(20) == 0) {
+      if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.75F && this.level().rand.nextInt(20) == 0) {
          this.bonusAspects.merge(Aspect.AIR, 1);
       }
 
       for(int x = -8; x <= 8; ++x) {
          for(int z = -8; z <= 8; ++z) {
             for(int y = -8; y <= 8; ++y) {
-               if (y + this.yCoord > 0 && y + this.yCoord < this.worldObj.getActualHeight()) {
-                  Block bi = this.worldObj.getBlock(x + this.xCoord, y + this.yCoord, z + this.zCoord);
-                  int md = this.worldObj.getBlockMetadata(x + this.xCoord, y + this.yCoord, z + this.zCoord);
+               if (y + this.yCoord > 0 && y + this.yCoord < this.level().getActualHeight()) {
+                  Block bi = this.level().getBlock(x + this.xCoord, y + this.yCoord, z + this.zCoord);
+                  int md = this.level().getBlockMetadata(x + this.xCoord, y + this.yCoord, z + this.zCoord);
                   Material bm = bi.getMaterial();
                   if (bi == ConfigBlocks.blockCustomOre && md == 1) {
-                     if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                     if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.level().rand.nextInt(20) == 0) {
                         this.bonusAspects.merge(Aspect.AIR, 1);
                         return;
                      }
                   } else if (bi == ConfigBlocks.blockCrystal && md == 0) {
-                     if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                     if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.level().rand.nextInt(10) == 0) {
                         this.bonusAspects.merge(Aspect.AIR, 1);
                         return;
                      }
                   } else if (bm != Material.fire && bm != Material.lava && (bi != ConfigBlocks.blockCustomOre || md != 2)) {
                      if (bi == ConfigBlocks.blockCrystal && md == 1) {
-                        if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.level().rand.nextInt(10) == 0) {
                            this.bonusAspects.merge(Aspect.FIRE, 1);
                            return;
                         }
                      } else if (bm == Material.ground) {
-                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(20) == 0) {
                            this.bonusAspects.merge(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCustomOre && md == 4) {
-                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(20) == 0) {
                            this.bonusAspects.merge(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCrystal && md == 3) {
-                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(10) == 0) {
                            this.bonusAspects.merge(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bm == Material.water) {
-                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.worldObj.rand.nextInt(15) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(15) == 0) {
                            this.bonusAspects.merge(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCustomOre && md == 3) {
-                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(20) == 0) {
                            this.bonusAspects.merge(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCrystal && md == 2) {
-                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                        if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(10) == 0) {
                            this.bonusAspects.merge(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bm != Material.circuits && bm != Material.piston) {
                         if (bi == ConfigBlocks.blockCustomOre && md == 5) {
-                           if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                           if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(20) == 0) {
                               this.bonusAspects.merge(Aspect.ORDER, 1);
                               return;
                            }
                         } else if (bi == ConfigBlocks.blockCrystal && md == 4) {
-                           if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                           if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(10) == 0) {
                               this.bonusAspects.merge(Aspect.ORDER, 1);
                               return;
                            }
                         } else if (bi == ConfigBlocks.blockCustomOre && md == 6) {
-                           if (this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                           if (this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.level().rand.nextInt(20) == 0) {
                               this.bonusAspects.merge(Aspect.ENTROPY, 1);
                               return;
                            }
-                        } else if (bi == ConfigBlocks.blockCrystal && md == 5 && this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.worldObj.rand.nextInt(10) == 0) {
+                        } else if (bi == ConfigBlocks.blockCrystal && md == 5 && this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.level().rand.nextInt(10) == 0) {
                            this.bonusAspects.merge(Aspect.ENTROPY, 1);
                            return;
                         }
-                     } else if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                     } else if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(20) == 0) {
                         this.bonusAspects.merge(Aspect.ORDER, 1);
                         return;
                      }
-                  } else if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.worldObj.rand.nextInt(20) == 0) {
+                  } else if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.level().rand.nextInt(20) == 0) {
                      this.bonusAspects.merge(Aspect.FIRE, 1);
                      return;
                   }
 
-                  if (bi == Blocks.bookshelf && this.worldObj.rand.nextInt(300) == 0 || bi == ConfigBlocks.blockJar && md == 1 && this.worldObj.rand.nextInt(200) == 0) {
+                  if (bi == Blocks.bookshelf && this.level().rand.nextInt(300) == 0 || bi == ConfigBlocks.blockJar && md == 1 && this.level().rand.nextInt(200) == 0) {
                      Aspect[] aspects = new Aspect[0];
                      aspects = Aspect.aspects.values().toArray(aspects);
-                     this.bonusAspects.merge(aspects[this.worldObj.rand.nextInt(aspects.length)], 1);
+                     this.bonusAspects.merge(aspects[this.level().rand.nextInt(aspects.length)], 1);
                      return;
                   }
                }
@@ -339,8 +339,8 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer var1) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && var1.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player var1) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && var1.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {
@@ -378,16 +378,16 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      if (this.worldObj != null && this.worldObj.isRemote) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null && (Platform.getEnvironment() == Env.CLIENT)) {
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
 
    public boolean receiveClientEvent(int i, int j) {
       if (i == 1) {
-         if (this.worldObj.isRemote) {
-            this.worldObj.playSound(this.xCoord, this.yCoord, this.zCoord, "thaumcraft:learn", 1.0F, 1.0F, false);
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
+            this.level().playSound(this.xCoord, this.yCoord, this.zCoord, "thaumcraft:learn", 1.0F, 1.0F, false);
          }
 
          return true;
@@ -396,7 +396,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       }
    }
 
-   public void duplicate(EntityPlayer player) {
+   public void duplicate(Player player) {
       if (this.data == null) {
          this.gatherResults();
       }
@@ -413,16 +413,16 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
          for(Aspect aspect : rr.tags.getAspects()) {
             Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)(-(rr.tags.getAmount(aspect) + this.data.copies)));
             ResearchManager.scheduleSave(player);
-            PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (EntityPlayerMP)player);
+            PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
          }
 
          InventoryUtils.consumeInventoryItem(player, Items.paper, 0);
          InventoryUtils.consumeInventoryItem(player, Items.dye, 0);
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
          ++this.data.copies;
          ResearchManager.updateData(this.contents[1], this.data);
          ++this.contents[1].stackSize;
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 

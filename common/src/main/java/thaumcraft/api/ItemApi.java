@@ -1,9 +1,9 @@
 package thaumcraft.api;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import com.linearity.opentc4.OpenTC4;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 /**
  * @author Azanor	
@@ -12,11 +12,17 @@ import net.minecraft.item.ItemStack;
  * I only give some examples and it will probably still 
  * require a bit of work for you to get hold of everything you need.
  *
+ * IgnoreLicensesCN:
+ * since we're open,it's suitable to remove it
+ *
  */
+@Deprecated(forRemoval = true)
 public class ItemApi {
-	
+
+	@Deprecated(forRemoval = true)
 	public static ItemStack getItem(String itemString, int meta) {
 		ItemStack item = null;
+
 
 		try {
 			String itemClass = "thaumcraft.common.config.ConfigItems";
@@ -27,12 +33,13 @@ public class ItemApi {
 				item = (ItemStack) obj;
 			}
 		} catch (Exception ex) {
-			FMLLog.warning("[Thaumcraft] Could not retrieve item identified by: " + itemString);
+			OpenTC4.LOGGER.warn("[Thaumcraft] Could not retrieve item identified by: " + itemString);
 		}
 
 		return item;
 	}
-	
+
+	@Deprecated(forRemoval = true)
 	public static ItemStack getBlock(String itemString, int meta) {
 		ItemStack item = null;
 
@@ -45,7 +52,7 @@ public class ItemApi {
 				item = (ItemStack) obj;
 			}
 		} catch (Exception ex) {
-			FMLLog.warning("[Thaumcraft] Could not retrieve block identified by: " + itemString);
+			OpenTC4.LOGGER.warning("[Thaumcraft] Could not retrieve block identified by: " + itemString);
 		}
 
 		return item;
@@ -56,7 +63,7 @@ public class ItemApi {
 	 * Some examples
 	 * 
 	 * Casting Wands:
-	 * itemWandCasting
+	 * WandCastingItem
 	 *  
 	 * Resources:
 	 * itemEssence, itemWispEssence, itemResource, itemShard, itemNugget, 

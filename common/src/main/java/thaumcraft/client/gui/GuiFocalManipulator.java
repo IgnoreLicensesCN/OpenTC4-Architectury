@@ -2,11 +2,6 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -20,11 +15,17 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerFocalManipulator;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileFocalManipulator;
+
+import java.awt.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiFocalManipulator extends GuiContainer {
@@ -139,7 +140,7 @@ public class GuiFocalManipulator extends GuiContainer {
       if (this.rank > 0) {
          for(int a = 0; a < this.possibleUpgrades.size(); ++a) {
             FocusUpgradeType u = this.possibleUpgrades.get(a);
-            if (this.selected == u.id) {
+            if (this.selected == u.id()) {
                this.drawTexturedModalRect(k + 48 + a * 16, l + 104, 200, 0, 16, 16);
             }
          }
@@ -161,7 +162,7 @@ public class GuiFocalManipulator extends GuiContainer {
                   GL11.glColor4f((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F, 0.9F);
                   this.drawTexturedModalRect(k + 48 + start, l + 88, 112 + start, 240, size, 8);
                   start += size;
-                  if (this.table.getWorldObj().rand.nextInt(66) == 0) {
+                  if (this.table.getLevel().rand.nextInt(66) == 0) {
                      float x = (float)(48 + start);
                      float y = 92.0F;
                      float xx = ((float)(46 + this.rank * 16) - x) / 9.0F;
@@ -196,8 +197,8 @@ public class GuiFocalManipulator extends GuiContainer {
 
       if (this.rank > 0) {
          if (this.nextSparkle < this.time) {
-            this.nextSparkle = this.time + (long)(this.table.size > 0 ? 10 : 500) + (long)this.table.getWorldObj().rand.nextInt(200);
-            this.sparkles.put(this.time, new Sparkle((float) (42 + this.rank * 16 + this.table.getWorldObj().rand.nextInt(12)), (float) (34 + this.table.getWorldObj().rand.nextInt(12)), 0.0F, 0.0F, 0.5F + this.table.getWorldObj().rand.nextFloat() * 0.4F, 1.0F - this.table.getWorldObj().rand.nextFloat() * 0.4F, 1.0F - this.table.getWorldObj().rand.nextFloat() * 0.4F));
+            this.nextSparkle = this.time + (long)(this.table.size > 0 ? 10 : 500) + (long)this.table.getLevel().rand.nextInt(200);
+            this.sparkles.put(this.time, new Sparkle((float) (42 + this.rank * 16 + this.table.getLevel().rand.nextInt(12)), (float) (34 + this.table.getLevel().rand.nextInt(12)), 0.0F, 0.0F, 0.5F + this.table.getLevel().rand.nextFloat() * 0.4F, 1.0F - this.table.getLevel().rand.nextFloat() * 0.4F, 1.0F - this.table.getLevel().rand.nextFloat() * 0.4F));
          }
 
          GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -207,7 +208,7 @@ public class GuiFocalManipulator extends GuiContainer {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(770, 771);
-            this.mc.renderEngine.bindTexture(u.icon);
+            this.mc.renderEngine.bindTexture(u.icon());
             UtilsFX.drawTexturedQuadFull(k + 48 + a * 16, l + 104, this.zLevel);
             GL11.glPopMatrix();
          }
@@ -225,7 +226,7 @@ public class GuiFocalManipulator extends GuiContainer {
          GL11.glPushMatrix();
          GL11.glEnable(GL11.GL_BLEND);
          GL11.glBlendFunc(770, 771);
-         this.mc.renderEngine.bindTexture(u.icon);
+         this.mc.renderEngine.bindTexture(u.icon());
          UtilsFX.drawTexturedQuadFull(k + 56 + a * 16, l + 32, this.zLevel);
          GL11.glPopMatrix();
       }
@@ -308,10 +309,10 @@ public class GuiFocalManipulator extends GuiContainer {
                var8 = my - (gy + 104);
                if (var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
                   this.aspects = new AspectList();
-                  if (this.selected == u.id) {
+                  if (this.selected == u.id()) {
                      this.selected = -1;
                   } else {
-                     this.selected = u.id;
+                     this.selected = u.id();
                      int amt = 200;
 
                      for(int q = 1; q < this.rank; ++q) {
@@ -337,7 +338,7 @@ public class GuiFocalManipulator extends GuiContainer {
    }
 
    private void playButtonClick() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
    }
 
    private void drawSparkle(double x, double y, int frame, float r, float g, float b) {

@@ -7,10 +7,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -19,7 +19,7 @@ import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileVisRelay;
 
@@ -69,9 +69,9 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-      if (!player.worldObj.isRemote && player.ticksExisted % 5 == 0) {
-         if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemWandCasting) {
-            ItemWandCasting wand = (ItemWandCasting)player.getHeldItem().getItem();
+      if (Platform.getEnvironment() != Env.CLIENT && player.ticksExisted % 5 == 0) {
+         if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof WandCastingItem) {
+            WandCastingItem wand = (WandCastingItem)player.getHeldItem().getItem();
             AspectList al = wand.getAspectsWithRoom(player.getHeldItem());
 
             for(Aspect aspect : al.getAspects()) {
@@ -111,7 +111,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.getItemDamage() == 0) {
          list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.ItemAmuletVis.text"));
       }
@@ -172,7 +172,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       return out;
    }
 
-   public boolean consumeAllVis(ItemStack is, EntityPlayer player, AspectList aspects, boolean doit, boolean crafting) {
+   public boolean consumeAllVis(ItemStack is, Player player, AspectList aspects, boolean doit, boolean crafting) {
       if (aspects != null && aspects.size() != 0) {
          for(Aspect aspect : aspects.getAspects()) {
             if (this.getVis(is, aspect) < aspects.getAmount(aspect)) {

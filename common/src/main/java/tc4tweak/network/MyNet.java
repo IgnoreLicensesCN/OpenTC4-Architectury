@@ -27,10 +27,10 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleChannelHandlerWrapper;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.channel.ChannelFutureListener;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.EnumMap;
 
@@ -116,7 +116,7 @@ public class MyNet {
 
     /**
      * Construct a minecraft packet from the supplied message. Can be used where minecraft packets are required, such as
-     * {@link TileEntity#getDescriptionPacket}.
+     * {@link BlockEntity#getDescriptionPacket}.
      *
      * @param message The message to translate into packet form
      * @return A minecraft {@link Packet} suitable for use in minecraft APIs
@@ -145,7 +145,7 @@ public class MyNet {
      * @param message The message to send
      * @param player The player to send it to
      */
-    public void sendTo(IMessage message, EntityPlayerMP player)
+    public void sendTo(IMessage message, ServerPlayer player)
     {
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);

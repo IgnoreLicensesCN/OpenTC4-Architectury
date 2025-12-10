@@ -3,10 +3,10 @@ package thaumcraft.common.lib.potions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.config.Config;
 
 import java.util.List;
@@ -37,15 +37,15 @@ public class PotionInfectiousVisExhaust extends Potion {
       return super.getStatusIconIndex();
    }
 
-   public void performEffect(EntityLivingBase target, int par2) {
-      List<EntityLivingBase> targets = target.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, target.boundingBox.expand(4.0F, 4.0F, 4.0F));
+   public void performEffect(LivingEntity target, int par2) {
+      List<LivingEntity> targets = target.level().getEntitiesWithinAABB(LivingEntity.class, target.boundingBox.expand(4.0F, 4.0F, 4.0F));
       if (!targets.isEmpty()) {
-         for(EntityLivingBase e : targets) {
+         for(LivingEntity e : targets) {
             if (!e.isPotionActive(Config.potionInfVisExhaustID)) {
                if (par2 > 0) {
-                  e.addPotionEffect(new PotionEffect(Config.potionInfVisExhaustID, 6000, par2 - 1, false));
+                  e.addEffect(new MobEffectInstance(Config.potionInfVisExhaustID, 6000, par2 - 1, false));
                } else {
-                  e.addPotionEffect(new PotionEffect(Config.potionVisExhaustID, 6000, 0, false));
+                  e.addEffect(new MobEffectInstance(Config.potionVisExhaustID, 6000, 0, false));
                }
             }
          }

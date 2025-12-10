@@ -2,7 +2,6 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Arrays;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +9,8 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerDeconstructionTable;
 import thaumcraft.common.tiles.TileDeconstructionTable;
+
+import java.util.Arrays;
 
 @SideOnly(Side.CLIENT)
 public class GuiDeconstructionTable extends GuiContainer {
@@ -63,6 +64,6 @@ public class GuiDeconstructionTable extends GuiContainer {
    }
 
    private void playButtonAspect() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhoff", 0.2F, 1.0F + this.mc.renderViewEntity.worldObj.rand.nextFloat() * 0.1F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhoff", 0.2F, 1.0F + this.mc.renderViewEntity.level().rand.nextFloat() * 0.1F, false);
    }
 }

@@ -1,17 +1,16 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-public class FXWisp extends ThaumcraftParticle{
+public class FXWisp extends ThaumcraftParticle {
 
     Entity target;
     public boolean shrink;

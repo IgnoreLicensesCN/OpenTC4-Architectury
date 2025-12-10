@@ -1,8 +1,8 @@
 package thaumcraft.api.research;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import com.linearity.opentc4.OpenTC4;
+import net.minecraft.resources.ResourceLocation;
+import com.linearity.opentc4.utils.StatCollector;
 import org.apache.logging.log4j.Level;
 import tc4tweak.modules.getResearch.GetResearch;
 
@@ -69,7 +69,7 @@ public class ResearchCategories {
 			if (!ri.isVirtual()) {
 				for (ResearchItem rr:rl.research.values()) {
 					if (rr.displayColumn == ri.displayColumn && rr.displayRow == ri.displayRow) {
-						FMLLog.log(Level.FATAL, "[Thaumcraft] Research ["+ri.getName()+"] not added as it overlaps with existing research ["+rr.getName()+"]");
+						OpenTC4.LOGGER.log(Level.FATAL, "[Thaumcraft] Research ["+ri.getName()+"] not added as it overlaps with existing research ["+rr.getName()+"]");
 						return;
 					}
 				}

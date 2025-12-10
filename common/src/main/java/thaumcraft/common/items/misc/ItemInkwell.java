@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.common.Thaumcraft;
@@ -43,7 +43,7 @@ public class ItemInkwell extends Item implements IScribeTools {
       int md = world.getBlockMetadata(x, y, z);
       Block bi = world.getBlock(x, y, z);
       if (tile instanceof TileTable && md != 6) {
-         if (world.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             return false;
          }
 

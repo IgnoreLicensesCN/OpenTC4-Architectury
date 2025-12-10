@@ -4,8 +4,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.ChunkPos;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 import thaumcraft.common.tiles.TilePedestal;
@@ -57,10 +57,10 @@ public class PacketFXInfusionSource implements IMessage, IMessageHandler<PacketF
       int ty = message.y - message.dy;
       int tz = message.z - message.dz;
       String key = tx + ":" + ty + ":" + tz + ":" + message.color;
-      TileEntity tile = Thaumcraft.proxy.getClientWorld().getTileEntity(message.x, message.y, message.z);
+      BlockEntity tile = Thaumcraft.getClientWorld().getBlockEntity(message.x, message.y, message.z);
       if (tile instanceof TileInfusionMatrix) {
          int count = 15;
-         if (Thaumcraft.proxy.getClientWorld().getTileEntity(tx, ty, tz) != null && Thaumcraft.proxy.getClientWorld().getTileEntity(tx, ty, tz) instanceof TilePedestal) {
+         if (Thaumcraft.getClientWorld().getBlockEntity(tx, ty, tz) != null && Thaumcraft.getClientWorld().getBlockEntity(tx, ty, tz) instanceof TilePedestal) {
             count = 60;
          }
 
@@ -70,7 +70,7 @@ public class PacketFXInfusionSource implements IMessage, IMessageHandler<PacketF
             sf.ticks = count;
             is.sourceFX.put(key, sf);
          } else {
-            is.sourceFX.put(key, new TileInfusionMatrix.SourceFX(new ChunkCoordinates(tx, ty, tz), count, message.color));
+            is.sourceFX.put(key, new TileInfusionMatrix.SourceFX(new ChunkPos(tx, ty, tz), count, message.color));
          }
       }
 

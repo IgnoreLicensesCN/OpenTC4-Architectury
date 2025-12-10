@@ -14,13 +14,13 @@ public class TileArcaneLampLight extends TileEntity {
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.count == 0) {
-            this.count = this.worldObj.rand.nextInt(100);
+            this.count = this.level().rand.nextInt(100);
          }
 
-         if (++this.count % 100 == 0 && !(this.worldObj.getTileEntity(this.x, this.y, this.z) instanceof TileArcaneLamp)) {
-            this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+         if (++this.count % 100 == 0 && !(this.level().getTileEntity(this.x, this.y, this.z) instanceof TileArcaneLamp)) {
+            this.level().setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
          }
       }
 

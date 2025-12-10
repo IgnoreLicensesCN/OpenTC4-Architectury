@@ -1,14 +1,14 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileCrystal;
 
 import java.util.Random;
 
 public class GenNestRoom extends GenCommon {
-   static void generateRoom(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -58,8 +58,8 @@ public class GenNestRoom extends GenCommon {
                placeBlock(world, x + a, y + 8, z + b, 21, cell);
             } else if (random.nextBoolean() && world.isAirBlock(x + a, y + 8, z + b)) {
                world.setBlock(x + a, y + 8, z + b, ConfigBlocks.blockCrystal, 7, 3);
-               TileCrystal te = (TileCrystal)world.getTileEntity(x + a, y + 8, z + b);
-               te.orientation = (short)ForgeDirection.DOWN.ordinal();
+               TileCrystal te = (TileCrystal)world.getBlockEntity(x + a, y + 8, z + b);
+               te.orientation = (short)Direction.DOWN.ordinal();
             }
          }
       }

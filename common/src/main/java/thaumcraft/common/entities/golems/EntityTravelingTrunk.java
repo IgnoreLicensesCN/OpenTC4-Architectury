@@ -5,18 +5,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemFood;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
@@ -116,7 +116,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
          this.motionY += 0.033F;
       }
 
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          if (!this.onGround && this.motionY < (double)0.0F && !this.inWater) {
             this.lidrot += 0.015F;
          }
@@ -152,7 +152,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
 
       this.fallDistance = 0.0F;
       if (this.getOwner() != null) {
-         if (!this.worldObj.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             ArrayList<WeakReference<Entity>> ll = EventHandlerEntity.linkedEntities.get(this.getOwner().getCommandSenderName());
             if (ll == null) {
                ll = new ArrayList<>();
@@ -180,8 +180,8 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
 
             for(int l = 0; l <= 4; ++l) {
                for(int i1 = 0; i1 <= 4; ++i1) {
-                  if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && (this.worldObj.isBlockNormalCubeDefault(i + l, k - 1, j + i1, false) || this.worldObj.getBlock(i + l, k - 1, j + i1).getMaterial() == Material.water) && !this.worldObj.isBlockNormalCubeDefault(i + l, k, j + i1, false) && !this.worldObj.isBlockNormalCubeDefault(i + l, k + 1, j + i1, false)) {
-                     this.worldObj.playSoundEffect((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, "mob.endermen.portal", 0.5F, 1.0F);
+                  if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && (this.level().isBlockNormalCubeDefault(i + l, k - 1, j + i1, false) || this.level().getBlock(i + l, k - 1, j + i1).getMaterial() == Material.water) && !this.level().isBlockNormalCubeDefault(i + l, k, j + i1, false) && !this.level().isBlockNormalCubeDefault(i + l, k + 1, j + i1, false)) {
+                     this.level().playSoundEffect((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, "mob.endermen.portal", 0.5F, 1.0F);
                      this.setLocationAndAngles((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, this.rotationYaw, this.rotationPitch);
                      this.setAttackTarget(null);
                      return;
@@ -205,10 +205,10 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
             this.faceEntity(this.getAttackTarget(), 10.0F, 20.0F);
             move = true;
             if (this.attackTime <= 0 && (double)this.getDistanceToEntity(this.getAttackTarget()) < (double)1.5F && this.getAttackTarget().boundingBox.maxY > this.boundingBox.minY && this.getAttackTarget().boundingBox.minY < this.boundingBox.maxY) {
-               this.attackTime = 10 + this.worldObj.rand.nextInt(5);
+               this.attackTime = 10 + this.level().rand.nextInt(5);
                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 4.0F);
-               this.worldObj.setEntityState(this, (byte)17);
-               this.worldObj.playSoundAtEntity(this, "mob.blaze.hit", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+               this.level().setEntityState(this, (byte)17);
+               this.level().playSoundAtEntity(this, "mob.blaze.hit", 0.5F, this.level().rand.nextFloat() * 0.1F + 0.9F);
             }
          }
 
@@ -230,7 +230,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
             }
 
             this.jumpMovementFactor = fast ? 0.04F : 0.03F;
-            this.worldObj.playSoundAtEntity(this, "random.chestclosed", 0.1F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.level().playSoundAtEntity(this, "random.chestclosed", 0.1F, this.level().rand.nextFloat() * 0.1F + 0.9F);
          } else {
             this.isJumping = false;
             if (this.onGround) {
@@ -245,7 +245,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
       return false;
    }
 
-   public void onCollideWithPlayer(EntityPlayer entityplayer) {
+   public void onCollideWithPlayer(Player Player) {
    }
 
    protected String getHurtSound() {
@@ -274,7 +274,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
       this.slotCount = this.getRows() * 9;
    }
 
-   public boolean interact(EntityPlayer player) {
+   public boolean interact(Player player) {
       if (player.isSneaking()) {
          return false;
       } else {
@@ -289,7 +289,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
             }
 
-            this.worldObj.playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
+            this.level().playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
             player.swingItem();
             return true;
          } else if (itemstack != null && itemstack.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth()) {
@@ -297,23 +297,23 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
             --itemstack.stackSize;
             this.heal((float)itemfood.func_150905_g(itemstack));
             if (this.getHealth() == this.getMaxHealth()) {
-               this.worldObj.playSoundAtEntity(this, "random.burp", 0.5F, this.worldObj.rand.nextFloat() * 0.5F + 0.5F);
+               this.level().playSoundAtEntity(this, "random.burp", 0.5F, this.level().rand.nextFloat() * 0.5F + 0.5F);
             } else {
-               this.worldObj.playSoundAtEntity(this, "random.eat", 0.5F, this.worldObj.rand.nextFloat() * 0.5F + 0.5F);
+               this.level().playSoundAtEntity(this, "random.eat", 0.5F, this.level().rand.nextFloat() * 0.5F + 0.5F);
             }
 
-            this.worldObj.setEntityState(this, (byte)18);
+            this.level().setEntityState(this, (byte)18);
             this.lidrot = 0.15F;
             if (itemstack.stackSize <= 0) {
                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
             }
 
             return true;
-         } else if (!this.worldObj.isRemote) {
+         } else if (Platform.getEnvironment() != Env.CLIENT) {
             if (this.getUpgrade() == 3 && !this.func_152113_b().equals(player.getCommandSenderName())) {
                return true;
             } else {
-               player.openGui(Thaumcraft.instance, 2, this.worldObj, this.getEntityId(), 0, 0);
+               player.openGui(Thaumcraft.instance, 2, this.level(), this.getEntityId(), 0, 0);
                return false;
             }
          } else {
@@ -334,7 +334,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
          double d = this.rand.nextGaussian() * 0.02;
          double d1 = this.rand.nextGaussian() * 0.02;
          double d2 = this.rand.nextGaussian() * 0.02;
-         this.worldObj.spawnParticle(s, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)0.5F + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d, d1, d2);
+         this.level().spawnParticle(s, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)0.5F + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d, d1, d2);
       }
 
    }
@@ -342,8 +342,8 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
    private void pullItems() {
       if (!this.isDead && !(this.getHealth() <= 0.0F)) {
          List list = null;
-         if (!this.worldObj.isRemote) {
-            list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.posX - (double)0.5F, this.posY - (double)0.5F, this.posZ - (double)0.5F, this.posX + (double)0.5F, this.posY + (double)0.5F, this.posZ + (double)0.5F));
+         if (Platform.getEnvironment() != Env.CLIENT) {
+            list = this.level().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.posX - (double)0.5F, this.posY - (double)0.5F, this.posZ - (double)0.5F, this.posX + (double)0.5F, this.posY + (double)0.5F, this.posZ + (double)0.5F));
 
              for (Object o : list) {
                  Entity entity = (Entity) o;
@@ -351,8 +351,8 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
                      ItemStack stack = ((EntityItem) entity).getEntityItem().copy();
                      ItemStack outstack = InventoryUtils.placeItemStackIntoInventory(stack, this.inventory, 0, true);
                      if (outstack == null || outstack.stackSize != stack.stackSize) {
-                         this.worldObj.playSoundAtEntity(this, "random.eat", 0.5F, this.worldObj.rand.nextFloat() * 0.5F + 0.5F);
-                         this.worldObj.setEntityState(this, (byte) 17);
+                         this.level().playSoundAtEntity(this, "random.eat", 0.5F, this.level().rand.nextFloat() * 0.5F + 0.5F);
+                         this.level().setEntityState(this, (byte) 17);
                          if (outstack != null && outstack.stackSize >= 0) {
                              ((EntityItem) entity).setEntityItemStack(outstack);
                          } else {
@@ -363,7 +363,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
              }
          }
 
-         list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.posX - (double)3.0F, this.posY - (double)3.0F, this.posZ - (double)3.0F, this.posX + (double)3.0F, this.posY + (double)3.0F, this.posZ + (double)3.0F));
+         list = this.level().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.posX - (double)3.0F, this.posY - (double)3.0F, this.posZ - (double)3.0F, this.posX + (double)3.0F, this.posY + (double)3.0F, this.posZ + (double)3.0F));
 
           for (Object o : list) {
               Entity entity = (Entity) o;
@@ -386,7 +386,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
    }
 
    public void onDeath(DamageSource par1DamageSource) {
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          this.inventory.dropAllItems();
       }
 
@@ -450,7 +450,7 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
    }
 
    public EntityLivingBase getOwnerEntity() {
-      return this.worldObj.getPlayerEntityByName(this.func_152113_b());
+      return this.level().getPlayerEntityByName(this.func_152113_b());
    }
 
    @SideOnly(Side.CLIENT)
@@ -481,10 +481,10 @@ public class EntityTravelingTrunk extends EntityLiving implements IEntityOwnable
                   return;
                }
 
-               this.worldObj.removeEntity(this);
+               this.level().removeEntity(this);
                this.isDead = false;
                if (this.isEntityAlive()) {
-                  this.worldObj.updateEntityWithOptionalForce(this, false);
+                  this.level().updateEntityWithOptionalForce(this, false);
                }
 
                Entity entity = EntityList.createEntityByName(EntityList.getEntityString(this), worldserver1);

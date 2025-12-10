@@ -1,10 +1,10 @@
 package tc4tweak;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.research.ResearchCategories;
@@ -22,7 +22,7 @@ public class CommonUtils {
     private static final LinkedHashSet<String> originalTabOrders = new LinkedHashSet<>();
 
     public static String toString(AspectList al) {
-        return al.aspects.entrySet().stream().filter(e -> e.getKey() != null && e.getValue() != null).map(e -> String.format("%dx%s", e.getValue(), e.getKey().getName())).collect(Collectors.joining(";"));
+        return al.getAspects().entrySet().stream().filter(e -> e.getKey() != null && e.getValue() != null).map(e -> String.format("%dx%s", e.getValue(), e.getKey().getName())).collect(Collectors.joining(";"));
     }
 
     public static String toString(CrucibleRecipe r) {
@@ -81,18 +81,19 @@ public class CommonUtils {
         return Math.min(Math.max(min, val), max);
     }
 
-    public static boolean isChunkLoaded(World world, int x, int y, int z) {
-        if (world.isRemote) {
+    public static boolean isChunkLoaded(Level world, int x, int y, int z) {
+        if (world.isClientSide()) {
             // client world lies about chunk existence
             return !world.getChunkFromBlockCoords(x, z).isEmpty();
         }
         return world.blockExists(x, y, z);
     }
 
-    public static void sendSupplementaryS35(TileEntity te) {
+    public static void sendSupplementaryS35(BlockEntity te) {
         if (!ConfigurationHandler.INSTANCE.isSendSupplementaryS35()) return;
-        World w = te.getWorldObj();
-        if (w.isRemote) return;
+        Level w = te.getLevel();
+        if (w == null) return;
+        if (w.isClientSide()) return;
         Packet packet = te.getDescriptionPacket();
         if (packet == null) return;
         // here we send a little further out in case player is moving very fast
@@ -100,8 +101,8 @@ public class CommonUtils {
         int sendDistanceLo = viewDistance - 2;
         int sendDistanceHi = viewDistance + 4;
         for (Object o : w.playerEntities) {
-            if (!(o instanceof EntityPlayerMP)) continue;
-            EntityPlayerMP player = (EntityPlayerMP) o;
+            if (!(o instanceof ServerPlayer)) continue;
+            ServerPlayer player = (ServerPlayer) o;
             int dx = (((int) player.posX) >> 4) - (te.xCoord >> 4);
             int dz = (((int) player.posZ) >> 4) - (te.zCoord >> 4);
             int dist = Math.max(Math.abs(dx), Math.abs(dz));

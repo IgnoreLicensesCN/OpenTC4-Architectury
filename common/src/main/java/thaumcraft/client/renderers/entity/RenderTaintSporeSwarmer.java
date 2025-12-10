@@ -3,9 +3,9 @@ package thaumcraft.client.renderers.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.client.renderers.models.entities.ModelTaintSporeSwarmer;
 
 @SideOnly(Side.CLIENT)

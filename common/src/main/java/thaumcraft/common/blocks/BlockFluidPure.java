@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.BlockFluidClassic;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -39,7 +39,7 @@ public class BlockFluidPure extends BlockFluidClassic {
    }
 
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-      if (!world.isRemote && this.isSourceBlock(world, x, y, z) && entity instanceof EntityPlayer && !((EntityPlayer)entity).isPotionActive(Config.potionWarpWardID)) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.isSourceBlock(world, x, y, z) && entity instanceof Player && !((Player)entity).isPotionActive(Config.potionWarpWardID)) {
          int warp = Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(entity.getCommandSenderName());
          int div = 1;
          if (warp > 0) {
@@ -49,7 +49,7 @@ public class BlockFluidPure extends BlockFluidClassic {
             }
          }
 
-         ((EntityPlayer)entity).addPotionEffect(new PotionEffect(Config.potionWarpWardID, Math.min(32000, 200000 / div), 0, true));
+         ((Player)entity).addPotionEffect(new PotionEffect(Config.potionWarpWardID, Math.min(32000, 200000 / div), 0, true));
          world.setBlockToAir(x, y, z);
       }
 
@@ -61,7 +61,8 @@ public class BlockFluidPure extends BlockFluidClassic {
       FXBubble fb = new FXBubble(world, (float)x + rand.nextFloat(), (float)y + 0.125F * (float)(8 - meta), (float)z + rand.nextFloat(), 0.0F, 0.0F, 0.0F, 0);
       fb.setAlphaF(0.25F);
       fb.setRGB(1.0F, 1.0F, 1.0F);
-      ParticleEngine.instance.addEffect(world, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
       if (rand.nextInt(25) == 0) {
          double var21 = (float)x + rand.nextFloat();
          double var22 = (double)y + this.maxY;

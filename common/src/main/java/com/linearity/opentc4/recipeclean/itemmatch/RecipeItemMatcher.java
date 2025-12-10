@@ -1,7 +1,17 @@
-package com.linearity.opentc4.recipeclean;
+package com.linearity.opentc4.recipeclean.itemmatch;
 
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class RecipeMatcher {
-    public abstract boolean matches(ItemStack stack);
+import java.util.List;
+
+
+public abstract class RecipeItemMatcher {
+    public abstract boolean matches(@NotNull ItemStack stack);
+
+    //you know what?
+    // you can just return randomly,
+    // just satisfy
+    // matches(getAvailableItemsSample()[someindex at least 0 is avaliable]) == true
+    public abstract @NotNull List<ItemStack> getAvailableItemStackSample();
 }

@@ -1,19 +1,19 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 
 import java.util.Random;
 
 public class WorldGenBigMagicTree extends WorldGenAbstractTree {
    static final byte[] otherCoordPairs = new byte[]{2, 0, 0, 1, 2, 1};
    Random rand = new Random();
-   World worldObj;
+   Level worldObj;
    int[] basePos = new int[]{0, 0, 0};
    int heightLimit;
    int height;
@@ -114,9 +114,9 @@ public class WorldGenBigMagicTree extends WorldGenAbstractTree {
                aint1[b2] = aint[b2] + k1;
 
                try {
-                  Block l1 = this.worldObj.getBlock(aint1[0], aint1[1], aint1[2]);
+                  Block l1 = this.level().getBlock(aint1[0], aint1[1], aint1[2]);
                    if (l1 == Blocks.air || l1 == Blocks.leaves) {
-                       this.setBlockAndNotifyAdequately(this.worldObj, aint1[0], aint1[1], aint1[2], par6, 0);
+                       this.setBlockAndNotifyAdequately(this.level(), aint1[0], aint1[1], aint1[2], par6, 0);
                    }
                    ++k1;
                } catch (Exception ignored) {
@@ -204,7 +204,7 @@ public class WorldGenBigMagicTree extends WorldGenAbstractTree {
                }
             }
 
-            this.setBlockAndNotifyAdequately(this.worldObj, aint3[0], aint3[1], aint3[2], par3, b5);
+            this.setBlockAndNotifyAdequately(this.level(), aint3[0], aint3[1], aint3[2], par3, b5);
          }
       }
 
@@ -302,7 +302,7 @@ public class WorldGenBigMagicTree extends WorldGenAbstractTree {
                aint3[b1] = par1ArrayOfInteger[b1] + i;
                aint3[b2] = MathHelper.floor_double((double)par1ArrayOfInteger[b2] + (double)i * d0);
                aint3[b3] = MathHelper.floor_double((double)par1ArrayOfInteger[b3] + (double)i * d1);
-               Block k = this.worldObj.getBlock(aint3[0], aint3[1], aint3[2]);
+               Block k = this.level().getBlock(aint3[0], aint3[1], aint3[2]);
                if (k != Blocks.air && k != Blocks.leaves) {
                   break;
                }
@@ -317,8 +317,8 @@ public class WorldGenBigMagicTree extends WorldGenAbstractTree {
    boolean validTreeLocation() {
       int[] aint = new int[]{this.basePos[0], this.basePos[1], this.basePos[2]};
       int[] aint1 = new int[]{this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
-      Block soil = this.worldObj.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
-      boolean isValidSoil = soil != null && soil.canSustainPlant(this.worldObj, this.basePos[0], this.basePos[1] - 1, this.basePos[2], ForgeDirection.UP, (BlockSapling)Blocks.sapling);
+      Block soil = this.level().getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
+      boolean isValidSoil = soil != null && soil.canSustainPlant(this.level(), this.basePos[0], this.basePos[1] - 1, this.basePos[2], Direction.UP, (BlockSapling)Blocks.sapling);
       if (!isValidSoil) {
          return false;
       } else {
@@ -344,8 +344,8 @@ public class WorldGenBigMagicTree extends WorldGenAbstractTree {
       this.leafDensity = par5 * 0.8;
    }
 
-   public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
-      this.worldObj = par1World;
+   public boolean generate(Level par1World, Random par2Random, int par3, int par4, int par5) {
+      this.level() = par1World;
       long l = par2Random.nextLong();
       this.rand.setSeed(l);
       this.basePos[0] = par3;

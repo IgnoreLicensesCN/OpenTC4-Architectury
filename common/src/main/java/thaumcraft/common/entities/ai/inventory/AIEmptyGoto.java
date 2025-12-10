@@ -1,18 +1,19 @@
 package thaumcraft.common.entities.ai.inventory;
 
-import java.util.ArrayList;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.entities.golems.Marker;
+
+import java.util.ArrayList;
 
 public class AIEmptyGoto extends EntityAIBase {
    private EntityGolemBase theGolem;
@@ -35,7 +36,7 @@ public class AIEmptyGoto extends EntityAIBase {
          ArrayList<Byte> matchingColors = this.theGolem.getColorsMatching(this.theGolem.itemCarried);
 
          for(byte color : matchingColors) {
-            ArrayList<IInventory> results = GolemHelper.getContainersWithRoom(this.theGolem.worldObj, this.theGolem, color);
+            ArrayList<IInventory> results = GolemHelper.getContainersWithRoom(this.theGolem.level(), this.theGolem, color);
             if (!results.isEmpty()) {
                ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
                ChunkCoordinates home = this.theGolem.getHomePosition();
@@ -70,7 +71,7 @@ public class AIEmptyGoto extends EntityAIBase {
 
          for(byte color : matchingColors) {
             for(Marker marker : this.theGolem.getMarkers()) {
-               if ((marker.color == color || color == -1) && (this.theGolem.worldObj.getTileEntity(marker.x, marker.y, marker.z) == null || !(this.theGolem.worldObj.getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory))) {
+               if ((marker.color == color || color == -1) && (this.theGolem.level().getTileEntity(marker.x, marker.y, marker.z) == null || !(this.theGolem.level().getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory))) {
                   this.movePosX = marker.x;
                   this.movePosY = marker.y;
                   this.movePosZ = marker.z;

@@ -2,7 +2,7 @@ package thaumcraft.common.entities.ai.inventory;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,7 +27,7 @@ public class AIHomePlace extends EntityAIBase {
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
-         TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+         TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
          boolean repeat = true;
          boolean didRepeat = false;
 
@@ -82,7 +82,7 @@ public class AIHomePlace extends EntityAIBase {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+      TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
       boolean repeat = true;
       boolean didRepeat = false;
 

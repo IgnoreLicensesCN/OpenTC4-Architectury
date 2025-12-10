@@ -1,8 +1,8 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -72,7 +72,7 @@ public class TileChestHungry extends TileEntity implements IInventory {
 
    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
       super.readFromNBT(par1NBTTagCompound);
-      NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+      NBTTagList var2 = par1NBTTagCompound.getTagList("ThaumcraftItems", 10);
       this.chestContents = new ItemStack[this.getSizeInventory()];
 
       for(int var3 = 0; var3 < var2.tagCount(); ++var3) {
@@ -98,15 +98,15 @@ public class TileChestHungry extends TileEntity implements IInventory {
          }
       }
 
-      par1NBTTagCompound.setTag("Items", var2);
+      par1NBTTagCompound.setTag("ThaumcraftItems", var2);
    }
 
    public int getInventoryStackLimit() {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void updateContainingBlockInfo() {
@@ -123,7 +123,7 @@ public class TileChestHungry extends TileEntity implements IInventory {
       if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F) {
          double var2 = (double)this.xCoord + (double)0.5F;
          double var4 = (double)this.zCoord + (double)0.5F;
-         this.worldObj.playSoundEffect(var2, (double)this.yCoord + (double)0.5F, var4, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+         this.level().playSoundEffect(var2, (double)this.yCoord + (double)0.5F, var4, "random.chestopen", 0.5F, this.level().rand.nextFloat() * 0.1F + 0.9F);
       }
 
       if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F) {
@@ -142,7 +142,7 @@ public class TileChestHungry extends TileEntity implements IInventory {
          if (this.lidAngle < var3 && var8 >= var3) {
             double var4 = (double)this.xCoord + (double)0.5F;
             double var6 = (double)this.zCoord + (double)0.5F;
-            this.worldObj.playSoundEffect(var4, (double)this.yCoord + (double)0.5F, var6, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.level().playSoundEffect(var4, (double)this.yCoord + (double)0.5F, var6, "random.chestclosed", 0.5F, this.level().rand.nextFloat() * 0.1F + 0.9F);
          }
 
          if (this.lidAngle < 0.0F) {
@@ -169,12 +169,12 @@ public class TileChestHungry extends TileEntity implements IInventory {
 
    public void openInventory() {
       ++this.numUsingPlayers;
-      this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, blockChestHungry, 1, this.numUsingPlayers);
+      this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, blockChestHungry, 1, this.numUsingPlayers);
    }
 
    public void closeInventory() {
       --this.numUsingPlayers;
-      this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, blockChestHungry, 1, this.numUsingPlayers);
+      this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, blockChestHungry, 1, this.numUsingPlayers);
    }
 
    public void invalidate() {

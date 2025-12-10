@@ -1,7 +1,5 @@
 package thaumcraft.client.renderers.tile;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -13,6 +11,9 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileHole;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class TileHoleRenderer extends TileEntitySpecialRenderer {
    FloatBuffer fBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -646,27 +647,27 @@ public class TileHoleRenderer extends TileEntitySpecialRenderer {
       double var10004 = te.zCoord;
       this.inrange = Minecraft.getMinecraft().renderViewEntity.getDistanceSq(var10002, var10003, var10004 + (double)0.5F) < (double)512.0F;
       GL11.glDisable(2912);
-      if (te.getWorldObj().getBlock(te.xCoord, te.yCoord + 1, te.zCoord).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord, te.yCoord + 1, te.zCoord) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord, te.yCoord + 1, te.zCoord).isOpaqueCube() && te.getLevel().getBlock(te.xCoord, te.yCoord + 1, te.zCoord) != ConfigBlocks.blockHole) {
          this.drawPlaneYPos((TileHole)te, x, y, z, f);
       }
 
-      if (te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord, te.yCoord - 1, te.zCoord).isOpaqueCube() && te.getLevel().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) != ConfigBlocks.blockHole) {
          this.drawPlaneYNeg((TileHole)te, x, y, z, f);
       }
 
-      if (te.getWorldObj().getBlock(te.xCoord, te.yCoord, te.zCoord - 1).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord, te.yCoord, te.zCoord - 1) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord, te.yCoord, te.zCoord - 1).isOpaqueCube() && te.getLevel().getBlock(te.xCoord, te.yCoord, te.zCoord - 1) != ConfigBlocks.blockHole) {
          this.drawPlaneZNeg((TileHole)te, x, y, z, f);
       }
 
-      if (te.getWorldObj().getBlock(te.xCoord, te.yCoord, te.zCoord + 1).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord, te.yCoord, te.zCoord + 1) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord, te.yCoord, te.zCoord + 1).isOpaqueCube() && te.getLevel().getBlock(te.xCoord, te.yCoord, te.zCoord + 1) != ConfigBlocks.blockHole) {
          this.drawPlaneZPos((TileHole)te, x, y, z, f);
       }
 
-      if (te.getWorldObj().getBlock(te.xCoord - 1, te.yCoord, te.zCoord).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord - 1, te.yCoord, te.zCoord) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord - 1, te.yCoord, te.zCoord).isOpaqueCube() && te.getLevel().getBlock(te.xCoord - 1, te.yCoord, te.zCoord) != ConfigBlocks.blockHole) {
          this.drawPlaneXNeg((TileHole)te, x, y, z, f);
       }
 
-      if (te.getWorldObj().getBlock(te.xCoord + 1, te.yCoord, te.zCoord).isOpaqueCube() && te.getWorldObj().getBlock(te.xCoord + 1, te.yCoord, te.zCoord) != ConfigBlocks.blockHole) {
+      if (te.getLevel().getBlock(te.xCoord + 1, te.yCoord, te.zCoord).isOpaqueCube() && te.getLevel().getBlock(te.xCoord + 1, te.yCoord, te.zCoord) != ConfigBlocks.blockHole) {
          this.drawPlaneXPos((TileHole)te, x, y, z, f);
       }
 

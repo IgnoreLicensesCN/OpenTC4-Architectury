@@ -1,9 +1,11 @@
 package thaumcraft.api;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
+import static com.linearity.opentc4.Consts.BlockPosCompoundTagKeys.*;
 
 public class BlockCoordinates implements Comparable<BlockCoordinates>
 {
@@ -24,31 +26,27 @@ public class BlockCoordinates implements Comparable<BlockCoordinates>
         this.y = par2;
         this.z = par3;
     }
-    
-    public BlockCoordinates(TileEntity tile)
+
+    public BlockCoordinates(BlockEntity tile)
     {
-        this.x = tile.xCoord;
-        this.y = tile.yCoord;
-        this.z = tile.zCoord;
+        this.x = tile.getBlockPos().getX();
+        this.y = tile.getBlockPos().getY();
+        this.z = tile.getBlockPos().getZ();
     }
 
-    public BlockCoordinates(BlockCoordinates par1ChunkCoordinates)
+    public BlockCoordinates(BlockCoordinates par1ChunkPos)
     {
-        this.x = par1ChunkCoordinates.x;
-        this.y = par1ChunkCoordinates.y;
-        this.z = par1ChunkCoordinates.z;
+        this.x = par1ChunkPos.x;
+        this.y = par1ChunkPos.y;
+        this.z = par1ChunkPos.z;
     }
 
     public boolean equals(Object par1Obj)
     {
-        if (!(par1Obj instanceof BlockCoordinates))
-        {
-            return false;
-        }
-        else
-        {
-        	BlockCoordinates coordinates = (BlockCoordinates)par1Obj;
+        if (par1Obj instanceof BlockCoordinates coordinates) {
             return this.x == coordinates.x && this.y == coordinates.y && this.z == coordinates.z ;
+        } else {
+            return false;
         }
     }
 
@@ -60,7 +58,7 @@ public class BlockCoordinates implements Comparable<BlockCoordinates>
     /**
      * Compare the coordinate with another coordinate
      */
-    public int compareWorldCoordinate(BlockCoordinates par1)
+    public int compareWorldCoordinate(@NotNull BlockCoordinates par1)
     {
         return this.y == par1.y ? (this.z == par1.z ? this.x - par1.x : this.z - par1.z) : this.y - par1.y;
     }
@@ -84,30 +82,28 @@ public class BlockCoordinates implements Comparable<BlockCoordinates>
     }
 
     /**
-     * Return the squared distance between this coordinates and the ChunkCoordinates given as argument.
+     * Return the squared distance between this coordinates and the ChunkPos given as argument.
      */
-    public float getDistanceSquaredToWorldCoordinates(BlockCoordinates par1ChunkCoordinates)
+    public float getDistanceSquaredToWorldCoordinates(@NotNull BlockCoordinates par1ChunkPos)
     {
-        return this.getDistanceSquared(par1ChunkCoordinates.x, par1ChunkCoordinates.y, par1ChunkCoordinates.z);
+        return this.getDistanceSquared(par1ChunkPos.x, par1ChunkPos.y, par1ChunkPos.z);
     }
 
     @Override
-    public int compareTo(@Nonnull BlockCoordinates par1Obj)
+    public int compareTo(@NotNull BlockCoordinates par1Obj)
     {
         return this.compareWorldCoordinate(par1Obj);
     }
-    
-    public void readNBT(NBTTagCompound nbt) {
-    	this.x = nbt.getInteger("b_x");
-    	this.y = nbt.getInteger("b_y");
-    	this.z = nbt.getInteger("b_z");
-    }
-    
-    public void writeNBT(NBTTagCompound nbt) {
-    	nbt.setInteger("b_x",x);
-    	nbt.setInteger("b_y",y);
-    	nbt.setInteger("b_z",z);
+
+    public void readNBT(@NotNull CompoundTag nbt) {
+        this.x = BLOCK_X_ACCESSOR.readFromCompoundTag(nbt);
+        this.y = BLOCK_Y_ACCESSOR.readFromCompoundTag(nbt);
+        this.z = BLOCK_Z_ACCESSOR.readFromCompoundTag(nbt);
     }
 
-
+    public void writeNBT(@NotNull CompoundTag nbt) {
+        BLOCK_X_ACCESSOR.writeToCompoundTag(nbt, x);
+        BLOCK_Y_ACCESSOR.writeToCompoundTag(nbt, y);
+        BLOCK_Z_ACCESSOR.writeToCompoundTag(nbt, z);
+    }
 }

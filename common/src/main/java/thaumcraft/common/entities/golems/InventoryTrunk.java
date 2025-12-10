@@ -1,9 +1,9 @@
 package thaumcraft.common.entities.golems;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -124,7 +124,7 @@ public class InventoryTrunk implements IInventory {
 
    }
 
-   public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+   public boolean isUseableByPlayer(Player Player) {
       return false;
    }
 

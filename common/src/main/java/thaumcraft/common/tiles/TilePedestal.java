@@ -2,9 +2,9 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -33,8 +33,8 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
 
    public ItemStack decrStackSize(int par1, int par2) {
       if (this.inventory[par1] != null) {
-         if (!this.worldObj.isRemote) {
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         if (Platform.getEnvironment() != Env.CLIENT) {
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
 
           ItemStack itemstack;
@@ -72,8 +72,8 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
       }
 
       this.markDirty();
-      if (!this.worldObj.isRemote) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
@@ -81,8 +81,8 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
    public void setInventorySlotContentsFromInfusion(int par1, ItemStack par2ItemStack) {
       this.inventory[par1] = par2ItemStack;
       this.markDirty();
-      if (!this.worldObj.isRemote) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
@@ -100,7 +100,7 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      NBTTagList nbttaglist = nbttagcompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbttagcompound.getTagList("ThaumcraftItems", 10);
       this.inventory = new ItemStack[this.getSizeInventory()];
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -125,7 +125,7 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
          }
       }
 
-      nbttagcompound.setTag("Items", nbttaglist);
+      nbttagcompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public void readFromNBT(NBTTagCompound nbtCompound) {
@@ -156,8 +156,8 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
       return false;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {
@@ -184,9 +184,9 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
 
    public boolean receiveClientEvent(int i, int j) {
       if (i == 11) {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int a = 0; a < Thaumcraft.proxy.particleCount(5); ++a) {
-               Thaumcraft.proxy.blockSparkle(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord, 12583104, 2);
+               ClientFXUtils.blockSparkle(this.level(), this.xCoord, this.yCoord + 1, this.zCoord, 12583104, 2);
             }
          }
 
@@ -194,9 +194,9 @@ public class TilePedestal extends TileThaumcraft implements ISidedInventory {
       } else if (i != 12) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int a = 0; a < Thaumcraft.proxy.particleCount(10); ++a) {
-               Thaumcraft.proxy.blockSparkle(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord, -9999, 2);
+               ClientFXUtils.blockSparkle(this.level(), this.xCoord, this.yCoord + 1, this.zCoord, -9999, 2);
             }
          }
 

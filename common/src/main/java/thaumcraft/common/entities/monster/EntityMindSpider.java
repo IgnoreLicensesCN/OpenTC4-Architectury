@@ -2,24 +2,24 @@ package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public class EntityMindSpider extends EntitySpider {
    private int lifeSpan = Integer.MAX_VALUE;
 
-   public EntityMindSpider(World par1World) {
+   public EntityMindSpider(Level par1World) {
       super(par1World);
       this.setSize(0.3F, 0.3F);
       this.experienceValue = 1;
    }
 
-   protected int getExperiencePoints(EntityPlayer p_70693_1_) {
+   protected int getExperiencePoints(Player p_70693_1_) {
       return this.isHarmless() ? 0 : super.getExperiencePoints(p_70693_1_);
    }
 
@@ -61,7 +61,7 @@ public class EntityMindSpider extends EntitySpider {
 
    protected Entity findPlayerToAttack() {
       double d0 = 12.0F;
-      return this.worldObj.getClosestVulnerablePlayerToEntity(this, d0);
+      return this.level().getClosestVulnerablePlayerToEntity(this, d0);
    }
 
    @SideOnly(Side.CLIENT)
@@ -71,7 +71,7 @@ public class EntityMindSpider extends EntitySpider {
 
    public void onUpdate() {
       super.onUpdate();
-      if (!this.worldObj.isRemote && this.ticksExisted > this.lifeSpan) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.ticksExisted > this.lifeSpan) {
          this.setDead();
       }
 

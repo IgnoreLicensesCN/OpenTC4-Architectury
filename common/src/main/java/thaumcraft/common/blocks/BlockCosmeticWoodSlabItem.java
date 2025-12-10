@@ -2,7 +2,7 @@ package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.item.ItemSlab;
+import net.minecraft.world.item.ItemSlab;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class BlockCosmeticWoodSlabItem extends ItemSlab {

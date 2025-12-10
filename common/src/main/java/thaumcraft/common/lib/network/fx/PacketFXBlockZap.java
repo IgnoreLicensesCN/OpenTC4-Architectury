@@ -45,8 +45,8 @@ public class PacketFXBlockZap implements IMessage, IMessageHandler<PacketFXBlock
    }
 
    public IMessage onMessage(PacketFXBlockZap message, MessageContext ctx) {
-      Thaumcraft.proxy.nodeBolt(Thaumcraft.proxy.getClientWorld(), message.x, message.y, message.z, message.dx, message.dy, message.dz);
-      Thaumcraft.proxy.getClientWorld().playSound(message.x, message.y, message.z, "thaumcraft:zap", 0.1F, 1.0F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F, false);
+      Thaumcraft.nodeBolt(Thaumcraft.getClientWorld(), message.x, message.y, message.z, message.dx, message.dy, message.dz);
+      Thaumcraft.getClientWorld().playSound(message.x, message.y, message.z, "thaumcraft:zap", 0.1F, 1.0F + Thaumcraft.getClientWorld().rand.nextFloat() * 0.2F, false);
       return null;
    }
 }

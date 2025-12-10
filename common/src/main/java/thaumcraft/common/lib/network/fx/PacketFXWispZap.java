@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.network.fx;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import thaumcraft.common.Thaumcraft;
 
 public class PacketFXWispZap implements IMessage, IMessageHandler<PacketFXWispZap,IMessage> {
@@ -40,7 +40,7 @@ public class PacketFXWispZap implements IMessage, IMessageHandler<PacketFXWispZa
       Entity var2 = this.getEntityByID(message.source, mc, world);
       Entity var3 = this.getEntityByID(message.target, mc, world);
       if (var2 != null && var3 != null) {
-         Thaumcraft.proxy.bolt(var2.worldObj, var2, var3);
+         Thaumcraft.bolt(var2.level(), var2, var3);
       }
 
       return null;

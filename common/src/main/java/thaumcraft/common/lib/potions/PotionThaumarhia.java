@@ -3,10 +3,10 @@ package thaumcraft.common.lib.potions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class PotionThaumarhia extends Potion {
@@ -35,13 +35,13 @@ public class PotionThaumarhia extends Potion {
       return super.getStatusIconIndex();
    }
 
-   public void performEffect(EntityLivingBase target, int par2) {
-      if (!target.worldObj.isRemote && target.worldObj.rand.nextInt(15) == 0) {
+   public void performEffect(LivingEntity target, int par2) {
+      if (Platform.getEnvironment() != Env.CLIENT && target.getRandom().nextInt(15) == 0) {
          int x = MathHelper.floor_double(target.posX);
          int y = MathHelper.floor_double(target.posY);
          int z = MathHelper.floor_double(target.posZ);
-         if (target.worldObj.isAirBlock(x, y, z)) {
-            target.worldObj.setBlock(x, y, z, ConfigBlocks.blockFluxGoo);
+         if (target.level().isAirBlock(x, y, z)) {
+            target.level().setBlock(x, y, z, ConfigBlocks.blockFluxGoo);
          }
       }
 

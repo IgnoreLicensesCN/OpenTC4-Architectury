@@ -1,13 +1,12 @@
 package thaumcraft.api.expands.warp.listeners;
 
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.expands.warp.PickWarpEventContext;
 import thaumcraft.api.expands.warp.WarpEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@ParametersAreNonnullByDefault
+
 public abstract class WarpEventListenerAfter implements Comparable<WarpEventListenerAfter> {
     public final int priority;
     /**
@@ -17,7 +16,7 @@ public abstract class WarpEventListenerAfter implements Comparable<WarpEventList
         this.priority = priority;
     }
     @Override
-    public int compareTo(@Nonnull WarpEventListenerAfter o) {
+    public int compareTo(@NotNull WarpEventListenerAfter o) {
         return Integer.compare(o.priority, priority);
     }
 
@@ -26,5 +25,5 @@ public abstract class WarpEventListenerAfter implements Comparable<WarpEventList
      * @param e event triggered
      * @param player victim
      */
-    public abstract void onWarpEvent(@Nonnull PickWarpEventContext warpContext, @Nonnull WarpEvent e, @Nonnull Player player);
+    public abstract void onWarpEvent(@NotNull PickWarpEventContext warpContext, @NotNull WarpEvent e, @NotNull Player player);
 }

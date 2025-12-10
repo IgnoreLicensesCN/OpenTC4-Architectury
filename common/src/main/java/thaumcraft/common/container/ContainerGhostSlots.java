@@ -1,17 +1,17 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class ContainerGhostSlots extends Container {
-   public boolean canInteractWith(EntityPlayer entityplayer) {
+   public boolean canInteractWith(Player Player) {
       return false;
    }
 
-   public ItemStack slotClick(int slotClicked, int button, int mod, EntityPlayer player) {
+   public ItemStack slotClick(int slotClicked, int button, int mod, Player player) {
       ItemStack itemstack = null;
       InventoryPlayer inventoryplayer = player.inventory;
       if ((mod == 0 || mod == 1) && (button == 0 || button == 1)) {

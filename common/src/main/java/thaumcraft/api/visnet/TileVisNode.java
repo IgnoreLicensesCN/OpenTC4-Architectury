@@ -1,8 +1,11 @@
 package thaumcraft.api.visnet;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import tc4tweak.modules.visrelay.SavedLinkHandler;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
@@ -12,6 +15,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Azanor
@@ -24,7 +28,7 @@ public abstract class TileVisNode extends TileThaumcraft {
 	
 	WeakReference<TileVisNode> parent = null;
 	ArrayList<WeakReference<TileVisNode>> children = new ArrayList<>();
-	List<ChunkCoordinates> loadedLink = null;
+	List<BlockPos> loadedLink = null;
 	
 	/**
 	 * @return the WorldCoordinates location of where this node is located
@@ -44,7 +48,7 @@ public abstract class TileVisNode extends TileThaumcraft {
 	public abstract boolean isSource();
 		
 	/**
-	 * This method should never be called directly. Use {@link VisNetHandler#drainVis(World, int, int, int, Aspect, int)} instead
+	 * This method should never be called directly. Use {@link VisNetHandler#drainVis(Level, int, int, int, Aspect, int)} instead
 	 * @param aspect what aspect to drain
 	 * @param vis how much to drain
 	 * @return how much was actually drained
@@ -73,17 +77,22 @@ public abstract class TileVisNode extends TileThaumcraft {
 		}
 		this.setParent(null);
 		this.parentChanged();
-		
+		Level worldObj = getLevel();
+		if (worldObj == null) {
+			throw new NullPointerException("worldObj is null");
+		}
 		if (this.isSource()) {
-			HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(worldObj.provider.dimensionId);
+			ResourceKey<Level> key = worldObj.dimension();
+			HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(key);
 			if (sourcelist==null) {
 				sourcelist = new HashMap<>();
 			}
 			sourcelist.remove(getLocation());
-			VisNetHandler.sources.put( worldObj.provider.dimensionId, sourcelist );
+			VisNetHandler.sources.put( key, sourcelist );
 		}
-		
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		BlockPos pos = this.worldPosition;
+		BlockState state = worldObj.getBlockState(pos);
+		worldObj.sendBlockUpdated(pos,state,state,3);
 	}
 	
 	
@@ -138,7 +147,8 @@ public abstract class TileVisNode extends TileThaumcraft {
 	@Override
 	public void updateEntity() {
 		if (SavedLinkHandler.processSavedLink(this)){return;}
-		if (!worldObj.isRemote && ((nodeCounter++) % 40==0 || nodeRefresh)) {
+		if (level == null) {return;}
+		if (Platform.getEnvironment() != Env.CLIENT && ((nodeCounter++) % 40==0 || nodeRefresh)) {
 			//check for changes
 			if (!nodeRefresh
 					&& !children.isEmpty()) {
@@ -163,11 +173,11 @@ public abstract class TileVisNode extends TileThaumcraft {
 			
 			//redo stuff
 			if (isSource() && !nodeRegged) {
-				VisNetHandler.addSource(getWorldObj(), this);
+				VisNetHandler.addSource(getLevel(), this);
 				nodeRegged = true;
 			} else 
 			if (!isSource() && !VisNetHandler.isNodeValid(getParent())) {
-				setParent(VisNetHandler.addNode(getWorldObj(), this));				
+				setParent(VisNetHandler.addNode(getLevel(), this));				
 				nodeRefresh=true;
 			}
 			
@@ -192,18 +202,18 @@ public abstract class TileVisNode extends TileThaumcraft {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-        this.loadedLink = SavedLinkHandler.readFromNBT(this, nbttagcompound);
+	public void load(CompoundTag CompoundTag) {
+		super.load(CompoundTag);
+        this.loadedLink = SavedLinkHandler.load(this, CompoundTag);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		SavedLinkHandler.writeToNBT(this, nbttagcompound);
+	public void saveAdditional(CompoundTag CompoundTag) {
+		super.saveAdditional(CompoundTag);
+		SavedLinkHandler.saveAdditional(this, CompoundTag);
 	}
 
-	public List<ChunkCoordinates> getSavedLink() {
+	public List<BlockPos> getSavedLink() {
 		return loadedLink;
 	}
 

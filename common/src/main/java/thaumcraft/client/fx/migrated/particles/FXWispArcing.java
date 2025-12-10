@@ -1,12 +1,12 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
-import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-public class FXWispArcing extends ThaumcraftParticle{
+public class FXWispArcing extends ThaumcraftParticle {
     private double field_70568_aq;
     private double field_70567_ar;
     private double field_70566_as;
@@ -65,6 +65,7 @@ public class FXWispArcing extends ThaumcraftParticle{
         var interpPosX = cameraPos.x;
         var interpPosY = cameraPos.y;
         var interpPosZ = cameraPos.z;
+
         float agescale;
         agescale = (float) this.age / (float) this.moteHalfLife;
         if (agescale > 1.0F) {
@@ -72,7 +73,7 @@ public class FXWispArcing extends ThaumcraftParticle{
         }
 
         this.quadSize = this.moteParticleScale * agescale;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
+//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
         float f10 = 0.5F * this.quadSize;
         float f11 = (float)(this.xo + (this.x - this.xo) * (double)f - interpPosX);
         float f12 = (float)(this.yo + (this.y - this.yo) * (double)f - interpPosY);

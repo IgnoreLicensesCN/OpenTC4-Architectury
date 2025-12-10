@@ -5,12 +5,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import thaumcraft.codechicken.lib.math.MathHelper;
 import thaumcraft.codechicken.lib.vec.BlockCoord;
 import thaumcraft.codechicken.lib.vec.Cuboid6;
@@ -88,7 +88,7 @@ public class RayTracer {
       }
    }
 
-   public MovingObjectPosition rayTraceCuboid(Vector3 start, Vector3 end, Cuboid6 cuboid) {
+   public HitResult rayTraceCuboid(Vector3 start, Vector3 end, Cuboid6 cuboid) {
       this.s_dist = Double.MAX_VALUE;
       this.s_side = -1;
 
@@ -99,18 +99,18 @@ public class RayTracer {
       if (this.s_side < 0) {
          return null;
       } else {
-         MovingObjectPosition mop = new MovingObjectPosition(0, 0, 0, this.s_side, this.s_vec.toVec3D());
+         HitResult mop = new HitResult(0, 0, 0, this.s_side, this.s_vec.toVec3D());
          mop.typeOfHit = null;
          return mop;
       }
    }
 
-   public MovingObjectPosition rayTraceCuboids(Vector3 start, Vector3 end, List<IndexedCuboid6> cuboids) {
+   public HitResult rayTraceCuboids(Vector3 start, Vector3 end, List<IndexedCuboid6> cuboids) {
       double c_dist = Double.MAX_VALUE;
-      MovingObjectPosition c_hit = null;
+      HitResult c_hit = null;
 
       for(IndexedCuboid6 cuboid : cuboids) {
-         MovingObjectPosition mop = this.rayTraceCuboid(start, end, cuboid);
+         HitResult mop = this.rayTraceCuboid(start, end, cuboid);
          if (mop != null && this.s_dist < c_dist) {
             c_dist = this.s_dist;
             c_hit = mop;
@@ -121,8 +121,8 @@ public class RayTracer {
       return c_hit;
    }
 
-   public MovingObjectPosition rayTraceCuboids(Vector3 start, Vector3 end, List<IndexedCuboid6> cuboids, BlockCoord pos, Block block) {
-      MovingObjectPosition mop = this.rayTraceCuboids(start, end, cuboids);
+   public HitResult rayTraceCuboids(Vector3 start, Vector3 end, List<IndexedCuboid6> cuboids, BlockCoord pos, Block block) {
+      HitResult mop = this.rayTraceCuboids(start, end, cuboids);
       if (mop != null) {
          mop.typeOfHit = MovingObjectType.BLOCK;
          mop.blockX = pos.x;
@@ -137,7 +137,7 @@ public class RayTracer {
    }
 
 
-   public static MovingObjectPosition retraceBlock(World world, EntityPlayer player, int x, int y, int z) {
+   public static HitResult retraceBlock(World world, Player player, int x, int y, int z) {
       Block block = world.getBlock(x, y, z);
       Vec3 headVec = getCorrectedHeadVec(player);
       Vec3 lookVec = player.getLook(1.0F);
@@ -148,7 +148,7 @@ public class RayTracer {
       return block.collisionRayTrace(world, x, y, z, headVec, endVec);
    }
 
-   private static double getBlockReachDistance_server(EntityPlayerMP player) {
+   private static double getBlockReachDistance_server(ServerPlayer player) {
       return player.theItemInWorldManager.getBlockReachDistance();
    }
 
@@ -157,21 +157,21 @@ public class RayTracer {
       return Minecraft.getMinecraft().playerController.getBlockReachDistance();
    }
 
-   public static Vec3 getCorrectedHeadVec(EntityPlayer player) {
+   public static Vec3 getCorrectedHeadVec(Player player) {
       Vec3 v = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
-      if (player.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          v.yCoord += player.getEyeHeight() - player.getDefaultEyeHeight();
       } else {
          v.yCoord += player.getEyeHeight();
-         if (player instanceof EntityPlayerMP && player.isSneaking()) {
+         if (player instanceof ServerPlayer && player.isSneaking()) {
             v.yCoord -= 0.08;
          }
       }
 
       return v;
    }
-   public static double getBlockReachDistance(EntityPlayer player) {
-      return player.worldObj.isRemote ? getBlockReachDistance_client() : (player instanceof EntityPlayerMP ? getBlockReachDistance_server((EntityPlayerMP)player) : (double)5.0F);
+   public static double getBlockReachDistance(Player player) {
+      return (Platform.getEnvironment() == Env.CLIENT) ? getBlockReachDistance_client() : (player instanceof ServerPlayer ? getBlockReachDistance_server((ServerPlayer)player) : (double)5.0F);
    }
 
 }

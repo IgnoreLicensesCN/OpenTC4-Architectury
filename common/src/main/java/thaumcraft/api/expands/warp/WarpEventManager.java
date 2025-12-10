@@ -1,8 +1,10 @@
 package thaumcraft.api.expands.warp;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.entity.player.ServerPlayer;
-import simpleutils.ListenerManager;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import org.jetbrains.annotations.NotNull;
+import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.expands.warp.listeners.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -10,7 +12,7 @@ import thaumcraft.common.lib.network.misc.PacketMiscEvent;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
 import thaumcraft.common.lib.research.PlayerKnowledge;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+
 
 import static thaumcraft.api.expands.warp.consts.AfterPickEventListeners.SPAWN_GUARD_IF_NO_EVENT;
 import static thaumcraft.api.expands.warp.consts.AfterWarpEventListeners.*;
@@ -21,7 +23,7 @@ import static thaumcraft.api.expands.warp.consts.WarpConditions.WARP_AND_COUNTER
 import static thaumcraft.api.expands.warp.consts.WarpEvents.*;
 import static thaumcraft.common.lib.WarpEvents.*;
 
-@ParametersAreNonnullByDefault
+
 public class WarpEventManager {
     /**
      * I may update those register methods,so please don't access these lists directly.
@@ -76,7 +78,7 @@ public class WarpEventManager {
         if (warpContext.warp <= 0 || warpContext.actualWarp <= 0) {
             return WarpEvent.EMPTY;
         }
-        warpContext.randWithWarp = player.worldObj.rand.nextInt(warpContext.warp);
+        warpContext.randWithWarp = player.getRandom().nextInt(warpContext.warp);
         WarpEvent picked = WarpEvent.EMPTY;
 
         for (WarpEvent pickEvent : warpEventManager.getListeners()) {
@@ -127,16 +129,15 @@ public class WarpEventManager {
         }
     }
 
-    public static void tryTriggerRandomWarpEvent(Player player) {
-        PlayerKnowledge knowledge = Thaumcraft.proxy.getPlayerKnowledge();
+    public static void tryTriggerRandomWarpEvent(@NotNull Player player) {
+        PlayerKnowledge knowledge = Thaumcraft.playerKnowledge;
         PickWarpEventContext warpContext = new PickWarpEventContext(
-                knowledge.getWarpTotal(player.getCommandSenderName())
+                knowledge.getWarpTotal(player.getName().getString())
                         + getWarpFromGear(player),
-                null,
                 player,
-                knowledge.getWarpPerm(player.getCommandSenderName())
-                        + knowledge.getWarpSticky(player.getCommandSenderName()),
-                knowledge.getWarpCounter(player.getCommandSenderName())
+                knowledge.getWarpPerm(player.getName().getString())
+                        + knowledge.getWarpSticky(player.getName().getString()),
+                knowledge.getWarpCounter(player.getName().getString())
         );
         for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
             if (!condition.check(warpContext,player)) {

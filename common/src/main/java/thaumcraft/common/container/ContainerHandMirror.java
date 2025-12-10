@@ -1,13 +1,13 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.items.relics.ItemHandMirror;
 
 public class ContainerHandMirror extends Container {
@@ -17,10 +17,10 @@ public class ContainerHandMirror extends Container {
    private int posZ;
    public IInventory input = new InventoryHandMirror(this);
    ItemStack mirror = null;
-   EntityPlayer player = null;
+   Player player = null;
 
    public ContainerHandMirror(InventoryPlayer iinventory, World par2World, int par3, int par4, int par5) {
-      this.worldObj = par2World;
+      this.level() = par2World;
       this.posX = par3;
       this.posY = par4;
       this.posZ = par5;
@@ -47,7 +47,7 @@ public class ContainerHandMirror extends Container {
    public void onCraftMatrixChanged(IInventory par1IInventory) {
       if (this.input.getStackInSlot(0) != null && ItemStack.areItemStacksEqual(this.input.getStackInSlot(0), this.mirror)) {
          this.player.openContainer = this.player.inventoryContainer;
-      } else if (!this.worldObj.isRemote && this.input.getStackInSlot(0) != null && this.player != null && ItemHandMirror.transport(this.mirror, this.input.getStackInSlot(0), this.player, this.worldObj)) {
+      } else if (Platform.getEnvironment() != Env.CLIENT && this.input.getStackInSlot(0) != null && this.player != null && ItemHandMirror.transport(this.mirror, this.input.getStackInSlot(0), this.player, this.level())) {
          this.input.setInventorySlotContents(0, null);
 
           for (Object crafter : this.crafters) {
@@ -57,7 +57,7 @@ public class ContainerHandMirror extends Container {
 
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       ItemStack stack = null;
       Slot slotObject = (Slot)this.inventorySlots.get(slot);
       if (slotObject != null && slotObject.getHasStack() && !(slotObject.getStack().getItem() instanceof ItemHandMirror)) {
@@ -81,17 +81,17 @@ public class ContainerHandMirror extends Container {
       return stack;
    }
 
-   public boolean canInteractWith(EntityPlayer var1) {
+   public boolean canInteractWith(Player var1) {
       return true;
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
-      if (!this.worldObj.isRemote) {
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
+      if (Platform.getEnvironment() != Env.CLIENT) {
          for(int var2 = 0; var2 < 1; ++var2) {
             ItemStack var3 = this.input.getStackInSlotOnClosing(var2);
             if (var3 != null) {
-               par1EntityPlayer.dropPlayerItemWithRandomChoice(var3, false);
+               par1Player.dropPlayerItemWithRandomChoice(var3, false);
             }
          }
       }

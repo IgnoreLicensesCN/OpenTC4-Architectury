@@ -3,18 +3,23 @@ package thaumcraft.common.items.wands;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
-import simpleutils.bauble.BaubleConsumer;
+import org.jetbrains.annotations.NotNull;
+import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -25,6 +30,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandTriggerManager;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.WandFocusEngine;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -36,30 +42,30 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static baubles.api.expanded.BaubleExpandedSlots.slotLimit;
-import static simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 public class WandManager implements IWandTriggerManager {
-    static HashMap<Integer, Long> cooldownServer = new HashMap<>();
-    static HashMap<Integer, Long> cooldownClient = new HashMap<>();
+    static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
+    static Map<Entity, Long> cooldownClient = new WeakHashMap<>();
 
-    //Do not modify it's bytecode.go to see thaumcraft.api.expands.wandconsumption.ConsumptionModifierCalculator and add listener.
-    public static float getTotalVisDiscount(EntityPlayer player, Aspect aspect) {
-        int cheatGadomancy = 0;//Gadomancy used tricks to modify java bytecode.deleting this will cause error with no stacktrace point to it.
-        final AtomicInteger total = new AtomicInteger(cheatGadomancy);
-        if (player == null) {
+    public static float getTotalVisDiscount(@NotNull LivingEntity user, Aspect aspect) {
+        
+//        now we dont have gadomancy in 1.20.1
+//        int cheatGadomancy = 0;//Gadomancy used tricks to modify java bytecode.deleting this will cause error with no stacktrace point to it.
+        final AtomicInteger total = new AtomicInteger(0);
+        if (user == null) {
             return 0.0F;
         } else {
             BaubleConsumer<IVisDiscountGear> visDiscountGearBaubleConsumer = (slot, stack, visDiscountGear) -> {
-                total.addAndGet(visDiscountGear.getVisDiscount(stack, player, aspect));
+                total.addAndGet(visDiscountGear.getVisDiscount(stack, user, aspect));
                 return false;
             };
-            forEachBauble(player, IVisDiscountGear.class, visDiscountGearBaubleConsumer);
+            forEachBauble(user, IVisDiscountGear.class, visDiscountGearBaubleConsumer);
 
             for (int a = 0; a < 4; ++a) {
                 ItemStack stack = player.inventory.getStackInSlot(a);
@@ -71,15 +77,15 @@ public class WandManager implements IWandTriggerManager {
                 }
             }
 
-            if (player.isPotionActive(Config.potionVisExhaustID) || player.isPotionActive(Config.potionInfVisExhaustID)) {
+            if (user.isPotionActive(Config.potionVisExhaustID) || user.isPotionActive(Config.potionInfVisExhaustID)) {
                 int level1 = 0;
                 int level2 = 0;
-                if (player.isPotionActive(Config.potionVisExhaustID)) {
-                    level1 = player.getActivePotionEffect(Potion.potionTypes[Config.potionVisExhaustID]).getAmplifier();
+                if (user.isPotionActive(Config.potionVisExhaustID)) {
+                    level1 = user.getActivePotionEffect(Potion.potionTypes[Config.potionVisExhaustID]).getAmplifier();
                 }
 
-                if (player.isPotionActive(Config.potionInfVisExhaustID)) {
-                    level2 = player.getActivePotionEffect(Potion.potionTypes[Config.potionInfVisExhaustID]).getAmplifier();
+                if (user.isPotionActive(Config.potionInfVisExhaustID)) {
+                    level2 = user.getActivePotionEffect(Potion.potionTypes[Config.potionInfVisExhaustID]).getAmplifier();
                 }
 
                 total.addAndGet((Math.max(level1, level2) + 1) * 10);
@@ -89,21 +95,31 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
-    public static boolean consumeVisFromInventory(EntityPlayer player, AspectList cost) {
+    public static boolean consumeVisFromInventory(Player player, AspectList cost){
+        return consumeVisFromInventory(player, cost, ignore -> true);
+    }
+    public static boolean consumeVisFromInventory(Player player, AspectList cost, Function<ItemStack,Boolean> additionalCondition) {
         BaubleConsumer<ItemAmuletVis> amuletVisBaubleConsumer = (slot, stack, itemAmuletVis)
-                -> itemAmuletVis.consumeAllVis(stack, player, cost, true, true);
+                -> {
+            if (!additionalCondition.apply(stack)) {return false;}
+            return itemAmuletVis.consumeAllVis(stack, player, cost, true, true);
+        };
         if (forEachBauble(player, ItemAmuletVis.class, amuletVisBaubleConsumer)) {
             return true;
         }
 
 
-        BaubleConsumer<ItemWandCasting> wandCastingBaubleConsumer = (slot, stack, itemWandCasting) -> itemWandCasting.consumeAllVis(stack, player, cost, true, true);
-        return forEachBauble(player, ItemWandCasting.class, wandCastingBaubleConsumer);
+        BaubleConsumer<WandCastingItem> wandCastingBaubleConsumer = (slot, stack, WandCastingItem) ->
+        {
+            if (!additionalCondition.apply(stack)) {return false;}
+            return WandCastingItem.consumeAllVis(stack, player, cost, true, true);
+        };
+        return forEachBauble(player, WandCastingItem.class, wandCastingBaubleConsumer);
 
 //      for(int a = player.inventory.mainInventory.length - 1; a >= 0; --a) {
 //         ItemStack item = player.inventory.mainInventory[a];
-//         if (item != null && item.getItem() instanceof ItemWandCasting) {
-//            boolean done = ((ItemWandCasting)item.getItem()).consumeAllVis(item, player, cost, true, true);
+//         if (item != null && item.getItem() instanceof WandCastingItem) {
+//            boolean done = ((WandCastingItem)item.getItem()).consumeAllVis(item, player, cost, true, true);
 //            if (done) {
 //               return true;
 //            }
@@ -111,9 +127,9 @@ public class WandManager implements IWandTriggerManager {
 //      }
     }
 
-    public static boolean createCrucible(ItemStack is, EntityPlayer player, World world, int x, int y, int z) {
-        ItemWandCasting wand = (ItemWandCasting) is.getItem();
-        if (!world.isRemote) {
+    public static boolean createCrucible(ItemStack is, Player player, Level world, int x, int y, int z) {
+        WandCastingItem wand = (WandCastingItem) is.getItem();
+        if (Platform.getEnvironment() != Env.CLIENT) {
             world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
             world.setBlockToAir(x, y, z);
             world.setBlock(x, y, z, ConfigBlocks.blockMetalDevice, 0, 3);
@@ -126,14 +142,14 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
-    public static boolean createInfusionAltar(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z) {
-        ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+    public static boolean createInfusionAltar(ItemStack itemstack, Player player, World world, int x, int y, int z) {
+        WandCastingItem wand = (WandCastingItem) itemstack.getItem();
 
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
                     if (fitInfusionAltar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 25).add(Aspect.EARTH, 25).add(Aspect.ORDER, 25).add(Aspect.AIR, 25).add(Aspect.ENTROPY, 25).add(Aspect.WATER, 25), true)) {
-                        if (!world.isRemote) {
+                        if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceInfusionAltar(world, xx, yy, zz);
                             return true;
                         }
@@ -213,14 +229,14 @@ public class WandManager implements IWandTriggerManager {
         world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
     }
 
-    public static boolean createNodeJar(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z) {
-        ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+    public static boolean createNodeJar(ItemStack itemstack, Player player, World world, int x, int y, int z) {
+        WandCastingItem wand = (WandCastingItem) itemstack.getItem();
 
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 3; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
                     if (fitNodeJar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 70).add(Aspect.EARTH, 70).add(Aspect.ORDER, 70).add(Aspect.AIR, 70).add(Aspect.ENTROPY, 70).add(Aspect.WATER, 70), true)) {
-                        if (!world.isRemote) {
+                        if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceNodeJar(world, xx, yy, zz);
                             return true;
                         }
@@ -234,8 +250,8 @@ public class WandManager implements IWandTriggerManager {
         return false;
     }
 
-    public static boolean createThaumatorium(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side) {
-        ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+    public static boolean createThaumatorium(ItemStack itemstack, Player player, World world, int x, int y, int z, int side) {
+        WandCastingItem wand = (WandCastingItem) itemstack.getItem();
         if (world.getBlock(x, y + 1, z) != ConfigBlocks.blockMetalDevice || world.getBlockMetadata(x, y + 1, z) != 9 || world.getBlock(x, y - 1, z) != ConfigBlocks.blockMetalDevice || world.getBlockMetadata(x, y - 1, z) != 0) {
             if (world.getBlock(x, y - 1, z) != ConfigBlocks.blockMetalDevice || world.getBlockMetadata(x, y - 1, z) != 9 || world.getBlock(x, y - 2, z) != ConfigBlocks.blockMetalDevice || world.getBlockMetadata(x, y - 2, z) != 0) {
                 return false;
@@ -244,7 +260,7 @@ public class WandManager implements IWandTriggerManager {
             --y;
         }
 
-        if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 15).add(Aspect.ORDER, 30).add(Aspect.WATER, 30), true) && !world.isRemote) {
+        if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 15).add(Aspect.ORDER, 30).add(Aspect.WATER, 30), true) && Platform.getEnvironment() != Env.CLIENT) {
             world.setBlock(x, y, z, ConfigBlocks.blockMetalDevice, 10, 0);
             world.setBlock(x, y + 1, z, ConfigBlocks.blockMetalDevice, 11, 0);
             TileEntity tile = world.getTileEntity(x, y, z);
@@ -256,8 +272,8 @@ public class WandManager implements IWandTriggerManager {
             world.markBlockForUpdate(x, y + 1, z);
             world.notifyBlockChange(x, y, z, ConfigBlocks.blockMetalDevice);
             world.notifyBlockChange(x, y + 1, z, ConfigBlocks.blockMetalDevice);
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0F));
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y + 1, z, -9999), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y + 1, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
             world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
             return true;
         } else {
@@ -307,7 +323,7 @@ public class WandManager implements IWandTriggerManager {
     }
 
     public static void replaceNodeJar(World world, int x, int y, int z) {
-        if (!world.isRemote) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
             int[][][] blueprint = new int[][][]{{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 3, 2}, {2, 2, 2}}, {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}};
 
             for (int yy = 0; yy < 4; ++yy) {
@@ -323,7 +339,7 @@ public class WandManager implements IWandTriggerManager {
                                 nm = node.getNodeModifier().ordinal();
                             }
 
-                            if (world.rand.nextFloat() < 0.75F) {
+                            if (world.getRandom().nextFloat() < 0.75F) {
                                 if (node.getNodeModifier() == null) {
                                     nm = NodeModifier.PALE.ordinal();
                                 } else if (node.getNodeModifier() == NodeModifier.BRIGHT) {
@@ -358,14 +374,14 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
-    public static boolean createArcaneFurnace(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z) {
-        ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+    public static boolean createArcaneFurnace(ItemStack itemstack, Player player, World world, int x, int y, int z) {
+        WandCastingItem wand = (WandCastingItem) itemstack.getItem();
 
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
                     if (fitArcaneFurnace(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 50).add(Aspect.EARTH, 50), true)) {
-                        if (!world.isRemote) {
+                        if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceArcaneFurnace(world, xx, yy, zz);
                             return true;
                         }
@@ -448,33 +464,34 @@ public class WandManager implements IWandTriggerManager {
         return fencefound;
     }
 
-    public static boolean createThaumonomicon(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z) {
-        if (!world.isRemote) {
-            ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
-            if (wand.getFocus(itemstack) != null) {
+    public static boolean createThaumonomicon(ItemStack itemstack, Player player, Level world, int x, int y, int z) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
+            var wand = itemstack.getItem();
+            if (wand instanceof WandFocusEngine engine && engine.canApplyFocus() && engine.getFocusItemStack(itemstack) != null) {
                 return false;
             } else {
-                world.setBlockToAir(x, y, z);
+                world.setBlockAndUpdate(new BlockPos(x, y, z),Blocks.AIR.defaultBlockState());
                 EntitySpecialItem entityItem = new EntitySpecialItem(world, (float) x + 0.5F, (float) y + 0.3F, (float) z + 0.5F, new ItemStack(ConfigItems.itemThaumonomicon));
                 entityItem.motionY = 0.0F;
                 entityItem.motionX = 0.0F;
                 entityItem.motionZ = 0.0F;
                 world.spawnEntityInWorld(entityItem);
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
                 world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
                 return true;
             }
-        } else {
+        } 
+        else {
             return false;
         }
     }
 
-    private static boolean createOculus(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side) {
-        if (!world.isRemote) {
+    private static boolean createOculus(ItemStack itemstack, Player player, World world, int x, int y, int z, int side) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
             TileEntity tile = world.getTileEntity(x, y, z);
             TileEntity node = world.getTileEntity(x, y + 1, z);
             if (node != null && tile instanceof TileEldritchAltar && ((TileEldritchAltar) tile).getEyes() == 4 && !((TileEldritchAltar) tile).isOpen() && node instanceof TileNode && ((TileNode) node).getNodeType() == NodeType.DARK && ((TileEldritchAltar) tile).checkForMaze()) {
-                ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+                WandCastingItem wand = (WandCastingItem) itemstack.getItem();
                 if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.AIR, 100).add(Aspect.FIRE, 100).add(Aspect.EARTH, 100).add(Aspect.WATER, 100).add(Aspect.ORDER, 100).add(Aspect.ENTROPY, 100), true)) {
                     world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
                     ((TileEldritchAltar) tile).setOpen(true);
@@ -510,8 +527,8 @@ public class WandManager implements IWandTriggerManager {
         };
     }
 
-    public static void changeFocus(ItemStack is, World w, EntityPlayer player, String focus) {
-        ItemWandCasting wand = (ItemWandCasting) is.getItem();
+    public static void changeFocus(ItemStack is, World w, Player player, String focus) {
+        WandCastingItem wand = (WandCastingItem) is.getItem();
         TreeMap<String, Integer> foci = new TreeMap<>();
         HashMap<Integer, Integer> pouches = new HashMap<>();
         final int[] pouchcount = {0};
@@ -595,7 +612,7 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
-    private static ItemStack fetchFocusFromPouch(EntityPlayer player, int focusid, ItemStack pouch, int pouchslot) {
+    private static ItemStack fetchFocusFromPouch(Player player, int focusid, ItemStack pouch, int pouchslot) {
         ItemStack focus = null;
         ItemStack[] inv = ((ItemFocusPouch) pouch.getItem()).getInventory(pouch);
         ItemStack contents = inv[focusid];
@@ -616,7 +633,7 @@ public class WandManager implements IWandTriggerManager {
         return focus;
     }
 
-    private static boolean addFocusToPouch(EntityPlayer player, ItemStack focus, HashMap<Integer, Integer> pouches) {
+    private static boolean addFocusToPouch(Player player, ItemStack focus, HashMap<Integer, Integer> pouches) {
         IInventory baubles = BaublesApi.getBaubles(player);
 
         for (Integer pouchslot : pouches.values()) {
@@ -650,9 +667,9 @@ public class WandManager implements IWandTriggerManager {
         return false;
     }
 
-    public static void toggleMisc(ItemStack itemstack, World world, EntityPlayer player) {
-        if (itemstack.getItem() instanceof ItemWandCasting) {
-            ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+    public static void toggleMisc(ItemStack itemstack, Level world, Player player) {
+        if (itemstack.getItem() instanceof WandCastingItem) {
+            WandCastingItem wand = (WandCastingItem) itemstack.getItem();
             if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitect && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
                 int dim = getAreaDim(itemstack);
                 IArchitect fa = (IArchitect) wand.getFocus(itemstack);
@@ -705,7 +722,7 @@ public class WandManager implements IWandTriggerManager {
     }
 
     public static int getAreaX(ItemStack stack) {
-        ItemWandCasting wand = (ItemWandCasting) stack.getItem();
+        WandCastingItem wand = (WandCastingItem) stack.getItem();
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("areax")) {
             int a = stack.stackTagCompound.getInteger("areax");
             if (a > wand.getFocus(stack).getMaxAreaSize(wand.getFocusItem(stack))) {
@@ -719,7 +736,7 @@ public class WandManager implements IWandTriggerManager {
     }
 
     public static int getAreaY(ItemStack stack) {
-        ItemWandCasting wand = (ItemWandCasting) stack.getItem();
+        WandCastingItem wand = (WandCastingItem) stack.getItem();
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("areay")) {
             int a = stack.stackTagCompound.getInteger("areay");
             if (a > wand.getFocus(stack).getMaxAreaSize(wand.getFocusItem(stack))) {
@@ -733,7 +750,7 @@ public class WandManager implements IWandTriggerManager {
     }
 
     public static int getAreaZ(ItemStack stack) {
-        ItemWandCasting wand = (ItemWandCasting) stack.getItem();
+        WandCastingItem wand = (WandCastingItem) stack.getItem();
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("areaz")) {
             int a = stack.stackTagCompound.getInteger("areaz");
             if (a > wand.getFocus(stack).getMaxAreaSize(wand.getFocusItem(stack))) {
@@ -774,38 +791,47 @@ public class WandManager implements IWandTriggerManager {
 
     }
 
-    static boolean isOnCooldown(EntityLivingBase entityLiving) {
-        if (entityLiving.worldObj.isRemote && cooldownClient.containsKey(entityLiving.getEntityId())) {
-            return cooldownClient.get(entityLiving.getEntityId()) > System.currentTimeMillis();
-        } else if (!entityLiving.worldObj.isRemote && cooldownServer.containsKey(entityLiving.getEntityId())) {
-            return cooldownServer.get(entityLiving.getEntityId()) > System.currentTimeMillis();
-        } else {
+    public static boolean isOnCooldown(LivingEntity entityLiving) {
+        if (entityLiving.level().isClientSide() && cooldownClient.containsKey(entityLiving.getId())) {
+            return cooldownClient.get(entityLiving.getId()) > System.currentTimeMillis();
+        }
+        else if (Platform.getEnvironment() != Env.CLIENT && cooldownServer.containsKey(entityLiving.getId())) {
+            return cooldownServer.get(entityLiving.getId()) > System.currentTimeMillis();
+        }
+        else {
             return false;
         }
     }
 
-    public static float getCooldown(EntityLivingBase entityLiving) {
-        return entityLiving.worldObj.isRemote && cooldownClient.containsKey(entityLiving.getEntityId()) ? (float) (cooldownClient.get(entityLiving.getEntityId()) - System.currentTimeMillis()) / 1000.0F : 0.0F;
+    public static float getCooldown(LivingEntity entityLiving) {
+        if (entityLiving.level().isClientSide()) {
+            return 0.f;
+        }
+        return (float) (cooldownClient.getOrDefault(entityLiving,System.currentTimeMillis()) - System.currentTimeMillis()) / 1000.0F;
     }
 
-    public static void setCooldown(EntityLivingBase entityLiving, int cd) {
+    public static void setCooldown(LivingEntity entityLiving, int cd) {
         if (cd == 0) {
-            cooldownClient.remove(entityLiving.getEntityId());
-            cooldownServer.remove(entityLiving.getEntityId());
-        } else if (entityLiving.worldObj.isRemote) {
-            cooldownClient.put(entityLiving.getEntityId(), System.currentTimeMillis() + (long) cd);
+            cooldownClient.remove(entityLiving);
+            cooldownServer.remove(entityLiving);
+        } else if (entityLiving.level().isClientSide()) {
+            cooldownClient.put(entityLiving, System.currentTimeMillis() + (long) cd);
         } else {
-            cooldownServer.put(entityLiving.getEntityId(), System.currentTimeMillis() + (long) cd);
+            cooldownServer.put(entityLiving, System.currentTimeMillis() + (long) cd);
         }
 
     }
 
-    public boolean performTrigger(World world, ItemStack wand, EntityPlayer player, int x, int y, int z, int side, int event) {
+    @Override
+    public boolean performTrigger(Level world, ItemStack wand, Player player, int x, int y, int z, Direction side) {
+        boolean returnFlag = false;
+        returnFlag = createThaumonomicon(wand, player, world, x, y, z);
+        if (returnFlag) {return true;}
+        returnFlag = createCrucible(wand, player, world, x, y, z);
+        if (returnFlag) {return true;}
+        
+        return false;
         switch (event) {
-            case 0:
-                return createThaumonomicon(wand, player, world, x, y, z);
-            case 1:
-                return createCrucible(wand, player, world, x, y, z);
             case 2:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "INFERNALFURNACE")) {
                     return createArcaneFurnace(wand, player, world, x, y, z);
@@ -840,8 +866,8 @@ public class WandManager implements IWandTriggerManager {
         return false;
     }
 
-    private static boolean createAdvancedAlchemicalFurnace(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side) {
-        if (!world.isRemote) {
+    private static boolean createAdvancedAlchemicalFurnace(ItemStack itemstack, Player player, Level world, int x, int y, int z, int side) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
             int[][][] blueprint = new int[][][]{{{4, 4, 4}, {4, 3, 4}, {4, 4, 4}}, {{1, 2, 1}, {2, 0, 2}, {1, 2, 1}}};
 
             for (int a = -1; a <= 1; ++a) {
@@ -875,7 +901,7 @@ public class WandManager implements IWandTriggerManager {
                                 }
                             }
 
-                            ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+                            WandCastingItem wand = (WandCastingItem) itemstack.getItem();
                             if (!wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).add(Aspect.FIRE, 50).add(Aspect.WATER, 50).add(Aspect.ORDER, 50), true)) {
                                 return false;
                             }
@@ -902,7 +928,7 @@ public class WandManager implements IWandTriggerManager {
                             for (int aa = -1; aa <= 1; ++aa) {
                                 for (int bb = 0; bb <= 1; ++bb) {
                                     for (int cc = -1; cc <= 1; ++cc) {
-                                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x + a + aa, y + b + bb, z + c + cc, -9999), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x + a, y + b, z + c, 32.0F));
+                                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x + a + aa, y + b + bb, z + c + cc, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x + a, y + b, z + c, 32.0F));
                                     }
                                 }
                             }

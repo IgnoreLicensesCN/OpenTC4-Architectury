@@ -1,14 +1,14 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
-import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 import java.awt.*;
 
-import static thaumcraft.client.fx.particles.migrated.particles.FXGeneric.PARTICLE_SPRITE;
+import static thaumcraft.client.fx.migrated.Particles.PARTICLE_SPRITE;
 
 public class FXVent extends ThaumcraftParticle {
     float psm = 1.0F;

@@ -6,18 +6,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.entities.IEldritchMob;
@@ -27,7 +27,8 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AILongRangeAttack;
 import thaumcraft.common.entities.projectile.EntityEldritchOrb;
-import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXSonic;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;
@@ -47,10 +48,10 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
       this.tasks.addTask(3, new AIAttackOnCollide(this, EntityLivingBase.class, 1.0F, false));
       this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.8));
       this.tasks.addTask(7, new EntityAIWander(this, 1.0F));
-      this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
       this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityCultist.class, 0, true));
       this.setSize(0.8F, 2.25F);
       this.experienceValue = 20;
@@ -93,7 +94,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          if (this.armLiftL > 0.0F) {
             this.armLiftL -= 0.05F;
          }
@@ -104,16 +105,16 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
 
          float x = (float)(this.posX + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F));
          float z = (float)(this.posZ + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F));
-         Thaumcraft.proxy.wispFXEG(this.worldObj, x, (float)(this.posY + 0.22 * (double)this.height), z, this);
-      } else if (this.worldObj.provider.dimensionId != Config.dimensionOuterId && (this.ticksExisted == 0 || this.ticksExisted % 100 == 0) && this.worldObj.difficultySetting != EnumDifficulty.EASY) {
-         double d6 = this.worldObj.difficultySetting == EnumDifficulty.HARD ? (double)576.0F : (double)256.0F;
+         Thaumcraft.proxy.wispFXEG(this.level(), x, (float)(this.posY + 0.22 * (double)this.height), z, this);
+      } else if (this.level().dimension() != Config.dimensionOuterId && (this.ticksExisted == 0 || this.ticksExisted % 100 == 0) && this.level().difficultySetting != Difficulty.EASY) {
+         double d6 = this.level().difficultySetting == Difficulty.HARD ? (double)576.0F : (double)256.0F;
 
-         for(int i = 0; i < this.worldObj.playerEntities.size(); ++i) {
-            EntityPlayer entityplayer1 = (EntityPlayer)this.worldObj.playerEntities.get(i);
-            if (entityplayer1.isEntityAlive()) {
-               double d5 = entityplayer1.getDistanceSq(this.posX, this.posY, this.posZ);
+         for(int i = 0; i < this.level().playerEntities.size(); ++i) {
+            Player Player1 = (Player)this.level().playerEntities.get(i);
+            if (Player1.isEntityAlive()) {
+               double d5 = Player1.getDistanceSq(this.posX, this.posY, this.posZ);
                if (d5 < d6) {
-                  PacketHandler.INSTANCE.sendTo(new PacketMiscEvent((short)2), (EntityPlayerMP)entityplayer1);
+                  PacketHandler.INSTANCE.sendTo(new PacketMiscEvent((short)2), (ServerPlayer)Player1);
                }
             }
          }
@@ -124,7 +125,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    public boolean attackEntityAsMob(Entity p_70652_1_) {
       boolean flag = super.attackEntityAsMob(p_70652_1_);
       if (flag) {
-         int i = this.worldObj.difficultySetting.getDifficultyId();
+         int i = this.level().difficultySetting.getDifficultyId();
          if (this.getHeldItem() == null && this.isBurning() && this.rand.nextFloat() < (float)i * 0.3F) {
             p_70652_1_.setFire(2 * i);
          }
@@ -172,7 +173,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.dropItem(ConfigItems.itemEldritchObject, 1);
+      this.dropItem(ThaumcraftItems.ELDRITCH_EYE);
    }
 
    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
@@ -196,8 +197,8 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
 
    public IEntityLivingData onSpawnWithEgg(IEntityLivingData p_110161_1_) {
       IEntityLivingData p_110161_1_1 = super.onSpawnWithEgg(p_110161_1_);
-      float f = this.worldObj.func_147462_b(this.posX, this.posY, this.posZ);
-      if (this.worldObj.provider.dimensionId == Config.dimensionOuterId) {
+      float f = this.level().func_147462_b(this.posX, this.posY, this.posZ);
+      if (this.level().dimension() == Config.dimensionOuterId) {
          int bh = (int)this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() / 2;
          this.setAbsorptionAmount(this.getAbsorptionAmount() + (float)bh);
       }
@@ -207,7 +208,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
 
    protected void updateAITasks() {
       super.updateAITasks();
-      if (this.worldObj.provider.dimensionId == Config.dimensionOuterId && this.hurtResistantTime <= 0 && this.ticksExisted % 25 == 0) {
+      if (this.level().dimension() == Config.dimensionOuterId && this.hurtResistantTime <= 0 && this.ticksExisted % 25 == 0) {
          int bh = (int)this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() / 2;
          if (this.getAbsorptionAmount() < (float)bh) {
             this.setAbsorptionAmount(this.getAbsorptionAmount() + 1.0F);
@@ -240,7 +241,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    }
 
    public boolean getCanSpawnHere() {
-      List ents = this.worldObj.getEntitiesWithinAABB(EntityEldritchGuardian.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + (double)1.0F, this.posY + (double)1.0F, this.posZ + (double)1.0F).expand(32.0F, 16.0F, 32.0F));
+      List ents = this.level().getEntitiesWithinAABB(EntityEldritchGuardian.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + (double)1.0F, this.posY + (double)1.0F, this.posZ + (double)1.0F).expand(32.0F, 16.0F, 32.0F));
       return ents.isEmpty() && super.getCanSpawnHere();
    }
 
@@ -254,9 +255,9 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
 
    public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f) {
       if (this.rand.nextFloat() > 0.1F) {
-         EntityEldritchOrb blast = new EntityEldritchOrb(this.worldObj, this);
+         EntityEldritchOrb blast = new EntityEldritchOrb(this.level(), this);
          this.lastBlast = !this.lastBlast;
-         this.worldObj.setEntityState(this, (byte)(this.lastBlast ? 16 : 15));
+         this.level().setEntityState(this, (byte)(this.lastBlast ? 16 : 15));
          int rr = this.lastBlast ? 90 : 180;
          double xx = MathHelper.cos((this.rotationYaw + (float)rr) % 360.0F / 180.0F * (float)Math.PI) * 0.5F;
          double yy = 0.057777777 * (double)this.height;
@@ -267,17 +268,17 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
          double d2 = entitylivingbase.posZ + entitylivingbase.motionZ - this.posZ;
          blast.setThrowableHeading(d0, d1, d2, 1.0F, 2.0F);
          this.playSound("thaumcraft:egattack", 2.0F, 1.0F + this.rand.nextFloat() * 0.1F);
-         this.worldObj.spawnEntityInWorld(blast);
+         this.level().spawnEntityInWorld(blast);
       } else if (this.canEntityBeSeen(entitylivingbase)) {
-         PacketHandler.INSTANCE.sendToAllAround(new PacketFXSonic(this.getEntityId()), new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 32.0F));
+         PacketHandler.INSTANCE.sendToAllAround(new PacketFXSonic(this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
 
          try {
             entitylivingbase.addPotionEffect(new PotionEffect(Potion.wither.id, 400, 0));
          } catch (Exception ignored) {
          }
 
-         if (entitylivingbase instanceof EntityPlayer) {
-            Thaumcraft.addWarpToPlayer((EntityPlayer)entitylivingbase, 1 + this.worldObj.rand.nextInt(3), true);
+         if (entitylivingbase instanceof Player) {
+            Thaumcraft.addWarpToPlayer((Player)entitylivingbase, 1 + this.level().rand.nextInt(3), true);
          }
 
          this.playSound("thaumcraft:egscreech", 3.0F, 1.0F + this.rand.nextFloat() * 0.1F);

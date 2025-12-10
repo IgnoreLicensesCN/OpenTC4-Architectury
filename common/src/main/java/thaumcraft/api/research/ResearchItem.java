@@ -1,5 +1,10 @@
 package thaumcraft.api.research;
 
+import com.linearity.opentc4.utils.StatCollector;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import net.minecraft.resources.ResourceLocation;
@@ -120,7 +125,7 @@ public class ResearchItem
     /**
      * Scanning these entities will have a chance of revealing hidden knowledge in the thaumonomicon
      */
-    private String[] entityTriggers;
+    private ResourceKey<EntityType<?>>[] entityTriggers;
     
     /**
      * Scanning things with these aspects will have a chance of revealing hidden knowledge in the thaumonomicon
@@ -242,7 +247,7 @@ public class ResearchItem
         return this;
     }
     
-    public ResearchItem setEntityTriggers(String... par)
+    public ResearchItem setEntityTriggers(ResourceKey<EntityType<?>>... par)
     {
         this.entityTriggers = par;
         return this;
@@ -258,7 +263,7 @@ public class ResearchItem
 		return itemTriggers;
 	}
 
-	public String[] getEntityTriggers() {
+	public ResourceKey<EntityType<?>>[] getEntityTriggers() {
 		return entityTriggers;
 	}
 	
@@ -356,7 +361,7 @@ public class ResearchItem
 		Aspect aspect=null;
 		int highest=0;
 		if (tags!=null) {
-            for (Aspect tag : tags.getAspects()) {
+            for (Aspect tag : tags.getAspectTypes()) {
                 if (tags.getAmount(tag) > highest) {
                     aspect = tag;
                     highest = tags.getAmount(tag);

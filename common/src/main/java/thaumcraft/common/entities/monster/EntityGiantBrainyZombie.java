@@ -3,9 +3,9 @@ package thaumcraft.common.entities.monster;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 
 public class EntityGiantBrainyZombie extends EntityBrainyZombie {
@@ -53,18 +53,18 @@ public class EntityGiantBrainyZombie extends EntityBrainyZombie {
 
    protected void dropFewItems(boolean flag, int i) {
       for(int a = 0; a < 6; ++a) {
-         if (this.worldObj.rand.nextBoolean()) {
+         if (this.level().rand.nextBoolean()) {
             this.dropItem(Items.rotten_flesh, 2);
          }
       }
 
       for(int a = 0; a < 6; ++a) {
-         if (this.worldObj.rand.nextBoolean()) {
+         if (this.level().rand.nextBoolean()) {
             this.dropItem(Items.rotten_flesh, 2);
          }
       }
 
-      if (this.worldObj.rand.nextInt(10) - i <= 4) {
+      if (this.level().rand.nextInt(10) - i <= 4) {
          this.entityDropItem(new ItemStack(ConfigItems.itemZombieBrain), 2.0F);
       }
 
@@ -73,7 +73,7 @@ public class EntityGiantBrainyZombie extends EntityBrainyZombie {
    protected void dropRareDrop(int par1) {
       switch (this.rand.nextInt(4)) {
          case 0:
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 2), 2.0F);
+            this.entityDropItem(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), 2.0F);
             break;
          case 1:
             this.dropItem(Items.carrot, 1);
@@ -82,7 +82,7 @@ public class EntityGiantBrainyZombie extends EntityBrainyZombie {
             this.dropItem(Items.potato, 1);
             break;
          case 3:
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 6), 2.0F);
+            this.entityDropItem(new ItemStack(ThaumcraftItems.AMBER_GEM), 2.0F);
       }
 
    }

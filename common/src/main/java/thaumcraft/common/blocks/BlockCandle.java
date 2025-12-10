@@ -6,12 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.crafting.IInfusionStabiliser;
 import thaumcraft.common.Thaumcraft;
@@ -56,11 +56,11 @@ public class BlockCandle extends Block implements IInfusionStabiliser {
       return Utils.colors[par1];
    }
 
-   public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
       return World.doesBlockHaveSolidTopSurface(par1World, par2, par3, par4);
    }
 
-   public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
+   public void onNeighborBlockChange(Level par1World, int par2, int par3, int par4, Block par5) {
       int var6 = par1World.getBlockMetadata(par2, par3, par4);
       boolean var7 = this.canPlaceBlockAt(par1World, par2, par3 - 1, par4);
       if (!var7) {
@@ -71,7 +71,7 @@ public class BlockCandle extends Block implements IInfusionStabiliser {
       super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
    }
 
-   public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5) {
+   public boolean canPlaceBlockOnSide(Level par1World, int par2, int par3, int par4, int par5) {
       return this.canPlaceBlockAt(par1World, par2, par3 - 1, par4);
    }
 
@@ -93,7 +93,7 @@ public class BlockCandle extends Block implements IInfusionStabiliser {
       return false;
    }
 
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       return null;
    }
 
@@ -109,7 +109,7 @@ public class BlockCandle extends Block implements IInfusionStabiliser {
       return false;
    }
 
-   public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+   public void randomDisplayTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
       double var7 = (float)par2 + 0.5F;
       double var9 = (float)par3 + 0.7F;
       double var11 = (float)par4 + 0.5F;

@@ -5,8 +5,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 
 public class EntityDart extends EntityArrow implements IProjectile, IEntityAdditionalSpawnData {
    private int xTile = -1;
@@ -37,13 +37,13 @@ public class EntityDart extends EntityArrow implements IProjectile, IEntityAddit
       this.rotationPitch = data.readFloat();
    }
 
-   public EntityDart(World par1World) {
+   public EntityDart(Level par1World) {
       super(par1World);
       this.renderDistanceWeight = 10.0F;
       this.setSize(0.5F, 0.5F);
    }
 
-   public EntityDart(World par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving, float par4, float par5) {
+   public EntityDart(Level par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving, float par4, float par5) {
       super(par1World);
       this.renderDistanceWeight = 10.0F;
       this.shootingEntity = par2EntityLiving;
@@ -66,11 +66,11 @@ public class EntityDart extends EntityArrow implements IProjectile, IEntityAddit
    }
 
    public void onUpdate() {
-      if (this.first && this.worldObj.isRemote) {
+      if (this.first && (Platform.getEnvironment() == Env.CLIENT)) {
          this.first = false;
 
          for(int a = 0; a < 5; ++a) {
-            this.worldObj.spawnParticle("smoke", this.posX - this.motionX / (double)1.5F, this.posY - this.motionY / (double)1.5F, this.posZ - this.motionZ / (double)1.5F, this.motionX / (double)9.0F + this.rand.nextGaussian() * 0.01, this.motionY / (double)9.0F + this.rand.nextGaussian() * 0.01, this.motionZ / (double)9.0F + this.rand.nextGaussian() * 0.01);
+            this.level().spawnParticle("smoke", this.posX - this.motionX / (double)1.5F, this.posY - this.motionY / (double)1.5F, this.posZ - this.motionZ / (double)1.5F, this.motionX / (double)9.0F + this.rand.nextGaussian() * 0.01, this.motionY / (double)9.0F + this.rand.nextGaussian() * 0.01, this.motionZ / (double)9.0F + this.rand.nextGaussian() * 0.01);
          }
       }
 

@@ -27,7 +27,7 @@ public class AIHomeDrop extends EntityAIBase {
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
-         TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+         TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
          return !(tile instanceof IInventory);
       } else {
          return false;
@@ -61,14 +61,14 @@ public class AIHomeDrop extends EntityAIBase {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      EntityItem item = new EntityItem(this.theGolem.worldObj, this.theGolem.posX, this.theGolem.posY + (double)(this.theGolem.height / 2.0F), this.theGolem.posZ, this.theGolem.itemCarried.copy());
+      EntityItem item = new EntityItem(this.theGolem.level(), this.theGolem.posX, this.theGolem.posY + (double)(this.theGolem.height / 2.0F), this.theGolem.posZ, this.theGolem.itemCarried.copy());
       if (item != null) {
          double distance = this.theGolem.getDistance((double)cX + (double)0.5F, (double)cY + (double)0.5F, (double)cZ + (double)0.5F);
          item.motionX = ((double)cX + (double)0.5F - this.theGolem.posX) * (distance / (double)3.0F);
          item.motionY = 0.1 + ((double)cY + (double)0.5F - (this.theGolem.posY + (double)(this.theGolem.height / 2.0F))) * (distance / (double)3.0F);
          item.motionZ = ((double)cZ + (double)0.5F - this.theGolem.posZ) * (distance / (double)3.0F);
          item.delayBeforeCanPickup = 10;
-         this.theGolem.worldObj.spawnEntityInWorld(item);
+         this.theGolem.level().spawnEntityInWorld(item);
          this.theGolem.itemCarried = null;
          this.theGolem.startActionTimer();
          this.theGolem.updateCarried();

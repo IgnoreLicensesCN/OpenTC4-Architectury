@@ -6,11 +6,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockTaint;
 import thaumcraft.common.config.ConfigBlocks;
@@ -25,11 +25,11 @@ public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawn
    private int fallHurtMax = 40;
    private float fallHurtAmount = 2.0F;
 
-   public EntityFallingTaint(World par1World) {
+   public EntityFallingTaint(Level par1World) {
       super(par1World);
    }
 
-   public EntityFallingTaint(World par1World, double par2, double par4, double par6, Block par8, int par9, int ox, int oy, int oz) {
+   public EntityFallingTaint(Level par1World, double par2, double par4, double par6, Block par8, int par9, int ox, int oy, int oz) {
       super(par1World);
       this.block = par8;
       this.metadata = par9;
@@ -84,32 +84,32 @@ public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawn
          this.motionX *= 0.98F;
          this.motionY *= 0.98F;
          this.motionZ *= 0.98F;
-         if (!this.worldObj.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             int i = MathHelper.floor_double(this.posX);
             int j = MathHelper.floor_double(this.posY);
             int k = MathHelper.floor_double(this.posZ);
             if (this.fallTime == 1) {
-               if (this.worldObj.getBlock(this.oldX, this.oldY, this.oldZ) != this.block) {
+               if (this.level().getBlock(this.oldX, this.oldY, this.oldZ) != this.block) {
                   this.setDead();
                   return;
                }
 
-               this.worldObj.setBlockToAir(this.oldX, this.oldY, this.oldZ);
+               this.level().setBlockToAir(this.oldX, this.oldY, this.oldZ);
             }
 
-            if (!this.onGround && (this.worldObj.getBlock(i, j - 1, k) != ConfigBlocks.blockFluxGoo || this.worldObj.getBlockMetadata(i, j - 1, k) < 4)) {
-               if (this.fallTime > 100 && !this.worldObj.isRemote && (j < 1 || j > 256) || this.fallTime > 600) {
+            if (!this.onGround && (this.level().getBlock(i, j - 1, k) != ConfigBlocks.blockFluxGoo || this.level().getBlockMetadata(i, j - 1, k) < 4)) {
+               if (this.fallTime > 100 && Platform.getEnvironment() != Env.CLIENT && (j < 1 || j > 256) || this.fallTime > 600) {
                   this.setDead();
                }
             } else {
                this.motionX *= 0.7F;
                this.motionZ *= 0.7F;
                this.motionY *= -0.5F;
-               if (this.worldObj.getBlock(i, j, k) != Blocks.piston && this.worldObj.getBlock(i, j, k) != Blocks.piston_extension && this.worldObj.getBlock(i, j, k) != Blocks.piston_head) {
-                  this.worldObj.playSoundAtEntity(this, "thaumcraft:gore", 0.5F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+               if (this.level().getBlock(i, j, k) != Blocks.piston && this.level().getBlock(i, j, k) != Blocks.piston_extension && this.level().getBlock(i, j, k) != Blocks.piston_head) {
+                  this.level().playSoundAtEntity(this, "thaumcraft:gore", 0.5F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
                   this.setDead();
-                  if (this.canPlace(i, j, k) && !BlockTaint.canFallBelow(this.worldObj, i, j - 1, k) && this.worldObj.setBlock(i, j, k, this.block, this.metadata, 3) && this.block instanceof BlockTaint) {
-                     ((BlockTaint)this.block).onFinishFalling(this.worldObj, i, j, k, this.metadata);
+                  if (this.canPlace(i, j, k) && !BlockTaint.canFallBelow(this.level(), i, j - 1, k) && this.level().setBlock(i, j, k, this.block, this.metadata, 3) && this.block instanceof BlockTaint) {
+                     ((BlockTaint)this.block).onFinishFalling(this.level(), i, j, k, this.metadata);
                   }
                }
             }
@@ -125,7 +125,7 @@ public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawn
    }
 
    private boolean canPlace(int i, int j, int k) {
-      return this.worldObj.getBlock(i, j, k) == ConfigBlocks.blockTaintFibres || this.worldObj.getBlock(i, j, k) == ConfigBlocks.blockFluxGoo || this.worldObj.canPlaceEntityOnSide(this.block, i, j, k, true, 1, null, null);
+      return this.level().getBlock(i, j, k) == ConfigBlocks.blockTaintFibres || this.level().getBlock(i, j, k) == ConfigBlocks.blockFluxGoo || this.level().canPlaceEntityOnSide(this.block, i, j, k, true, 1, null, null);
    }
 
    protected void fall(float par1) {
@@ -176,7 +176,7 @@ public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawn
 
    @SideOnly(Side.CLIENT)
    public World getWorld() {
-      return this.worldObj;
+      return this.level();
    }
 
    @SideOnly(Side.CLIENT)

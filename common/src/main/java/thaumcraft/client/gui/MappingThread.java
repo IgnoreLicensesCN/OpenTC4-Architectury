@@ -1,18 +1,16 @@
 package thaumcraft.client.gui;
 
+import net.minecraft.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import tc4tweak.ConfigurationHandler;
+import thaumcraft.common.lib.research.ScanManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import tc4tweak.ConfigurationHandler;
-import thaumcraft.common.lib.research.ScanManager;
-
-import static tc4tweak.ClientUtils.cacheUsed;
-import static tc4tweak.ClientUtils.priorityChanged;
-import static tc4tweak.ClientUtils.start;
+import static tc4tweak.ClientUtils.*;
 import static thaumcraft.common.Thaumcraft.log;
 
 public class MappingThread implements Runnable {

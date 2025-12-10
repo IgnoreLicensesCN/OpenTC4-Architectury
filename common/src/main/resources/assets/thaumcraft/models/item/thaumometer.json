@@ -1,4 +1,12 @@
 {
+  "comment": "forge additional part,forge loads model automatically i dont need to register XD.",
+  "loader": "forge:obj",
+  "detectCullableFaces": false,
+  "textures": {
+    "texture": "thaumcraft:item/scanner"
+  },
+
+
   "parent": "special-model-loader:builtin/obj",
   "parent-disabled": "minecraft:builtin/entity",
   "ambientocclusion": false,

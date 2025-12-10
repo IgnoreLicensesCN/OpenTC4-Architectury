@@ -3,9 +3,9 @@ package thaumcraft.common.lib.potions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
 
 public class PotionDeathGaze extends Potion {
    public static PotionDeathGaze instance = null;
@@ -33,6 +33,6 @@ public class PotionDeathGaze extends Potion {
       return super.getStatusIconIndex();
    }
 
-   public void performEffect(EntityLivingBase target, int par2) {
+   public void performEffect(LivingEntity target, int par2) {
    }
 }

@@ -1,6 +1,6 @@
 package thaumcraft.api.expands.warp;
 
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 
 public abstract class WarpConditionChecker implements Comparable<WarpConditionChecker> {
     public WarpConditionChecker(int priority) {

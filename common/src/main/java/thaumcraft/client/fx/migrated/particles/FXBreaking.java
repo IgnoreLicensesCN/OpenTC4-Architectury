@@ -1,21 +1,18 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-import static net.minecraft.client.particle.ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 
-
-public class FXBreaking extends ThaumcraftParticle{
+public class FXBreaking extends ThaumcraftParticle {
 
     public FXBreaking(ClientLevel par1World, double par2, double par4, double par6, Item item) {
         super(par1World, par2, par4, par6, 0.0F, 0.0F, 0.0F);
