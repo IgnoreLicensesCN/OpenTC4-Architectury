@@ -1,18 +1,20 @@
 package thaumcraft.common.entities.monster;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
+import thaumcraft.api.entityrender.ShieldRunesFXGetter;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
+import thaumcraft.common.items.ThaumcraftItems;
 
-public class EntityCultist extends EntityMob {
+public class EntityCultist extends EntityMob implements ShieldRunesFXGetter {
    public EntityCultist(World p_i1745_1_) {
       super(p_i1745_1_);
       this.setSize(0.6F, 1.8F);
@@ -47,18 +49,18 @@ public class EntityCultist extends EntityMob {
    protected void dropFewItems(boolean flag, int i) {
       int r = this.rand.nextInt(10);
       if (r == 0) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 9), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), 1.5F);
       } else if (r == 1) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 17), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.VOID_SEED, 1), 1.5F);
       } else if (r <= 3 + i) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 18), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.GOLD_COIN), 1.5F);
       }
 
       super.dropFewItems(flag, i);
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.entityDropItem(new ItemStack(ConfigItems.itemEldritchObject, 1, 1), 1.0F);
+      this.entityDropItem(new ItemStack(ThaumcraftItems.CRIMSON_RITES), 1.0F);
    }
 
    protected void addRandomArmor() {

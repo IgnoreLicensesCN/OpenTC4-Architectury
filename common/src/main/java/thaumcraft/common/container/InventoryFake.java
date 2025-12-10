@@ -1,9 +1,10 @@
 package thaumcraft.common.container;
 
-import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
 
 public class InventoryFake implements IInventory {
    private ItemStack[] stackList;
@@ -61,7 +62,7 @@ public class InventoryFake implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+   public boolean isUseableByPlayer(Player par1Player) {
       return true;
    }
 

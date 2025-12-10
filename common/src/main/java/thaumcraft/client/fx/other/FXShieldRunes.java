@@ -4,16 +4,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.entities.monster.EntityCultist;
 
+@Deprecated(forRemoval = true,since = "see particles.migrated")
 public class FXShieldRunes extends EntityFX {
    Entity target = null;
    float yaw = 0.0F;
@@ -59,10 +60,10 @@ public class FXShieldRunes extends EntityFX {
       float b = 1.0F;
       int frame = Math.min(15, (int)(14.0F * fade) + 1);
       if (this.target instanceof EntityMob && !(this.target instanceof EntityCultist)) {
-         UtilsFX.bindTexture("textures/models/ripple" + frame + ".png");
+         UtilsFX.bindTexture("models/special/ripple/ripple" + frame + ".png");
          b = 0.5F;
       } else {
-         UtilsFX.bindTexture("textures/models/hemis" + frame + ".png");
+         UtilsFX.bindTexture("models/special/hemis/hemis" + frame + ".png");
       }
 
       int i = 220;

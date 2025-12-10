@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.utils.Utils;
 
@@ -67,11 +67,11 @@ public class ItemLootBag extends Item {
    }
 
    public ItemStack onItemRightClick(ItemStack stack, World world, Player player) {
-      if (!world.isRemote) {
-         int q = 8 + world.rand.nextInt(5);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         int q = 8 + world.getRandom().nextInt(5);
 
          for(int a = 0; a < q; ++a) {
-            ItemStack is = Utils.generateLoot(stack.getItemDamage(), world.rand);
+            ItemStack is = Utils.generateLoot(stack.getItemDamage(), world.getRandom());
             world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, is.copy()));
          }
 

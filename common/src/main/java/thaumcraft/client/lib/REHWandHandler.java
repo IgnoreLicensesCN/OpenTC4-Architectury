@@ -2,42 +2,41 @@ package thaumcraft.client.lib;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import simpleutils.bauble.BaubleConsumer;
+import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.blocks.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemFocusPouch;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.events.KeyHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketFocusChangeToServer;
 
-import static simpleutils.bauble.BaubleUtils.forEachBauble;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 public class REHWandHandler {
    static float radialHudScale = 0.0F;
@@ -170,8 +169,8 @@ public class REHWandHandler {
    private void renderFocusRadialHUD(double sw, double sh, long time, float partialTicks) {
       RenderItem ri = new RenderItem();
       Minecraft mc = Minecraft.getMinecraft();
-      if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
-         ItemWandCasting wand = (ItemWandCasting)mc.thePlayer.getCurrentEquippedItem().getItem();
+      if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof WandCastingItem) {
+         WandCastingItem wand = (WandCastingItem)mc.thePlayer.getCurrentEquippedItem().getItem();
          ItemFocusBasic focus = wand.getFocus(mc.thePlayer.getCurrentEquippedItem());
          int i = (int)((double)Mouse.getEventX() * sw / (double)mc.displayWidth);
          int j = (int)(sh - (double)Mouse.getEventY() * sh / (double)mc.displayHeight - (double)1.0F);
@@ -283,7 +282,7 @@ public class REHWandHandler {
    }
 
    @SideOnly(Side.CLIENT)
-   public boolean handleArchitectOverlay(ItemStack stack, DrawBlockHighlightEvent event, int playerticks, MovingObjectPosition target) {
+   public boolean handleArchitectOverlay(ItemStack stack, DrawBlockHighlightEvent event, int playerticks, HitResult target) {
       Minecraft mc = Minecraft.getMinecraft();
       IArchitect af = (IArchitect)stack.getItem();
       String h = target.blockX + "" + target.blockY + target.blockZ + target.sideHit + playerticks / 5;
@@ -378,7 +377,7 @@ public class REHWandHandler {
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 1);
       GL11.glAlphaFunc(516, 0.003921569F);
-      EntityPlayer player = (EntityPlayer)mc.renderViewEntity;
+      Player player = (Player)mc.renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -433,7 +432,7 @@ public class REHWandHandler {
    @SideOnly(Side.CLIENT)
    public void drawArchitectAxis(double x, double y, double z, float partialTicks, boolean dx, boolean dy, boolean dz) {
       if (dx || dy || dz) {
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
          double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
          double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;

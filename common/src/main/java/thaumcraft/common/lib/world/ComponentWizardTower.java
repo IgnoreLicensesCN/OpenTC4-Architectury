@@ -1,15 +1,16 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ThaumcraftItems;
 
 import java.util.List;
 import java.util.Random;
@@ -32,7 +33,7 @@ public class ComponentWizardTower extends StructureVillagePieces.Village {
       return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(pieces, var8) == null ? new ComponentWizardTower(startPiece, par7, random, var8, par6) : null;
    }
 
-   public boolean addComponentParts(World world, Random par2Random, StructureBoundingBox bb) {
+   public boolean addComponentParts(Level world, Random par2Random, StructureBoundingBox bb) {
       if (this.averageGroundLevel < 0) {
          this.averageGroundLevel = this.getAverageGroundLevel(world, bb);
          if (this.averageGroundLevel < 0) {
@@ -102,6 +103,6 @@ public class ComponentWizardTower extends StructureVillagePieces.Village {
    }
 
    static {
-      towerChestContents = new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.glowstone_dust, 0, 1, 3, 3), new WeightedRandomChestContent(Items.glass_bottle, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_nugget, 0, 1, 3, 5), new WeightedRandomChestContent(Items.fire_charge, 0, 1, 1, 5), new WeightedRandomChestContent(Items.skull, 0, 1, 1, 3), new WeightedRandomChestContent(ConfigItems.itemResource, 9, 1, 3, 20), new WeightedRandomChestContent(ConfigItems.itemResource, 0, 1, 1, 5), new WeightedRandomChestContent(ConfigItems.itemResource, 1, 1, 1, 5), new WeightedRandomChestContent(ConfigItems.itemResource, 2, 1, 2, 5), new WeightedRandomChestContent(ConfigItems.itemThaumonomicon, 0, 1, 1, 20)};
+      towerChestContents = new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.glowstone_dust, 0, 1, 3, 3), new WeightedRandomChestContent(Items.glass_bottle, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_nugget, 0, 1, 3, 5), new WeightedRandomChestContent(Items.fire_charge, 0, 1, 1, 5), new WeightedRandomChestContent(Items.skull, 0, 1, 1, 3), new WeightedRandomChestContent(ThaumcraftItems.KNOWLEDGE_FRAGMENT, 1, 3, 20), new WeightedRandomChestContent(ThaumcraftItems.ALUMENTUM,1, 1, 5), new WeightedRandomChestContent(ThaumcraftItems.NITOR,1, 1, 5), new WeightedRandomChestContent(ThaumcraftItems.THAUMIUM_INGOT,1, 2, 5), new WeightedRandomChestContent(ConfigItems.itemThaumonomicon, 0, 1, 1, 20)};
    }
 }

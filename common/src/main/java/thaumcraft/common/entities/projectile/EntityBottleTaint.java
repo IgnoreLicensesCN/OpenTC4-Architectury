@@ -1,18 +1,19 @@
 package thaumcraft.common.entities.projectile;
 
-import java.util.List;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
+
+import java.util.List;
 
 public class EntityBottleTaint extends EntityThrowable {
    public EntityBottleTaint(World p_i1788_1_) {
@@ -35,9 +36,9 @@ public class EntityBottleTaint extends EntityThrowable {
       return -20.0F;
    }
 
-   protected void onImpact(MovingObjectPosition p_70184_1_) {
-      if (!this.worldObj.isRemote) {
-         List ents = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(5.0F, 5.0F, 5.0F));
+   protected void onImpact(HitResult p_70184_1_) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         List ents = this.level().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(5.0F, 5.0F, 5.0F));
          if (!ents.isEmpty()) {
             for(Object ent : ents) {
                EntityLivingBase el = (EntityLivingBase)ent;
@@ -54,10 +55,10 @@ public class EntityBottleTaint extends EntityThrowable {
          for(int a = 0; a < 10; ++a) {
             int xx = x + (int)((this.rand.nextFloat() - this.rand.nextFloat()) * 5.0F);
             int zz = z + (int)((this.rand.nextFloat() - this.rand.nextFloat()) * 5.0F);
-            if (this.worldObj.rand.nextBoolean() && this.worldObj.getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
-               Utils.setBiomeAt(this.worldObj, xx, zz, ThaumcraftWorldGenerator.biomeTaint);
-               if (this.worldObj.isBlockNormalCubeDefault(xx, y - 1, zz, false) && this.worldObj.getBlock(xx, y, zz).isReplaceable(this.worldObj, xx, y, zz)) {
-                  this.worldObj.setBlock(xx, y, zz, ConfigBlocks.blockTaintFibres, 0, 3);
+            if (this.level().rand.nextBoolean() && this.level().getBiomeGenForCoords(xx, zz) != ThaumcraftWorldGenerator.biomeTaint) {
+               Utils.setBiomeAt(this.level(), xx, zz, ThaumcraftWorldGenerator.biomeTaint);
+               if (this.level().isBlockNormalCubeDefault(xx, y - 1, zz, false) && this.level().getBlock(xx, y, zz).isReplaceable(this.level(), xx, y, zz)) {
+                  this.level().setBlock(xx, y, zz, ConfigBlocks.blockTaintFibres, 0, 3);
                }
             }
          }
@@ -68,7 +69,7 @@ public class EntityBottleTaint extends EntityThrowable {
             Thaumcraft.proxy.taintsplosionFX(this);
          }
 
-         Thaumcraft.proxy.bottleTaintBreak(this.worldObj, this.posX, this.posY, this.posZ);
+         Thaumcraft.proxy.bottleTaintBreak(this.level(), this.posX, this.posY, this.posZ);
       }
 
    }

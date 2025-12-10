@@ -1,12 +1,12 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.expands.worldgen.node.PickNodeCoordinateContext;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
+
 public abstract class PickNodeCoordinatesListener implements Comparable<PickNodeCoordinatesListener> {
     @Override
     public int compareTo(PickNodeCoordinatesListener o) {
@@ -18,6 +18,6 @@ public abstract class PickNodeCoordinatesListener implements Comparable<PickNode
         this.priority = priority;
     }
 
-    public abstract PickNodeCoordinateContext[] pickNodeCoordinates(World world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
+    public abstract PickNodeCoordinateContext[] pickNodeCoordinates(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
 
 }

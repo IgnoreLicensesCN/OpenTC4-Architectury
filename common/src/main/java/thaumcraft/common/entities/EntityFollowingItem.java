@@ -2,11 +2,11 @@ package thaumcraft.common.entities;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
 public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdditionalSpawnData {
@@ -18,7 +18,7 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
    int age;
    public double gravity;
 
-   public EntityFollowingItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
+   public EntityFollowingItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
       super(par1World);
       this.targetX = 0.0F;
       this.targetY = 0.0F;
@@ -34,7 +34,7 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
       this.rotationYaw = (float)(Math.random() * (double)360.0F);
    }
 
-   public EntityFollowingItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack, Entity target, int t) {
+   public EntityFollowingItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack, Entity target, int t) {
       this(par1World, par2, par4, par6, par8ItemStack);
       this.target = target;
       this.targetX = target.posX;
@@ -44,14 +44,14 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
       this.noClip = true;
    }
 
-   public EntityFollowingItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack, double tx, double ty, double tz) {
+   public EntityFollowingItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack, double tx, double ty, double tz) {
       this(par1World, par2, par4, par6, par8ItemStack);
       this.targetX = tx;
       this.targetY = ty;
       this.targetZ = tz;
    }
 
-   public EntityFollowingItem(World par1World) {
+   public EntityFollowingItem(Level par1World) {
       super(par1World);
       this.targetX = 0.0F;
       this.targetY = 0.0F;
@@ -98,11 +98,11 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
             this.noClip = false;
          }
 
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             if (this.type != 10) {
-               Thaumcraft.proxy.sparkle((float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, this.type);
+               ClientFXUtils.sparkle((float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, this.type);
             } else {
-               Thaumcraft.proxy.crucibleBubble(this.worldObj, (float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
+               Thaumcraft.proxy.crucibleBubble(this.level(), (float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
             }
          }
       }
@@ -135,7 +135,7 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
       try {
          int ent = data.readInt();
          if (ent > -1) {
-            this.target = this.worldObj.getEntityByID(ent);
+            this.target = this.level().getEntityByID(ent);
          }
 
          this.targetX = data.readDouble();

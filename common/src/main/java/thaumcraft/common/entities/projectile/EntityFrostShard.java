@@ -7,15 +7,15 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -25,11 +25,11 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
    public int bounceLimit = 3;
    public boolean fragile = false;
 
-   public EntityFrostShard(World par1World) {
+   public EntityFrostShard(Level par1World) {
       super(par1World);
    }
 
-   public EntityFrostShard(World par1World, EntityLivingBase par2EntityLiving, float scatter) {
+   public EntityFrostShard(Level par1World, EntityLivingBase par2EntityLiving, float scatter) {
       super(par1World, par2EntityLiving);
       this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), scatter);
    }
@@ -50,7 +50,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
       this.fragile = data.readBoolean();
    }
 
-   protected void onImpact(MovingObjectPosition mop) {
+   protected void onImpact(HitResult mop) {
       if (mop.entityHit != null) {
          int ox = MathHelper.floor_double(this.posX) - MathHelper.floor_double(mop.entityHit.posX);
          int oy = MathHelper.floor_double(this.posY) - MathHelper.floor_double(mop.entityHit.posY);
@@ -72,7 +72,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
          this.motionZ *= 0.66;
 
          for(int a = 0; (float)a < this.getDamage(); ++a) {
-            this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
          }
       } else if (mop.typeOfHit == MovingObjectType.BLOCK) {
          ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
@@ -88,7 +88,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
             this.motionY *= -0.9;
          }
 
-         Block bhit = this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
+         Block bhit = this.level().getBlock(mop.blockX, mop.blockY, mop.blockZ);
 
          try {
             this.playSound(bhit.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
@@ -96,7 +96,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
          }
 
          for(int a = 0; (float)a < this.getDamage(); ++a) {
-            this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(bhit) + "_" + this.worldObj.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ), this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(bhit) + "_" + this.level().getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ), this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
          }
       }
 
@@ -108,7 +108,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
       this.posY -= this.motionY / (double)var20 * (double)0.05F;
       this.posZ -= this.motionZ / (double)var20 * (double)0.05F;
       this.setBeenAttacked();
-      if (!this.worldObj.isRemote && mop.entityHit != null) {
+      if (Platform.getEnvironment() != Env.CLIENT && mop.entityHit != null) {
          double mx = mop.entityHit.motionX;
          double my = mop.entityHit.motionY;
          double mz = mop.entityHit.motionZ;
@@ -132,7 +132,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
          this.playSound(Blocks.ice.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
          for(int a = 0; (float)a < 8.0F * this.getDamage(); ++a) {
-            this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
          }
       }
 
@@ -140,11 +140,11 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote && this.getFrosty() > 0) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.getFrosty() > 0) {
          float s = this.getDamage() / 10.0F;
 
          for(int a = 0; a < this.getFrosty(); ++a) {
-            Thaumcraft.proxy.sparkle((float)this.posX - s + this.rand.nextFloat() * s * 2.0F, (float)this.posY - s + this.rand.nextFloat() * s * 2.0F, (float)this.posZ - s + this.rand.nextFloat() * s * 2.0F, 0.4F, 6, 0.005F);
+            ClientFXUtils.sparkle((float)this.posX - s + this.rand.nextFloat() * s * 2.0F, (float)this.posY - s + this.rand.nextFloat() * s * 2.0F, (float)this.posZ - s + this.rand.nextFloat() * s * 2.0F, 0.4F, 6, 0.005F);
          }
       }
 

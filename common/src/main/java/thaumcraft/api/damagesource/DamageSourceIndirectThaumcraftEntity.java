@@ -1,32 +1,12 @@
 package thaumcraft.api.damagesource;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
 
-public class DamageSourceIndirectThaumcraftEntity extends EntityDamageSourceIndirect {
+public class DamageSourceIndirectThaumcraftEntity /*extends EntityDamageSourceIndirect*/ {
 
-	private boolean fireDamage;
-	private float hungerDamage;
-	private boolean isUnblockable;
+    public static final ResourceKey<DamageType> TC_INDIRECT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.tryParse("thaumcraft:indirect_damage"));
 
-
-	public DamageSourceIndirectThaumcraftEntity(String par1Str,
-			Entity par2Entity, Entity par3Entity) {
-		super(par1Str, par2Entity, par3Entity);
-	}
-
-	
-	public DamageSource setFireDamage()
-    {
-        this.fireDamage = true;
-        return this;
-    }
-	
-	public DamageSource setDamageBypassesArmor()
-    {
-        this.isUnblockable = true;
-        this.hungerDamage = 0.0F;
-        return this;
-    }
 }

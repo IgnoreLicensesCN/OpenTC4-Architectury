@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.combat;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
 
 import java.util.Comparator;

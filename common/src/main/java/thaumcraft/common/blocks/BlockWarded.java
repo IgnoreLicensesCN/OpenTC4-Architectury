@@ -7,21 +7,21 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
@@ -62,7 +62,7 @@ public class BlockWarded extends BlockContainer {
       return false;
    }
 
-   public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
       float f = (float)target.hitVec.xCoord - (float)target.blockX;
       float f1 = (float)target.hitVec.yCoord - (float)target.blockY;
       float f2 = (float)target.hitVec.zCoord - (float)target.blockZ;
@@ -180,8 +180,8 @@ public class BlockWarded extends BlockContainer {
       this.getBlock(ba, x, y, z).onEntityWalking(ba, x, y, z, par5Entity);
    }
 
-   public void onBlockClicked(World ba, int x, int y, int z, EntityPlayer par5EntityPlayer) {
-      this.getBlock(ba, x, y, z).onBlockClicked(ba, x, y, z, par5EntityPlayer);
+   public void onBlockClicked(World ba, int x, int y, int z, Player par5Player) {
+      this.getBlock(ba, x, y, z).onBlockClicked(ba, x, y, z, par5Player);
    }
 
    public void velocityToAddToEntity(World ba, int x, int y, int z, Entity par5Entity, Vec3 par6Vec3) {
@@ -233,7 +233,7 @@ public class BlockWarded extends BlockContainer {
       return this.getBlock(world, x, y, z).canPlaceTorchOnTop(world, x, y, z);
    }
 
-   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+   public ItemStack getPickBlock(HitResult target, World world, int x, int y, int z) {
       return this.getBlock(world, x, y, z).getPickBlock(target, world, x, y, z);
    }
 
@@ -261,7 +261,7 @@ public class BlockWarded extends BlockContainer {
       return this.getBlock(world, x, y, z).getEnchantPowerBonus(world, x, y, z);
    }
 
-   public boolean canHarvestBlock(EntityPlayer player, int meta) {
+   public boolean canHarvestBlock(Player player, int meta) {
       return true;
    }
 

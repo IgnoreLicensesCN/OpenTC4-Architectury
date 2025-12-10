@@ -3,7 +3,7 @@ package thaumcraft.common.entities.ai.fluid;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaTransport;
@@ -23,7 +23,7 @@ public class AIEssentiaGather extends EntityAIBase {
 
    public AIEssentiaGather(EntityGolemBase par1EntityCreature) {
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
    }
 
@@ -112,7 +112,7 @@ public class AIEssentiaGather extends EntityAIBase {
             if (taken > 0) {
                EntityGolemBase var10000 = this.theGolem;
                var10000.essentiaAmount += taken;
-               this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.05F, 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.3F);
+               this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.05F, 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.3F);
                this.theGolem.updateCarried();
             } else {
                this.theGolem.essentia = null;

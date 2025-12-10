@@ -2,12 +2,12 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.TileThaumcraft;
@@ -68,7 +68,7 @@ public class TileArcaneFurnace extends TileThaumcraft {
 
    public void readFromNBT(NBTTagCompound nbttagcompound) {
       super.readFromNBT(nbttagcompound);
-      NBTTagList nbttaglist = nbttagcompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbttagcompound.getTagList("ThaumcraftItems", 10);
       this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -98,7 +98,7 @@ public class TileArcaneFurnace extends TileThaumcraft {
          }
       }
 
-      nbttagcompound.setTag("Items", nbttaglist);
+      nbttagcompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public void updateEntity() {
@@ -107,7 +107,7 @@ public class TileArcaneFurnace extends TileThaumcraft {
          this.getFacing();
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          boolean cookedflag = false;
          if (this.furnaceCookTime > 0) {
             --this.furnaceCookTime;
@@ -119,7 +119,7 @@ public class TileArcaneFurnace extends TileThaumcraft {
          }
 
          if (this.speedyTime <= 0) {
-            this.speedyTime = VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.FIRE, 5);
+            this.speedyTime = VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.FIRE, 5);
          }
 
          if (this.furnaceMaxCookTime == 0) {
@@ -136,7 +136,7 @@ public class TileArcaneFurnace extends TileThaumcraft {
                   ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[a]);
                   if (itemstack != null) {
                      this.ejectItem(itemstack.copy(), this.furnaceItemStacks[a]);
-                     this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockArcaneFurnace, 3, 0);
+                     this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockArcaneFurnace, 3, 0);
                      --this.furnaceItemStacks[a].stackSize;
                      if (this.furnaceItemStacks[a].stackSize <= 0) {
                         this.furnaceItemStacks[a] = null;
@@ -168,8 +168,8 @@ public class TileArcaneFurnace extends TileThaumcraft {
             int xx = this.xCoord + dir.offsetX * 2;
             int yy = this.yCoord + dir.offsetY * 2;
             int zz = this.zCoord + dir.offsetZ * 2;
-            TileEntity tile = this.worldObj.getTileEntity(xx, yy, zz);
-            if (tile instanceof TileBellows && ((TileBellows) tile).orientation == dir.getOpposite().ordinal() && !this.worldObj.isBlockIndirectlyGettingPowered(xx, yy, zz)) {
+            TileEntity tile = this.level().getTileEntity(xx, yy, zz);
+            if (tile instanceof TileBellows && ((TileBellows) tile).orientation == dir.getOpposite().ordinal() && !this.level().isBlockIndirectlyGettingPowered(xx, yy, zz)) {
                ++bellows;
             }
          }
@@ -211,21 +211,21 @@ public class TileArcaneFurnace extends TileThaumcraft {
 
    private void destroyItem(int slot) {
       this.furnaceItemStacks[slot] = null;
-      this.worldObj.playSound((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, "random.fizz", 0.3F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F, false);
-      double var21 = (float)this.xCoord + this.worldObj.rand.nextFloat();
+      this.level().playSound((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, "random.fizz", 0.3F, 2.6F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.8F, false);
+      double var21 = (float)this.xCoord + this.level().rand.nextFloat();
       double var22 = this.yCoord + 1;
-      double var23 = (float)this.zCoord + this.worldObj.rand.nextFloat();
-      this.worldObj.spawnParticle("lava", var21, var22, var23, 0.0F, 0.0F, 0.0F);
+      double var23 = (float)this.zCoord + this.level().rand.nextFloat();
+      this.level().spawnParticle("lava", var21, var22, var23, 0.0F, 0.0F, 0.0F);
    }
 
    private void getFacing() {
       this.facingX = 0;
       this.facingZ = 0;
-      if (this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord) == ConfigBlocks.blockArcaneFurnace && this.worldObj.getBlockMetadata(this.xCoord - 1, this.yCoord, this.zCoord) == 10) {
+      if (this.level().getBlock(this.xCoord - 1, this.yCoord, this.zCoord) == ConfigBlocks.blockArcaneFurnace && this.level().getBlockMetadata(this.xCoord - 1, this.yCoord, this.zCoord) == 10) {
          this.facingX = -1;
-      } else if (this.worldObj.getBlock(this.xCoord + 1, this.yCoord, this.zCoord) == ConfigBlocks.blockArcaneFurnace && this.worldObj.getBlockMetadata(this.xCoord + 1, this.yCoord, this.zCoord) == 10) {
+      } else if (this.level().getBlock(this.xCoord + 1, this.yCoord, this.zCoord) == ConfigBlocks.blockArcaneFurnace && this.level().getBlockMetadata(this.xCoord + 1, this.yCoord, this.zCoord) == 10) {
          this.facingX = 1;
-      } else if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 1) == ConfigBlocks.blockArcaneFurnace && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 1) == 10) {
+      } else if (this.level().getBlock(this.xCoord, this.yCoord, this.zCoord - 1) == ConfigBlocks.blockArcaneFurnace && this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 1) == 10) {
          this.facingZ = -1;
       } else {
          this.facingZ = 1;
@@ -241,23 +241,23 @@ public class TileArcaneFurnace extends TileThaumcraft {
          lx += (float)this.facingX * 1.2F;
          float lz = 0.5F;
          lz += (float)this.facingZ * 1.2F;
-         float mx = this.facingX == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.03F : (float)this.facingX * 0.13F;
-         float mz = this.facingZ == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.03F : (float)this.facingZ * 0.13F;
-         EntityItem entityitem = new EntityItem(this.worldObj, (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, items);
+         float mx = this.facingX == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.03F : (float)this.facingX * 0.13F;
+         float mz = this.facingZ == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.03F : (float)this.facingZ * 0.13F;
+         EntityItem entityitem = new EntityItem(this.level(), (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, items);
          entityitem.motionX = mx;
          entityitem.motionZ = mz;
          entityitem.motionY = 0.0F;
-         this.worldObj.spawnEntityInWorld(entityitem);
+         this.level().spawnEntityInWorld(entityitem);
          if (ThaumcraftApi.getSmeltingBonus(furnaceItemStack) != null) {
             ItemStack bonus = ThaumcraftApi.getSmeltingBonus(furnaceItemStack).copy();
             if (bonus != null) {
                if (bellows == 0) {
-                  if (this.worldObj.rand.nextInt(4) == 0) {
+                  if (this.level().rand.nextInt(4) == 0) {
                      ++bonus.stackSize;
                   }
                } else {
                   for(int a = 0; a < bellows; ++a) {
-                     if (this.worldObj.rand.nextFloat() < 0.44F) {
+                     if (this.level().rand.nextFloat() < 0.44F) {
                         ++bonus.stackSize;
                      }
                   }
@@ -265,13 +265,13 @@ public class TileArcaneFurnace extends TileThaumcraft {
             }
 
             if (bonus != null && bonus.stackSize > 0) {
-               mx = this.facingX == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.03F : (float)this.facingX * 0.13F;
-               mz = this.facingZ == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.03F : (float)this.facingZ * 0.13F;
-               EntityItem entityitem2 = new EntityItem(this.worldObj, (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, bonus);
+               mx = this.facingX == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.03F : (float)this.facingX * 0.13F;
+               mz = this.facingZ == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.03F : (float)this.facingZ * 0.13F;
+               EntityItem entityitem2 = new EntityItem(this.level(), (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, bonus);
                entityitem2.motionX = mx;
                entityitem2.motionZ = mz;
                entityitem2.motionY = 0.0F;
-               this.worldObj.spawnEntityInWorld(entityitem2);
+               this.level().spawnEntityInWorld(entityitem2);
             }
          }
 
@@ -291,13 +291,13 @@ public class TileArcaneFurnace extends TileThaumcraft {
          while(var2 > 0) {
             int var4 = EntityXPOrb.getXPSplit(var2);
             var2 -= var4;
-            EntityXPOrb xp = new EntityXPOrb(this.worldObj, (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, var4);
-            mx = this.facingX == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.025F : (float)this.facingX * 0.13F;
-            mz = this.facingZ == 0 ? (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.025F : (float)this.facingZ * 0.13F;
+            EntityXPOrb xp = new EntityXPOrb(this.level(), (float)this.xCoord + lx, (float)this.yCoord + 0.4F, (float)this.zCoord + lz, var4);
+            mx = this.facingX == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.025F : (float)this.facingX * 0.13F;
+            mz = this.facingZ == 0 ? (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.025F : (float)this.facingZ * 0.13F;
             xp.motionX = mx;
             xp.motionZ = mz;
             xp.motionY = 0.0F;
-            this.worldObj.spawnEntityInWorld(xp);
+            this.level().spawnEntityInWorld(xp);
          }
 
       }
@@ -316,10 +316,10 @@ public class TileArcaneFurnace extends TileThaumcraft {
       if (i != 3) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int a = 0; a < 5; ++a) {
-               Thaumcraft.proxy.furnaceLavaFx(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.facingX, this.facingZ);
-               this.worldObj.playSound((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, "liquid.lavapop", 0.1F + this.worldObj.rand.nextFloat() * 0.1F, 0.9F + this.worldObj.rand.nextFloat() * 0.15F, false);
+               Thaumcraft.proxy.furnaceLavaFx(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facingX, this.facingZ);
+               this.level().playSound((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, "liquid.lavapop", 0.1F + this.level().rand.nextFloat() * 0.1F, 0.9F + this.level().rand.nextFloat() * 0.15F, false);
             }
          }
 

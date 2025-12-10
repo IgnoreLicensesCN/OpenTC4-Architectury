@@ -1,19 +1,20 @@
 package thaumcraft.client.renderers.entity;
 
-import java.awt.Color;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.entities.monster.EntityWisp;
+
+import java.awt.*;
 
 public class RenderWisp extends Render {
    int size1 = 0;

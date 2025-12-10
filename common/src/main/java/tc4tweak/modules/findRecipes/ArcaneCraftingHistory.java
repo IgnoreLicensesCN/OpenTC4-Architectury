@@ -1,9 +1,9 @@
 package tc4tweak.modules.findRecipes;
 
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.modules.FlushableCache;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import thaumcraft.api.crafting.IArcaneRecipe;
 
 import java.util.Iterator;
@@ -18,12 +18,12 @@ class ArcaneCraftingHistory extends FlushableCache<ThreadLocal<LinkedList<IArcan
         return ThreadLocal.withInitial(LinkedList::new);
     }
 
-    IArcaneRecipe findInCache(IInventory inv, EntityPlayer player) {
+    IArcaneRecipe findInCache(Container inv, Player player) {
         if (isEnabled()) {
             LinkedList<IArcaneRecipe> history = getCache().get();
             for (Iterator<IArcaneRecipe> iterator = history.iterator(); iterator.hasNext(); ) {
                 IArcaneRecipe recipe = iterator.next();
-                if (recipe.matches(inv, player.worldObj, player)) {
+                if (recipe.matches(inv, player.level(), player)) {
                     iterator.remove();
                     history.addFirst(recipe);
                     return recipe;

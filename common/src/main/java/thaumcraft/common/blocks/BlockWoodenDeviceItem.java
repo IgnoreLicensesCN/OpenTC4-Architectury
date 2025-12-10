@@ -2,13 +2,13 @@ package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigBlocks;
@@ -32,7 +32,7 @@ public class BlockWoodenDeviceItem extends ItemBlock {
       return stack.hasTagCompound() && stack.stackTagCompound.hasKey("color") ? super.getUnlocalizedName() + "." + stack.getItemDamage() + "." + stack.stackTagCompound.getByte("color") : super.getUnlocalizedName() + "." + stack.getItemDamage();
    }
 
-   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
       boolean ret = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
       if (ret) {
          if (metadata == 0) {
@@ -130,7 +130,7 @@ public class BlockWoodenDeviceItem extends ItemBlock {
       return ret;
    }
 
-   public boolean func_150936_a(World world, int x, int y, int z, int side, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {
+   public boolean func_150936_a(World world, int x, int y, int z, int side, Player par6Player, ItemStack par7ItemStack) {
       if (par7ItemStack.getItemDamage() == 5) {
          if (side > 1) {
             return false;
@@ -141,6 +141,6 @@ public class BlockWoodenDeviceItem extends ItemBlock {
          }
       }
 
-      return super.func_150936_a(world, x, y, z, side, par6EntityPlayer, par7ItemStack);
+      return super.func_150936_a(world, x, y, z, side, par6Player, par7ItemStack);
    }
 }

@@ -3,17 +3,18 @@ package thaumcraft.common.items.wands;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
+//TODO:Rewrite,add interface to get focus and insert into(with C2S Package)
 public class ItemFocusPouch extends Item {
    protected IIcon icon;
 
@@ -45,12 +46,12 @@ public class ItemFocusPouch extends Item {
       return false;
    }
 
-   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-      if (!par2World.isRemote) {
-         par3EntityPlayer.openGui(Thaumcraft.instance, 5, par2World, MathHelper.floor_double(par3EntityPlayer.posX), MathHelper.floor_double(par3EntityPlayer.posY), MathHelper.floor_double(par3EntityPlayer.posZ));
+   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, Player par3Player) {
+      if (!(Platform.getEnvironment() == Env.CLIENT)) {
+         par3Player.openGui(Thaumcraft.instance, 5, par2World, MathHelper.floor_double(par3Player.posX), MathHelper.floor_double(par3Player.posY), MathHelper.floor_double(par3Player.posZ));
       }
 
-      return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+      return super.onItemRightClick(par1ItemStack, par2World, par3Player);
    }
 
    public ItemStack[] getInventory(ItemStack item) {

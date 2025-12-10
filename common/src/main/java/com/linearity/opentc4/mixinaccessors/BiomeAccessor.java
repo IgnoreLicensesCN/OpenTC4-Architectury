@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixinaccessors;
 
 import it.unimi.dsi.fastutil.longs.Long2FloatLinkedOpenHashMap;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;

@@ -6,15 +6,16 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.TileEldritchAltar;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
@@ -41,11 +42,11 @@ public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
       GL11.glPushMatrix();
       Block blockType = getBlockTypeSafely(te);
       if (blockType != null) {
-         int j = blockType.getMixedBrightnessForBlock(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+         int j = blockType.getMixedBrightnessForBlock(te.getLevel(), te.xCoord, te.yCoord, te.zCoord);
          int k = j % 65536;
          int l = j / 65536;
          OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
-         if (te.getWorldObj().provider.dimensionId == Config.dimensionOuterId) {
+         if (te.getLevel().dimension() == Config.dimensionOuterId) {
             tempTex = this.tex2;
          }
       }
@@ -56,12 +57,12 @@ public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
       GL11.glRotated(90.0F, -1.0F, 0.0F, 0.0F);
       this.model.renderPart("Cap");
       GL11.glPopMatrix();
-      if (te.getWorldObj() != null && te instanceof TileEldritchAltar && ((TileEldritchAltar)te).getEyes() > 0) {
+      if (te.getLevel() != null && te instanceof TileEldritchAltar && ((TileEldritchAltar)te).getEyes() > 0) {
          GL11.glPushMatrix();
          GL11.glTranslatef((float)x + 0.5F, (float)y + 0.0F, (float)z + 0.5F);
          if (this.entityitem == null || this.eye == null) {
-            this.eye = new ItemStack(ConfigItems.itemEldritchObject, 1, 0);
-            this.entityitem = new EntityItem(te.getWorldObj(), 0.0F, 0.0F, 0.0F, this.eye);
+            this.eye = new ItemStack(ThaumcraftItems.ELDRITCH_EYE);
+            this.entityitem = new EntityItem(te.getLevel(), 0.0F, 0.0F, 0.0F, this.eye);
             this.entityitem.hoverStart = 0.0F;
          }
 

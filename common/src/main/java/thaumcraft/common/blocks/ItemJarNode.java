@@ -4,17 +4,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.nodes.NodeModifier;
@@ -49,7 +49,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
 
    @Override
    @SideOnly(Side.CLIENT)
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       String desc = "§9" + StatCollector.translateToLocal("nodetype." + this.getNodeType(stack) + ".name");
       if (this.getNodeModifier(stack) != null) {
          desc = desc + ", " + StatCollector.translateToLocal("nodemod." + this.getNodeModifier(stack) + ".name");
@@ -61,7 +61,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
       super.addInformation(stack, player, list, par4);
    }
 
-   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+   public boolean onItemUse(ItemStack stack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       Block var11 = world.getBlock(x, y, z);
       if (var11 == Blocks.snow_layer) {
          side = 1;
@@ -123,7 +123,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
       if (!world.setBlock(x, y, z, ConfigBlocks.blockJar, metadata, 3)) {
          return false;
       } else {

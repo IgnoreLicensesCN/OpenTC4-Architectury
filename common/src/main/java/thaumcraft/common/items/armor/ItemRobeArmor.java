@@ -2,25 +2,26 @@ package thaumcraft.common.items.armor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
+
+import java.util.List;
 
 public class ItemRobeArmor extends ItemArmor implements IRepairable, IVisDiscountGear, IRunicArmor {
    public IIcon iconChest;
@@ -120,19 +121,19 @@ public class ItemRobeArmor extends ItemArmor implements IRepairable, IVisDiscoun
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 7)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return this.armorType == 3 ? 1 : 2;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
    }
 
-   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-      if (!world.isRemote && world.getBlock(x, y, z) == Blocks.cauldron && world.getBlockMetadata(x, y, z) > 0) {
+   public boolean onItemUseFirst(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+      if (Platform.getEnvironment() != Env.CLIENT && world.getBlock(x, y, z) == Blocks.cauldron && world.getBlockMetadata(x, y, z) > 0) {
          this.removeColor(stack);
          world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) - 1, 2);
          world.func_147453_f(x, y, z, Blocks.cauldron);

@@ -4,14 +4,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.EnumAction;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -61,7 +61,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairable, IRun
       return EnumRarity.uncommon;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
       super.addInformation(stack, player, list, par4);
    }
@@ -74,7 +74,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairable, IRun
       return 0;
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return 1;
    }
 
@@ -108,8 +108,8 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairable, IRun
          this.model.isChild = entityLiving.isChild();
          this.model.aimedBow = false;
          this.model.heldItemRight = entityLiving.getHeldItem() != null ? 1 : 0;
-         if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).getItemInUseDuration() > 0) {
-            EnumAction enumaction = ((EntityPlayer)entityLiving).getItemInUse().getItemUseAction();
+         if (entityLiving instanceof Player && ((Player)entityLiving).getItemInUseDuration() > 0) {
+            EnumAction enumaction = ((Player)entityLiving).getItemInUse().getItemUseAction();
             if (enumaction == EnumAction.block) {
                this.model.heldItemRight = 3;
             } else if (enumaction == EnumAction.bow) {
@@ -121,7 +121,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairable, IRun
       return this.model;
    }
 
-   public int getWarp(ItemStack itemstack, EntityPlayer player) {
+   public int getWarp(ItemStack itemstack, Player player) {
       return 1;
    }
 }

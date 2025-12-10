@@ -2,9 +2,6 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -13,9 +10,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -31,6 +28,10 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.ItemGolemCore;
 import thaumcraft.common.lib.utils.Utils;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
 public class GuiGolem extends GuiContainer {
    private float xSize_lo;
@@ -41,11 +42,11 @@ public class GuiGolem extends GuiContainer {
    private static final ModelGolem model = new ModelGolem(true);
    private Slot theSlot;
 
-   public GuiGolem(EntityPlayer player, EntityGolemBase e) {
+   public GuiGolem(Player player, EntityGolemBase e) {
       super(new ContainerGolem(player.inventory, e.inventory));
       this.golem = e;
-      if (this.golem.advanced && this.golem.worldObj.rand.nextInt(4) == 0) {
-         this.threat = this.golem.worldObj.rand.nextInt(9);
+      if (this.golem.advanced && this.golem.level().rand.nextInt(4) == 0) {
+         this.threat = this.golem.level().rand.nextInt(9);
       }
 
    }

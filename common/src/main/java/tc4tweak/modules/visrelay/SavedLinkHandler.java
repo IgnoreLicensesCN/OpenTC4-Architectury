@@ -1,13 +1,14 @@
 package tc4tweak.modules.visrelay;
 
+import com.linearity.opentc4.OpenTC4;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.visnet.TileVisNode;
 import thaumcraft.api.visnet.VisNetHandler;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static thaumcraft.common.Thaumcraft.log;
+import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.*;
 
 public class SavedLinkHandler {
     private enum Action {
@@ -47,30 +48,32 @@ public class SavedLinkHandler {
         try {
             action = processSavedLink0(visNode);
         } catch (Exception e) {
-            log.error("Failed to process saved link. Defaulting to no saved link!", e);
+            OpenTC4.LOGGER.error("Failed to process saved link. Defaulting to no saved link!", e);
 //            visNode.clearSavedLink();
             return false;
         }
         if (ConfigurationHandler.INSTANCE.isSavedLinkDebugEnabled() && action != Action.DISABLED) {
-            log.info("Processed saved link for node {} at {},{},{}: {}", getNodeType(visNode), c.x, c.y, c.z, action);
+            OpenTC4.LOGGER.info("Processed saved link for node {} at {},{},{}: {}", getNodeType(visNode), c.x, c.y, c.z, action);
         }
         return action.returnValue();
     }
 
     private static Action processSavedLink0(TileVisNode visNode) {
-        List<ChunkCoordinates> link = visNode.getSavedLink();
+        List<BlockPos> link = visNode.getSavedLink();
         if (link == null) return Action.DISABLED;
-        ChunkCoordinates c = link.get(0);
-        World w = visNode.getWorldObj();
-        if (!w.blockExists(c.posX, c.posY, c.posZ)) {
+        BlockPos c = link.get(0);
+        Level w = visNode.getLevel();
+        if (w == null) return Action.RETURN;
+        BlockState bs = w.getBlockState(c);
+        if (bs.isAir()) {
             return Action.RETURN;
         }
-        TileEntity tile = w.getTileEntity(c.posX, c.posY, c.posZ);
+        BlockEntity tile = w.getBlockEntity(c);
         if (!canConnect(visNode, tile)) {
-            // ThE uses a fake TE for cv p2p that is not retrievable via getTileEntity
+            // ThE uses a fake TE for cv p2p that is not retrievable via getBlockEntity
             // however it's accessible via VisNetHandler.sources
-            HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(w.provider.dimensionId);
-            TileVisNode sourcenode = CommonUtils.deref(sourcelist.get(new WorldCoordinates(c.posX, c.posY, c.posZ, w.provider.dimensionId)));
+            HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(w.dimension());
+            TileVisNode sourcenode = CommonUtils.deref(sourcelist.get(new WorldCoordinates(c.getX(),c.getY(),c.getZ(), w.dimension().toString())));
             if (sourcenode == null) {
                 visNode.clearSavedLink();
                 return Action.CLEAR_CONTINUE;
@@ -80,17 +83,19 @@ public class SavedLinkHandler {
         TileVisNode next = (TileVisNode) tile;
         if (next.isSource()) {
             SetParentHelper.setParent(next, visNode);
-            w.markBlockForUpdate(visNode.xCoord, visNode.yCoord, visNode.zCoord);
+            w.sendBlockUpdated(visNode.getBlockPos(),visNode.getBlockState(),visNode.getBlockState(),3);
+//            w.markBlockForUpdate(visNode.xCoord, visNode.yCoord, visNode.zCoord);
             visNode.parentChanged();
             visNode.clearSavedLink();
             return Action.SET_PARENT_RETURN;
         }
-        List<ChunkCoordinates> nextLink = next.getSavedLink();
+        List<BlockPos> nextLink = next.getSavedLink();
         if (nextLink == null) {
             visNode.clearSavedLink();
             if (VisNetHandler.isNodeValid(next.getRootSource())) {
                 SetParentHelper.setParent(next, visNode);
-                w.markBlockForUpdate(visNode.xCoord, visNode.yCoord, visNode.zCoord);
+                w.sendBlockUpdated(visNode.getBlockPos(),visNode.getBlockState(),visNode.getBlockState(),3);
+//                w.markBlockForUpdate(visNode.xCoord, visNode.yCoord, visNode.zCoord);
                 visNode.parentChanged();
                 return Action.SET_PARENT_RETURN;
             } else {
@@ -104,54 +109,66 @@ public class SavedLinkHandler {
         return Action.CLEAR_CONTINUE;
     }
 
-    private static boolean canConnect(TileVisNode node, TileEntity tile) {
-        if (!(tile instanceof TileVisNode)) return false;
-        TileVisNode next = (TileVisNode) tile;
+    private static boolean canConnect(TileVisNode node, BlockEntity tile) {
+        if (!(tile instanceof TileVisNode next)) return false;
         if (VisNetHandler.canNodeBeSeen(node, next)) return true;
         return node.getAttunement() == -1 || next.getAttunement() == -1 || next.getAttunement() == node.getAttunement();
     }
 
-    public static List<ChunkCoordinates> readFromNBT(TileVisNode thiz, NBTTagCompound tag) {
-        if (thiz.isSource() || !tag.hasKey("Link") || !ConfigurationHandler.INSTANCE.isSavedLinkEnabled()) {
+    public static List<BlockPos> load(TileVisNode thiz, CompoundTag tag) {
+        if (thiz.isSource()
+                || !TILE_VIS_NODE_LINKS_ACCESSOR.compoundTagHasKey(tag)
+                || !ConfigurationHandler.INSTANCE.isSavedLinkEnabled()
+        ) {
             return null;
         }
-        NBTTagList linkRaw = tag.getTagList("Link", Constants.NBT.TAG_COMPOUND);
-        log.trace("Reading link for node {} at {},{},{}. {} nodes.", getNodeType(thiz), thiz.xCoord, thiz.yCoord, thiz.zCoord, linkRaw.tagCount());
-        List<ChunkCoordinates> link = new ArrayList<>();
-        int end = Math.min(linkRaw.tagCount(), 2);
+        ListTag linkRaw = TILE_VIS_NODE_LINKS_ACCESSOR.readFromCompoundTag(tag);
+        OpenTC4.LOGGER.trace("Reading link for node {} at {}. {} nodes.", getNodeType(thiz), thiz.getBlockPos(), linkRaw.size());
+        List<BlockPos> link = new ArrayList<>();
+        int end = Math.min(linkRaw.size(), 2);
         for (int i = 0; i < end; i++) {
-            link.add(readOne(linkRaw.getCompoundTagAt(i)));
+            link.add(readOne((CompoundTag) linkRaw.get(i)));
         }
         return link;
     }
 
-    public static void writeToNBT(TileVisNode thiz, NBTTagCompound tag) {
+    public static void saveAdditional(TileVisNode thiz, CompoundTag tag) {
         if (thiz.isSource() || !ConfigurationHandler.INSTANCE.isSavedLinkEnabled()) return;
         TileVisNode root = CommonUtils.deref(thiz.getRootSource());
         if (root == null)
             return;
-        NBTTagList path = new NBTTagList();
+        ListTag path = new ListTag();
+//        NBTTagList path = new NBTTagList();
         TileVisNode node = CommonUtils.deref(thiz.getParent());
         // historically we store the whole path up to source node (hence the name link
         // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds of weirdness
         // due to unloading order, but 2 nodes seem to stable enough
-        while (node != null && (path.tagCount() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
-            path.appendTag(writeOne(node));
+        while (node != null && (path.size() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
+            path.add(writeOne(node));
             node = CommonUtils.deref(node.getParent());
         }
-        tag.setTag("Link", path);
-        log.trace("Written link for node {} at {},{},{}. {} element.", getNodeType(thiz), thiz.xCoord, thiz.yCoord, thiz.zCoord, path.tagCount());
+        TILE_VIS_NODE_LINKS_ACCESSOR.writeToCompoundTag(tag,path);
+//        tag.setTag("Link", path);
+        var pos = thiz.getBlockPos();
+        OpenTC4.LOGGER.trace("Written link for node {} at {}. {} element.", getNodeType(thiz),
+                pos, path.size()
+        );
     }
 
-    private static NBTTagCompound writeOne(TileVisNode node) {
-        NBTTagCompound elem = new NBTTagCompound();
-        elem.setInteger("x", node.xCoord);
-        elem.setInteger("y", node.yCoord);
-        elem.setInteger("z", node.zCoord);
+    private static CompoundTag writeOne(TileVisNode node) {
+        CompoundTag elem = new CompoundTag();
+        var pos = node.getBlockPos();
+        TILE_VIS_NODE_PATH_X_ACCESSOR.writeToCompoundTag(elem,pos.getX());
+        TILE_VIS_NODE_PATH_Y_ACCESSOR.writeToCompoundTag(elem,pos.getY());
+        TILE_VIS_NODE_PATH_Z_ACCESSOR.writeToCompoundTag(elem,pos.getZ());
         return elem;
     }
 
-    private static ChunkCoordinates readOne(NBTTagCompound elem) {
-        return new ChunkCoordinates(elem.getInteger("x"), elem.getInteger("y"), elem.getInteger("z"));
+    private static BlockPos readOne(CompoundTag elem) {
+        return new BlockPos(
+                TILE_VIS_NODE_PATH_X_ACCESSOR.readFromCompoundTag(elem),
+                TILE_VIS_NODE_PATH_Y_ACCESSOR.readFromCompoundTag(elem),
+                TILE_VIS_NODE_PATH_Z_ACCESSOR.readFromCompoundTag(elem)
+        );
     }
 }

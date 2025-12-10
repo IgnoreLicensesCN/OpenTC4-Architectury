@@ -2,19 +2,20 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.TileVisNode;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.IWandable;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 
 import java.awt.*;
@@ -55,8 +56,8 @@ public class TileVisRelay extends TileVisNode implements IWandable {
    }
 
    public void parentChanged() {
-      if (this.worldObj != null && this.worldObj.isRemote) {
-         this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null && (Platform.getEnvironment() == Env.CLIENT)) {
+         this.level().updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
@@ -69,10 +70,10 @@ public class TileVisRelay extends TileVisNode implements IWandable {
    public void updateEntity() {
       this.drawEffect();
       super.updateEntity();
-      if (!this.worldObj.isRemote && this.nodeCounter % 20 == 0) {
-         List<EntityPlayer> var5 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(5.0F, 5.0F, 5.0F));
+      if (Platform.getEnvironment() != Env.CLIENT && this.nodeCounter % 20 == 0) {
+         List<Player> var5 = this.level().getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(5.0F, 5.0F, 5.0F));
          if (var5 != null && !var5.isEmpty()) {
-            for(EntityPlayer player : var5) {
+            for(Player player : var5) {
                if (!nearbyPlayers.containsKey(player.getEntityId()) || ((WeakReference)nearbyPlayers.get(player.getEntityId())).get() == null || !(((TileVisRelay)((WeakReference)nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < this.getDistanceFrom(player.posX, player.posY, player.posZ))) {
                   nearbyPlayers.put(player.getEntityId(), new WeakReference(this));
                }
@@ -83,21 +84,21 @@ public class TileVisRelay extends TileVisNode implements IWandable {
    }
 
    protected void drawEffect() {
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          if (this.parentLoaded) {
             if (this.px == 0 && this.py == 0 && this.pz == 0) {
                this.setParent(null);
             } else {
                if (
                     !CommonUtils.isChunkLoaded(
-                    this.getWorldObj(),
+                    this.getLevel(),
                     this.xCoord - this.px,
                     this.yCoord - this.py,
                     this.zCoord - this.pz)
                ){
                   return;
                }
-               TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord - this.px, this.yCoord - this.py, this.zCoord - this.pz);
+               TileEntity tile = this.getLevel().getTileEntity(this.xCoord - this.px, this.yCoord - this.py, this.zCoord - this.pz);
                if (tile instanceof TileVisNode) {
                   this.setParent(new WeakReference(tile));
                }
@@ -117,7 +118,9 @@ public class TileVisRelay extends TileVisNode implements IWandable {
             }
 
             ForgeDirection d2 = ForgeDirection.getOrientation(this.orientation);
-            this.beam1 = Thaumcraft.proxy.beamPower(this.worldObj, xx - (double)d1.offsetX * 0.05, yy - (double)d1.offsetY * 0.05, zz - (double)d1.offsetZ * 0.05, (double)this.xCoord + (double)0.5F - (double)d2.offsetX * 0.05, (double)this.yCoord + (double)0.5F - (double)d2.offsetY * 0.05, (double)this.zCoord + (double)0.5F - (double)d2.offsetZ * 0.05, this.pRed, this.pGreen, this.pBlue, this.pulse > 0, this.beam1);
+            if (ClientFXUtils.checkPlatformClient()){
+               this.beam1 = ClientFXUtils.beamPower(this.level(), xx - (double)d1.offsetX * 0.05, yy - (double)d1.offsetY * 0.05, zz - (double)d1.offsetZ * 0.05, (double)this.xCoord + (double)0.5F - (double)d2.offsetX * 0.05, (double)this.yCoord + (double)0.5F - (double)d2.offsetY * 0.05, (double)this.zCoord + (double)0.5F - (double)d2.offsetZ * 0.05, this.pRed, this.pGreen, this.pBlue, this.pulse > 0, this.beam1);
+            }
          }
 
          if (this.pRed < 1.0F) {
@@ -173,7 +176,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
 
       if (c >= 0 && this.pulse == 0) {
          this.pulse = 5;
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, c);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, c);
       }
 
    }
@@ -182,7 +185,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
       if (i != 0) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             Color c = new Color(colors[j]);
             this.pulse = 5;
             this.pRed = (float)c.getRed() / 255.0F;
@@ -227,8 +230,8 @@ public class TileVisRelay extends TileVisNode implements IWandable {
 
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
-      if (!this.worldObj.isRemote) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          ++this.color;
          if (this.color > 5) {
             this.color = -1;
@@ -244,14 +247,14 @@ public class TileVisRelay extends TileVisNode implements IWandable {
       return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
    @Override

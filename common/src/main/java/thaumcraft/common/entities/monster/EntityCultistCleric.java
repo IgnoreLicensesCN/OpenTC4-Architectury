@@ -6,14 +6,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AICultistHurtByTarget;
@@ -32,10 +32,10 @@ public class EntityCultistCleric extends EntityCultist implements IRangedAttackM
       this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
       this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.8));
       this.tasks.addTask(7, new EntityAIWander(this, 0.8));
-      this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+      this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
       this.tasks.addTask(8, new EntityAILookIdle(this));
       this.targetTasks.addTask(1, new AICultistHurtByTarget(this, true));
-      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Player.class, 0, true));
    }
 
    protected void applyEntityAttributes() {
@@ -47,7 +47,7 @@ public class EntityCultistCleric extends EntityCultist implements IRangedAttackM
       this.setCurrentItemOrArmor(4, new ItemStack(ConfigItems.itemHelmetCultistRobe));
       this.setCurrentItemOrArmor(3, new ItemStack(ConfigItems.itemChestCultistRobe));
       this.setCurrentItemOrArmor(2, new ItemStack(ConfigItems.itemLegsCultistRobe));
-      if (this.rand.nextFloat() < (this.worldObj.difficultySetting == EnumDifficulty.HARD ? 0.3F : 0.1F)) {
+      if (this.rand.nextFloat() < (this.level().difficultySetting == Difficulty.HARD ? 0.3F : 0.1F)) {
          this.setCurrentItemOrArmor(1, new ItemStack(ConfigItems.itemBootsCultist));
       }
 
@@ -59,21 +59,21 @@ public class EntityCultistCleric extends EntityCultist implements IRangedAttackM
       double d2 = entitylivingbase.posZ - this.posZ;
       this.swingItem();
       if (this.rand.nextFloat() > 0.66F) {
-         EntityGolemOrb blast = new EntityGolemOrb(this.worldObj, this, entitylivingbase, true);
+         EntityGolemOrb blast = new EntityGolemOrb(this.level(), this, entitylivingbase, true);
          blast.posX += blast.motionX / (double)2.0F;
          blast.posZ += blast.motionZ / (double)2.0F;
          blast.setPosition(blast.posX, blast.posY, blast.posZ);
          blast.setThrowableHeading(d0, d1 + (double)2.0F, d2, 0.66F, 3.0F);
          this.playSound("thaumcraft:egattack", 1.0F, 1.0F + this.rand.nextFloat() * 0.1F);
-         this.worldObj.spawnEntityInWorld(blast);
+         this.level().spawnEntityInWorld(blast);
       } else {
          float f1 = MathHelper.sqrt_float(f) * 0.5F;
-         this.worldObj.playAuxSFXAtEntity(null, 1009, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+         this.level().playAuxSFXAtEntity(null, 1009, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 
          for(int i = 0; i < 3; ++i) {
-            EntitySmallFireball entitysmallfireball = new EntitySmallFireball(this.worldObj, this, d0 + this.rand.nextGaussian() * (double)f1, d1, d2 + this.rand.nextGaussian() * (double)f1);
+            EntitySmallFireball entitysmallfireball = new EntitySmallFireball(this.level(), this, d0 + this.rand.nextGaussian() * (double)f1, d1, d2 + this.rand.nextGaussian() * (double)f1);
             entitysmallfireball.posY = this.posY + (double)(this.height / 2.0F) + (double)0.5F;
-            this.worldObj.spawnEntityInWorld(entitysmallfireball);
+            this.level().spawnEntityInWorld(entitysmallfireball);
          }
       }
 
@@ -133,7 +133,7 @@ public class EntityCultistCleric extends EntityCultist implements IRangedAttackM
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote && this.getIsRitualist()) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.getIsRitualist()) {
          double d0 = (double)this.getHomePosition().posX + (double)0.5F - this.posX;
          double d1 = (double)this.getHomePosition().posY + (double)1.5F - (this.posY + (double)this.getEyeHeight());
          double d2 = (double)this.getHomePosition().posZ + (double)0.5F - this.posZ;

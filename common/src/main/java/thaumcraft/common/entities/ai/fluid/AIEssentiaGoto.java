@@ -3,9 +3,9 @@ package thaumcraft.common.entities.ai.fluid;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -23,7 +23,7 @@ public class AIEssentiaGoto extends EntityAIBase {
 
    public AIEssentiaGoto(EntityGolemBase par1EntityCreature) {
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
    }
 

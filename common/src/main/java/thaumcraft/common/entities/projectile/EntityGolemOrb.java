@@ -5,12 +5,12 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
 public class EntityGolemOrb extends EntityThrowable implements IEntityAdditionalSpawnData {
@@ -18,11 +18,11 @@ public class EntityGolemOrb extends EntityThrowable implements IEntityAdditional
    EntityLivingBase target;
    public boolean red = false;
 
-   public EntityGolemOrb(World par1World) {
+   public EntityGolemOrb(Level par1World) {
       super(par1World);
    }
 
-   public EntityGolemOrb(World par1World, EntityLivingBase par2EntityLiving, EntityLivingBase t, boolean r) {
+   public EntityGolemOrb(Level par1World, EntityLivingBase par2EntityLiving, EntityLivingBase t, boolean r) {
       super(par1World, par2EntityLiving);
       this.target = t;
       this.red = r;
@@ -47,7 +47,7 @@ public class EntityGolemOrb extends EntityThrowable implements IEntityAdditional
 
       try {
          if (id >= 0) {
-            this.target = (EntityLivingBase)this.worldObj.getEntityByID(id);
+            this.target = (EntityLivingBase)this.level().getEntityByID(id);
          }
       } catch (Exception ignored) {
       }
@@ -55,13 +55,13 @@ public class EntityGolemOrb extends EntityThrowable implements IEntityAdditional
       this.red = data.readBoolean();
    }
 
-   protected void onImpact(MovingObjectPosition mop) {
-      if (!this.worldObj.isRemote && this.getThrower() != null && mop.typeOfHit == MovingObjectType.ENTITY) {
+   protected void onImpact(HitResult mop) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.getThrower() != null && mop.typeOfHit == MovingObjectType.ENTITY) {
          mop.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), (float)this.getThrower().getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue() * (this.red ? 1.0F : 0.6F));
       }
 
-      this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "thaumcraft:shock", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-      Thaumcraft.proxy.burst(this.worldObj, this.posX, this.posY, this.posZ, 1.0F);
+      this.level().playSoundEffect(this.posX, this.posY, this.posZ, "thaumcraft:shock", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+      Thaumcraft.proxy.burst(this.level(), this.posX, this.posY, this.posZ, 1.0F);
       this.setDead();
    }
 
@@ -108,7 +108,7 @@ public class EntityGolemOrb extends EntityThrowable implements IEntityAdditional
                this.motionX *= 0.9;
                this.motionY *= 0.9;
                this.motionZ *= 0.9;
-               this.worldObj.playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+               this.level().playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
             }
 
             return true;

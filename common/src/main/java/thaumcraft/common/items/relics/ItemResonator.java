@@ -2,19 +2,18 @@ package thaumcraft.common.items.relics;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -22,6 +21,8 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileTubeBuffer;
+
+import java.util.List;
 
 public class ItemResonator extends Item {
    private IIcon icon;
@@ -55,16 +56,16 @@ public class ItemResonator extends Item {
       return par1ItemStack.hasTagCompound();
    }
 
-   public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+   public boolean onItemUseFirst(ItemStack itemstack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       TileEntity tile = world.getTileEntity(x, y, z);
       if (tile instanceof IEssentiaTransport) {
-         if (world.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             player.swingItem();
             return super.onItemUseFirst(itemstack, player, world, x, y, z, side, par8, par9, par10);
          } else {
             IEssentiaTransport et = (IEssentiaTransport)tile;
             ForgeDirection face = ForgeDirection.getOrientation(side);
-            MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+            HitResult hit = RayTracer.retraceBlock(world, player, x, y, z);
             if (hit != null && hit.subHit >= 0 && hit.subHit < 6) {
                face = ForgeDirection.getOrientation(hit.subHit);
             }
@@ -83,7 +84,7 @@ public class ItemResonator extends Item {
             }
 
             player.addChatMessage(new ChatComponentTranslation("tc.resonator2", "" + et.getSuctionAmount(face), s));
-            world.playSoundEffect(x, y, z, "thaumcraft:alembicknock", 0.5F, 1.9F + world.rand.nextFloat() * 0.1F);
+            world.playSoundEffect(x, y, z, "thaumcraft:alembicknock", 0.5F, 1.9F + world.getRandom().nextFloat() * 0.1F);
             return true;
          }
       } else {

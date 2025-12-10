@@ -1,10 +1,10 @@
 package thaumcraft.common.lib.world;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.world.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
@@ -17,14 +17,14 @@ import java.util.Random;
 public class VillageWizardManager implements VillagerRegistry.IVillageCreationHandler, VillagerRegistry.IVillageTradeHandler {
    public void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random) {
       if (villager.getProfession() == ConfigEntities.entWizardId) {
-         recipeList.add(new MerchantRecipe(new ItemStack(ConfigItems.itemResource, 20 + random.nextInt(3), 18), new ItemStack(Items.emerald)));
-         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ConfigItems.itemResource, 1, 9)));
+         recipeList.add(new MerchantRecipe(new ItemStack(ThaumcraftItems.GOLD_COIN, 20 + random.nextInt(3)), new ItemStack(Items.emerald)));
+         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
          recipeList.add(new MerchantRecipe(new ItemStack(ConfigItems.itemResource, 4 + random.nextInt(3), 3), new ItemStack(Items.emerald)));
-         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ConfigItems.itemResource, 1, 0)));
+         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ThaumcraftItems.ALUMENTUM)));
          recipeList.add(new MerchantRecipe(new ItemStack(ConfigItems.itemResource, 4 + random.nextInt(3), 6), new ItemStack(Items.emerald)));
-         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ConfigItems.itemResource, 1, 1)));
+         recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ThaumcraftItems.NITOR)));
          recipeList.add(new MerchantRecipe(new ItemStack(ConfigItems.itemNuggetChicken, 24 + random.nextInt(8), 0), new ItemStack(Items.emerald)));
-         recipeList.add(new MerchantRecipe(new ItemStack(Items.book, 4 + random.nextInt(3), 0), new ItemStack(ConfigItems.itemResource, 1, 9)));
+         recipeList.add(new MerchantRecipe(new ItemStack(Items.book, 4 + random.nextInt(3), 0), new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
          recipeList.add(new MerchantRecipe(new ItemStack(ConfigItems.itemNuggetBeef, 24 + random.nextInt(8), 0), new ItemStack(Items.emerald)));
          recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ConfigItems.itemShard, 2 + random.nextInt(2), random.nextInt(6))));
          recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(ConfigItems.itemManaBean, 1 + random.nextInt(2), 0)));

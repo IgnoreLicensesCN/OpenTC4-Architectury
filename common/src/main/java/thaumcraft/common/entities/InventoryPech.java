@@ -1,19 +1,19 @@
 package thaumcraft.common.entities;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.monster.EntityPech;
 
 public class InventoryPech implements IInventory {
    private final EntityPech theMerchant;
    private ItemStack[] theInventory = new ItemStack[5];
-   private final EntityPlayer thePlayer;
+   private final Player thePlayer;
    private Container eventHandler;
 
-   public InventoryPech(EntityPlayer par1EntityPlayer, EntityPech par2IMerchant, Container par1Container) {
-      this.thePlayer = par1EntityPlayer;
+   public InventoryPech(Player par1Player, EntityPech par2IMerchant, Container par1Container) {
+      this.thePlayer = par1Player;
       this.theMerchant = par2IMerchant;
       this.eventHandler = par1Container;
    }
@@ -69,7 +69,7 @@ public class InventoryPech implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+   public boolean isUseableByPlayer(Player par1Player) {
       return this.theMerchant.isTamed();
    }
 

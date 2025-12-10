@@ -27,7 +27,7 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
          this.facing = null;
 
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if (tile instanceof TileArcaneFurnace) {
                this.facing = dir.getOpposite();
                this.furnace = (TileArcaneFurnace)tile;
@@ -36,7 +36,7 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
          }
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          try {
             if (this.furnace != null && this.furnace.speedyTime < 60 && this.drawEssentia()) {
                TileArcaneFurnace var10000 = this.furnace;
@@ -52,7 +52,7 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
       if (++this.drawDelay % 5 != 0) {
          return false;
       } else {
-         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.facing);
+         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
          if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport)te;
             if (!ic.canOutputTo(this.facing.getOpposite())) {

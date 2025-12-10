@@ -3,20 +3,20 @@ package tc4tweak.modules.researchBrowser;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import tc4tweak.CommonUtils;
-import tc4tweak.ConfigurationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import com.linearity.opentc4.utils.StatCollector;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import tc4tweak.CommonUtils;
+import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
@@ -88,7 +88,7 @@ public class ThaumonomiconIndexSearcher {
         Set<SearchQuery> recipeBased = new HashSet<>();
         Set<String> usedResearches = new HashSet<>();
         for (String key : keys)
-            if (key != null && !key.isEmpty() && ResearchCategories.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getCommandSenderName(), key)) {
+            if (key != null && !key.isEmpty() && ResearchCategories.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getName().getString(), key)) {
                 if (ResearchCategories.getResearch(key).getName().startsWith("tc.research_name"))
                     continue;
                 recipeBased.clear();

@@ -1,20 +1,20 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.item.ItemStack;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Random;
 
 public class GenKeyRoom extends GenCommon {
-   static void generateRoom(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -81,26 +81,26 @@ public class GenKeyRoom extends GenCommon {
       }
 
       for(int g = 0; g < 5; ++g) {
-         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, ForgeDirection.WEST, cell);
+         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, Direction.NORTH, cell);
+         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, Direction.WEST, cell);
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
       world.setBlock(x + 8, y + 2, z + 8, ConfigBlocks.blockEldritch, 3, 3);
-      EntityPermanentItem entityitem = new EntityPermanentItem(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ConfigItems.itemEldritchObject, 1, 2));
+      EntityPermanentItem entityitem = new EntityPermanentItem(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ThaumcraftItems.RUNED_TABLET));
       entityitem.motionY = 0.0F;
       entityitem.motionX = 0.0F;
       entityitem.motionZ = 0.0F;
       world.spawnEntityInWorld(entityitem);
-      int zz = 2 + (world.difficultySetting == EnumDifficulty.HARD ? 2 : (world.difficultySetting == EnumDifficulty.NORMAL ? 1 : 0));
+      int zz = 2 + (world.getDifficulty() == Difficulty.HARD ? 2 : (world.getDifficulty() == Difficulty.NORMAL ? 1 : 0));
 
       for(int qq = 0; qq < zz; ++qq) {
          EntityEldritchGuardian eg = new EntityEldritchGuardian(world);
-         double i1 = (double)x + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.rand, 1, 3) * MathHelper.getRandomIntegerInRange(world.rand, -1, 1));
+         double i1 = (double)x + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.getRandom(), 1, 3) * MathHelper.getRandomIntegerInRange(world.getRandom(), -1, 1));
          double j1 = y + 2;
-         double k1 = (double)z + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.rand, 1, 3) * MathHelper.getRandomIntegerInRange(world.rand, -1, 1));
+         double k1 = (double)z + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.getRandom(), 1, 3) * MathHelper.getRandomIntegerInRange(world.getRandom(), -1, 1));
          eg.setPosition(i1, j1, k1);
          eg.onSpawnWithEgg(null);
          eg.setHomeArea(x + 8, y + 2, z + 8, 16);

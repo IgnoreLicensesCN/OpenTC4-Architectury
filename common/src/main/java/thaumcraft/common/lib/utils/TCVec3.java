@@ -1,8 +1,6 @@
 package thaumcraft.common.lib.utils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 public class TCVec3 {
    public static final TCVec3Pool vec3dPool = new TCVec3Pool(-1, -1);
@@ -41,7 +39,7 @@ public class TCVec3 {
       return this;
    }
 
-   @SideOnly(Side.CLIENT)
+//   @SideOnly(Side.CLIENT)
    public TCVec3 subtract(TCVec3 par1Vec3) {
       return this.myVec3LocalPool.getVecFromPool(par1Vec3.xCoord - this.xCoord, par1Vec3.yCoord - this.yCoord, par1Vec3.zCoord - this.zCoord);
    }
@@ -55,7 +53,7 @@ public class TCVec3 {
       return this.xCoord * par1Vec3.xCoord + this.yCoord * par1Vec3.yCoord + this.zCoord * par1Vec3.zCoord;
    }
 
-   @SideOnly(Side.CLIENT)
+//   @SideOnly(Side.CLIENT)
    public TCVec3 crossProduct(TCVec3 par1Vec3) {
       return this.myVec3LocalPool.getVecFromPool(this.yCoord * par1Vec3.zCoord - this.zCoord * par1Vec3.yCoord, this.zCoord * par1Vec3.xCoord - this.xCoord * par1Vec3.zCoord, this.xCoord * par1Vec3.yCoord - this.yCoord * par1Vec3.xCoord);
    }

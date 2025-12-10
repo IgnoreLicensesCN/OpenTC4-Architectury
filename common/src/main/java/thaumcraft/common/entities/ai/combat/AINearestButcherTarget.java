@@ -1,12 +1,13 @@
 package thaumcraft.common.entities.ai.combat;
 
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import thaumcraft.common.entities.golems.EntityGolemBase;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class AINearestButcherTarget extends EntityAITarget {
    EntityGolemBase theGolem;
@@ -36,14 +37,14 @@ public class AINearestButcherTarget extends EntityAITarget {
       if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
          return false;
       } else {
-         List<Entity> var5 = this.taskOwner.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
+         List<Entity> var5 = this.taskOwner.level().selectEntitiesWithinAABB(EntityLivingBase.class, this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
          var5.sort(this.theOldestAttackableTargetSorter);
 
          for(Entity var3 : var5) {
             EntityLivingBase var4 = (EntityLivingBase)var3;
             if (this.theGolem.isValidTarget(var3)) {
                this.target = var4;
-               List var55 = this.taskOwner.worldObj.selectEntitiesWithinAABB(this.target.getClass(), this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
+               List var55 = this.taskOwner.level().selectEntitiesWithinAABB(this.target.getClass(), this.taskOwner.boundingBox.expand(this.targetDistance, 4.0F, this.targetDistance), this.entitySelector);
                Iterator var22 = var55.iterator();
                int count = 0;
 

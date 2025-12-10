@@ -1,89 +1,112 @@
 package thaumcraft.common.lib.network.playerdata;
 
-
-package thaumcraft.common.network;
-
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-
 import com.linearity.opentc4.utils.StatCollector;
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 
-public class PacketWarpMessage {
-   public static final ResourceLocation ID = new ResourceLocation(Thaumcraft.MOD_ID, "warp_message");
+public class PacketWarpMessageS2C extends BaseS2CMessage {
+    public static final String ID = Thaumcraft.MOD_ID + ":warp_message";
 
-   public final int data;
-   public final byte type;
+    public final int data;
+    public final byte type;
 
-   public PacketWarpMessage(byte type,int data) {
-      this.data = data;
-      this.type = type;
-   }
+    public PacketWarpMessageS2C(byte type, int data) {
+        this.data = data;
+        this.type = type;
+    }
 
-   /** 解码 */
-   public static PacketWarpMessage decode(FriendlyByteBuf buf) {
-      int data = buf.readInt();
-      byte type = buf.readByte();
-      return new PacketWarpMessage(type,data);
-   }
+    /**
+     * 解码
+     */
+    public static PacketWarpMessageS2C decode(FriendlyByteBuf buf) {
+        int data = buf.readInt();
+        byte type = buf.readByte();
+        return new PacketWarpMessageS2C(type, data);
+    }
 
-   /** 编码 */
-   public static void encode(PacketWarpMessage msg, FriendlyByteBuf buf) {
-      buf.writeInt(msg.data);
-      buf.writeByte(msg.type);
-   }
+    /**
+     * 编码
+     */
+    public static void encode(PacketWarpMessageS2C msg, FriendlyByteBuf buf) {
+        buf.writeInt(msg.data);
+        buf.writeByte(msg.type);
+    }
 
-   /** 处理（只在客户端执行） */
-   public static void receive(PacketWarpMessage msg, Player player) {
-      if (player.level().isClientSide) {
-         ClientHandler.handle(msg);
-      }
-   }
+    /**
+     * 处理（只在客户端执行）
+     */
+    public static void receive(PacketWarpMessageS2C msg, Player player) {
+        if (player.level().isClientSide) {
+            ClientHandler.handle(msg);
+        }
+    }
 
-   // ---------------- CLIENT LOGIC -------------------
-   public static class ClientHandler {
-      public static void handle(PacketWarpMessage message) {
-         if (message.data == 0) return;
+    public static MessageType messageType;
 
-         String text;
-         int change = message.data;
+    @Override
+    public MessageType getType() {
+        return messageType;
+    }
 
-         if (message.type == 0) { // NORMAL WARP
-            text = change < 0 ?
-                    StatCollector.translateToLocal("tc.removewarp") :
-                    StatCollector.translateToLocal("tc.addwarp");
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(data);
+        buf.writeByte(type);
+    }
 
-            if (change > 0)
-               playWhisper();
-         }
-         else if (message.type == 1) { // STICKY WARP
-            text = change < 0 ?
-                    StatCollector.translateToLocal("tc.removewarpsticky") :
-                    StatCollector.translateToLocal("tc.addwarpsticky");
+    @Override
+    public void handle(NetworkManager.PacketContext context) {
+        Player player = context.getPlayer();
+        if (player != null && player.level().isClientSide) {
+            ClientHandler.handle(this);
+        }
+    }
 
-            if (change > 0)
-               playWhisper();
-         }
-         else { // TEMP WARP
-            text = change < 0 ?
-                    StatCollector.translateToLocal("tc.removewarptemp") :
-                    StatCollector.translateToLocal("tc.addwarptemp");
-         }
 
-         PlayerNotifications.addNotification(text);
-      }
+    // ---------------- CLIENT LOGIC -------------------
+    public static class ClientHandler {
+        public static void handle(PacketWarpMessageS2C message) {
+            if (message.data == 0) return;
 
-      private static void playWhisper() {
-         var mc = net.minecraft.client.Minecraft.getInstance();
-         mc.player.playSound(
-                 net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE, // 可替换为你自己的
-                 0.5F, 1.0F
-         );
-      }
-   }
+            String text;
+            int change = message.data;
+
+            if (message.type == 0) { // NORMAL WARP
+                text = change < 0 ?
+                        StatCollector.translateToLocal("tc.removewarp") :
+                        StatCollector.translateToLocal("tc.addwarp");
+
+                if (change > 0)
+                    playWhisper();
+            } else if (message.type == 1) { // STICKY WARP
+                text = change < 0 ?
+                        StatCollector.translateToLocal("tc.removewarpsticky") :
+                        StatCollector.translateToLocal("tc.addwarpsticky");
+
+                if (change > 0)
+                    playWhisper();
+            } else { // TEMP WARP
+                text = change < 0 ?
+                        StatCollector.translateToLocal("tc.removewarptemp") :
+                        StatCollector.translateToLocal("tc.addwarptemp");
+            }
+
+            PlayerNotifications.addNotification(text);
+        }
+
+        private static void playWhisper() {
+            var mc = net.minecraft.client.Minecraft.getInstance();
+            mc.player.playSound(
+                    net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE,
+                    0.5F, 1.0F
+            );
+        }
+    }
 }
 
 
@@ -98,14 +121,14 @@ public class PacketWarpMessage {
 //import com.linearity.opentc4.utils.StatCollector;
 //import thaumcraft.client.lib.PlayerNotifications;
 //
-//public class PacketWarpMessage implements IMessage, IMessageHandler<PacketWarpMessage,IMessage> {
+//public class PacketWarpMessageS2C implements IMessage, IMessageHandler<PacketWarpMessageS2C,IMessage> {
 //   protected int data = 0;
 //   protected byte type = 0;
 //
-//   public PacketWarpMessage() {
+//   public PacketWarpMessageS2C() {
 //   }
 //
-//   public PacketWarpMessage(Player player, byte type, int change) {
+//   public PacketWarpMessageS2C(Player player, byte type, int change) {
 //      this.data = change;
 //      this.type = type;
 //   }
@@ -121,7 +144,7 @@ public class PacketWarpMessage {
 //   }
 //
 //   @SideOnly(Side.CLIENT)
-//   public IMessage onMessage(PacketWarpMessage message, MessageContext ctx) {
+//   public IMessage onMessage(PacketWarpMessageS2C message, MessageContext ctx) {
 //      if (message.data != 0) {
 //         if (message.type == 0 && message.data > 0) {
 //            String text = StatCollector.translateToLocal("tc.addwarp");

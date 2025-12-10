@@ -2,8 +2,6 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,6 +14,9 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerSpa;
 import thaumcraft.common.tiles.TileSpa;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiSpa extends GuiContainer {
@@ -130,6 +131,6 @@ public class GuiSpa extends GuiContainer {
    }
 
    private void playButtonClick() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
    }
 }

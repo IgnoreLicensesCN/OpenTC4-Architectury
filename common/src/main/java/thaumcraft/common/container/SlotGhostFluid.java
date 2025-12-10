@@ -1,8 +1,8 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class SlotGhostFluid extends SlotGhost {
@@ -18,7 +18,7 @@ public class SlotGhostFluid extends SlotGhost {
       return FluidContainerRegistry.isContainer(par1ItemStack);
    }
 
-   public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
-       return super.canTakeStack(par1EntityPlayer);
+   public boolean canTakeStack(Player par1Player) {
+       return super.canTakeStack(par1Player);
    }
 }

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -60,7 +60,7 @@ public class BlockLifter extends BlockContainer {
    public void randomDisplayTick(World w, int i, int j, int k, Random r) {
       TileEntity te = w.getTileEntity(i, j, k);
       if (te instanceof TileLifter && !((TileLifter) te).gettingPower() && ((TileLifter) te).rangeAbove > 0) {
-         Thaumcraft.proxy.sparkle((float)i + 0.2F + r.nextFloat() * 0.6F, (float)(j + 1), (float)k + 0.2F + r.nextFloat() * 0.6F, 1.0F, 3, -0.3F);
+         ClientFXUtils.sparkle((float)i + 0.2F + r.nextFloat() * 0.6F, (float)(j + 1), (float)k + 0.2F + r.nextFloat() * 0.6F, 1.0F, 3, -0.3F);
       }
 
    }

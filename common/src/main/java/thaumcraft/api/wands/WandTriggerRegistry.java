@@ -1,13 +1,19 @@
 package thaumcraft.api.wands;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.linearity.opentc4.recipeclean.blockmatch.BlockMatcher;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import oshi.util.tuples.Pair;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class serves a similar function to IWandable in that it allows wands to interact
@@ -18,48 +24,65 @@ import java.util.List;
  * 
  * @author azanor
  *
+ * However if you can i prefer something like WandInteractableBlock and write logic there
+ * --IgnoreLicensesCN
  */
 public class WandTriggerRegistry {
-	
-	private static HashMap<String,HashMap<List,List>> triggers = new HashMap<>();
+
+	//Map<ModID(String),HashMap<>>
+	private static final Map<String, Multimap<BlockMatcher, IWandTriggerManager>> triggers = new ConcurrentHashMap<>();
 	private static final String DEFAULT = "default";
 
 	/**
 	 * Registers an action to perform when a casting wand right clicks on a specific block. 
 	 * A manager class needs to be created that implements IWandTriggerManager.
 	 * @param manager
-	 * @param event a logical number that you can use to differentiate different events or actions
-	 * @param block
-	 * @param meta send -1 as a wildcard value for all possible meta values
+	 * @param blockMatcher matches interacted block
 	 * @param modid a unique identifier. It is best to register your own triggers using your mod id to avoid conflicts with mods that register triggers for the same block
 	 */
-	public static void registerWandBlockTrigger(IWandTriggerManager manager, int event, Block block, int meta, String modid) {
-		if (!triggers.containsKey(modid)) {
-			triggers.put(modid, new HashMap<>());
-		}
-		HashMap<List,List> temp = triggers.get(modid);
-		temp.put(Arrays.asList(block,meta),Arrays.asList(manager,event));
-		triggers.put(modid, temp);
+	public static void registerWandBlockTrigger(IWandTriggerManager manager, BlockMatcher blockMatcher, String modid) {
+		Multimap<BlockMatcher,IWandTriggerManager> temp = triggers.computeIfAbsent(modid, k -> HashMultimap.create());
+		temp.put(blockMatcher,manager);
 	}
 	
 	/**
 	 * for legacy support
 	 */
-	public static void registerWandBlockTrigger(IWandTriggerManager manager, int event, Block block, int meta) {
-		registerWandBlockTrigger(manager, event, block, meta, DEFAULT);
+	public static void registerWandBlockTrigger(IWandTriggerManager manager, BlockMatcher block) {
+		registerWandBlockTrigger(manager, block, DEFAULT);
 	}
-	
+
+	public static List<IWandTriggerManager> matchesTrigger(BlockState blockState) {
+		List<IWandTriggerManager> result = new ArrayList<>();
+		for (var matcherToTriggers : triggers.values()) {
+			for (var matcher : matcherToTriggers.keySet()) {
+				if (matcher.match(blockState)){
+					result.addAll(matcherToTriggers.get(matcher));
+				}
+			}
+		}
+		return result;
+	}
+
+	public static List<IWandTriggerManager> matchesTrigger(BlockState blockState,String modid) {
+		List<IWandTriggerManager> result = new ArrayList<>();
+		var matcherToTriggers = triggers.get(modid);
+
+		for (var matcher : matcherToTriggers.keySet()) {
+			if (matcher.match(blockState)){
+				result.addAll(matcherToTriggers.get(matcher));
+			}
+		}
+		return result;
+	}
 	/**
 	 * Checks all trigger registries if one exists for the given block and meta
-	 * @param block
-	 * @param meta
-	 * @return
 	 */
-	public static boolean hasTrigger(Block block, int meta) {
+	public static boolean hasTrigger(BlockMatcher matcher) {
 		for (String modid:triggers.keySet()) {
-			HashMap<List,List> temp = triggers.get(modid);
-			if (temp.containsKey(Arrays.asList(block,meta)) ||
-					temp.containsKey(Arrays.asList(block,-1))) return true;
+			if (triggers.get(modid).containsKey(matcher)){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -67,59 +90,64 @@ public class WandTriggerRegistry {
 	/**
 	 * modid sensitive version
 	 */
-	public static boolean hasTrigger(Block block, int meta, String modid) {
+	public static boolean hasTrigger(BlockMatcher matcher, String modid) {
 		if (!triggers.containsKey(modid)) return false;
-		HashMap<List,List> temp = triggers.get(modid);
-        return temp.containsKey(Arrays.asList(block, meta)) ||
-                temp.containsKey(Arrays.asList(block, -1));
+        return triggers.get(modid).containsKey(matcher);
     }
-	
-	
-	/**
-	 * This is called by the onItemUseFirst function in wands. 
-	 * Parameters and return value functions like you would expect for that function.
-	 * @param world
-	 * @param wand
-	 * @param player
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param side
-	 * @param block
-	 * @param meta
-	 * @return
-	 */
-	public static boolean performTrigger(World world, ItemStack wand, Player player, 
-			int x, int y, int z, int side, Block block, int meta) {
-		
-		for (String modid:triggers.keySet()) {
-			HashMap<List,List> temp = triggers.get(modid);
-			List l = temp.get(Arrays.asList(block,meta));
-			if (l==null) l = temp.get(Arrays.asList(block,-1));
-			if (l==null) continue;
-			
-			IWandTriggerManager manager = (IWandTriggerManager) l.get(0);
-			int event = (Integer) l.get(1);
-			boolean result = manager.performTrigger(world, wand, player, x, y, z, side, event);
-			if (result) return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * modid sensitive version
-	 */
-	public static boolean performTrigger(World world, ItemStack wand, Player player, 
-			int x, int y, int z, int side, Block block, int meta, String modid) {
-		if (!triggers.containsKey(modid)) return false;
-		HashMap<List,List> temp = triggers.get(modid);
-		List l = temp.get(Arrays.asList(block,meta));
-		if (l==null) l = temp.get(Arrays.asList(block,-1));
-		if (l==null) return false;
-		
-		IWandTriggerManager manager = (IWandTriggerManager) l.get(0);
-		int event = (Integer) l.get(1);
-		return manager.performTrigger(world, wand, player, x, y, z, side, event);
-	}
-		
+
+//	/**
+//	 * This is called by the onItemUseFirst function in wands.
+//	 * Parameters and return value functions like you would expect for that function.
+//	 * @param world
+//	 * @param wand
+//	 * @param player
+//	 * @param x
+//	 * @param y
+//	 * @param z
+//	 * @param side
+//	 * @return true if consumed trigger
+//	 */
+//	public static boolean performTrigger(Level world, ItemStack wand, Player player,
+//			int x, int y, int z, Direction side) {
+//		BlockState state = world.getBlockState(new BlockPos(x, y, z));
+//		for (String modid:triggers.keySet()) {
+//			Multimap<BlockMatcher,IWandTriggerManager> matcherAndListeners = triggers.get(modid);
+//
+//			Collection<IWandTriggerManager> managers;
+//			for (BlockMatcher matcher:matcherAndListeners.keySet()) {
+//				if (matcher.match(state)){
+//					managers = matcherAndListeners.get(matcher);
+//					for (IWandTriggerManager manager:managers) {
+//						if (manager.performTrigger(world, wand, player, x, y, z, side)){
+//							return true;
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return false;
+//	}
+//
+//	/**
+//	 * modid sensitive version
+//	 */
+//	public static boolean performTrigger(Level world, ItemStack wand, Player player,
+//										 int x, int y, int z, Direction side, String modid) {
+//		if (!triggers.containsKey(modid)) return false;
+//		BlockState state = world.getBlockState(new BlockPos(x, y, z));
+//		Multimap<BlockMatcher,IWandTriggerManager> matcherAndListeners = triggers.get(modid);
+//
+//		Collection<IWandTriggerManager> managers;
+//		for (BlockMatcher matcher:matcherAndListeners.keySet()) {
+//			if (matcher.match(state)){
+//				managers = matcherAndListeners.get(matcher);
+//				for (IWandTriggerManager manager:managers) {
+//					if (manager.performTrigger(world, wand, player, x, y, z, side)){
+//						return true;
+//					}
+//				}
+//			}
+//		}
+//		return false;
+//	}
 }

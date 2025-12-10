@@ -1,17 +1,24 @@
-package thaumcraft.client.fx.beams;
+package thaumcraft.client.fx.migrated.beams;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.level.Level;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.world.entity.Entity;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 import thaumcraft.client.lib.UtilsFX;
 
-public class FXBeam extends EntityFX {
+import static org.lwjgl.opengl.GL11.GL_REPEAT;
+
+public class FXBeam extends ThaumcraftParticle {
    public int particle = 16;
    boolean updated = false;
    double movX = 0.0F;
@@ -35,74 +42,60 @@ public class FXBeam extends EntityFX {
    public int blendmode = 1;
    public float width = 1.0F;
 
-   public FXBeam(Level par1World, double x, double y, double z, double tx, double ty, double tz, float red, float green, float blue, int age) {
+   public FXBeam(ClientLevel par1World, double x, double y, double z, double tx, double ty, double tz, float red, float green, float blue, int age) {
       super(par1World, x, y, z, 0.0F, 0.0F, 0.0F);
-      this.particleRed = red;
-      this.particleGreen = green;
-      this.particleBlue = blue;
+      this.rCol = red;
+      this.gCol = green;
+      this.bCol = blue;
       this.setSize(0.02F, 0.02F);
-      this.noClip = true;
-      this.motionX = 0.0F;
-      this.motionY = 0.0F;
-      this.motionZ = 0.0F;
+      this.hasPhysics = false;
+      this.xd = 0.0F;
+      this.yd = 0.0F;
+      this.zd = 0.0F;
       this.tX = tx;
       this.tY = ty;
       this.tZ = tz;
-      float xd = (float)(this.posX - this.tX);
-      float yd = (float)(this.posY - this.tY);
-      float zd = (float)(this.posZ - this.tZ);
+      float xd = (float)(this.x - this.tX);
+      float yd = (float)(this.y - this.tY);
+      float zd = (float)(this.z - this.tZ);
       this.length = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
       double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
-      this.rotYaw = (float)(Math.atan2(xd, zd) * (double)180.0F / Math.PI);
-      this.rotPitch = (float)(Math.atan2(yd, var7) * (double)180.0F / Math.PI);
+      this.rotYaw = (float) (Math.atan2(xd, zd) * (double) 180.0F / Math.PI);
+      this.rotPitch = (float) (Math.atan2(yd, var7) * (double) 180.0F / Math.PI);
       this.prevYaw = this.rotYaw;
       this.prevPitch = this.rotPitch;
-      this.particleMaxAge = age;
-      EntityLivingBase renderentity = FMLClientHandler.instance().getClient().renderViewEntity;
-      int visibleDistance = 50;
-      if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
-         visibleDistance = 25;
-      }
-
-      if (renderentity.getDistance(this.posX, this.posY, this.posZ) > (double)visibleDistance) {
-         this.particleMaxAge = 0;
-      }
+      this.lifetime = age;
+      removeIfTooFar();
 
    }
 
-   public FXBeam(Level par1World, double x, double y, double z, Entity entity, float red, float green, float blue, int age) {
+   public FXBeam(ClientLevel par1World, double x, double y, double z, Entity entity, float red, float green, float blue, int age) {
       super(par1World, x, y, z, 0.0F, 0.0F, 0.0F);
-      this.particleRed = red;
-      this.particleGreen = green;
-      this.particleBlue = blue;
+      this.rCol = red;
+      this.gCol = green;
+      this.bCol = blue;
       this.setSize(0.02F, 0.02F);
-      this.noClip = true;
-      this.motionX = 0.0F;
-      this.motionY = 0.0F;
-      this.motionZ = 0.0F;
+      this.hasPhysics = false;
+      this.xd = 0.0F;
+      this.yd = 0.0F;
+      this.zd = 0.0F;
       this.targetEntity = entity;
-      this.tX = this.targetEntity.posX;
-      this.tY = this.targetEntity.posY + (double)this.targetEntity.getEyeHeight() - (double)(this.targetEntity.height / 2.0F);
-      this.tZ = this.targetEntity.posZ;
-      float xd = (float)(this.posX - this.tX);
-      float yd = (float)(this.posY - this.tY);
-      float zd = (float)(this.posZ - this.tZ);
+      var boundingBox = entity.getBoundingBox();
+      var entityHeight = boundingBox.maxY - boundingBox.minY;
+      this.tX = this.targetEntity.getX();
+      this.tY = this.targetEntity.getY() + (double) this.targetEntity.getEyeHeight() - (double) (entityHeight / 2.0F);
+      this.tZ = this.targetEntity.getZ();
+      float xd = (float)(this.x - this.tX);
+      float yd = (float)(this.y - this.tY);
+      float zd = (float)(this.z - this.tZ);
       this.length = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
       double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
-      this.rotYaw = (float)(Math.atan2(xd, zd) * (double)180.0F / Math.PI);
-      this.rotPitch = (float)(Math.atan2(yd, var7) * (double)180.0F / Math.PI);
+      this.rotYaw = (float) (Math.atan2(xd, zd) * (double) 180.0F / Math.PI);
+      this.rotPitch = (float) (Math.atan2(yd, var7) * (double) 180.0F / Math.PI);
       this.prevYaw = this.rotYaw;
       this.prevPitch = this.rotPitch;
-      this.particleMaxAge = age;
-      EntityLivingBase renderentity = FMLClientHandler.instance().getClient().renderViewEntity;
-      int visibleDistance = 50;
-      if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
-         visibleDistance = 25;
-      }
-
-      if (renderentity.getDistance(this.posX, this.posY, this.posZ) > (double)visibleDistance) {
-         this.particleMaxAge = 0;
-      }
+      this.lifetime = age;
+      removeIfTooFar();
 
    }
 
@@ -113,48 +106,45 @@ public class FXBeam extends EntityFX {
       this.tX = x;
       this.tY = y;
 
-      for(this.tZ = z; this.particleMaxAge - this.particleAge < 4; ++this.particleMaxAge) {
+      for(this.tZ = z; this.lifetime - this.age < 4; ++this.lifetime) {
       }
 
       this.updated = true;
    }
 
-   public void onUpdate() {
-      this.prevPosX = this.posX;
-      this.prevPosY = this.posY;
-      this.prevPosZ = this.posZ;
+   @Override
+   public void tick() {
+      this.xo = this.x;
+      this.yo = this.y;
+      this.zo = this.z;
       if (this.updated) {
-         this.posX = this.movX;
-         this.posY = this.movY;
-         this.posZ = this.movZ;
+         this.x = this.movX;
+         this.y = this.movY;
+         this.z = this.movZ;
          this.updated = false;
       }
 
       this.prevYaw = this.rotYaw;
       this.prevPitch = this.rotPitch;
       if (this.targetEntity != null) {
-         this.tX = this.targetEntity.posX;
-         this.tY = this.targetEntity.posY + (double)this.targetEntity.getEyeHeight() - (double)(this.targetEntity.height / 2.0F);
-         this.tZ = this.targetEntity.posZ;
+         var boundingBox = targetEntity.getBoundingBox();
+         var entityHeight = boundingBox.maxY - boundingBox.minY;
+         this.tX = this.targetEntity.getX();
+         this.tY = this.targetEntity.getY() + (double) this.targetEntity.getEyeHeight() - (entityHeight / 2.0F);
+         this.tZ = this.targetEntity.getZ();
       }
 
-      float xd = (float)(this.posX - this.tX);
-      float yd = (float)(this.posY - this.tY);
-      float zd = (float)(this.posZ - this.tZ);
+      float xd = (float)(this.x - this.tX);
+      float yd = (float)(this.y - this.tY);
+      float zd = (float)(this.z - this.tZ);
       this.length = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
       double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
-      this.rotYaw = (float)(Math.atan2(xd, zd) * (double)180.0F / Math.PI);
-      this.rotPitch = (float)(Math.atan2(yd, var7) * (double)180.0F / Math.PI);
-      if (this.particleAge++ >= this.particleMaxAge) {
+      this.rotYaw = (float) (Math.atan2(xd, zd) * (double) 180.0F / Math.PI);
+      this.rotPitch = (float) (Math.atan2(yd, var7) * (double) 180.0F / Math.PI);
+      if (this.age++ >= this.lifetime) {
          this.setDead();
       }
 
-   }
-
-   public void setRGB(float r, float g, float b) {
-      this.particleRed = r;
-      this.particleGreen = g;
-      this.particleBlue = b;
    }
 
    public void setType(int type) {
@@ -177,21 +167,39 @@ public class FXBeam extends EntityFX {
       this.rotationspeed = rotationspeed;
    }
 
-   public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5) {
-      tessellator.draw();
-      GL11.glPushMatrix();
+   @Override
+   public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+
+      var rightVec = camera.getLeftVector().negate();
+      var f1 = rightVec.x;
+      var f3 = rightVec.z;
+      var upVec = camera.getUpVector();
+      var f4 = upVec.x;
+      var f2 = upVec.y;
+      var f5 = upVec.z;
+      var f = partialTicks;
+      var cameraPos = camera.getPosition();
+      var interpPosX = cameraPos.x;
+      var interpPosY = cameraPos.y;
+      var interpPosZ = cameraPos.z;
+
+      PoseStack stack = new PoseStack();
+      stack.pushPose();
+//      tessellator.draw();
+//      GL11.glPushMatrix();
       float var9 = 1.0F;
-      float slide = (float)Minecraft.getMinecraft().thePlayer.ticksExisted;
-      float rot = (float)(this.level().provider.getWorldTime() % (long)(360 / this.rotationspeed) * (long)this.rotationspeed) + (float)this.rotationspeed * f;
+      var player = Minecraft.getInstance().player;
+      float slide = player == null?0:player.tickCount;
+      float rot = (float)(this.level.getDayTime() % (long)(360 / this.rotationspeed) * (long) this.rotationspeed) + (float) this.rotationspeed * f;
       float size = this.width;
       if (this.pulse) {
-         size = Math.min((float)this.particleAge / 4.0F, this.width);
-         size = (float)((double)this.prevSize + (double)(size - this.prevSize) * (double)f);
+         size = Math.min((float) this.age / 4.0F, this.width);
+         size = (float) ((double) this.prevSize + (double) (size - this.prevSize) * (double) f);
       }
 
       float op = 0.4F;
-      if (this.pulse && this.particleMaxAge - this.particleAge <= 4) {
-         op = 0.4F - (float)(4 - (this.particleMaxAge - this.particleAge)) * 0.1F;
+      if (this.pulse && this.lifetime - this.age <= 4) {
+         op = 0.4F - (float)(4 - (this.lifetime - this.age)) * 0.1F;
       }
 
       switch (this.type) {
@@ -208,32 +216,44 @@ public class FXBeam extends EntityFX {
             UtilsFX.bindTexture("textures/misc/beam.png");
       }
 
-      GL11.glTexParameterf(3553, 10242, 10497.0F);
-      GL11.glTexParameterf(3553, 10243, 10497.0F);
-      GL11.glDisable(2884);
+      RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL_REPEAT);
+      RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL_REPEAT);
+      RenderSystem.disableCull();
+
+//      GL11.glTexParameterf(3553, 10242, 10497.0F);
+//      GL11.glTexParameterf(3553, 10243, 10497.0F);
+//      GL11.glDisable(2884);
       float var11 = slide + f;
       if (this.reverse) {
          var11 *= -1.0F;
       }
 
       float var12 = -var11 * 0.2F - (float)MathHelper.floor_float(-var11 * 0.1F);
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(770, this.blendmode);
-      GL11.glDepthMask(false);
-      float xx = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)f - interpPosX);
-      float yy = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)f - interpPosY);
-      float zz = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)f - interpPosZ);
-      GL11.glTranslated(xx, yy, zz);
-      float ry = (float)((double)this.prevYaw + (double)(this.rotYaw - this.prevYaw) * (double)f);
-      float rp = (float)((double)this.prevPitch + (double)(this.rotPitch - this.prevPitch) * (double)f);
-      GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(180.0F + ry, 0.0F, 0.0F, -1.0F);
-      GL11.glRotatef(rp, 1.0F, 0.0F, 0.0F);
+//      GL11.glEnable(GL11.GL_BLEND);
+      RenderSystem.enableBlend();
+//      GL11.glBlendFunc(770, this.blendmode);
+      RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, this.blendmode);
+//      GL11.glDepthMask(false);
+      RenderSystem.depthMask(false);
+      float xx = (float)(this.xo + (this.x - this.xo) * (double) f - interpPosX);
+      float yy = (float)(this.yo + (this.y - this.yo) * (double) f - interpPosY);
+      float zz = (float)(this.zo + (this.z - this.zo) * (double) f - interpPosZ);
+      stack.translate((float)xx, (float)yy, (float)zz);
+//      GL11.glTranslated(xx, yy, zz);
+      float ry = (float)((double) this.prevYaw + (double)(this.rotYaw - this.prevYaw) * (double)f);
+      float rp = (float)((double) this.prevPitch + (double)(this.rotPitch - this.prevPitch) * (double)f);
+      stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+      stack.mulPose(Axis.ZP.rotationDegrees(180.0F + ry));
+      stack.mulPose(Axis.XP.rotationDegrees(rp));
+//      GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
+//      GL11.glRotatef(180.0F + ry, 0.0F, 0.0F, -1.0F);
+//      GL11.glRotatef(rp, 1.0F, 0.0F, 0.0F);
       double var44 = -0.15 * (double)size;
       double var17 = 0.15 * (double)size;
-      double var44b = -0.15 * (double)size * (double)this.endMod;
-      double var17b = 0.15 * (double)size * (double)this.endMod;
-      GL11.glRotatef(rot, 0.0F, 1.0F, 0.0F);
+      double var44b = -0.15 * (double)size * (double) this.endMod;
+      double var17b = 0.15 * (double)size * (double) this.endMod;
+      stack.mulPose(Axis.YP.rotationDegrees(rot));
+//      GL11.glRotatef(rot, 0.0F, 1.0F, 0.0F);
 
       for(int t = 0; t < 3; ++t) {
          double var29 = this.length * size / this.width * var9;
@@ -241,24 +261,50 @@ public class FXBeam extends EntityFX {
          double var33 = 1.0F;
          double var35 = -1.0F + var12 + (float)t / 3.0F;
          double var37 = (double)(this.length * size / this.width * var9) + var35;
-         GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
-         tessellator.startDrawingQuads();
-         tessellator.setBrightness(200);
-         tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, op);
-         tessellator.addVertexWithUV(var44b, var29, 0.0F, var33, var37);
-         tessellator.addVertexWithUV(var44, 0.0F, 0.0F, var33, var35);
-         tessellator.addVertexWithUV(var17, 0.0F, 0.0F, var31, var35);
-         tessellator.addVertexWithUV(var17b, var29, 0.0F, var31, var37);
-         tessellator.draw();
+
+         stack.mulPose(Axis.YP.rotationDegrees(60.0F));
+//         GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
+//         tessellator.startDrawingQuads();
+//         tessellator.setBrightness(200);
+//         tessellator.setColorRGBA_F(this.rCol, this.gCol, this.bCol, op);
+         consumer.vertex(var44b, var29, 0.0F)
+                 .color(this.rCol, this.gCol, this.bCol, op)
+                 .uv((float) var33, (float) var37)
+                 .uv2(LightTexture.FULL_BRIGHT)//TODO:Bright
+                 .endVertex();
+         consumer.vertex(var44, 0.0F, 0.0F)
+                 .color(this.rCol, this.gCol, this.bCol, op)
+                 .uv((float) var33, (float) var35)
+                 .uv2(LightTexture.FULL_BRIGHT)//TODO:Bright
+                 .endVertex();
+         consumer.vertex(var17, 0.0F, 0.0F)
+                 .color(this.rCol, this.gCol, this.bCol, op)
+                 .uv((float) var31, (float) var35)
+                 .uv2(LightTexture.FULL_BRIGHT)//TODO:Bright
+                 .endVertex();
+         consumer.vertex(var17b, var29, 0.0F)
+                 .color(this.rCol, this.gCol, this.bCol, op)
+                 .uv((float) var31, (float) var37)
+                 .uv2(LightTexture.FULL_BRIGHT)//TODO:Bright
+                 .endVertex();
+//         tessellator.addVertexWithUV(var44b, var29, 0.0F, var33, var37);
+//         tessellator.addVertexWithUV(var44, 0.0F, 0.0F, var33, var35);
+//         tessellator.addVertexWithUV(var17, 0.0F, 0.0F, var31, var35);
+//         tessellator.addVertexWithUV(var17b, var29, 0.0F, var31, var37);
+//         tessellator.draw();
       }
 
-      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      GL11.glDepthMask(true);
-      GL11.glDisable(GL11.GL_BLEND);
-      GL11.glEnable(2884);
-      GL11.glPopMatrix();
-      Minecraft.getMinecraft().renderEngine.bindTexture(UtilsFX.getParticleTexture());
-      tessellator.startDrawingQuads();
+//      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      RenderSystem.depthMask(true);
+      RenderSystem.disableBlend();
+      RenderSystem.enableCull();
+      stack.popPose();
+//      GL11.glDepthMask(true);
+//      GL11.glDisable(GL11.GL_BLEND);
+//      GL11.glEnable(2884);
+//      GL11.glPopMatrix();
+//      Minecraft.getMinecraft().renderEngine.bindTexture(UtilsFX.getParticleTexture());
+//      tessellator.startDrawingQuads();
       this.prevSize = size;
    }
 }

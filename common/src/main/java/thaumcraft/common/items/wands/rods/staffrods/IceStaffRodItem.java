@@ -1,23 +1,32 @@
-package thaumcraft.common.items.wands.wandrods;
+package thaumcraft.common.items.wands.rods.staffrods;
 
-import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsStaffRod;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
-public class IceStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod {
+public class IceStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, CraftingCostAspectOwner {
     public IceStaffRodItem() {
-        super(new Properties(), getPrimalAspectMapWithValue(175));
+        super(new Properties(), Map.of(Aspect.WATER,17));
     }
 
-    private final Map<Aspect, Integer> capacity = Map.of(Aspect.WATER,17);
+    private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(175));
     @Override
     @UnmodifiableView
     public Map<Aspect, Integer> getAspectCapacity() {
         return capacity;
+    }
+    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(14));
+    @Override
+    @UnmodifiableView
+    public Map<Aspect, Integer> getCraftingCostAspect() {
+        return cost;
     }
 }

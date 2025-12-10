@@ -1,16 +1,15 @@
 package thaumcraft.client.renderers.models.gear;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.HashMap;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
@@ -18,6 +17,8 @@ import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.items.armor.ItemHoverHarness;
 import thaumcraft.common.lib.utils.BlockUtils;
+
+import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class ModelHoverHarness extends ModelBiped {
@@ -53,7 +54,7 @@ public class ModelHoverHarness extends ModelBiped {
       this.modelBack.renderAll();
       GL11.glEnable(2896);
       GL11.glPopMatrix();
-      if (entity instanceof EntityPlayer && !GL11.glIsEnabled(GL11.GL_BLEND) && GL11.glGetInteger(2976) == 5888 && ((EntityPlayer) entity).inventory.armorItemInSlot(2).hasTagCompound() && ((EntityPlayer) entity).inventory.armorItemInSlot(2).stackTagCompound.hasKey("hover") && ((EntityPlayer) entity).inventory.armorItemInSlot(2).stackTagCompound.getByte("hover") == 1) {
+      if (entity instanceof Player && !GL11.glIsEnabled(GL11.GL_BLEND) && GL11.glGetInteger(2976) == 5888 && ((Player) entity).inventory.armorItemInSlot(2).hasTagCompound() && ((Player) entity).inventory.armorItemInSlot(2).stackTagCompound.hasKey("hover") && ((Player) entity).inventory.armorItemInSlot(2).stackTagCompound.getByte("hover") == 1) {
          long currenttime = System.currentTimeMillis();
          long timeShock = 0L;
          if (this.timingShock.get(entity.getEntityId()) != null) {
@@ -70,23 +71,23 @@ public class ModelHoverHarness extends ModelBiped {
 
          GL11.glTranslatef(0.0F, 0.2F, 0.55F);
          GL11.glPushMatrix();
-         UtilsFX.renderQuadCenteredFromIcon(false, ((ItemHoverHarness)((EntityPlayer)entity).inventory.armorItemInSlot(2).getItem()).iconLightningRing, 2.5F, 1.0F, 1.0F, 1.0F, 230, 1, 1.0F);
+         UtilsFX.renderQuadCenteredFromIcon(false, ((ItemHoverHarness)((Player)entity).inventory.armorItemInSlot(2).getItem()).iconLightningRing, 2.5F, 1.0F, 1.0F, 1.0F, 230, 1, 1.0F);
          GL11.glPopMatrix();
          GL11.glPushMatrix();
          GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
          GL11.glTranslatef(0.0F, 0.0F, 0.03F);
-         UtilsFX.renderQuadCenteredFromIcon(false, ((ItemHoverHarness)((EntityPlayer)entity).inventory.armorItemInSlot(2).getItem()).iconLightningRing, 1.5F, 1.0F, 0.5F, 1.0F, 230, 1, 1.0F);
+         UtilsFX.renderQuadCenteredFromIcon(false, ((ItemHoverHarness)((Player)entity).inventory.armorItemInSlot(2).getItem()).iconLightningRing, 1.5F, 1.0F, 0.5F, 1.0F, 230, 1, 1.0F);
          GL11.glPopMatrix();
          GL11.glPopMatrix();
          if (timeShock < currenttime) {
-            timeShock = currenttime + 50L + (long)entity.worldObj.rand.nextInt(50);
+            timeShock = currenttime + 50L + (long)entity.level().rand.nextInt(50);
             this.timingShock.put(entity.getEntityId(), timeShock);
-            MovingObjectPosition mop = BlockUtils.getTargetBlock(entity.worldObj, entity.posX, entity.posY - (double)0.45F - (double)mod, entity.posZ, ((EntityPlayer)entity).renderYawOffset - 90.0F - (float)entity.worldObj.rand.nextInt(180), (float)(-80 + entity.worldObj.rand.nextInt(160)), false, 6.0F);
+            HitResult mop = BlockUtils.getTargetBlock(entity.level(), entity.posX, entity.posY - (double)0.45F - (double)mod, entity.posZ, ((Player)entity).renderYawOffset - 90.0F - (float)entity.level().rand.nextInt(180), (float)(-80 + entity.level().rand.nextInt(160)), false, 6.0F);
             if (mop != null) {
                double px = mop.hitVec.xCoord;
                double py = mop.hitVec.yCoord;
                double pz = mop.hitVec.zCoord;
-               FXLightningBolt bolt = new FXLightningBolt(entity.worldObj, entity.posX - (double)(MathHelper.cos((((EntityPlayer)entity).renderYawOffset + 90.0F) / 180.0F * 3.141593F) * 0.5F), entity.posY - (double)0.45F - (double)mod, entity.posZ - (double)(MathHelper.sin((((EntityPlayer)entity).renderYawOffset + 90.0F) / 180.0F * 3.141593F) * 0.5F), px, py, pz, entity.worldObj.rand.nextLong(), 1, 2.0F, 3);
+               FXLightningBolt bolt = new FXLightningBolt(entity.level(), entity.posX - (double)(MathHelper.cos((((Player)entity).renderYawOffset + 90.0F) / 180.0F * 3.141593F) * 0.5F), entity.posY - (double)0.45F - (double)mod, entity.posZ - (double)(MathHelper.sin((((Player)entity).renderYawOffset + 90.0F) / 180.0F * 3.141593F) * 0.5F), px, py, pz, entity.level().rand.nextLong(), 1, 2.0F, 3);
                bolt.defaultFractal();
                bolt.setType(6);
                bolt.setWidth(0.015F);

@@ -6,15 +6,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
    private int orbHealth = 5;
    private Aspect aspect;
    private int aspectValue;
-   private EntityPlayer closestPlayer;
+   private Player closestPlayer;
 
    public boolean isInRangeToRenderDist(double par1) {
       double d1 = 0.5F;
@@ -34,7 +34,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       return par1 < d1 * d1;
    }
 
-   public EntityAspectOrb(World par1World, double par2, double par4, double par6, Aspect aspect, int par8) {
+   public EntityAspectOrb(Level par1World, double par2, double par4, double par6, Aspect aspect, int par8) {
       super(par1World);
       this.setSize(0.125F, 0.125F);
       this.yOffset = this.height / 2.0F;
@@ -51,7 +51,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       return false;
    }
 
-   public EntityAspectOrb(World par1World) {
+   public EntityAspectOrb(Level par1World) {
       super(par1World);
       this.setSize(0.125F, 0.125F);
       this.yOffset = this.height / 2.0F;
@@ -84,7 +84,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       this.prevPosY = this.posY;
       this.prevPosZ = this.posZ;
       this.motionY -= 0.03F;
-      if (this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)).getMaterial() == Material.lava) {
+      if (this.level().getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)).getMaterial() == Material.lava) {
          this.motionY = 0.2F;
          this.motionX = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
          this.motionZ = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F;
@@ -94,15 +94,15 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / (double)2.0F, this.posZ);
       double d0 = 8.0F;
       if (this.ticksExisted % 5 == 0 && this.closestPlayer == null) {
-         List<Entity> targets = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(d0, d0, d0));
+         List<Entity> targets = this.level().getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(d0, d0, d0));
          if (!targets.isEmpty()) {
             double distance = Double.MAX_VALUE;
 
             for(Entity t : targets) {
                double d = t.getDistanceSqToEntity(this);
-               if (d < distance && InventoryUtils.isWandInHotbarWithRoom(this.getAspect(), this.aspectValue, (EntityPlayer)t) >= 0) {
+               if (d < distance && InventoryUtils.isWandInHotbarWithRoom(this.getAspect(), this.aspectValue, (Player)t) >= 0) {
                   distance = d;
-                  this.closestPlayer = (EntityPlayer)t;
+                  this.closestPlayer = (Player)t;
                }
             }
          }
@@ -126,8 +126,8 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       float f = 0.98F;
       if (this.onGround) {
          f = 0.58800006F;
-         Block i = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
-         if (!i.isAir(this.worldObj, MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ))) {
+         Block i = this.level().getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+         if (!i.isAir(this.level(), MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ))) {
             f = i.slipperiness * 0.98F;
          }
       }
@@ -147,7 +147,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
    }
 
    public boolean handleWaterMovement() {
-      return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
+      return this.level().handleMaterialAcceleration(this.boundingBox, Material.water, this);
    }
 
    protected void dealFireDamage(int par1) {
@@ -182,13 +182,13 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       this.setAspect(Aspect.getAspect(par1NBTTagCompound.getString("Aspect")));
    }
 
-   public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
-      if (!this.worldObj.isRemote) {
-         int slot = InventoryUtils.isWandInHotbarWithRoom(this.getAspect(), this.aspectValue, par1EntityPlayer);
-         if (this.orbCooldown == 0 && par1EntityPlayer.xpCooldown == 0 && this.getAspect().isPrimal() && slot >= 0) {
-            ItemWandCasting wand = (ItemWandCasting)par1EntityPlayer.inventory.mainInventory[slot].getItem();
-            wand.addVis(par1EntityPlayer.inventory.mainInventory[slot], this.getAspect(), this.aspectValue, true);
-            par1EntityPlayer.xpCooldown = 2;
+   public void onCollideWithPlayer(Player par1Player) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         int slot = InventoryUtils.isWandInHotbarWithRoom(this.getAspect(), this.aspectValue, par1Player);
+         if (this.orbCooldown == 0 && par1Player.xpCooldown == 0 && this.getAspect().isPrimal() && slot >= 0) {
+            WandCastingItem wand = (WandCastingItem)par1Player.inventory.mainInventory[slot].getItem();
+            wand.addVis(par1Player.inventory.mainInventory[slot], this.getAspect(), this.aspectValue, true);
+            par1Player.xpCooldown = 2;
             this.playSound("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
             this.setDead();
          }

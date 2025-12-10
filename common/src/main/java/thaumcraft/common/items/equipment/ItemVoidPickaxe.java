@@ -3,24 +3,25 @@ package thaumcraft.common.items.equipment;
 import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Set;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemPickaxe;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
+
+import java.util.Set;
 
 public class ItemVoidPickaxe extends ItemPickaxe implements IRepairable, IWarpingGear {
    public IIcon icon;
@@ -49,7 +50,7 @@ public class ItemVoidPickaxe extends ItemPickaxe implements IRepairable, IWarpin
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 15)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
    public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
@@ -60,15 +61,15 @@ public class ItemVoidPickaxe extends ItemPickaxe implements IRepairable, IWarpin
 
    }
 
-   public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-      if (!player.worldObj.isRemote && entity instanceof EntityLivingBase && (!(entity instanceof EntityPlayer) || MinecraftServer.getServer().isPVPEnabled())) {
+   public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+      if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase && (!(entity instanceof Player) || MinecraftServer.getServer().isPVPEnabled())) {
          ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.weakness.getId(), 80));
       }
 
       return super.onLeftClickEntity(stack, player, entity);
    }
 
-   public int getWarp(ItemStack itemstack, EntityPlayer player) {
+   public int getWarp(ItemStack itemstack, Player player) {
       return 1;
    }
 }

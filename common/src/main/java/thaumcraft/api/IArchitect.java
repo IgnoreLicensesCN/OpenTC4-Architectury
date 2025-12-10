@@ -1,23 +1,25 @@
 package thaumcraft.api;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IArchitect {
 
 	/**
 	 * Returns a list of blocks that should be highlighted in world.
 	 */
-    ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world,
-                                                   int x, int y, int z, int side, Player player);
+    List<BlockCoordinates> getArchitectBlocks(ItemStack stack, Level world,
+											  int x, int y, int z, Direction side, Player player);
 	
 	/**
 	 * which axis should be displayed. 
 	 */
-    boolean showAxis(ItemStack stack, World world, Player player, int side, EnumAxis axis);
+    boolean showAxis(ItemStack stack, Level world, Player player, Direction side, EnumAxis axis);
 	
 	enum EnumAxis {
 		X, // east / west

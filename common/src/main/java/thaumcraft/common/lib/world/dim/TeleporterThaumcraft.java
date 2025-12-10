@@ -1,8 +1,9 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.util.LongHashMap;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 import thaumcraft.common.config.ConfigBlocks;
@@ -18,7 +19,7 @@ public class TeleporterThaumcraft extends Teleporter {
     private static final LongHashMap destinationCoordinateCache = new LongHashMap();
     private static final List<Long> destinationCoordinateKeys = new ArrayList<>();
 
-    public TeleporterThaumcraft(WorldServer par1WorldServer) {
+    public TeleporterThaumcraft(ServerLevel par1WorldServer) {
         super(par1WorldServer);
         this.worldServerInstance = par1WorldServer;
         this.random = new Random(par1WorldServer.getSeed());
@@ -26,7 +27,7 @@ public class TeleporterThaumcraft extends Teleporter {
 
     @Override
     public void placeInPortal(Entity par1Entity, double par2, double par4, double par6, float par8) {
-        if (this.worldServerInstance.provider.dimensionId != 1/*TheEnd*/) {
+        if (this.worldServerInstance.dimension() != 1/*TheEnd*/) {
             if (!this.placeInExistingPortal(par1Entity, par2, par4, par6, par8)) {
                 this.makePortal(par1Entity);
                 this.placeInExistingPortal(par1Entity, par2, par4, par6, par8);
@@ -34,7 +35,7 @@ public class TeleporterThaumcraft extends Teleporter {
         } else if (!this.placeInExistingPortal(par1Entity, par2, par4, par6, par8)) {
             int i = MathHelper.floor_double(par1Entity.posX);
             int k = MathHelper.floor_double(par1Entity.posZ);
-            int j = this.worldServerInstance.getHeightValue(i, k);
+            int j = this.worldServerInstance.getHeight(Heightmap.Types.WORLD_SURFACE,i, k);
             byte b0 = 1;
             byte b1 = 0;
             par1Entity.setLocationAndAngles(i, (double) j + (double) 4.0F, k, par1Entity.rotationYaw, 0.0F);
@@ -54,7 +55,7 @@ public class TeleporterThaumcraft extends Teleporter {
         int i1 = MathHelper.floor_double(par1Entity.posZ);
         int chunkX = l >> 4;
         int chunkZ = i1 >> 4;
-        String hs = chunkX + ":" + chunkZ + ":" + this.worldServerInstance.provider.dimensionId;
+        String hs = chunkX + ":" + chunkZ + ":" + this.worldServerInstance.dimension();
         long j1 = hs.hashCode();
         boolean flag = true;
         if (destinationCoordinateCache.containsItem(j1)) {

@@ -1,17 +1,17 @@
 package thaumcraft.common.tiles;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.ItemBathSalts;
+import thaumcraft.common.items.misc.ItemBathSalts;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHandler {
@@ -23,7 +23,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
 
    public void toggleMix() {
       this.mix = !this.mix;
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       this.markDirty();
    }
 
@@ -46,7 +46,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
 
    public void readFromNBT(NBTTagCompound nbttagcompound) {
       super.readFromNBT(nbttagcompound);
-      NBTTagList nbttaglist = nbttagcompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbttagcompound.getTagList("ThaumcraftItems", 10);
       this.itemStacks = new ItemStack[this.getSizeInventory()];
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -72,7 +72,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
          }
       }
 
-      nbttagcompound.setTag("Items", nbttaglist);
+      nbttagcompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public int getSizeInventory() {
@@ -124,8 +124,8 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {
@@ -163,9 +163,9 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote && this.counter++ % 40 == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.hasIngredients()) {
-         Block b = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-         int m = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
+      if (Platform.getEnvironment() != Env.CLIENT && this.counter++ % 40 == 0 && !this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && this.hasIngredients()) {
+         Block b = this.level().getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+         int m = this.level().getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
          Block tb = null;
          if (this.mix) {
             tb = ConfigBlocks.blockFluidPure;
@@ -178,7 +178,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
                for(int zz = -2; zz <= 2; ++zz) {
                   if (this.isValidLocation(this.xCoord + xx, this.yCoord + 1, this.zCoord + zz, true, tb)) {
                      this.consumeIngredients();
-                     this.worldObj.setBlock(this.xCoord + xx, this.yCoord + 1, this.zCoord + zz, tb);
+                     this.level().setBlock(this.xCoord + xx, this.yCoord + 1, this.zCoord + zz, tb);
                      this.checkQuanta(this.xCoord + xx, this.yCoord + 1, this.zCoord + zz);
                      return;
                   }
@@ -186,7 +186,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
             }
          } else if (this.isValidLocation(this.xCoord, this.yCoord + 1, this.zCoord, false, tb)) {
             this.consumeIngredients();
-            this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, tb);
+            this.level().setBlock(this.xCoord, this.yCoord + 1, this.zCoord, tb);
             this.checkQuanta(this.xCoord, this.yCoord + 1, this.zCoord);
          }
       }
@@ -194,13 +194,13 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
    }
 
    private void checkQuanta(int i, int j, int k) {
-      Block b = this.worldObj.getBlock(i, j, k);
+      Block b = this.level().getBlock(i, j, k);
       if (b instanceof BlockFluidBase) {
-         float p = ((BlockFluidBase)b).getQuantaPercentage(this.worldObj, i, j, k);
+         float p = ((BlockFluidBase)b).getQuantaPercentage(this.level(), i, j, k);
          if (p < 1.0F) {
             int md = (int)(1.0F / p) - 1;
             if (md >= 0 && md < 16) {
-               this.worldObj.setBlockMetadataWithNotify(i, j, k, md, 3);
+               this.level().setBlockMetadataWithNotify(i, j, k, md, 3);
             }
          }
       }
@@ -226,14 +226,14 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
    }
 
    private boolean isValidLocation(int x, int y, int z, boolean mustBeAdjacent, Block target) {
-      if ((target == Blocks.water || target == Blocks.flowing_water) && this.worldObj.provider.isHellWorld) {
+      if ((target == Blocks.water || target == Blocks.flowing_water) && this.level().provider.isHellWorld) {
          return false;
       } else {
-         Block b = this.worldObj.getBlock(x, y, z);
-         Block bb = this.worldObj.getBlock(x, y - 1, z);
-         int m = this.worldObj.getBlockMetadata(x, y, z);
-         if (bb.isSideSolid(this.worldObj, x, y - 1, z, ForgeDirection.UP) && b.isReplaceable(this.worldObj, x, y, z) && (b != target || m != 0)) {
-            return !mustBeAdjacent || BlockUtils.isBlockTouching(this.worldObj, x, y, z, target, 0);
+         Block b = this.level().getBlock(x, y, z);
+         Block bb = this.level().getBlock(x, y - 1, z);
+         int m = this.level().getBlockMetadata(x, y, z);
+         if (bb.isSideSolid(this.level(), x, y - 1, z, ForgeDirection.UP) && b.isReplaceable(this.level(), x, y, z) && (b != target || m != 0)) {
+            return !mustBeAdjacent || BlockUtils.isBlockTouching(this.level(), x, y, z, target, 0);
          } else {
             return false;
          }
@@ -243,7 +243,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
       int df = this.tank.fill(resource, doFill);
       if (df > 0 && doFill) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 
@@ -257,7 +257,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
       FluidStack fs = this.tank.drain(maxDrain, doDrain);
       if (fs != null && doDrain) {
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 

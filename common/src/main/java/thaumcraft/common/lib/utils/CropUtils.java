@@ -1,12 +1,12 @@
 package thaumcraft.common.lib.utils;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 
@@ -71,7 +71,7 @@ public class CropUtils {
 
    }
 
-   public static boolean isGrownCrop(World world, int x, int y, int z) {
+   public static boolean isGrownCrop(Level world, int x, int y, int z) {
       if (world.isAirBlock(x, y, z)) {
          return false;
       } else {
@@ -88,7 +88,7 @@ public class CropUtils {
          world.getBlock(x, y + 1, z);
          Block biB = world.getBlock(x, y - 1, z);
          int md = world.getBlockMetadata(x, y, z);
-         return bi instanceof IGrowable && !((IGrowable)bi).func_149851_a(world, x, y, z, world.isRemote) && !(bi instanceof BlockStem) || bi instanceof BlockCrops && md == 7 && !found || bi == Blocks.nether_wart && md >= 3 || bi == Blocks.cocoa && (md & 12) >> 2 >= 2 || standardCrops.contains(bi.getUnlocalizedName() + md) || clickableCrops.contains(bi.getUnlocalizedName() + md) || stackedCrops.contains(bi.getUnlocalizedName() + md) && biB == bi;
+         return bi instanceof IGrowable && !((IGrowable)bi).func_149851_a(world, x, y, z, world.isClientSide()) && !(bi instanceof BlockStem) || bi instanceof BlockCrops && md == 7 && !found || bi == Blocks.nether_wart && md >= 3 || bi == Blocks.cocoa && (md & 12) >> 2 >= 2 || standardCrops.contains(bi.getUnlocalizedName() + md) || clickableCrops.contains(bi.getUnlocalizedName() + md) || stackedCrops.contains(bi.getUnlocalizedName() + md) && biB == bi;
       }
    }
 
@@ -105,7 +105,7 @@ public class CropUtils {
       }
    }
 
-   public static boolean doesLampGrow(World world, int x, int y, int z) {
+   public static boolean doesLampGrow(Level world, int x, int y, int z) {
       Block bi = world.getBlock(x, y, z);
       int md = world.getBlockMetadata(x, y, z);
       return !lampBlacklist.contains(bi.getUnlocalizedName() + md);

@@ -1,9 +1,9 @@
 package thaumcraft.common.entities.golems;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.container.ContainerGhostSlots;
 import thaumcraft.common.container.SlotGhost;
 import thaumcraft.common.container.SlotGhostFluid;
@@ -26,7 +26,7 @@ public class ContainerGolem extends ContainerGhostSlots {
       this.bindPlayerInventory();
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+   public void onContainerClosed(Player par1Player) {
       ((EntityGolemBase)this.mobInv.ent).paused = false;
    }
 
@@ -71,7 +71,7 @@ public class ContainerGolem extends ContainerGhostSlots {
 
    }
 
-   public boolean enchantItem(EntityPlayer par1EntityPlayer, int button) {
+   public boolean enchantItem(Player par1Player, int button) {
       if (button == 66 && this.currentScroll > 0) {
          --this.currentScroll;
          this.refreshInventory();
@@ -105,11 +105,11 @@ public class ContainerGolem extends ContainerGhostSlots {
          ((EntityGolemBase) this.mobInv.ent).setColors(button - slots, c);
       }
 
-      this.mobInv.ent.worldObj.playSoundEffect(this.mobInv.ent.posX, this.mobInv.ent.posY, this.mobInv.ent.posZ, "random.click", 0.2F, 0.8F);
+      this.mobInv.ent.level().playSoundEffect(this.mobInv.ent.posX, this.mobInv.ent.posY, this.mobInv.ent.posZ, "random.click", 0.2F, 0.8F);
       return true;
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       ItemStack stack = null;
       Slot slotObject = (Slot)this.inventorySlots.get(slot);
       int slots = this.mobInv.slotCount;
@@ -134,7 +134,7 @@ public class ContainerGolem extends ContainerGhostSlots {
       return stack;
    }
 
-   public boolean canInteractWith(EntityPlayer var1) {
+   public boolean canInteractWith(Player var1) {
       return this.mobInv.canInteractWith(var1);
    }
 }

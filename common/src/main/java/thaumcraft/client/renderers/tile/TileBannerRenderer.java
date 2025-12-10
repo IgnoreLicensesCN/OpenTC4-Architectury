@@ -2,15 +2,16 @@ package thaumcraft.client.renderers.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBanner;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.tiles.TileBanner;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class TileBannerRenderer extends TileEntitySpecialRenderer {
@@ -18,8 +19,8 @@ public class TileBannerRenderer extends TileEntitySpecialRenderer {
 
    public void renderTileEntityAt(TileBanner banner, double par2, double par4, double par6, float par8) {
       if (banner == null){return;}
-      boolean flag = banner.getWorldObj() != null;
-      long k = flag ? banner.getWorldObj().getTotalWorldTime() : 0L;
+      boolean flag = banner.getLevel() != null;
+      long k = flag ? banner.getLevel().getTotalWorldTime() : 0L;
       GL11.glPushMatrix();
       if (banner.getAspect() == null && banner.getColor() == -1) {
          UtilsFX.bindTexture("textures/models/banner_cultist.png");
@@ -30,7 +31,7 @@ public class TileBannerRenderer extends TileEntitySpecialRenderer {
       GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 1.5F, (float)par6 + 0.5F);
       GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      if (banner.getWorldObj() != null) {
+      if (banner.getLevel() != null) {
          GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
          float f2 = (float)(banner.getFacing() * 360) / 16.0F;
          GL11.glRotatef(f2, 0.0F, 1.0F, 0.0F);

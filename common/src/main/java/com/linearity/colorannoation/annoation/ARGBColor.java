@@ -1,4 +1,4 @@
-package com.linearity.annoation;
+package com.linearity.colorannoation.annoation;
 
 
 import java.lang.annotation.ElementType;

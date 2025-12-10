@@ -1,4 +1,4 @@
-package simpleutils;
+package com.linearity.opentc4.simpleutils;
 
 import org.jetbrains.annotations.NotNull;
 

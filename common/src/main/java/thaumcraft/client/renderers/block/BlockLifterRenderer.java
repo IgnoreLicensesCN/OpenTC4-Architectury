@@ -1,7 +1,6 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import java.awt.Color;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +11,8 @@ import thaumcraft.common.blocks.BlockCustomOreItem;
 import thaumcraft.common.blocks.BlockLifter;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileLifter;
+
+import java.awt.*;
 
 public class BlockLifterRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

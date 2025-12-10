@@ -1,7 +1,7 @@
 package thaumcraft.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -10,12 +10,12 @@ import thaumcraft.common.entities.golems.ContainerTravelingTrunk;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 
 public class GuiTravelingTrunk extends GuiContainer {
-   private EntityPlayer theplayer;
+   private Player theplayer;
    private EntityTravelingTrunk themob;
    private int inventoryRows;
 
-   public GuiTravelingTrunk(EntityPlayer p, EntityTravelingTrunk m) {
-      super(new ContainerTravelingTrunk(p.inventory, p.worldObj, m));
+   public GuiTravelingTrunk(Player p, EntityTravelingTrunk m) {
+      super(new ContainerTravelingTrunk(p.inventory, p.level(), m));
       this.theplayer = p;
       this.themob = m;
       this.inventoryRows = m.inventory.slotCount / 9;
@@ -60,7 +60,7 @@ public class GuiTravelingTrunk extends GuiContainer {
       int k1 = i - (sx + 112);
       int l1 = j - (sy);
       if (k1 >= 0 && l1 >= 0 && k1 < 10 && l1 <= 10) {
-         this.themob.worldObj.playSound(this.themob.posX, this.themob.posY, this.themob.posZ, "random.click", 0.3F, 0.6F + (this.themob.getStay() ? 0.0F : 0.2F), false);
+         this.themob.level().playSound(this.themob.posX, this.themob.posY, this.themob.posZ, "random.click", 0.3F, 0.6F + (this.themob.getStay() ? 0.0F : 0.2F), false);
          if (this.themob.getStay()) {
             this.theplayer.addChatMessage(new ChatComponentTranslation("entity.trunk.move"));
          } else {

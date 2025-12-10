@@ -1,14 +1,17 @@
 package thaumcraft.api.internal;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
+@Deprecated(forRemoval = true,since = "open")
 public interface IInternalMethodHandler {
 
-	void generateVisEffect(int dim, int x, int y, int z, int x2, int y2, int z2, int color);
+	void generateVisEffect(ResourceKey<Level> dim, int x, int y, int z, int x2, int y2, int z2, int color);
 	boolean isResearchComplete(String username, String researchkey);
 	ItemStack getStackInRowAndColumn(Object instance, int row, int column);
 	AspectList getObjectAspects(ItemStack is);

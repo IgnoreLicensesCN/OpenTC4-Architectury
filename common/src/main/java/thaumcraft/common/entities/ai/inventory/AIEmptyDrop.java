@@ -20,7 +20,7 @@ public class AIEmptyDrop extends EntityAIBase {
          ChunkCoordinates home = this.theGolem.getHomePosition();
 
          for(byte color : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
-            for(ChunkCoordinates cc : GolemHelper.getMarkedBlocksAdjacentToGolem(this.theGolem.worldObj, this.theGolem, color)) {
+            for(ChunkCoordinates cc : GolemHelper.getMarkedBlocksAdjacentToGolem(this.theGolem.level(), this.theGolem, color)) {
                if (cc != home) {
                   return true;
                }
@@ -52,16 +52,16 @@ public class AIEmptyDrop extends EntityAIBase {
 
       label24:
       for(byte color : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
-         for(ChunkCoordinates cc : GolemHelper.getMarkedBlocksAdjacentToGolem(this.theGolem.worldObj, this.theGolem, color)) {
+         for(ChunkCoordinates cc : GolemHelper.getMarkedBlocksAdjacentToGolem(this.theGolem.level(), this.theGolem, color)) {
             if (cc != home) {
-               EntityItem item = new EntityItem(this.theGolem.worldObj, this.theGolem.posX, this.theGolem.posY + (double)(this.theGolem.height / 2.0F), this.theGolem.posZ, this.theGolem.itemCarried.copy());
+               EntityItem item = new EntityItem(this.theGolem.level(), this.theGolem.posX, this.theGolem.posY + (double)(this.theGolem.height / 2.0F), this.theGolem.posZ, this.theGolem.itemCarried.copy());
                if (item != null) {
                   double distance = this.theGolem.getDistance((double)cc.posX + (double)0.5F, (double)cc.posY + (double)0.5F, (double)cc.posZ + (double)0.5F);
                   item.motionX = ((double)cc.posX + (double)0.5F - this.theGolem.posX) * (distance / (double)3.0F);
                   item.motionY = 0.1 + ((double)cc.posY + (double)0.5F - (this.theGolem.posY + (double)(this.theGolem.height / 2.0F))) * (distance / (double)3.0F);
                   item.motionZ = ((double)cc.posZ + (double)0.5F - this.theGolem.posZ) * (distance / (double)3.0F);
                   item.delayBeforeCanPickup = 10;
-                  this.theGolem.worldObj.spawnEntityInWorld(item);
+                  this.theGolem.level().spawnEntityInWorld(item);
                   this.theGolem.itemCarried = null;
                   this.theGolem.startActionTimer();
                   break label24;

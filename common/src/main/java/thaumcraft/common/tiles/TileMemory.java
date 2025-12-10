@@ -27,16 +27,16 @@ public class TileMemory extends TileEntity {
    }
 
    public void recreateTileEntity() {
-      if (this.tileEntityCompound != null && this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != null) {
-         this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, this.oldblock, this.oldmeta, 0);
+      if (this.tileEntityCompound != null && this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) != null) {
+         this.level().setBlock(this.xCoord, this.yCoord, this.zCoord, this.oldblock, this.oldmeta, 0);
          this.tileEntityCompound.setInteger("x", this.xCoord);
          this.tileEntityCompound.setInteger("y", this.yCoord);
          this.tileEntityCompound.setInteger("z", this.zCoord);
-         this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord).readFromNBT(this.tileEntityCompound);
+         this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord).readFromNBT(this.tileEntityCompound);
       }
 
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
    }
 
    public void readFromNBT(NBTTagCompound nbttagcompound) {

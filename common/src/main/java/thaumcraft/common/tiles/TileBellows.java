@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.TileThaumcraft;
 
@@ -16,10 +16,10 @@ public class TileBellows extends TileThaumcraft {
    public int delay = 0;
 
    public void updateEntity() {
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          if (!this.gettingPower()) {
             if (this.firstrun) {
-               this.inflation = 0.35F + this.worldObj.rand.nextFloat() * 0.55F;
+               this.inflation = 0.35F + this.level().rand.nextFloat() * 0.55F;
             }
 
             this.firstrun = false;
@@ -37,7 +37,7 @@ public class TileBellows extends TileThaumcraft {
 
             if (this.inflation >= 1.0F && this.direction) {
                this.direction = false;
-               this.worldObj.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "mob.ghast.fireball", 0.01F, 0.5F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F, false);
+               this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "mob.ghast.fireball", 0.01F, 0.5F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, false);
             }
          }
       } else if (this.onVanillaFurnace && !this.gettingPower()) {
@@ -45,7 +45,7 @@ public class TileBellows extends TileThaumcraft {
          if (this.delay >= 2) {
             this.delay = 0;
             ForgeDirection dir = ForgeDirection.getOrientation(this.orientation);
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
+            TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
             if (tile instanceof TileEntityFurnace) {
                TileEntityFurnace tf = (TileEntityFurnace)tile;
                if (tf.furnaceCookTime > 0 && tf.furnaceCookTime < 199) {
@@ -58,7 +58,7 @@ public class TileBellows extends TileThaumcraft {
    }
 
    public boolean gettingPower() {
-      return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+      return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
    }
 
    public static int getBellows(World world, int x, int y, int z, ForgeDirection[] directions) {

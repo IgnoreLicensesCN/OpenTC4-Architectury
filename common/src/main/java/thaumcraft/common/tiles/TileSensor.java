@@ -3,13 +3,14 @@ package thaumcraft.common.tiles;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
-public class TileSensor extends TileEntity {
+public class TileSensor extends BlockEntity {
    public byte note = 0;
    public byte tone = 0;
    public int redstoneSignal = 0;
@@ -37,25 +38,25 @@ public class TileSensor extends TileEntity {
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.redstoneSignal > 0) {
             --this.redstoneSignal;
             if (this.redstoneSignal == 0) {
-               this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockWoodenDevice);
-               this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockWoodenDevice);
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockWoodenDevice);
+               this.level().notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockWoodenDevice);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             }
          }
 
-         ArrayList<Integer[]> nbe = (ArrayList)noteBlockEvents.get(this.worldObj);
+         ArrayList<Integer[]> nbe = (ArrayList)noteBlockEvents.get(this.level());
          if (nbe != null) {
             for(Integer[] dat : nbe) {
                if (dat[3] == this.tone && dat[4] == this.note && this.getDistanceFrom((double)dat[0] + (double)0.5F, (double)dat[1] + (double)0.5F, (double)dat[2] + (double)0.5F) <= (double)4096.0F) {
-                  this.triggerNote(this.worldObj, this.xCoord, this.yCoord, this.zCoord, false);
+                  this.triggerNote(this.level(), this.xCoord, this.yCoord, this.zCoord, false);
                   this.redstoneSignal = 10;
-                  this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockWoodenDevice);
-                  this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockWoodenDevice);
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  this.level().notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockWoodenDevice);
+                  this.level().notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockWoodenDevice);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   break;
                }
             }
@@ -76,7 +77,7 @@ public class TileSensor extends TileEntity {
    }
 
    public void updateTone() {
-      Material var5 = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord).getMaterial();
+      Material var5 = this.level().getBlock(this.xCoord, this.yCoord - 1, this.zCoord).getMaterial();
       this.tone = 0;
       if (var5 == Material.rock) {
          this.tone = 1;
@@ -101,7 +102,7 @@ public class TileSensor extends TileEntity {
       this.markDirty();
    }
 
-   public void triggerNote(World par1World, int par2, int par3, int par4, boolean sound) {
+   public void triggerNote(Level par1World, int par2, int par3, int par4, boolean sound) {
       if (par1World.getBlock(par2, par3 + 1, par4).getMaterial() == Material.air) {
          byte var6 = -1;
          if (sound) {

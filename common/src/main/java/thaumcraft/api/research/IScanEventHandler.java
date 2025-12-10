@@ -1,9 +1,9 @@
 package thaumcraft.api.research;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public interface IScanEventHandler {
-	ScanResult scanPhenomena(ItemStack stack, World world, Player player);
+	ScanResult scanPhenomena(ItemStack stack, Level world, Player player);
 }

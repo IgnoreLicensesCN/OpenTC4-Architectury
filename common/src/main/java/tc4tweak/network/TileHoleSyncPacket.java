@@ -7,27 +7,27 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.S35PacketUpdateBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileHole;
 
 import java.io.IOException;
 
 public class TileHoleSyncPacket implements IMessage, IMessageHandler<TileHoleSyncPacket, IMessage> {
-    private S35PacketUpdateTileEntity origin;
+    private S35PacketUpdateBlockEntity origin;
 
     // used by packet pipeline to reflectively construct this
     @SuppressWarnings("unused")
     public TileHoleSyncPacket() {
     }
 
-    public TileHoleSyncPacket(S35PacketUpdateTileEntity origin) {
+    public TileHoleSyncPacket(S35PacketUpdateBlockEntity origin) {
         this.origin = origin;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        origin = new S35PacketUpdateTileEntity();
+        origin = new S35PacketUpdateBlockEntity();
         try {
             origin.readPacketData(new PacketBuffer(buf));
         } catch (IOException e) {
@@ -54,8 +54,8 @@ public class TileHoleSyncPacket implements IMessage, IMessageHandler<TileHoleSyn
         if (!theWorld.blockExists(x, y, z)) return null;
         if (theWorld.getBlock(x, y, z) != ConfigBlocks.blockHole) return null;
         TileHole t = new TileHole();
-        theWorld.setTileEntity(x, y, z, t);
-        ctx.getClientHandler().handleUpdateTileEntity(message.origin);
+        theWorld.setBlockEntity(x, y, z, t);
+        ctx.getClientHandler().handleUpdateBlockEntity(message.origin);
         return null;
     }
 }

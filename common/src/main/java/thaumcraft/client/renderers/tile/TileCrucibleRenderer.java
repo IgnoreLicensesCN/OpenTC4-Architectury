@@ -1,7 +1,7 @@
 package thaumcraft.client.renderers.tile;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
@@ -30,7 +30,7 @@ public class TileCrucibleRenderer extends TileEntitySpecialRenderer {
             recolor = 0.5F + recolor / 2.0F;
          }
 
-         UtilsFX.renderQuadFromIcon(true, icon, 1.0F, 1.0F - recolor / 3.0F, 1.0F - recolor, 1.0F - recolor / 2.0F, ConfigBlocks.blockMetalDevice.getMixedBrightnessForBlock(cr.getWorldObj(), cr.xCoord, cr.yCoord, cr.zCoord), 771, 1.0F);
+         UtilsFX.renderQuadFromIcon(true, icon, 1.0F, 1.0F - recolor / 3.0F, 1.0F - recolor, 1.0F - recolor / 2.0F, ConfigBlocks.blockMetalDevice.getMixedBrightnessForBlock(cr.getLevel(), cr.xCoord, cr.yCoord, cr.zCoord), 771, 1.0F);
       }
 
       GL11.glPopMatrix();

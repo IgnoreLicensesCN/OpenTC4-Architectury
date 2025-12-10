@@ -2,9 +2,9 @@ package thaumcraft.common.config;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemArmor.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,10 +18,11 @@ import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.blocks.ItemJarNode;
 import thaumcraft.common.entities.ItemSpawnerEgg;
 import thaumcraft.common.entities.golems.*;
-import thaumcraft.common.items.*;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.armor.*;
 import thaumcraft.common.items.baubles.*;
 import thaumcraft.common.items.equipment.*;
+import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.relics.*;
 import thaumcraft.common.items.wands.*;
 import thaumcraft.common.items.wands.foci.*;
@@ -53,7 +54,8 @@ public class ConfigItems {
    public static StaffRod STAFF_ROD_REED;
    public static StaffRod STAFF_ROD_SILVERWOOD;
    public static StaffRod STAFF_ROD_PRIMAL;
-   public static Item itemWandCasting;
+   @Deprecated(forRemoval = true)
+   public static Item WandCastingItem;
    public static Item itemWandCap;
    public static Item itemWandRod;
    public static Item itemFocusPouch;
@@ -68,7 +70,7 @@ public class ConfigItems {
    public static Item itemEssence;
    public static Item itemWispEssence;
    public static Item itemCrystalEssence;
-   public static Item itemResource;
+//   public static Item itemResource;
    public static Item itemShard;
    public static Item itemNugget;
    public static Item itemNuggetChicken;
@@ -85,7 +87,7 @@ public class ConfigItems {
    public static Item itemSpawnerEgg;
    public static Item itemFocusPortableHole;
    public static Item itemFocusPech;
-   public static Item itemThaumometer;
+//   public static Item itemThaumometer;
    public static Item itemFlyingCarpet;
    public static Item itemGolemPlacer;
    public static Item itemGolemBell;
@@ -102,7 +104,7 @@ public class ConfigItems {
    public static Item itemBathSalts;
    public static Item itemBucketDeath;
    public static Item itemBucketPure;
-   public static Item itemEldritchObject;
+//   public static Item itemEldritchObject;
    public static Item itemSanitySoap;
    public static Item itemSanityChecker;
    public static Item itemBottleTaint;
@@ -181,8 +183,8 @@ public class ConfigItems {
       OreDictionary.registerOre("shardOrder", new ItemStack(itemShard, 1, 4));
       OreDictionary.registerOre("shardEntropy", new ItemStack(itemShard, 1, 5));
       OreDictionary.registerOre("oreAmber", new ItemStack(ConfigBlocks.blockCustomOre, 1, 7));
-      OreDictionary.registerOre("quicksilver", new ItemStack(itemResource, 1, 3));
-      OreDictionary.registerOre("gemAmber", new ItemStack(itemResource, 1, 6));
+//      OreDictionary.registerOre("quicksilver", new ItemStack(itemResource, 1, 3));
+//      OreDictionary.registerOre("gemAmber", new ItemStack(itemResource, 1, 6));
       OreDictionary.registerOre("nuggetIron", new ItemStack(itemNugget, 1, 0));
       OreDictionary.registerOre("nuggetCopper", new ItemStack(itemNugget, 1, 1));
       OreDictionary.registerOre("nuggetTin", new ItemStack(itemNugget, 1, 2));
@@ -190,10 +192,10 @@ public class ConfigItems {
       OreDictionary.registerOre("nuggetLead", new ItemStack(itemNugget, 1, 4));
       OreDictionary.registerOre("nuggetThaumium", new ItemStack(itemNugget, 1, 6));
       OreDictionary.registerOre("nuggetVoid", new ItemStack(itemNugget, 1, 7));
-      OreDictionary.registerOre("nuggetQuicksilver", new ItemStack(itemResource, 1, 3));
-      OreDictionary.registerOre("nuggetGold", new ItemStack(itemResource, 1, 18));
-      OreDictionary.registerOre("ingotThaumium", new ItemStack(itemResource, 1, 2));
-      OreDictionary.registerOre("ingotVoid", new ItemStack(itemResource, 1, 16));
+//      OreDictionary.registerOre("nuggetQuicksilver", new ItemStack(itemResource, 1, 3));
+//      OreDictionary.registerOre("nuggetGold", new ItemStack(itemResource, 1, 18));
+//      OreDictionary.registerOre("ingotThaumium", new ItemStack(ThaumcraftItems.ALUMENTUM, 1));
+//      OreDictionary.registerOre("ingotVoid", new ItemStack(itemResource, 1, 16));
       OreDictionary.registerOre("clusterIron", new ItemStack(itemNugget, 1, 16));
       OreDictionary.registerOre("clusterCopper", new ItemStack(itemNugget, 1, 17));
       OreDictionary.registerOre("clusterTin", new ItemStack(itemNugget, 1, 18));
@@ -209,51 +211,52 @@ public class ConfigItems {
       OreDictionary.registerOre("slabWood", new ItemStack(ConfigBlocks.blockSlabWood, 1, 1));
       OreDictionary.registerOre("treeSapling", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0));
       OreDictionary.registerOre("treeSapling", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1));
-      WAND_CAP_IRON = new WandCap("iron", 1.1F, new ItemStack(itemWandCap, 1, 0), 1);
-      WAND_CAP_GOLD = new WandCap("gold", 1.0F, new ItemStack(itemWandCap, 1, 1), 3);
-      WAND_CAP_THAUMIUM = new WandCap("thaumium", 0.9F, new ItemStack(itemWandCap, 1, 2), 6);
-      WAND_CAP_VOID = new WandCap("void", 0.8F, new ItemStack(itemWandCap, 1, 7), 9);
-      WAND_ROD_WOOD = new WandRod("wood", 25, new ItemStack(Items.stick), 1);
-      WAND_ROD_GREATWOOD = new WandRod("greatwood", 50, new ItemStack(itemWandRod, 1, 0), 3);
-      WAND_ROD_OBSIDIAN = new WandRod("obsidian", 75, new ItemStack(itemWandRod, 1, 1), 6, new WandRodPrimalOnUpdate(Aspect.EARTH));
-      WAND_ROD_BLAZE = new WandRod("blaze", 75, new ItemStack(itemWandRod, 1, 6), 6, new WandRodPrimalOnUpdate(Aspect.FIRE));
-      WAND_ROD_ICE = new WandRod("ice", 75, new ItemStack(itemWandRod, 1, 3), 6, new WandRodPrimalOnUpdate(Aspect.WATER));
-      WAND_ROD_QUARTZ = new WandRod("quartz", 75, new ItemStack(itemWandRod, 1, 4), 6, new WandRodPrimalOnUpdate(Aspect.ORDER));
-      WAND_ROD_BONE = new WandRod("bone", 75, new ItemStack(itemWandRod, 1, 7), 6, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
-      WAND_ROD_REED = new WandRod("reed", 75, new ItemStack(itemWandRod, 1, 5), 6, new WandRodPrimalOnUpdate(Aspect.AIR));
-      WAND_ROD_SILVERWOOD = new WandRod("silverwood", 100, new ItemStack(itemWandRod, 1, 2), 9);
-      WAND_ROD_BLAZE.setGlowing(true);
-      STAFF_ROD_GREATWOOD = new StaffRod("greatwood", 125, new ItemStack(itemWandRod, 1, 50), 8);
-      STAFF_ROD_OBSIDIAN = new StaffRod("obsidian", 175, new ItemStack(itemWandRod, 1, 51), 14, new WandRodPrimalOnUpdate(Aspect.EARTH));
-      STAFF_ROD_BLAZE = new StaffRod("blaze", 175, new ItemStack(itemWandRod, 1, 56), 14, new WandRodPrimalOnUpdate(Aspect.FIRE));
-      STAFF_ROD_ICE = new StaffRod("ice", 175, new ItemStack(itemWandRod, 1, 53), 14, new WandRodPrimalOnUpdate(Aspect.WATER));
-      STAFF_ROD_QUARTZ = new StaffRod("quartz", 175, new ItemStack(itemWandRod, 1, 54), 14, new WandRodPrimalOnUpdate(Aspect.ORDER));
-      STAFF_ROD_BONE = new StaffRod("bone", 175, new ItemStack(itemWandRod, 1, 57), 14, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
-      STAFF_ROD_REED = new StaffRod("reed", 175, new ItemStack(itemWandRod, 1, 55), 14, new WandRodPrimalOnUpdate(Aspect.AIR));
-      STAFF_ROD_SILVERWOOD = new StaffRod("silverwood", 250, new ItemStack(itemWandRod, 1, 52), 24);
-      STAFF_ROD_PRIMAL = new StaffRod("primal", 250, new ItemStack(itemWandRod, 1, 100), 32, new WandRodPrimalOnUpdate());
+//      WAND_CAP_IRON = new WandCap("iron", 1.1F, new ItemStack(itemWandCap, 1, 0), 1);
+//      WAND_CAP_GOLD = new WandCap("gold", 1.0F, new ItemStack(itemWandCap, 1, 1), 3);
+//      WAND_CAP_THAUMIUM = new WandCap("thaumium", 0.9F, new ItemStack(itemWandCap, 1, 2), 6);
+//      WAND_CAP_VOID = new WandCap("void", 0.8F, new ItemStack(itemWandCap, 1, 7), 9);
+//      WAND_ROD_WOOD = new WandRod("wood", 25, new ItemStack(Items.stick), 1);
+
+//      WAND_ROD_GREATWOOD = new WandRod("greatwood", 50, new ItemStack(itemWandRod, 1, 0), 3);
+//      WAND_ROD_OBSIDIAN = new WandRod("obsidian", 75, new ItemStack(itemWandRod, 1, 1), 6, new WandRodPrimalOnUpdate(Aspect.EARTH));
+//      WAND_ROD_BLAZE = new WandRod("blaze", 75, new ItemStack(itemWandRod, 1, 6), 6, new WandRodPrimalOnUpdate(Aspect.FIRE));
+//      WAND_ROD_ICE = new WandRod("ice", 75, new ItemStack(itemWandRod, 1, 3), 6, new WandRodPrimalOnUpdate(Aspect.WATER));
+//      WAND_ROD_QUARTZ = new WandRod("quartz", 75, new ItemStack(itemWandRod, 1, 4), 6, new WandRodPrimalOnUpdate(Aspect.ORDER));
+//      WAND_ROD_BONE = new WandRod("bone", 75, new ItemStack(itemWandRod, 1, 7), 6, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
+//      WAND_ROD_REED = new WandRod("reed", 75, new ItemStack(itemWandRod, 1, 5), 6, new WandRodPrimalOnUpdate(Aspect.AIR));
+//      WAND_ROD_SILVERWOOD = new WandRod("silverwood", 100, new ItemStack(itemWandRod, 1, 2), 9);
+//      WAND_ROD_BLAZE.setGlowing(true);
+
+//      STAFF_ROD_GREATWOOD = new StaffRod("greatwood", 125, new ItemStack(itemWandRod, 1, 50), 8);
+//      STAFF_ROD_OBSIDIAN = new StaffRod("obsidian", 175, new ItemStack(itemWandRod, 1, 51), 14, new WandRodPrimalOnUpdate(Aspect.EARTH));
+//      STAFF_ROD_BLAZE = new StaffRod("blaze", 175, new ItemStack(itemWandRod, 1, 56), 14, new WandRodPrimalOnUpdate(Aspect.FIRE));
+//      STAFF_ROD_ICE = new StaffRod("ice", 175, new ItemStack(itemWandRod, 1, 53), 14, new WandRodPrimalOnUpdate(Aspect.WATER));
+//      STAFF_ROD_QUARTZ = new StaffRod("quartz", 175, new ItemStack(itemWandRod, 1, 54), 14, new WandRodPrimalOnUpdate(Aspect.ORDER));
+//      STAFF_ROD_BONE = new StaffRod("bone", 175, new ItemStack(itemWandRod, 1, 57), 14, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
+//      STAFF_ROD_REED = new StaffRod("reed", 175, new ItemStack(itemWandRod, 1, 55), 14, new WandRodPrimalOnUpdate(Aspect.AIR));
+//      STAFF_ROD_SILVERWOOD = new StaffRod("silverwood", 250, new ItemStack(itemWandRod, 1, 52), 24);
+//      STAFF_ROD_PRIMAL = new StaffRod("primal", 250, new ItemStack(itemWandRod, 1, 100), 32, new WandRodPrimalOnUpdate());
       STAFF_ROD_PRIMAL.setRunes(true);
       STAFF_ROD_BLAZE.setGlowing(true);
    }
 
    public static void postInit() {
       if (Config.foundCopperIngot) {
-         WAND_CAP_COPPER = new WandCap("copper", 1.1F, Arrays.asList(Aspect.ORDER, Aspect.ENTROPY), 1.0F, new ItemStack(itemWandCap, 1, 3), 2);
+//         WAND_CAP_COPPER = new WandCap("copper", 1.1F, Arrays.asList(Aspect.ORDER, Aspect.ENTROPY), 1.0F, new ItemStack(itemWandCap, 1, 3), 2);
       }
 
       if (Config.foundSilverIngot) {
-         WAND_CAP_SILVER = new WandCap("silver", 1.0F, Arrays.asList(Aspect.AIR, Aspect.EARTH, Aspect.FIRE, Aspect.WATER), 0.95F, new ItemStack(itemWandCap, 1, 4), 4);
+//         WAND_CAP_SILVER = new WandCap("silver", 1.0F, Arrays.asList(Aspect.AIR, Aspect.EARTH, Aspect.FIRE, Aspect.WATER), 0.95F, new ItemStack(itemWandCap, 1, 4), 4);
       }
-
    }
 
    private static void initializeItems() {
-      itemWandCasting = (new ItemWandCasting()).setUnlocalizedName("WandCasting");
-      GameRegistry.registerItem(itemWandCasting, "WandCasting", "Thaumcraft");
-      itemWandCap = (new ItemWandCap()).setUnlocalizedName("WandCap");
-      GameRegistry.registerItem(itemWandCap, "WandCap", "Thaumcraft");
-      itemWandRod = (new ItemWandRod()).setUnlocalizedName("WandRod");
-      GameRegistry.registerItem(itemWandRod, "WandRod", "Thaumcraft");
+      WandCastingItem = (new WandCastingItem()).setUnlocalizedName("WandCasting");
+      GameRegistry.registerItem(WandCastingItem, "WandCasting", "Thaumcraft");
+//      itemWandCap = (new ItemWandCap()).setUnlocalizedName("WandCap");
+//      GameRegistry.registerItem(itemWandCap, "WandCap", "Thaumcraft");
+//      itemWandRod = (new ItemWandRod()).setUnlocalizedName("WandRod");
+//      GameRegistry.registerItem(itemWandRod, "WandRod", "Thaumcraft");
       itemFocusPouch = (new ItemFocusPouchBauble()).setUnlocalizedName("FocusPouch");
       GameRegistry.registerItem(itemFocusPouch, "FocusPouch", "Thaumcraft");
       itemFocusFire = (new ItemFocusFire()).setUnlocalizedName("FocusFire");
@@ -282,8 +285,8 @@ public class ConfigItems {
       GameRegistry.registerItem(itemManaBean, "ItemManaBean", "Thaumcraft");
       itemWispEssence = (new ItemWispEssence()).setUnlocalizedName("ItemWispEssence");
       GameRegistry.registerItem(itemWispEssence, "ItemWispEssence", "Thaumcraft");
-      itemResource = (new ItemResource()).setUnlocalizedName("ItemResource");
-      GameRegistry.registerItem(itemResource, "ItemResource", "Thaumcraft");
+//      itemResource = (new ItemResource()).setUnlocalizedName("ItemResource");
+//      GameRegistry.registerItem(itemResource, "ItemResource", "Thaumcraft");
       itemShard = (new ItemShard()).setUnlocalizedName("ItemShard");
       GameRegistry.registerItem(itemShard, "ItemShard", "Thaumcraft");
       itemResearchNotes = (new ItemResearchNotes()).setUnlocalizedName("ItemResearchNotes");
@@ -292,8 +295,8 @@ public class ConfigItems {
       GameRegistry.registerItem(itemInkwell, "ItemInkwell", "Thaumcraft");
       itemThaumonomicon = (new ItemThaumonomicon()).setUnlocalizedName("ItemThaumonomicon");
       GameRegistry.registerItem(itemThaumonomicon, "ItemThaumonomicon", "Thaumcraft");
-      itemThaumometer = (new ItemThaumometer()).setUnlocalizedName("ItemThaumometer");
-      GameRegistry.registerItem(itemThaumometer, "ItemThaumometer", "Thaumcraft");
+//      itemThaumometer = (new ThaumometerItem()).setUnlocalizedName("ThaumometerItem");
+//      GameRegistry.registerItem(itemThaumometer, "ThaumometerItem", "Thaumcraft");
       itemGoggles = (new ItemGoggles(ThaumcraftApi.armorMatSpecial, 4, 0)).setUnlocalizedName("ItemGoggles");
       GameRegistry.registerItem(itemGoggles, "ItemGoggles", "Thaumcraft");
       itemHelmetThaumium = (new ItemThaumiumArmor(ThaumcraftApi.armorMatThaumium, 2, 0)).setUnlocalizedName("ItemHelmetThaumium");
@@ -406,8 +409,6 @@ public class ConfigItems {
       GameRegistry.registerItem(itemChestFortress, "ItemChestplateFortress", "Thaumcraft");
       itemLegsFortress = (new ItemFortressArmor(ThaumcraftApi.armorMatThaumiumFortress, 4, 2)).setUnlocalizedName("ItemLeggingsFortress");
       GameRegistry.registerItem(itemLegsFortress, "ItemLeggingsFortress", "Thaumcraft");
-      itemEldritchObject = (new ItemEldritchObject()).setUnlocalizedName("ItemEldritchObject");
-      GameRegistry.registerItem(itemEldritchObject, "ItemEldritchObject", "Thaumcraft");
       itemHelmetVoid = (new ItemVoidArmor(ThaumcraftApi.armorMatVoid, 2, 0)).setUnlocalizedName("ItemHelmetVoid");
       GameRegistry.registerItem(itemHelmetVoid, "ItemHelmetVoid", "Thaumcraft");
       itemChestVoid = (new ItemVoidArmor(ThaumcraftApi.armorMatVoid, 2, 1)).setUnlocalizedName("ItemChestplateVoid");

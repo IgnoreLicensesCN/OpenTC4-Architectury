@@ -6,16 +6,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +50,8 @@ public class ItemSpawnerEgg extends Item {
       return entityegginfo != null ? (layer == 0 ? entityegginfo.color1 : entityegginfo.color2) : 16777215;
    }
 
-   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-       if (!world.isRemote) {
+   public boolean onItemUse(ItemStack stack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+       if (Platform.getEnvironment() != Env.CLIENT) {
            Block block = world.getBlock(x, y, z);
            x += Facing.offsetsXForSide[side];
            y += Facing.offsetsYForSide[side];
@@ -76,19 +76,19 @@ public class ItemSpawnerEgg extends Item {
        return true;
    }
 
-   public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-       if (!world.isRemote) {
-           MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
-           if (movingobjectposition != null) {
-               if (movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
-                   int i = movingobjectposition.blockX;
-                   int j = movingobjectposition.blockY;
-                   int k = movingobjectposition.blockZ;
+   public ItemStack onItemRightClick(ItemStack stack, World world, Player player) {
+       if (Platform.getEnvironment() != Env.CLIENT) {
+           HitResult HitResult = this.getHitResultFromPlayer(world, player, true);
+           if (HitResult != null) {
+               if (HitResult.typeOfHit == MovingObjectType.BLOCK) {
+                   int i = HitResult.blockX;
+                   int j = HitResult.blockY;
+                   int k = HitResult.blockZ;
                    if (!world.canMineBlock(player, i, j, k)) {
                        return stack;
                    }
 
-                   if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
+                   if (!player.canPlayerEdit(i, j, k, HitResult.sideHit, stack)) {
                        return stack;
                    }
 
@@ -121,7 +121,7 @@ public class ItemSpawnerEgg extends Item {
             entity = EntityList.createEntityByName(((EntityEggStuff)spawnList.get(par1)).name, par0World);
             if (entity instanceof EntityLivingBase) {
                EntityLiving entityliving = (EntityLiving)entity;
-               entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+               entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0world.getRandom().nextFloat() * 360.0F), 0.0F);
                entityliving.rotationYawHead = entityliving.rotationYaw;
                entityliving.renderYawOffset = entityliving.rotationYaw;
                entityliving.onSpawnWithEgg(null);

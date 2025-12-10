@@ -7,9 +7,9 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelArcaneWorkbench;
@@ -22,7 +22,7 @@ public class TileDeconstructionTableRenderer extends TileEntitySpecialRenderer {
    ItemStack tm;
 
    public TileDeconstructionTableRenderer() {
-      this.tm = new ItemStack(ConfigItems.itemThaumometer);
+      this.tm = new ItemStack(ThaumcraftItems.THAUMOMETER);
    }
 
    public void renderTileEntityAt(TileDeconstructionTable table, double par2, double par4, double par6, float par8) {
@@ -36,14 +36,14 @@ public class TileDeconstructionTableRenderer extends TileEntitySpecialRenderer {
       GL11.glPushMatrix();
       GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 0.92F, (float)par6 + 0.5F);
       GL11.glScaled(0.8, 0.8, 0.8);
-      EntityItem entityitem = new EntityItem(table.getWorldObj(), 0.0F, 0.0F, 0.0F, this.tm);
+      EntityItem entityitem = new EntityItem(table.getLevel(), 0.0F, 0.0F, 0.0F, this.tm);
       entityitem.hoverStart = 0.0F;
       RenderItem.renderInFrame = true;
       RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
       RenderItem.renderInFrame = false;
       GL11.glPopMatrix();
       float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
-      if (table != null && table.getWorldObj() != null && table.getStackInSlot(0) != null) {
+      if (table != null && table.getLevel() != null && table.getStackInSlot(0) != null) {
          GL11.glPushMatrix();
          GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 1.15F, (float)par6 + 0.5F);
          GL11.glRotatef(ticks % 360.0F, 0.0F, 1.0F, 0.0F);
@@ -52,7 +52,7 @@ public class TileDeconstructionTableRenderer extends TileEntitySpecialRenderer {
          GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
          ItemStack is = table.getStackInSlot(0).copy();
          is.stackSize = 1;
-         entityitem = new EntityItem(table.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
+         entityitem = new EntityItem(table.getLevel(), 0.0F, 0.0F, 0.0F, is);
          entityitem.hoverStart = MathHelper.sin(ticks / 14.0F) * 0.2F + 0.2F;
          RenderItem.renderInFrame = true;
          RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
@@ -61,7 +61,7 @@ public class TileDeconstructionTableRenderer extends TileEntitySpecialRenderer {
          GL11.glPopMatrix();
       }
 
-      if (table != null && table.getWorldObj() != null && table.aspect != null) {
+      if (table != null && table.getLevel() != null && table.aspect != null) {
          GL11.glPushMatrix();
          GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 1.081F, (float)par6 + 0.5F);
          GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);

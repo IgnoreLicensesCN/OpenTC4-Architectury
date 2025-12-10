@@ -3,10 +3,10 @@ package thaumcraft.common.items.armor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
@@ -54,6 +54,6 @@ public class ItemThaumiumArmor extends ItemArmor implements IRepairable, IRunicA
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 2)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 }

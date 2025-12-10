@@ -2,33 +2,34 @@ package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.EntityUtils;
 
+import java.util.ArrayList;
+
 public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
    private ChunkCoordinates currentFlightTarget;
    public int damBonus = 0;
    public ArrayList swarm = new ArrayList<>();
 
-   public EntityTaintSwarm(World par1World) {
+   public EntityTaintSwarm(Level par1World) {
       super(par1World);
       this.setSize(2.0F, 2.0F);
    }
@@ -102,7 +103,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
    public void onUpdate() {
       super.onUpdate();
       this.motionY *= 0.6F;
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          for(int a = 0; a < this.swarm.size(); ++a) {
             if (this.swarm.get(a) == null || ((Entity)this.swarm.get(a)).isDead) {
                this.swarm.remove(a);
@@ -111,7 +112,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
          }
 
          if (this.swarm.size() < Math.max(Thaumcraft.proxy.particleCount(25), 10)) {
-            this.swarm.add(Thaumcraft.proxy.swarmParticleFX(this.worldObj, this, 0.22F, 15.0F, 0.08F));
+            this.swarm.add(Thaumcraft.proxy.swarmParticleFX(this.level(), this, 0.22F, 15.0F, 0.08F));
          }
       }
 
@@ -124,7 +125,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
             this.attackEntityFrom(DamageSource.generic, 5.0F);
          }
 
-         if (this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1 || this.currentFlightTarget.posY > this.worldObj.getHeightValue(this.currentFlightTarget.posX, this.currentFlightTarget.posZ) + 8 || this.worldObj.getBiomeGenForCoords(this.currentFlightTarget.posX, this.currentFlightTarget.posZ).biomeID != Config.biomeTaintID)) {
+         if (this.currentFlightTarget != null && (!this.level().isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1 || this.currentFlightTarget.posY > this.level().getHeightValue(this.currentFlightTarget.posX, this.currentFlightTarget.posZ) + 8 || this.level().getBiomeGenForCoords(this.currentFlightTarget.posX, this.currentFlightTarget.posZ).biomeID != Config.biomeTaintID)) {
             this.currentFlightTarget = null;
          }
 
@@ -155,7 +156,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
          this.rotationYaw += var8;
       }
 
-      if (this.entityToAttack instanceof EntityPlayer && ((EntityPlayer)this.entityToAttack).capabilities.disableDamage) {
+      if (this.entityToAttack instanceof Player && ((Player)this.entityToAttack).capabilities.disableDamage) {
          this.entityToAttack = null;
       }
 
@@ -193,7 +194,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
          double mx = par1Entity.motionX;
          double my = par1Entity.motionY;
          double mz = par1Entity.motionZ;
-         if (this.attackEntityAsMob(par1Entity) && !this.worldObj.isRemote && par1Entity instanceof EntityLivingBase) {
+         if (this.attackEntityAsMob(par1Entity) && Platform.getEnvironment() != Env.CLIENT && par1Entity instanceof EntityLivingBase) {
             ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.weakness.id, 100, 0));
          }
 
@@ -201,14 +202,14 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
          par1Entity.motionX = mx;
          par1Entity.motionY = my;
          par1Entity.motionZ = mz;
-         this.worldObj.playSoundAtEntity(this, "thaumcraft:swarmattack", 0.3F, 0.9F + this.worldObj.rand.nextFloat() * 0.2F);
+         this.level().playSoundAtEntity(this, "thaumcraft:swarmattack", 0.3F, 0.9F + this.level().rand.nextFloat() * 0.2F);
       }
 
    }
 
    protected Entity findPlayerToAttack() {
       double var1 = 12.0F;
-      return this.getIsSummoned() ? null : this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
+      return this.getIsSummoned() ? null : this.level().getClosestVulnerablePlayerToEntity(this, var1);
    }
 
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -227,7 +228,7 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
       int var1 = MathHelper.floor_double(this.boundingBox.minY);
       int var2 = MathHelper.floor_double(this.posX);
       int var3 = MathHelper.floor_double(this.posZ);
-      int var4 = this.worldObj.getBlockLightValue(var2, var1, var3);
+      int var4 = this.level().getBlockLightValue(var2, var1, var3);
       byte var5 = 7;
       return var4 <= this.rand.nextInt(var5) && super.getCanSpawnHere();
    }
@@ -241,8 +242,8 @@ public class EntityTaintSwarm extends EntityMob implements ITaintedMob {
    }
 
    protected void dropFewItems(boolean flag, int i) {
-      if (this.worldObj.rand.nextBoolean()) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+      if (this.level().rand.nextBoolean()) {
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
       }
 
    }

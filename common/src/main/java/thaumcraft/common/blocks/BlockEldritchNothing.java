@@ -5,16 +5,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.tiles.TileEldritchNothing;
 
@@ -42,7 +42,7 @@ public class BlockEldritchNothing extends Block {
       return this.icon;
    }
 
-   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+   public ItemStack getPickBlock(HitResult target, World world, int x, int y, int z) {
       return null;
    }
 
@@ -81,7 +81,7 @@ public class BlockEldritchNothing extends Block {
    }
 
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-      if (entity.ticksExisted > 20 && (!(entity instanceof EntityPlayer) || !((EntityPlayer)entity).capabilities.isCreativeMode)) {
+      if (entity.ticksExisted > 20 && (!(entity instanceof Player) || !((Player)entity).capabilities.isCreativeMode)) {
          entity.attackEntityFrom(DamageSource.outOfWorld, 8.0F);
       }
 

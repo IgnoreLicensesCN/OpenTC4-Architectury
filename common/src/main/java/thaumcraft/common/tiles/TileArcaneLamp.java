@@ -13,20 +13,20 @@ public class TileArcaneLamp extends TileThaumcraft {
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote) {
-         int x = this.xCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
-         int y = this.yCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
-         int z = this.zCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
-         if (y > this.worldObj.getHeightValue(x, z) + 4) {
-            y = this.worldObj.getHeightValue(x, z) + 4;
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         int x = this.xCoord + this.level().rand.nextInt(16) - this.level().rand.nextInt(16);
+         int y = this.yCoord + this.level().rand.nextInt(16) - this.level().rand.nextInt(16);
+         int z = this.zCoord + this.level().rand.nextInt(16) - this.level().rand.nextInt(16);
+         if (y > this.level().getHeightValue(x, z) + 4) {
+            y = this.level().getHeightValue(x, z) + 4;
          }
 
          if (y < 5) {
             y = 5;
          }
 
-         if (this.worldObj.isAirBlock(x, y, z) && this.worldObj.getBlock(x, y, z) != ConfigBlocks.blockAiry && this.worldObj.getBlockLightValue(x, y, z) < 9) {
-            this.worldObj.setBlock(x, y, z, ConfigBlocks.blockAiry, 3, 3);
+         if (this.level().isAirBlock(x, y, z) && this.level().getBlock(x, y, z) != ConfigBlocks.blockAiry && this.level().getBlockLightValue(x, y, z) < 9) {
+            this.level().setBlock(x, y, z, ConfigBlocks.blockAiry, 3, 3);
          }
       }
 
@@ -44,8 +44,8 @@ public class TileArcaneLamp extends TileThaumcraft {
       for(int x = -15; x <= 15; ++x) {
          for(int y = -15; y <= 15; ++y) {
             for(int z = -15; z <= 15; ++z) {
-               if (this.worldObj.getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z) == ConfigBlocks.blockAiry && this.worldObj.getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z) == 3) {
-                  this.worldObj.setBlockToAir(this.xCoord + x, this.yCoord + y, this.zCoord + z);
+               if (this.level().getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z) == ConfigBlocks.blockAiry && this.level().getBlockMetadata(this.xCoord + x, this.yCoord + y, this.zCoord + z) == 3) {
+                  this.level().setBlockToAir(this.xCoord + x, this.yCoord + y, this.zCoord + z);
                }
             }
          }

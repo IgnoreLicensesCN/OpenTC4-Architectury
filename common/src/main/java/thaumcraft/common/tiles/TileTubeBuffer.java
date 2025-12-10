@@ -1,12 +1,12 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -74,7 +74,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       } else if (this.aspects.visSize() < 8) {
          this.aspects.add(tt, am);
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return 0;
       } else {
          return am;
@@ -85,7 +85,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       if (this.aspects.getAmount(tt) >= am) {
          this.aspects.remove(tt, am);
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return true;
       } else {
          return false;
@@ -144,7 +144,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    }
 
    public Aspect getEssentiaType(ForgeDirection loc) {
-      return this.aspects.size() > 0 ? this.aspects.getAspects()[this.worldObj.rand.nextInt(this.aspects.getAspects().length)] : null;
+      return this.aspects.size() > 0 ? this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)] : null;
    }
 
    public int getEssentiaAmount(ForgeDirection loc) {
@@ -158,7 +158,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
          TileEntity te = null;
          IEssentiaTransport ic = null;
          int suction = 0;
-         te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, face);
+         te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, face);
          if (te != null) {
             ic = (IEssentiaTransport)te;
             suction = ic.getSuctionAmount(face.getOpposite());
@@ -166,7 +166,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
 
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (this.canOutputTo(dir) && dir != face) {
-               te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir);
+               te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
                if (te != null) {
                   ic = (IEssentiaTransport)te;
                   int sa = ic.getSuctionAmount(dir.getOpposite());
@@ -196,7 +196,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
          this.getBellows();
       }
 
-      if (!this.worldObj.isRemote && this.count % 5 == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.count % 5 == 0) {
          int var10000 = this.aspects.visSize();
          this.getClass();
          if (var10000 < 8) {
@@ -211,7 +211,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       IEssentiaTransport ic = null;
 
       for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-         te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir);
+         te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
          if (te != null) {
             ic = (IEssentiaTransport)te;
             if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(dir) && this.getSuctionAmount(dir) >= ic.getMinimumSuction()) {
@@ -225,17 +225,17 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    }
 
    public void getBellows() {
-      this.bellows = TileBellows.getBellows(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
+      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
-      MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
+      HitResult hit = RayTracer.retraceBlock(world, player, x, y, z);
        if (hit != null) {
            if (hit.subHit >= 0 && hit.subHit < 6) {
                player.swingItem();
                if (player.isSneaking()) {
-                   player.worldObj.playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:squeek", 0.6F, 1.1F + world.rand.nextFloat() * 0.2F, false);
-                   if (!this.worldObj.isRemote) {
+                   player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:squeek", 0.6F, 1.1F + world.getRandom().nextFloat() * 0.2F, false);
+                   if (Platform.getEnvironment() != Env.CLIENT) {
                        ++this.chokedSides[hit.subHit];
                        if (this.chokedSides[hit.subHit] > 2) {
                            this.chokedSides[hit.subHit] = 0;
@@ -245,10 +245,10 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
                        world.markBlockForUpdate(x, y, z);
                    }
                } else {
-                   player.worldObj.playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+                   player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
                    this.openSides[hit.subHit] = !this.openSides[hit.subHit];
                    ForgeDirection dir = ForgeDirection.getOrientation(hit.subHit);
-                   TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+                   TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
                    if (tile instanceof TileTube) {
                        ((TileTube) tile).openSides[dir.getOpposite().ordinal()] = this.openSides[hit.subHit];
                        world.markBlockForUpdate(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
@@ -270,23 +270,23 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
        return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
-   public MovingObjectPosition rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, MovingObjectPosition fullblock) {
+   public HitResult rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, HitResult fullblock) {
       return fullblock;
    }
 
    private boolean canConnectSide(int side) {
       ForgeDirection dir = ForgeDirection.getOrientation(side);
-      TileEntity tile = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+      TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
       return tile instanceof IEssentiaTransport;
    }
 

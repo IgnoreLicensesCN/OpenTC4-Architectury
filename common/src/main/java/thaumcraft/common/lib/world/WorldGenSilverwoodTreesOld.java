@@ -1,13 +1,13 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.Random;
@@ -15,7 +15,7 @@ import java.util.Random;
 public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
    static final byte[] otherCoordPairs = new byte[]{2, 0, 0, 1, 2, 1};
    Random rand = new Random();
-   World worldObj;
+   Level worldObj;
    int[] basePos = new int[]{0, 0, 0};
    int heightLimit = 0;
    int height;
@@ -112,9 +112,9 @@ public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
             double var15 = Math.pow((double)Math.abs(var12) + (double)0.5F, 2.0F) + Math.pow((double)Math.abs(var13) + (double)0.5F, 2.0F);
              if (!(var15 > (double) (par4 * par4))) {
                  var11[var9] = var10[var9] + var13;
-                 Block block = this.worldObj.getBlock(var11[0], var11[1], var11[2]);
-                 if ((block == Blocks.air || block == ConfigBlocks.blockMagicalLeaves) && (block == null || block.canBeReplacedByLeaves(this.worldObj, var11[0], var11[1], var11[2]))) {
-                     this.setBlockAndNotifyAdequately(this.worldObj, var11[0], var11[1], var11[2], par6, 1);
+                 Block block = this.level().getBlock(var11[0], var11[1], var11[2]);
+                 if ((block == Blocks.air || block == ConfigBlocks.blockMagicalLeaves) && (block == null || block.canBeReplacedByLeaves(this.level(), var11[0], var11[1], var11[2]))) {
+                     this.setBlockAndNotifyAdequately(this.level(), var11[0], var11[1], var11[2], par6, 1);
                  }
 
              }
@@ -202,10 +202,10 @@ public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
             }
 
             if (this.rand.nextInt(50) == 0) {
-               this.setBlockAndNotifyAdequately(this.worldObj, var14[0], var14[1], var14[2], par3, var17 + 2);
-               ThaumcraftWorldGenerator.createRandomNodeAt(this.worldObj, var14[0], var14[1], var14[2], this.rand, true, false, false);
+               this.setBlockAndNotifyAdequately(this.level(), var14[0], var14[1], var14[2], par3, var17 + 2);
+               ThaumcraftWorldGenerator.createRandomNodeAt(this.level(), var14[0], var14[1], var14[2], this.rand, true, false, false);
             } else {
-               this.setBlockAndNotifyAdequately(this.worldObj, var14[0], var14[1], var14[2], par3, var17 + 1);
+               this.setBlockAndNotifyAdequately(this.level(), var14[0], var14[1], var14[2], par3, var17 + 1);
             }
          }
       }
@@ -300,7 +300,7 @@ public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
             var13[var5] = par1ArrayOfInteger[var5] + var14;
             var13[var6] = MathHelper.floor_double((double)par1ArrayOfInteger[var6] + (double)var14 * var9);
             var13[var7] = MathHelper.floor_double((double)par1ArrayOfInteger[var7] + (double)var14 * var11);
-            Block var16 = this.worldObj.getBlock(var13[0], var13[1], var13[2]);
+            Block var16 = this.level().getBlock(var13[0], var13[1], var13[2]);
             if (var16 != Blocks.air && var16 != ConfigBlocks.blockMagicalLeaves) {
                break;
             }
@@ -313,8 +313,8 @@ public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
    boolean validTreeLocation(int x, int z) {
       int[] var1 = new int[]{this.basePos[0] + x, this.basePos[1], this.basePos[2] + z};
       int[] var2 = new int[]{this.basePos[0] + x, this.basePos[1] + this.heightLimit - 1, this.basePos[2] + z};
-      Block var3 = this.worldObj.getBlock(this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z);
-      boolean isSoil = var3.canSustainPlant(this.worldObj, this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z, ForgeDirection.UP, (BlockSapling)Blocks.sapling);
+      Block var3 = this.level().getBlock(this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z);
+      boolean isSoil = var3.canSustainPlant(this.level(), this.basePos[0] + x, this.basePos[1] - 1, this.basePos[2] + z, Direction.UP, (BlockSapling)Blocks.sapling);
       if (!isSoil) {
          return false;
       } else {
@@ -333,8 +333,8 @@ public class WorldGenSilverwoodTreesOld extends WorldGenAbstractTree {
    public void setScale(double par1, double par3, double par5) {
    }
 
-   public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
-      this.worldObj = par1World;
+   public boolean generate(Level par1World, Random par2Random, int par3, int par4, int par5) {
+      this.level() = par1World;
       long var6 = par2Random.nextLong();
       this.rand.setSeed(var6);
       this.basePos[0] = par3;

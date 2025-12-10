@@ -1,16 +1,17 @@
 package thaumcraft.client.renderers.entity;
 
-import java.util.Random;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.entities.EntitySpecialItem;
+
+import java.util.Random;
 
 public class RenderFollowingItem extends Render {
    private RenderBlocks renderBlocks = new RenderBlocks();
@@ -29,7 +30,7 @@ public class RenderFollowingItem extends Render {
       ri.setRenderManager(RenderManager.instance);
       ItemStack var10 = par1EntityItem.getEntityItem();
       if (var10 != null) {
-         EntityItem ei = new EntityItem(par1EntityItem.worldObj, par1EntityItem.posX, par1EntityItem.posY, par1EntityItem.posZ, var10);
+         EntityItem ei = new EntityItem(par1EntityItem.level(), par1EntityItem.posX, par1EntityItem.posY, par1EntityItem.posZ, var10);
          ei.age = par1EntityItem.age;
          ei.hoverStart = par1EntityItem.hoverStart;
          ri.doRender(ei, par2, par4, par6, par8, pticks);

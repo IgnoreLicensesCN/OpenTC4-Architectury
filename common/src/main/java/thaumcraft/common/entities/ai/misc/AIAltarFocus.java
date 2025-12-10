@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.misc;
 
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityCultistCleric;
 
@@ -11,7 +11,7 @@ public class AIAltarFocus extends EntityAIBase {
 
    public AIAltarFocus(EntityCultistCleric par1EntityLiving) {
       this.entity = par1EntityLiving;
-      this.world = par1EntityLiving.worldObj;
+      this.world = par1EntityLiving.level();
       this.setMutexBits(7);
    }
 

@@ -1,12 +1,12 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 
 import java.util.Random;
 
 public class Gen2x2 extends GenCommon {
-   static void generateUpperLeft(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateUpperLeft(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -52,19 +52,19 @@ public class Gen2x2 extends GenCommon {
       }
 
       for(int g = 4; g <= 15; ++g) {
-         placeBlock(world, x + g, y + 2, z + 4, 10, ForgeDirection.NORTH, cell);
-         placeBlock(world, x + g, y + 10, z + 4, 11, ForgeDirection.NORTH, cell);
+         placeBlock(world, x + g, y + 2, z + 4, 10, Direction.NORTH, cell);
+         placeBlock(world, x + g, y + 10, z + 4, 11, Direction.NORTH, cell);
       }
 
       for(int g = 4; g <= 15; ++g) {
-         placeBlock(world, x + 4, y + 2, z + g, 10, ForgeDirection.WEST, cell);
-         placeBlock(world, x + 4, y + 10, z + g, 11, ForgeDirection.WEST, cell);
+         placeBlock(world, x + 4, y + 2, z + g, 10, Direction.WEST, cell);
+         placeBlock(world, x + 4, y + 10, z + g, 11, Direction.WEST, cell);
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
    }
 
-   static void generateUpperRight(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateUpperRight(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -110,19 +110,19 @@ public class Gen2x2 extends GenCommon {
       }
 
       for(int g = 0; g <= 11; ++g) {
-         placeBlock(world, x + g, y + 2, z + 4, 10, ForgeDirection.NORTH, cell);
-         placeBlock(world, x + g, y + 10, z + 4, 11, ForgeDirection.NORTH, cell);
+         placeBlock(world, x + g, y + 2, z + 4, 10, Direction.NORTH, cell);
+         placeBlock(world, x + g, y + 10, z + 4, 11, Direction.NORTH, cell);
       }
 
       for(int g = 4; g <= 15; ++g) {
-         placeBlock(world, x + 12, y + 2, z + g, 10, ForgeDirection.EAST, cell);
-         placeBlock(world, x + 12, y + 10, z + g, 11, ForgeDirection.EAST, cell);
+         placeBlock(world, x + 12, y + 2, z + g, 10, Direction.EAST, cell);
+         placeBlock(world, x + 12, y + 10, z + g, 11, Direction.EAST, cell);
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
    }
 
-   static void generateLowerLeft(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateLowerLeft(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -168,19 +168,19 @@ public class Gen2x2 extends GenCommon {
       }
 
       for(int g = 4; g <= 15; ++g) {
-         placeBlock(world, x + g, y + 2, z + 12, 10, ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + g, y + 10, z + 12, 11, ForgeDirection.SOUTH, cell);
+         placeBlock(world, x + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
+         placeBlock(world, x + g, y + 10, z + 12, 11, Direction.SOUTH, cell);
       }
 
       for(int g = 0; g <= 11; ++g) {
-         placeBlock(world, x + 4, y + 2, z + g, 10, ForgeDirection.WEST, cell);
-         placeBlock(world, x + 4, y + 10, z + g, 11, ForgeDirection.WEST, cell);
+         placeBlock(world, x + 4, y + 2, z + g, 10, Direction.WEST, cell);
+         placeBlock(world, x + 4, y + 10, z + g, 11, Direction.WEST, cell);
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
    }
 
-   static void generateLowerRight(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateLowerRight(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -226,13 +226,13 @@ public class Gen2x2 extends GenCommon {
       }
 
       for(int g = 0; g <= 11; ++g) {
-         placeBlock(world, x + g, y + 2, z + 12, 10, ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + g, y + 10, z + 12, 11, ForgeDirection.SOUTH, cell);
+         placeBlock(world, x + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
+         placeBlock(world, x + g, y + 10, z + 12, 11, Direction.SOUTH, cell);
       }
 
       for(int g = 0; g <= 12; ++g) {
-         placeBlock(world, x + 12, y + 2, z + g, 10, ForgeDirection.EAST, cell);
-         placeBlock(world, x + 12, y + 10, z + g, 11, ForgeDirection.EAST, cell);
+         placeBlock(world, x + 12, y + 2, z + g, 10, Direction.EAST, cell);
+         placeBlock(world, x + 12, y + 10, z + g, 11, Direction.EAST, cell);
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);

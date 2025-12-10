@@ -6,9 +6,9 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXVisSparkle;
 import thaumcraft.common.Thaumcraft;
 
@@ -58,11 +58,12 @@ public class PacketFXVisDrain implements IMessage, IMessageHandler<PacketFXVisDr
 
    @SideOnly(Side.CLIENT)
    public IMessage onMessage(PacketFXVisDrain message, MessageContext ctx) {
-      World worldObj = Thaumcraft.proxy.getClientWorld();
-      FXVisSparkle fb = new FXVisSparkle(worldObj, (double)message.dx + 0.4 + (double)(worldObj.rand.nextFloat() * 0.2F), (double)message.dy + 0.4 + (double)(worldObj.rand.nextFloat() * 0.2F), (double)message.dz + 0.4 + (double)(worldObj.rand.nextFloat() * 0.2F), (float)message.x + worldObj.rand.nextFloat(), (float)message.y + worldObj.rand.nextFloat(), (float)message.z + worldObj.rand.nextFloat());
+      Level worldObj = Thaumcraft.getClientWorld();
+      FXVisSparkle fb = new FXVisSparkle(worldObj, (double)message.dx + 0.4 + (double)(getRandom().nextFloat() * 0.2F), (double)message.dy + 0.4 + (double)(getRandom().nextFloat() * 0.2F), (double)message.dz + 0.4 + (double)(getRandom().nextFloat() * 0.2F), (float)message.x + getRandom().nextFloat(), (float)message.y + getRandom().nextFloat(), (float)message.z + getRandom().nextFloat());
       Color c = new Color(message.color);
       fb.setRBGColorF((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F);
-      ParticleEngine.instance.addEffect(worldObj, fb);
+      Minecraft.getInstance().particleEngine.add(fb);
+
       return null;
    }
 }

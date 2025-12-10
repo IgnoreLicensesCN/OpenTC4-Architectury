@@ -1,13 +1,13 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public class ContainerHoverHarness extends Container {
    private World worldObj;
@@ -16,11 +16,11 @@ public class ContainerHoverHarness extends Container {
    private int posZ;
    public IInventory input = new InventoryHoverHarness(this);
    ItemStack armor = null;
-   EntityPlayer player = null;
+   Player player = null;
    private int blockSlot;
 
    public ContainerHoverHarness(InventoryPlayer iinventory, World par2World, int par3, int par4, int par5) {
-      this.worldObj = par2World;
+      this.level() = par2World;
       this.posX = par3;
       this.posY = par4;
       this.posZ = par5;
@@ -29,7 +29,7 @@ public class ContainerHoverHarness extends Container {
       this.blockSlot = iinventory.currentItem + 28;
       this.addSlotToContainer(new Slot(this.input, 0, 80, 32));
       this.bindPlayerInventory(iinventory);
-      if (!par2World.isRemote) {
+      if (!(Platform.getEnvironment() == Env.CLIENT)) {
          try {
             ItemStack jar = ItemStack.loadItemStackFromNBT(this.armor.stackTagCompound.getCompoundTag("jar"));
             this.input.setInventorySlotContents(0, jar);
@@ -53,7 +53,7 @@ public class ContainerHoverHarness extends Container {
 
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       if (slot == this.blockSlot) {
          return null;
       } else {
@@ -81,16 +81,16 @@ public class ContainerHoverHarness extends Container {
       }
    }
 
-   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
+   public ItemStack slotClick(int par1, int par2, int par3, Player par4Player) {
       if (par1 == this.blockSlot) {
          return null;
       } else {
-         InventoryPlayer inventoryplayer = par4EntityPlayer.inventory;
-         return par1 == 0 && !this.input.isItemValidForSlot(par1, inventoryplayer.getItemStack()) && (par1 != 0 || inventoryplayer.getItemStack() != null) ? null : super.slotClick(par1, par2, par3, par4EntityPlayer);
+         InventoryPlayer inventoryplayer = par4Player.inventory;
+         return par1 == 0 && !this.input.isItemValidForSlot(par1, inventoryplayer.getItemStack()) && (par1 != 0 || inventoryplayer.getItemStack() != null) ? null : super.slotClick(par1, par2, par3, par4Player);
       }
    }
 
-   public boolean canInteractWith(EntityPlayer var1) {
+   public boolean canInteractWith(Player var1) {
       return true;
    }
 
@@ -101,8 +101,8 @@ public class ContainerHoverHarness extends Container {
 
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      if (!this.worldObj.isRemote) {
+   public void onContainerClosed(Player par1Player) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          ItemStack var3 = this.input.getStackInSlotOnClosing(0);
          if (var3 != null) {
             NBTTagCompound var4 = new NBTTagCompound();

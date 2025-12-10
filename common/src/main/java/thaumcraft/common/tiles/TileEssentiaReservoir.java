@@ -1,10 +1,10 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -85,7 +85,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
            }
 
            if (space > 0) {
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                this.markDirty();
            }
 
@@ -96,7 +96,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.essentia.getAmount(tt) >= am) {
          this.essentia.remove(tt, am);
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
       } else {
@@ -180,15 +180,15 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    public void updateEntity() {
       super.updateEntity();
       ++this.count;
-      if (!this.worldObj.isRemote && this.count % 5 == 0 && this.essentia.visSize() < this.maxAmount) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.count % 5 == 0 && this.essentia.visSize() < this.maxAmount) {
          this.fillReservoir();
       }
 
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          int vs = this.essentia.visSize();
          if (vs > 0) {
-            if (this.worldObj.rand.nextInt(500 - vs) == 0) {
-               this.worldObj.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:creak", 1.0F, 1.4F + this.worldObj.rand.nextFloat() * 0.2F, false);
+            if (this.level().rand.nextInt(500 - vs) == 0) {
+               this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:creak", 1.0F, 1.4F + this.level().rand.nextFloat() * 0.2F, false);
             }
 
             if (this.count % 20 == 0 && this.essentia.size() > 0) {
@@ -216,7 +216,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    }
 
    void fillReservoir() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.facing);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
          if (!ic.canOutputTo(this.facing.getOpposite())) {
@@ -235,26 +235,26 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
 
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
       if (player.isSneaking()) {
          this.facing = ForgeDirection.getOrientation(side);
       } else {
          this.facing = ForgeDirection.getOrientation(side).getOpposite();
       }
 
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       player.swingItem();
       this.markDirty();
       return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 }

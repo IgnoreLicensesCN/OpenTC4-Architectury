@@ -1,10 +1,15 @@
 package thaumcraft.api.expands.worldgen.node.consts;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import com.linearity.opentc4.utils.vanilla1710.BlockUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.expands.worldgen.node.listeners.NodeAspectGenerator;
@@ -13,8 +18,6 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
 import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.basicAspects;
@@ -23,14 +26,16 @@ import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.complex
 public class NodeAspectGenerators {
     public static final NodeAspectGenerator DEFAULT_ASPECT_GENERATOR = new NodeAspectGenerator(0) {
         @Override
-        @ParametersAreNonnullByDefault
-        public AspectList getNodeAspects(World world,
+        
+        public AspectList getNodeAspects(Level world,
                                          int x, int y, int z,
                                          Random random, boolean silverwood, boolean eerie, boolean small, AspectList previous,
                                          NodeType type,@Nullable NodeModifier modifier
                                          ) {
-            BiomeGenBase bg = world.getBiomeGenForCoords(x, z);
-            int baura = BiomeHandler.getBiomeAura(bg);
+            BlockPos pos = new BlockPos(x, y, z);
+            Holder<Biome> biomeHolder = world.getBiome(pos);
+
+            int baura = BiomeHandler.getBiomeAura(biomeHolder.value());
             if (type == NodeType.TAINTED) {
 
                 baura = (int) ((float) baura * 1.5F);
@@ -41,7 +46,7 @@ public class NodeAspectGenerators {
             }
 
             int value = random.nextInt(baura / 2) + baura / 2;
-            Aspect aspectFromBiome = BiomeHandler.getRandomBiomeTag(bg.biomeID, random);
+            Aspect aspectFromBiome = BiomeHandler.getRandomBiomeTag(biomeHolder.value(), random);
             if (aspectFromBiome != null) {
                 previous.add(aspectFromBiome, 2);
             } else {
@@ -102,16 +107,17 @@ public class NodeAspectGenerators {
                     for (int yy = -5; yy <= 5; ++yy) {
                         for (int zz = -5; zz <= 5; ++zz) {
                             try {
-                                Block bi = world.getBlock(x + xx, y + yy, z + zz);
-                                if (bi.getMaterial() == Material.water) {
+                                BlockState bi = world.getBlockState(new BlockPos(x + xx, y + yy, z + zz));
+                                FluidState fb = bi.getFluidState();
+                                if (fb.is(Fluids.WATER) || fb.is(Fluids.FLOWING_WATER)) {
                                     ++water;
-                                } else if (bi.getMaterial() == Material.lava) {
+                                } else if (fb.is(Fluids.LAVA) || fb.is(Fluids.FLOWING_LAVA)) {
                                     ++lava;
-                                } else if (bi == Blocks.stone) {
+                                } else if (bi.is(Blocks.STONE)) {
                                     ++stone;
                                 }
 
-                                if (bi.isFoliage(world, x + xx, y + yy, z + zz)) {
+                                if (BlockUtils.isFoliage(bi)) {
                                     ++foliage;
                                 }
                             } catch (Exception ignored) {

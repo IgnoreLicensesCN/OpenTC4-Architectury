@@ -2,9 +2,9 @@ package thaumcraft.common.lib.world.dim;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.world.level.ChunkPos;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.WorldChunkManagerHell;
 import net.minecraft.world.chunk.Chunk;
@@ -62,7 +62,7 @@ public class WorldProviderOuter extends WorldProvider {
 
    @Override
    public IChunkProvider createChunkGenerator() {
-      return new ChunkProviderOuter(this.worldObj, this.worldObj.getSeed(), true);
+      return new ChunkProviderOuter(this.level(), this.level().getSeed(), true);
    }
 
    @Override
@@ -95,7 +95,7 @@ public class WorldProviderOuter extends WorldProvider {
       f3 *= f2 * 0.0F + 0.15F;
       f4 *= f2 * 0.0F + 0.15F;
       f5 *= f2 * 0.0F + 0.15F;
-      return Vec3.createVectorHelper(f3, f4, f5);
+      return new Vec3(f3, f4, f5);
    }
 
    @Override
@@ -122,11 +122,11 @@ public class WorldProviderOuter extends WorldProvider {
 
    @Override
    public boolean canCoordinateBeSpawn(int p_76566_1_, int p_76566_2_) {
-      return this.worldObj.getTopBlock(p_76566_1_, p_76566_2_).getMaterial().blocksMovement();
+      return this.level().getTopBlock(p_76566_1_, p_76566_2_).getMaterial().blocksMovement();
    }
 
    @Override
-   public ChunkCoordinates getEntrancePortalLocation() {
+   public ChunkPos getEntrancePortalLocation() {
        return super.getEntrancePortalLocation();
    }
 

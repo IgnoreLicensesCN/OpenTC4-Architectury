@@ -1,6 +1,6 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 
@@ -20,7 +20,7 @@ public class SlotGhost extends Slot {
       return this.limit;
    }
 
-   public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+   public boolean canTakeStack(Player par1Player) {
       return false;
    }
 }

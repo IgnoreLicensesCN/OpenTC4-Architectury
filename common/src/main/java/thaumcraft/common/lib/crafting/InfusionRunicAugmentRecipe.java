@@ -1,10 +1,9 @@
 package thaumcraft.common.lib.crafting;
 
-import net.minecraft.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.world.World;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -15,26 +14,30 @@ import thaumcraft.common.lib.events.EventHandlerRunic;
 
 import java.util.ArrayList;
 
-public class InfusionRunicAugmentRecipe extends InfusionRecipe {
+import static com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils.ignoresDamage;
+import static com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils.setIgnoresDamage;
+
+//TODO:Impl with current API
+public class InfusionRunicAugmentRecipe /*extends InfusionRecipe*/ {
    private ItemStack[] components;
 
    public InfusionRunicAugmentRecipe() {
-      super("RUNICAUGMENTATION", null, 0, null, null, new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ConfigItems.itemResource, 1, 14)});
+      super("RUNICAUGMENTATION", null, 0, null, null, new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1)});
    }
 
    public InfusionRunicAugmentRecipe(ItemStack in) {
-      super("RUNICAUGMENTATION", null, 0, null, in, new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ConfigItems.itemResource, 1, 14)});
-      this.components = new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ConfigItems.itemResource, 1, 14)};
+      super("RUNICAUGMENTATION", null, 0, null, in, new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1)});
+      this.components = new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1)};
       int fc = EventHandlerRunic.getFinalCharge(in);
       if (fc > 0) {
          ArrayList<ItemStack> com = new ArrayList<>();
          com.add(new ItemStack(Items.diamond));
-         com.add(new ItemStack(ConfigItems.itemResource, 1, 14));
+         com.add(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1));
          int c = 0;
 
          while(c < fc) {
             ++c;
-            com.add(new ItemStack(ConfigItems.itemResource, 1, 14));
+            com.add(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1));
          }
 
          this.components = com.toArray(this.components);
@@ -42,8 +45,8 @@ public class InfusionRunicAugmentRecipe extends InfusionRecipe {
 
    }
 
-   public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, Player player) {
-      if (!this.research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research)) {
+   public boolean matches(ArrayList<ItemStack> input, ItemStack central, Level world, Player player) {
+      if (!this.research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), this.research)) {
          return false;
       } else if (!(central.getItem() instanceof IRunicArmor)) {
          return false;
@@ -60,8 +63,8 @@ public class InfusionRunicAugmentRecipe extends InfusionRecipe {
 
             for(int a = 0; a < ii.size(); ++a) {
                i2 = ii.get(a).copy();
-               if (comp.getItemDamage() == 32767) {
-                  i2.setItemDamage(32767);
+               if (ignoresDamage(comp)) {
+                  setIgnoresDamage(i2,true);
                }
 
                if (areItemStacksEqual(i2, comp, true)) {
@@ -111,11 +114,11 @@ public class InfusionRunicAugmentRecipe extends InfusionRecipe {
    public ItemStack[] getComponents(ItemStack input) {
       ArrayList<ItemStack> com = new ArrayList<>();
       com.add(new ItemStack(Items.diamond));
-      com.add(new ItemStack(ConfigItems.itemResource, 1, 14));
+      com.add(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1));
       int fc = EventHandlerRunic.getFinalCharge(input);
       if (fc > 0) {
          for(int c = 0; c < fc; ++c) {
-            com.add(new ItemStack(ConfigItems.itemResource, 1, 14));
+            com.add(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1));
          }
       }
 

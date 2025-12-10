@@ -1,8 +1,6 @@
 package thaumcraft.client.renderers.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import java.nio.FloatBuffer;
-import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -19,6 +17,9 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileMirror;
 import thaumcraft.common.tiles.TileMirrorEssentia;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class TileMirrorRenderer extends TileEntitySpecialRenderer {
    FloatBuffer fBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -573,7 +574,7 @@ public class TileMirrorRenderer extends TileEntitySpecialRenderer {
       if (te instanceof TileMirror) {
          linked = ((TileMirror)te).linked;
          if (((TileMirror)te).instability > 0) {
-            instability = Minecraft.getMinecraft().theWorld.rand.nextFloat() * ((float)((TileMirror)te).instability / 10000.0F);
+            instability = Minecraft.getMinecraft().theworld.getRandom().nextFloat() * ((float)((TileMirror)te).instability / 10000.0F);
          }
       }
 
@@ -582,7 +583,7 @@ public class TileMirrorRenderer extends TileEntitySpecialRenderer {
       }
 
       label30: {
-         int b = ConfigBlocks.blockMirror.getMixedBrightnessForBlock(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+         int b = ConfigBlocks.blockMirror.getMixedBrightnessForBlock(te.getLevel(), te.xCoord, te.yCoord, te.zCoord);
          if (linked) {
             double var10002 = (double)te.xCoord + (double)0.5F;
             double var10003 = (double)te.yCoord + (double)0.5F;

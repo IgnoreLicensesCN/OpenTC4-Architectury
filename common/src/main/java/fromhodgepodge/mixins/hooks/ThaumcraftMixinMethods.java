@@ -1,10 +1,9 @@
 package fromhodgepodge.mixins.hooks;
 
-import java.util.ArrayList;
-
-import net.minecraft.nbt.NBTTagList;
-
+import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.entities.golems.Marker;
+
+import java.util.ArrayList;
 
 public class ThaumcraftMixinMethods {
 

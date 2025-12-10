@@ -6,21 +6,21 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.Player;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.item.EntityItem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import org.apache.logging.log4j.Level;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
 import thaumcraft.common.lib.utils.BlockUtils;
@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
+//TODO
 public class ServerTickEventsFML {
     public static Map<Integer, LinkedBlockingQueue<VirtualSwapper>> swapList = new HashMap<>();
     public static HashMap<Integer, ArrayList<ChunkLoc>> chunksToGenerate = new HashMap<>();
@@ -53,7 +54,7 @@ public class ServerTickEventsFML {
     }
 
     public void tickChunkRegeneration(TickEvent.WorldTickEvent event) {
-        int dim = event.world.provider.dimensionId;
+        int dim = event.world.dimension();
         int count = 0;
         ArrayList<ChunkLoc> chunks = chunksToGenerate.get(dim);
         if (chunks != null && !chunks.isEmpty()) {
@@ -82,8 +83,8 @@ public class ServerTickEventsFML {
 
     }
 
-    private void tickBlockSwap(World world) {
-        int dim = world.provider.dimensionId;
+    private void tickBlockSwap(Level world) {
+        int dim = world.dimension();
         LinkedBlockingQueue<VirtualSwapper> queue = swapList.get(dim);
         if (queue != null) {
             boolean didSomething = false;
@@ -93,12 +94,12 @@ public class ServerTickEventsFML {
                 if (vs != null) {
                     Block bi = world.getBlock(vs.x, vs.y, vs.z);
                     int md = world.getBlockMetadata(vs.x, vs.y, vs.z);
-                    ItemWandCasting wand = null;
+                    WandCastingItem wand = null;
                     ItemFocusBasic focus = null;
                     ItemStack focusStack = null;
                     if (vs.player.inventory.getStackInSlot(vs.wand) != null
-                            && vs.player.inventory.getStackInSlot(vs.wand).getItem() instanceof ItemWandCasting) {
-                        wand = (ItemWandCasting) vs.player.inventory.getStackInSlot(vs.wand).getItem();
+                            && vs.player.inventory.getStackInSlot(vs.wand).getItem() instanceof WandCastingItem) {
+                        wand = (WandCastingItem) vs.player.inventory.getStackInSlot(vs.wand).getItem();
                         focusStack = wand.getFocusItem(vs.player.inventory.getStackInSlot(vs.wand));
                         focus = wand.getFocus(vs.player.inventory.getStackInSlot(vs.wand));
                     }
@@ -145,9 +146,9 @@ public class ServerTickEventsFML {
                                 wand.consumeAllVis(vs.player.inventory.getStackInSlot(vs.wand), vs.player, focus.getVisCost(focusStack), true, false);
                             }
 
-                            world.setBlock(vs.x, vs.y, vs.z, Block.getBlockFromItem(vs.target.getItem()), vs.target.getItemDamage(), 3);
+                            world.setBlock(vs.x, vs.y, vs.z, Block.getBlockFromItem(vs.target.getItem()), vs.target.getDamageValue(), 3);
                             Block.getBlockFromItem(vs.target.getItem()).onBlockPlacedBy(world, vs.x, vs.y, vs.z, vs.player, vs.target);
-                            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(vs.x, vs.y, vs.z, 12632319), new NetworkRegistry.TargetPoint(world.provider.dimensionId, vs.x, vs.y, vs.z, 32.0F));
+                            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(vs.x, vs.y, vs.z, 12632319), new NetworkRegistry.TargetPoint(world.dimension(), vs.x, vs.y, vs.z, 32.0F));
                             world.playAuxSFX(2001, vs.x, vs.y, vs.z, Block.getIdFromBlock(vs.bSource) + (vs.mSource << 12));
                             if (vs.lifespan > 0) {
                                 for (int xx = -1; xx <= 1; ++xx) {
@@ -172,8 +173,8 @@ public class ServerTickEventsFML {
 
     }
 
-    public static void addSwapper(World world, int x, int y, int z, Block bs, int ms, ItemStack target, int life, Player player, int wand) {
-        int dim = world.provider.dimensionId;
+    public static void addSwapper(Level world, int x, int y, int z, Block bs, int ms, ItemStack target, int life, Player player, int wand) {
+        int dim = world.dimension();
         if (bs != Blocks.air && !(bs.getBlockHardness(world, x, y, z) < 0.0F) && !target.isItemEqual(new ItemStack(bs, 1, ms))) {
             LinkedBlockingQueue<VirtualSwapper> queue = swapList.get(dim);
             if (queue == null) {
@@ -217,18 +218,18 @@ public class ServerTickEventsFML {
         int z = 0;
         Block bi;
         int md = 0;
-        NBTTagCompound nbt = null;
+        CompoundTag nbt = null;
 
-        RestorableWardedBlock(World world, int x, int y, int z) {
+        RestorableWardedBlock(Level world, int x, int y, int z) {
             this.x = x;
             this.y = y;
             this.z = z;
             this.bi = world.getBlock(x, y, z);
             this.md = world.getBlockMetadata(x, y, z);
-            TileEntity te = world.getTileEntity(x, y, z);
+            BlockEntity te = world.getBlockEntity(x, y, z);
             if (te != null) {
-                this.nbt = new NBTTagCompound();
-                te.writeToNBT(this.nbt);
+                this.nbt = new CompoundTag();
+                te.saveAdditional(this.nbt);
             }
 
         }

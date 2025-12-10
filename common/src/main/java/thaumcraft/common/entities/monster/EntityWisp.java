@@ -1,25 +1,25 @@
 package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXWispZap;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -80,21 +80,21 @@ public class EntityWisp extends EntityFlying implements IMob {
 
    public void onDeath(DamageSource par1DamageSource) {
       super.onDeath(par1DamageSource);
-      if (this.worldObj.isRemote) {
-         Thaumcraft.proxy.burst(this.worldObj, this.posX, this.posY + (double)0.45F, this.posZ, 1.0F);
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
+         Thaumcraft.proxy.burst(this.level(), this.posX, this.posY + (double)0.45F, this.posZ, 1.0F);
       }
 
    }
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote && this.ticksExisted <= 1) {
-         Thaumcraft.proxy.burst(this.worldObj, this.posX, this.posY + (double)0.45F, this.posZ, 1.0F);
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.ticksExisted <= 1) {
+         Thaumcraft.proxy.burst(this.level(), this.posX, this.posY + (double)0.45F, this.posZ, 1.0F);
       }
 
-      if (this.worldObj.isRemote && this.worldObj.rand.nextBoolean() && Aspect.getAspect(this.getType()) != null) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && this.level().rand.nextBoolean() && Aspect.getAspect(this.getType()) != null) {
          Color color = new Color(Aspect.getAspect(this.getType()).getColor());
-         Thaumcraft.proxy.wispFX(this.worldObj, this.posX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.7F), this.posY + (double)0.45F + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.7F), this.posZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.7F), 0.1F, (float)color.getRed() / 255.0F, (float)color.getGreen() / 255.0F, (float)color.getBlue() / 255.0F);
+         Thaumcraft.proxy.wispFX(this.level(), this.posX + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.7F), this.posY + (double)0.45F + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.7F), this.posZ + (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.7F), 0.1F, (float)color.getRed() / 255.0F, (float)color.getGreen() / 255.0F, (float)color.getBlue() / 255.0F);
       }
 
    }
@@ -108,8 +108,8 @@ public class EntityWisp extends EntityFlying implements IMob {
    }
 
    protected void updateEntityActionState() {
-      if (!this.worldObj.isRemote && Aspect.getAspect(this.getType()) == null) {
-         BiomeGenBase bg = this.worldObj.getBiomeGenForCoords(MathHelper.ceiling_double_int(this.posX), MathHelper.ceiling_double_int(this.posZ));
+      if (Platform.getEnvironment() != Env.CLIENT && Aspect.getAspect(this.getType()) == null) {
+         BiomeGenBase bg = this.level().getBiomeGenForCoords(MathHelper.ceiling_double_int(this.posX), MathHelper.ceiling_double_int(this.posZ));
          if (bg.biomeID == ThaumcraftWorldGenerator.biomeEerie.biomeID) {
             switch (this.rand.nextInt(6)) {
                case 0:
@@ -130,16 +130,16 @@ public class EntityWisp extends EntityFlying implements IMob {
                case 5:
                   this.setType(Aspect.DEATH.getTag());
             }
-         } else if (this.worldObj.rand.nextInt(10) != 0) {
+         } else if (this.level().rand.nextInt(10) != 0) {
             ArrayList<Aspect> as = Aspect.getPrimalAspects();
-            this.setType(as.get(this.worldObj.rand.nextInt(as.size())).getTag());
+            this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          } else {
             ArrayList<Aspect> as = Aspect.getCompoundAspects();
-            this.setType(as.get(this.worldObj.rand.nextInt(as.size())).getTag());
+            this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          }
       }
 
-      if (!this.worldObj.isRemote && this.worldObj.difficultySetting.getDifficultyId() == 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.level().difficultySetting.getDifficultyId() == 0) {
          this.setDead();
       }
 
@@ -175,8 +175,8 @@ public class EntityWisp extends EntityFlying implements IMob {
       }
 
       --this.aggroCooldown;
-      if (this.worldObj.rand.nextInt(1000) == 0 && (this.targetedEntity == null || this.aggroCooldown-- <= 0)) {
-         this.targetedEntity = this.worldObj.getClosestVulnerablePlayerToEntity(this, 16.0F);
+      if (this.level().rand.nextInt(1000) == 0 && (this.targetedEntity == null || this.aggroCooldown-- <= 0)) {
+         this.targetedEntity = this.level().getClosestVulnerablePlayerToEntity(this, 16.0F);
          if (this.targetedEntity != null) {
             this.aggroCooldown = 50;
          }
@@ -190,18 +190,18 @@ public class EntityWisp extends EntityFlying implements IMob {
          if (this.canEntityBeSeen(this.targetedEntity)) {
             ++this.attackCounter;
             if (this.attackCounter == 20) {
-               this.worldObj.playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.1F);
-               PacketHandler.INSTANCE.sendToAllAround(new PacketFXWispZap(this.getEntityId(), this.targetedEntity.getEntityId()), new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 32.0F));
+               this.level().playSoundAtEntity(this, "thaumcraft:zap", 1.0F, 1.1F);
+               PacketHandler.INSTANCE.sendToAllAround(new PacketFXWispZap(this.getEntityId(), this.targetedEntity.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
                float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
                if (!(Math.abs(this.targetedEntity.motionX) > (double)0.1F) && !(Math.abs(this.targetedEntity.motionY) > (double)0.1F) && !(Math.abs(this.targetedEntity.motionZ) > (double)0.1F)) {
-                  if (this.worldObj.rand.nextFloat() < 0.66F) {
+                  if (this.level().rand.nextFloat() < 0.66F) {
                      this.targetedEntity.attackEntityFrom(DamageSource.causeMobDamage(this), damage + 1.0F);
                   }
-               } else if (this.worldObj.rand.nextFloat() < 0.4F) {
+               } else if (this.level().rand.nextFloat() < 0.4F) {
                   this.targetedEntity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
                }
 
-               this.attackCounter = -20 + this.worldObj.rand.nextInt(20);
+               this.attackCounter = -20 + this.level().rand.nextInt(20);
             }
          } else if (this.attackCounter > 0) {
             --this.attackCounter;
@@ -223,7 +223,7 @@ public class EntityWisp extends EntityFlying implements IMob {
 
       for(int i = 1; (double)i < d3; ++i) {
          axisalignedbb.offset(d4, d5, d6);
-         if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty()) {
+         if (!this.level().getCollidingBoundingBoxes(this, axisalignedbb).isEmpty()) {
             return false;
          }
       }
@@ -231,11 +231,11 @@ public class EntityWisp extends EntityFlying implements IMob {
       int x = (int)this.waypointX;
       int y = (int)this.waypointY;
       int z = (int)this.waypointZ;
-      if (this.worldObj.getBlock(x, y, z).getMaterial().isLiquid()) {
+      if (this.level().getBlock(x, y, z).getMaterial().isLiquid()) {
          return false;
       } else {
          for(int a = 0; a < 11; ++a) {
-            if (!this.worldObj.isAirBlock(x, y - a, z)) {
+            if (!this.level().isAirBlock(x, y - a, z)) {
                return true;
             }
          }
@@ -282,29 +282,29 @@ public class EntityWisp extends EntityFlying implements IMob {
       int count = 0;
 
       try {
-         List l = this.worldObj.getEntitiesWithinAABB(EntityWisp.class, this.boundingBox.expand(16.0F, 16.0F, 16.0F));
+         List l = this.level().getEntitiesWithinAABB(EntityWisp.class, this.boundingBox.expand(16.0F, 16.0F, 16.0F));
          if (l != null) {
             count = l.size();
          }
       } catch (Exception ignored) {
       }
 
-      return count < 8 && this.worldObj.difficultySetting.getDifficultyId() > 0 && this.isValidLightLevel() && super.getCanSpawnHere();
+      return count < 8 && this.level().difficultySetting.getDifficultyId() > 0 && this.isValidLightLevel() && super.getCanSpawnHere();
    }
 
    protected boolean isValidLightLevel() {
       int i = MathHelper.floor_double(this.posX);
       int j = MathHelper.floor_double(this.boundingBox.minY);
       int k = MathHelper.floor_double(this.posZ);
-      if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32)) {
+      if (this.level().getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32)) {
          return false;
       } else {
-         int l = this.worldObj.getBlockLightValue(i, j, k);
-         if (this.worldObj.isThundering()) {
-            int i1 = this.worldObj.skylightSubtracted;
-            this.worldObj.skylightSubtracted = 10;
-            l = this.worldObj.getBlockLightValue(i, j, k);
-            this.worldObj.skylightSubtracted = i1;
+         int l = this.level().getBlockLightValue(i, j, k);
+         if (this.level().isThundering()) {
+            int i1 = this.level().skylightSubtracted;
+            this.level().skylightSubtracted = 10;
+            l = this.level().getBlockLightValue(i, j, k);
+            this.level().skylightSubtracted = i1;
          }
 
          return l <= this.rand.nextInt(8);

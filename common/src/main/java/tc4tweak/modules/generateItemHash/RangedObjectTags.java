@@ -1,7 +1,7 @@
 package tc4tweak.modules.generateItemHash;
 
+import net.minecraft.world.item.Item;
 import tc4tweak.modules.FlushableCache;
-import net.minecraft.item.Item;
 import thaumcraft.api.ThaumcraftApi;
 
 import java.util.Arrays;

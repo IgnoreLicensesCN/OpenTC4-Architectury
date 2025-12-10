@@ -1,31 +1,38 @@
 package thaumcraft.common.lib.world.biomes;
 
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
+import com.linearity.opentc4.utils.vanilla1710.BiomeType;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes.*;
 
 public class BiomeHandler {
 
-   public static Map<BiomeDictionary.Type,BiomeInfo> biomeInfo = new HashMap<>();
+   
+   public static final Map<BiomeType, BiomeInfo> biomeInfo = new ConcurrentHashMap<>();
 
-   public static void registerBiomeInfo(BiomeDictionary.Type type, int auraLevel, Aspect tag, boolean greatwood, float greatwoodchance) {
+   public static void registerBiomeInfo(BiomeType type, int auraLevel, Aspect tag, boolean greatwood, float greatwoodchance) {
       biomeInfo.put(type, new BiomeInfo(auraLevel, tag, greatwood, greatwoodchance));
    }
 
-   public static void registerBiomeInfo(BiomeDictionary.Type type, BiomeInfo info) {
+   public static void registerBiomeInfo(BiomeType type, BiomeInfo info) {
       biomeInfo.put(type, info);
    }
 
-   public static int getBiomeAura(BiomeGenBase biome) {
-      BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(biome);
+   public static int getBiomeAura(Biome biome) {
+      ResourceKey<Biome> biomeResKey = getBiomeResKey(biome);
+      BiomeType[] types = getBiomeTypes(biomeResKey).toArray(new BiomeType[0]);
       int average = 0;
       int count = 0;
 
-      for(BiomeDictionary.Type type : types) {
+      for(BiomeType type : types) {
          BiomeInfo info = biomeInfo.get(type);
          if (info == null) {
             continue;
@@ -37,9 +44,12 @@ public class BiomeHandler {
       return average / count;
    }
 
-   public static Aspect getRandomBiomeTag(int biomeId, Random random) {
-      BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(BiomeGenBase.getBiome(biomeId));
-      BiomeDictionary.Type type = types[random.nextInt(types.length)];
+   public static Aspect getRandomBiomeTag(Biome biome, Random random) {
+      return getRandomBiomeTag(getBiomeResKey(biome), random);
+   }
+   public static Aspect getRandomBiomeTag(ResourceKey<Biome> biomeResKey, Random random) {
+      BiomeType[] types = getBiomeTypes(biomeResKey).toArray(new BiomeType[0]);
+      BiomeType type = types[random.nextInt(types.length)];
       BiomeInfo info = biomeInfo.get(type);
       if (info == null) {
          return null;
@@ -47,10 +57,14 @@ public class BiomeHandler {
       return info.getTag();
    }
 
-   public static float getBiomeSupportsGreatwood(int biomeId) {
-      BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(BiomeGenBase.getBiome(biomeId));
 
-      for(BiomeDictionary.Type type : types) {
+   public static float getBiomeSupportsGreatwood(Biome biome) {
+      return getBiomeSupportsGreatwood(getBiomeResKey(biome));
+   }
+   public static float getBiomeSupportsGreatwood(ResourceKey<Biome> biomeResKey) {
+      BiomeType[] types = getBiomeTypes(biomeResKey).toArray(new BiomeType[0]);
+
+      for(BiomeType type : types) {
          BiomeInfo info = biomeInfo.get(type);
          if (info == null) {
             continue;

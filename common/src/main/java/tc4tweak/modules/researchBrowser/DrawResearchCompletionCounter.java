@@ -1,13 +1,13 @@
 package tc4tweak.modules.researchBrowser;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import tc4tweak.ClientUtils;
-import tc4tweak.ConfigurationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import tc4tweak.ClientUtils;
+import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
@@ -28,7 +28,7 @@ public class DrawResearchCompletionCounter {
     }
 
     private static boolean canUnlockResearch(ResearchItem res) {
-        String playerName = Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+        String playerName = Minecraft.getMinecraft().thePlayer.getName().getString();
         if (res.parents != null) {
             for (String pt : res.parents) {
                 ResearchItem parent = ResearchCategories.getResearch(pt);
@@ -59,7 +59,7 @@ public class DrawResearchCompletionCounter {
         // but I'm not entirely sure how that field is actually used in practice, so let's be conservative for now
         Map<String, ResearchItem> all = category.research.entrySet().stream().filter(e -> !(e.getValue().isAutoUnlock() && e.getValue().isVirtual())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         int total = all.size();
-        ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+        ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getName().getString());
         long completed = completedKeys.stream().filter(all::containsKey).count();
         long revealed = all.entrySet().stream().filter(e -> completedKeys.contains(e.getKey()) || completedKeys.contains("@" + e.getKey()) || !(e.getValue().isLost() || e.getValue().isHidden() && !completedKeys.contains("@" + e.getValue().key) || e.getValue().isConcealed() && !canUnlockResearch(e.getValue()))).count();
         String tooltip;

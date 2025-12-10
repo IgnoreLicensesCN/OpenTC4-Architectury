@@ -5,14 +5,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -22,7 +22,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemManaBean;
+import thaumcraft.common.items.misc.ItemManaBean;
 import thaumcraft.common.tiles.TileManaPod;
 
 import java.util.ArrayList;
@@ -109,22 +109,22 @@ public class BlockManaPod extends Block {
       return super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
    }
 
-   public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+   public void updateTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
       if (!this.canBlockStay(par1World, par2, par3, par4)) {
          this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
          par1World.setBlockToAir(par2, par3, par4);
-      } else if (par1World.rand.nextInt(30) == 0) {
+      } else if (par1world.getRandom().nextInt(30) == 0) {
          TileEntity tile = par1World.getTileEntity(par2, par3, par4);
          if (tile instanceof TileManaPod) {
             ((TileManaPod)tile).checkGrowth();
          }
 
-         st.remove(new WorldCoordinates(par2, par3, par4, par1World.provider.dimensionId));
+         st.remove(new WorldCoordinates(par2, par3, par4, par1World.dimension()));
       }
 
    }
 
-   public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
+   public boolean canBlockStay(Level par1World, int par2, int par3, int par4) {
       BiomeGenBase biome = par1World.getBiomeGenForCoords(par2, par4);
       boolean magicBiome = false;
       if (biome != null) {
@@ -151,7 +151,7 @@ public class BlockManaPod extends Block {
       return world.getBlockMetadata(x, y, z);
    }
 
-   public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
+   public void onNeighborBlockChange(Level par1World, int par2, int par3, int par4, Block par5) {
       if (!this.canBlockStay(par1World, par2, par3, par4)) {
          this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
          par1World.setBlockToAir(par2, par3, par4);
@@ -162,7 +162,7 @@ public class BlockManaPod extends Block {
    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
       TileEntity tile = world.getTileEntity(x, y, z);
       if (tile instanceof TileManaPod && ((TileManaPod) tile).aspect != null) {
-         st.put(new WorldCoordinates(x, y, z, world.provider.dimensionId), ((TileManaPod)tile).aspect);
+         st.put(new WorldCoordinates(x, y, z, world.dimension()), ((TileManaPod)tile).aspect);
       }
 
       super.breakBlock(world, x, y, z, block, meta);
@@ -172,13 +172,13 @@ public class BlockManaPod extends Block {
       ArrayList<ItemStack> dropped = new ArrayList<>();
        if (metadata >= 2) {
            byte b0 = 1;
-           if (metadata == 7 && world.rand.nextFloat() > 0.33F) {
+           if (metadata == 7 && world.getRandom().nextFloat() > 0.33F) {
                b0 = 2;
            }
 
            Aspect aspect = Aspect.PLANT;
-           if (st.containsKey(new WorldCoordinates(x, y, z, world.provider.dimensionId))) {
-               aspect = (Aspect) st.get(new WorldCoordinates(x, y, z, world.provider.dimensionId));
+           if (st.containsKey(new WorldCoordinates(x, y, z, world.dimension()))) {
+               aspect = (Aspect) st.get(new WorldCoordinates(x, y, z, world.dimension()));
            } else {
                TileEntity tile = world.getTileEntity(x, y, z);
                if (tile instanceof TileManaPod && ((TileManaPod) tile).aspect != null) {
@@ -192,7 +192,7 @@ public class BlockManaPod extends Block {
                dropped.add(i);
            }
 
-           st.remove(new WorldCoordinates(x, y, z, world.provider.dimensionId));
+           st.remove(new WorldCoordinates(x, y, z, world.dimension()));
        }
        return dropped;
    }

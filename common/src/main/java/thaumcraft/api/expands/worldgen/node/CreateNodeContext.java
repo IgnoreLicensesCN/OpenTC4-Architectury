@@ -4,10 +4,10 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jetbrains.annotations.Nullable;
 
-@ParametersAreNonnullByDefault
+
+
 public class CreateNodeContext {
 
     public CreateNodeContext(NodeType nodeType, @Nullable NodeModifier nodeModifier, int x, int y, int z, AspectList aspects) {

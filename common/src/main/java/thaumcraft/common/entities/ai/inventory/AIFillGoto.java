@@ -3,10 +3,10 @@ package thaumcraft.common.entities.ai.inventory;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -63,7 +63,7 @@ public class AIFillGoto extends EntityAIBase {
                     this.theGolem.itemWatched = stack.copy();
 
                     for (byte color : this.theGolem.getColorsMatching(this.theGolem.itemWatched)) {
-                        results = GolemHelper.getContainersWithGoods(this.theGolem.worldObj, this.theGolem, this.theGolem.itemWatched, color);
+                        results = GolemHelper.getContainersWithGoods(this.theGolem.level(), this.theGolem, this.theGolem.itemWatched, color);
                     }
 
                     if (!results.isEmpty()) {

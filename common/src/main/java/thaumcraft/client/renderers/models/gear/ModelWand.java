@@ -1,7 +1,5 @@
 package thaumcraft.client.renderers.models.gear;
 
-import java.awt.Color;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -11,16 +9,18 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
+
+import java.awt.*;
 
 public class ModelWand extends ModelBase {
    ModelRenderer Rod;
@@ -60,9 +60,9 @@ public class ModelWand extends ModelBase {
 
    public void render(ItemStack wandStack) {
       if (RenderManager.instance.renderEngine != null) {
-         ItemWandCasting wand = (ItemWandCasting)wandStack.getItem();
+         WandCastingItem wand = (WandCastingItem)wandStack.getItem();
          ItemStack focusStack = wand.getFocusItem(wandStack);
-         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+         Player player = Minecraft.getMinecraft().thePlayer;
          boolean staff = wand.isStaff(wandStack);
          boolean runes = wand.hasRunes(wandStack);
          Minecraft.getMinecraft().renderEngine.bindTexture(wand.getRod(wandStack).getTexture());
@@ -237,7 +237,7 @@ public class ModelWand extends ModelBase {
       }
    }
 
-   private void drawRune(double x, double y, double z, int rune, EntityPlayer player) {
+   private void drawRune(double x, double y, double z, int rune, Player player) {
       GL11.glPushMatrix();
       UtilsFX.bindTexture("textures/misc/script.png");
       float r = MathHelper.sin((float)(player.ticksExisted + rune * 5) / 5.0F) * 0.1F + 0.88F;

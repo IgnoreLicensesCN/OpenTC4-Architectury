@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSlimyBubble;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -39,7 +39,7 @@ public class BlockFluidDeath extends BlockFluidFinite {
    }
 
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-      if (!world.isRemote && entity instanceof EntityLivingBase) {
+      if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase) {
          entity.attackEntityFrom(DamageSourceThaumcraft.dissolve, (float)(world.getBlockMetadata(x, y, z) + 1));
       }
 
@@ -56,7 +56,8 @@ public class BlockFluidDeath extends BlockFluidFinite {
       FXSlimyBubble ef = new FXSlimyBubble(world, (float)x + rand.nextFloat(), (float)y + 0.1F + 0.225F * (float)meta, (float)z + rand.nextFloat(), 0.075F + h);
       ef.setAlphaF(0.8F);
       ef.setRBGColorF(0.3F - rand.nextFloat() * 0.1F, 0.0F, 0.4F + rand.nextFloat() * 0.1F);
-      ParticleEngine.instance.addEffect(world, ef);
+      Minecraft.getInstance().particleEngine.add(ef);
+
       if (rand.nextInt(50) == 0) {
          double var21 = (float)x + rand.nextFloat();
          double var22 = (double)y + this.maxY;

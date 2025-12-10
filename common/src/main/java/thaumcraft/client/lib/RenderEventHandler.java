@@ -1,38 +1,31 @@
 package thaumcraft.client.lib;
 
+import com.linearity.opentc4.OpenTC4;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityNote;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -55,13 +48,17 @@ import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.armor.ItemFortressArmor;
 import thaumcraft.common.items.armor.ItemVoidRobeArmor;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.misc.PacketNote;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.tiles.TileSensor;
 import thaumcraft.common.tiles.TileWandPedestal;
 import truetyper.FontLoader;
 import truetyper.TrueTypeFont;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static thaumcraft.client.renderers.tile.TileNodeRenderer.renderFacingStrip_tweaked;
 
@@ -163,7 +160,7 @@ public class RenderEventHandler {
    @SubscribeEvent
    public void blockHighlight(DrawBlockHighlightEvent event) {
       int ticks = event.player.ticksExisted;
-      MovingObjectPosition target = event.target;
+      HitResult target = event.target;
       if (!blockTags.isEmpty()) {
          int x = (Integer)blockTags.get(0);
          int y = (Integer)blockTags.get(1);
@@ -180,8 +177,8 @@ public class RenderEventHandler {
       }
 
       if (event.player.inventory.armorItemInSlot(3) != null && event.player.inventory.armorItemInSlot(3).getItem() instanceof IGoggles && ((IGoggles)event.player.inventory.armorItemInSlot(3).getItem()).showIngamePopups(event.player.inventory.armorItemInSlot(3), event.player)) {
-         boolean spaceAbove = event.player.worldObj.isAirBlock(target.blockX, target.blockY + 1, target.blockZ);
-         TileEntity te = event.player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
+         boolean spaceAbove = event.player.level().isAirBlock(target.blockX, target.blockY + 1, target.blockZ);
+         TileEntity te = event.player.level().getTileEntity(target.blockX, target.blockY, target.blockZ);
          if (te != null) {
             int note = -1;
             if (te instanceof TileEntityNote) {
@@ -203,7 +200,7 @@ public class RenderEventHandler {
 
             if (note >= 0) {
                if (ticks % 5 == 0) {
-                  PacketHandler.INSTANCE.sendToServer(new PacketNote(target.blockX, target.blockY, target.blockZ, event.player.worldObj.provider.dimensionId));
+                  PacketHandler.INSTANCE.sendToServer(new PacketNote(target.blockX, target.blockY, target.blockZ, event.player.level().dimension()));
                }
 
                this.drawTextInAir(target.blockX, target.blockY + 1, target.blockZ, event.partialTicks, "Note: " + note);
@@ -230,8 +227,8 @@ public class RenderEventHandler {
 
       float partialTicks = event.partialTicks;
       Minecraft mc = Minecraft.getMinecraft();
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      if (Minecraft.getMinecraft().renderViewEntity instanceof Player) {
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          long time = System.currentTimeMillis();
          if (player.inventory.getCurrentItem() != null && (player.inventory.getCurrentItem().getItem() instanceof ItemGolemPlacer || player.inventory.getCurrentItem().getItem() instanceof ItemGolemBell)) {
             this.renderMarkedBlocks(event, partialTicks, player, time);
@@ -257,15 +254,15 @@ public class RenderEventHandler {
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
    public void renderPlayerSpecialsEvent(RenderPlayerEvent.Specials.Pre event) {
-      if (event.entityPlayer != null && event.entityPlayer.inventory.armorInventory[2] != null && (event.entityPlayer.inventory.armorInventory[2].getItem() instanceof ItemFortressArmor || event.entityPlayer.inventory.armorInventory[2].getItem() instanceof ItemVoidRobeArmor)) {
+      if (event.Player != null && event.Player.inventory.armorInventory[2] != null && (event.Player.inventory.armorInventory[2].getItem() instanceof ItemFortressArmor || event.Player.inventory.armorInventory[2].getItem() instanceof ItemVoidRobeArmor)) {
          event.renderCape = false;
       }
 
    }
 
    public void drawTagsOnContainer(double x, double y, double z, AspectList tags, int bright, ForgeDirection dir, float partialTicks) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer && tags != null && tags.size() > 0) {
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      if (Minecraft.getMinecraft().renderViewEntity instanceof Player && tags != null && tags.size() > 0) {
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
          double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
          double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -326,8 +323,8 @@ public class RenderEventHandler {
    }
 
    public void drawTextInAir(double x, double y, double z, float partialTicks, String text) {
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      if (Minecraft.getMinecraft().renderViewEntity instanceof Player) {
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
          double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
          double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -360,14 +357,14 @@ public class RenderEventHandler {
          for(int yy = -range; yy <= range; ++yy) {
             for(int zz = -range; zz <= range; ++zz) {
                int value = -1;
-               Block bi = player.worldObj.getBlock(x + xx, y + yy, z + zz);
+               BlockState bi = player.level().getBlock(x + xx, y + yy, z + zz);
                if (bi != Blocks.air && bi != Blocks.bedrock) {
                   if (bi.getMaterial() == Material.lava) {
                      value = -10;
                   } else if (bi.getMaterial() == Material.water) {
                      value = -5;
                   } else {
-                     int md = bi.getDamageValue(player.worldObj, x + xx, y + yy, z + zz);
+                     int md = bi.getDamageValue(player.level(), x + xx, y + yy, z + zz);
                      int[] od = OreDictionary.getOreIDs(new ItemStack(bi, 1, md));
                      boolean ore = false;
                      if (od != null) {
@@ -382,13 +379,17 @@ public class RenderEventHandler {
 
                      if (ore) {
                         try {
-                           ScanResult scan = new ScanResult((byte)1, Block.getIdFromBlock(bi), md, null, "");
-                           value = ScanManager.getScanAspects(scan, player.worldObj).visSize();
+                           ScanResult scan = new ScanResult((byte)1, bi.getBlock().asItem(), null, "");
+                           value = ScanManager.getScanAspects(scan, player.level()).visSize();
                         } catch (Exception var21) {
                            try {
-                              ScanResult scan = new ScanResult((byte)1, Item.getIdFromItem(bi.getItem(player.worldObj, x + xx, y + yy, z + zz)), bi.getDamageValue(player.worldObj, x + xx, y + yy, z + zz), null, "");
-                              value = ScanManager.getScanAspects(scan, player.worldObj).visSize();
-                           } catch (Exception ignored) {
+                              ScanResult scan = new ScanResult((byte)1, bi.getBlock().asItem(), null, "");
+
+//                              ScanResult scan = new ScanResult((byte)1, Item.getIdFromItem(bi.getItem(player.level(), x + xx, y + yy, z + zz)), bi.getDamageValue(player.level(), x + xx, y + yy, z + zz), null, "");
+                              value = ScanManager.getScanAspects(scan, player.level()).visSize();
+                           } catch (Exception e) {
+                              throw new RuntimeException(e);
+//                              OpenTC4.LOGGER.error("Failed to scan block", e);
                            }
                         }
                      }
@@ -402,7 +403,7 @@ public class RenderEventHandler {
 
    }
 
-   public void showScannedBlocks(float partialTicks, EntityPlayer player, long time) {
+   public void showScannedBlocks(float partialTicks, Player player, long time) {
       Minecraft mc = Minecraft.getMinecraft();
       long dif = this.scanCount - time;
       GL11.glPushMatrix();
@@ -468,7 +469,7 @@ public class RenderEventHandler {
       float r = 1.0F;
       float g = 1.0F;
       float b = 1.0F;
-      EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -497,7 +498,7 @@ public class RenderEventHandler {
    }
 
    @SideOnly(Side.CLIENT)
-   public void renderMarkedBlocks(RenderWorldLastEvent event, float partialTicks, EntityPlayer player, long time) {
+   public void renderMarkedBlocks(RenderWorldLastEvent event, float partialTicks, Player player, long time) {
       Minecraft mc = Minecraft.getMinecraft();
       if (player.inventory.getCurrentItem().hasTagCompound() && player.inventory.getCurrentItem().stackTagCompound.hasKey("markers")) {
          Entity golem = null;
@@ -508,7 +509,7 @@ public class RenderEventHandler {
             face = ItemGolemBell.getGolemHomeFace(player.inventory.getCurrentItem());
             int gid = ItemGolemBell.getGolemId(player.inventory.getCurrentItem());
             if (gid > -1) {
-               golem = player.worldObj.getEntityByID(gid);
+               golem = player.level().getEntityByID(gid);
             }
 
             if (!(golem instanceof EntityGolemBase)) {
@@ -540,11 +541,11 @@ public class RenderEventHandler {
             x += ForgeDirection.getOrientation(s).offsetX;
             y += ForgeDirection.getOrientation(s).offsetY;
             z += ForgeDirection.getOrientation(s).offsetZ;
-            if (dim == player.worldObj.provider.dimensionId && player.getDistanceSq(x, y, z) < (double)4096.0F) {
+            if (dim == player.level().dimension() && player.getDistanceSq(x, y, z) < (double)4096.0F) {
                GL11.glPushMatrix();
                this.drawMarkerOverlay(x, y, z, s, partialTicks, c);
                GL11.glPopMatrix();
-               if (player.worldObj.isAirBlock(ox, oy, oz)) {
+               if (player.level().isAirBlock(ox, oy, oz)) {
                   GL11.glPushMatrix();
 
                   for(int a = 0; a < 6; ++a) {
@@ -576,7 +577,7 @@ public class RenderEventHandler {
       float r = 1.0F;
       float g = 1.0F;
       float b = 1.0F;
-      EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -621,7 +622,7 @@ public class RenderEventHandler {
       float r = 1.0F;
       float g = 1.0F;
       float b = 1.0F;
-      EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -666,7 +667,7 @@ public class RenderEventHandler {
       float r = 1.0F;
       float g = 1.0F;
       float b = 1.0F;
-      EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -700,7 +701,7 @@ public class RenderEventHandler {
    }
 
    public void drawMarkerLine(double x, double y, double z, int side, float partialTicks, int color, Entity cc) {
-      EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+      Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
       double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
       double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
       double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
@@ -829,7 +830,7 @@ public class RenderEventHandler {
 
    @SubscribeEvent
    public void livingTick(LivingEvent.LivingUpdateEvent event) {
-      if (event.entity.worldObj.isRemote && event.entity instanceof EntityMob && !event.entity.isDead) {
+      if ((Platform.getEnvironment() == Env.CLIENT) && event.entity instanceof EntityMob && !event.entity.isDead) {
          EntityMob mob = (EntityMob)event.entity;
          int t = (int)mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
          if (t >= 0) {

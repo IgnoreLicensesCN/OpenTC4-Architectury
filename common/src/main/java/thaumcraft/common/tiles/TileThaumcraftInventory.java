@@ -1,8 +1,8 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import thaumcraft.api.TileThaumcraft;
@@ -119,7 +119,7 @@ public class TileThaumcraftInventory extends TileThaumcraft implements ISidedInv
          this.customName = nbtCompound.getString("CustomName");
       }
 
-      NBTTagList nbttaglist = nbtCompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbtCompound.getTagList("ThaumcraftItems", 10);
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
          if (!this.isSyncedSlot(i)) {
@@ -150,15 +150,15 @@ public class TileThaumcraftInventory extends TileThaumcraft implements ISidedInv
          }
       }
 
-      nbtCompound.setTag("Items", nbttaglist);
+      nbtCompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public int getInventoryStackLimit() {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {

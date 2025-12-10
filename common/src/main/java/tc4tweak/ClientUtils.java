@@ -1,6 +1,5 @@
 package tc4tweak;
 
-import thaumcraft.codechicken.lib.math.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -9,6 +8,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import thaumcraft.codechicken.lib.math.MathHelper;
 import thaumcraft.common.tiles.TileMagicWorkbench;
 
 import java.awt.*;

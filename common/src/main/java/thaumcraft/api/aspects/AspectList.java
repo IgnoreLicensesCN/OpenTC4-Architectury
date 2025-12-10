@@ -1,21 +1,28 @@
 package thaumcraft.api.aspects;
 
+import com.linearity.opentc4.utils.CompoundTagHelper;
+import com.linearity.opentc4.utils.StatCollector;
 import fromhodgepodge.util.AspectNameSorter;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.Thaumcraft;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+
+import static com.linearity.opentc4.Consts.AspectCompoundTagAccessors.*;
 
 public class AspectList implements Serializable {
 	
-	public LinkedHashMap<Aspect,Integer> aspects = new LinkedHashMap<>();//aspects associated with this object
+	protected final LinkedHashMap<Aspect,Integer> aspects = new LinkedHashMap<>();//aspects associated with this object
 
 	
 	/**
@@ -26,7 +33,7 @@ public class AspectList implements Serializable {
 		try {
 			AspectList temp = ThaumcraftApiHelper.getObjectAspects(stack);
 			if (temp!=null) {
-				for (Aspect tag : temp.getAspects()) {
+				for (Aspect tag : temp.getAspectTypes()) {
 					add(tag, temp.getAmount(tag));
 				}
 			}
@@ -36,10 +43,14 @@ public class AspectList implements Serializable {
 	public AspectList() {
 	}
 
+	public AspectList(AspectList another) {
+		this.aspects.putAll(another.aspects);
+	}
+
     public static void addAspectDescriptionToList(AspectList aspects, Player player, List<String> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(Aspect tag : aspects.getAspectsSorted()) {
-             if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
+             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getName().getString(), tag)) {
                 aspectDescriptions.add(tag.getName() + " x " + aspects.getAmount(tag));
              } else {
                 aspectDescriptions.add(StatCollector.translateToLocal("tc.aspect.unknown"));
@@ -50,7 +61,7 @@ public class AspectList implements Serializable {
 
     public AspectList copy() {
 		AspectList out = new AspectList();
-		for (Aspect a:this.getAspects())
+		for (Aspect a:this.getAspectTypes())
 			out.add(a, this.getAmount(a));
 		return out;
 	}
@@ -78,9 +89,16 @@ public class AspectList implements Serializable {
 	/**
 	 * @return an array of all the aspects in this collection
 	 */
-	public Aspect[] getAspects() {
+	public Aspect[] getAspectTypes() {
 		Aspect[] q = new Aspect[1];
 		return aspects.keySet().toArray(q);
+	}
+
+	@UnmodifiableView
+	private final Map<Aspect,Integer> aspectView = Collections.unmodifiableMap(aspects);
+	@UnmodifiableView
+	public Map<Aspect,Integer> getAspects() {
+		return aspectView;
 	}
 	
 	/**
@@ -148,7 +166,7 @@ public class AspectList implements Serializable {
 			} while (change);
 			return out;
 		} catch (Exception e) {
-			return this.getAspects();
+			return this.getAspectTypes();
 		}
 	}
 	
@@ -212,10 +230,19 @@ public class AspectList implements Serializable {
 	 * @return
 	 */
 	public AspectList add(Aspect aspect, int amount) {
-		if (aspect == null){return this;}
+		if (aspect == null){
+			throw new NullPointerException("aspect is null");
+		}
 		if (this.aspects.containsKey(aspect)) {
 			int oldamount = this.aspects.get(aspect);
 			amount += oldamount;
+		}
+		this.aspects.put( aspect, amount );
+		return this;
+	}
+	public AspectList set(Aspect aspect, int amount) {
+		if (aspect == null){
+			throw new NullPointerException("aspect is null");
 		}
 		this.aspects.put( aspect, amount );
 		return this;
@@ -240,77 +267,159 @@ public class AspectList implements Serializable {
 	}
 	
 	public AspectList add(AspectList in) {
-		for (Aspect a:in.getAspects()) 
+		for (Aspect a:in.getAspectTypes())
 			this.add(a, in.getAmount(a));
 		return this;
 	}
 	
 	public AspectList merge(AspectList in) {
-		for (Aspect a:in.getAspects()) 
+		for (Aspect a:in.getAspectTypes())
 			this.merge(a, in.getAmount(a));
 		return this;
 	}
-	
-	/**
-	 * Reads the list of aspects from nbt
-	 * @param nbttagcompound
-	 * @return 
-	 */
-	public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        aspects.clear();
-        NBTTagList tlist = nbttagcompound.getTagList("Aspects",(byte)10);
-		for (int j = 0; j < tlist.tagCount(); j++) {
-			NBTTagCompound rs = tlist.getCompoundTagAt(j);
-			if (rs.hasKey("key")) {
-				add(	Aspect.getAspect(rs.getString("key")),
-						rs.getInteger("amount"));
+
+	public void saveAdditional(CompoundTag tag) {
+		ListTag tlist = new ListTag();
+		for (Aspect aspect : getAspectTypes()) {
+			if (aspect != null) {
+				CompoundTag f = new CompoundTag();
+				ASPECT_KEY_ACCESSOR.writeToCompoundTag(f,aspect.getTag());
+				ASPECT_AMOUNT_ACCESSOR.writeToCompoundTag(f,getAmount(aspect));
+				tlist.add(f);
 			}
 		}
-    }
-	
-	public void readFromNBT(NBTTagCompound nbttagcompound, String label)
-    {
-        aspects.clear();
-        NBTTagList tlist = nbttagcompound.getTagList(label,(byte)10);
-		for (int j = 0; j < tlist.tagCount(); j++) {
-			NBTTagCompound rs = tlist.getCompoundTagAt(j);
-			if (rs.hasKey("key")) {
-				add(	Aspect.getAspect(rs.getString("key")),
-						rs.getInteger("amount"));
+		ASPECT_ASPECTS_ACCESSOR.writeToCompoundTag(tag,tlist);
+	}
+
+	public void load(CompoundTag tag) {
+		aspects.clear();
+		ASPECT_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
+		ListTag tlist = ASPECT_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
+		for (int i = 0; i < tlist.size(); i++) {
+			CompoundTag rs = tlist.getCompound(i);
+			if (rs.contains(ASPECT_KEY_ACCESSOR.tagKey)) {
+				add(Aspect.getAspect(ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs)), ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs));
 			}
 		}
-    }
-	
-	/**
-	 * Writes the list of aspects to nbt
-	 * @param nbttagcompound
-	 * @return 
-	 */
-	public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
-        NBTTagList tlist = new NBTTagList();
-		nbttagcompound.setTag("Aspects", tlist);
-		for (Aspect aspect : getAspects())
-			if (aspect != null) {
-				NBTTagCompound f = new NBTTagCompound();
-				f.setString("key", aspect.getTag());
-				f.setInteger("amount", getAmount(aspect));
-				tlist.appendTag(f);
+	}
+
+
+	public static AspectList generateFromNBT(CompoundTag tag) {
+		AspectList out = new AspectList();
+		ListTag tlist = ASPECT_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
+		for (int i = 0; i < tlist.size(); i++) {
+			CompoundTag rs = tlist.getCompound(i);
+			if (rs.contains(ASPECT_KEY_ACCESSOR.tagKey)) {
+				out.add(Aspect.getAspect(ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs)), ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs));
 			}
-    }
-	
-	public void writeToNBT(NBTTagCompound nbttagcompound, String label)
-    {
-        NBTTagList tlist = new NBTTagList();
-		nbttagcompound.setTag(label, tlist);
-		for (Aspect aspect : getAspects())
-			if (aspect != null) {
-				NBTTagCompound f = new NBTTagCompound();
-				f.setString("key", aspect.getTag());
-				f.setInteger("amount", getAmount(aspect));
-				tlist.appendTag(f);
+		}
+		return out;
+	}
+	public void load(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+		aspects.clear();
+		ListTag tlist = accessor.readFromCompoundTag(tag); // 10 = CompoundTag
+		for (int j = 0; j < tlist.size(); j++) {
+			CompoundTag rs = tlist.getCompound(j);
+			if (rs.contains(ASPECT_KEY_ACCESSOR.tagKey)) {
+				add(Aspect.getAspect(ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs)), ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs));
 			}
-    }
+		}
+	}
+
+	public void saveAdditional(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+		ListTag tlist = new ListTag();
+		for (Aspect aspect : getAspectTypes()) {
+			if (aspect != null) {
+				CompoundTag f = new CompoundTag();
+				ASPECT_KEY_ACCESSOR.writeToCompoundTag(f,aspect.getTag());
+				ASPECT_AMOUNT_ACCESSOR.writeToCompoundTag(f,getAmount(aspect));
+				tlist.add(f);
+			}
+		}
+		accessor.writeToCompoundTag(tag,tlist);
+	}
+//	public void saveAdditional(CompoundTag CompoundTag, String label)
+//	{
+//		NBTTagList tlist = new NBTTagList();
+//		CompoundTag.setTag(label, tlist);
+//		for (Aspect aspect : getAspects())
+//			if (aspect != null) {
+//				CompoundTag f = new CompoundTag();
+//				f.setString("key", aspect.getTag());
+//				f.setInteger("amount", getAmount(aspect));
+//				tlist.appendTag(f);
+//			}
+//	}
+
+//	/**
+//	 * Reads the list of aspects from nbt
+//	 * @param CompoundTag
+//	 * @return
+//	 */
+//	public void load(CompoundTag CompoundTag)
+//    {
+//        aspects.clear();
+//        NBTTagList tlist = CompoundTag.getTagList("Aspects",(byte)10);
+//		for (int j = 0; j < tlist.tagCount(); j++) {
+//			CompoundTag rs = tlist.getCompoundTagAt(j);
+//			if (rs.hasKey("key")) {
+//				add(	Aspect.getAspect(rs.getString("key")),
+//						rs.getInteger("amount"));
+//			}
+//		}
+//    }
+	
+//	public void load(CompoundTag CompoundTag, String label)
+//    {
+//        aspects.clear();
+//        NBTTagList tlist = CompoundTag.getTagList(label,(byte)10);
+//		for (int j = 0; j < tlist.tagCount(); j++) {
+//			CompoundTag rs = tlist.getCompoundTagAt(j);
+//			if (rs.hasKey("key")) {
+//				add(	Aspect.getAspect(rs.getString("key")),
+//						rs.getInteger("amount"));
+//			}
+//		}
+//    }
+	
+//	/**
+//	 * Writes the list of aspects to nbt
+//	 * @param CompoundTag
+//	 * @return
+//	 */
+//	public void saveAdditional(CompoundTag CompoundTag)
+//    {
+//        NBTTagList tlist = new NBTTagList();
+//		CompoundTag.setTag("Aspects", tlist);
+//		for (Aspect aspect : getAspects())
+//			if (aspect != null) {
+//				CompoundTag f = new CompoundTag();
+//				f.setString("key", aspect.getTag());
+//				f.setInteger("amount", getAmount(aspect));
+//				tlist.appendTag(f);
+//			}
+//    }
+	
+//	public void saveAdditional(CompoundTag CompoundTag, String label)
+//    {
+//        NBTTagList tlist = new NBTTagList();
+//		CompoundTag.setTag(label, tlist);
+//		for (Aspect aspect : getAspects())
+//			if (aspect != null) {
+//				CompoundTag f = new CompoundTag();
+//				f.setString("key", aspect.getTag());
+//				f.setInteger("amount", getAmount(aspect));
+//				tlist.appendTag(f);
+//			}
+//    }
+
+	public void putAllAspects(AspectList aspects) {
+		this.aspects.putAll(aspects.getAspects());
+	}
+
+
+	public void replaceAll(BiFunction<Aspect,Integer,Integer> biFunction){
+		aspects.replaceAll(biFunction);
+	}
 	
 }

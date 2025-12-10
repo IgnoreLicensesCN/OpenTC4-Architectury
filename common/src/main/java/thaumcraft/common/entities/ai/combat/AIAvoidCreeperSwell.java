@@ -1,12 +1,12 @@
 package thaumcraft.common.entities.ai.combat;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
@@ -35,7 +35,7 @@ public class AIAvoidCreeperSwell extends EntityAIBase {
          this.nearSpeed = this.theGolem.getAIMoveSpeed() * 1.25F;
       }
 
-      List<Entity> var1 = (List<Entity>)this.theGolem.worldObj.getEntitiesWithinAABB(EntityCreeper.class, this.theGolem.boundingBox.expand(this.distanceFromEntity, 3.0F, this.distanceFromEntity));
+      List<Entity> var1 = (List<Entity>)this.theGolem.level().getEntitiesWithinAABB(EntityCreeper.class, this.theGolem.boundingBox.expand(this.distanceFromEntity, 3.0F, this.distanceFromEntity));
       if (var1.isEmpty()) {
          return false;
       } else if (((EntityCreeper)var1.get(0)).getCreeperState() != 1) {

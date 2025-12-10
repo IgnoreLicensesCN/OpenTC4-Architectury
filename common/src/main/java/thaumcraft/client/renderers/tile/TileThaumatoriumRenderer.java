@@ -7,9 +7,9 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
@@ -35,7 +35,7 @@ public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       UtilsFX.bindTexture("textures/models/thaumatorium.png");
       int md = 0;
-      if (tile.getWorldObj() != null) {
+      if (tile.getLevel() != null) {
          switch (tile.facing.ordinal()) {
             case 2:
                GL11.glRotatef(270.0F, 0.0F, 0.0F, 1.0F);
@@ -53,7 +53,7 @@ public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
       this.model.renderAll();
       GL11.glPopMatrix();
       float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
-      if (tile != null && tile.getWorldObj() != null && tile.recipeHash != null && !tile.recipeHash.isEmpty()) {
+      if (tile != null && tile.getLevel() != null && tile.recipeHash != null && !tile.recipeHash.isEmpty()) {
          int stack = Minecraft.getMinecraft().renderViewEntity.ticksExisted / 40 % tile.recipeHash.size();
          CrucibleRecipe recipe = ThaumcraftApi.getCrucibleRecipeFromHash(tile.recipeHash.get(stack));
          if (recipe != null) {
@@ -75,7 +75,7 @@ public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
             GL11.glScaled(0.75F, 0.75F, 0.75F);
             ItemStack is = recipe.getRecipeOutput().copy();
             is.stackSize = 1;
-            this.entityitem = new EntityItem(tile.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
+            this.entityitem = new EntityItem(tile.getLevel(), 0.0F, 0.0F, 0.0F, is);
             this.entityitem.hoverStart = 0.0F;
             RenderItem.renderInFrame = true;
             RenderManager.instance.renderEntityWithPosYaw(this.entityitem, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);

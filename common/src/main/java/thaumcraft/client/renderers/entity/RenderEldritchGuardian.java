@@ -4,12 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Difficulty;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.renderers.models.entities.ModelEldritchGuardian;
 import thaumcraft.common.config.Config;
@@ -47,9 +47,9 @@ public class RenderEldritchGuardian extends RenderLiving {
          d3 -= guardian.height * ((float)((EntityEldritchWarden)guardian).getSpawnTimer() / 150.0F);
       } else {
          Entity e = Minecraft.getMinecraft().renderViewEntity;
-         float d6 = e.worldObj.difficultySetting == EnumDifficulty.HARD ? 576.0F : 1024.0F;
+         float d6 = e.level().difficultySetting == Difficulty.HARD ? 576.0F : 1024.0F;
          float d7 = 256.0F;
-         if (guardian.worldObj != null && guardian.worldObj.provider.dimensionId == Config.dimensionOuterId) {
+         if (guardian.level() != null && guardian.level().dimension() == Config.dimensionOuterId) {
             base = 1.0F;
          } else {
             double d8 = guardian.getDistanceSq(e.posX, e.posY, e.posZ);

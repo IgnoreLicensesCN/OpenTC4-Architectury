@@ -4,13 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
@@ -57,8 +57,8 @@ public class ItemThaumonomicon extends Item {
 
    }
 
-   public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-      if (!par2World.isRemote) {
+   public ItemStack onItemRightClick(ItemStack stack, World par2World, Player player) {
+      if (!(Platform.getEnvironment() == Env.CLIENT)) {
          if (Config.allowCheatSheet && stack.getItemDamage() == 42) {
             for(ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
                for(ResearchItem ri : cat.research.values()) {
@@ -87,8 +87,8 @@ public class ItemThaumonomicon extends Item {
             }
          }
 
-         PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(player), (EntityPlayerMP)player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncAspects(player), (EntityPlayerMP)player);
+         PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(player), (ServerPlayer)player);
+         PacketHandler.INSTANCE.sendTo(new PacketSyncAspects(player), (ServerPlayer)player);
       } else {
          par2World.playSound(player.posX, player.posY, player.posZ, "thaumcraft:page", 1.0F, 1.0F, false);
       }
@@ -101,11 +101,11 @@ public class ItemThaumonomicon extends Item {
       return itemstack.getItemDamage() != 42 ? EnumRarity.uncommon : EnumRarity.epic;
    }
 
-   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+   public void addInformation(ItemStack par1ItemStack, Player par2Player, List par3List, boolean par4) {
       if (par1ItemStack.getItemDamage() == 42) {
          par3List.add("Cheat Sheet");
       }
 
-      super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+      super.addInformation(par1ItemStack, par2Player, par3List, par4);
    }
 }

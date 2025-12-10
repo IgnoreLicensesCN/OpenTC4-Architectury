@@ -1,13 +1,13 @@
 package thaumcraft.common.lib.world.dim;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.Random;
 
 public class GenLibraryRoom extends GenCommon {
-   static void generateRoom(World world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -64,14 +64,14 @@ public class GenLibraryRoom extends GenCommon {
       }
 
       for(int g = 0; g < 5; ++g) {
-         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, ForgeDirection.WEST, cell);
-         placeBlock(world, x + 6 + g, y + 9, z + 4, 11, ForgeDirection.NORTH, cell);
-         placeBlock(world, x + 6 + g, y + 9, z + 12, 11, ForgeDirection.SOUTH, cell);
-         placeBlock(world, x + 12, y + 9, z + 6 + g, 11, ForgeDirection.EAST, cell);
-         placeBlock(world, x + 4, y + 9, z + 6 + g, 11, ForgeDirection.WEST, cell);
+         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, Direction.NORTH, cell);
+         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, Direction.WEST, cell);
+         placeBlock(world, x + 6 + g, y + 9, z + 4, 11, Direction.NORTH, cell);
+         placeBlock(world, x + 6 + g, y + 9, z + 12, 11, Direction.SOUTH, cell);
+         placeBlock(world, x + 12, y + 9, z + 6 + g, 11, Direction.EAST, cell);
+         placeBlock(world, x + 4, y + 9, z + 6 + g, 11, Direction.WEST, cell);
       }
 
       world.setBlock(x + 5, y + 4, z + 5, ConfigBlocks.blockEldritch, 5, 3);

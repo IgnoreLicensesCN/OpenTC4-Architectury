@@ -1,24 +1,24 @@
 package thaumcraft.common.entities.projectile;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
 public class EntityExplosiveOrb extends EntityThrowable {
    public float strength = 1.0F;
    public boolean onFire = false;
 
-   public EntityExplosiveOrb(World par1World) {
+   public EntityExplosiveOrb(Level par1World) {
       super(par1World);
    }
 
-   public EntityExplosiveOrb(World par1World, EntityLivingBase par2EntityLiving) {
+   public EntityExplosiveOrb(Level par1World, EntityLivingBase par2EntityLiving) {
       super(par1World, par2EntityLiving);
    }
 
@@ -26,13 +26,13 @@ public class EntityExplosiveOrb extends EntityThrowable {
       return 0.01F;
    }
 
-   protected void onImpact(MovingObjectPosition mop) {
-      if (!this.worldObj.isRemote) {
+   protected void onImpact(HitResult mop) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (mop.entityHit != null) {
             mop.entityHit.attackEntityFrom(causeFireballDamage(this, this.getThrower()), this.strength * 1.5F);
          }
 
-         this.worldObj.newExplosion(null, this.posX, this.posY, this.posZ, this.strength, this.onFire, false);
+         this.level().newExplosion(null, this.posX, this.posY, this.posZ, this.strength, this.onFire, false);
          this.setDead();
       }
 
@@ -49,8 +49,8 @@ public class EntityExplosiveOrb extends EntityThrowable {
 
    public void onUpdate() {
       super.onUpdate();
-      if (this.worldObj.isRemote) {
-         Thaumcraft.proxy.drawGenericParticles(this.worldObj, this.prevPosX + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), this.prevPosY + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), this.prevPosZ + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 0.8F, false, 151, 9, 1, 7 + this.rand.nextInt(5), 0, 2.0F + this.rand.nextFloat());
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
+         Thaumcraft.proxy.drawGenericParticles(this.level(), this.prevPosX + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), this.prevPosY + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), this.prevPosZ + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F), 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 0.8F, false, 151, 9, 1, 7 + this.rand.nextInt(5), 0, 2.0F + this.rand.nextFloat());
       }
 
       if (this.ticksExisted > 500) {

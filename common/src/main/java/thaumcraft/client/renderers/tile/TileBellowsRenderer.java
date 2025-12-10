@@ -1,11 +1,11 @@
 package thaumcraft.client.renderers.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBellows;
@@ -34,8 +34,8 @@ public class TileBellowsRenderer extends TileEntitySpecialRenderer {
 
    public void renderEntityAt(TileBellows bellows, double x, double y, double z, float fq) {
       float scale = 0.0F;
-      if (bellows.getWorldObj() == null) {
-         EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+      if (bellows.getLevel() == null) {
+         Player p = Minecraft.getMinecraft().thePlayer;
          scale = MathHelper.sin((float)p.ticksExisted / 8.0F) * 0.3F + 0.7F;
          bellows.orientation = 2;
       } else {

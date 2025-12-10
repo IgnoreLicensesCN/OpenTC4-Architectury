@@ -1,27 +1,24 @@
 package tc4tweak.modules.objectTag;
 
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import tc4tweak.modules.generateItemHash.GenerateItemHash;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraftforge.oredict.OreDictionary;
+
+import net.minecraft.world.item.*;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import tc4tweak.modules.generateItemHash.GenerateItemHash;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,96 +30,47 @@ public class GetObjectTags {
     static final Logger log = LogManager.getLogger("GetObjectTags");
     private static final ObjectTagsCache cache = new ObjectTagsCache();
 
-    @SuppressWarnings({"rawtypes"})
-    public static ConcurrentHashMap<List, AspectList> newReplacementObjectTagsMap() {
-        return new InterceptingConcurrentHashMap();
-    }
+
+//    public static Stream<Entry<ItemStack, AspectList>> stream() {
+//        if (cache.isEnabled())
+//            return cache.getCache().entrySet().stream()
+//                    .flatMap(e -> StreamSupport.stream(Spliterators.spliterator(iterate(e.getKey(), e.getValue()), e.getValue().size(), Spliterator.DISTINCT | Spliterator.NONNULL), false));
+//        return Stream.empty();
+//    }
 
     public static Stream<Entry<ItemStack, AspectList>> stream() {
-        if (cache.isEnabled())
-            return cache.getCache().entrySet().stream()
-                    .flatMap(e -> StreamSupport.stream(Spliterators.spliterator(iterate(e.getKey(), e.getValue()), e.getValue().size(), Spliterator.DISTINCT | Spliterator.NONNULL), false));
-        return Stream.empty();
-    }
+        if (!cache.isEnabled()) return Stream.empty();
 
-    private static Iterator<Entry<ItemStack, AspectList>> iterate(Item owner, TIntObjectMap<AspectList> all) {
-        TIntObjectIterator<AspectList> backing = all.iterator();
-        return new Iterator<Entry<ItemStack, AspectList>>() {
-            @Override
-            public boolean hasNext() {
-                return backing.hasNext();
-            }
-
-            @Override
-            public Entry<ItemStack, AspectList> next() {
-                backing.advance();
-                return Pair.of(new ItemStack(owner, 1, backing.key()), backing.value());
-            }
-        };
+        return cache.getCache().entrySet().stream()
+                .map(e -> Map.entry(e.getKey().getDefaultInstance(), e.getValue()));
     }
 
     @Nullable
-    public static AspectList getObjectTags(ItemStack itemstack) {
-        Item item;
-        int meta;
-        try {
-            item = itemstack.getItem();
-            meta = itemstack.getItemDamage();
-        } catch (Exception e) {
-            return null;
-        }
+    public static AspectList getObjectTags(@NotNull ItemStack itemstack) {
+        Item item = itemstack.getItem();
 
-        if (item == null) {
-            return null;
-        }
-
-        AspectList tmp = getBaseObjectTags(item, meta);
-        if (tmp == null)
-            // cache disabled, try find it as is
-            tmp = ThaumcraftApi.objectTags.get(Arrays.asList(item, meta));
+        AspectList tmp = getBaseObjectTags(item);
         if (tmp == null) {
-            // try wildcard and int[] indexes
-            for (List l : ThaumcraftApi.objectTags.keySet()) {
-                if (l.get(0) == item && l.get(1) instanceof int[]) {
-                    int[] range = (int[]) l.get(1);
-                    Arrays.sort(range);
-                    if (Arrays.binarySearch(range, meta) >= 0) {
-                        tmp = ThaumcraftApi.objectTags.get(Arrays.asList(item, range));
-                        return tmp;
-                    }
-                }
-            }
-
-            tmp = ThaumcraftApi.objectTags.get(Arrays.asList(item, OreDictionary.WILDCARD_VALUE));
-            if (tmp == null) {
-                if (meta == OreDictionary.WILDCARD_VALUE) {
-                    for (int index = 0; index < 16; ++index) {
-                        tmp = ThaumcraftApi.objectTags.get(Arrays.asList(item, index));
-                        if (tmp != null)
-                            break;
-                    }
-                }
-
-                // regen it
-                if (tmp == null) {
-                    tmp = ThaumcraftCraftingManager.generateTags(item, meta);
-                }
-            }
+            // cache disabled, try find it as is
+            tmp = ThaumcraftApi.objectTags.get(item);
+        }
+        if (tmp == null) {
+            tmp = ThaumcraftCraftingManager.generateTags(item);
         }
 
-        if (itemstack.getItem() instanceof ItemWandCasting) {
-            ItemWandCasting wand = (ItemWandCasting) itemstack.getItem();
+        if (itemstack.getItem() instanceof WandCastingItem) {
+            WandCastingItem wand = (WandCastingItem) itemstack.getItem();
             if (tmp == null) tmp = new AspectList();
             addWandTags(itemstack, tmp, wand);
-        } else if (item == Items.potionitem) {
+        } else if (item instanceof PotionItem potionItem) {
             if (tmp == null) tmp = new AspectList();
-            addPotionTags(itemstack, (ItemPotion) item, tmp);
+            addPotionTags(itemstack, potionItem, tmp);
         }
 
         if (tmp == null) {
             return null;
         }
-        for (Integer size : tmp.aspects.values()) {
+        for (Integer size : tmp.getAspects().values()) {
             if (size > 64) {
                 return truncateAspectList(tmp);
             }
@@ -133,14 +81,14 @@ public class GetObjectTags {
 
     private static AspectList truncateAspectList(AspectList tmp) {
         AspectList out = tmp.copy();
-        out.aspects.replaceAll((a, n) -> Math.min(64, n));
+        out.replaceAll((a, n) -> Math.min(64, n));
         return out;
     }
 
     /**
      * Add wand related aspects
      */
-    private static void addWandTags(ItemStack itemstack, AspectList tmp, ItemWandCasting wand) {
+    private static void addWandTags(ItemStack itemstack, AspectList tmp, WandCastingItem wand) {
         tmp.merge(Aspect.MAGIC, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 2);
         tmp.merge(Aspect.TOOL, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 3);
     }
@@ -148,16 +96,17 @@ public class GetObjectTags {
     /**
      * Add potion related aspects
      */
+    //TODO:API adds aspects for effects and item types
     @SuppressWarnings("unchecked")
-    private static void addPotionTags(ItemStack itemstack, ItemPotion item, AspectList tmp) {
+    private static void addPotionTags(ItemStack itemstack, PotionItem item, AspectList tmp) {
         tmp.merge(Aspect.WATER, 1);
-        List<PotionEffect> effects = item.getEffects(itemstack.getItemDamage());
-        if (effects != null) {
-            if (ItemPotion.isSplash(itemstack.getItemDamage())) {
+        List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
+        if (!effects.isEmpty()) {
+            if (item instanceof ThrowablePotionItem) {
                 tmp.merge(Aspect.ENTROPY, 2);
             }
 
-            for (PotionEffect effect : effects) {
+            for (MobEffectInstance effect : effects) {
                 int amplifier = effect.getAmplifier();
                 int potionID = effect.getPotionID();
                 tmp.merge(Aspect.MAGIC, (amplifier + 1) * 2);
@@ -211,77 +160,19 @@ public class GetObjectTags {
      * @return null if cache disabled. non null if cache enabled. might be an empty aspect list if the generateTag failed.
      */
     @Nullable
-    private static AspectList getBaseObjectTags(Item item, int meta) {
-        ConcurrentMap<Item, TIntObjectMap<AspectList>> cache = GetObjectTags.cache.getCache();
+    private static AspectList getBaseObjectTags(Item item) {
+        ConcurrentMap<Item, AspectList> cache = GetObjectTags.cache.getCache();
         if (cache == null)
             return null;
-        TIntObjectMap<AspectList> submap = cache.get(item);
-        if (submap != null) {
-            AspectList aspectList;
-            if ((aspectList = submap.get(meta)) != null) {
-                return aspectList;
-            }
-            if ((aspectList = submap.get(OreDictionary.WILDCARD_VALUE)) != null) {
-                return aspectList;
-            }
 
-            if (meta == OreDictionary.WILDCARD_VALUE) {
-                for (int i = 0; i < 16; i++) {
-                    if ((aspectList = submap.get(i)) != null) {
-                        return aspectList;
-                    }
-                }
-            }
-        }
-        AspectList aspectList = ThaumcraftCraftingManager.generateTags(item, meta);
-        // do not return null. null signals the cache is disabled
-        return aspectList == null ? new AspectList() : aspectList;
-    }
+        AspectList aspect = cache.get(item);
+        if (aspect != null)
+            return aspect;
 
-    static void mutateObjectTagsSubmap(List<?> key, ObjectTagsMutation action) {
-        ConcurrentMap<Item, TIntObjectMap<AspectList>> cache = GetObjectTags.cache.getCache();
-        if (cache != null) {
-            Item item = (Item) key.get(0);
-            if (key.get(1) instanceof int[]) {
-                int[] metas = (int[]) key.get(1);
-                TIntObjectMap<AspectList> submap = cache.computeIfAbsent(item, k -> new TIntObjectHashMap<>(metas.length));
-                for (int meta : metas) action.accept(submap, meta);
-            } else if (key.get(1) instanceof Integer) {
-                action.accept(cache.computeIfAbsent(item, k -> new TIntObjectHashMap<>()), ((Integer) key.get(1)));
-            }
-        }
-    }
+        // 新版 generateTags 不再接收 meta，因为 meta 已废除
+        aspect = ThaumcraftCraftingManager.generateTags(item);
 
-    @ParametersAreNonnullByDefault
-    @SuppressWarnings("rawtypes")
-    static class InterceptingConcurrentHashMap extends ConcurrentHashMap<List, AspectList> {
-        @Override
-        public AspectList put(List key, AspectList value) {
-            mutateObjectTagsSubmap(key, (submap, meta) -> submap.put(meta, value));
-            GenerateItemHash.onNewObjectTag(key);
-            return super.put(key, value);
-        }
-
-        @Override
-        public AspectList remove(Object key) {
-            if (key instanceof List) {
-                List<?> key1 = (List<?>) key;
-                mutateObjectTagsSubmap(key1, TIntObjectMap::remove);
-                GenerateItemHash.onRemoveObjectTag(key1);
-            }
-            return super.remove(key);
-        }
-
-        @Override
-        public boolean remove(Object key, Object value) {
-            if (key instanceof List && value instanceof AspectList) {
-                List<?> key1 = (List<?>) key;
-                mutateObjectTagsSubmap(key1, (submap, meta) -> {
-                    if (value.equals(submap.get(meta))) submap.remove(meta);
-                });
-                GenerateItemHash.onRemoveObjectTag(key1);
-            }
-            return super.remove(key, value);
-        }
+        // 不返回 null，因为 null 表示 cache disabled
+        return aspect == null ? new AspectList() : aspect;
     }
 }

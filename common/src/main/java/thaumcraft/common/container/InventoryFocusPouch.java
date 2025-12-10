@@ -1,9 +1,9 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.wands.ItemFocusBasic;
 
 public class InventoryFocusPouch implements IInventory {
@@ -61,7 +61,7 @@ public class InventoryFocusPouch implements IInventory {
       return 1;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+   public boolean isUseableByPlayer(Player par1Player) {
       return true;
    }
 

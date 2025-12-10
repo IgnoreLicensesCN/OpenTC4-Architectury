@@ -1,4 +1,4 @@
-package com.linearity.fabrictests.mixinaccessor;
+package com.linearity.opentc4.mixinaccessors;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

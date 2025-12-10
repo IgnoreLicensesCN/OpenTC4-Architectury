@@ -1,10 +1,10 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -27,27 +27,27 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       nbttagcompound.setInteger("orientation", this.orientation.ordinal());
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
       this.orientation = ForgeDirection.getOrientation(side);
-      player.worldObj.playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:tool", 0.3F, 1.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+      player.level().playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:tool", 0.3F, 1.9F + player.level().rand.nextFloat() * 0.2F, false);
       player.swingItem();
       this.markDirty();
       return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
    boolean drawEssentia() {
       for(ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
-         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, facing);
+         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, facing);
          if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport)te;
             if (!ic.canOutputTo(facing.getOpposite())) {

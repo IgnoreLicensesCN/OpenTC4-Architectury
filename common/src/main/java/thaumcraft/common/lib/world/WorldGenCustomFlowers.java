@@ -1,8 +1,8 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
@@ -16,7 +16,7 @@ public class WorldGenCustomFlowers extends WorldGenerator {
       this.plantBlockMeta = md;
    }
 
-   public boolean generate(World world, Random par2Random, int par3, int par4, int par5) {
+   public boolean generate(Level world, Random par2Random, int par3, int par4, int par5) {
       for(int var6 = 0; var6 < 18; ++var6) {
          int var7 = par3 + par2Random.nextInt(8) - par2Random.nextInt(8);
          int var8 = par4 + par2Random.nextInt(4) - par2Random.nextInt(4);

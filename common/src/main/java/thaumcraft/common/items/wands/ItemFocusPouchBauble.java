@@ -3,7 +3,7 @@ package thaumcraft.common.items.wands;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemFocusPouchBauble extends ItemFocusPouch implements IBauble {
    public BaubleType getBaubleType(ItemStack itemstack) {

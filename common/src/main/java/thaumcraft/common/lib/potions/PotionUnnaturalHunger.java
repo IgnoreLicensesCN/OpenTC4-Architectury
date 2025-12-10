@@ -3,10 +3,10 @@ package thaumcraft.common.lib.potions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.Player;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
 
 public class PotionUnnaturalHunger extends Potion {
    public static PotionUnnaturalHunger instance = null;
@@ -34,8 +34,8 @@ public class PotionUnnaturalHunger extends Potion {
       return super.getStatusIconIndex();
    }
 
-   public void performEffect(EntityLivingBase target, int par2) {
-      if (!target.worldObj.isRemote && target instanceof Player) {
+   public void performEffect(LivingEntity target, int par2) {
+      if (Platform.getEnvironment() != Env.CLIENT && target instanceof Player) {
          ((Player)target).addExhaustion(0.025F * (float)(par2 + 1));
       }
 

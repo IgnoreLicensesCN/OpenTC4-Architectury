@@ -7,11 +7,11 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -19,14 +19,14 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.ItemEssence;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.misc.ItemEssence;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.*;
 
@@ -312,15 +312,15 @@ public class BlockWoodenDevice extends BlockContainer {
       return meta == 4 || meta == 6 || meta == 7 || super.isSideSolid(world, x, y, z, side);
    }
 
-   public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8, float par9) {
+   public boolean onBlockActivated(World w, int x, int y, int z, Player p, int par6, float par7, float par8, float par9) {
       if (w.getBlock(x, y, z) != this) {
          return false;
       } else {
          int meta = w.getBlockMetadata(x, y, z);
          if (meta != 4 && meta != 6 && meta != 7) {
-            if (w.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                return true;
-            } else if (meta != 5 || p.inventory.getCurrentItem() != null && p.inventory.getCurrentItem() != null && p.inventory.getCurrentItem().getItem() instanceof ItemWandCasting) {
+            } else if (meta != 5 || p.inventory.getCurrentItem() != null && p.inventory.getCurrentItem() != null && p.inventory.getCurrentItem().getItem() instanceof WandCastingItem) {
                if (meta == 1) {
                   TileSensor var6 = (TileSensor)w.getTileEntity(x, y, z);
                   if (var6 != null) {
@@ -379,13 +379,13 @@ public class BlockWoodenDevice extends BlockContainer {
       }
    }
 
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
       int md = par1World.getBlockMetadata(par2, par3, par4);
       if (md == 8) {
          this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
       }
 
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
    }
 
    public ArrayList getDrops(World world, int x, int y, int z, int metadata, int fortune) {
@@ -415,7 +415,7 @@ public class BlockWoodenDevice extends BlockContainer {
 
    public void onBlockPlacedBy(World w, int x, int y, int z, EntityLivingBase p, ItemStack s) {
       TileEntity tile = w.getTileEntity(x, y, z);
-      if (tile instanceof TileOwned && p instanceof EntityPlayer) {
+      if (tile instanceof TileOwned && p instanceof Player) {
          ((TileOwned)tile).owner = p.getCommandSenderName();
          tile.markDirty();
       }
@@ -469,7 +469,7 @@ public class BlockWoodenDevice extends BlockContainer {
       return null;
    }
 
-   public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
+   public boolean onBlockEventReceived(Level par1World, int par2, int par3, int par4, int par5, int par6) {
       float var7 = (float)Math.pow(2.0F, (double)(par6 - 12) / (double)12.0F);
       if (par5 <= 4) {
          if (par5 >= 0) {
@@ -500,18 +500,18 @@ public class BlockWoodenDevice extends BlockContainer {
       }
    }
 
-   public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+   public void updateTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
       if (par1World.getBlock(par2, par3, par4) == this) {
-         if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 3) {
+         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 3) {
             this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
          }
 
       }
    }
 
-   public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
+   public void onEntityCollidedWithBlock(Level par1World, int par2, int par3, int par4, Entity par5Entity) {
       if (par1World.getBlock(par2, par3, par4) == this) {
-         if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2) {
+         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 2) {
             this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
          }
 
@@ -542,12 +542,12 @@ public class BlockWoodenDevice extends BlockContainer {
       }
 
       if (setting == 2) {
-         var8 = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
+         var8 = world.getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
       }
 
       if (!var8.isEmpty()) {
          for(Entity var10 : var8) {
-            if (!var10.doesEntityNotTriggerPressurePlate() && (setting != 1 || !(var10 instanceof EntityPlayer) || !var10.getCommandSenderName().equals(username) && !accessList.contains("0" + var10.getCommandSenderName()) && !accessList.contains("1" + var10.getCommandSenderName())) && (setting != 2 || !(var10 instanceof EntityPlayer) || var10.getCommandSenderName().equals(username) || accessList.contains("0" + var10.getCommandSenderName()) || accessList.contains("1" + var10.getCommandSenderName()))) {
+            if (!var10.doesEntityNotTriggerPressurePlate() && (setting != 1 || !(var10 instanceof Player) || !var10.getCommandSenderName().equals(username) && !accessList.contains("0" + var10.getCommandSenderName()) && !accessList.contains("1" + var10.getCommandSenderName())) && (setting != 2 || !(var10 instanceof Player) || var10.getCommandSenderName().equals(username) || accessList.contains("0" + var10.getCommandSenderName()) || accessList.contains("1" + var10.getCommandSenderName()))) {
                var6 = true;
                break;
             }
@@ -576,7 +576,7 @@ public class BlockWoodenDevice extends BlockContainer {
 
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       if (par6 == 3) {
          par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
          par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);

@@ -2,21 +2,21 @@ package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 
 public class EntityTaintSporeSwarmer extends EntityTaintSpore {
    int spawnCounter = 500;
 
-   public EntityTaintSporeSwarmer(World par1World) {
+   public EntityTaintSporeSwarmer(Level par1World) {
       super(par1World);
       this.setSporeSize(10);
    }
@@ -35,7 +35,7 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
    }
 
    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          this.sploosh(10);
       }
 
@@ -48,12 +48,12 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
          --this.spawnCounter;
       }
 
-      if (this.spawnCounter <= 0 && this.worldObj.getClosestVulnerablePlayerToEntity(this, 16.0F) != null) {
+      if (this.spawnCounter <= 0 && this.level().getClosestVulnerablePlayerToEntity(this, 16.0F) != null) {
          this.spawnCounter = 500;
          this.swarmBurst(1);
       }
 
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          for(int a = 0; a < this.swarm.size(); ++a) {
             if (this.swarm.get(a) == null || ((Entity)this.swarm.get(a)).isDead) {
                this.swarm.remove(a);
@@ -62,7 +62,7 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
          }
 
          if (this.swarm.size() < (500 - this.spawnCounter) / 25) {
-            this.swarm.add(Thaumcraft.proxy.swarmParticleFX(this.worldObj, this, 0.1F, 10.0F, 0.0F));
+            this.swarm.add(Thaumcraft.proxy.swarmParticleFX(this.level(), this, 0.1F, 10.0F, 0.0F));
          }
       }
 
@@ -72,20 +72,20 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
 
    }
 
-   public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+   public void onCollideWithPlayer(Player par1Player) {
    }
 
    protected void swarmBurst(int amt) {
-      if (!this.worldObj.isRemote) {
-         this.worldObj.playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.worldObj.rand.nextFloat() * 0.1F);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         this.level().playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.level().rand.nextFloat() * 0.1F);
 
          for(int a = 0; a < amt; ++a) {
-            EntityTaintSwarm swarm = new EntityTaintSwarm(this.worldObj);
-            swarm.setLocationAndAngles(this.posX, this.posY + (double)0.5F, this.posZ, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
-            this.worldObj.spawnEntityInWorld(swarm);
+            EntityTaintSwarm swarm = new EntityTaintSwarm(this.level());
+            swarm.setLocationAndAngles(this.posX, this.posY + (double)0.5F, this.posZ, this.level().rand.nextFloat() * 360.0F, 0.0F);
+            this.level().spawnEntityInWorld(swarm);
          }
 
-         this.worldObj.setEntityState(this, (byte)6);
+         this.level().setEntityState(this, (byte)6);
       }
 
    }
@@ -119,10 +119,10 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
    public int getBrightnessForRender(float par1) {
       int i = MathHelper.floor_double(this.posX);
       int j = MathHelper.floor_double(this.posZ);
-      if (this.worldObj.blockExists(i, 0, j)) {
+      if (this.level().blockExists(i, 0, j)) {
          double d0 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66;
          int k = MathHelper.floor_double(this.posY - (double)this.yOffset + d0);
-         return this.worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
+         return this.level().getLightBrightnessForSkyBlocks(i, k, j, 0);
       } else {
          return 0;
       }
@@ -131,10 +131,10 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
    public float getBrightness(float par1) {
       int i = MathHelper.floor_double(this.posX);
       int j = MathHelper.floor_double(this.posZ);
-      if (this.worldObj.blockExists(i, 0, j)) {
+      if (this.level().blockExists(i, 0, j)) {
          double d0 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66;
          int k = MathHelper.floor_double(this.posY - (double)this.yOffset + d0);
-         return this.worldObj.getLightBrightness(i, k, j);
+         return this.level().getLightBrightness(i, k, j);
       } else {
          return 0.0F;
       }
@@ -146,10 +146,10 @@ public class EntityTaintSporeSwarmer extends EntityTaintSpore {
 
    protected void dropFewItems(boolean flag, int i) {
       for(int a = 0; a <= 1; ++a) {
-         if (this.worldObj.rand.nextBoolean()) {
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+         if (this.level().rand.nextBoolean()) {
+            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
          } else {
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 12), this.height / 2.0F);
+            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
          }
       }
 

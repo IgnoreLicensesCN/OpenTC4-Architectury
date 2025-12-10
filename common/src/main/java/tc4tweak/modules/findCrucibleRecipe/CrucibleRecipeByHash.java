@@ -14,14 +14,12 @@ import static tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe.log;
 class CrucibleRecipeByHash extends FlushableCache<TIntObjectMap<CrucibleRecipe>> {
 	@Override
 	protected TIntObjectMap<CrucibleRecipe> createCache() {
-		List<?> list = ThaumcraftApi.getCraftingRecipes();
+		List<CrucibleRecipe> list = ThaumcraftApi.getCrucibleRecipes();
 		TIntObjectMap<CrucibleRecipe> result = new TIntObjectHashMap<>();
-		for (Object o : list) {
-			if (o instanceof CrucibleRecipe) {
-				CrucibleRecipe recipe = (CrucibleRecipe) o;
-				CrucibleRecipe existing = result.putIfAbsent(recipe.hash, recipe);
-				if (existing != null && log.isWarnEnabled())
-					log.warn("Recipe {} ignored due to collision with {} for hash {}", CommonUtils.toString(recipe), CommonUtils.toString(existing), recipe.hash);
+		for (CrucibleRecipe o : list) {
+			CrucibleRecipe existing = result.putIfAbsent(o.hash, o);
+			if (existing != null && log.isWarnEnabled()) {
+				log.warn("Recipe {} ignored due to collision with {} for hash {}", CommonUtils.toString(o), CommonUtils.toString(existing), o.hash);
 			}
 		}
 		return result;

@@ -6,19 +6,19 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXWisp;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.world.WorldGenGreatwoodTrees;
@@ -96,12 +96,12 @@ public class BlockCustomPlant extends BlockBush {
       }
    }
 
-   public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
       return true;
    }
 
    public void updateTick(World world, int i, int j, int k, Random random) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          super.updateTick(world, i, j, k, random);
          int l = world.getBlockMetadata(i, j, k);
          if (l == 0 && world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(25) == 0) {
@@ -115,7 +115,7 @@ public class BlockCustomPlant extends BlockBush {
 
    public void growGreatTree(World world, int i, int j, int k, Random random) {
       if (world != null && world.provider != null) {
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             world.setBlockToAir(i, j, k);
             WorldGenGreatwoodTrees obj = new WorldGenGreatwoodTrees(true);
             if (!obj.generate(world, random, i, j, k, false)) {
@@ -128,7 +128,7 @@ public class BlockCustomPlant extends BlockBush {
 
    public void growSilverTree(World world, int i, int j, int k, Random random) {
       if (world != null && world.provider != null) {
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             world.setBlockToAir(i, j, k);
             WorldGenSilverwoodTrees obj = new WorldGenSilverwoodTrees(true, 7, 5);
             if (!obj.generate(world, random, i, j, k)) {
@@ -161,30 +161,32 @@ public class BlockCustomPlant extends BlockBush {
    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
       int md = world.getBlockMetadata(i, j, k);
       if (md == 2 && random.nextInt(3) == 0) {
-         float cr = 0.3F + world.rand.nextFloat() * 0.3F;
-         float cg = 0.7F + world.rand.nextFloat() * 0.3F;
-         float cb = 0.7F + world.rand.nextFloat() * 0.3F;
-         float xr = (float)i + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.1F;
-         float yr = (float)j + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.15F;
-         float zr = (float)k + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.1F;
+         float cr = 0.3F + world.getRandom().nextFloat() * 0.3F;
+         float cg = 0.7F + world.getRandom().nextFloat() * 0.3F;
+         float cb = 0.7F + world.getRandom().nextFloat() * 0.3F;
+         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+         float yr = (float)j + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.15F;
+         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
          FXWisp ef = new FXWisp(world, xr, yr, zr, 0.2F, cr, cg, cb);
          ef.tinkle = false;
-         ParticleEngine.instance.addEffect(world, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       } else if (md == 3 && random.nextBoolean()) {
-         float xr = (float)i + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.1F;
-         float yr = (float)j + 0.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.1F;
-         float zr = (float)k + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.1F;
+         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+         float yr = (float)j + 0.6F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
          world.spawnParticle("smoke", xr, yr, zr, 0.0F, 0.0F, 0.0F);
          world.spawnParticle("flame", xr, yr, zr, 0.0F, 0.0F, 0.0F);
       } else if (md == 5 && random.nextInt(3) == 0) {
-         float xr = (float)i + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
+         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
          float yr = (float)j + 0.3F;
-         float zr = (float)k + 0.5F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F;
+         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
          FXWisp ef = new FXWisp(world, xr, yr, zr, 0.1F, 0.5F, 0.3F, 0.8F);
          ef.tinkle = false;
          ef.shrink = true;
          ef.setGravity(0.015F);
-         ParticleEngine.instance.addEffect(world, ef);
+         Minecraft.getInstance().particleEngine.add(ef);
+
       }
 
    }

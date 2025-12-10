@@ -2,18 +2,17 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySpellParticleFX;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.TileThaumcraft;
@@ -22,6 +21,8 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
+
+import java.util.ArrayList;
 
 public class TileMirror extends TileThaumcraft implements IInventory {
    public boolean linked = false;
@@ -52,12 +53,12 @@ public class TileMirror extends TileThaumcraft implements IInventory {
             tm.linkX = this.xCoord;
             tm.linkY = this.yCoord;
             tm.linkZ = this.zCoord;
-            tm.linkDim = this.worldObj.provider.dimensionId;
+            tm.linkDim = this.level().dimension();
             targetWorld.markBlockForUpdate(tm.xCoord, tm.yCoord, tm.zCoord);
             this.linked = true;
             this.markDirty();
             tm.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
       }
 
@@ -94,20 +95,20 @@ public class TileMirror extends TileThaumcraft implements IInventory {
                if (!tm.linked) {
                   this.linked = false;
                   this.markDirty();
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   return false;
-               } else if (tm.linkX == this.xCoord && tm.linkY == this.yCoord && tm.linkZ == this.zCoord && tm.linkDim == this.worldObj.provider.dimensionId) {
+               } else if (tm.linkX == this.xCoord && tm.linkY == this.yCoord && tm.linkZ == this.zCoord && tm.linkDim == this.level().dimension()) {
                   return true;
                } else {
                   this.linked = false;
                   this.markDirty();
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   return false;
                }
             } else {
                this.linked = false;
                this.markDirty();
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                return false;
             }
          }
@@ -128,7 +129,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
                if (!tm.linked) {
                   return false;
                } else {
-                  return tm.linkX == this.xCoord && tm.linkY == this.yCoord && tm.linkZ == this.zCoord && tm.linkDim == this.worldObj.provider.dimensionId;
+                  return tm.linkX == this.xCoord && tm.linkY == this.yCoord && tm.linkZ == this.zCoord && tm.linkDim == this.level().dimension();
                }
             } else {
                return false;
@@ -149,7 +150,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
          } else {
             this.linked = false;
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             return false;
          }
       }
@@ -166,7 +167,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
             ie.setDead();
             this.markDirty();
             target.markDirty();
-            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
+            this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
             return true;
          } else {
             return false;
@@ -178,14 +179,14 @@ public class TileMirror extends TileThaumcraft implements IInventory {
 
    public void eject() {
       if (!this.outputStacks.isEmpty() && this.count > 20) {
-         int i = this.worldObj.rand.nextInt(this.outputStacks.size());
+         int i = this.level().rand.nextInt(this.outputStacks.size());
          if (this.outputStacks.get(i) != null) {
             ItemStack outItem = ((ItemStack)this.outputStacks.get(i)).copy();
             outItem.stackSize = 1;
             if (this.spawnItem(outItem)) {
                --((ItemStack)this.outputStacks.get(i)).stackSize;
                this.addInstability(null, 1);
-               this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
+               this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
                if (((ItemStack)this.outputStacks.get(i)).stackSize <= 0) {
                   this.outputStacks.remove(i);
                }
@@ -200,12 +201,12 @@ public class TileMirror extends TileThaumcraft implements IInventory {
    public boolean spawnItem(ItemStack stack) {
       try {
          ForgeDirection face = ForgeDirection.getOrientation(this.getBlockMetadata());
-         EntityItem ie2 = new EntityItem(this.worldObj, (double)this.xCoord + (double)0.5F - (double)face.offsetX * 0.3, (double)this.yCoord + (double)0.5F - (double)face.offsetY * 0.3, (double)this.zCoord + (double)0.5F - (double)face.offsetZ * 0.3, stack);
+         EntityItem ie2 = new EntityItem(this.level(), (double)this.xCoord + (double)0.5F - (double)face.offsetX * 0.3, (double)this.yCoord + (double)0.5F - (double)face.offsetY * 0.3, (double)this.zCoord + (double)0.5F - (double)face.offsetZ * 0.3, stack);
          ie2.motionX = (float)face.offsetX * 0.15F;
          ie2.motionY = (float)face.offsetY * 0.15F;
          ie2.motionZ = (float)face.offsetZ * 0.15F;
          ie2.timeUntilPortal = 20;
-         this.worldObj.spawnEntityInWorld(ie2);
+         this.level().spawnEntityInWorld(ie2);
          return true;
       } catch (Exception var4) {
          return false;
@@ -253,14 +254,14 @@ public class TileMirror extends TileThaumcraft implements IInventory {
       if (i != 1) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             ForgeDirection face = ForgeDirection.getOrientation(this.getBlockMetadata());
 
             for(int q = 0; q < Thaumcraft.proxy.particleCount(1); ++q) {
-               double xx = (double)this.xCoord + 0.33 + (double)(this.worldObj.rand.nextFloat() * 0.33F) - (double)face.offsetX / (double)2.0F;
-               double yy = (double)this.yCoord + 0.33 + (double)(this.worldObj.rand.nextFloat() * 0.33F) - (double)face.offsetY / (double)2.0F;
-               double zz = (double)this.zCoord + 0.33 + (double)(this.worldObj.rand.nextFloat() * 0.33F) - (double)face.offsetZ / (double)2.0F;
-               EntitySpellParticleFX var21 = new EntitySpellParticleFX(this.worldObj, xx, yy, zz, 0.0F, 0.0F, 0.0F);
+               double xx = (double)this.xCoord + 0.33 + (double)(this.level().rand.nextFloat() * 0.33F) - (double)face.offsetX / (double)2.0F;
+               double yy = (double)this.yCoord + 0.33 + (double)(this.level().rand.nextFloat() * 0.33F) - (double)face.offsetY / (double)2.0F;
+               double zz = (double)this.zCoord + 0.33 + (double)(this.level().rand.nextFloat() * 0.33F) - (double)face.offsetZ / (double)2.0F;
+               EntitySpellParticleFX var21 = new EntitySpellParticleFX(this.level(), xx, yy, zz, 0.0F, 0.0F, 0.0F);
                var21.motionX = (double)face.offsetX * 0.05;
                var21.motionY = (double)face.offsetY * 0.05;
                var21.motionZ = (double)face.offsetZ * 0.05;
@@ -276,7 +277,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int tickrate = this.instability / 50;
          if (tickrate == 0 || this.count % (tickrate * tickrate) == 0) {
             this.eject();
@@ -301,11 +302,11 @@ public class TileMirror extends TileThaumcraft implements IInventory {
    public void checkInstability() {
       if (this.instability > 0 && this.count % 20 == 0) {
          --this.instability;
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       }
 
       if (this.instability > 0) {
-         int amt = VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.ORDER, Math.min(this.instability, 1));
+         int amt = VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.ORDER, Math.min(this.instability, 1));
          if (amt > 0) {
             World targetWorld = MinecraftServer.getServer().worldServerForDimension(this.linkDim);
             this.addInstability(targetWorld, -amt);
@@ -316,7 +317,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
 
    public void readFromNBT(NBTTagCompound nbtCompound) {
       super.readFromNBT(nbtCompound);
-      NBTTagList nbttaglist = nbtCompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbtCompound.getTagList("ThaumcraftItems", 10);
       this.outputStacks = new ArrayList<>();
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -340,7 +341,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
          }
       }
 
-      nbtCompound.setTag("Items", nbttaglist);
+      nbtCompound.setTag("ThaumcraftItems", nbttaglist);
    }
 
    public int getSizeInventory() {
@@ -370,7 +371,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
       if (target instanceof TileMirror) {
          ((TileMirror)target).addStack(par2ItemStack.copy());
          this.addInstability(null, par2ItemStack.stackSize);
-         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
+         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMirror, 1, 0);
       } else {
          this.spawnItem(par2ItemStack.copy());
       }
@@ -389,7 +390,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer var1) {
+   public boolean isUseableByPlayer(Player var1) {
       return false;
    }
 

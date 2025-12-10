@@ -1,10 +1,10 @@
 package thaumcraft.common.entities.ai.pech;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathPoint;
 import thaumcraft.common.config.Config;
@@ -31,7 +31,7 @@ public class AIPechItemEntityGoto extends EntityAIBase {
          return false;
       } else {
          double range = Double.MAX_VALUE;
-         List<Entity> targets = this.pech.worldObj.getEntitiesWithinAABBExcludingEntity(this.pech, this.pech.boundingBox.expand(this.maxTargetDistance, this.maxTargetDistance, this.maxTargetDistance));
+         List<Entity> targets = this.pech.level().getEntitiesWithinAABBExcludingEntity(this.pech, this.pech.boundingBox.expand(this.maxTargetDistance, this.maxTargetDistance, this.maxTargetDistance));
          if (targets.isEmpty()) {
             return false;
          } else {
@@ -96,7 +96,7 @@ public class AIPechItemEntityGoto extends EntityAIBase {
          }
 
          if (is == null || is.stackSize != am) {
-            this.targetEntity.worldObj.playSoundAtEntity(this.targetEntity, "random.pop", 0.2F, ((this.targetEntity.worldObj.rand.nextFloat() - this.targetEntity.worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            this.targetEntity.level().playSoundAtEntity(this.targetEntity, "random.pop", 0.2F, ((this.targetEntity.level().rand.nextFloat() - this.targetEntity.level().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
          }
       }
 

@@ -1,10 +1,9 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
-public class ClientProxy extends CommonProxy {
+public class OpenTC4ClientProxy extends OpenTC4CommonProxy {
     @Override
     public Player getLocalPlayer() {
         return Minecraft.getInstance().player;
@@ -14,5 +13,14 @@ public class ClientProxy extends CommonProxy {
     public boolean isShiftKeyDown() {
         var client = Minecraft.getInstance();
         return client.options.keyShift.isDown();
+    }
+
+    @Override
+    public int getLocalPlayerTicks() {
+        var player = getLocalPlayer();
+        if (player != null) {
+            return player.tickCount;
+        }
+        return 0;
     }
 }

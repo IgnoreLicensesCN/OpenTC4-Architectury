@@ -1,20 +1,21 @@
 package thaumcraft.client.renderers.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
 import thaumcraft.common.tiles.TileInfusionMatrix;
+
+import java.util.Random;
 
 @SideOnly(Side.CLIENT)
 public class TileRunicMatrixRenderer extends TileEntitySpecialRenderer {
@@ -85,7 +86,7 @@ public class TileRunicMatrixRenderer extends TileEntitySpecialRenderer {
       UtilsFX.bindTexture("textures/models/infuser.png");
       GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 0.5F, (float)par6 + 0.5F);
       float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
-      if (is.getWorldObj() != null) {
+      if (is.getLevel() != null) {
          GL11.glRotatef(ticks % 360.0F * is.startUp, 0.0F, 1.0F, 0.0F);
          GL11.glRotatef(35.0F * is.startUp, 1.0F, 0.0F, 0.0F);
          GL11.glRotatef(45.0F * is.startUp, 0.0F, 0.0F, 1.0F);

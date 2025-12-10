@@ -10,20 +10,20 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntitySpellParticleFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import tc4tweak.network.NetworkedConfiguration;
 import thaumcraft.api.aspects.AspectList;
@@ -117,9 +117,9 @@ public class BlockJar extends BlockContainer {
       return ConfigBlocks.blockJarRI;
    }
 
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
       this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
    }
 
    public static void playJarSound(World world, int x, int y, int z, float p_72980_8_) {
@@ -183,9 +183,9 @@ public class BlockJar extends BlockContainer {
       return meta != 15;
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       int md = par1World.getBlockMetadata(par2, par3, par4);
-      if (md == 1 && !par1World.isRemote) {
+      if (md == 1 && !(Platform.getEnvironment() == Env.CLIENT)) {
          TileEntity te = par1World.getTileEntity(par2, par3, par4);
          if (te instanceof TileJarBrain) {
             int xp = ((TileJarBrain) te).xp;
@@ -225,13 +225,13 @@ public class BlockJar extends BlockContainer {
    }
 
    public boolean onBlockActivated(World world, int x, int y, int z,
-                                   EntityPlayer player, int side, float what,
+                                   Player player, int side, float what,
                                    float these, float are) {
       TileEntity te = world.getTileEntity(x, y, z);
       if (te instanceof TileJarBrain) {
          ((TileJarBrain) te).eatDelay = 40;
-         if (!world.isRemote) {
-            int var6 = world.rand.nextInt(Math.min(((TileJarBrain) te).xp + 1, 64));
+         if (Platform.getEnvironment() != Env.CLIENT) {
+            int var6 = world.getRandom().nextInt(Math.min(((TileJarBrain) te).xp + 1, 64));
             if (var6 > 0) {
                ((TileJarBrain) te).xp -= var6;
                int xp = var6;
@@ -259,11 +259,11 @@ public class BlockJar extends BlockContainer {
                world.markBlockForUpdate(x, y, z);
                te.markDirty();
 
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   playJarSound(world, x, y, z, 1.f);
                } else {
                   ForgeDirection fd = ForgeDirection.getOrientation(side);
-                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ConfigItems.itemResource, 1, 13)));
+                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
                }
             } else if (player.getHeldItem() == null) {
                //clear jar
@@ -272,9 +272,9 @@ public class BlockJar extends BlockContainer {
                   fillableJar.aspect = null;
                }
 
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   playJarSound(world, x, y, z, .4f);
-                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, false);
+                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
                }
             }
          } else if (player.getHeldItem() != null
@@ -295,7 +295,7 @@ public class BlockJar extends BlockContainer {
             world.markBlockForUpdate(x, y, z);
             te.markDirty();
 
-            if (world.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                playJarSound(world, x, y, z, .4f);
             }
          }
@@ -338,7 +338,7 @@ public class BlockJar extends BlockContainer {
          double zz = (double) z + 0.3 + (double) (rand.nextFloat() * 0.4F);
          EntitySpellParticleFX var21 = new EntitySpellParticleFX(world, xx, yy, zz, 0.0F, 0.0F, 0.0F);
          var21.setAlphaF(0.5F);
-         var21.setRBGColorF(0.0F, 0.4F + world.rand.nextFloat() * 0.1F, 0.3F + world.rand.nextFloat() * 0.2F);
+         var21.setRBGColorF(0.0F, 0.4F + world.getRandom().nextFloat() * 0.1F, 0.3F + world.getRandom().nextFloat() * 0.2F);
          Minecraft.getMinecraft().effectRenderer.addEffect(var21);
       }
 

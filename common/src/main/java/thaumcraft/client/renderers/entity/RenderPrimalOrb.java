@@ -1,16 +1,17 @@
 package thaumcraft.client.renderers.entity;
 
-import java.util.Random;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.blocks.BlockCustomOreItem;
+
+import java.util.Random;
 
 public class RenderPrimalOrb extends Render {
    public RenderPrimalOrb() {

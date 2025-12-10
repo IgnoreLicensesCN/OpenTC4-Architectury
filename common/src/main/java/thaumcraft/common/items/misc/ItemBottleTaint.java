@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityBottleTaint;
@@ -39,7 +39,7 @@ public class ItemBottleTaint extends Item implements IScribeTools {
       }
 
       world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          world.spawnEntityInWorld(new EntityBottleTaint(world, player));
       }
 

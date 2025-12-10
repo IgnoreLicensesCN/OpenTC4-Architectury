@@ -1,16 +1,17 @@
 package thaumcraft.common.entities;
 
-import java.util.ArrayList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
+
+import java.util.ArrayList;
 
 public class InventoryMob implements IInventory {
    public ItemStack[] inventory;
@@ -182,11 +183,11 @@ public class InventoryMob implements IInventory {
       return this.stacklimit;
    }
 
-   public boolean canInteractWith(EntityPlayer entityplayer) {
+   public boolean canInteractWith(Player Player) {
       if (this.ent.isDead) {
          return false;
       } else {
-         return entityplayer.getDistanceSqToEntity(this.ent) <= (double)64.0F;
+         return Player.getDistanceSqToEntity(this.ent) <= (double)64.0F;
       }
    }
 
@@ -210,7 +211,7 @@ public class InventoryMob implements IInventory {
 
    }
 
-   public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+   public boolean isUseableByPlayer(Player Player) {
       return false;
    }
 

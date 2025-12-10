@@ -1,11 +1,20 @@
 {
   "required": true,
   "package": "com.linearity.opentc4.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "ItemRendererMixin"
   ],
   "mixins": [
+    "BiomeMixin",
+    "ClientPacketListenerAccessor",
+    "ClimateSettingsMixin",
+    "DropExperienceBlockMixin",
+    "EntityTypeMixin",
+    "ItemStackMixin",
+    "LivingEntityAccessor",
+    "ServerGamePacketListenerImplAccessor",
   ],
   "injectors": {
     "defaultRequire": 1

@@ -30,17 +30,17 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      if (this.worldObj != null && this.worldObj.isRemote) {
-         this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null && (Platform.getEnvironment() == Env.CLIENT)) {
+         this.level().updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.charges < 4 && this.drawEssentia()) {
             ++this.charges;
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
 
          if (this.charges > 1 && this.count++ % 300 == 0) {
@@ -52,7 +52,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
 
    private void updateAnimals() {
       int distance = 7;
-      List<EntityAnimal> var5 = this.worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(distance, distance, distance));
+      List<EntityAnimal> var5 = this.level().getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(distance, distance, distance));
 
       for(EntityAnimal var3 : var5) {
          EntityLivingBase var4 = var3;
@@ -102,7 +102,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       if (++this.drawDelay % 5 != 0) {
          return false;
       } else {
-         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.facing);
+         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
          if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport)te;
             if (!ic.canOutputTo(this.facing.getOpposite())) {

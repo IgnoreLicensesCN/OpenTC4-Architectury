@@ -2,7 +2,7 @@ package thaumcraft.client.renderers.models;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public class ModelManaPod extends ModelBase {
    public ModelRenderer pod0;

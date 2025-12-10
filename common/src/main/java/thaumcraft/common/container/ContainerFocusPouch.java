@@ -1,12 +1,12 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.items.wands.ItemFocusPouch;
 
@@ -18,10 +18,10 @@ public class ContainerFocusPouch extends Container {
    private int blockSlot;
    public IInventory input = new InventoryFocusPouch(this);
    ItemStack pouch = null;
-   EntityPlayer player = null;
+   Player player = null;
 
    public ContainerFocusPouch(InventoryPlayer iinventory, World par2World, int par3, int par4, int par5) {
-      this.worldObj = par2World;
+      this.level() = par2World;
       this.posX = par3;
       this.posY = par4;
       this.posZ = par5;
@@ -34,7 +34,7 @@ public class ContainerFocusPouch extends Container {
       }
 
       this.bindPlayerInventory(iinventory);
-      if (!par2World.isRemote) {
+      if (!(Platform.getEnvironment() == Env.CLIENT)) {
          try {
             ((InventoryFocusPouch)this.input).stackList = ((ItemFocusPouch)this.pouch.getItem()).getInventory(this.pouch);
          } catch (Exception ignored) {
@@ -57,7 +57,7 @@ public class ContainerFocusPouch extends Container {
 
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slot) {
+   public ItemStack transferStackInSlot(Player par1Player, int slot) {
       if (slot == this.blockSlot) {
          return null;
       } else {
@@ -85,17 +85,17 @@ public class ContainerFocusPouch extends Container {
       }
    }
 
-   public boolean canInteractWith(EntityPlayer var1) {
+   public boolean canInteractWith(Player var1) {
       return true;
    }
 
-   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
-      return par1 == this.blockSlot ? null : super.slotClick(par1, par2, par3, par4EntityPlayer);
+   public ItemStack slotClick(int par1, int par2, int par3, Player par4Player) {
+      return par1 == this.blockSlot ? null : super.slotClick(par1, par2, par3, par4Player);
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
-      if (!this.worldObj.isRemote) {
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
+      if (Platform.getEnvironment() != Env.CLIENT) {
          ((ItemFocusPouch)this.pouch.getItem()).setInventory(this.pouch, ((InventoryFocusPouch)this.input).stackList);
          if (this.player == null) {
             return;

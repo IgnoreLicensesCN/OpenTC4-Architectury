@@ -7,18 +7,18 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
@@ -84,9 +84,9 @@ public class BlockMirror extends BlockContainer {
       return false;
    }
 
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
       this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
    }
 
    public ArrayList getDrops(World world, int x, int y, int z, int metadata, int fortune) {
@@ -101,7 +101,7 @@ public class BlockMirror extends BlockContainer {
                drop.setTagInfo("linkY", new NBTTagInt(tm.linkY));
                drop.setTagInfo("linkZ", new NBTTagInt(tm.linkZ));
                drop.setTagInfo("linkDim", new NBTTagInt(tm.linkDim));
-               drop.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.provider.dimensionId).getDimensionName()));
+               drop.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                drop.setItemDamage(1);
                tm.invalidateLink();
             }
@@ -118,7 +118,7 @@ public class BlockMirror extends BlockContainer {
                drop.setTagInfo("linkY", new NBTTagInt(tm.linkY));
                drop.setTagInfo("linkZ", new NBTTagInt(tm.linkZ));
                drop.setTagInfo("linkDim", new NBTTagInt(tm.linkDim));
-               drop.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.provider.dimensionId).getDimensionName()));
+               drop.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                drop.setItemDamage(7);
                tm.invalidateLink();
             }
@@ -132,7 +132,7 @@ public class BlockMirror extends BlockContainer {
 
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
       int md = world.getBlockMetadata(x, y, z);
-      if (md < 6 && !world.isRemote && entity instanceof EntityItem && !entity.isDead && entity.timeUntilPortal == 0) {
+      if (md < 6 && Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityItem && !entity.isDead && entity.timeUntilPortal == 0) {
          TileMirror taf = (TileMirror)world.getTileEntity(x, y, z);
          if (taf != null) {
             taf.transport((EntityItem)entity);
@@ -141,7 +141,7 @@ public class BlockMirror extends BlockContainer {
 
    }
 
-   public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
+   public int onBlockPlaced(Level par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9) {
       if (par9 > 6) {
          par9 = 6;
       } else if (par9 > 0 && par9 < 6) {
@@ -152,7 +152,7 @@ public class BlockMirror extends BlockContainer {
    }
 
    public void onNeighborBlockChange(World world, int i, int j, int k, Block l) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int i1 = world.getBlockMetadata(i, j, k);
          boolean flag = !world.isSideSolid(i - 1, j, k, ForgeDirection.getOrientation(5)) && i1 % 6 == 5;
 
@@ -218,15 +218,15 @@ public class BlockMirror extends BlockContainer {
       }
    }
 
-   public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
+   public boolean onBlockActivated(Level par1World, int par2, int par3, int par4, Player par5Player, int par6, float par7, float par8, float par9) {
       return true;
    }
 
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       return null;
    }
 
-   public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getSelectedBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
       return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
    }

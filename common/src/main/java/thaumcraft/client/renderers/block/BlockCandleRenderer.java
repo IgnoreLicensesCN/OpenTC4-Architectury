@@ -1,8 +1,6 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import java.awt.Color;
-import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
@@ -10,6 +8,9 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.BlockCandle;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
+
+import java.awt.*;
+import java.util.Random;
 
 public class BlockCandleRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

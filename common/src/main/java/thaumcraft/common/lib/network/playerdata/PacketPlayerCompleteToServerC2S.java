@@ -103,11 +103,11 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
             for (Aspect a : research.tags.getAspectTypes()) {
                 Thaumcraft.playerKnowledge.addAspectPool(username, a, (short) (-research.tags.getAmount(a)));
                 ResearchManager.scheduleSave(target.getName().getString());
-//                new PacketAspectPool(
-//                        a.getTag(),
-//                        (short) (-research.tags.getAmount(a)),
-//                        Thaumcraft.playerKnowledge.getAspectPoolFor(username, a))
-//                        .sendTo(serverPlayer);
+                new PacketAspectPoolS2C(
+                        a.getTag(),
+                        (short) (-research.tags.getAmount(a)),
+                        Thaumcraft.playerKnowledge.getAspectPoolFor(username, a))
+                        .sendTo(serverPlayer);
             }
 
             // 完成研究
@@ -128,7 +128,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
         }
 
         //TODO:Sound
-//        world.playSound(null, target.blockPosition(), Thaumcraft.SOUNDS.LEARN, target.getSoundSource(), 0.75F, 1.0F);
+        world.playSound(null, target.blockPosition(), Thaumcraft.SOUNDS.LEARN, target.getSoundSource(), 0.75F, 1.0F);
     }
 
     // ------------------ 逻辑 ------------------

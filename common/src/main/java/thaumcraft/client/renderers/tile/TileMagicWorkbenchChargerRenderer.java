@@ -2,19 +2,20 @@ package thaumcraft.client.renderers.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.tiles.TileMagicWorkbenchCharger;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class TileMagicWorkbenchChargerRenderer extends TileEntitySpecialRenderer {
@@ -27,7 +28,7 @@ public class TileMagicWorkbenchChargerRenderer extends TileEntitySpecialRenderer
 
    public void renderTileEntityAt(TileMagicWorkbenchCharger tile, double par2, double par4, double par6, float par8) {
       int facing = 1;
-      if (tile.getWorldObj() != null) {
+      if (tile.getLevel() != null) {
          facing = tile.orientation;
       }
 

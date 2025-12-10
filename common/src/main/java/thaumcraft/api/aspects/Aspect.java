@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import com.linearity.opentc4.utils.StatCollector;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class Aspect {
 	
 
 	///////////////////////////////
-	public static LinkedHashMap<String,Aspect> aspects = new LinkedHashMap<>();
+	public static final LinkedHashMap<String,Aspect> aspects = new LinkedHashMap<>();
 	
 	//PRIMAL
 		public static final Aspect AIR = new Aspect("aer",0xffff7e,"e",1);

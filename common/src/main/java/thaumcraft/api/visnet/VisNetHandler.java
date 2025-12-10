@@ -1,10 +1,13 @@
 package thaumcraft.api.visnet;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
@@ -13,6 +16,9 @@ import thaumcraft.common.lib.utils.Utils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class VisNetHandler {
 
@@ -30,12 +36,12 @@ public class VisNetHandler {
 	 * @param amount how much to drain
 	 * @return how much was actually drained
 	 */
-	public static int drainVis(World world, int x, int y, int z, Aspect aspect, int amount) {
+	public static int drainVis(Level world, int x, int y, int z, Aspect aspect, int amount) {
 
 		int drainedAmount = 0;
 
 		WorldCoordinates drainer = new WorldCoordinates(x, y, z,
-				world.provider.dimensionId);
+				world.dimension());
 		if (!nearbyNodes.containsKey(drainer)) {
 			calculateNearbyNodes(world, x, y, z);
 		}
@@ -53,7 +59,8 @@ public class VisNetHandler {
 				amount -= a;
 				if (a > 0) {
 					int color = Aspect.getPrimalAspects().indexOf(aspect);
-					generateVisEffect(world.provider.dimensionId, x, y, z, node.xCoord, node.yCoord, node.zCoord, color);
+					var pos = node.getBlockPos();
+					generateVisEffect(world.dimension(), x, y, z, pos.getX(),pos.getY(),pos.getZ(), color);
 				}
 				if (amount <= 0) {
 					break;
@@ -64,20 +71,21 @@ public class VisNetHandler {
 		return drainedAmount;
 	}
 	
-	public static void generateVisEffect(int dim, int x, int y, int z, int x2, int y2, int z2, int color) {
+	public static void generateVisEffect(ResourceKey<Level> dim, int x, int y, int z, int x2, int y2, int z2, int color) {
 		ThaumcraftApi.internalMethods.generateVisEffect(dim, x, y, z, x2, y2, z2, color);
 	}
 
-	public static HashMap<Integer, HashMap<WorldCoordinates, WeakReference<TileVisNode>>> sources = new HashMap<>();
+	public static HashMap<ResourceKey<Level>, HashMap<WorldCoordinates, WeakReference<TileVisNode>>> sources = new HashMap<>();
 
-	public static void addSource(World world, TileVisNode vs) {
+	public static void addSource(Level world, TileVisNode vs) {
+		ResourceKey<Level> key = world.dimension();
 		HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = sources
-				.get(world.provider.dimensionId);
+				.get(key);
 		if (sourcelist == null) {
 			sourcelist = new HashMap<>();
 		}
 		sourcelist.put(vs.getLocation(), new WeakReference<>(vs));
-		sources.put(world.provider.dimensionId, sourcelist);
+		sources.put(key, sourcelist);
 		nearbyNodes.clear();
 	}
 
@@ -92,11 +100,11 @@ public class VisNetHandler {
         return !visNode.isInvalid();
     }
 
-	public static WeakReference<TileVisNode> addNode(World world, TileVisNode vn) {
+	public static WeakReference<TileVisNode> addNode(Level world, TileVisNode vn) {
 		WeakReference<TileVisNode> ref = new WeakReference<>(vn);
 
 		HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = sources
-				.get(world.provider.dimensionId);
+				.get(world.dimension());
 		if (sourcelist == null) {
 			sourcelist = new HashMap<>();
 			return null;
@@ -144,7 +152,7 @@ public class VisNetHandler {
 		return null;
 	}
 
-	static ArrayList<WorldCoordinates> cache = new ArrayList<>();
+	public static final List<WorldCoordinates> cache = new ArrayList<>();
 	public static ArrayList<Object[]> findClosestNodes(TileVisNode target,
 			TileVisNode parent, ArrayList<Object[]> in) {
 		
@@ -155,7 +163,7 @@ public class VisNetHandler {
 			TileVisNode child = childWR.get();
 
 			if (child != null && !child.equals(target) && !child.equals(parent)) {
-				float r2 = inRange(child.getWorldObj(), child.getLocation(),
+				float r2 = inRange(child.getLevel(), child.getLocation(),
 						target.getLocation(), target.getRange());
 				if (r2 > 0) {
 					in.add(new Object[] { child, r2 });
@@ -167,18 +175,18 @@ public class VisNetHandler {
 		return in;
 	}
 
-	private static float inRange(World world, WorldCoordinates cc1,
+	private static float inRange(Level world, WorldCoordinates cc1,
 			WorldCoordinates cc2, int range) {
 		float distance = cc1.getDistanceSquaredToWorldCoordinates(cc2);
 		return distance > range * range ? -1 : distance;
 	}
 
-	private static final HashMap<WorldCoordinates, ArrayList<WeakReference<TileVisNode>>> nearbyNodes = new HashMap<>();
+	public static final Map<WorldCoordinates, ArrayList<WeakReference<TileVisNode>>> nearbyNodes = new ConcurrentHashMap<>();
 
-	private static void calculateNearbyNodes(World world, int x, int y, int z) {
+	private static void calculateNearbyNodes(Level world, int x, int y, int z) {
 
 		HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = sources
-				.get(world.provider.dimensionId);
+				.get(world.dimension());
 		if (sourcelist == null) {
 			sourcelist = new HashMap<>();
 			return;
@@ -186,7 +194,7 @@ public class VisNetHandler {
 
 		ArrayList<WeakReference<TileVisNode>> cn = new ArrayList<>();
 		WorldCoordinates drainer = new WorldCoordinates(x, y, z,
-				world.provider.dimensionId);
+				world.dimension().toString());
 
 		ArrayList<Object[]> nearby = new ArrayList<>();
 
@@ -217,7 +225,7 @@ public class VisNetHandler {
 				TileVisNode n = child.get();
 				if (n != null && !n.equals(source)) {
 					
-					float r2 = inRange(n.getWorldObj(), n.getLocation(),
+					float r2 = inRange(n.getLevel(), n.getLocation(),
 							drainer, n.getRange());
 					if (r2 > 0 && r2 < range) {
 						range = r2;
@@ -239,7 +247,7 @@ public class VisNetHandler {
 		for (WeakReference<TileVisNode> child : source.getChildren()) {
 			TileVisNode n = child.get();
 			
-			if (n != null && n.getWorldObj()!=null && isChunkLoaded(n.getWorldObj(), n.xCoord, n.zCoord)) {
+			if (n != null && n.getLevel()!=null && isChunkLoaded(n.getLevel(), n.xCoord, n.zCoord)) {
 				list.add(child);
 				list = getAllChildren(n,list);
 			}
@@ -247,15 +255,15 @@ public class VisNetHandler {
 		return list;
 	}
 	
-	public static boolean isChunkLoaded(World world, int x, int z) {
+	public static boolean isChunkLoaded(Level world, int x, int z) {
         return Utils.isChunkLoaded(world, x, z);
 	}
 
 	 public static boolean canNodeBeSeen(TileVisNode source,TileVisNode target)
 	 {
-		 World world = source.getWorldObj();
-		 Vec3 v1 = Vec3.createVectorHelper((double) source.xCoord + 0.5D, (double) source.yCoord + 0.5D, (double) source.zCoord + 0.5D);
-		 Vec3 v2 = Vec3.createVectorHelper((double) target.xCoord + 0.5D, (double) target.yCoord + 0.5D, (double) target.zCoord + 0.5D);
+		 Level world = source.getLevel();
+		 Vec3 v1 = new Vec3((double) source.xCoord + 0.5D, (double) source.yCoord + 0.5D, (double) source.zCoord + 0.5D);
+		 Vec3 v2 = new Vec3((double) target.xCoord + 0.5D, (double) target.yCoord + 0.5D, (double) target.zCoord + 0.5D);
 		 if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) return true;
 		 if (Double.isNaN(v2.xCoord) || Double.isNaN(v2.yCoord) || Double.isNaN(v2.zCoord)) return true;
 		 int x2 = MathHelper.floor_double(v2.xCoord);
@@ -374,12 +382,12 @@ public class VisNetHandler {
 				 if (x1 == target.xCoord && y1 == target.yCoord && z1 == target.zCoord)
 					 return true;
 
-				 Block block = world.getBlock(x1, y1, z1);
-				 int meta = world.getBlockMetadata(x1, y1, z1);
+				 BlockState block = world.getBlockState(new BlockPos(x1, y1, z1));
+//				 int meta = world.getBlockMetadata(x1, y1, z1);
 				 if (block.canCollideCheck(meta, false)) {
 					 if (block.getCollisionBoundingBoxFromPool(world, x1, y1, z1) != null) {
-						 MovingObjectPosition movingobjectposition1 = block.collisionRayTrace(world, x1, y1, z1, v1, v2);
-						 if (movingobjectposition1 != null && movingobjectposition1.typeOfHit != MovingObjectPosition.MovingObjectType.MISS) {
+						 HitResult HitResult1 = block.collisionRayTrace(world, x1, y1, z1, v1, v2);
+						 if (HitResult1 != null && HitResult1.typeOfHit != HitResult.MovingObjectType.MISS) {
 							 return false;
 						 }
 					 }
@@ -387,9 +395,9 @@ public class VisNetHandler {
 			 }
 		 }
 		 return true;
-//		 MovingObjectPosition mop = ThaumcraftApiHelper.rayTraceIgnoringSource(source.getWorldObj(),
-//				 Vec3.createVectorHelper(source.xCoord+.5, source.yCoord+.5,source.zCoord+.5),
-//				 Vec3.createVectorHelper(target.xCoord+.5, target.yCoord+.5,target.zCoord+.5),
+//		 HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(source.getLevel(),
+//				 new Vec3(source.xCoord+.5, source.yCoord+.5,source.zCoord+.5),
+//				 new Vec3(target.xCoord+.5, target.yCoord+.5,target.zCoord+.5),
 //				 false, true, false);
 //		 return  mop == null || (mop.typeOfHit==MovingObjectType.BLOCK &&
 //				 mop.blockX==target.xCoord && mop.blockY==target.yCoord && mop.blockZ==target.zCoord);
@@ -398,7 +406,7 @@ public class VisNetHandler {
 	// public static HashMap<WorldCoordinates,WeakReference<TileVisNode>>
 	// noderef = new HashMap<WorldCoordinates,WeakReference<TileVisNode>>();
 	//
-	// public static TileVisNode getClosestNodeWithinRadius(World world, int x,
+	// public static TileVisNode getClosestNodeWithinRadius(Level world, int x,
 	// int y, int z, int radius) {
 	// TileVisNode out = null;
 	// WorldCoordinates wc = null;
@@ -406,7 +414,7 @@ public class VisNetHandler {
 	// for (int sx = x - radius; sx <= x + radius; sx++) {
 	// for (int sy = y - radius; sy <= y + radius; sy++) {
 	// for (int sz = z - radius; sz <= z + radius; sz++) {
-	// wc = new WorldCoordinates(sx,sy,sz,world.provider.dimensionId);
+	// wc = new WorldCoordinates(sx,sy,sz,world.dimension());
 	// if (noderef.containsKey(wc)) {
 	// float d = wc.getDistanceSquared(x, y, z);
 	// if (d<radius*radius && noderef.get(wc).get()!=null &&

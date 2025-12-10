@@ -1,15 +1,15 @@
 package thaumcraft.common.entities.monster;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.item.Item;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 
 public class EntityTaintacleSmall extends EntityTaintacle implements ITaintedMob {
    int lifetime = 200;
 
-   public EntityTaintacleSmall(World par1World) {
+   public EntityTaintacleSmall(Level par1World) {
       super(par1World);
       this.setSize(0.22F, 1.0F);
       this.experienceValue = 0;

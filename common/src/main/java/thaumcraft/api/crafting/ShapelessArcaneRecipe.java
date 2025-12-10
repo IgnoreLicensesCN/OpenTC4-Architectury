@@ -1,140 +1,160 @@
 package thaumcraft.api.crafting;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.Player;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
+import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 public class ShapelessArcaneRecipe implements IArcaneRecipe
 {
-    private ItemStack output = null;
-    private ArrayList input = new ArrayList();
+    private final Function<ItemStack[],ItemStack> resultGenerator;
+    private final RecipeItemMatcher[] input;
+    private final ItemStack[] inputSampleArr;
     
-    public AspectList aspects = null;
-    public String research; 
+    public final AspectList aspects;
+    public final String research;
+    private final RecipeItemMatcher outMatcher;
 
-    public ShapelessArcaneRecipe(String research, Block result, AspectList aspects, Object... recipe){ this(research,new ItemStack(result),aspects, recipe); }
-    public ShapelessArcaneRecipe(String research, Item  result, AspectList aspects, Object... recipe){ this(research,new ItemStack(result),aspects, recipe); }
 
-    public ShapelessArcaneRecipe(String research, ItemStack result, AspectList aspects, Object... recipe)
+    //do not set ItemStack.EMPTY matcher here.
+    public ShapelessArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList aspects, RecipeItemMatcher[] recipe,RecipeItemMatcher outMatcher)
     {
-        output = result.copy();
+        this.resultGenerator = resultGenerator;
         this.research = research;
-        this.aspects = aspects;
-        for (Object in : recipe)
-        {
-            if (in instanceof ItemStack)
-            {
-                input.add(((ItemStack)in).copy());
-            }
-            else if (in instanceof Item)
-            {
-                input.add(new ItemStack((Item)in));
-            }
-            else if (in instanceof Block)
-            {
-                input.add(new ItemStack((Block)in));
-            }
-            else if (in instanceof String)
-            {
-                input.add(OreDictionary.getOres((String)in));
-            }
-            else
-            {
-                StringBuilder ret = new StringBuilder("Invalid shapeless ore recipe: ");
-                for (Object tmp :  recipe)
-                {
-                    ret.append(tmp).append(", ");
-                }
-                ret.append(output);
-                throw new RuntimeException(ret.toString());
-            }
-        }
+        this.aspects = aspects.copy();
+        this.input = recipe;
+        this.inputSampleArr = new ItemStack[input.length];
+        this.outMatcher = outMatcher;
     }
 
     @Override
-    public int getRecipeSize(){ return input.size(); }
+    public int getRecipeSize(){ return input.length; }
 
     @Override
-    public ItemStack getRecipeOutput(){ return output; }
+    public ItemStack getRecipeOutput(){ return getOutputSample(getInputSample())[0]; }
 
     @Override
-    public ItemStack getCraftingResult(IInventory var1){ return output.copy(); }
-
-    @Override
-    public boolean matches(IInventory var1, World world, Player player)
-    {
-    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), research)) {
-    		return false;
-    	}
-    	
-        ArrayList required = new ArrayList(input);
-        
+    public ItemStack getCraftingResult(Container var1){
+        List<ItemStack> inStacks = new ArrayList<>(9);
+        int inCounter = 0;
         for (int x = 0; x < 9; x++)
         {
-            ItemStack slot = var1.getStackInSlot(x);
-
-            if (slot != null)
-            {
-                boolean inRecipe = false;
-
-                for (Object o : required) {
-                    boolean match = false;
-
-                    Object next = o;
-
-                    if (next instanceof ItemStack) {
-                        match = checkItemEquals((ItemStack) next, slot);
-                    } else if (next instanceof ArrayList) {
-                        for (ItemStack item : (ArrayList<ItemStack>) next) {
-                            match = match || checkItemEquals(item, slot);
-                        }
-                    }
-
-                    if (match) {
-                        inRecipe = true;
-                        required.remove(next);
-                        break;
-                    }
-                }
-
-                if (!inRecipe)
-                {
-                    return false;
-                }
+            ItemStack slot = var1.getItem(x);
+            if (!slot.isEmpty()){
+                inStacks.add(slot);
+                inCounter += 1;
             }
         }
-        
-        return required.isEmpty();
-    }
-
-    private boolean checkItemEquals(ItemStack target, ItemStack input)
-    {
-        if (input == null && target != null || input != null && target == null)
-        {
-            return false;
+        if (input.length != inCounter){
+            return ItemStack.EMPTY;
         }
-        return (target.getItem() == input.getItem() && 
-        		(!target.hasTagCompound() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input,target)) &&
-        		(target.getItemDamage() == OreDictionary.WILDCARD_VALUE|| target.getItemDamage() == input.getItemDamage()));
+        boolean[] used = new boolean[inCounter];
+        if (matchPermutation(0, inStacks, used)) {
+            return resultGenerator.apply(inStacks.toArray(new ItemStack[0]));
+        }
+
+        return ItemStack.EMPTY;
+
+
+//        return output.copy();
     }
 
-    /**
-     * Returns the input for this recipe, any mod accessing this value should never
-     * manipulate the values in this array as it will effect the recipe itself.
-     * @return The recipes input vales.
-     */
-    public ArrayList getInput()
-    {
-        return this.input;
+    private boolean matchPermutation(int index, List<ItemStack> inStacks, boolean[] used) {
+        if (index == input.length) {
+            return true; // 全部匹配成功
+        }
+
+        for (int i = 0; i < inStacks.size(); i++) {
+            if (!used[i] && input[index].matches(inStacks.get(i))) {
+                used[i] = true;
+                if (matchPermutation(index + 1, inStacks, used)) {
+                    return true;
+                }
+                used[i] = false;
+            }
+        }
+
+        return false;
     }
+
+    @Override
+    public boolean matches(Container var1, Level world, Player player)
+    {
+    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), research)) {
+    		return false;
+    	}
+
+        return getCraftingResult(var1).isEmpty();
+    	
+//        ArrayList required = new ArrayList(input);
+//
+//        for (int x = 0; x < 9; x++)
+//        {
+//            ItemStack slot = var1.getItem(x);
+//
+//            if (!slot.isEmpty())
+//            {
+//                boolean inRecipe = false;
+//
+//                for (Object o : required) {
+//                    boolean match = false;
+//
+//                    Object next = o;
+//
+//                    if (next instanceof ItemStack itemStack) {
+//                        match = checkItemEquals(itemStack, slot);
+//                    } else if (next instanceof List<?> list) {
+//                        for (ItemStack item : (List<ItemStack>) list) {
+//                            match = match || checkItemEquals(item, slot);
+//                        }
+//                    }
+//
+//                    if (match) {
+//                        inRecipe = true;
+//                        required.remove(next);
+//                        break;
+//                    }
+//                }
+//
+//                if (!inRecipe)
+//                {
+//                    return false;
+//                }
+//            }
+//        }
+        
+//        return required.isEmpty();
+    }
+
+//    private boolean checkItemEquals(ItemStack target, ItemStack input)
+//    {
+//        if (input == null && target != null || input != null && target == null)
+//        {
+//            return false;
+//        }
+//        return (target.getItem() == input.getItem() &&
+//        		(!target.hasTagCompound() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input,target)) &&
+//        		(ignoresDamage(target)|| target.getDamageValue() == input.getDamageValue()));
+//    }
+
+//    /**
+//     * Returns the input for this recipe, any mod accessing this value should never
+//     * manipulate the values in this array as it will effect the recipe itself.
+//     * @return The recipes input vales.
+//     */
+//    public ArrayList getInput()
+//    {
+//        return this.input;
+//    }
     
     @Override		
 	public AspectList getAspects() {
@@ -142,7 +162,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
 	}
     
     @Override		
-	public AspectList getAspects(IInventory inv) {
+	public AspectList getAspects(Container inv) {
 		return aspects;
 	}
 	
@@ -150,4 +170,23 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
 	public String getResearch() {
 		return research;
 	}
+
+    @Override
+    public ItemStack[] getInputSample() {
+        for (int i=0;i<input.length;i++){
+            inputSampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
+        }
+        return inputSampleArr;
+    }
+
+    private final ItemStack[] outputSampleArr = new ItemStack[1];
+    @Override
+    public ItemStack[] getOutputSample(ItemStack[] inputSample) {
+        outputSampleArr[0] = resultGenerator.apply(inputSample);
+        return outputSampleArr;
+    }
+    @Override
+    public boolean matchViaOutput(ItemStack res) {
+        return outMatcher.matches(res);
+    }
 }

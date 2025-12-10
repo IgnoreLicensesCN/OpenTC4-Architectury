@@ -1,15 +1,14 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.LightTexture;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-import static thaumcraft.client.fx.particles.migrated.particles.FXGeneric.PARTICLE_SPRITE;
+import static thaumcraft.client.fx.migrated.Particles.PARTICLE_SPRITE;
 
 public class FXSmokeSpiral extends ThaumcraftParticle {
     private final float radius;

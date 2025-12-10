@@ -1,4 +1,4 @@
 package thaumcraft.api.wands;
-
-public class WorkAsStaffRod {
+//for crafting
+public interface WorkAsStaffRod {
 }

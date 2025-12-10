@@ -2,7 +2,7 @@ package thaumcraft.common.lib;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 public class TCVec3 {
    public static final TCVec3Pool vec3dPool = new TCVec3Pool(-1, -1);

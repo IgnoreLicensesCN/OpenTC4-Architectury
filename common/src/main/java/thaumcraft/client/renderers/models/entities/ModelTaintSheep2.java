@@ -2,7 +2,7 @@ package thaumcraft.client.renderers.models.entities;
 
 import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import thaumcraft.common.entities.monster.EntityTaintSheep;
 

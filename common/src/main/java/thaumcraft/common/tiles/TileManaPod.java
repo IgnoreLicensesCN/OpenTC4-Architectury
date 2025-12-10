@@ -1,6 +1,5 @@
 package thaumcraft.common.tiles;
 
-import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -9,6 +8,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.lib.research.ResearchManager;
+
+import java.util.ArrayList;
 
 public class TileManaPod extends TileThaumcraft implements IAspectContainer {
    public Aspect aspect = null;
@@ -29,10 +30,10 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
    }
 
    public void checkGrowth() {
-      int l = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+      int l = this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
       if (l < 7) {
          ++l;
-         this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, l, 3);
+         this.level().setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, l, 3);
       }
 
       if (l > 2) {
@@ -47,7 +48,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
                int x = this.xCoord + dir.offsetX;
                int y = this.yCoord + dir.offsetY;
                int z = this.zCoord + dir.offsetZ;
-               TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+               TileEntity tile = this.level().getTileEntity(x, y, z);
                if (tile instanceof TileManaPod && ((TileManaPod) tile).aspect != null) {
                   al.add(((TileManaPod)tile).aspect, 1);
                }
@@ -72,7 +73,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
                }
 
                if (!outlist.isEmpty()) {
-                  this.aspect = outlist.get(this.worldObj.rand.nextInt(outlist.size()));
+                  this.aspect = outlist.get(this.level().rand.nextInt(outlist.size()));
                   this.markDirty();
                }
             }
@@ -84,11 +85,11 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
          }
 
          if (this.aspect == null) {
-            if (this.worldObj.rand.nextInt(8) == 0) {
+            if (this.level().rand.nextInt(8) == 0) {
                this.aspect = Aspect.PLANT;
             } else {
                ArrayList<Aspect> outlist = Aspect.getPrimalAspects();
-               this.aspect = outlist.get(this.worldObj.rand.nextInt(outlist.size()));
+               this.aspect = outlist.get(this.level().rand.nextInt(outlist.size()));
             }
 
             this.markDirty();

@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,7 +13,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.common.Thaumcraft;
@@ -60,7 +60,7 @@ public class ItemResearchNotes extends Item {
    }
 
    public ItemStack onItemRightClick(ItemStack stack, World world, Player player) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (ResearchManager.getData(stack) != null && ResearchManager.getData(stack).isComplete() && !ResearchManager.isResearchComplete(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
             if (ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
                PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(ResearchManager.getData(stack).key), (ServerPlayer)player);
@@ -83,12 +83,12 @@ public class ItemResearchNotes extends Item {
             String key = ResearchManager.findHiddenResearch(player);
             if (key.equals("FAIL")) {
                --stack.stackSize;
-               EntityItem entityItem = new EntityItem(world, player.posX, player.posY + (double)(player.getEyeHeight() / 2.0F), player.posZ, new ItemStack(ConfigItems.itemResource, 7 + world.rand.nextInt(3), 9));
+               EntityItem entityItem = new EntityItem(world, player.posX, player.posY + (double)(player.getEyeHeight() / 2.0F), player.posZ, new ItemStack(ConfigItems.itemResource, 7 + world.getRandom().nextInt(3), 9));
                world.spawnEntityInWorld(entityItem);
                world.playSoundAtEntity(player, "thaumcraft:erase", 0.75F, 1.0F);
             } else {
                stack.setItemDamage(0);
-               stack.stackTagCompound = ResearchManager.createNote(stack, key, player.worldObj).stackTagCompound;
+               stack.stackTagCompound = ResearchManager.createNote(stack, key, player.level()).stackTagCompound;
                world.playSoundAtEntity(player, "thaumcraft:write", 0.75F, 1.0F);
             }
          }

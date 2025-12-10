@@ -7,18 +7,18 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -31,7 +31,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
-import thaumcraft.common.items.ItemShard;
+import thaumcraft.common.items.misc.ItemShard;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.*;
 
@@ -221,7 +221,7 @@ public class BlockMetalDevice extends BlockContainer {
    }
 
    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          int metadata = world.getBlockMetadata(i, j, k);
          if (metadata == 0) {
             TileCrucible tile = (TileCrucible) world.getTileEntity(i, j, k);
@@ -236,7 +236,7 @@ public class BlockMetalDevice extends BlockContainer {
                this.delay = 0;
                if (entity instanceof EntityLivingBase && tile != null && tile.heat > 150 && tile.tank.getFluidAmount() > 0) {
                   entity.attackEntityFrom(DamageSource.inFire, 1.0F);
-                  world.playSoundEffect(i, j, k, "random.fizz", 0.4F, 2.0F + world.rand.nextFloat() * 0.4F);
+                  world.playSoundEffect(i, j, k, "random.fizz", 0.4F, 2.0F + world.getRandom().nextFloat() * 0.4F);
                }
             }
          }
@@ -436,7 +436,7 @@ public class BlockMetalDevice extends BlockContainer {
          ((TileCrucible) te).getBellows();
       }
 
-      if (!world.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (te instanceof TileAlembic) {
             world.markBlockForUpdate(x, y, z);
          } else if (te instanceof TileArcaneLamp) {
@@ -497,13 +497,13 @@ public class BlockMetalDevice extends BlockContainer {
       super.onNeighborBlockChange(world, x, y, z, nbid);
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       InventoryUtils.dropItems(par1World, par2, par3, par4);
       TileEntity te = par1World.getTileEntity(par2, par3, par4);
       if (te instanceof TileCrucible) {
          ((TileCrucible) te).spillRemnants();
       } else if (te instanceof TileAlembic && ((TileAlembic) te).aspectFilter != null) {
-         par1World.spawnEntityInWorld(new EntityItem(par1World, (float) par2 + 0.5F, (float) par3 + 0.5F, (float) par4 + 0.5F, new ItemStack(ConfigItems.itemResource, 1, 13)));
+         par1World.spawnEntityInWorld(new EntityItem(par1World, (float) par2 + 0.5F, (float) par3 + 0.5F, (float) par4 + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
       } else if (te instanceof TileArcaneLamp) {
          ((TileArcaneLamp) te).removeLights();
       }
@@ -511,9 +511,9 @@ public class BlockMetalDevice extends BlockContainer {
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);
-      if (metadata == 0 && !world.isRemote) {
+      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT) {
          FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem());
          if (fs != null && fs.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
             int volume = fs.amount;
@@ -542,12 +542,12 @@ public class BlockMetalDevice extends BlockContainer {
                player.inventoryContainer.detectAndSendChanges();
                te.markDirty();
                world.markBlockForUpdate(x, y, z);
-               world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F);
+               world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F);
             }
          }
       }
 
-      if (metadata == 1 && !world.isRemote && !player.isSneaking() && player.getHeldItem() == null) {
+      if (metadata == 1 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() == null) {
          TileEntity te = world.getTileEntity(x, y, z);
          if (te instanceof TileAlembic) {
             TileAlembic tile = (TileAlembic) te;
@@ -578,11 +578,11 @@ public class BlockMetalDevice extends BlockContainer {
                ((TileAlembic) te).aspectFilter = null;
                world.markBlockForUpdate(x, y, z);
                te.markDirty();
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 1.1F, false);
                } else {
                   ForgeDirection fd = ForgeDirection.getOrientation(side);
-                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ConfigItems.itemResource, 1, 13)));
+                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
                }
 
                return true;
@@ -591,9 +591,9 @@ public class BlockMetalDevice extends BlockContainer {
             if (player.isSneaking() && player.getHeldItem() == null) {
                ((TileAlembic) te).amount = 0;
                ((TileAlembic) te).aspect = null;
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:alembicknock", 0.2F, 1.0F, false);
-                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, false);
+                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
                }
             } else {
                if (player.getHeldItem() != null && ((TileAlembic) te).aspectFilter == null && player.getHeldItem().getItem() == ConfigItems.itemResource && player.getHeldItem().getItemDamage() == 13) {
@@ -609,7 +609,7 @@ public class BlockMetalDevice extends BlockContainer {
                   ((TileAlembic) te).aspectFilter = ((TileAlembic) te).aspect;
                   world.markBlockForUpdate(x, y, z);
                   te.markDirty();
-                  if (world.isRemote) {
+                  if ((Platform.getEnvironment() == Env.CLIENT)) {
                      world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 0.9F, false);
                   }
 
@@ -656,7 +656,7 @@ public class BlockMetalDevice extends BlockContainer {
                      ((TileAlembic) te).amount = 0;
                      ((TileAlembic) te).aspect = null;
                      --player.getHeldItem().stackSize;
-                     if (!addToPlayerInventoryBiased(player.inventory, drop) && !world.isRemote) {
+                     if (!addToPlayerInventoryBiased(player.inventory, drop) && Platform.getEnvironment() != Env.CLIENT) {
                         world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, drop));
                      }
                   }
@@ -664,8 +664,8 @@ public class BlockMetalDevice extends BlockContainer {
                   if (doit) {
                      te.markDirty();
                      world.markBlockForUpdate(x, y, z);
-                     if (world.isRemote) {
-                        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.3F, false);
+                     if ((Platform.getEnvironment() == Env.CLIENT)) {
+                        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
                      }
                   }
 
@@ -683,7 +683,7 @@ public class BlockMetalDevice extends BlockContainer {
          world.setBlockMetadataWithNotify(x, y, z, 5, 2);
          world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
          return true;
-      } else if (world.isRemote) {
+      } else if ((Platform.getEnvironment() == Env.CLIENT)) {
          return true;
       } else {
          if (metadata == 10) {
@@ -727,7 +727,7 @@ public class BlockMetalDevice extends BlockContainer {
       }
    }
 
-   public void onPoweredBlockChange(World par1World, int par2, int par3, int par4, boolean flag) {
+   public void onPoweredBlockChange(Level par1World, int par2, int par3, int par4, boolean flag) {
       int l = par1World.getBlockMetadata(par2, par3, par4);
       if (l == 5 && flag) {
          par1World.setBlockMetadataWithNotify(par2, par3, par4, 6, 2);

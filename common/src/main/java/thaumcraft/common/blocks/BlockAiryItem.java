@@ -4,9 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
@@ -37,13 +37,13 @@ public class BlockAiryItem extends ItemBlock {
       return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
    }
 
-   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+   public void addInformation(ItemStack par1ItemStack, Player par2Player, List list, boolean par4) {
       List<String> loreList = (List<String>) list;
       if (par1ItemStack.getItemDamage() == 0) {
          loreList.add("§5Place a randomly generated node");
          loreList.add("§oCreative Mode Only");
       }
 
-      super.addInformation(par1ItemStack, par2EntityPlayer, loreList, par4);
+      super.addInformation(par1ItemStack, par2Player, loreList, par4);
    }
 }

@@ -2,8 +2,8 @@ package thaumcraft.client.renderers.models;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.entity.Entity;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.common.entities.monster.EntityPech;
 
 public class ModelPech extends ModelBase {

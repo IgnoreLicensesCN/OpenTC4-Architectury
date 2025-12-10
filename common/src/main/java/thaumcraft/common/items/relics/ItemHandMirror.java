@@ -2,29 +2,30 @@ package thaumcraft.common.items.relics;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileMirror;
+
+import java.util.List;
 
 public class ItemHandMirror extends Item {
    private IIcon icon;
@@ -62,10 +63,10 @@ public class ItemHandMirror extends Item {
       return par1ItemStack.hasTagCompound();
    }
 
-   public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
+   public boolean onItemUseFirst(ItemStack itemstack, Player player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
       Block bi = world.getBlock(x, y, z);
       if (bi == ConfigBlocks.blockMirror) {
-         if (world.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             player.swingItem();
             return super.onItemUseFirst(itemstack, player, world, x, y, z, par7, par8, par9, par10);
          } else {
@@ -74,8 +75,8 @@ public class ItemHandMirror extends Item {
                itemstack.setTagInfo("linkX", new NBTTagInt(tm.xCoord));
                itemstack.setTagInfo("linkY", new NBTTagInt(tm.yCoord));
                itemstack.setTagInfo("linkZ", new NBTTagInt(tm.zCoord));
-               itemstack.setTagInfo("linkDim", new NBTTagInt(world.provider.dimensionId));
-               itemstack.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.provider.dimensionId).getDimensionName()));
+               itemstack.setTagInfo("linkDim", new NBTTagInt(world.dimension()));
+               itemstack.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                world.playSoundEffect(x, y, z, "thaumcraft:jar", 1.0F, 2.0F);
                player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorlinked")));
                player.inventoryContainer.detectAndSendChanges();
@@ -88,33 +89,33 @@ public class ItemHandMirror extends Item {
       }
    }
 
-   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-      if (!par2World.isRemote && par1ItemStack.hasTagCompound()) {
+   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, Player par3Player) {
+      if (!(Platform.getEnvironment() == Env.CLIENT) && par1ItemStack.hasTagCompound()) {
          int lx = par1ItemStack.stackTagCompound.getInteger("linkX");
          int ly = par1ItemStack.stackTagCompound.getInteger("linkY");
          int lz = par1ItemStack.stackTagCompound.getInteger("linkZ");
          int ldim = par1ItemStack.stackTagCompound.getInteger("linkDim");
          World targetWorld = MinecraftServer.getServer().worldServerForDimension(ldim);
          if (targetWorld == null) {
-            return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+            return super.onItemRightClick(par1ItemStack, par2World, par3Player);
          }
 
          TileEntity te = targetWorld.getTileEntity(lx, ly, lz);
          if (!(te instanceof TileMirror)) {
             par1ItemStack.setTagCompound(null);
-            par2World.playSoundAtEntity(par3EntityPlayer, "thaumcraft:zap", 1.0F, 0.8F);
-            par3EntityPlayer.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorerror")));
-            return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+            par2World.playSoundAtEntity(par3Player, "thaumcraft:zap", 1.0F, 0.8F);
+            par3Player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorerror")));
+            return super.onItemRightClick(par1ItemStack, par2World, par3Player);
          }
 
-         par3EntityPlayer.openGui(Thaumcraft.instance, 16, par2World, MathHelper.floor_double(par3EntityPlayer.posX), MathHelper.floor_double(par3EntityPlayer.posY), MathHelper.floor_double(par3EntityPlayer.posZ));
+         par3Player.openGui(Thaumcraft.instance, 16, par2World, MathHelper.floor_double(par3Player.posX), MathHelper.floor_double(par3Player.posY), MathHelper.floor_double(par3Player.posZ));
       }
 
-      return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+      return super.onItemRightClick(par1ItemStack, par2World, par3Player);
    }
 
    @SideOnly(Side.CLIENT)
-   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+   public void addInformation(ItemStack item, Player par2Player, List list, boolean par4) {
       if (item.hasTagCompound()) {
          int lx = item.stackTagCompound.getInteger("linkX");
          int ly = item.stackTagCompound.getInteger("linkY");
@@ -126,7 +127,7 @@ public class ItemHandMirror extends Item {
 
    }
 
-   public static boolean transport(ItemStack mirror, ItemStack items, EntityPlayer player, World worldObj) {
+   public static boolean transport(ItemStack mirror, ItemStack items, Player player, World worldObj) {
       if (mirror.hasTagCompound()) {
          int lx = mirror.stackTagCompound.getInteger("linkX");
          int ly = mirror.stackTagCompound.getInteger("linkY");

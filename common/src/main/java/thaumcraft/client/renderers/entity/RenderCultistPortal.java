@@ -7,11 +7,11 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
@@ -60,14 +60,14 @@ public class RenderCultistPortal extends Render {
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 771);
       GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
-      if (Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+      if (Minecraft.getMinecraft().renderViewEntity instanceof Player) {
          Tessellator tessellator = Tessellator.instance;
          float arX = ActiveRenderInfo.rotationX;
          float arZ = ActiveRenderInfo.rotationZ;
          float arYZ = ActiveRenderInfo.rotationYZ;
          float arXY = ActiveRenderInfo.rotationXY;
          float arXZ = ActiveRenderInfo.rotationXZ;
-         EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+         Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double var10000 = player.prevPosX + (player.posX - player.prevPosX) * (double)f;
          var10000 = player.prevPosY + (player.posY - player.prevPosY) * (double)f;
          var10000 = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)f;

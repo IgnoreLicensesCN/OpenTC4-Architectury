@@ -3,21 +3,22 @@ package thaumcraft.common.items.equipment;
 import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemPickaxe;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
+
+import java.util.Set;
 
 public class ItemElementalPickaxe extends ItemPickaxe implements IRepairable {
    public IIcon icon;
@@ -46,21 +47,21 @@ public class ItemElementalPickaxe extends ItemPickaxe implements IRepairable {
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 2)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-      if (!player.worldObj.isRemote && (!(entity instanceof EntityPlayer) || MinecraftServer.getServer().isPVPEnabled())) {
+   public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+      if (Platform.getEnvironment() != Env.CLIENT && (!(entity instanceof Player) || MinecraftServer.getServer().isPVPEnabled())) {
          entity.setFire(2);
       }
 
       return super.onLeftClickEntity(stack, player, entity);
    }
 
-   public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+   public boolean onItemUse(ItemStack itemstack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       itemstack.damageItem(5, player);
-      if (!world.isRemote) {
-         world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:wandfail", 0.2F, 0.2F + world.rand.nextFloat() * 0.2F);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:wandfail", 0.2F, 0.2F + world.getRandom().nextFloat() * 0.2F);
       } else {
          Minecraft mc = Minecraft.getMinecraft();
          Thaumcraft.instance.renderEventHandler.startScan(player, x, y, z, System.currentTimeMillis() + 5000L, 8);

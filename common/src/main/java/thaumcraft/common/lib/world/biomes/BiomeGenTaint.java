@@ -2,9 +2,9 @@ package thaumcraft.common.lib.world.biomes;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBlockBlob;
@@ -39,7 +39,7 @@ public class BiomeGenTaint extends BiomeGenBase {
 
    }
 
-   public void decorate(World world, Random random, int x, int z) {
+   public void decorate(Level world, Random random, int x, int z) {
       super.decorate(world, random, x, z);
       this.decorateSpecial(world, random, x, z);
    }
@@ -48,20 +48,20 @@ public class BiomeGenTaint extends BiomeGenBase {
       return par1Random.nextInt(8) == 0 ? this.bigTree : super.func_150567_a(par1Random);
    }
 
-   public void decorateSpecial(World world, Random random, int x, int z) {
+   public void decorateSpecial(Level world, Random random, int x, int z) {
       int k = random.nextInt(3);
 
       for(int l = 0; l < k; ++l) {
          int i1 = x + random.nextInt(16) + 8;
          int j1 = z + random.nextInt(16) + 8;
-         int k1 = world.getHeightValue(i1, j1);
+         int k1 = world.getHeight(Heightmap.Types.WORLD_SURFACE,i1, j1);
          blobs.generate(world, random, i1, k1, j1);
       }
 
       for(int a = 0; a < 10; ++a) {
          int xx = x + random.nextInt(16);
          int zz = z + random.nextInt(16);
-         int yy = world.getHeightValue(xx, zz) - 1;
+         int yy = world.getHeight(Heightmap.Types.WORLD_SURFACE,xx, zz) - 1;
          Block l1 = world.getBlock(xx, yy, zz);
          if (l1 != Blocks.air) {
             if (l1 == Blocks.grass) {

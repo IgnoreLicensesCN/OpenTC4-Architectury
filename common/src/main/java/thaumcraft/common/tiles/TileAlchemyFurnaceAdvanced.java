@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -59,8 +59,8 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      if (this.worldObj != null) {
-         this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null) {
+         this.level().updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
@@ -71,20 +71,20 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
 
    public void updateEntity() {
       ++this.count;
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.destroy) {
             for(int a = -1; a <= 1; ++a) {
                for(int b = 0; b <= 1; ++b) {
                   for(int c = -1; c <= 1; ++c) {
-                     if ((a != 0 || b != 0 || c != 0) && this.worldObj.getBlock(this.xCoord + a, this.yCoord + b, this.zCoord + c) == this.getBlockType()) {
-                        int m = this.worldObj.getBlockMetadata(this.xCoord + a, this.yCoord + b, this.zCoord + c);
-                        this.worldObj.setBlock(this.xCoord + a, this.yCoord + b, this.zCoord + c, Block.getBlockFromItem(this.getBlockType().getItemDropped(m, this.worldObj.rand, 0)), this.getBlockType().damageDropped(m), 3);
+                     if ((a != 0 || b != 0 || c != 0) && this.level().getBlock(this.xCoord + a, this.yCoord + b, this.zCoord + c) == this.getBlockType()) {
+                        int m = this.level().getBlockMetadata(this.xCoord + a, this.yCoord + b, this.zCoord + c);
+                        this.level().setBlock(this.xCoord + a, this.yCoord + b, this.zCoord + c, Block.getBlockFromItem(this.getBlockType().getItemDropped(m, this.level().rand, 0)), this.getBlockType().damageDropped(m), 3);
                      }
                   }
                }
             }
 
-            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Block.getBlockFromItem(this.getBlockType().getItemDropped(0, this.worldObj.rand, 0)), this.getBlockType().damageDropped(0), 3);
+            this.level().setBlock(this.xCoord, this.yCoord, this.zCoord, Block.getBlockFromItem(this.getBlockType().getItemDropped(0, this.level().rand, 0)), this.getBlockType().damageDropped(0), 3);
             return;
          }
 
@@ -95,19 +95,19 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
          if (this.count % 5 == 0) {
             int pt = this.heat--;
             if (this.heat <= this.maxPower) {
-               this.heat += VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.FIRE, 50);
+               this.heat += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.FIRE, 50);
             }
 
             if (this.power1 <= this.maxPower) {
-               this.power1 += VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.ENTROPY, 50);
+               this.power1 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.ENTROPY, 50);
             }
 
             if (this.power2 <= this.maxPower) {
-               this.power2 += VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, Aspect.WATER, 50);
+               this.power2 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.WATER, 50);
             }
 
             if (pt / 50 != this.heat / 50) {
-               this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+               this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             }
          }
       }
@@ -127,7 +127,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
             this.aspects.add(al);
             this.vis = this.aspects.visSize();
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             return true;
          } else {
             return false;

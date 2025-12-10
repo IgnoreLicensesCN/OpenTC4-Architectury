@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
@@ -33,7 +33,7 @@ public class ItemJarFilledRenderer implements IItemRenderer {
       if (item.getItem() == ConfigItems.itemJarFilled) {
          if (type == ItemRenderType.ENTITY) {
             GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
-         } else if (type == ItemRenderType.EQUIPPED && data[1] instanceof EntityPlayer) {
+         } else if (type == ItemRenderType.EQUIPPED && data[1] instanceof Player) {
             GL11.glTranslatef(0.0F, 0.0F, -0.5F);
          }
 

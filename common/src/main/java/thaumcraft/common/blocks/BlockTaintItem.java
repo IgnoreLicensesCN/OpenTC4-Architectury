@@ -1,8 +1,8 @@
 package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 
 public class BlockTaintItem extends ItemBlock {
    public BlockTaintItem(Block par1) {

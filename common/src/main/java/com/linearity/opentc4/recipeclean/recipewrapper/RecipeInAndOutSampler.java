@@ -5,4 +5,8 @@ import net.minecraft.world.item.ItemStack;
 public interface RecipeInAndOutSampler {
     //you know we can just get inputs
     ItemStack[] getInputSample();
+
+    //i would suggest to use with above
+    //warning:no need to consider match
+    ItemStack[] getOutputSample(ItemStack[] inputSample);
 }

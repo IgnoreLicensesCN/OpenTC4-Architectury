@@ -4,25 +4,19 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityLookHelper;
-import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.ai.misc.AIWander;
 
 public class EntityWatcher extends EntityMob {
@@ -47,7 +41,7 @@ public class EntityWatcher extends EntityMob {
         EntityAIMoveTowardsRestriction entityaimovetowardsrestriction;
         this.tasks.addTask(5, entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0F));
         this.tasks.addTask(7, this.wander = new AIWander(this, 1.0F));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAIWatchClosest(this, Player.class, 8.0F));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityWatcher.class, 12.0F, 0.01F));
         this.tasks.addTask(9, new EntityAILookIdle(this));
         this.wander.setMutexBits(3);
@@ -131,11 +125,11 @@ public class EntityWatcher extends EntityMob {
     public EntityLivingBase getTargetedEntity() {
         if (!this.func_175474_cn()) {
             return null;
-        } else if (this.worldObj.isRemote) {
+        } else if ((Platform.getEnvironment() == Env.CLIENT)) {
             if (this.field_175478_bn != null) {
                 return this.field_175478_bn;
             } else {
-                Entity entity = this.worldObj.getEntityByID(this.dataWatcher.getWatchableObjectInt(17));
+                Entity entity = this.level().getEntityByID(this.dataWatcher.getWatchableObjectInt(17));
                 if (entity instanceof EntityLivingBase) {
                     this.field_175478_bn = (EntityLivingBase) entity;
                     return this.field_175478_bn;
@@ -194,12 +188,12 @@ public class EntityWatcher extends EntityMob {
 
     @Override
     public float getBlockPathWeight(int x, int y, int z) {
-        return this.worldObj.isAirBlock(x, y, z) ? 10.0F : super.getBlockPathWeight(x, y, z);
+        return this.level().isAirBlock(x, y, z) ? 10.0F : super.getBlockPathWeight(x, y, z);
     }
 
     @Override
     public void onLivingUpdate() {
-        if (this.worldObj.isRemote) {
+        if ((Platform.getEnvironment() == Env.CLIENT)) {
             this.field_175484_c = this.field_175482_b;
             if (this.isGazing()) {
                 if (this.field_175483_bk < 0.5F) {
@@ -223,7 +217,7 @@ public class EntityWatcher extends EntityMob {
                 Vec3 vec3 = this.getLook(0.0F);
 
                 for (int i = 0; i < 2; ++i) {
-                    this.worldObj.spawnParticle("bubble", this.posX + (this.rand.nextDouble() - (double) 0.5F) * (double) this.width - vec3.xCoord * (double) 1.5F, this.posY + this.rand.nextDouble() * (double) this.height - vec3.yCoord * (double) 1.5F, this.posZ + (this.rand.nextDouble() - (double) 0.5F) * (double) this.width - vec3.zCoord * (double) 1.5F, 0.0F, 0.0F, 0.0F);
+                    this.level().spawnParticle("bubble", this.posX + (this.rand.nextDouble() - (double) 0.5F) * (double) this.width - vec3.xCoord * (double) 1.5F, this.posY + this.rand.nextDouble() * (double) this.height - vec3.yCoord * (double) 1.5F, this.posZ + (this.rand.nextDouble() - (double) 0.5F) * (double) this.width - vec3.zCoord * (double) 1.5F, 0.0F, 0.0F, 0.0F);
                 }
             }
 
@@ -248,7 +242,7 @@ public class EntityWatcher extends EntityMob {
 
                     while (d4 < d3) {
                         d4 += 1.8 - d5 + this.rand.nextDouble() * (1.7 - d5);
-                        this.worldObj.spawnParticle("bubble", this.posX + d0 * d4, this.posY + d1 * d4 + (double) this.getEyeHeight(), this.posZ + d2 * d4, 0.0F, 0.0F, 0.0F);
+                        this.level().spawnParticle("bubble", this.posX + d0 * d4, this.posY + d1 * d4 + (double) this.getEyeHeight(), this.posZ + d2 * d4, 0.0F, 0.0F, 0.0F);
                     }
                 }
             }
@@ -358,10 +352,10 @@ public class EntityWatcher extends EntityMob {
                 ++this.field_179455_b;
                 if (this.field_179455_b == 0) {
                     this.field_179456_a.func_175463_b(this.field_179456_a.getAttackTarget().getEntityId());
-                    this.field_179456_a.worldObj.setEntityState(this.field_179456_a, (byte) 21);
+                    this.field_179456_a.level().setEntityState(this.field_179456_a, (byte) 21);
                 } else if (this.field_179455_b >= this.field_179456_a.func_175464_ck()) {
                     float f = 1.0F;
-                    if (this.field_179456_a.worldObj.difficultySetting == EnumDifficulty.HARD) {
+                    if (this.field_179456_a.level().difficultySetting == Difficulty.HARD) {
                         f += 2.0F;
                     }
 

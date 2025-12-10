@@ -4,21 +4,22 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
-public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
+public class EntityThaumicSlime extends Mob implements IMob, ITaintedMob {
    private static final float[] spawnChances = new float[]{1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
    public float squishAmount;
    public float squishFactor;
@@ -27,7 +28,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
    int launched = 10;
    int spitCounter = 100;
 
-   public EntityThaumicSlime(World par1World) {
+   public EntityThaumicSlime(Level par1World) {
       super(par1World);
       int i = 1 << this.rand.nextInt(3);
       this.yOffset = 0.0F;
@@ -35,7 +36,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
       this.setSlimeSize(i);
    }
 
-   public EntityThaumicSlime(World par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
+   public EntityThaumicSlime(Level par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
       super(par1World);
       this.setSlimeSize(1);
       this.posY = (par2EntityLiving.boundingBox.minY + par2EntityLiving.boundingBox.maxY) / (double)2.0F;
@@ -117,7 +118,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
    }
 
    public void onUpdate() {
-      if (!this.worldObj.isRemote && this.worldObj.difficultySetting.getDifficultyId() == 0 && this.getSlimeSize() > 0) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.level().difficultySetting.getDifficultyId() == 0 && this.getSlimeSize() > 0) {
          this.isDead = true;
       }
 
@@ -128,7 +129,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
       int i = (int)Math.sqrt(this.getSlimeSize());
       if (this.launched > 0) {
          --this.launched;
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int j = 0; j < i * (this.launched + 1); ++j) {
                Thaumcraft.proxy.slimeJumpFX(this, i);
             }
@@ -136,7 +137,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
       }
 
       if (this.onGround && !flag) {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int j = 0; j < i * 8; ++j) {
                Thaumcraft.proxy.slimeJumpFX(this, i);
             }
@@ -152,7 +153,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
       }
 
       this.alterSquishAmount();
-      if (this.worldObj.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          float ff = (float)Math.sqrt(this.getSlimeSize());
          this.setSize(0.6F * ff, 0.6F * ff);
       }
@@ -162,7 +163,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
    protected EntityThaumicSlime getClosestMergableSlime() {
       EntityThaumicSlime closest = null;
       double distance = Double.MAX_VALUE;
-      List ents = this.worldObj.getEntitiesWithinAABB(EntityThaumicSlime.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(16.0F, 8.0F, 16.0F));
+      List ents = this.level().getEntitiesWithinAABB(EntityThaumicSlime.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(16.0F, 8.0F, 16.0F));
       if (ents != null && !ents.isEmpty()) {
          for(Object s : ents) {
             EntityThaumicSlime slime = (EntityThaumicSlime)s;
@@ -179,21 +180,21 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
 
    protected void updateEntityActionState() {
       this.despawnEntity();
-      EntityPlayer entityplayer = this.worldObj.getClosestVulnerablePlayerToEntity(this, 16.0F);
-      if (entityplayer != null) {
+      Player Player = this.level().getClosestVulnerablePlayerToEntity(this, 16.0F);
+      if (Player != null) {
          if (this.spitCounter > 0) {
             --this.spitCounter;
          }
 
-         this.faceEntity(entityplayer, 10.0F, 20.0F);
-         if (this.getDistanceToEntity(entityplayer) > 4.0F && this.spitCounter <= 0 && this.getSlimeSize() > 3) {
+         this.faceEntity(Player, 10.0F, 20.0F);
+         if (this.getDistanceToEntity(Player) > 4.0F && this.spitCounter <= 0 && this.getSlimeSize() > 3) {
             this.spitCounter = 101;
-            if (!this.worldObj.isRemote) {
-               EntityThaumicSlime flyslime = new EntityThaumicSlime(this.worldObj, this, entityplayer);
-               this.worldObj.spawnEntityInWorld(flyslime);
+            if (Platform.getEnvironment() != Env.CLIENT) {
+               EntityThaumicSlime flyslime = new EntityThaumicSlime(this.level(), this, Player);
+               this.level().spawnEntityInWorld(flyslime);
             }
 
-            this.worldObj.playSoundAtEntity(this, "thaumcraft:gore", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+            this.level().playSoundAtEntity(this, "thaumcraft:gore", 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
             this.setSlimeSize(this.getSlimeSize() - 1);
          }
       } else {
@@ -209,7 +210,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
 
       if (this.onGround && this.slimeJumpDelay-- <= 0) {
          this.slimeJumpDelay = this.getJumpDelay();
-         if (entityplayer != null) {
+         if (Player != null) {
             this.slimeJumpDelay /= 3;
          }
 
@@ -238,33 +239,33 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
    }
 
    protected EntityThaumicSlime createInstance() {
-      return new EntityThaumicSlime(this.worldObj);
+      return new EntityThaumicSlime(this.level());
    }
 
    public void setDead() {
       int i = (int)Math.sqrt(this.getSlimeSize());
-      if (!this.worldObj.isRemote && i > 1 && this.getHealth() <= 0.0F) {
+      if (Platform.getEnvironment() != Env.CLIENT && i > 1 && this.getHealth() <= 0.0F) {
          for(int k = 0; k < i; ++k) {
             float f = ((float)(k % 2) - 0.5F) * (float)i / 4.0F;
             float f1 = ((float)(k / 2) - 0.5F) * (float)i / 4.0F;
             EntityThaumicSlime entityslime = this.createInstance();
             entityslime.setSlimeSize(1);
             entityslime.setLocationAndAngles(this.posX + (double)f, this.posY + (double)0.5F, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
-            this.worldObj.spawnEntityInWorld(entityslime);
+            this.level().spawnEntityInWorld(entityslime);
          }
       }
 
       super.setDead();
    }
 
-   public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+   public void onCollideWithPlayer(Player par1Player) {
       if (this.canDamagePlayer()) {
          int i = (int)Math.max(1.0F, Math.sqrt(this.getSlimeSize()));
          if (this.launched > 0 && i == 2) {
             i = 3;
          }
 
-         if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.8 * (double)i * 0.8 * (double)i && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttackStrength())) {
+         if (this.canEntityBeSeen(par1Player) && this.getDistanceSqToEntity(par1Player) < 0.8 * (double)i * 0.8 * (double)i && par1Player.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttackStrength())) {
             this.playSound("mob.attack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
          }
       }
@@ -289,7 +290,7 @@ public class EntityThaumicSlime extends EntityMob implements IMob, ITaintedMob {
 
    protected void dropFewItems(boolean flag, int i) {
       if (this.getSlimeSize() < 3 && this.rand.nextInt(3) == 0) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
       }
 
    }

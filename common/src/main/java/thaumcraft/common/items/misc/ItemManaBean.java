@@ -1,14 +1,14 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemFood;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -56,17 +56,17 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
    }
 
    protected void onFoodEaten(ItemStack stack, World world, Player player) {
-      if (!world.isRemote) {
-         Potion p = Potion.potionTypes[world.rand.nextInt(Potion.potionTypes.length)];
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         Potion p = Potion.potionTypes[world.getRandom().nextInt(Potion.potionTypes.length)];
          if (p != null) {
             if (p.isInstant()) {
                p.affectEntity(player, player, 2, 3.0F);
             } else {
-               player.addPotionEffect(new PotionEffect(p.id, 160 + world.rand.nextInt(80), 0));
+               player.addPotionEffect(new PotionEffect(p.id, 160 + world.getRandom().nextInt(80), 0));
             }
          }
 
-         if (world.rand.nextFloat() < 0.25F) {
+         if (world.getRandom().nextFloat() < 0.25F) {
             AspectList al = ((ItemManaBean)stack.getItem()).getAspects(stack);
             if (al != null && al.size() > 0) {
                Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), al.getAspects()[0], (short)1);
@@ -111,7 +111,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
    }
 
    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-      if (!par2World.isRemote && !par1ItemStack.hasTagCompound()) {
+      if (!(Platform.getEnvironment() == Env.CLIENT) && !par1ItemStack.hasTagCompound()) {
          this.setAspects(par1ItemStack, (new AspectList()).add(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
       }
 

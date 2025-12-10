@@ -1,6 +1,6 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
@@ -23,5 +23,5 @@ public abstract class DoGenerateCondition implements Comparable<DoGenerateCondit
      * @param newGen
      * @return
      */
-    public abstract boolean check(World world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
+    public abstract boolean check(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
 }

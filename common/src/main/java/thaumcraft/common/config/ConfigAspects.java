@@ -1,13 +1,14 @@
 package thaumcraft.common.config;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionHelper;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.items.ThaumcraftItems;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -393,13 +394,13 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockCustomPlant, 1, 5), (new AspectList()).add(Aspect.PLANT, 2).add(Aspect.POISON, 1).add(Aspect.MAGIC, 2));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), (new AspectList()).add(Aspect.EARTH, 1).add(Aspect.MAGIC, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), (new AspectList()).add(Aspect.EARTH, 1).add(Aspect.MAGIC, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 3), (new AspectList()).add(Aspect.METAL, 3).add(Aspect.POISON, 1).add(Aspect.EXCHANGE, 2));
+      ThaumcraftApi.registerObjectTag(new ItemStack(QUICK_SILVER), (new AspectList()).add(Aspect.METAL, 3).add(Aspect.POISON, 1).add(Aspect.EXCHANGE, 2));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemZombieBrain), (new AspectList()).add(Aspect.FLESH, 2).add(Aspect.MIND, 4).add(Aspect.UNDEAD, 2));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 6), (new AspectList()).add(Aspect.TRAP, 2).add(Aspect.CRYSTAL, 2));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 9), (new AspectList()).add(Aspect.MIND, 8));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 11), (new AspectList()).add(Aspect.TAINT, 3).add(Aspect.SLIME, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 12), (new AspectList()).add(Aspect.TAINT, 2).add(Aspect.GREED, 1).add(Aspect.HUNGER, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 18), (new AspectList()).add(Aspect.GREED, 1));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.AMBER_GEM), (new AspectList()).add(Aspect.TRAP, 2).add(Aspect.CRYSTAL, 2));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), (new AspectList()).add(Aspect.MIND, 8));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), (new AspectList()).add(Aspect.TAINT, 3).add(Aspect.SLIME, 1));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), (new AspectList()).add(Aspect.TAINT, 2).add(Aspect.GREED, 1).add(Aspect.HUNGER, 1));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.GOLD_COIN), (new AspectList()).add(Aspect.GREED, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemLootbag, 1, 0), (new AspectList()).add(Aspect.GREED, 8));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemLootbag, 1, 1), (new AspectList()).add(Aspect.GREED, 16));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemLootbag, 1, 2), (new AspectList()).add(Aspect.GREED, 32));
@@ -414,7 +415,7 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 3), (new AspectList()).add(Aspect.MAGIC, 1).add(Aspect.EARTH, 2).add(Aspect.CRYSTAL, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 4), (new AspectList()).add(Aspect.MAGIC, 1).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 5), (new AspectList()).add(Aspect.MAGIC, 1).add(Aspect.ENTROPY, 2).add(Aspect.CRYSTAL, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemResource, 1, 14), (new AspectList(new ItemStack(ConfigItems.itemShard, 1, 6))).add(Aspect.MAGIC, 2).remove(Aspect.CRYSTAL));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1), (new AspectList(new ItemStack(ConfigItems.itemShard, 1, 6))).add(Aspect.MAGIC, 2).remove(Aspect.CRYSTAL));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockMetalDevice), (new AspectList(new ItemStack(Items.cauldron, 1, 32767))).add(Aspect.CRAFT, 4).add(Aspect.MAGIC, 4));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockCandle), (new AspectList()).add(Aspect.LIGHT, 2).add(Aspect.FLESH, 1).add(Aspect.MAGIC, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockAiry, 1, 2), (new AspectList()).add(Aspect.LIGHT, 1));
@@ -441,10 +442,10 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemHelmetCultistRobe, 1, 32767), (new AspectList()).add(Aspect.METAL, 3).add(Aspect.CLOTH, 2).add(Aspect.ELDRITCH, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemBootsCultist, 1, 32767), (new AspectList()).add(Aspect.METAL, 4).add(Aspect.ELDRITCH, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 8), (new AspectList()).add(Aspect.ELDRITCH, 1).add(Aspect.TREE, 2).add(Aspect.CLOTH, 3));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemEldritchObject, 1, 0), (new AspectList()).add(Aspect.ELDRITCH, 5).add(Aspect.AURA, 3).add(Aspect.MAGIC, 3).add(Aspect.SENSES, 3).add(Aspect.SOUL, 3));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemEldritchObject, 1, 1), (new AspectList()).add(Aspect.MIND, 5).add(Aspect.MAGIC, 3).add(Aspect.ELDRITCH, 3).add(Aspect.SOUL, 3));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemEldritchObject, 1, 2), (new AspectList()).add(Aspect.TRAP, 4).add(Aspect.MIND, 4).add(Aspect.MECHANISM, 4));
-      ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemEldritchObject, 1, 3), (new AspectList()).add(Aspect.AIR, 16).add(Aspect.EARTH, 16).add(Aspect.FIRE, 16).add(Aspect.WATER, 16).add(Aspect.ORDER, 16).add(Aspect.ENTROPY, 16));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.ELDRITCH_EYE), (new AspectList()).add(Aspect.ELDRITCH, 5).add(Aspect.AURA, 3).add(Aspect.MAGIC, 3).add(Aspect.SENSES, 3).add(Aspect.SOUL, 3));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.CRIMSON_RITES), (new AspectList()).add(Aspect.MIND, 5).add(Aspect.MAGIC, 3).add(Aspect.ELDRITCH, 3).add(Aspect.SOUL, 3));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.RUNED_TABLET), (new AspectList()).add(Aspect.TRAP, 4).add(Aspect.MIND, 4).add(Aspect.MECHANISM, 4));
+      ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.PRIME_PEARL), (new AspectList()).add(Aspect.AIR, 16).add(Aspect.EARTH, 16).add(Aspect.FIRE, 16).add(Aspect.WATER, 16).add(Aspect.ORDER, 16).add(Aspect.ENTROPY, 16));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockEldritch, 1, 32767), (new AspectList()).add(Aspect.VOID, 8).add(Aspect.ELDRITCH, 8).add(Aspect.SENSES, 4));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockEldritchPortal), (new AspectList()).add(Aspect.VOID, 8).add(Aspect.ELDRITCH, 8).add(Aspect.TRAVEL, 8));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockEldritch, 1, 3), (new AspectList()).add(Aspect.VOID, 4).add(Aspect.ELDRITCH, 4));

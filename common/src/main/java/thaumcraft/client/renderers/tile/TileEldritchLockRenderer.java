@@ -1,7 +1,5 @@
 package thaumcraft.client.renderers.tile;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -11,15 +9,18 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
-import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.TileEldritchLock;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
    FloatBuffer fBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -37,7 +38,7 @@ public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
       double var10004 = te.zCoord;
       this.inrange = Minecraft.getMinecraft().renderViewEntity.getDistanceSq(var10002, var10003, var10004 + (double)0.5F) < (double)512.0F;
       if (this.is == null) {
-         this.is = new ItemStack(ConfigItems.itemEldritchObject, 1, 2);
+         this.is = new ItemStack(ThaumcraftItems.RUNED_TABLET);
       }
 
       float bob = 0.0F;
@@ -86,7 +87,7 @@ public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
 
          GL11.glScaled(1.0F, 1.0F, 1.0F);
          if (this.entityitem == null) {
-            this.entityitem = new EntityItem(te.getWorldObj(), 0.0F, 0.0F, 0.0F, this.is);
+            this.entityitem = new EntityItem(te.getLevel(), 0.0F, 0.0F, 0.0F, this.is);
          }
 
          this.entityitem.hoverStart = 0.0F;

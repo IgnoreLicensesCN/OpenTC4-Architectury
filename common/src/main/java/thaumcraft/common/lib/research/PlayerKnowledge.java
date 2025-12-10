@@ -4,17 +4,18 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerKnowledge {
-   public Map<String, ArrayList<String>> researchCompleted = new HashMap<>();
-   public Map<String, AspectList> aspectsDiscovered = new HashMap<>();
-   public Map<String,ArrayList<String>> objectsScanned = new HashMap<>();
-   public Map<String,ArrayList<String>> entitiesScanned = new HashMap<>();
-   public Map<String,ArrayList<String>> phenomenaScanned = new HashMap<>();
-   public Map<String,Integer> warpCount = new HashMap<>();
-   public Map<String,Integer> warp = new HashMap<>();
-   public Map<String,Integer> warpSticky = new HashMap<>();
-   public Map<String,Integer> warpTemp = new HashMap<>();
+   public final Map<String, List<String>> researchCompleted = new ConcurrentHashMap<>();
+   public final Map<String, AspectList> aspectsDiscovered = new ConcurrentHashMap<>();
+   public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
+   public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();
+   public final Map<String,List<String>> phenomenaScanned = new ConcurrentHashMap<>();
+   public final Map<String,Integer> warpCount = new ConcurrentHashMap<>();
+   public final Map<String,Integer> warp = new ConcurrentHashMap<>();
+   public final Map<String,Integer> warpSticky = new ConcurrentHashMap<>();
+   public final Map<String,Integer> warpTemp = new ConcurrentHashMap<>();
 
    public void wipePlayerKnowledge(String player) {
       this.researchCompleted.remove(player);
@@ -38,7 +39,7 @@ public class PlayerKnowledge {
    }
 
    public boolean hasDiscoveredAspect(String player, Aspect aspect) {
-      return this.getAspectsDiscovered(player).aspects.containsKey(aspect);
+      return this.getAspectsDiscovered(player).getAspects().containsKey(aspect);
    }
 
    public boolean hasDiscoveredParentAspects(String player, Aspect aspect) {
@@ -49,7 +50,7 @@ public class PlayerKnowledge {
          if (components == null) {
             return true;
          } else {
-            return new HashSet<>(Arrays.asList(this.getAspectsDiscovered(player).getAspects())).containsAll(Arrays.asList(components));
+            return new HashSet<>(Arrays.asList(this.getAspectsDiscovered(player).getAspectTypes())).containsAll(Arrays.asList(components));
          }
       }
    }
@@ -60,27 +61,27 @@ public class PlayerKnowledge {
          known = new AspectList();
       }
 
-      if (!known.aspects.containsKey(Aspect.AIR)) {
+      if (!known.getAspects().containsKey(Aspect.AIR)) {
          known.add(Aspect.AIR, 0);
       }
 
-      if (!known.aspects.containsKey(Aspect.FIRE)) {
+      if (!known.getAspects().containsKey(Aspect.FIRE)) {
          known.add(Aspect.FIRE, 0);
       }
 
-      if (!known.aspects.containsKey(Aspect.EARTH)) {
+      if (!known.getAspects().containsKey(Aspect.EARTH)) {
          known.add(Aspect.EARTH, 0);
       }
 
-      if (!known.aspects.containsKey(Aspect.WATER)) {
+      if (!known.getAspects().containsKey(Aspect.WATER)) {
          known.add(Aspect.WATER, 0);
       }
 
-      if (!known.aspects.containsKey(Aspect.ORDER)) {
+      if (!known.getAspects().containsKey(Aspect.ORDER)) {
          known.add(Aspect.ORDER, 0);
       }
 
-      if (!known.aspects.containsKey(Aspect.ENTROPY)) {
+      if (!known.getAspects().containsKey(Aspect.ENTROPY)) {
          known.add(Aspect.ENTROPY, 0);
       }
 
@@ -89,7 +90,7 @@ public class PlayerKnowledge {
 
    public boolean addDiscoveredAspect(String player, Aspect aspect) {
       AspectList known = this.getAspectsDiscovered(player);
-      if (!known.aspects.containsKey(aspect)) {
+      if (!known.getAspects().containsKey(aspect)) {
          known.add(aspect, 0);
          this.aspectsDiscovered.put(player, known);
          return true;
@@ -129,14 +130,14 @@ public class PlayerKnowledge {
       }
    }
 
-   public boolean setAspectPool(String username, Aspect aspect, short amount) {
+   public boolean setAspectPool(String username, Aspect aspect, int amount) {
       AspectList al = this.getAspectsDiscovered(username);
       if (al == null) {
          al = new AspectList();
       }
 
       if (aspect != null) {
-         al.aspects.put(aspect, (int) amount);
+         al.set(aspect,  amount);
          this.aspectsDiscovered.put(username, al);
          return true;
       } else {

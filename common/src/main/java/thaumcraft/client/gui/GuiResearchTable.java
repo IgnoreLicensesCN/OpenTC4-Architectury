@@ -1,19 +1,15 @@
 package thaumcraft.client.gui;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.entity.player.Player;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +18,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
@@ -35,6 +31,11 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexUtils;
 import thaumcraft.common.tiles.TileResearchTable;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class GuiResearchTable extends GuiContainer {
@@ -52,7 +53,7 @@ public class GuiResearchTable extends GuiContainer {
    private TileResearchTable tileEntity;
    private FontRenderer galFontRenderer;
    private String username;
-   EntityPlayer player;
+   Player player;
    public Aspect select1 = null;
    public Aspect select2 = null;
    private AspectList aspectlist = new AspectList();
@@ -65,7 +66,7 @@ public class GuiResearchTable extends GuiContainer {
    private ArrayList<String> checked = new ArrayList<>();
    private ArrayList<String> highlight = new ArrayList<>();
 
-   public GuiResearchTable(EntityPlayer player, TileResearchTable e) {
+   public GuiResearchTable(Player player, TileResearchTable e) {
       super(new ContainerResearchTable(player.inventory, e));
       this.tileEntity = e;
       this.xSize = 255;
@@ -422,11 +423,11 @@ public class GuiResearchTable extends GuiContainer {
          long time = System.currentTimeMillis();
          if (this.lastRuneCheck < time) {
             this.lastRuneCheck = time + 250L;
-            int k = this.mc.theWorld.rand.nextInt(120) - 60;
-            int l = this.mc.theWorld.rand.nextInt(120) - 60;
+            int k = this.mc.theworld.getRandom().nextInt(120) - 60;
+            int l = this.mc.theworld.getRandom().nextInt(120) - 60;
             HexUtils.Hex hp = (new HexUtils.Pixel(k, l)).toHex(9);
             if (!this.runes.containsKey(hp.toString()) && !this.note.hexes.containsKey(hp.toString())) {
-               this.runes.put(hp.toString(), new Rune(hp.q, hp.r, time, this.lastRuneCheck + 15000L + (long) this.mc.theWorld.rand.nextInt(10000), this.mc.theWorld.rand.nextInt(16)));
+               this.runes.put(hp.toString(), new Rune(hp.q, hp.r, time, this.lastRuneCheck + 15000L + (long) this.mc.theworld.getRandom().nextInt(10000), this.mc.theworld.getRandom().nextInt(16)));
             }
          }
 
@@ -677,27 +678,27 @@ public class GuiResearchTable extends GuiContainer {
    }
 
    private void playButtonClick() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:cameraclack", 0.4F, 1.0F, false);
    }
 
    private void playButtonAspect() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhoff", 0.2F, 1.0F + this.mc.renderViewEntity.worldObj.rand.nextFloat() * 0.1F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhoff", 0.2F, 1.0F + this.mc.renderViewEntity.level().rand.nextFloat() * 0.1F, false);
    }
 
    private void playButtonCombine() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhon", 0.3F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:hhon", 0.3F, 1.0F, false);
    }
 
    private void playButtonWrite() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:write", 0.2F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:write", 0.2F, 1.0F, false);
    }
 
    private void playButtonErase() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:erase", 0.2F, 1.0F + this.mc.renderViewEntity.worldObj.rand.nextFloat() * 0.1F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:erase", 0.2F, 1.0F + this.mc.renderViewEntity.level().rand.nextFloat() * 0.1F, false);
    }
 
    private void playButtonScroll() {
-      this.mc.renderViewEntity.worldObj.playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:key", 0.3F, 1.0F, false);
+      this.mc.renderViewEntity.level().playSound(this.mc.renderViewEntity.posX, this.mc.renderViewEntity.posY, this.mc.renderViewEntity.posZ, "thaumcraft:key", 0.3F, 1.0F, false);
    }
 
    private void drawOrb(double x, double y) {

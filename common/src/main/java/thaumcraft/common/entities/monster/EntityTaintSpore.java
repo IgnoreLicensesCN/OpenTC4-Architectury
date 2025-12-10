@@ -4,17 +4,18 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -27,7 +28,7 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
    protected int growth = 0;
    public float displaySize = 0.0F;
 
-   public EntityTaintSpore(World par1World) {
+   public EntityTaintSpore(Level par1World) {
       super(par1World);
       this.setSporeSize(2);
    }
@@ -87,7 +88,7 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
       int x = MathHelper.floor_double(this.posX);
       int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
       int z = MathHelper.floor_double(this.posZ);
-      if (this.worldObj.getBlock(x, y, z) != ConfigBlocks.blockTaintFibres || this.worldObj.getBlockMetadata(x, y, z) != 4) {
+      if (this.level().getBlock(x, y, z) != ConfigBlocks.blockTaintFibres || this.level().getBlockMetadata(x, y, z) != 4) {
          super.moveEntity(par1, par3, par5);
       }
    }
@@ -110,7 +111,7 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
 
    public void onUpdate() {
       super.onUpdate();
-      if (!this.worldObj.isRemote && this.ticksExisted % 20 == 0 && this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ)).biomeID != Config.biomeTaintID) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.ticksExisted % 20 == 0 && this.level().getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ)).biomeID != Config.biomeTaintID) {
          this.damageEntity(DamageSource.starve, 1.0F);
       }
 
@@ -123,27 +124,27 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
          this.growth = 0;
       }
 
-      if (this.worldObj.isRemote) {
+      if (ClientFXUtils.checkPlatformClient()) {
          if (this.displaySize < (float)this.getSporeSize()) {
             this.displaySize += 0.02F;
          }
 
          for(int a = 0; a < this.swarm.size(); ++a) {
-            if (this.swarm.get(a) == null || ((Entity)this.swarm.get(a)).isDead) {
+            if (this.swarm.get(a) == null || (this.swarm.get(a)).isDead) {
                this.swarm.remove(a);
                break;
             }
          }
 
          if (this.swarm.size() < this.getSporeSize() / 3) {
-            this.swarm.add(Thaumcraft.proxy.swarmParticleFX(this.worldObj, this, 0.1F, 10.0F, 0.0F));
+            this.swarm.add(ClientFXUtils.swarmParticleFX(this.level(), this, 0.1F, 10.0F, 0.0F));
          }
       }
 
       int x = MathHelper.floor_double(this.posX);
       int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
       int z = MathHelper.floor_double(this.posZ);
-      if (this.worldObj.getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.worldObj.getBlockMetadata(x, y, z) == 4) {
+      if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
          if (this.deathTime > 0) {
             this.spiderBurst();
          }
@@ -153,26 +154,26 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
 
    }
 
-   public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+   public void onCollideWithPlayer(Player par1Player) {
       this.spiderBurst();
    }
 
    protected void spiderBurst() {
-      if (!this.worldObj.isRemote) {
-         this.worldObj.playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.worldObj.rand.nextFloat() * 0.1F);
-         int q = this.getSporeSize() / 3 + this.worldObj.rand.nextInt(this.getSporeSize() / 2 + 1);
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         this.level().playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.level().rand.nextFloat() * 0.1F);
+         int q = this.getSporeSize() / 3 + this.level().rand.nextInt(this.getSporeSize() / 2 + 1);
 
          for(int a = 0; a < q; ++a) {
-            EntityTaintSpider spiderling = new EntityTaintSpider(this.worldObj);
-            spiderling.setLocationAndAngles(this.posX + (double)this.worldObj.rand.nextFloat() - (double)this.worldObj.rand.nextFloat(), this.posY + (double)this.worldObj.rand.nextFloat(), this.posZ + (double)this.worldObj.rand.nextFloat() - (double)this.worldObj.rand.nextFloat(), this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
-            this.worldObj.spawnEntityInWorld(spiderling);
+            EntityTaintSpider spiderling = new EntityTaintSpider(this.level());
+            spiderling.setLocationAndAngles(this.posX + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.posY + (double)this.level().rand.nextFloat(), this.posZ + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.level().rand.nextFloat() * 360.0F, 0.0F);
+            this.level().spawnEntityInWorld(spiderling);
          }
 
          int x = MathHelper.floor_double(this.posX);
          int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
          int z = MathHelper.floor_double(this.posZ);
-         if (this.worldObj.getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.worldObj.getBlockMetadata(x, y, z) == 4) {
-            this.worldObj.setBlockMetadataWithNotify(x, y, z, 3, 3);
+         if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
+            this.level().setBlockMetadataWithNotify(x, y, z, 3, 3);
          }
 
          this.setDead();
@@ -226,10 +227,10 @@ public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityA
    }
 
    protected void dropFewItems(boolean flag, int i) {
-      if (this.worldObj.rand.nextBoolean()) {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+      if (this.level().rand.nextBoolean()) {
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
       } else {
-         this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 12), this.height / 2.0F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
       }
 
    }

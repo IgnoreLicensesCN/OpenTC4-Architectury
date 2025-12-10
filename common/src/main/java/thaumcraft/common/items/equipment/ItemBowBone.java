@@ -5,13 +5,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemBow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
@@ -29,7 +29,7 @@ public class ItemBowBone extends ItemBow implements IRepairable {
       this.setCreativeTab(Thaumcraft.tabTC);
    }
 
-   public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
+   public void onUsingTick(ItemStack stack, Player player, int count) {
       int ticks = this.getMaxItemUseDuration(stack) - count;
       if (ticks > 18) {
          player.stopUsingItem();
@@ -37,14 +37,14 @@ public class ItemBowBone extends ItemBow implements IRepairable {
 
    }
 
-   public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
+   public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, Player par3Player, int par4) {
       int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
-      ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, j);
+      ArrowLooseEvent event = new ArrowLooseEvent(par3Player, par1ItemStack, j);
       MinecraftForge.EVENT_BUS.post(event);
       if (!event.isCanceled()) {
          j = event.charge;
-         boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
-         if (flag || par3EntityPlayer.inventory.hasItem(Items.arrow)) {
+         boolean flag = par3Player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+         if (flag || par3Player.inventory.hasItem(Items.arrow)) {
             float f = (float)j / 10.0F;
             f = (f * f + f * 2.0F) / 3.0F;
             if ((double)f < 0.1) {
@@ -55,7 +55,7 @@ public class ItemBowBone extends ItemBow implements IRepairable {
                f = 1.0F;
             }
 
-            EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, f * 2.5F);
+            EntityArrow entityarrow = new EntityArrow(par2World, par3Player, f * 2.5F);
             entityarrow.setDamage(entityarrow.getDamage() + (double)0.5F);
             int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
             if (k > 0) {
@@ -71,15 +71,15 @@ public class ItemBowBone extends ItemBow implements IRepairable {
                entityarrow.setFire(100);
             }
 
-            par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+            par1ItemStack.damageItem(1, par3Player);
+            par2World.playSoundAtEntity(par3Player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
             if (flag) {
                entityarrow.canBePickedUp = 2;
             } else {
-               par3EntityPlayer.inventory.consumeInventoryItem(Items.arrow);
+               par3Player.inventory.consumeInventoryItem(Items.arrow);
             }
 
-            if (!par2World.isRemote) {
+            if (!(Platform.getEnvironment() == Env.CLIENT)) {
                par2World.spawnEntityInWorld(entityarrow);
             }
          }
@@ -87,14 +87,14 @@ public class ItemBowBone extends ItemBow implements IRepairable {
       }
    }
 
-   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-      ArrowNockEvent event = new ArrowNockEvent(par3EntityPlayer, par1ItemStack);
+   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, Player par3Player) {
+      ArrowNockEvent event = new ArrowNockEvent(par3Player, par1ItemStack);
       MinecraftForge.EVENT_BUS.post(event);
       if (event.isCanceled()) {
          return event.result;
       } else {
-         if (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.hasItem(Items.arrow) || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0) {
-            par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+         if (par3Player.capabilities.isCreativeMode || par3Player.inventory.hasItem(Items.arrow) || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0) {
+            par3Player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
          }
 
          return par1ItemStack;
@@ -116,7 +116,7 @@ public class ItemBowBone extends ItemBow implements IRepairable {
 
    }
 
-   public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+   public IIcon getIcon(ItemStack stack, int renderPass, Player player, ItemStack usingItem, int useRemaining) {
       int j = stack.getMaxItemUseDuration() - useRemaining;
       if (usingItem == null) {
          return this.itemIcon;

@@ -1,9 +1,9 @@
 package fromhodgepodge.util;
 
-import java.util.Comparator;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+
+import java.util.Comparator;
 
 public class AspectNameSorter implements Comparator<Aspect> {
 
@@ -18,7 +18,7 @@ public class AspectNameSorter implements Comparator<Aspect> {
     }
 
     public static Aspect[] sort(AspectList list) {
-        return list.aspects.keySet().stream().sorted(INSTANCE).toArray(Aspect[]::new);
+        return list.getAspects().keySet().stream().sorted(INSTANCE).toArray(Aspect[]::new);
     }
 
 }

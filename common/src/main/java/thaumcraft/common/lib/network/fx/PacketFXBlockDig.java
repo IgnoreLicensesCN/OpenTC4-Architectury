@@ -1,17 +1,17 @@
 package thaumcraft.common.lib.network.fx;
 
-import cpw.mods.fml.client.FMLClientHandler;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.client.fx.particles.FXBoreParticles;
 import thaumcraft.common.Thaumcraft;
 
@@ -67,20 +67,20 @@ public class PacketFXBlockDig implements IMessage, IMessageHandler<PacketFXBlock
       if ((new ItemStack(item, 1, message.md)).getItemSpriteNumber() == 0 && item instanceof ItemBlock) {
          Block block = Block.getBlockById(message.bi);
          if (block != null) {
-            for(int a = 0; a < Thaumcraft.proxy.particleCount(20); ++a) {
-               FXBoreParticles fb = (new FXBoreParticles(Thaumcraft.proxy.getClientWorld(), (float)message.dx + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.dy + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.dz + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (double)message.x + (double)0.5F, (double)message.y + (double)0.5F, (double)message.z + (double)0.5F, block, Thaumcraft.proxy.getClientWorld().rand.nextInt(6), message.md)).applyColourMultiplier(message.x, message.y, message.z);
-               FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+            for(int a = 0; a < Thaumcraft.particleCount(20); ++a) {
+               FXBoreParticles fb = (new FXBoreParticles(Thaumcraft.getClientWorld(), (float)message.dx + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.dy + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.dz + Thaumcraft.getClientWorld().rand.nextFloat(), (double)message.x + (double)0.5F, (double)message.y + (double)0.5F, (double)message.z + (double)0.5F, block, Thaumcraft.getClientWorld().rand.nextInt(6), message.md)).applyColourMultiplier(message.x, message.y, message.z);
+               Minecraft.getInstance().particleEngine.add(fb);
             }
 
-            Thaumcraft.proxy.getClientWorld().playSound((float)message.dx + 0.5F, (float)message.dy + 0.5F, (float)message.dz + 0.5F, block.stepSound.getBreakSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F, false);
+            Thaumcraft.getClientWorld().playSound((float)message.dx + 0.5F, (float)message.dy + 0.5F, (float)message.dz + 0.5F, block.stepSound.getBreakSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F, false);
          }
       } else {
-         for(int a = 0; a < Thaumcraft.proxy.particleCount(20); ++a) {
-            FXBoreParticles fb = (new FXBoreParticles(Thaumcraft.proxy.getClientWorld(), (float)message.dx + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.dy + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.dz + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (double)message.x + (double)0.5F, (double)message.y + (double)0.5F, (double)message.z + (double)0.5F, item, Thaumcraft.proxy.getClientWorld().rand.nextInt(6), message.md)).applyColourMultiplier(message.x, message.y, message.z);
-            FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+         for(int a = 0; a < Thaumcraft.particleCount(20); ++a) {
+            FXBoreParticles fb = (new FXBoreParticles(Thaumcraft.getClientWorld(), (float)message.dx + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.dy + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.dz + Thaumcraft.getClientWorld().rand.nextFloat(), (double)message.x + (double)0.5F, (double)message.y + (double)0.5F, (double)message.z + (double)0.5F, item, Thaumcraft.getClientWorld().rand.nextInt(6), message.md)).applyColourMultiplier(message.x, message.y, message.z);
+            Minecraft.getInstance().particleEngine.add(fb);
          }
 
-         Thaumcraft.proxy.getClientWorld().playSound((float)message.dx + 0.5F, (float)message.dy + 0.5F, (float)message.dz + 0.5F, Blocks.stone.stepSound.getBreakSound(), (Blocks.stone.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.stone.stepSound.getPitch() * 0.8F, false);
+         Thaumcraft.getClientWorld().playSound((float)message.dx + 0.5F, (float)message.dy + 0.5F, (float)message.dz + 0.5F, Blocks.stone.stepSound.getBreakSound(), (Blocks.stone.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.stone.stepSound.getPitch() * 0.8F, false);
       }
 
       return null;

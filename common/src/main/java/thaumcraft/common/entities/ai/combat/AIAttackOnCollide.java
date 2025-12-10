@@ -5,8 +5,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 
 public class AIAttackOnCollide extends EntityAIBase {
    World worldObj;
@@ -30,7 +30,7 @@ public class AIAttackOnCollide extends EntityAIBase {
 
    public AIAttackOnCollide(EntityCreature attacker, double speedTowardsTarget, boolean longMemory) {
       this.attacker = attacker;
-      this.worldObj = attacker.worldObj;
+      this.level() = attacker.level();
       this.speedTowardsTarget = speedTowardsTarget;
       this.longMemory = longMemory;
       this.setMutexBits(3);

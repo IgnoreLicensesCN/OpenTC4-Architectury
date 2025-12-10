@@ -3,15 +3,14 @@ package thaumcraft.common.tiles;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -30,6 +29,8 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.container.InventoryFake;
 import thaumcraft.common.lib.utils.InventoryUtils;
+
+import java.util.ArrayList;
 
 public class TileThaumatorium extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, ISidedInventory {
    public ItemStack inputStack = null;
@@ -99,7 +100,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    public void readFromNBT(NBTTagCompound nbtCompound) {
       super.readFromNBT(nbtCompound);
-      NBTTagList nbttaglist = nbtCompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbtCompound.getTagList("ThaumcraftItems", 10);
       if (nbttaglist.tagCount() > 0) {
          this.inputStack = ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(0));
       }
@@ -124,7 +125,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
          nbttaglist.appendTag(nbttagcompound1);
       }
 
-      nbtCompound.setTag("Items", nbttaglist);
+      nbtCompound.setTag("ThaumcraftItems", nbttaglist);
       NBTTagList nbttaglist2 = new NBTTagList();
       if (!this.recipePlayer.isEmpty()) {
           for (String s : this.recipePlayer) {
@@ -143,9 +144,9 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    }
 
    boolean checkHeat() {
-      Material mat = this.worldObj.getBlock(this.xCoord, this.yCoord - 2, this.zCoord).getMaterial();
-      Block bi = this.worldObj.getBlock(this.xCoord, this.yCoord - 2, this.zCoord);
-      int md = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 2, this.zCoord);
+      Material mat = this.level().getBlock(this.xCoord, this.yCoord - 2, this.zCoord).getMaterial();
+      Block bi = this.level().getBlock(this.xCoord, this.yCoord - 2, this.zCoord);
+      int md = this.level().getBlockMetadata(this.xCoord, this.yCoord - 2, this.zCoord);
       return mat == Material.lava || mat == Material.fire || bi == ConfigBlocks.blockAiry && md == 1;
    }
 
@@ -162,7 +163,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    }
 
    public void updateEntity() {
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.counter == 0 || this.counter % 40 == 0) {
             this.heated = this.checkHeat();
             this.getUpgrades();
@@ -190,7 +191,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
                return;
             }
 
-            TileEntity inventory = this.worldObj.getTileEntity(this.xCoord + this.facing.offsetX, this.yCoord, this.zCoord + this.facing.offsetZ);
+            TileEntity inventory = this.level().getTileEntity(this.xCoord + this.facing.offsetX, this.yCoord, this.zCoord + this.facing.offsetZ);
             if (inventory instanceof IInventory) {
                ItemStack dropped = this.getCurrentOutputRecipe();
                dropped = InventoryUtils.placeItemStackIntoInventory(dropped, (IInventory)inventory, this.facing.getOpposite().ordinal(), false);
@@ -218,14 +219,14 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
          }
       } else if (this.venting > 0) {
          --this.venting;
-         float fx = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-         float fz = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-         float fy = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-         float fx2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-         float fz2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
-         float fy2 = 0.1F - this.worldObj.rand.nextFloat() * 0.2F;
+         float fx = 0.1F - this.level().rand.nextFloat() * 0.2F;
+         float fz = 0.1F - this.level().rand.nextFloat() * 0.2F;
+         float fy = 0.1F - this.level().rand.nextFloat() * 0.2F;
+         float fx2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+         float fz2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
+         float fy2 = 0.1F - this.level().rand.nextFloat() * 0.2F;
          int color = 16777215;
-         Thaumcraft.proxy.drawVentParticles(this.worldObj, (float)this.xCoord + 0.5F + fx + (float)this.facing.offsetX / 2.0F, (float)this.yCoord + 0.5F + fy, (float)this.zCoord + 0.5F + fz + (float)this.facing.offsetZ / 2.0F, (float)this.facing.offsetX / 4.0F + fx2, fy2, (float)this.facing.offsetZ / 4.0F + fz2, color);
+         Thaumcraft.proxy.drawVentParticles(this.level(), (float)this.xCoord + 0.5F + fx + (float)this.facing.offsetX / 2.0F, (float)this.yCoord + 0.5F + fy, (float)this.zCoord + 0.5F + fz + (float)this.facing.offsetZ / 2.0F, (float)this.facing.offsetX / 4.0F + fx2, fy2, (float)this.facing.offsetZ / 4.0F + fz2, color);
       }
 
    }
@@ -234,28 +235,28 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       if (this.currentRecipe != null && this.currentCraft < this.recipeHash.size() && this.currentRecipe.matches(this.essentia, this.inputStack) && this.decrStackSize(0, 1) != null) {
          this.essentia = new AspectList();
          ItemStack dropped = this.getCurrentOutputRecipe();
-         EntityPlayer p = this.worldObj.getPlayerEntityByName(this.recipePlayer.get(this.currentCraft));
+         Player p = this.level().getPlayerEntityByName(this.recipePlayer.get(this.currentCraft));
          if (p != null) {
             FMLCommonHandler.instance().firePlayerCraftingEvent(p, dropped, new InventoryFake(new ItemStack[]{this.inputStack}));
          }
 
-         TileEntity inventory = this.worldObj.getTileEntity(this.xCoord + this.facing.offsetX, this.yCoord, this.zCoord + this.facing.offsetZ);
+         TileEntity inventory = this.level().getTileEntity(this.xCoord + this.facing.offsetX, this.yCoord, this.zCoord + this.facing.offsetZ);
          if (inventory instanceof IInventory) {
             dropped = InventoryUtils.placeItemStackIntoInventory(dropped, (IInventory)inventory, this.facing.getOpposite().ordinal(), true);
          }
 
          if (dropped != null) {
-            EntityItem ei = new EntityItem(this.worldObj, (double)this.xCoord + (double)0.5F + (double)this.facing.offsetX * 0.66, (double)this.yCoord + 0.33 + (double)this.facing.getOpposite().offsetY, (double)this.zCoord + (double)0.5F + (double)this.facing.offsetZ * 0.66, dropped.copy());
+            EntityItem ei = new EntityItem(this.level(), (double)this.xCoord + (double)0.5F + (double)this.facing.offsetX * 0.66, (double)this.yCoord + 0.33 + (double)this.facing.getOpposite().offsetY, (double)this.zCoord + (double)0.5F + (double)this.facing.offsetZ * 0.66, dropped.copy());
             ei.motionX = 0.075F * (float)this.facing.offsetX;
             ei.motionY = 0.025F;
             ei.motionZ = 0.075F * (float)this.facing.offsetZ;
-            this.worldObj.spawnEntityInWorld(ei);
-            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, 0);
+            this.level().spawnEntityInWorld(ei);
+            this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 0, 0);
          }
 
-         this.worldObj.playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.25F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
+         this.level().playSoundEffect((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "random.fizz", 0.25F, 2.6F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.8F);
          this.currentCraft = -1;
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 
@@ -268,7 +269,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       for(int y = 0; y <= 1; ++y) {
          for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (dir != this.facing && dir != ForgeDirection.DOWN && (y != 0 || dir != ForgeDirection.UP)) {
-               te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord + y, this.zCoord, dir);
+               te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord + y, this.zCoord, dir);
                if (te != null) {
                   ic = (IEssentiaTransport)te;
                   if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(null) && this.getSuctionAmount(null) >= ic.getMinimumSuction()) {
@@ -290,7 +291,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       if (this.currentRecipe != null && ce > 0) {
          int add = Math.min(ce, am);
          this.essentia.add(tt, add);
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return am - add;
       } else {
@@ -301,7 +302,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.essentia.getAmount(tt) >= am) {
          this.essentia.remove(tt, am);
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
       } else {
@@ -331,7 +332,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    public boolean receiveClientEvent(int i, int j) {
       if (i >= 0) {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             this.venting = 7;
          }
 
@@ -462,8 +463,8 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {
@@ -489,7 +490,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    }
 
    public boolean gettingPower() {
-      return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) || this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord - 1, this.zCoord) || this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord + 1, this.zCoord);
+      return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) || this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord - 1, this.zCoord) || this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord + 1, this.zCoord);
    }
 
    public void getUpgrades() {
@@ -500,10 +501,10 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
             if (dir != ForgeDirection.DOWN && dir != this.facing) {
                int xx = this.xCoord + dir.offsetX;
                int zz = this.zCoord + dir.offsetZ;
-               Block bi = this.worldObj.getBlock(xx, this.yCoord + yy + dir.offsetY, zz);
-               int md = this.worldObj.getBlockMetadata(xx, this.yCoord + yy + dir.offsetY, zz);
+               Block bi = this.level().getBlock(xx, this.yCoord + yy + dir.offsetY, zz);
+               int md = this.level().getBlockMetadata(xx, this.yCoord + yy + dir.offsetY, zz);
                if (bi == ConfigBlocks.blockMetalDevice && md == 12) {
-                  TileEntity te = this.worldObj.getTileEntity(xx, this.yCoord + yy + dir.offsetY, zz);
+                  TileEntity te = this.level().getTileEntity(xx, this.yCoord + yy + dir.offsetY, zz);
                   if (te instanceof TileBrainbox && ((TileBrainbox) te).facing == dir.getOpposite()) {
                      mr += 2;
                   }
@@ -519,7 +520,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
             this.recipeHash.remove(this.recipeHash.size() - 1);
          }
 
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
 

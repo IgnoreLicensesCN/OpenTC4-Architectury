@@ -1,15 +1,16 @@
 package thaumcraft.common.entities.ai.fluid;
 
-import java.util.ArrayList;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
+
+import java.util.ArrayList;
 
 public class AILiquidEmpty extends EntityAIBase {
    private EntityGolemBase theGolem;
@@ -21,7 +22,7 @@ public class AILiquidEmpty extends EntityAIBase {
 
    public AILiquidEmpty(EntityGolemBase par1EntityCreature) {
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
    }
 
@@ -62,7 +63,7 @@ public class AILiquidEmpty extends EntityAIBase {
          }
 
          if (amt > 200) {
-            this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", Math.min(0.2F, 0.2F * ((float)amt / (float)this.theGolem.getFluidCarryLimit())), 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.3F);
+            this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", Math.min(0.2F, 0.2F * ((float)amt / (float)this.theGolem.getFluidCarryLimit())), 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.3F);
          }
 
          this.theGolem.updateCarried();

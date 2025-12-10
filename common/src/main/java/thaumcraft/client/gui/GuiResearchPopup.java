@@ -2,17 +2,18 @@ package thaumcraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.lib.utils.InventoryUtils;
+
+import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class GuiResearchPopup extends Gui {

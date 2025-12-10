@@ -15,7 +15,7 @@ public class TileTubeOnewayRenderer extends TileEntitySpecialRenderer {
 
    public void renderEntityAt(TileTubeOneway valve, double x, double y, double z, float fq) {
       UtilsFX.bindTexture("textures/models/valve.png");
-      if (valve.getWorldObj() == null || ThaumcraftApiHelper.getConnectableTile(valve.getWorldObj(), valve.xCoord, valve.yCoord, valve.zCoord, valve.facing.getOpposite()) != null) {
+      if (valve.getLevel() == null || ThaumcraftApiHelper.getConnectableTile(valve.getLevel(), valve.xCoord, valve.yCoord, valve.zCoord, valve.facing.getOpposite()) != null) {
          GL11.glPushMatrix();
          this.fd = valve.facing;
          GL11.glTranslated(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F);

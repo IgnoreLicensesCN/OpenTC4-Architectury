@@ -4,18 +4,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
@@ -76,26 +76,26 @@ public class ItemHoverHarness extends ItemArmor implements IRepairable, IVisDisc
       return par2ItemStack.isItemEqual(new ItemStack(Items.gold_ingot)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return aspect == Aspect.AIR ? 5 : 2;
    }
 
-   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-      if (!par2World.isRemote) {
-         par3EntityPlayer.openGui(Thaumcraft.instance, 17, par2World, MathHelper.floor_double(par3EntityPlayer.posX), MathHelper.floor_double(par3EntityPlayer.posY), MathHelper.floor_double(par3EntityPlayer.posZ));
+   public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, Player par3Player) {
+      if (!(Platform.getEnvironment() == Env.CLIENT)) {
+         par3Player.openGui(Thaumcraft.instance, 17, par2World, MathHelper.floor_double(par3Player.posX), MathHelper.floor_double(par3Player.posY), MathHelper.floor_double(par3Player.posZ));
       }
 
       return par1ItemStack;
    }
 
-   public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+   public void onArmorTick(World world, Player player, ItemStack itemStack) {
       if (!player.capabilities.isCreativeMode) {
          Hover.handleHoverArmor(player, player.inventory.armorItemInSlot(2));
       }
 
    }
 
-   public void addInformation(ItemStack is, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack is, Player player, List list, boolean par4) {
       super.addInformation(is, player, list, par4);
       if (is.hasTagCompound() && is.stackTagCompound.hasKey("jar")) {
          ItemStack jar = ItemStack.loadItemStackFromNBT(is.stackTagCompound.getCompoundTag("jar"));

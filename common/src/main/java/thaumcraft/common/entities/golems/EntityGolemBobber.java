@@ -5,13 +5,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 
 public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnData {
@@ -40,12 +40,12 @@ public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnD
       this.motionZ = data.readDouble();
       int fid = data.readInt();
       if (fid >= 0) {
-         this.fisher = (EntityGolemBase)this.worldObj.getEntityByID(fid);
+         this.fisher = (EntityGolemBase)this.level().getEntityByID(fid);
       }
 
    }
 
-   public EntityGolemBobber(World par1World) {
+   public EntityGolemBobber(Level par1World) {
       super(par1World);
       this.setSize(0.25F, 0.25F);
       this.ignoreFrustumCheck = true;
@@ -54,7 +54,7 @@ public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnD
       this.motionZ = 0.0F;
    }
 
-   public EntityGolemBobber(World par1World, EntityGolemBase par2EntityLiving, int x, int y, int z) {
+   public EntityGolemBobber(Level par1World, EntityGolemBase par2EntityLiving, int x, int y, int z) {
       super(par1World);
       this.setSize(0.25F, 0.25F);
       this.fisher = par2EntityLiving;
@@ -80,14 +80,14 @@ public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnD
 
    public void onUpdate() {
       super.onUpdate();
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.fisher == null || !this.fisher.isEntityAlive()) {
             this.setDead();
             return;
          }
 
          if (this.rand.nextFloat() < 0.02F) {
-            ((WorldServer)this.worldObj).func_147487_a("splash", this.posX + (double)this.rand.nextFloat() - (double)this.rand.nextFloat(), this.posY + (double)this.rand.nextFloat(), this.posZ + (double)this.rand.nextFloat() - (double)this.rand.nextFloat(), 2 + this.rand.nextInt(2), 0.1F, 0.0F, 0.1F, 0.0F);
+            ((WorldServer)this.level()).func_147487_a("splash", this.posX + (double)this.rand.nextFloat() - (double)this.rand.nextFloat(), this.posY + (double)this.rand.nextFloat(), this.posZ + (double)this.rand.nextFloat() - (double)this.rand.nextFloat(), 2 + this.rand.nextInt(2), 0.1F, 0.0F, 0.1F, 0.0F);
          }
       }
 
@@ -103,14 +103,14 @@ public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnD
 
          Vec3 vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
          Vec3 vec3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-         MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3);
+         HitResult HitResult = this.level().rayTraceBlocks(vec31, vec3);
          vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
          vec3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-         if (movingobjectposition != null) {
-            vec3 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
-            if (movingobjectposition.entityHit == null) {
+         if (HitResult != null) {
+            vec3 = Vec3.createVectorHelper(HitResult.hitVec.xCoord, HitResult.hitVec.yCoord, HitResult.hitVec.zCoord);
+            if (HitResult.entityHit == null) {
                this.inBlock = true;
-               if (this.worldObj.getBlock(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ).getMaterial() != Material.water) {
+               if (this.level().getBlock(HitResult.blockX, HitResult.blockY, HitResult.blockZ).getMaterial() != Material.water) {
                   this.setDead();
                }
             }
@@ -150,19 +150,19 @@ public class EntityGolemBobber extends Entity implements IEntityAdditionalSpawnD
                double d3 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(j) / (double)b0 - (double)0.125F + (double)0.125F;
                double d4 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(j + 1) / (double)b0 - (double)0.125F + (double)0.125F;
                AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(this.boundingBox.minX, d3, this.boundingBox.minZ, this.boundingBox.maxX, d4, this.boundingBox.maxZ);
-               if (this.worldObj.isAABBInMaterial(axisalignedbb1, Material.water)) {
+               if (this.level().isAABBInMaterial(axisalignedbb1, Material.water)) {
                   d10 += (double)1.0F / (double)b0;
                }
             }
 
-            if (!this.worldObj.isRemote && d10 > (double)0.0F) {
-               WorldServer worldserver = (WorldServer)this.worldObj;
+            if (Platform.getEnvironment() != Env.CLIENT && d10 > (double)0.0F) {
+               WorldServer worldserver = (WorldServer)this.level();
                int k = 1;
-               if (this.rand.nextFloat() < 0.25F && this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
+               if (this.rand.nextFloat() < 0.25F && this.level().canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
                   k = 2;
                }
 
-               if (this.rand.nextFloat() < 0.5F && !this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
+               if (this.rand.nextFloat() < 0.5F && !this.level().canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
                   --k;
                }
 

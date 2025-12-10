@@ -9,15 +9,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -31,7 +31,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.relics.ItemResonator;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.tiles.*;
 
 import java.util.LinkedList;
@@ -95,7 +95,7 @@ public class BlockTube extends BlockContainer {
    @SideOnly(Side.CLIENT)
    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
       int metadata = world.getBlockMetadata(x, y, z);
-      boolean noDoodads = Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() == null || !(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) && !(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof ItemResonator);
+      boolean noDoodads = Minecraft.getMinecraft().thePlayer == null || Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() == null || !(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof WandCastingItem) && !(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof ItemResonator);
       if ((metadata == 0 || metadata == 1 || metadata == 3 || metadata == 5 || metadata == 6) && noDoodads) {
          float minx = BlockRenderer.W6;
          float maxx = BlockRenderer.W10;
@@ -247,17 +247,17 @@ public class BlockTube extends BlockContainer {
 
    public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileTubeFilter && ((TileTubeFilter) te).aspectFilter != null && !world.isRemote) {
-         world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ConfigItems.itemResource, 1, 13)));
+      if (te instanceof TileTubeFilter && ((TileTubeFilter) te).aspectFilter != null && Platform.getEnvironment() != Env.CLIENT) {
+         world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
       }
 
       super.breakBlock(world, x, y, z, par5, par6);
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);
       if (metadata == 1) {
-         if (player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof ItemWandCasting || player.getHeldItem().getItem() instanceof ItemResonator || player.getHeldItem().getItem() == Item.getItemFromBlock(this))) {
+         if (player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof WandCastingItem || player.getHeldItem().getItem() instanceof ItemResonator || player.getHeldItem().getItem() == Item.getItemFromBlock(this))) {
             return false;
          }
 
@@ -265,8 +265,8 @@ public class BlockTube extends BlockContainer {
          if (te instanceof TileTubeValve) {
             ((TileTubeValve)te).allowFlow = !((TileTubeValve)te).allowFlow;
             world.markBlockForUpdate(x, y, z);
-            if (!world.isRemote) {
-               world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:squeek", 0.7F, 0.9F + world.rand.nextFloat() * 0.2F);
+            if (Platform.getEnvironment() != Env.CLIENT) {
+               world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:squeek", 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
             }
 
             return true;
@@ -278,11 +278,11 @@ public class BlockTube extends BlockContainer {
          if (te instanceof TileTubeFilter && player.isSneaking() && ((TileTubeFilter) te).aspectFilter != null) {
             ((TileTubeFilter)te).aspectFilter = null;
             world.markBlockForUpdate(x, y, z);
-            if (world.isRemote) {
+            if ((Platform.getEnvironment() == Env.CLIENT)) {
                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
             } else {
                ForgeDirection fd = ForgeDirection.getOrientation(side);
-               world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F + (float)fd.offsetX / 3.0F, (float)y + 0.5F, (float)z + 0.5F + (float)fd.offsetZ / 3.0F, new ItemStack(ConfigItems.itemResource, 1, 13)));
+               world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F + (float)fd.offsetX / 3.0F, (float)y + 0.5F, (float)z + 0.5F + (float)fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
             }
 
             return true;
@@ -293,7 +293,7 @@ public class BlockTube extends BlockContainer {
                ((TileTubeFilter)te).aspectFilter = ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()).getAspects()[0];
                --player.getHeldItem().stackSize;
                world.markBlockForUpdate(x, y, z);
-               if (world.isRemote) {
+               if ((Platform.getEnvironment() == Env.CLIENT)) {
                   world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
                }
             }
@@ -308,13 +308,13 @@ public class BlockTube extends BlockContainer {
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
    public void onBlockHighlight(DrawBlockHighlightEvent event) {
-      if (event.target.typeOfHit == MovingObjectType.BLOCK && event.player.worldObj.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == this && event.player.worldObj.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) != 7 && event.player.getCurrentEquippedItem() != null && (event.player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting || event.player.getCurrentEquippedItem().getItem() instanceof ItemResonator)) {
-         RayTracer.retraceBlock(event.player.worldObj, event.player, event.target.blockX, event.target.blockY, event.target.blockZ);
+      if (event.target.typeOfHit == MovingObjectType.BLOCK && event.player.level().getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == this && event.player.level().getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) != 7 && event.player.getCurrentEquippedItem() != null && (event.player.getCurrentEquippedItem().getItem() instanceof WandCastingItem || event.player.getCurrentEquippedItem().getItem() instanceof ItemResonator)) {
+         RayTracer.retraceBlock(event.player.level(), event.player, event.target.blockX, event.target.blockY, event.target.blockZ);
       }
 
    }
 
-   public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
+   public HitResult collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
       TileEntity tile = world.getTileEntity(x, y, z);
       if ((tile instanceof TileTube || tile instanceof TileTubeBuffer)) {
          List<IndexedCuboid6> cuboids = new LinkedList<>();

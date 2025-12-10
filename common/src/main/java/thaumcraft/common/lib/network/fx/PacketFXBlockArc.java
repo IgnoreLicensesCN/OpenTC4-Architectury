@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 
@@ -39,18 +39,18 @@ public class PacketFXBlockArc implements IMessage, IMessageHandler<PacketFXBlock
    }
 
    public IMessage onMessage(PacketFXBlockArc message, MessageContext ctx) {
-      Entity p = Thaumcraft.proxy.getClientWorld().getEntityByID(message.source);
+      Entity p = Thaumcraft.getClientWorld().getEntityByID(message.source);
       if (p != null) {
-         float r = 0.3F - Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.1F;
+         float r = 0.3F - Thaumcraft.getClientWorld().rand.nextFloat() * 0.1F;
          float g = 0.0F;
-         float b = 0.5F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F;
+         float b = 0.5F + Thaumcraft.getClientWorld().rand.nextFloat() * 0.2F;
          if (p instanceof EntityCultistPortal) {
-            r = 0.5F + Thaumcraft.proxy.getClientWorld().rand.nextFloat() * 0.2F;
+            r = 0.5F + Thaumcraft.getClientWorld().rand.nextFloat() * 0.2F;
             g = 0.0F;
             b = 0.0F;
          }
 
-         Thaumcraft.proxy.arcLightning(Thaumcraft.proxy.getClientWorld(), p.posX, p.boundingBox.minY + (double)(p.height / 2.0F), p.posZ, (double)message.x + (double)0.5F, message.y + 1, (double)message.z + (double)0.5F, r, g, b, 0.5F);
+         Thaumcraft.arcLightning(Thaumcraft.getClientWorld(), p.posX, p.boundingBox.minY + (double)(p.height / 2.0F), p.posZ, (double)message.x + (double)0.5F, message.y + 1, (double)message.z + (double)0.5F, r, g, b, 0.5F);
       }
 
       return null;

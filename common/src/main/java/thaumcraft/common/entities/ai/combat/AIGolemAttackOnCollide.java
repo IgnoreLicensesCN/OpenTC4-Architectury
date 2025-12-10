@@ -3,7 +3,7 @@ package thaumcraft.common.entities.ai.combat;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 public class AIGolemAttackOnCollide extends EntityAIBase {
@@ -16,7 +16,7 @@ public class AIGolemAttackOnCollide extends EntityAIBase {
 
    public AIGolemAttackOnCollide(EntityGolemBase par1EntityLiving) {
       this.theGolem = par1EntityLiving;
-      this.worldObj = par1EntityLiving.worldObj;
+      this.level() = par1EntityLiving.level();
       this.setMutexBits(3);
    }
 

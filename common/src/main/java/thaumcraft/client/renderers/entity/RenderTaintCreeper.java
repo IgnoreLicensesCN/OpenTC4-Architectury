@@ -3,10 +3,10 @@ package thaumcraft.client.renderers.entity;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelCreeper;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.entities.monster.EntityTaintCreeper;
 

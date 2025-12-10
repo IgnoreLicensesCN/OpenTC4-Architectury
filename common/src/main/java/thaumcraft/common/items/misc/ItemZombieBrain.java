@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemFood;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
 public class ItemZombieBrain extends ItemFood {
@@ -32,11 +32,11 @@ public class ItemZombieBrain extends ItemFood {
    }
 
    public ItemStack onEaten(ItemStack stack, World world, Player player) {
-      if (!world.isRemote && player instanceof ServerPlayer) {
-         if (world.rand.nextFloat() < 0.1F) {
+      if (Platform.getEnvironment() != Env.CLIENT && player instanceof ServerPlayer) {
+         if (world.getRandom().nextFloat() < 0.1F) {
             Thaumcraft.addStickyWarpToPlayer(player, 1);
          } else {
-            Thaumcraft.addWarpToPlayer(player, 1 + world.rand.nextInt(3), true);
+            Thaumcraft.addWarpToPlayer(player, 1 + world.getRandom().nextInt(3), true);
          }
       }
 

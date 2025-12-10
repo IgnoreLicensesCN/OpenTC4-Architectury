@@ -1,14 +1,13 @@
-package thaumcraft.client.fx.particles.migrated.particles;
+package thaumcraft.client.fx.migrated.particles;
 
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
 public class FXBubbleAlt extends ThaumcraftParticle {
     public int particle = 25;

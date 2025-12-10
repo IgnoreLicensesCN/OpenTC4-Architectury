@@ -2,23 +2,24 @@ package thaumcraft.client.renderers.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityCultistCleric;
 import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
+
+import java.awt.*;
+import java.util.Random;
 
 @SideOnly(Side.CLIENT)
 public class RenderCultist extends RenderBiped {

@@ -8,20 +8,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileArcaneWorkbench;
 import thaumcraft.common.tiles.TileDeconstructionTable;
@@ -73,7 +73,7 @@ public class BlockTable extends BlockContainer implements IWandable {
       }
    }
 
-   public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack is) {
+   public void onBlockPlacedBy(Level par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack is) {
       int md = par1World.getBlockMetadata(par2, par3, par4);
       if (md < 14) {
          int var7 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + (double)0.5F) & 3;
@@ -95,12 +95,12 @@ public class BlockTable extends BlockContainer implements IWandable {
       return ConfigBlocks.blockTableRI;
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       InventoryUtils.dropItems(par1World, par2, par3, par4);
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
-   public int getDamageValue(World par1World, int par2, int par3, int par4) {
+   public int getDamageValue(Level par1World, int par2, int par3, int par4) {
       int md = par1World.getBlockMetadata(par2, par3, par4);
       return md >= 2 && md <= 9 ? 2 : super.getDamageValue(par1World, par2, par3, par4);
    }
@@ -133,11 +133,11 @@ public class BlockTable extends BlockContainer implements IWandable {
       super.onNeighborBlockChange(world, x, y, z, par5);
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int idk, float what, float these, float are) {
+   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int idk, float what, float these, float are) {
       TileEntity tileEntity = world.getTileEntity(x, y, z);
       int md = world.getBlockMetadata(x, y, z);
       if (md > 1 && tileEntity != null && !player.isSneaking()) {
-         if (world.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             return true;
          } else if (tileEntity instanceof TileArcaneWorkbench) {
             player.openGui(Thaumcraft.instance, 13, world, x, y, z);
@@ -189,9 +189,9 @@ public class BlockTable extends BlockContainer implements IWandable {
       }
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
       if (md <= 1) {
-         ItemWandCasting wand = (ItemWandCasting)wandstack.getItem();
+         WandCastingItem wand = (WandCastingItem)wandstack.getItem();
          world.setBlock(x, y, z, ConfigBlocks.blockTable, 15, 3);
          world.setTileEntity(x, y, z, new TileArcaneWorkbench());
          TileArcaneWorkbench tawb = (TileArcaneWorkbench)world.getTileEntity(x, y, z);
@@ -209,13 +209,13 @@ public class BlockTable extends BlockContainer implements IWandable {
       }
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 }

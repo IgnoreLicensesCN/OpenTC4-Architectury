@@ -1,9 +1,9 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class InventoryHandMirror implements IInventory {
    private ItemStack[] stackList = new ItemStack[1];
@@ -60,7 +60,7 @@ public class InventoryHandMirror implements IInventory {
       return 64;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+   public boolean isUseableByPlayer(Player par1Player) {
       return true;
    }
 

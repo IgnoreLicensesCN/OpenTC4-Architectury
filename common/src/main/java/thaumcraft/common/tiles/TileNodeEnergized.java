@@ -2,7 +2,7 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -30,8 +30,8 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote) {
-         if (this.getNodeType() == NodeType.UNSTABLE && this.worldObj.rand.nextInt(500) == 1) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
+         if (this.getNodeType() == NodeType.UNSTABLE && this.level().rand.nextInt(500) == 1) {
             this.visBase = new AspectList();
          }
 
@@ -68,7 +68,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
 
          amt = MathHelper.floor_double(MathHelper.sqrt_double(amt));
          if (this.getNodeType() == NodeType.UNSTABLE) {
-            amt += this.worldObj.rand.nextInt(5) - 2;
+            amt += this.level().rand.nextInt(5) - 2;
          }
 
          if (amt >= 1) {
@@ -77,7 +77,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       }
 
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
    }
 
    public void readFromNBT(NBTTagCompound nbttagcompound) {

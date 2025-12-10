@@ -1,9 +1,9 @@
 package thaumcraft.common.lib.world;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
@@ -27,13 +27,13 @@ public class ComponentBankerHome extends StructureVillagePieces.Village {
       this.tablePosition = p_i2101_3_.nextInt(3);
    }
 
-   protected void func_143012_a(NBTTagCompound p_143012_1_) {
+   protected void func_143012_a(CompoundTag p_143012_1_) {
       super.func_143012_a(p_143012_1_);
       p_143012_1_.setInteger("T", this.tablePosition);
       p_143012_1_.setBoolean("C", this.isTallHouse);
    }
 
-   protected void func_143011_b(NBTTagCompound p_143011_1_) {
+   protected void func_143011_b(CompoundTag p_143011_1_) {
       super.func_143011_b(p_143011_1_);
       this.tablePosition = p_143011_1_.getInteger("T");
       this.isTallHouse = p_143011_1_.getBoolean("C");

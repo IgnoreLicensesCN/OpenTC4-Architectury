@@ -8,20 +8,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemWispEssence;
+import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class BlockMagicalLog extends BlockRotatedPillar {
       return 1;
    }
 
-//   public void breakBlock(World par1World, int x, int y, int z, int par5, int par6) {
+//   public void breakBlock(Level par1World, int x, int y, int z, int par5, int par6) {
 //      byte b0 = 4;
 //      int j1 = b0 + 1;
 //      if (par1World.checkChunksExist(x - j1, y - j1, z - j1, x + j1, y + j1, z + j1)) {
@@ -106,8 +106,8 @@ public class BlockMagicalLog extends BlockRotatedPillar {
          }
       }
    }
-   public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
-      if (limitToValidMetadata(par5) == 2 && !par1World.isRemote) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
+      if (limitToValidMetadata(par5) == 2 && !(Platform.getEnvironment() == Env.CLIENT)) {
          TileEntity te = par1World.getTileEntity(par2, par3, par4);
          if (te instanceof INode && ((INode) te).getAspects().size() > 0) {
             for(Aspect aspect : ((INode)te).getAspects().getAspects()) {
@@ -123,7 +123,7 @@ public class BlockMagicalLog extends BlockRotatedPillar {
          }
       }
 
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6EntityPlayer);
+      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
    }
 
    public int damageDropped(int par1) {

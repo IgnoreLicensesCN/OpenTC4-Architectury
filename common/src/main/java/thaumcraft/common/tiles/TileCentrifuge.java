@@ -65,7 +65,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       if (am > 0 && this.aspectOut == null) {
          this.aspectOut = tt;
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          --am;
       }
 
@@ -76,7 +76,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       if (this.aspectOut != null && tt == this.aspectOut) {
          this.aspectOut = null;
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return true;
       } else {
          return false;
@@ -157,7 +157,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
          this.aspectIn = aspect;
          this.process = 39;
          this.markDirty();
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return 1;
       } else {
          return 0;
@@ -166,7 +166,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
    public void updateEntity() {
       super.updateEntity();
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (!this.gettingPower()) {
             if (this.aspectOut == null && this.aspectIn == null && ++this.count % 5 == 0) {
                this.drawEssentia();
@@ -192,7 +192,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
          int pr = (int)this.rotation;
          this.rotation += this.rotationSpeed;
          if (this.rotation % 180.0F <= 20.0F && pr % 180 >= 160 && this.rotationSpeed > 0.0F) {
-            this.worldObj.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:pump", 1.0F, 1.0F, false);
+            this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "thaumcraft:pump", 1.0F, 1.0F, false);
          }
       }
 
@@ -200,14 +200,14 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
    void processEssentia() {
       Aspect[] comps = this.aspectIn.getComponents();
-      this.aspectOut = comps[this.worldObj.rand.nextInt(2)];
+      this.aspectOut = comps[this.level().rand.nextInt(2)];
       this.aspectIn = null;
       this.markDirty();
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
    }
 
    void drawEssentia() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
          if (!ic.canOutputTo(ForgeDirection.UP)) {
@@ -223,7 +223,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
             this.aspectIn = ta;
             this.process = 39;
             this.markDirty();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
       }
 
@@ -238,6 +238,6 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
    }
 
    public boolean gettingPower() {
-      return this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+      return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
    }
 }

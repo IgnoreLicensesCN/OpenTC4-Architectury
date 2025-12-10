@@ -2,25 +2,26 @@ package thaumcraft.common.entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.container.SlotOutput;
 import thaumcraft.common.entities.monster.EntityPech;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContainerPech extends Container {
    private EntityPech pech;
    private InventoryPech inventory;
-   private EntityPlayer player;
+   private Player player;
    private final World theWorld;
    ChestGenHooks chest = ChestGenHooks.getInfo("dungeonChest");
 
@@ -62,12 +63,12 @@ public class ContainerPech extends Container {
       super.detectAndSendChanges();
    }
 
-   public boolean enchantItem(EntityPlayer par1EntityPlayer, int par2) {
+   public boolean enchantItem(Player par1Player, int par2) {
       if (par2 == 0) {
          this.generateContents();
          return true;
       } else {
-         return super.enchantItem(par1EntityPlayer, par2);
+         return super.enchantItem(par1Player, par2);
       }
    }
 
@@ -82,27 +83,27 @@ public class ContainerPech extends Container {
    }
 
    private void generateContents() {
-      if (!this.theWorld.isRemote && this.inventory.getStackInSlot(0) != null && this.inventory.getStackInSlot(1) == null && this.inventory.getStackInSlot(2) == null && this.inventory.getStackInSlot(3) == null && this.inventory.getStackInSlot(4) == null && this.pech.isValued(this.inventory.getStackInSlot(0))) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.inventory.getStackInSlot(0) != null && this.inventory.getStackInSlot(1) == null && this.inventory.getStackInSlot(2) == null && this.inventory.getStackInSlot(3) == null && this.inventory.getStackInSlot(4) == null && this.pech.isValued(this.inventory.getStackInSlot(0))) {
          int value = this.pech.getValue(this.inventory.getStackInSlot(0));
-         if (this.theWorld.rand.nextInt(100) <= value / 2) {
+         if (this.theworld.getRandom().nextInt(100) <= value / 2) {
             this.pech.setTamed(false);
             this.pech.updateAINextTick = true;
             this.pech.playSound("thaumcraft:pech_trade", 0.4F, 1.0F);
          }
 
-         if (this.theWorld.rand.nextInt(5) == 0) {
-            value += this.theWorld.rand.nextInt(3);
-         } else if (this.theWorld.rand.nextBoolean()) {
-            value -= this.theWorld.rand.nextInt(3);
+         if (this.theworld.getRandom().nextInt(5) == 0) {
+            value += this.theworld.getRandom().nextInt(3);
+         } else if (this.theworld.getRandom().nextBoolean()) {
+            value -= this.theworld.getRandom().nextInt(3);
          }
 
          EntityPech var10000 = this.pech;
          ArrayList<List> pos = (ArrayList)EntityPech.tradeInventory.get(this.pech.getPechType());
 
          while(value > 0) {
-            int am = Math.min(5, Math.max((value + 1) / 2, this.theWorld.rand.nextInt(value) + 1));
+            int am = Math.min(5, Math.max((value + 1) / 2, this.theworld.getRandom().nextInt(value) + 1));
             value -= am;
-            if (am == 1 && this.theWorld.rand.nextBoolean() && this.hasStuffInPack()) {
+            if (am == 1 && this.theworld.getRandom().nextBoolean() && this.hasStuffInPack()) {
                ArrayList<Integer> loot = new ArrayList<>();
 
                for(int a = 0; a < this.pech.loot.length; ++a) {
@@ -111,7 +112,7 @@ public class ContainerPech extends Container {
                   }
                }
 
-               int r = loot.get(this.theWorld.rand.nextInt(loot.size()));
+               int r = loot.get(this.theworld.getRandom().nextInt(loot.size()));
                ItemStack is = this.pech.loot[r].copy();
                is.stackSize = 1;
                this.mergeItemStack(is, 1, 5, false);
@@ -119,13 +120,13 @@ public class ContainerPech extends Container {
                if (this.pech.loot[r].stackSize <= 0) {
                   this.pech.loot[r] = null;
                }
-            } else if (am >= 4 && this.theWorld.rand.nextBoolean()) {
-               WeightedRandomChestContent[] contents = this.chest.getItems(this.theWorld.rand);
+            } else if (am >= 4 && this.theworld.getRandom().nextBoolean()) {
+               WeightedRandomChestContent[] contents = this.chest.getItems(this.theworld.getRandom());
                WeightedRandomChestContent wc = null;
                int cc = 0;
 
                do {
-                  wc = contents[this.theWorld.rand.nextInt(contents.length)];
+                  wc = contents[this.theworld.getRandom().nextInt(contents.length)];
                   ++cc;
                } while(cc < 50 && (wc.theItemId == null || wc.itemWeight > 5 || wc.theMaximumChanceToGenerateItem > 1));
 
@@ -140,7 +141,7 @@ public class ContainerPech extends Container {
                List it = null;
 
                do {
-                  it = pos.get(this.theWorld.rand.nextInt(pos.size()));
+                  it = pos.get(this.theworld.getRandom().nextInt(pos.size()));
                } while((Integer)it.get(0) != am);
 
                ItemStack is = ((ItemStack)it.get(1)).copy();
@@ -158,11 +159,11 @@ public class ContainerPech extends Container {
    public void updateProgressBar(int par1, int par2) {
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+   public boolean canInteractWith(Player par1Player) {
       return this.pech.isTamed();
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -190,20 +191,20 @@ public class ContainerPech extends Container {
             return null;
          }
 
-         slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+         slot.onPickupFromSlot(par1Player, itemstack1);
       }
 
       return itemstack;
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
       this.pech.trading = false;
-      if (!this.theWorld.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          for(int a = 0; a < 5; ++a) {
             ItemStack itemstack = this.inventory.getStackInSlotOnClosing(a);
             if (itemstack != null) {
-               EntityItem ei = par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
+               EntityItem ei = par1Player.dropPlayerItemWithRandomChoice(itemstack, false);
                if (ei != null) {
                   ei.func_145799_b("PechDrop");
                }

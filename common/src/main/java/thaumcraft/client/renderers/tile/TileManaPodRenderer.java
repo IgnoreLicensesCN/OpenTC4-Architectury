@@ -1,19 +1,20 @@
 package thaumcraft.client.renderers.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import java.awt.Color;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelManaPod;
 import thaumcraft.common.tiles.TileManaPod;
+
+import java.awt.*;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockMetaSafely;
 
@@ -38,7 +39,7 @@ public class TileManaPodRenderer extends TileEntitySpecialRenderer {
             aspect = pod.aspect;
          }
 
-//         bright = pod.getBlockType().getMixedBrightnessForBlock(pod.getWorldObj(), pod.xCoord, pod.yCoord, pod.zCoord);
+//         bright = pod.getBlockType().getMixedBrightnessForBlock(pod.getLevel(), pod.xCoord, pod.yCoord, pod.zCoord);
       }
 
       if (meta > 1) {
@@ -74,7 +75,7 @@ public class TileManaPodRenderer extends TileEntitySpecialRenderer {
          GL11.glTranslated(x + (double)0.5F, y + (double)0.75F, z + (double)0.5F);
          GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
          if (meta > 2) {
-            EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+            Player p = Minecraft.getMinecraft().thePlayer;
             float scale = MathHelper.sin((float)(p.ticksExisted + pod.hashCode() % 100) / 8.0F) * 0.1F + 0.9F;
             GL11.glPushMatrix();
             float bs = MathHelper.sin((float)(p.ticksExisted + pod.hashCode() % 100) / 8.0F) * 0.3F + 0.7F;

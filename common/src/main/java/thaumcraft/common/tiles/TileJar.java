@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.TileThaumcraft;
 
 import java.util.Random;

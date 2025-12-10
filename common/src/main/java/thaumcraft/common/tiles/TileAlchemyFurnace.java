@@ -2,10 +2,10 @@ package thaumcraft.common.tiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -106,7 +106,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
    public void readFromNBT(NBTTagCompound nbtCompound) {
       super.readFromNBT(nbtCompound);
-      NBTTagList nbttaglist = nbtCompound.getTagList("Items", 10);
+      NBTTagList nbttaglist = nbtCompound.getTagList("ThaumcraftItems", 10);
       this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
 
       for(int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -143,7 +143,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          }
       }
 
-      nbtCompound.setTag("Items", nbttaglist);
+      nbtCompound.setTag("ThaumcraftItems", nbttaglist);
       if (this.hasCustomInventoryName()) {
          nbtCompound.setString("CustomName", this.customName);
       }
@@ -184,8 +184,8 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
       super.onDataPacket(net, pkt);
-      if (this.worldObj != null) {
-         this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
+      if (this.level() != null) {
+         this.level().updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
       }
 
    }
@@ -202,7 +202,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          --this.furnaceBurnTime;
       }
 
-      if (!this.worldObj.isRemote) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.bellows < 0) {
             this.getBellows();
          }
@@ -214,7 +214,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
             Object var10;
             for(TileEntity tile = null; deep < 5; var10 = null) {
                ++deep;
-               TileEntity var9 = this.worldObj.getTileEntity(this.xCoord, this.yCoord + deep, this.zCoord);
+               TileEntity var9 = this.level().getTileEntity(this.xCoord, this.yCoord + deep, this.zCoord);
                if (!(var9 instanceof TileAlembic)) {
                   break;
                }
@@ -224,8 +224,8 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
                   this.takeFromContainer(alembic.aspect, 1);
                   alembic.addToContainer(alembic.aspect, 1);
                   exlude.merge(alembic.aspect, 1);
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                  this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                  this.level().markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
                }
             }
 
@@ -233,7 +233,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
             while(deep < 5) {
                ++deep;
-               TileEntity var11 = this.worldObj.getTileEntity(this.xCoord, this.yCoord + deep, this.zCoord);
+               TileEntity var11 = this.level().getTileEntity(this.xCoord, this.yCoord + deep, this.zCoord);
                if (!(var11 instanceof TileAlembic)) {
                   break;
                }
@@ -249,8 +249,8 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
                   if (as != null) {
                      alembic.addToContainer(as, 1);
-                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
+                     this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                     this.level().markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
                      break;
                   }
                }
@@ -263,7 +263,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
                flag1 = true;
                this.speedBoost = false;
                if (this.furnaceItemStacks[1] != null) {
-                  if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 0))) {
+                  if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(ThaumcraftItems.ALUMENTUM))) {
                      this.speedBoost = true;
                   }
 
@@ -288,7 +288,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
          if (flag != this.furnaceBurnTime > 0) {
             flag1 = true;
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
       }
 
@@ -319,7 +319,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    }
 
    public void getBellows() {
-      this.bellows = TileBellows.getBellows(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
+      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
    }
 
    public void smeltItem() {
@@ -344,8 +344,8 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
       return TileEntityFurnace.getItemBurnTime(par0ItemStack) > 0;
    }
 
-   public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-      return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+   public boolean isUseableByPlayer(Player par1Player) {
+      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
    }
 
    public void openInventory() {
@@ -388,7 +388,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          }
 
          if (temp.size() > 0) {
-            Aspect tag = temp.getAspects()[this.worldObj.rand.nextInt(temp.getAspects().length)];
+            Aspect tag = temp.getAspects()[this.level().rand.nextInt(temp.getAspects().length)];
             this.aspects.remove(tag, 1);
             --this.vis;
             return tag;

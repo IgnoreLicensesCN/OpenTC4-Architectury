@@ -2,11 +2,13 @@ package thaumcraft.common.lib.potions;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.resources.ResourceLocation;
 
 public class PotionSunScorned extends Potion {
    public static PotionSunScorned instance = null;
@@ -34,12 +36,12 @@ public class PotionSunScorned extends Potion {
       return super.getStatusIconIndex();
    }
 
-   public void performEffect(EntityLivingBase target, int par2) {
-      if (!target.worldObj.isRemote) {
+   public void performEffect(LivingEntity target, int par2) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          float f = target.getBrightness(1.0F);
-         if (f > 0.5F && target.worldObj.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && target.worldObj.canBlockSeeTheSky(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
+         if (f > 0.5F && target.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && target.level().canBlockSeeTheSky(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
             target.setFire(4);
-         } else if (f < 0.25F && target.worldObj.rand.nextFloat() > f * 2.0F) {
+         } else if (f < 0.25F && target.getRandom().nextFloat() > f * 2.0F) {
             target.heal(1.0F);
          }
       }

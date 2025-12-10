@@ -5,7 +5,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.Config;
@@ -33,7 +33,7 @@ public class AISortingGoto extends EntityAIBase {
 
    public boolean shouldExecute() {
       if (this.theGolem.itemCarried != null && this.theGolem.ticksExisted % Config.golemDelay <= 0) {
-         ArrayList<IInventory> results = GolemHelper.getContainersWithRoom(this.theGolem.worldObj, this.theGolem, (byte)-1);
+         ArrayList<IInventory> results = GolemHelper.getContainersWithRoom(this.theGolem.level(), this.theGolem, (byte)-1);
          if (results.isEmpty()) {
             return false;
          } else {

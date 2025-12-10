@@ -1,11 +1,11 @@
 package thaumcraft.common.tiles;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -109,7 +109,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       }
 
       this.aspects.add(tt, am - out);
-      this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       this.markDirty();
       return out;
    }
@@ -117,7 +117,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.aspects.getAmount(tt) >= am) {
          this.aspects.remove(tt, am);
-         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
       } else {
@@ -188,11 +188,11 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       if (i != 9) {
          return super.receiveClientEvent(i, j);
       } else {
-         if (this.worldObj.isRemote) {
+         if ((Platform.getEnvironment() == Env.CLIENT)) {
             for(int yy = -1; yy < 3; ++yy) {
                for(int xx = -1; xx < 2; ++xx) {
                   for(int zz = -1; zz < 2; ++zz) {
-                     Thaumcraft.proxy.blockSparkle(this.worldObj, this.xCoord + xx, this.yCoord + yy, this.zCoord + zz, -9999, 5);
+                     ClientFXUtils.blockSparkle(this.level(), this.xCoord + xx, this.yCoord + yy, this.zCoord + zz, -9999, 5);
                   }
                }
             }
@@ -204,8 +204,8 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       }
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md) {
-      if (!world.isRemote) {
+   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          this.drop = false;
          world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
          TileNode tn = (TileNode)world.getTileEntity(x, y, z);
@@ -220,19 +220,19 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       }
 
       world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(ConfigBlocks.blockJar) + '\uf000');
-      player.worldObj.playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "random.glass", 1.0F, 0.9F + player.worldObj.rand.nextFloat() * 0.2F, false);
+      player.level().playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "random.glass", 1.0F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
       player.swingItem();
       return 0;
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player) {
+   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
       return null;
    }
 
-   public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count) {
+   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
    }
 
-   public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count) {
+   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
    public boolean doesContainerAccept(Aspect tag) {

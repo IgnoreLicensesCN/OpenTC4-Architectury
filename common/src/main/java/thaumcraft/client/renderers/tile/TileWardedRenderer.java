@@ -2,27 +2,28 @@ package thaumcraft.client.renderers.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.blocks.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.foci.ItemFocusWarding;
 import thaumcraft.common.tiles.TileWarded;
+
+import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class TileWardedRenderer extends TileEntitySpecialRenderer {
@@ -30,17 +31,17 @@ public class TileWardedRenderer extends TileEntitySpecialRenderer {
 
    public void renderTileEntityAt(TileWarded tile, double x, double y, double z, float f) {
       EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
-      if (viewer instanceof EntityPlayer) {
-         EntityPlayer player = (EntityPlayer)viewer;
-         if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemWandCasting) {
-            ItemWandCasting wand = (ItemWandCasting)player.getCurrentEquippedItem().getItem();
+      if (viewer instanceof Player) {
+         Player player = (Player)viewer;
+         if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof WandCastingItem) {
+            WandCastingItem wand = (WandCastingItem)player.getCurrentEquippedItem().getItem();
             if (wand.getFocus(player.getCurrentEquippedItem()) != null && wand.getFocus(player.getCurrentEquippedItem()) instanceof ItemFocusWarding) {
                GL11.glPushMatrix();
                GL11.glEnable(GL11.GL_BLEND);
                GL11.glBlendFunc(770, 1);
                GL11.glAlphaFunc(516, 0.003921569F);
                GL11.glTranslatef((float)x + 0.5F, (float)y, (float)z + 0.5F);
-               World world = tile.getWorldObj();
+               World world = tile.getLevel();
                RenderBlocks renderBlocks = new RenderBlocks();
                GL11.glDisable(2896);
                Tessellator t = Tessellator.instance;

@@ -2,10 +2,10 @@ package thaumcraft.common.entities.ai.fluid;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import tc4tweak.ConfigurationHandler;
@@ -30,7 +30,7 @@ public class AILiquidGather extends EntityAIBase {
 
     public AILiquidGather(EntityGolemBase par1EntityCreature) {
         this.theGolem = par1EntityCreature;
-        this.theWorld = par1EntityCreature.worldObj;
+        this.theWorld = par1EntityCreature.level();
         this.setMutexBits(3);
     }
 
@@ -131,7 +131,7 @@ public class AILiquidGather extends EntityAIBase {
                                 }
 
                                 if (fs.amount > 200) {
-                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F * ((float) fs.amount / (float) max), 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.3F);
+                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F * ((float) fs.amount / (float) max), 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.3F);
                                 }
 
                                 this.theGolem.updateCarried();
@@ -183,7 +183,7 @@ public class AILiquidGather extends EntityAIBase {
                                     }
 
                                     this.theWorld.setBlockToAir(i, j, k);
-                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F, 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.3F);
+                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F, 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.3F);
                                     this.theGolem.updateCarried();
                                     if (this.theGolem.fluidCarried.amount > this.theGolem.getFluidCarryLimit() - 1000) {
                                         this.theGolem.itemWatched = null;
@@ -203,7 +203,7 @@ public class AILiquidGather extends EntityAIBase {
                                     }
 
                                     this.theWorld.setBlockToAir(i, j, k);
-                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F, 1.0F + (this.theWorld.rand.nextFloat() - this.theWorld.rand.nextFloat()) * 0.3F);
+                                    this.theWorld.playSoundAtEntity(this.theGolem, "game.neutral.swim", 0.2F, 1.0F + (this.theworld.getRandom().nextFloat() - this.theworld.getRandom().nextFloat()) * 0.3F);
                                     this.theGolem.updateCarried();
                                     if (this.theGolem.fluidCarried.amount > this.theGolem.getFluidCarryLimit() - 1000) {
                                         this.theGolem.itemWatched = null;

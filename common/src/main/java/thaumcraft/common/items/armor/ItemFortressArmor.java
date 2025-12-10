@@ -2,17 +2,16 @@ package thaumcraft.common.items.armor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumAction;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -24,6 +23,8 @@ import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.client.renderers.models.gear.ModelFortressArmor;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
+
+import java.util.List;
 
 public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicArmor, ISpecialArmor, IGoggles, IRevealer {
    public IIcon iconHelm;
@@ -80,8 +81,8 @@ public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicA
          this.model.isChild = entityLiving.isChild();
          this.model.aimedBow = false;
          this.model.heldItemRight = entityLiving.getHeldItem() != null ? 1 : 0;
-         if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).getItemInUseDuration() > 0) {
-            EnumAction enumaction = ((EntityPlayer)entityLiving).getItemInUse().getItemUseAction();
+         if (entityLiving instanceof Player && ((Player)entityLiving).getItemInUseDuration() > 0) {
+            EnumAction enumaction = ((Player)entityLiving).getItemInUse().getItemUseAction();
             if (enumaction == EnumAction.block) {
                this.model.heldItemRight = 3;
             } else if (enumaction == EnumAction.bow) {
@@ -101,7 +102,7 @@ public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicA
       return EnumRarity.rare;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("goggles")) {
          list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("item.ItemGoggles.name"));
       }
@@ -114,7 +115,7 @@ public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicA
    }
 
    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-      return par2ItemStack.isItemEqual(new ItemStack(ConfigItems.itemResource, 1, 2)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+      return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.THAUMIUM_INGOT)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
    public int getRunicCharge(ItemStack itemstack) {
@@ -137,11 +138,11 @@ public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicA
          ratio = (double)this.damageReduceAmount / (double)20.0F;
       }
 
-      if (player instanceof EntityPlayer) {
+      if (player instanceof Player) {
          double set = 0.875F;
 
          for(int a = 1; a < 4; ++a) {
-            ItemStack piece = ((EntityPlayer)player).inventory.armorInventory[a];
+            ItemStack piece = ((Player)player).inventory.armorInventory[a];
             if (piece != null && piece.getItem() instanceof ItemFortressArmor) {
                set += 0.125F;
                if (piece.hasTagCompound() && piece.stackTagCompound.hasKey("mask")) {
@@ -156,7 +157,7 @@ public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicA
       return new ISpecialArmor.ArmorProperties(priority, ratio, armor.getMaxDamage() + 1 - armor.getItemDamage());
    }
 
-   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+   public int getArmorDisplay(Player player, ItemStack armor, int slot) {
       return this.damageReduceAmount;
    }
 

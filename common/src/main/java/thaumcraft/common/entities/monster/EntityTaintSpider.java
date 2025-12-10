@@ -2,17 +2,17 @@ package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.config.ConfigItems;
 
 public class EntityTaintSpider extends EntitySpider implements ITaintedMob {
-   public EntityTaintSpider(World par1World) {
+   public EntityTaintSpider(Level par1World) {
       super(par1World);
       this.setSize(0.4F, 0.3F);
       this.experienceValue = 2;
@@ -30,7 +30,7 @@ public class EntityTaintSpider extends EntitySpider implements ITaintedMob {
 
    protected Entity findPlayerToAttack() {
       double d0 = 12.0F;
-      return this.worldObj.getClosestVulnerablePlayerToEntity(this, d0);
+      return this.level().getClosestVulnerablePlayerToEntity(this, d0);
    }
 
    @SideOnly(Side.CLIENT)
@@ -47,11 +47,11 @@ public class EntityTaintSpider extends EntitySpider implements ITaintedMob {
    }
 
    protected void dropFewItems(boolean flag, int i) {
-      if (this.worldObj.rand.nextInt(6) == 0) {
-         if (this.worldObj.rand.nextBoolean()) {
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 11), this.height / 2.0F);
+      if (this.level().rand.nextInt(6) == 0) {
+         if (this.level().rand.nextBoolean()) {
+            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
          } else {
-            this.entityDropItem(new ItemStack(ConfigItems.itemResource, 1, 12), this.height / 2.0F);
+            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
          }
       }
 

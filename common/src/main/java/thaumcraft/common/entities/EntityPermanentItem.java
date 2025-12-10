@@ -1,14 +1,14 @@
 package thaumcraft.common.entities;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class EntityPermanentItem extends EntitySpecialItem {
-   public EntityPermanentItem(World par1World) {
+   public EntityPermanentItem(Level par1World) {
       super(par1World);
    }
 
-   public EntityPermanentItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
+   public EntityPermanentItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
       super(par1World);
       this.setSize(0.25F, 0.25F);
       this.yOffset = this.height / 2.0F;

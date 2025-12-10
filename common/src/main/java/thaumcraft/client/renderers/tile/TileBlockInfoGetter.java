@@ -16,7 +16,7 @@ public class TileBlockInfoGetter {
             return tile.blockType;
         }
         if (tile.hasWorldObj()) {
-            if (tile.getWorldObj() != null) {
+            if (tile.getLevel() != null) {
                 return tile.getBlockType();
             }
         }
@@ -31,7 +31,7 @@ public class TileBlockInfoGetter {
             return tile.blockMetadata;
         }
         if  (tile.hasWorldObj()) {
-            if (tile.getWorldObj() != null) {
+            if (tile.getLevel() != null) {
                 return tile.getBlockMetadata();
             }
         }

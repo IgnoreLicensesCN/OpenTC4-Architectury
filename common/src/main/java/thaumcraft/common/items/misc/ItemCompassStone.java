@@ -1,15 +1,15 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -42,7 +42,7 @@ public class ItemCompassStone extends Item {
    }
 
    public void onUpdate(ItemStack p_77663_1_, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
-      if (world.isRemote) {
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
          ArrayList<WorldCoordinates> del = new ArrayList<>();
          this.t = null;
 

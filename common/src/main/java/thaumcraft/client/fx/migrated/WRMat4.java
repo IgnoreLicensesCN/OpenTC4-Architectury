@@ -1,4 +1,4 @@
-package thaumcraft.client.fx;
+package thaumcraft.client.fx.migrated;
 
 public class WRMat4 {
    float[] mat;

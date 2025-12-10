@@ -2,14 +2,15 @@ package thaumcraft.client.lib;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.awt.Color;
-import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.client.fx.ParticleEngine;
+import net.minecraft.client.Minecraft;
 import thaumcraft.common.config.Config;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class REHNotifyHandler {
    public void handleNotifications(Minecraft mc, long time, RenderGameOverlayEvent event) {

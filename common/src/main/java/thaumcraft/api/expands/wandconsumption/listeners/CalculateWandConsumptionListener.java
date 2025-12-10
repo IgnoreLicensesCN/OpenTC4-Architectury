@@ -1,11 +1,12 @@
 package thaumcraft.api.expands.wandconsumption.listeners;
 
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.wands.ItemWandCasting;
-
-import javax.annotation.Nonnull;
 
 public abstract class CalculateWandConsumptionListener implements Comparable<CalculateWandConsumptionListener> {
     public final int priority;
@@ -15,18 +16,18 @@ public abstract class CalculateWandConsumptionListener implements Comparable<Cal
 
     /**
      * after all of these listeners,we have the percent of cost.
-     * @param casting the casting using.
+     * @param casting the casting using.may not be WandCastingItem
      * @param stack itemstack of the wand
-     * @param player the player using wand.
+     * @param user the user using wand.
      * @param aspect the aspect costing.each (primal aspect) will be calculated separately.
      * @param crafting if this operation is crafting item.
      * @param currentConsumption current consumption percent of this operation.
      * @return consumption percent after this calculation
      */
-    public abstract float onCalculation(ItemWandCasting casting, ItemStack stack, Player player, Aspect aspect, boolean crafting,float currentConsumption);
+    public abstract float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption);
 
     @Override
-    public int compareTo(@Nonnull CalculateWandConsumptionListener o) {
+    public int compareTo(@NotNull CalculateWandConsumptionListener o) {
         return Integer.compare(priority, o.priority);
     }
 }

@@ -7,19 +7,19 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -69,13 +69,13 @@ public class BlockChestHungry extends BlockContainer {
       return te instanceof IInventory ? Container.calcRedstoneFromInventory((IInventory)te) : 0;
    }
 
-   public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack is) {
+   public void onBlockPlacedBy(Level par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack is) {
       int var6 = par1World.getBlockMetadata(par2, par3, par4) & 3;
       int var7 = BlockPistonBase.determineOrientation(par1World, par2, par3, par4, par5EntityLiving);
       par1World.setBlock(par2, par3, par4, this, var7, 3);
    }
 
-   public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
       TileChestHungry var7 = (TileChestHungry)par1World.getTileEntity(par2, par3, par4);
       if (var7 != null) {
          for(int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
@@ -108,7 +108,7 @@ public class BlockChestHungry extends BlockContainer {
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       float var5 = 0.0625F;
       return AxisAlignedBB.getBoundingBox((float)par2 + var5, par3, (float)par4 + var5, (float)(par2 + 1) - var5, (float)(par3 + 1) - var5, (float)(par4 + 1) - var5);
    }
@@ -120,11 +120,11 @@ public class BlockChestHungry extends BlockContainer {
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
       Object var10 = world.getTileEntity(x, y, z);
       if (var10 != null) {
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             if (entity instanceof EntityItem && !entity.isDead) {
                ItemStack leftovers = InventoryUtils.placeItemStackIntoInventory(((EntityItem)entity).getEntityItem(), (IInventory)var10, 1, true);
                if (leftovers == null || leftovers.stackSize != ((EntityItem)entity).getEntityItem().stackSize) {
-                  world.playSoundAtEntity(entity, "random.eat", 0.25F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+                  world.playSoundAtEntity(entity, "random.eat", 0.25F, (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.2F + 1.0F);
                   world.addBlockEvent(x, y, z, ConfigBlocks.blockChestHungry, 2, 2);
                }
 
@@ -141,19 +141,19 @@ public class BlockChestHungry extends BlockContainer {
       }
    }
 
-   public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
+   public boolean onBlockActivated(Level par1World, int par2, int par3, int par4, Player par5Player, int par6, float par7, float par8, float par9) {
       Object var10 = par1World.getTileEntity(par2, par3, par4);
       if (var10 == null) {
          return true;
-      } else if (par1World.isRemote) {
+      } else if ((Platform.getEnvironment() == Env.CLIENT)) {
          return true;
       } else {
-         par5EntityPlayer.displayGUIChest((IInventory)var10);
+         par5Player.displayGUIChest((IInventory)var10);
          return true;
       }
    }
 
-   public TileEntity createNewTileEntity(World par1World, int m) {
+   public TileEntity createNewTileEntity(Level par1World, int m) {
       return new TileChestHungry();
    }
 }

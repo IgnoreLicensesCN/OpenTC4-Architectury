@@ -1,6 +1,6 @@
-package com.linearity.fabrictests.mixin.client;
+package com.linearity.opentc4.mixin;
 
-import com.linearity.fabrictests.mixinaccessor.ItemRendererAccessor;
+import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import renders.ThaumometerItemRenderer;
 
-import static com.linearity.fabrictests.Fabrictests.THAUMOMETER_ITEM;
+import static thaumcraft.client.renderers.item.RenderUtils.ITEM_RENDERERS;
+
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin implements ItemRendererAccessor {
@@ -25,8 +25,10 @@ public class ItemRendererMixin implements ItemRendererAccessor {
             cancellable = true)
     private void render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
         if (itemStack != null){
-            if (itemStack.getItem() == THAUMOMETER_ITEM){
-                ThaumometerItemRenderer.INSTANCE.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel);
+            var item = itemStack.getItem();
+            var renderer = ITEM_RENDERERS.get(item);
+            if (renderer != null){
+                renderer.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel);
                 ci.cancel();
             }
         }

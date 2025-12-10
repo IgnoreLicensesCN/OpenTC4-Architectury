@@ -4,10 +4,10 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 public abstract class AITarget extends EntityAIBase {
@@ -81,11 +81,11 @@ public abstract class AITarget extends EntityAIBase {
                return false;
             }
          } else {
-            if (par1EntityLiving instanceof EntityPlayer && !par2 && ((EntityPlayer)par1EntityLiving).capabilities.disableDamage) {
+            if (par1EntityLiving instanceof Player && !par2 && ((Player)par1EntityLiving).capabilities.disableDamage) {
                return false;
             }
 
-            if (par1EntityLiving instanceof EntityPlayer && par1EntityLiving.getCommandSenderName().equals(((EntityGolemBase)this.taskOwner).getOwnerName())) {
+            if (par1EntityLiving instanceof Player && par1EntityLiving.getCommandSenderName().equals(((EntityGolemBase)this.taskOwner).getOwnerName())) {
                return false;
             }
          }

@@ -44,11 +44,11 @@ public class PacketFXBlockBubble implements IMessage, IMessageHandler<PacketFXBl
       float g = (float)c.getGreen() / 255.0F;
       float b = (float)c.getBlue() / 255.0F;
 
-      for(int a = 0; a < Thaumcraft.proxy.particleCount(1); ++a) {
-         Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)message.x, (float)message.y + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.z + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), r, g, b);
-         Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)(message.x + 1), (float)message.y + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.z + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), r, g, b);
-         Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)message.x + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.y + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.z, r, g, b);
-         Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)message.x + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)message.y + Thaumcraft.proxy.getClientWorld().rand.nextFloat(), (float)(message.z + 1), r, g, b);
+      for(int a = 0; a < Thaumcraft.particleCount(1); ++a) {
+         Thaumcraft.crucibleBubble(Thaumcraft.getClientWorld(), (float)message.x, (float)message.y + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.z + Thaumcraft.getClientWorld().rand.nextFloat(), r, g, b);
+         Thaumcraft.crucibleBubble(Thaumcraft.getClientWorld(), (float)(message.x + 1), (float)message.y + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.z + Thaumcraft.getClientWorld().rand.nextFloat(), r, g, b);
+         Thaumcraft.crucibleBubble(Thaumcraft.getClientWorld(), (float)message.x + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.y + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.z, r, g, b);
+         Thaumcraft.crucibleBubble(Thaumcraft.getClientWorld(), (float)message.x + Thaumcraft.getClientWorld().rand.nextFloat(), (float)message.y + Thaumcraft.getClientWorld().rand.nextFloat(), (float)(message.z + 1), r, g, b);
       }
 
       return null;

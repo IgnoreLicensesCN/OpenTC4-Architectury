@@ -7,14 +7,14 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -110,12 +110,12 @@ public class BlockArcaneDoor extends BlockContainer {
    }
 
    @SideOnly(Side.CLIENT)
-   public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getSelectedBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
       return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
    }
 
-   public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+   public AxisAlignedBB getCollisionBoundingBoxFromPool(Level par1World, int par2, int par3, int par4) {
       this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
       return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
    }
@@ -182,8 +182,8 @@ public class BlockArcaneDoor extends BlockContainer {
 
    }
 
-    public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8, float par9) {
-      if (!w.isRemote) {
+    public boolean onBlockActivated(World w, int x, int y, int z, Player p, int par6, float par7, float par8, float par9) {
+      if (Platform.getEnvironment() != Env.CLIENT) {
          TileEntity tile = w.getTileEntity(x, y, z);
          if (tile instanceof TileOwned) {
             if (!p.getCommandSenderName().equals(((TileOwned)tile).owner) && !((TileOwned)tile).accessList.contains("0" + p.getCommandSenderName()) && !((TileOwned)tile).accessList.contains("1" + p.getCommandSenderName())) {
@@ -218,7 +218,7 @@ public class BlockArcaneDoor extends BlockContainer {
 
    }
 
-   public void onPoweredBlockChange(World par1World, int par2, int par3, int par4, boolean par5) {
+   public void onPoweredBlockChange(Level par1World, int par2, int par3, int par4, boolean par5) {
       int var6 = this.getFullMetadata(par1World, par2, par3, par4);
       boolean var7 = (var6 & 4) != 0;
       if (var7 != par5) {
@@ -237,7 +237,7 @@ public class BlockArcaneDoor extends BlockContainer {
 
    }
 
-   public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
+   public void onNeighborBlockChange(Level par1World, int par2, int par3, int par4, Block par5) {
       int var6 = par1World.getBlockMetadata(par2, par3, par4);
       if (par5 == ConfigBlocks.blockWoodenDevice) {
          ArrayList<String> users = new ArrayList<>();
@@ -290,7 +290,7 @@ public class BlockArcaneDoor extends BlockContainer {
             var7 = true;
          }
 
-         if (var7 && !par1World.isRemote) {
+         if (var7 && !(Platform.getEnvironment() == Env.CLIENT)) {
             this.dropBlockAsItem(par1World, par2, par3, par4, var6, 0);
          }
       } else {
@@ -309,12 +309,12 @@ public class BlockArcaneDoor extends BlockContainer {
       return Config.wardedStone ? Item.getItemById(0) : ((par1 & 8) != 0 ? Item.getItemById(0) : ConfigItems.itemArcaneDoor);
    }
 
-   public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3) {
+   public HitResult collisionRayTrace(Level par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3) {
       this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
       return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
    }
 
-   public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
       return par3 < 255 && World.doesBlockHaveSolidTopSurface(par1World, par2, par3 - 1, par4) && super.canPlaceBlockAt(par1World, par2, par3, par4) && super.canPlaceBlockAt(par1World, par2, par3 + 1, par4);
    }
 
@@ -343,7 +343,7 @@ public class BlockArcaneDoor extends BlockContainer {
       return new TileOwned();
    }
 
-   public boolean canHarvestBlock(EntityPlayer player, int meta) {
+   public boolean canHarvestBlock(Player player, int meta) {
       return true;
    }
 

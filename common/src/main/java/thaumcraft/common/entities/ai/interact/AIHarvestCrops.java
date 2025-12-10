@@ -1,24 +1,20 @@
 package thaumcraft.common.entities.ai.interact;
 
 import com.mojang.authlib.GameProfile;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockLog;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemSeedFood;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
@@ -32,6 +28,10 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class AIHarvestCrops extends EntityAIBase {
    private EntityGolemBase theGolem;
@@ -58,7 +58,7 @@ public class AIHarvestCrops extends EntityAIBase {
       this.count = 0;
       this.checklist = new ArrayList<>();
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
       this.distance = (float)MathHelper.ceiling_float_int(this.theGolem.getRange() / 4.0F);
    }

@@ -1,10 +1,10 @@
 package thaumcraft.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemBlock;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class BlockLootItem extends ItemBlock {
       }
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       super.addInformation(stack, player, list, par4);
       list.add(this.getRarity(stack).rarityName);
    }

@@ -30,10 +30,10 @@ public class AICultistHurtByTarget extends EntityAITarget {
       if (this.entityCallsForHelp) {
          double d0 = this.getTargetDistance();
 
-         for(EntityCreature entitycreature : (List<EntityCreature>)this.taskOwner.worldObj.getEntitiesWithinAABB(EntityCultist.class, AxisAlignedBB.getBoundingBox(this.taskOwner.posX, this.taskOwner.posY, this.taskOwner.posZ, this.taskOwner.posX + (double)1.0F, this.taskOwner.posY + (double)1.0F, this.taskOwner.posZ + (double)1.0F).expand(d0, 10.0F, d0))) {
+         for(EntityCreature entitycreature : (List<EntityCreature>)this.taskOwner.level().getEntitiesWithinAABB(EntityCultist.class, AxisAlignedBB.getBoundingBox(this.taskOwner.posX, this.taskOwner.posY, this.taskOwner.posZ, this.taskOwner.posX + (double)1.0F, this.taskOwner.posY + (double)1.0F, this.taskOwner.posZ + (double)1.0F).expand(d0, 10.0F, d0))) {
             if (this.taskOwner != entitycreature && entitycreature.getAttackTarget() == null && !entitycreature.isOnSameTeam(this.taskOwner.getAITarget())) {
                if (entitycreature instanceof EntityCultistCleric && ((EntityCultistCleric)entitycreature).getIsRitualist()) {
-                  if (this.taskOwner.worldObj.rand.nextInt(3) == 0) {
+                  if (this.taskOwner.level().rand.nextInt(3) == 0) {
                      ((EntityCultistCleric)entitycreature).setIsRitualist(false);
                      entitycreature.setAttackTarget(this.taskOwner.getAITarget());
                   }

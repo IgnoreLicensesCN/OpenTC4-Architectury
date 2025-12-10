@@ -2,13 +2,13 @@ package thaumcraft.common.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
@@ -42,13 +42,13 @@ public class ContainerDeconstructionTable extends Container {
       par1ICrafting.sendProgressBarUpdate(this, 0, this.table.breaktime);
    }
 
-   public boolean enchantItem(EntityPlayer p, int button) {
+   public boolean enchantItem(Player p, int button) {
       if (button == 1 && this.table.aspect != null) {
          Thaumcraft.proxy.playerKnowledge.addAspectPool(p.getCommandSenderName(), this.table.aspect, (short)1);
          ResearchManager.scheduleSave(p);
-         PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.table.aspect.getTag(), (short) 1, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(p.getCommandSenderName(), this.table.aspect)), (EntityPlayerMP)p);
+         PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.table.aspect.getTag(), (short) 1, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(p.getCommandSenderName(), this.table.aspect)), (ServerPlayer)p);
          this.table.aspect = null;
-         this.table.getWorldObj().markBlockForUpdate(this.table.xCoord, this.table.yCoord, this.table.zCoord);
+         this.table.getLevel().markBlockForUpdate(this.table.xCoord, this.table.yCoord, this.table.zCoord);
       }
 
       return false;
@@ -75,11 +75,11 @@ public class ContainerDeconstructionTable extends Container {
 
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.table.isUseableByPlayer(par1EntityPlayer);
+   public boolean canInteractWith(Player par1Player) {
+      return this.table.isUseableByPlayer(par1Player);
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -113,7 +113,7 @@ public class ContainerDeconstructionTable extends Container {
             return null;
          }
 
-         slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+         slot.onPickupFromSlot(par1Player, itemstack1);
       }
 
       return itemstack;

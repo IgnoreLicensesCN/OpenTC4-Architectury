@@ -1,19 +1,24 @@
 package thaumcraft.common.lib.world;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenBlockBlob;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;
@@ -85,16 +90,16 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         return biomeBlacklist.getOrDefault(biome, -1);
     }
 
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, Level world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         this.worldGeneration(random, chunkX, chunkZ, world, true);
     }
 
-    public void worldGeneration(Random random, int chunkX, int chunkZ, World world, boolean newGen) {
-        if (world.provider.dimensionId == Config.dimensionOuterId) {
+    public void worldGeneration(Random random, int chunkX, int chunkZ, Level world, boolean newGen) {
+        if (world.dimension() == Config.dimensionOuterId) {
             MazeHandler.generateEldritch(world, random, chunkX, chunkZ);
             world.getChunkFromChunkCoords(chunkX, chunkZ).setChunkModified();
         } else {
-            switch (world.provider.dimensionId) {
+            switch (world.dimension()) {
                 case -1:
                     this.generateNether(world, random, chunkX, chunkZ, newGen);
                 case 1:
@@ -110,17 +115,17 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
     }
 
-    private boolean generateTotem(World world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+    private boolean generateTotem(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
         if (Config.genStructure
-                && (world.provider.dimensionId == 0 || world.provider.dimensionId == 1)
+                && (world.dimension() == 0 || world.dimension() == 1)
                 && newGen
                 && !auraGen && random.nextInt(Config.nodeRarity * 10) == 0
         ) {
             int x = chunkX * 16 + random.nextInt(16);
             int z = chunkZ * 16 + random.nextInt(16);
-            int topy = world.provider.dimensionId == -1
+            int topy = world.dimension() == -1
                     ? Utils.getFirstUncoveredY(world, x, z) - 1
-                    : world.getHeightValue(x, z) - 1;
+                    : world.getHeight(Heightmap.Types.WORLD_SURFACE,x, z) - 1;
             if (topy > world.getActualHeight()) {
                 return false;
             }
@@ -166,7 +171,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         return false;
     }
 
-    private boolean generateWildNodes(World world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+    private boolean generateWildNodes(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
         return NodeGenerationManager.generateWildNodes(world, random, chunkX, chunkZ, auraGen, newGen);
 //        if (Config.genAura && random.nextInt(Config.nodeRarity) == 0 && !auraGen) {
 //            int x = chunkX * 16 + random.nextInt(16);
@@ -202,7 +207,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 //        }
     }
 
-    public static void createRandomNodeAt(World world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
+    public static void createRandomNodeAt(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
         if (basicAspects.isEmpty()) {
             for (Aspect as : c) {
                 if (as.getComponents() != null) {
@@ -388,12 +393,12 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         createNodeAt(world, x, y, z, type, modifier, al);
     }
 
-    public static void createNodeAt(World world, int x, int y, int z, NodeType nt, NodeModifier nm, AspectList al) {
+    public static void createNodeAt(Level world, int x, int y, int z, NodeType nt, NodeModifier nm, AspectList al) {
         if (world.isAirBlock(x, y, z)) {
             world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 0);
         }
 
-        TileEntity te = world.getTileEntity(x, y, z);
+        BlockEntity te = world.getBlockEntity(x, y, z);
         if (te instanceof TileNode) {
             ((TileNode) te).setNodeType(nt);
             ((TileNode) te).setNodeModifier(nm);
@@ -403,9 +408,9 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void generateSurface(World world, Random random, int chunkX, int chunkZ, boolean newGen) {
+    private void generateSurface(Level world, Random random, int chunkX, int chunkZ, boolean newGen) {
         boolean auraGen = false;
-        int blacklist = getDimBlacklist(world.provider.dimensionId);
+        int blacklist = getDimBlacklist(world.dimension());
         if (blacklist == -1 && Config.genTrees && !world.getWorldInfo().getTerrainType().getWorldTypeName().startsWith("flat") && (newGen || Config.regenTrees)) {
             this.generateVegetation(world, random, chunkX, chunkZ, newGen);
         }
@@ -415,11 +420,11 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         if (blacklist != 0 && blacklist != 2 && Config.genAura && (newGen || Config.regenAura)) {
-            ChunkPosition var7 = (new MapGenScatteredFeature()).func_151545_a(world, chunkX * 16 + 8, world.getHeightValue(chunkX * 16 + 8, chunkZ * 16 + 8), chunkZ * 16 + 8);
+            ChunkPosition var7 = (new MapGenScatteredFeature()).func_151545_a(world, chunkX * 16 + 8, world.getHeight(Heightmap.Types.WORLD_SURFACE,chunkX * 16 + 8, chunkZ * 16 + 8), chunkZ * 16 + 8);
             if (var7 != null && !this.structureNode.containsKey(var7.hashCode())) {
                 auraGen = true;
                 this.structureNode.put(var7.hashCode(), true);
-                createRandomNodeAt(world, var7.chunkPosX, world.getHeightValue(var7.chunkPosX, var7.chunkPosZ) + 3, var7.chunkPosZ, random, false, false, false);
+                createRandomNodeAt(world, var7.chunkPosX, world.getHeight(Heightmap.Types.WORLD_SURFACE,var7.chunkPosX, var7.chunkPosZ) + 3, var7.chunkPosZ, random, false, false, false);
             }
 
             auraGen = this.generateWildNodes(world, random, chunkX, chunkZ, auraGen, newGen);
@@ -427,13 +432,13 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
         if (blacklist == -1
                 && Config.genStructure
-                && world.provider.dimensionId == 0
+                && world.dimension() == 0
                 && !world.getWorldInfo().getTerrainType().getWorldTypeName().startsWith("flat")
                 && (newGen || Config.regenStructure)
         ) {
             int randPosX = chunkX * 16 + random.nextInt(16);
             int randPosZ = chunkZ * 16 + random.nextInt(16);
-            int randPosY = world.getHeightValue(randPosX, randPosZ) - 9;
+            int randPosY = world.getHeight(Heightmap.Types.WORLD_SURFACE,randPosX, randPosZ) - 9;
             if (randPosY < world.getActualHeight()) {
                 world.getChunkFromBlockCoords(MathHelper.floor_double(randPosX), MathHelper.floor_double(randPosZ));
                 if (random.nextInt(150) == 0) {
@@ -479,7 +484,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
     }
 
-    private void generateVegetation(World world, Random random, int chunkX, int chunkZ, boolean newGen) {
+    private void generateVegetation(Level world, Random random, int chunkX, int chunkZ, boolean newGen) {
         BiomeGenBase bgb = world.getBiomeGenForCoords(chunkX * 16 + 8, chunkZ * 16 + 8);
         if (getBiomeBlacklist(bgb.biomeID) == -1) {
             if (random.nextInt(60) == 3) {
@@ -492,7 +497,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
             int randPosX = chunkX * 16 + random.nextInt(16);
             int randPosZ = chunkZ * 16 + random.nextInt(16);
-            int randPosY = world.getHeightValue(randPosX, randPosZ);
+            int randPosY = world.getHeight(Heightmap.Types.WORLD_SURFACE,randPosX, randPosZ);
             if (randPosY <= world.getActualHeight()) {
                 if (world.getBiomeGenForCoords(randPosX, randPosZ).topBlock == Blocks.sand && world.getBiomeGenForCoords(randPosX, randPosZ).temperature > 1.0F && random.nextInt(30) == 0) {
                     generateFlowers(world, random, randPosX, randPosY, randPosZ, 3);
@@ -502,7 +507,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
     }
 
-    private void generateOres(World world, Random random, int chunkX, int chunkZ, boolean newGen) {
+    private void generateOres(Level world, Random random, int chunkX, int chunkZ, boolean newGen) {
         BiomeGenBase bgb = world.getBiomeGenForCoords(chunkX * 16 + 8, chunkZ * 16 + 8);
         if (getBiomeBlacklist(bgb.biomeID) != 0 && getBiomeBlacklist(bgb.biomeID) != 2) {
             if (Config.genCinnibar && (newGen || Config.regenCinnibar)) {
@@ -521,7 +526,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
                 for (int i = 0; i < 20; ++i) {
                     int randPosX = chunkX * 16 + random.nextInt(16);
                     int randPosZ = chunkZ * 16 + random.nextInt(16);
-                    int randPosY = world.getHeightValue(randPosX, randPosZ) - random.nextInt(25);
+                    int randPosY = world.getHeight(Heightmap.Types.WORLD_SURFACE,randPosX, randPosZ) - random.nextInt(25);
                     Block block = world.getBlock(randPosX, randPosY, randPosZ);
                     if (block != null && block.isReplaceableOreGen(world, randPosX, randPosY, randPosZ, Blocks.stone)) {
                         world.setBlock(randPosX, randPosY, randPosZ, ConfigBlocks.blockCustomOre, 7, 2);
@@ -533,7 +538,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
                 for (int i = 0; i < 8; ++i) {
                     int randPosX = chunkX * 16 + random.nextInt(16);
                     int randPosZ = chunkZ * 16 + random.nextInt(16);
-                    int randPosY = random.nextInt(Math.max(5, world.getHeightValue(randPosX, randPosZ) - 5));
+                    int randPosY = random.nextInt(Math.max(5, world.getHeight(Heightmap.Types.WORLD_SURFACE,randPosX, randPosZ) - 5));
                     int md = random.nextInt(6) + 1;
                     if (random.nextInt(3) == 0) {
                         Aspect tag = BiomeHandler.getRandomBiomeTag(world.getBiomeGenForCoords(randPosX, randPosZ).biomeID, random);
@@ -565,7 +570,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
     }
 
-    private void generateNether(World world, Random random, int chunkX, int chunkZ, boolean newGen) {
+    private void generateNether(Level world, Random random, int chunkX, int chunkZ, boolean newGen) {
         boolean auraGen = false;
         if (!world.getWorldInfo().getTerrainType().getWorldTypeName().startsWith("flat") && (newGen || Config.regenStructure)) {
             this.generateTotem(world, random, chunkX, chunkZ, auraGen, newGen);
@@ -577,17 +582,18 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
     }
 
-    public static boolean generateFlowers(World world, Random random, int x, int y, int z, int flower) {
+    public static boolean generateFlowers(Level world, Random random, int x, int y, int z, int flower) {
         WorldGenerator flowers = new WorldGenCustomFlowers(ConfigBlocks.blockCustomPlant, flower);
         return flowers.generate(world, random, x, y, z);
     }
 
-    public static boolean generateGreatwood(World world, Random random, int chunkX, int chunkZ) {
+    public static boolean generateGreatwood(Level world, Random random, int chunkX, int chunkZ) {
         int x = chunkX * 16 + random.nextInt(16);
         int z = chunkZ * 16 + random.nextInt(16);
-        int y = world.getHeightValue(x, z);
-        int bio = world.getBiomeGenForCoords(x, z).biomeID;
-        if (BiomeHandler.getBiomeSupportsGreatwood(bio) > random.nextFloat()) {
+        int y = world.getHeight(Heightmap.Types.WORLD_SURFACE,x, z);
+        Biome biome = world.getBiome(new BlockPos(x, y, z)).value();
+//        int bio = world.getBiomeGenForCoords(x, z).biomeID;
+        if (BiomeHandler.getBiomeSupportsGreatwood(biome) > random.nextFloat()) {
             boolean t = (new WorldGenGreatwoodTrees(false)).generate(world, random, x, y, z, random.nextInt(8) == 0);
             return t;
         } else {
@@ -595,12 +601,19 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
     }
 
-    public static boolean generateSilverwood(World world, Random random, int chunkX, int chunkZ) {
+    public static boolean generateSilverwood(Level world, Random random, int chunkX, int chunkZ) {
         int x = chunkX * 16 + random.nextInt(16);
         int z = chunkZ * 16 + random.nextInt(16);
-        int y = world.getHeightValue(x, z);
-        BiomeGenBase bio = world.getBiomeGenForCoords(x, z);
-        if (bio.equals(biomeMagicalForest) || bio.equals(biomeTaint) || !BiomeDictionary.isBiomeOfType(bio, Type.MAGICAL) && bio.biomeID != BiomeGenBase.forestHills.biomeID && bio.biomeID != BiomeGenBase.birchForestHills.biomeID) {
+        int y = world.getHeight(Heightmap.Types.WORLD_SURFACE,x, z);
+        Holder<Biome> bio = world.getBiome(new BlockPos(x, y, z));
+//        BiomeGenBase bio = world.getBiomeGenForCoords(x, z);
+        if ((bio.is(biomeMagicalForest)
+                || bio.is(biomeTaint)
+                || !bio.is(Type.MAGICAL))
+                && !bio.is(Biomes.FOREST)
+                && !bio.is(Biomes.BIRCH_FOREST)
+                && !bio.is(Biomes.OLD_GROWTH_BIRCH_FOREST)
+        ) {
             return false;
         } else {
             boolean t = (new WorldGenSilverwoodTrees(false, 7, 4)).generate(world, random, x, y, z);

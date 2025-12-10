@@ -1,11 +1,11 @@
 package thaumcraft.common.container;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class ContainerThaumatorium extends Container {
    private TileThaumatorium thaumatorium;
-   private EntityPlayer player = null;
+   private Player player = null;
    public ArrayList<CrucibleRecipe> recipes = new ArrayList<>();
 
    public ContainerThaumatorium(InventoryPlayer par1InventoryPlayer, TileThaumatorium tileEntity) {
@@ -42,9 +42,9 @@ public class ContainerThaumatorium extends Container {
       this.updateRecipes();
    }
 
-   public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-      super.onContainerClosed(par1EntityPlayer);
-      if (!this.thaumatorium.getWorldObj().isRemote) {
+   public void onContainerClosed(Player par1Player) {
+      super.onContainerClosed(par1Player);
+      if (Platform.getEnvironment() != Env.CLIENT) {
          this.thaumatorium.eventHandler = null;
       }
 
@@ -71,7 +71,7 @@ public class ContainerThaumatorium extends Container {
 
    }
 
-   public boolean enchantItem(EntityPlayer par1EntityPlayer, int button) {
+   public boolean enchantItem(Player par1Player, int button) {
       if (!this.recipes.isEmpty() && button >= 0 && button < this.recipes.size()) {
          boolean found = false;
 
@@ -88,23 +88,23 @@ public class ContainerThaumatorium extends Container {
 
          if (!found) {
             this.thaumatorium.recipeEssentia.add(this.recipes.get(button).aspects.copy());
-            this.thaumatorium.recipePlayer.add(par1EntityPlayer.getCommandSenderName());
+            this.thaumatorium.recipePlayer.add(par1Player.getCommandSenderName());
             this.thaumatorium.recipeHash.add(this.recipes.get(button).hash);
          }
 
          this.thaumatorium.markDirty();
-         this.thaumatorium.getWorldObj().markBlockForUpdate(this.thaumatorium.xCoord, this.thaumatorium.yCoord, this.thaumatorium.zCoord);
+         this.thaumatorium.getLevel().markBlockForUpdate(this.thaumatorium.xCoord, this.thaumatorium.yCoord, this.thaumatorium.zCoord);
          return true;
       } else {
          return false;
       }
    }
 
-   public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-      return this.thaumatorium.isUseableByPlayer(par1EntityPlayer);
+   public boolean canInteractWith(Player par1Player) {
+      return this.thaumatorium.isUseableByPlayer(par1Player);
    }
 
-   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+   public ItemStack transferStackInSlot(Player par1Player, int par2) {
       ItemStack itemstack = null;
       Slot slot = (Slot)this.inventorySlots.get(par2);
       if (slot != null && slot.getHasStack()) {
@@ -138,7 +138,7 @@ public class ContainerThaumatorium extends Container {
             return null;
          }
 
-         slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+         slot.onPickupFromSlot(par1Player, itemstack1);
       }
 
       return itemstack;

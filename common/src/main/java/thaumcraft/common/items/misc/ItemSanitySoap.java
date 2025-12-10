@@ -1,4 +1,4 @@
-package thaumcraft.common.items;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -8,8 +8,8 @@ import net.minecraft.world.item.EnumAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -52,13 +52,13 @@ public class ItemSanitySoap extends Item {
          player.stopUsingItem();
       }
 
-      if (player.worldObj.isRemote) {
-         if (player.worldObj.rand.nextFloat() < 0.2F) {
-            player.worldObj.playSound(player.posX, player.posY, player.posZ, "thaumcraft:roots", 0.1F, 1.5F + player.worldObj.rand.nextFloat() * 0.2F, false);
+      if ((Platform.getEnvironment() == Env.CLIENT)) {
+         if (player.level().rand.nextFloat() < 0.2F) {
+            player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:roots", 0.1F, 1.5F + player.level().rand.nextFloat() * 0.2F, false);
          }
 
          for(int a = 0; a < Thaumcraft.proxy.particleCount(5); ++a) {
-            Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)player.posX - 0.5F + player.worldObj.rand.nextFloat(), (float)player.boundingBox.minY + player.worldObj.rand.nextFloat() * player.height, (float)player.posZ - 0.5F + player.worldObj.rand.nextFloat(), 1.0F, 0.8F, 0.9F);
+            Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)player.posX - 0.5F + player.level().rand.nextFloat(), (float)player.boundingBox.minY + player.level().rand.nextFloat() * player.height, (float)player.posZ - 0.5F + player.level().rand.nextFloat(), 1.0F, 0.8F, 0.9F);
          }
       }
 
@@ -68,7 +68,7 @@ public class ItemSanitySoap extends Item {
       int qq = this.getMaxItemUseDuration(stack) - par4;
       if (qq > 195) {
          --stack.stackSize;
-         if (!world.isRemote) {
+         if (Platform.getEnvironment() != Env.CLIENT) {
             float chance = 0.33F;
             if (player.isPotionActive(Config.potionWarpWardID)) {
                chance += 0.25F;
@@ -81,7 +81,7 @@ public class ItemSanitySoap extends Item {
                chance += 0.25F;
             }
 
-            if (world.rand.nextFloat() < chance && Thaumcraft.proxy.getPlayerKnowledge().getWarpSticky(player.getCommandSenderName()) > 0) {
+            if (world.getRandom().nextFloat() < chance && Thaumcraft.proxy.getPlayerKnowledge().getWarpSticky(player.getCommandSenderName()) > 0) {
                Thaumcraft.addStickyWarpToPlayer(player, -1);
             }
 
@@ -89,10 +89,10 @@ public class ItemSanitySoap extends Item {
                Thaumcraft.addWarpToPlayer(player, -Thaumcraft.proxy.getPlayerKnowledge().getWarpTemp(player.getCommandSenderName()), true);
             }
          } else {
-            player.worldObj.playSound(player.posX, player.posY, player.posZ, "thaumcraft:craftstart", 0.25F, 1.0F, false);
+            player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:craftstart", 0.25F, 1.0F, false);
 
             for(int a = 0; a < Thaumcraft.proxy.particleCount(20); ++a) {
-               Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)player.posX - 0.5F + player.worldObj.rand.nextFloat() * 1.5F, (float)player.boundingBox.minY + player.worldObj.rand.nextFloat() * player.height, (float)player.posZ - 0.5F + player.worldObj.rand.nextFloat() * 1.5F, 1.0F, 0.7F, 0.9F);
+               Thaumcraft.proxy.crucibleBubble(Thaumcraft.proxy.getClientWorld(), (float)player.posX - 0.5F + player.level().rand.nextFloat() * 1.5F, (float)player.boundingBox.minY + player.level().rand.nextFloat() * player.height, (float)player.posZ - 0.5F + player.level().rand.nextFloat() * 1.5F, 1.0F, 0.7F, 0.9F);
             }
          }
       }

@@ -3,13 +3,13 @@ package thaumcraft.common.entities.ai.interact;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -43,7 +43,7 @@ public class AIUseItem extends EntityAIBase {
       this.color = -1;
       this.nextTick = 0;
       this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.worldObj;
+      this.theWorld = par1EntityCreature.level();
       this.setMutexBits(3);
       this.distance = (float)MathHelper.ceiling_float_int(this.theGolem.getRange() / 3.0F);
       if (this.theWorld instanceof WorldServer) {
@@ -51,7 +51,7 @@ public class AIUseItem extends EntityAIBase {
       }
 
       try {
-         this.nextTick = this.theGolem.ticksExisted + this.theWorld.rand.nextInt(6);
+         this.nextTick = this.theGolem.ticksExisted + this.theworld.getRandom().nextInt(6);
       } catch (Exception ignored) {
       }
 
@@ -64,7 +64,7 @@ public class AIUseItem extends EntityAIBase {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+      TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
       if (!(tile instanceof IInventory)) {
          ignoreItem = true;
       }
@@ -112,7 +112,7 @@ public class AIUseItem extends EntityAIBase {
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
-      TileEntity tile = this.theGolem.worldObj.getTileEntity(cX, cY, cZ);
+      TileEntity tile = this.theGolem.level().getTileEntity(cX, cY, cZ);
       if (!(tile instanceof IInventory)) {
          ignoreItem = true;
       }
@@ -120,20 +120,20 @@ public class AIUseItem extends EntityAIBase {
       this.player.setPositionAndRotation(this.theGolem.posX, this.theGolem.posY, this.theGolem.posZ, this.theGolem.rotationYaw, this.theGolem.rotationPitch);
       this.player.setCurrentItemOrArmor(0, this.theGolem.itemCarried);
       this.player.setSneaking(this.theGolem.getToggles()[2]);
-      Iterator i$ = GolemHelper.getMarkedSides(this.theGolem, this.xx, this.yy, this.zz, this.theGolem.worldObj.provider.dimensionId, (byte)this.color).iterator();
+      Iterator i$ = GolemHelper.getMarkedSides(this.theGolem, this.xx, this.yy, this.zz, this.theGolem.level().dimension(), (byte)this.color).iterator();
       if (i$.hasNext()) {
          Integer side = (Integer)i$.next();
          int x = 0;
          int y = 0;
          int z = 0;
-         if (this.theGolem.worldObj.isAirBlock(this.xx, this.yy, this.zz)) {
+         if (this.theGolem.level().isAirBlock(this.xx, this.yy, this.zz)) {
             x = ForgeDirection.getOrientation(side).getOpposite().offsetX;
             y = ForgeDirection.getOrientation(side).getOpposite().offsetY;
             z = ForgeDirection.getOrientation(side).getOpposite().offsetZ;
          }
 
          if (this.im == null) {
-            this.im = new ItemInWorldManager(this.theGolem.worldObj);
+            this.im = new ItemInWorldManager(this.theGolem.level());
          }
 
          if (this.theGolem.itemCarried == null && !ignoreItem) {
@@ -143,7 +143,7 @@ public class AIUseItem extends EntityAIBase {
                if (this.theGolem.getToggles()[1]) {
                   this.theGolem.startLeftArmTimer();
                   this.im.onBlockClicked(this.xx + x, this.yy + y, this.zz + z, side);
-               } else if (this.im.activateBlockOrUseItem(this.player, this.theGolem.worldObj, this.theGolem.itemCarried, this.xx + x, this.yy + y, this.zz + z, side, 0.5F, 0.5F, 0.5F)) {
+               } else if (this.im.activateBlockOrUseItem(this.player, this.theGolem.level(), this.theGolem.itemCarried, this.xx + x, this.yy + y, this.zz + z, side, 0.5F, 0.5F, 0.5F)) {
                   this.theGolem.startRightArmTimer();
                }
 
@@ -176,9 +176,9 @@ public class AIUseItem extends EntityAIBase {
    boolean findSomething() {
       for(byte col : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
          for(Marker marker : this.theGolem.getMarkers()) {
-            if ((marker.color == col || col == -1) && (!this.theGolem.getToggles()[0] || this.theGolem.worldObj.isAirBlock(marker.x, marker.y, marker.z)) && (this.theGolem.getToggles()[0] || !this.theGolem.worldObj.isAirBlock(marker.x, marker.y, marker.z))) {
+            if ((marker.color == col || col == -1) && (!this.theGolem.getToggles()[0] || this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z)) && (this.theGolem.getToggles()[0] || !this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z))) {
                ForgeDirection opp = ForgeDirection.getOrientation(marker.side);
-               if (this.theGolem.worldObj.isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
+               if (this.theGolem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
                   this.color = col;
                   this.xx = marker.x;
                   this.yy = marker.y;

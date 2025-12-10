@@ -1,16 +1,27 @@
 package thaumcraft.common.items.wands.wandcaps;
 
-import thaumcraft.common.items.wands.ThaumcraftWandCapItem;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.WandUtils;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
-public class GoldWandCapItem extends ThaumcraftWandCapItem {//itemWandCap:1
-    public GoldWandCapItem() {
+import java.util.Collections;
+import java.util.Map;
+
+public class ThaumiumWandCapItem extends ThaumcraftWandCapItem implements CraftingCostAspectOwner {//itemWandCap:2
+    public ThaumiumWandCapItem() {
         super(new Properties());
     }
 
 
     @Override
     public float getBaseCostModifier() {
-        return 1.f;
+        return .9f;
     }
 
+    private final Map<Aspect,Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(6));
+    @Override
+    public Map<Aspect, Integer> getCraftingCostAspect() {
+        return cost;
+    }
 }

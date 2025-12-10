@@ -35,6 +35,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import thaumcraft.client.ClientProxy;
 
+@Deprecated(forRemoval = true)
 public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
     private static ByteBuffer downloadBuffer = ByteBuffer.allocateDirect(8388608);
     private static final String owner = "CB's DepLoader";

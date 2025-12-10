@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixinaccessors;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

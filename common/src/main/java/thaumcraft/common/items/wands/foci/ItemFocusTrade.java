@@ -5,17 +5,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
@@ -25,7 +25,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.events.ServerTickEventsFML;
 import thaumcraft.common.lib.utils.BlockUtils;
@@ -66,13 +66,13 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       return this.iconOrnament;
    }
 
-   protected MovingObjectPosition getMovingObjectPositionFromPlayer(World par1World, EntityPlayer par2EntityPlayer) {
+   protected HitResult getHitResultFromPlayer(Level par1World, Player par2Player) {
       float f = 1.0F;
-      float f1 = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * f;
-      float f2 = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * f;
-      double d0 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)f;
-      double d1 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)f + (double)(par1World.isRemote ? par2EntityPlayer.getEyeHeight() - par2EntityPlayer.getDefaultEyeHeight() : par2EntityPlayer.getEyeHeight());
-      double d2 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)f;
+      float f1 = par2Player.prevRotationPitch + (par2Player.rotationPitch - par2Player.prevRotationPitch) * f;
+      float f2 = par2Player.prevRotationYaw + (par2Player.rotationYaw - par2Player.prevRotationYaw) * f;
+      double d0 = par2Player.prevPosX + (par2Player.posX - par2Player.prevPosX) * (double)f;
+      double d1 = par2Player.prevPosY + (par2Player.posY - par2Player.prevPosY) * (double)f + (double)((Platform.getEnvironment() == Env.CLIENT) ? par2Player.getEyeHeight() - par2Player.getDefaultEyeHeight() : par2Player.getEyeHeight());
+      double d2 = par2Player.prevPosZ + (par2Player.posZ - par2Player.prevPosZ) * (double)f;
       Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
       float f3 = MathHelper.cos(-f2 * ((float)Math.PI / 180F) - (float)Math.PI);
       float f4 = MathHelper.sin(-f2 * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -81,17 +81,17 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       float f7 = f4 * f5;
       float f8 = f3 * f5;
       double d3 = 5.0F;
-      if (par2EntityPlayer instanceof EntityPlayerMP) {
-         d3 = ((EntityPlayerMP)par2EntityPlayer).theItemInWorldManager.getBlockReachDistance();
+      if (par2Player instanceof ServerPlayer) {
+         d3 = ((ServerPlayer)par2Player).theItemInWorldManager.getBlockReachDistance();
       }
 
       Vec3 vec31 = vec3.addVector((double)f7 * d3, (double)f6 * d3, (double)f8 * d3);
       return par1World.rayTraceBlocks(vec3, vec31, false);
    }
 
-   public ItemStack onFocusRightClick(ItemStack itemstack, World world, EntityPlayer player, MovingObjectPosition movingobjectposition) {
-      MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(world, player);
-      ItemWandCasting wand = (ItemWandCasting)itemstack.getItem();
+   public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player player, HitResult HitResult) {
+      HitResult mop = this.getHitResultFromPlayer(world, player);
+      WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       if (mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
          int x = mop.blockX;
          int y = mop.blockY;
@@ -99,7 +99,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
          Block bi = world.getBlock(x, y, z);
          int md = world.getBlockMetadata(x, y, z);
          if (player.isSneaking()) {
-            if (!world.isRemote && world.getTileEntity(x, y, z) == null) {
+            if (Platform.getEnvironment() != Env.CLIENT && world.getTileEntity(x, y, z) == null) {
                ItemStack isout = new ItemStack(bi, 1, md);
 
                try {
@@ -118,7 +118,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
             }
          } else {
             ItemStack pb = this.getPickedBlock(itemstack);
-            if (pb != null && world.isRemote) {
+            if (pb != null && (Platform.getEnvironment() == Env.CLIENT)) {
                player.swingItem();
             } else if (pb != null && world.getTileEntity(x, y, z) == null && world.getBlock(x, y, z).getMaterial() != Config.taintMaterial) {
                if (this.isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
@@ -143,15 +143,15 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
    }
 
    public boolean onEntitySwing(EntityLivingBase player, ItemStack stack) {
-      if (!player.worldObj.isRemote && player instanceof EntityPlayer) {
+      if (Platform.getEnvironment() != Env.CLIENT && player instanceof Player) {
          ItemStack pb = this.getPickedBlock(stack);
-         MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(player.worldObj, (EntityPlayer)player);
+         HitResult mop = this.getHitResultFromPlayer(player.level(), (Player)player);
          if (mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
             int x = mop.blockX;
             int y = mop.blockY;
             int z = mop.blockZ;
-            if (pb != null && player.worldObj.getTileEntity(x, y, z) == null && player.worldObj.getBlock(x, y, z).getMaterial() != Config.taintMaterial) {
-               ServerTickEventsFML.addSwapper(player.worldObj, x, y, z, player.worldObj.getBlock(x, y, z), player.worldObj.getBlockMetadata(x, y, z), pb, 0, (EntityPlayer)player, ((EntityPlayer)player).inventory.currentItem);
+            if (pb != null && player.level().getTileEntity(x, y, z) == null && player.level().getBlock(x, y, z).getMaterial() != Config.taintMaterial) {
+               ServerTickEventsFML.addSwapper(player.level(), x, y, z, player.level().getBlock(x, y, z), player.level().getBlockMetadata(x, y, z), pb, 0, (Player)player, ((Player)player).inventory.currentItem);
             }
          }
       }
@@ -212,8 +212,8 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge) * 2;
    }
 
-   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, EntityPlayer player) {
-      ItemWandCasting wand = (ItemWandCasting)stack.getItem();
+   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
+      WandCastingItem wand = (WandCastingItem)stack.getItem();
       wand.getFocus(stack);
       Block bi = world.getBlock(x, y, z);
       int md = world.getBlockMetadata(x, y, z);
@@ -228,7 +228,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       return out;
    }
 
-   public void checkNeighbours(World world, int x, int y, int z, Block bi, int md, BlockCoordinates pos, int side, int sizeX, int sizeY, int sizeZ, ArrayList list, EntityPlayer player) {
+   public void checkNeighbours(World world, int x, int y, int z, Block bi, int md, BlockCoordinates pos, int side, int sizeX, int sizeY, int sizeZ, ArrayList list, Player player) {
       if (!this.checked.contains(pos)) {
          this.checked.add(pos);
          switch (side) {
@@ -277,7 +277,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       }
    }
 
-   public boolean showAxis(ItemStack stack, World world, EntityPlayer player, int side, EnumAxis axis) {
+   public boolean showAxis(ItemStack stack, World world, Player player, int side, EnumAxis axis) {
       int dim = WandManager.getAreaDim(stack);
       switch (side) {
          case 0:

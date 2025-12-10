@@ -4,12 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileOwned;
@@ -33,7 +33,7 @@ public class ItemArcaneDoor extends Item {
       return this.icon;
    }
 
-   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+   public boolean onItemUse(ItemStack stack, Player player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
       if (par7 != 1) {
          return false;
       } else {
@@ -54,7 +54,7 @@ public class ItemArcaneDoor extends Item {
       }
    }
 
-   public static void placeDoorBlock(World world, int x, int y, int z, int par4, Block par5Block, EntityPlayer player) {
+   public static void placeDoorBlock(World world, int x, int y, int z, int par4, Block par5Block, Player player) {
       byte var6 = 0;
       byte var7 = 0;
       if (par4 == 0) {

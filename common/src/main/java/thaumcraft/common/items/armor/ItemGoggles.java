@@ -2,15 +2,14 @@ package thaumcraft.common.items.armor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.EnumRarity;
+import net.minecraft.world.item.ItemArmor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -21,6 +20,8 @@ import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.common.Thaumcraft;
+
+import java.util.List;
 
 public class ItemGoggles extends ItemArmor implements IRepairable, IVisDiscountGear, IRevealer, IGoggles, IRunicArmor {
    public IIcon icon;
@@ -35,7 +36,7 @@ public class ItemGoggles extends ItemArmor implements IRepairable, IVisDiscountG
       return 0;
    }
 
-   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       super.addInformation(stack, player, list, par4);
       list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
    }
@@ -62,7 +63,7 @@ public class ItemGoggles extends ItemArmor implements IRepairable, IVisDiscountG
       return par2ItemStack.isItemEqual(new ItemStack(Items.gold_ingot)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
       return 5;
    }
 
