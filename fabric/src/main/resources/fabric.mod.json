@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "opentc4",
+  "version": "${version}",
+  "name": "opentc4-architectury",
+  "description": "",
+  "authors": [
+    ""
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "MIT",
+  "icon": "assets/opentc4/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.linearity.opentc4.fabric.OpenTC4Fabric"
+    ],
+    "client": [
+      "com.linearity.opentc4.fabric.client.OpenTC4FabricClient"
+    ]
+  },
+  "mixins": [
+    "opentc4.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "architectury": ">=9.2.14",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
