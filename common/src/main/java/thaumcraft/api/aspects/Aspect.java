@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.text.WordUtils;
+import thaumcraft.common.Thaumcraft;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,14 +40,14 @@ public class Aspect {
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(String tag, int color, Aspect[] components) {
-		this(tag,color,components,new ResourceLocation("thaumcraft","textures/aspects/"+tag.toLowerCase()+".png"),1);
+		this(tag,color,components,new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/"+tag.toLowerCase()+".png"),1);
 	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(String tag, int color, Aspect[] components, int blend) {
-		this(tag,color,components,new ResourceLocation("thaumcraft","textures/aspects/"+tag.toLowerCase()+".png"),blend);
+		this(tag,color,components,new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/"+tag.toLowerCase()+".png"),blend);
 	}
 
 	/**

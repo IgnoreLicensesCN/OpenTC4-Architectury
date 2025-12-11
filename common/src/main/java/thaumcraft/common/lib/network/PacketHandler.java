@@ -3,9 +3,7 @@ package thaumcraft.common.lib.network;
 
 import dev.architectury.networking.simple.SimpleNetworkManager;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
-import thaumcraft.common.lib.network.misc.PacketNoteC2S;
-import thaumcraft.common.lib.network.misc.PacketNoteS2C;
+import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.*;
 
 public class PacketHandler {
@@ -30,6 +28,9 @@ public class PacketHandler {
         PacketAspectDiscoveryS2C.messageType = INSTANCE.registerS2C(PacketAspectDiscoveryS2C.ID, PacketAspectDiscoveryS2C::decode);
         PacketAspectCombinationC2S.messageType = INSTANCE.registerC2S(PacketAspectCombinationC2S.ID,PacketAspectCombinationC2S::decode);
         PacketBoreDigS2C.messageType = INSTANCE.registerS2C(PacketBoreDigS2C.ID, PacketBoreDigS2C::decode);
+
+        PacketItemKeyC2S.messageType = INSTANCE.registerC2S(PacketItemKeyC2S.ID,PacketItemKeyC2S::decode);
+        PacketMiscEventS2C.messageType = INSTANCE.registerS2C(PacketMiscEventS2C.ID, PacketMiscEventS2C::decode);
         PacketNoteC2S.messageType = INSTANCE.registerC2S(PacketNoteC2S.ID, PacketNoteC2S::decode);
         PacketNoteS2C.messageType = INSTANCE.registerS2C(PacketNoteS2C.ID, PacketNoteS2C::decode);
 

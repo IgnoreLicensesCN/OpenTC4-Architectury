@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import tc4tweak.ConfigurationHandler;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
@@ -47,20 +48,20 @@ public class EntityUtils {
     }
     public static final Set<EntityType<? extends LivingEntity>> livingEntityTypes = ConcurrentHashMap.newKeySet();
     public static void init(){
-        RegistrarManager manager = RegistrarManager.get("thaumcraft");
-        manager.builder(ResourceLocation.tryParse("tc:mobmod"),CHAMPION_MOD).build();
-        manager.builder(ResourceLocation.tryParse("tc:championhealth"),CHAMPION_HEALTH).build();
-        manager.builder(ResourceLocation.tryParse("tc:championdmg"),CHAMPION_DAMAGE).build();
-        manager.builder(ResourceLocation.tryParse("tc:blodspeedboost"),BOLDBUFF).build();
-        manager.builder(ResourceLocation.tryParse("tc:mightlydmgboost"),MIGHTYBUFF).build();
+        RegistrarManager manager = RegistrarManager.get(Thaumcraft.MOD_ID);
+        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":mobmod"),CHAMPION_MOD).build();
+        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":championhealth"),CHAMPION_HEALTH).build();
+        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":championdmg"),CHAMPION_DAMAGE).build();
+        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":blodspeedboost"),BOLDBUFF).build();
+        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":mightlydmgboost"),MIGHTYBUFF).build();
         int counter = 0;
         for (AttributeModifierTweaked modifier:HPBUFF){
-            manager.builder(ResourceLocation.tryParse("tc:hpbuff_"+counter),modifier).build();
+            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":hpbuff_"+counter),modifier).build();
             counter += 1;
         }
         counter = 0;
         for (AttributeModifierTweaked modifier:DMGBUFF){
-            manager.builder(ResourceLocation.tryParse("tc:dmgbuff_"+counter),modifier).build();
+            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":dmgbuff_"+counter),modifier).build();
             counter += 1;
         }
         for (EntityType<? extends Entity> entityType: DefaultAttributesAccessor.opentc4$getSuppliers().keySet()) {

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.linearity.opentc4.Consts.BlockPosCompoundTagKeys.*;
 
+@Deprecated(forRemoval = true,since = "BlockPos")
 public class BlockCoordinates implements Comparable<BlockCoordinates>
 {
     /** the x coordinate */

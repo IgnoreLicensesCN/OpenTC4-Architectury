@@ -14,6 +14,7 @@ import thaumcraft.common.items.armor.ItemHoverHarness;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketFocusChangeToServer;
+import thaumcraft.common.lib.network.misc.PacketItemKeyC2S;
 import thaumcraft.common.lib.network.misc.PacketItemKeyToServer;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
@@ -112,7 +113,8 @@ public class KeyHandler {
                   Player player = mc.player;
                   if (player != null && !this.keyPressedG) {
                      lastPressG = System.currentTimeMillis();
-                     PacketHandler.INSTANCE.sendToServer(new PacketItemKeyToServer(player, 1));
+                     new PacketItemKeyC2S(player.level().dimension(),1,player.getMainHandItem().isEmpty()?0:1).sendToServer();
+//                     PacketHandler.INSTANCE.sendToServer(new PacketItemKeyToServer(player, 1));
                   }
 
                   this.keyPressedG = true;
