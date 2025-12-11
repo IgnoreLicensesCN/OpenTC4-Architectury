@@ -6,11 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.ResourceLocation;
+import thaumcraft.common.Thaumcraft;
 
 public class PotionBlurredVision extends Potion {
    public static PotionBlurredVision instance = null;
    private int statusIconIndex = -1;
-   static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/misc/potions.png");
+   static final ResourceLocation rl = new ResourceLocation(Thaumcraft.MOD_ID, "textures/misc/potions.png");
 
    public PotionBlurredVision(int par1, boolean par2, int par3) {
       super(par1, par2, par3);

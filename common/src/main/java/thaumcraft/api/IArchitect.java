@@ -1,5 +1,6 @@
 package thaumcraft.api;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +14,10 @@ public interface IArchitect {
 	/**
 	 * Returns a list of blocks that should be highlighted in world.
 	 */
-    List<BlockCoordinates> getArchitectBlocks(ItemStack stack, Level world,
-											  int x, int y, int z, Direction side, Player player);
+//    List<BlockPos> getArchitectBlocks(ItemStack stack, Level world,
+//									  int x, int y, int z, Direction side, Player player);
+	List<BlockPos> getArchitectBlocks(ItemStack stack, Level world,
+									  BlockPos pos, Direction side, Player player);
 	
 	/**
 	 * which axis should be displayed. 

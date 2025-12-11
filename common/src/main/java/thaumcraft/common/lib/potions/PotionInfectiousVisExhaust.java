@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.resources.ResourceLocation;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class PotionInfectiousVisExhaust extends Potion {
    public static PotionInfectiousVisExhaust instance = null;
    private int statusIconIndex = -1;
-   static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/misc/potions.png");
+   static final ResourceLocation rl = new ResourceLocation(Thaumcraft.MOD_ID, "textures/misc/potions.png");
 
    public PotionInfectiousVisExhaust(int par1, boolean par2, int par3) {
       super(par1, par2, par3);

@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.*;
@@ -328,7 +327,7 @@ public class WandCastingItem extends Item
         return InteractionResult.PASS;
     }
 
-    public List<BlockCoordinates> getArchitectBlocks(ItemStack usingWand, Level world, int x, int y, int z, Direction side, Player player) {
+    public List<BlockPos> getArchitectBlocks(ItemStack usingWand, Level world, BlockPos pos, Direction side, Player player) {
         if (canApplyFocus()){
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
@@ -337,7 +336,7 @@ public class WandCastingItem extends Item
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
                         && focus instanceof IArchitect architect
                 ){
-                    return architect.getArchitectBlocks(usingWand, world, x, y, z, side, player);
+                    return architect.getArchitectBlocks(usingWand, world, pos, side, player);
                 }
             }
         }

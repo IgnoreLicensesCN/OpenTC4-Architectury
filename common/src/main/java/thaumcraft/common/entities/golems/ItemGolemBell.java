@@ -83,7 +83,7 @@ public class ItemGolemBell extends Item {
       return markers;
    }
 
-   public static void resetMarkers(ItemStack stack, World world, Player player) {
+   public static void resetMarkers(ItemStack stack, Level world, Player player) {
       Entity golem = null;
       int gid = getGolemId(stack);
       if (gid > -1) {

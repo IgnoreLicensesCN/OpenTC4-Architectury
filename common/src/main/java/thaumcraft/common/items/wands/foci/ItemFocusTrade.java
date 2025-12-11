@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.core.BlockPos;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,7 @@ import thaumcraft.common.lib.events.ServerTickEventsFML;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
    public IIcon iconOrnament;
@@ -212,7 +214,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge) * 2;
    }
 
-   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
+   public List<BlockPos> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
       WandCastingItem wand = (WandCastingItem)stack.getItem();
       wand.getFocus(stack);
       Block bi = world.getBlock(x, y, z);

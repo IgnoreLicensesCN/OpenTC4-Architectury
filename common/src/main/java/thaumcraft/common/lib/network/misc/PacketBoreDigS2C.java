@@ -19,6 +19,7 @@ public class PacketBoreDigS2C extends BaseS2CMessage {
    private final int z;
    private final int digloc;
 
+
    // 构造
    public PacketBoreDigS2C(int x, int y, int z, int digloc) {
       this.x = x;

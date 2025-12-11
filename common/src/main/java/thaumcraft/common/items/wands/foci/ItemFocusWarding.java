@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,6 +30,7 @@ import thaumcraft.common.tiles.TileWarded;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
    public IIcon iconOrnament;
@@ -163,8 +165,8 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge);
    }
 
-   public ArrayList<BlockCoordinates> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
-      ArrayList<BlockCoordinates> out = new ArrayList<>();
+   public List<BlockPos> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
+      List<BlockPos> out = new ArrayList<>();
       WandCastingItem wand = (WandCastingItem)stack.getItem();
       wand.getFocus(stack);
       this.checked.clear();

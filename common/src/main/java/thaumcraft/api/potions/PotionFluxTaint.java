@@ -9,6 +9,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.entities.ITaintedMob;
+import thaumcraft.common.Thaumcraft;
 
 import java.util.Objects;
 
@@ -42,7 +43,7 @@ public class PotionFluxTaint extends MobEffect
 //		return super.getStatusIconIndex();
 //	}
 	
-	static final ResourceLocation rl = new ResourceLocation("thaumcraft","textures/misc/potions.png");//TODO:Split and get effect icon
+	static final ResourceLocation rl = new ResourceLocation(Thaumcraft.MOD_ID,"textures/misc/potions.png");//TODO:Split and get effect icon
 	public static final ResourceKey<MobEffect> FLUX_TAINT_KEY = ResourceKey.create(Registries.MOB_EFFECT, Objects.requireNonNull(ResourceLocation.tryParse("thaumcraft:flux_taint")));
 
 	@Override

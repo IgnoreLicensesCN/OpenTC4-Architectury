@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.StaffRod;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
@@ -18,7 +17,6 @@ import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.blocks.ItemJarNode;
 import thaumcraft.common.entities.ItemSpawnerEgg;
 import thaumcraft.common.entities.golems.*;
-import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.armor.*;
 import thaumcraft.common.items.baubles.*;
 import thaumcraft.common.items.equipment.*;
@@ -26,8 +24,6 @@ import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.relics.*;
 import thaumcraft.common.items.wands.*;
 import thaumcraft.common.items.wands.foci.*;
-
-import java.util.Arrays;
 
 public class ConfigItems {
    public static WandCap WAND_CAP_IRON;
@@ -236,8 +232,8 @@ public class ConfigItems {
 //      STAFF_ROD_REED = new StaffRod("reed", 175, new ItemStack(itemWandRod, 1, 55), 14, new WandRodPrimalOnUpdate(Aspect.AIR));
 //      STAFF_ROD_SILVERWOOD = new StaffRod("silverwood", 250, new ItemStack(itemWandRod, 1, 52), 24);
 //      STAFF_ROD_PRIMAL = new StaffRod("primal", 250, new ItemStack(itemWandRod, 1, 100), 32, new WandRodPrimalOnUpdate());
-      STAFF_ROD_PRIMAL.setRunes(true);
-      STAFF_ROD_BLAZE.setGlowing(true);
+//      STAFF_ROD_PRIMAL.setRunes(true);
+//      STAFF_ROD_BLAZE.setGlowing(true);
    }
 
    public static void postInit() {
@@ -335,7 +331,7 @@ public class ConfigItems {
       GameRegistry.registerItem(itemTripleMeatTreat, "TripleMeatTreat", "Thaumcraft");
       itemSwordElemental = (new ItemElementalSword(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemSwordElemental");
       GameRegistry.registerItem(itemSwordElemental, "ItemSwordElemental", "Thaumcraft");
-      itemShovelElemental = (new ItemElementalShovel(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemShovelElemental");
+      itemShovelElemental = (new ElementalShovelItem(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemShovelElemental");
       GameRegistry.registerItem(itemShovelElemental, "ItemShovelElemental", "Thaumcraft");
       itemPickElemental = (new ItemElementalPickaxe(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemPickaxeElemental");
       GameRegistry.registerItem(itemPickElemental, "ItemPickaxeElemental", "Thaumcraft");
