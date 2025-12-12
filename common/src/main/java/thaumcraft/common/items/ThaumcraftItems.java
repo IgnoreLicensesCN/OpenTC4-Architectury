@@ -15,7 +15,7 @@ import thaumcraft.common.items.wands.wandcaps.*;
 
 public class ThaumcraftItems {
 
-    public static final Item ALUMENTUM = Registry.SUPPLIER_ALUMENTUM.get();//itemResource:0
+    public static final AlumentumItem ALUMENTUM = Registry.SUPPLIER_ALUMENTUM.get();//itemResource:0
     public static final BlockItem NITOR = Registry.SUPPLIER_NITOR.get();//itemResource:1
     public static final Item THAUMIUM_INGOT = Registry.SUPPLIER_THAUMIUM_INGOT.get();//itemResource:2 Thaumium Ingot
     public static final Item QUICK_SILVER = Registry.SUPPLIER_QUICK_SILVER.get();//itemResource:3
@@ -82,7 +82,7 @@ public class ThaumcraftItems {
     public static class Registry {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create("thaumcraft", Registries.ITEM);
 
-        public static final RegistrySupplier<Item> SUPPLIER_ALUMENTUM = ITEMS.register("alumentum", () -> new Item(new Item.Properties()));//TODO:new item class(use->boom)
+        public static final RegistrySupplier<AlumentumItem> SUPPLIER_ALUMENTUM = ITEMS.register("alumentum", AlumentumItem::new);
         public static final RegistrySupplier<BlockItem> SUPPLIER_NITOR = ITEMS.register("nitor", () -> new BlockItem(/*blockAiry:1*/,new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_INGOT = ITEMS.register("thaumium_ingot", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_QUICK_SILVER = ITEMS.register("quick_silver", () -> new Item(new Item.Properties()));
@@ -117,7 +117,13 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<SilverWandCapItem> SUPPLIER_SILVER_WAND_CAP = ITEMS.register("wand_cap_silver", SilverWandCapItem::new);
         public static final RegistrySupplier<ThaumiumWandCapItem> SUPPLIER_THAUMIUM_WAND_CAP = ITEMS.register("wand_cap_thaumium", ThaumiumWandCapItem::new);
         public static final RegistrySupplier<VoidWandCapItem> SUPPLIER_VOID_WAND_CAP = ITEMS.register("wand_cap_void", VoidWandCapItem::new);
-        
+
+
+        //wand caps (inert)
+        public static final RegistrySupplier<Item> SUPPLIER_SILVER_WAND_CAP_INERT = ITEMS.register("wand_cap_silver_inert",() -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_WAND_CAP_INERT = ITEMS.register("wand_cap_thaumium_inert",() -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_VOID_WAND_CAP_INERT = ITEMS.register("wand_cap_void_inert",() -> new Item(new Item.Properties()));
+
         //wand rods
         public static final RegistrySupplier<BlazeWandRodItem> SUPPLIER_BLAZE_WAND_ROD = ITEMS.register("wand_rod_blaze", BlazeWandRodItem::new);
         public static final RegistrySupplier<BoneWandRodItem> SUPPLIER_BONE_WAND_ROD = ITEMS.register("wand_rod_bone", BoneWandRodItem::new);
@@ -139,10 +145,6 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<QuartzStaffRodItem> SUPPLIER_QUARTZ_STAFF_ROD = ITEMS.register("staff_rod_quartz", QuartzStaffRodItem::new);
         public static final RegistrySupplier<ReedStaffRodItem> SUPPLIER_REED_STAFF_ROD = ITEMS.register("staff_rod_reed", ReedStaffRodItem::new);
         public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register("staff_rod_silverwood", SilverWoodStaffRodItem::new);
-
-        public static final RegistrySupplier<Item> SUPPLIER_SILVER_WAND_CAP_INERT = ITEMS.register("wand_cap_silver_inert",() -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_WAND_CAP_INERT = ITEMS.register("wand_cap_thaumium_inert",() -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_VOID_WAND_CAP_INERT = ITEMS.register("wand_cap_void_inert",() -> new Item(new Item.Properties()));
     }
     public static class ItemTags {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(

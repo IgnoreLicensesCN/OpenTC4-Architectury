@@ -113,7 +113,9 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 
    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
       super.onUpdate(stack, world, entity, par4, par5);
-      if (Platform.getEnvironment() != Env.CLIENT && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12) && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead() && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.getRandom().nextInt(4321) <= stack.stackSize) {
+      if (Platform.getEnvironment() != Env.CLIENT && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
+              && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()
+              && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.getRandom().nextInt(4321) <= stack.stackSize) {
          ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 120, 0, false));
          if (entity instanceof Player) {
             String s = StatCollector.translateToLocal("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
