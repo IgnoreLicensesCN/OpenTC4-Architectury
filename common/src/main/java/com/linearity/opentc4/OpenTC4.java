@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.item.RenderUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.misc.dispensebehavior.ThaumcraftDispenseBehaviors;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
@@ -30,8 +31,9 @@ public final class OpenTC4 {
     }
     public static void onServerStarting(){
         ThaumcraftItems.init();
-        ThaumcraftDispenseBehaviors.init();
         ThaumcraftBlocks.init();
+        ThaumcraftEntities.init();
+        ThaumcraftDispenseBehaviors.init();
         BiomeWithTypes.init();
         EventHandlerEntity.init();
         EntityUtils.init();
