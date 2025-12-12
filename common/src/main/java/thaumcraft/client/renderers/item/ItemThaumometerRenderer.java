@@ -36,7 +36,6 @@ import thaumcraft.client.lib.UtilsFX;
 import com.mojang.math.Axis;
 import org.lwjgl.opengl.GL11;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-
 import java.util.Objects;
 
 @Deprecated(forRemoval = true,since = "see ThaumometerItemRenderer")

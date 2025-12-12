@@ -5,22 +5,27 @@ import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.ThaumcraftSounds;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PacketResearchCompleteS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":research_complete";
 
     public static MessageType messageType;
 
-    private final String key;
+    private String key;
 
+    public PacketResearchCompleteS2C(){}
     public PacketResearchCompleteS2C(String key) {
         this.key = key;
     }
@@ -55,9 +60,9 @@ public class PacketResearchCompleteS2C extends BaseS2CMessage {
 
         // clue
         if (key.startsWith("@")) {
-            String text = ClientTickEventsFML.translate("tc.addclue");
+            String text = String.valueOf(Component.translatable("tc.addclue"));
             PlayerNotifications.addNotification("§a" + text);
-            player.playSound(Thaumcraft.getLearnSound(), 0.2F, 1.0F + player.getRandom().nextFloat() * 0.1F);
+            player.playSound(ThaumcraftSounds.LEARN, 0.2F, 1.0F + player.getRandom().nextFloat() * 0.1F);
         } else if (!ResearchCategories.getResearch(key).isVirtual()) {
             ClientTickEventsFML.researchPopup.queueResearchInformation(ResearchCategories.getResearch(key));
             GuiResearchBrowser.highlightedItem.add(key);
@@ -66,7 +71,7 @@ public class PacketResearchCompleteS2C extends BaseS2CMessage {
 
         // GUI 更新
         if (Minecraft.getInstance().screen instanceof GuiResearchBrowser gui) {
-            ArrayList<String> al = GuiResearchBrowser.completedResearch.get(player.getName().getString());
+            List<String> al = GuiResearchBrowser.completedResearch.get(player.getName().getString());
             if (al == null) al = new ArrayList<>();
             al.add(key);
             GuiResearchBrowser.completedResearch.put(player.getName().getString(), al);

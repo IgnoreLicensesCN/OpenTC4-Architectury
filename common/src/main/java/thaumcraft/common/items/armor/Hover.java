@@ -21,14 +21,16 @@ import thaumcraft.common.lib.utils.Utils;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static baubles.api.expanded.BaubleExpandedSlots.getTypeFromBaubleType;
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBaubleWithBaubleType;
 
 public class Hover {
     public static final int EFFICIENCY = 360;
-    static HashMap<Integer, Boolean> hovering = new HashMap<>();
-    static HashMap<Integer, Long> timing = new HashMap<>();
+    static Map<String, Boolean> hovering = new ConcurrentHashMap<>();
+    static Map<String, Long> timing = new ConcurrentHashMap<>();
 
     public static boolean toggleHover(Player player, int playerId, @Nonnull ItemStack armor) {
         boolean hover = hovering.get(playerId) != null && hovering.get(playerId);
@@ -56,40 +58,40 @@ public class Hover {
         }
     }
 
-    public static void setHover(int playerId, boolean hover) {
-        hovering.put(playerId, hover);
+    public static void setHover(String playerName, boolean hover) {
+        hovering.put(playerName, hover);
     }
 
-    public static boolean getHover(int playerId) {
-        return hovering.containsKey(playerId) ? hovering.get(playerId) : false;
+    public static boolean getHover(String playerName) {
+        return hovering.getOrDefault(playerName, false);
     }
 
     public static void handleHoverArmor(Player player, ItemStack armor) {
-        if (hovering.get(player.getEntityId()) == null && armor.hasTagCompound() && armor.stackTagCompound.hasKey("hover")) {
-            hovering.put(player.getEntityId(), armor.stackTagCompound.getByte("hover") == 1);
+        if (hovering.get(player.getName().getString()) == null && armor.hasTagCompound() && armor.stackTagCompound.hasKey("hover")) {
+            hovering.put(player.getName().getString(), armor.stackTagCompound.getByte("hover") == 1);
             if ((Platform.getEnvironment() == Env.CLIENT)) {
                 PacketHandler.INSTANCE.sendToServer(new PacketFlyToServer(player, armor.stackTagCompound.getByte("hover") == 1));
             }
         }
 
-        boolean hover = hovering.get(player.getEntityId()) != null && hovering.get(player.getEntityId());
+        boolean hover = hovering.get(player.getName().getString()) != null && hovering.get(player.getName().getString());
         World world = player.level();
         player.capabilities.isFlying = hover;
         if ((Platform.getEnvironment() == Env.CLIENT) && player instanceof LocalPlayer) {
             if (hover && expendCharge(player, armor)) {
                 long currenttime = System.currentTimeMillis();
                 long time = 0L;
-                if (timing.get(player.getEntityId()) != null) {
-                    time = timing.get(player.getEntityId());
+                if (timing.get(player.getName().getString()) != null) {
+                    time = timing.get(player.getName().getString());
                 }
 
                 if (time < currenttime) {
                     time = currenttime + 1200L;
-                    timing.put(player.getEntityId(), time);
+                    timing.put(player.getName().getString(), time);
                     player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:jacobs", 0.05F, 1.0F + player.level().rand.nextFloat() * 0.05F, false);
                 }
 
-                int haste = EnchantmentHelper.getEnchantmentLevel(Config.enchHaste.effectId, armor);
+                int haste = EnchantmentHelper.getEnchantmentLevel(Config.enchHaste, armor);
                 final float[] mod = {0.7F + 0.075F * (float) haste};
                 if (!forEachBaubleWithBaubleType(getTypeFromBaubleType(BaubleType.AMULET), player, ItemGirdleHover.class,
                         (slot, stack, item) -> {
@@ -113,7 +115,7 @@ public class Hover {
                 player.motionX *= mod[0];
                 player.motionZ *= mod[0];
             } else if (hover) {
-                toggleHover(player, player.getEntityId(), armor);
+                toggleHover(player, player.getName().getString(), armor);
             }
         } else {
             if (armor.hasTagCompound() && !armor.stackTagCompound.hasKey("hover")) {
@@ -133,7 +135,7 @@ public class Hover {
                 }
             } else {
                 if (hover) {
-                    toggleHover(player, player.getEntityId(), armor);
+                    toggleHover(player, player.getName().getString(), armor);
                 }
 
                 player.fallDistance *= 0.75F;

@@ -3,8 +3,8 @@ package tc4tweak.network;
 import tc4tweak.ConfigurationHandler;
 
 public class NetworkedConfiguration {
-    static boolean checkWorkbenchRecipes = true;
-    static boolean smallerJar = false;
+    public static boolean checkWorkbenchRecipes = true;
+    public static boolean smallerJar = false;
 
     public static boolean isCheckWorkbenchRecipes() {
         return checkWorkbenchRecipes;

@@ -16,7 +16,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import thaumcraft.api.entities.IEldritchMob;
@@ -29,8 +28,8 @@ import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.entities.projectile.EntityEldritchOrb;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockArc;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockArcS2C;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.network.fx.PacketFXSonic;
 import thaumcraft.common.lib.utils.EntityUtils;
 
@@ -185,9 +184,9 @@ public class EntityEldritchWarden extends EntityThaumcraftBoss implements IRange
                this.level().setBlock(i + deltaX, j, k + deltaZ, ConfigBlocks.blockAiry, 11, 3);
                this.level().scheduleBlockUpdate(i + deltaX, j, k + deltaZ, ConfigBlocks.blockAiry, 250 + this.rand.nextInt(150));
                if (this.rand.nextFloat() < 0.3F) {
-                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArc(i + deltaX, j, k + deltaZ, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), i + deltaX, j, k + deltaZ, 32.0F));
+                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArcS2C(i + deltaX, j, k + deltaZ, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), i + deltaX, j, k + deltaZ, 32.0F));
                } else {
-                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(i + deltaX, j, k + deltaZ, 8388736), new NetworkRegistry.TargetPoint(this.level().dimension(), i + deltaX, j, k + deltaZ, 32.0F));
+                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(i + deltaX, j, k + deltaZ, 8388736), new NetworkRegistry.TargetPoint(this.level().dimension(), i + deltaX, j, k + deltaZ, 32.0F));
                }
             }
          }

@@ -8,29 +8,30 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import tc4tweak.ConfigurationHandler;
 
-public class MessageSendConfigurationV2 implements IMessage,  IMessageHandler<MessageSendConfigurationV2, IMessage>  {
-    private CompoundTag tag;
-
-    public MessageSendConfigurationV2() {
-        tag = new CompoundTag();
-        // yeah I said NBT is an unfortunate piece of tech, but it does give us a bit of flexibility over network
-        // protocol
-        tag.setBoolean("sj", ConfigurationHandler.INSTANCE.isSmallerJars());
-    }
-
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        tag = ByteBufUtils.readTag(buf);
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeTag(buf, tag);
-    }
-
-    @Override
-    public IMessage onMessage(MessageSendConfigurationV2 message, MessageContext ctx) {
-        NetworkedConfiguration.smallerJar = message.tag.getBoolean("sj");
-        return null;
-    }
+@Deprecated(forRemoval = true,since = "migrate to packetConfig")
+public class MessageSendConfigurationV2 /*implements IMessage,  IMessageHandler<MessageSendConfigurationV2, IMessage>*/  {
+//    private CompoundTag tag;
+//
+//    public MessageSendConfigurationV2() {
+//        tag = new CompoundTag();
+//        // yeah I said NBT is an unfortunate piece of tech, but it does give us a bit of flexibility over network
+//        // protocol
+//        tag.setBoolean("sj", ConfigurationHandler.INSTANCE.isSmallerJars());
+//    }
+//
+//    @Override
+//    public void fromBytes(ByteBuf buf) {
+//        tag = ByteBufUtils.readTag(buf);
+//    }
+//
+//    @Override
+//    public void toBytes(ByteBuf buf) {
+//        ByteBufUtils.writeTag(buf, tag);
+//    }
+//
+//    @Override
+//    public IMessage onMessage(MessageSendConfigurationV2 message, MessageContext ctx) {
+//        NetworkedConfiguration.smallerJar = message.tag.getBoolean("sj");
+//        return null;
+//    }
 }

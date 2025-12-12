@@ -18,10 +18,11 @@ public class PacketNoteS2C extends BaseS2CMessage {
 
     public static MessageType messageType;
 
-    private final BlockPos pos;
-    private final ResourceKey<Level> dim;
-    private final byte note;
+    private BlockPos pos;
+    private ResourceKey<Level> dim;
+    private byte note;
 
+    public PacketNoteS2C() {}
     public PacketNoteS2C(BlockPos pos, ResourceKey<Level> dim, byte note) {
         this.pos = pos;
         this.dim = dim;

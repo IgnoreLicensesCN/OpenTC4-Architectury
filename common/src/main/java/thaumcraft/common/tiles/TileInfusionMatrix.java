@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.core.BlockPos;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -41,8 +41,8 @@ import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockZap;
-import thaumcraft.common.lib.network.fx.PacketFXInfusionSource;
+import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
+import thaumcraft.common.lib.network.fx.PacketFXInfusionSourceS2C;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
@@ -419,7 +419,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                         playerBeingTokenXP.addExperienceLevel(-1);
                         --this.recipeXP;
                         playerBeingTokenXP.attackEntityFrom(DamageSource.magic, (float) this.level().rand.nextInt(2));
-                        PacketFXInfusionSource var22 = new PacketFXInfusionSource(
+                        PacketFXInfusionSourceS2C var22 = new PacketFXInfusionSourceS2C(
                                 this.xCoord, this.yCoord, this.zCoord,
                                 (byte) 0, (byte) 0, (byte) 0,
                                 playerBeingTokenXP.getEntityId());
@@ -484,7 +484,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                             if (this.itemCount == 0) {
                                 this.itemCount = 5;
                                 SimpleNetworkWrapper var10000 = PacketHandler.INSTANCE;
-                                PacketFXInfusionSource var10001 = new PacketFXInfusionSource(this.xCoord, this.yCoord, this.zCoord, (byte) (this.xCoord - cc.posX), (byte) (this.yCoord - cc.posY), (byte) (this.zCoord - cc.posZ), 0);
+                                PacketFXInfusionSourceS2C var10001 = new PacketFXInfusionSourceS2C(this.xCoord, this.yCoord, this.zCoord, (byte) (this.xCoord - cc.posX), (byte) (this.yCoord - cc.posY), (byte) (this.zCoord - cc.posZ), 0);
                                 double var10005 = this.xCoord;
                                 double var10006 = this.yCoord;
                                 double var10007 = this.zCoord;
@@ -533,7 +533,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
         List<Entity> targets = this.level().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(10.0F, 10.0F, 10.0F));
         if (targets != null && !targets.isEmpty()) {
             for (Entity target : targets) {
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZap((float) this.xCoord + 0.5F, (float) this.yCoord + 0.5F, (float) this.zCoord + 0.5F, (float) target.posX, (float) target.posY + target.height / 2.0F, (float) target.posZ), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZapS2C((float) this.xCoord + 0.5F, (float) this.yCoord + 0.5F, (float) this.zCoord + 0.5F, (float) target.posX, (float) target.posY + target.height / 2.0F, (float) target.posZ), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
                 target.attackEntityFrom(DamageSource.magic, (float) (4 + this.level().rand.nextInt(4)));
                 if (!all) {
                     break;
@@ -602,7 +602,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 }
 
                 this.level().addBlockEvent(cc.posX, cc.posY, cc.posZ, ConfigBlocks.blockStoneDevice, 11, 0);
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZap((float) this.xCoord + 0.5F, (float) this.yCoord + 0.5F, (float) this.zCoord + 0.5F, (float) cc.posX + 0.5F, (float) cc.posY + 1.5F, (float) cc.posZ + 0.5F), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZapS2C((float) this.xCoord + 0.5F, (float) this.yCoord + 0.5F, (float) this.zCoord + 0.5F, (float) cc.posX + 0.5F, (float) cc.posY + 1.5F, (float) cc.posZ + 0.5F), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
                 return;
             }
         }
@@ -874,12 +874,12 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
     }
 
     public static class SourceFX {
-        public ChunkCoordinates loc;
+        public BlockPos loc;
         public int ticks;
         public int color;
         public int entity;
 
-        public SourceFX(ChunkCoordinates loc, int ticks, int color) {
+        public SourceFX(BlockPos loc, int ticks, int color) {
             this.loc = loc;
             this.ticks = ticks;
             this.color = color;

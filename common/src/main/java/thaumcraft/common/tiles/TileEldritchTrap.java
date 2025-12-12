@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockZap;
+import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 
 public class TileEldritchTrap extends TileEntity {
    int count = 20;
@@ -26,7 +26,7 @@ public class TileEldritchTrap extends TileEntity {
                Thaumcraft.addWarpToPlayer(p, 1 + this.level().rand.nextInt(2), true);
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZap((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, (float)p.posX, (float)p.boundingBox.minY + p.eyeHeight, (float)p.posZ), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZapS2C((float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F, (float)p.posX, (float)p.boundingBox.minY + p.eyeHeight, (float)p.posZ), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
          }
       }
 

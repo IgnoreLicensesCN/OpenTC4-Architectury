@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,7 +96,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
                this.level().setBlockToAir(x, y, z);
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, 14483711), new NetworkRegistry.TargetPoint(this.level().dimension(), x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(x, y, z, 14483711), new NetworkRegistry.TargetPoint(this.level().dimension(), x, y, z, 32.0F));
             ++this.charges;
             this.markDirty();
             return;

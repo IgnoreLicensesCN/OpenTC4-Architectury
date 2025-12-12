@@ -3,6 +3,7 @@ package thaumcraft.common.lib.network;
 
 import dev.architectury.networking.simple.SimpleNetworkManager;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.fx.*;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.*;
 
@@ -27,14 +28,32 @@ public class PacketHandler {
         PacketAspectPlaceToServerC2S.messageType = INSTANCE.registerC2S(PacketAspectPlaceToServerC2S.ID, PacketAspectPlaceToServerC2S::decode);
         PacketAspectDiscoveryS2C.messageType = INSTANCE.registerS2C(PacketAspectDiscoveryS2C.ID, PacketAspectDiscoveryS2C::decode);
         PacketAspectCombinationC2S.messageType = INSTANCE.registerC2S(PacketAspectCombinationC2S.ID,PacketAspectCombinationC2S::decode);
+
         PacketBoreDigS2C.messageType = INSTANCE.registerS2C(PacketBoreDigS2C.ID, PacketBoreDigS2C::decode);
+        PacketConfigS2C.messageType = INSTANCE.registerS2C(PacketConfigS2C.ID, PacketConfigS2C::decode);
+        PacketFlyC2S.messageType = INSTANCE.registerC2S(PacketFlyC2S.ID, PacketFlyC2S::decode);
 
         PacketItemKeyC2S.messageType = INSTANCE.registerC2S(PacketItemKeyC2S.ID,PacketItemKeyC2S::decode);
         PacketMiscEventS2C.messageType = INSTANCE.registerS2C(PacketMiscEventS2C.ID, PacketMiscEventS2C::decode);
         PacketNoteC2S.messageType = INSTANCE.registerC2S(PacketNoteC2S.ID, PacketNoteC2S::decode);
         PacketNoteS2C.messageType = INSTANCE.registerS2C(PacketNoteS2C.ID, PacketNoteS2C::decode);
 
-        int idx = 0;
+        PacketFXBeamPulseS2C.messageType = INSTANCE.registerS2C(PacketFXBeamPulseS2C.ID, PacketFXBeamPulseS2C::decode);
+        PacketFXBeamPulseGolemBossS2C.messageType = INSTANCE.registerS2C(PacketFXBeamPulseGolemBossS2C.ID, PacketFXBeamPulseGolemBossS2C::decode);
+        PacketFXBlockArcS2C.messageType = INSTANCE.registerS2C(PacketFXBlockArcS2C.ID, PacketFXBlockArcS2C::decode);
+        PacketFXBlockBubbleS2C.messageType = INSTANCE.registerS2C(PacketFXBlockBubbleS2C.ID, PacketFXBlockBubbleS2C::decode);
+        PacketFXBlockDigS2C.messageType = INSTANCE.registerS2C(PacketFXBlockDigS2C.ID, PacketFXBlockDigS2C::decode);
+        PacketFXBlockSparkleS2C.messageType = INSTANCE.registerS2C(PacketFXBlockSparkleS2C.ID, PacketFXBlockSparkleS2C::decode);
+        PacketFXBlockZapS2C.messageType = INSTANCE.registerS2C(PacketFXBlockZapS2C.ID, PacketFXBlockZapS2C::decode);
+        PacketFXEssentiaSourceS2C.messageType = INSTANCE.registerS2C(PacketFXEssentiaSourceS2C.ID, PacketFXEssentiaSourceS2C::decode);
+        PacketFXInfusionSourceS2C.messageType = INSTANCE.registerS2C(PacketFXInfusionSourceS2C.ID, PacketFXInfusionSourceS2C::decode);
+        PacketFXShieldS2C.messageType = INSTANCE.registerS2C(PacketFXShieldS2C.ID, PacketFXShieldS2C::decode);
+        PacketFXSonicS2C.messageType = INSTANCE.registerS2C(PacketFXSonicS2C.ID, PacketFXSonicS2C::decode);
+        PacketFXVisDrainS2C.messageType = INSTANCE.registerS2C(PacketFXVisDrainS2C.ID, PacketFXVisDrainS2C::decode);
+        PacketFXWispZapS2C.messageType = INSTANCE.registerS2C(PacketFXWispZapS2C.ID, PacketFXWispZapS2C::decode);
+        PacketFXZapS2C.messageType = INSTANCE.registerS2C(PacketFXZapS2C.ID, PacketFXZapS2C::decode);
+
+//        int idx = 0;
 //      INSTANCE.registerMessage(PacketBiomeChange.class, PacketBiomeChange.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketConfig.class, PacketConfig.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketMiscEvent.class, PacketMiscEvent.class, idx++, Side.CLIENT);
@@ -60,14 +79,14 @@ public class PacketHandler {
 //      INSTANCE.registerMessage(PacketItemKeyToServer.class, PacketItemKeyToServer.class, idx++, Side.SERVER);
 //      INSTANCE.registerMessage(PacketFocusChangeToServer.class, PacketFocusChangeToServer.class, idx++, Side.SERVER);
 //      INSTANCE.registerMessage(PacketFlyToServer.class, PacketFlyToServer.class, idx++, Side.SERVER);
-//      INSTANCE.registerMessage(PacketFXBlockBubble.class, PacketFXBlockBubble.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXBlockBubbleS2C.class, PacketFXBlockBubbleS2C.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketFXBlockDig.class, PacketFXBlockDig.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXBlockSparkle.class, PacketFXBlockSparkle.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXBlockArc.class, PacketFXBlockArc.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXBlockZap.class, PacketFXBlockZap.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXEssentiaSource.class, PacketFXEssentiaSource.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXInfusionSource.class, PacketFXInfusionSource.class, idx++, Side.CLIENT);
-//      INSTANCE.registerMessage(PacketFXShield.class, PacketFXShield.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXBlockSparkleS2C.class, PacketFXBlockSparkleS2C.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXBlockArcS2C.class, PacketFXBlockArcS2C.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXBlockZapS2C.class, PacketFXBlockZapS2C.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXEssentiaSourceS2C.class, PacketFXEssentiaSourceS2C.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXInfusionSourceS2C.class, PacketFXInfusionSourceS2C.class, idx++, Side.CLIENT);
+//      INSTANCE.registerMessage(PacketFXShieldS2C.class, PacketFXShieldS2C.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketFXSonic.class, PacketFXSonic.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketFXWispZap.class, PacketFXWispZap.class, idx++, Side.CLIENT);
 //      INSTANCE.registerMessage(PacketFXZap.class, PacketFXZap.class, idx++, Side.CLIENT);

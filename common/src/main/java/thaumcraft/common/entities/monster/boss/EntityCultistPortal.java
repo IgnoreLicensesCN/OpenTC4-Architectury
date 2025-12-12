@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,19 +18,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.monster.EntityCultist;
 import thaumcraft.common.entities.monster.EntityCultistCleric;
 import thaumcraft.common.entities.monster.EntityCultistKnight;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockArc;
+import thaumcraft.common.lib.network.fx.PacketFXBlockArcS2C;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.WorldGenEldritchRing;
 import thaumcraft.common.tiles.TileBanner;
 
 import java.util.List;
 
-public class EntityCultistPortal extends EntityMob implements IBossDisplayData {
+public class EntityCultistPortal extends Monster implements IBossDisplayData {
    int stage = 0;
    int stagecounter = 200;
    public int pulse = 0;
@@ -138,7 +138,7 @@ public class EntityCultistPortal extends EntityMob implements IBossDisplayData {
                   if (te instanceof TileBanner) {
 
                      ((TileBanner)te).setFacing(WorldGenEldritchRing.bannerFaceFromDirection(a));
-                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArc((int)this.posX - dir.offsetX * 6, (int)this.posY, (int)this.posZ + dir.offsetZ * 6, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
+                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArcS2C((int)this.posX - dir.offsetX * 6, (int)this.posY, (int)this.posZ + dir.offsetZ * 6, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
                      this.playSound("thaumcraft:wandfail", 1.0F, 1.0F);
                   }
                }
@@ -152,7 +152,7 @@ public class EntityCultistPortal extends EntityMob implements IBossDisplayData {
                   float rr = this.level().rand.nextFloat();
                   int md = rr < 0.05F ? 2 : (rr < 0.2F ? 1 : 0);
                   this.level().setBlock(a, (int)this.posY, b, ConfigBlocks.blockLootCrate, md, 3);
-                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArc(a, (int)this.posY, b, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
+                  PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockArcS2C(a, (int)this.posY, b, this.getEntityId()), new NetworkRegistry.TargetPoint(this.level().dimension(), this.posX, this.posY, this.posZ, 32.0F));
                   this.playSound("thaumcraft:wandfail", 1.0F, 1.0F);
                }
             }

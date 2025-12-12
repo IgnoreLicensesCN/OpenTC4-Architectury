@@ -17,10 +17,11 @@ public class PacketSyncResearchS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_research";
     public static MessageType messageType;
 
-    public final List<String> data;
+    public List<String> data;
 
     // ---------------- 构造 ----------------
 
+    public PacketSyncResearchS2C(){}
     /**
      * 服务端发送用构造
      */

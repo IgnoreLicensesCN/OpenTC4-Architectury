@@ -38,7 +38,7 @@ import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
 
@@ -272,8 +272,8 @@ public class WandManager implements IWandTriggerManager {
             world.markBlockForUpdate(x, y + 1, z);
             world.notifyBlockChange(x, y, z, ConfigBlocks.blockMetalDevice);
             world.notifyBlockChange(x, y + 1, z, ConfigBlocks.blockMetalDevice);
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y + 1, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(x, y + 1, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
             world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
             return true;
         } else {
@@ -476,7 +476,7 @@ public class WandManager implements IWandTriggerManager {
                 entityItem.motionX = 0.0F;
                 entityItem.motionZ = 0.0F;
                 world.spawnEntityInWorld(entityItem);
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(x, y, z, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
                 world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
                 return true;
             }
@@ -928,7 +928,7 @@ public class WandManager implements IWandTriggerManager {
                             for (int aa = -1; aa <= 1; ++aa) {
                                 for (int bb = 0; bb <= 1; ++bb) {
                                     for (int cc = -1; cc <= 1; ++cc) {
-                                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(x + a + aa, y + b + bb, z + c + cc, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x + a, y + b, z + c, 32.0F));
+                                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(x + a + aa, y + b + bb, z + c + cc, -9999), new NetworkRegistry.TargetPoint(world.dimension(), x + a, y + b, z + c, 32.0F));
                                     }
                                 }
                             }

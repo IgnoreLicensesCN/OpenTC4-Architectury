@@ -15,10 +15,11 @@ public class PacketSyncScannedItemsS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_scanned_items";
     public static MessageType messageType;
 
-    public final List<String> data;
+    public List<String> data;
 
     // ------------------ 构造 ------------------
 
+    public PacketSyncScannedItemsS2C(){}
     /**
      * 解码用构造
      */

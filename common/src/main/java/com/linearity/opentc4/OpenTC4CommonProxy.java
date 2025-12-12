@@ -14,4 +14,6 @@ public class OpenTC4CommonProxy {
     public int getLocalPlayerTicks(){
         throw new RuntimeException("client only!");
     }
+
+
 }

@@ -62,7 +62,7 @@ public class GuiResearchBrowser extends GuiScreen {
     public static int lastY = -6;
     private GuiButton button;
     private final LinkedList<ResearchItem> research = new LinkedList<>();
-    public static HashMap<String, ArrayList<String>> completedResearch = new HashMap<>();
+    public static Map<String, List<String>> completedResearch = new HashMap<>();
     public static ArrayList<String> highlightedItem = new ArrayList<>();
     private static String selectedCategory = null;
     private final FontRenderer galFontRenderer;

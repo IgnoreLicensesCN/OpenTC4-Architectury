@@ -117,7 +117,7 @@ public class Config {
     public static int notificationDelay = 5000;
     public static int notificationMax = 15;
     public static boolean glowyTaint = true;
-    public static int researchDifficulty = 0;
+    public static byte researchDifficulty = 0;
     public static int aspectTotalCap = 100;
     public static int golemDelay = 5;
     public static int golemIgnoreDelay = 10000;

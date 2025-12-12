@@ -7,6 +7,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EntityThaumcraftBoss extends EntityMob implements IBossDisplayData {
+public class EntityThaumcraftBoss extends Monster implements IBossDisplayData {
    HashMap<Integer,Integer> aggro = new HashMap<>();
    int spawnTimer = 0;
 

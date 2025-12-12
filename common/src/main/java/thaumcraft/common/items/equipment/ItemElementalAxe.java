@@ -12,13 +12,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntityFollowingItem;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockBubble;
+import thaumcraft.common.lib.network.fx.PacketFXBlockBubbleS2C;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
@@ -137,7 +135,7 @@ public class ItemElementalAxe extends ItemAxe implements IRepairable {
         if (!player.isSneaking() && Utils.isWoodLog(world, x, y, z)) {
             if (Platform.getEnvironment() != Env.CLIENT) {
                 BlockUtils.breakFurthestBlock(world, x, y, z, bi, player, true, 10);
-                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockBubble(x, y, z, (new Color(0.33F, 0.33F, 1.0F)).getRGB()), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
+                PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockBubbleS2C(x, y, z, (new Color(0.33F, 0.33F, 1.0F)).getRGB()), new NetworkRegistry.TargetPoint(world.dimension(), x, y, z, 32.0F));
                 world.playSoundEffect(x, y, z, "thaumcraft:bubble", 0.15F, 1.0F);
             }
 

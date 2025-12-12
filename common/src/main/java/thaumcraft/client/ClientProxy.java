@@ -165,7 +165,7 @@ public class ClientProxy extends CommonProxy {
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemJarFilled, new ItemJarFilledRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemJarNode, new ItemJarNodeRenderer());
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ConfigBlocks.blockAiry), new ItemNodeRenderer());
-      MinecraftForgeClient.registerItemRenderer(ThaumcraftItems.THAUMOMETER, new ItemThaumometerRenderer());
+//      MinecraftForgeClient.registerItemRenderer(ThaumcraftItems.THAUMOMETER, new ItemThaumometerRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.WandCastingItem, new ItemWandRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemTrunkSpawner, new ItemTrunkSpawnerRenderer());
       MinecraftForgeClient.registerItemRenderer(ConfigItems.itemBowBone, new ItemBowBoneRenderer());

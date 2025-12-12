@@ -17,11 +17,12 @@ import thaumcraft.common.tiles.TileArcaneBore;
 
 public class PacketMiscEventS2C  extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":misc_event";
-    private final short type;
+    private short type;
     public static final short WARP_EVENT = 0;
     public static final short MIST_EVENT = 1;
     public static final short MIST_EVENT_SHORT = 2;
 
+    public PacketMiscEventS2C(){}
     public PacketMiscEventS2C(short type){
         this.type = type;
     }

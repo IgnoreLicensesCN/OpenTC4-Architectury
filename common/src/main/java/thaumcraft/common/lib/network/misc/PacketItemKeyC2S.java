@@ -21,10 +21,11 @@ public class PacketItemKeyC2S extends BaseC2SMessage {
 
     public static MessageType messageType;
 
-    private final ResourceKey<Level> dim;
-    private final byte key;
-    private final int hand; // 0 = OFF_HAND, 1 = MAIN_HAND
+    private ResourceKey<Level> dim;
+    private byte key;
+    private int hand; // 0 = OFF_HAND, 1 = MAIN_HAND
 
+    public PacketItemKeyC2S(){}
     public PacketItemKeyC2S(ResourceKey<Level> dim, int key, int hand) {
         this.dim = dim;
         this.key = (byte) key;

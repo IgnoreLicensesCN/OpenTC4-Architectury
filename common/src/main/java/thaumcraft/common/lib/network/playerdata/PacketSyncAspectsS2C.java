@@ -17,14 +17,14 @@ public class PacketSyncAspectsS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_aspects";
     public static MessageType messageType;
 
-    public final List<AspectAmount> data;
+    public List<AspectAmount> data;
 
     // ---------------- 内部类，封装 Aspect+数量 ----------------
     public record AspectAmount(String tag, short amount) {
     }
 
     // ---------------- 构造 ----------------
-
+    public PacketSyncAspectsS2C(){}
     /**
      * 服务端发送用
      */

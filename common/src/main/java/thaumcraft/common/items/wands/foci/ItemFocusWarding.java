@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
@@ -25,7 +24,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.tiles.TileWarded;
 
 import java.util.ArrayList;
@@ -111,7 +110,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
                      tw.light = (byte)ll;
                      tw.owner = player.getCommandSenderName().hashCode();
                      world.markBlockForUpdate(c.x, c.y, c.z);
-                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
+                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
                   }
                }
             }
@@ -127,7 +126,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
                      if (tw2.owner == player.getCommandSenderName().hashCode()) {
                         world.setBlock(c.x, c.y, c.z, tw2.block, tw2.blockMd, 3);
                         world.markBlockForUpdate(c.x, c.y, c.z);
-                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
+                        PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(c.x, c.y, c.z, 16556032), new NetworkRegistry.TargetPoint(world.dimension(), c.x, c.y, c.z, 32.0F));
                      }
                   }
                }

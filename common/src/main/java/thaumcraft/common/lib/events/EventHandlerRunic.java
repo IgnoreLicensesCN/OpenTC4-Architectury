@@ -16,127 +16,122 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IWarpingGear;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.armor.ItemFortressArmor;
-import thaumcraft.common.items.baubles.ItemAmuletRunic;
-import thaumcraft.common.items.baubles.ItemGirdleRunic;
-import thaumcraft.common.items.baubles.ItemRingRunic;
-import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXShield;
+import thaumcraft.common.lib.network.fx.PacketFXShieldS2C;
 import thaumcraft.common.lib.network.playerdata.PacketRunicCharge;
 import thaumcraft.common.lib.utils.EntityUtils;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 //TODO
 public class EventHandlerRunic {
-   public HashMap<String,Integer> runicCharge = new HashMap<>();
-   private HashMap<String,Long> nextCycle = new HashMap<>();
-   private HashMap<String,Integer> lastCharge = new HashMap<>();
-   public HashMap<String,Integer[]> runicInfo = new HashMap<>();
-   private HashMap<String,Long> upgradeCooldown = new HashMap<>();
-   public boolean isDirty = true;
-   private int rechargeDelay = 0;
+   public static Map<String,Integer> runicCharge = new ConcurrentHashMap<>();
+   public static Map<String,Long> nextCycle = new ConcurrentHashMap<>();
+   public static Map<String,Integer> lastCharge = new ConcurrentHashMap<>();
+   public static Map<String,Integer[]> runicInfo = new ConcurrentHashMap<>();
+   public static Map<String,Long> upgradeCooldown = new ConcurrentHashMap<>();
+   public static boolean isDirty = true;
+   public static int rechargeDelay = 0;
 
-   @SubscribeEvent
-   public void livingTick(LivingEvent.LivingUpdateEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT && event.entity instanceof Player) {
-         Player player = (Player)event.entity;
-         if (this.isDirty || player.ticksExisted % 40 == 0) {
-            final int[] max = {0};
-            final int[] charged = {0};
-            final int[] kinetic = {0};
-            final int[] healing = {0};
-            final int[] emergency = {0};
-            this.isDirty = false;
-
-            for(int a = 0; a < 4; ++a) {
-               if (player.inventory.armorItemInSlot(a) != null && player.inventory.armorItemInSlot(a).getItem() instanceof IRunicArmor) {
-                  int amount = getFinalCharge(player.inventory.armorItemInSlot(a));
-                  max[0] += amount;
-               }
-            }
-
-            forEachBauble(player,(a,stack,item) -> {
-               if (item instanceof IRunicArmor){
-                  IRunicArmor armor = (IRunicArmor)stack.getItem();
-                  int amount = getFinalCharge(stack);
-                  if (item instanceof ItemRingRunic) {
-                     switch (stack.getDamageValue()) {
-                        case 2:
-                           ++charged[0];
-                           break;
-                        case 3:
-                           ++healing[0];
-                     }
-                  } else if (item instanceof ItemAmuletRunic && stack.getDamageValue() == 1) {
-                     ++emergency[0];
-                  } else if (item instanceof ItemGirdleRunic && stack.getDamageValue() == 1) {
-                     ++kinetic[0];
-                  }
-
-                  max[0] += amount;
-               }
-               return false;
-            });
-
-            if (max[0] > 0) {
-               this.runicInfo.put(player.getEntityId(), new Integer[]{max[0], charged[0], kinetic[0], healing[0], emergency[0]});
-               if (this.runicCharge.containsKey(player.getEntityId())) {
-                  int charge = this.runicCharge.get(player.getEntityId());
-                  if (charge > max[0]) {
-                     this.runicCharge.put(player.getEntityId(), max[0]);
-                     PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) max[0], max[0]), (ServerPlayer)player);
-                  }
-               }
-            } else {
-               this.runicInfo.remove(player.getEntityId());
-               this.runicCharge.put(player.getEntityId(), 0);
-               PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) 0, 0), (ServerPlayer)player);
-            }
-         }
-
-         if (this.rechargeDelay > 0) {
-            --this.rechargeDelay;
-         } else if (this.runicInfo.containsKey(player.getEntityId())) {
-            if (!this.lastCharge.containsKey(player.getEntityId())) {
-               this.lastCharge.put(player.getEntityId(), -1);
-            }
-
-            if (!this.runicCharge.containsKey(player.getEntityId())) {
-               this.runicCharge.put(player.getEntityId(), 0);
-            }
-
-            if (!this.nextCycle.containsKey(player.getEntityId())) {
-               this.nextCycle.put(player.getEntityId(), 0L);
-            }
-
-            long time = System.currentTimeMillis();
-            int charge = this.runicCharge.get(player.getEntityId());
-            if (charge > ((Integer[])this.runicInfo.get(player.getEntityId()))[0]) {
-               charge = ((Integer[])this.runicInfo.get(player.getEntityId()))[0];
-            } else if (charge < ((Integer[])this.runicInfo.get(player.getEntityId()))[0] && this.nextCycle.get(player.getEntityId()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).add(Aspect.AIR, Config.shieldCost).add(Aspect.EARTH, Config.shieldCost))) {
-               long interval = Config.shieldRecharge - ((Integer[])this.runicInfo.get(player.getEntityId()))[1] * 500;
-               this.nextCycle.put(player.getEntityId(), time + interval);
-               ++charge;
-               this.runicCharge.put(player.getEntityId(), charge);
-            }
-
-            if (this.lastCharge.get(player.getEntityId()) != charge) {
-               PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
-               this.lastCharge.put(player.getEntityId(), charge);
-            }
-         }
-      }
-
-   }
+//   @SubscribeEvent
+//   public void livingTick(LivingEvent.LivingUpdateEvent event) {
+//      if (Platform.getEnvironment() != Env.CLIENT && event.entity instanceof Player) {
+//         Player player = (Player)event.entity;
+//         if (this.isDirty || player.ticksExisted % 40 == 0) {
+//            final int[] max = {0};
+//            final int[] charged = {0};
+//            final int[] kinetic = {0};
+//            final int[] healing = {0};
+//            final int[] emergency = {0};
+//            this.isDirty = false;
+//
+//            for(int a = 0; a < 4; ++a) {
+//               if (player.inventory.armorItemInSlot(a) != null && player.inventory.armorItemInSlot(a).getItem() instanceof IRunicArmor) {
+//                  int amount = getFinalCharge(player.inventory.armorItemInSlot(a));
+//                  max[0] += amount;
+//               }
+//            }
+//
+//            forEachBauble(player,(a,stack,item) -> {
+//               if (item instanceof IRunicArmor){
+//                  IRunicArmor armor = (IRunicArmor)stack.getItem();
+//                  int amount = getFinalCharge(stack);
+//                  if (item instanceof ItemRingRunic) {
+//                     switch (stack.getDamageValue()) {
+//                        case 2:
+//                           ++charged[0];
+//                           break;
+//                        case 3:
+//                           ++healing[0];
+//                     }
+//                  } else if (item instanceof ItemAmuletRunic && stack.getDamageValue() == 1) {
+//                     ++emergency[0];
+//                  } else if (item instanceof ItemGirdleRunic && stack.getDamageValue() == 1) {
+//                     ++kinetic[0];
+//                  }
+//
+//                  max[0] += amount;
+//               }
+//               return false;
+//            });
+//
+//            if (max[0] > 0) {
+//               this.runicInfo.put(player.getEntityId(), new Integer[]{max[0], charged[0], kinetic[0], healing[0], emergency[0]});
+//               if (this.runicCharge.containsKey(player.getEntityId())) {
+//                  int charge = this.runicCharge.get(player.getEntityId());
+//                  if (charge > max[0]) {
+//                     this.runicCharge.put(player.getEntityId(), max[0]);
+//                     PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) max[0], max[0]), (ServerPlayer)player);
+//                  }
+//               }
+//            } else {
+//               this.runicInfo.remove(player.getEntityId());
+//               this.runicCharge.put(player.getEntityId(), 0);
+//               PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) 0, 0), (ServerPlayer)player);
+//            }
+//         }
+//
+//         if (this.rechargeDelay > 0) {
+//            --this.rechargeDelay;
+//         } else if (this.runicInfo.containsKey(player.getEntityId())) {
+//            if (!this.lastCharge.containsKey(player.getEntityId())) {
+//               this.lastCharge.put(player.getEntityId(), -1);
+//            }
+//
+//            if (!this.runicCharge.containsKey(player.getEntityId())) {
+//               this.runicCharge.put(player.getEntityId(), 0);
+//            }
+//
+//            if (!this.nextCycle.containsKey(player.getEntityId())) {
+//               this.nextCycle.put(player.getEntityId(), 0L);
+//            }
+//
+//            long time = System.currentTimeMillis();
+//            int charge = this.runicCharge.get(player.getEntityId());
+//            if (charge > ((Integer[])this.runicInfo.get(player.getEntityId()))[0]) {
+//               charge = ((Integer[])this.runicInfo.get(player.getEntityId()))[0];
+//            } else if (charge < ((Integer[])this.runicInfo.get(player.getEntityId()))[0] && this.nextCycle.get(player.getEntityId()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).add(Aspect.AIR, Config.shieldCost).add(Aspect.EARTH, Config.shieldCost))) {
+//               long interval = Config.shieldRecharge - ((Integer[])this.runicInfo.get(player.getEntityId()))[1] * 500;
+//               this.nextCycle.put(player.getEntityId(), time + interval);
+//               ++charge;
+//               this.runicCharge.put(player.getEntityId(), charge);
+//            }
+//
+//            if (this.lastCharge.get(player.getEntityId()) != charge) {
+//               PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
+//               this.lastCharge.put(player.getEntityId(), charge);
+//            }
+//         }
+//      }
+//
+//   }
 
    @SubscribeEvent
    public void entityHurt(LivingHurtEvent event) {
@@ -180,7 +175,7 @@ public class EventHandlerRunic {
                target = -3;
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
             int charge = this.runicCharge.get(player.getEntityId());
             if ((float)charge > event.ammount) {
                charge = (int)((float)charge - event.ammount);
@@ -242,7 +237,7 @@ public class EventHandlerRunic {
                target = -3;
             }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShield(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
             event.entity.level().playSoundEffect(event.entity.posX, event.entity.posY, event.entity.posZ, "thaumcraft:runic_shield_effect", 0.66F, 1.1F + event.entity.getRandom().nextFloat() * 0.1F);
          } else if (t >= 0 && ChampionModifier.mods[t].type == 2 && event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
@@ -260,6 +255,7 @@ public class EventHandlerRunic {
 
    }
 
+   //TODO:Migrate to item
    @SubscribeEvent
    public void tooltipEvent(ItemTooltipEvent event) {
       int charge = getFinalCharge(event.itemStack);
@@ -283,17 +279,7 @@ public class EventHandlerRunic {
          if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
             base += stack.stackTagCompound.getByte("RS.HARDEN");
          }
-
          return base;
-      }
-   }
-
-   public static int getFinalWarp(ItemStack stack, Player player) {
-      if (stack != null && stack.getItem() instanceof IWarpingGear) {
-         IWarpingGear armor = (IWarpingGear)stack.getItem();
-         return armor.getWarp(stack, player);
-      } else {
-         return 0;
       }
    }
 
@@ -307,6 +293,15 @@ public class EventHandlerRunic {
          }
 
          return base;
+      }
+   }
+
+   public static int getFinalWarp(ItemStack stack, Player player) {
+      if (stack != null && stack.getItem() instanceof IWarpingGear) {
+         IWarpingGear armor = (IWarpingGear)stack.getItem();
+         return armor.getWarp(stack, player);
+      } else {
+         return 0;
       }
    }
 }

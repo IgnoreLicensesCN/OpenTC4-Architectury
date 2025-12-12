@@ -40,7 +40,17 @@ public class ClientFXUtils {
     public static boolean checkPlatformClient() {
         return Platform.getEnvironment() == Env.CLIENT;
     }
+    public static void arcLightning(ClientLevel world, double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
+        if (!checkPlatformClient()){return;}
+        FXSparkle ef2 = new FXSparkle(world, tx, ty, tz, tx, ty, tz, 3.0F, 6, 2);
+        ef2.setGravity(0.0F);
+        ef2.setNoClip(true);
+        ef2.setRBGColorF(r, g, b);
+        Minecraft.getInstance().particleEngine.add(ef2);
 
+        FXArc efa = new FXArc(world, x, y, z, tx, ty, tz, r, g, b, h);
+        Minecraft.getInstance().particleEngine.add(efa);
+    }
 
     public static void blockSparkle(ClientLevel world, int x, int y, int z, int c, int count) {
         if (!checkPlatformClient()) {

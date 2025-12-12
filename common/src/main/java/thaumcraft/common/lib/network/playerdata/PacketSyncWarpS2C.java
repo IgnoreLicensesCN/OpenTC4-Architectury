@@ -12,9 +12,10 @@ public class PacketSyncWarpS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_warp";
     public static MessageType messageType;
 
-    public final int data;
-    public final byte type;
+    public int data;
+    public byte type;
 
+    public PacketSyncWarpS2C(){}
     /**
      * 解码用构造
      */
