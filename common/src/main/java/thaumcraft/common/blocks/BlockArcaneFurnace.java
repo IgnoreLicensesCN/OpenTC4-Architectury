@@ -21,6 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.BlockUtils;

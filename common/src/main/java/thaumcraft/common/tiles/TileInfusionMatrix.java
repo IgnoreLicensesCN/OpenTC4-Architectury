@@ -757,7 +757,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
             }
 
             ++this.craftCount;
-            Thaumcraft.blockRunes(this.level(), this.xCoord, this.yCoord - 2, this.zCoord, 0.5F + this.level().rand.nextFloat() * 0.2F, 0.1F, 0.7F + this.level().rand.nextFloat() * 0.3F, 25, -0.03F);
+            ClientFXUtils.blockRunes(this.level(), this.xCoord, this.yCoord - 2, this.zCoord, 0.5F + this.level().rand.nextFloat() * 0.2F, 0.1F, 0.7F + this.level().rand.nextFloat() * 0.3F, 25, -0.03F);
         } else if (this.craftCount > 0) {
             this.craftCount -= 2;
             if (this.craftCount < 0) {

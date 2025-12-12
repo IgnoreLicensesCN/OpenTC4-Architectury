@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -293,18 +294,18 @@ public class BlockCosmeticSolid extends Block {
          if (md == 3) {
             if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
                for(int a = 0; a < Thaumcraft.proxy.particleCount(2); ++a) {
-                  Thaumcraft.blockRunes(world, x, (float)y + 0.7F, z, 0.2F + world.getRandom().nextFloat() * 0.4F, world.getRandom().nextFloat() * 0.3F, 0.8F + world.getRandom().nextFloat() * 0.2F, 20, -0.02F);
+                  ClientFXUtils.blockRunes(world, x, (float)y + 0.7F, z, 0.2F + world.getRandom().nextFloat() * 0.4F, world.getRandom().nextFloat() * 0.3F, 0.8F + world.getRandom().nextFloat() * 0.2F, 20, -0.02F);
                }
             } else if (world.getBlock(x, y + 1, z) != ConfigBlocks.blockAiry && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z) || world.getBlock(x, y + 2, z) != ConfigBlocks.blockAiry && world.getBlock(x, y + 1, z).getBlocksMovement(world, x, y + 1, z)) {
                for(int a = 0; a < Thaumcraft.proxy.particleCount(3); ++a) {
-                  Thaumcraft.blockRunes(world, x, (float)y + 0.7F, z, 0.9F + world.getRandom().nextFloat() * 0.1F, world.getRandom().nextFloat() * 0.3F, world.getRandom().nextFloat() * 0.3F, 24, -0.02F);
+                  ClientFXUtils.blockRunes(world, x, (float)y + 0.7F, z, 0.9F + world.getRandom().nextFloat() * 0.1F, world.getRandom().nextFloat() * 0.3F, world.getRandom().nextFloat() * 0.3F, 24, -0.02F);
                }
             } else {
                List<Entity> list = (List<Entity>)world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(1.0F, 1.0F, 1.0F));
                if (!list.isEmpty()) {
                   for(Entity entity : list) {
                      if (entity instanceof EntityLivingBase && !(entity instanceof Player)) {
-                        Thaumcraft.blockRunes(world, x, (float)y + 0.6F + world.getRandom().nextFloat() * Math.max(0.8F, entity.getEyeHeight()), z, 0.6F + world.getRandom().nextFloat() * 0.4F, 0.0F, 0.3F + world.getRandom().nextFloat() * 0.7F, 20, 0.0F);
+                        ClientFXUtils.blockRunes(world, x, (float)y + 0.6F + world.getRandom().nextFloat() * Math.max(0.8F, entity.getEyeHeight()), z, 0.6F + world.getRandom().nextFloat() * 0.4F, 0.0F, 0.3F + world.getRandom().nextFloat() * 0.7F, 20, 0.0F);
                         break;
                      }
                   }

@@ -279,7 +279,7 @@ public class BlockEldritch extends BlockContainer {
          int y = j + r.nextInt(2) - r.nextInt(2);
          int z = k + r.nextInt(2) - r.nextInt(2);
          if (w.isAirBlock(x, y, z)) {
-            Thaumcraft.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
+            ClientFXUtils.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
          }
       }
 
