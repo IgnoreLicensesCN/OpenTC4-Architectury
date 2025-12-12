@@ -228,7 +228,7 @@ public class ConfigBlocks {
       GameRegistry.registerTileEntity(TileArcaneLampFertility.class, "TileArcaneLampFertility");
       GameRegistry.registerTileEntity(TileOwned.class, "TileOwned");
       GameRegistry.registerTileEntity(TileLifter.class, "TileLifter");
-      GameRegistry.registerTileEntity(TileNitor.class, "TileNitor");
+//      GameRegistry.registerTileEntity(TileNitor.class, "TileNitor");
       GameRegistry.registerTileEntity(TileNode.class, "TileNode");
       GameRegistry.registerTileEntity(TileCrystal.class, "TileCrystal");
       GameRegistry.registerTileEntity(TileEldritchCrystal.class, "TileEldritchCrystal");
