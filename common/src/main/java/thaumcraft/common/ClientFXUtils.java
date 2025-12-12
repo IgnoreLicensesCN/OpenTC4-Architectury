@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.migrated.particles.*;
@@ -769,6 +770,13 @@ public class ClientFXUtils {
         );
     }
 
+    public static void blockRunes(Level world, double x, double y, double z, float r, float g, float b, int dur, float grav) {
+        if (!(world instanceof ClientLevel clientLevel)) {return;}
+        FXBlockRunes fb = new FXBlockRunes(clientLevel, x + (double)0.5F, y + (double)0.5F, z + (double)0.5F, r, g, b, dur);
+        fb.setGravity(grav);
+        Minecraft.getInstance().particleEngine.add(fb);
+
+    }
     public static void blockRunes(ClientLevel world, double x, double y, double z, float r, float g, float b, int dur, float grav) {
         if (!checkPlatformClient()) {
             return;

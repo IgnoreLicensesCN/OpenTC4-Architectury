@@ -61,7 +61,7 @@ public class ThaumometerItem extends Item {
       if (pointedEntity != null) {
          ScanResult sr = new ScanResult((byte)2, (Item) null, pointedEntity, "");
          if (ScanManager.isValidScanTarget(p, sr, "@")) {
-            Thaumcraft.blockRunes(world,
+            ClientFXUtils.blockRunes(world,
                     pointedEntity.getX() - (double)0.5F,
                     pointedEntity.getY() + (double)(pointedEntity.getEyeHeight() / 2.0F),
                     pointedEntity.getZ() - (double)0.5F, 0.3F + world.getRandom().nextFloat() * 0.7F,
@@ -82,7 +82,7 @@ public class ThaumometerItem extends Item {
                ScanResult sr = new ScanResult((byte)3, "", null, "NODE" + node.getId());
                if (ScanManager.isValidScanTarget(p, sr, "@")) {
 
-                  Thaumcraft.blockRunes(
+                  ClientFXUtils.blockRunes(
                           world,
                           pos.getX(), pos.getY() + 0.25, pos.getZ(),
                           0.3F + world.getRandom().nextFloat() * 0.7F,
@@ -103,7 +103,7 @@ public class ThaumometerItem extends Item {
                ScanResult sr = null;
                sr = new ScanResult((byte)1, item, null, "");
                if (ScanManager.isValidScanTarget(p, sr, "@")) {
-                  Thaumcraft.blockRunes(world,
+                  ClientFXUtils.blockRunes(world,
                           pos.getX(),
                           pos.getY() + 0.25,
                           pos.getZ(),

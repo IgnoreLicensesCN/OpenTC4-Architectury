@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 
-public abstract class RecipeItemMatcher {
+public abstract class RecipeItemMatcher implements ReturnItemStackAfterConsume{
     public abstract boolean matches(@NotNull ItemStack stack);
 
     //you know what?
