@@ -15,21 +15,30 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItems;
 
 public class EntityAlumentum extends ThrowableItemProjectile {
    public static EntityType<EntityAlumentum> entityAlumentumType;
 
+   public EntityAlumentum(Level par1World){
+      this(ThaumcraftEntities.ALUMENTUM,par1World);
+   }
    public EntityAlumentum(EntityType<EntityAlumentum> type,Level par1World) {
       super(type,par1World);
    }
-
-   public EntityAlumentum(EntityType<EntityAlumentum> type,Level par1World, LivingEntity par2EntityLiving) {
-      super(type,par1World, par2EntityLiving);
+   public EntityAlumentum(LivingEntity par2EntityLiving, Level par1World){
+      this(ThaumcraftEntities.ALUMENTUM,par2EntityLiving,par1World);
+   }
+   public EntityAlumentum(EntityType<EntityAlumentum> type, LivingEntity par2EntityLiving,Level par1World) {
+      super(type,par2EntityLiving,par1World);
    }
 
-   public EntityAlumentum(EntityType<EntityAlumentum> type,Level par1World, double par2, double par4, double par6) {
-      super(type,par1World, par2, par4, par6);
+   public EntityAlumentum(Level par1World, double par2, double par4, double par6) {
+      this(ThaumcraftEntities.ALUMENTUM,par6, par2, par4, par1World);
+   }
+   public EntityAlumentum(EntityType<EntityAlumentum> type, double par2, double par4, double par6,Level par1World) {
+      super(type,par6, par2, par4, par1World);
    }
 
    @Override

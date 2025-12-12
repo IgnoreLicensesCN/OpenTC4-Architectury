@@ -227,33 +227,34 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public ItemStack onItemRightClick(ItemStack itemstack, World world, Player player) {
-      if (itemstack.getItemDamage() == 0) {
-         if (!player.capabilities.isCreativeMode) {
-            --itemstack.stackSize;
-         }
-
-         world.playSoundAtEntity(player, "random.bow", 0.3F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            world.spawnEntityInWorld(new EntityAlumentum(world, player));
-         }
-      } else if (itemstack.getItemDamage() == 9) {
-         if (!player.capabilities.isCreativeMode) {
-            --itemstack.stackSize;
-         }
-
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            for(Aspect a : Aspect.getPrimalAspects()) {
-               short q = (short)(world.getRandom().nextInt(2) + 1);
-               Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), a, q);
-               ResearchManager.scheduleSave(player);
-               PacketHandler.INSTANCE.sendTo(new PacketAspectPool(a.getTag(), q, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), a)), (ServerPlayer)player);
-            }
-         }
-      }
-
-      return itemstack;
-   }
+//   public ItemStack onItemRightClick(ItemStack itemstack, World world, Player player) {
+//      if (itemstack.getItemDamage() == 0) {
+//         if (!player.capabilities.isCreativeMode) {
+//            --itemstack.stackSize;
+//         }
+//
+//         world.playSoundAtEntity(player, "random.bow", 0.3F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            world.spawnEntityInWorld(new EntityAlumentum(world, player));
+//         }
+//      } else
+//      if (itemstack.getItemDamage() == 9) {
+//         if (!player.capabilities.isCreativeMode) {
+//            --itemstack.stackSize;
+//         }
+//
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            for(Aspect a : Aspect.getPrimalAspects()) {
+//               short q = (short)(world.getRandom().nextInt(2) + 1);
+//               Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), a, q);
+//               ResearchManager.scheduleSave(player);
+//               PacketHandler.INSTANCE.sendTo(new PacketAspectPool(a.getTag(), q, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), a)), (ServerPlayer)player);
+//            }
+//         }
+//      }
+//
+//      return itemstack;
+//   }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       AspectList aspects = this.getAspects(stack);

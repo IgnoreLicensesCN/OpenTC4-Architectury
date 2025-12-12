@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import thaumcraft.common.items.consumable.AlumentumItem;
+import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.relics.ThaumometerItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
@@ -25,7 +27,7 @@ public class ThaumcraftItems {
     public static final Item AMBER_GEM = Registry.SUPPLIER_AMBER_GEM.get();//itemResource:6
     public static final Item ENCHANTED_FABRIC = Registry.SUPPLIER_ENCHANTED_FABRIC.get();//itemResource:7
     public static final Item VIS_FILTER = Registry.SUPPLIER_VIS_FILTER.get();//itemResource:8
-    public static final Item KNOWLEDGE_FRAGMENT = Registry.SUPPLIER_KNOWLEDGE_FRAGMENT.get();//itemResource:9
+    public static final KnowledgeFragmentItem KNOWLEDGE_FRAGMENT = Registry.SUPPLIER_KNOWLEDGE_FRAGMENT.get();//itemResource:9
     public static final Item MIRRORED_GLASS = Registry.SUPPLIER_MIRRORED_GLASS.get();//itemResource:10
     public static final Item TAINTED_GOO = Registry.SUPPLIER_TAINTED_GOO.get();//itemResource:11
     public static final Item TAINT_TENDRIL = Registry.SUPPLIER_TAINT_TENDRIL.get();//itemResource:12
@@ -91,7 +93,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<Item> SUPPLIER_AMBER_GEM = ITEMS.register("amber_gem", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_ENCHANTED_FABRIC = ITEMS.register("enchanted_fabric", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_VIS_FILTER = ITEMS.register("vis_filter", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_KNOWLEDGE_FRAGMENT = ITEMS.register("knowledge_fragment", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<KnowledgeFragmentItem> SUPPLIER_KNOWLEDGE_FRAGMENT = ITEMS.register("knowledge_fragment", KnowledgeFragmentItem::new);
         public static final RegistrySupplier<Item> SUPPLIER_MIRRORED_GLASS = ITEMS.register("mirrored_glass", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_TAINTED_GOO = ITEMS.register("tainted_goo", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register("taint_tendril", () -> new Item(new Item.Properties()));
