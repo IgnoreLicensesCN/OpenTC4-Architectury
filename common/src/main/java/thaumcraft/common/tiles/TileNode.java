@@ -35,7 +35,7 @@ import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockZap;
+import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -609,7 +609,7 @@ public class TileNode extends TileThaumcraft implements INode, IWandable {
                               this.level().markBlockForUpdate(this.xCoord + x, this.yCoord + y, this.zCoord + z);
                               te.markDirty();
                               change = true;
-                              PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZap((float)(this.xCoord + x) + 0.5F, (float)(this.yCoord + y) + 0.5F, (float)(this.zCoord + z) + 0.5F, (float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
+                              PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockZapS2C((float)(this.xCoord + x) + 0.5F, (float)(this.yCoord + y) + 0.5F, (float)(this.zCoord + z) + 0.5F, (float)this.xCoord + 0.5F, (float)this.yCoord + 0.5F, (float)this.zCoord + 0.5F), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord, this.yCoord, this.zCoord, 32.0F));
                            }
                         }
                      }

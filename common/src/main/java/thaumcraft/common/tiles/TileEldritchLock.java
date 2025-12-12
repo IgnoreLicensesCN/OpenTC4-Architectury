@@ -18,7 +18,7 @@ import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
 import thaumcraft.common.entities.monster.boss.EntityTaintacleGiant;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
@@ -104,7 +104,7 @@ public class TileEldritchLock extends TileThaumcraft {
             for(int b = -2; b <= 2; ++b) {
                for(int c = -2; c <= 2; ++c) {
                   if (this.level().getBlock(this.xCoord + a, this.yCoord + b, this.zCoord + c) == ConfigBlocks.blockAiry) {
-                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(this.xCoord + a, this.yCoord + b, this.zCoord + c, 4194368), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord + a, this.yCoord + b, this.zCoord + c, 32.0F));
+                     PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(this.xCoord + a, this.yCoord + b, this.zCoord + c, 4194368), new NetworkRegistry.TargetPoint(this.level().dimension(), this.xCoord + a, this.yCoord + b, this.zCoord + c, 32.0F));
                      this.level().setBlockToAir(this.xCoord + a, this.yCoord + b, this.zCoord + c);
                   }
                }

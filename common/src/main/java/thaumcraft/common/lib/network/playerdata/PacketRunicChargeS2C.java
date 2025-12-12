@@ -12,10 +12,11 @@ public class PacketRunicChargeS2C extends BaseS2CMessage {
 
     public static MessageType messageType;
 
-    public final String playerName;
-    public final short amount;
-    public final short max;
+    public String playerName;
+    public short amount;
+    public short max;
 
+    public PacketRunicChargeS2C(){}
     // 构造
     public PacketRunicChargeS2C(String playerName, short amount, short max) {
         this.playerName = playerName;

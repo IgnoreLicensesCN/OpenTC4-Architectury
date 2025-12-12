@@ -22,4 +22,5 @@ Maybe i should impl items and game contents then back to rendering.</p>
 <p>2025/12/8 fx particles and chatgpt becomes full after using for several times</p>
 <p>2025/12/9 getting faster in fx</p>
 <p>2025/12/10 finished fx...maybe</p>
+<p>2025/12/11 start using git,maybe i wont write this often.</p>
 

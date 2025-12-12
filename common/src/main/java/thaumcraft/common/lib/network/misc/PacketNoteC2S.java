@@ -20,10 +20,10 @@ public class PacketNoteC2S extends BaseC2SMessage {
 
     public static MessageType messageType;
 
-    private final BlockPos pos;
-    private final ResourceKey<Level> dim;
-    private final byte note; // -1 = 请求服务器返回
-
+    private BlockPos pos;
+    private ResourceKey<Level> dim;
+    private byte note; // -1 = 请求服务器返回
+    public PacketNoteC2S(){}
     public PacketNoteC2S(BlockPos pos, ResourceKey<Level> dim) {
         this(pos, dim, (byte) -1);
     }

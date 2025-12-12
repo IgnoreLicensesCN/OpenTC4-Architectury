@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "LivingEntityClientMixin"
   ],
   "mixins": [
     "BiomeMixin",
@@ -14,7 +15,11 @@
     "EntityTypeMixin",
     "ItemStackMixin",
     "LivingEntityAccessor",
+    "LivingEntityMixin",
+    "MobMixin",
+    "MonsterMixin",
     "ServerGamePacketListenerImplAccessor",
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

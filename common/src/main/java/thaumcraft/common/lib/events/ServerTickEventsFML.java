@@ -16,13 +16,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import org.apache.logging.log4j.Level;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.lib.world.ChunkLoc;
@@ -148,7 +147,7 @@ public class ServerTickEventsFML {
 
                             world.setBlock(vs.x, vs.y, vs.z, Block.getBlockFromItem(vs.target.getItem()), vs.target.getDamageValue(), 3);
                             Block.getBlockFromItem(vs.target.getItem()).onBlockPlacedBy(world, vs.x, vs.y, vs.z, vs.player, vs.target);
-                            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(vs.x, vs.y, vs.z, 12632319), new NetworkRegistry.TargetPoint(world.dimension(), vs.x, vs.y, vs.z, 32.0F));
+                            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(vs.x, vs.y, vs.z, 12632319), new NetworkRegistry.TargetPoint(world.dimension(), vs.x, vs.y, vs.z, 32.0F));
                             world.playAuxSFX(2001, vs.x, vs.y, vs.z, Block.getIdFromBlock(vs.bSource) + (vs.mSource << 12));
                             if (vs.lifespan > 0) {
                                 for (int xx = -1; xx <= 1; ++xx) {

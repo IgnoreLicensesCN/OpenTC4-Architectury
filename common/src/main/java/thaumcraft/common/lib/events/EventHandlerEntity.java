@@ -25,37 +25,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SharedMonsterAttributes;
-import net.minecraft.world.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.world.entity.item.EntityEnderPearl;
-import net.minecraft.world.entity.item.EntityItem;
-import net.minecraft.world.entity.item.EntityXPOrb;
-import net.minecraft.world.entity.monster.EntityCreeper;
-import net.minecraft.world.entity.monster.EntityMob;
-import net.minecraft.world.entity.monster.EntityZombie;
-import net.minecraft.world.entity.passive.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.InventoryPlayer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.world.item.ItemFood;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.*;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.aspects.Aspect;
@@ -224,75 +201,75 @@ public class EventHandlerEntity {
                prevStep.remove(playerName);
             }
          });
-         EntityEvent.ADD.register((entity, world) -> {
-            if (entity instanceof LivingEntity livingEntity
-                    && !livingEntity.isDeadOrDying()
-            ) {
-                var entityLevel = livingEntity.level();// i think it should be the same with world
-                AttributeInstance championModInstance = livingEntity.getAttribute(EntityUtils.CHAMPION_MOD);
-                if (championModInstance != null) {
-                    if (championModInstance.getBaseValue() == CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED) {
-                        int championChance = world.getRandom().nextInt(100);
-                        if (world.getDifficulty() == Difficulty.EASY || !Config.championMobs) {
-                            championChance += 2;
-                        }
-
-                        if (world.getDifficulty() == Difficulty.HARD) {
-                            championChance -= Config.championMobs ? 2 : 0;
-                        }
-
-                        if (world.dimension() == Config.dimensionOuter) {
-                            championChance -= 3;
-                        }
-
-                        Holder<Biome> biomeHolder = entityLevel.getBiome(
-                                livingEntity.blockPosition()
-                        );
-                       AtomicReference<ResourceKey<Biome>> biomeResKeyRef = new AtomicReference<>();
-                       biomeHolder.unwrapKey().ifPresent(biomeResKeyRef::set);
-                       if (biomeResKeyRef.get() == null) {
-                          biomeResKeyRef.set(BiomeWithTypes.getBiomeResKey(biomeHolder.value()));
-                       }
-                       Collection<BiomeType> biomeTypes = BiomeWithTypes.getBiomeTypes(biomeResKeyRef.get());
-
-                        if (biomeTypes.contains(BiomeType.SPOOKY)
-                                || biomeTypes.contains(BiomeType.NETHER)
-                                || biomeTypes.contains(BiomeType.END)) {
-                            championChance -= Config.championMobs ? 2 : 1;
-                        }
-
-                        if (isDangerousLocation(entityLevel, livingEntity.blockPosition())){
-                            championChance -= Config.championMobs ? 10 : 3;
-                        }
-
-                        int cc = 0;
-                        boolean whitelisted = false;
-
-                        for (Class<?> clazz : ConfigEntities.championModWhitelist.keySet()) {
-                            if (clazz.isAssignableFrom(livingEntity.getClass())) {
-                                whitelisted = true;
-                                if (Config.championMobs || livingEntity instanceof EntityThaumcraftBoss) {
-                                    cc = Math.max(cc, ConfigEntities.championModWhitelist.get(clazz) - 1);
-                                }
-                            }
-                        }
-
-                        championChance -= cc;
-                        AttributeInstance maxHealthAttr = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-                        if (whitelisted
-                                && championChance <= 0
-                                && maxHealthAttr != null
-                                && maxHealthAttr.getBaseValue() >= (double) 10.0F
-                        ) {
-                            EntityUtils.makeChampion(livingEntity, false);
-                        } else {
-                           championModInstance.setBaseValue(CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED);
-                        }
-                    }
-                }
-            }
-            return EventResult.pass();
-         });
+//         EntityEvent.ADD.register((entity, world) -> {
+//            if (entity instanceof LivingEntity livingEntity
+//                    && !livingEntity.isDeadOrDying()
+//            ) {
+//                var entityLevel = livingEntity.level();// i think it should be the same with world
+//                AttributeInstance championModInstance = livingEntity.getAttribute(EntityUtils.CHAMPION_MOD);
+//                if (championModInstance != null) {
+//                    if (championModInstance.getBaseValue() == CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED) {
+//                        int championChance = world.getRandom().nextInt(100);
+//                        if (world.getDifficulty() == Difficulty.EASY || !Config.championMobs) {
+//                            championChance += 2;
+//                        }
+//
+//                        if (world.getDifficulty() == Difficulty.HARD) {
+//                            championChance -= Config.championMobs ? 2 : 0;
+//                        }
+//
+//                        if (world.dimension() == Config.dimensionOuter) {
+//                            championChance -= 3;
+//                        }
+//
+//                        Holder<Biome> biomeHolder = entityLevel.getBiome(
+//                                livingEntity.blockPosition()
+//                        );
+//                       AtomicReference<ResourceKey<Biome>> biomeResKeyRef = new AtomicReference<>();
+//                       biomeHolder.unwrapKey().ifPresent(biomeResKeyRef::set);
+//                       if (biomeResKeyRef.get() == null) {
+//                          biomeResKeyRef.set(BiomeWithTypes.getBiomeResKey(biomeHolder.value()));
+//                       }
+//                       Collection<BiomeType> biomeTypes = BiomeWithTypes.getBiomeTypes(biomeResKeyRef.get());
+//
+//                        if (biomeTypes.contains(BiomeType.SPOOKY)
+//                                || biomeTypes.contains(BiomeType.NETHER)
+//                                || biomeTypes.contains(BiomeType.END)) {
+//                            championChance -= Config.championMobs ? 2 : 1;
+//                        }
+//
+//                        if (isDangerousLocation(entityLevel, livingEntity.blockPosition())){
+//                            championChance -= Config.championMobs ? 10 : 3;
+//                        }
+//
+//                        int cc = 0;
+//                        boolean whitelisted = false;
+//
+//                        for (Class<?> clazz : ConfigEntities.championModWhitelist.keySet()) {
+//                            if (clazz.isAssignableFrom(livingEntity.getClass())) {
+//                                whitelisted = true;
+//                                if (Config.championMobs || livingEntity instanceof EntityThaumcraftBoss) {
+//                                    cc = Math.max(cc, ConfigEntities.championModWhitelist.get(clazz) - 1);
+//                                }
+//                            }
+//                        }
+//
+//                        championChance -= cc;
+//                        AttributeInstance maxHealthAttr = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+//                        if (whitelisted
+//                                && championChance <= 0
+//                                && maxHealthAttr != null
+//                                && maxHealthAttr.getBaseValue() >= (double) 10.0F
+//                        ) {
+//                            EntityUtils.makeChampion(livingEntity, false);
+//                        } else {
+//                           championModInstance.setBaseValue(CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED);
+//                        }
+//                    }
+//                }
+//            }
+//            return EventResult.pass();
+//         });
 
       }
 
@@ -309,7 +286,8 @@ public class EventHandlerEntity {
 
    public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof EnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair();
    public static void doRepair(ItemStack is, Player player) {
-      int level = EnchantmentHelper.getEnchantmentLevel(Config.enchRepair, is);
+
+      int level = EnchantmentHelper.getEnchantments(is).getOrDefault(Config.enchRepair,0);
       if (level > 0) {
          if (level > 2) {
             level = 2;
@@ -342,18 +320,16 @@ public class EventHandlerEntity {
       }
    }
 
-   @SubscribeEvent
-   public void livingTick(LivingEvent.LivingUpdateEvent event) {
-      //TODO:WeakMap
-      if (event.entity instanceof EntityMob && !event.entity.isDead) {
-         EntityMob mob = (EntityMob)event.entity;
-         int t = (int)mob.getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
-         if (t >= 0 && ChampionModifier.mods[t].type == 0) {
-            ChampionModifier.mods[t].effect.performEffect(mob, null, null, 0.0F);
-         }
-      }
-
-   }
+//   @SubscribeEvent
+//   public void livingTick(LivingEvent.LivingUpdateEvent event) {
+//      if (event.entity instanceof EntityMob && !event.entity.isDead) {
+//         EntityMob mob = (EntityMob)event.entity;
+//         int t = (int)mob.getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+//         if (t >= 0 && ChampionModifier.mods[t].type == 0) {
+//            ChampionModifier.mods[t].effect.performEffect(mob, null, null, 0.0F);
+//         }
+//      }
+//   }
 
    private static void updateSpeed(Player player) {
       try {
@@ -390,7 +366,10 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void playerInteract(EntityInteractEvent event) {
-      if (event.target instanceof EntityGolemBase && !((EntityGolemBase) event.target).getOwnerName().isEmpty() && !((EntityGolemBase)event.target).getOwnerName().equals(event.Player.getName().getString())) {
+      if (event.target instanceof EntityGolemBase
+              && !((EntityGolemBase) event.target).getOwnerName().isEmpty()
+              && !((EntityGolemBase)event.target).getOwnerName().equals(event.Player.getName().getString())
+      ) {
          if (Platform.getEnvironment() != Env.CLIENT) {
             event.Player.displayClientMessage(new ChatComponentTranslation("You are not my Master!"));
          }
@@ -444,25 +423,15 @@ public class EventHandlerEntity {
 
    }
 
-   private static boolean isDangerousLocation(Level world, BlockPos blockPos) {
-      if (world.dimension() == Config.dimensionOuter) {
-         int xx = blockPos.getX() >> 4;
-         int zz = blockPos.getZ() >> 4;
-         Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
-         return c != null && (c.feature == 6 || c.feature == 8);
-      }
 
-      return false;
-   }
-
-   @SubscribeEvent
-   public void entityConstuct(EntityEvent.EntityConstructing event) {
-      if (event.entity instanceof EntityMob) {
-         EntityMob mob = (EntityMob)event.entity;
-         mob.getAttributeMap().registerAttribute(EntityUtils.CHAMPION_MOD).setBaseValue(-2.0F);
-      }
-
-   }
+//   @SubscribeEvent
+//   public void entityConstuct(EntityEvent.EntityConstructing event) {
+//      if (event.entity instanceof EntityMob) {
+//         EntityMob mob = (EntityMob)event.entity;
+//         mob.getAttributeMap().registerAttribute(EntityUtils.CHAMPION_MOD).setBaseValue(-2.0F);
+//      }
+//
+//   }
 
    @SubscribeEvent
    public void itemPickup(EntityItemPickupEvent event) {

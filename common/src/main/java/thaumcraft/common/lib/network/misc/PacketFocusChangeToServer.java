@@ -12,6 +12,7 @@ import net.minecraftforge.common.DimensionManager;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 
+@Deprecated(forRemoval = true,since = "i want to order to server that change which 'FocusContainer' and which focus inside,or remove focus.")
 public class PacketFocusChangeToServer implements IMessage, IMessageHandler<PacketFocusChangeToServer,IMessage> {
    private int dim;
    private int playerid;

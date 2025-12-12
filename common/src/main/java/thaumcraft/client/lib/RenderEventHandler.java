@@ -4,6 +4,8 @@ import com.linearity.opentc4.OpenTC4;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -827,16 +829,15 @@ public class RenderEventHandler {
       }
 
    }
-
-   @SubscribeEvent
-   public void livingTick(LivingEvent.LivingUpdateEvent event) {
-      if ((Platform.getEnvironment() == Env.CLIENT) && event.entity instanceof EntityMob && !event.entity.isDead) {
-         EntityMob mob = (EntityMob)event.entity;
-         int t = (int)mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
-         if (t >= 0) {
-            ChampionModifier.mods[t].effect.showFX(mob);
-         }
-      }
-
-   }
+//in 2025 we have mixin
+//   @SubscribeEvent
+//   public void livingTick(LivingEvent.LivingUpdateEvent event) {
+//      if ((Platform.getEnvironment() == Env.CLIENT) && event.entity instanceof EntityMob && !event.entity.isDead) {
+//         EntityMob mob = (EntityMob)event.entity;
+//         int t = (int)mob.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+//         if (t >= 0) {
+//            ChampionModifier.mods[t].effect.showFX(mob);
+//         }
+//      }
+//   }
 }

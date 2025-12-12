@@ -36,8 +36,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
 
     // ------------------ 构造 ------------------
 
-    public PacketPlayerCompleteToServerC2S() {
-    }
+    public PacketPlayerCompleteToServerC2S() {}
 
     public PacketPlayerCompleteToServerC2S(String key, String username, ResourceKey<Level> dim, byte type) {
         this.key = key;

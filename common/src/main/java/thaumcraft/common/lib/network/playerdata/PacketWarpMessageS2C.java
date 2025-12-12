@@ -12,8 +12,10 @@ import thaumcraft.common.Thaumcraft;
 public class PacketWarpMessageS2C extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":warp_message";
 
-    public final int data;
-    public final byte type;
+    public int data;
+    public byte type;
+
+    public PacketWarpMessageS2C() {}
 
     public PacketWarpMessageS2C(byte type, int data) {
         this.data = data;

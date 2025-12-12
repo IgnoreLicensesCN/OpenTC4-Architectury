@@ -64,18 +64,18 @@ public class EntityUtils {
             manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID+":dmgbuff_"+counter),modifier).build();
             counter += 1;
         }
-        for (EntityType<? extends Entity> entityType: DefaultAttributesAccessor.opentc4$getSuppliers().keySet()) {
-            try {
-                Entity tryCreated = ((EntityTypeAccessor)entityType).opentc4$getFactory().create(entityType,null);
-                if (tryCreated instanceof LivingEntity) {
-                    var livingType = (EntityType<? extends LivingEntity>) entityType;
-                    platformUtils.registerEntityDefaultAttribute(livingType,CHAMPION_MOD);
-                    livingEntityTypes.add(livingType);
-                }
-            }catch (NullPointerException e){
-                LOGGER.error("EntityUtils init: ", e);
-            }
-        }
+//        for (EntityType<? extends Entity> entityType: DefaultAttributesAccessor.opentc4$getSuppliers().keySet()) {
+//            try {
+//                Entity tryCreated = ((EntityTypeAccessor)entityType).opentc4$getFactory().create(entityType,null);
+//                if (tryCreated instanceof LivingEntity) {
+//                    var livingType = (EntityType<? extends LivingEntity>) entityType;
+//                    platformUtils.registerEntityDefaultAttribute(livingType,CHAMPION_MOD);
+//                    livingEntityTypes.add(livingType);
+//                }
+//            }catch (NullPointerException e){
+//                LOGGER.error("EntityUtils init: ", e);
+//            }
+//        }
     }
     public static final double CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED = -2.;
     public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED = -1.;
@@ -310,9 +310,9 @@ public class EntityUtils {
    }
 
    public static void makeChampion(LivingEntity entity, boolean persist) {
-      int type = entity.getRandom().nextInt(ChampionModifier.mods.length);
-      if (entity instanceof Creeper) {
-         type = 0;
+      int type = 0;
+      if (!(entity instanceof Creeper)) {
+         type = entity.getRandom().nextInt(ChampionModifier.mods.length);
       }
 
       AttributeInstance modai = entity.getAttribute(CHAMPION_MOD);

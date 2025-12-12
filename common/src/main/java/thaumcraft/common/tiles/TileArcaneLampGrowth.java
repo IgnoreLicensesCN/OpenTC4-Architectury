@@ -18,7 +18,7 @@ import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXBlockSparkle;
+import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.CropUtils;
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       if (this.lid != this.level().getBlock(this.lx, this.ly, this.lz) || this.lmd != this.level().getBlockMetadata(this.lx, this.ly, this.lz)) {
          Player p = this.level().getClosestPlayer(this.lx, this.ly, this.lz, 32.0F);
          if (p != null) {
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkle(this.lx, this.ly, this.lz, 4259648), new NetworkRegistry.TargetPoint(this.level().dimension(), this.lx, this.ly, this.lz, 32.0F));
+            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(this.lx, this.ly, this.lz, 4259648), new NetworkRegistry.TargetPoint(this.level().dimension(), this.lx, this.ly, this.lz, 32.0F));
          }
 
          this.lid = this.level().getBlock(this.lx, this.ly, this.lz);

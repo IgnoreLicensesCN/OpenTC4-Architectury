@@ -8,7 +8,7 @@ import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectSource;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXEssentiaSource;
+import thaumcraft.common.lib.network.fx.PacketFXEssentiaSourceS2C;
 import thaumcraft.common.tiles.TileMirrorEssentia;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class EssentiaHandler {
                IAspectSource as = (IAspectSource)sourceTile;
                if (as.takeFromContainer(aspect, 1)) {
                   SimpleNetworkWrapper var10000 = PacketHandler.INSTANCE;
-                  PacketFXEssentiaSource var10001 = new PacketFXEssentiaSource(
+                  PacketFXEssentiaSourceS2C var10001 = new PacketFXEssentiaSourceS2C(
                           pos.getX(), pos.getY(), pos.getZ(),
                           (byte)(pos.getX() - source.x),
                           (byte)(pos.getY() - source.y),

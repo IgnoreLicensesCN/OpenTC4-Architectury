@@ -1,13 +1,6 @@
 package thaumcraft.client.fx.bolt;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import org.lwjgl.opengl.GL11;
-import thaumcraft.client.fx.WRVector3;
-import thaumcraft.client.lib.UtilsFX;
-
 @Deprecated(forRemoval = true,since = "see particles.migrated")
 public class FXLightningBolt /*extends EntityFX*/ {
 //   private int type = 0;
