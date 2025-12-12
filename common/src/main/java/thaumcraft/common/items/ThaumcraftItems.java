@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.misc.*;
@@ -85,7 +86,7 @@ public class ThaumcraftItems {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create("thaumcraft", Registries.ITEM);
 
         public static final RegistrySupplier<AlumentumItem> SUPPLIER_ALUMENTUM = ITEMS.register("alumentum", AlumentumItem::new);
-        public static final RegistrySupplier<BlockItem> SUPPLIER_NITOR = ITEMS.register("nitor", () -> new BlockItem(/*blockAiry:1*/,new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_NITOR = ITEMS.register("nitor", () -> new BlockItem(ThaumcraftBlocks.NITOR_BLOCK,new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_INGOT = ITEMS.register("thaumium_ingot", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_QUICK_SILVER = ITEMS.register("quick_silver", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_MAGIC_TALLOW = ITEMS.register("magic_tallow", () -> new Item(new Item.Properties()));
