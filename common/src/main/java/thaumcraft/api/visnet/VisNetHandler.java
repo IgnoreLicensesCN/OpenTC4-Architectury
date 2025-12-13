@@ -22,6 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class VisNetHandler {
 
+	public static int drainVis(Level world, BlockPos pos, Aspect aspect, int amount){
+		return drainVis(world,pos.getX(),pos.getY(),pos.getZ(),aspect,amount);
+	}
 	// NODE DRAINING
 	/**
 	 * This method drains vis from a relay or source near the passed in

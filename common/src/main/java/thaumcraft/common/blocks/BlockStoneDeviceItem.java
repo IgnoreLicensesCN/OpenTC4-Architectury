@@ -1,11 +1,11 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.tiles.TileFluxScrubber;
 
 public class BlockStoneDeviceItem extends ItemBlock {
@@ -28,7 +28,7 @@ public class BlockStoneDeviceItem extends ItemBlock {
       if (metadata == 14) {
          TileFluxScrubber tile = (TileFluxScrubber)world.getTileEntity(x, y, z);
          if (tile instanceof TileFluxScrubber) {
-            tile.facing = ForgeDirection.getOrientation(side).getOpposite();
+            tile.facing = Direction.getOrientation(side).getOpposite();
             tile.markDirty();
             world.markBlockForUpdate(x, y, x);
          }

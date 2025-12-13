@@ -1,9 +1,9 @@
 package thaumcraft.common.lib.utils;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockStem;
-import net.minecraft.block.IGrowable;
+import net.minecraft.world.level.block.BlockCrops;
+import net.minecraft.world.level.block.BlockStem;
+import net.minecraft.world.level.block.IGrowable;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;

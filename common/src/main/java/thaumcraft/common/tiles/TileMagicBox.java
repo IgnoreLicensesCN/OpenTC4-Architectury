@@ -1,14 +1,14 @@
 package thaumcraft.common.tiles;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.common.container.ContainerMagicBox;
@@ -292,7 +292,7 @@ public class TileMagicBox extends TileThaumcraft implements IInventory {
    private void findBoxes(int x, int y, int z, ArrayList list) {
       if (list.size() < 1024) {
          for(int a = 0; a < 6; ++a) {
-            ForgeDirection dir = ForgeDirection.getOrientation(a);
+            Direction dir = Direction.getOrientation(a);
             TileEntity tile = this.level().getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
             if (tile instanceof TileMagicBox) {
                WorldCoordinates wc = new WorldCoordinates(tile);

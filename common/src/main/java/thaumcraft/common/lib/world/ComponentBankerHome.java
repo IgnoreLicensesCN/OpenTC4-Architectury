@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.world;
 
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;

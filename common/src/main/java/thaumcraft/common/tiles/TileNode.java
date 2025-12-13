@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.entity.player.Player;

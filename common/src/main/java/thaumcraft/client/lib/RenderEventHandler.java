@@ -6,8 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -29,7 +29,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
@@ -168,7 +168,7 @@ public class RenderEventHandler {
          int y = (Integer)blockTags.get(1);
          int z = (Integer)blockTags.get(2);
          AspectList ot = (AspectList)blockTags.get(3);
-         ForgeDirection dir = ForgeDirection.getOrientation((Integer)blockTags.get(4));
+         Direction dir = Direction.getOrientation((Integer)blockTags.get(4));
          if (x == target.blockX && y == target.blockY && z == target.blockZ) {
             if (tagscale < 0.5F) {
                tagscale += 0.031F - tagscale / 10.0F;
@@ -197,7 +197,7 @@ public class RenderEventHandler {
                   tagscale += 0.031F - tagscale / 10.0F;
                }
 
-               this.drawTagsOnContainer(target.blockX, (float)target.blockY + (spaceAbove ? 0.4F : 0.0F) + shift, target.blockZ, ((IAspectContainer)te).getAspects(), 220, spaceAbove ? ForgeDirection.UP : ForgeDirection.getOrientation(event.target.sideHit), event.partialTicks);
+               this.drawTagsOnContainer(target.blockX, (float)target.blockY + (spaceAbove ? 0.4F : 0.0F) + shift, target.blockZ, ((IAspectContainer)te).getAspects(), 220, spaceAbove ? Direction.UP : Direction.getOrientation(event.target.sideHit), event.partialTicks);
             }
 
             if (note >= 0) {
@@ -262,7 +262,7 @@ public class RenderEventHandler {
 
    }
 
-   public void drawTagsOnContainer(double x, double y, double z, AspectList tags, int bright, ForgeDirection dir, float partialTicks) {
+   public void drawTagsOnContainer(double x, double y, double z, AspectList tags, int bright, Direction dir, float partialTicks) {
       if (Minecraft.getMinecraft().renderViewEntity instanceof Player && tags != null && tags.size() > 0) {
          Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
@@ -483,7 +483,7 @@ public class RenderEventHandler {
 
       for(int side = 0; side < 6; ++side) {
          GL11.glPushMatrix();
-         ForgeDirection dir = ForgeDirection.getOrientation(side);
+         Direction dir = Direction.getOrientation(side);
          GL11.glTranslated(-iPX + x + (double)0.5F, -iPY + y + (double)0.5F, -iPZ + z + (double)0.5F);
          GL11.glRotatef(90.0F, (float)(-dir.offsetY), (float)dir.offsetX, (float)(-dir.offsetZ));
          if (dir.offsetZ < 0) {
@@ -540,9 +540,9 @@ public class RenderEventHandler {
             int dim = nbttagcompound1.getInteger("dim");
             byte s = nbttagcompound1.getByte("side");
             byte c = nbttagcompound1.getByte("color");
-            x += ForgeDirection.getOrientation(s).offsetX;
-            y += ForgeDirection.getOrientation(s).offsetY;
-            z += ForgeDirection.getOrientation(s).offsetZ;
+            x += Direction.getOrientation(s).offsetX;
+            y += Direction.getOrientation(s).offsetY;
+            z += Direction.getOrientation(s).offsetZ;
             if (dim == player.level().dimension() && player.getDistanceSq(x, y, z) < (double)4096.0F) {
                GL11.glPushMatrix();
                this.drawMarkerOverlay(x, y, z, s, partialTicks, c);
@@ -551,16 +551,16 @@ public class RenderEventHandler {
                   GL11.glPushMatrix();
 
                   for(int a = 0; a < 6; ++a) {
-                     this.drawAirBlockoverlay(ox + ForgeDirection.getOrientation(a).offsetX, oy + ForgeDirection.getOrientation(a).offsetY, oz + ForgeDirection.getOrientation(a).offsetZ, a, partialTicks, c);
+                     this.drawAirBlockoverlay(ox + Direction.getOrientation(a).offsetX, oy + Direction.getOrientation(a).offsetY, oz + Direction.getOrientation(a).offsetZ, a, partialTicks, c);
                   }
 
                   GL11.glPopMatrix();
                }
 
                if (golem != null && Config.golemLinkQuality > 3) {
-                  x -= (double)ForgeDirection.getOrientation(s).offsetX * (double)0.5F;
-                  y -= (double)ForgeDirection.getOrientation(s).offsetY * (double)0.5F;
-                  z -= (double)ForgeDirection.getOrientation(s).offsetZ * (double)0.5F;
+                  x -= (double)Direction.getOrientation(s).offsetX * (double)0.5F;
+                  y -= (double)Direction.getOrientation(s).offsetY * (double)0.5F;
+                  z -= (double)Direction.getOrientation(s).offsetZ * (double)0.5F;
                   GL11.glPushMatrix();
                   this.drawMarkerLine(x, y, z, s, partialTicks, c, golem);
                   GL11.glPopMatrix();
@@ -600,7 +600,7 @@ public class RenderEventHandler {
       GL11.glDisable(2884);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 1);
-      ForgeDirection dir = ForgeDirection.getOrientation(side);
+      Direction dir = Direction.getOrientation(side);
       GL11.glTranslated(-iPX + x + (double)0.5F - (double)((float)dir.offsetX * 0.01F), -iPY + y + (double)0.5F - (double)((float)dir.offsetY * 0.01F), -iPZ + z + (double)0.5F - (double)((float)dir.offsetZ * 0.01F));
       GL11.glRotatef(90.0F, (float)(-dir.offsetY), (float)dir.offsetX, (float)(-dir.offsetZ));
       GL11.glPushMatrix();
@@ -645,7 +645,7 @@ public class RenderEventHandler {
       GL11.glDisable(2884);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 1);
-      ForgeDirection dir = ForgeDirection.getOrientation(side);
+      Direction dir = Direction.getOrientation(side);
       GL11.glTranslated(-iPX + x + (double)0.5F + (double)((float)dir.offsetX * 0.01F), -iPY + y + (double)0.5F + (double)((float)dir.offsetY * 0.01F), -iPZ + z + (double)0.5F + (double)((float)dir.offsetZ * 0.01F));
       GL11.glRotatef(90.0F, (float)(-dir.offsetY), (float)dir.offsetX, (float)(-dir.offsetZ));
       GL11.glPushMatrix();
@@ -682,7 +682,7 @@ public class RenderEventHandler {
       GL11.glDisable(2884);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(770, 1);
-      ForgeDirection dir = ForgeDirection.getOrientation(side);
+      Direction dir = Direction.getOrientation(side);
       GL11.glTranslated(-iPX + x + (double)0.5F + (double)((float)dir.offsetX * 0.01F), -iPY + y + (double)0.5F + (double)((float)dir.offsetY * 0.01F), -iPZ + z + (double)0.5F + (double)((float)dir.offsetZ * 0.01F));
       GL11.glRotatef(90.0F, (float)(-dir.offsetY), (float)dir.offsetX, (float)(-dir.offsetZ));
       GL11.glPushMatrix();
@@ -727,9 +727,9 @@ public class RenderEventHandler {
       GL11.glBlendFunc(770, 1);
       Tessellator tessellator = Tessellator.instance;
       double ds1y = ePY + (double)cc.height;
-      double dd1x = x + (double)0.5F + (double)ForgeDirection.getOrientation(side).offsetX * (double)0.5F;
-      double dd1y = y + (double)0.5F + (double)ForgeDirection.getOrientation(side).offsetY * (double)0.5F;
-      double dd1z = z + (double)0.5F + (double)ForgeDirection.getOrientation(side).offsetZ * (double)0.5F;
+      double dd1x = x + (double)0.5F + (double)Direction.getOrientation(side).offsetX * (double)0.5F;
+      double dd1y = y + (double)0.5F + (double)Direction.getOrientation(side).offsetY * (double)0.5F;
+      double dd1z = z + (double)0.5F + (double)Direction.getOrientation(side).offsetZ * (double)0.5F;
       double dc1x = (float)(dd1x - ePX);
       double dc1y = (float)(dd1y - ds1y);
       double dc1z = (float)(dd1z - ePZ);

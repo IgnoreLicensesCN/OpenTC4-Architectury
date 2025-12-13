@@ -4,7 +4,7 @@ package thaumcraft.client.renderers.tile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
@@ -20,7 +20,7 @@ public class TileArcaneLampRenderer extends TileEntitySpecialRenderer {
       if (tileentity == null){return;}
       Minecraft mc = FMLClientHandler.instance().getClient();
       if (tileentity.getLevel() != null) {
-         ForgeDirection dir = ForgeDirection.DOWN;
+         Direction dir = Direction.DOWN;
          if (tileentity instanceof TileArcaneLamp) {
             dir = ((TileArcaneLamp)tileentity).facing;
          } else if (tileentity instanceof TileArcaneLampGrowth) {

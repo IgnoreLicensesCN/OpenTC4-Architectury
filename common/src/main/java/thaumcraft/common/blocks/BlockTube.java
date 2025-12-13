@@ -3,9 +3,9 @@ package thaumcraft.common.blocks;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,7 +19,7 @@ import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.client.renderers.block.BlockRenderer;
@@ -103,10 +103,10 @@ public class BlockTube extends BlockContainer {
          float maxy = BlockRenderer.W11;
          float minz = BlockRenderer.W5;
          float maxz = BlockRenderer.W11;
-         ForgeDirection fd = null;
+         Direction fd = null;
 
          for(int side = 0; side < 6; ++side) {
-            fd = ForgeDirection.getOrientation(side);
+            fd = Direction.getOrientation(side);
             TileEntity te = ThaumcraftApiHelper.getConnectableTile(world, x, y, z, fd);
             if (te != null) {
                switch (side) {
@@ -167,10 +167,10 @@ public class BlockTube extends BlockContainer {
          float maxy = BlockRenderer.W10;
          float minz = BlockRenderer.W6;
          float maxz = BlockRenderer.W10;
-         ForgeDirection fd = null;
+         Direction fd = null;
 
          for(int side = 0; side < 6; ++side) {
-            fd = ForgeDirection.getOrientation(side);
+            fd = Direction.getOrientation(side);
             TileEntity te = ThaumcraftApiHelper.getConnectableTile(world, i, j, k, fd);
             if (te != null) {
                switch (side) {
@@ -281,7 +281,7 @@ public class BlockTube extends BlockContainer {
             if ((Platform.getEnvironment() == Env.CLIENT)) {
                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
             } else {
-               ForgeDirection fd = ForgeDirection.getOrientation(side);
+               Direction fd = Direction.getOrientation(side);
                world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F + (float)fd.offsetX / 3.0F, (float)y + 0.5F, (float)z + 0.5F + (float)fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
             }
 

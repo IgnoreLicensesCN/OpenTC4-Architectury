@@ -12,7 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
@@ -46,7 +46,7 @@ public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
       GL11.glPushMatrix();
       UtilsFX.bindTexture("textures/models/eldritch_cube.png");
       GL11.glTranslated(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F);
-      ForgeDirection dir = ForgeDirection.getOrientation(((TileEldritchLock)te).getFacing());
+      Direction dir = Direction.getOrientation(((TileEldritchLock)te).getFacing());
 
       for(int u = 0; u < 4; ++u) {
          GL11.glPushMatrix();

@@ -1,10 +1,10 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.blocks.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 
@@ -32,7 +32,7 @@ public class BlockCosmeticOpaqueRenderer extends BlockRenderer implements ISimpl
                renderer.setRenderBoundsFromBlock(block);
 
                for(int d = 0; d < 6; ++d) {
-                  ForgeDirection dir1 = ForgeDirection.getOrientation(d);
+                  Direction dir1 = Direction.getOrientation(d);
                   if (block.shouldSideBeRendered(world, x + dir1.offsetX, y + dir1.offsetY, z + dir1.offsetZ, d)) {
                      switch (d) {
                         case 0:

@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -13,14 +13,14 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 
 public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEssentiaTransport {
-   public ForgeDirection orientation = ForgeDirection.getOrientation(2);
+   public Direction orientation = Direction.getOrientation(2);
 
    public boolean canUpdate() {
       return false;
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.orientation = ForgeDirection.getOrientation(nbttagcompound.getInteger("orientation"));
+      this.orientation = Direction.getOrientation(nbttagcompound.getInteger("orientation"));
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
@@ -28,7 +28,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
    }
 
    public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
-      this.orientation = ForgeDirection.getOrientation(side);
+      this.orientation = Direction.getOrientation(side);
       player.level().playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:tool", 0.3F, 1.9F + player.level().rand.nextFloat() * 0.2F, false);
       player.swingItem();
       this.markDirty();
@@ -46,7 +46,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
    }
 
    boolean drawEssentia() {
-      for(ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
+      for(Direction facing : Direction.VALID_DIRECTIONS) {
          TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, facing);
          if (te != null) {
             IEssentiaTransport ic = (IEssentiaTransport)te;
@@ -63,42 +63,42 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return false;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return true;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return true;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return false;
    }
 
    public void setSuction(Aspect aspect, int amount) {
    }
 
-   public Aspect getSuctionType(ForgeDirection face) {
+   public Aspect getSuctionType(Direction face) {
       return Aspect.ENTROPY;
    }
 
-   public int getSuctionAmount(ForgeDirection face) {
+   public int getSuctionAmount(Direction face) {
       return face != this.orientation ? 128 : 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection face) {
+   public Aspect getEssentiaType(Direction face) {
       return null;
    }
 
-   public int getEssentiaAmount(ForgeDirection face) {
+   public int getEssentiaAmount(Direction face) {
       return 0;
    }
 

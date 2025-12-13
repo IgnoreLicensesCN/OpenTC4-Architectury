@@ -2,7 +2,7 @@ package thaumcraft.common.entities.golems;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.entity.player.Player;

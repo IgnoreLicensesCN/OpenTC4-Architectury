@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 public class JarStepSound extends Block.SoundType {
    public JarStepSound(String par1Str, float par2, float par3) {

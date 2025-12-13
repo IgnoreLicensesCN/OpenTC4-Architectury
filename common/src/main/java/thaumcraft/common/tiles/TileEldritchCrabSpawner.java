@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityEldritchCrab;
@@ -57,7 +57,7 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
    }
 
    void drawVent() {
-      ForgeDirection dir = ForgeDirection.getOrientation(this.facing);
+      Direction dir = Direction.getOrientation(this.facing);
       float fx = 0.15F - this.level().rand.nextFloat() * 0.3F;
       float fz = 0.15F - this.level().rand.nextFloat() * 0.3F;
       float fy = 0.15F - this.level().rand.nextFloat() * 0.3F;
@@ -86,7 +86,7 @@ public class TileEldritchCrabSpawner extends TileThaumcraft {
    }
 
    private void spawnCrab() {
-      ForgeDirection dir = ForgeDirection.getOrientation(this.facing);
+      Direction dir = Direction.getOrientation(this.facing);
       EntityEldritchCrab crab = new EntityEldritchCrab(this.level());
       double x = this.xCoord + dir.offsetX;
       double y = this.yCoord + dir.offsetY;

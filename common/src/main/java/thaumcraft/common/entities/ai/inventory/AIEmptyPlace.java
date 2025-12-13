@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -28,7 +28,7 @@ public class AIEmptyPlace extends EntityAIBase {
    public boolean shouldExecute() {
       if (this.theGolem.itemCarried != null && this.theGolem.getNavigator().noPath()) {
          ChunkCoordinates home = this.theGolem.getHomePosition();
-         ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
@@ -91,7 +91,7 @@ public class AIEmptyPlace extends EntityAIBase {
    public void startExecuting() {
       this.count = 200;
       ChunkCoordinates home = this.theGolem.getHomePosition();
-      ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+      Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;

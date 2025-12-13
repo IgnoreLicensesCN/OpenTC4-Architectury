@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransport;
@@ -100,7 +100,7 @@ public class TileAlembicRenderer extends TileEntitySpecialRenderer {
       if (tile.getLevel() != null) {
          UtilsFX.bindTexture("textures/models/Bore.png");
 
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
             if (tile.canOutputTo(dir)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(tile.getLevel(), tile.xCoord, tile.yCoord, tile.zCoord, dir);
                if (te instanceof IEssentiaTransport && !(te instanceof TileTube)) {

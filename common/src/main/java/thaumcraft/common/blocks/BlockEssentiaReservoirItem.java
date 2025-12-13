@@ -1,11 +1,11 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 
 public class BlockEssentiaReservoirItem extends ItemBlock {
@@ -24,7 +24,7 @@ public class BlockEssentiaReservoirItem extends ItemBlock {
       if (placed) {
          try {
             TileEssentiaReservoir ts = (TileEssentiaReservoir)world.getTileEntity(x, y, z);
-            ts.facing = ForgeDirection.getOrientation(side).getOpposite();
+            ts.facing = Direction.getOrientation(side).getOpposite();
             ts.markDirty();
             world.markBlockForUpdate(x, y, z);
          } catch (Exception ignored) {

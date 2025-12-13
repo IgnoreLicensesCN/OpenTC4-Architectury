@@ -3,7 +3,7 @@ package thaumcraft.common.items.wands.foci;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
@@ -255,7 +255,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
                if (!world.isAirBlock(pos.x, pos.y, pos.z)) {
                   list.add(pos);
 
-                  for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                  for(Direction dir : Direction.VALID_DIRECTIONS) {
                      BlockCoordinates cc = new BlockCoordinates(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
                      this.checkNeighbours(world, x, y, z, cc, side, sizeX, sizeY, sizeZ, list, player, tiles);
                   }

@@ -1,12 +1,12 @@
 package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class TileArcaneLamp extends TileThaumcraft {
-   public ForgeDirection facing = ForgeDirection.getOrientation(0);
+   public Direction facing = Direction.getOrientation(0);
 
    public boolean canUpdate() {
        return super.canUpdate();
@@ -33,7 +33,7 @@ public class TileArcaneLamp extends TileThaumcraft {
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getInteger("orientation"));
+      this.facing = Direction.getOrientation(nbttagcompound.getInteger("orientation"));
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {

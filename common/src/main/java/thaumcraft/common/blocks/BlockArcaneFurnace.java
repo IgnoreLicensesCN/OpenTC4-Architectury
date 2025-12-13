@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -20,7 +20,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -324,7 +324,7 @@ public class BlockArcaneFurnace extends BlockContainer {
       return meta == 0 ? Item.getItemById(0) : (meta == 10 ? Item.getItemFromBlock(Blocks.iron_bars) : (meta % 2 != 0 && meta != 5 ? Item.getItemFromBlock(Blocks.nether_brick) : Item.getItemFromBlock(Blocks.obsidian)));
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       return world.getBlockMetadata(x, y, z) != 0;
    }
 

@@ -100,7 +100,7 @@ public class BlockUtils {
 //         Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"createStackedBlock", "func_149644_j"}, Integer.TYPE);
 //         dropped = (ItemStack)m.invoke(block);
 //      } catch (Exception var4) {
-//         Thaumcraft.log.warn("Could not invoke net.minecraft.block.Block method createStackedBlock");
+//         Thaumcraft.log.warn("Could not invoke net.minecraft.world.level.block.Block method createStackedBlock");
 //      }
 //
 //      return dropped;
@@ -111,7 +111,7 @@ public class BlockUtils {
          Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"dropBlockAsItem", "func_149642_a"}, World.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, ItemStack.class);
          m.invoke(block, world, x, y, z, stack);
       } catch (Exception var7) {
-         Thaumcraft.log.warn("Could not invoke net.minecraft.block.Block method createStackedBlock");
+         Thaumcraft.log.warn("Could not invoke net.minecraft.world.level.block.Block method createStackedBlock");
       }
 
    }

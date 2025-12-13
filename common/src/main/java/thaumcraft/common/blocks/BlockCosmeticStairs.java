@@ -2,8 +2,8 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockStairs;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import thaumcraft.common.Thaumcraft;

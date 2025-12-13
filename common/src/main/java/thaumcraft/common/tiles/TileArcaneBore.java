@@ -1,13 +1,26 @@
 package thaumcraft.common.tiles;
 
+import com.linearity.opentc4.utils.StatCollector;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.block.Block;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.core.BlockPos;
+
+import net.minecraft.core.Direction;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemPickaxe;
@@ -16,10 +29,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.TileThaumcraft;
@@ -29,25 +41,32 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.WandInteractableBlock;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.equipment.ItemElementalPickaxe;
+import thaumcraft.common.items.wands.foci.FocusExcavationItem;
 import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.misc.PacketBoreDig;
+import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.lib.utils.TCVec3;
 import thaumcraft.common.lib.utils.Utils;
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
-import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class TileArcaneBore extends TileThaumcraft implements IInventory, IWandable {
+public class TileArcaneBore extends TileThaumcraft implements Container, WandInteractableBlock, TickingBlockEntity {
     public int spiral = 0;
     public float currentRadius = 0.0F;
     public int maxRadius = 2;
@@ -87,9 +106,9 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     int maxPause;
     long repairCounter;
     boolean first;
-    public ForgeDirection orientation;
-    public ForgeDirection baseOrientation;
-    FakePlayer fakePlayer;
+    public Direction orientation;
+    public Direction baseOrientation;
+    FakeThaumcraftPlayer fakePlayer;
     private AspectList repairCost;
     private AspectList currentRepairVis;
     public int fortune;
@@ -97,18 +116,18 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     public int area;
     int blockCount;
     private float speedyTime;
-    private final int itemsPerVis;
+    private final int itemsPerVis = 20;//anazor drunk too much and left this field here
 
     public TileArcaneBore() {
-        this.digBlock = Blocks.air;
+        this.digBlock = Blocks.AIR;
         this.digMd = 0;
         this.radInc = 0.0F;
         this.paused = 100;
         this.maxPause = 100;
         this.repairCounter = 0L;
         this.first = true;
-        this.orientation = ForgeDirection.getOrientation(1);
-        this.baseOrientation = ForgeDirection.getOrientation(1);
+        this.orientation = Direction.UP;
+        this.baseOrientation = Direction.UP;
         this.fakePlayer = null;
         this.repairCost = new AspectList();
         this.currentRepairVis = new AspectList();
@@ -116,17 +135,16 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
         this.speed = 0;
         this.area = 0;
         this.blockCount = 0;
-        this.itemsPerVis = 20;
     }
 
-    public boolean canUpdate() {
-        return super.canUpdate();
-    }
+//    public boolean canUpdate() {
+//        return super.canUpdate();
+//    }
 
-    public void updateEntity() {
-        super.updateEntity();
+    @Override
+    public void tick() {
         if (Platform.getEnvironment() != Env.CLIENT && this.speedyTime < 20.0F) {
-            this.speedyTime += (float) VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.ENTROPY, 100) / 5.0F;
+            this.speedyTime += (float) VisNetHandler.drainVis(this.level, this.getPos(), Aspect.ENTROPY, 100) / 5.0F;
             if (this.speedyTime < 20.0F && this.base != null && this.base.drawEssentia()) {
                 float var10001 = this.speedyTime;
                 this.getClass();
@@ -134,8 +152,8 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
             }
         }
 
-        if (Platform.getEnvironment() != Env.CLIENT && this.fakePlayer == null) {
-            this.fakePlayer = FakePlayerFactory.get((WorldServer) this.level(), new GameProfile(null, "FakeThaumcraftBore"));
+        if (this.level instanceof ServerLevel serverLevel && this.fakePlayer == null) {
+            this.fakePlayer = FakeThaumcraftPlayer.FakeThaumcraftPlayerFactory.get(serverLevel, "FakeThaumcraftBore");
         }
 
         if ((Platform.getEnvironment() == Env.CLIENT) && this.first) {
@@ -191,22 +209,24 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
         }
 
         if (this.fakePlayer instanceof ServerPlayer serverPlayer && this.hasPickaxe && this.getStackInSlot(1) != null) {
-            if (this.repairCounter++ % 40L == 0L && this.getStackInSlot(1).isItemDamaged()) {
+            if (this.repairCounter++ % 40L == 0L && this.getStackInSlot(1).isDamaged()) {
                 this.doRepair(this.getStackInSlot(1), serverPlayer);
             }
 
             if (this.repairCost != null && this.repairCost.size() > 0 && this.repairCounter % 5L == 0L) {
-                for (Aspect a : this.repairCost.getAspects()) {
-                    if (this.currentRepairVis.getAmount(a) < this.repairCost.getAmount(a)) {
-                        this.currentRepairVis.add(a, VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, a, this.repairCost.getAmount(a)));
+                for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                    var repairAspect = a.getKey();
+                    var repairAmount = a.getValue();
+                    if (this.currentRepairVis.getAmount(repairAspect) < repairAmount) {
+                        this.currentRepairVis.add(repairAspect, VisNetHandler.drainVis(this.level, this.getPos(), repairAspect, repairAmount));
                     }
                 }
             }
 
-            this.fakePlayer.ticksExisted = (int) this.repairCounter;
+            this.fakePlayer.tickCount = (int) this.repairCounter;
 
             try {
-                this.getStackInSlot(1).updateAnimation(this.level(), this.fakePlayer, 0, true);
+                this.getStackInSlot(1).updateAnimation(this.level, this.fakePlayer, 0, true);
             } catch (Exception ignored) {
             }
         }
@@ -214,7 +234,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     }
 
     private void doRepair(ItemStack is, Player player) {
-        int level = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.REPAIR.effectId, is);
+        int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
         if (level > 0) {
             if (level > 2) {
                 level = 2;
@@ -228,10 +248,10 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
 
                 cost = ResearchManager.reduceToPrimals(cost);
 
-                for (Aspect a : cost.getAspects()) {
-                    if (a != null) {
-                        this.repairCost.merge(a, (int) Math.sqrt(cost.getAmount(a) * 2) * level);
-                    }
+                for (Map.Entry<Aspect,Integer> a : cost.getAspects().entrySet()) {
+                    var repairCostAspect = a.getKey();
+                    var repairCostAmount = a.getValue();
+                    this.repairCost.merge(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2) * level);
                 }
 
                 boolean doIt = true;
@@ -240,8 +260,10 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
                 }
 
                 if (doIt) {
-                    for (Aspect a : this.repairCost.getAspects()) {
-                        if (this.currentRepairVis.getAmount(a) < this.repairCost.getAmount(a)) {
+                    for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                        var repairCostAspect = a.getKey();
+                        var repairCostAmount = a.getValue();
+                        if (this.currentRepairVis.getAmount(repairCostAspect) < repairCostAmount) {
                             doIt = false;
                             break;
                         }
@@ -249,12 +271,15 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
                 }
 
                 if (doIt) {
-                    for (Aspect a : this.repairCost.getAspects()) {
-                        this.currentRepairVis.reduce(a, this.repairCost.getAmount(a));
+
+                    for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                        var repairCostAspect = a.getKey();
+                        var repairCostAmount = a.getValue();
+                        this.currentRepairVis.reduce(repairCostAspect, repairCostAmount);
                     }
 
-                    is.damageItem(-level, player);
-                    this.markDirty();
+                    is.hurtAndBreak(-level, player,(ignored)->{});
+                    this.setChanged();
                 }
             } else {
                 this.repairCost = new AspectList();
@@ -264,33 +289,35 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     }
 
     private boolean areItemsValid() {
-        boolean notNearBroken = !this.hasPickaxe || this.getStackInSlot(1).getItemDamage() + 1 < this.getStackInSlot(1).getMaxDamage();
+        boolean notNearBroken = !this.hasPickaxe || this.getStackInSlot(1).getDamageValue() + 1 < this.getStackInSlot(1).getMaxDamage();
 
-        return this.hasFocus && this.hasPickaxe && this.getStackInSlot(1).isItemStackDamageable() && notNearBroken;
+        return this.hasFocus && this.hasPickaxe && this.getStackInSlot(1).isDamageableItem() && notNearBroken;
     }
 
-    public void markDirty() {
-        super.markDirty();
+    @Override
+    public void setChanged() {
+        super.setChanged();
         this.fortune = 0;
         this.area = 0;
         this.speed = 0;
-        if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof ItemFocusExcavation) {
-            this.fortune = ((ItemFocusExcavation) this.getStackInSlot(0).getItem()).getUpgradeLevel(this.getStackInSlot(0), FocusUpgradeType.treasure);
-            this.area = ((ItemFocusExcavation) this.getStackInSlot(0).getItem()).getUpgradeLevel(this.getStackInSlot(0), FocusUpgradeType.enlarge);
-            this.speed += ((ItemFocusExcavation) this.getStackInSlot(0).getItem()).getUpgradeLevel(this.getStackInSlot(0), FocusUpgradeType.potency);
+        if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof FocusExcavationItem focusExcavationItem) {
+            var upgrades = (focusExcavationItem).getWandUpgrades(this.getStackInSlot(0));
+            this.fortune = upgrades.get(FocusUpgradeType.treasure);
+            this.area = upgrades.get(FocusUpgradeType.enlarge);
+            this.speed += upgrades.get(FocusUpgradeType.potency);
             this.hasFocus = true;
         } else {
             this.hasFocus = false;
         }
 
-        if (this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof ItemPickaxe) {
+        if (this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() instanceof PickaxeItem) {
             this.hasPickaxe = true;
-            int f = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, this.getStackInSlot(1));
+            int f = EnchantmentHelper.getEnchantments(this.getStackInSlot(1)).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
             if (f > this.fortune) {
                 this.fortune = f;
             }
 
-            this.speed += EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, this.getStackInSlot(1));
+            this.speed += EnchantmentHelper.getEnchantments(this.getStackInSlot(1)).getOrDefault(Enchantments.BLOCK_EFFICIENCY, 0);
         } else {
             this.hasPickaxe = false;
         }
@@ -301,8 +328,9 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
         if (this.rotX == this.tarX && this.rotZ == this.tarZ) {
             if (Platform.getEnvironment() != Env.CLIENT) {
                 boolean dug = false;
+                var pos = this.getPos();
                 if (this.base == null) {
-                    this.base = (TileArcaneBoreBase) this.level().getTileEntity(this.xCoord, this.yCoord + this.baseOrientation.getOpposite().offsetY, this.zCoord);
+                    this.base = (TileArcaneBoreBase) this.level.getBlockEntity(new BlockPos(pos.getX(), pos.getY() + this.baseOrientation.getOpposite().getStepY(), pos.getZ()));
                 }
 
                 if (--this.count > 0) {
@@ -378,7 +406,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
                     this.level().setBlockToAir(this.digX, this.digY, this.digZ);
                     if (this.base != null) {
                         for (int lb = 2; lb < 6; ++lb) {
-                            ForgeDirection lbd = ForgeDirection.getOrientation(lb);
+                            Direction lbd = Direction.getOrientation(lb);
                             TileEntity lbte = this.level().getTileEntity(this.base.xCoord + lbd.offsetX, this.base.yCoord, this.base.zCoord + lbd.offsetZ);
                             if (lbte instanceof TileArcaneLamp) {
                                 int d = this.level().rand.nextInt(32) * 2;
@@ -647,7 +675,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     }
 
 
-    public void setOrientation(@Nonnull ForgeDirection or, boolean initial) {
+    public void setOrientation(@NotNull Direction or, boolean initial) {
         this.orientation = or;
         this.lastX = 0;
         this.lastZ = 0;
@@ -692,8 +720,8 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
         this.digX = 0;
         this.digY = 0;
         this.digZ = 0;
-        if (this.level() != null) {
-            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        if (this.level != null) {
+            this.level.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
 
     }
@@ -713,8 +741,8 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
 
     @Override
     public void readCustomNBT(NBTTagCompound nbttagcompound) {
-        this.orientation = ForgeDirection.getOrientation(nbttagcompound.getInteger("orientation"));
-        this.baseOrientation = ForgeDirection.getOrientation(nbttagcompound.getInteger("baseOrientation"));
+        this.orientation = Direction.getOrientation(nbttagcompound.getInteger("orientation"));
+        this.baseOrientation = Direction.getOrientation(nbttagcompound.getInteger("baseOrientation"));
         NBTTagList var2 = nbttagcompound.getTagList("Inventory", 10);
         this.contents = new ItemStack[this.getSizeInventory()];
 
@@ -726,7 +754,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
             }
         }
 
-        this.markDirty();
+        this.setChanged();
     }
 
     @Override
@@ -814,7 +842,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
                 }
 
             }
-            this.markDirty();
+            this.setChanged();
             return var3;
         } else {
             return null;
@@ -833,11 +861,11 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
 
     public void setInventorySlotContents(int var1, ItemStack var2) {
         this.contents[var1] = var2;
-        if (var2 != null && var2.stackSize > this.getInventoryStackLimit()) {
-            var2.stackSize = this.getInventoryStackLimit();
+        if (var2 != null && var2.getCount() > this.getInventoryStackLimit()) {
+            var2.setCount(this.getInventoryStackLimit());
         }
 
-        this.markDirty();
+        this.setChanged();
     }
 
     public String getInventoryName() {
@@ -849,7 +877,10 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     }
 
     public boolean isUseableByPlayer(Player var1) {
-        return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && var1.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+        var pos = this.getPos();
+        return this.level != null
+                && this.level.getBlockEntity(pos) == this
+                && var1.distanceToSqr(pos.getX() + .5f, pos.getY() + .5f,pos.getZ() + .5f) <= (double) 64.0F;
     }
 
     public void openInventory() {
@@ -866,21 +897,19 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
         return true;
     }
 
-    public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
-        this.setOrientation(ForgeDirection.getOrientation(side), false);
-        player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
-        player.swingItem();
-        this.markDirty();
-        return 0;
-    }
-
-    public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
-        return null;
-    }
-
-    public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
-    }
-
-    public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
+    @Override
+    public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
+        var player = useOnContext.getPlayer();
+        var pos = this.getPos();
+        this.setOrientation(useOnContext.getClickedFace(), false);
+        player.level().playSound( player,
+                pos,
+                ThaumcraftSounds.TOOL,
+                SoundSource.BLOCKS,
+                0.5F,
+                0.9F + player.level().random.nextFloat() * 0.2F);
+        player.swing(player.getUsedItemHand());
+        this.setChanged();
+        return InteractionResult.PASS;
     }
 }

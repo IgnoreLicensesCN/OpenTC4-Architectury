@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -38,7 +38,7 @@ public class AIEmptyGoto extends EntityAIBase {
          for(byte color : matchingColors) {
             ArrayList<IInventory> results = GolemHelper.getContainersWithRoom(this.theGolem.level(), this.theGolem, color);
             if (!results.isEmpty()) {
-               ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+               Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
                ChunkCoordinates home = this.theGolem.getHomePosition();
                int cX = home.posX - facing.offsetX;
                int cY = home.posY - facing.offsetY;

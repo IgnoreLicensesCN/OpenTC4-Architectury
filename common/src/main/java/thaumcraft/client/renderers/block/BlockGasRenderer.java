@@ -1,13 +1,13 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.BlockFluidBase;
 import thaumcraft.common.blocks.BlockFluxGas;
 import thaumcraft.common.config.ConfigBlocks;
@@ -71,7 +71,7 @@ public class BlockGasRenderer implements ISimpleBlockRenderingHandler {
          float blue = (float)(color & 255) / 255.0F;
          BlockFluxGas theFluid = (BlockFluxGas)block;
          int bMeta = world.getBlockMetadata(x, y, z);
-         if (!world.isSideSolid(x, y + theFluid.getDensityDir(), z, ForgeDirection.DOWN, false)) {
+         if (!world.isSideSolid(x, y + theFluid.getDensityDir(), z, Direction.DOWN, false)) {
             tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
             tessellator.setColorOpaque_F(red, green, blue);
             block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

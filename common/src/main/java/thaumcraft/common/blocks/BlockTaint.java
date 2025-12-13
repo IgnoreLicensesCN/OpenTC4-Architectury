@@ -2,8 +2,8 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.config.Config;
@@ -135,7 +135,7 @@ public class BlockTaint extends Block {
 
             if (world.isAirBlock(x, y + 1, z)) {
                boolean doIt = true;
-               ForgeDirection dir = ForgeDirection.getOrientation(2 + random.nextInt(4));
+               Direction dir = Direction.getOrientation(2 + random.nextInt(4));
 
                for(int a = 0; a < 4; ++a) {
                   if (!world.isAirBlock(x + dir.offsetX, y - a, z + dir.offsetZ)) {
@@ -177,7 +177,7 @@ public class BlockTaint extends Block {
                   boolean doIt = world.getBlock(x, y + 1, z) == this;
                   if (doIt) {
                      for(int a = 2; a < 6; ++a) {
-                        ForgeDirection dir = ForgeDirection.getOrientation(a);
+                        Direction dir = Direction.getOrientation(a);
                         if (world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) != this) {
                            doIt = false;
                            break;
@@ -328,7 +328,7 @@ public class BlockTaint extends Block {
       }
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       return true;
    }
 }

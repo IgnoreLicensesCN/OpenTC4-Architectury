@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.TileVisNode;
@@ -112,12 +112,12 @@ public class TileVisRelay extends TileVisNode implements IWandable {
             double xx = (double) this.getParent().get().xCoord + (double)0.5F;
             double yy = (double) this.getParent().get().yCoord + (double)0.5F;
             double zz = (double) this.getParent().get().zCoord + (double)0.5F;
-            ForgeDirection d1 = ForgeDirection.UNKNOWN;
+            Direction d1 = Direction.UNKNOWN;
             if (this.getParent().get() instanceof TileVisRelay) {
-               d1 = ForgeDirection.getOrientation(((TileVisRelay)this.getParent().get()).orientation);
+               d1 = Direction.getOrientation(((TileVisRelay)this.getParent().get()).orientation);
             }
 
-            ForgeDirection d2 = ForgeDirection.getOrientation(this.orientation);
+            Direction d2 = Direction.getOrientation(this.orientation);
             if (ClientFXUtils.checkPlatformClient()){
                this.beam1 = ClientFXUtils.beamPower(this.level(), xx - (double)d1.offsetX * 0.05, yy - (double)d1.offsetY * 0.05, zz - (double)d1.offsetZ * 0.05, (double)this.xCoord + (double)0.5F - (double)d2.offsetX * 0.05, (double)this.yCoord + (double)0.5F - (double)d2.offsetY * 0.05, (double)this.zCoord + (double)0.5F - (double)d2.offsetZ * 0.05, this.pRed, this.pGreen, this.pBlue, this.pulse > 0, this.beam1);
             }

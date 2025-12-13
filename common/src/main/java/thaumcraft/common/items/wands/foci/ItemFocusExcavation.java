@@ -213,10 +213,10 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //   }
 //
 //   boolean breakNeighbour(Player p, int x, int y, int z, Block block, int md, ItemStack stack) {
-//      List<ForgeDirection> directions = Arrays.asList(ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+//      List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
 //      Collections.shuffle(directions, p.level().rand);
 //
-//      for(ForgeDirection dir : directions) {
+//      for(Direction dir : directions) {
 //         if (p.level().getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == block && p.level().getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == md && this.excavate(p.level(), stack, p, block, md, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
 //            return true;
 //         }

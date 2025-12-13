@@ -2,7 +2,7 @@ package thaumcraft.client.renderers.tile;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.client.lib.UtilsFX;
@@ -15,7 +15,7 @@ public class TileTubeBufferRenderer extends TileEntitySpecialRenderer {
    public void renderEntityAt(TileTubeBuffer buffer, double x, double y, double z, float fq) {
       UtilsFX.bindTexture("textures/models/valve.png");
       if (buffer.getLevel() != null) {
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
             if (buffer.chokedSides[dir.ordinal()] != 0 && buffer.openSides[dir.ordinal()] && ThaumcraftApiHelper.getConnectableTile(buffer.getLevel(), buffer.xCoord, buffer.yCoord, buffer.zCoord, dir) != null) {
                GL11.glPushMatrix();
                GL11.glTranslated(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F);

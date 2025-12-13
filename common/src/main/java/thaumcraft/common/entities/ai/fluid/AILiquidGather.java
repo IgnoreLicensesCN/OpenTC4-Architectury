@@ -1,12 +1,12 @@
 package thaumcraft.common.entities.ai.fluid;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -20,7 +20,7 @@ public class AILiquidGather extends EntityAIBase {
     private int waterX;
     private int waterY;
     private int waterZ;
-    private ForgeDirection markerOrientation;
+    private Direction markerOrientation;
     private World theWorld;
     private float pumpDist = 0.0F;
     int count = 0;
@@ -39,7 +39,7 @@ public class AILiquidGather extends EntityAIBase {
         if (fluids == null) {
             return false;
         } else if (this.theGolem.itemWatched != null && !fluids.isEmpty() && this.theGolem.getNavigator().noPath()) {
-            ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+            Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
             ChunkCoordinates home = this.theGolem.getHomePosition();
             int var10000 = home.posX - facing.offsetX;
             var10000 = home.posY - facing.offsetY;
@@ -55,7 +55,7 @@ public class AILiquidGather extends EntityAIBase {
                 for (Marker marker : GolemHelper.getMarkedFluidHandlersAdjacentToGolem(fluid, this.theWorld, this.theGolem)) {
                     TileEntity te = this.theWorld.getTileEntity(marker.x, marker.y, marker.z);
                     if (te instanceof IFluidHandler) {
-                        FluidStack fs = ((IFluidHandler) te).drain(ForgeDirection.getOrientation(marker.side), new FluidStack(fluid.getFluid(), max - camt), false);
+                        FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.side), new FluidStack(fluid.getFluid(), max - camt), false);
                         if (fs != null && fs.amount > 0) {
                             return true;
                         }
@@ -104,7 +104,7 @@ public class AILiquidGather extends EntityAIBase {
     public void updateTask() {
         ++this.count;
         if (this.count >= 10) {
-            ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+            Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
             ChunkCoordinates home = this.theGolem.getHomePosition();
             int var10000 = home.posX - facing.offsetX;
             var10000 = home.posY - facing.offsetY;
@@ -121,7 +121,7 @@ public class AILiquidGather extends EntityAIBase {
                     for (Marker marker : GolemHelper.getMarkedFluidHandlersAdjacentToGolem(fluidstack, this.theWorld, this.theGolem)) {
                         TileEntity te = this.theWorld.getTileEntity(marker.x, marker.y, marker.z);
                         if (te instanceof IFluidHandler) {
-                            FluidStack fs = ((IFluidHandler) te).drain(ForgeDirection.getOrientation(marker.side), new FluidStack(fluidstack.getFluid(), max - camt), true);
+                            FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.side), new FluidStack(fluidstack.getFluid(), max - camt), true);
                             if (fs != null && fs.amount > 0) {
                                 if (this.theGolem.fluidCarried != null) {
                                     FluidStack var31 = this.theGolem.fluidCarried;
@@ -286,7 +286,7 @@ public class AILiquidGather extends EntityAIBase {
                 if (sources.size() >= ConfigurationHandler.INSTANCE.getDecantMaxBlocks())
                     return;
             }
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            for (Direction direction : Direction.VALID_DIRECTIONS) {
                 toVisit.add(new ChunkCoordinates(v.posX + direction.offsetX, v.posY + direction.offsetY, v.posZ + direction.offsetZ));
             }
         }

@@ -3,7 +3,7 @@ package thaumcraft.common.lib.world.biomes;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.BlockFlower;
+import net.minecraft.world.level.block.BlockFlower;
 import net.minecraft.world.entity.monster.EntityEnderman;
 import net.minecraft.world.entity.monster.EntityWitch;
 import net.minecraft.world.entity.passive.EntityHorse;

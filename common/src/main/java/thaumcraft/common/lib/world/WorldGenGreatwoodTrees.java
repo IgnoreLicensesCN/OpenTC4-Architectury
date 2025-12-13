@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.world;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.BlockSapling;
+import net.minecraft.world.level.block.BlockSapling;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityChest;
 import net.minecraft.world.level.block.entity.BlockEntityMobSpawner;

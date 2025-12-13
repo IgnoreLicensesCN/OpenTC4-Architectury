@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.interact;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.level.block.Blocks;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;

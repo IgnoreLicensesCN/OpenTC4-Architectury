@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 
 public class TileJarFillableVoid extends TileJarFillable {
@@ -31,7 +31,7 @@ public class TileJarFillableVoid extends TileJarFillable {
       return this.aspectFilter != null ? 48 : 32;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.aspectFilter != null && this.amount < this.maxAmount ? 48 : 32;
    }
 

@@ -1,12 +1,12 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
 
@@ -64,7 +64,7 @@ public class BlockMetalDeviceItem extends ItemBlock {
                Block var11 = world.getBlock(x, y, z);
                if (world.isAirBlock(x, y, z) || var11.isReplaceable(world, x, y, z) || var11 == Blocks.vine || var11 == Blocks.tallgrass || var11 == Blocks.deadbush || var11 == Blocks.snow_layer) {
                   for(int a = 2; a < 6; ++a) {
-                     ForgeDirection dir = ForgeDirection.getOrientation(a);
+                     Direction dir = Direction.getOrientation(a);
                      int xx = x + dir.offsetX;
                      int yy = y + dir.offsetY;
                      int zz = z + dir.offsetZ;
@@ -92,25 +92,25 @@ public class BlockMetalDeviceItem extends ItemBlock {
       if (metadata == 7) {
          TileArcaneLamp tile = (TileArcaneLamp)world.getTileEntity(x, y, z);
          if (tile instanceof TileArcaneLamp) {
-            tile.facing = ForgeDirection.getOrientation(side).getOpposite();
+            tile.facing = Direction.getOrientation(side).getOpposite();
             world.markBlockForUpdate(x, y, x);
          }
       } else if (metadata == 8) {
          TileArcaneLampGrowth tile = (TileArcaneLampGrowth)world.getTileEntity(x, y, z);
          if (tile instanceof TileArcaneLampGrowth) {
-            tile.facing = ForgeDirection.getOrientation(side).getOpposite();
+            tile.facing = Direction.getOrientation(side).getOpposite();
             world.markBlockForUpdate(x, y, x);
          }
       } else if (metadata == 12) {
          TileBrainbox tile = (TileBrainbox)world.getTileEntity(x, y, z);
          if (tile instanceof TileBrainbox) {
-            tile.facing = ForgeDirection.getOrientation(side).getOpposite();
+            tile.facing = Direction.getOrientation(side).getOpposite();
             world.markBlockForUpdate(x, y, x);
          }
       } else if (metadata == 13) {
          TileArcaneLampFertility tile = (TileArcaneLampFertility)world.getTileEntity(x, y, z);
          if (tile instanceof TileArcaneLampFertility) {
-            tile.facing = ForgeDirection.getOrientation(side).getOpposite();
+            tile.facing = Direction.getOrientation(side).getOpposite();
             world.markBlockForUpdate(x, y, x);
          }
       } else if (metadata == 14) {

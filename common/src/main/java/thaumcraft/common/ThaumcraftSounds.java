@@ -15,6 +15,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_SPILL = new ResourceLocation("thaumcraft:spill");
         public static final ResourceLocation RES_HEARTBEAT = new ResourceLocation("thaumcraft:heartbeat");
         public static final ResourceLocation RES_ZAP = new ResourceLocation("thaumcraft:zap");
+        public static final ResourceLocation RES_TOOL = new ResourceLocation("thaumcraft:tool");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -27,4 +28,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent SPILL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SPILL);
     public static final SoundEvent HEARTBEAT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_HEARTBEAT);
     public static final SoundEvent ZAP = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ZAP);
+    public static final SoundEvent TOOL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_TOOL);
 }

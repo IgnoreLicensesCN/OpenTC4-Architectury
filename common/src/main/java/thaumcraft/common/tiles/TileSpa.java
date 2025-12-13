@@ -1,13 +1,13 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -222,7 +222,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
          this.decrStackSize(0, 1);
       }
 
-      this.drain(ForgeDirection.UNKNOWN, 1000, true);
+      this.drain(Direction.UNKNOWN, 1000, true);
    }
 
    private boolean isValidLocation(int x, int y, int z, boolean mustBeAdjacent, Block target) {
@@ -232,7 +232,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
          Block b = this.level().getBlock(x, y, z);
          Block bb = this.level().getBlock(x, y - 1, z);
          int m = this.level().getBlockMetadata(x, y, z);
-         if (bb.isSideSolid(this.level(), x, y - 1, z, ForgeDirection.UP) && b.isReplaceable(this.level(), x, y, z) && (b != target || m != 0)) {
+         if (bb.isSideSolid(this.level(), x, y - 1, z, Direction.UP) && b.isReplaceable(this.level(), x, y, z) && (b != target || m != 0)) {
             return !mustBeAdjacent || BlockUtils.isBlockTouching(this.level(), x, y, z, target, 0);
          } else {
             return false;
@@ -240,7 +240,7 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
       }
    }
 
-   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+   public int fill(Direction from, FluidStack resource, boolean doFill) {
       int df = this.tank.fill(resource, doFill);
       if (df > 0 && doFill) {
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -250,11 +250,11 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
       return df;
    }
 
-   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+   public FluidStack drain(Direction from, FluidStack resource, boolean doDrain) {
       return resource != null && resource.isFluidEqual(this.tank.getFluid()) ? this.tank.drain(resource.amount, doDrain) : null;
    }
 
-   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+   public FluidStack drain(Direction from, int maxDrain, boolean doDrain) {
       FluidStack fs = this.tank.drain(maxDrain, doDrain);
       if (fs != null && doDrain) {
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -264,15 +264,15 @@ public class TileSpa extends TileThaumcraft implements ISidedInventory, IFluidHa
       return fs;
    }
 
-   public boolean canFill(ForgeDirection from, Fluid fluid) {
-      return from != ForgeDirection.UP;
+   public boolean canFill(Direction from, Fluid fluid) {
+      return from != Direction.UP;
    }
 
-   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-      return from != ForgeDirection.UP;
+   public boolean canDrain(Direction from, Fluid fluid) {
+      return from != Direction.UP;
    }
 
-   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+   public FluidTankInfo[] getTankInfo(Direction from) {
       return new FluidTankInfo[]{this.tank.getInfo()};
    }
 }

@@ -1,9 +1,9 @@
 package thaumcraft.common.entities.ai.interact;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockLog;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockDirectional;
+import net.minecraft.world.level.block.BlockLog;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
@@ -19,7 +19,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -223,7 +223,7 @@ public class AIHarvestCrops extends EntityAIBase {
                         int[] zm = new int[]{0, 1, 0, 1, 0, -1, -1, 1, -1};
 
                         for(int count = 0; st != null && st.stackSize > 0 && count < 9; ++count) {
-                           if (st.getItem() != null && (st.getItem() instanceof IPlantable || st.getItem() instanceof ItemSeedFood) && st.getItem().onItemUse(st.copy(), fp, this.theWorld, this.xx + xm[count], this.yy - 1, this.zz + zm[count], ForgeDirection.UP.ordinal(), 0.5F, 0.5F, 0.5F)) {
+                           if (st.getItem() != null && (st.getItem() instanceof IPlantable || st.getItem() instanceof ItemSeedFood) && st.getItem().onItemUse(st.copy(), fp, this.theWorld, this.xx + xm[count], this.yy - 1, this.zz + zm[count], Direction.UP.ordinal(), 0.5F, 0.5F, 0.5F)) {
                               --st.stackSize;
                            }
                         }

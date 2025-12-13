@@ -16,7 +16,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityCultist;
 import thaumcraft.common.entities.monster.EntityCultistCleric;
@@ -132,7 +132,7 @@ public class EntityCultistPortal extends Monster implements IBossDisplayData {
                this.level().setEntityState(this, (byte)16);
 
                for(int a = 2; a < 6; ++a) {
-                  ForgeDirection dir = ForgeDirection.getOrientation(a);
+                  Direction dir = Direction.getOrientation(a);
                   this.level().setBlock((int)this.posX - dir.offsetX * 6, (int)this.posY, (int)this.posZ + dir.offsetZ * 6, ConfigBlocks.blockWoodenDevice, 8, 3);
                   TileEntity te = this.level().getTileEntity((int)this.posX - dir.offsetX * 6, (int)this.posY, (int)this.posZ + dir.offsetZ * 6);
                   if (te instanceof TileBanner) {

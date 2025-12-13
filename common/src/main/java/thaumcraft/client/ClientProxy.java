@@ -14,7 +14,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelChicken;
@@ -40,7 +40,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -635,7 +635,7 @@ public class ClientProxy extends CommonProxy {
 
    }
 
-   public void blockWard(World world, double x, double y, double z, ForgeDirection side, float f, float f1, float f2) {
+   public void blockWard(World world, double x, double y, double z, Direction side, float f, float f1, float f2) {
       FXBlockWard fb = new FXBlockWard(world, x + (double)0.5F, y + (double)0.5F, z + (double)0.5F, side, f, f1, f2);
       Minecraft.getInstance().particleEngine.add(fb);
    }

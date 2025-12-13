@@ -1,6 +1,6 @@
 package thaumcraft.client.gui;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import tc4tweak.ConfigurationHandler;

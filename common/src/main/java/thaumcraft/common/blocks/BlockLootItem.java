@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemBlock;

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -61,15 +61,15 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return true;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return this.thaumatorium != null && this.thaumatorium.isConnectable(face);
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return this.thaumatorium != null && this.thaumatorium.canInputFrom(face);
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return false;
    }
 
@@ -79,27 +79,27 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       }
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return this.thaumatorium == null ? null : this.thaumatorium.getSuctionType(loc);
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.getSuctionAmount(loc);
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, face);
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, face);
    }
 

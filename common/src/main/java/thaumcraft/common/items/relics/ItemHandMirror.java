@@ -2,7 +2,7 @@ package thaumcraft.common.items.relics;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -20,7 +20,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileMirror;
@@ -140,7 +140,7 @@ public class ItemHandMirror extends Item {
             TileEntity te = targetWorld.getTileEntity(lx, ly, lz);
             if (te instanceof TileMirror) {
                TileMirror tm = (TileMirror)te;
-               ForgeDirection linkedFacing = ForgeDirection.getOrientation(targetWorld.getBlockMetadata(lx, ly, lz));
+               Direction linkedFacing = Direction.getOrientation(targetWorld.getBlockMetadata(lx, ly, lz));
                EntityItem ie2 = new EntityItem(targetWorld, (double)lx + (double)0.5F - (double)linkedFacing.offsetX * 0.3, (double)ly + (double)0.5F - (double)linkedFacing.offsetY * 0.3, (double)lz + (double)0.5F - (double)linkedFacing.offsetZ * 0.3, items.copy());
                ie2.motionX = (float)linkedFacing.offsetX * 0.15F;
                ie2.motionY = (float)linkedFacing.offsetY * 0.15F;

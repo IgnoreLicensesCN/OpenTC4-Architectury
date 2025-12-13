@@ -14,7 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.VisNetHandler;
@@ -200,7 +200,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
 
    public boolean spawnItem(ItemStack stack) {
       try {
-         ForgeDirection face = ForgeDirection.getOrientation(this.getBlockMetadata());
+         Direction face = Direction.getOrientation(this.getBlockMetadata());
          EntityItem ie2 = new EntityItem(this.level(), (double)this.xCoord + (double)0.5F - (double)face.offsetX * 0.3, (double)this.yCoord + (double)0.5F - (double)face.offsetY * 0.3, (double)this.zCoord + (double)0.5F - (double)face.offsetZ * 0.3, stack);
          ie2.motionX = (float)face.offsetX * 0.15F;
          ie2.motionY = (float)face.offsetY * 0.15F;
@@ -255,7 +255,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
          return super.receiveClientEvent(i, j);
       } else {
          if ((Platform.getEnvironment() == Env.CLIENT)) {
-            ForgeDirection face = ForgeDirection.getOrientation(this.getBlockMetadata());
+            Direction face = Direction.getOrientation(this.getBlockMetadata());
 
             for(int q = 0; q < Thaumcraft.proxy.particleCount(1); ++q) {
                double xx = (double)this.xCoord + 0.33 + (double)(this.level().rand.nextFloat() * 0.33F) - (double)face.offsetX / (double)2.0F;

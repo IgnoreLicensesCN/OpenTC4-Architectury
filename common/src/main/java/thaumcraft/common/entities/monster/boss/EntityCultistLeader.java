@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.boss;
 
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.world.entity.player.Player;

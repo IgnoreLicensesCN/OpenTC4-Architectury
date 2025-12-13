@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -219,7 +219,7 @@ public class BlockWoodenDevice extends BlockContainer {
             float var6 = 0.0625F;
             this.setBlockBounds(var6, 0.0F, var6, 1.0F - var6, 0.03125F, 1.0F - var6);
          } else if (meta == 5) {
-            ForgeDirection dir = ForgeDirection.UNKNOWN;
+            Direction dir = Direction.UNKNOWN;
             TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
             if (tile instanceof TileArcaneBore) {
                dir = ((TileArcaneBore)tile).orientation;
@@ -266,7 +266,7 @@ public class BlockWoodenDevice extends BlockContainer {
             this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 1.0F, 0.9F);
          } else if (meta != 2 && meta != 3 && meta != 8) {
             if (meta == 5) {
-               ForgeDirection dir = ForgeDirection.UNKNOWN;
+               Direction dir = Direction.UNKNOWN;
                TileEntity tile = world.getTileEntity(i, j, k);
                if (tile instanceof TileArcaneBore) {
                   dir = ((TileArcaneBore)tile).orientation;
@@ -294,7 +294,7 @@ public class BlockWoodenDevice extends BlockContainer {
       } else if (meta == 5) {
          TileArcaneBore tile = (TileArcaneBore)world.getTileEntity(x, y, z);
          if (tile instanceof TileArcaneBore) {
-            ForgeDirection d = tile.baseOrientation.getOpposite();
+            Direction d = tile.baseOrientation.getOpposite();
             Block block = world.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
             if (block != ConfigBlocks.blockWoodenDevice || !block.isSideSolid(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ, tile.baseOrientation)) {
                InventoryUtils.dropItems(world, x, y, z);
@@ -307,7 +307,7 @@ public class BlockWoodenDevice extends BlockContainer {
       super.onNeighborBlockChange(world, x, y, z, par5);
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       int meta = world.getBlockMetadata(x, y, z);
       return meta == 4 || meta == 6 || meta == 7 || super.isSideSolid(world, x, y, z, side);
    }
@@ -633,12 +633,12 @@ public class BlockWoodenDevice extends BlockContainer {
       return meta != 2 && meta != 3 && super.canEntityDestroy(world, x, y, z, entity);
    }
 
-   public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
       int meta = world.getBlockMetadata(x, y, z);
       return meta != 6 && meta != 7 ? 0 : 20;
    }
 
-   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
       int meta = world.getBlockMetadata(x, y, z);
       return meta != 6 && meta != 7 ? 0 : 5;
    }

@@ -4,7 +4,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -17,7 +17,7 @@ public class AILiquidEmpty extends EntityAIBase {
    private int waterX;
    private int waterY;
    private int waterZ;
-   private ForgeDirection markerOrientation;
+   private Direction markerOrientation;
    private World theWorld;
 
    public AILiquidEmpty(EntityGolemBase par1EntityCreature) {
@@ -47,7 +47,7 @@ public class AILiquidEmpty extends EntityAIBase {
    }
 
    public void startExecuting() {
-      ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+      Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
       ChunkCoordinates home = this.theGolem.getHomePosition();
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
@@ -55,7 +55,7 @@ public class AILiquidEmpty extends EntityAIBase {
       TileEntity tile = this.theWorld.getTileEntity(cX, cY, cZ);
       if (tile instanceof IFluidHandler) {
          IFluidHandler fh = (IFluidHandler)tile;
-         int amt = fh.fill(ForgeDirection.getOrientation(this.theGolem.homeFacing), this.theGolem.fluidCarried, true);
+         int amt = fh.fill(Direction.getOrientation(this.theGolem.homeFacing), this.theGolem.fluidCarried, true);
          FluidStack var10000 = this.theGolem.fluidCarried;
          var10000.amount -= amt;
          if (this.theGolem.fluidCarried.amount <= 0) {

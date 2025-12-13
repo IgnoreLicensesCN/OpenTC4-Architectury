@@ -4,7 +4,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -16,7 +16,7 @@ public class AIEssentiaEmpty extends EntityAIBase {
    private int jarX;
    private int jarY;
    private int jarZ;
-   private ForgeDirection markerOrientation;
+   private Direction markerOrientation;
    private World theWorld;
 
    public AIEssentiaEmpty(EntityGolemBase par1EntityCreature) {
@@ -79,8 +79,8 @@ public class AIEssentiaEmpty extends EntityAIBase {
       } else if (tile instanceof IEssentiaTransport) {
          for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, (byte)-1)) {
             IEssentiaTransport trans = (IEssentiaTransport)tile;
-            if (trans.canInputFrom(ForgeDirection.getOrientation(side)) && trans.getSuctionAmount(ForgeDirection.getOrientation(side)) > 0 && (trans.getSuctionType(ForgeDirection.getOrientation(side)) == null || trans.getSuctionType(ForgeDirection.getOrientation(side)) == this.theGolem.essentia)) {
-               int added = trans.addEssentia(this.theGolem.essentia, this.theGolem.essentiaAmount, ForgeDirection.getOrientation(side));
+            if (trans.canInputFrom(Direction.getOrientation(side)) && trans.getSuctionAmount(Direction.getOrientation(side)) > 0 && (trans.getSuctionType(Direction.getOrientation(side)) == null || trans.getSuctionType(Direction.getOrientation(side)) == this.theGolem.essentia)) {
+               int added = trans.addEssentia(this.theGolem.essentia, this.theGolem.essentiaAmount, Direction.getOrientation(side));
                if (added > 0) {
                   EntityGolemBase var10000 = this.theGolem;
                   var10000.essentiaAmount -= added;

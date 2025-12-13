@@ -8,7 +8,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TileArcaneLampFertility extends TileThaumcraft implements IEssentiaTransport {
-   public ForgeDirection facing = ForgeDirection.getOrientation(0);
+   public Direction facing = Direction.getOrientation(0);
    public int charges = 0;
    int count = 0;
    int drawDelay = 0;
@@ -89,7 +89,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getInteger("orientation"));
+      this.facing = Direction.getOrientation(nbttagcompound.getInteger("orientation"));
       this.charges = nbttagcompound.getInteger("charges");
    }
 
@@ -116,15 +116,15 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       }
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return false;
    }
 
@@ -139,27 +139,27 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       return 0;
    }
 
-   public Aspect getSuctionType(ForgeDirection face) {
+   public Aspect getSuctionType(Direction face) {
       return Aspect.LIFE;
    }
 
-   public int getSuctionAmount(ForgeDirection face) {
+   public int getSuctionAmount(Direction face) {
       return face == this.facing ? 128 - this.charges * 10 : 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection facing) {
+   public int takeEssentia(Aspect aspect, int amount, Direction facing) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection facing) {
+   public int addEssentia(Aspect aspect, int amount, Direction facing) {
       return 0;
    }
 }

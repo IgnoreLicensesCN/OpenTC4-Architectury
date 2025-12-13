@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -19,7 +19,7 @@ import java.awt.*;
 public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSource, IWandable, IEssentiaTransport {
    public AspectList essentia = new AspectList();
    public int maxAmount = 256;
-   public ForgeDirection facing;
+   public Direction facing;
    int count;
    float tr;
    float tri;
@@ -33,7 +33,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    public Aspect displayAspect;
 
    public TileEssentiaReservoir() {
-      this.facing = ForgeDirection.DOWN;
+      this.facing = Direction.DOWN;
       this.count = 0;
       this.tr = 1.0F;
       this.tri = 0.0F;
@@ -57,7 +57,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
          this.essentia = new AspectList();
       }
 
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getByte("face"));
+      this.facing = Direction.getOrientation(nbttagcompound.getByte("face"));
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
@@ -130,15 +130,15 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       return true;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return face == this.facing;
    }
 
@@ -153,27 +153,27 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       return 24;
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return null;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.essentia.visSize() < this.maxAmount ? 24 : 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
-      return this.essentia.visSize() > 0 && loc == ForgeDirection.UNKNOWN ? this.essentia.getAspects()[0] : null;
+   public Aspect getEssentiaType(Direction loc) {
+      return this.essentia.visSize() > 0 && loc == Direction.UNKNOWN ? this.essentia.getAspects()[0] : null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.essentia.visSize();
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
    }
 
@@ -237,9 +237,9 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
 
    public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
       if (player.isSneaking()) {
-         this.facing = ForgeDirection.getOrientation(side);
+         this.facing = Direction.getOrientation(side);
       } else {
-         this.facing = ForgeDirection.getOrientation(side).getOpposite();
+         this.facing = Direction.getOrientation(side).getOpposite();
       }
 
       this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

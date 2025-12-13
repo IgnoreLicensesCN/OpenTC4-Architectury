@@ -1,7 +1,7 @@
 package thaumcraft.common.config;
 
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.MapColor;
+import net.minecraft.world.level.block.material.Material;
 
 public class MaterialAiry extends Material {
    private int mobilityFlag;

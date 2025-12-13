@@ -206,7 +206,7 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
             return result;
         }
 
-        // side offset (替代 ForgeDirection.offsetX/Y/Z)
+        // side offset (替代 Direction.offsetX/Y/Z)
         BlockPos offset = pos.relative(side);
 
         // 玩家水平朝向 (用于替代 NBT 的 orientation)

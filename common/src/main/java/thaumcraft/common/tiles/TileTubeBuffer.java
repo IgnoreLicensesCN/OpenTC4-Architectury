@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -112,15 +112,15 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       return true;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return this.openSides[face.ordinal()];
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return this.openSides[face.ordinal()];
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return this.openSides[face.ordinal()];
    }
 
@@ -135,23 +135,23 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       return 0;
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return null;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.chokedSides[loc.ordinal()] == 2 ? 0 : (this.bellows > 0 && this.chokedSides[loc.ordinal()] != 1 ? this.bellows * 32 : 1);
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.aspects.size() > 0 ? this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)] : null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.aspects.visSize();
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       if (!this.canOutputTo(face)) {
          return 0;
       } else {
@@ -164,7 +164,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
             suction = ic.getSuctionAmount(face.getOpposite());
          }
 
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
             if (this.canOutputTo(dir) && dir != face) {
                te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
                if (te != null) {
@@ -186,7 +186,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       }
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
    }
 
@@ -210,7 +210,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       TileEntity te = null;
       IEssentiaTransport ic = null;
 
-      for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for(Direction dir : Direction.VALID_DIRECTIONS) {
          te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
          if (te != null) {
             ic = (IEssentiaTransport)te;
@@ -225,7 +225,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    }
 
    public void getBellows() {
-      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
+      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.VALID_DIRECTIONS);
    }
 
    public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
@@ -247,7 +247,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
                } else {
                    player.level().playSound((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:tool", 0.5F, 0.9F + player.level().rand.nextFloat() * 0.2F, false);
                    this.openSides[hit.subHit] = !this.openSides[hit.subHit];
-                   ForgeDirection dir = ForgeDirection.getOrientation(hit.subHit);
+                   Direction dir = Direction.getOrientation(hit.subHit);
                    TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
                    if (tile instanceof TileTube) {
                        ((TileTube) tile).openSides[dir.getOpposite().ordinal()] = this.openSides[hit.subHit];
@@ -285,7 +285,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    }
 
    private boolean canConnectSide(int side) {
-      ForgeDirection dir = ForgeDirection.getOrientation(side);
+      Direction dir = Direction.getOrientation(side);
       TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
       return tile instanceof IEssentiaTransport;
    }

@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
@@ -64,10 +64,10 @@ public class ItemResonator extends Item {
             return super.onItemUseFirst(itemstack, player, world, x, y, z, side, par8, par9, par10);
          } else {
             IEssentiaTransport et = (IEssentiaTransport)tile;
-            ForgeDirection face = ForgeDirection.getOrientation(side);
+            Direction face = Direction.getOrientation(side);
             HitResult hit = RayTracer.retraceBlock(world, player, x, y, z);
             if (hit != null && hit.subHit >= 0 && hit.subHit < 6) {
-               face = ForgeDirection.getOrientation(hit.subHit);
+               face = Direction.getOrientation(hit.subHit);
             }
 
             if (!(tile instanceof TileTubeBuffer) && et.getEssentiaType(face) != null) {

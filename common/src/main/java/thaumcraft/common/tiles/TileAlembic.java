@@ -9,7 +9,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -26,7 +26,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    public int facing = 2;
    public boolean aboveAlembic = false;
    public boolean aboveFurnace = false;
-   ForgeDirection fd = null;
+   Direction fd = null;
 
    public AspectList getAspects() {
       return this.aspect != null ? (new AspectList()).add(this.aspect, this.amount) : new AspectList();
@@ -49,7 +49,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
       }
 
       this.amount = nbttagcompound.getShort("amount");
-      this.fd = ForgeDirection.getOrientation(this.facing);
+      this.fd = Direction.getOrientation(this.facing);
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
@@ -141,7 +141,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
        if (side > 1) {
            this.facing = side;
-           this.fd = ForgeDirection.getOrientation(this.facing);
+           this.fd = Direction.getOrientation(this.facing);
            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
            player.swingItem();
            this.markDirty();
@@ -159,42 +159,42 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
    }
 
-   public boolean isConnectable(ForgeDirection face) {
-      return face != ForgeDirection.getOrientation(this.facing) && face != ForgeDirection.DOWN;
+   public boolean isConnectable(Direction face) {
+      return face != Direction.getOrientation(this.facing) && face != Direction.DOWN;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return false;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
-      return face != ForgeDirection.getOrientation(this.facing) && face != ForgeDirection.DOWN;
+   public boolean canOutputTo(Direction face) {
+      return face != Direction.getOrientation(this.facing) && face != Direction.DOWN;
    }
 
    public void setSuction(Aspect aspect, int amount) {
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return null;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.aspect;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.amount;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection loc) {
+   public int addEssentia(Aspect aspect, int amount, Direction loc) {
       return 0;
    }
 

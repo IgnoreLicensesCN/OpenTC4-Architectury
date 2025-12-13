@@ -333,7 +333,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
         Block bi = world.getBlock(x, y, z);
         int md = world.getBlockMetadata(x, y, z);
         boolean result = false;
-        ForgeDirection direction = ForgeDirection.getOrientation(side);
+        Direction direction = Direction.getOrientation(side);
         if (bi instanceof IWandable) {
             int ret = ((IWandable) bi).onWandRightClick(world, itemstack, player, x, y, z, side, md);
             if (ret >= 0) {

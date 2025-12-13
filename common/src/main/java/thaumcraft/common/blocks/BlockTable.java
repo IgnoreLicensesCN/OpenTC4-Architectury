@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -52,8 +52,8 @@ public class BlockTable extends BlockContainer implements IWandable {
       return this.icon;
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-      return side == ForgeDirection.UP || super.isSideSolid(world, x, y, z, side);
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
+      return side == Direction.UP || super.isSideSolid(world, x, y, z, side);
    }
 
    @SideOnly(Side.CLIENT)
@@ -117,14 +117,14 @@ public class BlockTable extends BlockContainer implements IWandable {
       TileEntity tile = world.getTileEntity(x, y, z);
       int md = world.getBlockMetadata(x, y, z);
       if (tile instanceof TileResearchTable) {
-         int mm = world.getBlockMetadata(x + ForgeDirection.getOrientation(md).offsetX, y + ForgeDirection.getOrientation(md).offsetY, z + ForgeDirection.getOrientation(md).offsetZ);
+         int mm = world.getBlockMetadata(x + Direction.getOrientation(md).offsetX, y + Direction.getOrientation(md).offsetY, z + Direction.getOrientation(md).offsetZ);
          if (mm < 6) {
             InventoryUtils.dropItems(world, x, y, z);
             world.setTileEntity(x, y, z, new TileTable());
             world.setBlock(x, y, z, this, 0, 3);
          }
       } else if (md >= 6 && md < 14) {
-         TileEntity tile2 = world.getTileEntity(x + ForgeDirection.getOrientation(md - 4).offsetX, y + ForgeDirection.getOrientation(md - 4).offsetY, z + ForgeDirection.getOrientation(md - 4).offsetZ);
+         TileEntity tile2 = world.getTileEntity(x + Direction.getOrientation(md - 4).offsetX, y + Direction.getOrientation(md - 4).offsetY, z + Direction.getOrientation(md - 4).offsetZ);
          if (!(tile2 instanceof TileResearchTable)) {
             world.setBlock(x, y, z, this, 0, 3);
          }
@@ -150,9 +150,9 @@ public class BlockTable extends BlockContainer implements IWandable {
                player.openGui(Thaumcraft.instance, 10, world, x, y, z);
             } else {
                for(int a = 2; a < 6; ++a) {
-                  TileEntity tile = world.getTileEntity(x + ForgeDirection.getOrientation(a).offsetX, y + ForgeDirection.getOrientation(a).offsetY, z + ForgeDirection.getOrientation(a).offsetZ);
+                  TileEntity tile = world.getTileEntity(x + Direction.getOrientation(a).offsetX, y + Direction.getOrientation(a).offsetY, z + Direction.getOrientation(a).offsetZ);
                   if (tile instanceof TileResearchTable) {
-                     player.openGui(Thaumcraft.instance, 10, world, x + ForgeDirection.getOrientation(a).offsetX, y + ForgeDirection.getOrientation(a).offsetY, z + ForgeDirection.getOrientation(a).offsetZ);
+                     player.openGui(Thaumcraft.instance, 10, world, x + Direction.getOrientation(a).offsetX, y + Direction.getOrientation(a).offsetY, z + Direction.getOrientation(a).offsetZ);
                      break;
                   }
                }

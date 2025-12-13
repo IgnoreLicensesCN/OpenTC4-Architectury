@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -24,7 +24,7 @@ public class AIFillTake extends EntityAIBase {
 
    public boolean shouldExecute() {
       if (this.theGolem.getCarried() == null && this.theGolem.itemWatched != null && this.theGolem.getNavigator().noPath() && this.theGolem.hasSomething()) {
-         ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
          ChunkCoordinates home = this.theGolem.getHomePosition();
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;

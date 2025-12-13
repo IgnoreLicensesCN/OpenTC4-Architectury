@@ -3,15 +3,15 @@ package thaumcraft.common.tiles;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -368,7 +368,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       this.bellows = 0;
 
       for(int a = 2; a < 6; ++a) {
-         ForgeDirection dir = ForgeDirection.getOrientation(a);
+         Direction dir = Direction.getOrientation(a);
          int xx = this.xCoord + dir.offsetX;
          int zz = this.zCoord + dir.offsetZ;
          Block bi = this.level().getBlock(xx, this.yCoord, zz);
@@ -380,7 +380,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
 
    }
 
-   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+   public int fill(Direction from, FluidStack resource, boolean doFill) {
       if (resource != null && resource.getFluidID() != FluidRegistry.WATER.getID()) {
          return 0;
       } else {
@@ -393,7 +393,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       }
    }
 
-   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+   public FluidStack drain(Direction from, FluidStack resource, boolean doDrain) {
       if (resource != null && resource.isFluidEqual(this.tank.getFluid())) {
          if (doDrain) {
             this.markDirty();
@@ -406,19 +406,19 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       }
    }
 
-   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+   public FluidStack drain(Direction from, int maxDrain, boolean doDrain) {
       return this.tank.drain(maxDrain, doDrain);
    }
 
-   public boolean canFill(ForgeDirection from, Fluid fluid) {
+   public boolean canFill(Direction from, Fluid fluid) {
       return fluid != null && fluid.getID() == FluidRegistry.WATER.getID();
    }
 
-   public boolean canDrain(ForgeDirection from, Fluid fluid) {
+   public boolean canDrain(Direction from, Fluid fluid) {
       return true;
    }
 
-   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+   public FluidTankInfo[] getTankInfo(Direction from) {
       return new FluidTankInfo[]{this.tank.getInfo()};
    }
 

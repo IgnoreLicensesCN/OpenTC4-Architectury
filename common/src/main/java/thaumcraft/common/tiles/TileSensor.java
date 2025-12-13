@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;

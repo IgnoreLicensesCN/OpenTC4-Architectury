@@ -4,7 +4,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -30,7 +30,7 @@ public class AIEssentiaGather extends EntityAIBase {
    public boolean shouldExecute() {
       if (this.theGolem.getNavigator().noPath() && this.delay <= System.currentTimeMillis()) {
          ChunkCoordinates home = this.theGolem.getHomePosition();
-         ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;
          int cZ = home.posZ - facing.offsetZ;
@@ -42,7 +42,7 @@ public class AIEssentiaGather extends EntityAIBase {
             if (te != null) {
                if (te instanceof IEssentiaTransport) {
                   IEssentiaTransport etrans = (IEssentiaTransport)te;
-                  if ((te instanceof TileJarFillable || te instanceof TileEssentiaReservoir || etrans.canOutputTo(facing)) && etrans.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(etrans.getEssentiaType(facing)) || this.theGolem.essentia.equals(etrans.getEssentiaType(ForgeDirection.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
+                  if ((te instanceof TileJarFillable || te instanceof TileEssentiaReservoir || etrans.canOutputTo(facing)) && etrans.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(etrans.getEssentiaType(facing)) || this.theGolem.essentia.equals(etrans.getEssentiaType(Direction.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
                      this.delay = System.currentTimeMillis() + 1000L;
                      this.start = 0;
                      return true;
@@ -76,14 +76,14 @@ public class AIEssentiaGather extends EntityAIBase {
 
    public void startExecuting() {
       ChunkCoordinates home = this.theGolem.getHomePosition();
-      ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+      Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
       TileEntity te = this.theWorld.getTileEntity(cX, cY + this.start, cZ);
       if (te instanceof IEssentiaTransport) {
          if (te instanceof TileAlembic || te instanceof TileJarFillable) {
-            facing = ForgeDirection.UP;
+            facing = Direction.UP;
          }
 
          if (te instanceof TileEssentiaReservoir) {
@@ -95,10 +95,10 @@ public class AIEssentiaGather extends EntityAIBase {
             return;
          }
 
-         if (ta.canOutputTo(facing) && ta.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(ta.getEssentiaType(facing)) || this.theGolem.essentia.equals(ta.getEssentiaType(ForgeDirection.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
+         if (ta.canOutputTo(facing) && ta.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(ta.getEssentiaType(facing)) || this.theGolem.essentia.equals(ta.getEssentiaType(Direction.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
             Aspect a = ta.getEssentiaType(facing);
             if (a == null) {
-               a = ta.getEssentiaType(ForgeDirection.UNKNOWN);
+               a = ta.getEssentiaType(Direction.UNKNOWN);
             }
 
             int qq = ta.getEssentiaAmount(facing);

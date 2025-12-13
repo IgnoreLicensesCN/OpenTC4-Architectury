@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.TileThaumcraft;

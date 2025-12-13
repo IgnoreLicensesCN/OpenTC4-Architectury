@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntitySpellParticleFX;
@@ -24,7 +24,7 @@ import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import tc4tweak.network.NetworkedConfiguration;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -262,7 +262,7 @@ public class BlockJar extends BlockContainer {
                if ((Platform.getEnvironment() == Env.CLIENT)) {
                   playJarSound(world, x, y, z, 1.f);
                } else {
-                  ForgeDirection fd = ForgeDirection.getOrientation(side);
+                  Direction fd = Direction.getOrientation(side);
                   world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
                }
             } else if (player.getHeldItem() == null) {

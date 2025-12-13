@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -254,7 +254,7 @@ public class BlockArcaneDoor extends BlockContainer {
 
          label98:
          for(int a = 2; a <= 5; ++a) {
-            ForgeDirection dir = ForgeDirection.getOrientation(a);
+            Direction dir = Direction.getOrientation(a);
             Block bi = par1World.getBlock(par2 + dir.offsetX, par3 + dir.offsetY, par4 + dir.offsetZ);
             int md = par1World.getBlockMetadata(par2 + dir.offsetX, par3 + dir.offsetY, par4 + dir.offsetZ);
             if (bi == ConfigBlocks.blockWoodenDevice && md == 3) {
