@@ -1,6 +1,6 @@
 package thaumcraft.common.items.armor;
 
-import net.minecraft.block.BlockColored;
+import net.minecraft.world.level.block.BlockColored;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.world.item.Items;
 import net.minecraft.inventory.InventoryCrafting;

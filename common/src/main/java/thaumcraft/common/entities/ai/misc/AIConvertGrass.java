@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.misc;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.level.block.Blocks;

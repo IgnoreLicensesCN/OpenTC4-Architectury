@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonBase;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockPistonBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemBlock;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileArcaneBore;
@@ -38,7 +38,7 @@ public class BlockWoodenDeviceItem extends ItemBlock {
          if (metadata == 0) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if (tile instanceof TileBellows) {
-               ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+               Direction dir = Direction.getOrientation(side).getOpposite();
                ((TileBellows)tile).orientation = (byte)dir.ordinal();
                int xx = x + dir.offsetX;
                int yy = y + dir.offsetY;
@@ -59,16 +59,16 @@ public class BlockWoodenDeviceItem extends ItemBlock {
                int var6 = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + (double)0.5F) & 3;
                switch (var6) {
                   case 0:
-                     tile.orientation = ForgeDirection.getOrientation(2);
+                     tile.orientation = Direction.getOrientation(2);
                      break;
                   case 1:
-                     tile.orientation = ForgeDirection.getOrientation(5);
+                     tile.orientation = Direction.getOrientation(5);
                      break;
                   case 2:
-                     tile.orientation = ForgeDirection.getOrientation(3);
+                     tile.orientation = Direction.getOrientation(3);
                      break;
                   case 3:
-                     tile.orientation = ForgeDirection.getOrientation(4);
+                     tile.orientation = Direction.getOrientation(4);
                }
 
                tile.markDirty();
@@ -79,9 +79,9 @@ public class BlockWoodenDeviceItem extends ItemBlock {
          if (metadata == 5) {
             TileArcaneBore tile = (TileArcaneBore)world.getTileEntity(x, y, z);
             if (tile instanceof TileArcaneBore) {
-               tile.baseOrientation = ForgeDirection.getOrientation(side);
+               tile.baseOrientation = Direction.getOrientation(side);
                int var6 = BlockPistonBase.determineOrientation(world, x, y, z, player);
-               tile.orientation = ForgeDirection.getOrientation(var6);
+               tile.orientation = Direction.getOrientation(var6);
                world.markBlockForUpdate(x, y, x);
                tile.markDirty();
             }

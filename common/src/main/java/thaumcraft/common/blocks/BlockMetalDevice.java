@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -259,7 +259,7 @@ public class BlockMetalDevice extends BlockContainer {
             } else if (metadata == 14) {
                TileEntity te = world.getTileEntity(i, j, k);
                if (te instanceof TileVisRelay) {
-                  switch (ForgeDirection.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
+                  switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
                      case UP:
                         this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
                         break;
@@ -375,7 +375,7 @@ public class BlockMetalDevice extends BlockContainer {
          } else if (metadata == 14) {
             TileEntity te = world.getTileEntity(i, j, k);
             if (te instanceof TileVisRelay) {
-               switch (ForgeDirection.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
+               switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
                   case UP:
                      this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
                      break;
@@ -459,7 +459,7 @@ public class BlockMetalDevice extends BlockContainer {
             }
          } else if (te instanceof TileVisRelay && md == 14) {
             TileVisRelay telb = (TileVisRelay) te;
-            if (world.isAirBlock(x + ForgeDirection.getOrientation(telb.orientation).getOpposite().offsetX, y + ForgeDirection.getOrientation(telb.orientation).getOpposite().offsetY, z + ForgeDirection.getOrientation(telb.orientation).getOpposite().offsetZ)) {
+            if (world.isAirBlock(x + Direction.getOrientation(telb.orientation).getOpposite().offsetX, y + Direction.getOrientation(telb.orientation).getOpposite().offsetY, z + Direction.getOrientation(telb.orientation).getOpposite().offsetZ)) {
                this.dropBlockAsItem(world, x, y, z, 14, 0);
                world.setBlockToAir(x, y, z);
             }
@@ -524,7 +524,7 @@ public class BlockMetalDevice extends BlockContainer {
                   return true;
                }
 
-               tile.fill(ForgeDirection.UNKNOWN, FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem()), true);
+               tile.fill(Direction.UNKNOWN, FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem()), true);
                ItemStack emptyContainer = null;
                FluidContainerRegistry.FluidContainerData[] fcs = FluidContainerRegistry.getRegisteredFluidContainerData();
 
@@ -581,7 +581,7 @@ public class BlockMetalDevice extends BlockContainer {
                if ((Platform.getEnvironment() == Env.CLIENT)) {
                   world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 1.1F, false);
                } else {
-                  ForgeDirection fd = ForgeDirection.getOrientation(side);
+                  Direction fd = Direction.getOrientation(side);
                   world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
                }
 

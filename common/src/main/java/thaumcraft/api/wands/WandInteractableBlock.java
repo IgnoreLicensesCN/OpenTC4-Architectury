@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 public interface WandInteractableBlock {
 
+    //if InteractionResult.CONSUME,hold right click will lead to loooooong use(call #interact below every tick).
     @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext);
-    void interact(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount);
+
+    //InteractionResult.CONSUME above to get here every using tick
+    default void interact(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount){};
 }

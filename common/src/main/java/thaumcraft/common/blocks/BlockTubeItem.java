@@ -1,12 +1,12 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.tiles.TileEssentiaCrystalizer;
 import thaumcraft.common.tiles.TileTube;
 
@@ -30,11 +30,11 @@ public class BlockTubeItem extends ItemBlock {
       if (ret) {
          TileEntity te = world.getTileEntity(x, y, z);
          if (te instanceof TileTube) {
-            ((TileTube)te).facing = ForgeDirection.getOrientation(side);
+            ((TileTube)te).facing = Direction.getOrientation(side);
          }
 
          if (te instanceof TileEssentiaCrystalizer) {
-            ((TileEssentiaCrystalizer)te).facing = ForgeDirection.getOrientation(side).getOpposite();
+            ((TileEssentiaCrystalizer)te).facing = Direction.getOrientation(side).getOpposite();
          }
       }
 

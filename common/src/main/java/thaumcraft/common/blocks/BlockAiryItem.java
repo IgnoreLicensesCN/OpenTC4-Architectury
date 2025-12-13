@@ -2,7 +2,7 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemBlock;

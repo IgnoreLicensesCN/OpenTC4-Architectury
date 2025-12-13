@@ -9,8 +9,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
@@ -24,7 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.modules.FlushableCache;
 import tc4tweak.network.MessageSendConfiguration;
@@ -268,7 +268,7 @@ public class CommonProxy implements IGuiHandler {
 //   public void drawVentParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, int color) {
 //   }
 //
-//   public void blockWard(World world, double x, double y, double z, ForgeDirection side, float f, float f1, float f2) {
+//   public void blockWard(World world, double x, double y, double z, Direction side, float f, float f1, float f2) {
 //   }
 //
 //   public void wispFX4(World worldObj, double posX, double posY, double posZ, Entity target, int type, boolean shrink, float gravity) {

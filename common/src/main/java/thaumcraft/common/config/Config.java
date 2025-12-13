@@ -1,8 +1,8 @@
 package thaumcraft.common.config;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.material.MapColor;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Items;

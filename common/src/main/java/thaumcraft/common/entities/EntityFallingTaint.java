@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;

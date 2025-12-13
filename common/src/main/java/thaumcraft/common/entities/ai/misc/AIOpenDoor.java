@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.misc;
 
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.BlockFenceGate;
+import net.minecraft.world.level.block.BlockDoor;
+import net.minecraft.world.level.block.BlockFenceGate;
 import net.minecraft.world.level.block.Blocks;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.common.entities.golems.EntityGolemBase;

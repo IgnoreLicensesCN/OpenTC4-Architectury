@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.world.dim;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.BlockFalling;
+import net.minecraft.world.level.block.BlockFalling;
 import net.minecraft.world.entity.EnumCreatureType;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.ChunkPosition;

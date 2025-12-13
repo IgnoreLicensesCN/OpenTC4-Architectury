@@ -1,9 +1,9 @@
 package thaumcraft.common.tiles;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IGrowable;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,7 +11,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTransport {
-   public ForgeDirection facing = ForgeDirection.getOrientation(0);
+   public Direction facing = Direction.getOrientation(0);
    private boolean reserve = false;
    public int charges = -1;
    int lx = 0;
@@ -135,7 +135,7 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getInteger("orientation"));
+      this.facing = Direction.getOrientation(nbttagcompound.getInteger("orientation"));
       this.reserve = nbttagcompound.getBoolean("reserve");
       this.charges = nbttagcompound.getInteger("charges");
    }
@@ -164,15 +164,15 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       }
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return false;
    }
 
@@ -187,27 +187,27 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       return 0;
    }
 
-   public Aspect getSuctionType(ForgeDirection face) {
+   public Aspect getSuctionType(Direction face) {
       return Aspect.PLANT;
    }
 
-   public int getSuctionAmount(ForgeDirection face) {
+   public int getSuctionAmount(Direction face) {
       return face != this.facing || this.reserve && this.charges > 0 ? 0 : 128;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection loc) {
+   public int takeEssentia(Aspect aspect, int amount, Direction loc) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection loc) {
+   public int addEssentia(Aspect aspect, int amount, Direction loc) {
       return 0;
    }
 }

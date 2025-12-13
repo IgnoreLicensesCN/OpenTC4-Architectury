@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.world.level.block.Blocks;
@@ -16,7 +16,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 
@@ -75,7 +75,7 @@ public class EntityFrostShard extends EntityThrowable implements IEntityAddition
             this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
          }
       } else if (mop.typeOfHit == MovingObjectType.BLOCK) {
-         ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
+         Direction dir = Direction.getOrientation(mop.sideHit);
          if (dir.offsetZ != 0) {
             this.motionZ *= -1.0F;
          }

@@ -5,10 +5,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -453,7 +453,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 //draining essentia,may add instability if failed
                 for (Aspect aspect : this.recipeEssentia.getAspects()) {
                     if (this.recipeEssentia.getAmount(aspect) > 0) {
-                        if (EssentiaHandler.drainEssentia(this, aspect, ForgeDirection.UNKNOWN, 12)) {
+                        if (EssentiaHandler.drainEssentia(this, aspect, Direction.UNKNOWN, 12)) {
                             this.recipeEssentia.reduce(aspect, 1);
                             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                             this.markDirty();

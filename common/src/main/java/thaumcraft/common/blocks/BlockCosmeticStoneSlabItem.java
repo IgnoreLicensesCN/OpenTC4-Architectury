@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockSlab;
 import net.minecraft.world.item.ItemSlab;
 import thaumcraft.common.config.ConfigBlocks;
 

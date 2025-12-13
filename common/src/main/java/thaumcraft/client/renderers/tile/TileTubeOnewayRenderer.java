@@ -2,7 +2,7 @@ package thaumcraft.client.renderers.tile;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.client.lib.UtilsFX;
@@ -11,7 +11,7 @@ import thaumcraft.common.tiles.TileTubeOneway;
 
 public class TileTubeOnewayRenderer extends TileEntitySpecialRenderer {
    private ModelTubeValve model = new ModelTubeValve();
-   ForgeDirection fd = null;
+   Direction fd = null;
 
    public void renderEntityAt(TileTubeOneway valve, double x, double y, double z, float fq) {
       UtilsFX.bindTexture("textures/models/valve.png");

@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
 
@@ -55,7 +55,7 @@ public class TileTubeValve extends TileTube {
                this.markDirty();
                world.markBlockForUpdate(x, y, z);
                this.openSides[hit.subHit] = !this.openSides[hit.subHit];
-               ForgeDirection dir = ForgeDirection.getOrientation(hit.subHit);
+               Direction dir = Direction.getOrientation(hit.subHit);
                TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
                if (tile instanceof TileTube) {
                    ((TileTube) tile).openSides[dir.getOpposite().ordinal()] = this.openSides[hit.subHit];
@@ -76,9 +76,9 @@ public class TileTubeValve extends TileTube {
                        break;
                    }
 
-                   if (!this.canConnectSide(ForgeDirection.getOrientation(a % 6).ordinal())) {
+                   if (!this.canConnectSide(Direction.getOrientation(a % 6).ordinal())) {
                        a %= 6;
-                       this.facing = ForgeDirection.getOrientation(a);
+                       this.facing = Direction.getOrientation(a);
                        world.markBlockForUpdate(x, y, z);
                        break;
                    }
@@ -101,7 +101,7 @@ public class TileTubeValve extends TileTube {
       nbttagcompound.setBoolean("hadpower", this.wasPoweredLastTick);
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face != this.facing && super.isConnectable(face);
    }
 

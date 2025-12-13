@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.item.Item;
@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.crafting.IInfusionStabiliser;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
@@ -139,25 +139,25 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
       if (md <= 6 && this.checkIfAttachedToBlock(world, i, j, k)) {
          TileCrystal tes = (TileCrystal)world.getTileEntity(i, j, k);
          int i1 = tes.orientation;
-         boolean flag = !world.isSideSolid(i - 1, j, k, ForgeDirection.getOrientation(5)) && i1 == 5;
+         boolean flag = !world.isSideSolid(i - 1, j, k, Direction.getOrientation(5)) && i1 == 5;
 
-          if (!world.isSideSolid(i + 1, j, k, ForgeDirection.getOrientation(4)) && i1 == 4) {
+          if (!world.isSideSolid(i + 1, j, k, Direction.getOrientation(4)) && i1 == 4) {
             flag = true;
          }
 
-         if (!world.isSideSolid(i, j, k - 1, ForgeDirection.getOrientation(3)) && i1 == 3) {
+         if (!world.isSideSolid(i, j, k - 1, Direction.getOrientation(3)) && i1 == 3) {
             flag = true;
          }
 
-         if (!world.isSideSolid(i, j, k + 1, ForgeDirection.getOrientation(2)) && i1 == 2) {
+         if (!world.isSideSolid(i, j, k + 1, Direction.getOrientation(2)) && i1 == 2) {
             flag = true;
          }
 
-         if (!world.isSideSolid(i, j - 1, k, ForgeDirection.getOrientation(1)) && i1 == 1) {
+         if (!world.isSideSolid(i, j - 1, k, Direction.getOrientation(1)) && i1 == 1) {
             flag = true;
          }
 
-         if (!world.isSideSolid(i, j + 1, k, ForgeDirection.getOrientation(0)) && i1 == 0) {
+         if (!world.isSideSolid(i, j + 1, k, Direction.getOrientation(0)) && i1 == 0) {
             flag = true;
          }
 
@@ -168,7 +168,7 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
 
       } else if (md == 7) {
          TileCrystal tes = (TileCrystal)world.getTileEntity(i, j, k);
-         ForgeDirection fd = ForgeDirection.getOrientation(tes.orientation).getOpposite();
+         Direction fd = Direction.getOrientation(tes.orientation).getOpposite();
          if (world.isAirBlock(i + fd.offsetX, j + fd.offsetY, k + fd.offsetZ)) {
             this.dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
             world.setBlockToAir(i, j, k);
@@ -188,32 +188,32 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
    }
 
    public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l) {
-      if (l == 0 && world.isSideSolid(i, j + 1, k, ForgeDirection.getOrientation(0))) {
+      if (l == 0 && world.isSideSolid(i, j + 1, k, Direction.getOrientation(0))) {
          return true;
-      } else if (l == 1 && world.isSideSolid(i, j - 1, k, ForgeDirection.getOrientation(1))) {
+      } else if (l == 1 && world.isSideSolid(i, j - 1, k, Direction.getOrientation(1))) {
          return true;
-      } else if (l == 2 && world.isSideSolid(i, j, k + 1, ForgeDirection.getOrientation(2))) {
+      } else if (l == 2 && world.isSideSolid(i, j, k + 1, Direction.getOrientation(2))) {
          return true;
-      } else if (l == 3 && world.isSideSolid(i, j, k - 1, ForgeDirection.getOrientation(3))) {
+      } else if (l == 3 && world.isSideSolid(i, j, k - 1, Direction.getOrientation(3))) {
          return true;
-      } else if (l == 4 && world.isSideSolid(i + 1, j, k, ForgeDirection.getOrientation(4))) {
+      } else if (l == 4 && world.isSideSolid(i + 1, j, k, Direction.getOrientation(4))) {
          return true;
       } else {
-         return l == 5 && world.isSideSolid(i - 1, j, k, ForgeDirection.getOrientation(5));
+         return l == 5 && world.isSideSolid(i - 1, j, k, Direction.getOrientation(5));
       }
    }
 
    public boolean canPlaceBlockAt(World world, int i, int j, int k) {
-      if (world.isSideSolid(i - 1, j, k, ForgeDirection.getOrientation(5))) {
+      if (world.isSideSolid(i - 1, j, k, Direction.getOrientation(5))) {
          return true;
-      } else if (world.isSideSolid(i + 1, j, k, ForgeDirection.getOrientation(4))) {
+      } else if (world.isSideSolid(i + 1, j, k, Direction.getOrientation(4))) {
          return true;
-      } else if (world.isSideSolid(i, j, k - 1, ForgeDirection.getOrientation(3))) {
+      } else if (world.isSideSolid(i, j, k - 1, Direction.getOrientation(3))) {
          return true;
-      } else if (world.isSideSolid(i, j, k + 1, ForgeDirection.getOrientation(2))) {
+      } else if (world.isSideSolid(i, j, k + 1, Direction.getOrientation(2))) {
          return true;
       } else {
-         return world.isSideSolid(i, j - 1, k, ForgeDirection.getOrientation(1)) || world.isSideSolid(i, j + 1, k, ForgeDirection.getOrientation(0));
+         return world.isSideSolid(i, j - 1, k, Direction.getOrientation(1)) || world.isSideSolid(i, j + 1, k, Direction.getOrientation(0));
       }
    }
 

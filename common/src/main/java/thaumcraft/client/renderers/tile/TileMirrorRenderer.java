@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
@@ -568,7 +568,7 @@ public class TileMirrorRenderer extends TileEntitySpecialRenderer {
    }
 
    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
-      ForgeDirection dir = ForgeDirection.getOrientation(te.getBlockMetadata() % 6);
+      Direction dir = Direction.getOrientation(te.getBlockMetadata() % 6);
       boolean linked = false;
       float instability = 0.0F;
       if (te instanceof TileMirror) {

@@ -13,7 +13,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -319,7 +319,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    }
 
    public void getBellows() {
-      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS);
+      this.bellows = TileBellows.getBellows(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.VALID_DIRECTIONS);
    }
 
    public void smeltItem() {

@@ -3,7 +3,7 @@ package thaumcraft.common.items.armor;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +32,7 @@ public class Hover {
     static Map<String, Boolean> hovering = new ConcurrentHashMap<>();
     static Map<String, Long> timing = new ConcurrentHashMap<>();
 
-    public static boolean toggleHover(Player player, int playerId, @Nonnull ItemStack armor) {
+    public static boolean toggleHover(Player player, int playerId, @NotNull ItemStack armor) {
         boolean hover = hovering.get(playerId) != null && hovering.get(playerId);
         short fuel = 0;
         if (armor.hasTagCompound() && armor.stackTagCompound.hasKey("jar")) {

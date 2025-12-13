@@ -2,7 +2,7 @@ package thaumcraft.common.lib.world;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Blocks;

@@ -1,6 +1,6 @@
 package thaumcraft.client.renderers.tile;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nullable;

@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands;
 
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
@@ -265,7 +265,7 @@ public class WandManager implements IWandTriggerManager {
             world.setBlock(x, y + 1, z, ConfigBlocks.blockMetalDevice, 11, 0);
             TileEntity tile = world.getTileEntity(x, y, z);
             if (tile instanceof TileThaumatorium) {
-                ((TileThaumatorium) tile).facing = ForgeDirection.getOrientation(side);
+                ((TileThaumatorium) tile).facing = Direction.getOrientation(side);
             }
 
             world.markBlockForUpdate(x, y, z);

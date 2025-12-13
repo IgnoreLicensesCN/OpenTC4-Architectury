@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
@@ -54,6 +54,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.*;
 
+//TODO:3 classes for 3 types
 public class EntityPech extends EntityMob implements IRangedAttackMob {
    public ItemStack[] loot = new ItemStack[9];
    public boolean trading = false;

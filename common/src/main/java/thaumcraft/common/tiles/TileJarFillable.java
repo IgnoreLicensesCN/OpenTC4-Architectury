@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -114,16 +114,16 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       return this.aspectFilter == null || tag.equals(this.aspectFilter);
    }
 
-   public boolean isConnectable(ForgeDirection face) {
-      return face == ForgeDirection.UP;
+   public boolean isConnectable(Direction face) {
+      return face == Direction.UP;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
-      return face == ForgeDirection.UP;
+   public boolean canInputFrom(Direction face) {
+      return face == Direction.UP;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
-      return face == ForgeDirection.UP;
+   public boolean canOutputTo(Direction face) {
+      return face == Direction.UP;
    }
 
    public void setSuction(Aspect aspect, int amount) {
@@ -137,11 +137,11 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       return this.aspectFilter != null ? 64 : 32;
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return this.aspectFilter != null ? this.aspectFilter : this.aspect;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       if (this.amount < this.maxAmount) {
          return this.aspectFilter != null ? 64 : 32;
       } else {
@@ -149,19 +149,19 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       }
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.aspect;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.amount;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
    }
 
@@ -174,10 +174,10 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
    }
 
    void fillJar() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.UP);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
-         if (!ic.canOutputTo(ForgeDirection.DOWN)) {
+         if (!ic.canOutputTo(Direction.DOWN)) {
             return;
          }
 
@@ -186,12 +186,12 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
             ta = this.aspectFilter;
          } else if (this.aspect != null && this.amount > 0) {
             ta = this.aspect;
-         } else if (ic.getEssentiaAmount(ForgeDirection.DOWN) > 0 && ic.getSuctionAmount(ForgeDirection.DOWN) < this.getSuctionAmount(ForgeDirection.UP) && this.getSuctionAmount(ForgeDirection.UP) >= ic.getMinimumSuction()) {
-            ta = ic.getEssentiaType(ForgeDirection.DOWN);
+         } else if (ic.getEssentiaAmount(Direction.DOWN) > 0 && ic.getSuctionAmount(Direction.DOWN) < this.getSuctionAmount(Direction.UP) && this.getSuctionAmount(Direction.UP) >= ic.getMinimumSuction()) {
+            ta = ic.getEssentiaType(Direction.DOWN);
          }
 
-         if (ta != null && ic.getSuctionAmount(ForgeDirection.DOWN) < this.getSuctionAmount(ForgeDirection.UP)) {
-            this.addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.DOWN));
+         if (ta != null && ic.getSuctionAmount(Direction.DOWN) < this.getSuctionAmount(Direction.UP)) {
+            this.addToContainer(ta, ic.takeEssentia(ta, 1, Direction.DOWN));
          }
       }
 

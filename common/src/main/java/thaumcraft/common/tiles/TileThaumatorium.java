@@ -3,8 +3,8 @@ package thaumcraft.common.tiles;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -40,7 +40,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    public ArrayList<String> recipePlayer = new ArrayList<>();
    public int currentCraft = -1;
    public int maxRecipes = 1;
-   public ForgeDirection facing;
+   public Direction facing;
    public Aspect currentSuction;
    int venting;
    int counter;
@@ -49,7 +49,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    public Container eventHandler;
 
    public TileThaumatorium() {
-      this.facing = ForgeDirection.NORTH;
+      this.facing = Direction.NORTH;
       this.currentSuction = null;
       this.venting = 0;
       this.counter = 0;
@@ -63,7 +63,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getByte("facing"));
+      this.facing = Direction.getOrientation(nbttagcompound.getByte("facing"));
       this.essentia.readFromNBT(nbttagcompound);
       this.maxRecipes = nbttagcompound.getByte("maxrec");
       this.recipeEssentia = new ArrayList<>();
@@ -267,8 +267,8 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       IEssentiaTransport ic = null;
 
       for(int y = 0; y <= 1; ++y) {
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (dir != this.facing && dir != ForgeDirection.DOWN && (y != 0 || dir != ForgeDirection.UP)) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
+            if (dir != this.facing && dir != Direction.DOWN && (y != 0 || dir != Direction.UP)) {
                te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord + y, this.zCoord, dir);
                if (te != null) {
                   ic = (IEssentiaTransport)te;
@@ -342,15 +342,15 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       }
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face != this.facing;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return face != this.facing;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return false;
    }
 
@@ -358,27 +358,27 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       this.currentSuction = aspect;
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return this.currentSuction;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.currentSuction != null ? 128 : 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
    }
 
@@ -497,8 +497,8 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       int mr = 1;
 
       for(int yy = 0; yy <= 1; ++yy) {
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (dir != ForgeDirection.DOWN && dir != this.facing) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
+            if (dir != Direction.DOWN && dir != this.facing) {
                int xx = this.xCoord + dir.offsetX;
                int zz = this.zCoord + dir.offsetZ;
                Block bi = this.level().getBlock(xx, this.yCoord + yy + dir.offsetY, zz);

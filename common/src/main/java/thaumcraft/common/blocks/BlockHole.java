@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 
 import java.util.List;
 import java.util.Random;
@@ -53,7 +53,7 @@ public class BlockHole extends BlockContainer {
    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
    }
 
-   public boolean isSideSolid(IBlockAccess world, int i, int j, int k, ForgeDirection o) {
+   public boolean isSideSolid(IBlockAccess world, int i, int j, int k, Direction o) {
       return false;
    }
 

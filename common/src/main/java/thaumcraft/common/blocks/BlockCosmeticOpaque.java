@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -75,7 +75,7 @@ public class BlockCosmeticOpaque extends BlockContainer {
          float f = (float)target.hitVec.xCoord - (float)target.blockX;
          float f1 = (float)target.hitVec.yCoord - (float)target.blockY;
          float f2 = (float)target.hitVec.zCoord - (float)target.blockZ;
-         Thaumcraft.proxy.blockWard(worldObj, target.blockX, target.blockY, target.blockZ, ForgeDirection.getOrientation(target.sideHit), f, f1, f2);
+         Thaumcraft.proxy.blockWard(worldObj, target.blockX, target.blockY, target.blockZ, Direction.getOrientation(target.sideHit), f, f1, f2);
          return true;
       } else {
          return false;
@@ -165,7 +165,7 @@ public class BlockCosmeticOpaque extends BlockContainer {
       return true;
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       return true;
    }
 

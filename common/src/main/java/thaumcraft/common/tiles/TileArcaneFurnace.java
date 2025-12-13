@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -163,8 +163,8 @@ public class TileArcaneFurnace extends TileThaumcraft {
    private int getBellows() {
       int bellows = 0;
 
-      for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-         if (dir != ForgeDirection.UP) {
+      for(Direction dir : Direction.VALID_DIRECTIONS) {
+         if (dir != Direction.UP) {
             int xx = this.xCoord + dir.offsetX * 2;
             int yy = this.yCoord + dir.offsetY * 2;
             int zz = this.zCoord + dir.offsetZ * 2;

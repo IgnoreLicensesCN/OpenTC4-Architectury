@@ -1,11 +1,11 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.ConfigBlocks;
 
@@ -31,27 +31,27 @@ public class BlockTaintRenderer extends BlockRenderer implements ISimpleBlockRen
          Tessellator t = Tessellator.instance;
          t.setColorOpaque_F(1.0F, 1.0F, 1.0F);
          t.setBrightness(200);
-         if (block.shouldSideBeRendered(world, x + 1, y, z, ForgeDirection.EAST.ordinal())) {
+         if (block.shouldSideBeRendered(world, x + 1, y, z, Direction.EAST.ordinal())) {
             renderer.renderFaceXPos(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 4));
          }
 
-         if (block.shouldSideBeRendered(world, x - 1, y, z, ForgeDirection.WEST.ordinal())) {
+         if (block.shouldSideBeRendered(world, x - 1, y, z, Direction.WEST.ordinal())) {
             renderer.renderFaceXNeg(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 5));
          }
 
-         if (block.shouldSideBeRendered(world, x, y, z + 1, ForgeDirection.SOUTH.ordinal())) {
+         if (block.shouldSideBeRendered(world, x, y, z + 1, Direction.SOUTH.ordinal())) {
             renderer.renderFaceZPos(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 2));
          }
 
-         if (block.shouldSideBeRendered(world, x, y, z - 1, ForgeDirection.NORTH.ordinal())) {
+         if (block.shouldSideBeRendered(world, x, y, z - 1, Direction.NORTH.ordinal())) {
             renderer.renderFaceZNeg(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 3));
          }
 
-         if (block.shouldSideBeRendered(world, x, y + 1, z, ForgeDirection.UP.ordinal())) {
+         if (block.shouldSideBeRendered(world, x, y + 1, z, Direction.UP.ordinal())) {
             renderer.renderFaceYPos(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 0));
          }
 
-         if (block.shouldSideBeRendered(world, x, y - 1, z, ForgeDirection.DOWN.ordinal())) {
+         if (block.shouldSideBeRendered(world, x, y - 1, z, Direction.DOWN.ordinal())) {
             renderer.renderFaceYNeg(block, x, y, z, b.getOverlayBlockTexture(x, y, z, 1));
          }
       }

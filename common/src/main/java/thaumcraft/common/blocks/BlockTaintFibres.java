@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockFlower;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -176,7 +176,7 @@ public class BlockTaintFibres extends Block {
    public static boolean spreadFibres(World world, int x, int y, int z) {
       Block bi = world.getBlock(x, y, z);
       if (BlockUtils.isAdjacentToSolidBlock(world, x, y, z) && !isOnlyAdjacentToTaint(world, x, y, z) && !world.getBlock(x, y, z).getMaterial().isLiquid() && (world.isAirBlock(x, y, z) || bi.isReplaceable(world, x, y, z) || bi instanceof BlockFlower || bi.isLeaves(world, x, y, z))) {
-         if (world.getRandom().nextInt(10) == 0 && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, ForgeDirection.UP)) {
+         if (world.getRandom().nextInt(10) == 0 && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, Direction.UP)) {
             if (world.getRandom().nextInt(10) < 9) {
                world.setBlock(x, y, z, ConfigBlocks.blockTaintFibres, 1, 3);
             } else if (world.getRandom().nextInt(12) < 10) {
@@ -211,7 +211,7 @@ public class BlockTaintFibres extends Block {
       int count = 0;
 
       for(int a = 0; a < 6; ++a) {
-         ForgeDirection d = ForgeDirection.getOrientation(a);
+         Direction d = Direction.getOrientation(a);
          int xx = x + d.offsetX;
          int yy = y + d.offsetY;
          int zz = z + d.offsetZ;
@@ -226,7 +226,7 @@ public class BlockTaintFibres extends Block {
 
    public static boolean isOnlyAdjacentToTaint(World world, int x, int y, int z) {
       for(int a = 0; a < 6; ++a) {
-         ForgeDirection d = ForgeDirection.getOrientation(a);
+         Direction d = Direction.getOrientation(a);
          int xx = x + d.offsetX;
          int yy = y + d.offsetY;
          int zz = z + d.offsetZ;
@@ -303,7 +303,7 @@ public class BlockTaintFibres extends Block {
 
          try {
             for(int a = 0; a < 6; ++a) {
-               ForgeDirection side = ForgeDirection.getOrientation(a);
+               Direction side = Direction.getOrientation(a);
                if (world.isSideSolid(x + side.offsetX, y + side.offsetY, z + side.offsetZ, side.getOpposite(), false)) {
                   switch (a) {
                      case 0:
@@ -338,7 +338,7 @@ public class BlockTaintFibres extends Block {
 
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       return false;
    }
 

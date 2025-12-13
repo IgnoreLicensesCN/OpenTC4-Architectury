@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockContainer;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +23,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileWarded;
@@ -66,7 +66,7 @@ public class BlockWarded extends BlockContainer {
       float f = (float)target.hitVec.xCoord - (float)target.blockX;
       float f1 = (float)target.hitVec.yCoord - (float)target.blockY;
       float f2 = (float)target.hitVec.zCoord - (float)target.blockZ;
-      Thaumcraft.proxy.blockWard(worldObj, target.blockX, target.blockY, target.blockZ, ForgeDirection.getOrientation(target.sideHit), f, f1, f2);
+      Thaumcraft.proxy.blockWard(worldObj, target.blockX, target.blockY, target.blockZ, Direction.getOrientation(target.sideHit), f, f1, f2);
       return true;
    }
 
@@ -221,7 +221,7 @@ public class BlockWarded extends BlockContainer {
       return this.getBlock(world, x, y, z).isNormalCube(world, x, y, z);
    }
 
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
       return this.getBlock(world, x, y, z).isSideSolid(world, x, y, z, side);
    }
 
@@ -241,7 +241,7 @@ public class BlockWarded extends BlockContainer {
       return this.getBlock(world, x, y, z).isFoliage(world, x, y, z);
    }
 
-   public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plant) {
+   public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, Direction direction, IPlantable plant) {
       return this.getBlock(world, x, y, z).canSustainPlant(world, x, y, z, direction, plant);
    }
 

@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -9,11 +9,11 @@ import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
 public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
-   ForgeDirection facing;
+   Direction facing;
    public TileAlchemyFurnaceAdvanced furnace;
 
    public TileAlchemyFurnaceAdvancedNozzle() {
-      this.facing = ForgeDirection.UNKNOWN;
+      this.facing = Direction.UNKNOWN;
       this.furnace = null;
    }
 
@@ -22,10 +22,10 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
    }
 
    public void updateEntity() {
-      if (this.facing == ForgeDirection.UNKNOWN && this.furnace == null) {
+      if (this.facing == Direction.UNKNOWN && this.furnace == null) {
          this.facing = null;
 
-         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+         for(Direction dir : Direction.VALID_DIRECTIONS) {
             TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if (tile instanceof TileAlchemyFurnaceAdvanced) {
                this.facing = dir.getOpposite();
@@ -86,15 +86,15 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       return false;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
+   public boolean isConnectable(Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
+   public boolean canInputFrom(Direction face) {
       return false;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
+   public boolean canOutputTo(Direction face) {
       return face == this.facing;
    }
 
@@ -109,27 +109,27 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       return 0;
    }
 
-   public Aspect getSuctionType(ForgeDirection face) {
+   public Aspect getSuctionType(Direction face) {
       return null;
    }
 
-   public int getSuctionAmount(ForgeDirection face) {
+   public int getSuctionAmount(Direction face) {
       return 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.furnace != null ? this.furnace.aspects.getAspects()[0] : null;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.furnace != null ? this.furnace.aspects.getAmount(this.furnace.aspects.getAspects()[0]) : null;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection facing) {
+   public int takeEssentia(Aspect aspect, int amount, Direction facing) {
       return this.canOutputTo(facing) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection facing) {
+   public int addEssentia(Aspect aspect, int amount, Direction facing) {
       return 0;
    }
 }

@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.interact;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.entities.golems.Marker;
@@ -60,7 +60,7 @@ public class AIUseItem extends EntityAIBase {
    public boolean shouldExecute() {
       boolean ignoreItem = false;
       ChunkCoordinates home = this.theGolem.getHomePosition();
-      ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+      Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
@@ -108,7 +108,7 @@ public class AIUseItem extends EntityAIBase {
    void click() {
       ChunkCoordinates home = this.theGolem.getHomePosition();
       boolean ignoreItem = false;
-      ForgeDirection facing = ForgeDirection.getOrientation(this.theGolem.homeFacing);
+      Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
       int cX = home.posX - facing.offsetX;
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
@@ -127,9 +127,9 @@ public class AIUseItem extends EntityAIBase {
          int y = 0;
          int z = 0;
          if (this.theGolem.level().isAirBlock(this.xx, this.yy, this.zz)) {
-            x = ForgeDirection.getOrientation(side).getOpposite().offsetX;
-            y = ForgeDirection.getOrientation(side).getOpposite().offsetY;
-            z = ForgeDirection.getOrientation(side).getOpposite().offsetZ;
+            x = Direction.getOrientation(side).getOpposite().offsetX;
+            y = Direction.getOrientation(side).getOpposite().offsetY;
+            z = Direction.getOrientation(side).getOpposite().offsetZ;
          }
 
          if (this.im == null) {
@@ -177,7 +177,7 @@ public class AIUseItem extends EntityAIBase {
       for(byte col : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
          for(Marker marker : this.theGolem.getMarkers()) {
             if ((marker.color == col || col == -1) && (!this.theGolem.getToggles()[0] || this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z)) && (this.theGolem.getToggles()[0] || !this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z))) {
-               ForgeDirection opp = ForgeDirection.getOrientation(marker.side);
+               Direction opp = Direction.getOrientation(marker.side);
                if (this.theGolem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
                   this.color = col;
                   this.xx = marker.x;

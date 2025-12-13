@@ -2,7 +2,7 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -44,7 +44,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
             }
 
             for(int d = 2; d < 6; ++d) {
-               ForgeDirection dir = ForgeDirection.getOrientation(d);
+               Direction dir = Direction.getOrientation(d);
                int x = this.xCoord + dir.offsetX;
                int y = this.yCoord + dir.offsetY;
                int z = this.zCoord + dir.offsetZ;

@@ -2,9 +2,9 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BlockRotatedPillar;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -176,11 +176,11 @@ public class BlockMagicalLog extends BlockRotatedPillar {
       return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
    }
 
-   public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
       return 5;
    }
 
-   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
       return 5;
    }
 }

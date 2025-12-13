@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.interact;
 
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.level.block.Blocks;
@@ -14,7 +14,7 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EntityGolemBobber;
@@ -61,7 +61,7 @@ public class AIFish extends EntityAIBase {
             int z = (int)this.target.zCoord;
 
             for(int a = 2; a <= 5; ++a) {
-               ForgeDirection dir = ForgeDirection.getOrientation(a);
+               Direction dir = Direction.getOrientation(a);
                if (this.theWorld.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).getMaterial() == Material.water && this.theWorld.isAirBlock(x + dir.offsetX, y + 1 + dir.offsetY, z + dir.offsetZ)) {
                   this.quality += 3.0E-5F;
                   if (this.theWorld.canBlockSeeTheSky(x + dir.offsetX, y + 1 + dir.offsetY, z + dir.offsetZ)) {
@@ -177,7 +177,7 @@ public class AIFish extends EntityAIBase {
       int z = (int)this.target.zCoord;
 
       for(int a = 2; a <= 5; ++a) {
-         ForgeDirection dir = ForgeDirection.getOrientation(a);
+         Direction dir = Direction.getOrientation(a);
          if (this.theWorld.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).getMaterial() == Material.water && this.theWorld.isAirBlock(x + dir.offsetX, y + 1 + dir.offsetY, z + dir.offsetZ)) {
             f1 -= 0.005F;
             f2 += 0.00125F;

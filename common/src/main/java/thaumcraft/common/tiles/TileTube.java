@@ -10,7 +10,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWandable {
-   public ForgeDirection facing;
+   public Direction facing;
    public boolean[] openSides;
    Aspect essentiaType;
    int essentiaAmount;
@@ -39,7 +39,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    int ventColor;
 
    public TileTube() {
-      this.facing = ForgeDirection.NORTH;
+      this.facing = Direction.NORTH;
       this.openSides = new boolean[]{true, true, true, true, true, true};
       this.essentiaType = null;
       this.essentiaAmount = 0;
@@ -53,7 +53,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
       this.essentiaType = Aspect.getAspect(nbttagcompound.getString("type"));
       this.essentiaAmount = nbttagcompound.getInteger("amount");
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getInteger("side"));
+      this.facing = Direction.getOrientation(nbttagcompound.getInteger("side"));
       byte[] sides = nbttagcompound.getByteArray("open");
       if (sides != null && sides.length == 6) {
          for(int a = 0; a < 6; ++a) {
@@ -136,11 +136,11 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    void calculateSuction(Aspect filter, boolean restrict, boolean directional) {
       this.suction = 0;
       this.suctionType = null;
-      ForgeDirection loc = null;
+      Direction loc = null;
 
       for(int dir = 0; dir < 6; ++dir) {
          try {
-            loc = ForgeDirection.getOrientation(dir);
+            loc = Direction.getOrientation(dir);
             if ((!directional || this.facing == loc.getOpposite()) && this.isConnectable(loc)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
@@ -165,11 +165,11 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    }
 
    void checkVenting() {
-      ForgeDirection loc = null;
+      Direction loc = null;
 
       for(int dir = 0; dir < 6; ++dir) {
          try {
-            loc = ForgeDirection.getOrientation(dir);
+            loc = Direction.getOrientation(dir);
             if (this.isConnectable(loc)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
@@ -193,11 +193,11 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    }
 
    void equalizeWithNeighbours(boolean directional) {
-      ForgeDirection loc = null;
+      Direction loc = null;
       if (this.essentiaAmount <= 0) {
          for(int dir = 0; dir < 6; ++dir) {
             try {
-               loc = ForgeDirection.getOrientation(dir);
+               loc = Direction.getOrientation(dir);
                if ((!directional || this.facing != loc.getOpposite()) && this.isConnectable(loc)) {
                   TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                   if (te != null) {
@@ -207,7 +207,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
                         if (a == null) {
                            a = ic.getEssentiaType(loc.getOpposite());
                            if (a == null) {
-                              a = ic.getEssentiaType(ForgeDirection.UNKNOWN);
+                              a = ic.getEssentiaType(Direction.UNKNOWN);
                            }
                         }
 
@@ -229,16 +229,16 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       }
    }
 
-   public boolean isConnectable(ForgeDirection face) {
-      return face != ForgeDirection.UNKNOWN && this.openSides[face.ordinal()];
+   public boolean isConnectable(Direction face) {
+      return face != Direction.UNKNOWN && this.openSides[face.ordinal()];
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
-      return face != ForgeDirection.UNKNOWN && this.openSides[face.ordinal()];
+   public boolean canInputFrom(Direction face) {
+      return face != Direction.UNKNOWN && this.openSides[face.ordinal()];
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
-      return face != ForgeDirection.UNKNOWN && this.openSides[face.ordinal()];
+   public boolean canOutputTo(Direction face) {
+      return face != Direction.UNKNOWN && this.openSides[face.ordinal()];
    }
 
    public void setSuction(Aspect aspect, int amount) {
@@ -246,23 +246,23 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       this.suction = amount;
    }
 
-   public Aspect getSuctionType(ForgeDirection loc) {
+   public Aspect getSuctionType(Direction loc) {
       return this.suctionType;
    }
 
-   public int getSuctionAmount(ForgeDirection loc) {
+   public int getSuctionAmount(Direction loc) {
       return this.suction;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.essentiaType;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.essentiaAmount;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       if (this.canOutputTo(face) && this.essentiaType == aspect && this.essentiaAmount > 0 && amount > 0) {
          --this.essentiaAmount;
          if (this.essentiaAmount <= 0) {
@@ -276,7 +276,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       }
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       if (this.canInputFrom(face) && this.essentiaAmount == 0 && amount > 0) {
          this.essentiaType = aspect;
          ++this.essentiaAmount;
@@ -331,7 +331,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
                this.markDirty();
                world.markBlockForUpdate(x, y, z);
                this.openSides[hit.subHit] = !this.openSides[hit.subHit];
-               ForgeDirection dir = ForgeDirection.getOrientation(hit.subHit);
+               Direction dir = Direction.getOrientation(hit.subHit);
                TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
                if (tile instanceof TileTube) {
                    ((TileTube) tile).openSides[dir.getOpposite().ordinal()] = this.openSides[hit.subHit];
@@ -352,9 +352,9 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
                        break;
                    }
 
-                   if (this.canConnectSide(ForgeDirection.getOrientation(a % 6).getOpposite().ordinal()) && this.isConnectable(ForgeDirection.getOrientation(a % 6).getOpposite())) {
+                   if (this.canConnectSide(Direction.getOrientation(a % 6).getOpposite().ordinal()) && this.isConnectable(Direction.getOrientation(a % 6).getOpposite())) {
                        a %= 6;
-                       this.facing = ForgeDirection.getOrientation(a);
+                       this.facing = Direction.getOrientation(a);
                        world.markBlockForUpdate(x, y, z);
                        break;
                    }
@@ -380,7 +380,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    }
 
    protected boolean canConnectSide(int side) {
-      ForgeDirection dir = ForgeDirection.getOrientation(side);
+      Direction dir = Direction.getOrientation(side);
       TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
       return tile instanceof IEssentiaTransport;
    }

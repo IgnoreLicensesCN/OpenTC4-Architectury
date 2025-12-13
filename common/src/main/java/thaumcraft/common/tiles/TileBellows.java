@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 
 public class TileBellows extends TileThaumcraft {
@@ -44,7 +44,7 @@ public class TileBellows extends TileThaumcraft {
          ++this.delay;
          if (this.delay >= 2) {
             this.delay = 0;
-            ForgeDirection dir = ForgeDirection.getOrientation(this.orientation);
+            Direction dir = Direction.getOrientation(this.orientation);
             TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
             if (tile instanceof TileEntityFurnace) {
                TileEntityFurnace tf = (TileEntityFurnace)tile;
@@ -61,10 +61,10 @@ public class TileBellows extends TileThaumcraft {
       return this.level().isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
    }
 
-   public static int getBellows(World world, int x, int y, int z, ForgeDirection[] directions) {
+   public static int getBellows(World world, int x, int y, int z, Direction[] directions) {
       int bellows = 0;
 
-      for(ForgeDirection dir : directions) {
+      for(Direction dir : directions) {
          int xx = x + dir.offsetX;
          int yy = y + dir.offsetY;
          int zz = z + dir.offsetZ;

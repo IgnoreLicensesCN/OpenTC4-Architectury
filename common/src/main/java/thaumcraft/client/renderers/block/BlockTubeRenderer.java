@@ -1,12 +1,12 @@
 package thaumcraft.client.renderers.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.blocks.BlockTube;
@@ -42,7 +42,7 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
             drawFaces(renderer, block, ((BlockTube)block).icon[1], true);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             TileTubeValve tc = new TileTubeValve();
-            tc.facing = ForgeDirection.EAST;
+            tc.facing = Direction.EAST;
             TileEntityRendererDispatcher.instance.renderTileEntityAt(tc, 0.0F, 0.0F, 0.0F, 0.0F);
             GL11.glEnable(32826);
          }
@@ -107,7 +107,7 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
          float AZ_minz = W7;
          float AZ_maxz = W9;
          boolean notConduit = false;
-         ForgeDirection fd = null;
+         Direction fd = null;
          IEssentiaTransport tube = null;
          TileEntity tt = world.getTileEntity(x, y, z);
          if (tt instanceof IEssentiaTransport) {
@@ -115,7 +115,7 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
          }
 
          for(int side = 0; side < 6; ++side) {
-            fd = ForgeDirection.getOrientation(side);
+            fd = Direction.getOrientation(side);
             if (tube == null || tube.isConnectable(fd)) {
                TileEntity te = this.getConnectableTile(world, x, y, z, fd);
                if (te != null && (metadata == 4 || !(te instanceof TileBellows))) {
@@ -248,7 +248,7 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
       return ConfigBlocks.blockTubeRI;
    }
 
-   public TileEntity getConnectableTile(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+   public TileEntity getConnectableTile(IBlockAccess world, int x, int y, int z, Direction face) {
       TileEntity te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
       if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).isConnectable(face.getOpposite())) {
          return te;

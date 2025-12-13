@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -16,14 +16,14 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
    public Aspect aspectOut = null;
    public Aspect aspectIn = null;
-   public ForgeDirection facing;
+   public Direction facing;
    int count;
    int process;
    float rotationSpeed;
    public float rotation;
 
    public TileCentrifuge() {
-      this.facing = ForgeDirection.NORTH;
+      this.facing = Direction.NORTH;
       this.count = 0;
       this.process = 0;
       this.rotationSpeed = 0.0F;
@@ -37,7 +37,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
       this.aspectIn = Aspect.getAspect(nbttagcompound.getString("aspectIn"));
       this.aspectOut = Aspect.getAspect(nbttagcompound.getString("aspectOut"));
-      this.facing = ForgeDirection.getOrientation(nbttagcompound.getInteger("facing"));
+      this.facing = Direction.getOrientation(nbttagcompound.getInteger("facing"));
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
@@ -109,16 +109,16 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       return true;
    }
 
-   public boolean isConnectable(ForgeDirection face) {
-      return face == ForgeDirection.UP || face == ForgeDirection.DOWN;
+   public boolean isConnectable(Direction face) {
+      return face == Direction.UP || face == Direction.DOWN;
    }
 
-   public boolean canInputFrom(ForgeDirection face) {
-      return face == ForgeDirection.DOWN;
+   public boolean canInputFrom(Direction face) {
+      return face == Direction.DOWN;
    }
 
-   public boolean canOutputTo(ForgeDirection face) {
-      return face == ForgeDirection.UP;
+   public boolean canOutputTo(Direction face) {
+      return face == Direction.UP;
    }
 
    public void setSuction(Aspect aspect, int amount) {
@@ -132,27 +132,27 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       return 0;
    }
 
-   public Aspect getSuctionType(ForgeDirection face) {
+   public Aspect getSuctionType(Direction face) {
       return null;
    }
 
-   public int getSuctionAmount(ForgeDirection face) {
-      return face == ForgeDirection.DOWN ? (this.gettingPower() ? 0 : (this.aspectIn == null ? 128 : 64)) : 0;
+   public int getSuctionAmount(Direction face) {
+      return face == Direction.DOWN ? (this.gettingPower() ? 0 : (this.aspectIn == null ? 128 : 64)) : 0;
    }
 
-   public Aspect getEssentiaType(ForgeDirection loc) {
+   public Aspect getEssentiaType(Direction loc) {
       return this.aspectOut;
    }
 
-   public int getEssentiaAmount(ForgeDirection loc) {
+   public int getEssentiaAmount(Direction loc) {
       return this.aspectOut != null ? 1 : 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction face) {
       return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, ForgeDirection face) {
+   public int addEssentia(Aspect aspect, int amount, Direction face) {
       if (this.aspectIn == null && !aspect.isPrimal()) {
          this.aspectIn = aspect;
          this.process = 39;
@@ -207,19 +207,19 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
    }
 
    void drawEssentia() {
-      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
+      TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.DOWN);
       if (te != null) {
          IEssentiaTransport ic = (IEssentiaTransport)te;
-         if (!ic.canOutputTo(ForgeDirection.UP)) {
+         if (!ic.canOutputTo(Direction.UP)) {
             return;
          }
 
          Aspect ta = null;
-         if (ic.getEssentiaAmount(ForgeDirection.UP) > 0 && ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN) && this.getSuctionAmount(ForgeDirection.DOWN) >= ic.getMinimumSuction()) {
-            ta = ic.getEssentiaType(ForgeDirection.UP);
+         if (ic.getEssentiaAmount(Direction.UP) > 0 && ic.getSuctionAmount(Direction.UP) < this.getSuctionAmount(Direction.DOWN) && this.getSuctionAmount(Direction.DOWN) >= ic.getMinimumSuction()) {
+            ta = ic.getEssentiaType(Direction.UP);
          }
 
-         if (ta != null && !ta.isPrimal() && ic.getSuctionAmount(ForgeDirection.UP) < this.getSuctionAmount(ForgeDirection.DOWN) && ic.takeEssentia(ta, 1, ForgeDirection.UP) == 1) {
+         if (ta != null && !ta.isPrimal() && ic.getSuctionAmount(Direction.UP) < this.getSuctionAmount(Direction.DOWN) && ic.takeEssentia(ta, 1, Direction.UP) == 1) {
             this.aspectIn = ta;
             this.process = 39;
             this.markDirty();

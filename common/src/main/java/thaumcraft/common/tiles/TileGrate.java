@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.entities.EntityItemGrate;
 
 public class TileGrate extends TileEntity implements ISidedInventory {
@@ -54,11 +54,11 @@ public class TileGrate extends TileEntity implements ISidedInventory {
    }
 
    public int[] getAccessibleSlotsFromSide(int par1) {
-      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par1 == ForgeDirection.UP.ordinal() ? new int[]{0} : new int[0];
+      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par1 == Direction.UP.ordinal() ? new int[]{0} : new int[0];
    }
 
    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par3 == ForgeDirection.UP.ordinal();
+      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par3 == Direction.UP.ordinal();
    }
 
    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {

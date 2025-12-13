@@ -2,7 +2,7 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemBlock;
@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class BlockCustomPlantItem extends ItemBlock {
@@ -51,7 +51,7 @@ public class BlockCustomPlantItem extends ItemBlock {
       if (side != 1) {
          return false;
       } else if (player.canPlayerEdit(x, y, z, side, stack) && player.canPlayerEdit(x, y + 1, z, side, stack)) {
-         if (world.getBlock(x, y, z).canSustainPlant(world, x, y, z, ForgeDirection.UP, new CustomPlantTypes(stack.getItemDamage())) && world.isAirBlock(x, y + 1, z)) {
+         if (world.getBlock(x, y, z).canSustainPlant(world, x, y, z, Direction.UP, new CustomPlantTypes(stack.getItemDamage())) && world.isAirBlock(x, y + 1, z)) {
             world.setBlock(x, y + 1, z, ConfigBlocks.blockCustomPlant, stack.getItemDamage(), 3);
             world.playSoundEffect((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F, ConfigBlocks.blockCustomPlant.stepSound.getStepResourcePath(), (ConfigBlocks.blockCustomPlant.stepSound.getVolume() + 1.0F) / 2.0F, ConfigBlocks.blockCustomPlant.stepSound.getPitch() * 0.8F);
             --stack.stackSize;

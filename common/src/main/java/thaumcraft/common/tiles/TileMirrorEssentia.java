@@ -5,7 +5,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -19,12 +19,12 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
    public int linkY;
    public int linkZ;
    public int linkDim;
-   public ForgeDirection linkedFacing;
+   public Direction linkedFacing;
    int count;
    int inc;
 
    public TileMirrorEssentia() {
-      this.linkedFacing = ForgeDirection.UNKNOWN;
+      this.linkedFacing = Direction.UNKNOWN;
       this.count = 0;
       this.inc = 40;
    }
@@ -61,7 +61,7 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
             tm.linkZ = this.zCoord;
             tm.linkDim = this.level().dimension();
             targetWorld.markBlockForUpdate(tm.xCoord, tm.yCoord, tm.zCoord);
-            this.linkedFacing = ForgeDirection.getOrientation(targetWorld.getBlockMetadata(this.linkX, this.linkY, this.linkZ));
+            this.linkedFacing = Direction.getOrientation(targetWorld.getBlockMetadata(this.linkX, this.linkY, this.linkZ));
             this.linked = true;
             this.markDirty();
             tm.markDirty();
@@ -79,7 +79,7 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
             if (te instanceof TileMirrorEssentia) {
                TileMirrorEssentia tm = (TileMirrorEssentia)te;
                tm.linked = false;
-               tm.linkedFacing = ForgeDirection.UNKNOWN;
+               tm.linkedFacing = Direction.UNKNOWN;
                this.markDirty();
                tm.markDirty();
                targetWorld.markBlockForUpdate(this.linkX, this.linkY, this.linkZ);
@@ -182,8 +182,8 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
    public boolean takeFromContainer(Aspect tag, int amount) {
       if (this.isLinkValid() && amount <= 1) {
          World targetWorld = DimensionManager.getWorld(this.linkDim);
-         if (this.linkedFacing == ForgeDirection.UNKNOWN && targetWorld != null) {
-            this.linkedFacing = ForgeDirection.getOrientation(targetWorld.getBlockMetadata(this.linkX, this.linkY, this.linkZ) % 6);
+         if (this.linkedFacing == Direction.UNKNOWN && targetWorld != null) {
+            this.linkedFacing = Direction.getOrientation(targetWorld.getBlockMetadata(this.linkX, this.linkY, this.linkZ) % 6);
          }
 
          TileEntity te = targetWorld.getTileEntity(this.linkX, this.linkY, this.linkZ);
