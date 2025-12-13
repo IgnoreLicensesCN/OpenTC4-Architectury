@@ -1,7 +1,7 @@
 package thaumcraft.common.config;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemArmor.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;

@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.AttackBlockListener;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -189,7 +190,7 @@ public class WandCastingItem extends Item
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        appendWandHoverText(this,stack, level, list, tooltipFlag);
+        appendWandHoverText(this,stack, level, list, tooltipFlag, Minecraft.getInstance().player);
     }
 
     @Override

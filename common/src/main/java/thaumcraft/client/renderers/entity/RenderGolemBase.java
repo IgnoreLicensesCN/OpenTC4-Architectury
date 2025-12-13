@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
@@ -237,7 +237,7 @@ public class RenderGolemBase extends RenderLiving {
          UtilsFX.bindTexture("textures/models/bucket.png");
          this.model.renderPart("Bucket");
          if (e.getCarriedForDisplay() != null) {
-            Fluid fluid = FluidRegistry.getFluid(Item.getIdFromItem(e.getCarriedForDisplay().getItem()));
+            Fluid fluid = FluidRegistry.getFluid(BuiltInRegistries.ITEM.getKey(e.getCarriedForDisplay().getItem()));
             float max = (float)Math.max(e.getCarriedForDisplay().getItemDamage(), e.getFluidCarryLimit());
             float fill = (float)e.getCarriedForDisplay().getItemDamage() / max;
             if (fluid != null) {

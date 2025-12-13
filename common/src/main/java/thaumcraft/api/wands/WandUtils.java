@@ -4,6 +4,7 @@ import com.linearity.opentc4.OpenTC4CommonProxy;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,7 +26,7 @@ public class WandUtils {
     }
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
-    public static void appendWandHoverText(Item item, ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    public static void appendWandHoverText(Item item, ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
@@ -43,7 +44,7 @@ public class WandUtils {
                 float mod = ConsumptionModifierCalculator.getConsumptionModifier(
                         item,
                         stack,
-                        null, /*sorry we dont have a player here now*/
+                        livingEntity,
                         aspect,
                         false);
                 String consumptionString = decimalFormat.format(mod * 100.0F);

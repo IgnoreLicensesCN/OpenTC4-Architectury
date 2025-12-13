@@ -61,7 +61,16 @@ public class DrawResearchCompletionCounter {
         int total = all.size();
         ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getName().getString());
         long completed = completedKeys.stream().filter(all::containsKey).count();
-        long revealed = all.entrySet().stream().filter(e -> completedKeys.contains(e.getKey()) || completedKeys.contains("@" + e.getKey()) || !(e.getValue().isLost() || e.getValue().isHidden() && !completedKeys.contains("@" + e.getValue().key) || e.getValue().isConcealed() && !canUnlockResearch(e.getValue()))).count();
+        long revealed = all.entrySet().stream().filter(e ->
+                completedKeys.contains(e.getKey())
+                || completedKeys.contains("@" + e.getKey())
+                        ||
+                        !(e.getValue().isLost()
+                                || e.getValue().isHidden()
+                                && !completedKeys.contains("@" + e.getValue().key)
+                                || e.getValue().isConcealed()
+                                && !canUnlockResearch(e.getValue()))
+        ).count();
         String tooltip;
         if (style == ConfigurationHandler.CompletionCounterStyle.Current && revealed < total) {
             tooltip = I18n.format("tc4tweaks.gui.progress.partial", completed, revealed);

@@ -30,7 +30,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.util.EnumChatFormatting;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
@@ -847,7 +847,7 @@ public class ClientProxy extends CommonProxy {
    }
 
    public void bottleTaintBreak(World world, double x, double y, double z) {
-      String s = "iconcrack_" + Item.getIdFromItem(ConfigItems.itemBottleTaint) + "_" + 0;
+      String s = "iconcrack_" + BuiltInRegistries.ITEM.getKey(ConfigItems.itemBottleTaint) + "_" + 0;
 
       for(int k1 = 0; k1 < 8; ++k1) {
          Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);

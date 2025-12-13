@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.expands.warp.listeners.*;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.misc.PacketMiscEvent;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
+import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
+import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.research.PlayerKnowledge;
 
 
@@ -100,11 +99,11 @@ public class WarpEventManager {
         return picked;
     }
 
-    public static void triggerRandomWarpEvent(PickWarpEventContext warpContext, Player player) {
+    public static void triggerRandomWarpEvent(PickWarpEventContext warpContext, ServerPlayer player) {
         triggerWarpEvent(warpContext, pickWarpEventWithListener(warpContext,player),player);
     }
 
-    public static void triggerWarpEvent(PickWarpEventContext warpContext,WarpEvent e,Player player) {
+    public static void triggerWarpEvent(PickWarpEventContext warpContext, WarpEvent e, ServerPlayer player) {
         e.enable();
         for (WarpEventListenerBefore listener : warpEventListenerBeforeManager.getListeners()) {
             listener.onWarpEvent(warpContext,e,player);
@@ -120,16 +119,16 @@ public class WarpEventManager {
             }
             if (e.sendMiscPacket){
                 if (player instanceof ServerPlayer) {
-                    PacketHandler.INSTANCE.sendTo(new PacketMiscEvent((short)0), (ServerPlayer)player);
+                    new PacketMiscEventS2C((short)0).sendTo(player);
                 }
             }
             if (player instanceof ServerPlayer) {
-                PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), (ServerPlayer)player);
+                new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
             }
         }
     }
 
-    public static void tryTriggerRandomWarpEvent(@NotNull Player player) {
+    public static void tryTriggerRandomWarpEvent(@NotNull ServerPlayer player) {
         PlayerKnowledge knowledge = Thaumcraft.playerKnowledge;
         PickWarpEventContext warpContext = new PickWarpEventContext(
                 knowledge.getWarpTotal(player.getName().getString())
@@ -149,7 +148,7 @@ public class WarpEventManager {
 
     public static final int defaultCheckWarpEventDelay = 2000;
     //unit:tick
-    public static int getWarpEventDelayForPlayer(Player player) {
+    public static int getWarpEventDelayForPlayer(ServerPlayer player) {
         int result = defaultCheckWarpEventDelay;
         for (GettingWarpDelayListener listener : gettingWarpDelayListenerManager.getListeners()) {
             result = listener.onGettingWarpEventDelayForPlayer(player);

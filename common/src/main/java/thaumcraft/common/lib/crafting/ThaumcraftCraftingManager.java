@@ -487,7 +487,7 @@ public class ThaumcraftCraftingManager {
         label216:
         for (Object o : recipeList) {
             CraftingRecipe recipe = (CraftingRecipe) o;
-            if (recipe != null && recipe.getRecipeOutput() != null && Item.getIdFromItem(recipe.getRecipeOutput().getItem()) > 0 && recipe.getRecipeOutput().getItem() != null) {
+            if (recipe != null && recipe.getRecipeOutput() != null && BuiltInRegistries.ITEM.getKey(recipe.getRecipeOutput().getItem()) > 0 && recipe.getRecipeOutput().getItem() != null) {
                 int idR = recipe.getRecipeOutput().getDamageValue() == 32767 ? 0 : recipe.getRecipeOutput().getDamageValue();
                 int idS = meta == 32767 ? 0 : meta;
                 if (recipe.getRecipeOutput().getItem() == item && idR == idS) {

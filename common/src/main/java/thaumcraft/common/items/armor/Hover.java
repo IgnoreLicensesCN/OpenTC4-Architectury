@@ -91,7 +91,7 @@ public class Hover {
                     player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:jacobs", 0.05F, 1.0F + player.level().rand.nextFloat() * 0.05F, false);
                 }
 
-                int haste = EnchantmentHelper.getEnchantmentLevel(Config.enchHaste, armor);
+                int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.HASTE, armor);
                 final float[] mod = {0.7F + 0.075F * (float) haste};
                 if (!forEachBaubleWithBaubleType(getTypeFromBaubleType(BaubleType.AMULET), player, ItemGirdleHover.class,
                         (slot, stack, item) -> {

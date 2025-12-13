@@ -1,5 +1,8 @@
 package thaumcraft.api.expands.aspects.item.consts;
 
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
+import com.google.common.collect.TreeRangeMap;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -12,10 +15,14 @@ import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.expands.UnmodifiableAspectList;
 import thaumcraft.api.expands.aspects.item.listeners.BonusTagForItemListener;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 
 public class BonusTagForItemListeners {
@@ -86,22 +93,34 @@ public class BonusTagForItemListeners {
         }
     };
 
+    //call aspectValueByDurabilityMap.higherEntry(maxDamage).getValue();
+    //then we have (for input maxDamage)(wood,stone,gold,iron are their Tiers#xxxxx#getUses()):
+    //-inf,wood -> 1
+    //if not match:
+    //-inf,stone -> 2
+    //if not match:
+    //-inf,gold -> 2
+    //if not match:
+    //-inf,iron -> 3
+    //if not match:
+    //-inf,Integer.MAX_VALUE -> 3
+    //we got Integer.MAX_VALUE so never mismatch
+    //also easy to insert points
+    public static final NavigableMap<Integer, Integer> aspectValueByDurabilityMap = new ConcurrentSkipListMap<>();
+    static {
+        aspectValueByDurabilityMap.put(Tiers.WOOD.getUses(), 1);
+        aspectValueByDurabilityMap.put(Tiers.STONE.getUses(), 2);
+        aspectValueByDurabilityMap.put(Tiers.GOLD.getUses(), 2);
+        aspectValueByDurabilityMap.put(Tiers.IRON.getUses(), 3);
+        aspectValueByDurabilityMap.put(Integer.MAX_VALUE, 4);
+    }
+
     public static final BonusTagForItemListener DEFAULT_ON_SHEARS = new BonusTagForItemListener(70) {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof ShearsItem shears) {
                 int maxDamage = shears.getMaxDamage();
-                if (maxDamage <= Tiers.WOOD.getUses()) {
-                    currentAspects.merge(Aspect.HARVEST, 1);
-                } else if (maxDamage > Tiers.STONE.getUses() && maxDamage > Tiers.GOLD.getUses()) {
-                    if (maxDamage <= Tiers.IRON.getUses()) {
-                        currentAspects.merge(Aspect.HARVEST, 3);
-                    } else {
-                        currentAspects.merge(Aspect.HARVEST, 4);
-                    }
-                } else {
-                    currentAspects.merge(Aspect.HARVEST, 2);
-                }
+                currentAspects.merge(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage).getValue());
             }
         }
     };
@@ -110,17 +129,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof HoeItem hoe) {
                 int maxDamage = hoe.getMaxDamage();
-                if (maxDamage <= Tiers.WOOD.getUses()) {
-                    currentAspects.merge(Aspect.HARVEST, 1);
-                } else if (maxDamage > Tiers.STONE.getUses() && maxDamage > Tiers.GOLD.getUses()) {
-                    if (maxDamage <= Tiers.IRON.getUses()) {
-                        currentAspects.merge(Aspect.HARVEST, 3);
-                    } else {
-                        currentAspects.merge(Aspect.HARVEST, 4);
-                    }
-                } else {
-                    currentAspects.merge(Aspect.HARVEST, 2);
-                }
+                currentAspects.merge(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage).getValue());
             }
         }
     };
@@ -150,16 +159,17 @@ public class BonusTagForItemListeners {
             ENCHANTMENT_ASPECT_MAP.put(Enchantments.SMITE, Aspect.ENTROPY);
             ENCHANTMENT_ASPECT_MAP.put(Enchantments.UNBREAKING, Aspect.EARTH);
             // 自定义附魔
-             ENCHANTMENT_ASPECT_MAP.put(Config.enchHaste, Aspect.MOTION);
-             ENCHANTMENT_ASPECT_MAP.put(Config.enchRepair, Aspect.TOOL);
+            ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.HASTE, Aspect.MOTION);
+            ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.REPAIR, Aspect.TOOL);
     }
     public static final BonusTagForItemListener DEFAULT_ENCHANTMENTS = new BonusTagForItemListener(80){
 
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
-            if (item != null) {
+            if (!itemstack.isEmpty()) {
 
-                Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemstack);//what i will replace the default read nbt ways with
+                //what i will replace the default read nbt ways with
+                Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemstack);
 
                 int totalLevel = 0;
                 for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {

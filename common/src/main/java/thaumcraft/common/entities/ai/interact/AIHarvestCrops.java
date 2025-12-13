@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemSeedFood;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Direction;

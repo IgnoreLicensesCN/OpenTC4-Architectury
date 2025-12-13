@@ -387,7 +387,7 @@ public class RenderEventHandler {
                            try {
                               ScanResult scan = new ScanResult((byte)1, bi.getBlock().asItem(), null, "");
 
-//                              ScanResult scan = new ScanResult((byte)1, Item.getIdFromItem(bi.getItem(player.level(), x + xx, y + yy, z + zz)), bi.getDamageValue(player.level(), x + xx, y + yy, z + zz), null, "");
+//                              ScanResult scan = new ScanResult((byte)1, BuiltInRegistries.ITEM.getKey(bi.getItem(player.level(), x + xx, y + yy, z + zz)), bi.getDamageValue(player.level(), x + xx, y + yy, z + zz), null, "");
                               value = ScanManager.getScanAspects(scan, player.level()).visSize();
                            } catch (Exception e) {
                               throw new RuntimeException(e);

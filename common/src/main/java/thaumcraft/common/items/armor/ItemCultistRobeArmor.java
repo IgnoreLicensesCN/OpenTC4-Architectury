@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.EnumAction;
 import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemArmor;

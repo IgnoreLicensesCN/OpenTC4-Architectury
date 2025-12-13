@@ -1,16 +1,23 @@
 package thaumcraft.common.entities.monster;
 
+import com.linearity.opentc4.datautils.SimplePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameTag;
 import net.minecraft.world.item.ItemStack;
@@ -19,10 +26,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -33,15 +45,14 @@ import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.pech.AIPechItemEntityGoto;
 import thaumcraft.common.entities.ai.pech.AIPechTradePlayer;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.misc.ItemManaBean;
 import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class EntityPech extends EntityMob implements IRangedAttackMob {
    public ItemStack[] loot = new ItemStack[9];
@@ -53,8 +64,8 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
    private EntityAIAvoidEntity aiAvoidPlayer = new EntityAIAvoidEntity(this, Player.class, 8.0F, 0.5F, 0.6);
    public float mumble = 0.0F;
    int chargecount = 0;
-   static HashMap valuedItems = new HashMap<>();
-   public static HashMap tradeInventory = new HashMap<>();
+   static Map<ResourceLocation,Integer> valuedItems = new HashMap<>();
+   public static Map<Integer,List<SimplePair<Integer,ItemStack>>> tradeInventory = new HashMap<>();
 
    public String getCommandSenderName() {
       if (this.hasCustomNameTag()) {
@@ -563,11 +574,13 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
    public boolean canPickup(ItemStack entityItem) {
       if (entityItem == null) {
          return false;
-      } else if (!this.isTamed() && valuedItems.containsKey(Item.getIdFromItem(entityItem.getItem()))) {
+      } else if (!this.isTamed()
+              && valuedItems.containsKey(BuiltInRegistries.ITEM.getKey(entityItem.getItem()))
+      ) {
          return true;
       } else {
          for(int a = 0; a < this.loot.length; ++a) {
-            if (this.loot[a] != null && this.loot[a].stackSize <= 0) {
+            if (this.loot[a] != null && this.loot[a].getCount() <= 0) {
                this.loot[a] = null;
             }
 
@@ -575,7 +588,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
                return true;
             }
 
-            if (InventoryUtils.areItemStacksEqualStrict(entityItem, this.loot[a]) && entityItem.stackSize + this.loot[a].stackSize <= this.loot[a].getMaxStackSize()) {
+            if (ItemStack.matches(entityItem, this.loot[a]) && entityItem.getCount() + this.loot[a].getCount() <= this.loot[a].getMaxStackSize()) {
                return true;
             }
          }
@@ -584,7 +597,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       }
    }
 
-   public ItemStack pickupItem(ItemStack entityItem) {
+   public @Nullable ItemStack pickupItem(ItemStack entityItem) {
       if (entityItem == null) {
          return entityItem;
       } else if (!this.isTamed() && this.isValued(entityItem)) {
@@ -594,8 +607,8 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
             this.level().setEntityState(this, (byte)18);
          }
 
-         --entityItem.stackSize;
-         return entityItem.stackSize <= 0 ? null : entityItem;
+         entityItem.shrink(1);
+         return entityItem.getCount() <= 0 ? null : entityItem;
       } else {
          for(int a = 0; a < this.loot.length; ++a) {
             if (this.loot[a] != null && this.loot[a].stackSize <= 0) {
@@ -656,7 +669,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       if (item == null) {
          return false;
       } else {
-         boolean value = valuedItems.containsKey(Item.getIdFromItem(item.getItem()));
+         boolean value = valuedItems.containsKey(BuiltInRegistries.ITEM.getKey(item.getItem()));
          if (!value) {
             AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
@@ -673,7 +686,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       if (item == null) {
          return 0;
       } else {
-         int value = valuedItems.containsKey(Item.getIdFromItem(item.getItem())) ? (Integer)valuedItems.get(Item.getIdFromItem(item.getItem())) : 0;
+         int value = valuedItems.containsKey(BuiltInRegistries.ITEM.getKey(item.getItem())) ? (Integer)valuedItems.get(BuiltInRegistries.ITEM.getKey(item.getItem())) : 0;
          if (value == 0) {
             AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
@@ -685,94 +698,160 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
    }
 
    static {
-      valuedItems.put(Item.getIdFromItem(ConfigItems.itemManaBean), 1);
-      valuedItems.put(Item.getIdFromItem(Items.gold_ingot), 2);
-      valuedItems.put(Item.getIdFromItem(Items.golden_apple), 2);
-      valuedItems.put(Item.getIdFromItem(Items.ender_pearl), 3);
-      valuedItems.put(Item.getIdFromItem(Items.diamond), 4);
-      valuedItems.put(Item.getIdFromItem(Items.emerald), 5);
-      ArrayList<List> forInv = new ArrayList<>();
-      forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemManaBean)));
-      forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 16)));
-      forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 31)));
-      forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 21)));
-      if (Config.foundCopperIngot) {
-         forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 17)));
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(ConfigItems.itemManaBean), 1);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.GOLD_INGOT), 2);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.GOLDEN_APPLE), 2);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.ENDER_PEARL), 3);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.DIAMOND), 4);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.EMERALD), 5);
+      valuedItems.put(BuiltInRegistries.ITEM.getKey(Items.ENCHANTED_GOLDEN_APPLE), 10);//just addition--IgnoreLicensesCN
+
+      ItemStack potionStack;
+      ItemStack book;
+
+      {
+         List<SimplePair<Integer, ItemStack>> forInv = new ArrayList<>();
+         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 16)));
+         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 31)));
+         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 21)));
+         if (Config.foundCopperIngot) {
+            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 17)));
+         }
+
+         if (Config.foundTinIngot) {
+            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 18)));
+         }
+
+         if (Config.foundSilverIngot) {
+            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 19)));
+         }
+
+         if (Config.foundLeadIngot) {
+            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 20)));
+         }
+
+         forInv.add(new SimplePair<>(2, new ItemStack(Items.BLAZE_ROD)));
+         forInv.add(new SimplePair<>(2, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0)));
+
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRENGTH);
+         forInv.add(new SimplePair<>(2, potionStack));
+
+
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS);
+         forInv.add(new SimplePair<>(2, potionStack));
+
+         forInv.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
+         forInv.add(new SimplePair<>(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         forInv.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_STRENGTH);
+         forInv.add(new SimplePair<>(3, potionStack));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_NIGHT_VISION);
+         forInv.add(new SimplePair<>(3, potionStack));
+
+         forInv.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
+         forInv.add(new SimplePair<>(4, new ItemStack(ConfigItems.itemPickThaumium)));
+         forInv.add(new SimplePair<>(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
+         forInv.add(new SimplePair<>(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
+         tradeInventory.put(0, forInv);
+      }
+      {
+         List<SimplePair<Integer, ItemStack>> forMag = new ArrayList<>();
+         forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+
+         for (int a = 0; a < 6; ++a) {
+            forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemShard, 1, a)));
+         }
+
+         forMag.add(new SimplePair<>(1, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         forMag.add(new SimplePair<>(2, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION);
+         forMag.add(new SimplePair<>(2, potionStack));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING);
+         forMag.add(new SimplePair<>(2, potionStack));
+
+         book = new ItemStack(Items.ENCHANTED_BOOK);
+         EnchantedBookItem.addEnchantment(
+                 book,
+                 new EnchantmentInstance(ThaumcraftEnchantments.HASTE, 1)
+         );
+         forMag.add(new SimplePair<>(3, book));
+
+         forMag.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
+         forMag.add(new SimplePair<>(3, potionStack));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+         forMag.add(new SimplePair<>(3, potionStack));
+
+         for (int a = 0; a < 7; ++a) {
+            forMag.add(new SimplePair<>(4, new ItemStack(ConfigBlocks.blockCrystal, 1, a)));
+         }
+
+         forMag.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
+
+
+         book = new ItemStack(Items.ENCHANTED_BOOK);
+         EnchantedBookItem.addEnchantment(
+                 book,
+                 new EnchantmentInstance(ThaumcraftEnchantments.REPAIR, 1)
+         );
+         forMag.add(new SimplePair<>(5, book));
+
+         forMag.add(new SimplePair<>(5, new ItemStack(ConfigItems.itemFocusPouch)));
+         forMag.add(new SimplePair<>(5, new ItemStack(ConfigItems.itemFocusPech)));
+         forMag.add(new SimplePair<>(5, new ItemStack(ConfigItems.itemAmuletVis, 1, 0)));
+         tradeInventory.put(1, forMag);
       }
 
-      if (Config.foundTinIngot) {
-         forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 18)));
+      {
+         List<SimplePair<Integer, ItemStack>> forArc = new ArrayList<>();
+         forArc.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+
+         for (int a = 0; a < 15; ++a) {
+            forArc.add(new SimplePair<>(1, new ItemStack(ConfigBlocks.blockCandle, 1, a)));
+         }
+
+         forArc.add(new SimplePair<>(2, new ItemStack(Items.GHAST_TEAR)));
+         forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8194)));
+         forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8201)));
+
+
+         book = new ItemStack(Items.ENCHANTED_BOOK);
+         EnchantedBookItem.addEnchantment(
+                 book,
+                 new EnchantmentInstance(Enchantments.POWER_ARROWS, 1)
+         );
+         forArc.add(new SimplePair<>(2, book));
+
+         forArc.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
+         forArc.add(new SimplePair<>(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_INVISIBILITY);
+         forArc.add(new SimplePair<>(3, potionStack));
+
+         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
+         forArc.add(new SimplePair<>(3, potionStack));
+
+         forArc.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+         forArc.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
+         forArc.add(new SimplePair<>(4, new ItemStack(ConfigItems.itemBootsThaumium)));
+         forArc.add(new SimplePair<>(5, new ItemStack(ConfigItems.itemRingRunic, 1, 0)));
+
+
+         book = new ItemStack(Items.ENCHANTED_BOOK);
+         EnchantedBookItem.addEnchantment(
+                 book,
+                 new EnchantmentInstance(Enchantments.FLAMING_ARROWS, 1)
+         );
+         forArc.add(new SimplePair<>(5, book));
+
+         book = new ItemStack(Items.ENCHANTED_BOOK);
+         EnchantedBookItem.addEnchantment(
+                 book,
+                 new EnchantmentInstance(Enchantments.INFINITY_ARROWS, 1)
+         );
+         forArc.add(new SimplePair<>(5, book));
+         tradeInventory.put(2, forArc);
       }
-
-      if (Config.foundSilverIngot) {
-         forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 19)));
-      }
-
-      if (Config.foundLeadIngot) {
-         forInv.add(Arrays.asList(1, new ItemStack(ConfigItems.itemNugget, 1, 20)));
-      }
-
-      forInv.add(Arrays.asList(2, new ItemStack(Items.blaze_rod)));
-      forInv.add(Arrays.asList(2, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0)));
-      forInv.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8201)));
-      forInv.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8194)));
-      forInv.add(Arrays.asList(3, new ItemStack(Items.experience_bottle)));
-      forInv.add(Arrays.asList(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
-      forInv.add(Arrays.asList(3, new ItemStack(Items.golden_apple, 1, 0)));
-      forInv.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8265)));
-      forInv.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8262)));
-      forInv.add(Arrays.asList(5, new ItemStack(Items.golden_apple, 1, 1)));
-      forInv.add(Arrays.asList(4, new ItemStack(ConfigItems.itemPickThaumium)));
-      forInv.add(Arrays.asList(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
-      forInv.add(Arrays.asList(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
-      tradeInventory.put(0, forInv);
-      ArrayList<List> forMag = new ArrayList<>();
-      forMag.add(Arrays.asList(1, new ItemStack(ConfigItems.itemManaBean)));
-
-      for(int a = 0; a < 6; ++a) {
-         forMag.add(Arrays.asList(1, new ItemStack(ConfigItems.itemShard, 1, a)));
-      }
-
-      forMag.add(Arrays.asList(1, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
-      forMag.add(Arrays.asList(2, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
-      forMag.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8193)));
-      forMag.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8261)));
-      forMag.add(Arrays.asList(3, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Config.enchHaste, 1))));
-      forMag.add(Arrays.asList(3, new ItemStack(Items.golden_apple, 1, 0)));
-      forMag.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8225)));
-      forMag.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8229)));
-
-      for(int a = 0; a < 7; ++a) {
-         forMag.add(Arrays.asList(4, new ItemStack(ConfigBlocks.blockCrystal, 1, a)));
-      }
-
-      forMag.add(Arrays.asList(5, new ItemStack(Items.golden_apple, 1, 1)));
-      forMag.add(Arrays.asList(5, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Config.enchRepair, 1))));
-      forMag.add(Arrays.asList(5, new ItemStack(ConfigItems.itemFocusPouch)));
-      forMag.add(Arrays.asList(5, new ItemStack(ConfigItems.itemFocusPech)));
-      forMag.add(Arrays.asList(5, new ItemStack(ConfigItems.itemAmuletVis, 1, 0)));
-      tradeInventory.put(1, forMag);
-      ArrayList<List> forArc = new ArrayList<>();
-      forArc.add(Arrays.asList(1, new ItemStack(ConfigItems.itemManaBean)));
-
-      for(int a = 0; a < 15; ++a) {
-         forArc.add(Arrays.asList(1, new ItemStack(ConfigBlocks.blockCandle, 1, a)));
-      }
-
-      forArc.add(Arrays.asList(2, new ItemStack(Items.ghast_tear)));
-      forArc.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8194)));
-      forArc.add(Arrays.asList(2, new ItemStack(Items.potionitem, 1, 8201)));
-      forArc.add(Arrays.asList(2, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.power, 1))));
-      forArc.add(Arrays.asList(3, new ItemStack(Items.experience_bottle)));
-      forArc.add(Arrays.asList(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
-      forArc.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8270)));
-      forArc.add(Arrays.asList(3, new ItemStack(Items.potionitem, 1, 8225)));
-      forArc.add(Arrays.asList(3, new ItemStack(Items.golden_apple, 1, 0)));
-      forArc.add(Arrays.asList(5, new ItemStack(Items.golden_apple, 1, 1)));
-      forArc.add(Arrays.asList(4, new ItemStack(ConfigItems.itemBootsThaumium)));
-      forArc.add(Arrays.asList(5, new ItemStack(ConfigItems.itemRingRunic, 1, 0)));
-      forArc.add(Arrays.asList(5, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.flame, 1))));
-      forArc.add(Arrays.asList(5, Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.infinity, 1))));
-      tradeInventory.put(2, forArc);
    }
 }
