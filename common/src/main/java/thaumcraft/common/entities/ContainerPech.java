@@ -1,5 +1,6 @@
 package thaumcraft.common.entities;
 
+import com.linearity.opentc4.datautils.SimplePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
@@ -98,7 +99,7 @@ public class ContainerPech extends Container {
          }
 
          EntityPech var10000 = this.pech;
-         ArrayList<List> pos = (ArrayList)EntityPech.tradeInventory.get(this.pech.getPechType());
+         List<SimplePair<Integer,ItemStack>> pos = EntityPech.tradeInventory.get(this.pech.getPechType());
 
          while(value > 0) {
             int am = Math.min(5, Math.max((value + 1) / 2, this.theworld.getRandom().nextInt(value) + 1));

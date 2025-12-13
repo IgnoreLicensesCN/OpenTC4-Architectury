@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -189,9 +190,9 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
             this.vRadZ *= 0.9F;
         }
 
-        if (Platform.getEnvironment() != Env.CLIENT && this.hasPickaxe && this.getStackInSlot(1) != null) {
+        if (this.fakePlayer instanceof ServerPlayer serverPlayer && this.hasPickaxe && this.getStackInSlot(1) != null) {
             if (this.repairCounter++ % 40L == 0L && this.getStackInSlot(1).isItemDamaged()) {
-                this.doRepair(this.getStackInSlot(1), this.fakePlayer);
+                this.doRepair(this.getStackInSlot(1), serverPlayer);
             }
 
             if (this.repairCost != null && this.repairCost.size() > 0 && this.repairCounter % 5L == 0L) {
@@ -213,7 +214,7 @@ public class TileArcaneBore extends TileThaumcraft implements IInventory, IWanda
     }
 
     private void doRepair(ItemStack is, Player player) {
-        int level = EnchantmentHelper.getEnchantmentLevel(Config.enchRepair.effectId, is);
+        int level = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.REPAIR.effectId, is);
         if (level > 0) {
             if (level > 2) {
                 level = 2;

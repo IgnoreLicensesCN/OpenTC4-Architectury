@@ -2,24 +2,18 @@ package thaumcraft.common.lib.events;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.StatCollector;
-import com.linearity.opentc4.utils.vanilla1710.BiomeType;
-import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -29,10 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.Difficulty;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.aspects.Aspect;
@@ -46,13 +37,11 @@ import thaumcraft.api.wands.EnchantmentRepairVisProvider;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
-import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
 import thaumcraft.common.items.misc.ItemBathSalts;
 import thaumcraft.common.items.misc.ItemCrystalEssence;
@@ -62,26 +51,21 @@ import thaumcraft.common.items.equipment.ItemBowBone;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.WarpEvents;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.lib.world.dim.Cell;
-import thaumcraft.common.lib.world.dim.CellLoc;
-import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.tiles.TileOwned;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.LOGGER;
 import static thaumcraft.api.expands.warp.WarpEventManager.getWarpEventDelayForPlayer;
-import static thaumcraft.common.lib.utils.EntityUtils.CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED;
-import static thaumcraft.common.lib.utils.EntityUtils.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED;
 
 
 //TODO
@@ -172,25 +156,25 @@ public class EventHandlerEntity {
                player.onUpdateAbilities();
             }
 
-            if (Platform.getEnvironment() != Env.CLIENT) {
-               if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(player) == 0) {
-                  WarpEvents.checkWarpEvent(player);
+            if (player instanceof ServerPlayer serverPlayer) {
+               if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(serverPlayer) == 0) {
+                  WarpEvents.checkWarpEvent(serverPlayer);
                }
 
                if (player.tickCount % 10 == 0 && player.hasEffect(Config.potionDeathGaze)) {
-                  WarpEvents.checkDeathGaze(player);
+                  WarpEvents.checkDeathGaze(serverPlayer);
                }
 
-               if (player.tickCount % 40 == 0) {
+               if (serverPlayer.tickCount % 40 == 0) {
                   int a = 0;
                   Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && stack.getItem() instanceof IRepairable && !player.isCreative()) {
-                        doRepair(stack, player);
+                     if (stack.getDamageValue() > 0 && stack.getItem() instanceof IRepairable && !serverPlayer.isCreative()) {
+                        doRepair(stack, serverPlayer);
                      }
                   };
-                  player.getInventory().items.forEach(repairItemStack);
-                  player.getInventory().offhand.forEach(repairItemStack);
-                  player.getInventory().armor.forEach(repairItemStack);
+                  serverPlayer.getInventory().items.forEach(repairItemStack);
+                  serverPlayer.getInventory().offhand.forEach(repairItemStack);
+                  serverPlayer.getInventory().armor.forEach(repairItemStack);
                }
             }
 
@@ -285,9 +269,9 @@ public class EventHandlerEntity {
    }
 
    public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof EnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair();
-   public static void doRepair(ItemStack is, Player player) {
+   public static void doRepair(ItemStack is, ServerPlayer player) {
 
-      int level = EnchantmentHelper.getEnchantments(is).getOrDefault(Config.enchRepair,0);
+      int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
       if (level > 0) {
          if (level > 2) {
             level = 2;
@@ -333,8 +317,10 @@ public class EventHandlerEntity {
 
    private static void updateSpeed(Player player) {
       try {
-         if (!player.capabilities.isFlying && player.inventory.armorItemInSlot(0) != null && player.moveForward > 0.0F) {
-            int haste = EnchantmentHelper.getEnchantmentLevel(Config.enchHaste.effectId, player.inventory.armorItemInSlot(0));
+         if (!player.capabilities.isFlying
+                 && player.inventory.armorItemInSlot(0) != null
+                 && player.moveForward > 0.0F) {
+            int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.HASTE.effectId, player.inventory.armorItemInSlot(0));
             if (haste > 0) {
                float bonus = (float)haste * 0.015F;
                if (player.isAirBorne) {
@@ -350,7 +336,6 @@ public class EventHandlerEntity {
          }
       } catch (Exception ignored) {
       }
-
    }
 
    @SubscribeEvent

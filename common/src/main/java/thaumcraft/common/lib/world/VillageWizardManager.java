@@ -2,7 +2,7 @@ package thaumcraft.common.lib.world;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.world.entity.passive.EntityVillager;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.village.MerchantRecipe;

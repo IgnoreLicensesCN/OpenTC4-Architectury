@@ -1,10 +1,14 @@
 package thaumcraft.common.items.misc;
 
+import com.linearity.opentc4.utils.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -29,6 +32,7 @@ import thaumcraft.common.entities.projectile.EntityAlumentum;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
+import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
@@ -37,6 +41,7 @@ import java.util.Random;
 
 import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
+//TODO:Migrate logic
 public class ItemResource extends Item implements IEssentiaContainerItem {
    public IIcon[] icon = new IIcon[19];
    public IIcon iconOverlay;
@@ -111,9 +116,10 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
    }
 
-   public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
+   public void onUpdate(ItemStack stack, Level world, Entity entity, int par4, boolean par5) {
       super.onUpdate(stack, world, entity, par4, par5);
-      if (Platform.getEnvironment() != Env.CLIENT && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
+      if (Platform.getEnvironment() != Env.CLIENT
+              && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
               && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()
               && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.getRandom().nextInt(4321) <= stack.stackSize) {
          ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 120, 0, false));
@@ -122,110 +128,106 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
             ((Player)entity).addChatMessage(new ChatComponentTranslation(s));
             InventoryUtils.consumeInventoryItem((Player)entity, stack.getItem(), stack.getItemDamage());
          }
-      } else if (Platform.getEnvironment() != Env.CLIENT && stack.getItemDamage() == 15) {
+      } else if (Platform.getEnvironment() != Env.CLIENT
+              && stack.getItemDamage() == 15) {
          int r = world.getRandom().nextInt(20000);
          if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("blurb")) {
             stack.stackTagCompound.removeTag("blurb");
          }
 
          if (r < 20) {
-            Aspect aspect = null;
-            switch (world.getRandom().nextInt(6)) {
-               case 0:
-                  aspect = Aspect.AIR;
-                  break;
-               case 1:
-                  aspect = Aspect.EARTH;
-                  break;
-               case 2:
-                  aspect = Aspect.FIRE;
-                  break;
-               case 3:
-                  aspect = Aspect.WATER;
-                  break;
-               case 4:
-                  aspect = Aspect.ORDER;
-                  break;
-               case 5:
-                  aspect = Aspect.ENTROPY;
-            }
+            Aspect aspect = switch (world.getRandom()
+                    .nextInt(6)) {
+                case 0 -> Aspect.AIR;
+                case 1 -> Aspect.EARTH;
+                case 2 -> Aspect.FIRE;
+                case 3 -> Aspect.WATER;
+                case 4 -> Aspect.ORDER;
+                case 5 -> Aspect.ENTROPY;
+                default -> null;
+            };
 
-            if (aspect != null) {
-               EntityAspectOrb orb = new EntityAspectOrb(world, entity.posX, entity.posY, entity.posZ, aspect, 1);
-               world.spawnEntityInWorld(orb);
+             if (aspect != null) {
+               EntityAspectOrb orb = new EntityAspectOrb(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
+               world.addFreshEntity(orb);
             }
-         } else if (r == 42 && entity instanceof Player && !ResearchManager.isResearchComplete(entity.getCommandSenderName(), "FOCUSPRIMAL") && !ResearchManager.isResearchComplete(entity.getCommandSenderName(), "@FOCUSPRIMAL")) {
-            ((Player)entity).addChatMessage(new ChatComponentTranslation("§5§o" + StatCollector.translateToLocal("tc.primalcharm.trigger")));
-            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("@FOCUSPRIMAL"), (ServerPlayer)entity);
-            Thaumcraft.proxy.getResearchManager().completeResearch((Player)entity, "@FOCUSPRIMAL");
+         } else if (r == 42
+                 && entity instanceof ServerPlayer player
+                 && !ResearchManager.isResearchComplete(player.getName().getString(), "FOCUSPRIMAL")
+                 && !ResearchManager.isResearchComplete(player.getName().getString(), "@FOCUSPRIMAL")
+         ) {
+            player.sendSystemMessage(
+                    Component.literal("§5§o" + StatCollector.translateToLocal("tc.primalcharm.trigger")));
+            new PacketResearchCompleteS2C("@FOCUSPRIMAL").sendTo(player);
+            Thaumcraft.researchManager.completeResearch(player, "@FOCUSPRIMAL");
          }
       }
 
    }
 
-   public boolean onItemUse(ItemStack itemstack, Player player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
-      if (itemstack.getItemDamage() != 1) {
-         return super.onItemUse(itemstack, player, world, x, y, z, par7, par8, par9, par10);
-      } else {
-         Block var11 = world.getBlock(x, y, z);
-         if (var11 == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
-            par7 = 1;
-         } else if (var11 != Blocks.vine && var11 != Blocks.tallgrass && var11 != Blocks.deadbush && !var11.isReplaceable(world, x, y, z)) {
-            if (par7 == 0) {
-               --y;
-            }
+//   public boolean onItemUse(ItemStack itemstack, Player player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
+//      if (itemstack.getItemDamage() != 1) {
+//         return super.onItemUse(itemstack, player, world, x, y, z, par7, par8, par9, par10);
+//      } else {
+//         Block var11 = world.getBlock(x, y, z);
+//         if (var11 == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+//            par7 = 1;
+//         } else if (var11 != Blocks.vine && var11 != Blocks.tallgrass && var11 != Blocks.deadbush && !var11.isReplaceable(world, x, y, z)) {
+//            if (par7 == 0) {
+//               --y;
+//            }
+//
+//            if (par7 == 1) {
+//               ++y;
+//            }
+//
+//            if (par7 == 2) {
+//               --z;
+//            }
+//
+//            if (par7 == 3) {
+//               ++z;
+//            }
+//
+//            if (par7 == 4) {
+//               --x;
+//            }
+//
+//            if (par7 == 5) {
+//               ++x;
+//            }
+//         }
+//
+//         if (itemstack.stackSize == 0) {
+//            return false;
+//         } else if (!player.canPlayerEdit(x, y, z, par7, itemstack)) {
+//            return false;
+//         } else if (world.canPlaceEntityOnSide(ConfigBlocks.blockAiry, x, y, z, false, par7, player, itemstack)) {
+//            if (this.placeBlockAt(itemstack, player, world, x, y, z, par7, par8, par9, par10, ConfigBlocks.blockAiry, itemstack.getItemDamage())) {
+//               world.playSoundEffect((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, ConfigBlocks.blockAiry.stepSound.getStepResourcePath(), (ConfigBlocks.blockAiry.stepSound.getVolume() + 1.0F) / 2.0F, ConfigBlocks.blockAiry.stepSound.getPitch() * 0.8F);
+//               --itemstack.stackSize;
+//               return true;
+//            } else {
+//               return false;
+//            }
+//         } else {
+//            return false;
+//         }
+//      }
+//   }
 
-            if (par7 == 1) {
-               ++y;
-            }
-
-            if (par7 == 2) {
-               --z;
-            }
-
-            if (par7 == 3) {
-               ++z;
-            }
-
-            if (par7 == 4) {
-               --x;
-            }
-
-            if (par7 == 5) {
-               ++x;
-            }
-         }
-
-         if (itemstack.stackSize == 0) {
-            return false;
-         } else if (!player.canPlayerEdit(x, y, z, par7, itemstack)) {
-            return false;
-         } else if (world.canPlaceEntityOnSide(ConfigBlocks.blockAiry, x, y, z, false, par7, player, itemstack)) {
-            if (this.placeBlockAt(itemstack, player, world, x, y, z, par7, par8, par9, par10, ConfigBlocks.blockAiry, itemstack.getItemDamage())) {
-               world.playSoundEffect((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, ConfigBlocks.blockAiry.stepSound.getStepResourcePath(), (ConfigBlocks.blockAiry.stepSound.getVolume() + 1.0F) / 2.0F, ConfigBlocks.blockAiry.stepSound.getPitch() * 0.8F);
-               --itemstack.stackSize;
-               return true;
-            } else {
-               return false;
-            }
-         } else {
-            return false;
-         }
-      }
-   }
-
-   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, Block bid, int metadata) {
-      if (!world.setBlock(x, y, z, bid, metadata, 3)) {
-         return false;
-      } else {
-         if (world.getBlock(x, y, z) == bid) {
-            bid.onBlockPlacedBy(world, x, y, z, player, stack);
-            bid.onPostBlockPlaced(world, x, y, z, metadata);
-         }
-
-         return true;
-      }
-   }
+//   public boolean placeBlockAt(ItemStack stack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, Block bid, int metadata) {
+//      if (!world.setBlock(x, y, z, bid, metadata, 3)) {
+//         return false;
+//      } else {
+//         if (world.getBlock(x, y, z) == bid) {
+//            bid.onBlockPlacedBy(world, x, y, z, player, stack);
+//            bid.onPostBlockPlaced(world, x, y, z, metadata);
+//         }
+//
+//         return true;
+//      }
+//   }
 
 //   public ItemStack onItemRightClick(ItemStack itemstack, World world, Player player) {
 //      if (itemstack.getItemDamage() == 0) {
@@ -260,13 +262,13 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       AspectList aspects = this.getAspects(stack);
       addAspectDescriptionToList(aspects,player,list);
 
-      if (stack.getItemDamage() == 15) {
-         Random rand = new Random(stack.hashCode() + player.ticksExisted / 120);
-         int r = rand.nextInt(200);
-         if (r < 25) {
-            list.add("§6" + StatCollector.translateToLocal("tc.primalcharm." + rand.nextInt(5)));
-         }
-      }
+//      if (stack.getItemDamage() == 15) {
+//         Random rand = new Random(stack.hashCode() + player.ticksExisted / 120);
+//         int r = rand.nextInt(200);
+//         if (r < 25) {
+//            list.add("§6" + StatCollector.translateToLocal("tc.primalcharm." + rand.nextInt(5)));
+//         }
+//      }
 
       super.addInformation(stack, player, list, par4);
    }

@@ -30,6 +30,7 @@ public final class OpenTC4 {
 
     }
     public static void onServerStarting(){
+        ThaumcraftEnchantments.init();
         ThaumcraftItems.init();
         ThaumcraftBlocks.init();
         ThaumcraftEntities.init();

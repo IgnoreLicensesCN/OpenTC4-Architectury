@@ -1,6 +1,6 @@
 package thaumcraft.api.expands.warp;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +32,11 @@ public abstract class WarpEvent implements Comparable<WarpEvent> {
         }
         return warpRequiredCompared;
     }
-    public abstract void onEventTriggered(PickWarpEventContext warpContext,Player player);
+    public abstract void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player);
 
     public static final WarpEvent EMPTY = new WarpEvent(0,0) {
         @Override
-        public void onEventTriggered(PickWarpEventContext warpContext,Player player) {
+        public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
         }
     };
 }

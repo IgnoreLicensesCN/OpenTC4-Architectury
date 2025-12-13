@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.world;
 
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;

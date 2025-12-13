@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.crafting;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import thaumcraft.api.IRunicArmor;

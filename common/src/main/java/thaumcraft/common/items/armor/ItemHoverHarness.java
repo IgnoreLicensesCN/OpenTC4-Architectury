@@ -7,7 +7,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
@@ -29,12 +31,12 @@ import java.util.List;
 
 import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
-public class ItemHoverHarness extends ItemArmor implements IRepairable, IVisDiscountGear, IRunicArmor {
+public class ItemHoverHarness extends ArmorItem implements IRepairable, IVisDiscountGear, IRunicArmor {
    ModelBiped model = null;
    public IIcon icon;
    public IIcon iconLightningRing;
 
-   public ItemHoverHarness(ItemArmor.ArmorMaterial enumarmormaterial, int j, int k) {
+   public ItemHoverHarness(Tier enumarmormaterial, int j, int k) {
       super(enumarmormaterial, j, k);
       this.setMaxDamage(400);
       this.setCreativeTab(Thaumcraft.tabTC);

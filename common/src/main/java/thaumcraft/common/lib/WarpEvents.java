@@ -17,6 +17,7 @@ import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;
+import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -236,8 +237,8 @@ public class WarpEvents {
 //      PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), (ServerPlayer)player);
    }
 
-   public static void spawnMist(Player player, int warp, int guardian) {
-      PacketHandler.INSTANCE.sendTo(new PacketMiscEvent((short)1), (ServerPlayer)player);
+   public static void spawnMist(ServerPlayer player, int warp, int guardian) {
+      new PacketMiscEventS2C((short)1).sendTo(player);
       if (guardian > 0) {
          guardian = Math.min(8, guardian);
 
@@ -336,7 +337,7 @@ public class WarpEvents {
           for (Entity entity : list) {
               if (entity.canBeCollidedWith()
                       && entity instanceof LivingEntity
-                      && entity.isEntityAlive()
+                      && entity.isAlive()
                       && EntityUtils.isVisibleTo(0.75F, player, entity, (float) range)
                       && player.canEntityBeSeen(entity)
                       && (!(entity instanceof Player)
@@ -358,15 +359,12 @@ public class WarpEvents {
    }
 
    public static int getWarpFromGear(Player player) {
-      AtomicInteger w = new AtomicInteger(EventHandlerRunic.getFinalWarp(player.getCurrentEquippedItem(), player));
-
-      for(int a = 0; a < 4; ++a) {
-         w.addAndGet(EventHandlerRunic.getFinalWarp(player.inventory.armorItemInSlot(a), player));
-      }
+      AtomicInteger w = new AtomicInteger(EventHandlerRunic.getFinalWarp(player.getMainHandItem(), player));
+      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(EventHandlerRunic.getFinalWarp(armorInSlot, player)));
       forEachBauble(player,(slot, stack, item) -> {
          w.addAndGet(EventHandlerRunic.getFinalWarp(stack, player));
          return false;
       });
-      return w.get();
+      return w.addAndGet(EventHandlerRunic.getFinalWarp(player.getOffhandItem(), player));
    }
 }

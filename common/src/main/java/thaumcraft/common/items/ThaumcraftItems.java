@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
+import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.relics.ThaumometerItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
@@ -34,7 +35,7 @@ public class ThaumcraftItems {
     public static final Item TAINT_TENDRIL = Registry.SUPPLIER_TAINT_TENDRIL.get();//itemResource:12
     public static final Item JAR_LABEL = Registry.SUPPLIER_JAR_LABEL.get();//itemResource:13
     public static final Item SALIS_MUNDUS = Registry.SUPPLIER_SALIS_MUNDUS.get();//itemResource:14
-    public static final Item PRIMAL_CHARM = Registry.SUPPLIER_PRIMAL_CHARM.get();//itemResource:15
+    public static final PrimalCharmItem PRIMAL_CHARM = Registry.SUPPLIER_PRIMAL_CHARM.get();//itemResource:15
     public static final Item VOID_INGOT = Registry.SUPPLIER_VOID_INGOT.get();//itemResource:16
     public static final Item VOID_SEED = Registry.SUPPLIER_VOID_SEED.get();//itemResource:17
     public static final Item GOLD_COIN = Registry.SUPPLIER_GOLD_COIN.get();//itemResource:18
@@ -100,7 +101,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register("taint_tendril", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_JAR_LABEL = ITEMS.register("jar_label", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_SALIS_MUNDUS = ITEMS.register("salis_mundus", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_PRIMAL_CHARM = ITEMS.register("primal_charm", () -> new Item(new Item.Properties().stacksTo(1)));
+        public static final RegistrySupplier<PrimalCharmItem> SUPPLIER_PRIMAL_CHARM = ITEMS.register("primal_charm", PrimalCharmItem::new);
         public static final RegistrySupplier<Item> SUPPLIER_VOID_INGOT = ITEMS.register("void_ingot", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_VOID_SEED = ITEMS.register("void_seed", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_GOLD_COIN = ITEMS.register("gold_coin", () -> new Item(new Item.Properties()));

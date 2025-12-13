@@ -5,7 +5,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingManager;
@@ -727,7 +727,7 @@ public class Config {
                                         break;
                                     case "woodLog":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ItemElementalAxe.oreDictLogs.add(Arrays.asList(Item.getIdFromItem(is.getItem()), is.getItemDamage()));
+                                            ItemElementalAxe.oreDictLogs.add(Arrays.asList(BuiltInRegistries.ITEM.getKey(is.getItem()), is.getItemDamage()));
                                         }
                                         break;
                                     case "ingotLead":
