@@ -247,12 +247,13 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         }).orElse(false);
     }
     @Override
-    public <T extends Item> boolean forEachBauble(
+    public <T> boolean forEachBauble(
             Player player,
             Class<T> expectedItemType,
             BaubleConsumer<T> consumer
     ) {
         return forEachBauble(player, (slot, stack, item) -> {
+            if (stack == null || item == null || stack.isEmpty()) return false;
             if (expectedItemType.isAssignableFrom(item.getClass())) {
                 return consumer.accept(slot, stack, (T) item);
             }
@@ -282,13 +283,14 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         }).orElse(false);
     }
     @Override
-    public <T extends Item> boolean forEachBaubleWithType(
+    public <T> boolean forEachBaubleWithType(
             String baubleType,
             Player player,
             Class<T> expectedItemType,
             BaubleConsumer<T> consumer
     ) {
         return forEachBaubleWithType(baubleType,player, (slot, stack, item) -> {
+            if (stack == null || item == null || stack.isEmpty()) return false;
             if (expectedItemType.isAssignableFrom(item.getClass())) {
                 return consumer.accept(slot, stack, (T) item);
             }

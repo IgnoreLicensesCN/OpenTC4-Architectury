@@ -58,7 +58,7 @@ public abstract class PlatformUniqueUtils {
             BaubleConsumer<Item> consumer
     );
 
-    public abstract <T extends Item> boolean forEachBauble(
+    public abstract <T> boolean forEachBauble(
             Player player,
             Class<T> expectedItemType,
             BaubleConsumer<T> consumer
@@ -69,7 +69,7 @@ public abstract class PlatformUniqueUtils {
             BaubleConsumer<Item> consumer
     );
 
-    public abstract <T extends Item> boolean forEachBaubleWithType(
+    public abstract <T> boolean forEachBaubleWithType(
             String baubleType,
             Player player,
             Class<T> expectedItemType,

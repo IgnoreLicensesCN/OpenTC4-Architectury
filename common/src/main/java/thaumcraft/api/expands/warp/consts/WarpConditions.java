@@ -4,6 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.expands.warp.PickWarpEventContext;
 import thaumcraft.api.expands.warp.WarpConditionChecker;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 public class WarpConditions {
 
@@ -17,7 +18,7 @@ public class WarpConditions {
     public static final WarpConditionChecker NO_WARP_WARD = new WarpConditionChecker(1) {
         @Override
         public boolean check(PickWarpEventContext context, Player player) {
-            return player.getEffect(Config.potionWarpWard) != null;
+            return player.hasEffect(ThaumcraftEffects.WARP_WARD);
         }
     };
 }

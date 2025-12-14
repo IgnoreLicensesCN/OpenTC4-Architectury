@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 public class ItemSanitySoap extends Item {
    @SideOnly(Side.CLIENT)
@@ -70,7 +71,7 @@ public class ItemSanitySoap extends Item {
          --stack.stackSize;
          if (Platform.getEnvironment() != Env.CLIENT) {
             float chance = 0.33F;
-            if (player.isPotionActive(Config.potionWarpWardID)) {
+            if (player.hasEffect(ThaumcraftEffects.WARP_WARD)) {
                chance += 0.25F;
             }
 

@@ -16,6 +16,7 @@
     "ItemStackMixin",
     "LivingEntityAccessor",
     "LivingEntityMixin",
+    "MilkBucketItemMixin",
     "MobMixin",
     "MonsterMixin",
     "ServerGamePacketListenerImplAccessor",

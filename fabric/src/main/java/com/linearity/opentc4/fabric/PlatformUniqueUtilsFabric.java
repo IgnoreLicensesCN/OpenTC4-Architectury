@@ -275,7 +275,8 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
                 for (int i = 0; i < slot.getContainerSize(); i++) {
                     ItemStack stack = slot.getItem(i);
                     if (!stack.isEmpty()) {
-                        if (consumer.accept(EquippedBaubleSlot.trinkets(slot.getSlotType().getName(),i), stack, stack.getItem())) {
+                        var item = stack.getItem();
+                        if (consumer.accept(EquippedBaubleSlot.trinkets(slot.getSlotType().getName(),i), stack, item)) {
                             return true;
                         }
                     }
@@ -286,12 +287,13 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
     }
 
     @Override
-    public <T extends Item> boolean forEachBauble(
+    public <T> boolean forEachBauble(
             Player player,
             Class<T> expectedItemType,
             BaubleConsumer<T> consumer
     ) {
         return forEachBauble(player, (slot, stack, item) -> {
+            if (stack == null || item == null || stack.isEmpty()) return false;
             if (expectedItemType.isAssignableFrom(item.getClass())) {
                 return consumer.accept(slot, stack, (T) item);
             }
@@ -303,13 +305,12 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
     public String[] listBaubleTypes(LivingEntity livingEntity) {
         Set<String> slotTypes = new HashSet<>();
 
-        TrinketsApi.getTrinketComponent(livingEntity).ifPresent(comp -> {
-            comp.getInventory().forEach((groupId, group) -> {
-                group.keySet().forEach(slotId -> {
-                    slotTypes.add(groupId + "/" + slotId);
-                });
-            });
-        });
+        TrinketsApi.getTrinketComponent(livingEntity).ifPresent(comp -> comp.getInventory().forEach(
+                (groupId, group) ->
+                group.keySet().forEach(
+                        slotId -> slotTypes.add(groupId + "/" + slotId)
+                )
+        ));
         return slotTypes.toArray(new String[0]);
     }
 
@@ -339,13 +340,14 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
     }
 
     @Override
-    public <T extends Item> boolean forEachBaubleWithType(
+    public <T> boolean forEachBaubleWithType(
             String baubleType,
             Player player,
             Class<T> expectedItemType,
             BaubleConsumer<T> consumer
     ) {
         return forEachBaubleWithType(baubleType,player, (slot, stack, item) -> {
+            if (stack == null || item == null || stack.isEmpty()) return false;
             if (expectedItemType.isAssignableFrom(item.getClass())) {
                 return consumer.accept(slot, stack, (T) item);
             }

@@ -30,7 +30,7 @@ import static thaumcraft.api.expands.warp.WarpEventManager.tryTriggerRandomWarpE
 
 public class WarpEvents {
 
-   public static void checkWarpEvent(Player player) {
+   public static void checkWarpEvent(ServerPlayer player) {
       tryTriggerRandomWarpEvent(player);
 //      int warp = Thaumcraft.playerKnowledge.getWarpTotal(player.getName().getString());
 //      int actualwarp = Thaumcraft.playerKnowledge.getWarpPerm(player.getName().getString())
@@ -327,36 +327,36 @@ public class WarpEvents {
       player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.7")));
    }
 
-   public static void checkDeathGaze(Player player) {
-      MobEffectInstance pe = player.getActiveMobEffectInstance(Potion.potionTypes[Config.potionDeathGazeID]);
-      if (pe != null) {
-         int level = pe.getAmplifier();
-         int range = Math.min(8 + level * 3, 24);
-         List<Entity> list = (List<Entity>)player.level().getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(range, range, range));
-
-          for (Entity entity : list) {
-              if (entity.canBeCollidedWith()
-                      && entity instanceof LivingEntity
-                      && entity.isAlive()
-                      && EntityUtils.isVisibleTo(0.75F, player, entity, (float) range)
-                      && player.canEntityBeSeen(entity)
-                      && (!(entity instanceof Player)
-                      || MinecraftServer.getServer().isPVPEnabled())
-                      && !((LivingEntity) entity).isPotionActive(Potion.wither.getId()))
-              {
-                 LivingEntity living = (LivingEntity) entity;
-                  living.setRevengeTarget(player);
-                  living.setLastAttacker(player);
-                  if (entity instanceof EntityCreature) {
-                      ((EntityCreature) entity).setTarget(player);
-                  }
-
-                  living.addEffect(new MobEffectInstance(Potion.wither.getId(), 80));
-              }
-          }
-
-      }
-   }
+//   public static void checkDeathGaze(Player player) {
+//      MobEffectInstance pe = player.getActiveMobEffectInstance(Potion.potionTypes[Config.potionDeathGazeID]);
+//      if (pe != null) {
+//         int level = pe.getAmplifier();
+//         int range = Math.min(8 + level * 3, 24);
+//         List<Entity> list = (List<Entity>)player.level().getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(range, range, range));
+//
+//          for (Entity entity : list) {
+//              if (entity.canBeCollidedWith()
+//                      && entity instanceof LivingEntity
+//                      && entity.isAlive()
+//                      && EntityUtils.isVisibleTo(0.75F, player, entity, (float) range)
+//                      && player.canEntityBeSeen(entity)
+//                      && (!(entity instanceof Player)
+//                      || MinecraftServer.getServer().isPVPEnabled())
+//                      && !((LivingEntity) entity).isPotionActive(Potion.wither.getId()))
+//              {
+//                 LivingEntity living = (LivingEntity) entity;
+//                  living.setRevengeTarget(player);
+//                  living.setLastAttacker(player);
+//                  if (entity instanceof EntityCreature) {
+//                      ((EntityCreature) entity).setTarget(player);
+//                  }
+//
+//                  living.addEffect(new MobEffectInstance(Potion.wither.getId(), 80));
+//              }
+//          }
+//
+//      }
+//   }
 
    public static int getWarpFromGear(Player player) {
       AtomicInteger w = new AtomicInteger(EventHandlerRunic.getFinalWarp(player.getMainHandItem(), player));

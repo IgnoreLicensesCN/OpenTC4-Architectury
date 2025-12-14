@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.EnumRarity;
@@ -59,7 +60,7 @@ public class ItemCultistBoots extends ItemArmor implements IRepairable, IRunicAr
       return 1;
    }
 
-   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
       return 1;
    }
 

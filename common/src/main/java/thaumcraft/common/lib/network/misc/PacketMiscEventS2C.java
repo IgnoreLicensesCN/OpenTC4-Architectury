@@ -7,13 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.client.lib.RenderEventHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.tiles.TileArcaneBore;
+import thaumcraft.common.lib.effects.DeathGazeEffect;
 
 public class PacketMiscEventS2C  extends BaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":misc_event";
@@ -54,7 +51,7 @@ public class PacketMiscEventS2C  extends BaseS2CMessage {
         Player p = Minecraft.getInstance().player;
         switch (type) {
             case 0:
-                ClientTickEventsFML.warpVignette = 100;
+                DeathGazeEffect.warpVignette = 100;
                 p.level().playSound(
                         p,
                         p.getX(), p.getY(), p.getZ(),

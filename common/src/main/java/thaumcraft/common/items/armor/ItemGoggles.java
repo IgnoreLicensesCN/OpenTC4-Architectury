@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.EnumRarity;
@@ -63,7 +64,7 @@ public class ItemGoggles extends ItemArmor implements IRepairable, IVisDiscountG
       return par2ItemStack.isItemEqual(new ItemStack(Items.gold_ingot)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
       return 5;
    }
 

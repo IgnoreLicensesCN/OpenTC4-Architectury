@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.EnumRarity;
@@ -13,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
@@ -124,7 +124,7 @@ public class ItemRobeArmor extends ItemArmor implements IRepairable, IVisDiscoun
       return par2ItemStack.isItemEqual(new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
       return this.armorType == 3 ? 1 : 2;
    }
 

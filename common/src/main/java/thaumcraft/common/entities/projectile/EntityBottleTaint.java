@@ -43,7 +43,7 @@ public class EntityBottleTaint extends EntityThrowable {
             for(Object ent : ents) {
                EntityLivingBase el = (EntityLivingBase)ent;
                if (!(el instanceof ITaintedMob) && !el.isEntityUndead()) {
-                  el.addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 100, 0, false));
+                  el.addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 100, 0, false));
                }
             }
          }

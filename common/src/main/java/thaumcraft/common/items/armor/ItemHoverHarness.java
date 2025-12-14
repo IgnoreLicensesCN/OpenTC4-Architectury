@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ArmorItem;
@@ -17,7 +18,6 @@ import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
@@ -78,7 +78,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairable, IVisDisc
       return par2ItemStack.isItemEqual(new ItemStack(Items.gold_ingot)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
       return aspect == Aspect.AIR ? 5 : 2;
    }
 

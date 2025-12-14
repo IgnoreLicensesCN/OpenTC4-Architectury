@@ -1,6 +1,6 @@
 package thaumcraft.api;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 
@@ -15,6 +15,6 @@ import thaumcraft.api.aspects.Aspect;
  */
 public interface IVisDiscountGear {
 		
-	int getVisDiscount(ItemStack stack, Player player, Aspect aspect);
+	int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect);
 
 }

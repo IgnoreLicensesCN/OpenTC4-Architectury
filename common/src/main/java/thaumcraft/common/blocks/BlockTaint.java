@@ -28,6 +28,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityFallingTaint;
 import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
 import thaumcraft.common.lib.CustomSoundType;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
@@ -291,9 +292,9 @@ public class BlockTaint extends Block {
       if (md != 2) {
          if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
             if (entity instanceof Player && world.getRandom().nextInt(100) == 0) {
-               ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 80, 0, false));
+               ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 80, 0, false));
             } else if (!(entity instanceof Player) && world.getRandom().nextInt(20) == 0) {
-               ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 160, 0, false));
+               ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 160, 0, false));
             }
          }
 

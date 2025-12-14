@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingManager;
 import net.minecraft.world.item.crafting.FurnaceRecipes;
@@ -23,8 +22,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.potions.PotionFluxTaint;
-import thaumcraft.api.potions.PotionVisExhaust;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.EntityFallingTaint;
@@ -136,15 +133,15 @@ public class Config {
     public static boolean spawnTaintSpore = true;
     public static boolean spawnPech = true;
     public static boolean spawnElder = true;
-    public static int potionVisExhaustID = 18;
-    public static int potionInfVisExhaustID = 18;
-    public static int potionBlurredID = 18;
-    public static int potionThaumarhiaID = 18;
-    public static int potionTaintPoisonID = 19;
-    public static int potionUnHungerID = 17;
-    public static int potionSunScornedID = 17;
-    public static int potionWarpWardID = 23;
-    public static int potionDeathGazeID = 17;
+//    public static int potionVisExhaustID = 18;
+//    public static int potionInfVisExhaustID = 18;
+//    public static int potionBlurredID = 18;
+//    public static int potionThaumarhiaID = 18;
+//    public static int potionTaintPoisonID = 19;
+//    public static int potionUnHungerID = 17;
+//    public static int potionSunScornedID = 17;
+//    public static int potionWarpWardID = 23;
+//    public static int potionDeathGazeID = 17;
     public static Enchantment enchHaste = null;
     public static Enchantment enchRepair = null;
     public static ArrayList<Aspect> aspectOrder = new ArrayList<>();
@@ -266,77 +263,77 @@ public class Config {
             start = -1;
         }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionTaintPoisonID = start;
-            PotionFluxTaint.instance = new PotionFluxTaint(potionTaintPoisonID, true, 6697847);
-            PotionFluxTaint.init();
-            Thaumcraft.log.info("Initializing PotionFluxTaint with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionTaintPoisonID = start;
+//            PotionFluxTaint.instance = new PotionFluxTaint(potionTaintPoisonID, true, 6697847);
+//            PotionFluxTaint.init();
+//            Thaumcraft.log.info("Initializing PotionFluxTaint with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionVisExhaustID = start;
-            PotionVisExhaust.instance = new PotionVisExhaust(potionVisExhaustID, true, 6702199);
-            PotionVisExhaust.init();
-            Thaumcraft.log.info("Initializing PotionVisExhaust with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionVisExhaustID = start;
+//            PotionVisExhaust.instance = new PotionVisExhaust(potionVisExhaustID, true, 6702199);
+//            PotionVisExhaust.init();
+//            Thaumcraft.log.info("Initializing PotionVisExhaust with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionInfVisExhaustID = start;
-            PotionInfectiousVisExhaust.instance = new PotionInfectiousVisExhaust(potionInfVisExhaustID, true, 6706551);
-            PotionInfectiousVisExhaust.init();
-            Thaumcraft.log.info("Initializing PotionInfectiousVisExhaust with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionInfVisExhaustID = start;
+//            PotionInfectiousVisExhaust.instance = new PotionInfectiousVisExhaust(potionInfVisExhaustID, true, 6706551);
+//            PotionInfectiousVisExhaust.init();
+//            Thaumcraft.log.info("Initializing PotionInfectiousVisExhaust with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionUnHungerID = start;
-            PotionUnnaturalHunger.instance = new PotionUnnaturalHunger(potionUnHungerID, true, 4482611);
-            PotionUnnaturalHunger.init();
-            Thaumcraft.log.info("Initializing PotionUnnaturalHunger with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionUnHungerID = start;
+//            PotionUnnaturalHunger.instance = new PotionUnnaturalHunger(potionUnHungerID, true, 4482611);
+//            PotionUnnaturalHunger.init();
+//            Thaumcraft.log.info("Initializing PotionUnnaturalHunger with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionWarpWardID = start;
-            PotionWarpWard.instance = new PotionWarpWard(potionWarpWardID, false, 14742263);
-            PotionWarpWard.init();
-            Thaumcraft.log.info("Initializing PotionWarpWard with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionWarpWardID = start;
+//            PotionWarpWard.instance = new PotionWarpWard(potionWarpWardID, false, 14742263);
+//            PotionWarpWard.init();
+//            Thaumcraft.log.info("Initializing PotionWarpWard with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionDeathGazeID = start;
-            PotionDeathGaze.instance = new PotionDeathGaze(potionDeathGazeID, true, 6702131);
-            PotionDeathGaze.init();
-            Thaumcraft.log.info("Initializing PotionDeathGaze with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionDeathGazeID = start;
+//            PotionDeathGaze.instance = new PotionDeathGaze(potionDeathGazeID, true, 6702131);
+//            PotionDeathGaze.init();
+//            Thaumcraft.log.info("Initializing PotionDeathGaze with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionBlurredID = start;
-            PotionBlurredVision.instance = new PotionBlurredVision(potionBlurredID, true, 8421504);
-            PotionBlurredVision.init();
-            Thaumcraft.log.info("Initializing PotionBlurredVision with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionBlurredID = start;
+//            PotionBlurredVision.instance = new PotionBlurredVision(potionBlurredID, true, 8421504);
+//            PotionBlurredVision.init();
+//            Thaumcraft.log.info("Initializing PotionBlurredVision with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionSunScornedID = start;
-            PotionSunScorned.instance = new PotionSunScorned(potionSunScornedID, true, 16308330);
-            PotionSunScorned.init();
-            Thaumcraft.log.info("Initializing PotionSunScorned with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionSunScornedID = start;
+//            PotionSunScorned.instance = new PotionSunScorned(potionSunScornedID, true, 16308330);
+//            PotionSunScorned.init();
+//            Thaumcraft.log.info("Initializing PotionSunScorned with id {}", start);
+//        }
 
-        start = getNextPotionId(start);
-        if (start >= 0) {
-            potionThaumarhiaID = start;
-            PotionThaumarhia.instance = new PotionThaumarhia(potionThaumarhiaID, true, 6702199);
-            PotionThaumarhia.init();
-            Thaumcraft.log.info("Initializing PotionThaumarhia with id {}", start);
-        }
+//        start = getNextPotionId(start);
+//        if (start >= 0) {
+//            potionThaumarhiaID = start;
+//            PotionThaumarhia.instance = new PotionThaumarhia(potionThaumarhiaID, true, 6702199);
+//            PotionThaumarhia.init();
+//            Thaumcraft.log.info("Initializing PotionThaumarhia with id {}", start);
+//        }
 
     }
 

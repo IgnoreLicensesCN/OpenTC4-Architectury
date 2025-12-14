@@ -2,6 +2,8 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
@@ -15,6 +17,7 @@ import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.Random;
 
@@ -39,7 +42,7 @@ public class BlockFluidPure extends BlockFluidClassic {
    }
 
    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-      if (Platform.getEnvironment() != Env.CLIENT && this.isSourceBlock(world, x, y, z) && entity instanceof Player && !((Player)entity).isPotionActive(Config.potionWarpWardID)) {
+      if (Platform.getEnvironment() != Env.CLIENT && this.isSourceBlock(world, x, y, z) && entity instanceof Player && !((Player)entity).hasEffect(ThaumcraftEffects.WARP_WARD)) {
          int warp = Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(entity.getCommandSenderName());
          int div = 1;
          if (warp > 0) {
@@ -49,7 +52,7 @@ public class BlockFluidPure extends BlockFluidClassic {
             }
          }
 
-         ((Player)entity).addPotionEffect(new PotionEffect(Config.potionWarpWardID, Math.min(32000, 200000 / div), 0, true));
+         ((Player)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.WARP_WARD, Math.min(32000, 200000 / div), 0, true));
          world.setBlockToAir(x, y, z);
       }
 

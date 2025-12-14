@@ -17,7 +17,7 @@ public class BaubleUtils {
      * iterate through every bauble itemstack of a player
      * @param player the victim
      * @param operation what will be done for every itemstack,return true inside to break the loop
-     * @return whether the loop is broken by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, Item)} returning true.
+     * @return whether the loop is broken by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, Object)} returning true.
      */
     public static boolean forEachBauble(Player player,BaubleConsumer<Item> operation) {
 
@@ -26,14 +26,14 @@ public class BaubleUtils {
 
     /**
      * iterate through every bauble itemstack of a player,
-     * only item class meets {@code expectedItemType} will be accepted by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, Item)}
+     * only item class meets {@code expectedItemType} will be accepted by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, T)}
      * @param player the victim
      * @param expectedItemType class to judge item type,judge with it's method {@link Class#isAssignableFrom(Class)}.
      *                         e.g. expectedItemType.isAssignableFrom(itemstack.getItem().getClass())
      * @param operation what will be done for every itemstack,return true inside to break the loop
-     * @return whether the loop is broken by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, Item)} returning true.
+     * @return whether the loop is broken by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, T)} returning true.
      */
-    public static <T extends Item> boolean forEachBauble(Player player,Class<T> expectedItemType, BaubleConsumer<T> operation) {
+    public static <T> boolean forEachBauble(Player player,Class<T> expectedItemType, BaubleConsumer<T> operation) {
 
         return platformUtils.forEachBauble(player,expectedItemType, operation);
     }
@@ -49,7 +49,7 @@ public class BaubleUtils {
     /**
      * see {@link BaubleUtils#forEachBauble(Player, Class, BaubleConsumer)},but it checks specific bauble type
      */
-    public static <T extends Item> boolean forEachBaubleWithBaubleType(String baubleType,Player player,Class<T> expectedItemType, BaubleConsumer<T> operation) {
+    public static <T> boolean forEachBaubleWithBaubleType(String baubleType,Player player,Class<T> expectedItemType, BaubleConsumer<T> operation) {
         return platformUtils.forEachBaubleWithType(baubleType, player,expectedItemType, operation);
     }
     public static String[] listBaubleTypes(LivingEntity livingEntity){

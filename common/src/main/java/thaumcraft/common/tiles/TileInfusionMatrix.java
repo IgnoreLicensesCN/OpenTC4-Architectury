@@ -39,6 +39,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.container.InventoryFake;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
@@ -548,10 +549,9 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
         if (targets != null && !targets.isEmpty()) {
             for (EntityLivingBase target : targets) {
                 if (this.level().rand.nextBoolean()) {
-                    target.addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 120, 0, false));
+                    target.addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 120, 0, false));
                 } else {
-                    PotionEffect pe = new PotionEffect(Config.potionVisExhaustID, 2400, 0, true);
-                    pe.getCurativeItems().clear();
+                    PotionEffect pe = new PotionEffect(ThaumcraftEffects.VIS_EXHAUST, 2400, 0, true);
                     target.addPotionEffect(pe);
                 }
 

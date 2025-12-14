@@ -4,11 +4,14 @@ import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.StatCollector;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,6 +54,12 @@ import thaumcraft.common.items.equipment.ItemBowBone;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.WarpEvents;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
+import thaumcraft.common.lib.effects.UnnaturalHungerEffect;
+import thaumcraft.common.lib.effects.effectshaderhandlers.BlurredVisionShaderHandler;
+import thaumcraft.common.lib.effects.effectshaderhandlers.DeathGazeShaderHandler;
+import thaumcraft.common.lib.effects.effectshaderhandlers.SunScornedShaderHandler;
+import thaumcraft.common.lib.effects.effectshaderhandlers.UnnaturalHungerShaderHandler;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
@@ -72,7 +81,6 @@ import static thaumcraft.api.expands.warp.WarpEventManager.getWarpEventDelayForP
 public class EventHandlerEntity {
    public static HashMap<String,Float> prevStep = new HashMap<>();
    public static HashMap<String,ArrayList<WeakReference<Entity>>> linkedEntities = new HashMap<>();
-   public static Set<Entity> championMobs = (Set<Entity>)(Object) new MapMaker().weakKeys().weakValues().concurrencyLevel(2).makeMap().keySet();
 
    public static File getThaumcraftPlayersDirectory(MinecraftServer server) {
       File saveRootDir = server.getServerDirectory();
@@ -134,6 +142,16 @@ public class EventHandlerEntity {
                     getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getName().getString()),
                     getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getName().getString()));
          });
+
+         ClientTickEvent.CLIENT_POST.register(mc -> {
+            var player = mc.player;
+            if (player == null){return;}
+            DeathGazeShaderHandler.INSTANCE.tick(player);
+            BlurredVisionShaderHandler.INSTANCE.tick(player);
+            SunScornedShaderHandler.INSTANCE.tick(player);
+            UnnaturalHungerShaderHandler.INSTANCE.tick(player);
+         });
+
          TickEvent.PLAYER_PRE.register(player -> {
             var world = player.level();
             var playerName = player.getName().getString();
@@ -160,10 +178,12 @@ public class EventHandlerEntity {
                if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(serverPlayer) == 0) {
                   WarpEvents.checkWarpEvent(serverPlayer);
                }
-
-               if (player.tickCount % 10 == 0 && player.hasEffect(Config.potionDeathGaze)) {
-                  WarpEvents.checkDeathGaze(serverPlayer);
-               }
+               //migrated to DeathGazeEffect#applyEffectTick
+//               if (player.tickCount % 10 == 0 && player.hasEffect(
+//                       Config.potionDeathGaze
+//               )) {
+//                  WarpEvents.checkDeathGaze(serverPlayer);
+//               }
 
                if (serverPlayer.tickCount % 40 == 0) {
                   int a = 0;
@@ -481,7 +501,7 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void livingTick(LivingDeathEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(Config.potionTaintPoisonID)) {
+      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.FLUX_TAINT)) {
          Entity entity = null;
          if (event.entityLiving instanceof EntityCreeper) {
             entity = new EntityTaintCreeper(event.entityLiving.level());
@@ -608,32 +628,32 @@ public class EventHandlerEntity {
 
    }
 
-   @SubscribeEvent
-   public void finishedUsingItem(PlayerUseItemEvent.Finish event) {
-      if (Platform.getEnvironment() != Env.CLIENT && event.Player.isPotionActive(Config.potionUnHungerID)) {
-         if (!event.item.isItemEqual(new ItemStack(Items.rotten_flesh))
-                 && !event.item.isItemEqual(new ItemStack(ConfigItems.itemZombieBrain))
-         ) {
-            if (event.item.getItem() instanceof ItemFood) {
-               event.Player.displayClientMessage(Component.literal("§4§o" + StatCollector.translateToLocal("warp.text.hunger.1")));
-            }
-         } else {
-            MobEffectInstance pe = event.Player.getActiveMobEffectInstance(Potion.potionTypes[Config.potionUnHungerID]);
-            int amp = pe.getAmplifier() - 1;
-            int duration = pe.getDuration() - 600;
-            event.Player.removeMobEffectInstance(Config.potionUnHungerID);
-            if (duration > 0 && amp >= 0) {
-               pe = new MobEffectInstance(Config.potionUnHungerID, duration, amp, true);
-               pe.getCurativeItems().clear();
-               pe.addCurativeItem(new ItemStack(Items.rotten_flesh));
-               event.Player.addEffect(pe);
-            }
-
-            event.Player.displayClientMessage(Component.literal("§2§o" + StatCollector.translateToLocal("warp.text.hunger.2")));
-         }
-      }
-
-   }
+//   @SubscribeEvent
+//   public void finishedUsingItem(PlayerUseItemEvent.Finish event) {
+//      if (Platform.getEnvironment() != Env.CLIENT && event.Player.isPotionActive(ThaumcraftEffects.UNNATURAL_HUNGER)) {
+//         if (!event.item.isItemEqual(new ItemStack(Items.rotten_flesh))
+//                 && !event.item.isItemEqual(new ItemStack(ConfigItems.itemZombieBrain))
+//         ) {
+//            if (event.item.getItem() instanceof ItemFood) {
+//               event.Player.displayClientMessage(Component.literal("§4§o" + StatCollector.translateToLocal("warp.text.hunger.1")));
+//            }
+//         } else {
+//            MobEffectInstance pe = event.Player.getActiveMobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER);
+//            int amp = pe.getAmplifier() - 1;
+//            int duration = pe.getDuration() - 600;
+//            event.Player.removeMobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER);
+//            if (duration > 0 && amp >= 0) {
+//               pe = new MobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER, duration, amp, true,true);
+//               pe.getCurativeItems().clear();
+//               pe.addCurativeItem(new ItemStack(Items.rotten_flesh));
+//               event.Player.addEffect(pe);
+//            }
+//
+//            event.Player.displayClientMessage(Component.literal("§2§o" + StatCollector.translateToLocal("warp.text.hunger.2")));
+//         }
+//      }
+//
+//   }
 
    @SubscribeEvent
    public void itemExpire(ItemExpireEvent event) {

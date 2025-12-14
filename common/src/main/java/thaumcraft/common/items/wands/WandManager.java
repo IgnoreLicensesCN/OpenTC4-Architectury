@@ -1,27 +1,18 @@
 package thaumcraft.common.items.wands;
 
-import baubles.api.BaublesApi;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.Direction;
-import net.minecraftforge.oredict.OreDictionary;
-import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitect;
-import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -31,69 +22,26 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandTriggerManager;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.WandFocusEngine;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import static baubles.api.expanded.BaubleExpandedSlots.slotLimit;
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 public class WandManager implements IWandTriggerManager {
     static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
     static Map<Entity, Long> cooldownClient = new WeakHashMap<>();
 
-    public static float getTotalVisDiscount(@NotNull LivingEntity user, Aspect aspect) {
-        
-//        now we dont have gadomancy in 1.20.1
-//        int cheatGadomancy = 0;//Gadomancy used tricks to modify java bytecode.deleting this will cause error with no stacktrace point to it.
-        final AtomicInteger total = new AtomicInteger(0);
-        if (user == null) {
-            return 0.0F;
-        } else {
-            BaubleConsumer<IVisDiscountGear> visDiscountGearBaubleConsumer = (slot, stack, visDiscountGear) -> {
-                total.addAndGet(visDiscountGear.getVisDiscount(stack, user, aspect));
-                return false;
-            };
-            forEachBauble(user, IVisDiscountGear.class, visDiscountGearBaubleConsumer);
-
-            for (int a = 0; a < 4; ++a) {
-                ItemStack stack = player.inventory.getStackInSlot(a);
-                if (player.inventory.armorItemInSlot(a) != null) {
-                    Item item = player.inventory.armorItemInSlot(a).getItem();
-                    if (item instanceof IVisDiscountGear) {
-                        visDiscountGearBaubleConsumer.accept(a, stack, ((IVisDiscountGear) item));
-                    }
-                }
-            }
-
-            if (user.isPotionActive(Config.potionVisExhaustID) || user.isPotionActive(Config.potionInfVisExhaustID)) {
-                int level1 = 0;
-                int level2 = 0;
-                if (user.isPotionActive(Config.potionVisExhaustID)) {
-                    level1 = user.getActivePotionEffect(Potion.potionTypes[Config.potionVisExhaustID]).getAmplifier();
-                }
-
-                if (user.isPotionActive(Config.potionInfVisExhaustID)) {
-                    level2 = user.getActivePotionEffect(Potion.potionTypes[Config.potionInfVisExhaustID]).getAmplifier();
-                }
-
-                total.addAndGet((Math.max(level1, level2) + 1) * 10);
-            }
-
-            return (float) total.get() / 100.0F;
-        }
-    }
 
     public static boolean consumeVisFromInventory(Player player, AspectList cost){
         return consumeVisFromInventory(player, cost, ignore -> true);

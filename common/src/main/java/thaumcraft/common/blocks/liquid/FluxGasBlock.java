@@ -16,6 +16,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GAS_FLOWING;
 
@@ -56,11 +57,10 @@ public class FluxGasBlock extends FiniteLiquidBlock {
       // TODO: 替换为实际 Vis Exhaust / Confusion MobEffect
       MobEffectInstance effect;
       if (level.random.nextBoolean()) {
-         effect = new MobEffectInstance(Config.potionVisExhaustID, 1200, lvl / 3, true, false);
+         effect = new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 1200, lvl / 3, true, false);
       } else {
-         effect = new MobEffectInstance(MobEffects.CONFUSION, 80 + lvl * 20, 0, false, false);
+         effect = new MobEffectInstance(MobEffects.CONFUSION, 80 + lvl * 20, 0, false, false,false);
       }
-      effect.getCurativeItems().clear();
       living.addEffect(effect);
 
       // LEVEL 减少 / 消失

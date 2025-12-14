@@ -25,6 +25,7 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityTaintSpore;
 import thaumcraft.common.lib.CustomSoundType;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -247,9 +248,9 @@ public class BlockTaintFibres extends Block {
       world.getBlockMetadata(i, j, k);
       if (Platform.getEnvironment() != Env.CLIENT && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()) {
          if (entity instanceof Player && world.getRandom().nextInt(1000) == 0) {
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 80, 0, false));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 80, 0, false));
          } else if (!(entity instanceof Player) && world.getRandom().nextInt(500) == 0) {
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 160, 0, false));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 160, 0, false));
          }
       }
 

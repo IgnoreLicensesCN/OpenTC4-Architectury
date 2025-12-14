@@ -1,5 +1,6 @@
 package thaumcraft.api.expands.warp.consts;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +10,7 @@ import thaumcraft.api.expands.warp.PickWarpEventContext;
 import thaumcraft.api.expands.warp.WarpEvent;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
@@ -33,11 +35,11 @@ public class WarpEvents {
             player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.11")),true);
         }
     };
+
     public static final WarpEvent VIS_EXHAUST = new WarpEvent(4,16) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionVisExhaust, 5000, Math.min(3, warpContext.warp / 15), true);
-//            pe.getCurativeItems().clear();
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 5000, Math.min(3, warpContext.warp / 15), true,true);
 
             try {
                 player.addEffect(pe);
@@ -51,8 +53,8 @@ public class WarpEvents {
     public static final WarpEvent THAUMARHIA = new WarpEvent(4,20) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionThaumarhia, Math.min(32000, 10 * warpContext.warp), 0, true);
-//            pe.getCurativeItems().clear();
+            t milk
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.THAUMARHIA, Math.min(32000, 10 * warpContext.warp), 0, true,true);
 
             try {
                 player.addEffect(pe);
@@ -67,11 +69,7 @@ public class WarpEvents {
     public static final WarpEvent STRANGE_HUNGER = new WarpEvent(4,24) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            //TODO:Add curative item for potionUnHunger
-            MobEffectInstance pe = new MobEffectInstance(Config.potionUnHunger, 5000, Math.min(3, warpContext.warp / 15),true, true);
-//            pe.getCurativeItems().clear();
-//            pe.addCurativeItem(new ItemStack(ThaumcraftItems.rotten_flesh));
-//            pe.addCurativeItem(new ItemStack(ConfigItems.itemZombieBrain));
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER, 5000, Math.min(3, warpContext.warp / 15),true, true);
 
             try {
                 player.addEffect(pe);
@@ -99,7 +97,7 @@ public class WarpEvents {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             try {
-                player.addEffect(new MobEffectInstance(Config.potionBlurredID, Math.min(32000, 10 * warpContext.warp), 0,true, true));
+                player.addEffect(new MobEffectInstance(ThaumcraftEffects.BLURRED_VISION, Math.min(32000, 10 * warpContext.warp), 0,true, true));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -108,8 +106,8 @@ public class WarpEvents {
     public static final WarpEvent SUN_SCORNED = new WarpEvent(4,40) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionSunScorned, 5000, Math.min(3, warpContext.warp / 15),true, true);
-//            pe.getCurativeItems().clear();
+            t milk
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.SUN_SCORNED, 5000, Math.min(3, warpContext.warp / 15),true, true);
 
             try {
                 player.addEffect(pe);
@@ -136,8 +134,8 @@ public class WarpEvents {
     public static final WarpEvent INF_VIS_EXHAUST = new WarpEvent(4,48) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionInfVisExhaustID, 6000, Math.min(3, warpContext.warp / 15),true, false);
-//            pe.getCurativeItems().clear();
+            t milk
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.INFECTIOUS_VIS_EXHAUST, 6000, Math.min(3, warpContext.warp / 15),true, false);
 
             try {
                 player.addEffect(pe);
@@ -158,15 +156,14 @@ public class WarpEvents {
     public static final WarpEvent DEATH_GAZE = new WarpEvent(4,56) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionDeathGaze, 6000, Math.min(3, warpContext.warp / 15),true, true);
-            pe.getCurativeItems().clear();
+            t milk
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.DEATH_GAZE, 6000, Math.min(3, warpContext.warp / 15),true, true);
 
             try {
                 player.addEffect(pe);
             } catch (Exception e) {
-                e.printStackTrace();
+                OpenTC4.LOGGER.error(e);
             }
-
             player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.4")),true);
         }
     };
@@ -216,7 +213,8 @@ public class WarpEvents {
     public static final WarpEvent STRANGE_HUNGER_2 = new WarpEvent(4,80) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            MobEffectInstance pe = new MobEffectInstance(Config.potionUnHunger, 6000, Math.min(3, warpContext.warp / 15),true , true);
+            t milk
+            MobEffectInstance pe = new MobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER, 6000, Math.min(3, warpContext.warp / 15),true , true);
 //            pe.getCurativeItems().clear();
 //            pe.addCurativeItem(new ItemStack(ThaumcraftItems.rotten_flesh));
 //            pe.addCurativeItem(new ItemStack(ConfigItems.itemZombieBrain));

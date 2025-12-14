@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.EnumAction;
@@ -74,7 +75,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairable, IRun
       return 0;
    }
 
-   public int getVisDiscount(ItemStack stack, Player player, Aspect aspect) {
+   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
       return 1;
    }
 

@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityThaumicSlime;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import static thaumcraft.common.ThaumcraftSounds.GORE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.FLUX_GAS;
@@ -66,11 +67,10 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         if (entity instanceof LivingEntity living) {
             MobEffectInstance eff =
                     new MobEffectInstance(
-                            Config.potionVisExhaustID,//TODO
+                            ThaumcraftEffects.VIS_EXHAUST,
                             600,
                             lvl / 3,
                             true, false);
-            eff.getCurativeItems().clear();//TODO
             living.addEffect(eff);
         }
     }

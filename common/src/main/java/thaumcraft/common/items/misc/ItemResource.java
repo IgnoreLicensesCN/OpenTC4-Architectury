@@ -121,8 +121,8 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       if (Platform.getEnvironment() != Env.CLIENT
               && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
               && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()
-              && !((EntityLivingBase)entity).isPotionActive(Config.potionTaintPoisonID) && world.getRandom().nextInt(4321) <= stack.stackSize) {
-         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Config.potionTaintPoisonID, 120, 0, false));
+              && !((EntityLivingBase)entity).isPotionActive(ThaumcraftEffects.FLUX_TAINT) && world.getRandom().nextInt(4321) <= stack.stackSize) {
+         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 120, 0, false));
          if (entity instanceof Player) {
             String s = StatCollector.translateToLocal("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
             ((Player)entity).addChatMessage(new ChatComponentTranslation(s));

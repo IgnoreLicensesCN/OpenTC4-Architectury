@@ -3,7 +3,7 @@ package com.linearity.opentc4.simpleutils.bauble;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public interface BaubleConsumer<T extends Item> {
+public interface BaubleConsumer<T> {
     /**
      * @param stack stack in slot,skip if null.
      * @param item item of the stack

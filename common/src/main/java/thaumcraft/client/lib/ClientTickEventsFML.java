@@ -25,13 +25,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.ItemFocusBasic;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
@@ -44,6 +42,8 @@ import thaumcraft.common.items.wands.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
+import thaumcraft.common.lib.effects.DeathGazeEffect;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.TileInfusionMatrix;
@@ -67,12 +67,15 @@ public class ClientTickEventsFML {
    HashMap<Integer,AspectList> oldvals = new HashMap<>();
    long nextsync = 0L;
    boolean startThread = false;
-   public static int warpVignette = 0;
    private static final int SHADER_DESAT = 0;
    private static final int SHADER_BLUR = 1;
    private static final int SHADER_HUNGER = 2;
    private static final int SHADER_SUNSCORNED = 3;
-   ResourceLocation[] shader_resources = new ResourceLocation[]{new ResourceLocation("shaders/post/desaturatetc.json"), new ResourceLocation("shaders/post/blurtc.json"), new ResourceLocation("shaders/post/hunger.json"), new ResourceLocation("shaders/post/sunscorned.json")};
+   ResourceLocation[] shader_resources = new ResourceLocation[]{
+           new ResourceLocation("shaders/post/desaturatetc.json"),//death gaze
+           new ResourceLocation("shaders/post/blurtc.json"),
+           new ResourceLocation("shaders/post/hunger.json"),
+           new ResourceLocation("shaders/post/sunscorned.json")};
    ItemStack lastItem = null;
    int lastCount = 0;
 
@@ -98,8 +101,8 @@ public class ClientTickEventsFML {
             try {
                if (event.player.getEntityId() == mc.thePlayer.getEntityId()) {
                   this.checkShaders(event, mc);
-                  if (warpVignette > 0) {
-                     --warpVignette;
+                  if (DeathGazeEffect.warpVignette > 0) {
+                     --DeathGazeEffect.warpVignette;
                      RenderEventHandler.targetBrightness = 0.0F;
                   } else {
                      RenderEventHandler.targetBrightness = 1.0F;
@@ -126,50 +129,50 @@ public class ClientTickEventsFML {
    }
 
    private void checkShaders(TickEvent.PlayerTickEvent event, Minecraft mc) {
-      if (event.player.isPotionActive(Config.potionDeathGazeID)) {
-         warpVignette = 10;
-         if (!RenderEventHandler.shaderGroups.containsKey(0)) {
-            try {
-               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[0]), 0);
-            } catch (JsonException ignored) {
-            }
-         }
-      } else if (RenderEventHandler.shaderGroups.containsKey(0)) {
-         this.deactivateShader(0);
-      }
+//      if (event.player.isPotionActive(Config.potionDeathGazeID)) {
+//         DeathGazeEffect.warpVignette = 10;
+//         if (!RenderEventHandler.shaderGroups.containsKey(0)) {
+//            try {
+//               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[0]), 0);
+//            } catch (JsonException ignored) {
+//            }
+//         }
+//      } else if (RenderEventHandler.shaderGroups.containsKey(0)) {
+//         this.deactivateShader(0);
+//      }
 
-      if (event.player.isPotionActive(Config.potionBlurredID)) {
-         if (!RenderEventHandler.shaderGroups.containsKey(1)) {
-            try {
-               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[1]), 1);
-            } catch (JsonException ignored) {
-            }
-         }
-      } else if (RenderEventHandler.shaderGroups.containsKey(1)) {
-         this.deactivateShader(1);
-      }
+//      if (event.player.isPotionActive(Config.potionBlurredID)) {
+//         if (!RenderEventHandler.shaderGroups.containsKey(1)) {
+//            try {
+//               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[1]), 1);
+//            } catch (JsonException ignored) {
+//            }
+//         }
+//      } else if (RenderEventHandler.shaderGroups.containsKey(1)) {
+//         this.deactivateShader(1);
+//      }
 
-      if (event.player.isPotionActive(Config.potionUnHungerID)) {
-         if (!RenderEventHandler.shaderGroups.containsKey(2)) {
-            try {
-               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[2]), 2);
-            } catch (JsonException ignored) {
-            }
-         }
-      } else if (RenderEventHandler.shaderGroups.containsKey(2)) {
-         this.deactivateShader(2);
-      }
+//      if (event.player.isPotionActive(ThaumcraftEffects.UNNATURAL_HUNGER)) {
+//         if (!RenderEventHandler.shaderGroups.containsKey(2)) {
+//            try {
+//               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[2]), 2);
+//            } catch (JsonException ignored) {
+//            }
+//         }
+//      } else if (RenderEventHandler.shaderGroups.containsKey(2)) {
+//         this.deactivateShader(2);
+//      }
 
-      if (event.player.isPotionActive(Config.potionSunScornedID)) {
-         if (!RenderEventHandler.shaderGroups.containsKey(3)) {
-            try {
-               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[3]), 3);
-            } catch (JsonException ignored) {
-            }
-         }
-      } else if (RenderEventHandler.shaderGroups.containsKey(3)) {
-         this.deactivateShader(3);
-      }
+//      if (event.player.isPotionActive(Config.potionSunScornedID)) {
+//         if (!RenderEventHandler.shaderGroups.containsKey(3)) {
+//            try {
+//               this.setShader(new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), this.shader_resources[3]), 3);
+//            } catch (JsonException ignored) {
+//            }
+//         }
+//      } else if (RenderEventHandler.shaderGroups.containsKey(3)) {
+//         this.deactivateShader(3);
+//      }
 
    }
 

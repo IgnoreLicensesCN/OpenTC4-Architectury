@@ -196,7 +196,7 @@ public class EventHandlerRunic {
                this.upgradeCooldown.put(key, time + 20000L);
                synchronized(player) {
                   try {
-                     player.addEffect(new MobEffectInstance(Potion.regeneration.id, 240, ((Integer[])this.runicInfo.get(player.getEntityId()))[3]));
+                     player.addEffect(new MobEffectInstance(Potion.regeneration.id, 240, ((Integer[])this.runicInfo.get(player.getEntityId()))[3]),false,true);
                   } catch (Exception ignored) {
                   }
                }
