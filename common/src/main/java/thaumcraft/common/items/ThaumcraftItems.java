@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
+import thaumcraft.common.items.consumable.ZombieBrainItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.relics.ThaumometerItem;
@@ -81,6 +82,7 @@ public class ThaumcraftItems {
     public static final Item THAUMIUM_WAND_CAP_INERT = Registry.SUPPLIER_THAUMIUM_WAND_CAP_INERT.get();
     public static final Item VOID_WAND_CAP_INERT = Registry.SUPPLIER_VOID_WAND_CAP_INERT.get();
 
+    public static final ZombieBrainItem ZOMBIE_BRAIN = Registry.SUPPLIER_ZOMBIE_BRAIN.get();
 
 
     public static class Registry {
@@ -149,6 +151,8 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<QuartzStaffRodItem> SUPPLIER_QUARTZ_STAFF_ROD = ITEMS.register("staff_rod_quartz", QuartzStaffRodItem::new);
         public static final RegistrySupplier<ReedStaffRodItem> SUPPLIER_REED_STAFF_ROD = ITEMS.register("staff_rod_reed", ReedStaffRodItem::new);
         public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register("staff_rod_silverwood", SilverWoodStaffRodItem::new);
+
+        public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register("zombie_brain", ZombieBrainItem::new);
     }
     public static class ItemTags {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(
