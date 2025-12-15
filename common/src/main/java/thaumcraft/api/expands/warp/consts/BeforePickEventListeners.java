@@ -1,6 +1,7 @@
 package thaumcraft.api.expands.warp.consts;
 
 import com.linearity.opentc4.OpenTC4;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -13,11 +14,10 @@ public class BeforePickEventListeners {
     public static final PickWarpEventListenerBefore THAUMIC_FORTRESS_MASK_DISCOUNT = new PickWarpEventListenerBefore(0) {
         @Override
         public void beforePickEvent(PickWarpEventContext e, Player player) {
-            ItemStack helm = player.inventory.armorInventory[3];
-            if (helm != null
-                    && helm.getItem() instanceof ItemFortressArmor
-                    && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask")
-                    && helm.stackTagCompound.getInteger("mask") == 0) {
+            ItemStack helm = player.getItemBySlot(EquipmentSlot.HEAD);
+            //TODO:ItemFortressArmor Mask interfaces. "mask" with integer makes chaos.
+            if (helm.getItem() instanceof ItemFortressArmor fortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey(
+                    "mask") && helm.stackTagCompound.getInteger("mask") == 0) {
 
                 e.warp -=  2 + player.getRandom().nextInt(4);
             }

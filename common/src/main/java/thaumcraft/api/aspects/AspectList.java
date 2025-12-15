@@ -421,5 +421,14 @@ public class AspectList implements Serializable {
 	public void replaceAll(BiFunction<Aspect,Integer,Integer> biFunction){
 		aspects.replaceAll(biFunction);
 	}
-	
+
+	public static AspectList of(Aspect... aspects){
+		AspectList out = new AspectList();
+		for (Aspect aspect : aspects){
+			if (aspect != null){
+				out.add(aspect,1);
+			}
+		}
+		return out;
+	}
 }

@@ -1,5 +1,6 @@
 package truetyper;
 
+import com.linearity.opentc4.OpenTC4;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -364,7 +365,7 @@ public class TrueTypeFont {
          GLU.gluBuild2DMipmaps(3553, internalFormat, width, height, format, 5121, byteBuffer);
          return textureId.get(0);
       } catch (Exception e) {
-         e.printStackTrace();
+         OpenTC4.LOGGER.error(e);
          System.exit(-1);
          return -1;
       }

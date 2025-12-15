@@ -10,8 +10,7 @@ import thaumcraft.api.expands.warp.PickWarpEventContext;
 import thaumcraft.api.expands.warp.WarpEvent;
 import thaumcraft.api.expands.warp.listeners.WarpEventListenerAfter;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
+import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 
 
 import static thaumcraft.common.lib.WarpEvents.grantResearch;
@@ -24,8 +23,8 @@ public class AfterWarpEventListeners {
                     && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "BATHSALTS")
                     && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "@BATHSALTS")) {
                 player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.8")),false);
-                if (player instanceof ServerPlayer) {
-                    PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("@BATHSALTS"), (ServerPlayer) player);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    new PacketResearchCompleteS2C("@BATHSALTS").sendTo(serverPlayer);
                 }
                 Thaumcraft.researchManager.completeResearch(player, "@BATHSALTS");
             }
@@ -33,8 +32,8 @@ public class AfterWarpEventListeners {
             if (warpContext.actualWarp > 25
                     && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "ELDRITCHMINOR")) {
                 grantResearch(player, 10);
-                if (player instanceof ServerPlayer) {
-                    PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMINOR"), (ServerPlayer) player);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    new PacketResearchCompleteS2C("ELDRITCHMINOR").sendTo(serverPlayer);
                 }
                 Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMINOR");
             }
@@ -42,8 +41,8 @@ public class AfterWarpEventListeners {
             if (warpContext.actualWarp > 50
                     && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "ELDRITCHMAJOR")) {
                 grantResearch(player, 20);
-                if (player instanceof ServerPlayer) {
-                    PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMAJOR"), (ServerPlayer) player);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    new PacketResearchCompleteS2C("ELDRITCHMAJOR").sendTo(serverPlayer);
                 }
                 Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMAJOR");
             }
