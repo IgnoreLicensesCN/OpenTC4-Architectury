@@ -138,8 +138,6 @@ public class BonusTagForItemListeners {
     };
 
     //yes yes you can put your own enchantment XD
-    //not modernized yet,most still in 1.7.10 enchantments.
-    //TODO:More vanilla enchantments.
     public static final Map<Enchantment, AspectList> ENCHANTMENT_ASPECT_MAP = new ConcurrentHashMap<>();
 
     static {
