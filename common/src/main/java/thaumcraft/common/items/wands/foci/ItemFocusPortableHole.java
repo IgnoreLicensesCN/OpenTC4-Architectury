@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -19,7 +18,7 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.tiles.TileHole;
 
 public class ItemFocusPortableHole extends ItemFocusBasic {
@@ -118,7 +117,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
          AspectList c = this.getVisCost(itemstack);
 
          for(Aspect a : c.getAspects()) {
-            c.merge(a, c.getAmount(a) * distance);
+            c.mergeWithHighest(a, c.getAmount(a) * distance);
          }
 
          if (wand.consumeAllVis(itemstack, player, c, true, false)) {
@@ -154,6 +153,6 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList()).add(Aspect.ENTROPY, 10).add(Aspect.AIR, 10);
+      cost = (new AspectList()).addAll(Aspect.ENTROPY, 10).addAll(Aspect.AIR, 10);
    }
 }

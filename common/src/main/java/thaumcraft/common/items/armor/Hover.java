@@ -13,14 +13,12 @@ import net.minecraft.nbt.NBTTagShort;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.items.baubles.ItemGirdleHover;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketFlyToServer;
 import thaumcraft.common.lib.utils.Utils;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -177,9 +175,9 @@ public class Hover {
                 is.setTagInfo("charge", new NBTTagShort((short) 0));
                 --fuel;
                 if (fuel > 0) {
-                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList()).add(Aspect.ENERGY, fuel));
+                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList()).addAll(Aspect.ENERGY, fuel));
                 } else {
-                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList()).remove(Aspect.ENERGY));
+                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList()).reduceAndRemoveIfNegative(Aspect.ENERGY));
                 }
 
                 NBTTagCompound var4 = new NBTTagCompound();

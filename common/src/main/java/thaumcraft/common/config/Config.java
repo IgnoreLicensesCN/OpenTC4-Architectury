@@ -37,7 +37,6 @@ import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.equipment.ItemElementalAxe;
 import thaumcraft.common.lib.enchantment.EnchantmentHaste;
 import thaumcraft.common.lib.enchantment.EnchantmentRepair;
-import thaumcraft.common.lib.potions.*;
 import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -704,22 +703,22 @@ public class Config {
                                 switch (ore) {
                                     case "woodRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.TREE, 3).add(Aspect.TOOL, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.TREE, 3).addAll(Aspect.TOOL, 1));
                                         }
                                         break;
                                     case "itemRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.MOTION, 2).add(Aspect.TOOL, 2));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.MOTION, 2).addAll(Aspect.TOOL, 2));
                                         }
                                         break;
                                     case "ingotSteel":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.METAL, 3).add(Aspect.ORDER, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 3).addAll(Aspect.ORDER, 1));
                                         }
                                         break;
                                     case "crystalQuartz":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.CRYSTAL, 1).add(Aspect.ENERGY, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.CRYSTAL, 1).addAll(Aspect.ENERGY, 1));
                                         }
                                         break;
                                     case "woodLog":
@@ -750,22 +749,22 @@ public class Config {
                                 }
                             } else {
                                 for (ItemStack is : OreDictionary.getOres(ore)) {
-                                    ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.CRYSTAL, 2).add(Aspect.GREED, 2));
+                                    ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.CRYSTAL, 2).addAll(Aspect.GREED, 2));
                                 }
                             }
                         } else {
                             for (ItemStack is : OreDictionary.getOres(ore)) {
-                                ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.METAL, 2).add(Aspect.ENTROPY, 1).add(Aspect.TOOL, 1));
+                                ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 2).addAll(Aspect.ENTROPY, 1).addAll(Aspect.TOOL, 1));
                             }
                         }
                     } else {
                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.METAL, 3).add(Aspect.TOOL, 1));
+                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 3).addAll(Aspect.TOOL, 1));
                         }
                     }
                 } else {
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        ThaumcraftApi.registerObjectTag(is, (new AspectList()).add(Aspect.METAL, 2).add(Aspect.POISON, 2).add(Aspect.ENERGY, 2));
+                        ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 2).addAll(Aspect.POISON, 2).addAll(Aspect.ENERGY, 2));
                     }
                 }
             }

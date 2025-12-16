@@ -43,7 +43,7 @@ public class ItemWispEssence extends Item implements IEssentiaContainerItem {
    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
       for(Aspect tag : Aspect.aspects.values()) {
          ItemStack i = new ItemStack(this, 1, 0);
-         this.setAspects(i, (new AspectList()).add(tag, 2));
+         this.setAspects(i, (new AspectList()).addAll(tag, 2));
          par3List.add(i);
       }
 

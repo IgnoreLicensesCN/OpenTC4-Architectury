@@ -34,7 +34,6 @@ import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.container.InventoryFake;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
@@ -308,7 +307,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                             float essmod = recipe2.getEssentiaMod(this.recipeInput);
 
                             for (Aspect as : esscost.getAspects()) {
-                                esscost.add(as, (int) ((float) esscost.getAmount(as) * essmod));
+                                esscost.addAll(as, (int) ((float) esscost.getAmount(as) * essmod));
                             }
 
                             this.recipeEssentia = esscost;
@@ -513,7 +512,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
 
     private void addInstabilityAndRequiredAspect(Aspect[] recipeRequiredAspects) {
         Aspect asToAdd = recipeRequiredAspects[this.level().rand.nextInt(recipeRequiredAspects.length)];
-        this.recipeEssentia.add(asToAdd, 1);
+        this.recipeEssentia.addAll(asToAdd, 1);
         if (this.level().rand.nextInt(50 - this.recipeInstability * 2) == 0) {
             ++this.instability;
         }

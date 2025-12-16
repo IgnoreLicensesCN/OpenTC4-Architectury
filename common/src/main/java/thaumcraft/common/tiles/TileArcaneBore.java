@@ -1,7 +1,6 @@
 package thaumcraft.common.tiles;
 
 import com.linearity.opentc4.utils.StatCollector;
-import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -28,10 +27,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.TileThaumcraft;
@@ -39,12 +36,10 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
-import thaumcraft.api.wands.IWandable;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.WandInteractableBlock;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.equipment.ItemElementalPickaxe;
 import thaumcraft.common.items.wands.foci.FocusExcavationItem;
@@ -53,7 +48,6 @@ import thaumcraft.common.lib.FakeThaumcraftPlayer;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -218,7 +212,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, WandInt
                     var repairAspect = a.getKey();
                     var repairAmount = a.getValue();
                     if (this.currentRepairVis.getAmount(repairAspect) < repairAmount) {
-                        this.currentRepairVis.add(repairAspect, VisNetHandler.drainVis(this.level, this.getPos(), repairAspect, repairAmount));
+                        this.currentRepairVis.addAll(repairAspect, VisNetHandler.drainVis(this.level, this.getPos(), repairAspect, repairAmount));
                     }
                 }
             }
@@ -251,7 +245,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, WandInt
                 for (Map.Entry<Aspect,Integer> a : cost.getAspects().entrySet()) {
                     var repairCostAspect = a.getKey();
                     var repairCostAmount = a.getValue();
-                    this.repairCost.merge(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2) * level);
+                    this.repairCost.mergeWithHighest(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2) * level);
                 }
 
                 boolean doIt = true;

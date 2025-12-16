@@ -8,8 +8,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -17,7 +15,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityFireBat;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 public class ItemFocusHellbat extends ItemFocusBasic {
@@ -144,11 +142,11 @@ public class ItemFocusHellbat extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).add(Aspect.FIRE, 200).add(Aspect.ENTROPY, 100).add(Aspect.AIR, 100);
-      costBomb = (new AspectList()).add(Aspect.FIRE, 100).add(Aspect.ENTROPY, 200).add(Aspect.AIR, 100);
-      costDevil = (new AspectList()).add(Aspect.FIRE, 100).add(Aspect.ENTROPY, 100).add(Aspect.AIR, 100).add(Aspect.EARTH, 100);
-      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new AspectList()).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1));
-      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new AspectList()).add(Aspect.ARMOR, 1));
-      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new AspectList()).add(Aspect.HUNGER, 1).add(Aspect.LIFE, 1));
+      costBase = (new AspectList()).addAll(Aspect.FIRE, 200).addAll(Aspect.ENTROPY, 100).addAll(Aspect.AIR, 100);
+      costBomb = (new AspectList()).addAll(Aspect.FIRE, 100).addAll(Aspect.ENTROPY, 200).addAll(Aspect.AIR, 100);
+      costDevil = (new AspectList()).addAll(Aspect.FIRE, 100).addAll(Aspect.ENTROPY, 100).addAll(Aspect.AIR, 100).addAll(Aspect.EARTH, 100);
+      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new AspectList()).addAll(Aspect.ENERGY, 1).addAll(Aspect.TRAP, 1));
+      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new AspectList()).addAll(Aspect.ARMOR, 1));
+      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new AspectList()).addAll(Aspect.HUNGER, 1).addAll(Aspect.LIFE, 1));
    }
 }

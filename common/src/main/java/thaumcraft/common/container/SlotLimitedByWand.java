@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class SlotLimitedByWand extends Slot {
    int limit = 64;

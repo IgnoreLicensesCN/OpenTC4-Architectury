@@ -10,7 +10,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -769,21 +768,21 @@ public class ResearchManager {
             if (aspect != null) {
                 if (aspect.isPrimal()) {
                     if (merge) {
-                        out.merge(aspect, al.getAmount(aspect));
+                        out.mergeWithHighest(aspect, al.getAmount(aspect));
                     } else {
-                        out.add(aspect, al.getAmount(aspect));
+                        out.addAll(aspect, al.getAmount(aspect));
                     }
                 } else {
                     AspectList send = new AspectList();
-                    send.add(aspect.getComponents()[0], al.getAmount(aspect));
-                    send.add(aspect.getComponents()[1], al.getAmount(aspect));
+                    send.addAll(aspect.getComponents()[0], al.getAmount(aspect));
+                    send.addAll(aspect.getComponents()[1], al.getAmount(aspect));
                     send = reduceToPrimals(send, merge);
 
                     for (Aspect a : send.getAspectTypes()) {
                         if (merge) {
-                            out.merge(a, send.getAmount(a));
+                            out.mergeWithHighest(a, send.getAmount(a));
                         } else {
-                            out.add(a, send.getAmount(a));
+                            out.addAll(a, send.getAmount(a));
                         }
                     }
                 }

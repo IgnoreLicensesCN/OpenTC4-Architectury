@@ -19,7 +19,7 @@ import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.nodes.INode;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
 
                      for(Aspect aspect : as.getAspects()) {
                         if (node.getAspects().getAmount(aspect) > min) {
-                           wand.addVis(this.getStackInSlot(0), aspect, 1, true);
+                           wand.addCentiVis(this.getStackInSlot(0), aspect, 1, true);
                            node.takeFromContainer(aspect, 1);
                            this.somethingChanged = true;
                            this.draining = true;
@@ -216,11 +216,11 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList primals = ResearchManager.reduceToPrimals((new AspectList()).add(aspect, 1));
+                              AspectList primals = ResearchManager.reduceToPrimals((new AspectList()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
                                  if (primals.getAmount(aspect2) > 0 && node.getAspects().getAmount(aspect) > min) {
-                                    wand.addVis(this.getStackInSlot(0), aspect2, 1, true);
+                                    wand.addCentiVis(this.getStackInSlot(0), aspect2, 1, true);
                                     node.takeFromContainer(aspect, 1);
                                     this.somethingChanged = true;
                                     this.draining = true;
@@ -273,7 +273,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList primals = ResearchManager.reduceToPrimals((new AspectList()).add(aspect, 1));
+                              AspectList primals = ResearchManager.reduceToPrimals((new AspectList()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
                                  if (primals.getAmount(aspect2) > 0 && node.getAspects().getAmount(aspect) > min) {
@@ -357,7 +357,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
          AspectList out = new AspectList();
 
          for(Aspect a : al.getAspectsSorted()) {
-            out.add(a, al.getAmount(a) / 100);
+            out.addAll(a, al.getAmount(a) / 100);
          }
 
          return out;
@@ -367,7 +367,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
          AspectList out = new AspectList();
 
          for(Aspect a : al.getAspectsSorted()) {
-            out.add(a, al.getAmount(a) / 100);
+            out.addAll(a, al.getAmount(a) / 100);
          }
 
          return out;

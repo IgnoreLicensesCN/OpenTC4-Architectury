@@ -7,14 +7,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityFrostShard;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class ItemFocusFrost extends ItemFocusBasic {
    private static final AspectList costBase;
@@ -100,10 +99,10 @@ public class ItemFocusFrost extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).add(Aspect.WATER, 5).add(Aspect.FIRE, 2).add(Aspect.ENTROPY, 2);
-      costScatter = (new AspectList()).add(Aspect.WATER, 20).add(Aspect.FIRE, 2).add(Aspect.ENTROPY, 2).add(Aspect.AIR, 5);
-      costBoulder = (new AspectList()).add(Aspect.WATER, 20).add(Aspect.FIRE, 2).add(Aspect.ENTROPY, 2).add(Aspect.EARTH, 5);
-      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new AspectList()).add(Aspect.COLD, 1).add(Aspect.WEAPON, 1));
-      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new AspectList()).add(Aspect.COLD, 1).add(Aspect.CRYSTAL, 1));
+      costBase = (new AspectList()).addAll(Aspect.WATER, 5).addAll(Aspect.FIRE, 2).addAll(Aspect.ENTROPY, 2);
+      costScatter = (new AspectList()).addAll(Aspect.WATER, 20).addAll(Aspect.FIRE, 2).addAll(Aspect.ENTROPY, 2).addAll(Aspect.AIR, 5);
+      costBoulder = (new AspectList()).addAll(Aspect.WATER, 20).addAll(Aspect.FIRE, 2).addAll(Aspect.ENTROPY, 2).addAll(Aspect.EARTH, 5);
+      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new AspectList()).addAll(Aspect.COLD, 1).addAll(Aspect.WEAPON, 1));
+      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new AspectList()).addAll(Aspect.COLD, 1).addAll(Aspect.CRYSTAL, 1));
    }
 }

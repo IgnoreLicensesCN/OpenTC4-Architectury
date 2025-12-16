@@ -48,52 +48,52 @@ public class NodeAspectGenerators {
             int value = random.nextInt(baura / 2) + baura / 2;
             Aspect aspectFromBiome = BiomeHandler.getRandomBiomeTag(biomeHolder.value(), random);
             if (aspectFromBiome != null) {
-                previous.add(aspectFromBiome, 2);
+                previous.addAll(aspectFromBiome, 2);
             } else {
                 Aspect aa = complexAspects.get(random.nextInt(complexAspects.size()));
-                previous.add(aa, 1);
+                previous.addAll(aa, 1);
                 aa = basicAspects.get(random.nextInt(basicAspects.size()));
-                previous.add(aa, 1);
+                previous.addAll(aa, 1);
             }
 
             for (int a = 0; a < 3; ++a) {
                 if (random.nextBoolean()) {
                     if (random.nextInt(Config.specialNodeRarity) == 0) {
                         Aspect aa = complexAspects.get(random.nextInt(complexAspects.size()));
-                        previous.merge(aa, 1);
+                        previous.mergeWithHighest(aa, 1);
                     } else {
                         Aspect aa = basicAspects.get(random.nextInt(basicAspects.size()));
-                        previous.merge(aa, 1);
+                        previous.mergeWithHighest(aa, 1);
                     }
                 }
             }
 
             if (type == NodeType.HUNGRY) {
-                previous.merge(Aspect.HUNGER, 2);
+                previous.mergeWithHighest(Aspect.HUNGER, 2);
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.GREED, 1);
+                    previous.mergeWithHighest(Aspect.GREED, 1);
                 }
             } else if (type == NodeType.PURE) {
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.LIFE, 2);
+                    previous.mergeWithHighest(Aspect.LIFE, 2);
                 } else {
-                    previous.merge(Aspect.ORDER, 2);
+                    previous.mergeWithHighest(Aspect.ORDER, 2);
                 }
             } else if (type == NodeType.DARK) {
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.DEATH, 1);
+                    previous.mergeWithHighest(Aspect.DEATH, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.UNDEAD, 1);
+                    previous.mergeWithHighest(Aspect.UNDEAD, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.ENTROPY, 1);
+                    previous.mergeWithHighest(Aspect.ENTROPY, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.merge(Aspect.DARKNESS, 1);
+                    previous.mergeWithHighest(Aspect.DARKNESS, 1);
                 }
             }
 
@@ -129,20 +129,20 @@ public class NodeAspectGenerators {
             }
 
             if (water > 100) {
-                previous.merge(Aspect.WATER, 1);
+                previous.mergeWithHighest(Aspect.WATER, 1);
             }
 
             if (lava > 100) {
-                previous.merge(Aspect.FIRE, 1);
-                previous.merge(Aspect.EARTH, 1);
+                previous.mergeWithHighest(Aspect.FIRE, 1);
+                previous.mergeWithHighest(Aspect.EARTH, 1);
             }
 
             if (stone > 500) {
-                previous.merge(Aspect.EARTH, 1);
+                previous.mergeWithHighest(Aspect.EARTH, 1);
             }
 
             if (foliage > 100) {
-                previous.merge(Aspect.PLANT, 1);
+                previous.mergeWithHighest(Aspect.PLANT, 1);
             }
 
             int[] spread = new int[previous.size()];
@@ -159,7 +159,7 @@ public class NodeAspectGenerators {
             }
 
             for (int a = 0; a < spread.length; ++a) {
-                previous.merge(previous.getAspectsSorted()[a], (int) ((float) spread[a] / total * (float) value));
+                previous.mergeWithHighest(previous.getAspectsSorted()[a], (int) ((float) spread[a] / total * (float) value));
             }
             return previous;
         }

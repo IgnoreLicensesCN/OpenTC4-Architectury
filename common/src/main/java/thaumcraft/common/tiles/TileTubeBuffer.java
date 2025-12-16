@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -72,7 +71,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       if (am != 1) {
          return am;
       } else if (this.aspects.visSize() < 8) {
-         this.aspects.add(tt, am);
+         this.aspects.addAll(tt, am);
          this.markDirty();
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return 0;
@@ -83,7 +82,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.aspects.getAmount(tt) >= am) {
-         this.aspects.remove(tt, am);
+         this.aspects.reduceAndRemoveIfNegative(tt, am);
          this.markDirty();
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          return true;

@@ -19,7 +19,7 @@ import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileVisRelay;
 
@@ -151,7 +151,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
       for(Aspect aspect : cur.getAspects()) {
          if (cur.getAmount(aspect) < this.getMaxVis(wandstack)) {
-            out.add(aspect, 1);
+            out.addAll(aspect, 1);
          }
       }
 
@@ -163,9 +163,9 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
       for(Aspect aspect : Aspect.getPrimalAspects()) {
          if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getTag())) {
-            out.merge(aspect, is.stackTagCompound.getInteger(aspect.getTag()));
+            out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getTag()));
          } else {
-            out.merge(aspect, 0);
+            out.mergeWithHighest(aspect, 0);
          }
       }
 

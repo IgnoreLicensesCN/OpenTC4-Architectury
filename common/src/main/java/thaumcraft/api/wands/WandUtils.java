@@ -30,11 +30,11 @@ public class WandUtils {
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
-        if (item instanceof VisContainer visContainer) {
+        if (item instanceof IVisContainer IVisContainer) {
             StringBuilder tt = new StringBuilder();
 
-            var visOwning = visContainer.getAllVisOwning(stack);
-            var visCapacity = visContainer.getAllVisCapacity(stack);
+            var visOwning = IVisContainer.getAllVisOwning(stack);
+            var visCapacity = IVisContainer.getAllVisCapacity(stack);
 
 
             for (var entry : visOwning.entrySet()) {

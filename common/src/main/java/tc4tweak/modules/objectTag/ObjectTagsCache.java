@@ -1,18 +1,13 @@
 package tc4tweak.modules.objectTag;
 
 import com.linearity.opentc4.OpenTC4;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.world.item.Item;
 import tc4tweak.modules.FlushableCache;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.AspectList;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 //congratulations!we dont need itemmeta! consider all of them 0!
 class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList>> {
@@ -44,7 +39,7 @@ class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList>> {
             map.merge(key, val.copy(),
                     (a, b) -> {
                         OpenTC4.LOGGER.warn("duplicate aspect tag for {}", key);
-                        return a.copy().add(b);
+                        return a.copy().addAll(b);
                     }
             );
         });

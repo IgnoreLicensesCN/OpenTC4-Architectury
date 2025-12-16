@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -29,7 +28,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    Direction fd = null;
 
    public AspectList getAspects() {
-      return this.aspect != null ? (new AspectList()).add(this.aspect, this.amount) : new AspectList();
+      return this.aspect != null ? (new AspectList()).addAll(this.aspect, this.amount) : new AspectList();
    }
 
    public void setAspects(AspectList aspects) {

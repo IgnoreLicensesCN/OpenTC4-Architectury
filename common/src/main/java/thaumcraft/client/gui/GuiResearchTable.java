@@ -18,7 +18,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.Thaumcraft;
@@ -80,7 +79,7 @@ public class GuiResearchTable extends GuiContainer {
       int count = 0;
 
       for(Aspect aspect : Aspect.aspects.values()) {
-         this.aspectlist.add(aspect, count);
+         this.aspectlist.addAll(aspect, count);
          ++count;
       }
 
@@ -119,7 +118,7 @@ public class GuiResearchTable extends GuiContainer {
             AspectList al = rr.tags.copy();
 
             for(Aspect aspect : al.getAspects()) {
-               al.add(aspect, this.note.copies);
+               al.addAll(aspect, this.note.copies);
             }
 
             int count = 0;

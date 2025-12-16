@@ -30,7 +30,6 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.logging.log4j.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -48,7 +47,7 @@ import thaumcraft.common.entities.ai.inventory.*;
 import thaumcraft.common.entities.ai.misc.AIOpenDoor;
 import thaumcraft.common.entities.ai.misc.AIReturnHome;
 import thaumcraft.common.entities.projectile.EntityDart;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.lib.utils.Utils;
@@ -884,7 +883,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
          ItemStack disp = new ItemStack(ConfigItems.itemJarFilled);
          int amt = (int)(64.0F * ((float)this.essentiaAmount / (float)this.getCarryLimit()));
          if (this.essentia != null && this.essentiaAmount > 0) {
-            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new AspectList()).add(this.essentia, amt));
+            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new AspectList()).addAll(this.essentia, amt));
          }
 
          this.getDataWatcher().updateObject(16, disp);

@@ -9,9 +9,6 @@ import java.util.List;
 public abstract class RecipeItemMatcher implements ReturnItemStackAfterConsume{
     public abstract boolean matches(@NotNull ItemStack stack);
 
-    //you know what?
-    // you can just return randomly,
-    // just satisfy
-    // matches(getAvailableItemsSample()[someindex at least 0 is avaliable]) == true
+    //fill as many as possible,except tool with different durability.
     public abstract @NotNull List<ItemStack> getAvailableItemStackSample();
 }

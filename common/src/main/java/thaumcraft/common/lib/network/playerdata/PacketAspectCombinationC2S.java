@@ -111,7 +111,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
       // 处理第一个 aspect
       if (Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect1) <= 0 && ab1) {
-         table.bonusAspects.remove(aspect1, 1);
+         table.bonusAspects.reduceAndRemoveIfNegative(aspect1, 1);
          world.sendBlockUpdated(new BlockPos(x, y, z), te.getBlockState(), te.getBlockState(), 3);
          te.setChanged();
       } else {
@@ -122,7 +122,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
       // 处理第二个 aspect
       if (Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect2) <= 0 && ab2) {
-         table.bonusAspects.remove(aspect2, 1);
+         table.bonusAspects.reduceAndRemoveIfNegative(aspect2, 1);
          world.sendBlockUpdated(new BlockPos(x, y, z), te.getBlockState(), te.getBlockState(), 3);
          te.setChanged();
       } else {

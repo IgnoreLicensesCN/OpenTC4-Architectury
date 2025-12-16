@@ -17,13 +17,13 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileNode;
+import thaumcraft.common.tiles.NodeBlockEntity;
 
 public class ItemNodeRenderer implements IItemRenderer {
    AspectList aspects;
 
    public ItemNodeRenderer() {
-      this.aspects = (new AspectList()).add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40).add(Aspect.WATER, 40);
+      this.aspects = (new AspectList()).addAll(Aspect.AIR, 40).addAll(Aspect.FIRE, 40).addAll(Aspect.EARTH, 40).addAll(Aspect.WATER, 40);
    }
 
    public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
@@ -41,7 +41,7 @@ public class ItemNodeRenderer implements IItemRenderer {
          GL11.glTranslatef(0.0F, 0.0F, -0.5F);
       }
 
-      TileNode tjf = new TileNode();
+      NodeBlockEntity tjf = new NodeBlockEntity();
       tjf.setAspects(this.aspects);
       tjf.setNodeType(NodeType.NORMAL);
       tjf.blockType = ConfigBlocks.blockAiry;

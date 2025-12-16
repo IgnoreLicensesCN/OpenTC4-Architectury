@@ -17,7 +17,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -112,7 +111,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
 
    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
       if (!(Platform.getEnvironment() == Env.CLIENT) && !par1ItemStack.hasTagCompound()) {
-         this.setAspects(par1ItemStack, (new AspectList()).add(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
+         this.setAspects(par1ItemStack, (new AspectList()).addAll(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
       }
 
       super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
@@ -120,7 +119,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
 
    public void onCreated(ItemStack par1ItemStack, World par2World, Player par3Player) {
       if (!par1ItemStack.hasTagCompound()) {
-         this.setAspects(par1ItemStack, (new AspectList()).add(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
+         this.setAspects(par1ItemStack, (new AspectList()).addAll(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
       }
 
    }

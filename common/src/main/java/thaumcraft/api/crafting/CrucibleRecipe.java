@@ -73,7 +73,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 //		temptags.aspects.putAll(itags.aspects);
 		
 		for (Aspect tag:aspects.getAspectTypes()) {
-			temptags.remove(tag, aspects.getAmount(tag));
+			temptags.reduceAndRemoveIfNegative(tag, aspects.getAmount(tag));
 		}
 		
 		itags = temptags;

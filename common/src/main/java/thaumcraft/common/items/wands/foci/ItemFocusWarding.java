@@ -21,7 +21,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
@@ -296,7 +296,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
    }
 
    static {
-      cost = (new AspectList()).add(Aspect.EARTH, 25).add(Aspect.ORDER, 25).add(Aspect.WATER, 10);
+      cost = (new AspectList()).addAll(Aspect.EARTH, 25).addAll(Aspect.ORDER, 25).addAll(Aspect.WATER, 10);
       delay = new HashMap<>();
    }
 }

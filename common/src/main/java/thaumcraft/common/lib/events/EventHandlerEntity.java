@@ -10,8 +10,6 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +23,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
@@ -55,7 +52,6 @@ import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.WarpEvents;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.effects.UnnaturalHungerEffect;
 import thaumcraft.common.lib.effects.effectshaderhandlers.BlurredVisionShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.DeathGazeShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.SunScornedShaderHandler;
@@ -304,7 +300,7 @@ public class EventHandlerEntity {
 
             for(Aspect a : cost.getAspectTypes()) {
                if (a != null) {
-                  finalCost.merge(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
+                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
                }
             }
             boolean doRepair = false;
@@ -490,7 +486,7 @@ public class EventHandlerEntity {
                   int size = 1 + event.entity.getRandom().nextInt(aspects.getAmount(aspect));
                   size = Math.max(1, size / 2);
                   ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
-                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).add(aspect, 1));
+                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).addAll(aspect, 1));
                   event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
                }
             }

@@ -7,7 +7,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.tiles.TileMagicWorkbench;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
@@ -52,6 +55,10 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
         this.width = width;
         this.height = height;
         this.outMatcher = outMatcher;
+        this.allSampled = new ItemStack[input.length][];
+        for (int i=0;i<allSampled.length;i++){
+            allSampled[i] = input[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+        }
         
 //        int idx = 0;
 
@@ -194,7 +201,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
         ItemStack[] inputItemStacks = new ItemStack[9];
         for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++){
             for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++){
-                inputItemStacks[x + (y*2)] = ThaumcraftApiHelper.getStackInRowAndColumn(inv, x, y);
+                inputItemStacks[x + (y*2)] = ThaumcraftApiHelper.getStackInRowAndColumn((TileMagicWorkbench) inv, x, y);
             }
         }
         return inputItemStacks;
@@ -223,7 +230,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
                     }
                 }
 
-                ItemStack slot = ThaumcraftApiHelper.getStackInRowAndColumn(inv, x, y);
+                ItemStack slot = ThaumcraftApiHelper.getStackInRowAndColumn((TileMagicWorkbench) inv, x, y);
 
                 if (!target.matches(slot)){
                     return false;
@@ -308,6 +315,12 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
             sampled[i] = pickByTime(input[i].getAvailableItemStackSample());
         }
         return sampled;
+    }
+
+    private final ItemStack[][] allSampled;
+    @Override
+    public ItemStack[][] getAllInputSample(){
+        return allSampled;
     }
 
     private final ItemStack[] resultStore = new ItemStack[1];

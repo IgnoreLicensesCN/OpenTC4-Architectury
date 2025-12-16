@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -85,7 +84,7 @@ public class ItemCrystalEssence extends Item implements IEssentiaContainerItem {
 
    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
       if (!(Platform.getEnvironment() == Env.CLIENT) && !par1ItemStack.hasTagCompound()) {
-         this.setAspects(par1ItemStack, (new AspectList()).add(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
+         this.setAspects(par1ItemStack, (new AspectList()).addAll(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
       }
 
       super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
@@ -93,7 +92,7 @@ public class ItemCrystalEssence extends Item implements IEssentiaContainerItem {
 
    public void onCreated(ItemStack par1ItemStack, World par2World, Player par3Player) {
       if (!par1ItemStack.hasTagCompound()) {
-         this.setAspects(par1ItemStack, (new AspectList()).add(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
+         this.setAspects(par1ItemStack, (new AspectList()).addAll(displayAspects[this.rand.nextInt(displayAspects.length)], 1));
       }
 
    }

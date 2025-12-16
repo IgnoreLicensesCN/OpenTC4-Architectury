@@ -2,6 +2,8 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.client.particle.EffectRenderer;
@@ -48,8 +50,8 @@ public class BlockAiry extends BlockContainer {
    public BlockAiry() {
       super(Config.airyMaterial);
       this.setStepSound(new Block.SoundType("cloth", 0.0F, 1.0F));
-      this.setCreativeTab(Thaumcraft.tabTC);
       this.setTickRandomly(true);
+      this.setCreativeTab(Thaumcraft.tabTC);
    }
 
    @SideOnly(Side.CLIENT)
@@ -65,7 +67,9 @@ public class BlockAiry extends BlockContainer {
    @SideOnly(Side.CLIENT)
    public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
       int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-      if ((md == 0 || md == 5) && worldObj.rand.nextBoolean()) {
+      if ((
+//              md == 0 ||
+              md == 5) && worldObj.rand.nextBoolean()) {
          UtilsFX.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
       }
 
@@ -73,7 +77,9 @@ public class BlockAiry extends BlockContainer {
    }
 
    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-      if (meta == 0 || meta == 5) {
+      if (
+//              meta == 0 ||
+                      meta == 5) {
          Thaumcraft.proxy.burst(world, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
          world.playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:craftfail", 1.0F, 1.0F, false);
       }
@@ -83,7 +89,9 @@ public class BlockAiry extends BlockContainer {
 
    public float getBlockHardness(World world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
-      if (md != 0 && md != 5) {
+      if (
+//              md != 0 &&
+              md != 5) {
          if (md != 10 && md != 11) {
             return md == 12 ? -1.0F : super.getBlockHardness(world, x, y, z);
          } else {
@@ -96,7 +104,9 @@ public class BlockAiry extends BlockContainer {
 
    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
       int md = world.getBlockMetadata(x, y, z);
-      if (md != 0 && md != 5) {
+      if (
+//              md != 0 &&
+              md != 5) {
          if (md != 10 && md != 11) {
             return md == 12 ? Float.MAX_VALUE : super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
          } else {
@@ -218,8 +228,8 @@ public class BlockAiry extends BlockContainer {
       return md == 1 ? ConfigItems.itemResource : Item.getItemById(0);
    }
 
-   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int par5, Player par6Player) {
-      if (par5 == 0 && !(Platform.getEnvironment() == Env.CLIENT)) {
+   public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int meta, Player par6Player) {
+      if (meta == 0 && !(Platform.getEnvironment() == Env.CLIENT)) {
          TileEntity te = par1World.getTileEntity(par2, par3, par4);
          if (te instanceof INode && ((INode) te).getAspects().size() > 0) {
             for(Aspect aspect : ((INode)te).getAspects().getAspects()) {
@@ -227,7 +237,7 @@ public class BlockAiry extends BlockContainer {
                   if (((INode)te).getAspects().getAmount(aspect) >= 5) {
                      ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
                      new AspectList();
-                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).add(aspect, 2));
+                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
                      this.dropBlockAsItem(par1World, par2, par3, par4, ess);
                   }
                }
@@ -235,7 +245,7 @@ public class BlockAiry extends BlockContainer {
          }
       }
 
-      super.onBlockHarvested(par1World, par2, par3, par4, par5, par6Player);
+      super.onBlockHarvested(par1World, par2, par3, par4, meta, par6Player);
    }
 
    @SideOnly(Side.CLIENT)
@@ -276,7 +286,7 @@ public class BlockAiry extends BlockContainer {
 
    public TileEntity createTileEntity(World world, int metadata) {
       if (metadata == 0) {
-         return new TileNode();
+         return new NodeBlockEntity();
       } else if (metadata == 1) {
          return new TileNitor();
       } else if (metadata == 4) {
@@ -295,6 +305,7 @@ public class BlockAiry extends BlockContainer {
       par3List.add(new ItemStack(par1, 1, 0));
    }
 
+   //TODO:new item creates node(not this node blockItem)
    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
       if (stack.getItemDamage() == 0 && entity instanceof Player) {
          ThaumcraftWorldGenerator.createRandomNodeAt(world, x, y, z, world.getRandom(), false, false, false);

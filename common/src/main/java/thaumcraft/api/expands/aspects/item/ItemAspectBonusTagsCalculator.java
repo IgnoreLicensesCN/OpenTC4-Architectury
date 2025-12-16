@@ -44,7 +44,7 @@ public class ItemAspectBonusTagsCalculator {
         if (sourceTags != null) {
             for (Aspect tag : sourceTags.getAspectTypes()) {
                 if (tag != null) {
-                    aspects.add(tag, sourceTags.getAmount(tag));
+                    aspects.addAll(tag, sourceTags.getAmount(tag));
                 }
             }
         }

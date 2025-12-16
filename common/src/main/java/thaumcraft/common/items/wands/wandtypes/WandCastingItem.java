@@ -43,8 +43,8 @@ public class WandCastingItem extends Item
         ArcaneCraftingVisProvider,
         ArcaneCraftingWand,
         WandFocusEngine,
-        VisContainer,
-        WandComponentsOwner,
+        IVisContainer,
+        IWandComponentsOwner,
         WandComponentNameOwner,
         AttackBlockListener,
         IArchitect {
@@ -255,7 +255,7 @@ public class WandCastingItem extends Item
         if (usingBlockPos != null){
             var blockEntity = level.getBlockEntity(usingBlockPos);
             if (blockEntity instanceof WandInteractableBlock wandInteractableBlock){
-                wandInteractableBlock.interact(level, livingEntity, usingWand, useCount);
+                wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useCount);
             }else {
                 entityUsingBlockMapping.remove(livingEntity);
             }

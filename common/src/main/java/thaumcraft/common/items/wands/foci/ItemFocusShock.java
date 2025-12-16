@@ -10,8 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -19,7 +17,7 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityShockOrb;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXZap;
@@ -213,10 +211,10 @@ public class ItemFocusShock extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).add(Aspect.AIR, 25);
-      costChain = (new AspectList()).add(Aspect.AIR, 40).add(Aspect.WATER, 10);
-      costGround = (new AspectList()).add(Aspect.AIR, 75).add(Aspect.EARTH, 25);
-      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new AspectList()).add(Aspect.WEATHER, 1));
-      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new AspectList()).add(Aspect.WEATHER, 1));
+      costBase = (new AspectList()).addAll(Aspect.AIR, 25);
+      costChain = (new AspectList()).addAll(Aspect.AIR, 40).addAll(Aspect.WATER, 10);
+      costGround = (new AspectList()).addAll(Aspect.AIR, 75).addAll(Aspect.EARTH, 25);
+      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new AspectList()).addAll(Aspect.WEATHER, 1));
+      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new AspectList()).addAll(Aspect.WEATHER, 1));
    }
 }

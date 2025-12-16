@@ -36,7 +36,7 @@ import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
-import thaumcraft.common.tiles.TileNode;
+import thaumcraft.common.tiles.NodeBlockEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -277,52 +277,52 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         Aspect ra = BiomeHandler.getRandomBiomeTag(bg.biomeID, random);
         AspectList al = new AspectList();
         if (ra != null) {
-            al.add(ra, 2);
+            al.addAll(ra, 2);
         } else {
             Aspect aa = complexAspects.get(random.nextInt(complexAspects.size()));
-            al.add(aa, 1);
+            al.addAll(aa, 1);
             aa = basicAspects.get(random.nextInt(basicAspects.size()));
-            al.add(aa, 1);
+            al.addAll(aa, 1);
         }
 
         for (int a = 0; a < 3; ++a) {
             if (random.nextBoolean()) {
                 if (random.nextInt(Config.specialNodeRarity) == 0) {
                     Aspect aa = complexAspects.get(random.nextInt(complexAspects.size()));
-                    al.merge(aa, 1);
+                    al.mergeWithHighest(aa, 1);
                 } else {
                     Aspect aa = basicAspects.get(random.nextInt(basicAspects.size()));
-                    al.merge(aa, 1);
+                    al.mergeWithHighest(aa, 1);
                 }
             }
         }
 
         if (type == NodeType.HUNGRY) {
-            al.merge(Aspect.HUNGER, 2);
+            al.mergeWithHighest(Aspect.HUNGER, 2);
             if (random.nextBoolean()) {
-                al.merge(Aspect.GREED, 1);
+                al.mergeWithHighest(Aspect.GREED, 1);
             }
         } else if (type == NodeType.PURE) {
             if (random.nextBoolean()) {
-                al.merge(Aspect.LIFE, 2);
+                al.mergeWithHighest(Aspect.LIFE, 2);
             } else {
-                al.merge(Aspect.ORDER, 2);
+                al.mergeWithHighest(Aspect.ORDER, 2);
             }
         } else if (type == NodeType.DARK) {
             if (random.nextBoolean()) {
-                al.merge(Aspect.DEATH, 1);
+                al.mergeWithHighest(Aspect.DEATH, 1);
             }
 
             if (random.nextBoolean()) {
-                al.merge(Aspect.UNDEAD, 1);
+                al.mergeWithHighest(Aspect.UNDEAD, 1);
             }
 
             if (random.nextBoolean()) {
-                al.merge(Aspect.ENTROPY, 1);
+                al.mergeWithHighest(Aspect.ENTROPY, 1);
             }
 
             if (random.nextBoolean()) {
-                al.merge(Aspect.DARKNESS, 1);
+                al.mergeWithHighest(Aspect.DARKNESS, 1);
             }
         }
 
@@ -357,20 +357,20 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         if (water > 100) {
-            al.merge(Aspect.WATER, 1);
+            al.mergeWithHighest(Aspect.WATER, 1);
         }
 
         if (lava > 100) {
-            al.merge(Aspect.FIRE, 1);
-            al.merge(Aspect.EARTH, 1);
+            al.mergeWithHighest(Aspect.FIRE, 1);
+            al.mergeWithHighest(Aspect.EARTH, 1);
         }
 
         if (stone > 500) {
-            al.merge(Aspect.EARTH, 1);
+            al.mergeWithHighest(Aspect.EARTH, 1);
         }
 
         if (foliage > 100) {
-            al.merge(Aspect.PLANT, 1);
+            al.mergeWithHighest(Aspect.PLANT, 1);
         }
 
         int[] spread = new int[al.size()];
@@ -387,7 +387,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         for (int a = 0; a < spread.length; ++a) {
-            al.merge(al.getAspectsSorted()[a], (int) ((float) spread[a] / total * (float) value));
+            al.mergeWithHighest(al.getAspectsSorted()[a], (int) ((float) spread[a] / total * (float) value));
         }
 
         createNodeAt(world, x, y, z, type, modifier, al);
@@ -399,10 +399,10 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         BlockEntity te = world.getBlockEntity(x, y, z);
-        if (te instanceof TileNode) {
-            ((TileNode) te).setNodeType(nt);
-            ((TileNode) te).setNodeModifier(nm);
-            ((TileNode) te).setAspects(al);
+        if (te instanceof NodeBlockEntity) {
+            ((NodeBlockEntity) te).setNodeType(nt);
+            ((NodeBlockEntity) te).setNodeModifier(nm);
+            ((NodeBlockEntity) te).setAspects(al);
         }
 
         world.markBlockForUpdate(x, y, z);

@@ -130,6 +130,20 @@ public class Consts {
                 = new CompoundTagHelper.IntTagAccessor(TILE_VIS_NODE_PATH_Z);
 
     }
+    public static class NodeBlockEntityCompoundTagAccessors {
+        private static final String NODE_ID = "nodeId";
+        public static final CompoundTagHelper.StringTagAccessor NODE_ID_ACCESSOR = new CompoundTagHelper.StringTagAccessor(NODE_ID);
+        private static final String NODE_TYPE = "nodeType";
+        public static final CompoundTagHelper.StringTagAccessor NODE_TYPE_ACCESSOR = new CompoundTagHelper.StringTagAccessor(NODE_TYPE);
+        private static final String NODE_MODIFIER = "nodeModifier";
+        public static final CompoundTagHelper.StringTagAccessor NODE_MODIFIER_ACCESSOR = new CompoundTagHelper.StringTagAccessor(NODE_MODIFIER);
+        public static final String NODE_LAST_ACTIVE = "lastActive";
+        public static final CompoundTagHelper.LongTagAccessor NODE_LAST_ACTIVE_ACCESSOR = new CompoundTagHelper.LongTagAccessor(NODE_LAST_ACTIVE);
+        public static final String NODE_ASPECTS = "nodeAspects";
+        public static final CompoundTagHelper.ListTagAccessor NODE_ASPECTS_ACCESSOR = new CompoundTagHelper.ListTagAccessor(NODE_ASPECTS);
+        public static final String NODE_ASPECTS_BASE = "nodeAspectsBase";
+        public static final CompoundTagHelper.ListTagAccessor NODE_ASPECTS_BASE_ACCESSOR = new CompoundTagHelper.ListTagAccessor(NODE_ASPECTS_BASE);
+    }
 
 
     public static class MazeHandlerCompoundTagAccessors {

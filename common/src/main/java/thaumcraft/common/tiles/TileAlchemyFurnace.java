@@ -17,7 +17,6 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventory {
@@ -223,7 +222,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
                if (alembic.aspect != null && alembic.amount < alembic.maxAmount && this.aspects.getAmount(alembic.aspect) > 0) {
                   this.takeFromContainer(alembic.aspect, 1);
                   alembic.addToContainer(alembic.aspect, 1);
-                  exlude.merge(alembic.aspect, 1);
+                  exlude.mergeWithHighest(alembic.aspect, 1);
                   this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.level().markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
                }
@@ -328,7 +327,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          al = ThaumcraftCraftingManager.getBonusTags(this.furnaceItemStacks[0], al);
 
          for(Aspect a : al.getAspects()) {
-            this.aspects.add(a, al.getAmount(a));
+            this.aspects.addAll(a, al.getAmount(a));
          }
 
          this.vis = this.aspects.visSize();
@@ -383,13 +382,13 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          AspectList temp = this.aspects.copy();
          if (exlude.size() > 0) {
             for(Aspect a : exlude.getAspects()) {
-               temp.remove(a);
+               temp.reduceAndRemoveIfNegative(a);
             }
          }
 
          if (temp.size() > 0) {
             Aspect tag = temp.getAspects()[this.level().rand.nextInt(temp.getAspects().length)];
-            this.aspects.remove(tag, 1);
+            this.aspects.reduceAndRemoveIfNegative(tag, 1);
             --this.vis;
             return tag;
          }
@@ -400,7 +399,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
    public boolean takeFromContainer(Aspect tag, int amount) {
       if (this.aspects != null && this.aspects.getAmount(tag) >= amount) {
-         this.aspects.remove(tag, amount);
+         this.aspects.reduceAndRemoveIfNegative(tag, amount);
          this.vis -= amount;
          return true;
       } else {

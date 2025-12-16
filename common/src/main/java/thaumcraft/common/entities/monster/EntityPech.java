@@ -10,15 +10,11 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +26,6 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -47,7 +42,7 @@ import thaumcraft.common.entities.ai.pech.AIPechTradePlayer;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.misc.ItemManaBean;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -122,12 +117,12 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
             ItemStack wand = new ItemStack(ConfigItems.WandCastingItem);
             ItemStack focus = new ItemStack(ConfigItems.itemFocusPech);
             ((WandCastingItem)wand.getItem()).setFocus(wand, focus);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.EARTH, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.ENTROPY, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.WATER, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.AIR, this.rand.nextInt(4), true);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.FIRE, this.rand.nextInt(4), true);
-            ((WandCastingItem)wand.getItem()).addVis(wand, Aspect.ORDER, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.EARTH, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.ENTROPY, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.WATER, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.AIR, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.FIRE, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.ORDER, this.rand.nextInt(4), true);
             this.setCurrentItemOrArmor(0, wand);
             break;
          case 1:
@@ -329,7 +324,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       for(int a = 0; a < 1 + i; ++a) {
          if (this.rand.nextBoolean()) {
             ItemStack is = new ItemStack(ConfigItems.itemManaBean);
-            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList()).add(aspects[this.rand.nextInt(aspects.length)], 1));
+            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
             this.entityDropItem(is, 1.5F);
          }
       }

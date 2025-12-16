@@ -2,7 +2,6 @@ package com.linearity.opentc4.mixin;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -116,8 +115,8 @@ public class ServerPlayerMixin {
                 int charge = EventHandlerRunic.runicCharge.get(player.getName().getString());
                 if (charge > ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0]) {
                     charge = ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0];
-                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0] && EventHandlerRunic.nextCycle.get(player.getName().getString()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).add(
-                        Aspect.AIR, Config.shieldCost).add(Aspect.EARTH, Config.shieldCost))) {
+                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0] && EventHandlerRunic.nextCycle.get(player.getName().getString()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).addAll(
+                        Aspect.AIR, Config.shieldCost).addAll(Aspect.EARTH, Config.shieldCost))) {
                     long interval = Config.shieldRecharge - ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[1] * 500;
                     EventHandlerRunic.nextCycle.put(player.getName().getString(), time + interval);
                     ++charge;

@@ -80,7 +80,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    public AspectList getAspects() {
       AspectList al = new AspectList();
       if (this.aspect != null) {
-         al.add(this.aspect, 1);
+         al.addAll(this.aspect, 1);
       }
 
       return al;
@@ -285,7 +285,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
 
    public void eject() {
       ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, 1, 0);
-      ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).add(this.aspect, 1));
+      ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).addAll(this.aspect, 1));
       TileEntity inventory = this.level().getTileEntity(this.xCoord + this.facing.getOpposite().offsetX, this.yCoord + this.facing.getOpposite().offsetY, this.zCoord + this.facing.getOpposite().offsetZ);
       if (inventory instanceof IInventory) {
          stack = InventoryUtils.placeItemStackIntoInventory(stack, (IInventory)inventory, this.facing.ordinal(), true);

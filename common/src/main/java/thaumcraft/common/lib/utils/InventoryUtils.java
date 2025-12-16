@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import java.util.List;
 import java.util.Random;
@@ -342,7 +342,7 @@ public class InventoryUtils {
          ItemStack stack = player.getInventory().items.get(i);
          if (!stack.isEmpty() && stack.getItem() instanceof WandCastingItem wand) {
             // 调用原有魔杖逻辑判断容量
-            if (wand.addVis(stack, aspect, amount, false) < amount) {
+            if (wand.addCentiVis(stack, aspect, amount, false) < amount) {
                return i;
             }
          }
@@ -359,7 +359,7 @@ public class InventoryUtils {
       // 检查副手
       ItemStack offhand = player.getInventory().offhand.get(0);
       if (!offhand.isEmpty() && offhand.getItem() instanceof WandCastingItem wand) {
-         if (wand.addVis(offhand, aspect, amount, false) < amount) {
+         if (wand.addCentiVis(offhand, aspect, amount, false) < amount) {
             return OFFHAND_INDEX; // 自定义副手返回值
          }
       }

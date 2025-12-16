@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
@@ -280,34 +281,23 @@ public class Utils {
       return result;
    }
 
-   @Deprecated(forRemoval = true,since = "why you want this instead of manage your type well?")
-   public static Object getNBTDataFromId(CompoundTag nbt, byte id, String key) {
-//      switch (id) {
-//         case 1:
-//            return nbt.getByte(key);
-//         case 2:
-//            return nbt.getShort(key);
-//         case 3:
-//            return nbt.getInteger(key);
-//         case 4:
-//            return nbt.getLong(key);
-//         case 5:
-//            return nbt.getFloat(key);
-//         case 6:
-//            return nbt.getDouble(key);
-//         case 7:
-//            return nbt.getByteArray(key);
-//         case 8:
-//            return nbt.getString(key);
-//         case 9:
-//            return nbt.getTagList(key, 10);
-//         case 10:
-//            return nbt.getTag(key);
-//         case 11:
-//            return nbt.getIntArray(key);
-//         default:
-//            return null;
-//      }
+   //only for comparing
+   public static @Nullable Object getNBTDataFromId(CompoundTag nbt, String key) {
+      if (!nbt.contains(key)) return null;
+
+      Tag tag = nbt.get(key);
+      if (tag instanceof ByteTag) return ((ByteTag) tag).getAsByte();
+      if (tag instanceof ShortTag) return ((ShortTag) tag).getAsShort();
+      if (tag instanceof IntTag) return ((IntTag) tag).getAsInt();
+      if (tag instanceof LongTag) return ((LongTag) tag).getAsLong();
+      if (tag instanceof FloatTag) return ((FloatTag) tag).getAsFloat();
+      if (tag instanceof DoubleTag) return ((DoubleTag) tag).getAsDouble();
+      if (tag instanceof ByteArrayTag) return ((ByteArrayTag) tag).getAsByteArray();
+      if (tag instanceof StringTag) return ((StringTag) tag).getAsString();
+      if (tag instanceof IntArrayTag) return ((IntArrayTag) tag).getAsIntArray();
+      if (tag instanceof ListTag) return tag; // 可以返回 ListTag 进一步处理
+      if (tag instanceof CompoundTag) return tag; // 复合 tag
+      return null;
    }
 
    public static void generateVisEffect(ResourceKey<Level> dim, int x, int y, int z, int x2, int y2, int z2, int color) {

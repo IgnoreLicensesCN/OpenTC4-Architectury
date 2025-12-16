@@ -8,8 +8,6 @@ import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.InfusionRecipe;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 
 import java.util.ArrayList;
@@ -98,9 +96,9 @@ public class InfusionRunicAugmentRecipe /*extends InfusionRecipe*/ {
       AspectList out = new AspectList();
       int vis = (int)((double)32.0F * Math.pow(2.0F, EventHandlerRunic.getFinalCharge(input)));
       if (vis > 0) {
-         out.add(Aspect.ARMOR, vis / 2);
-         out.add(Aspect.MAGIC, vis / 2);
-         out.add(Aspect.ENERGY, vis);
+         out.addAll(Aspect.ARMOR, vis / 2);
+         out.addAll(Aspect.MAGIC, vis / 2);
+         out.addAll(Aspect.ENERGY, vis);
       }
 
       return out;

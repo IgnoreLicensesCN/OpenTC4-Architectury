@@ -55,7 +55,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
    public AspectList getAspects() {
       AspectList al = new AspectList();
       if (this.aspectOut != null) {
-         al.add(this.aspectOut, 1);
+         al.addAll(this.aspectOut, 1);
       }
 
       return al;

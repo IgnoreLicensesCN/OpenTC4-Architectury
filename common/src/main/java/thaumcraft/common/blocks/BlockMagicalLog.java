@@ -22,7 +22,7 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.misc.ItemWispEssence;
-import thaumcraft.common.tiles.TileNode;
+import thaumcraft.common.tiles.NodeBlockEntity;
 
 import java.util.List;
 import java.util.Random;
@@ -115,7 +115,7 @@ public class BlockMagicalLog extends BlockRotatedPillar {
                   if (((INode)te).getAspects().getAmount(aspect) >= 5) {
                      ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
                      new AspectList();
-                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).add(aspect, 2));
+                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
                      this.dropBlockAsItem(par1World, par2, par3, par4, ess);
                   }
                }
@@ -164,7 +164,7 @@ public class BlockMagicalLog extends BlockRotatedPillar {
    }
 
    public TileEntity createTileEntity(World world, int metadata) {
-      return limitToValidMetadata(metadata) == 2 ? new TileNode() : super.createTileEntity(world, metadata);
+      return limitToValidMetadata(metadata) == 2 ? new NodeBlockEntity() : super.createTileEntity(world, metadata);
    }
 
    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {

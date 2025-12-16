@@ -13,5 +13,5 @@ public interface WandInteractableBlock {
     @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext);
 
     //InteractionResult.CONSUME above to get here every using tick
-    default void interact(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount){};
+    default void interactOnWandInteractable(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount){};
 }

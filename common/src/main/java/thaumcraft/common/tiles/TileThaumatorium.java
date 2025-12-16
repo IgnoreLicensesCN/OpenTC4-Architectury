@@ -290,7 +290,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       int ce = this.currentRecipe.aspects.getAmount(tt) - this.essentia.getAmount(tt);
       if (this.currentRecipe != null && ce > 0) {
          int add = Math.min(ce, am);
-         this.essentia.add(tt, add);
+         this.essentia.addAll(tt, add);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return am - add;
@@ -301,7 +301,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.essentia.getAmount(tt) >= am) {
-         this.essentia.remove(tt, am);
+         this.essentia.reduceAndRemoveIfNegative(tt, am);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;

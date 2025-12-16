@@ -26,7 +26,7 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.events.ServerTickEventsFML;
 import thaumcraft.common.lib.utils.BlockUtils;
@@ -183,8 +183,8 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
    public AspectList getVisCost(ItemStack itemstack) {
       if (this.isUpgradedWith(itemstack, FocusUpgradeType.silktouch)) {
          if (cost2 == null) {
-            cost2 = (new AspectList()).add(Aspect.AIR, 1).add(Aspect.FIRE, 1).add(Aspect.EARTH, 1).add(Aspect.WATER, 1).add(Aspect.ORDER, 1).add(Aspect.ENTROPY, 1);
-            cost2.add(cost);
+            cost2 = (new AspectList()).addAll(Aspect.AIR, 1).addAll(Aspect.FIRE, 1).addAll(Aspect.EARTH, 1).addAll(Aspect.WATER, 1).addAll(Aspect.ORDER, 1).addAll(Aspect.ENTROPY, 1);
+            cost2.addAll(cost);
          }
 
          return cost2;
@@ -305,7 +305,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
    }
 
    static {
-      cost = (new AspectList()).add(Aspect.ENTROPY, 5).add(Aspect.EARTH, 5).add(Aspect.ORDER, 5);
+      cost = (new AspectList()).addAll(Aspect.ENTROPY, 5).addAll(Aspect.EARTH, 5).addAll(Aspect.ORDER, 5);
       cost2 = null;
    }
 }

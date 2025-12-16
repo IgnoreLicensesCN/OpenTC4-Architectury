@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.gear.ModelWand;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class ItemWandRenderer implements IItemRenderer {
    private ModelWand model = new ModelWand();

@@ -14,6 +14,7 @@ import thaumcraft.common.lib.events.CommandThaumcraft;
 import thaumcraft.common.lib.events.EventHandlerEntity;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.biomes.BiomeRegistration;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public final class OpenTC4 {
     public static final String MOD_ID = "opentc4";
@@ -33,6 +34,7 @@ public final class OpenTC4 {
         ThaumcraftEnchantments.init();
         ThaumcraftItems.init();
         ThaumcraftBlocks.init();
+        ThaumcraftBlockEntities.init();
         ThaumcraftEntities.init();
         ThaumcraftDispenseBehaviors.init();
         BiomeWithTypes.init();

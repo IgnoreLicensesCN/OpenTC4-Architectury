@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
@@ -63,7 +64,7 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.THAUMIUM_INGOT);
         }
     };
@@ -95,7 +96,7 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.VOID_INGOT);
         }
     };
@@ -127,8 +128,8 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
-            return Ingredient.of(ThaumcraftItems.THAUMIUM_ELEMENTAL_INGOT);
+        public @NotNull Ingredient getRepairIngredient() {
+            return Ingredient.of(ThaumcraftItems.THAUMIUM_INGOT);
         }
     };
     public static final ArmorMaterial THAUMIUM = new ArmorMaterial() {
@@ -778,14 +779,14 @@ public class ThaumcraftApi {
             AspectList tmp = ThaumcraftApiHelper.generateTags(item.getItem());
             if (tmp != null && tmp.size() > 0) {
                 for (Aspect tag : tmp.getAspectTypes()) {
-                    aspects.add(tag, tmp.getAmount(tag));
+                    aspects.addAll(tag, tmp.getAmount(tag));
                 }
             }
             registerObjectTag(item, aspects);
         } else {
             AspectList tmp = ThaumcraftApiHelper.getObjectAspects(item);
             for (Aspect tag : aspects.getAspectTypes()) {
-                tmp.merge(tag, tmp.getAmount(tag));
+                tmp.mergeWithHighest(tag, tmp.getAmount(tag));
             }
             registerObjectTag(item, tmp);
         }

@@ -4,7 +4,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
@@ -77,10 +76,10 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
        if (am != 0) {
            int space = this.maxAmount - this.essentia.visSize();
            if (space >= am) {
-               this.essentia.add(tt, am);
+               this.essentia.addAll(tt, am);
                am = 0;
            } else {
-               this.essentia.add(tt, space);
+               this.essentia.addAll(tt, space);
                am -= space;
            }
 
@@ -95,7 +94,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.essentia.getAmount(tt) >= am) {
-         this.essentia.remove(tt, am);
+         this.essentia.reduceAndRemoveIfNegative(tt, am);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;

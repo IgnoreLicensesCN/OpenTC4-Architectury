@@ -1,5 +1,7 @@
 package thaumcraft.common.lib.crafting;
 
+import com.linearity.opentc4.OpenTC4;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,10 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.ThrowablePotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.crafting.CraftingManager;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 import tc4tweak.modules.findRecipes.FindRecipes;
 import tc4tweak.modules.objectTag.GetObjectTags;
@@ -22,13 +22,17 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.expands.aspects.item.ItemAspectBonusTagsCalculator;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 public class ThaumcraftCraftingManager {
 
@@ -85,7 +89,10 @@ public class ThaumcraftCraftingManager {
 
     public static AspectList findMatchingArcaneRecipeAspects(Container awb, Player player) {
         IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
-        return recipe == null ? new AspectList() : recipe.getAspects() == null ? recipe.getAspects(awb) : recipe.getAspects();
+        return recipe == null ? new AspectList() :
+                recipe.getAspects() == null
+                        ? recipe.getAspects(awb)
+                        : recipe.getAspects();
 //      int var2 = 0;
 //      ItemStack var3 = null;
 //      ItemStack var4 = null;
@@ -151,95 +158,104 @@ public class ThaumcraftCraftingManager {
         Item item;
 //      int meta;
         boolean ignoresDamageFlag;
-        try {
-            item = itemstack.getItem();
-//         meta = itemstack.getDamageValue();
-//         ignoresDamageFlag = ignoresDamage(itemstack);
-        } catch (Exception var8) {
-            return null;
-        }
+        item = itemstack.getItem();
 
         AspectList tmp = ThaumcraftApi.objectTags.get(item);
         if (tmp == null) {
             tmp = generateTags(item);
         }
 
+        //TODO:Separate to wand additional aspects to API
         if (itemstack.getItem() instanceof WandCastingItem wand) {
             if (tmp == null) {
                 tmp = new AspectList();
             }
+            var totalAvgAspects = 0;
+            for (var componentItem : wand.getWandComponents(itemstack)) {
+                var craftCostTotalAspect = 0;
+                var aspectCount = 0;
+                if (componentItem instanceof CraftingCostAspectOwner costAspectOwner) {
+                    var aspectMap = costAspectOwner.getCraftingCostAspect();
+                    for (var aspectValue : aspectMap.values()) {
+                        craftCostTotalAspect += aspectValue;
+                        aspectCount += 1;
+                    }
+                }
+                totalAvgAspects += craftCostTotalAspect / aspectCount;
+            }
 
-            tmp.merge(Aspect.MAGIC, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 2);
-            tmp.merge(Aspect.TOOL, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 3);
+            tmp.mergeWithHighest(Aspect.MAGIC, (totalAvgAspects) / 2);
+            tmp.mergeWithHighest(Aspect.TOOL, (totalAvgAspects) / 3);
         }
 
+        //TODO:Potion effect aspects to API
         if (item instanceof PotionItem potionItem) {
-            tmp.merge(Aspect.WATER, 1);
+            tmp.mergeWithHighest(Aspect.WATER, 1);
             List<MobEffectInstance> effects = PotionUtils.getMobEffects(itemstack);
             if (!effects.isEmpty()) {
                 if (potionItem instanceof ThrowablePotionItem) {
-                    tmp.merge(Aspect.ENTROPY, 2);
+                    tmp.mergeWithHighest(Aspect.ENTROPY, 2);
                 }
 
                 for (MobEffectInstance var6 : effects) {
-                    tmp.merge(Aspect.MAGIC, (var6.getAmplifier() + 1) * 2);
+                    tmp.mergeWithHighest(Aspect.MAGIC, (var6.getAmplifier() + 1) * 2);
                     MobEffect effect = var6.getEffect();
                     if (effect == MobEffects.BLINDNESS) {
-                        tmp.merge(Aspect.DARKNESS, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.DARKNESS, (var6.getAmplifier() + 1) * 3);
                     } else if (effect == MobEffects.CONFUSION) { // Potion.confusion
-                        tmp.merge(Aspect.ELDRITCH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.ELDRITCH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DAMAGE_BOOST) { // Potion.damageBoost
-                        tmp.merge(Aspect.WEAPON, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.WEAPON, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DIG_SLOWDOWN) { // Potion.digSlowdown
-                        tmp.merge(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DIG_SPEED) { // Potion.digSpeed
-                        tmp.merge(Aspect.TOOL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.TOOL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.FIRE_RESISTANCE) { // Potion.fireResistance
-                        tmp.merge(Aspect.ARMOR, var6.getAmplifier() + 1);
-                        tmp.merge(Aspect.FIRE, (var6.getAmplifier() + 1) * 2);
+                        tmp.mergeWithHighest(Aspect.ARMOR, var6.getAmplifier() + 1);
+                        tmp.mergeWithHighest(Aspect.FIRE, (var6.getAmplifier() + 1) * 2);
 
                     } else if (effect == MobEffects.HARM) { // Potion.harm
-                        tmp.merge(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.HEAL) { // Potion.heal
-                        tmp.merge(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.HUNGER) { // Potion.hunger
-                        tmp.merge(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.INVISIBILITY) { // Potion.invisibility
-                        tmp.merge(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.JUMP) { // Potion.jump
-                        tmp.merge(Aspect.FLIGHT, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.FLIGHT, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.MOVEMENT_SLOWDOWN) { // Potion.moveSlowdown
-                        tmp.merge(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.MOVEMENT_SPEED) { // Potion.moveSpeed
-                        tmp.merge(Aspect.MOTION, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.MOTION, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.NIGHT_VISION) { // Potion.nightVision
-                        tmp.merge(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.POISON) { // Potion.poison
-                        tmp.merge(Aspect.POISON, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.POISON, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.REGENERATION) { // Potion.regeneration
-                        tmp.merge(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DAMAGE_RESISTANCE) { // Potion.resistance
-                        tmp.merge(Aspect.ARMOR, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.ARMOR, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.WATER_BREATHING) { // Potion.waterBreathing
-                        tmp.merge(Aspect.AIR, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.AIR, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.WEAKNESS) { // Potion.weakness
-                        tmp.merge(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
                     }
                 }
             }
@@ -248,6 +264,7 @@ public class ThaumcraftCraftingManager {
         return capAspects(tmp, 64);
     }
 
+    //set aspect no more than (amount)
     private static AspectList capAspects(AspectList sourcetags, int amount) {
         if (sourcetags == null) {
             return sourcetags;
@@ -255,7 +272,7 @@ public class ThaumcraftCraftingManager {
             AspectList out = new AspectList();
 
             for (Aspect aspect : sourcetags.getAspectTypes()) {
-                out.merge(aspect, Math.min(amount, sourcetags.getAmount(aspect)));
+                out.mergeWithHighest(aspect, Math.min(amount, sourcetags.getAmount(aspect)));
             }
 
             return out;
@@ -275,14 +292,14 @@ public class ThaumcraftCraftingManager {
 
         if (ThaumcraftApi.exists(item)) {
             return getObjectTagsOriginal(new ItemStack(item));
-        } else if (history.contains((item))) {
+        } else if (history.contains((item.getDefaultInstance()))) {
             return null;
         } else {
             history.add(item.getDefaultInstance());
             if (history.size() < 100) {
                 AspectList ret = generateTagsFromRecipes(item, history);
                 ret = capAspects(ret, 64);
-                ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, tmeta), ret);
+                ThaumcraftApi.registerObjectTag(new ItemStack(item), ret);
                 return ret;
             } else {
                 return null;
@@ -294,30 +311,27 @@ public class ThaumcraftCraftingManager {
         CrucibleRecipe cr = ThaumcraftApi.getCrucibleRecipe(new ItemStack(item, 1));
         if (cr != null) {
             AspectList ot = cr.aspects.copy();
-            int ss = cr.getRecipeOutput().getCount();
-            ItemStack cat = cr.catalyst.getAvailableItemStackSample().get(0);
-//            if (cr.catalyst instanceof ItemStack) {
-//                cat = (ItemStack) cr.catalyst;
-//            } else if (cr.catalyst instanceof ArrayList && !((ArrayList) cr.catalyst).isEmpty()) {
-//                cat = (ItemStack) ((ArrayList) cr.catalyst).get(0);
-//            }
-
-            AspectList ot2 = generateTags(cat.getItem(), history);
+            int ss = cr.getRecipeOutput()
+                    .getCount();
+            AspectList ot2 = null;
+            for (var cat:cr.catalyst.getAvailableItemStackSample()){
+                ot2 = generateTags(cat.getItem(), history);
+            }
             AspectList out = new AspectList();
             if (ot2 != null && ot2.size() > 0) {
                 for (Aspect tt : ot2.getAspectTypes()) {
-                    out.add(tt, ot2.getAmount(tt));
+                    out.addAll(tt, ot2.getAmount(tt));
                 }
             }
 
             for (Aspect tt : ot.getAspectTypes()) {
                 int amt = (int) (Math.sqrt(ot.getAmount(tt)) / (double) ss);
-                out.add(tt, amt);
+                out.addAll(tt, amt);
             }
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.remove(as);
+                    out.reduceAndRemoveIfNegative(as);
                 }
             }
 
@@ -330,108 +344,60 @@ public class ThaumcraftCraftingManager {
     private static AspectList generateTagsFromArcaneRecipes(Item item, List<ItemStack> history) {
         AspectList ret = null;
         int value = 0;
-        List recipeList = ThaumcraftApi.getCraftingRecipes();
+        List<IArcaneRecipe> recipeList = ThaumcraftApi.getIArcaneRecipes();
 
-        label173:
-        for (Object o : recipeList) {
-            if (o instanceof IArcaneRecipe recipe) {
-                if (recipe.getRecipeOutput() != null) {
-                    int idR = recipe.getRecipeOutput().getDamageValue() == 32767 ? 0 : recipe.getRecipeOutput().getDamageValue();
-                    int idS = meta < 0 ? 0 : meta;
-                    if (recipe.getRecipeOutput().getItem() == item && idR == idS) {
-                        ArrayList<ItemStack> ingredients = new ArrayList<>();
-                        new AspectList();
-                        int cval = 0;
+        for (var arcaneRecipe : recipeList) {
+            if (arcaneRecipe.getRecipeOutput() != null) {
+                if (arcaneRecipe.getRecipeOutput()
+                        .getItem() == item) {
+                    ArrayList<ItemStack> ingredients = new ArrayList<>();
+                    new AspectList();
 
-                        try {
-                            if (o instanceof ShapedArcaneRecipe) {
-                                int width = ((ShapedArcaneRecipe) o).width;
-                                int height = ((ShapedArcaneRecipe) o).height;
-                                Object[] items = ((ShapedArcaneRecipe) o).getInput();
-
-                                for (int i = 0; i < width && i < 3; ++i) {
-                                    for (int j = 0; j < height && j < 3; ++j) {
-                                        if (items[i + j * width] != null) {
-                                            if (items[i + j * width] instanceof ArrayList) {
-                                                for (ItemStack it : (ArrayList<ItemStack>) items[i + j * width]) {
-                                                    if (Utils.isEETransmutionItem(it.getItem())) {
-                                                        continue label173;
-                                                    }
-
-                                                    AspectList obj = generateTags(it.getItem(), it.getDamageValue(), history);
-                                                    if (obj != null && obj.size() > 0) {
-                                                        ItemStack is = it.copy();
-                                                        is.setCount(1);
-                                                        ingredients.add(is);
-                                                        break;
-                                                    }
-                                                }
-                                            } else {
-                                                ItemStack it = (ItemStack) items[i + j * width];
-                                                if (Utils.isEETransmutionItem(it.getItem())) {
-                                                    continue label173;
-                                                }
-
-                                                ItemStack is = it.copy();
-                                                is.setCount(1);
-                                                ingredients.add(is);
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if (o instanceof ShapelessArcaneRecipe) {
-                                ArrayList items = ((ShapelessArcaneRecipe) o).getInput();
-
-                                for (int i = 0; i < items.size() && i < 9; ++i) {
-                                    if (items.get(i) != null) {
-                                        if (items.get(i) instanceof ArrayList) {
-                                            for (ItemStack it : (ArrayList<ItemStack>) items.get(i)) {
-                                                if (Utils.isEETransmutionItem(it.getItem())) {
-                                                    continue label173;
-                                                }
-
-                                                AspectList obj = generateTags(it.getItem(), it.getDamageValue(), history);
-                                                if (obj != null && obj.size() > 0) {
-                                                    ItemStack is = it.copy();
-                                                    is.setCount(1);
-                                                    ingredients.add(is);
-                                                    break;
-                                                }
-                                            }
-                                        } else {
-                                            ItemStack it = (ItemStack) items.get(i);
-                                            if (Utils.isEETransmutionItem(it.getItem())) {
-                                                continue label173;
-                                            }
-
-                                            ItemStack is = it.copy();
-                                            is.setCount(1);
-                                            ingredients.add(is);
-                                        }
-                                    }
+                    try {
+                        for (var stackArr:arcaneRecipe.getAllInputSample()){
+                            for (var stack : stackArr){
+                                if (stack == null || stack.isEmpty()) continue;
+                                AspectList obj = generateTags(stack.getItem(), history);
+                                if (obj != null && obj.size() > 0) {
+                                    ItemStack is = stack.copy();
+                                    is.setCount(1);
+                                    ingredients.add(is);
+                                    break;
                                 }
                             }
-
-                            AspectList ph = getAspectsFromIngredients(ingredients, recipe.getRecipeOutput(), history);
-                            if (recipe.getAspects() != null) {
-                                for (Aspect a : recipe.getAspects().getAspectTypes()) {
-                                    ph.add(a, (int) (Math.sqrt(recipe.getAspects().getAmount(a)) / (double) ((float) recipe.getRecipeOutput().getCount())));
-                                }
-                            }
-
-                            for (Aspect as : ph.copy().getAspectTypes()) {
-                                if (ph.getAmount(as) <= 0) {
-                                    ph.remove(as);
-                                }
-                            }
-
-                            if (cval >= value) {
-                                ret = ph;
-                                value = cval;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
+                        AspectList ph = getAspectsFromIngredients(ingredients, arcaneRecipe.getRecipeOutput(), history);
+                        if (arcaneRecipe.getAspects() != null) {
+                            for (Aspect a : arcaneRecipe.getAspects()
+                                    .getAspectTypes()) {
+                                ph.addAll(
+                                        a, (int) (Math.sqrt(arcaneRecipe.getAspects()
+                                                .getAmount(a)) / (double) ((float) arcaneRecipe.getRecipeOutput()
+                                                .getCount()))
+                                );
+                            }
+                        }
+
+                        for (Aspect as : ph.copy()
+                                .getAspectTypes()) {
+                            //remove <=0(why this will be executed?)
+                            if (ph.getAmount(as) <= 0) {
+                                ph.reduceAndRemoveIfNegative(as);
+                            }
+                        }
+
+                        //pick minimum AspectList
+                        if (ph.visSize() < value && ph.visSize() > 0) {
+                            ret = ph;
+                            value= ph.visSize() ;
+                        }
+
+//                            if (cval >= value) {
+//                                ret = ph;
+//                                value = cval;
+//                            }//anazor drunk too much?
+                    } catch (Exception e) {
+                        OpenTC4.LOGGER.error(e);
                     }
                 }
             }
@@ -461,17 +427,18 @@ public class ThaumcraftCraftingManager {
             AspectList ot2 = getAspectsFromIngredients(ingredients, cr.getRecipeOutput(), history);
 
             for (Aspect tt : ot2.getAspectTypes()) {
-                out.add(tt, ot2.getAmount(tt));
+                out.addAll(tt, ot2.getAmount(tt));
             }
 
             for (Aspect tt : ot.getAspectTypes()) {
-                int amt = (int) (Math.sqrt(ot.getAmount(tt)) / (double) cr.getRecipeOutput().getCount());
-                out.add(tt, amt);
+                int amt = (int) (Math.sqrt(ot.getAmount(tt)) / (double) cr.getRecipeOutput()
+                        .getCount());
+                out.addAll(tt, amt);
             }
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.remove(as);
+                    out.reduceAndRemoveIfNegative(as);
                 }
             }
 
@@ -480,139 +447,47 @@ public class ThaumcraftCraftingManager {
     }
 
     private static AspectList generateTagsFromCraftingRecipes(Item item, List<ItemStack> history) {
-        AspectList ret = null;
-        int value = Integer.MAX_VALUE;
-        List recipeList = CraftingManager.getInstance().getRecipeList();
+        AtomicReference<AspectList> ret = new AtomicReference<>();
+        AtomicInteger value = new AtomicInteger(Integer.MAX_VALUE);
+        var server = platformUtils.getServer();
 
-        label216:
-        for (Object o : recipeList) {
-            CraftingRecipe recipe = (CraftingRecipe) o;
-            if (recipe != null && recipe.getRecipeOutput() != null && BuiltInRegistries.ITEM.getKey(recipe.getRecipeOutput().getItem()) > 0 && recipe.getRecipeOutput().getItem() != null) {
-                int idR = recipe.getRecipeOutput().getDamageValue() == 32767 ? 0 : recipe.getRecipeOutput().getDamageValue();
-                int idS = meta == 32767 ? 0 : meta;
-                if (recipe.getRecipeOutput().getItem() == item && idR == idS) {
-                    ArrayList<ItemStack> ingredients = new ArrayList<>();
-                    new AspectList();
-                    int cval = 0;
 
-                    try {
-                        if (o instanceof ShapedRecipes) {
-                            int width = ((ShapedRecipes) o).recipeWidth;
-                            int height = ((ShapedRecipes) o).recipeHeight;
-                            ItemStack[] items = ((ShapedRecipes) o).recipeItems;
-
-                            for (int i = 0; i < width && i < 3; ++i) {
-                                for (int j = 0; j < height && j < 3; ++j) {
-                                    if (items[i + j * width] != null) {
-                                        if (Utils.isEETransmutionItem(items[i + j * width].getItem())) {
-                                            continue label216;
+        server.getAllLevels()
+                .forEach(level -> {
+                    var manager = level.getRecipeManager();
+                    manager.getAllRecipesFor(RecipeType.CRAFTING)
+                            .forEach(recipe -> {
+                                var resultStack = recipe.getResultItem(level.registryAccess());
+                                if (!resultStack.is(item)) {return;}//of course recipe need to match item we expect for.
+                                List<ItemStack> ingredients = new ArrayList<>();
+                                NonNullList<Ingredient> ingredientsInternal = recipe.getIngredients();
+                                for (var ingredientInner : ingredientsInternal) {
+                                    for (ItemStack stack : ingredientInner.getItems()) {
+                                        AspectList obj = generateTags(stack.getItem(), history);
+                                        if (obj != null && obj.size() > 0) {
+                                            ItemStack is = stack.copy();
+                                            is.setCount(1);
+                                            ingredients.add(is);
+                                            break;
                                         }
-
-                                        ItemStack is = items[i + j * width].copy();
-                                        is.setCount(1);
-                                        ingredients.add(is);
                                     }
                                 }
-                            }
-                        } else if (o instanceof ShapelessRecipes) {
-                            List<ItemStack> items = ((ShapelessRecipes) o).recipeItems;
+                                AspectList ph = getAspectsFromIngredients(ingredients, resultStack, history);
 
-                            for (int i = 0; i < items.size() && i < 9; ++i) {
-                                if (items.get(i) != null) {
-                                    if (Utils.isEETransmutionItem(items.get(i).getItem())) {
-                                        continue label216;
-                                    }
-
-                                    ItemStack is = items.get(i).copy();
-                                    is.setCount(1);
-                                    ingredients.add(is);
-                                }
-                            }
-                        } else if (o instanceof ShapedOreRecipe) {
-                            int size = ((ShapedOreRecipe) o).getRecipeSize();
-                            Object[] items = ((ShapedOreRecipe) o).getInput();
-
-                            for (int i = 0; i < size && i < 9; ++i) {
-                                if (items[i] != null) {
-                                    if (items[i] instanceof ArrayList) {
-                                        for (ItemStack it : (ArrayList<ItemStack>) items[i]) {
-                                            if (Utils.isEETransmutionItem(it.getItem())) {
-                                                continue label216;
-                                            }
-
-                                            AspectList obj = generateTags(it.getItem(), it.getDamageValue(), history);
-                                            if (obj != null && obj.size() > 0) {
-                                                ItemStack is = it.copy();
-                                                is.setCount(1);
-                                                ingredients.add(is);
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        ItemStack it = (ItemStack) items[i];
-                                        if (Utils.isEETransmutionItem(it.getItem())) {
-                                            continue label216;
-                                        }
-
-                                        ItemStack is = it.copy();
-                                        is.setCount(1);
-                                        ingredients.add(is);
+                                for (Aspect as : ph.copy()
+                                        .getAspectTypes()) {
+                                    if (ph.getAmount(as) <= 0) {
+                                        ph.reduceAndRemoveIfNegative(as);
                                     }
                                 }
-                            }
-                        } else if (o instanceof ShapelessOreRecipe) {
-                            ArrayList items = ((ShapelessOreRecipe) o).getInput();
 
-                            for (int i = 0; i < items.size() && i < 9; ++i) {
-                                if (items.get(i) != null) {
-                                    if (items.get(i) instanceof ArrayList) {
-                                        for (ItemStack it : (ArrayList<ItemStack>) items.get(i)) {
-                                            if (Utils.isEETransmutionItem(it.getItem())) {
-                                                continue label216;
-                                            }
-
-                                            AspectList obj = generateTags(it.getItem(), it.getDamageValue(), history);
-                                            if (obj != null && obj.size() > 0) {
-                                                ItemStack is = it.copy();
-                                                is.setCount(1);
-                                                ingredients.add(is);
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        ItemStack it = (ItemStack) items.get(i);
-                                        if (Utils.isEETransmutionItem(it.getItem())) {
-                                            continue label216;
-                                        }
-
-                                        ItemStack is = it.copy();
-                                        is.setCount(1);
-                                        ingredients.add(is);
-                                    }
+                                if (ph.visSize() < value.get() && ph.visSize() > 0) {
+                                    ret.set(ph);
+                                    value.set(ph.visSize());
                                 }
-                            }
-                        }
-
-                        AspectList ph = getAspectsFromIngredients(ingredients, recipe.getRecipeOutput(), history);
-
-                        for (Aspect as : ph.copy().getAspectTypes()) {
-                            if (ph.getAmount(as) <= 0) {
-                                ph.remove(as);
-                            }
-                        }
-
-                        if (ph.visSize() < value && ph.visSize() > 0) {
-                            ret = ph;
-                            value = ph.visSize();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        return ret;
+                            });
+                });
+        return ret.get();
     }
 
     private static AspectList getAspectsFromIngredients(List<ItemStack> ingredients, ItemStack recipeOut, List<ItemStack> history) {
@@ -627,13 +502,13 @@ public class ThaumcraftCraftingManager {
                 if (!i$.hasNext()) {
                     for (Aspect as : mid.getAspectTypes()) {
                         if (as != null) {
-                            out.add(as, (int) ((float) mid.getAmount(as) * 0.75F / (float) recipeOut.getCount()));
+                            out.addAll(as, (int) ((float) mid.getAmount(as) * 0.75F / (float) recipeOut.getCount()));
                         }
                     }
 
                     for (Aspect as : out.getAspectTypes()) {
                         if (out.getAmount(as) <= 0) {
-                            out.remove(as);
+                            out.reduceAndRemoveIfNegative(as);
                         }
                     }
 
@@ -642,24 +517,31 @@ public class ThaumcraftCraftingManager {
 
                 ItemStack is = i$.next();
                 obj = generateTags(is.getItem(), history);
-                if (is.getItem().getContainerItem() == null) {
+                if (!is.getItem()
+                        .hasCraftingRemainingItem()) {
                     break;
                 }
 
-                if (is.getItem().getContainerItem() != is.getItem()) {
-                    AspectList objC = generateTags(is.getItem().getContainerItem(), 32767, history);
-                    Aspect[] arr$ = objC.getAspectTypes();
-                    int len$ = arr$.length;
-                    int counter = 0;
+                if (is.getItem()
+                        .getCraftingRemainingItem() != is.getItem()) {
+                    AspectList objC = generateTags(
+                            is.getItem()
+                                    .getCraftingRemainingItem(), history
+                    );
+                    if (objC != null && objC.size() > 0) {
+                        Aspect[] arr$ = objC.getAspectTypes();
+                        int len$ = arr$.length;
+                        int counter = 0;
 
-                    while (true) {
-                        if (counter >= len$) {
-                            break label57;
+                        while (true) {
+                            if (counter >= len$) {
+                                break label57;
+                            }
+
+                            Aspect as = arr$[counter];
+                            out.reduce(as, objC.getAmount(as));
+                            ++counter;
                         }
-
-                        Aspect as = arr$[counter];
-                        out.reduce(as, objC.getAmount(as));
-                        ++counter;
                     }
                 }
             }
@@ -667,14 +549,14 @@ public class ThaumcraftCraftingManager {
             if (obj != null) {
                 for (Aspect as : obj.getAspectTypes()) {
                     if (as != null) {
-                        mid.add(as, obj.getAmount(as));
+                        mid.addAll(as, obj.getAmount(as));
                     }
                 }
             }
         }
     }
 
-    private static AspectList generateTagsFromRecipes(Item item, ArrayList<ItemStack> history) {
+    private static AspectList generateTagsFromRecipes(Item item, List<ItemStack> history) {
         AspectList ret;
         ret = generateTagsFromCrucibleRecipes(item, history);
         if (ret != null) {

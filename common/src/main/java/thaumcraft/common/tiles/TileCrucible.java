@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
 import thaumcraft.api.TileThaumcraft;
@@ -112,12 +111,12 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
                }
 
                this.tank.drain(2, true);
-               this.aspects.remove(a, 1);
+               this.aspects.reduceAndRemoveIfNegative(a, 1);
                if (!a.isPrimal()) {
                   if (this.level().rand.nextBoolean()) {
-                     this.aspects.add(a.getComponents()[0], 1);
+                     this.aspects.addAll(a.getComponents()[0], 1);
                   } else {
-                     this.aspects.add(a.getComponents()[1], 1);
+                     this.aspects.addAll(a.getComponents()[1], 1);
                   }
                } else {
                   this.spill();
@@ -271,7 +270,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             }
 
             for(Aspect tag : ot.getAspects()) {
-               this.aspects.add(tag, ot.getAmount(tag));
+               this.aspects.addAll(tag, ot.getAmount(tag));
             }
 
             bubble = true;
@@ -332,8 +331,8 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       AspectList output = new AspectList();
       if (this.aspects.size() > 0) {
          Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
-         output.add(tag, 1);
-         this.aspects.remove(tag, 1);
+         output.addAll(tag, 1);
+         this.aspects.reduceAndRemoveIfNegative(tag, 1);
       }
 
       this.markDirty();

@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.InventoryTickableComponent;
-import thaumcraft.api.wands.VisContainer;
+import thaumcraft.api.wands.IVisContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
     @Override
     public void tickAsComponent(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
         var wandStackItem = usingWand.getItem();
-        if (wandStackItem instanceof VisContainer container) {
+        if (wandStackItem instanceof IVisContainer container) {
             if (entity.tickCount % 200 == 0){
                 var capacity = container.getAllVisCapacity(usingWand);
                 var owningVis = container.getAllVisOwning(usingWand);

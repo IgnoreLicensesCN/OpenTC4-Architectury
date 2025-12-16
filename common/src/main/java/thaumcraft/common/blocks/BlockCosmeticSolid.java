@@ -28,7 +28,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.misc.ItemWispEssence;
-import thaumcraft.common.tiles.TileNode;
+import thaumcraft.common.tiles.NodeBlockEntity;
 import thaumcraft.common.tiles.TileWardingStone;
 
 import java.util.List;
@@ -253,7 +253,7 @@ public class BlockCosmeticSolid extends Block {
       if (metadata == 3) {
          return new TileWardingStone();
       } else {
-         return metadata == 8 ? new TileNode() : super.createTileEntity(world, metadata);
+         return metadata == 8 ? new NodeBlockEntity() : super.createTileEntity(world, metadata);
       }
    }
 
@@ -276,7 +276,7 @@ public class BlockCosmeticSolid extends Block {
                      if (((INode)te).getAspects().getAmount(aspect) >= 5) {
                         ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
                         new AspectList();
-                        ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).add(aspect, 2));
+                        ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
                         this.dropBlockAsItem(par1World, par2, par3, par4, ess);
                      }
                   }

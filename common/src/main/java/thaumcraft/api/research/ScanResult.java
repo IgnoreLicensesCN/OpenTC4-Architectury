@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -17,9 +18,9 @@ public class ScanResult {
 	public Entity entity;
 	public String phenomena;
 
-	public ScanResult(byte type, Item item, Entity entity,
-			String phenomena) {
-		this(type,item.toString(),entity,phenomena);
+	public ScanResult(byte type, @Nullable Item item, Entity entity,
+					  String phenomena) {
+		this(type,item==null? null :item.arch$registryName().toString(),entity,phenomena);
 	}
 	public ScanResult(byte type,String item, Entity entity, String phenomena) {
 		super();

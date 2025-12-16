@@ -149,7 +149,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                   AspectList tal = new AspectList();
 
                   for(Aspect as : FocusUpgradeType.types[id].aspects.getAspects()) {
-                     tal.add(as, amt);
+                     tal.addAll(as, amt);
                   }
 
                   this.aspects = ResearchManager.reduceToPrimals(tal);

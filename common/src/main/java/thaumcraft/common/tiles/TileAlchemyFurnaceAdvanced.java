@@ -124,7 +124,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
             this.power1 -= aa;
             this.power2 -= aa;
             this.processed = (int)((float)this.processed + 5.0F + Math.max(0.0F, (1.0F - (float)this.heat / (float)this.maxPower) * 100.0F));
-            this.aspects.add(al);
+            this.aspects.addAll(al);
             this.vis = this.aspects.visSize();
             this.markDirty();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

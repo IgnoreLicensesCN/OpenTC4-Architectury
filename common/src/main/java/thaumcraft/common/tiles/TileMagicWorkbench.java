@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import thaumcraft.api.TileThaumcraft;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import static tc4tweak.ClientUtils.lastUpdate;
 import static tc4tweak.ClientUtils.postponed;

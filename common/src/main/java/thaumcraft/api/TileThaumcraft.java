@@ -3,6 +3,7 @@ package thaumcraft.api;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,5 +70,16 @@ public class TileThaumcraft extends BlockEntity {
 //        super.onDataPacket(net, pkt);
 //        this.readCustomNBT(pkt.func_148857_g());
 //    }
+
+    public void markDirtyAndUpdateSelf(){
+        this.setChanged();
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(),
+                    this.getBlockState(), Block.UPDATE_ALL);
+        }
+    }
+    //call by Block (Like AuraNodeBlock#tick call NodeBlockEntity#serverTickByBlockHandle）
+    public void serverTickByBlockHandle(){}
+    public void clientTickByBlockHandle(){}
 
 }

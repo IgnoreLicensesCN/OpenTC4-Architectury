@@ -3,11 +3,14 @@ package thaumcraft.client.lib;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -16,15 +19,15 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.*;
 import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.particles.FXScorch;
-import thaumcraft.client.fx.particles.FXSparkle;
+import thaumcraft.client.fx.migrated.particles.FXScorch;
+import thaumcraft.client.fx.migrated.particles.FXSparkle;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 
@@ -64,36 +67,27 @@ public class UtilsFX {
       return lightBrightnessTable[light];
    }
 
-   public static void infusedStoneSparkle(World world, int x, int y, int z, int md) {
-      if ((Platform.getEnvironment() == Env.CLIENT)) {
-         int color = 0;
-         switch (md) {
-            case 1:
-               color = 1;
-               break;
-            case 2:
-               color = 4;
-               break;
-            case 3:
-               color = 2;
-               break;
-            case 4:
-               color = 3;
-               break;
-            case 5:
-               color = 6;
-               break;
-            case 6:
-               color = 5;
-         }
+   public static void infusedStoneSparkle(Level world, int x, int y, int z,int colorValue) {
+      if (world instanceof ClientLevel clientLevel) {
+         int color = switch (colorValue) {
+             case 1 -> 1;
+             case 2 -> 4;
+             case 3 -> 2;
+             case 4 -> 3;
+             case 5 -> 6;
+             case 6 -> 5;
+             default -> -1;
+         };
 
-         for(int a = 0; a < Thaumcraft.proxy.particleCount(3); ++a) {
-            FXSparkle fx = new FXSparkle(world, (float)x + world.getRandom().nextFloat(), (float)y + world.getRandom().nextFloat(), (float)z + world.getRandom().nextFloat(), 1.75F, color == -1 ? world.getRandom().nextInt(5) : color, 3 + world.getRandom().nextInt(3));
+          for(int a = 0; a < ClientFXUtils.particleCount(3); ++a) {
+            FXSparkle fx = new FXSparkle(clientLevel,
+                    (float)x + world.getRandom().nextFloat(),
+                    (float)y + world.getRandom().nextFloat(),
+                    (float)z + world.getRandom().nextFloat(),
+                    1.75F, color == -1 ? world.getRandom().nextInt(5) : color, 3 + world.getRandom().nextInt(3));
             fx.setGravity(0.1F);
             Minecraft.getInstance().particleEngine.add(fx);
-
          }
-
       }
    }
 

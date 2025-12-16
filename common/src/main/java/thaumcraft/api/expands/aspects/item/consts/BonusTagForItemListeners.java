@@ -30,7 +30,7 @@ public class BonusTagForItemListeners {
                             .getAspectTypes()) {
                         int amountInContainer = currentAspects.getAmount(tag);
                         if (amountInContainer > 0) {
-                            currentAspects.add(tag, amountInContainer);
+                            currentAspects.addAll(tag, amountInContainer);
                         }
                     }
                 }
@@ -42,7 +42,7 @@ public class BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof ArmorItem armorItem) {
-                currentAspects.merge(Aspect.ARMOR, armorItem.getMaterial()
+                currentAspects.mergeWithHighest(Aspect.ARMOR, armorItem.getMaterial()
                         .getDefenseForType(armorItem.getType())
                 );
             }
@@ -56,7 +56,7 @@ public class BonusTagForItemListeners {
                 float damage = swordItem.getTier()
                         .getAttackDamageBonus() + swordItem.getDamage();
                 if (damage > 0.F) {
-                    currentAspects.merge(Aspect.WEAPON, (int) damage);
+                    currentAspects.mergeWithHighest(Aspect.WEAPON, (int) damage);
                 }
             }
         }
@@ -66,8 +66,8 @@ public class BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof BowItem) {
-                currentAspects.merge(Aspect.WEAPON, 3)
-                        .merge(Aspect.FLIGHT, 1);
+                currentAspects.mergeWithHighest(Aspect.WEAPON, 3)
+                        .mergeWithHighest(Aspect.FLIGHT, 1);
             }
         }
     };
@@ -77,7 +77,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof PickaxeItem pickaxe) {
                 Tier tier = pickaxe.getTier();
-                currentAspects.merge(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
+                currentAspects.mergeWithHighest(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
             }
         }
     };
@@ -86,7 +86,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof TieredItem tiered) {
                 Tier tier = tiered.getTier();
-                currentAspects.merge(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
+                currentAspects.mergeWithHighest(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
             }
         }
     };
@@ -119,7 +119,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof ShearsItem shears) {
                 int maxDamage = shears.getMaxDamage();
-                currentAspects.merge(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
+                currentAspects.mergeWithHighest(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
                         .getValue()
                 );
             }
@@ -130,7 +130,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof HoeItem hoe) {
                 int maxDamage = hoe.getMaxDamage();
-                currentAspects.merge(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
+                currentAspects.mergeWithHighest(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
                         .getValue()
                 );
             }
@@ -203,7 +203,7 @@ public class BonusTagForItemListeners {
                     if (aspects != null) {
                         for (var addEntry : aspects.getAspects()
                                 .entrySet()) {
-                            currentAspects.merge(addEntry.getKey(), lvl * addEntry.getValue());
+                            currentAspects.mergeWithHighest(addEntry.getKey(), lvl * addEntry.getValue());
                         }
                     }
 
@@ -211,7 +211,7 @@ public class BonusTagForItemListeners {
                 }
 
                 if (totalLevel > 0) {
-                    currentAspects.merge(Aspect.MAGIC, totalLevel);
+                    currentAspects.mergeWithHighest(Aspect.MAGIC, totalLevel);
                 }
             }
         }

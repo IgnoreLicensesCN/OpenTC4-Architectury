@@ -15,7 +15,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerFocalManipulator;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -322,7 +321,7 @@ public class GuiFocalManipulator extends GuiContainer {
                      AspectList tal = new AspectList();
 
                      for(Aspect as : FocusUpgradeType.types[this.selected].aspects.getAspects()) {
-                        tal.add(as, amt);
+                        tal.addAll(as, amt);
                      }
 
                      this.aspects = ResearchManager.reduceToPrimals(tal);

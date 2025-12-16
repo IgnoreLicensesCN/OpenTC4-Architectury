@@ -60,7 +60,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
          NBTTagCompound var4 = var2.getCompoundTagAt(var3);
          String var5 = var4.getString("tag");
          if (Aspect.getAspect(var5) != null) {
-            this.bonusAspects.merge(Aspect.getAspect(var5), 1);
+            this.bonusAspects.mergeWithHighest(Aspect.getAspect(var5), 1);
          }
       }
 
@@ -137,7 +137,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                if (r2 && this.level().rand.nextFloat() < 0.1F) {
                   this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                } else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
-                  this.bonusAspects.remove(aspect, 1);
+                  this.bonusAspects.reduceAndRemoveIfNegative(aspect, 1);
                   player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.markDirty();
                } else {
@@ -174,19 +174,19 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
 
    private void recalculateBonus() {
       if (!this.level().isDaytime() && this.level().getBlockLightValue(this.xCoord, this.yCoord + 1, this.zCoord) < 4 && !this.level().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && this.level().rand.nextInt(20) == 0) {
-         this.bonusAspects.merge(Aspect.ENTROPY, 1);
+         this.bonusAspects.mergeWithHighest(Aspect.ENTROPY, 1);
       }
 
       if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.5F && this.level().rand.nextInt(20) == 0) {
-         this.bonusAspects.merge(Aspect.AIR, 1);
+         this.bonusAspects.mergeWithHighest(Aspect.AIR, 1);
       }
 
       if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.66F && this.level().rand.nextInt(20) == 0) {
-         this.bonusAspects.merge(Aspect.AIR, 1);
+         this.bonusAspects.mergeWithHighest(Aspect.AIR, 1);
       }
 
       if ((float)this.yCoord > (float)this.level().getActualHeight() * 0.75F && this.level().rand.nextInt(20) == 0) {
-         this.bonusAspects.merge(Aspect.AIR, 1);
+         this.bonusAspects.mergeWithHighest(Aspect.AIR, 1);
       }
 
       for(int x = -8; x <= 8; ++x) {
@@ -198,83 +198,83 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                   Material bm = bi.getMaterial();
                   if (bi == ConfigBlocks.blockCustomOre && md == 1) {
                      if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.level().rand.nextInt(20) == 0) {
-                        this.bonusAspects.merge(Aspect.AIR, 1);
+                        this.bonusAspects.mergeWithHighest(Aspect.AIR, 1);
                         return;
                      }
                   } else if (bi == ConfigBlocks.blockCrystal && md == 0) {
                      if (this.bonusAspects.getAmount(Aspect.AIR) < 1 && this.level().rand.nextInt(10) == 0) {
-                        this.bonusAspects.merge(Aspect.AIR, 1);
+                        this.bonusAspects.mergeWithHighest(Aspect.AIR, 1);
                         return;
                      }
                   } else if (bm != Material.fire && bm != Material.lava && (bi != ConfigBlocks.blockCustomOre || md != 2)) {
                      if (bi == ConfigBlocks.blockCrystal && md == 1) {
                         if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.level().rand.nextInt(10) == 0) {
-                           this.bonusAspects.merge(Aspect.FIRE, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.FIRE, 1);
                            return;
                         }
                      } else if (bm == Material.ground) {
                         if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(20) == 0) {
-                           this.bonusAspects.merge(Aspect.EARTH, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCustomOre && md == 4) {
                         if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(20) == 0) {
-                           this.bonusAspects.merge(Aspect.EARTH, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCrystal && md == 3) {
                         if (this.bonusAspects.getAmount(Aspect.EARTH) < 1 && this.level().rand.nextInt(10) == 0) {
-                           this.bonusAspects.merge(Aspect.EARTH, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.EARTH, 1);
                            return;
                         }
                      } else if (bm == Material.water) {
                         if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(15) == 0) {
-                           this.bonusAspects.merge(Aspect.WATER, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCustomOre && md == 3) {
                         if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(20) == 0) {
-                           this.bonusAspects.merge(Aspect.WATER, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bi == ConfigBlocks.blockCrystal && md == 2) {
                         if (this.bonusAspects.getAmount(Aspect.WATER) < 1 && this.level().rand.nextInt(10) == 0) {
-                           this.bonusAspects.merge(Aspect.WATER, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.WATER, 1);
                            return;
                         }
                      } else if (bm != Material.circuits && bm != Material.piston) {
                         if (bi == ConfigBlocks.blockCustomOre && md == 5) {
                            if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(20) == 0) {
-                              this.bonusAspects.merge(Aspect.ORDER, 1);
+                              this.bonusAspects.mergeWithHighest(Aspect.ORDER, 1);
                               return;
                            }
                         } else if (bi == ConfigBlocks.blockCrystal && md == 4) {
                            if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(10) == 0) {
-                              this.bonusAspects.merge(Aspect.ORDER, 1);
+                              this.bonusAspects.mergeWithHighest(Aspect.ORDER, 1);
                               return;
                            }
                         } else if (bi == ConfigBlocks.blockCustomOre && md == 6) {
                            if (this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.level().rand.nextInt(20) == 0) {
-                              this.bonusAspects.merge(Aspect.ENTROPY, 1);
+                              this.bonusAspects.mergeWithHighest(Aspect.ENTROPY, 1);
                               return;
                            }
                         } else if (bi == ConfigBlocks.blockCrystal && md == 5 && this.bonusAspects.getAmount(Aspect.ENTROPY) < 1 && this.level().rand.nextInt(10) == 0) {
-                           this.bonusAspects.merge(Aspect.ENTROPY, 1);
+                           this.bonusAspects.mergeWithHighest(Aspect.ENTROPY, 1);
                            return;
                         }
                      } else if (this.bonusAspects.getAmount(Aspect.ORDER) < 1 && this.level().rand.nextInt(20) == 0) {
-                        this.bonusAspects.merge(Aspect.ORDER, 1);
+                        this.bonusAspects.mergeWithHighest(Aspect.ORDER, 1);
                         return;
                      }
                   } else if (this.bonusAspects.getAmount(Aspect.FIRE) < 1 && this.level().rand.nextInt(20) == 0) {
-                     this.bonusAspects.merge(Aspect.FIRE, 1);
+                     this.bonusAspects.mergeWithHighest(Aspect.FIRE, 1);
                      return;
                   }
 
                   if (bi == Blocks.bookshelf && this.level().rand.nextInt(300) == 0 || bi == ConfigBlocks.blockJar && md == 1 && this.level().rand.nextInt(200) == 0) {
                      Aspect[] aspects = new Aspect[0];
                      aspects = Aspect.aspects.values().toArray(aspects);
-                     this.bonusAspects.merge(aspects[this.level().rand.nextInt(aspects.length)], 1);
+                     this.bonusAspects.mergeWithHighest(aspects[this.level().rand.nextInt(aspects.length)], 1);
                      return;
                   }
                }

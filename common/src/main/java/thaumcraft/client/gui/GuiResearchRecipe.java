@@ -130,7 +130,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 for (Aspect aspect : aspectsKnownSorted.getAspectsSorted()) {
                     if (count <= 4) {
                         ++count;
-                        tal.add(aspect, aspectsKnownSorted.getAmount(aspect));
+                        tal.addAll(aspect, aspectsKnownSorted.getAmount(aspect));
                     }
 
                     if (count == 4) {

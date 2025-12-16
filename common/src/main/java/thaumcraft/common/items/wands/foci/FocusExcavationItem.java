@@ -36,7 +36,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
-import thaumcraft.api.wands.VisContainer;
+import thaumcraft.api.wands.IVisContainer;
 import thaumcraft.api.wands.WandFocusEngine;
 import thaumcraft.client.fx.beams.FXBeamWand;
 import thaumcraft.common.Thaumcraft;
@@ -47,16 +47,16 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FocusExcavationItem extends FocusBasicItem{
-    public static final AspectList wandCost = (new AspectList()).add(Aspect.EARTH, 15);
+    public static final AspectList wandCost = (new AspectList()).addAll(Aspect.EARTH, 15);
     public static final AspectList wandCostWithSilkTouchOrDowsing = (new AspectList())
-            .add(Aspect.AIR, 1)
-            .add(Aspect.FIRE, 1)
-            .add(Aspect.EARTH, 1)
-            .add(Aspect.WATER, 1)
-            .add(Aspect.ORDER, 1)
-            .add(Aspect.ENTROPY, 1)
-            .add(wandCost);
-    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).add(Aspect.MINE, 1));
+            .addAll(Aspect.AIR, 1)
+            .addAll(Aspect.FIRE, 1)
+            .addAll(Aspect.EARTH, 1)
+            .addAll(Aspect.WATER, 1)
+            .addAll(Aspect.ORDER, 1)
+            .addAll(Aspect.ENTROPY, 1)
+            .addAll(wandCost);
+    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).addAll(Aspect.MINE, 1));
 
     public FocusExcavationItem() {
         super(new Properties().stacksTo(1));
@@ -155,7 +155,7 @@ public class FocusExcavationItem extends FocusBasicItem{
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
         var wandItem = usingWand.getItem();
         var focusItem = focusStack.getItem();
-        if (!((wandItem instanceof VisContainer container) && (focusItem instanceof IWandFocusItem wandFocusItem))
+        if (!((wandItem instanceof IVisContainer container) && (focusItem instanceof IWandFocusItem wandFocusItem))
         ){
             user.stopUsingItem();
             return;
@@ -279,7 +279,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         }
         var wandItem = usingWand.getItem();
         if (!(
-                (wandItem instanceof VisContainer visContainer)
+                (wandItem instanceof IVisContainer IVisContainer)
                 && (wandItem instanceof WandFocusEngine focusEngine)
         )){
             return false;

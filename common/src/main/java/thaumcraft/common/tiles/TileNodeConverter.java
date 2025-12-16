@@ -27,10 +27,10 @@ public class TileNodeConverter extends TileThaumcraft {
 
       if (this.status == 1 && Platform.getEnvironment() != Env.CLIENT && this.count >= 1000) {
          TileEntity tile = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-         if (tile instanceof TileNode) {
-            AspectList base = ((TileNode)tile).getAspectsBase();
-            NodeType type = ((TileNode)tile).getNodeType();
-            NodeModifier mod = ((TileNode)tile).getNodeModifier();
+         if (tile instanceof NodeBlockEntity) {
+            AspectList base = ((NodeBlockEntity)tile).getAspectsBase();
+            NodeType type = ((NodeBlockEntity)tile).getNodeType();
+            NodeModifier mod = ((NodeBlockEntity)tile).getNodeModifier();
             this.level().setBlock(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockAiry, 5, 3);
             TileEntity tilenew = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
             if (tilenew instanceof TileNodeEnergized) {
@@ -55,13 +55,13 @@ public class TileNodeConverter extends TileThaumcraft {
             NodeModifier mod = ((TileNodeEnergized)tile).getNodeModifier();
             this.level().setBlock(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockAiry, 0, 3);
             TileEntity tilenew = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-            if (tilenew instanceof TileNode) {
-               ((TileNode)tilenew).setNodeModifier(mod);
-               ((TileNode)tilenew).setNodeType(type);
-               ((TileNode)tilenew).setAspects(base.copy());
+            if (tilenew instanceof NodeBlockEntity) {
+               ((NodeBlockEntity)tilenew).setNodeModifier(mod);
+               ((NodeBlockEntity)tilenew).setNodeType(type);
+               ((NodeBlockEntity)tilenew).setAspects(base.copy());
 
-               for(Aspect a : ((TileNode)tilenew).getAspects().getAspects()) {
-                  ((TileNode)tilenew).takeFromContainer(a, ((TileNode)tilenew).getAspects().getAmount(a));
+               for(Aspect a : ((NodeBlockEntity)tilenew).getAspects().getAspects()) {
+                  ((NodeBlockEntity)tilenew).takeFromContainer(a, ((NodeBlockEntity)tilenew).getAspects().getAmount(a));
                }
             }
 
@@ -77,8 +77,8 @@ public class TileNodeConverter extends TileThaumcraft {
             ++this.count;
             if (Platform.getEnvironment() != Env.CLIENT) {
                TileEntity tilenew = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-               if (tilenew instanceof TileNode) {
-                  TileNode nd = (TileNode)tilenew;
+               if (tilenew instanceof NodeBlockEntity) {
+                  NodeBlockEntity nd = (NodeBlockEntity)tilenew;
                   AspectList al = nd.getAspects();
                   if (al.getAspects().length > 0) {
                      nd.takeFromContainer(al.getAspects()[this.level().rand.nextInt(al.getAspects().length)], 1);

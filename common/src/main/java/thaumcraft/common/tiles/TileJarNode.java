@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -13,7 +12,6 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.IWandable;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class TileJarNode extends TileJar implements IAspectContainer, INode, IWandable {
@@ -46,7 +44,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       for(int j = 0; j < tlist.tagCount(); ++j) {
          NBTTagCompound rs = tlist.getCompoundTagAt(j);
          if (rs.hasKey("key")) {
-            al.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
+            al.addAll(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
          }
       }
 
@@ -54,7 +52,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       this.aspectsBase = new AspectList();
       if (oldBase > 0 && al.size() == 0) {
          for(Aspect a : this.aspects.getAspects()) {
-            this.aspectsBase.merge(a, oldBase);
+            this.aspectsBase.mergeWithHighest(a, oldBase);
          }
       } else {
          this.aspectsBase = al.copy();
@@ -108,7 +106,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
          out = this.aspects.getAmount(tt) + am - this.aspectsBase.getAmount(tt);
       }
 
-      this.aspects.add(tt, am - out);
+      this.aspects.addAll(tt, am - out);
       this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
       this.markDirty();
       return out;
@@ -116,7 +114,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.aspects.getAmount(tt) >= am) {
-         this.aspects.remove(tt, am);
+         this.aspects.reduceAndRemoveIfNegative(tt, am);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;
@@ -177,7 +175,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
 
    public void setNodeVisBase(Aspect aspect, short nodeVisBase) {
       if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
-         this.aspectsBase.merge(aspect, nodeVisBase);
+         this.aspectsBase.mergeWithHighest(aspect, nodeVisBase);
       } else {
          this.aspectsBase.reduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
       }
@@ -208,7 +206,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       if (Platform.getEnvironment() != Env.CLIENT) {
          this.drop = false;
          world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
-         TileNode tn = (TileNode)world.getTileEntity(x, y, z);
+         NodeBlockEntity tn = (NodeBlockEntity)world.getTileEntity(x, y, z);
          if (tn != null) {
             tn.setAspects(this.getAspects());
             tn.setNodeModifier(this.getNodeModifier());

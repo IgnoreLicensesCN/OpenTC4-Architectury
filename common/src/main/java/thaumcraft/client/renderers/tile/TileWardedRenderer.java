@@ -19,7 +19,7 @@ import thaumcraft.api.WorldCoordinates;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.blocks.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.foci.ItemFocusWarding;
 import thaumcraft.common.tiles.TileWarded;
 

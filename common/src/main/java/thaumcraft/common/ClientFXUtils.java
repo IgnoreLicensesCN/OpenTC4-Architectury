@@ -1090,7 +1090,7 @@ public class ClientFXUtils {
 
     }
 
-    public static void hungryNodeFX(ClientLevel worldObj, int sourceX, int sourceY, int sourceZ, int targetX, int targetY, int targetZ, Block block, int md) {
+    public static void hungryNodeFX(ClientLevel worldObj, int sourceX, int sourceY, int sourceZ, int targetX, int targetY, int targetZ, Block block) {
         if (!checkPlatformClient()) {
             return;
         }

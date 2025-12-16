@@ -52,7 +52,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       if (this.furnace == null) {
          return false;
       } else if (this.furnace.aspects.getAmount(tt) >= am) {
-         this.furnace.aspects.remove(tt, am);
+         this.furnace.aspects.reduceAndRemoveIfNegative(tt, am);
          this.furnace.markDirty();
          this.furnace.vis = this.furnace.aspects.visSize();
          this.level().markBlockForUpdate(this.furnace.xCoord, this.furnace.yCoord, this.furnace.zCoord);

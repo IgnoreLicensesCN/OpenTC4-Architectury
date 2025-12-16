@@ -26,7 +26,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
    }
 
    public AspectList getAspects() {
-      return this.aspectFilter != null ? (new AspectList()).add(this.aspectFilter, -1) : null;
+      return this.aspectFilter != null ? (new AspectList()).addAll(this.aspectFilter, -1) : null;
    }
 
    public void setAspects(AspectList aspects) {

@@ -3,7 +3,6 @@ package thaumcraft.api.wands;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +15,8 @@ import java.util.Map;
 
 import static thaumcraft.api.expands.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
-public interface VisContainer {
-
+public interface IVisContainer {
+    public static final int CENTIVIS_MULTIPLIER = 100;
     /**
      *
      * @param stack which owns vis
@@ -48,33 +47,38 @@ public interface VisContainer {
     //amount 1 -> showing 0.01
     //return overflow amount
 
+    default int addCentiVis(ItemStack stack, Aspect aspect, int centiVisAmount /*alert:not multiplied by 100*/){
+        return addCentiVis(stack, aspect, centiVisAmount, true);
+    }
     /**
      * add vis to this stack
      * @param stack stack will be added vis inside
      * @param aspect to add
-     * @param amount to add (amount 1 -> showing 0.01)
-     * @return overflow amount
+     * @param centiVisAmount to add (centiVisAmount 1 -> showing 0.01)
+     * @return overflow centiVisAmount
      */
-    default int addVis(ItemStack stack, Aspect aspect, int amount /*alert:not multiplied by 100*/) {
+    default int addCentiVis(ItemStack stack, Aspect aspect, int centiVisAmount /*alert:not multiplied by 100*/, boolean doIt) {
         int capacity = getAllVisCapacity(stack).getOrDefault(aspect,0) * getVisCapacityMultiplier();
         if (capacity == 0){
-            return amount;
+            return centiVisAmount;
         }
         var visOwning = getAllVisOwning(stack);
         int currentVis = visOwning.getOrDefault(aspect,0);
-        currentVis += amount;
+        currentVis += centiVisAmount;
         int result = Math.max(currentVis - capacity, 0);
         currentVis = Math.min(capacity,currentVis);
         visOwning.put(aspect,currentVis);
-        storeVisOwning(stack, visOwning);
+        if (doIt){
+            storeVisOwning(stack, visOwning);
+        }
         return result;
     }
 
     /**
-     * like {@link VisContainer#addVis(ItemStack, Aspect, int)} but we do this with a map.Map in WILL be modified.
+     * like {@link IVisContainer#addCentiVis(ItemStack, Aspect, int)} but we do this with a map.Map in WILL be modified.
      * @param stack which will be set in vis.
      * @param addInto a map to add many aspects into.
-     * @return remaining vis
+     * @return remaining centiVis
      */
     default Map<Aspect,Integer> addAllVis(ItemStack stack, Map<Aspect,Integer> addInto) {
         var capacity = getAllVisCapacity(stack);
@@ -123,11 +127,11 @@ public interface VisContainer {
         return res;
     }
 
-    default boolean consumeVis(@NotNull ItemStack is, @Nullable LivingEntity user,@NotNull Aspect aspect, int amount, boolean crafting) {
+    default boolean consumeVis(@NotNull ItemStack is, @Nullable LivingEntity user,@NotNull Aspect aspect, int centiVisAmount, boolean crafting) {
 
-        amount = (int) ((float) amount * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
-        if (getVisOwning(is, aspect) >= amount) {
-            storeVisOwning(is, aspect, getVisOwning(is, aspect) - amount);
+        centiVisAmount = (int) ((float) centiVisAmount * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
+        if (getVisOwning(is, aspect) >= centiVisAmount) {
+            storeVisOwning(is, aspect, getVisOwning(is, aspect) - centiVisAmount);
             return true;
         } else {
             return false;
@@ -142,7 +146,7 @@ public interface VisContainer {
                 var aspect = entries.getKey();
                 var amount = entries.getValue();
                 int cost = amount * 100;
-                nl.add(aspect, cost);
+                nl.addAll(aspect, cost);
             }
 
             return this.consumeAllVis(is, user, nl, doit, true);
@@ -159,7 +163,7 @@ public interface VisContainer {
                 var aspect = entry.getKey();
                 int cost = entry.getValue();
                 cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
-                nl.add(aspect, cost);
+                nl.addAll(aspect, cost);
             }
 
             for (var entry : nl.getAspects().entrySet()) {

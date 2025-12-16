@@ -24,32 +24,32 @@ public class UnmodifiableAspectList extends AspectList {
     }
 
     @Override
-    public AspectList merge(AspectList in) throws RuntimeException {
+    public AspectList mergeWithHighest(AspectList in) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList merge(Aspect aspect, int amount) throws RuntimeException {
+    public AspectList mergeWithHighest(Aspect aspect, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList add(AspectList in) throws RuntimeException {
+    public AspectList addAll(AspectList in) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList add(Aspect aspect, int amount) throws RuntimeException {
+    public AspectList addAll(Aspect aspect, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList remove(Aspect key) throws RuntimeException {
+    public AspectList reduceAndRemoveIfNegative(Aspect key) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList remove(Aspect key, int amount) throws RuntimeException {
+    public AspectList reduceAndRemoveIfNegative(Aspect key, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
@@ -59,12 +59,12 @@ public class UnmodifiableAspectList extends AspectList {
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void loadFrom(CompoundTag tag) {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public void load(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+    public void loadFrom(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
         throw new RuntimeException("Unmodifiable!");
     }
 

@@ -12,7 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -77,7 +76,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
 
       for(Aspect tag : Aspect.aspects.values()) {
          ItemStack i = new ItemStack(this, 1, 1);
-         this.setAspects(i, (new AspectList()).add(tag, 8));
+         this.setAspects(i, (new AspectList()).addAll(tag, 8));
          stacks.add(i);
       }
 
@@ -134,7 +133,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
             }
 
             ItemStack phial = new ItemStack(this, 1, 1);
-            this.setAspects(phial, (new AspectList()).add(tile.aspect, 8));
+            this.setAspects(phial, (new AspectList()).addAll(tile.aspect, 8));
             if (tile.takeFromContainer(tile.aspect, 8)) {
                --itemstack.stackSize;
                if (!addItemStackToInventory_tweaked(player.inventory,phial)) {
@@ -160,7 +159,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
             if (tile.takeFromContainer(asp, 8)) {
                --itemstack.stackSize;
                ItemStack phial = new ItemStack(this, 1, 1);
-               this.setAspects(phial, (new AspectList()).add(asp, 8));
+               this.setAspects(phial, (new AspectList()).addAll(asp, 8));
                if (!addItemStackToInventory_tweaked(player.inventory,phial)) {
                   world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, phial));
                }

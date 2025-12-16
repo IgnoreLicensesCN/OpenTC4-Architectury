@@ -14,7 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
@@ -187,7 +187,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
          int slot = InventoryUtils.isWandInHotbarWithRoom(this.getAspect(), this.aspectValue, par1Player);
          if (this.orbCooldown == 0 && par1Player.xpCooldown == 0 && this.getAspect().isPrimal() && slot >= 0) {
             WandCastingItem wand = (WandCastingItem)par1Player.inventory.mainInventory[slot].getItem();
-            wand.addVis(par1Player.inventory.mainInventory[slot], this.getAspect(), this.aspectValue, true);
+            wand.addCentiVis(par1Player.inventory.mainInventory[slot], this.getAspect(), this.aspectValue, true);
             par1Player.xpCooldown = 2;
             this.playSound("random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
             this.setDead();

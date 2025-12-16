@@ -13,7 +13,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -264,7 +263,7 @@ public class EntityWisp extends EntityFlying implements IMob {
       if (Aspect.getAspect(this.getType()) != null) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
          new AspectList();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).add(Aspect.getAspect(this.getType()), 2));
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(Aspect.getAspect(this.getType()), 2));
          this.entityDropItem(ess, 0.0F);
       }
 

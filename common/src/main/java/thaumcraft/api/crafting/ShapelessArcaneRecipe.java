@@ -34,6 +34,10 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
         this.input = recipe;
         this.inputSampleArr = new ItemStack[input.length];
         this.outMatcher = outMatcher;
+        this.allSampled = new ItemStack[input.length][];
+        for (int i=0;i<allSampled.length;i++){
+            allSampled[i] = input[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+        }
     }
 
     @Override
@@ -177,6 +181,12 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
             inputSampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
         }
         return inputSampleArr;
+    }
+
+    private final ItemStack[][] allSampled;
+    @Override
+    public ItemStack[][] getAllInputSample() {
+        return allSampled;
     }
 
     private final ItemStack[] outputSampleArr = new ItemStack[1];

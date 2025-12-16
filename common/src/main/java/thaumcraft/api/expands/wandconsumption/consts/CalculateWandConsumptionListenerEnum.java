@@ -11,11 +11,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.expands.wandconsumption.listeners.CalculateWandConsumptionListener;
 import thaumcraft.api.wands.*;
-import thaumcraft.common.items.wands.WandManager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
@@ -24,7 +22,7 @@ public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {
         @Override
         public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if ((casting instanceof WandComponentsOwner componentsOwner)) {
+            if ((casting instanceof IWandComponentsOwner componentsOwner)) {
                 var cap = componentsOwner.getWandComponents(stack);
                 if (cap instanceof VisCostModifierOwner visCostModifierOwner) {
                     currentConsumption -= (1-visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier()));

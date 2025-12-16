@@ -20,7 +20,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    String id;
 
    public TileNodeEnergized() {
-      this.auraBase = (new AspectList()).add(Aspect.AIR, 20).add(Aspect.FIRE, 20).add(Aspect.EARTH, 20).add(Aspect.WATER, 20).add(Aspect.ORDER, 20).add(Aspect.ENTROPY, 20);
+      this.auraBase = (new AspectList()).addAll(Aspect.AIR, 20).addAll(Aspect.FIRE, 20).addAll(Aspect.EARTH, 20).addAll(Aspect.WATER, 20).addAll(Aspect.ORDER, 20).addAll(Aspect.ENTROPY, 20);
       this.visBase = new AspectList();
       this.vis = new AspectList();
       this.nodeType = NodeType.NORMAL;
@@ -72,7 +72,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
          }
 
          if (amt >= 1) {
-            this.visBase.merge(aspect, amt);
+            this.visBase.mergeWithHighest(aspect, amt);
          }
       }
 
@@ -104,7 +104,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       for(int j = 0; j < tlist.tagCount(); ++j) {
          NBTTagCompound rs = tlist.getCompoundTagAt(j);
          if (rs.hasKey("key")) {
-            this.visBase.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
+            this.visBase.addAll(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
          }
       }
 

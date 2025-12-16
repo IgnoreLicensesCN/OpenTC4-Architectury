@@ -17,7 +17,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -33,7 +33,7 @@ public class ThaumcraftApiHelper {
         AspectList temp2 = new AspectList();
         for (Aspect tag : temp.getAspectTypes()) {
             if (tag != null)
-                temp2.add(tag, temp.getAmount(tag));
+                temp2.addAll(tag, temp.getAmount(tag));
         }
         while (temp2.size() > 6) {
             Aspect lowest = null;
@@ -69,7 +69,7 @@ public class ThaumcraftApiHelper {
                     lowest = tag;
                 }
             }
-            temp2.remove(lowest);
+            temp2.reduceAndRemoveIfNegative(lowest);
         }
         return temp2;
     }
@@ -187,7 +187,7 @@ public class ThaumcraftApiHelper {
         if (allAspects.get(amount) == null) {
             AspectList al = new AspectList();
             for (Aspect aspect : Aspect.aspects.values()) {
-                al.add(aspect, amount);
+                al.addAll(aspect, amount);
             }
             allAspects.put(amount, al);
         }
@@ -198,7 +198,7 @@ public class ThaumcraftApiHelper {
         if (allCompoundAspects.get(amount) == null) {
             AspectList al = new AspectList();
             for (Aspect aspect : Aspect.getCompoundAspects()) {
-                al.add(aspect, amount);
+                al.addAll(aspect, amount);
             }
             allCompoundAspects.put(amount, al);
         }

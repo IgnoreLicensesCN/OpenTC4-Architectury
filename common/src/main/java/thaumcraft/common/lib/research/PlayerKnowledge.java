@@ -62,27 +62,27 @@ public class PlayerKnowledge {
       }
 
       if (!known.getAspects().containsKey(Aspect.AIR)) {
-         known.add(Aspect.AIR, 0);
+         known.addAll(Aspect.AIR, 0);
       }
 
       if (!known.getAspects().containsKey(Aspect.FIRE)) {
-         known.add(Aspect.FIRE, 0);
+         known.addAll(Aspect.FIRE, 0);
       }
 
       if (!known.getAspects().containsKey(Aspect.EARTH)) {
-         known.add(Aspect.EARTH, 0);
+         known.addAll(Aspect.EARTH, 0);
       }
 
       if (!known.getAspects().containsKey(Aspect.WATER)) {
-         known.add(Aspect.WATER, 0);
+         known.addAll(Aspect.WATER, 0);
       }
 
       if (!known.getAspects().containsKey(Aspect.ORDER)) {
-         known.add(Aspect.ORDER, 0);
+         known.addAll(Aspect.ORDER, 0);
       }
 
       if (!known.getAspects().containsKey(Aspect.ENTROPY)) {
-         known.add(Aspect.ENTROPY, 0);
+         known.addAll(Aspect.ENTROPY, 0);
       }
 
       this.aspectsDiscovered.put(player, known);
@@ -91,7 +91,7 @@ public class PlayerKnowledge {
    public boolean addDiscoveredAspect(String player, Aspect aspect) {
       AspectList known = this.getAspectsDiscovered(player);
       if (!known.getAspects().containsKey(aspect)) {
-         known.add(aspect, 0);
+         known.addAll(aspect, 0);
          this.aspectsDiscovered.put(player, known);
          return true;
       } else {
@@ -113,7 +113,7 @@ public class PlayerKnowledge {
       if (aspect != null && amount != 0) {
          boolean ret = false;
          if (amount > 0) {
-            al.add(aspect, amount);
+            al.addAll(aspect, amount);
             ret = true;
          } else if (al.getAmount(aspect) > 0) {
             al.reduce(aspect, -amount);
