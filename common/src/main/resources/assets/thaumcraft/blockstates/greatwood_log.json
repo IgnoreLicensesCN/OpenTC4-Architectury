@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "thaumcraft:block/greatwood" },
+    "axis=x": { "model": "thaumcraft:block/greatwood", "x": 90, "y": 90 },
+    "axis=z": { "model": "thaumcraft:block/greatwood", "x": 90 }
+  }
+}

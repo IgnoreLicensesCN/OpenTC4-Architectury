@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "thaumcraft:block/silverwood" },
+    "axis=x": { "model": "thaumcraft:block/silverwood", "x": 90, "y": 90 },
+    "axis=z": { "model": "thaumcraft:block/silverwood", "x": 90 }
+  }
+}
