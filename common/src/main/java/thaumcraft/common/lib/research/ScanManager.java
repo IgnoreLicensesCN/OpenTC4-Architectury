@@ -37,7 +37,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.network.playerdata.PacketAspectDiscoveryS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.tiles.NodeBlockEntity;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 
 import java.util.List;
 import java.util.Objects;
@@ -358,7 +358,7 @@ public class ScanManager implements IScanEventHandler {
 
     private static AspectList generateNodeAspects(Level world, String node) {
         AspectList tags = new AspectList();
-        BlockPosWithDim loc = NodeBlockEntity.nodeIdToLocations.get(node);
+        BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
         if (loc != null) {
             ResourceLocation dim = loc.dim();
             BlockPos pos = loc.pos();

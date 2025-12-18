@@ -17,7 +17,7 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.NodeBlockEntity;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 
 public class ItemNodeRenderer implements IItemRenderer {
    AspectList aspects;
@@ -41,7 +41,7 @@ public class ItemNodeRenderer implements IItemRenderer {
          GL11.glTranslatef(0.0F, 0.0F, -0.5F);
       }
 
-      NodeBlockEntity tjf = new NodeBlockEntity();
+      AbstractNodeBlockEntity tjf = new AbstractNodeBlockEntity();
       tjf.setAspects(this.aspects);
       tjf.setNodeType(NodeType.NORMAL);
       tjf.blockType = ConfigBlocks.blockAiry;

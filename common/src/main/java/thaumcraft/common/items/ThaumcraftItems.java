@@ -84,6 +84,15 @@ public class ThaumcraftItems {
 
     public static final ZombieBrainItem ZOMBIE_BRAIN = Registry.SUPPLIER_ZOMBIE_BRAIN.get();
 
+    public static final BlockItem GREATWOOD_LOG = Registry.SUPPLIER_GREATWOOD_LOG.get();
+    public static final BlockItem SILVERWOOD_LOG = Registry.SUPPLIER_SILVERWOOD_LOG.get();
+    public static final BlockItem GREATWOOD_PLANKS = Registry.SUPPLIER_GREATWOOD_PLANKS.get();
+    public static final BlockItem SILVERWOOD_PLANKS = Registry.SUPPLIER_SILVERWOOD_PLANKS.get();
+    public static final BlockItem GREATWOOD_LEAVES = Registry.SUPPLIER_GREATWOOD_LEAVES.get();
+    public static final BlockItem SILVERWOOD_LEAVES = Registry.SUPPLIER_SILVERWOOD_LEAVES.get();
+    public static final BlockItem GREATWOOD_SAPLING = Registry.SUPPLIER_GREATWOOD_SAPLING.get();
+    public static final BlockItem SILVERWOOD_SAPLING = Registry.SUPPLIER_SILVERWOOD_SAPLING.get();
+
 
     public static class Registry {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create("thaumcraft", Registries.ITEM);
@@ -153,6 +162,15 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register("staff_rod_silverwood", SilverWoodStaffRodItem::new);
 
         public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register("zombie_brain", ZombieBrainItem::new);
+
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LOG = ITEMS.register("greatwood_log",() ->new BlockItem(ThaumcraftBlocks.GREATWWOOD_LOG,new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LOG = ITEMS.register("silverwood_log",() ->new BlockItem(ThaumcraftBlocks.SILVERWOOD_LOG,new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS = ITEMS.register("greatwood_planks", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS = ITEMS.register("silverwood_planks", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LEAVES = ITEMS.register("greatwood_leaves", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_LEAVES, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LEAVES = ITEMS.register("silverwood_leaves", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_LEAVES, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_SAPLING = ITEMS.register("greatwood_sapling", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_SAPLING, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_SAPLING = ITEMS.register("silverwood_sapling", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_SAPLING, new Item.Properties()));
     }
     public static class ItemTags {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(
@@ -167,6 +185,8 @@ public class ThaumcraftItems {
         public static final TagKey<Item> GOLD_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:gold_nuggets"));
         public static final TagKey<Item> IRON_NUGGET_FORGE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge:nuggets/iron"));
         public static final TagKey<Item> IRON_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:iron_nuggets"));
+
+        public static final TagKey<Item> PLANKS_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("minecraft:planks"));
     }
 
     public static void init() {

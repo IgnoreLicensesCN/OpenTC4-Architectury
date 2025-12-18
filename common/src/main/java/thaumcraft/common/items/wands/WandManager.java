@@ -438,7 +438,7 @@ public class WandManager implements IWandTriggerManager {
         if (Platform.getEnvironment() != Env.CLIENT) {
             TileEntity tile = world.getTileEntity(x, y, z);
             TileEntity node = world.getTileEntity(x, y + 1, z);
-            if (node != null && tile instanceof TileEldritchAltar && ((TileEldritchAltar) tile).getEyes() == 4 && !((TileEldritchAltar) tile).isOpen() && node instanceof NodeBlockEntity && ((NodeBlockEntity) node).getNodeType() == NodeType.DARK && ((TileEldritchAltar) tile).checkForMaze()) {
+            if (node != null && tile instanceof TileEldritchAltar && ((TileEldritchAltar) tile).getEyes() == 4 && !((TileEldritchAltar) tile).isOpen() && node instanceof AbstractNodeBlockEntity && ((AbstractNodeBlockEntity) node).getNodeType() == NodeType.DARK && ((TileEldritchAltar) tile).checkForMaze()) {
                 WandCastingItem wand = (WandCastingItem) itemstack.getItem();
                 if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.AIR, 100).addAll(Aspect.FIRE, 100).addAll(Aspect.EARTH, 100).addAll(Aspect.WATER, 100).addAll(Aspect.ORDER, 100).addAll(Aspect.ENTROPY, 100), true)) {
                     world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);

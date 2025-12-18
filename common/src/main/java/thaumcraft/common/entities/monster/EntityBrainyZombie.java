@@ -4,13 +4,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 
-public class EntityBrainyZombie extends EntityZombie {
+public class EntityBrainyZombie extends Zombie {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0F);
@@ -18,7 +19,7 @@ public class EntityBrainyZombie extends EntityZombie {
       this.getEntityAttribute(field_110186_bp).setBaseValue(0.0F);
    }
 
-   public EntityBrainyZombie(World world) {
+   public EntityBrainyZombie(Level world) {
       super(world);
       this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
    }

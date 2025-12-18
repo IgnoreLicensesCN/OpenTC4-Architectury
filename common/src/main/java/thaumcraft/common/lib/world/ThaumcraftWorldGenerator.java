@@ -1,6 +1,8 @@
 package thaumcraft.common.lib.world;
 
 import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.material.Material;
 import net.minecraft.core.BlockPos;
@@ -36,7 +38,7 @@ import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
-import thaumcraft.common.tiles.NodeBlockEntity;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -207,7 +209,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 //        }
     }
 
-    public static void createRandomNodeAt(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
+    public static void createRandomNodeAt(WorldGenLevel world, int x, int y, int z, RandomSource random, boolean silverwood, boolean eerie, boolean small) {
         if (basicAspects.isEmpty()) {
             for (Aspect as : c) {
                 if (as.getComponents() != null) {
@@ -399,10 +401,10 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         BlockEntity te = world.getBlockEntity(x, y, z);
-        if (te instanceof NodeBlockEntity) {
-            ((NodeBlockEntity) te).setNodeType(nt);
-            ((NodeBlockEntity) te).setNodeModifier(nm);
-            ((NodeBlockEntity) te).setAspects(al);
+        if (te instanceof AbstractNodeBlockEntity) {
+            ((AbstractNodeBlockEntity) te).setNodeType(nt);
+            ((AbstractNodeBlockEntity) te).setNodeModifier(nm);
+            ((AbstractNodeBlockEntity) te).setAspects(al);
         }
 
         world.markBlockForUpdate(x, y, z);

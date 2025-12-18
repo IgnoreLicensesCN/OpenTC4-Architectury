@@ -48,7 +48,6 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 import thaumcraft.common.items.misc.ItemCompassStone;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
@@ -66,7 +65,8 @@ import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*
 import static thaumcraft.api.nodes.NodeModifier.*;
 import static thaumcraft.api.wands.IVisContainer.CENTIVIS_MULTIPLIER;
 
-public class NodeBlockEntity extends TileThaumcraft implements INode, WandInteractableBlock {
+//i think it would be suitable to abstract this since we have 3 types.
+public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements INode, WandInteractableBlock {
     long lastActive = 0L;
     AspectList aspects = new AspectList();
     AspectList aspectsBase = new AspectList();
@@ -79,17 +79,14 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
     String id;
     byte nodeLock;
     boolean catchUp;
-    //   public Entity drainEntity;
-//   public HitResult drainCollision;
     public int drainColor;
     public Color targetColor;
     public Color color;
+    //for renderers
+    public Entity drainEntity;
+    public HitResult drainCollision;
 
-    public NodeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.AURA_NODE, blockPos, blockState);
-    }
-
-    public NodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public AbstractNodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.nodeType = NodeType.NORMAL;
         this.nodeModifier = null;
@@ -99,8 +96,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
         this.id = null;
         this.nodeLock = 0;
         this.catchUp = false;
-//      this.drainEntity = null;
-//      this.drainCollision = null;
+        this.drainEntity = null;
+        this.drainCollision = null;
         this.drainColor = 0XFFFFFF;
         this.targetColor = new Color(0XFFFFFF);
         this.color = new Color(0XFFFFFF);
@@ -214,9 +211,13 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
         if (!(livingEntity instanceof Player player)) {
             return;
         }
+        if (this.level == null) {
+            player.stopUsingItem();
+            return;
+        }
         if (!(usingWand.getItem() instanceof IVisContainer visContainer) || !(usingWand.getItem() instanceof IWandComponentsOwner componentsOwner)) {
             return;
-        }//TODO
+        }
         HitResult hitResult = EntityUtils.getHitResultFromPlayer(this.level, player, true);
         if (hitResult.getType() != Type.BLOCK) {
             player.stopUsingItem();
@@ -296,14 +297,13 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
             }
 
             if (success) {
-//            this.drainEntity = player;
-//            this.drainCollision = hitResult;
+                this.drainEntity = player;
+                this.drainCollision = hitResult;
                 this.targetColor = new Color(this.drainColor);
+            } else {
+                this.drainEntity = null;
+                this.drainCollision = null;
             }
-//         else {
-//            this.drainEntity = null;
-//            this.drainCollision = null;
-//         }
 
             if (mfu) {
                 markDirtyAndUpdateSelf();
@@ -434,7 +434,6 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
 
         this.aspects.loadFrom(tag, NODE_ASPECTS_ACCESSOR);
 
-        //TODO:Drain vis into #interact
 //      String de = nbttagcompound.getString("drainer");
 //      if (de != null && !de.isEmpty() && this.getlevel != null) {
 //         this.drainEntity = this.getlevel.getPlayerEntityByName(de);
@@ -562,7 +561,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
                         tz = (int) rayTraceLoc.z;
                         var bi = clientLevel.getBlockState(new BlockPos(tx, ty, tz));
                         if (!bi.isAir()) {
-                            ClientFXUtils.hungryNodeFX(clientLevel, tx, ty, tz, pos.getX(), pos.getY(), pos.getZ(), bi.getBlock());
+                            ClientFXUtils.hungryNodeFX(
+                                    clientLevel, tx, ty, tz, pos.getX(), pos.getY(), pos.getZ(), bi.getBlock());
                         }
                     }
                 }
@@ -647,103 +647,111 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
 
     private boolean handleDischarge(boolean change) {
         if (level == null) return false;
+        if (!nodeLockApplicable()) {
+            return change;
+        }
+        if (this.getLock() == 1) {
+            return change;
+        }
+        if (this.getNodeModifier() == FADING) {
+            return change;
+        }
         var pos = this.getBlockPos();
-        if (this.getLock() != 1) {
-            if (this.getNodeModifier() == FADING) {
+
+        boolean shiny = this.getNodeType() == NodeType.HUNGRY || this.getNodeModifier() == BRIGHT;
+        int inc = this.getNodeModifier() == null ? 2 : (shiny ? 1 : (this.getNodeModifier() == PALE ? 3 : 2));
+        if (this.count % inc != 0) {
+            return change;
+        }
+        if (this.getNodeModifier() == PALE && this.level.random.nextBoolean()) {
+            return change;
+        }
+        int xOffset = this.level.random.nextInt(5) - this.level.random.nextInt(5);
+        int yOffset = this.level.random.nextInt(5) - this.level.random.nextInt(5);
+        int zOffset = this.level.random.nextInt(5) - this.level.random.nextInt(5);
+        if (xOffset == 0 && yOffset == 0 && zOffset == 0){
+            return change;
+        }
+
+        var pos2 = new BlockPos(pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset);
+        BlockEntity te = this.level.getBlockEntity(pos2);
+        if (te instanceof AbstractNodeBlockEntity anotherNode && this.level.getBlockState(
+                        pos2)
+                .getBlock() == ThaumcraftBlocks.AURA_NODE) {
+            if (anotherNode.getLock() > 0) {
                 return change;
-            } else {
-                boolean shiny = this.getNodeType() == NodeType.HUNGRY || this.getNodeModifier() == BRIGHT;
-                int inc = this.getNodeModifier() == null ? 2 : (shiny ? 1 : (this.getNodeModifier() == PALE ? 3 : 2));
-                if (this.count % inc != 0) {
-                    return change;
-                } else {
-                    int x = this.level.random.nextInt(5) - this.level.random.nextInt(5);
-                    int y = this.level.random.nextInt(5) - this.level.random.nextInt(5);
-                    int z = this.level.random.nextInt(5) - this.level.random.nextInt(5);
-                    if (this.getNodeModifier() == PALE && this.level.random.nextBoolean()) {
-                        return change;
-                    } else {
-                        if (x != 0 || y != 0 || z != 0) {
-                            var pos2 = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
-                            BlockEntity te = this.level.getBlockEntity(pos2);
-                            if (te instanceof NodeBlockEntity nd && this.level.getBlockState(
-                                    pos2).getBlock() == ThaumcraftBlocks.AURA_NODE) {
-                                if (nd.getLock() > 0) {
-                                    return change;
-                                }
+            }
 
-                                int ndavg = (nd.getAspects()
-                                        .visSize() + nd.getAspectsBase()
-                                        .visSize()) / 2;
-                                int thisavg = (this.getAspects()
-                                        .visSize() + this.getAspectsBase()
-                                        .visSize()) / 2;
-                                if (ndavg < thisavg && nd.getAspects()
-                                        .size() > 0) {
-                                    Aspect a = nd.getAspects().randomAspect(this.level.getRandom());
-                                    boolean u = false;
-                                    if (this.getAspects()
-                                            .getAmount(a) < this.getNodeVisBase(a) && nd.takeFromContainer(a, 1)) {
-                                        this.addToContainer(a, 1);
-                                        u = true;
-                                    } else if (nd.takeFromContainer(a, 1)) {
-                                        if (this.level.random.nextInt(1 + (int) ((double) this.getNodeVisBase(
-                                                a) / (shiny ? (double) 1.5F : (double) 1.0F))) == 0) {
-                                            this.aspectsBase.addAll(a, 1);
-                                            if (this.getNodeModifier() == PALE && this.level.random.nextInt(100) == 0) {
-                                                this.setNodeModifier(null);
-                                                this.regeneration = -1;
-                                            }
-
-                                            if (this.level.random.nextInt(3) == 0) {
-                                                nd.setNodeVisBase(a, (short) (nd.getNodeVisBase(a) - 1));
-                                            }
-                                        }
-
-                                        u = true;
-                                    }
-
-                                    if (u) {
-                                        ((NodeBlockEntity) te).wait = ((NodeBlockEntity) te).regeneration / 2;
-                                        te.setChanged();
-                                        if (te.hasLevel() && te.getLevel() != null) {
-                                            te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(),
-                                                    te.getBlockState(), Block.UPDATE_ALL);
-                                        }
-                                        change = true;
-                                        double cx = pos.getX() + 0.5;
-                                        double cy = pos.getY() + 0.5;
-                                        double cz = pos.getZ() + 0.5;
-                                        double rangeSq = 32.0 * 32.0;
-
-                                        PacketFXBlockZapS2C packet = new PacketFXBlockZapS2C(
-                                                (float) (pos.getX() + x) + 0.5F,
-                                                (float) (pos.getY() + y) + 0.5F,
-                                                (float) (pos.getZ() + z) + 0.5F,
-                                                (float) cx,
-                                                (float) cy,
-                                                (float) cz
-                                        );
-
-                                        for (Player player : level.players()) {
-                                            if (player instanceof ServerPlayer serverPlayer) {
-                                                if (player.distanceToSqr(cx, cy, cz) <= rangeSq) {
-                                                    packet.sendTo(serverPlayer);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+            int ndavg = (anotherNode.getAspects()
+                    .visSize() + anotherNode.getAspectsBase()
+                    .visSize()) / 2;
+            int thisavg = (this.getAspects()
+                    .visSize() + this.getAspectsBase()
+                    .visSize()) / 2;
+            if (ndavg < thisavg && anotherNode.getAspects()
+                    .size() > 0) {
+                Aspect a = anotherNode.getAspects()
+                        .randomAspect(this.level.getRandom());
+                boolean u = false;
+                if (this.getAspects()
+                        .getAmount(a) < this.getNodeVisBase(a) && anotherNode.takeFromContainer(a, 1)) {
+                    this.addToContainer(a, 1);
+                    u = true;
+                } else if (anotherNode.takeFromContainer(a, 1)) {
+                    if (this.level.random.nextInt(1 + (int) ((double) this.getNodeVisBase(
+                            a) / (shiny ? (double) 1.5F : (double) 1.0F))) == 0) {
+                        this.aspectsBase.addAll(a, 1);
+                        if (this.getNodeModifier() == PALE && this.level.random.nextInt(100) == 0) {
+                            this.setNodeModifier(null);
+                            this.regeneration = -1;
                         }
 
-                        return change;
+                        if (this.level.random.nextInt(3) == 0) {
+                            anotherNode.setNodeVisBase(a, (short) (anotherNode.getNodeVisBase(a) - 1));
+                        }
+                    }
+
+                    u = true;
+                }
+
+                if (u) {
+                    anotherNode.wait = anotherNode.regeneration / 2;
+                    te.setChanged();
+                    if (te.hasLevel() && te.getLevel() != null) {
+                        te.getLevel()
+                                .sendBlockUpdated(
+                                        te.getBlockPos(), te.getBlockState(),
+                                        te.getBlockState(), Block.UPDATE_ALL
+                                );
+                    }
+                    change = true;
+                    double cx = pos.getX() + 0.5;
+                    double cy = pos.getY() + 0.5;
+                    double cz = pos.getZ() + 0.5;
+                    double rangeSq = 32.0 * 32.0;
+
+                    PacketFXBlockZapS2C packet = new PacketFXBlockZapS2C(
+                            (float) (pos.getX() + xOffset) + 0.5F,
+                            (float) (pos.getY() + yOffset) + 0.5F,
+                            (float) (pos.getZ() + zOffset) + 0.5F,
+                            (float) cx,
+                            (float) cy,
+                            (float) cz
+                    );
+
+                    for (Player player : level.players()) {
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            if (player.distanceToSqr(cx, cy, cz) <= rangeSq) {
+                                packet.sendTo(serverPlayer);
+                            }
+                        }
                     }
                 }
             }
-        } else {
-            return change;
         }
+
+
+        return change;
     }
 
     private boolean handleRecharge(boolean change) {
@@ -751,7 +759,7 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
         if (this.regeneration < 0) {
 
             var modifier = this.getNodeModifier();
-            this.regeneration = modifier==null?600:modifier.getRegenValue();
+            this.regeneration = modifier == null ? 600 : modifier.getRegenValue();
 
             if (this.getLock() == 1) {
                 this.regeneration *= 2;
@@ -772,7 +780,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
                     AspectList al = new AspectList();
 
                     for (var aspectEntry : this.getAspects()
-                            .getAspects().entrySet()) {
+                            .getAspects()
+                            .entrySet()) {
                         var aspect = aspectEntry.getKey();
                         var amount = aspectEntry.getValue();
                         if (amount < this.getNodeVisBase(aspect)) {
@@ -789,7 +798,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
 
         if (this.count % 1200 == 0) {
             for (var aspectEntry : this.getAspects()
-                    .getAspects().entrySet()) {
+                    .getAspects()
+                    .entrySet()) {
                 var aspect = aspectEntry.getKey();
                 var amount = aspectEntry.getValue();
                 if (amount <= 0) {
@@ -833,7 +843,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
             AspectList al = new AspectList();
 
             for (var aspectEntry : this.getAspects()
-                    .getAspects().entrySet()) {
+                    .getAspects()
+                    .entrySet()) {
                 var aspect = aspectEntry.getKey();
                 var amount = aspectEntry.getValue();
                 if (amount < this.getNodeVisBase(aspect)) {
@@ -850,12 +861,8 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
         return change;
     }
 
-    //TODO:If you are log or something contains a node,override it
-    public void removeNode(){
-        if (this.level != null) {
-            this.level.setBlock(this.getBlockPos(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-        }
-    }
+    //TODO:If you are silverTree log or something contains a node,override it
+    public abstract void removeNode();
 
     private boolean handleTaintNode(boolean change) {
         if (!(this.level instanceof ServerLevel serverLevel)) return false;
@@ -976,7 +983,7 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
                         double d0 = (double) pos.getX() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double) 5.0F;
                         double d3 = pos.getY() + this.level.random.nextInt(3) - 1;
                         double d4 = (double) pos.getZ() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double) 5.0F;
-                        EntityLiving entityliving = entity instanceof EntityLiving ? entity : null;
+                        LivingEntity entityliving = entity;
                         entity.setLocationAndAngles(d0, d3, d4, this.level.random.nextFloat() * 360.0F, 0.0F);
                         if (entityliving == null || entityliving.getCanSpawnHere()) {
                             this.level.spawnEntityInWorld(entityliving);
@@ -1031,16 +1038,19 @@ public class NodeBlockEntity extends TileThaumcraft implements INode, WandIntera
         return this.nodeLock;
     }
 
+    public abstract boolean nodeLockApplicable();
+
     public void checkLock() {
+        var pos = this.getBlockPos();
         if ((this.count <= 1 || this.count % 50 == 0) && pos.getY() > 0
-                && this.getBlockType() == ConfigBlocks.blockAiry
+                && nodeLockApplicable()
         ) {
             byte oldLock = this.nodeLock;
             this.nodeLock = 0;
             if (!this.level.isBlockIndirectlyGettingPowered(pos.getX(), pos.getY() - 1, pos.getZ())
                     && this.level.getBlock(pos.getX(), pos.getY() - 1, pos.getZ()) == ConfigBlocks.blockStoneDevice
             ) {
-                if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 9) {//节点稳定器
+                if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 9) {//节点稳定器 //TODO:Interface
                     this.nodeLock = 1;
                 } else if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 10) {//高级节点稳定器
                     this.nodeLock = 2;

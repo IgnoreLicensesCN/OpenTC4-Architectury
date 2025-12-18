@@ -1,17 +1,9 @@
 package thaumcraft.common.lib.world.biomes;
 
-import com.linearity.colorannoation.annoation.ARGBColor;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
@@ -20,7 +12,6 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
@@ -34,22 +25,17 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.monster.EntityBrainyZombie;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
-import thaumcraft.common.entities.monster.EntityWisp;
+import thaumcraft.common.entities.ThaumcraftEntities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BiomeGenEerie /*extends BiomeGenBase*/ {
-   public static final Biome INSTANCE = create();
    public static int waterColor = 0x2E91FF;
    public static int foliageColorOverride = 0x404040;
    public static int grassColorOverride = 0x404040;
    public static int skyColor = 0x220011;
 
-   private static Biome create() {
+   public static Biome createEerie() {
       MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
 
       // 生物生成
@@ -58,16 +44,16 @@ public class BiomeGenEerie /*extends BiomeGenBase*/ {
       spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 4, 1, 1));
 
       if (Config.spawnAngryZombie) {
-         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.BRAINY_ZOMBIE.get(), 32, 1, 1));
-         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.GIANT_BRAINY_ZOMBIE.get(), 8, 1, 1));
+         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.BRAINY_ZOMBIE, 32, 1, 1));
+         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.GIANT_BRAINY_ZOMBIE, 8, 1, 1));
       }
 
       if (Config.spawnWisp) {
-         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.WISP.get(), 3, 1, 1));
+         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.WISP, 3, 1, 1));
       }
 
       if (Config.spawnElder) {
-         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.ELDRITCH_GUARDIAN.get(), 1, 1, 1));
+         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.ELDRITCH_GUARDIAN, 1, 1, 1));
       }
 
       BiomeGenerationSettings.PlainBuilder generation = new BiomeGenerationSettings.PlainBuilder();

@@ -1,39 +1,89 @@
 package thaumcraft.common.lib.world.biomes;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.biome.BiomeGenBase;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.entities.monster.EntityInhabitedZombie;
 
-import java.util.Random;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 
-public class BiomeGenEldritch extends BiomeGenBase {
-   public BiomeGenEldritch(int p_i1990_1_) {
-      super(p_i1990_1_);
-      this.spawnableMonsterList.clear();
-      this.spawnableCreatureList.clear();
-      this.spawnableWaterCreatureList.clear();
-      this.spawnableCaveCreatureList.clear();
-      this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityInhabitedZombie.class, 1, 1, 1));
-      this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityEldritchGuardian.class, 1, 1, 1));
-      this.topBlock = Blocks.dirt;
-      this.fillerBlock = Blocks.dirt;
-      this.setBiomeName("Eldritch");
-      this.setDisableRain();
+//it's for outer
+public class BiomeGenEldritch /*extends BiomeGenBase*/ {
+
+   public static int waterColor = 0x009900;   // 可以自己调整
+   public static int foliageColorOverride = 0x101010;
+   public static int grassColorOverride = 0x101010;
+   public static int skyColor = 0x000000;//the outer is really dark isn't it?
+
+   public static Biome createEldritch() {
+      // 生物生成设置
+      MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
+      spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.INHABITED_ZOMBIE, 1, 1, 1));
+      spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ThaumcraftEntities.ELDRITCH_GUARDIAN, 1, 1, 1));
+
+      // 地形生成设置
+      BiomeGenerationSettings.PlainBuilder generation = new BiomeGenerationSettings.PlainBuilder();
+
+      // 示例：添加一棵树（如果你想留空可以不添加）
+//      ConfiguredFeature<TreeConfiguration, ?> treeConfigured = new ConfiguredFeature<>(
+//              Feature.TREE,
+//              new TreeConfiguration.TreeConfigurationBuilder(
+//                      BlockStateProvider.simple(Blocks.DARK_OAK_LOG),
+//                      new StraightTrunkPlacer(4, 2, 0),
+//                      BlockStateProvider.simple(Blocks.DARK_OAK_LEAVES),
+//                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+//                      new TwoLayersFeatureSize(1, 0, 1)
+//              ).ignoreVines().build()
+//      );
+
+//      Holder<ConfiguredFeature<?, ?>> treeHolder = Holder.direct(treeConfigured);
+//      PlacedFeature treePlaced = new PlacedFeature(
+//              treeHolder,
+//              List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread())
+//      );
+//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(treePlaced));
+
+      // 构建 Biome
+      return new Biome.BiomeBuilder()
+              .temperature(0.5F)
+              .downfall(0.0F) // 禁雨
+              .specialEffects(
+                      new BiomeSpecialEffects.Builder()
+                              .waterColor(waterColor)
+                              .foliageColorOverride(foliageColorOverride)
+                              .grassColorOverride(grassColorOverride)
+                              .skyColor(skyColor)
+                              .build()
+              )
+              .mobSpawnSettings(spawns.build())
+              .generationSettings(generation.build())
+              .build();
    }
 
-   @SideOnly(Side.CLIENT)
-   public int getSkyColorByTemp(float p_76731_1_) {
-      return 0;
-   }
-
-   public void decorate(Level world, Random random, int x, int z) {
-   }
-
-   public BiomeGenBase createMutation() {
-      return null;
-   }
+//   public BiomeGenEldritch(int p_i1990_1_) {
+//      super(p_i1990_1_);
+//      this.spawnableMonsterList.clear();
+//      this.spawnableCreatureList.clear();
+//      this.spawnableWaterCreatureList.clear();
+//      this.spawnableCaveCreatureList.clear();
+//      this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityInhabitedZombie.class, 1, 1, 1));
+//      this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityEldritchGuardian.class, 1, 1, 1));
+//      this.topBlock = Blocks.dirt;
+//      this.fillerBlock = Blocks.dirt;
+//      this.setBiomeName("Eldritch");
+//      this.setDisableRain();
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public int getSkyColorByTemp(float p_76731_1_) {
+//      return 0;
+//   }
+//
+//   public void decorate(Level world, Random random, int x, int z) {
+//   }
+//
+//   public BiomeGenBase createMutation() {
+//      return null;
+//   }
 }

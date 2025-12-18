@@ -260,7 +260,7 @@ public class ClientProxy extends CommonProxy {
       TileMirrorRenderer tmr = new TileMirrorRenderer();
       this.registerTileEntitySpecialRenderer(TileMirror.class, tmr);
       this.registerTileEntitySpecialRenderer(TileMirrorEssentia.class, tmr);
-      this.registerTileEntitySpecialRenderer(NodeBlockEntity.class, new TileNodeRenderer());
+      this.registerTileEntitySpecialRenderer(AbstractNodeBlockEntity.class, new TileNodeRenderer());
       this.registerTileEntitySpecialRenderer(TileNodeEnergized.class, new TileNodeEnergizedRenderer());
       this.registerTileEntitySpecialRenderer(TileNodeConverter.class, new TileNodeConverterRenderer());
       this.registerTileEntitySpecialRenderer(TileNodeStabilizer.class, new TileNodeStabilizerRenderer());

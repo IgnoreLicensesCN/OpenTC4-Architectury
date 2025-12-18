@@ -23,7 +23,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.items.relics.ThaumometerItem;
 import thaumcraft.common.tiles.TileJarNode;
-import thaumcraft.common.tiles.NodeBlockEntity;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 
 @SideOnly(Side.CLIENT)
 public class TileNodeRenderer extends TileEntitySpecialRenderer {
@@ -192,15 +192,15 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
          }
 
          renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
-         if (tile instanceof NodeBlockEntity && ((NodeBlockEntity)tile).drainEntity != null && ((NodeBlockEntity)tile).drainCollision != null) {
-            Entity drainEntity = ((NodeBlockEntity)tile).drainEntity;
+         if (tile instanceof AbstractNodeBlockEntity && ((AbstractNodeBlockEntity)tile).drainEntity != null && ((AbstractNodeBlockEntity)tile).drainCollision != null) {
+            Entity drainEntity = ((AbstractNodeBlockEntity)tile).drainEntity;
             if (drainEntity instanceof Player && !((Player)drainEntity).isUsingItem()) {
-               ((NodeBlockEntity)tile).drainEntity = null;
-               ((NodeBlockEntity)tile).drainCollision = null;
+               ((AbstractNodeBlockEntity)tile).drainEntity = null;
+               ((AbstractNodeBlockEntity)tile).drainCollision = null;
                return;
             }
 
-            HitResult drainCollision = ((NodeBlockEntity)tile).drainCollision;
+            HitResult drainCollision = ((AbstractNodeBlockEntity)tile).drainCollision;
             GL11.glPushMatrix();
             float f10 = 0.0F;
             int iiud = ((Player)drainEntity).getItemInUseDuration();
@@ -217,7 +217,7 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
             double d4 = drainEntity.prevPosY + (drainEntity.posY - drainEntity.prevPosY) * (double)partialTicks + vec3.yCoord;
             double d5 = drainEntity.prevPosZ + (drainEntity.posZ - drainEntity.prevPosZ) * (double)partialTicks + vec3.zCoord;
             double d6 = drainEntity == Minecraft.getMinecraft().thePlayer ? (double)0.0F : (double)drainEntity.getEyeHeight();
-            UtilsFX.drawFloatyLine(d3, d4 + d6, d5, (double)drainCollision.blockX + (double)0.5F, (double)drainCollision.blockY + (double)0.5F, (double)drainCollision.blockZ + (double)0.5F, partialTicks, ((NodeBlockEntity)tile).color.getRGB(), "textures/misc/wispy.png", -0.02F, (float)Math.min(iiud, 10) / 10.0F);
+            UtilsFX.drawFloatyLine(d3, d4 + d6, d5, (double)drainCollision.blockX + (double)0.5F, (double)drainCollision.blockY + (double)0.5F, (double)drainCollision.blockZ + (double)0.5F, partialTicks, ((AbstractNodeBlockEntity)tile).color.getRGB(), "textures/misc/wispy.png", -0.02F, (float)Math.min(iiud, 10) / 10.0F);
             GL11.glPopMatrix();
          }
 

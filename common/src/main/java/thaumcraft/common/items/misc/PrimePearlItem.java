@@ -26,7 +26,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.NodeBlockEntity;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class PrimePearlItem extends Item {
         var pos = useOnContext.getClickedPos();
 
         BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof NodeBlockEntity node) {
+        if (te instanceof AbstractNodeBlockEntity node) {
 //            player.swingItem();
             player.swing(useOnContext.getHand(), true);
             if (!world.isClientSide) {

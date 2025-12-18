@@ -206,7 +206,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INode, IWa
       if (Platform.getEnvironment() != Env.CLIENT) {
          this.drop = false;
          world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
-         NodeBlockEntity tn = (NodeBlockEntity)world.getTileEntity(x, y, z);
+         AbstractNodeBlockEntity tn = (AbstractNodeBlockEntity)world.getTileEntity(x, y, z);
          if (tn != null) {
             tn.setAspects(this.getAspects());
             tn.setNodeModifier(this.getNodeModifier());

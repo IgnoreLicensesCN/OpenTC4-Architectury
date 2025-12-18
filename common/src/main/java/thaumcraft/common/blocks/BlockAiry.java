@@ -286,7 +286,7 @@ public class BlockAiry extends BlockContainer {
 
    public TileEntity createTileEntity(World world, int metadata) {
       if (metadata == 0) {
-         return new NodeBlockEntity();
+         return new AbstractNodeBlockEntity();
       } else if (metadata == 1) {
          return new TileNitor();
       } else if (metadata == 4) {
