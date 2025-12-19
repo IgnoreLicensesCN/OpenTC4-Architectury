@@ -14,6 +14,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.lib.world.WorldGenCustomFlowers;
 
+//note that TreeConfiguration isnt used.
 public class SilverwoodTreeFeature extends Feature<TreeConfiguration> {
 
     private final int minHeight;
@@ -75,9 +76,11 @@ public class SilverwoodTreeFeature extends Feature<TreeConfiguration> {
             if (!flag) {
                 return false;
             } else {
+
                 BlockState soilState = world.getBlockState(posBelow);
 
                 boolean isSoil = Blocks.OAK_SAPLING.canSurvive(Blocks.OAK_SAPLING.defaultBlockState(), level, pos);
+
                 if (isSoil && y < 256 - height - 1) {
                     soilState.neighborChanged(world, posBelow, Blocks.OAK_SAPLING, pos, false);
                     int start = y + height - 5;

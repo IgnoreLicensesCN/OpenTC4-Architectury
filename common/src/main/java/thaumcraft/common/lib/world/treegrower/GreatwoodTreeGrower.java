@@ -6,15 +6,13 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenConfiguredFeatures;
-import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
 
-//sapling
-public class SilverwoodTreeGrower extends AbstractTreeGrower {
-    public SilverwoodTreeGrower() {}
+public class GreatwoodTreeGrower extends AbstractTreeGrower {
+    public GreatwoodTreeGrower() {}
 
     @Override
     protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource randomSource, boolean bl) {
 
-        return (ResourceKey<ConfiguredFeature<?,?>>)(Object)ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_PLANTED_CONFIGURED_KEY;
+        return //TODO
     }
 }

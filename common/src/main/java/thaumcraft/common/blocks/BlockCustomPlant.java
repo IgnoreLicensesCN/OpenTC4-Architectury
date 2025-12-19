@@ -118,7 +118,7 @@ public class BlockCustomPlant extends BlockBush {
          if (Platform.getEnvironment() != Env.CLIENT) {
             world.setBlockToAir(i, j, k);
             WorldGenGreatwoodTrees obj = new WorldGenGreatwoodTrees(true);
-            if (!obj.generate(world, random, i, j, k, false)) {
+            if (!obj.generateInternal(world, random, i, j, k, false)) {
                world.setBlock(i, j, k, this, 0, 0);
             }
 

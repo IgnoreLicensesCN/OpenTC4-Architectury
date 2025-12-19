@@ -163,7 +163,7 @@ public class ThaumcraftItems {
 
         public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register("zombie_brain", ZombieBrainItem::new);
 
-        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LOG = ITEMS.register("greatwood_log",() ->new BlockItem(ThaumcraftBlocks.GREATWWOOD_LOG,new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LOG = ITEMS.register("greatwood_log",() ->new BlockItem(ThaumcraftBlocks.GREATWOOD_LOG,new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LOG = ITEMS.register("silverwood_log",() ->new BlockItem(ThaumcraftBlocks.SILVERWOOD_LOG,new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS = ITEMS.register("greatwood_planks", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS = ITEMS.register("silverwood_planks", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS, new Item.Properties()));

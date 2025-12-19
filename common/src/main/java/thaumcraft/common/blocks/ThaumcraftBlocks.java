@@ -22,7 +22,7 @@ public class ThaumcraftBlocks {
     public static final FluxGasBlock FLUX_GAS = Registry.SUPPLIER_FLUX_GAS.get();
     public static final NitorBlock NITOR_BLOCK = Registry.SUPPLIER_NITOR_BLOCK.get();
     public static final AuraNodeBlock AURA_NODE = Registry.SUPPLIER_AURA_NODE.get();
-    public static final RotatedPillarBlock GREATWWOOD_LOG = Registry.SUPPLIER_GREATWWOOD_LOG.get();
+    public static final RotatedPillarBlock GREATWOOD_LOG = Registry.SUPPLIER_GREATWWOOD_LOG.get();
     public static final RotatedPillarBlock SILVERWOOD_LOG = Registry.SUPPLIER_SILVERWOOD_LOG.get();
     public static final SilverWoodKnotBlock SILVERWOOD_KNOT = Registry.SUPPLIER_SILVERWOOD_KNOT.get();
     public static final Block GREATWOOD_PLANKS = Registry.SUPPLIER_GREATWOOD_PLANKS.get();

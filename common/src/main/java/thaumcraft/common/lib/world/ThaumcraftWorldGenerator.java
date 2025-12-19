@@ -596,7 +596,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         Biome biome = world.getBiome(new BlockPos(x, y, z)).value();
 //        int bio = world.getBiomeGenForCoords(x, z).biomeID;
         if (BiomeHandler.getBiomeSupportsGreatwood(biome) > random.nextFloat()) {
-            boolean t = (new WorldGenGreatwoodTrees(false)).generate(world, random, x, y, z, random.nextInt(8) == 0);
+            boolean t = (new WorldGenGreatwoodTrees(false)).generateInternal(world, random, x, y, z, random.nextInt(8) == 0);
             return t;
         } else {
             return false;

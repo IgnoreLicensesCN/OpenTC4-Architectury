@@ -3,6 +3,8 @@ package thaumcraft.common.lib.utils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.EntityItem;
@@ -315,39 +317,69 @@ public class BlockUtils {
       return false;
    }
 
-   public static boolean isBlockTouching(IBlockAccess world, int x, int y, int z, Block id) {
-      return world.getBlock(x, y, z + 1) == id || world.getBlock(x, y, z - 1) == id || world.getBlock(x + 1, y, z) == id || world.getBlock(x - 1, y, z) == id || world.getBlock(x, y + 1, z) == id || world.getBlock(x, y - 1, z) == id;
+   private static final int[][] DIRS_6 = {
+           { 0,  0,  1},
+           { 0,  0, -1},
+           { 1,  0,  0},
+           {-1,  0,  0},
+           { 0,  1,  0},
+           { 0, -1,  0}
+   };
+
+
+   public static boolean isBlockTouching(BlockGetter world, BlockPos pos, Block block) {
+      return world.getBlockState(pos.north()).getBlock() == block
+              || world.getBlockState(pos.south()).getBlock() == block
+              || world.getBlockState(pos.east()).getBlock()  == block
+              || world.getBlockState(pos.west()).getBlock()  == block
+              || world.getBlockState(pos.above()).getBlock() == block
+              || world.getBlockState(pos.below()).getBlock() == block;
    }
 
-   public static boolean isBlockTouching(IBlockAccess world, int x, int y, int z, Block id, int md) {
-      return world.getBlock(x, y, z + 1) == id && world.getBlockMetadata(x, y, z + 1) == md || world.getBlock(x, y, z - 1) == id && world.getBlockMetadata(x, y, z - 1) == md || world.getBlock(x + 1, y, z) == id && world.getBlockMetadata(x + 1, y, z) == md || world.getBlock(x - 1, y, z) == id && world.getBlockMetadata(x - 1, y, z) == md || world.getBlock(x, y + 1, z) == id && world.getBlockMetadata(x, y + 1, z) == md || world.getBlock(x, y - 1, z) == id && world.getBlockMetadata(x, y - 1, z) == md;
-   }
-
-   public static boolean isBlockTouchingOnSide(IBlockAccess world, int x, int y, int z, Block id, int md, int side) {
-      if ((side <= 3 || world.getBlock(x, y, z + 1) != id || world.getBlockMetadata(x, y, z + 1) != md) && (side <= 3 || world.getBlock(x, y, z - 1) != id || world.getBlockMetadata(x, y, z - 1) != md) && (side <= 1 || side >= 4 || world.getBlock(x + 1, y, z) != id || world.getBlockMetadata(x + 1, y, z) != md) && (side <= 1 || side >= 4 || world.getBlock(x - 1, y, z) != id || world.getBlockMetadata(x - 1, y, z) != md) && (side <= 1 || world.getBlock(x, y + 1, z) != id || world.getBlockMetadata(x, y + 1, z) != md) && (side <= 1 || world.getBlock(x, y - 1, z) != id || world.getBlockMetadata(x, y - 1, z) != md)) {
-         if ((side <= 3 || world.getBlock(x, y + 1, z + 1) != id || world.getBlockMetadata(x, y + 1, z + 1) != md) && (side <= 3 || world.getBlock(x, y + 1, z - 1) != id || world.getBlockMetadata(x, y + 1, z - 1) != md) && (side <= 1 || side >= 4 || world.getBlock(x + 1, y + 1, z) != id || world.getBlockMetadata(x + 1, y + 1, z) != md) && (side <= 1 || side >= 4 || world.getBlock(x - 1, y + 1, z) != id || world.getBlockMetadata(x - 1, y + 1, z) != md)) {
-            if ((side <= 3 || world.getBlock(x, y - 1, z + 1) != id || world.getBlockMetadata(x, y - 1, z + 1) != md) && (side <= 3 || world.getBlock(x, y - 1, z - 1) != id || world.getBlockMetadata(x, y - 1, z - 1) != md) && (side <= 1 || side >= 4 || world.getBlock(x + 1, y - 1, z) != id || world.getBlockMetadata(x + 1, y - 1, z) != md) && (side <= 1 || side >= 4 || world.getBlock(x - 1, y - 1, z) != id || world.getBlockMetadata(x - 1, y - 1, z) != md)) {
-               switch (side) {
-                  case 0:
-                     if (world.getBlock(x, y - 1, z) == id && world.getBlockMetadata(x, y - 1, z) == md) {
-                        return true;
-                     }
-                     break;
-                  case 1:
-                     if (world.getBlock(x, y + 1, z) == id && world.getBlockMetadata(x, y + 1, z) == md) {
-                        return true;
-                     }
-               }
-
-               return false;
-            } else {
-               return true;
-            }
-         } else {
-            return true;
-         }
-      } else {
+   //| 旧 side | Direction |
+   //| ------ | --------- |
+   //| 0      | `DOWN`    |
+   //| 1      | `UP`      |
+   //| 2      | `NORTH`   |
+   //| 3      | `SOUTH`   |
+   //| 4      | `WEST`    |
+   //| 5      | `EAST`    |
+   public static boolean isBlockTouchingOnSide(
+           BlockGetter world,
+           BlockPos pos,
+           Block block,
+           Direction side
+   ) {
+      // 1️⃣ 正对方向
+      if (world.getBlockState(pos.relative(side)).getBlock() == block) {
          return true;
       }
+
+      // 2️⃣ 同层的“侧向邻居”
+      for (Direction dir : Direction.Plane.HORIZONTAL) {
+         if (dir.getAxis() == side.getAxis()) {
+            continue; // 跳过同轴方向
+         }
+         if (world.getBlockState(pos.relative(dir)).getBlock() == block) {
+            return true;
+         }
+      }
+
+      // 3️⃣ 上下两层的侧向邻居
+      for (Direction vertical : new Direction[]{Direction.UP, Direction.DOWN}) {
+         BlockPos shifted = pos.relative(vertical);
+
+         for (Direction dir : Direction.Plane.HORIZONTAL) {
+            if (dir.getAxis() == side.getAxis()) {
+               continue;
+            }
+            if (world.getBlockState(shifted.relative(dir)).getBlock() == block) {
+               return true;
+            }
+         }
+      }
+
+      return false;
    }
+
 }

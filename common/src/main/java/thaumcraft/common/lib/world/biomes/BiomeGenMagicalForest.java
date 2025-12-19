@@ -26,10 +26,8 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityPech;
 import thaumcraft.common.entities.monster.EntityWisp;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.WorldGenBigMagicTree;
-import thaumcraft.common.lib.world.WorldGenGreatwoodTrees;
-import thaumcraft.common.lib.world.WorldGenManaPods;
-import thaumcraft.common.lib.world.WorldGenSilverwoodTrees;
+import thaumcraft.common.lib.world.*;
+import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -57,10 +55,10 @@ public class BiomeGenMagicalForest /*extends BiomeGenBase*/ {
 
       // 地形生成
       BiomeGenerationSettings.PlainBuilder generation = new BiomeGenerationSettings.PlainBuilder();
+      {
+         //TODO:Woods and flowers(silverwood finished)
 
-      //TODO:Woods and flowers
-
-      // 树示例（bigTree / silverwood / greatwood 可以改成 Feature 版本）
+         // 树示例（bigTree / silverwood / greatwood 可以改成 Feature 版本）
 //      ConfiguredFeature<TreeConfiguration, ?> treeConfigured = new ConfiguredFeature<>(
 //              Feature.TREE,
 //              new TreeConfiguration.TreeConfigurationBuilder(
@@ -71,16 +69,14 @@ public class BiomeGenMagicalForest /*extends BiomeGenBase*/ {
 //                      new TwoLayersFeatureSize(1, 0, 1)
 //              ).ignoreVines().build()
 //      );
-//      Holder<ConfiguredFeature<?, ?>> treeHolder = Holder.direct(treeConfigured);
-//      PlacedFeature treePlaced = new PlacedFeature(
-//              treeHolder,
-//              List.of(RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread())
-//      );
-//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(treePlaced));
-
-      // 草 / 花 / ManaPods / BigMushrooms 可以通过自定义 Feature 实现
-      // 这里只是占位
-      // generation.addFeature(...);
+         Holder<ConfiguredFeature<?, ?>> silverTreeHolder = Holder.direct(
+                 ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_GENERATED_CONFIGURED);
+         PlacedFeature silverTreePlaced = new PlacedFeature(
+                 silverTreeHolder, List.of(RarityFilter.onAverageOnceEvery(15), InSquarePlacement.spread()));
+         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(silverTreePlaced));
+         // 草 / 花 / ManaPods / BigMushrooms 可以通过自定义 Feature 实现
+         // 这里只是占位
+         // generation.addFeature(...);}
 
       // 构建 Biome
       return new Biome.BiomeBuilder()

@@ -344,7 +344,7 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
    public void setScale(double par1, double par3, double par5) {
    }
 
-   public boolean generate(Level par1World, Random par2Random, int par3, int par4, int par5, boolean spiders) {
+   public boolean generateInternal(Level par1World, Random par2Random, int par3, int par4, int par5, boolean spiders) {
       this.level() = par1World;
       long var6 = par2Random.nextLong();
       this.rand.setSeed(var6);
@@ -422,6 +422,6 @@ public class WorldGenGreatwoodTrees extends WorldGenAbstractTree {
    }
 
    public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
-      return this.generate(var1, var2, var3, var4, var5, var2.nextInt(8) == 0);
+      return this.generateInternal(var1, var2, var3, var4, var5, var2.nextInt(8) == 0);
    }
 }
