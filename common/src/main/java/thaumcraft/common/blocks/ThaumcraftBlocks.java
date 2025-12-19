@@ -15,6 +15,7 @@ import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.worldgenerated.AuraNodeBlock;
 import thaumcraft.common.blocks.worldgenerated.SilverWoodKnotBlock;
 import thaumcraft.common.blocks.worldgenerated.SilverwoodLeavesBlock;
+import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 
 public class ThaumcraftBlocks {

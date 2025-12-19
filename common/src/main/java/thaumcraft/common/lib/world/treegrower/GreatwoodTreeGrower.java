@@ -13,6 +13,6 @@ public class GreatwoodTreeGrower extends AbstractTreeGrower {
     @Override
     protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource randomSource, boolean bl) {
 
-        return //TODO
+        return (ResourceKey<ConfiguredFeature<?,?>>)(Object)ThaumcraftWorldGenConfiguredFeatures.Configureds.GREATWOOD_PLANTED_CONFIGURED_KEY;
     }
 }
