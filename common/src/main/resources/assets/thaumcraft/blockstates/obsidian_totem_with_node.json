@@ -1,0 +1,61 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_shaded"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_base"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "down": "true",
+        "rand": 0
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_rand0"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "down": "true",
+        "rand": 1
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_rand1"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "down": "true",
+        "rand": 2
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_rand2"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "down": "true",
+        "rand": 3
+      },
+      "apply": {
+        "model": "thaumcraft:block/obsidian_totem_rand3"
+      }
+    }
+  ]
+}

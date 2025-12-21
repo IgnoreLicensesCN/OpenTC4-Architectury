@@ -12,9 +12,7 @@ import thaumcraft.common.blocks.crafted.NitorBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.blocks.worldgenerated.AuraNodeBlock;
-import thaumcraft.common.blocks.worldgenerated.SilverWoodKnotBlock;
-import thaumcraft.common.blocks.worldgenerated.SilverwoodLeavesBlock;
+import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 
@@ -32,6 +30,9 @@ public class ThaumcraftBlocks {
     public static final SilverwoodLeavesBlock SILVERWOOD_LEAVES = Registry.SUPPLIER_SILVERWOOD_LEAVES.get();
     public static final SaplingBlock GREATWOOD_SAPLING = Registry.SUPPLIER_GREATWOOD_SAPLING.get();
     public static final SaplingBlock SILVERWOOD_SAPLING = Registry.SUPPLIER_SILVERWOOD_SAPLING.get();
+    public static final ObsidianTotemBlock OBSIDIAN_TOTEM = Registry.SUPPLIER_OBSIDIAN_TOTEM.get();
+    public static final ObsidianTotemWithNodeBlock OBSIDIAN_TOTEM_WITH_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE.get();
+    public static final Block OBSIDIAN_TILE = Registry.SUPPLIER_OBSIDIAN_TILE.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register("flux_goo", FluxGooBlock::new);
@@ -45,21 +46,11 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<Block> SUPPLIER_SILVERWOOD_PLANKS = BLOCKS.register("silverwood_planks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
         public static final RegistrySupplier<LeavesBlock> SUPPLIER_GREATWOOD_LEAVES = BLOCKS.register("greatwood_leaves", () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
         public static final RegistrySupplier<SilverwoodLeavesBlock> SUPPLIER_SILVERWOOD_LEAVES = BLOCKS.register("silverwood_leaves", SilverwoodLeavesBlock::new);
-        public static final RegistrySupplier<SaplingBlock> SUPPLIER_GREATWOOD_SAPLING =
-                BLOCKS.register("greatwood_sapling",
-                        () -> new SaplingBlock(
-                                new GreatwoodTreeGrower(),
-                                BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)
-                        )
-                );
-        public static final RegistrySupplier<SaplingBlock> SUPPLIER_SILVERWOOD_SAPLING =
-                BLOCKS.register("silverwood_sapling",
-                        () -> new SaplingBlock(
-                                new SilverwoodTreeGrower(),
-                                BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)
-                        )
-                );
-
+        public static final RegistrySupplier<SaplingBlock> SUPPLIER_GREATWOOD_SAPLING = BLOCKS.register("greatwood_sapling", () -> new SaplingBlock(new GreatwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+        public static final RegistrySupplier<SaplingBlock> SUPPLIER_SILVERWOOD_SAPLING = BLOCKS.register("silverwood_sapling", () -> new SaplingBlock(new SilverwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+        public static final RegistrySupplier<ObsidianTotemBlock> SUPPLIER_OBSIDIAN_TOTEM = BLOCKS.register("obsidian_totem", ObsidianTotemBlock::new);
+        public static final RegistrySupplier<ObsidianTotemWithNodeBlock> SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE = BLOCKS.register("obsidian_totem_with_node", ObsidianTotemWithNodeBlock::new);
+        public static final RegistrySupplier<Block> SUPPLIER_OBSIDIAN_TILE = BLOCKS.register("obsidian_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)));
 
         static {
             BLOCKS.register();

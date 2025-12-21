@@ -34,6 +34,22 @@ import thaumcraft.common.tiles.TileWardingStone;
 import java.util.List;
 import java.util.Random;
 
+//"block.thaumcraft.obsidian_totem": "黑曜石图腾",
+//    "block.thaumcraft.obsidian_tile": "黑曜石瓦块",
+//    "tile.blockCosmeticSolid.2.name": "旅行者铺路石",
+//    "tile.blockCosmeticSolid.3.name": "守卫者铺路石",
+//    "tile.blockCosmeticSolid.4.name": "神秘方块",
+//    "tile.blockCosmeticSolid.5.name": "油脂方块",
+//    "tile.blockCosmeticSolid.6.name": "奥术石块",
+//    "tile.blockCosmeticSolid.7.name": "奥术石砖",
+//    "block.thaumcraft.obsidian_totem_with_node": "蕴灵黑曜石图腾",
+//    "tile.blockCosmeticSolid.9.name": "傀儡脚镣",
+//    "tile.blockCosmeticSolid.10.name": "激活傀儡脚镣",
+//    "tile.blockCosmeticSolid.11.name": "荒古石头",
+//    "tile.blockCosmeticSolid.12.name": "荒古岩石",
+//    "tile.blockCosmeticSolid.13.name": "荒古石头",
+//    "tile.blockCosmeticSolid.14.name": "陈年石头",
+//    "tile.blockCosmeticSolid.15.name": "荒古石座",
 public class BlockCosmeticSolid extends Block {
    public IIcon[] icon = new IIcon[27];
 
@@ -55,6 +71,7 @@ public class BlockCosmeticSolid extends Block {
       this.icon[4] = ir.registerIcon("thaumcraft:obsidiantotem3");
       this.icon[5] = ir.registerIcon("thaumcraft:obsidiantotem4");
       this.icon[6] = ir.registerIcon("thaumcraft:obsidiantotembaseshaded");
+      
       this.icon[7] = ir.registerIcon("thaumcraft:paving_stone_travel");
       this.icon[8] = ir.registerIcon("thaumcraft:paving_stone_warding");
       this.icon[9] = ir.registerIcon("thaumcraft:thaumiumblock");
@@ -77,39 +94,46 @@ public class BlockCosmeticSolid extends Block {
       this.icon[26] = ir.registerIcon("thaumcraft:es_p");
    }
 
+   //0 = DOWN
+   //1 = UP
+   //2 = NORTH (-Z)
+   //3 = SOUTH (+Z)
+   //4 = WEST  (-X)
+   //5 = EAST  (+X)
    @SideOnly(Side.CLIENT)
-   public IIcon getIcon(int par1, int par2) {
-      if (par2 > 1 && par2 != 8) {
-         if (par2 == 2) {
+   public IIcon getIcon(int direction, int meta) {
+      if (meta > 1 && meta != 8) {
+         if (meta == 2) {
             return this.icon[7];
-         } else if (par2 == 3) {
+         } else if (meta == 3) {
             return this.icon[8];
-         } else if (par2 == 4) {
+         } else if (meta == 4) {
             return this.icon[9];
-         } else if (par2 == 5) {
-            return par1 > 1 ? this.icon[10] : this.icon[11];
-         } else if (par2 == 6) {
+         } else if (meta == 5) {
+            return direction > 1 ? this.icon[10] : this.icon[11];
+         } else if (meta == 6) {
             return this.icon[12];
-         } else if (par2 == 7) {
+         } else if (meta == 7) {
             return this.icon[13];
-         } else if (par2 != 9 && par2 != 10) {
-            if (par2 != 11 && par2 != 13) {
-               if (par2 == 12) {
+         } else if (meta != 9 && meta != 10) {
+            if (meta != 11 && meta != 13) {
+               if (meta == 12) {
                   return this.icon[21];
-               } else if (par2 == 14) {
+               } else if (meta == 14) {
                   return this.icon[25];
-               } else if (par2 == 15) {
-                  return par1 <= 1 ? this.icon[17] : this.icon[26];
+               } else if (meta == 15) {
+                  return direction <= 1 ? this.icon[17] : this.icon[26];
                } else {
-                  return super.getIcon(par1, par2);
+                  return super.getIcon(direction, meta);
                }
             } else {
                return this.icon[17];
             }
          } else {
-            return par1 == 0 ? this.icon[13] : (par1 == 1 ? (par2 == 9 ? this.icon[14] : this.icon[16]) : this.icon[15]);
+            return direction == 0 ? this.icon[13] : (direction == 1 ? (meta == 9 ? this.icon[14] : this.icon[16]) : this.icon[15]);
          }
-      } else {
+      }
+      else {
          return this.icon[0];
       }
    }
@@ -117,13 +141,26 @@ public class BlockCosmeticSolid extends Block {
    @SideOnly(Side.CLIENT)
    public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
       int md = ba.getBlockMetadata(x, y, z);
-      if ((md == 0 || md == 8) && side > 1 && side < 100) {
+      if ((md == 0 || md == 8)
+              && side > 1
+              && side < 100
+      ) {
+         //totem
+
          if (ba.getBlock(x, y + 1, z) != this || ba.getBlockMetadata(x, y + 1, z) != 0 && ba.getBlockMetadata(x, y + 1, z) != 8) {
-            return ba.getBlock(x, y - 1, z) == this && (ba.getBlockMetadata(x, y - 1, z) == 0 || ba.getBlockMetadata(x, y - 1, z) == 8) ? this.icon[2 + Math.abs((side + x % 4 + z % 4 + y % 4) % 4)] : this.icon[1];
+            //no totem at top
+            boolean randomSideFlag = ba.getBlock(x, y - 1, z) == this && (ba.getBlockMetadata(x, y - 1, z) == 0
+                    || ba.getBlockMetadata(x, y - 1, z) == 8);//totemAtBelow
+            if (randomSideFlag) {
+               return this.icon[2 + Math.abs((side + x % 4 + z % 4 + y % 4) % 4)];
+            }
+            return this.icon[1];
          } else {
+            //totem at top
             return this.icon[6];
          }
-      } else if (md != 11 && md != 13 && side < 100) {
+      }
+      else if (md != 11 && md != 13 && side < 100) {
          if (md == 12) {
             switch (side) {
                case 0:

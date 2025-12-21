@@ -289,7 +289,7 @@ public class ItemThaumometerRenderer /*implements IItemRenderer*/ {
 //
 //      if (scan.type == 3 && scan.phenomena.startsWith("NODE")) {
 //         // 渲染节点名称
-//         renderFloatingText(matrix, buffer, Component.literal("tile.blockAiry.0.name").toString(), player);
+//         renderFloatingText(matrix, buffer, Component.literal("block.thaumcraft.aura_node").toString(), player);
 ////         INode node = (INode) player.level().getBlockEntity(scan.blockPos);
 ////         if (node != null) {
 ////            String name = "NODE" + node.getId();

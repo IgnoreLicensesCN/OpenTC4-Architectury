@@ -35,6 +35,9 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock {
             SoundEvents.WOOD_HIT, // hit
             SoundEvents.WOOD_FALL  // fall
     );
+    public SilverWoodKnotBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
     public SilverWoodKnotBlock() {
         super(BlockBehaviour.Properties.of()
                 .mapColor(blockState ->
