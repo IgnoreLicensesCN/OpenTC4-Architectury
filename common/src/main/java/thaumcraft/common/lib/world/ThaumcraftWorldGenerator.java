@@ -209,6 +209,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 //        }
     }
 
+    @Deprecated(forRemoval = true,since = "we have new api called same name")
     public static void createRandomNodeAt(WorldGenLevel world, int x, int y, int z, RandomSource random, boolean silverwood, boolean eerie, boolean small) {
         if (basicAspects.isEmpty()) {
             for (Aspect as : c) {

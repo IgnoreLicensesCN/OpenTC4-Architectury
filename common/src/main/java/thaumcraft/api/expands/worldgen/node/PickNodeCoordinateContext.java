@@ -1,18 +1,16 @@
 package thaumcraft.api.expands.worldgen.node;
 
+import net.minecraft.core.BlockPos;
+
 public class PickNodeCoordinateContext {
-    public PickNodeCoordinateContext(int x, int y, int z, boolean silverwood, boolean eerie, boolean small) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public PickNodeCoordinateContext(BlockPos pos, boolean silverwood, boolean eerie, boolean small) {
+        this.pos = pos;
         this.silverwood = silverwood;
         this.eerie = eerie;
         this.small = small;
     }
 
-    public int x;
-    public int y;
-    public int z;
+    public BlockPos pos;
     public boolean silverwood;
     public boolean eerie;
     public boolean small;

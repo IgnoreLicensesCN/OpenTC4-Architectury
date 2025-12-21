@@ -1,11 +1,12 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.nodes.NodeModifier;
 
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public abstract class NodeModifierPicker implements Comparable<NodeModifierPicker> {
     public NodeModifierPicker(int priority) {
@@ -20,5 +21,8 @@ public abstract class NodeModifierPicker implements Comparable<NodeModifierPicke
         return Integer.compare(priority, o.priority);
     }
 
-    public abstract NodeModifier onPickingNodeModifier(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small,@Nullable NodeModifier previous);
+    public abstract NodeModifier onPickingNodeModifier(WorldGenLevel world, BlockPos pos, RandomSource random, boolean silverwood, boolean eerie, boolean small, @Nullable NodeModifier previous);
+    public NodeModifier onPickingNodeModifier(Level world, BlockPos pos, RandomSource random, boolean silverwood, boolean eerie, boolean small, @Nullable NodeModifier previous){
+        return onPickingNodeModifier((WorldGenLevel)world, pos, random, silverwood, eerie, small, previous);
+    };
 }

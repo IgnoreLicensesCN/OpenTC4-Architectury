@@ -3,10 +3,8 @@ package thaumcraft.common.lib.world.structure;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -14,12 +12,9 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -30,10 +25,6 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -41,6 +32,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.Optional;
 import java.util.Set;
 
+import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.MOUND_STRUCTURE_TYPE;
 
 public class MoundStructure extends Structure {
@@ -93,25 +85,12 @@ public class MoundStructure extends Structure {
                 && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(0,9,18)))){
             return Optional.empty();
         }
-//        if (WorldGenMound.generateStatic(world, random, randPosX, randPosY, randPosZ)) {
-//            auraGen = true;
-//            int value = random.nextInt(200) + 400;
-//            createRandomNodeAt(
-//                    world,
-//                    randPosX + 9, randPosY + 8, randPosZ + 9,
-//                    random,
-//                    false,
-//                    true,
-//                    false
-//            );
-//        }
+
         return Optional.of(
                 new GenerationStub(
-                        pos, builder -> {
-                    builder.addPiece(
-                            new MoundStructurePiece(pos)
-                    );
-                }
+                        pos, builder -> builder.addPiece(
+                                new MoundStructurePiece(pos)
+                        )
                 )
         );
     }
@@ -194,7 +173,6 @@ public class MoundStructure extends Structure {
         }
         public MoundStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
-            // 读取 NBT 数据初始化
         }
 
         @Override
@@ -262,6 +240,17 @@ public class MoundStructure extends Structure {
                 if (zombieSpawnerBlockEntity instanceof SpawnerBlockEntity spawner) {
                     spawner.setEntityId(EntityType.ZOMBIE, randomSource);
                 }
+            }
+            {
+                int value = randomSource.nextInt(200) + 400;//anazor forgot something?
+                createRandomNodeAt(
+                        level,
+                        startPos.offset(9,8,9),
+                        randomSource,
+                        false,
+                        true,
+                        false
+                );
             }
         }
     }

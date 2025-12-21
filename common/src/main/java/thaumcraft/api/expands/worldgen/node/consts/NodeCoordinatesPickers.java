@@ -2,9 +2,7 @@ package thaumcraft.api.expands.worldgen.node.consts;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
@@ -13,8 +11,6 @@ import thaumcraft.api.expands.worldgen.node.listeners.PickNodeCoordinatesListene
 import thaumcraft.common.lib.utils.Utils;
 
 
-import java.util.Random;
-
 import static net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE_WG;
 
 public class NodeCoordinatesPickers {
@@ -22,7 +18,7 @@ public class NodeCoordinatesPickers {
     public static final PickNodeCoordinatesListener defaultPicker = new PickNodeCoordinatesListener(0) {
         @Override
         
-        public PickNodeCoordinateContext[] pickNodeCoordinates(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+        public PickNodeCoordinateContext[] pickNodeCoordinates(Level world, RandomSource random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
             int x = chunkX * 16 + random.nextInt(16);
             int z = chunkZ * 16 + random.nextInt(16);
             int selectedY = Utils.getFirstUncoveredY(world, x, z);
@@ -63,7 +59,7 @@ public class NodeCoordinatesPickers {
             if (selectedY > world.getMinBuildHeight()) {
                 return EMPTY_CONTEXTS;
             }
-            return new PickNodeCoordinateContext[]{new PickNodeCoordinateContext(x, selectedY, z, false, false, false)};
+            return new PickNodeCoordinateContext[]{new PickNodeCoordinateContext(new BlockPos(x, selectedY, z), false, false, false)};
         }
     };
 }

@@ -1,20 +1,21 @@
 package thaumcraft.api.expands.worldgen.node.consts;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.expands.worldgen.node.listeners.NodeModifierPicker;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.common.config.Config;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 public class NodeModifierPickers {
 
     public static final NodeModifierPicker DEFAULT_NODE_MODIFIER_PICKER = new NodeModifierPicker(0) {
         @Override
         
-        public NodeModifier onPickingNodeModifier(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small,@Nullable NodeModifier previous) {
+        public NodeModifier onPickingNodeModifier(WorldGenLevel world, BlockPos pos, RandomSource random, boolean silverwood, boolean eerie, boolean small, @Nullable NodeModifier previous) {
             if (random.nextInt(Config.specialNodeRarity / 2) == 0) {
                 switch (random.nextInt(3)) {
                     case 0:

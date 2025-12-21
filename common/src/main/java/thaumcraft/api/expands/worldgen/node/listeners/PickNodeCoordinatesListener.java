@@ -1,10 +1,8 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.expands.worldgen.node.PickNodeCoordinateContext;
-
-
-import java.util.Random;
 
 
 public abstract class PickNodeCoordinatesListener implements Comparable<PickNodeCoordinatesListener> {
@@ -18,6 +16,6 @@ public abstract class PickNodeCoordinatesListener implements Comparable<PickNode
         this.priority = priority;
     }
 
-    public abstract PickNodeCoordinateContext[] pickNodeCoordinates(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
+    public abstract PickNodeCoordinateContext[] pickNodeCoordinates(Level world, RandomSource random, int chunkX, int chunkZ, boolean auraGen, boolean newGen);
 
 }

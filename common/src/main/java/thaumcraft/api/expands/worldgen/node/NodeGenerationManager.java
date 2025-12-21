@@ -1,7 +1,10 @@
 package thaumcraft.api.expands.worldgen.node;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import com.linearity.opentc4.simpleutils.ListenerManager;
+import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.expands.worldgen.node.listeners.*;
@@ -11,7 +14,6 @@ import thaumcraft.api.nodes.NodeType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static thaumcraft.api.expands.worldgen.node.consts.CreateNodeListeners.DEFAULT_NODE_CREATOR;
 import static thaumcraft.api.expands.worldgen.node.consts.DoGenerateConditions.*;
@@ -50,7 +52,7 @@ public class NodeGenerationManager {
     /**
      * will be called when generating nodes
      */
-    public static boolean generateWildNodes(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+    public static boolean generateWildNodes(Level world, RandomSource random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
         for (DoGenerateCondition condition : doGenerateConditionsManager.getListeners()) {
             if (!condition.check(world, random, chunkX, chunkZ, auraGen, newGen)) {
                 return false;
@@ -66,7 +68,7 @@ public class NodeGenerationManager {
             return false;
         } else {
             for (PickNodeCoordinateContext node : expectingNodeLocations) {
-                createRandomNodeAt(world, node.x, node.y, node.z, random, node.silverwood, node.eerie, node.small);
+                createRandomNodeAt(world, node.pos, random, node.silverwood, node.eerie, node.small);
             }
             return true;
         }
@@ -83,27 +85,54 @@ public class NodeGenerationManager {
             }
         }
     }
-    public static void createRandomNodeAt(Level world, int x, int y, int z, Random random, boolean silverwood, boolean eerie, boolean small) {
+    public static void createRandomNodeAt(Level world, BlockPos pos, RandomSource random, boolean silverwood, boolean eerie, boolean small) {
         tryInitAspects();
         NodeType type = NodeType.NORMAL;
         for (NodeTypePicker picker : nodeTypePickerManager.getListeners()) {
-            type = picker.onPickingNodeType(world, x, y, z, random, silverwood, eerie, small, type);
+            type = picker.onPickingNodeType(world, pos, random, silverwood, eerie, small, type);
         }
 
         NodeModifier modifier = null;
         for (NodeModifierPicker picker : nodeModifierPickerManager.getListeners()) {
-            modifier = picker.onPickingNodeModifier(world, x, y, z, random, silverwood, eerie, small, modifier);
+            modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
         }
 
         AspectList nodeAspects = new AspectList();
         for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
-            nodeAspects = generator.getNodeAspects(world, x, y, z, random, silverwood, eerie, small,nodeAspects, type,modifier);
+            nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
         }
 
-        createNodeAt(world,new CreateNodeContext(type,modifier,x,y,z,nodeAspects));
+        createNodeAt(world,new CreateNodeContext(type,modifier,pos,nodeAspects));
+    }
+
+    public static void createRandomNodeAt(WorldGenLevel world, BlockPos pos, RandomSource random, boolean silverwood, boolean eerie, boolean small) {
+        tryInitAspects();
+        NodeType type = NodeType.NORMAL;
+        for (NodeTypePicker picker : nodeTypePickerManager.getListeners()) {
+            type = picker.onPickingNodeType(world, pos, random, silverwood, eerie, small, type);
+        }
+
+        NodeModifier modifier = null;
+        for (NodeModifierPicker picker : nodeModifierPickerManager.getListeners()) {
+            modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
+        }
+
+        AspectList nodeAspects = new AspectList();
+        for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
+            nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
+        }
+
+        createNodeAt(world,new CreateNodeContext(type,modifier,pos,nodeAspects));
     }
 
     public static void createNodeAt(Level world,CreateNodeContext context) {
+        for (CreateNodeListener listener : createNodeListenerManager.getListeners()) {
+            if (listener.onCreateNode(world, context)) {
+                break;
+            }
+        }
+    }
+    public static void createNodeAt(WorldGenLevel world, CreateNodeContext context) {
         for (CreateNodeListener listener : createNodeListenerManager.getListeners()) {
             if (listener.onCreateNode(world, context)) {
                 break;

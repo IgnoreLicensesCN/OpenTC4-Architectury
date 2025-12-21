@@ -3,7 +3,9 @@ package thaumcraft.api.expands.worldgen.node.consts;
 import com.linearity.opentc4.utils.vanilla1710.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,21 +20,20 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
 
-import java.util.Random;
-
 import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.basicAspects;
 import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.complexAspects;
 
 public class NodeAspectGenerators {
     public static final NodeAspectGenerator DEFAULT_ASPECT_GENERATOR = new NodeAspectGenerator(0) {
+
         @Override
-        
-        public AspectList getNodeAspects(Level world,
-                                         int x, int y, int z,
-                                         Random random, boolean silverwood, boolean eerie, boolean small, AspectList previous,
-                                         NodeType type,@Nullable NodeModifier modifier
+        public AspectList getNodeAspects(
+                WorldGenLevel world,
+                BlockPos pos,
+                RandomSource random, boolean silverwood, boolean eerie, boolean small, AspectList previous,
+                NodeType type, @Nullable NodeModifier modifier
                                          ) {
-            BlockPos pos = new BlockPos(x, y, z);
+            
             Holder<Biome> biomeHolder = world.getBiome(pos);
 
             int baura = BiomeHandler.getBiomeAura(biomeHolder.value());
@@ -107,7 +108,7 @@ public class NodeAspectGenerators {
                     for (int yy = -5; yy <= 5; ++yy) {
                         for (int zz = -5; zz <= 5; ++zz) {
                             try {
-                                BlockState bi = world.getBlockState(new BlockPos(x + xx, y + yy, z + zz));
+                                BlockState bi = world.getBlockState(pos.offset(xx,yy,zz));
                                 FluidState fb = bi.getFluidState();
                                 if (fb.is(Fluids.WATER) || fb.is(Fluids.FLOWING_WATER)) {
                                     ++water;

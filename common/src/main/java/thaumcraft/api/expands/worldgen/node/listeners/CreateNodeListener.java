@@ -1,6 +1,7 @@
 package thaumcraft.api.expands.worldgen.node.listeners;
 
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.expands.worldgen.node.CreateNodeContext;
 
 public abstract class CreateNodeListener implements Comparable<CreateNodeListener> {
@@ -17,5 +18,8 @@ public abstract class CreateNodeListener implements Comparable<CreateNodeListene
     /**
      * @return true if you want to stop listeners after it.
      */
-    public abstract boolean onCreateNode(Level atWorld, CreateNodeContext context);
+    public boolean onCreateNode(Level atWorld, CreateNodeContext context){
+        return onCreateNode((WorldGenLevel)atWorld, context);
+    };
+    public abstract boolean onCreateNode(WorldGenLevel atWorld, CreateNodeContext context);
 }
