@@ -1,4 +1,4 @@
-package com.linearity.opentc4.datautils;
+package com.linearity.opentc4.simpleutils;
 
 import java.util.Objects;
 

@@ -1,14 +1,20 @@
 package thaumcraft.common.lib.world.structure;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -46,8 +52,22 @@ public class MoundStructure extends Structure {
 
     @Override
     public @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        BlockPos pos = context.chunkPos()
-                .getWorldPosition();
+        var chunkGen = context.chunkGenerator();
+        var heightAccessor = context.heightAccessor();
+        var randomState = context.randomState();
+        var random = context.random();
+        int x = context.chunkPos()
+                .getMinBlockX() + random.nextInt(16);
+        int z = context.chunkPos()
+                .getMinBlockZ() + random.nextInt(16);
+        int y = chunkGen.getFirstOccupiedHeight(
+                x,
+                z,
+                Heightmap.Types.WORLD_SURFACE_WG,
+                heightAccessor,
+                randomState
+        );
+        var pos = new BlockPos(x, y, z);
         Holder<Biome> biome = context.biomeSource()
                 .getNoiseBiome(
                         QuartPos.fromBlock(pos.getX()),
@@ -60,13 +80,9 @@ public class MoundStructure extends Structure {
         if (!biome.is(BiomeTags.IS_OVERWORLD)) {
             return Optional.empty();
         }
-        var random = context.random();
         if (random.nextInt(150) != 0) {
             return Optional.empty();
         }
-        var chunkGen = context.chunkGenerator();
-        var heightAccessor = context.heightAccessor();
-        var randomState = context.randomState();
         int randPosY = chunkGen.getFirstOccupiedHeight(
                 pos.getX(),
                 pos.getZ(),
@@ -78,21 +94,22 @@ public class MoundStructure extends Structure {
                 .getMaxBuildHeight()) {
             return Optional.empty();
         }
-        if (!(LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(9,9,9))
+        if (!(LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(9, 9, 9))
                 && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.above(9))//i, j + 9, k)
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18,9,0))
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18,9,18))
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(0,9,18)))){
+                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 0))
+                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 18))
+                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(0, 9, 18)))) {
             return Optional.empty();
         }
 
         return Optional.of(
                 new GenerationStub(
                         pos, builder -> builder.addPiece(
-                                new MoundStructurePiece(pos)
-                        )
+                        new MoundStructurePiece(pos)
+                )
                 )
         );
+
     }
 
     @Override
@@ -133,7 +150,7 @@ public class MoundStructure extends Structure {
         if (distanceToAir <= 2) {
             pos = pos.above(distanceToAir - 1);
 //            j += distanceToAir - 1;
-            BlockState bStateAbove = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor,randomState)
+            BlockState bStateAbove = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor, randomState)
                     .getBlock(y);
 //            Block blockID = world.getBlock(i, j, k);
 //            Block blockIDAbove = world.getBlock(i, j + 1, k);
@@ -142,14 +159,14 @@ public class MoundStructure extends Structure {
             if (!bStateAbove.isAir()) {
                 return false;
             }
-            BlockState bState = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor,randomState)
+            BlockState bState = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor, randomState)
                     .getBlock(y - 1);
             var block = bState.getBlock();
             if (VALID_SPAWN_BLOCKS.contains(block)) {
                 return true;
             }
-            BlockState bStateBelow = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor,randomState)
-                    .getBlock(y-2);
+            BlockState bStateBelow = chunkGen.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor, randomState)
+                    .getBlock(y - 2);
             return (PART_VALID_SPAWN_BLOCKS.contains(block))
                     && VALID_SPAWN_BLOCKS.contains(bStateBelow.getBlock());
         }
@@ -161,16 +178,24 @@ public class MoundStructure extends Structure {
         public static final StructurePieceType TYPE = register("mound_piece", MoundStructurePiece::new);
 
         public MoundStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
-            super(TYPE,tag);
+            super(TYPE, tag);
         }
 
         private static StructurePieceType register(String id, StructurePieceType type) {
-            return Registry.register(BuiltInRegistries.STRUCTURE_PIECE, new ResourceLocation(Thaumcraft.MOD_ID, id), type);
+            return Registry.register(
+                    BuiltInRegistries.STRUCTURE_PIECE, new ResourceLocation(Thaumcraft.MOD_ID, id), type);
         }
+
         public MoundStructurePiece(BlockPos pos) {
-            super(TYPE, 0, new BoundingBox(pos.getX(),pos.getY()+1,pos.getZ(), pos.getX() + 18,pos.getY()+15,pos.getZ()+18)); // 示例 16x16x16
-            
+            super(
+                    TYPE, 0, new BoundingBox(
+                            pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 18, pos.getY() + 15,
+                            pos.getZ() + 18
+                    )
+            ); // 示例 16x16x16
+
         }
+
         public MoundStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
         }
@@ -191,7 +216,7 @@ public class MoundStructure extends Structure {
                 ChunkPos chunkPos,
                 BlockPos startPos
         ) {
-            MoundStructureSetBlocks.setBlocks(level,startPos);
+            MoundStructureSetBlocks.setBlocks(level, startPos);
 
             {
                 BlockPos chestPos = startPos.offset(10, 1, 9);
@@ -200,20 +225,20 @@ public class MoundStructure extends Structure {
                 int md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
                 //TODO:separate md
                 level.setBlock(
-                        startPos.offset(9,1,7), randomSource.nextFloat() < 0.3F
+                        startPos.offset(9, 1, 7), randomSource.nextFloat() < 0.3F
                                 ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3
                 );
                 rr = randomSource.nextFloat();
                 md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
                 level.setBlock(
-                        startPos.offset(9,1,11), randomSource.nextFloat() < 0.3F
+                        startPos.offset(9, 1, 11), randomSource.nextFloat() < 0.3F
                                 ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3
                 );
                 if (randomSource.nextInt(3) == 0) {
-                    level.setBlock(chestPos,Blocks.TRAPPED_CHEST.defaultBlockState(), 3);
-                    level.setBlock(chestPos.below(2),Blocks.TNT.defaultBlockState(), 3);
+                    level.setBlock(chestPos, Blocks.TRAPPED_CHEST.defaultBlockState(), 3);
+                    level.setBlock(chestPos.below(2), Blocks.TNT.defaultBlockState(), 3);
                 } else {
-                    level.setBlock(chestPos,Blocks.CHEST.defaultBlockState(), 3);
+                    level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
                 }
 
                 level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
@@ -230,7 +255,7 @@ public class MoundStructure extends Structure {
                 level.setBlock(skeletonSpawnerPos, Blocks.SPAWNER.defaultBlockState(), 3);
                 var skeletonSpawnerBlockEntity = level.getBlockEntity(skeletonSpawnerPos);
                 if (skeletonSpawnerBlockEntity instanceof SpawnerBlockEntity spawner) {
-                    spawner.setEntityId(EntityType.SKELETON,randomSource);
+                    spawner.setEntityId(EntityType.SKELETON, randomSource);
                 }
             }
             {
@@ -245,7 +270,7 @@ public class MoundStructure extends Structure {
                 int value = randomSource.nextInt(200) + 400;//anazor forgot something?
                 createRandomNodeAt(
                         level,
-                        startPos.offset(9,8,9),
+                        startPos.offset(9, 8, 9),
                         randomSource,
                         false,
                         true,

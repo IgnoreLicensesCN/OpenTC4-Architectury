@@ -1,6 +1,6 @@
 package thaumcraft.api;
 
-import com.linearity.opentc4.datautils.SimplePair;
+import com.linearity.opentc4.simpleutils.SimplePair;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;

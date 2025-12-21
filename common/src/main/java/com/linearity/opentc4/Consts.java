@@ -172,4 +172,11 @@ public class Consts {
         private static final String WAND_UPGRADE = "upgrade";
         public static final CompoundTagHelper.JsonObjectTagAccessor FOCUS_UPGRADE_JSON_ACCESSOR = new CompoundTagHelper.JsonObjectTagAccessor(WAND_UPGRADE);
     }
+
+    public static class EldritchRingMapToMazeSize{
+        private static final String WIDTH = "width";
+        public static final CompoundTagHelper.IntTagAccessor WIDTH_ACCESSOR = new CompoundTagHelper.IntTagAccessor(WIDTH);
+        private static final String HEIGHT = "height";
+        public static final CompoundTagHelper.IntTagAccessor HEIGHT_ACCESSOR = new CompoundTagHelper.IntTagAccessor(HEIGHT);
+    }
 }

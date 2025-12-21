@@ -1,6 +1,6 @@
 package thaumcraft.common.entities;
 
-import com.linearity.opentc4.datautils.SimplePair;
+import com.linearity.opentc4.simpleutils.SimplePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
@@ -11,7 +11,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.container.SlotOutput;
 import thaumcraft.common.entities.monster.EntityPech;

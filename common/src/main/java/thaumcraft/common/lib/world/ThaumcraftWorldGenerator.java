@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
+@Deprecated(forRemoval = true)
 public class ThaumcraftWorldGenerator implements IWorldGenerator {
     public static BiomeGenBase biomeTaint;
     public static BiomeGenBase biomeEerie;
@@ -473,7 +474,9 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
                         Thread t = new Thread(new MazeThread(chunkX, chunkZ, w, h, random.nextLong()));
                         t.start();
                     }
-                } else if (random.nextInt(40) == 0) {
+                }
+                    else
+                        if (random.nextInt(40) == 0) {
                     randPosY += 9;
                     WorldGenerator hilltopStones = new WorldGenHilltopStones();
                     if (hilltopStones.generate(world, random, randPosX, randPosY, randPosZ)) {

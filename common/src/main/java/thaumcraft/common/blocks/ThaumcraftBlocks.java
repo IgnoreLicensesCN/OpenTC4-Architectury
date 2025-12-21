@@ -60,14 +60,15 @@ public class ThaumcraftBlocks {
                         )
                 );
 
+
+        static {
+            BLOCKS.register();
+        }
     }
 
     public static void init(){
-        Registry.BLOCKS.register();
         ThaumcraftFluids.init();
     }
-
-
 
     //stole from mc source
     private static RotatedPillarBlock log(MapColor top, MapColor side) {

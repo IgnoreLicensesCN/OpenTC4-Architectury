@@ -14,8 +14,12 @@ public class ThaumcraftFluids {
         public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create("thhaumcraft", Registries.FLUID);
         public static final RegistrySupplier<FluxGooFluid> SUPPLIER_FLUX_GOO_FLOWING = FLUIDS.register("flux_goo_flowing",FluxGooFluid::new);
         public static final RegistrySupplier<FluxGasFluid> SUPPLIER_FLUX_GAS_FLOWING = FLUIDS.register("flux_gas_flowing",FluxGasFluid::new);
+
+
+        static {
+            FLUIDS.register();
+        }
     }
     public static void init(){
-        Registry.FLUIDS.register();
     }
 }
