@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.world;
+package thaumcraft.common.lib.world.registries;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;

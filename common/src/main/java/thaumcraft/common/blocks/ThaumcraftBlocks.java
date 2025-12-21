@@ -23,7 +23,7 @@ public class ThaumcraftBlocks {
     public static final FluxGasBlock FLUX_GAS = Registry.SUPPLIER_FLUX_GAS.get();
     public static final NitorBlock NITOR_BLOCK = Registry.SUPPLIER_NITOR_BLOCK.get();
     public static final AuraNodeBlock AURA_NODE = Registry.SUPPLIER_AURA_NODE.get();
-    public static final RotatedPillarBlock GREATWOOD_LOG = Registry.SUPPLIER_GREATWWOOD_LOG.get();
+    public static final RotatedPillarBlock GREATWOOD_LOG = Registry.SUPPLIER_GREATWOOD_LOG.get();
     public static final RotatedPillarBlock SILVERWOOD_LOG = Registry.SUPPLIER_SILVERWOOD_LOG.get();
     public static final SilverWoodKnotBlock SILVERWOOD_KNOT = Registry.SUPPLIER_SILVERWOOD_KNOT.get();
     public static final Block GREATWOOD_PLANKS = Registry.SUPPLIER_GREATWOOD_PLANKS.get();
@@ -38,7 +38,7 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<FluxGasBlock> SUPPLIER_FLUX_GAS = BLOCKS.register("flux_gas", FluxGasBlock::new);
         public static final RegistrySupplier<NitorBlock> SUPPLIER_NITOR_BLOCK = BLOCKS.register("nitor_block", NitorBlock::new);
         public static final RegistrySupplier<AuraNodeBlock> SUPPLIER_AURA_NODE = BLOCKS.register("aura_node", AuraNodeBlock::new);
-        public static final RegistrySupplier<RotatedPillarBlock> SUPPLIER_GREATWWOOD_LOG = BLOCKS.register("greatwood_log",() -> log(MapColor.PODZOL,MapColor.TERRACOTTA_GRAY));
+        public static final RegistrySupplier<RotatedPillarBlock> SUPPLIER_GREATWOOD_LOG = BLOCKS.register("greatwood_log",() -> log(MapColor.PODZOL,MapColor.TERRACOTTA_GRAY));
         public static final RegistrySupplier<RotatedPillarBlock> SUPPLIER_SILVERWOOD_LOG = BLOCKS.register("silverwood_log",() -> log(MapColor.COLOR_LIGHT_GRAY,MapColor.WOOL));
         public static final RegistrySupplier<SilverWoodKnotBlock> SUPPLIER_SILVERWOOD_KNOT = BLOCKS.register("silverwood_knot_log", SilverWoodKnotBlock::new);
         public static final RegistrySupplier<Block> SUPPLIER_GREATWOOD_PLANKS = BLOCKS.register("greatwood_planks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));

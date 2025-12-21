@@ -443,20 +443,21 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
             int randPosY = world.getHeight(Heightmap.Types.WORLD_SURFACE,randPosX, randPosZ) - 9;
             if (randPosY < world.getActualHeight()) {
                 world.getChunkFromBlockCoords(MathHelper.floor_double(randPosX), MathHelper.floor_double(randPosZ));
-                if (random.nextInt(150) == 0) {
-                    if (WorldGenMound.generateStatic(world, random, randPosX, randPosY, randPosZ)) {
-                        auraGen = true;
-                        int value = random.nextInt(200) + 400;
-                        createRandomNodeAt(
-                                world,
-                                randPosX + 9, randPosY + 8, randPosZ + 9,
-                                random,
-                                false,
-                                true,
-                                false
-                        );
-                    }
-                } else if (random.nextInt(66) == 0) {
+//                if (random.nextInt(150) == 0) {
+//                    if (WorldGenMound.generateStatic(world, random, randPosX, randPosY, randPosZ)) {
+//                        auraGen = true;
+//                        int value = random.nextInt(200) + 400;
+//                        createRandomNodeAt(
+//                                world,
+//                                randPosX + 9, randPosY + 8, randPosZ + 9,
+//                                random,
+//                                false,
+//                                true,
+//                                false
+//                        );
+//                    }
+//                } else
+                    if (random.nextInt(66) == 0) {
                     WorldGenEldritchRing stonering = new WorldGenEldritchRing();
                     randPosY += 8;
                     int w = 11 + random.nextInt(6) * 2;

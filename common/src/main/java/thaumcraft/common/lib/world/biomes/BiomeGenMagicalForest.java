@@ -6,14 +6,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -22,20 +21,13 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.*;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityPech;
-import thaumcraft.common.entities.monster.EntityWisp;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.*;
 import thaumcraft.common.lib.world.feature.BigMagicTreeFeature;
-import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
+import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
 
 import java.util.List;
-import java.util.Random;
 
 public class BiomeGenMagicalForest /*extends BiomeGenBase*/ {
 
@@ -107,75 +99,69 @@ public class BiomeGenMagicalForest /*extends BiomeGenBase*/ {
       {
          //TODO:Woods and flowers(silverwood finished)
 
-         // 树示例（bigTree / silverwood / greatwood 可以改成 Feature 版本）
-//      ConfiguredFeature<TreeConfiguration, ?> treeConfigured = new ConfiguredFeature<>(
-//              Feature.TREE,
-//              new TreeConfiguration.TreeConfigurationBuilder(
-//                      BlockStateProvider.simple(Blocks.OAK_LOG),
-//                      new StraightTrunkPlacer(4, 2, 0),
-//                      BlockStateProvider.simple(Blocks.OAK_LEAVES),
-//                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-//                      new TwoLayersFeatureSize(1, 0, 1)
-//              ).ignoreVines().build()
-//      );
-         {
-            Holder<ConfiguredFeature<?, ?>> silverTreeHolder = Holder.direct(
-                    ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_GENERATED_CONFIGURED);
-            PlacedFeature silverTreePlaced = new PlacedFeature(
-                    silverTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
-            Holder<ConfiguredFeature<?, ?>> greatTreeHolder = Holder.direct(
-                    ThaumcraftWorldGenConfiguredFeatures.Configureds.GREATWOOD_GENERATED_CONFIGURED);
-            PlacedFeature greatTreePlaced = new PlacedFeature(
-                    greatTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
 
-            ConfiguredFeature<?,?> bigMagicTreeConfigured = new ConfiguredFeature<>(
-                    new BigMagicTreeFeature(),
-                    USELESS_TREE_CONFIGURATION
-            );
-            PlacedFeature bigMagicTreePlaced = new PlacedFeature(
-                    Holder.direct(bigMagicTreeConfigured),
-                    List.of(RarityFilter.onAverageOnceEvery(1))
-            );
+         //suddenly...trees
+         PlacedFeature randomPlacedTrees = getPlaceRandomTreeFeature();
+         generation.addFeature(
+                 GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(),
+                 Holder.direct(randomPlacedTrees));
 
-            var configuredRandomTree = new ConfiguredFeature<>(
-                    new RandomTreeSelectorFeature(
-                            TreeConfiguration.CODEC,
-                            Holder.direct(silverTreePlaced),
-                            Holder.direct(greatTreePlaced),
-                            Holder.direct(bigMagicTreePlaced))
-                    ,
-                    USELESS_TREE_CONFIGURATION
-            );
-            Holder<ConfiguredFeature<?, ?>> randomTreeFeatureHolder = Holder.direct(configuredRandomTree);
-            PlacedFeature randomPlaced = new PlacedFeature(
-                    randomTreeFeatureHolder, List.of(RarityFilter.onAverageOnceEvery(1),
-                    InSquarePlacement.spread())
-            );
-            generation.addFeature(
-                    GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(),
-                    Holder.direct(randomPlaced));
-         }
-
-         // 草 / 花 / ManaPods / BigMushrooms 可以通过自定义 Feature 实现
-         // 这里只是占位
-         // generation.addFeature(...);}
 
          // 构建 Biome
-         return new Biome.BiomeBuilder()
-                 .temperature(0.7F)
-                 .downfall(0.6F)
-                 .specialEffects(
-                         new BiomeSpecialEffects.Builder()
-                                 .waterColor(waterColor)
-                                 .foliageColorOverride(foliageColor)
-                                 .grassColorOverride(grassColor)
-                                 .skyColor(skyColor)
-                                 .build()
-                 )
-                 .mobSpawnSettings(spawns.build())
-                 .generationSettings(generation.build())
-                 .build();
       }
+      return new Biome.BiomeBuilder()
+              .temperature(0.7F)
+              .downfall(0.6F)
+              .specialEffects(
+                      new BiomeSpecialEffects.Builder()
+                              .waterColor(waterColor)
+                              .foliageColorOverride(foliageColor)
+                              .grassColorOverride(grassColor)
+                              .skyColor(skyColor)
+                              .build()
+              )
+              .mobSpawnSettings(spawns.build())
+              .generationSettings(generation.build())
+
+              .build();
+   }
+
+   private static @NotNull PlacedFeature getPlaceRandomTreeFeature() {
+      Holder<ConfiguredFeature<?, ?>> silverTreeHolder = Holder.direct(
+              ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_GENERATED_CONFIGURED);
+      PlacedFeature silverTreePlaced = new PlacedFeature(
+              silverTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
+      Holder<ConfiguredFeature<?, ?>> greatTreeHolder = Holder.direct(
+              ThaumcraftWorldGenConfiguredFeatures.Configureds.GREATWOOD_GENERATED_CONFIGURED);
+      PlacedFeature greatTreePlaced = new PlacedFeature(
+              greatTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
+
+      ConfiguredFeature<?,?> bigMagicTreeConfigured = new ConfiguredFeature<>(
+              new BigMagicTreeFeature(),
+              USELESS_TREE_CONFIGURATION
+      );
+      PlacedFeature bigMagicTreePlaced = new PlacedFeature(
+              Holder.direct(bigMagicTreeConfigured),
+              List.of(RarityFilter.onAverageOnceEvery(1))
+      );
+
+      var configuredRandomTree = new ConfiguredFeature<>(
+              new RandomTreeSelectorFeature(
+                      TreeConfiguration.CODEC,
+                      Holder.direct(silverTreePlaced),
+                      Holder.direct(greatTreePlaced),
+                      Holder.direct(bigMagicTreePlaced))
+              ,
+              USELESS_TREE_CONFIGURATION
+      );
+      Holder<ConfiguredFeature<?, ?>> randomTreeFeatureHolder = Holder.direct(configuredRandomTree);
+       return new PlacedFeature(
+               randomTreeFeatureHolder, List.of(
+               CountPlacement.of(2),
+               InSquarePlacement.spread(),
+               HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE)
+       )
+       );
    }
 //   protected WorldGenBigMagicTree bigTree = new WorldGenBigMagicTree(false);
 //   private static final WorldGenBlockBlob blobs;

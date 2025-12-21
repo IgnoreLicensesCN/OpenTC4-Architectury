@@ -150,14 +150,14 @@ public class ThaumometerItem extends Item {
    }
 
    @Override
-   public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int count) {
+   public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int useRemainingCount) {
       if (livingEntity instanceof Player player) {
-         onUsingTick(itemStack,player,count);
+         onUsingTick(itemStack,player,useRemainingCount);
       }
    }
    private final AtomicInteger counter = new AtomicInteger(0);
-   public void onUsingTick(ItemStack stack, Player p, int count) {//TODO:migrate
-      count = counter.decrementAndGet();
+   public void onUsingTick(ItemStack stack, Player p, int useRemainingCount) {//TODO:migrate
+      var count = counter.decrementAndGet();
       var localPlayer = Minecraft.getInstance().player;
       if (p.level().isClientSide() && localPlayer != null && Objects.equals(localPlayer.getName().getString(),p.getName().getString())) {
          ScanResult scan = this.doScan(stack, p.level(), p, count);

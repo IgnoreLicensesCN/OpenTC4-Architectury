@@ -5,8 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenConfiguredFeatures;
-import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
+import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
 
 //sapling
 public class SilverwoodTreeGrower extends AbstractTreeGrower {

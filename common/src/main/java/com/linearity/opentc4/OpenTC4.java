@@ -13,7 +13,8 @@ import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.events.CommandThaumcraft;
 import thaumcraft.common.lib.events.EventHandlerEntity;
 import thaumcraft.common.lib.utils.EntityUtils;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenConfiguredFeatures;
+import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
+import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
 import thaumcraft.common.lib.world.biomes.BiomeRegistration;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -44,6 +45,7 @@ public final class OpenTC4 {
         BiomeRegistration.init();
         ThaumcraftEnchantments.init();
         ThaumcraftWorldGenConfiguredFeatures.init();
+        ThaumcraftStructures.init();
     }
 
     public static void onClientStarting() {

@@ -250,12 +250,12 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount) {
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack usingWand, int useRemainingCount) {
         var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity,null);
         if (usingBlockPos != null){
             var blockEntity = level.getBlockEntity(usingBlockPos);
             if (blockEntity instanceof WandInteractableBlock wandInteractableBlock){
-                wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useCount);
+                wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
             }else {
                 entityUsingBlockMapping.remove(livingEntity);
             }
@@ -266,7 +266,7 @@ public class WandCastingItem extends Item
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(livingEntity)){
-                    focus.onUsingFocusTick(usingWand,focusStack,livingEntity,useCount);
+                    focus.onUsingFocusTick(usingWand,focusStack,livingEntity,useRemainingCount);
                 }
             }
         }
@@ -300,14 +300,14 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public void releaseUsing(ItemStack usingWand, Level level, LivingEntity user, int useCount) {
+    public void releaseUsing(ItemStack usingWand, Level level, LivingEntity user, int useRemainingTicks) {
         entityUsingBlockMapping.remove(user);
         if (canApplyFocus()){
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(user)){
-                    focus.onPlayerStoppedUsingFocus(usingWand,focusStack,level,user,useCount);
+                    focus.onPlayerStoppedUsingFocus(usingWand,focusStack,level,user,useRemainingTicks);
                 }
             }
         }
