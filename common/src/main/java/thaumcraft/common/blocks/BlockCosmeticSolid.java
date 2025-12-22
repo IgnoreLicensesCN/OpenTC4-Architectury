@@ -13,9 +13,10 @@ package thaumcraft.common.blocks;
 //    "10": "激活傀儡脚镣",
 //    "11": "荒古石头",
 //    "12": "荒古岩石",
-//    "13": "荒古石头",//not made,unknown usage,i want to merge to 11
+//    "13": "荒古石头",//i didn't impl one(looks same as 11?),unknown usage,i want to merge to 11
 //    "14": "陈年石头",
 //    "15": "荒古石座",
+@Deprecated(forRemoval = true,since = "separated")
 public class BlockCosmeticSolid /*extends Block*/ {
 
 //   public IIcon[] icon = new IIcon[27];
