@@ -18,7 +18,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static thaumcraft.common.blocks.crafted.PavingStoneWardingBlock.POWERED;
+import static thaumcraft.common.blocks.crafted.PavingStoneWardingBlock.LIT;
 
 public class WardingStoneBlockEntity extends BlockEntity implements EntityBlock {
     private final AtomicInteger tickCounter = new AtomicInteger();
@@ -74,11 +74,11 @@ public class WardingStoneBlockEntity extends BlockEntity implements EntityBlock 
                     }
                 }
 
-                if (blockState.getValue(POWERED) && !charged) {
-                    serverLevel.setBlock(blockPos, blockState.setValue(POWERED, false), 3);
+                if (blockState.getValue(LIT) && !charged) {
+                    serverLevel.setBlock(blockPos, blockState.setValue(LIT, false), 3);
                 }
-                else if (!blockState.getValue(POWERED) && charged) {
-                    serverLevel.setBlock(blockPos, blockState.setValue(POWERED, true), 3);
+                else if (!blockState.getValue(LIT) && charged) {
+                    serverLevel.setBlock(blockPos, blockState.setValue(LIT, true), 3);
                 }
             }
         };

@@ -364,7 +364,9 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       int xx = MathHelper.floor_double(this.posX);
       int yy = MathHelper.floor_double(this.posY);
       int zz = MathHelper.floor_double(this.posZ);
-       this.inactive = yy > 0 && this.level().getBlock(xx, yy - 1, zz) == ConfigBlocks.blockCosmeticSolid && this.level().getBlockMetadata(xx, yy - 1, zz) == 10;
+       this.inactive = yy > 0
+               && this.level().getBlock(xx, yy - 1, zz) == ConfigBlocks.blockCosmeticSolid
+               && this.level().getBlockMetadata(xx, yy - 1, zz) == 10;//charged golem fetter(however charged and not charged versions are merged via blockStateProperty)
 
       if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.regenTimer > 0) {

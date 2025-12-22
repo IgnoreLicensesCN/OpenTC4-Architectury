@@ -38,18 +38,18 @@ import java.util.Random;
 //    "1": "黑曜石瓦块",
 //    "2": "旅行者铺路石",
 //    "3": "守卫者铺路石",
-//    "tile.blockCosmeticSolid.4": "神秘方块",
-//    "tile.blockCosmeticSolid.5": "油脂方块",
-//    "tile.blockCosmeticSolid.6": "奥术石块",
-//    "tile.blockCosmeticSolid.7": "奥术石砖",
+//    "4": "神秘方块",
+//    "5": "油脂方块",
+//    "6": "奥术石块",
+//    "7": "奥术石砖",
 //    "8": "蕴灵黑曜石图腾",
-//    "tile.blockCosmeticSolid.9": "傀儡脚镣",
-//    "tile.blockCosmeticSolid.10": "激活傀儡脚镣",
-//    "tile.blockCosmeticSolid.11": "荒古石头",
-//    "tile.blockCosmeticSolid.12": "荒古岩石",
-//    "tile.blockCosmeticSolid.13.": "荒古石头",
-//    "tile.blockCosmeticSolid.14.": "陈年石头",
-//    "tile.blockCosmeticSolid.15.": "荒古石座",
+//    "9": "傀儡脚镣",
+//    "10": "激活傀儡脚镣",
+//    "11": "荒古石头",
+//    "12": "荒古岩石",
+//    "13": "荒古石头",//not made,unknown usage,i want to merge to 11
+//    "14": "陈年石头",
+//    "15": "荒古石座",
 public class BlockCosmeticSolid extends Block {
    public IIcon[] icon = new IIcon[27];
 
@@ -79,19 +79,24 @@ public class BlockCosmeticSolid extends Block {
 
       this.icon[10] = ir.registerIcon("thaumcraft:tallowblock");
       this.icon[11] = ir.registerIcon("thaumcraft:tallowblock_top");
-      this.icon[12] = ir.registerIcon("thaumcraft:pedestal_top");
-      this.icon[13] = ir.registerIcon("thaumcraft:arcane_stone");
+
+      this.icon[12] = ir.registerIcon("thaumcraft:pedestal_top");//arcane stone block
+      this.icon[13] = ir.registerIcon("thaumcraft:arcane_stone");//...brick
+
       this.icon[14] = ir.registerIcon("thaumcraft:golem_stone_top");
       this.icon[15] = ir.registerIcon("thaumcraft:golem_stone_side");
       this.icon[16] = ir.registerIcon("thaumcraft:golem_stone_top_active");
-      this.icon[17] = ir.registerIcon("thaumcraft:es_1");
-      this.icon[18] = ir.registerIcon("thaumcraft:es_2");
-      this.icon[19] = ir.registerIcon("thaumcraft:es_3");
-      this.icon[20] = ir.registerIcon("thaumcraft:es_4");
-      this.icon[21] = ir.registerIcon("thaumcraft:er_1");
-      this.icon[22] = ir.registerIcon("thaumcraft:er_2");
-      this.icon[23] = ir.registerIcon("thaumcraft:er_3");
-      this.icon[24] = ir.registerIcon("thaumcraft:er_4");
+
+      this.icon[17] = ir.registerIcon("thaumcraft:ancient_stone_1");
+      this.icon[18] = ir.registerIcon("thaumcraft:ancient_stone_2");
+      this.icon[19] = ir.registerIcon("thaumcraft:ancient_stone_3");
+      this.icon[20] = ir.registerIcon("thaumcraft:ancient_stone_4");
+
+      this.icon[21] = ir.registerIcon("thaumcraft:ancient_rock_1");
+      this.icon[22] = ir.registerIcon("thaumcraft:ancient_rock_2");
+      this.icon[23] = ir.registerIcon("thaumcraft:ancient_rock_3");
+      this.icon[24] = ir.registerIcon("thaumcraft:ancient_rock_4");
+
       this.icon[25] = ir.registerIcon("thaumcraft:crust");
       this.icon[26] = ir.registerIcon("thaumcraft:es_p");
    }
@@ -132,7 +137,9 @@ public class BlockCosmeticSolid extends Block {
                return this.icon[17];
             }
          } else {
-            return direction == 0 ? this.icon[13] : (direction == 1 ? (meta == 9 ? this.icon[14] : this.icon[16]) : this.icon[15]);
+            return direction == 0 ? this.icon[13] :
+                    (direction == 1 ? (meta == 9 ? this.icon[14] : this.icon[16])
+                    : this.icon[15]);
          }
       }
       else {
@@ -162,7 +169,9 @@ public class BlockCosmeticSolid extends Block {
             return this.icon[6];
          }
       }
-      else if (md != 11 && md != 13 && side < 100) {
+      else if (md != 11
+              && md != 13
+              && side < 100) {
          if (md == 12) {
             switch (side) {
                case 0:
@@ -356,7 +365,7 @@ public class BlockCosmeticSolid extends Block {
    }
 
    public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
-      return worldObj.getBlock(x, y, z) == this;
+      return worldObj.getBlock(x, y, z) == this;//anazor drunk too much so that a lot of blocks can be used to activate beacon--this comment will be sent to OpenTC4-1.7.10
    }
 
    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {

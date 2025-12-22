@@ -19,7 +19,7 @@ public class PavingStoneTravelBlock extends Block {
     }
     public PavingStoneTravelBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.STONE)
-                .lightLevel(s->7)
+                .lightLevel(s->9)
                 .strength(2.f,10.f)
         );
     }

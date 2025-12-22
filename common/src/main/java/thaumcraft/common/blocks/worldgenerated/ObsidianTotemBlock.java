@@ -34,7 +34,7 @@ public class ObsidianTotemBlock extends Block {
         super(properties);
     }
     public ObsidianTotemBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN));
+        super(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).explosionResistance(999));
     }
 
     @Override

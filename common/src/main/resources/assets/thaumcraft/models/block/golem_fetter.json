@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "minecraft:block/arcane_stone_bricks",
+    "east": "minecraft:block/golem_fetter_side",
+    "north": "minecraft:block/golem_fetter_side",
+    "particle": "minecraft:block/golem_fetter_side",
+    "south": "minecraft:block/golem_fetter_side",
+    "west": "minecraft:block/golem_fetter_side",
+    "up": "minecraft:block/golem_fetter_top"
+  }
+}

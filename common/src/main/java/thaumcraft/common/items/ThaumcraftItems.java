@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
@@ -98,112 +99,222 @@ public class ThaumcraftItems {
     public static final BlockItem PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
     public static final BlockItem PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
     public static final BlockItem THAUMIUM_BLOCK = Registry.SUPPLIER_THAUMIUM_BLOCK.get();
+    public static final BlockItem TALLOW_BLOCK = Registry.SUPPLIER_TALLOW_BLOCK.get();
+    public static final BlockItem ARCANE_STONE_BLOCK = Registry.SUPPLIER_ARCANE_STONE_BLOCK.get();
+    public static final BlockItem ARCANE_STONE_BRICKS = Registry.SUPPLIER_ARCANE_STONE_BRICKS.get();
+    public static final BlockItem GOLEM_FETTER = Registry.SUPPLIER_GOLEM_FETTER.get();
+    public static final BlockItem ANCIENT_STONE = Registry.SUPPLIER_ANCIENT_STONE.get();
+    public static final BlockItem ANCIENT_ROCK = Registry.SUPPLIER_ANCIENT_ROCK.get();
+    public static final BlockItem CRUSTED_STONE = Registry.SUPPLIER_CRUSTED_STONE.get();
+    public static final BlockItem ANCIENT_STONE_PEDESTAL = Registry.SUPPLIER_ANCIENT_STONE_PEDESTAL.get();
 
+
+    //===========================================================================================
 
     public static class Registry {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create("thaumcraft", Registries.ITEM);
 
-        public static final RegistrySupplier<AlumentumItem> SUPPLIER_ALUMENTUM = ITEMS.register("alumentum", AlumentumItem::new);
-        public static final RegistrySupplier<BlockItem> SUPPLIER_NITOR = ITEMS.register("nitor", () -> new BlockItem(ThaumcraftBlocks.NITOR_BLOCK,new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_INGOT = ITEMS.register("thaumium_ingot", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_QUICK_SILVER = ITEMS.register("quick_silver", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_MAGIC_TALLOW = ITEMS.register("magic_tallow", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<AlumentumItem> SUPPLIER_ALUMENTUM = ITEMS.register(
+                "alumentum", AlumentumItem::new);
+        public static final RegistrySupplier<BlockItem> SUPPLIER_NITOR = ITEMS.register(
+                "nitor", () -> new BlockItem(ThaumcraftBlocks.NITOR_BLOCK, new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_INGOT = ITEMS.register(
+                "thaumium_ingot", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_QUICK_SILVER = ITEMS.register(
+                "quick_silver", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_MAGIC_TALLOW = ITEMS.register(
+                "magic_tallow", () -> new Item(new Item.Properties()));
         //        public static final RegistrySupplier<Item> SUPPLIER_ZOMBIE_BRAIN_REMOVED = ITEMS.register("zombie_brain_removed", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_AMBER_GEM = ITEMS.register("amber_gem", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_ENCHANTED_FABRIC = ITEMS.register("enchanted_fabric", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_VIS_FILTER = ITEMS.register("vis_filter", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<KnowledgeFragmentItem> SUPPLIER_KNOWLEDGE_FRAGMENT = ITEMS.register("knowledge_fragment", KnowledgeFragmentItem::new);
-        public static final RegistrySupplier<Item> SUPPLIER_MIRRORED_GLASS = ITEMS.register("mirrored_glass", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_TAINTED_GOO = ITEMS.register("tainted_goo", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register("taint_tendril", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_JAR_LABEL = ITEMS.register("jar_label", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_SALIS_MUNDUS = ITEMS.register("salis_mundus", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<PrimalCharmItem> SUPPLIER_PRIMAL_CHARM = ITEMS.register("primal_charm", PrimalCharmItem::new);
-        public static final RegistrySupplier<Item> SUPPLIER_VOID_INGOT = ITEMS.register("void_ingot", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_VOID_SEED = ITEMS.register("void_seed", () -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_GOLD_COIN = ITEMS.register("gold_coin", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_AMBER_GEM = ITEMS.register(
+                "amber_gem", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_ENCHANTED_FABRIC = ITEMS.register(
+                "enchanted_fabric", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_VIS_FILTER = ITEMS.register(
+                "vis_filter", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<KnowledgeFragmentItem> SUPPLIER_KNOWLEDGE_FRAGMENT = ITEMS.register(
+                "knowledge_fragment", KnowledgeFragmentItem::new);
+        public static final RegistrySupplier<Item> SUPPLIER_MIRRORED_GLASS = ITEMS.register(
+                "mirrored_glass", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_TAINTED_GOO = ITEMS.register(
+                "tainted_goo", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register(
+                "taint_tendril", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_JAR_LABEL = ITEMS.register(
+                "jar_label", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_SALIS_MUNDUS = ITEMS.register(
+                "salis_mundus", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<PrimalCharmItem> SUPPLIER_PRIMAL_CHARM = ITEMS.register(
+                "primal_charm", PrimalCharmItem::new);
+        public static final RegistrySupplier<Item> SUPPLIER_VOID_INGOT = ITEMS.register(
+                "void_ingot", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_VOID_SEED = ITEMS.register(
+                "void_seed", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_GOLD_COIN = ITEMS.register(
+                "gold_coin", () -> new Item(new Item.Properties()));
 
-        public static final RegistrySupplier<EldritchEyeItem> SUPPLIER_ELDRITCH_EYE = ITEMS.register("eldritch_eye", EldritchEyeItem::new);
-        public static final RegistrySupplier<CrimsonRitesItem> SUPPLIER_CRIMSON_RITES = ITEMS.register("crimson_rites", CrimsonRitesItem::new);
-        public static final RegistrySupplier<RunedTabletItem> SUPPLIER_RUNED_TABLET = ITEMS.register("runed_tablet", RunedTabletItem::new);
-        public static final RegistrySupplier<PrimePearlItem> SUPPLIER_PRIME_PEARL = ITEMS.register("prime_pearl", PrimePearlItem::new);
-        public static final RegistrySupplier<EldritchObeliskPlacerItem> SUPPLIER_ELDRITCH_OBELISK_PLACER = ITEMS.register("ob_placer", EldritchObeliskPlacerItem::new);
+        public static final RegistrySupplier<EldritchEyeItem> SUPPLIER_ELDRITCH_EYE = ITEMS.register(
+                "eldritch_eye", EldritchEyeItem::new);
+        public static final RegistrySupplier<CrimsonRitesItem> SUPPLIER_CRIMSON_RITES = ITEMS.register(
+                "crimson_rites", CrimsonRitesItem::new);
+        public static final RegistrySupplier<RunedTabletItem> SUPPLIER_RUNED_TABLET = ITEMS.register(
+                "runed_tablet", RunedTabletItem::new);
+        public static final RegistrySupplier<PrimePearlItem> SUPPLIER_PRIME_PEARL = ITEMS.register(
+                "prime_pearl", PrimePearlItem::new);
+        public static final RegistrySupplier<EldritchObeliskPlacerItem> SUPPLIER_ELDRITCH_OBELISK_PLACER = ITEMS.register(
+                "ob_placer", EldritchObeliskPlacerItem::new);
 
-        public static final RegistrySupplier<ThaumometerItem> SUPPLIER_THAUMOMETER_ITEM = ITEMS.register("thaumometer", ThaumometerItem::new);
+        public static final RegistrySupplier<ThaumometerItem> SUPPLIER_THAUMOMETER_ITEM = ITEMS.register(
+                "thaumometer", ThaumometerItem::new);
 
         //wand caps
-        public static final RegistrySupplier<CopperWandCapItem> SUPPLIER_COPPER_WAND_CAP = ITEMS.register("wand_cap_copper", CopperWandCapItem::new);//
-        public static final RegistrySupplier<GoldWandCapItem> SUPPLIER_GOLD_WAND_CAP = ITEMS.register("wand_cap_gold", GoldWandCapItem::new);
-        public static final RegistrySupplier<IronWandCapItem> SUPPLIER_IRON_WAND_CAP = ITEMS.register("wand_cap_iron", IronWandCapItem::new);
-        public static final RegistrySupplier<SilverWandCapItem> SUPPLIER_SILVER_WAND_CAP = ITEMS.register("wand_cap_silver", SilverWandCapItem::new);
-        public static final RegistrySupplier<ThaumiumWandCapItem> SUPPLIER_THAUMIUM_WAND_CAP = ITEMS.register("wand_cap_thaumium", ThaumiumWandCapItem::new);
-        public static final RegistrySupplier<VoidWandCapItem> SUPPLIER_VOID_WAND_CAP = ITEMS.register("wand_cap_void", VoidWandCapItem::new);
+        public static final RegistrySupplier<CopperWandCapItem> SUPPLIER_COPPER_WAND_CAP = ITEMS.register(
+                "wand_cap_copper", CopperWandCapItem::new);//
+        public static final RegistrySupplier<GoldWandCapItem> SUPPLIER_GOLD_WAND_CAP = ITEMS.register(
+                "wand_cap_gold", GoldWandCapItem::new);
+        public static final RegistrySupplier<IronWandCapItem> SUPPLIER_IRON_WAND_CAP = ITEMS.register(
+                "wand_cap_iron", IronWandCapItem::new);
+        public static final RegistrySupplier<SilverWandCapItem> SUPPLIER_SILVER_WAND_CAP = ITEMS.register(
+                "wand_cap_silver", SilverWandCapItem::new);
+        public static final RegistrySupplier<ThaumiumWandCapItem> SUPPLIER_THAUMIUM_WAND_CAP = ITEMS.register(
+                "wand_cap_thaumium", ThaumiumWandCapItem::new);
+        public static final RegistrySupplier<VoidWandCapItem> SUPPLIER_VOID_WAND_CAP = ITEMS.register(
+                "wand_cap_void", VoidWandCapItem::new);
 
 
         //wand caps (inert)
-        public static final RegistrySupplier<Item> SUPPLIER_SILVER_WAND_CAP_INERT = ITEMS.register("wand_cap_silver_inert",() -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_WAND_CAP_INERT = ITEMS.register("wand_cap_thaumium_inert",() -> new Item(new Item.Properties()));
-        public static final RegistrySupplier<Item> SUPPLIER_VOID_WAND_CAP_INERT = ITEMS.register("wand_cap_void_inert",() -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_SILVER_WAND_CAP_INERT = ITEMS.register(
+                "wand_cap_silver_inert", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_WAND_CAP_INERT = ITEMS.register(
+                "wand_cap_thaumium_inert", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_VOID_WAND_CAP_INERT = ITEMS.register(
+                "wand_cap_void_inert", () -> new Item(new Item.Properties()));
 
         //wand rods
-        public static final RegistrySupplier<BlazeWandRodItem> SUPPLIER_BLAZE_WAND_ROD = ITEMS.register("wand_rod_blaze", BlazeWandRodItem::new);
-        public static final RegistrySupplier<BoneWandRodItem> SUPPLIER_BONE_WAND_ROD = ITEMS.register("wand_rod_bone", BoneWandRodItem::new);
-        public static final RegistrySupplier<GreatWoodWandRodItem> SUPPLIER_GREATWOOD_WAND_ROD = ITEMS.register("wand_rod_greatwood", GreatWoodWandRodItem::new);
-        public static final RegistrySupplier<IceWandRodItem> SUPPLIER_ICE_WAND_ROD = ITEMS.register("wand_rod_ice", IceWandRodItem::new);
-        public static final RegistrySupplier<ObsidianWandRodItem> SUPPLIER_OBSIDIAN_WAND_ROD = ITEMS.register("wand_rod_obsidian", ObsidianWandRodItem::new);
-        public static final RegistrySupplier<QuartzWandRodItem> SUPPLIER_QUARTZ_WAND_ROD = ITEMS.register("wand_rod_quartz", QuartzWandRodItem::new);
-        public static final RegistrySupplier<ReedWandRodItem> SUPPLIER_REED_WAND_ROD = ITEMS.register("wand_rod_reed", ReedWandRodItem::new);
-        public static final RegistrySupplier<SilverWoodWandRodItem> SUPPLIER_SILVERWOOD_WAND_ROD = ITEMS.register("wand_rod_silverwood", SilverWoodWandRodItem::new);
-        public static final RegistrySupplier<WoodWandRodItem> SUPPLIER_WOOD_WAND_ROD = ITEMS.register("wand_rod_wood", WoodWandRodItem::new);//fake in fact
+        public static final RegistrySupplier<BlazeWandRodItem> SUPPLIER_BLAZE_WAND_ROD = ITEMS.register(
+                "wand_rod_blaze", BlazeWandRodItem::new);
+        public static final RegistrySupplier<BoneWandRodItem> SUPPLIER_BONE_WAND_ROD = ITEMS.register(
+                "wand_rod_bone", BoneWandRodItem::new);
+        public static final RegistrySupplier<GreatWoodWandRodItem> SUPPLIER_GREATWOOD_WAND_ROD = ITEMS.register(
+                "wand_rod_greatwood", GreatWoodWandRodItem::new);
+        public static final RegistrySupplier<IceWandRodItem> SUPPLIER_ICE_WAND_ROD = ITEMS.register(
+                "wand_rod_ice", IceWandRodItem::new);
+        public static final RegistrySupplier<ObsidianWandRodItem> SUPPLIER_OBSIDIAN_WAND_ROD = ITEMS.register(
+                "wand_rod_obsidian", ObsidianWandRodItem::new);
+        public static final RegistrySupplier<QuartzWandRodItem> SUPPLIER_QUARTZ_WAND_ROD = ITEMS.register(
+                "wand_rod_quartz", QuartzWandRodItem::new);
+        public static final RegistrySupplier<ReedWandRodItem> SUPPLIER_REED_WAND_ROD = ITEMS.register(
+                "wand_rod_reed", ReedWandRodItem::new);
+        public static final RegistrySupplier<SilverWoodWandRodItem> SUPPLIER_SILVERWOOD_WAND_ROD = ITEMS.register(
+                "wand_rod_silverwood", SilverWoodWandRodItem::new);
+        public static final RegistrySupplier<WoodWandRodItem> SUPPLIER_WOOD_WAND_ROD = ITEMS.register(
+                "wand_rod_wood", WoodWandRodItem::new);//fake in fact
 
         //staff rods
-        public static final RegistrySupplier<PrimalStaffRodItem> SUPPLIER_PRIMAL_STAFF_ROD = ITEMS.register("staff_rod_primal",PrimalStaffRodItem::new);
-        public static final RegistrySupplier<BlazeStaffRodItem> SUPPLIER_BLAZE_STAFF_ROD = ITEMS.register("staff_rod_blaze", BlazeStaffRodItem::new);
-        public static final RegistrySupplier<BoneStaffRodItem> SUPPLIER_BONE_STAFF_ROD = ITEMS.register("staff_rod_bone", BoneStaffRodItem::new);
-        public static final RegistrySupplier<GreatWoodStaffRodItem> SUPPLIER_GREATWOOD_STAFF_ROD = ITEMS.register("staff_rod_greatwood", GreatWoodStaffRodItem::new);
-        public static final RegistrySupplier<IceStaffRodItem> SUPPLIER_ICE_STAFF_ROD = ITEMS.register("staff_rod_ice", IceStaffRodItem::new);
-        public static final RegistrySupplier<ObsidianStaffRodItem> SUPPLIER_OBSIDIAN_STAFF_ROD = ITEMS.register("staff_rod_obsidian", ObsidianStaffRodItem::new);
-        public static final RegistrySupplier<QuartzStaffRodItem> SUPPLIER_QUARTZ_STAFF_ROD = ITEMS.register("staff_rod_quartz", QuartzStaffRodItem::new);
-        public static final RegistrySupplier<ReedStaffRodItem> SUPPLIER_REED_STAFF_ROD = ITEMS.register("staff_rod_reed", ReedStaffRodItem::new);
-        public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register("staff_rod_silverwood", SilverWoodStaffRodItem::new);
+        public static final RegistrySupplier<PrimalStaffRodItem> SUPPLIER_PRIMAL_STAFF_ROD = ITEMS.register(
+                "staff_rod_primal", PrimalStaffRodItem::new);
+        public static final RegistrySupplier<BlazeStaffRodItem> SUPPLIER_BLAZE_STAFF_ROD = ITEMS.register(
+                "staff_rod_blaze", BlazeStaffRodItem::new);
+        public static final RegistrySupplier<BoneStaffRodItem> SUPPLIER_BONE_STAFF_ROD = ITEMS.register(
+                "staff_rod_bone", BoneStaffRodItem::new);
+        public static final RegistrySupplier<GreatWoodStaffRodItem> SUPPLIER_GREATWOOD_STAFF_ROD = ITEMS.register(
+                "staff_rod_greatwood", GreatWoodStaffRodItem::new);
+        public static final RegistrySupplier<IceStaffRodItem> SUPPLIER_ICE_STAFF_ROD = ITEMS.register(
+                "staff_rod_ice", IceStaffRodItem::new);
+        public static final RegistrySupplier<ObsidianStaffRodItem> SUPPLIER_OBSIDIAN_STAFF_ROD = ITEMS.register(
+                "staff_rod_obsidian", ObsidianStaffRodItem::new);
+        public static final RegistrySupplier<QuartzStaffRodItem> SUPPLIER_QUARTZ_STAFF_ROD = ITEMS.register(
+                "staff_rod_quartz", QuartzStaffRodItem::new);
+        public static final RegistrySupplier<ReedStaffRodItem> SUPPLIER_REED_STAFF_ROD = ITEMS.register(
+                "staff_rod_reed", ReedStaffRodItem::new);
+        public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register(
+                "staff_rod_silverwood", SilverWoodStaffRodItem::new);
 
-        public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register("zombie_brain", ZombieBrainItem::new);
+        public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register(
+                "zombie_brain", ZombieBrainItem::new);
 
-        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LOG = ITEMS.register("greatwood_log",() ->new BlockItem(ThaumcraftBlocks.GREATWOOD_LOG,new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LOG = ITEMS.register("silverwood_log",() ->new BlockItem(ThaumcraftBlocks.SILVERWOOD_LOG,new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS = ITEMS.register("greatwood_planks", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS = ITEMS.register("silverwood_planks", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LEAVES = ITEMS.register("greatwood_leaves", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_LEAVES, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LEAVES = ITEMS.register("silverwood_leaves", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_LEAVES, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_SAPLING = ITEMS.register("greatwood_sapling", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_SAPLING, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_SAPLING = ITEMS.register("silverwood_sapling", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_SAPLING, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LOG = ITEMS.register(
+                "greatwood_log", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_LOG, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LOG = ITEMS.register(
+                "silverwood_log", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_LOG, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS = ITEMS.register(
+                "greatwood_planks", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS = ITEMS.register(
+                "silverwood_planks", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_LEAVES = ITEMS.register(
+                "greatwood_leaves", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_LEAVES, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LEAVES = ITEMS.register(
+                "silverwood_leaves", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_LEAVES, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_SAPLING = ITEMS.register(
+                "greatwood_sapling", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_SAPLING, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_SAPLING = ITEMS.register(
+                "silverwood_sapling", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_SAPLING, new Item.Properties()));
 
 
-        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TOTEM = ITEMS.register("obsidian_totem", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TOTEM, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TILE = ITEMS.register("obsidian_tile", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TILE, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_TRAVEL = ITEMS.register("paving_stone_travel", () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_TRAVEL, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_WARDING = ITEMS.register("paving_stone_warding", () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_WARDING, new Item.Properties()));
-        public static final RegistrySupplier<BlockItem> SUPPLIER_THAUMIUM_BLOCK = ITEMS.register("thaumium_block", () -> new BlockItem(ThaumcraftBlocks.THAUMIUM_BLOCK, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TOTEM = ITEMS.register(
+                "obsidian_totem", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TOTEM, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TILE = ITEMS.register(
+                "obsidian_tile", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TILE, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_TRAVEL = ITEMS.register(
+                "paving_stone_travel",
+                () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_TRAVEL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_WARDING = ITEMS.register(
+                "paving_stone_warding",
+                () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_WARDING, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_THAUMIUM_BLOCK = ITEMS.register(
+                "thaumium_block", () -> new BlockItem(ThaumcraftBlocks.THAUMIUM_BLOCK, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_TALLOW_BLOCK = ITEMS.register(
+                "tallow_block", () -> new BlockItem(ThaumcraftBlocks.TALLOW_BLOCK, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BLOCK = ITEMS.register(
+                "arcane_stone_block", () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BLOCK, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BRICKS = ITEMS.register(
+                "arcane_stone_bricks", () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICKS, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GOLEM_FETTER = ITEMS.register(
+                "golem_fetter", () -> new BlockItem(ThaumcraftBlocks.GOLEM_FETTER, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE = ITEMS.register(
+                "ancient_stone", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_ROCK = ITEMS.register(
+                "ancient_rock", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_ROCK, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CRUSTED_STONE = ITEMS.register(
+                "crusted_stone", () -> new BlockItem(ThaumcraftBlocks.CRUSTED_STONE, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE_PEDESTAL = ITEMS.register(
+                "ancient_stone_pedestal", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_PEDESTAL, new Item.Properties()));
 
+        static {
+            Registry.ITEMS.register();
+        }
     }
+
     public static class ItemTags {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(
-        public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("thaumcraft:tag_void_ingot"));
-        public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("thaumcraft:tag_prime_pearl"));
+        public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("thaumcraft:tag_void_ingot"));
+        public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("thaumcraft:tag_prime_pearl"));
 
-        public static final TagKey<Item> SILVER_NUGGET_FORGE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge:nuggets/silver"));
-        public static final TagKey<Item> SILVER_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:silver_nuggets"));
-        public static final TagKey<Item> COPPER_NUGGET_FORGE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge:nuggets/copper"));
-        public static final TagKey<Item> COPPER_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:copper_nuggets"));
-        public static final TagKey<Item> GOLD_NUGGET_FORGE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge:nuggets/gold"));
-        public static final TagKey<Item> GOLD_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:gold_nuggets"));
-        public static final TagKey<Item> IRON_NUGGET_FORGE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge:nuggets/iron"));
-        public static final TagKey<Item> IRON_NUGGET_FABRIC_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("c:iron_nuggets"));
+        public static final TagKey<Item> SILVER_NUGGET_FORGE_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("forge:nuggets/silver"));
+        public static final TagKey<Item> SILVER_NUGGET_FABRIC_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("c:silver_nuggets"));
+        public static final TagKey<Item> COPPER_NUGGET_FORGE_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("forge:nuggets/copper"));
+        public static final TagKey<Item> COPPER_NUGGET_FABRIC_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("c:copper_nuggets"));
+        public static final TagKey<Item> GOLD_NUGGET_FORGE_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("forge:nuggets/gold"));
+        public static final TagKey<Item> GOLD_NUGGET_FABRIC_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("c:gold_nuggets"));
+        public static final TagKey<Item> IRON_NUGGET_FORGE_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("forge:nuggets/iron"));
+        public static final TagKey<Item> IRON_NUGGET_FABRIC_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("c:iron_nuggets"));
 
-        public static final TagKey<Item> PLANKS_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("minecraft:planks"));
+        public static final TagKey<Item> PLANKS_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("minecraft:planks"));
     }
 
     public static void init() {
-        Registry.ITEMS.register();
+
     }
 }

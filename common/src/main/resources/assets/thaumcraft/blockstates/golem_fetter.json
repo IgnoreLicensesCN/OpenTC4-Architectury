@@ -1,0 +1,20 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "lit": "true"
+      },
+      "apply": {
+        "model": "thaumcraft:block/golem_fetter_activated"
+      }
+    },
+    {
+      "when": {
+        "lit": "false"
+      },
+      "apply": {
+        "model": "thaumcraft:block/golem_fetter"
+      }
+    }
+  ]
+}

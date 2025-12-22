@@ -36,7 +36,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock {
         super(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)
                 .randomTicks()
                 .sound(TOTEM_SOUND)
-                .lightLevel(s -> 7)
+                .lightLevel(s -> 7).explosionResistance(999)
         );
     }
 

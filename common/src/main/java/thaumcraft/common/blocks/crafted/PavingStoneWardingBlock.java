@@ -1,7 +1,6 @@
 package thaumcraft.common.blocks.crafted;
 
 import com.linearity.opentc4.clientrenderapi.IClientRandomTickableBlock;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,19 +8,18 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.ThaumcraftBlocks;
 
 public class PavingStoneWardingBlock extends Block implements IClientRandomTickableBlock {
-    public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public PavingStoneWardingBlock(Properties properties) {
         super(properties);
     }
@@ -107,18 +105,42 @@ public class PavingStoneWardingBlock extends Block implements IClientRandomTicka
         }
     }
 
+
+    //redstone lamp
+    public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
+    @Nullable
     @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
-        boolean hasSignal = blockPlaceContext.getLevel().hasNeighborSignal(blockPlaceContext.getClickedPos());
-        return defaultBlockState().setValue(POWERED,hasSignal);
+    public BlockState getStateForPlacement(BlockPlaceContext arg) {
+        return this.defaultBlockState().setValue(LIT, arg.getLevel().hasNeighborSignal(arg.getClickedPos()));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(POWERED);
+        builder.add(LIT);
     }
 
     public boolean isCharged(BlockState state) {
-        return state.getValue(POWERED);
+        return state.getValue(LIT);
+    }
+
+
+    @Override
+    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, BlockPos arg5, boolean bl) {
+        if (!arg2.isClientSide) {
+            boolean bl2 = arg.getValue(LIT);
+            if (bl2 != arg2.hasNeighborSignal(arg3)) {
+                if (bl2) {
+                    arg2.scheduleTick(arg3, this, 4);
+                } else {
+                    arg2.setBlock(arg3, arg.cycle(LIT), 2);
+                }
+            }
+        }
+    }
+    @Override
+    public void tick(BlockState arg, ServerLevel arg2, BlockPos arg3, RandomSource arg4) {
+        if (arg.getValue(LIT) && !arg2.hasNeighborSignal(arg3)) {
+            arg2.setBlock(arg3, arg.cycle(LIT), 2);
+        }
     }
 }

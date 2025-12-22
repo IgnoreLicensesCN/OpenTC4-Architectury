@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "thaumcraft:block/ancient_stone_1",
+    "side": "thaumcraft:block/ancient_stone_pedestal_side"
+  }
+}

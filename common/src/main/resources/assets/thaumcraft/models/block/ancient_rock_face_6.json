@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "thaumcraft:block/ancient_rock_3",
+    "up": "thaumcraft:block/ancient_rock_3",
+    "north": "thaumcraft:block/ancient_rock_3",
+    "south": "thaumcraft:block/ancient_rock_3",
+    "west": "thaumcraft:block/ancient_rock_4",
+    "east": "thaumcraft:block/ancient_rock_4"
+  }
+}
