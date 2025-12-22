@@ -9,9 +9,12 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.blocks.crafted.NitorBlock;
+import thaumcraft.common.blocks.crafted.PavingStoneTravelBlock;
+import thaumcraft.common.blocks.crafted.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
@@ -33,6 +36,9 @@ public class ThaumcraftBlocks {
     public static final ObsidianTotemBlock OBSIDIAN_TOTEM = Registry.SUPPLIER_OBSIDIAN_TOTEM.get();
     public static final ObsidianTotemWithNodeBlock OBSIDIAN_TOTEM_WITH_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE.get();
     public static final Block OBSIDIAN_TILE = Registry.SUPPLIER_OBSIDIAN_TILE.get();
+    public static final PavingStoneTravelBlock PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
+    public static final PavingStoneWardingBlock PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
+    public static final WardingAuraBlock WARDING_AURA = Registry.SUPPLIER_WARDING_AURA.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register("flux_goo", FluxGooBlock::new);
@@ -51,6 +57,9 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<ObsidianTotemBlock> SUPPLIER_OBSIDIAN_TOTEM = BLOCKS.register("obsidian_totem", ObsidianTotemBlock::new);
         public static final RegistrySupplier<ObsidianTotemWithNodeBlock> SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE = BLOCKS.register("obsidian_totem_with_node", ObsidianTotemWithNodeBlock::new);
         public static final RegistrySupplier<Block> SUPPLIER_OBSIDIAN_TILE = BLOCKS.register("obsidian_tile", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)));
+        public static final RegistrySupplier<PavingStoneTravelBlock> SUPPLIER_PAVING_STONE_TRAVEL = BLOCKS.register("paving_stone_travel", PavingStoneTravelBlock::new);
+        public static final RegistrySupplier<PavingStoneWardingBlock> SUPPLIER_PAVING_STONE_WARDING = BLOCKS.register("paving_stone_warding", PavingStoneWardingBlock::new);
+        public static final RegistrySupplier<WardingAuraBlock> SUPPLIER_WARDING_AURA = BLOCKS.register("warding_aura", WardingAuraBlock::new);
 
         static {
             BLOCKS.register();

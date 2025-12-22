@@ -17,8 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
@@ -53,7 +55,6 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ import static thaumcraft.api.nodes.NodeModifier.*;
 import static thaumcraft.api.wands.IVisContainer.CENTIVIS_MULTIPLIER;
 
 //i think it would be suitable to abstract this since we have 3 types.
-public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements INode, WandInteractableBlock {
+public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements INode, WandInteractableBlock, EntityBlock {
     long lastActive = 0L;
     AspectList aspects = new AspectList();
     AspectList aspectsBase = new AspectList();
@@ -139,27 +140,27 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements 
 
     }
 
-    @Override
-    public void serverTickByBlockHandle() {
-        if (this.id == null) {
-            this.generateId();
+
+    public static void serverTick(AbstractNodeBlockEntity thiz) {
+        if (thiz.id == null) {
+            thiz.generateId();
         }
 
         boolean change = false;
-        change = this.handleHungryNodeFirst(change);
-        ++this.count;
-        this.checkLock();
+        change = thiz.handleHungryNodeFirst(change);
+        ++thiz.count;
+        thiz.checkLock();
 
-        change = this.handleDischarge(change);
-        change = this.handleRecharge(change);
+        change = thiz.handleDischarge(change);
+        change = thiz.handleRecharge(change);
         //TODO:Listeners for NodeTypes
-        change = this.handleTaintNode(change);
-        change = this.handleNodeStability(change);
-        change = this.handleDarkNode(change);
-        change = this.handlePureNode(change);
-        change = this.handleHungryNodeSecond(change);
+        change = thiz.handleTaintNode(change);
+        change = thiz.handleNodeStability(change);
+        change = thiz.handleDarkNode(change);
+        change = thiz.handlePureNode(change);
+        change = thiz.handleHungryNodeSecond(change);
         if (change) {
-            markDirtyAndUpdateSelf();
+            thiz.markDirtyAndUpdateSelf();
         }
     }
 
@@ -183,14 +184,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements 
     public void nodeChange() {
         this.regeneration = -1;
         markDirtyAndUpdateSelf();
-    }
-
-    public double getDistanceToSq(double par1, double par3, double par5) {
-        var pos = this.getBlockPos();
-        double var7 = (double) pos.getX() + (double) 0.5F - par1;
-        double var9 = (double) pos.getY() + (double) 0.5F - par3;
-        double var11 = (double) pos.getZ() + (double) 0.5F - par5;
-        return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
     @Override
@@ -1047,12 +1040,13 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements 
         ) {
             byte oldLock = this.nodeLock;
             this.nodeLock = 0;
-            if (!this.level.isBlockIndirectlyGettingPowered(pos.getX(), pos.getY() - 1, pos.getZ())
+            if (!this.level.hasNeighborSignal(pos.below())
                     && this.level.getBlock(pos.getX(), pos.getY() - 1, pos.getZ()) == ConfigBlocks.blockStoneDevice
             ) {
                 if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 9) {//节点稳定器 //TODO:Interface
                     this.nodeLock = 1;
-                } else if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 10) {//高级节点稳定器
+                }
+                else if (this.level.getBlockMetadata(pos.getX(), pos.getY() - 1, pos.getZ()) == 10) {//高级节点稳定器
                     this.nodeLock = 2;
                 }
             }
@@ -1062,5 +1056,24 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements 
             }
         }
 
+    }
+//
+//    @Override
+//    public void tick() {
+//
+//    }
+//
+//    @Override
+//    public BlockPos getPos() {
+//        return this.getBlockPos();
+//    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return (level1, blockPos, blockState, blockEntity) -> {
+            if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
+                serverTick(abstractNodeBlockEntity);
+            }
+        };
     }
 }

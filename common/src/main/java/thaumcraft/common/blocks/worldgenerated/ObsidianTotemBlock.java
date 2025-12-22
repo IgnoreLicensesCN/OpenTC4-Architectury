@@ -15,10 +15,20 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 public class ObsidianTotemBlock extends Block {
-    public static final BooleanProperty UP = BooleanProperty.create("up");
-    public static final BooleanProperty DOWN = BooleanProperty.create("down");
-    public static final IntegerProperty COORDINATE_BASED_RAND = IntegerProperty.create("rand", 1, 4);
-
+    public static final IntegerProperty RENDER_STATE = IntegerProperty.create("render_state", 0, 5);
+    public static final int RENDER_STATE_PROPERTY_VALUE_UP_HAS_TOTEM = 0;
+    public static final int RENDER_STATE_PROPERTY_VALUE_SINGLE_TOTEM = 1;
+    public static final int RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_1 = 2;
+    public static final int RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_2 = 3;
+    public static final int RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_3 = 4;
+    public static final int RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_4 = 5;
+    public final BlockState RENDER_STATE_UP_HAS_TOTEM = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_UP_HAS_TOTEM);
+    public final BlockState RENDER_STATE_SINGLE_TOTEM = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_SINGLE_TOTEM);
+    public final BlockState RENDER_STATE_TOP_TOTEM_1 = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_1);
+    public final BlockState RENDER_STATE_TOP_TOTEM_2 = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_2);
+    public final BlockState RENDER_STATE_TOP_TOTEM_3 = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_3);
+    public final BlockState RENDER_STATE_TOP_TOTEM_4 = defaultBlockState().setValue(RENDER_STATE, RENDER_STATE_PROPERTY_VALUE_TOP_TOTEM_4);
+    public final BlockState[] RENDER_STATES_TOP_TOTEM = new BlockState[]{RENDER_STATE_TOP_TOTEM_1, RENDER_STATE_TOP_TOTEM_2, RENDER_STATE_TOP_TOTEM_3,RENDER_STATE_TOP_TOTEM_4};
 
     public ObsidianTotemBlock(Properties properties) {
         super(properties);
@@ -32,36 +42,42 @@ public class ObsidianTotemBlock extends Block {
         Level level = ctx.getLevel();
         BlockPos pos = ctx.getClickedPos();
         boolean up = level.getBlockState(pos.above()).getBlock() instanceof ObsidianTotemBlock;
+        if (up){
+            return RENDER_STATE_UP_HAS_TOTEM;
+        }
         boolean down = level.getBlockState(pos.below()).getBlock() instanceof ObsidianTotemBlock;
+        if (!down){
+            return RENDER_STATE_SINGLE_TOTEM;
+        }
 
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
         int base = (x % 4 + y % 4 + z % 4) % 4; // 0~3
 
-        return defaultBlockState()
-                .setValue(UP, up)
-                .setValue(DOWN, down)
-                .setValue(COORDINATE_BASED_RAND, base);
+        return RENDER_STATES_TOP_TOTEM[base];
     }
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor world, BlockPos currentPos, BlockPos neighborPos) {
         if (!world.isClientSide()) {
-            boolean up = world.getBlockState(currentPos.above()).is(this);
-            boolean down = world.getBlockState(currentPos.below()).is(this);
+            boolean up = world.getBlockState(currentPos.above()).getBlock() instanceof ObsidianTotemBlock;
+            if (up){
+                return RENDER_STATE_UP_HAS_TOTEM;
+            }
+            boolean down = world.getBlockState(currentPos.below()).getBlock() instanceof ObsidianTotemBlock;
+            if (!down){
+                return RENDER_STATE_SINGLE_TOTEM;
+            }
 
             int x = currentPos.getX(), y = currentPos.getY(), z = currentPos.getZ();
             int base = (x % 4 + y % 4 + z % 4) % 4;
 
-            return state
-                    .setValue(UP, up)
-                    .setValue(DOWN, down)
-                    .setValue(COORDINATE_BASED_RAND, base);
+            return RENDER_STATES_TOP_TOTEM[base];
         }
         return state;
     }
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(UP, DOWN, COORDINATE_BASED_RAND);
+        builder.add(RENDER_STATE);
     }
 
 }

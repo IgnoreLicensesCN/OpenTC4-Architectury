@@ -40,6 +40,7 @@ import java.util.Set;
 
 import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.MOUND_STRUCTURE_TYPE;
+import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
 public class MoundStructure extends Structure {
 
@@ -50,12 +51,15 @@ public class MoundStructure extends Structure {
     public static final Codec<MoundStructure> CODEC =
             simpleCodec(MoundStructure::new);
 
+    public static boolean couldGenMountStructureViaCoords(GenerationContext context){
+        return randomSourceFromChunkPosAndSeed(context.chunkPos(),context.seed()).nextInt(150) == 0;
+    }
     @Override
     public @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         var chunkGen = context.chunkGenerator();
         var heightAccessor = context.heightAccessor();
         var randomState = context.randomState();
-        var random = context.random();
+        var random = randomSourceFromChunkPosAndSeed(context.chunkPos(),context.seed());
         int x = context.chunkPos()
                 .getMinBlockX() + random.nextInt(16);
         int z = context.chunkPos()

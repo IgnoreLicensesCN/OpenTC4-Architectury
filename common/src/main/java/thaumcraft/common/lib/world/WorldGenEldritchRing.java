@@ -13,6 +13,7 @@ import thaumcraft.common.tiles.TileEldritchAltar;
 
 import java.util.Random;
 
+@Deprecated(forRemoval = true)
 public class WorldGenEldritchRing extends WorldGenerator {
    public int chunkX;
    public int chunkZ;
@@ -69,8 +70,13 @@ public class WorldGenEldritchRing extends WorldGenerator {
                if (x != i - 3 && x != i + 3 || z != k - 3 && z != k + 3) {
                   for(int q = -4; q < 5; ++q) {
                      Block bb = world.getBlock(x, j + q, z);
-                     if (q <= 0 || bb.isReplaceable(world, x, j + q, z) || !bb.getMaterial().blocksMovement() || bb.isFoliage(world, x, j + q, z)) {
-                        if (rand.nextInt(4) == 0) {
+                     if (q <= 0
+                             || bb.isReplaceable(world, x, j + q, z)
+                             || !bb.getMaterial().blocksMovement()
+                             || bb.isFoliage(world, x, j + q, z)//however,once > 0 it's always air,all tries are useless.
+                     ) {
+                        if (rand.nextInt(4) == 0
+                        ) {
                            world.setBlock(x, j + q, z, Blocks.obsidian);
                         } else {
                            world.setBlock(x, j + q, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
@@ -121,9 +127,17 @@ public class WorldGenEldritchRing extends WorldGenerator {
                      world.setBlock(x, j + 5, z, ConfigBlocks.blockEldritch, 2, 3);
                      world.setBlock(x, j + 6, z, ConfigBlocks.blockEldritch, 2, 3);
                      world.setBlock(x, j + 7, z, ConfigBlocks.blockEldritch, 2, 3);
-                  } else if (((x == i - 3 || x == i + 3) && Math.abs((z - k) % 2) == 1 || (z == k - 3 || z == k + 3) && Math.abs((x - i) % 2) == 1) && Math.abs(x - i) != Math.abs(z - k)) {
-                     world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
-                     world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
+                  } else {
+                     var flagFinal = Math.abs(x - i) != Math.abs(z - k);
+                     if (((x == i - 3 || x == i + 3)
+                             && Math.abs((z - k) % 2) == 1
+                             || (z == k - 3 || z == k + 3)
+                             && Math.abs((x - i) % 2) == 1)
+                             && flagFinal
+                     ) {
+                        world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
+                        world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
+                     }
                   }
                }
             }

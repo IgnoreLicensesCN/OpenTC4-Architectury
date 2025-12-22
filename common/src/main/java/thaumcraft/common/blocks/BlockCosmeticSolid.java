@@ -34,22 +34,22 @@ import thaumcraft.common.tiles.TileWardingStone;
 import java.util.List;
 import java.util.Random;
 
-//"block.thaumcraft.obsidian_totem": "黑曜石图腾",
-//    "block.thaumcraft.obsidian_tile": "黑曜石瓦块",
-//    "tile.blockCosmeticSolid.2.name": "旅行者铺路石",
-//    "tile.blockCosmeticSolid.3.name": "守卫者铺路石",
-//    "tile.blockCosmeticSolid.4.name": "神秘方块",
-//    "tile.blockCosmeticSolid.5.name": "油脂方块",
-//    "tile.blockCosmeticSolid.6.name": "奥术石块",
-//    "tile.blockCosmeticSolid.7.name": "奥术石砖",
-//    "block.thaumcraft.obsidian_totem_with_node": "蕴灵黑曜石图腾",
-//    "tile.blockCosmeticSolid.9.name": "傀儡脚镣",
-//    "tile.blockCosmeticSolid.10.name": "激活傀儡脚镣",
-//    "tile.blockCosmeticSolid.11.name": "荒古石头",
-//    "tile.blockCosmeticSolid.12.name": "荒古岩石",
-//    "tile.blockCosmeticSolid.13.name": "荒古石头",
-//    "tile.blockCosmeticSolid.14.name": "陈年石头",
-//    "tile.blockCosmeticSolid.15.name": "荒古石座",
+//"0": "黑曜石图腾",
+//    "1": "黑曜石瓦块",
+//    "2": "旅行者铺路石",
+//    "3": "守卫者铺路石",
+//    "tile.blockCosmeticSolid.4": "神秘方块",
+//    "tile.blockCosmeticSolid.5": "油脂方块",
+//    "tile.blockCosmeticSolid.6": "奥术石块",
+//    "tile.blockCosmeticSolid.7": "奥术石砖",
+//    "8": "蕴灵黑曜石图腾",
+//    "tile.blockCosmeticSolid.9": "傀儡脚镣",
+//    "tile.blockCosmeticSolid.10": "激活傀儡脚镣",
+//    "tile.blockCosmeticSolid.11": "荒古石头",
+//    "tile.blockCosmeticSolid.12": "荒古岩石",
+//    "tile.blockCosmeticSolid.13.": "荒古石头",
+//    "tile.blockCosmeticSolid.14.": "陈年石头",
+//    "tile.blockCosmeticSolid.15.": "荒古石座",
 public class BlockCosmeticSolid extends Block {
    public IIcon[] icon = new IIcon[27];
 
@@ -74,7 +74,9 @@ public class BlockCosmeticSolid extends Block {
       
       this.icon[7] = ir.registerIcon("thaumcraft:paving_stone_travel");
       this.icon[8] = ir.registerIcon("thaumcraft:paving_stone_warding");
+
       this.icon[9] = ir.registerIcon("thaumcraft:thaumiumblock");
+
       this.icon[10] = ir.registerIcon("thaumcraft:tallowblock");
       this.icon[11] = ir.registerIcon("thaumcraft:tallowblock_top");
       this.icon[12] = ir.registerIcon("thaumcraft:pedestal_top");

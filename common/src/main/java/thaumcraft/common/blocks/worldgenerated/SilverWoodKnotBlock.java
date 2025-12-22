@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -15,14 +14,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootParams;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
-
-import java.util.List;
 
 public class SilverWoodKnotBlock extends RotatedPillarBlock {
 
@@ -86,7 +81,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock {
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         var bEntity = serverLevel.getBlockEntity(blockPos);
         if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
-            node.serverTickByBlockHandle();
+            node.serverRandomTickByBlockHandle();
         }
     }
 

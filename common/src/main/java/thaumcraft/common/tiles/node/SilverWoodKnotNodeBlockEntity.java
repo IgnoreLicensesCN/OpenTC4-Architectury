@@ -3,8 +3,10 @@ package thaumcraft.common.tiles.node;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
@@ -31,5 +33,10 @@ public class SilverWoodKnotNodeBlockEntity extends AbstractNodeBlockEntity {
         if (this.level != null) {
             this.level.setBlock(this.getBlockPos(), ThaumcraftBlocks.SILVERWOOD_LOG.defaultBlockState(), Block.UPDATE_ALL);
         }
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new SilverWoodKnotNodeBlockEntity(blockPos, blockState);
     }
 }

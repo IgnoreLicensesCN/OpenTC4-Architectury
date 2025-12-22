@@ -143,7 +143,9 @@ public class BlockAiry extends BlockContainer {
 
    public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
-      return md == 2 || md == 3 || md == 4 || md == 10 || md == 11;
+      return md == 2 || md == 3
+//              || md == 4
+              || md == 10 || md == 11;
    }
 
    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {

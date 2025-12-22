@@ -157,13 +157,13 @@ public class AuraNodeBlock extends Block {
     public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }
-    @Override
-    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = serverLevel.getBlockEntity(blockPos);
-        if (bEntity instanceof NodeBlockEntity node){
-            node.serverTickByBlockHandle();
-        }
-    }
+//    @Override
+//    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+//        var bEntity = serverLevel.getBlockEntity(blockPos);
+//        if (bEntity instanceof NodeBlockEntity node){
+//            node.serverRandomTickByBlockHandle();
+//        }
+//    }
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {

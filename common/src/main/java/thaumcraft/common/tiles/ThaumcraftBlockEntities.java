@@ -15,6 +15,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<NodeBlockEntity> AURA_NODE = Registry.SUPPLIER_AURA_NODE.get();
     public static final BlockEntityType<SilverWoodKnotNodeBlockEntity> SILVERWOOD_KNOT_NODE = Registry.SUPPLIER_SILVERWOOD_KNOT_NODE.get();
     public static final BlockEntityType<ObsidianTotemNodeBlockEntity> OBSIDIAN_TOTEM_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_NODE.get();
+    public static final BlockEntityType<WardingStoneBlockEntity> WARDING_STONE = Registry.SUPPLIER_WARDING_STONE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -29,8 +30,12 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(SilverWoodKnotNodeBlockEntity::new, ThaumcraftBlocks.SILVERWOOD_KNOT).build(null)//seems "type" not used
         );
         public static final RegistrySupplier<BlockEntityType<ObsidianTotemNodeBlockEntity>> SUPPLIER_OBSIDIAN_TOTEM_NODE = BLOCK_ENTITIES.register(
-                "bosidian_totem_node",
+                "obsidian_totem_node",
                 () -> BlockEntityType.Builder.of(ObsidianTotemNodeBlockEntity::new, ThaumcraftBlocks.OBSIDIAN_TOTEM_WITH_NODE).build(null)//seems "type" not used
+        );
+        public static final RegistrySupplier<BlockEntityType<WardingStoneBlockEntity>> SUPPLIER_WARDING_STONE = BLOCK_ENTITIES.register(
+                "warding_stone",
+                () -> BlockEntityType.Builder.of(WardingStoneBlockEntity::new, ThaumcraftBlocks.PAVING_STONE_WARDING).build(null)//seems "type" not used
         );
     }
 

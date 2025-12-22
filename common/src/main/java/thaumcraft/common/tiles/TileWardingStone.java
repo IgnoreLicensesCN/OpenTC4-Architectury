@@ -27,7 +27,10 @@ public class TileWardingStone extends TileEntity {
          }
 
          if (this.count % 5 == 0 && !this.gettingPower()) {
-            List<EntityLivingBase> targets = this.level().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 3, this.zCoord + 1).expand(0.1, 0.1, 0.1));
+            List<EntityLivingBase> targets = this.level().getEntitiesWithinAABB(
+                    EntityLivingBase.class,
+                    AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord,
+                            this.xCoord + 1, this.yCoord + 3, this.zCoord + 1).expand(0.1, 0.1, 0.1));
             if (!targets.isEmpty()) {
                for(EntityLivingBase e : targets) {
                   if (!e.onGround && !(e instanceof Player)) {

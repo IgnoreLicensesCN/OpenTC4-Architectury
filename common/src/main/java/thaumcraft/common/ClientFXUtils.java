@@ -52,7 +52,9 @@ public class ClientFXUtils {
         FXArc efa = new FXArc(world, x, y, z, tx, ty, tz, r, g, b, h);
         Minecraft.getInstance().particleEngine.add(efa);
     }
-
+    public static void blockSparkle(ClientLevel world, BlockPos pos, int c, int count){
+        blockSparkle(world, pos.getX(),pos.getY(),pos.getZ(), count, c);
+    }
     public static void blockSparkle(ClientLevel world, int x, int y, int z, int c, int count) {
         if (!checkPlatformClient()) {
             return;

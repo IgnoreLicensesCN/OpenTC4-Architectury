@@ -79,7 +79,7 @@ public class TileThaumcraft extends BlockEntity {
         }
     }
     //call by Block (Like AuraNodeBlock#tick call NodeBlockEntity#serverTickByBlockHandle）
-    public void serverTickByBlockHandle(){}
+    public void serverRandomTickByBlockHandle(){}
     public void clientTickByBlockHandle(){}
 
 }

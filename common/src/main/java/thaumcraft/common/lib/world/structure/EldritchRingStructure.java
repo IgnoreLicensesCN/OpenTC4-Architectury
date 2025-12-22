@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
@@ -41,6 +42,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.common.lib.world.structure.MoundStructure.couldGenMountStructureViaCoords;
+import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
 public class EldritchRingStructure extends Structure {
     public static final Codec<EldritchRingStructure> CODEC =
@@ -51,8 +54,20 @@ public class EldritchRingStructure extends Structure {
         this.settings = settings;
     }
 
+    public static boolean couldGenEldritchRingStructureViaCoords(GenerationContext context){
+        if (couldGenMountStructureViaCoords(context)){
+            return false;
+        }
+        return randomSourceFromChunkPosAndSeed(context.chunkPos(),context.seed()).nextInt(66) == 0;
+    }
     @Override
     protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+
+        RandomSource random = randomSourceFromChunkPosAndSeed(context.chunkPos(), context.seed());
+        if (couldGenEldritchRingStructureViaCoords(context)) {
+            return Optional.empty();
+        }
+
 
         if (new MoundStructure(settings).findGenerationPoint(context).isPresent()){
             return Optional.empty();
@@ -61,7 +76,6 @@ public class EldritchRingStructure extends Structure {
         var chunkGen = context.chunkGenerator();
         var heightAccessor = context.heightAccessor();
         var randomState = context.randomState();
-        var random = context.random();
         int x = context.chunkPos()
                 .getMinBlockX() + random.nextInt(16);
         int z = context.chunkPos()
@@ -88,9 +102,6 @@ public class EldritchRingStructure extends Structure {
             return Optional.empty();
         }
 
-        if (random.nextInt(66) != 0) {
-            return Optional.empty();
-        }
         var width = 11 + random.nextInt(6) * 2;
         var height = 11 + random.nextInt(6) * 2;
         if (MazeHandler.mazesInRange(context.chunkPos().x, context.chunkPos().z, width, height)){
@@ -216,26 +227,29 @@ public class EldritchRingStructure extends Structure {
                                 BlockPos blockPos) {
             for (int xOffset = -3; xOffset <= 3; xOffset++) {
                 for (int zOffset = -3; zOffset <= 3; zOffset++) {
-                    if ((xOffset!=-3 && xOffset!=3) || (zOffset!=-3 && zOffset!=3)) {
+                    boolean xNotOnEdge = (xOffset!=-3 && xOffset!=3);
+                    boolean zNotOnEdge = (zOffset!=-3 && zOffset!=3);
+
+                    if (xNotOnEdge || zNotOnEdge) {
                         for(int yOffset = -4; yOffset < 5; ++yOffset) {
-                            var solidPos = blockPos.above(yOffset);
+                            var solidPos = blockPos.offset(xOffset,yOffset,zOffset);
                             if (yOffset > 0) {
                                 level.setBlock(solidPos,Blocks.AIR.defaultBlockState(),3);
                             }
-                            BlockState bState = level.getBlockState(blockPos.above(yOffset));
+                            BlockState bState = level.getBlockState(solidPos);
                             Block block = bState.getBlock();
 
                             if (random.nextInt(4) == 0) {
                                 level.setBlock(solidPos, Blocks.OBSIDIAN.defaultBlockState(), 3);
                             } else {
-                                world.setBlock(x, j + q, z, ConfigBlocks.blockCosmeticSolid, 1, 3);//TODO:Meta->Block
+                                level.setBlock(solidPos, ThaumcraftBlocks.OBSIDIAN_TILE.defaultBlockState(), 3);
                             }
-
                         }
 
+                        //center pillar
                         if (xOffset==0 && zOffset==0) {
                             world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);//TODO:Meta->Block
-                            world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);//TODO:Meta->Block
+                            level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.OBSIDIAN_TILE.defaultBlockState(), 3);
                             int r = random.nextInt(10);
                             BlockEntity te = level.getBlockEntity(blockPos.offset(xOffset,1,zOffset));
                             if (te instanceof TileEldritchAltar) {
@@ -252,18 +266,17 @@ public class EldritchRingStructure extends Structure {
                                             Direction dir = Direction.getOrientation(a);
                                             world.setBlock(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3, ConfigBlocks.blockWoodenDevice, 8, 3);
                                             BlockEntity probablyBanner = world.getBlockEntity(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
-                                            if (probablyBanner instanceof TileBanner) {
-                                                TileBanner banner = (TileBanner) probablyBanner;
+                                            if (probablyBanner instanceof TileBanner banner) {
                                                 banner.setFacing(bannerFaceFromDirection(a));
                                             }
                                         }
                                     case 5:
-                                    default:
-                                        break;
                                     case 6:
                                     case 7:
                                         altar.setSpawner(true);
                                         altar.setSpawnType((byte)1);
+                                    default:
+                                        break;
                                 }
                             }
 
@@ -273,15 +286,30 @@ public class EldritchRingStructure extends Structure {
                             world.setBlock(x, j + 6, z, ConfigBlocks.blockEldritch, 2, 3);
                             world.setBlock(x, j + 7, z, ConfigBlocks.blockEldritch, 2, 3);
                         }
-                        else if (
-                                ((x == i - 3 || x == i + 3)
-                                        && Math.abs((z - k) % 2) == 1
-                                        || (z == k - 3 || z == k + 3)
-                                        && Math.abs((x - i) % 2) == 1)
-                                        && Math.abs(x - i) != Math.abs(z - k)
-                        ) {
-                            world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
-                            world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
+                        else {
+                            boolean xOnEdge = (xOffset == -3 || xOffset == 3);
+                            boolean zOnEdge = (zOffset == -3 || zOffset == 3);
+
+                            boolean zIsOdd = (Math.abs(zOffset % 2) == 1);
+                            boolean xIsOdd = (Math.abs(xOffset % 2) == 1);
+
+                            //(-3,-2,-1,0,1,2,3)
+                            //if xOnEdge && zOnEdge,will not satisfy "if (xNotOnEdge || zNotOnEdge)" before
+                            //so at least one of isn't on edge
+                            //however one is onEdge
+                            //assume xOnEdge,then x=-3 or 3,z = -1 or 1(z should be odd)
+                            //this flag is always satisfied here
+//                            boolean notDiagonal = (Math.abs(xOffset) != Math.abs(zOffset));
+
+                            boolean oneEdgeWhileAnotherOdd = (xOnEdge && zIsOdd) || (zOnEdge && xIsOdd);
+                            if (oneEdgeWhileAnotherOdd //&& notDiagonal
+                            ) {
+                                level.setBlock(
+                                        blockPos.offset(xOffset, 0, zOffset),
+                                        ThaumcraftBlocks.OBSIDIAN_TILE.defaultBlockState(), 3
+                                );
+                                world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
+                            }
                         }
                     }
                 }
