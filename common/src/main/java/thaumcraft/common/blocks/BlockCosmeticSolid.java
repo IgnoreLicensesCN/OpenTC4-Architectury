@@ -17,6 +17,7 @@ package thaumcraft.common.blocks;
 //    "14": "陈年石头",
 //    "15": "荒古石座",
 public class BlockCosmeticSolid /*extends Block*/ {
+
 //   public IIcon[] icon = new IIcon[27];
 //
 //   public BlockCosmeticSolid() {
