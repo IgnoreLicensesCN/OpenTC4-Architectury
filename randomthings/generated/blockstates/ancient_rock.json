@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "face_state=0": {
+      "model": "thaumcraft:block/ancient_rock_face_0"
+    },
+    "face_state=1": {
+      "model": "thaumcraft:block/ancient_rock_face_1"
+    },
+    "face_state=2": {
+      "model": "thaumcraft:block/ancient_rock_face_2"
+    },
+    "face_state=3": {
+      "model": "thaumcraft:block/ancient_rock_face_3"
+    },
+    "face_state=4": {
+      "model": "thaumcraft:block/ancient_rock_face_4"
+    },
+    "face_state=5": {
+      "model": "thaumcraft:block/ancient_rock_face_5"
+    },
+    "face_state=6": {
+      "model": "thaumcraft:block/ancient_rock_face_6"
+    },
+    "face_state=7": {
+      "model": "thaumcraft:block/ancient_rock_face_7"
+    }
+  }
+}
