@@ -93,6 +93,12 @@ public class ThaumcraftItems {
     public static final BlockItem GREATWOOD_SAPLING = Registry.SUPPLIER_GREATWOOD_SAPLING.get();
     public static final BlockItem SILVERWOOD_SAPLING = Registry.SUPPLIER_SILVERWOOD_SAPLING.get();
 
+    public static final BlockItem OBSIDIAN_TOTEM = Registry.SUPPLIER_OBSIDIAN_TOTEM.get();
+    public static final BlockItem OBSIDIAN_TIME = Registry.SUPPLIER_OBSIDIAN_TILE.get();
+    public static final BlockItem PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
+    public static final BlockItem PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
+    public static final BlockItem THAUMIUM_BLOCK = Registry.SUPPLIER_THAUMIUM_BLOCK.get();
+
 
     public static class Registry {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create("thaumcraft", Registries.ITEM);
@@ -171,6 +177,14 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_LEAVES = ITEMS.register("silverwood_leaves", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_LEAVES, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_SAPLING = ITEMS.register("greatwood_sapling", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_SAPLING, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_SAPLING = ITEMS.register("silverwood_sapling", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_SAPLING, new Item.Properties()));
+
+
+        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TOTEM = ITEMS.register("obsidian_totem", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TOTEM, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_OBSIDIAN_TILE = ITEMS.register("obsidian_tile", () -> new BlockItem(ThaumcraftBlocks.OBSIDIAN_TILE, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_TRAVEL = ITEMS.register("paving_stone_travel", () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_TRAVEL, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PAVING_STONE_WARDING = ITEMS.register("paving_stone_warding", () -> new BlockItem(ThaumcraftBlocks.PAVING_STONE_WARDING, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_THAUMIUM_BLOCK = ITEMS.register("thaumium_block", () -> new BlockItem(ThaumcraftBlocks.THAUMIUM_BLOCK, new Item.Properties()));
+
     }
     public static class ItemTags {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(

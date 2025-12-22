@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -14,9 +15,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
 
 public class SilverWoodKnotBlock extends RotatedPillarBlock {
@@ -91,5 +94,10 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock {
         if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
             node.clientTickByBlockHandle();
         }
+    }
+
+    @Override
+    public @NotNull Item asItem() {
+        return ThaumcraftItems.SILVERWOOD_LOG;
     }
 }

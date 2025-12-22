@@ -39,6 +39,7 @@ public class ThaumcraftBlocks {
     public static final PavingStoneTravelBlock PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
     public static final PavingStoneWardingBlock PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
     public static final WardingAuraBlock WARDING_AURA = Registry.SUPPLIER_WARDING_AURA.get();
+    public static final Block THAUMIUM_BLOCK = Registry.SUPPLIER_THAUMIUM_BLOCK.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register("flux_goo", FluxGooBlock::new);
@@ -60,6 +61,7 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<PavingStoneTravelBlock> SUPPLIER_PAVING_STONE_TRAVEL = BLOCKS.register("paving_stone_travel", PavingStoneTravelBlock::new);
         public static final RegistrySupplier<PavingStoneWardingBlock> SUPPLIER_PAVING_STONE_WARDING = BLOCKS.register("paving_stone_warding", PavingStoneWardingBlock::new);
         public static final RegistrySupplier<WardingAuraBlock> SUPPLIER_WARDING_AURA = BLOCKS.register("warding_aura", WardingAuraBlock::new);
+        public static final RegistrySupplier<Block> SUPPLIER_THAUMIUM_BLOCK = BLOCKS.register("thaumium_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));//harness and resistance may changed,but i think it's also suitable
 
         static {
             BLOCKS.register();
