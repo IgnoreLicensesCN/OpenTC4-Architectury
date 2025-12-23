@@ -1,9 +1,13 @@
 package com.linearity.opentc4;
 
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
+import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.client.fx.migrated.Particles;
+import thaumcraft.client.renderers.ThaumcraftRenderers;
+import thaumcraft.client.renderers.block.HungryChestRenderer;
 import thaumcraft.client.renderers.item.RenderUtils;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -56,5 +60,6 @@ public final class OpenTC4 {
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
         RenderUtils.init();
         ThaumcraftBlockAndItemColors.init();
+        ThaumcraftRenderers.init();
     }
 }

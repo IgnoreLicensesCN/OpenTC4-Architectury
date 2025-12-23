@@ -7,7 +7,8 @@
     "ClientChunkCacheMixin",
     "ClientChunkCacheStorageMixin",
     "ItemRendererMixin",
-    "LivingEntityClientMixin"
+    "LivingEntityClientMixin",
+    "SheetsMixin"
   ],
   "mixins": [
     "BiomeMixin",
