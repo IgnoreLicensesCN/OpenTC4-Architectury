@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "thaumcraft:block/arcane_stone_bricks",
+    "top": "thaumcraft:block/arcane_stone_bricks",
+    "side": "thaumcraft:block/arcane_stone_bricks"
+  }
+}

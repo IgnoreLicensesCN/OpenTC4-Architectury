@@ -1,0 +1,580 @@
+{
+  "variants": {
+    "face_state=0,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_0_bottom"
+    },
+    "face_state=0,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_0_top"
+    },
+    "face_state=0,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_0_double"
+    },
+    "face_state=1,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_1_bottom"
+    },
+    "face_state=1,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_1_top"
+    },
+    "face_state=1,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_1_double"
+    },
+    "face_state=2,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_2_bottom"
+    },
+    "face_state=2,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_2_top"
+    },
+    "face_state=2,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_2_double"
+    },
+    "face_state=3,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_3_bottom"
+    },
+    "face_state=3,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_3_top"
+    },
+    "face_state=3,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_3_double"
+    },
+    "face_state=4,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_4_bottom"
+    },
+    "face_state=4,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_4_top"
+    },
+    "face_state=4,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_4_double"
+    },
+    "face_state=5,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_5_bottom"
+    },
+    "face_state=5,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_5_top"
+    },
+    "face_state=5,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_5_double"
+    },
+    "face_state=6,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_6_bottom"
+    },
+    "face_state=6,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_6_top"
+    },
+    "face_state=6,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_6_double"
+    },
+    "face_state=7,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_7_bottom"
+    },
+    "face_state=7,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_7_top"
+    },
+    "face_state=7,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_7_double"
+    },
+    "face_state=8,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_8_bottom"
+    },
+    "face_state=8,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_8_top"
+    },
+    "face_state=8,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_8_double"
+    },
+    "face_state=9,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_9_bottom"
+    },
+    "face_state=9,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_9_top"
+    },
+    "face_state=9,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_9_double"
+    },
+    "face_state=10,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_10_bottom"
+    },
+    "face_state=10,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_10_top"
+    },
+    "face_state=10,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_10_double"
+    },
+    "face_state=11,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_11_bottom"
+    },
+    "face_state=11,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_11_top"
+    },
+    "face_state=11,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_11_double"
+    },
+    "face_state=12,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_12_bottom"
+    },
+    "face_state=12,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_12_top"
+    },
+    "face_state=12,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_12_double"
+    },
+    "face_state=13,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_13_bottom"
+    },
+    "face_state=13,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_13_top"
+    },
+    "face_state=13,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_13_double"
+    },
+    "face_state=14,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_14_bottom"
+    },
+    "face_state=14,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_14_top"
+    },
+    "face_state=14,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_14_double"
+    },
+    "face_state=15,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_15_bottom"
+    },
+    "face_state=15,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_15_top"
+    },
+    "face_state=15,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_15_double"
+    },
+    "face_state=16,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_16_bottom"
+    },
+    "face_state=16,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_16_top"
+    },
+    "face_state=16,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_16_double"
+    },
+    "face_state=17,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_17_bottom"
+    },
+    "face_state=17,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_17_top"
+    },
+    "face_state=17,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_17_double"
+    },
+    "face_state=18,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_18_bottom"
+    },
+    "face_state=18,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_18_top"
+    },
+    "face_state=18,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_18_double"
+    },
+    "face_state=19,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_19_bottom"
+    },
+    "face_state=19,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_19_top"
+    },
+    "face_state=19,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_19_double"
+    },
+    "face_state=20,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_20_bottom"
+    },
+    "face_state=20,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_20_top"
+    },
+    "face_state=20,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_20_double"
+    },
+    "face_state=21,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_21_bottom"
+    },
+    "face_state=21,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_21_top"
+    },
+    "face_state=21,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_21_double"
+    },
+    "face_state=22,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_22_bottom"
+    },
+    "face_state=22,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_22_top"
+    },
+    "face_state=22,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_22_double"
+    },
+    "face_state=23,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_23_bottom"
+    },
+    "face_state=23,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_23_top"
+    },
+    "face_state=23,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_23_double"
+    },
+    "face_state=24,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_24_bottom"
+    },
+    "face_state=24,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_24_top"
+    },
+    "face_state=24,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_24_double"
+    },
+    "face_state=25,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_25_bottom"
+    },
+    "face_state=25,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_25_top"
+    },
+    "face_state=25,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_25_double"
+    },
+    "face_state=26,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_26_bottom"
+    },
+    "face_state=26,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_26_top"
+    },
+    "face_state=26,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_26_double"
+    },
+    "face_state=27,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_27_bottom"
+    },
+    "face_state=27,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_27_top"
+    },
+    "face_state=27,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_27_double"
+    },
+    "face_state=28,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_28_bottom"
+    },
+    "face_state=28,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_28_top"
+    },
+    "face_state=28,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_28_double"
+    },
+    "face_state=29,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_29_bottom"
+    },
+    "face_state=29,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_29_top"
+    },
+    "face_state=29,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_29_double"
+    },
+    "face_state=30,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_30_bottom"
+    },
+    "face_state=30,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_30_top"
+    },
+    "face_state=30,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_30_double"
+    },
+    "face_state=31,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_31_bottom"
+    },
+    "face_state=31,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_31_top"
+    },
+    "face_state=31,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_31_double"
+    },
+    "face_state=32,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_32_bottom"
+    },
+    "face_state=32,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_32_top"
+    },
+    "face_state=32,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_32_double"
+    },
+    "face_state=33,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_33_bottom"
+    },
+    "face_state=33,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_33_top"
+    },
+    "face_state=33,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_33_double"
+    },
+    "face_state=34,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_34_bottom"
+    },
+    "face_state=34,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_34_top"
+    },
+    "face_state=34,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_34_double"
+    },
+    "face_state=35,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_35_bottom"
+    },
+    "face_state=35,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_35_top"
+    },
+    "face_state=35,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_35_double"
+    },
+    "face_state=36,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_36_bottom"
+    },
+    "face_state=36,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_36_top"
+    },
+    "face_state=36,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_36_double"
+    },
+    "face_state=37,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_37_bottom"
+    },
+    "face_state=37,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_37_top"
+    },
+    "face_state=37,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_37_double"
+    },
+    "face_state=38,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_38_bottom"
+    },
+    "face_state=38,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_38_top"
+    },
+    "face_state=38,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_38_double"
+    },
+    "face_state=39,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_39_bottom"
+    },
+    "face_state=39,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_39_top"
+    },
+    "face_state=39,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_39_double"
+    },
+    "face_state=40,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_40_bottom"
+    },
+    "face_state=40,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_40_top"
+    },
+    "face_state=40,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_40_double"
+    },
+    "face_state=41,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_41_bottom"
+    },
+    "face_state=41,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_41_top"
+    },
+    "face_state=41,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_41_double"
+    },
+    "face_state=42,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_42_bottom"
+    },
+    "face_state=42,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_42_top"
+    },
+    "face_state=42,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_42_double"
+    },
+    "face_state=43,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_43_bottom"
+    },
+    "face_state=43,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_43_top"
+    },
+    "face_state=43,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_43_double"
+    },
+    "face_state=44,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_44_bottom"
+    },
+    "face_state=44,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_44_top"
+    },
+    "face_state=44,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_44_double"
+    },
+    "face_state=45,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_45_bottom"
+    },
+    "face_state=45,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_45_top"
+    },
+    "face_state=45,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_45_double"
+    },
+    "face_state=46,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_46_bottom"
+    },
+    "face_state=46,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_46_top"
+    },
+    "face_state=46,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_46_double"
+    },
+    "face_state=47,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_47_bottom"
+    },
+    "face_state=47,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_47_top"
+    },
+    "face_state=47,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_47_double"
+    },
+    "face_state=48,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_48_bottom"
+    },
+    "face_state=48,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_48_top"
+    },
+    "face_state=48,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_48_double"
+    },
+    "face_state=49,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_49_bottom"
+    },
+    "face_state=49,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_49_top"
+    },
+    "face_state=49,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_49_double"
+    },
+    "face_state=50,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_50_bottom"
+    },
+    "face_state=50,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_50_top"
+    },
+    "face_state=50,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_50_double"
+    },
+    "face_state=51,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_51_bottom"
+    },
+    "face_state=51,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_51_top"
+    },
+    "face_state=51,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_51_double"
+    },
+    "face_state=52,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_52_bottom"
+    },
+    "face_state=52,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_52_top"
+    },
+    "face_state=52,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_52_double"
+    },
+    "face_state=53,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_53_bottom"
+    },
+    "face_state=53,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_53_top"
+    },
+    "face_state=53,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_53_double"
+    },
+    "face_state=54,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_54_bottom"
+    },
+    "face_state=54,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_54_top"
+    },
+    "face_state=54,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_54_double"
+    },
+    "face_state=55,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_55_bottom"
+    },
+    "face_state=55,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_55_top"
+    },
+    "face_state=55,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_55_double"
+    },
+    "face_state=56,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_56_bottom"
+    },
+    "face_state=56,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_56_top"
+    },
+    "face_state=56,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_56_double"
+    },
+    "face_state=57,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_57_bottom"
+    },
+    "face_state=57,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_57_top"
+    },
+    "face_state=57,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_57_double"
+    },
+    "face_state=58,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_58_bottom"
+    },
+    "face_state=58,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_58_top"
+    },
+    "face_state=58,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_58_double"
+    },
+    "face_state=59,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_59_bottom"
+    },
+    "face_state=59,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_59_top"
+    },
+    "face_state=59,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_59_double"
+    },
+    "face_state=60,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_60_bottom"
+    },
+    "face_state=60,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_60_top"
+    },
+    "face_state=60,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_60_double"
+    },
+    "face_state=61,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_61_bottom"
+    },
+    "face_state=61,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_61_top"
+    },
+    "face_state=61,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_61_double"
+    },
+    "face_state=62,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_62_bottom"
+    },
+    "face_state=62,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_62_top"
+    },
+    "face_state=62,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_62_double"
+    },
+    "face_state=63,type=bottom": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_63_bottom"
+    },
+    "face_state=63,type=top": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_63_top"
+    },
+    "face_state=63,type=double": {
+      "model": "thaumcraft:block/ancient_stone/slab/face_63_double"
+    }
+  }
+}

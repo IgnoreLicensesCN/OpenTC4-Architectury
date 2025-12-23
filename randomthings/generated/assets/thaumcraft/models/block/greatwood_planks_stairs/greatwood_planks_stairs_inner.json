@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "thaumcraft:block/greatwood_planks",
+    "top": "thaumcraft:block/greatwood_planks",
+    "side": "thaumcraft:block/greatwood_planks"
+  }
+}

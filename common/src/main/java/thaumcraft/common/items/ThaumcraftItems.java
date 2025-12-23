@@ -7,10 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.StairBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.worldgenerated.AncientStoneStairBlock;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
@@ -113,6 +110,10 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_STONE_BRICK_STAIRS = Registry.SUPPLIER_ARCANE_STONE_BRICK_STAIRS.get();
     public static final BlockItem GREATWOOD_PLANKS_STAIRS = Registry.SUPPLIER_GREATWOOD_PLANKS_STAIRS.get();
     public static final BlockItem SILVERWOOD_PLANKS_STAIRS = Registry.SUPPLIER_SILVERWOOD_PLANKS_STAIRS.get();
+    public static final BlockItem ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
+    public static final BlockItem ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
+    public static final BlockItem GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
+    public static final BlockItem SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
 
 
     //===========================================================================================
@@ -275,7 +276,9 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BLOCK = ITEMS.register(
                 "arcane_stone_block", () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BLOCK, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BRICKS = ITEMS.register(
-                "arcane_stone_bricks", () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICKS, new Item.Properties()));
+                "arcane_stone_bricks",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICKS, new Item.Properties())
+        );
         public static final RegistrySupplier<BlockItem> SUPPLIER_GOLEM_FETTER = ITEMS.register(
                 "golem_fetter", () -> new BlockItem(ThaumcraftBlocks.GOLEM_FETTER, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE = ITEMS.register(
@@ -285,15 +288,39 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_CRUSTED_STONE = ITEMS.register(
                 "crusted_stone", () -> new BlockItem(ThaumcraftBlocks.CRUSTED_STONE, new Item.Properties()));
         public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE_PEDESTAL = ITEMS.register(
-                "ancient_stone_pedestal", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_PEDESTAL, new Item.Properties()));
+                "ancient_stone_pedestal",
+                () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_PEDESTAL, new Item.Properties())
+        );
         public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE_STAIRS = ITEMS.register(
-                "ancient_stone_stairs", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_STAIRS, new Item.Properties()));
+                "ancient_stone_stairs",
+                () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_STAIRS, new Item.Properties())
+        );
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BRICK_STAIRS = ITEMS.register(
-                "arcane_stone_brick_stairs", () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICK_STAIRS, new Item.Properties()));
+                "arcane_stone_brick_stairs",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICK_STAIRS, new Item.Properties())
+        );
         public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS_STAIRS = ITEMS.register(
-                "greatwood_planks_stairs", () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS_STAIRS, new Item.Properties()));
+                "greatwood_planks_stairs",
+                () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS_STAIRS, new Item.Properties())
+        );
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS_STAIRS = ITEMS.register(
-                "silverwood_planks_stairs", () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS_STAIRS, new Item.Properties()));
+                "silverwood_planks_stairs",
+                () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS_STAIRS, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_STONE_SLAB = ITEMS.register(
+                "ancient_stone_slab", () -> new BlockItem(ThaumcraftBlocks.ANCIENT_STONE_SLAB, new Item.Properties()));
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_STONE_BRICK_SLAB = ITEMS.register(
+                "arcane_stone_brick_slab",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_STONE_BRICK_SLAB, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREATWOOD_PLANKS_SLAB = ITEMS.register(
+                "greatwood_planks_slab",
+                () -> new BlockItem(ThaumcraftBlocks.GREATWOOD_PLANKS_SLAB, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS_SLAB = ITEMS.register(
+                "silverwood_planks_slab",
+                () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS_SLAB, new Item.Properties())
+        );
 
         static {
             Registry.ITEMS.register();

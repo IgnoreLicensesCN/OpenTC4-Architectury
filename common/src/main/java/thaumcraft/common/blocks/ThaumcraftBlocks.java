@@ -8,10 +8,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import thaumcraft.common.blocks.crafted.GolemFetterBlock;
-import thaumcraft.common.blocks.crafted.NitorBlock;
-import thaumcraft.common.blocks.crafted.PavingStoneTravelBlock;
-import thaumcraft.common.blocks.crafted.PavingStoneWardingBlock;
+import thaumcraft.common.blocks.crafted.*;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -53,6 +50,10 @@ public class ThaumcraftBlocks {
     public static final StairBlock ARCANE_STONE_BRICK_STAIRS = Registry.SUPPLIER_ARCANE_STONE_BRICK_STAIRS.get();
     public static final StairBlock GREATWOOD_PLANKS_STAIRS = Registry.SUPPLIER_GREATWOOD_PLANKS_STAIRS.get();
     public static final StairBlock SILVERWOOD_PLANKS_STAIRS = Registry.SUPPLIER_SILVERWOOD_PLANKS_STAIRS.get();
+    public static final AncientStoneSlabBlock ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
+    public static final SlabBlock ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
+    public static final SlabBlock GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
+    public static final SlabBlock SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -150,6 +151,22 @@ public class ThaumcraftBlocks {
                         SUPPLIER_SILVERWOOD_PLANKS.get()
                                 .defaultBlockState(), BlockBehaviour.Properties.copy(SUPPLIER_SILVERWOOD_PLANKS.get())
                 )
+        );
+        public static final RegistrySupplier<AncientStoneSlabBlock> SUPPLIER_ANCIENT_STONE_SLAB = BLOCKS.register(
+                "ancient_stone_slab", AncientStoneSlabBlock::new);
+        public static final RegistrySupplier<SlabBlock> SUPPLIER_ARCANE_STONE_BRICK_SLAB = BLOCKS.register(
+                "arcane_stone_brick_slab",
+                () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_ARCANE_STONE_BRICKS.get())
+                )
+        );
+        public static final RegistrySupplier<SlabBlock> SUPPLIER_GREATWOOD_PLANKS_SLAB = BLOCKS.register(
+                "greatwood_planks_slab",
+                () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_GREATWOOD_PLANKS.get())
+                )
+        );
+        public static final RegistrySupplier<SlabBlock> SUPPLIER_SILVERWOOD_PLANKS_SLAB = BLOCKS.register(
+                "silverwood_planks_slab",
+                () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_SILVERWOOD_PLANKS.get()))
         );
 
         static {

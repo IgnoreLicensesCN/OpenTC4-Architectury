@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "thaumcraft:block/ancient_stone/cube/face_2",
+    "top": "thaumcraft:block/ancient_stone/cube/face_2",
+    "side": "thaumcraft:block/ancient_stone/cube/face_2"
+  }
+}

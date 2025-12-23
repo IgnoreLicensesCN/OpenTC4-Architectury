@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "thaumcraft:block/greatwood_planks_slab/greatwood_planks_slab_bottom"
+    },
+    "type=top": {
+      "model": "thaumcraft:block/greatwood_planks_slab/greatwood_planks_slab_top"
+    },
+    "type=double": {
+      "model": "thaumcraft:block/greatwood_planks_slab/greatwood_planks_slab_double"
+    }
+  }
+}
