@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "block_drop",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thaumcraft:order_crystal_cluster",
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "living_entity"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "shard_drop",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thaumcraft:order_shard",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 6
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_properties",
+                "entity": "living_entity"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

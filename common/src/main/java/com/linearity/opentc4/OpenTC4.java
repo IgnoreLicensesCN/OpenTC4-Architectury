@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.item.RenderUtils;
+import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItems;
@@ -54,5 +55,6 @@ public final class OpenTC4 {
         Particles.init();
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
         RenderUtils.init();
+        ThaumcraftBlockAndItemColors.init();
     }
 }

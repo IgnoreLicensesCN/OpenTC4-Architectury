@@ -1,5 +1,6 @@
 package thaumcraft.api.crafting;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 /**
@@ -10,10 +11,7 @@ import net.minecraft.world.level.Level;
  *
  */
 public interface IInfusionStabiliser {
-	
-	/**
-	 * returns true if the block can stabilise things
-	 */
-    boolean canStabaliseInfusion(Level world, int x, int y, int z);
+
+	boolean canStabaliseInfusion(Level world, BlockPos pos);
 
 }

@@ -2,6 +2,7 @@ package thaumcraft.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.world.level.block.material.Material;
@@ -46,7 +47,6 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
       for(int var4 = 0; var4 <= 6; ++var4) {
          par3List.add(new ItemStack(par1, 1, var4));
       }
-
    }
 
    @SideOnly(Side.CLIENT)
@@ -77,7 +77,9 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
       if (md < 6) {
          return BlockCustomOreItem.colors[md + 1];
       } else {
-         return md == 6 ? BlockCustomOreItem.colors[(new Random()).nextInt(6) + 1] : super.colorMultiplier(par1iBlockAccess, par2, par3, par4);
+         return md == 6
+                 ? BlockCustomOreItem.colors[(new Random()).nextInt(6) + 1]
+                 : super.colorMultiplier(par1iBlockAccess, par2, par3, par4);
       }
    }
 
@@ -173,7 +175,6 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
             this.dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
             world.setBlockToAir(i, j, k);
          }
-
       }
    }
 
@@ -217,7 +218,7 @@ public class BlockCrystal extends BlockContainer implements IInfusionStabiliser 
       }
    }
 
-   public boolean canStabaliseInfusion(World world, int x, int y, int z) {
+   public boolean canStabaliseInfusion(Level world, BlockPos pos) {
       return true;
    }
 }

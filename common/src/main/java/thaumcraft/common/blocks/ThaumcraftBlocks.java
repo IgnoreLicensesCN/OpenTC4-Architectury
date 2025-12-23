@@ -55,6 +55,15 @@ public class ThaumcraftBlocks {
     public static final SlabBlock GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
     public static final SlabBlock SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
 
+    public static final AbstractCrystalBlock AIR_CRYSTAL = Registry.SUPPLIER_AIR_CRYSTAL.get();
+    public static final AbstractCrystalBlock FIRE_CRYSTAL = Registry.SUPPLIER_FIRE_CRYSTAL.get();
+    public static final AbstractCrystalBlock WATER_CRYSTAL = Registry.SUPPLIER_WATER_CRYSTAL.get();
+    public static final AbstractCrystalBlock EARTH_CRYSTAL = Registry.SUPPLIER_EARTH_CRYSTAL.get();
+    public static final AbstractCrystalBlock ORDER_CRYSTAL = Registry.SUPPLIER_ORDER_CRYSTAL.get();
+    public static final AbstractCrystalBlock ENTROPY_CRYSTAL = Registry.SUPPLIER_ENTROPY_CRYSTAL.get();
+    public static final AbstractCrystalBlock MIXED_CRYSTAL = Registry.SUPPLIER_MIXED_CRYSTAL.get();
+    public static final AbstractCrystalBlock STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -167,6 +176,39 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<SlabBlock> SUPPLIER_SILVERWOOD_PLANKS_SLAB = BLOCKS.register(
                 "silverwood_planks_slab",
                 () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_SILVERWOOD_PLANKS.get()))
+        );
+
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_AIR_CRYSTAL = BLOCKS.register(
+                "air_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0xffff7e}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_FIRE_CRYSTAL = BLOCKS.register(
+                "fire_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0xff3c01}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_WATER_CRYSTAL = BLOCKS.register(
+                "water_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0x0090ff}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_EARTH_CRYSTAL = BLOCKS.register(
+                "earth_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0x00a000}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_ORDER_CRYSTAL = BLOCKS.register(
+                "order_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0xeeccff}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_ENTROPY_CRYSTAL = BLOCKS.register(
+                "entropy_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0x555577}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_MIXED_CRYSTAL = BLOCKS.register(
+                "mixed_crystal_cluster",
+                ()-> new AbstractCrystalBlock(new int[]{0xffff7e, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577}){}
+        );
+        public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_STRANGE_CRYSTALS = BLOCKS.register(
+                "strange_crystals",
+                ()-> new AbstractCrystalBlock(new int[]{0xFFFFFF}){}
         );
 
         static {

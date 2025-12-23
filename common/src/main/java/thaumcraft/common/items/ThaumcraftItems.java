@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import thaumcraft.common.blocks.AbstractCrystalBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
@@ -114,6 +115,24 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
     public static final BlockItem GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
     public static final BlockItem SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
+
+    public static final BlockItem AIR_CRYSTAL = Registry.SUPPLIER_AIR_CRYSTAL.get();
+    public static final BlockItem FIRE_CRYSTAL = Registry.SUPPLIER_FIRE_CRYSTAL.get();
+    public static final BlockItem WATER_CRYSTAL = Registry.SUPPLIER_WATER_CRYSTAL.get();
+    public static final BlockItem EARTH_CRYSTAL = Registry.SUPPLIER_EARTH_CRYSTAL.get();
+    public static final BlockItem ORDER_CRYSTAL = Registry.SUPPLIER_ORDER_CRYSTAL.get();
+    public static final BlockItem ENTROPY_CRYSTAL = Registry.SUPPLIER_ENTROPY_CRYSTAL.get();
+    public static final BlockItem MIXED_CRYSTAL = Registry.SUPPLIER_MIXED_CRYSTAL.get();
+    public static final BlockItem STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
+
+    public static final Item AIR_SHARD      = Registry.SUPPLIER_AIR_SHARD.get();
+    public static final Item FIRE_SHARD     = Registry.SUPPLIER_FIRE_SHARD.get();
+    public static final Item WATER_SHARD    = Registry.SUPPLIER_WATER_SHARD.get();
+    public static final Item EARTH_SHARD    = Registry.SUPPLIER_EARTH_SHARD.get();
+    public static final Item ORDER_SHARD    = Registry.SUPPLIER_ORDER_SHARD.get();
+    public static final Item ENTROPY_SHARD  = Registry.SUPPLIER_ENTROPY_SHARD.get();
+    public static final Item BALANCE_SHARD  = Registry.SUPPLIER_BALANCE_SHARD.get();
+
 
 
     //===========================================================================================
@@ -320,6 +339,74 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_SILVERWOOD_PLANKS_SLAB = ITEMS.register(
                 "silverwood_planks_slab",
                 () -> new BlockItem(ThaumcraftBlocks.SILVERWOOD_PLANKS_SLAB, new Item.Properties())
+        );
+
+        public static final RegistrySupplier<BlockItem> SUPPLIER_AIR_CRYSTAL = ITEMS.register(
+                "air_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.AIR_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_FIRE_CRYSTAL = ITEMS.register(
+                "fire_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.FIRE_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_WATER_CRYSTAL = ITEMS.register(
+                "water_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.WATER_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_EARTH_CRYSTAL = ITEMS.register(
+                "earth_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.EARTH_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ORDER_CRYSTAL = ITEMS.register(
+                "order_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.ORDER_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ENTROPY_CRYSTAL = ITEMS.register(
+                "entropy_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.ENTROPY_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MIXED_CRYSTAL = ITEMS.register(
+                "mixed_crystal_cluster",
+                () -> new BlockItem(ThaumcraftBlocks.MIXED_CRYSTAL, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_STRANGE_CRYSTALS = ITEMS.register(
+                "strange_crystals",
+                () -> new BlockItem(ThaumcraftBlocks.STRANGE_CRYSTALS, new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_AIR_SHARD = ITEMS.register(
+                "air_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_FIRE_SHARD = ITEMS.register(
+                "fire_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_WATER_SHARD = ITEMS.register(
+                "water_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_EARTH_SHARD = ITEMS.register(
+                "earth_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_ORDER_SHARD = ITEMS.register(
+                "order_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_ENTROPY_SHARD = ITEMS.register(
+                "entropy_shard",
+                () -> new Item(new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_BALANCE_SHARD = ITEMS.register(
+                "balance_shard",
+                () -> new Item(new Item.Properties())
         );
 
         static {

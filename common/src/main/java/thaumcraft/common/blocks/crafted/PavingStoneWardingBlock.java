@@ -19,7 +19,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 
-public class PavingStoneWardingBlock extends Block implements IClientRandomTickableBlock {
+public class PavingStoneWardingBlock extends Block {
     public PavingStoneWardingBlock(Properties properties) {
         super(properties);
     }
@@ -30,8 +30,11 @@ public class PavingStoneWardingBlock extends Block implements IClientRandomTicka
         );
     }
 
+
     @Override
-    public void onClientRandomTick(BlockState blockState, ClientLevel clientLevel, BlockPos blockPos) {
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+
+        if (!(level instanceof ClientLevel clientLevel)){return;}
 
         var x = blockPos.getX();
         var y = blockPos.getY();
