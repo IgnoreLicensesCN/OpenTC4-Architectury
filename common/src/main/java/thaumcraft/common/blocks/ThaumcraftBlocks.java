@@ -16,6 +16,7 @@ import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ThaumcraftBlocks {
     public static final FluxGooBlock FLUX_GOO = Registry.SUPPLIER_FLUX_GOO.get();
@@ -63,6 +64,8 @@ public class ThaumcraftBlocks {
     public static final AbstractCrystalBlock ENTROPY_CRYSTAL = Registry.SUPPLIER_ENTROPY_CRYSTAL.get();
     public static final AbstractCrystalBlock MIXED_CRYSTAL = Registry.SUPPLIER_MIXED_CRYSTAL.get();
     public static final AbstractCrystalBlock STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
+
+    public static final HungryChestBlock HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -209,6 +212,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_STRANGE_CRYSTALS = BLOCKS.register(
                 "strange_crystals",
                 ()-> new AbstractCrystalBlock(new int[]{0xFFFFFF}){}
+        );
+        public static final RegistrySupplier<HungryChestBlock> SUPPLIER_HUNGRY_CHEST = BLOCKS.register(
+                "hungry_chest",
+                () -> new HungryChestBlock(ThaumcraftBlockEntities.Registry.SUPPLIER_HUNGRY_CHEST::get)
         );
 
         static {

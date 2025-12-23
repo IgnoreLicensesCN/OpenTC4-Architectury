@@ -16,6 +16,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<SilverWoodKnotNodeBlockEntity> SILVERWOOD_KNOT_NODE = Registry.SUPPLIER_SILVERWOOD_KNOT_NODE.get();
     public static final BlockEntityType<ObsidianTotemNodeBlockEntity> OBSIDIAN_TOTEM_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_NODE.get();
     public static final BlockEntityType<WardingStoneBlockEntity> WARDING_STONE = Registry.SUPPLIER_WARDING_STONE.get();
+    public static final BlockEntityType<HungryChestBlockEntity> HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -36,6 +37,10 @@ public class ThaumcraftBlockEntities {
         public static final RegistrySupplier<BlockEntityType<WardingStoneBlockEntity>> SUPPLIER_WARDING_STONE = BLOCK_ENTITIES.register(
                 "warding_stone",
                 () -> BlockEntityType.Builder.of(WardingStoneBlockEntity::new, ThaumcraftBlocks.PAVING_STONE_WARDING).build(null)//seems "type" not used
+        );
+        public static final RegistrySupplier<BlockEntityType<HungryChestBlockEntity>> SUPPLIER_HUNGRY_CHEST = BLOCK_ENTITIES.register(
+                "hungry_chest",
+                () -> BlockEntityType.Builder.of(HungryChestBlockEntity::new, ThaumcraftBlocks.HUNGRY_CHEST).build(null)//seems "type" not used
         );
     }
 

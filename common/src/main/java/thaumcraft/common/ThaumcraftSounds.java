@@ -17,6 +17,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_ZAP = new ResourceLocation("thaumcraft:zap");
         public static final ResourceLocation RES_TOOL = new ResourceLocation("thaumcraft:tool");
         public static final ResourceLocation RES_CRAFT_FAIL = new ResourceLocation("thaumcraft:craftfail");
+        public static final ResourceLocation RES_CRAFT_FAIL = new ResourceLocation("thaumcraft:craftfail");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
