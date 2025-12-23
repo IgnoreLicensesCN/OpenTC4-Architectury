@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "facing=east,half=bottom,shape=straight": { "model": "thaumcraft:block/greatwood_planks_stairs" }
+  }
+}

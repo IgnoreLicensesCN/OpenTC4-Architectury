@@ -2,12 +2,13 @@ import json
 from pathlib import Path
 
 # ===== 配置 =====
-OUTPUT = Path("generated")
-MODEL_DIR = OUTPUT / "models/block"
+OUTPUT = Path("generated/assets/thaumcraft")
+
+MODEL_DIR = OUTPUT / "models/block/ancient_rock"
 BLOCKSTATE_DIR = OUTPUT / "blockstates"
 
 TEXTURE_BASE = "thaumcraft:block/ancient_rock_"
-BLOCK_MODEL_BASE = "thaumcraft:block/ancient_rock_face_"
+BLOCK_MODEL_BASE = "thaumcraft:block/ancient_rock/face_"
 
 FACE_NAMES = ["down", "up", "north", "south", "west", "east"]
 
@@ -17,7 +18,7 @@ FACE_STATE_MAX = 8  # 0~7
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 BLOCKSTATE_DIR.mkdir(parents=True, exist_ok=True)
 
-# 生成模型
+# ===== 生成 models =====
 for state in range(FACE_STATE_MAX):
     x_bit = state & 1          # x%2
     y_bit = (state >> 1) & 1   # y%2
@@ -25,34 +26,34 @@ for state in range(FACE_STATE_MAX):
 
     textures = {}
     for i, face in enumerate(FACE_NAMES):
-        if i in (0, 1):  # down/up
-            tex_idx = x_bit + z_bit*2
-        elif i in (2, 3):  # north/south
-            tex_idx = x_bit + y_bit*2
-        elif i in (4, 5):  # west/east
-            tex_idx = z_bit + y_bit*2
+        if i in (0, 1):        # down / up
+            tex_idx = x_bit + z_bit * 2
+        elif i in (2, 3):      # north / south
+            tex_idx = x_bit + y_bit * 2
+        elif i in (4, 5):      # west / east
+            tex_idx = z_bit + y_bit * 2
         else:
-            tex_idx = 0  # fallback
-        textures[face] = f"{TEXTURE_BASE}{tex_idx+1}"  # 贴图文件 ancient_rock_1~4
+            tex_idx = 0
+
+        textures[face] = f"{TEXTURE_BASE}{tex_idx + 1}"
 
     model_json = {
         "parent": "minecraft:block/cube",
         "textures": textures
     }
 
-    with open(MODEL_DIR / f"ancient_rock_face_{state}.json", "w", encoding="utf-8") as f:
+    with open(MODEL_DIR / f"face_{state}.json", "w", encoding="utf-8") as f:
         json.dump(model_json, f, indent=2)
 
-# 生成 blockstates
-variants = {}
-for state in range(FACE_STATE_MAX):
-    variants[f"face_state={state}"] = {
+# ===== 生成 blockstates =====
+variants = {
+    f"face_state={state}": {
         "model": f"{BLOCK_MODEL_BASE}{state}"
     }
-
-blockstate_json = {"variants": variants}
+    for state in range(FACE_STATE_MAX)
+}
 
 with open(BLOCKSTATE_DIR / "ancient_rock.json", "w", encoding="utf-8") as f:
-    json.dump(blockstate_json, f, indent=2)
+    json.dump({"variants": variants}, f, indent=2)
 
 print(f"Generated {FACE_STATE_MAX} face states for AncientRockBlock")

@@ -3,32 +3,38 @@ import json
 import random
 from pathlib import Path
 
-# ====== 配置 ======
-OUTPUT = Path("generated")
-MODEL_DIR = OUTPUT / "models/block"
+# ========= 配置 =========
+OUTPUT = Path("generated/assets/thaumcraft")
+
 BLOCKSTATE_DIR = OUTPUT / "blockstates"
+MODEL_DIR = OUTPUT / "models/block/ancient_stone"
 
 TEXTURE_BASE = "thaumcraft:block/ancient_stone_"
-BLOCK_MODEL_BASE = "thaumcraft:block/ancient_stone_face_"
+CUBE_MODEL_BASE = "thaumcraft:block/ancient_stone/cube/face_"
+STAIRS_MODEL_BASE = "thaumcraft:block/ancient_stone/stairs/face_"
 
 FACE_NAMES = ["down", "up", "north", "south", "west", "east"]
 
-MAX_STATES = 64          # 你要用的 FACE_STATE 数量
-RANDOM_SEED = 114514     # 固定种子，方便复现
-# ==================
+MAX_STATES = 64
+RANDOM_SEED = 114514
+# ========================
 
 random.seed(RANDOM_SEED)
 
-MODEL_DIR.mkdir(parents=True, exist_ok=True)
-BLOCKSTATE_DIR.mkdir(parents=True, exist_ok=True)
+# 创建目录
+for d in [
+    BLOCKSTATE_DIR,
+    MODEL_DIR / "cube",
+    MODEL_DIR / "stairs",
+]:
+    d.mkdir(parents=True, exist_ok=True)
 
-# 1️⃣ 枚举所有 4^6 组合
+# 1️⃣ 枚举并洗牌 4^6
 all_faces = list(itertools.product(range(4), repeat=6))
 random.shuffle(all_faces)
-
 selected = all_faces[:MAX_STATES]
 
-# 2️⃣ 生成 models
+# 2️⃣ cube models
 for idx, faces in enumerate(selected):
     textures = {
         face: f"{TEXTURE_BASE}{faces[i] + 1}"
@@ -40,21 +46,87 @@ for idx, faces in enumerate(selected):
         "textures": textures
     }
 
-    with open(MODEL_DIR / f"ancient_stone_face_{idx}.json", "w", encoding="utf-8") as f:
+    with open(MODEL_DIR / "cube" / f"face_{idx}.json", "w", encoding="utf-8") as f:
         json.dump(model, f, indent=2)
 
-# 3️⃣ 生成 blockstates
-variants = {}
-for i in range(MAX_STATES):
-    variants[f"face_state={i}"] = {
-        "model": f"{BLOCK_MODEL_BASE}{i}"
+# 3️⃣ stairs models（straight / inner / outer）
+STAIR_PARENTS = {
+    "": "minecraft:block/stairs",
+    "_inner": "minecraft:block/inner_stairs",
+    "_outer": "minecraft:block/outer_stairs",
+}
+
+for idx, faces in enumerate(selected):
+    textures = {
+        face: f"{TEXTURE_BASE}{faces[i] + 1}"
+        for i, face in enumerate(FACE_NAMES)
     }
 
-blockstate = {
-    "variants": variants
+    for suffix, parent in STAIR_PARENTS.items():
+        model = {
+            "parent": parent,
+            "textures": {
+                "bottom": textures["down"],
+                "top": textures["up"],
+                "side": textures["north"]
+            }
+        }
+
+        with open(
+            MODEL_DIR / "stairs" / f"face_{idx}{suffix}.json",
+            "w",
+            encoding="utf-8"
+        ) as f:
+            json.dump(model, f, indent=2)
+
+# 4️⃣ ancient_stone blockstate
+block_variants = {
+    f"face_state={i}": {
+        "model": f"{CUBE_MODEL_BASE}{i}"
+    }
+    for i in range(MAX_STATES)
 }
 
 with open(BLOCKSTATE_DIR / "ancient_stone.json", "w", encoding="utf-8") as f:
-    json.dump(blockstate, f, indent=2)
+    json.dump({"variants": block_variants}, f, indent=2)
 
-print(f"Generated {MAX_STATES} states.")
+# 5️⃣ ancient_stone_stairs blockstate
+stairs_variants = {}
+
+def stair_key(facing, half, shape):
+    return f"facing={facing},half={half},shape={shape}"
+
+ROT = {
+    "north": 270,
+    "south": 90,
+    "west": 180,
+    "east": 0,
+}
+
+for i in range(MAX_STATES):
+    for facing in ["north", "south", "west", "east"]:
+        for half in ["bottom", "top"]:
+            for shape in ["straight", "inner_left", "inner_right", "outer_left", "outer_right"]:
+                if "inner" in shape:
+                    suffix = "_inner"
+                elif "outer" in shape:
+                    suffix = "_outer"
+                else:
+                    suffix = ""
+
+                model = {
+                    "model": f"{STAIRS_MODEL_BASE}{i}{suffix}",
+                    "y": ROT[facing]
+                }
+
+                if half == "top":
+                    model["x"] = 180
+
+                stairs_variants[
+                    f"face_state={i}," + stair_key(facing, half, shape)
+                ] = model
+
+with open(BLOCKSTATE_DIR / "ancient_stone_stairs.json", "w", encoding="utf-8") as f:
+    json.dump({"variants": stairs_variants}, f, indent=2)
+
+print(f"Generated {MAX_STATES} face_state variants for cube + stairs.")

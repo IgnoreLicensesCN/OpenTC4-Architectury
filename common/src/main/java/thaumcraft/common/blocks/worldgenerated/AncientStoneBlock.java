@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -29,7 +29,7 @@ public class AncientStoneBlock extends Block {
     }
 
     @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+    public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         var coord = blockPlaceContext.getClickedPos();
         var hasher = ""+coord.getX() + coord.getY() + coord.getZ() + blockPlaceContext.getLevel().dimension().location();
         var random = new Random(hasher.hashCode());
