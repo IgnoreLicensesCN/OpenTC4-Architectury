@@ -30,7 +30,6 @@ import thaumcraft.common.config.ConfigBlocks;
 
 import java.awt.*;
 
-//TODO:Loot table
 public abstract class AbstractCrystalBlock extends Block implements IInfusionStabiliser  {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final int[] CRYSTAL_COLORS = {0xffffff, 0xffff7e, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577};
