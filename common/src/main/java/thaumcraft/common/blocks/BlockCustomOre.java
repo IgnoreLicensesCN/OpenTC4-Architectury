@@ -27,6 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//"0": "朱砂矿石",
+//    "tile.blockCustomOre.1.name": "风之蕴魔石",
+//    "tile.blockCustomOre.2.name": "火之蕴魔石",
+//    "tile.blockCustomOre.3.name": "水之蕴魔石",
+//    "tile.blockCustomOre.4.name": "地之蕴魔石",
+//    "tile.blockCustomOre.5.name": "秩序蕴魔石",
+//    "tile.blockCustomOre.6.name": "混沌蕴魔石",
+//    "7": "琥珀矿石",
 public class BlockCustomOre extends Block {
    public IIcon[] icon = new IIcon[5];
    private Random rand = new Random();
@@ -44,9 +52,9 @@ public class BlockCustomOre extends Block {
    public void registerBlockIcons(IIconRegister ir) {
       this.icon[0] = ir.registerIcon("thaumcraft:cinnibar");
       this.icon[1] = ir.registerIcon("thaumcraft:infusedorestone");
-      this.icon[2] = ir.registerIcon("thaumcraft:infusedore");
+      this.icon[2] = ir.registerIcon("thaumcraft:infusedore");//dynamic ore but unused
       this.icon[3] = ir.registerIcon("thaumcraft:amberore");
-      this.icon[4] = ir.registerIcon("thaumcraft:frostshard");
+      this.icon[4] = ir.registerIcon("thaumcraft:frostshard");//unused in game
    }
 
    @SideOnly(Side.CLIENT)

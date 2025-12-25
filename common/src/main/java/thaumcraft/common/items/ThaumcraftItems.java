@@ -7,8 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.AbstractCrystalBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
@@ -133,6 +135,14 @@ public class ThaumcraftItems {
     public static final Item ENTROPY_SHARD  = Registry.SUPPLIER_ENTROPY_SHARD.get();
     public static final Item BALANCE_SHARD  = Registry.SUPPLIER_BALANCE_SHARD.get();
 
+    public static final Item CINNABAR_ORE = Registry.SUPPLIER_CINNABAR_ORE.get();
+    public static final Item AMBER_ORE = Registry.SUPPLIER_AMBER_ORE.get();
+    public static final Item AIR_INFUSED_STONE = Registry.SUPPLIER_AIR_INFUSED_STONE.get();
+    public static final Item FIRE_INFUSED_STONE = Registry.SUPPLIER_FIRE_INFUSED_STONE.get();
+    public static final Item WATER_INFUSED_STONE = Registry.SUPPLIER_WATER_INFUSED_STONE.get();
+    public static final Item EARTH_INFUSED_STONE = Registry.SUPPLIER_EARTH_INFUSED_STONE.get();
+    public static final Item ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
+    public static final Item ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
 
 
     //===========================================================================================
@@ -408,6 +418,45 @@ public class ThaumcraftItems {
                 "balance_shard",
                 () -> new Item(new Item.Properties())
         );
+
+        public static final RegistrySupplier<Item> SUPPLIER_CINNABAR_ORE = ITEMS.register(
+                "cinnabar_ore",
+                () -> new BlockItem(ThaumcraftBlocks.CINNABAR_ORE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_AMBER_ORE = ITEMS.register(
+                "amber_ore",
+                () -> new BlockItem(ThaumcraftBlocks.AMBER_ORE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_AIR_INFUSED_STONE = ITEMS.register(
+                "air_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.AIR_INFUSED_STONE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_FIRE_INFUSED_STONE = ITEMS.register(
+                "fire_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.FIRE_INFUSED_STONE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_WATER_INFUSED_STONE = ITEMS.register(
+                "water_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.WATER_INFUSED_STONE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_EARTH_INFUSED_STONE = ITEMS.register(
+                "earth_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.EARTH_INFUSED_STONE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_ORDER_INFUSED_STONE = ITEMS.register(
+                "order_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.ORDER_INFUSED_STONE, new Item.Properties())
+        );
+        public static final RegistrySupplier<Item> SUPPLIER_ENTROPY_INFUSED_STONE = ITEMS.register(
+                "entropy_infused_stone",
+                () -> new BlockItem(ThaumcraftBlocks.ENTROPY_INFUSED_STONE, new Item.Properties())
+        );
+
+        public static final RegistrySupplier<Item> SUPPLIER_AMBER = ITEMS.register(
+                "amber",
+                () -> new Item(new Item.Properties())
+        );
+
 
         static {
             Registry.ITEMS.register();

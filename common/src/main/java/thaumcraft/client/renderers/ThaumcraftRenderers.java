@@ -1,6 +1,7 @@
 package thaumcraft.client.renderers;
 
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import thaumcraft.client.renderers.block.EldritchVoidRenderer;
 import thaumcraft.client.renderers.block.HungryChestRenderer;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -13,6 +14,10 @@ public class ThaumcraftRenderers {
         BlockEntityRendererRegistry.register(
                 ThaumcraftBlockEntities.HUNGRY_CHEST,
                 HungryChestRenderer::new
+        );
+        BlockEntityRendererRegistry.register(
+                ThaumcraftBlockEntities.ELDRITCH_VOID,
+                EldritchVoidRenderer::new
         );
     }
 }

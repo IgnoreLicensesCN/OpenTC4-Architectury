@@ -71,5 +71,62 @@ public class ThaumcraftBlockAndItemColors {
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[5],
                 ThaumcraftItems.ENTROPY_SHARD
         );
+
+
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.AIR_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.AIR_INFUSED_STONE
+        );
+
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.FIRE_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.FIRE_INFUSED_STONE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.WATER_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.WATER_INFUSED_STONE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.EARTH_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.EARTH_INFUSED_STONE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.ORDER_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.ORDER_INFUSED_STONE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0){
+                        return ThaumcraftBlocks.ENTROPY_INFUSED_STONE.rgbColor;
+                    }
+                    return 0xFFFFFF;
+                },ThaumcraftBlocks.ENTROPY_INFUSED_STONE
+        );
     }
 }

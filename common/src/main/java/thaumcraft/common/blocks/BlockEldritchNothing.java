@@ -84,7 +84,6 @@ public class BlockEldritchNothing extends Block {
       if (entity.ticksExisted > 20 && (!(entity instanceof Player) || !((Player)entity).capabilities.isCreativeMode)) {
          entity.attackEntityFrom(DamageSource.outOfWorld, 8.0F);
       }
-
    }
 
    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {

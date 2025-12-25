@@ -2,8 +2,15 @@ package thaumcraft.common.blocks;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -14,6 +21,7 @@ import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
+import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -66,6 +74,16 @@ public class ThaumcraftBlocks {
     public static final AbstractCrystalBlock STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
 
     public static final HungryChestBlock HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
+    public static final EldritchVoidBlock ELDRITCH_VOID = Registry.SUPPLIER_ELDRITCH_VOID.get();
+
+    public static final Block CINNABAR_ORE = Registry.SUPPLIER_CINNABAR_ORE.get();
+    public static final Block AMBER_ORE = Registry.SUPPLIER_AMBER_ORE.get();
+    public static final AirInfusedStoneBlock AIR_INFUSED_STONE = Registry.SUPPLIER_AIR_INFUSED_STONE.get();
+    public static final FireInfusedStoneBlock FIRE_INFUSED_STONE = Registry.SUPPLIER_FIRE_INFUSED_STONE.get();
+    public static final WaterInfusedStoneBlock WATER_INFUSED_STONE = Registry.SUPPLIER_WATER_INFUSED_STONE.get();
+    public static final EarthInfusedStoneBlock EARTH_INFUSED_STONE = Registry.SUPPLIER_EARTH_INFUSED_STONE.get();
+    public static final OrderInfusedStoneBlock ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
+    public static final EntropyInfusedStoneBlock ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -216,6 +234,62 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<HungryChestBlock> SUPPLIER_HUNGRY_CHEST = BLOCKS.register(
                 "hungry_chest",
                 () -> new HungryChestBlock(ThaumcraftBlockEntities.Registry.SUPPLIER_HUNGRY_CHEST::get)
+        );
+        public static final RegistrySupplier<EldritchVoidBlock> SUPPLIER_ELDRITCH_VOID = BLOCKS.register(
+                "eldritch_void",
+                EldritchVoidBlock::new
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_CINNABAR_ORE = BLOCKS.register(
+                "cinnabar_ore",
+                () -> new Block(
+                        BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
+                                .sound(SoundType.STONE)
+                                .strength(5.f,1.5f)
+                )
+        );
+        public static final RegistrySupplier<DropExperienceBlock> SUPPLIER_AMBER_ORE = BLOCKS.register(
+                "amber_ore",
+                () -> new DropExperienceBlock(
+                        BlockBehaviour.Properties.copy(Blocks.GOLD_ORE)
+                                .sound(SoundType.STONE)
+                                .strength(5.f,1.5f), ConstantInt.of(1)
+                ){
+                    @Override
+                    protected void tryDropExperience(ServerLevel serverLevel, BlockPos blockPos, ItemStack itemStack, IntProvider intProvider) {
+                        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, itemStack) == 0) {
+                            int i = intProvider.sample(serverLevel.random);
+                            if (i > 0) {
+                                this.popExperience(serverLevel, blockPos, i
+                                        + serverLevel.random.nextInt(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStack) + 1)
+                                );
+                            }
+                        }
+                    }
+                }
+        );
+        public static final RegistrySupplier<AirInfusedStoneBlock> SUPPLIER_AIR_INFUSED_STONE = BLOCKS.register(
+                "air_infused_stone",
+                AirInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<FireInfusedStoneBlock> SUPPLIER_FIRE_INFUSED_STONE = BLOCKS.register(
+                "fire_infused_stone",
+                FireInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<WaterInfusedStoneBlock> SUPPLIER_WATER_INFUSED_STONE = BLOCKS.register(
+                "water_infused_stone",
+                WaterInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<EarthInfusedStoneBlock> SUPPLIER_EARTH_INFUSED_STONE = BLOCKS.register(
+                "earth_infused_stone",
+                EarthInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<OrderInfusedStoneBlock> SUPPLIER_ORDER_INFUSED_STONE = BLOCKS.register(
+                "order_infused_stone",
+                OrderInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<EntropyInfusedStoneBlock> SUPPLIER_ENTROPY_INFUSED_STONE = BLOCKS.register(
+                "entropy_infused_stone",
+                EntropyInfusedStoneBlock::new
         );
 
         static {

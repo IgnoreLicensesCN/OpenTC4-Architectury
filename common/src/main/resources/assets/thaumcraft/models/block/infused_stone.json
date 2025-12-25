@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "outer": "thaumcraft:block/infused_stone_outer",
+    "inner": "thaumcraft:block/infused_stone_inner"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "outer": "#stone" , "tintindex": 1 },
+        "south": { "outer": "#stone" , "tintindex": 1},
+        "west":  { "outer": "#stone" , "tintindex": 1},
+        "east":  { "outer": "#stone" , "tintindex": 1},
+        "up":    { "outer": "#stone" , "tintindex": 1},
+        "down":  { "outer": "#stone" , "tintindex": 1}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "texture": "#inner", "tintindex": 0 },
+        "south": { "texture": "#inner", "tintindex": 0 },
+        "west":  { "texture": "#inner", "tintindex": 0 },
+        "east":  { "texture": "#inner", "tintindex": 0 },
+        "up":    { "texture": "#inner", "tintindex": 0 },
+        "down":  { "texture": "#inner", "tintindex": 0 }
+      }
+    }
+  ]
+}
