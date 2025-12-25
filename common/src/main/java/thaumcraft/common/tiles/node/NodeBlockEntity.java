@@ -30,9 +30,4 @@ public class NodeBlockEntity extends AbstractNodeBlockEntity {
             this.level.setBlock(this.getBlockPos(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new NodeBlockEntity(blockPos, blockState);
-    }
 }

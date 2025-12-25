@@ -7,18 +7,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.tiles.EldritchVoidBlockEntity;
 
-public class EldritchVoidBlock extends Block {
+public class EldritchVoidBlock extends Block implements EntityBlock {
     public EldritchVoidBlock(Properties properties) {
         super(properties);
     }
@@ -74,5 +74,8 @@ public class EldritchVoidBlock extends Block {
         }
     }
 
-
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new EldritchVoidBlockEntity(blockPos, blockState);
+    }
 }
