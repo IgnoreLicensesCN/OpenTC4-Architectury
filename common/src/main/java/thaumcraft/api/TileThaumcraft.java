@@ -26,22 +26,22 @@ public class TileThaumcraft extends BlockEntity {
     //NBT stuff
 
     @Override
-    public void load(CompoundTag CompoundTag) {
-        super.load(CompoundTag);
-        readCustomNBT(CompoundTag);
+    public void load(CompoundTag compoundTag) {
+        super.load(compoundTag);
+        readCustomNBT(compoundTag);
     }
 
-    public void readCustomNBT(CompoundTag CompoundTag) {
+    public void readCustomNBT(CompoundTag compoundTag) {
         //TODO
     }
 
     @Override
-    public void saveAdditional(CompoundTag CompoundTag) {
-        super.saveAdditional(CompoundTag);
-        writeCustomNBT(CompoundTag);
+    public void saveAdditional(CompoundTag compoundTag) {
+        super.saveAdditional(compoundTag);
+        writeCustomNBT(compoundTag);
     }
 
-    public void writeCustomNBT(CompoundTag CompoundTag) {
+    public void writeCustomNBT(CompoundTag compoundTag) {
         //TODO
     }
 

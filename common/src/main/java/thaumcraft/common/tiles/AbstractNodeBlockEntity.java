@@ -67,7 +67,11 @@ import static thaumcraft.api.nodes.NodeModifier.*;
 import static thaumcraft.api.wands.IVisContainer.CENTIVIS_MULTIPLIER;
 
 //i think it would be suitable to abstract this since we have 3 types.
-public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements INode, WandInteractableBlock, EntityBlock {
+public abstract class AbstractNodeBlockEntity extends TileThaumcraft
+        implements
+        INode
+        , WandInteractableBlock
+{
     long lastActive = 0L;
     AspectList aspects = new AspectList();
     AspectList aspectsBase = new AspectList();
@@ -1068,12 +1072,5 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft implements 
 //        return this.getBlockPos();
 //    }
 
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return (level1, blockPos, blockState, blockEntity) -> {
-            if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
-                serverTick(abstractNodeBlockEntity);
-            }
-        };
-    }
+
 }

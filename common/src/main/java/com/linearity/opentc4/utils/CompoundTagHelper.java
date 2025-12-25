@@ -6,9 +6,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.minecraft.nbt.Tag.*;
@@ -59,6 +57,39 @@ public class CompoundTagHelper {
             return tag.contains(tagKey);
         }
     }
+
+    public static class StringSetTagAccessor extends CompoundTagAccessor<Set<String>> {
+        private static final Set<String> CLASS_CHEATER = Set.of();
+        private final ListTagAccessor LIST_TAG_ACCESSOR;
+        public StringSetTagAccessor(String tagKey) {
+            super(tagKey, (Class<Set<String>>) CLASS_CHEATER.getClass());
+            this.LIST_TAG_ACCESSOR = new ListTagAccessor(tagKey);
+        }
+
+        @Override
+        public Set<String> readFromCompoundTag(CompoundTag tag) {
+            ListTag listTag = LIST_TAG_ACCESSOR.readFromCompoundTag(tag);
+            List<String> list = new ArrayList<>(listTag.size());
+            for (int i=0;i<listTag.size();i++) {
+                String element = listTag.getString(i);
+                list.add(element);
+            }
+            return Set.of(list.toArray(new String[0]));
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag, Set<String> value) {
+            ListTag listTag = new ListTag();
+            value.forEach(s -> listTag.add(StringTag.valueOf(s)));
+            LIST_TAG_ACCESSOR.writeToCompoundTag(tag, listTag);
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey);
+        }
+    }
+
     public static class VisOwningTagAccessor extends CompoundTagAccessor<Map<Aspect,Integer>> {
         private static final Map<Aspect,Integer> classProvider = Collections.emptyMap();
         private final JsonObjectTagAccessor internalAccessor;

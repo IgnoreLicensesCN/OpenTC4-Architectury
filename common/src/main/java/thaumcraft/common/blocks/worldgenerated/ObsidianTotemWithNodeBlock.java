@@ -9,16 +9,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
-public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock {
+public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock {
     public ObsidianTotemWithNodeBlock(Properties properties) {
         super(properties);
     }
@@ -88,5 +95,20 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock {
     @Override
     public Item asItem() {
         return ThaumcraftItems.OBSIDIAN_TOTEM;
+    }
+
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new ObsidianTotemNodeBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return (level1, blockPos, blockState, blockEntity) -> {
+            if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
+                AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);
+            }
+        };
     }
 }

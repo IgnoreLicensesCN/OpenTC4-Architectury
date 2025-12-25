@@ -18,6 +18,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<WardingStoneBlockEntity> WARDING_STONE = Registry.SUPPLIER_WARDING_STONE.get();
     public static final BlockEntityType<HungryChestBlockEntity> HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
     public static final BlockEntityType<EldritchVoidBlockEntity> ELDRITCH_VOID = Registry.SUPPLIER_ELDRITCH_VOID.get();
+    public static final BlockEntityType<OwnedBlockEntity> OWNED = Registry.SUPPLIER_OWNED.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -46,6 +47,14 @@ public class ThaumcraftBlockEntities {
         public static final RegistrySupplier<BlockEntityType<EldritchVoidBlockEntity>> SUPPLIER_ELDRITCH_VOID = BLOCK_ENTITIES.register(
                 "eldritch_void",
                 () -> BlockEntityType.Builder.of(EldritchVoidBlockEntity::new, ThaumcraftBlocks.ELDRITCH_VOID).build(null)//seems "type" not used
+        );
+
+        public static final RegistrySupplier<BlockEntityType<OwnedBlockEntity>> SUPPLIER_OWNED = BLOCK_ENTITIES.register(
+                "owned",
+                () -> BlockEntityType.Builder.of(
+                        OwnedBlockEntity::new,
+                        ThaumcraftBlocks.WARDED_GLASS
+                ).build(null)
         );
     }
 

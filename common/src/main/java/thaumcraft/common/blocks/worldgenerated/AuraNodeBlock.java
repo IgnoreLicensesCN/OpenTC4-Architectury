@@ -10,8 +10,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -21,12 +25,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 
-public class AuraNodeBlock extends Block {
+public class AuraNodeBlock extends Block implements EntityBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
                     0.7 * 16, 0.7 * 16, 0.7 * 16);
@@ -171,5 +177,19 @@ public class AuraNodeBlock extends Block {
         if (bEntity instanceof NodeBlockEntity node){
             node.clientTickByBlockHandle();
         }
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new NodeBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return (level1, blockPos, blockState, blockEntity) -> {
+            if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
+                AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);
+            }
+        };
     }
 }

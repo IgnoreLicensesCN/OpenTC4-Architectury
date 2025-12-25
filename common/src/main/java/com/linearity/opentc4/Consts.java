@@ -179,4 +179,9 @@ public class Consts {
         private static final String HEIGHT = "height";
         public static final CompoundTagHelper.IntTagAccessor HEIGHT_ACCESSOR = new CompoundTagHelper.IntTagAccessor(HEIGHT);
     }
+
+    public static class OwnedBlockEntityTagAccessors {
+        private static final String OWNERS = "owners";
+        public static final CompoundTagHelper.StringSetTagAccessor OWNERS_ACCESSOR = new CompoundTagHelper.StringSetTagAccessor(OWNERS);
+    }
 }

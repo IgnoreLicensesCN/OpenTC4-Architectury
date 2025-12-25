@@ -79,6 +79,11 @@ public class ThaumcraftBlocks {
     public static final OrderInfusedStoneBlock ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
     public static final EntropyInfusedStoneBlock ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
 
+    public static final Block AMBER_BLOCK = Registry.SUPPLIER_AMBER_BLOCK.get();
+    public static final Block AMBER_BRICK = Registry.SUPPLIER_AMBER_BRICK.get();
+
+    public static final WardedGlassBlock WARDED_GLASS = Registry.SUPPLIER_WARDED_GLASS.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -273,6 +278,23 @@ public class ThaumcraftBlocks {
                 "entropy_infused_stone",
                 EntropyInfusedStoneBlock::new
         );
+        public static final RegistrySupplier<Block> SUPPLIER_AMBER_BLOCK = BLOCKS.register(
+                "amber_block",
+                () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
+                        .strength(1.5f,5.f)
+                )
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_AMBER_BRICK = BLOCKS.register(
+                "amber_brick",
+                () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
+                        .strength(1.5f,5.f)
+                )
+        );
+        public static final RegistrySupplier<WardedGlassBlock> SUPPLIER_WARDED_GLASS = BLOCKS.register(
+                "warded_glass",
+                WardedGlassBlock::new
+        );
+
 
         static {
             BLOCKS.register();

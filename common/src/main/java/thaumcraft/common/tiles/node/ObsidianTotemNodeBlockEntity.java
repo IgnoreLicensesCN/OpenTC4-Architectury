@@ -31,8 +31,4 @@ public class ObsidianTotemNodeBlockEntity extends AbstractNodeBlockEntity {
         }
     }
 
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ObsidianTotemNodeBlockEntity(blockPos, blockState);
-    }
 }

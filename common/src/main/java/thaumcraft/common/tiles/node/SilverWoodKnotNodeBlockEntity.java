@@ -35,8 +35,4 @@ public class SilverWoodKnotNodeBlockEntity extends AbstractNodeBlockEntity {
         }
     }
 
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new SilverWoodKnotNodeBlockEntity(blockPos, blockState);
-    }
 }

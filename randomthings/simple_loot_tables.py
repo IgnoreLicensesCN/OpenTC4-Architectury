@@ -29,6 +29,8 @@ block_names = [
     "silverwood_planks_stairs",
     "hungry_chest",
     "cinnabar_ore",
+    "amber_block",
+    "amber_brick",
 ]
 
 slab_names = [

@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class HungryChestBlockEntity extends ChestBlockEntity implements EntityBlock {
+public class HungryChestBlockEntity extends ChestBlockEntity {
     private NonNullList<ItemStack> items;
     private final HungryContainerOpenersCounter openersCounter;
     public AtomicBoolean eating = new AtomicBoolean(false);
@@ -50,42 +50,6 @@ public class HungryChestBlockEntity extends ChestBlockEntity implements EntityBl
         this(ThaumcraftBlockEntities.HUNGRY_CHEST,blockPos, blockState);
     }
 
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new HungryChestBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return (level1, blockPos, blockState1, blockEntity) -> {
-            if (level1 == null || level1.isClientSide()) return;
-            if (!(blockEntity instanceof HungryChestBlockEntity hungryChest)){return;}
-            if (!hungryChest.eatingCooldown()){return;}
-
-            BlockPos above = blockPos.above();
-
-            List<ItemEntity> items = level1.getEntitiesOfClass(ItemEntity.class,
-                    new AABB(above));
-
-            for (ItemEntity itemEntity : items) {
-                ItemStack stack = itemEntity.getItem();
-                eating.set(true);
-                hungryChest.startOpen(null);
-                //TODO
-
-                ItemStack leftover = hungryChest.addItem(stack.copy()); // 伪方法，自己写循环吸收
-                if (leftover.isEmpty()) {
-                    itemEntity.remove(Entity.RemovalReason.DISCARDED);
-                } else {
-                    itemEntity.setItem(leftover);
-                }
-                hungryChest.stopOpen(null);
-                addEatingCooldownForEating();
-                break;
-            }
-        };
-    }
     static void playSound(Level level, BlockPos blockPos, BlockState blockState, SoundEvent soundEvent) {
         ChestType chestType = blockState.getValue(ChestBlock.TYPE);
         if (chestType != ChestType.LEFT) {
@@ -215,13 +179,13 @@ public class HungryChestBlockEntity extends ChestBlockEntity implements EntityBl
     }
 
     protected int eatingCooldownCounter = 0;
-    protected boolean eatingCooldown(){
+    public boolean eatingCooldown(){
         if (eatingCooldownCounter > 0){
             eatingCooldownCounter -= 1;
         }
         return eatingCooldownCounter == 0;
     }
-    protected void addEatingCooldownForEating() {
+    public void addEatingCooldownForEating() {
         eatingCooldownCounter += 5;
     }
 

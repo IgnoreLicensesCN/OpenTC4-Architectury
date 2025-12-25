@@ -144,6 +144,9 @@ public class ThaumcraftItems {
     public static final Item ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
     public static final Item ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
 
+    public static final Item AMBER_BLOCK = Registry.SUPPLIER_AMBER_BLOCK.get();
+    public static final Item AMBER_BRICK = Registry.SUPPLIER_AMBER_BRICK.get();
+
 
     //===========================================================================================
 
@@ -451,12 +454,14 @@ public class ThaumcraftItems {
                 "entropy_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.ENTROPY_INFUSED_STONE, new Item.Properties())
         );
-
-        public static final RegistrySupplier<Item> SUPPLIER_AMBER = ITEMS.register(
-                "amber",
-                () -> new Item(new Item.Properties())
+        public static final RegistrySupplier<Item> SUPPLIER_AMBER_BLOCK = ITEMS.register(
+                "amber_block",
+                () -> new BlockItem(ThaumcraftBlocks.AMBER_BLOCK,new Item.Properties())
         );
-
+        public static final RegistrySupplier<Item> SUPPLIER_AMBER_BRICK = ITEMS.register(
+                "amber_brick",
+                () -> new BlockItem(ThaumcraftBlocks.AMBER_BRICK,new Item.Properties())
+        );
 
         static {
             Registry.ITEMS.register();
