@@ -31,6 +31,7 @@ block_names = [
     "cinnabar_ore",
     "amber_block",
     "amber_brick",
+    "warded_glass"
 ]
 
 slab_names = [
