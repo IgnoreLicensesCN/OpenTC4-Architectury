@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public interface ThaumcraftItemRenderer {
-    public void render(
+    void render(
             ItemStack itemStack,
             ItemDisplayContext itemDisplayContext,
             boolean bl,

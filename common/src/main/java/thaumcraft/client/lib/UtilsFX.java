@@ -3,14 +3,11 @@ package thaumcraft.client.lib;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -20,15 +17,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.util.*;
-import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.migrated.particles.FXScorch;
-import thaumcraft.client.fx.migrated.particles.FXSparkle;
-import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 
 import javax.imageio.ImageIO;
@@ -40,8 +31,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static tc4tweak.ClientUtils.fieldParticleTexture;
 
 public class UtilsFX {
    public static final String[] colorNames = new String[]{"White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
@@ -65,30 +54,6 @@ public class UtilsFX {
       }
 
       return lightBrightnessTable[light];
-   }
-
-   public static void infusedStoneSparkle(Level world, int x, int y, int z,int colorValue) {
-      if (world instanceof ClientLevel clientLevel) {
-         int color = switch (colorValue) {
-             case 1 -> 1;
-             case 2 -> 4;
-             case 3 -> 2;
-             case 4 -> 3;
-             case 5 -> 6;
-             case 6 -> 5;
-             default -> -1;
-         };
-
-          for(int a = 0; a < ClientFXUtils.particleCount(3); ++a) {
-            FXSparkle fx = new FXSparkle(clientLevel,
-                    (float)x + world.getRandom().nextFloat(),
-                    (float)y + world.getRandom().nextFloat(),
-                    (float)z + world.getRandom().nextFloat(),
-                    1.75F, color == -1 ? world.getRandom().nextInt(5) : color, 3 + world.getRandom().nextInt(3));
-            fx.setGravity(0.1F);
-            Minecraft.getInstance().particleEngine.add(fx);
-         }
-      }
    }
 
    public static void shootFire(World world, Player p, boolean offset, int range, boolean lance) {

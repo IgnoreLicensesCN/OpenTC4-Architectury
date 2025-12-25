@@ -2,15 +2,9 @@ package thaumcraft.common.blocks;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -244,7 +238,7 @@ public class ThaumcraftBlocks {
                 () -> new Block(
                         BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
                                 .sound(SoundType.STONE)
-                                .strength(5.f,1.5f)
+                                .strength(1.5f,5.f)
                 )
         );
         public static final RegistrySupplier<DropExperienceBlock> SUPPLIER_AMBER_ORE = BLOCKS.register(
@@ -252,20 +246,8 @@ public class ThaumcraftBlocks {
                 () -> new DropExperienceBlock(
                         BlockBehaviour.Properties.copy(Blocks.GOLD_ORE)
                                 .sound(SoundType.STONE)
-                                .strength(5.f,1.5f), ConstantInt.of(1)
-                ){
-                    @Override
-                    protected void tryDropExperience(ServerLevel serverLevel, BlockPos blockPos, ItemStack itemStack, IntProvider intProvider) {
-                        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, itemStack) == 0) {
-                            int i = intProvider.sample(serverLevel.random);
-                            if (i > 0) {
-                                this.popExperience(serverLevel, blockPos, i
-                                        + serverLevel.random.nextInt(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStack) + 1)
-                                );
-                            }
-                        }
-                    }
-                }
+                                .strength(1.5f,5.f), UniformInt.of(1,4)
+                )
         );
         public static final RegistrySupplier<AirInfusedStoneBlock> SUPPLIER_AIR_INFUSED_STONE = BLOCKS.register(
                 "air_infused_stone",

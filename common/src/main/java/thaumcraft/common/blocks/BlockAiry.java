@@ -31,7 +31,7 @@ import thaumcraft.api.nodes.INode;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
 import thaumcraft.client.fx.particles.FXSparkle;
-import thaumcraft.client.lib.UtilsFX;
+import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -70,7 +70,7 @@ public class BlockAiry extends BlockContainer {
       if ((
 //              md == 0 ||
               md == 5) && worldObj.rand.nextBoolean()) {
-         UtilsFX.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
+         UtilsFXMigrated.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
       }
 
       return super.addHitEffects(worldObj, target, effectRenderer);
