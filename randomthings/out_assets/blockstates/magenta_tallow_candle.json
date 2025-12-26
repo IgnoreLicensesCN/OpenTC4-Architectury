@@ -1,0 +1,49 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "thaumcraft:block/candle/base"
+      }
+    },
+    {
+      "when": {
+        "wax": 1
+      },
+      "apply": {
+        "model": "thaumcraft:block/candle/magenta/wax1"
+      }
+    },
+    {
+      "when": {
+        "wax": 2
+      },
+      "apply": {
+        "model": "thaumcraft:block/candle/magenta/wax2"
+      }
+    },
+    {
+      "when": {
+        "wax": 3
+      },
+      "apply": {
+        "model": "thaumcraft:block/candle/magenta/wax3"
+      }
+    },
+    {
+      "when": {
+        "wax": 4
+      },
+      "apply": {
+        "model": "thaumcraft:block/candle/magenta/wax4"
+      }
+    },
+    {
+      "when": {
+        "wax": 5
+      },
+      "apply": {
+        "model": "thaumcraft:block/candle/magenta/wax5"
+      }
+    }
+  ]
+}

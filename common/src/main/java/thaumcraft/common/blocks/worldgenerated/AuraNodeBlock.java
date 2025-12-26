@@ -105,7 +105,7 @@ public class AuraNodeBlock extends Block implements EntityBlock {
             BlockPos pos,
             CollisionContext ctx
     ) {
-        return COLLISION_SHAPE;
+        return Shapes.empty();
     }
 
 

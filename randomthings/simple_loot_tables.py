@@ -31,7 +31,23 @@ block_names = [
     "cinnabar_ore",
     "amber_block",
     "amber_brick",
-    "warded_glass"
+    "warded_glass",
+    'white_tallow_candle',
+    'orange_tallow_candle',
+    'magenta_tallow_candle',
+    'light_blue_tallow_candle',
+    'yellow_tallow_candle',
+    'lime_tallow_candle',
+    'pink_tallow_candle',
+    'gray_tallow_candle',
+    'light_gray_tallow_candle',
+    'cyan_tallow_candle',
+    'purple_tallow_candle',
+    'blue_tallow_candle',
+    'brown_tallow_candle',
+    'green_tallow_candle',
+    'red_tallow_candle',
+    'black_tallow_candle',
 ]
 
 slab_names = [

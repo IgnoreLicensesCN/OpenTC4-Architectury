@@ -128,5 +128,21 @@ public class ThaumcraftBlockAndItemColors {
                     return 0xFFFFFF;
                 },ThaumcraftBlocks.ENTROPY_INFUSED_STONE
         );
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.WHITE_TALLOW_CANDLE.color,ThaumcraftBlocks.WHITE_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.ORANGE_TALLOW_CANDLE.color,ThaumcraftBlocks.ORANGE_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE.color,ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE.color,ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.YELLOW_TALLOW_CANDLE.color,ThaumcraftBlocks.YELLOW_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIME_TALLOW_CANDLE.color,ThaumcraftBlocks.LIME_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.PINK_TALLOW_CANDLE.color,ThaumcraftBlocks.PINK_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.GRAY_TALLOW_CANDLE.color,ThaumcraftBlocks.GRAY_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE.color,ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.CYAN_TALLOW_CANDLE.color,ThaumcraftBlocks.CYAN_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.PURPLE_TALLOW_CANDLE.color,ThaumcraftBlocks.PURPLE_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BLUE_TALLOW_CANDLE.color,ThaumcraftBlocks.BLUE_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BROWN_TALLOW_CANDLE.color,ThaumcraftBlocks.BROWN_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.GREEN_TALLOW_CANDLE.color,ThaumcraftBlocks.GREEN_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.RED_TALLOW_CANDLE.color,ThaumcraftBlocks.RED_TALLOW_CANDLE);
+        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BLACK_TALLOW_CANDLE.color,ThaumcraftBlocks.BLACK_TALLOW_CANDLE);
     }
 }

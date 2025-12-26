@@ -1,0 +1,46 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "all": "thaumcraft:block/candle_green"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        10
+      ],
+      "to": [
+        8,
+        2,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "south": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "west": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "east": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "up": {
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "down": {
+          "texture": "#all",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

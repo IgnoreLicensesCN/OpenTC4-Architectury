@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "thaumcraft:light_gray_tallow_candle"
+                }
+            ]
+        }
+    ]
+}

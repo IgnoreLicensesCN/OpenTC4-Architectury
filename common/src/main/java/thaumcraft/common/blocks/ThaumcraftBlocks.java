@@ -84,6 +84,23 @@ public class ThaumcraftBlocks {
 
     public static final WardedGlassBlock WARDED_GLASS = Registry.SUPPLIER_WARDED_GLASS.get();
 
+    public static final TallowCandleBlock WHITE_TALLOW_CANDLE = Registry.SUPPLIER_WHITE_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock ORANGE_TALLOW_CANDLE = Registry.SUPPLIER_ORANGE_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock MAGENTA_TALLOW_CANDLE = Registry.SUPPLIER_MAGENTA_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock LIGHT_BLUE_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock YELLOW_TALLOW_CANDLE = Registry.SUPPLIER_YELLOW_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock LIME_TALLOW_CANDLE = Registry.SUPPLIER_LIME_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock PINK_TALLOW_CANDLE = Registry.SUPPLIER_PINK_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock GRAY_TALLOW_CANDLE = Registry.SUPPLIER_GRAY_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock LIGHT_GRAY_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock CYAN_TALLOW_CANDLE = Registry.SUPPLIER_CYAN_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock PURPLE_TALLOW_CANDLE = Registry.SUPPLIER_PURPLE_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock BLUE_TALLOW_CANDLE = Registry.SUPPLIER_BLUE_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock BROWN_TALLOW_CANDLE = Registry.SUPPLIER_BROWN_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock GREEN_TALLOW_CANDLE = Registry.SUPPLIER_GREEN_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
+    public static final TallowCandleBlock BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -293,6 +310,71 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<WardedGlassBlock> SUPPLIER_WARDED_GLASS = BLOCKS.register(
                 "warded_glass",
                 WardedGlassBlock::new
+        );
+
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_WHITE_TALLOW_CANDLE = BLOCKS.register(
+                "white_tallow_candle",
+                () -> new TallowCandleBlock(0xf0f0f0)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_ORANGE_TALLOW_CANDLE = BLOCKS.register(
+                "orange_tallow_candle",
+                () -> new TallowCandleBlock(0xeb8844)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_MAGENTA_TALLOW_CANDLE = BLOCKS.register(
+                "magenta_tallow_candle",
+                () -> new TallowCandleBlock(0xc354cd)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE = BLOCKS.register(
+                "light_blue_tallow_candle",
+                () -> new TallowCandleBlock(0x6689d3)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_YELLOW_TALLOW_CANDLE = BLOCKS.register(
+                "yellow_tallow_candle",
+                () -> new TallowCandleBlock(0xdecf2a)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_LIME_TALLOW_CANDLE = BLOCKS.register(
+                "lime_tallow_candle",
+                () -> new TallowCandleBlock(0x41cd34)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_PINK_TALLOW_CANDLE = BLOCKS.register(
+                "pink_tallow_candle",
+                () -> new TallowCandleBlock(0xd88198)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_GRAY_TALLOW_CANDLE = BLOCKS.register(
+                "gray_tallow_candle",
+                () -> new TallowCandleBlock(0x434343)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE = BLOCKS.register(
+                "light_gray_tallow_candle",
+                () -> new TallowCandleBlock(0xa0a0a0)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_CYAN_TALLOW_CANDLE = BLOCKS.register(
+                "cyan_tallow_candle",
+                () -> new TallowCandleBlock(0x287697)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_PURPLE_TALLOW_CANDLE = BLOCKS.register(
+                "purple_tallow_candle",
+                () -> new TallowCandleBlock(0x7b2fbe)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_BLUE_TALLOW_CANDLE = BLOCKS.register(
+                "blue_tallow_candle",
+                () -> new TallowCandleBlock(0x253192)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_BROWN_TALLOW_CANDLE = BLOCKS.register(
+                "brown_tallow_candle",
+                () -> new TallowCandleBlock(0x51301a)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_GREEN_TALLOW_CANDLE = BLOCKS.register(
+                "green_tallow_candle",
+                () -> new TallowCandleBlock(0x3b511a)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_RED_TALLOW_CANDLE = BLOCKS.register(
+                "red_tallow_candle",
+                () -> new TallowCandleBlock(0xb3312c)
+        );
+        public static final RegistrySupplier<TallowCandleBlock> SUPPLIER_BLACK_TALLOW_CANDLE = BLOCKS.register(
+                "black_tallow_candle",
+                () -> new TallowCandleBlock(0x1e1b1b)
         );
 
 

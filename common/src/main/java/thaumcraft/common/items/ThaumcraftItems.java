@@ -147,6 +147,22 @@ public class ThaumcraftItems {
     public static final Item AMBER_BLOCK = Registry.SUPPLIER_AMBER_BLOCK.get();
     public static final Item AMBER_BRICK = Registry.SUPPLIER_AMBER_BRICK.get();
 
+    public static final BlockItem WHITE_TALLOW_CANDLE = Registry.SUPPLIER_WHITE_TALLOW_CANDLE.get();
+    public static final BlockItem ORANGE_TALLOW_CANDLE = Registry.SUPPLIER_ORANGE_TALLOW_CANDLE.get();
+    public static final BlockItem MAGENTA_TALLOW_CANDLE = Registry.SUPPLIER_MAGENTA_TALLOW_CANDLE.get();
+    public static final BlockItem LIGHT_BLUE_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE.get();
+    public static final BlockItem YELLOW_TALLOW_CANDLE = Registry.SUPPLIER_YELLOW_TALLOW_CANDLE.get();
+    public static final BlockItem LIME_TALLOW_CANDLE = Registry.SUPPLIER_LIME_TALLOW_CANDLE.get();
+    public static final BlockItem PINK_TALLOW_CANDLE = Registry.SUPPLIER_PINK_TALLOW_CANDLE.get();
+    public static final BlockItem GRAY_TALLOW_CANDLE = Registry.SUPPLIER_GRAY_TALLOW_CANDLE.get();
+    public static final BlockItem LIGHT_GRAY_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE.get();
+    public static final BlockItem CYAN_TALLOW_CANDLE = Registry.SUPPLIER_CYAN_TALLOW_CANDLE.get();
+    public static final BlockItem PURPLE_TALLOW_CANDLE = Registry.SUPPLIER_PURPLE_TALLOW_CANDLE.get();
+    public static final BlockItem BLUE_TALLOW_CANDLE = Registry.SUPPLIER_BLUE_TALLOW_CANDLE.get();
+    public static final BlockItem BROWN_TALLOW_CANDLE = Registry.SUPPLIER_BROWN_TALLOW_CANDLE.get();
+    public static final BlockItem GREEN_TALLOW_CANDLE = Registry.SUPPLIER_GREEN_TALLOW_CANDLE.get();
+    public static final BlockItem RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
+    public static final BlockItem BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
 
     //===========================================================================================
 
@@ -422,47 +438,110 @@ public class ThaumcraftItems {
                 () -> new Item(new Item.Properties())
         );
 
-        public static final RegistrySupplier<Item> SUPPLIER_CINNABAR_ORE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CINNABAR_ORE = ITEMS.register(
                 "cinnabar_ore",
                 () -> new BlockItem(ThaumcraftBlocks.CINNABAR_ORE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_AMBER_ORE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_AMBER_ORE = ITEMS.register(
                 "amber_ore",
                 () -> new BlockItem(ThaumcraftBlocks.AMBER_ORE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_AIR_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_AIR_INFUSED_STONE = ITEMS.register(
                 "air_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.AIR_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_FIRE_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_FIRE_INFUSED_STONE = ITEMS.register(
                 "fire_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.FIRE_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_WATER_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_WATER_INFUSED_STONE = ITEMS.register(
                 "water_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.WATER_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_EARTH_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_EARTH_INFUSED_STONE = ITEMS.register(
                 "earth_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.EARTH_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_ORDER_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ORDER_INFUSED_STONE = ITEMS.register(
                 "order_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.ORDER_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_ENTROPY_INFUSED_STONE = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ENTROPY_INFUSED_STONE = ITEMS.register(
                 "entropy_infused_stone",
                 () -> new BlockItem(ThaumcraftBlocks.ENTROPY_INFUSED_STONE, new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_AMBER_BLOCK = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_AMBER_BLOCK = ITEMS.register(
                 "amber_block",
                 () -> new BlockItem(ThaumcraftBlocks.AMBER_BLOCK,new Item.Properties())
         );
-        public static final RegistrySupplier<Item> SUPPLIER_AMBER_BRICK = ITEMS.register(
+        public static final RegistrySupplier<BlockItem> SUPPLIER_AMBER_BRICK = ITEMS.register(
                 "amber_brick",
                 () -> new BlockItem(ThaumcraftBlocks.AMBER_BRICK,new Item.Properties())
         );
-
+        public static final RegistrySupplier<BlockItem> SUPPLIER_WHITE_TALLOW_CANDLE = ITEMS.register(
+                "white_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.WHITE_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ORANGE_TALLOW_CANDLE = ITEMS.register(
+                "orange_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.ORANGE_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MAGENTA_TALLOW_CANDLE = ITEMS.register(
+                "magenta_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE = ITEMS.register(
+                "light_blue_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_YELLOW_TALLOW_CANDLE = ITEMS.register(
+                "yellow_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.YELLOW_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_LIME_TALLOW_CANDLE = ITEMS.register(
+                "lime_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.LIME_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PINK_TALLOW_CANDLE = ITEMS.register(
+                "pink_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.PINK_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GRAY_TALLOW_CANDLE = ITEMS.register(
+                "gray_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.GRAY_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE = ITEMS.register(
+                "light_gray_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CYAN_TALLOW_CANDLE = ITEMS.register(
+                "cyan_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.CYAN_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_PURPLE_TALLOW_CANDLE = ITEMS.register(
+                "purple_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.PURPLE_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_BLUE_TALLOW_CANDLE = ITEMS.register(
+                "blue_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.BLUE_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_BROWN_TALLOW_CANDLE = ITEMS.register(
+                "brown_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.BROWN_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GREEN_TALLOW_CANDLE = ITEMS.register(
+                "green_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.GREEN_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_RED_TALLOW_CANDLE = ITEMS.register(
+                "red_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.RED_TALLOW_CANDLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_BLACK_TALLOW_CANDLE = ITEMS.register(
+                "black_tallow_candle",
+                () -> new BlockItem(ThaumcraftBlocks.BLACK_TALLOW_CANDLE,new Item.Properties())
+        );
         static {
             Registry.ITEMS.register();
         }

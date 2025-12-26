@@ -58,7 +58,7 @@ public class NitorBlock extends Block {
 
     @Override
     public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        return SHAPE;
+        return Shapes.empty();
     }
 
     @Override
