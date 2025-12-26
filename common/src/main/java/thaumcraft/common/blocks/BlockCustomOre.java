@@ -1,12 +1,18 @@
 package thaumcraft.common.blocks;
 
 //"0": "朱砂矿石",
-//    "tile.blockCustomOre.1.name": "风之蕴魔石",
-//    "tile.blockCustomOre.2.name": "火之蕴魔石",
-//    "tile.blockCustomOre.3.name": "水之蕴魔石",
-//    "tile.blockCustomOre.4.name": "地之蕴魔石",
-//    "tile.blockCustomOre.5.name": "秩序蕴魔石",
-//    "tile.blockCustomOre.6.name": "混沌蕴魔石",
+//    "block.thaumcraft.air_infused_stone": "风之蕴魔石",
+    "item.thaumcraft.air_infused_stone": "风之蕴魔石",
+//    "block.thaumcraft.fire_infused_stone": "火之蕴魔石",
+    "item.thaumcraft.fire_infused_stone": "火之蕴魔石",
+//    "block.thaumcraft.water_infused_stone": "水之蕴魔石",
+    "item.thaumcraft.water_infused_stone": "水之蕴魔石",
+//    "block.thaumcraft.earth_infused_stone": "地之蕴魔石",
+    "item.thaumcraft.earth_infused_stone": "地之蕴魔石",
+//    "block.thaumcraft.order_infused_stone": "秩序蕴魔石",
+    "item.thaumcraft.order_infused_stone": "秩序蕴魔石",
+//    "block.thaumcraft.entropy_infused_stone": "混沌蕴魔石",
+    "item.thaumcraft.entropy_infused_stone": "混沌蕴魔石",
 //    "7": "琥珀矿石",
 @Deprecated(forRemoval = true)
 public class BlockCustomOre /*extends Block */{

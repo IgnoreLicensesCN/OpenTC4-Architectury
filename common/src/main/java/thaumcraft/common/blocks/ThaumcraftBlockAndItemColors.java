@@ -3,8 +3,7 @@ package thaumcraft.common.blocks;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItems;
 
 public class ThaumcraftBlockAndItemColors {

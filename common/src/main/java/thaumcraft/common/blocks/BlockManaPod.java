@@ -73,6 +73,21 @@ public class BlockManaPod extends Block {
       return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
    }
 
+   //   public static float W1 = 0.0625F;
+   //   public static float W2 = 0.125F;
+   //   public static float W3 = 0.1875F;
+   //   public static float W4 = 0.25F;
+   //   public static float W5 = 0.3125F;
+   //   public static float W6 = 0.375F;
+   //   public static float W7 = 0.4375F;
+   //   public static float W8 = 0.5F;
+   //   public static float W9 = 0.5625F;
+   //   public static float W10 = 0.625F;
+   //   public static float W11 = 0.6875F;
+   //   public static float W12 = 0.75F;
+   //   public static float W13 = 0.8125F;
+   //   public static float W14 = 0.875F;
+   //   public static float W15 = 0.9375F;
    public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
       int l = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
       switch (l) {
