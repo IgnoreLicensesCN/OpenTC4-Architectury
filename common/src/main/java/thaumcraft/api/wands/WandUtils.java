@@ -26,15 +26,15 @@ public class WandUtils {
     }
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
-    public static void appendWandHoverText(Item item, ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
+    public static void appendWandHoverText(Item wandItem, ItemStack wandStack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
-        if (item instanceof IVisContainer IVisContainer) {
+        if (wandItem instanceof IVisContainer IVisContainer) {
             StringBuilder tt = new StringBuilder();
 
-            var visOwning = IVisContainer.getAllVisOwning(stack);
-            var visCapacity = IVisContainer.getAllVisCapacity(stack);
+            var visOwning = IVisContainer.getAllVisOwning(wandStack);
+            var visCapacity = IVisContainer.getAllVisCapacity(wandStack);
 
 
             for (var entry : visOwning.entrySet()) {
@@ -42,20 +42,20 @@ public class WandUtils {
                 String amountString = String.valueOf(((float)entry.getValue()) / 100.0F);
                 String capacityString = String.valueOf(((float)visCapacity.getOrDefault(entry.getKey(),0)) / 100.0F);
                 float mod = ConsumptionModifierCalculator.getConsumptionModifier(
-                        item,
-                        stack,
+                        wandItem,
+                        wandStack,
                         livingEntity,
                         aspect,
                         false);
                 String consumptionString = decimalFormat.format(mod * 100.0F);
                 String focusConsumptionString = "";
-                if (item instanceof WandFocusEngine engine && engine.canApplyFocus()) {
-                    var focus = engine.getFocusItemStack(stack);
-                    var focusItem = focus.getItem();
+                if (wandItem instanceof IWandFocusEngine engine && engine.canApplyFocus()) {
+                    var focusStack = engine.getFocusItemStack(wandStack);
+                    var focusItem = focusStack.getItem();
                     if (focusItem instanceof IWandFocusItem wandFocusItem) {
-                        int amt = wandFocusItem.getVisCost(focus).getAmount(aspect);
+                        int amt = wandFocusItem.getVisCost(focusStack,wandStack).getAmount(aspect);
                         if (amt > 0) {
-                            focusConsumptionString = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(wandFocusItem.isVisCostPerTick() ? "item.Focus.cost2" : "item.Focus.cost1");
+                            focusConsumptionString = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(wandFocusItem.isVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
                         }
                     }
                 }
@@ -86,11 +86,11 @@ public class WandUtils {
 //                    ++num;
 //                    tot = (int) ((float) tot + mod * 100.0F);
 //                    String text = "";
-//                    ItemStack focus = this.getFocusItem(stack);
+//                    ItemStack focus = this.getFocusItem(wandStack);
 //                    if (focus != null) {
 //                        int amt = ((ItemFocusBasic) focus.getItem()).getVisCost(focus).getAmount(aspect);
 //                        if (amt > 0) {
-//                            text = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "item.Focus.cost2" : "item.Focus.cost1");
+//                            text = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
 //                        }
 //                    }
 //
@@ -113,10 +113,10 @@ public class WandUtils {
 //            }
         }
 
-//        list.add(pos, ChatFormatting.GOLD + StatCollector.translateToLocal("item.capacity.text") + " " + this.getMaxVis(stack) / 100 + "§r" + tt2);
+//        list.add(pos, ChatFormatting.GOLD + StatCollector.translateToLocal("wandItem.capacity.text") + " " + this.getMaxVis(wandStack) / 100 + "§r" + tt2);
 
-        if (item instanceof WandFocusEngine engine && engine.canApplyFocus()) {
-            var focus = engine.getFocusItemStack(stack);
+        if (wandItem instanceof IWandFocusEngine engine && engine.canApplyFocus()) {
+            var focus = engine.getFocusItemStack(wandStack);
             var focusItem = focus.getItem();
             if (focusItem instanceof IWandFocusItem wandFocusItem) {
 
@@ -130,7 +130,7 @@ public class WandUtils {
     }
 
     public static void addFocusInformation(IWandFocusItem focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
-		for (var entry:focus.getWandUpgrades(focusstack).entrySet()) {
+		for (var entry:focus.getAppliedWandUpgrades(focusstack).entrySet()) {
             FocusUpgradeType type = entry.getKey();
             var id = type.id();
             var lvl = entry.getValue();

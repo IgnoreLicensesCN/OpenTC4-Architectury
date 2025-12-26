@@ -5,7 +5,6 @@ import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -31,7 +30,7 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
 
     public void addFocusInformation(ItemStack focusstack, List<Component> list) {
         Map<String, Integer> map = new LinkedHashMap<>();
-        for (Map.Entry<FocusUpgradeType, Integer> entry:this.getWandUpgrades(focusstack).entrySet()) {
+        for (Map.Entry<FocusUpgradeType, Integer> entry:this.getAppliedWandUpgrades(focusstack).entrySet()) {
             var upgradeType = FocusUpgradeType.getType(entry.getKey().id());
             list.add(Component.literal(ChatFormatting.DARK_PURPLE +upgradeType.getLocalizedName()+
                     (" "+ StatCollector.translateToLocal("enchantment.level." + entry.getValue()))));
@@ -39,12 +38,12 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> getWandUpgrades(ItemStack stack) {
+    public Map<FocusUpgradeType, Integer> getAppliedWandUpgrades(ItemStack focusStack) {
         Map<FocusUpgradeType, Integer> map = new HashMap<>();
-        if (!stack.hasTag()) {
+        if (!focusStack.hasTag()) {
             return map;
         }
-        var tag = stack.getTag();
+        var tag = focusStack.getTag();
         if (tag == null){
             return map;
         }
@@ -111,8 +110,8 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        AspectList al = this.getVisCost(stack);
+    public void appendHoverText(ItemStack focusStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+        AspectList al = this.getVisCost(focusStack,null);
         if (al!=null && al.size()>0) {
             list.add(Component.literal(StatCollector.translateToLocal(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1")));
             for (Aspect aspect:al.getAspectsSorted()) {
@@ -121,6 +120,6 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
                 list.add(Component.literal(" §"+aspect.getChatcolor()+aspect.getName()+"§r x "+ amount));
             }
         }
-        addFocusInformation(stack,list);
+        addFocusInformation(focusStack,list);
     }
 }

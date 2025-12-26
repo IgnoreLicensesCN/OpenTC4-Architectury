@@ -21,10 +21,10 @@ import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble
 public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
             if ((casting instanceof IWandComponentsOwner componentsOwner)) {
-                var cap = componentsOwner.getWandComponents(stack);
-                if (cap instanceof VisCostModifierOwner visCostModifierOwner) {
+                var cap = componentsOwner.getWandComponents(wandStack);
+                if (cap instanceof IVisCostModifierOwner visCostModifierOwner) {
                     currentConsumption -= (1-visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier()));
                 }
             }
@@ -33,7 +33,7 @@ public enum CalculateWandConsumptionListenerEnum {
     }),
     DISCOUNT_GEAR(new CalculateWandConsumptionListener(10) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
 
             AtomicReference<Float> currentConsumptionAtomic = new AtomicReference<>(currentConsumption);
             if (user instanceof Player player) {
@@ -58,7 +58,7 @@ public enum CalculateWandConsumptionListenerEnum {
     }),
     VIS_COST_ADD_EFFECT(new CalculateWandConsumptionListener(20) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
             if (user != null) {
                 Map<String,Integer> percentsWithCategory = new HashMap<>();
                 for (var effectInstance:user.getActiveEffects()){
@@ -84,12 +84,12 @@ public enum CalculateWandConsumptionListenerEnum {
     }),
     FOCUS_DISCOUNT(new CalculateWandConsumptionListener(30) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if (casting instanceof WandFocusEngine focusEngine) {
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+            if (casting instanceof IWandFocusEngine focusEngine) {
                 if (focusEngine.canApplyFocus()){
-                    var focusStack = focusEngine.getFocusItemStack(stack);
+                    var focusStack = focusEngine.getFocusItemStack(wandStack);
                     if (focusStack != null && !crafting && focusStack.getItem() instanceof IWandFocusItem wandFocusItem) {
-                        currentConsumption -= (float) wandFocusItem.getWandUpgrades(stack).getOrDefault(FocusUpgradeType.frugal,0) / 10.0F;
+                        currentConsumption -= (float) wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,wandStack).getOrDefault(FocusUpgradeType.frugal,0) / 10.0F;
                     }
                 }
             }
@@ -98,16 +98,16 @@ public enum CalculateWandConsumptionListenerEnum {
     }),
     SCEPTRE(new CalculateWandConsumptionListener(40) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if (casting instanceof ArcaneCraftingVisDiscountOwner discountOwner) {
-                currentConsumption -= discountOwner.getVisDiscount(stack);
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+            if (casting instanceof IArcaneCraftingVisDiscountOwner discountOwner) {
+                currentConsumption -= discountOwner.getVisDiscount(wandStack);
             }
             return currentConsumption;
         }
     }),
     ENSURE_LOWER_BOUND(new CalculateWandConsumptionListener(10000) {
         @Override
-        public float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
+        public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
             return Math.max(currentConsumption, 0.1F);
         }
     });

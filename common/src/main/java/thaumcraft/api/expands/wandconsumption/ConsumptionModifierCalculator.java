@@ -21,10 +21,10 @@ public class ConsumptionModifierCalculator {
     /**
      * {@link CalculateWandConsumptionListener#onCalculation(Item, ItemStack, LivingEntity, Aspect, boolean, float)}
      */
-    public static float getConsumptionModifier(Item casting, ItemStack is, @Nullable LivingEntity user, Aspect aspect, boolean crafting) {
+    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting) {
         float consumptionModifier = 1.0F;
         for (CalculateWandConsumptionListener listener : calculateWandConsumptionListenerManager.getListeners()) {
-            consumptionModifier = listener.onCalculation(casting,is,user,aspect,crafting,consumptionModifier);
+            consumptionModifier = listener.onCalculation(casting,wandStack,user,aspect,crafting,consumptionModifier);
         }
         return consumptionModifier;
     }

@@ -7,7 +7,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public interface WandInteractableBlock {
+public interface IWandInteractableBlock {
 
     //if InteractionResult.CONSUME,hold right click will lead to loooooong use(call #interact below every tick).
     @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext);

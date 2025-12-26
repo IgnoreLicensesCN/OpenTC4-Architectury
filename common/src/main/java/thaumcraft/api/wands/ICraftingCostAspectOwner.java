@@ -5,6 +5,6 @@ import thaumcraft.api.aspects.Aspect;
 import java.util.Map;
 
 //for crafting
-public interface CraftingCostAspectOwner {
+public interface ICraftingCostAspectOwner {
     Map<Aspect, Integer> getCraftingCostAspect();
 }

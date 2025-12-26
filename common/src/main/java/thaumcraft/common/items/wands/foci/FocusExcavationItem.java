@@ -4,6 +4,7 @@ import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -32,14 +33,15 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.IVisContainer;
-import thaumcraft.api.wands.WandFocusEngine;
-import thaumcraft.client.fx.beams.FXBeamWand;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.wands.IWandFocusEngine;
+import thaumcraft.client.fx.migrated.beams.FXBeamWand;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.utils.BlockUtils;
 
@@ -68,11 +70,11 @@ public class FocusExcavationItem extends FocusBasicItem{
     }
 
     @Override
-    public AspectList getVisCost(ItemStack focusstack) {
+    public AspectList getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack) {
         if (!(focusstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
             return wandCost;
         }
-        var upgrades = wandFocusItem.getWandUpgrades(focusstack);
+        var upgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusstack,wandStack);
         if (upgrades.getOrDefault(FocusUpgradeType.silktouch,0) > 0
                 || upgrades.getOrDefault(dowsing,0) > 0
         ) {
@@ -113,7 +115,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         if (focusstack == null) {return List.of();}
         var item = focusstack.getItem();
         if (item instanceof IWandFocusItem focusItem) {
-            int rank = focusItem.getWandUpgrades(focusstack)
+            int rank = focusItem.getAppliedWandUpgrades(focusstack)
                     .values()
                     .stream()
                     .mapToInt(Integer::intValue)
@@ -160,7 +162,7 @@ public class FocusExcavationItem extends FocusBasicItem{
             user.stopUsingItem();
             return;
         }
-        if (!(container.consumeAllVis(usingWand,user,getVisCost(focusStack),false,false))
+        if (!(container.consumeAllVis(usingWand,user,getVisCost(focusStack,usingWand),false,false))
         ){
             user.stopUsingItem();
             return;
@@ -179,11 +181,11 @@ public class FocusExcavationItem extends FocusBasicItem{
             double tz = user.getZ() + v.z() * (double)10.0F;
             int impact = 0;
 
-            if (mop == null) {
+            if (mop == null && level instanceof ClientLevel clientLevel) {
                 lastUsingAtCoords.put(user,MAX);
                 breakCount.put(user,0.F);
                 soundDelay.put(user, 0L);
-                beam.put(user, Thaumcraft.proxy.beamCont(level, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
+                beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
                 return;
             }
             var mopVec = mop.getLocation();
@@ -196,8 +198,8 @@ public class FocusExcavationItem extends FocusBasicItem{
                 level.playSound(user,mopBlockPos, ThaumcraftSounds.RUMBLE, SoundSource.BLOCKS,.3F,1.F);
                 soundDelay.put(user, System.currentTimeMillis() + 1200L);
             }
-            if (Platform.getEnvironment() == Env.CLIENT) {
-                beam.put(user, Thaumcraft.proxy.beamCont(level, user, tx, ty, tz, 2, 65382, false, 2.0F, beam.get(user), impact));
+            if (level instanceof ClientLevel clientLevel) {
+                beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 2.0F, beam.get(user), impact));
             }
 
             if (mop.getType() != HitResult.Type.BLOCK || !(user instanceof Player player)){
@@ -210,7 +212,7 @@ public class FocusExcavationItem extends FocusBasicItem{
                 BlockState blockState = level.getBlockState(mopBlockPos);
                 float hardness = blockState.getDestroySpeed(level, mopBlockPos);
                 if (hardness >= 0.0F) {
-                    int pot = wandFocusItem.getWandUpgrades(focusStack).getOrDefault(FocusUpgradeType.potency, 0);
+                    int pot = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.potency, 0);
                     float speed = 0.05F + (float)pot * 0.1F;
                     if (blockState.is(BlockTags.BASE_STONE_OVERWORLD) ||
                             blockState.is(BlockTags.DIRT)  ||
@@ -227,7 +229,7 @@ public class FocusExcavationItem extends FocusBasicItem{
                         float bc = breakCount.get(user);
                         if (Platform.getEnvironment() == Env.CLIENT && bc > 0.0F && !blockState.isAir()) {
                             int progress = (int)(bc / hardness * 9.0F);
-                            Thaumcraft.proxy.excavateFX(mopBlockPos, user, blockState.getBlock().arch$registryName(), progress);
+                            ClientFXUtils.excavateFX(mopBlockPos, user, blockState.getBlock().arch$registryName(), progress);
                         }
 
                         if (Platform.getEnvironment() == Env.CLIENT) {
@@ -236,12 +238,12 @@ public class FocusExcavationItem extends FocusBasicItem{
                             } else {
                                 breakCount.put(user, bc + speed);
                             }
-                        } else if (bc >= hardness && container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack), true, false)) {
+                        } else if (bc >= hardness && container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
-                                for(int a = 0; a < wandFocusItem.getWandUpgrades(focusStack).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
-                                    if (container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack), false, false)
+                                for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
+                                    if (container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), false, false)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack), true, false);
+                                        container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false);
                                     }
                                 }
                             }
@@ -280,7 +282,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         var wandItem = usingWand.getItem();
         if (!(
                 (wandItem instanceof IVisContainer IVisContainer)
-                && (wandItem instanceof WandFocusEngine focusEngine)
+                && (wandItem instanceof IWandFocusEngine focusEngine)
         )){
             return false;
         }
@@ -295,7 +297,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         if (!(fItem instanceof IWandFocusItem wandFocusItem)){
             return false;
         }
-        var wandUpgrades = wandFocusItem.getWandUpgrades(focusStack);
+        var wandUpgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand);
         {
             int fortune = wandUpgrades.getOrDefault(FocusUpgradeType.treasure, 0);
             boolean silk = wandUpgrades.getOrDefault(FocusUpgradeType.silktouch, 0) > 0;

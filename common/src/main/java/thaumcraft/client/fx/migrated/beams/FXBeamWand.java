@@ -12,8 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.fx.migrated.ThaumcraftParticle;
@@ -21,7 +20,7 @@ import thaumcraft.client.lib.UtilsFX;
 
 public class FXBeamWand extends ThaumcraftParticle {
    public int particle = 16;
-   Player player = null;
+   LivingEntity living;
    private double offset = 0.0F;
    private float length = 0.0F;
    private float rotYaw = 0.0F;
@@ -43,16 +42,16 @@ public class FXBeamWand extends ThaumcraftParticle {
    private float prevSize = 0.0F;
    public int impact;
 
-   public FXBeamWand(ClientLevel par1World, Player player, double tx, double ty, double tz, float red, float green, float blue, int age) {
-      super(par1World, player.getX(), player.getY(), player.getZ(), 0.0F, 0.0F, 0.0F);
+   public FXBeamWand(ClientLevel par1World, LivingEntity living, double tx, double ty, double tz, float red, float green, float blue, int age) {
+      super(par1World, living.getX(), living.getY(), living.getZ(), 0.0F, 0.0F, 0.0F);
       if (Minecraft.getInstance().player != Minecraft.getInstance().cameraEntity) {
-         this.offset = (entityHeight(player) / 2.0F) + (double) 0.25F;
+         this.offset = (entityHeight(living) / 2.0F) + (double) 0.25F;
       }
 
       this.rCol = red;
       this.gCol = green;
       this.bCol = blue;
-      this.player = player;
+      this.living = living;
       this.setSize(0.02F, 0.02F);
       this.hasPhysics = false;
       this.xd = 0.0F;
@@ -61,9 +60,9 @@ public class FXBeamWand extends ThaumcraftParticle {
       this.tX = tx;
       this.tY = ty;
       this.tZ = tz;
-      float xd = (float)(player.getX() - this.tX);
-      float yd = (float)(player.getY() + this.offset - this.tY);
-      float zd = (float)(player.getZ() - this.tZ);
+      float xd = (float)(living.getX() - this.tX);
+      float yd = (float)(living.getY() + this.offset - this.tY);
+      float zd = (float)(living.getZ() - this.tZ);
       this.length = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
       double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
       this.rotYaw = (float) (Math.atan2(xd, zd) * (double) 180.0F / Math.PI);
@@ -86,17 +85,17 @@ public class FXBeamWand extends ThaumcraftParticle {
 
    @Override
    public void tick() {
-      this.xo = this.player.getX();
-      this.yo = this.player.getY() + this.offset;
-      this.zo = this.player.getZ();
+      this.xo = this.living.getX();
+      this.yo = this.living.getY() + this.offset;
+      this.zo = this.living.getZ();
       this.ptX = this.tX;
       this.ptY = this.tY;
       this.ptZ = this.tZ;
       this.prevYaw = this.rotYaw;
       this.prevPitch = this.rotPitch;
-      float xd = (float)(this.player.getX() - this.tX);
-      float yd = (float)(this.player.getY() + this.offset - this.tY);
-      float zd = (float)(this.player.getZ() - this.tZ);
+      float xd = (float)(this.living.getX() - this.tX);
+      float yd = (float)(this.living.getY() + this.offset - this.tY);
+      float zd = (float)(this.living.getZ() - this.tZ);
       this.length = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
       double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
       this.rotYaw = (float) (Math.atan2(xd, zd) * (double) 180.0F / Math.PI);
@@ -211,22 +210,22 @@ public class FXBeamWand extends ThaumcraftParticle {
 //      GL11.glEnable(GL11.GL_BLEND);
 //      GL11.glBlendFunc(770, 1);
 //      GL11.glDepthMask(false);
-      double prex = this.player.xo;
-      double prey = this.player.yo + this.offset;
-      double prez = this.player.zo;
-      double px = this.player.getX();
-      double py = this.player.getY() + this.offset;
-      double pz = this.player.getZ();
-      prex -= MathHelper.cos(this.player.yRotO / 180.0F * 3.141593F) * 0.066F;
+      double prex = this.living.xo;
+      double prey = this.living.yo + this.offset;
+      double prez = this.living.zo;
+      double px = this.living.getX();
+      double py = this.living.getY() + this.offset;
+      double pz = this.living.getZ();
+      prex -= MathHelper.cos(this.living.yRotO / 180.0F * 3.141593F) * 0.066F;
       prey -= 0.06;
-      prez -= MathHelper.sin(this.player.yRotO / 180.0F * 3.141593F) * 0.04F;
-      Vec3 vec3d = this.player.getLookAngle();
+      prez -= MathHelper.sin(this.living.yRotO / 180.0F * 3.141593F) * 0.04F;
+      Vec3 vec3d = this.living.getLookAngle();
       prex += vec3d.x * 0.3;
       prey += vec3d.y * 0.3;
       prez += vec3d.z * 0.3;
-      px -= MathHelper.cos(this.player.getYRot() / 180.0F * 3.141593F) * 0.066F;
+      px -= MathHelper.cos(this.living.getYRot() / 180.0F * 3.141593F) * 0.066F;
       py -= 0.06;
-      pz -= MathHelper.sin(this.player.getYRot() / 180.0F * 3.141593F) * 0.04F;
+      pz -= MathHelper.sin(this.living.getYRot() / 180.0F * 3.141593F) * 0.04F;
       px += vec3d.x * 0.3;
       py += vec3d.y * 0.3;
       pz += vec3d.z * 0.3;

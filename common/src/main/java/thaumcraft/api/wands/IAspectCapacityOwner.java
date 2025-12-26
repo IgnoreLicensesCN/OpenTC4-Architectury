@@ -4,7 +4,7 @@ import thaumcraft.api.aspects.Aspect;
 
 import java.util.Map;
 
-public interface AspectCapacityOwner {
+public interface IAspectCapacityOwner {
 
     Map<Aspect,Integer> getAspectCapacity();
 }

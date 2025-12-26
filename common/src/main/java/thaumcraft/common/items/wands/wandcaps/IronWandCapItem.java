@@ -1,7 +1,7 @@
 package thaumcraft.common.items.wands.wandcaps;
 
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
@@ -9,7 +9,7 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 import java.util.Collections;
 import java.util.Map;
 
-public class IronWandCapItem extends ThaumcraftWandCapItem implements CraftingCostAspectOwner, INodeHarmfulComponent {//itemWandCap:0
+public class IronWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwner, INodeHarmfulComponent {//itemWandCap:0
     public IronWandCapItem() {
         super(new Properties());
     }

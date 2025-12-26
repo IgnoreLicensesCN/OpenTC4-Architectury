@@ -36,16 +36,16 @@ import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 //i will use interface instead of (item instanceof WandCastingItem wandCasting)
 public class WandCastingItem extends Item
         implements
-        WandSpellEventListenable,
-        WandCapOwner,
-        WandRodOwner,
-        EnchantmentRepairVisProvider,
-        ArcaneCraftingVisProvider,
-        ArcaneCraftingWand,
-        WandFocusEngine,
+        IWandSpellEventListenable,
+        IWandCapOwner,
+        IWandRodOwner,
+        IEnchantmentRepairVisProvider,
+        IArcaneCraftingVisProvider,
+        IArcaneCraftingWand,
+        IWandFocusEngine,
         IVisContainer,
         IWandComponentsOwner,
-        WandComponentNameOwner,
+        IWandComponentNameOwner,
         AttackBlockListener,
         IArchitect {
 
@@ -96,7 +96,7 @@ public class WandCastingItem extends Item
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof WandSpellEventListenable listener){
+            if (component instanceof IWandSpellEventListenable listener){
                 listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
             }
         }
@@ -117,7 +117,7 @@ public class WandCastingItem extends Item
         float result = 1.0F;
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof ArcaneCraftingVisProvider provider){
+            if (component instanceof IArcaneCraftingVisProvider provider){
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -179,7 +179,7 @@ public class WandCastingItem extends Item
         Map<Aspect, Integer> result = new HashMap<>();
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof AspectCapacityOwner owner){
+            if (component instanceof IAspectCapacityOwner owner){
                 owner.getAspectCapacity().forEach(
                         (aspect,integer) -> result.merge(aspect,integer * getVisCapacityMultiplier(),Integer::sum));
             }
@@ -212,7 +212,7 @@ public class WandCastingItem extends Item
         StringBuilder wandComponentNames = new StringBuilder();
         var components = getWandComponents(itemStack);
         for (var component : components){
-            if (component instanceof WandComponentNameOwner owner){
+            if (component instanceof IWandComponentNameOwner owner){
                 wandComponentNames.append(owner.getComponentName().getString());
             }
         }
@@ -237,7 +237,7 @@ public class WandCastingItem extends Item
         if (player != null){
             var onBlockState = player.level().getBlockState(useOnContext.getClickedPos());
             if (!onBlockState.isAir()){
-                if (onBlockState.getBlock() instanceof WandInteractableBlock interactableBlock){
+                if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock){
                     var result = interactableBlock.useOnWandInteractable(useOnContext);
                     if (result == InteractionResult.CONSUME){
                         entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
@@ -254,7 +254,7 @@ public class WandCastingItem extends Item
         var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity,null);
         if (usingBlockPos != null){
             var blockEntity = level.getBlockEntity(usingBlockPos);
-            if (blockEntity instanceof WandInteractableBlock wandInteractableBlock){
+            if (blockEntity instanceof IWandInteractableBlock wandInteractableBlock){
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
             }else {
                 entityUsingBlockMapping.remove(livingEntity);

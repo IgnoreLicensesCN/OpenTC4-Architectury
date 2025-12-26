@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands.rods.wandrods;
 
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
-public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, CraftingCostAspectOwner {
+public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwner {
     public ReedWandRodItem() {
         super(new Properties(), Map.of(Aspect.AIR,7));
     }

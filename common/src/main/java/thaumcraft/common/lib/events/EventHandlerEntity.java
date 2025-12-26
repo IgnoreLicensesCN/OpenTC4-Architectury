@@ -33,7 +33,7 @@ import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.wands.EnchantmentRepairVisProvider;
+import thaumcraft.api.wands.IEnchantmentRepairVisProvider;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -284,7 +284,7 @@ public class EventHandlerEntity {
       }
    }
 
-   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof EnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair();
+   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair();
    public static void doRepair(ItemStack is, ServerPlayer player) {
 
       int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);

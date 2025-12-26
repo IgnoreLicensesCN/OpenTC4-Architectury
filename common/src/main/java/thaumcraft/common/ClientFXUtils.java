@@ -11,9 +11,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -508,7 +510,10 @@ public class ClientFXUtils {
         bolt.finalizeBolt();
     }
 
-    public static void excavateFX(int x, int y, int z, Player p, int bi, int md, int progress) {
+    public static void excavateFX(BlockPos pos, LivingEntity living, ResourceLocation block, int progress){
+        excavateFX(pos.getX(),pos.getY(),pos.getZ(),living,block,progress);
+    }
+    public static void excavateFX(int x, int y, int z, LivingEntity living, ResourceLocation block, int progress) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -516,7 +521,7 @@ public class ClientFXUtils {
         LevelRenderer renderer = mc.levelRenderer;
 
         renderer.destroyBlockProgress(
-                p.getId(),                 // breakerId（实体 id）
+                living.getId(),                 // breakerId（实体 id）
                 new BlockPos(x, y, z),     // BlockPos
                 progress                  // 0–9
         );
@@ -549,7 +554,7 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(beamcon);
     }
 
-    public static FXBeamWand beamCont(ClientLevel worldObj, Player p, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
+    public static FXBeamWand beamCont(ClientLevel worldObj, LivingEntity living, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
         if (!checkPlatformClient()) {
             throw new RuntimeException("not avaliable in server");
         }
@@ -570,7 +575,7 @@ public class ClientFXUtils {
         } else {
             beamcon = new FXBeamWand(
                     worldObj,
-                    p,
+                    living,
                     tx,
                     ty,
                     tz,

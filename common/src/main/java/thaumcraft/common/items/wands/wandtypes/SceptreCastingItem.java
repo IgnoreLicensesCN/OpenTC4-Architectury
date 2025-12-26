@@ -7,11 +7,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.wands.ArcaneCraftingVisDiscountOwner;
+import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwner;
 
-public class SceptreCastingItem extends WandCastingItem implements ArcaneCraftingVisDiscountOwner {
+public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwner {
     public SceptreCastingItem() {
         super();
     }

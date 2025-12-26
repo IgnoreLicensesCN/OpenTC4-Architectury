@@ -17,14 +17,14 @@ public abstract class CalculateWandConsumptionListener implements Comparable<Cal
     /**
      * after all of these listeners,we have the percent of cost.
      * @param casting the casting using.may not be WandCastingItem
-     * @param stack itemstack of the wand
+     * @param wandStack itemstack of the wand
      * @param user the user using wand.
      * @param aspect the aspect costing.each (primal aspect) will be calculated separately.
      * @param crafting if this operation is crafting item.
      * @param currentConsumption current consumption percent of this operation.
      * @return consumption percent after this calculation
      */
-    public abstract float onCalculation(Item casting, ItemStack stack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption);
+    public abstract float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption);
 
     @Override
     public int compareTo(@NotNull CalculateWandConsumptionListener o) {

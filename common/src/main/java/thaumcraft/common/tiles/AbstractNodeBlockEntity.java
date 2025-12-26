@@ -17,9 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -28,7 +26,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
@@ -41,7 +38,7 @@ import thaumcraft.api.research.ScanResult;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.api.wands.IVisContainer;
 import thaumcraft.api.wands.IWandComponentsOwner;
-import thaumcraft.api.wands.WandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -70,7 +67,7 @@ import static thaumcraft.api.wands.IVisContainer.CENTIVIS_MULTIPLIER;
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
         INode
-        , WandInteractableBlock
+        , IWandInteractableBlock
 {
     long lastActive = 0L;
     AspectList aspects = new AspectList();

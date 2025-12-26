@@ -22,7 +22,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.expands.aspects.item.ItemAspectBonusTagsCalculator;
-import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -174,7 +174,7 @@ public class ThaumcraftCraftingManager {
             for (var componentItem : wand.getWandComponents(itemstack)) {
                 var craftCostTotalAspect = 0;
                 var aspectCount = 0;
-                if (componentItem instanceof CraftingCostAspectOwner costAspectOwner) {
+                if (componentItem instanceof ICraftingCostAspectOwner costAspectOwner) {
                     var aspectMap = costAspectOwner.getCraftingCostAspect();
                     for (var aspectValue : aspectMap.values()) {
                         craftCostTotalAspect += aspectValue;

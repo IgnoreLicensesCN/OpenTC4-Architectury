@@ -2,12 +2,12 @@ package thaumcraft.api.wands;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.List;
@@ -15,12 +15,26 @@ import java.util.Map;
 
 public interface IWandFocusItem {
 
-    Map<FocusUpgradeType,Integer> getWandUpgrades(ItemStack stack);
+    Map<FocusUpgradeType,Integer> getAppliedWandUpgrades(ItemStack focusStack);
+    default Map<FocusUpgradeType,Integer> getWandUpgradesWithWandModifiers(ItemStack focusStack,@Nullable ItemStack wandStack) {
+        var appliedUpgrades = getAppliedWandUpgrades(focusStack);
+        if (wandStack == null) {
+            return appliedUpgrades;
+        }
+        if (wandStack.getItem() instanceof IWandComponentsOwner componentsOwner) {
+            for (Item component: componentsOwner.getWandComponents(wandStack)) {
+                if (component instanceof IWandUpgradeModifier modifier) {
+                    appliedUpgrades = modifier.modifyWandUpgrades(appliedUpgrades);
+                }
+            }
+        }
+        return appliedUpgrades;
+    };
     void storeWandUpgrades(ItemStack stack, Map<FocusUpgradeType,Integer> wandUpgrades);
     void addWandUpgrade(ItemStack stack, FocusUpgradeType type);
 
     default boolean isUpgradedWith(ItemStack focusstack, FocusUpgradeType focusUpgradetype) {
-        return getWandUpgrades(focusstack).containsKey(focusUpgradetype);
+        return getAppliedWandUpgrades(focusstack).containsKey(focusUpgradetype);
     }
 
     default boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
@@ -30,7 +44,7 @@ public interface IWandFocusItem {
     /**
      * How much vis does this focus consume per activation.
      */
-    AspectList getVisCost(ItemStack focusstack);
+    AspectList getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack);
 
     /**
      * This returns how many milliseconds must pass before the focus can be activated again.
@@ -54,7 +68,7 @@ public interface IWandFocusItem {
      */
     String getSortingHelper(ItemStack focusstack) {
         StringBuilder out= new StringBuilder();
-        for (FocusUpgradeType id:getWandUpgrades(focusstack).keySet()) {
+        for (FocusUpgradeType id: getAppliedWandUpgrades(focusstack).keySet()) {
             out.append(id.id());
         }
         return out.toString();

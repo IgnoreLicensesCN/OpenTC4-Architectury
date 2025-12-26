@@ -50,7 +50,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      if (!(itemstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
 //         return cost;
 //      }
-//      var upgrades = wandFocusItem.getWandUpgrades(itemstack);
+//      var upgrades = wandFocusItem.getAppliedWandUpgrades(itemstack);
 //      if (upgrades.getOrDefault(FocusUpgradeType.silktouch,0) > 0
 //              || upgrades.getOrDefault(dowsing,0) > 0
 //      ) {

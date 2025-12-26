@@ -3,7 +3,7 @@ package thaumcraft.api.wands;
 import net.minecraft.world.item.ItemStack;
 
 //which can use wand focus
-public interface WandFocusEngine {
+public interface IWandFocusEngine {
     default boolean canApplyFocus(){
         return true;
     };

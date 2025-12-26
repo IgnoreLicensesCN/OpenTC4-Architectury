@@ -37,7 +37,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.api.wands.WandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.ConfigBlocks;
@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TileArcaneBore extends TileThaumcraft implements Container, WandInteractableBlock, TickingBlockEntity {
+public class TileArcaneBore extends TileThaumcraft implements Container, IWandInteractableBlock, TickingBlockEntity {
     public int spiral = 0;
     public float currentRadius = 0.0F;
     public int maxRadius = 2;
@@ -295,7 +295,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, WandInt
         this.area = 0;
         this.speed = 0;
         if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = (focusExcavationItem).getWandUpgrades(this.getStackInSlot(0));
+            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(this.getStackInSlot(0),null);
             this.fortune = upgrades.get(FocusUpgradeType.treasure);
             this.area = upgrades.get(FocusUpgradeType.enlarge);
             this.speed += upgrades.get(FocusUpgradeType.potency);

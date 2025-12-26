@@ -21,7 +21,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandTriggerManager;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.api.wands.WandFocusEngine;
+import thaumcraft.api.wands.IWandFocusEngine;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
@@ -415,7 +415,7 @@ public class WandManager implements IWandTriggerManager {
     public static boolean createThaumonomicon(ItemStack itemstack, Player player, Level world, int x, int y, int z) {
         if (Platform.getEnvironment() != Env.CLIENT) {
             var wand = itemstack.getItem();
-            if (wand instanceof WandFocusEngine engine && engine.canApplyFocus() && engine.getFocusItemStack(itemstack) != null) {
+            if (wand instanceof IWandFocusEngine engine && engine.canApplyFocus() && engine.getFocusItemStack(itemstack) != null) {
                 return false;
             } else {
                 world.setBlockAndUpdate(new BlockPos(x, y, z),Blocks.AIR.defaultBlockState());

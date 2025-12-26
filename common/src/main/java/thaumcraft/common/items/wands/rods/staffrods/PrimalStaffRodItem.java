@@ -3,9 +3,7 @@ package thaumcraft.common.items.wands.rods.staffrods;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.CraftingCostAspectOwner;
-import thaumcraft.api.wands.WandUtils;
-import thaumcraft.api.wands.WorkAsStaffRod;
+import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
 import java.util.Collections;
@@ -13,7 +11,7 @@ import java.util.Map;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, CraftingCostAspectOwner {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner, IWandUpgradeModifier {
     public PrimalStaffRodItem() {
         super(new Properties().rarity(Rarity.RARE), getPrimalAspectMapWithValue(25));
     }
@@ -30,5 +28,11 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     @UnmodifiableView
     public Map<Aspect, Integer> getCraftingCostAspect() {
         return cost;
+    }
+
+    @Override
+    public Map<FocusUpgradeType, Integer> modifyWandUpgrades(Map<FocusUpgradeType, Integer> wandUpgrades) {
+        wandUpgrades.merge(FocusUpgradeType.potency,1,Integer::sum);
+        return wandUpgrades;
     }
 }

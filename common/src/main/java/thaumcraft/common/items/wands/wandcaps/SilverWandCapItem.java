@@ -2,14 +2,14 @@ package thaumcraft.common.items.wands.wandcaps;
 
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.CraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
 import java.util.Collections;
 import java.util.Map;
 
-public class SilverWandCapItem extends ThaumcraftWandCapItem implements CraftingCostAspectOwner {//itemWandCap:4
+public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwner {//itemWandCap:4
     public SilverWandCapItem() {
         super(new Properties());
     }
