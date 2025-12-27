@@ -16,10 +16,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ScanResult;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketScannedToServerC2S;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -78,7 +77,7 @@ public class ThaumometerItem extends Item {
          if (mop instanceof BlockHitResult blockHitResult && mop.getType() != HitResult.Type.MISS) {
             var pos = blockHitResult.getBlockPos();
             BlockEntity tile = world.getBlockEntity(pos);
-            if (tile instanceof INode node) {
+            if (tile instanceof INodeBlockEntity node) {
                ScanResult sr = new ScanResult((byte)3, "", null, "NODE" + node.getId());
                if (ScanManager.isValidScanTarget(p, sr, "@")) {
 

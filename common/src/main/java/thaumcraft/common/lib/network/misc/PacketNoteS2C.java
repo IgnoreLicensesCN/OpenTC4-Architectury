@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileSensor;
 
-public class PacketNoteS2C extends BaseS2CMessage {
+public class PacketNoteS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":note_s2c";
 
     public static MessageType messageType;

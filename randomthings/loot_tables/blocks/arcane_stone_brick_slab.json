@@ -11,7 +11,7 @@
                             "add": false,
                             "conditions": [
                                 {
-                                    "block": "minecraft:arcane_stone_brick_slab",
+                                    "block": "thaumcraft:arcane_stone_brick_slab",
                                     "condition": "minecraft:block_state_property",
                                     "properties": {
                                         "type": "double"
@@ -25,11 +25,11 @@
                             "function": "minecraft:explosion_decay"
                         }
                     ],
-                    "name": "minecraft:arcane_stone_brick_slab"
+                    "name": "thaumcraft:arcane_stone_brick_slab"
                 }
             ],
             "rolls": 1.0
         }
     ],
-    "random_sequence": "minecraft:blocks/arcane_stone_brick_slab"
+    "random_sequence": "thaumcraft:blocks/arcane_stone_brick_slab"
 }

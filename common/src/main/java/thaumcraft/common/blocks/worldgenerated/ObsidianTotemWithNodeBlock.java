@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.nodes.INodeBlock;
+import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
@@ -25,7 +27,7 @@ import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
-public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock {
+public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock, IWandInteractableBlock, INodeBlock {
     public ObsidianTotemWithNodeBlock(Properties properties) {
         super(properties);
     }

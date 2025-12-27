@@ -66,16 +66,26 @@ os.makedirs(output_dir, exist_ok=True)
 # 遍历生成 JSON
 for s in block_names:
     loot_table = {
-        "type": "minecraft:block",
-        "pools": [
-            {
-                "rolls": 1,
-                "entries": [
-                    {"type": "minecraft:item", "name": f"thaumcraft:{s}"}
-                ]
-            }
-        ]
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": f"thaumcraft:{s}"
+        }
+      ],
+      "rolls": 1.0
     }
+  ],
+  "random_sequence": f"thaumcraft:blocks/{s}"
+}
 
     # 写文件
     file_path = os.path.join(output_dir, f"{s}.json")
@@ -98,7 +108,7 @@ for s in slab_names:
                                 "add": False,
                                 "conditions": [
                                     {
-                                        "block": "minecraft:"+s,
+                                        "block": f"thaumcraft:{s}",
                                         "condition": "minecraft:block_state_property",
                                         "properties": {
                                             "type": "double"
@@ -112,13 +122,13 @@ for s in slab_names:
                                 "function": "minecraft:explosion_decay"
                             }
                         ],
-                        "name": "minecraft:"+s
+                        "name": f"thaumcraft:{s}"
                     }
                 ],
                 "rolls": 1.0
             }
         ],
-        "random_sequence": "minecraft:blocks/"+s
+        "random_sequence": f"thaumcraft:blocks/{s}"
     }
 
 

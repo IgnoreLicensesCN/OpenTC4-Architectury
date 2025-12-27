@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -12,7 +12,7 @@ import thaumcraft.common.Thaumcraft;
 
 import java.awt.*;
 
-public class PacketFXBeamPulseS2C extends BaseS2CMessage {
+public class PacketFXBeamPulseS2C extends ThaumcraftBaseS2CMessage {
 
    public static final String ID = Thaumcraft.MOD_ID + ":fx_beam_pulse";
    public static MessageType messageType;

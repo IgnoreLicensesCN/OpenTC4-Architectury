@@ -2,7 +2,7 @@ package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import thaumcraft.common.Thaumcraft;

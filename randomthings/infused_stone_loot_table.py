@@ -23,7 +23,7 @@ for aspectName in aspectTypeNames:
                             # Silk touch 掉本体
                             {
                                 "type": "minecraft:item",
-                                "name": "minecraft:" + blockName,
+                                "name": "thaumcraft:" + blockName,
                                 "conditions": [
                                     {
                                         "condition": "minecraft:match_tool",
@@ -41,7 +41,7 @@ for aspectName in aspectTypeNames:
                             # 非 silk touch 掉 shard
                             {
                                 "type": "minecraft:item",
-                                "name": "minecraft:" + shardName,
+                                "name": "thaumcraft:" + shardName,
                                 "functions": [
                                     # count = 1 + random.nextInt(2 + fortune)
                                     {

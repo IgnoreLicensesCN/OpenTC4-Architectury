@@ -27,7 +27,10 @@ import thaumcraft.common.tiles.TileEtherealBloom;
 
 import java.util.List;
 import java.util.Random;
-
+//"tile.blockCustomPlant.2.name": "水银花",
+//    "tile.blockCustomPlant.3.name": "火焰草",
+//    "tile.blockCustomPlant.4.name": "天域花",
+//    "tile.blockCustomPlant.5.name": "纤毛菇",
 public class BlockCustomPlant extends BlockBush {
    public IIcon[] icon = new IIcon[6];
    public IIcon iconLeaves;

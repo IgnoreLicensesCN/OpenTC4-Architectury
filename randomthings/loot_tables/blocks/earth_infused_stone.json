@@ -9,7 +9,7 @@
                     "children": [
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:earth_infused_stone",
+                            "name": "thaumcraft:earth_infused_stone",
                             "conditions": [
                                 {
                                     "condition": "minecraft:match_tool",
@@ -28,7 +28,7 @@
                         },
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:earth_shard",
+                            "name": "thaumcraft:earth_shard",
                             "functions": [
                                 {
                                     "function": "minecraft:set_count",

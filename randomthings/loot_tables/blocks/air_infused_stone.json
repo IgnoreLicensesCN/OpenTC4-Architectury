@@ -9,7 +9,7 @@
                     "children": [
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:air_infused_stone",
+                            "name": "thaumcraft:air_infused_stone",
                             "conditions": [
                                 {
                                     "condition": "minecraft:match_tool",
@@ -28,7 +28,7 @@
                         },
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:air_shard",
+                            "name": "thaumcraft:air_shard",
                             "functions": [
                                 {
                                     "function": "minecraft:set_count",

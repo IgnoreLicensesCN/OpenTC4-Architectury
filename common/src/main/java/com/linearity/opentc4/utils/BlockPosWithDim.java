@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public record BlockPosWithDim(ResourceLocation dim, BlockPos pos) implements Comparable<BlockPosWithDim> {
+    public static final ResourceLocation UNKNOWN_DIM = new ResourceLocation("thaumcraft","unknown");
     @Override
     public int compareTo(@NotNull BlockPosWithDim o) {
         var dimCompare = dim.compareTo(o.dim);

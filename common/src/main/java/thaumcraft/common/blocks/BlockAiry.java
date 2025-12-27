@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.client.particle.EffectRenderer;
@@ -27,7 +28,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.entities.IEldritchMob;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.particles.FXSpark;
 import thaumcraft.client.fx.particles.FXSparkle;
@@ -38,12 +39,22 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.projectile.EntityShockOrb;
 import thaumcraft.common.items.misc.ItemWispEssence;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.*;
 
 import java.util.List;
 import java.util.Random;
 
+import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+
+//tile.blockAiry.0.name=灵气节点
+//tile.blockAiry.1.name=闪耀之光
+//tile.blockAiry.2.name=闪烁之光
+//tile.blockAiry.3.name=闪烁之光
+//tile.blockAiry.4.name=守护之光
+//tile.blockAiry.5.name=充能灵气节点
+//tile.blockAiry.10.name=静电力场
+//tile.blockAiry.11.name=弱化力场
+//tile.blockAiry.12.name=封绝力场
 public class BlockAiry extends BlockContainer {
    public IIcon blankIcon;
 
@@ -233,10 +244,10 @@ public class BlockAiry extends BlockContainer {
    public void onBlockHarvested(Level par1World, int par2, int par3, int par4, int meta, Player par6Player) {
       if (meta == 0 && !(Platform.getEnvironment() == Env.CLIENT)) {
          TileEntity te = par1World.getTileEntity(par2, par3, par4);
-         if (te instanceof INode && ((INode) te).getAspects().size() > 0) {
-            for(Aspect aspect : ((INode)te).getAspects().getAspects()) {
-               for(int a = 0; a <= ((INode)te).getAspects().getAmount(aspect) / 10; ++a) {
-                  if (((INode)te).getAspects().getAmount(aspect) >= 5) {
+         if (te instanceof INodeBlockEntity && ((INodeBlockEntity) te).getAspects().size() > 0) {
+            for(Aspect aspect : ((INodeBlockEntity)te).getAspects().getAspects()) {
+               for(int a = 0; a <= ((INodeBlockEntity)te).getAspects().getAmount(aspect) / 10; ++a) {
+                  if (((INodeBlockEntity)te).getAspects().getAmount(aspect) >= 5) {
                      ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
                      new AspectList();
                      ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
@@ -308,9 +319,9 @@ public class BlockAiry extends BlockContainer {
    }
 
    //TODO:new item creates node(not this node blockItem)
-   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+   public void onBlockPlacedBy(Level world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
       if (stack.getItemDamage() == 0 && entity instanceof Player) {
-         ThaumcraftWorldGenerator.createRandomNodeAt(world, x, y, z, world.getRandom(), false, false, false);
+         createRandomNodeAt(world, new BlockPos(x, y, z), world.getRandom(), false, false, false);
       }
 
       super.onBlockPlacedBy(world, x, y, z, entity, stack);
@@ -393,6 +404,5 @@ public class BlockAiry extends BlockContainer {
       if ((md == 10 || md == 11) && Platform.getEnvironment() != Env.CLIENT) {
          world.setBlockToAir(x, y, z);
       }
-
    }
 }

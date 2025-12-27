@@ -11,7 +11,7 @@
                             "add": false,
                             "conditions": [
                                 {
-                                    "block": "minecraft:ancient_stone_slab",
+                                    "block": "thaumcraft:ancient_stone_slab",
                                     "condition": "minecraft:block_state_property",
                                     "properties": {
                                         "type": "double"
@@ -25,11 +25,11 @@
                             "function": "minecraft:explosion_decay"
                         }
                     ],
-                    "name": "minecraft:ancient_stone_slab"
+                    "name": "thaumcraft:ancient_stone_slab"
                 }
             ],
             "rolls": 1.0
         }
     ],
-    "random_sequence": "minecraft:blocks/ancient_stone_slab"
+    "random_sequence": "thaumcraft:blocks/ancient_stone_slab"
 }

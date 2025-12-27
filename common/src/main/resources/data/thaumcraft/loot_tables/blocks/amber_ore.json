@@ -9,7 +9,7 @@
                     "children": [
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:amber_ore",
+                            "name": "thaumcraft:amber_ore",
                             "conditions": [
                                 {
                                     "condition": "minecraft:match_tool",
@@ -28,7 +28,7 @@
                         },
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:amber_gem",
+                            "name": "thaumcraft:amber_gem",
                             "functions": [
                                 {
                                     "function": "minecraft:set_count",

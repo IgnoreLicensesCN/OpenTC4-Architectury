@@ -11,7 +11,7 @@
                             "add": false,
                             "conditions": [
                                 {
-                                    "block": "minecraft:greatwood_planks_slab",
+                                    "block": "thaumcraft:greatwood_planks_slab",
                                     "condition": "minecraft:block_state_property",
                                     "properties": {
                                         "type": "double"
@@ -25,11 +25,11 @@
                             "function": "minecraft:explosion_decay"
                         }
                     ],
-                    "name": "minecraft:greatwood_planks_slab"
+                    "name": "thaumcraft:greatwood_planks_slab"
                 }
             ],
             "rolls": 1.0
         }
     ],
-    "random_sequence": "minecraft:blocks/greatwood_planks_slab"
+    "random_sequence": "thaumcraft:blocks/greatwood_planks_slab"
 }

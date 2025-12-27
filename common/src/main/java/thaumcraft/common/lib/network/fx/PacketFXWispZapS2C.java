@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 
-public class PacketFXWispZapS2C extends BaseS2CMessage {
+public class PacketFXWispZapS2C extends ThaumcraftBaseS2CMessage {
 
    public static final String ID = Thaumcraft.MOD_ID + ":fx_wisp_zap";
    public static MessageType messageType;

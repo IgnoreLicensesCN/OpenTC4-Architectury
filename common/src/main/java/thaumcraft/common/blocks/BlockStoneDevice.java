@@ -31,6 +31,21 @@ import thaumcraft.common.tiles.*;
 import java.util.List;
 import java.util.Random;
 
+//"tile.blockStoneDevice.0.name": "炼金炉",
+//    "tile.blockStoneDevice.1.name": "奥术基座",
+//    "tile.blockStoneDevice.2.name": "符文矩阵",
+//    "tile.blockStoneDevice.3.name": "注魔桩",
+//    "tile.blockStoneDevice.4.name": "注魔桩",
+//    "tile.blockStoneDevice.5.name": "法杖充能基座",
+//    "tile.blockStoneDevice.6.name": "注魔桩",
+//    "tile.blockStoneDevice.7.name": "注魔桩",
+//    "tile.blockStoneDevice.8.name": "复合充能核心",
+//    "tile.blockStoneDevice.9.name": "节点稳定器",
+//    "tile.blockStoneDevice.10.name": "高级节点稳定器",
+//    "tile.blockStoneDevice.11.name": "节点换能器",
+//    "tile.blockStoneDevice.12.name": "奥术浴场",
+//    "tile.blockStoneDevice.13.name": "核心镶饰台",
+//    "tile.blockStoneDevice.14.name": "咒波洗涤器",
 public class BlockStoneDevice extends BlockContainer {
    public IIcon[] iconFurnace = new IIcon[5];
    public IIcon[] iconPedestal = new IIcon[2];
@@ -436,7 +451,6 @@ public class BlockStoneDevice extends BlockContainer {
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
          super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
       }
-
    }
 
    public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {

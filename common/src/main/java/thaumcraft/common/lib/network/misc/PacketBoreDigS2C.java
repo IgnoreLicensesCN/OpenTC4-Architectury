@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileArcaneBore;
 
-public class PacketBoreDigS2C extends BaseS2CMessage {
+public class PacketBoreDigS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":bore_dig";
 
    public static MessageType messageType;

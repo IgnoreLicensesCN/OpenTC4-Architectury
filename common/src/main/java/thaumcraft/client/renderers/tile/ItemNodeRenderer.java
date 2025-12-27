@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
@@ -62,7 +62,7 @@ public class ItemNodeRenderer implements IItemRenderer {
    }
 
 
-   public static void renderItemNode(INode node) {
+   public static void renderItemNode(INodeBlockEntity node) {
       if (node.getAspects().size() > 0) {
          EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
          float alpha = 0.5F;

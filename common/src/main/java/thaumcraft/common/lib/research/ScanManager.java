@@ -26,7 +26,7 @@ import tc4tweak.modules.generateItemHash.GenerateItemHash;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ScanResult;
 import thaumcraft.client.lib.PlayerNotifications;
@@ -366,14 +366,14 @@ public class ScanManager implements IScanEventHandler {
                     .location()
             )) {
                 BlockEntity tnb = world.getBlockEntity(pos);
-                if (tnb instanceof INode iNode) {
-                    AspectList ta = iNode.getAspects();
+                if (tnb instanceof INodeBlockEntity iNodeBlockEntity) {
+                    AspectList ta = iNodeBlockEntity.getAspects();
 
                     for (Aspect a : ta.getAspectsSorted()) {
                         tags.mergeWithHighest(a, Math.max(4, ta.getAmount(a) / 10));
                     }
 
-                    var nodeType = iNode.getNodeType();
+                    var nodeType = iNodeBlockEntity.getNodeType();
                     if (nodeType == UNSTABLE) {
                         tags.mergeWithHighest(Aspect.ENTROPY, 4);
                     }

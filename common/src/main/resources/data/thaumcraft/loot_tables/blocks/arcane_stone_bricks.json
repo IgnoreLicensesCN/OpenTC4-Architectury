@@ -2,13 +2,20 @@
     "type": "minecraft:block",
     "pools": [
         {
-            "rolls": 1,
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "condition": "minecraft:survives_explosion"
+                }
+            ],
             "entries": [
                 {
                     "type": "minecraft:item",
                     "name": "thaumcraft:arcane_stone_bricks"
                 }
-            ]
+            ],
+            "rolls": 1.0
         }
-    ]
+    ],
+    "random_sequence": "thaumcraft:blocks/arcane_stone_bricks"
 }

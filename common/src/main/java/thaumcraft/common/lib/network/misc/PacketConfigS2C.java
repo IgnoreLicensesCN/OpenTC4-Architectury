@@ -2,7 +2,7 @@ package thaumcraft.common.lib.network.misc;
 
 import com.linearity.opentc4.OpenTC4;
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,7 +14,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.tiles.TileArcaneBore;
 
-public class PacketConfigS2C extends BaseS2CMessage {
+public class PacketConfigS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":config";
     public static MessageType messageType;
 

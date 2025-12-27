@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.nodes.INodeBlock;
+import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
@@ -29,7 +31,7 @@ import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
 
-public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock {
+public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock, IWandInteractableBlock, INodeBlock {
 
     public static final SoundType KNOT_SOUND = new SoundType(
             1.0F, // volume

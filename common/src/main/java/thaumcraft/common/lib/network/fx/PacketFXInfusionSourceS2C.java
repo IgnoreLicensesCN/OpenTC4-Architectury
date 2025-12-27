@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -12,7 +12,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 import thaumcraft.common.tiles.TilePedestal;
 
-public class PacketFXInfusionSourceS2C extends BaseS2CMessage {
+public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
 
    public static final String ID = Thaumcraft.MOD_ID + ":fx_infusion_source";
    public static MessageType messageType;

@@ -1,43 +1,5 @@
 package thaumcraft.client.renderers.item;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
-import thaumcraft.api.research.IScanEventHandler;
-import thaumcraft.api.research.ScanResult;
-import thaumcraft.common.lib.research.ScanManager;
-import thaumcraft.common.lib.utils.EntityUtils;
-import thaumcraft.client.lib.UtilsFX;
-
-import com.mojang.math.Axis;
-import org.lwjgl.opengl.GL11;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import java.util.Objects;
-
 @Deprecated(forRemoval = true,since = "see ThaumometerItemRenderer")
 public class ItemThaumometerRenderer /*implements IItemRenderer*/ {
 ////   private IModelCustom model;

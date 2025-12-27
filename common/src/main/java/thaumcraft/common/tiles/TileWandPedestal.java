@@ -16,7 +16,7 @@ import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -194,8 +194,8 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                label152:
                for(ChunkCoordinates co : this.nodes) {
                   TileEntity te = this.level().getTileEntity(co.posX, co.posY, co.posZ);
-                  if (te instanceof INode && !(te instanceof TileJarNode)) {
-                     INode node = (INode)te;
+                  if (te instanceof INodeBlockEntity && !(te instanceof TileJarNode)) {
+                     INodeBlockEntity node = (INodeBlockEntity)te;
 
                      for(Aspect aspect : as.getAspects()) {
                         if (node.getAspects().getAmount(aspect) > min) {
@@ -252,8 +252,8 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                label207:
                for(ChunkCoordinates co : this.nodes) {
                   TileEntity te = this.level().getTileEntity(co.posX, co.posY, co.posZ);
-                  if (te instanceof INode && !(te instanceof TileJarNode)) {
-                     INode node = (INode)te;
+                  if (te instanceof INodeBlockEntity && !(te instanceof TileJarNode)) {
+                     INodeBlockEntity node = (INodeBlockEntity)te;
 
                      for(Aspect aspect : as.getAspects()) {
                         if (node.getAspects().getAmount(aspect) > min) {
@@ -315,7 +315,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
          for(int yy = -8; yy <= 8; ++yy) {
             for(int zz = -8; zz <= 8; ++zz) {
                TileEntity te = this.level().getTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
-               if (te instanceof INode) {
+               if (te instanceof INodeBlockEntity) {
                   this.nodes.add(new ChunkCoordinates(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz));
                }
             }

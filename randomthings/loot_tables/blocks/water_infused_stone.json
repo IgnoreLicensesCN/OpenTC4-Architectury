@@ -9,7 +9,7 @@
                     "children": [
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:water_infused_stone",
+                            "name": "thaumcraft:water_infused_stone",
                             "conditions": [
                                 {
                                     "condition": "minecraft:match_tool",
@@ -28,7 +28,7 @@
                         },
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:water_shard",
+                            "name": "thaumcraft:water_shard",
                             "functions": [
                                 {
                                     "function": "minecraft:set_count",

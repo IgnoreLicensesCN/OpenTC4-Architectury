@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,7 +12,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
 
-public class PacketMiscEventS2C  extends BaseS2CMessage {
+public class PacketMiscEventS2C  extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":misc_event";
     private short type;
     public static final short WARP_EVENT = 0;

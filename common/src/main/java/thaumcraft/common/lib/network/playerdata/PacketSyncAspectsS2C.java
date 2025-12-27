@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,7 +13,7 @@ import thaumcraft.common.Thaumcraft;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketSyncAspectsS2C extends BaseS2CMessage {
+public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_aspects";
     public static MessageType messageType;
 

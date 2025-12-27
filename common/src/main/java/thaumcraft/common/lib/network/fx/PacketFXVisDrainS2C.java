@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import thaumcraft.common.Thaumcraft;
 import java.awt.*;
 import java.util.Random;
 
-public class PacketFXVisDrainS2C extends BaseS2CMessage {
+public class PacketFXVisDrainS2C extends ThaumcraftBaseS2CMessage {
 
    public static final String ID = Thaumcraft.MOD_ID + ":fx_vis_drain";
    public static MessageType messageType;

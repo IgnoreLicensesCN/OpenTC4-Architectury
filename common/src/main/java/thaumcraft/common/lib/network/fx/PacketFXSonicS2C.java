@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import thaumcraft.client.fx.migrated.other.FXSonic;
 import thaumcraft.common.Thaumcraft;
 
-public class PacketFXSonicS2C extends BaseS2CMessage {
+public class PacketFXSonicS2C extends ThaumcraftBaseS2CMessage {
 
    public static final String ID = Thaumcraft.MOD_ID + ":fx_sonic";
    public static MessageType messageType;

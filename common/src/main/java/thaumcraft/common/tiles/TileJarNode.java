@@ -8,13 +8,13 @@ import net.minecraft.nbt.NBTTagList;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.config.ConfigBlocks;
 
-public class TileJarNode extends TileJar implements IAspectContainer, INode, IWandable {
+public class TileJarNode extends TileJar implements IAspectContainer, INodeBlockEntity, IWandable {
    private AspectList aspects = new AspectList();
    private AspectList aspectsBase = new AspectList();
    private NodeType nodeType;

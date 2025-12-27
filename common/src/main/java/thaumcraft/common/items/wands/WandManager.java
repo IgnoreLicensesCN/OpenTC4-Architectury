@@ -15,7 +15,7 @@ import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -259,7 +259,7 @@ public class WandManager implements IWandTriggerManager {
 
                     if (blueprint[yy][xx][zz] == 3) {
                         TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                        if (!(tile instanceof INode) || tile instanceof TileJarNode) {
+                        if (!(tile instanceof INodeBlockEntity) || tile instanceof TileJarNode) {
                             return false;
                         }
                     }
@@ -279,7 +279,7 @@ public class WandManager implements IWandTriggerManager {
                     for (int zz = 0; zz < 3; ++zz) {
                         if (blueprint[yy][xx][zz] == 3) {
                             TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
-                            INode node = (INode) tile;
+                            INodeBlockEntity node = (INodeBlockEntity) tile;
                             AspectList na = node.getAspects().copy();
                             int nt = node.getNodeType().ordinal();
                             int nm = -1;

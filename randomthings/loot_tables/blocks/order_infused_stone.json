@@ -9,7 +9,7 @@
                     "children": [
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:order_infused_stone",
+                            "name": "thaumcraft:order_infused_stone",
                             "conditions": [
                                 {
                                     "condition": "minecraft:match_tool",
@@ -28,7 +28,7 @@
                         },
                         {
                             "type": "minecraft:item",
-                            "name": "minecraft:order_shard",
+                            "name": "thaumcraft:order_shard",
                             "functions": [
                                 {
                                     "function": "minecraft:set_count",

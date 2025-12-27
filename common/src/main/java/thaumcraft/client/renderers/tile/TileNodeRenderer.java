@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -170,9 +170,9 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
    }
 
    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-      if (tile instanceof INode) {
+      if (tile instanceof INodeBlockEntity) {
          float size = 1.0F;
-         INode node = (INode)tile;
+         INodeBlockEntity node = (INodeBlockEntity)tile;
          double viewDistance = 64.0F;
          EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
          boolean condition = false;
@@ -191,7 +191,7 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
             }
          }
 
-         renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
+         renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INodeBlockEntity)tile).getAspects(), ((INodeBlockEntity)tile).getNodeType(), ((INodeBlockEntity)tile).getNodeModifier());
          if (tile instanceof AbstractNodeBlockEntity && ((AbstractNodeBlockEntity)tile).drainEntity != null && ((AbstractNodeBlockEntity)tile).drainCollision != null) {
             Entity drainEntity = ((AbstractNodeBlockEntity)tile).drainEntity;
             if (drainEntity instanceof Player && !((Player)drainEntity).isUsingItem()) {

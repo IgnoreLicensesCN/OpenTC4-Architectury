@@ -2,14 +2,14 @@ package thaumcraft.common.lib.network.playerdata;
 
 import com.linearity.opentc4.utils.StatCollector;
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.BaseS2CMessage;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 
-public class PacketWarpMessageS2C extends BaseS2CMessage {
+public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":warp_message";
 
     public int data;
