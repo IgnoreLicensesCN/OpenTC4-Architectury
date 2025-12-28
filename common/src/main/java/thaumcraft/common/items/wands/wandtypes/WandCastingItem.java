@@ -236,15 +236,20 @@ public class WandCastingItem extends Item
         var player = useOnContext.getPlayer();
         if (player != null){
             var onBlockState = player.level().getBlockState(useOnContext.getClickedPos());
-            if (!onBlockState.isAir()){
-                if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock){
-                    var result = interactableBlock.useOnWandInteractable(useOnContext);
-                    if (result == InteractionResult.CONSUME){
-                        entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
-                    }
-                    return result;
+            InteractionResult result = InteractionResult.PASS;
+            if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock){
+                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME){
+                    result = InteractionResult.CONSUME;
+                    entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
             }
+            if (player.level().getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlock interactableBlock){
+                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME){
+                    result = InteractionResult.CONSUME;
+                    entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
+                }
+            }
+            return result;
         }
         return super.useOn(useOnContext);
     }
@@ -253,10 +258,18 @@ public class WandCastingItem extends Item
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack usingWand, int useRemainingCount) {
         var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity,null);
         if (usingBlockPos != null){
+            var blockState = level.getBlockState(usingBlockPos);
             var blockEntity = level.getBlockEntity(usingBlockPos);
+            var interacting = false;
+            if (blockState.getBlock() instanceof IWandInteractableBlock wandInteractableBlock){
+                wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
+                interacting = true;
+            }
             if (blockEntity instanceof IWandInteractableBlock wandInteractableBlock){
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
-            }else {
+                interacting = true;
+            }
+            if (!interacting) {
                 entityUsingBlockMapping.remove(livingEntity);
             }
         }
