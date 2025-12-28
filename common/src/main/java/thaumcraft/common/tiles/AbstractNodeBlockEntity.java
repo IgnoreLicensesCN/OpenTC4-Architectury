@@ -38,10 +38,8 @@ import thaumcraft.api.wands.IVisContainer;
 import thaumcraft.api.wands.IWandComponentsOwner;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
@@ -51,14 +49,11 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
 import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
-import static thaumcraft.api.nodes.NodeModifier.*;
 import static thaumcraft.api.wands.IVisContainer.CENTIVIS_MULTIPLIER;
 
 //i think it would be suitable to abstract this since we have 3 types.
@@ -84,6 +79,10 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     //for renderers
     public Entity drainEntity;
     public HitResult drainCollision;
+
+    public int getTickCount() {
+        return tickCount;
+    }
 
     public AbstractNodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -145,21 +144,13 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         boolean change = false;
-        change = thiz.handleHungryNodeFirst(change);
         ++thiz.tickCount;
         thiz.checkLock();
 
-        change |= INodeLock.getNodeLock(thiz.getLockId())
-                .nodeLockTick(thiz);
-
+        change |= INodeLock.getNodeLock(thiz.getLockId()).nodeLockTick(thiz);
         change |= thiz.handleAttackAnotherNode();
         change |= thiz.handleRecharge();
-        change = thiz.handleNodeStability(change);
-        //TODO:Listeners for NodeTypes
-        change = thiz.handleTaintNode(change);
-        change = thiz.handleDarkNode(change);
-        change = thiz.handlePureNode(change);
-        change = thiz.handleHungryNodeSecond(change);
+        change |= thiz.getNodeType().nodeTypeTick(thiz);
         if (change) {
             thiz.markDirtyAndUpdateSelf();
         }
@@ -171,8 +162,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             this.generateId();
         }
 
-        boolean change = false;
-        change = this.handleHungryNodeFirst(change);
         ++this.tickCount;
         this.checkLock();
 
@@ -516,119 +505,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return true;
     }
 
-    private boolean handleHungryNodeFirst(boolean change) {
-        var pos = this.getBlockPos();
-        if (this.getNodeType() == NodeType.HUNGRY) {
-            if (this.level instanceof ClientLevel clientLevel) {
-                for (int a = 0; a < ClientFXUtils.particleCount(1); ++a) {
-                    int tx = pos.getX() + clientLevel.random.nextInt(16) - clientLevel.random.nextInt(16);
-                    int ty = pos.getY() + clientLevel.random.nextInt(16) - clientLevel.random.nextInt(16);
-                    int tz = pos.getZ() + clientLevel.random.nextInt(16) - clientLevel.random.nextInt(16);
-                    var heightAt = clientLevel.getHeight(Heightmap.Types.WORLD_SURFACE, tx, tz);
-                    if (ty > heightAt) {
-                        ty = heightAt;
-                    }
-
-                    Vec3 v1 = new Vec3(
-                            (double) pos.getX() + (double) 0.5F, (double) pos.getY() + (double) 0.5F,
-                            (double) pos.getZ() + (double) 0.5F
-                    );
-                    Vec3 v2 = new Vec3(
-                            (double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
-                    HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(
-                            clientLevel, v1, v2, true/*, false, false (always these two flags)*/);
-
-                    if (mop != null && mop.getLocation()
-                            .distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < (double) 256.0F) {
-                        var rayTraceLoc = mop.getLocation();
-                        tx = (int) rayTraceLoc.x;
-                        ty = (int) rayTraceLoc.y;
-                        tz = (int) rayTraceLoc.z;
-                        var bi = clientLevel.getBlockState(new BlockPos(tx, ty, tz));
-                        if (!bi.isAir()) {
-                            ClientFXUtils.hungryNodeFX(
-                                    clientLevel, tx, ty, tz, pos.getX(), pos.getY(), pos.getZ(), bi.getBlock());
-                        }
-                    }
-                }
-            }
-
-            if (Config.hardNode) {
-                AABB box = new AABB(
-                        pos.getX(), pos.getY(), pos.getZ(),
-                        pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1
-                ).inflate(15.0D);
-                if (level instanceof ServerLevel serverLevel) {
-
-                    List<Entity> ents = level.getEntities(null, box);
-
-                    if (!ents.isEmpty()) {
-                        for (Entity entity : ents) {
-                            if (entity instanceof Player player && player.getAbilities().invulnerable) {
-                                continue;
-                            }
-
-                            if (!entity.isAlive() || entity.isInvulnerable()) continue;
-
-                            double distSq = entity.distanceToSqr(
-                                    pos.getX() + 0.5,
-                                    pos.getY() + 0.5,
-                                    pos.getZ() + 0.5
-                            );
-                            if (distSq < (double) 2.0F) {
-                                entity.hurt(
-                                        level.damageSources()
-                                                .fellOutOfWorld(), 1.0F
-                                );
-                                if (!entity.isAlive()) {
-                                    ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
-                                    AspectList al = ScanManager.getScanAspects(scan, this.level);
-                                    if (al != null && al.size() > 0) {
-                                        al = ResearchManager.reduceToPrimals(al.copy());
-                                        if (al.size() > 0) {
-                                            Aspect a = al.getAspects()
-                                                    .keySet()
-                                                    .toArray(new Aspect[0])[this.level.random.nextInt(al.size())];
-                                            if (this.getAspects()
-                                                    .getAmount(a) < this.getNodeVisBase(a)) {
-                                                this.addToContainer(a, 1);
-                                                change = true;
-                                            } else if (this.level.random.nextInt(
-                                                    1 + this.getNodeVisBase(a) * 2) < al.getAmount(a)) {
-                                                this.aspectsBase.addAll(a, 1);
-                                                change = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            double dx = (pos.getX() + 0.5 - entity.getX()) / 15.0;
-                            double dy = (pos.getY() + 0.5 - entity.getY()) / 15.0;
-                            double dz = (pos.getZ() + 0.5 - entity.getZ()) / 15.0;
-
-                            double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                            double strength = 1.0 - dist;
-
-                            if (strength > 0.0) {
-                                strength *= strength;
-
-                                Vec3 motion = entity.getDeltaMovement();
-                                entity.setDeltaMovement(
-                                        motion.x + dx / dist * strength * 0.15,
-                                        motion.y + dy / dist * strength * 0.25,
-                                        motion.z + dz / dist * strength * 0.15
-                                );
-                                entity.hurtMarked = true; // Forge/vanilla 同步用
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return change;
-    }
 
     //attack another node(zap~),take vis from there.
     private boolean handleAttackAnotherNode() {
@@ -755,20 +631,9 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             int regenCounts = regenPeriod > 0 ? (int) ((currentMillis - this.lastActiveMillis) / (long) regenPeriod) : 0;
             if (regenCounts > 0) {
                 for (int a = 0; a < Math.min(regenCounts, this.aspectsBase.visSize()); ++a) {
-                    AspectList al = new AspectList();
-
-                    for (var aspectEntry : this.getAspects()
-                            .getAspects()
-                            .entrySet()) {
-                        var aspect = aspectEntry.getKey();
-                        var amount = aspectEntry.getValue();
-                        if (amount < this.getNodeVisBase(aspect)) {
-                            al.addAll(aspect, 1);
-                        }
-                    }
-
-                    if (al.size() > 0) {
-                        this.addToContainer(al.randomAspect(this.level.random), 1);
+                    List<Aspect> aspectCanRegen = getVisCanRegen();
+                    if (!aspectCanRegen.isEmpty()) {
+                        this.addToContainer(aspectCanRegen.get(this.level.random.nextInt(aspectCanRegen.size())), 1);
                     }
                 }
             }
@@ -804,206 +669,37 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             --this.wait;
         }
 
-        //regen all vis
         if (this.regenerationTickPeriod > 0
                 && this.wait == 0
                 && this.tickCount % this.regenerationTickPeriod == 0) {
             this.lastActiveMillis = System.currentTimeMillis();
-            AspectList al = new AspectList();
-            for (var aspectEntry : this.getAspects()
-                    .getAspects()
-                    .entrySet()) {
-                var aspect = aspectEntry.getKey();
-                var amount = aspectEntry.getValue();
-                if (amount < this.getNodeVisBase(aspect)) {
-                    al.addAll(aspect, 1);
-                }
-            }
-            if (al.size() > 0) {
-                this.addToContainer(al.randomAspect(this.level.random), 1);
+            List<Aspect> aspectCanRegen = getVisCanRegen();
+            if (!aspectCanRegen.isEmpty()) {
+                this.addToContainer(aspectCanRegen.get(this.level.random.nextInt(aspectCanRegen.size())), 1);
                 return true;
             }
         }
 
         return false;
     }
+    private List<Aspect> getVisCanRegen(){
+        List<Aspect> result = new ArrayList<>(this.getAspects().size());
+        for (var aspectEntry : this.getAspects()
+                .getAspects()
+                .entrySet()) {
+            var aspect = aspectEntry.getKey();
+            var amount = aspectEntry.getValue();
+            if (amount < this.getNodeVisBase(aspect)) {
+                result.add(aspect);
+            }
+        }
+        return result;
+    }
+
 
     //TODO:If you are silverTree log or something contains a node,override it
     public abstract void removeNode();
 
-    private boolean handleTaintNode(boolean change) {
-        if (!(this.level instanceof ServerLevel serverLevel)) return false;
-        var pos = this.getBlockPos();
-        if (this.getNodeType() == NodeType.TAINTED && this.tickCount % 50 == 0) {
-            int x = 0;
-            int z = 0;
-            int y = 0;
-            x = pos.getX() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-            z = pos.getZ() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-            y = pos.getY() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-            BiomeGenBase bg = serverLevel.getBiomeGenForCoords(x, z);
-            if (bg.biomeID != ThaumcraftWorldGenerator.biomeTaint.biomeID) {
-                Utils.setBiomeAt(serverLevel, x, y, z, ThaumcraftWorldGenerator.biomeTaint);
-            }
-
-            if (Config.hardNode && serverLevel.random.nextBoolean()) {
-                x = pos.getX() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                z = pos.getZ() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                y = pos.getY() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                if (BlockTaintFibres.spreadFibres(serverLevel, x, y, z)) {
-                }
-            }
-        } else if (this.getNodeType() != NodeType.PURE && this.getNodeType() != NodeType.TAINTED && this.tickCount % 100 == 0) {
-            BiomeGenBase bg = serverLevel.getBiomeGenForCoords(pos.getX(), pos.getZ());
-            if (bg.biomeID == ThaumcraftWorldGenerator.biomeTaint.biomeID && serverLevel.random.nextInt(500) == 0) {
-                this.setNodeType(NodeType.TAINTED);
-                this.nodeChange();
-            }
-        }
-
-        return change;
-    }
-
-    private boolean handleNodeStability(boolean change) {
-        if (!(this.level instanceof ServerLevel serverLevel)) return false;
-        var pos = this.getBlockPos();
-        if (this.tickCount % 100 == 0) {
-            if (this.getNodeType() == NodeType.UNSTABLE && this.level.random.nextBoolean()) {
-                if (this.getLockId() == 0) {
-                    Aspect aspect = null;
-                    if ((aspect = this.takeRandomPrimalFromSource()) != null) {
-                        EntityAspectOrb orb = new EntityAspectOrb(
-                                this.level, (double) pos.getX() + (double) 0.5F, (double) pos.getY() + (double) 0.5F,
-                                (double) pos.getZ() + (double) 0.5F, aspect, 1
-                        );
-                        this.level.addFreshEntity(orb);
-
-                        change = true;
-                    }
-                } else if (
-                        this.level.random.nextInt(10000 / this.getLockId()) == 42) {
-                    this.setNodeType(NodeType.NORMAL);
-                    change = true;
-                }
-            }
-
-            if (this.getNodeModifier() == FADING
-                    && this.getLockId() > 0
-                    && this.level.random.nextInt(
-                    12500 / this.getLockId()) == 69
-            ) {
-                this.setNodeModifier(PALE);
-                change = true;
-            }
-        }
-
-        return change;
-    }
-
-    private boolean handlePureNode(boolean change) {
-        if (!(this.level instanceof ServerLevel serverLevel)) return false;
-        var pos = this.getBlockPos();
-        int dimbl = ThaumcraftWorldGenerator.getDimBlacklist(this.level.dimension());
-        if (dimbl != 0 && dimbl != 2 && this.getNodeType() == NodeType.PURE && this.tickCount % 50 == 0) {
-            int x = pos.getX() + this.level.random.nextInt(8) - this.level.random.nextInt(8);
-            int z = pos.getZ() + this.level.random.nextInt(8) - this.level.random.nextInt(8);
-            BiomeGenBase bg = this.level.getBiomeGenForCoords(x, z);
-            int biobl = ThaumcraftWorldGenerator.getBiomeBlacklist(bg.biomeID);
-            if (biobl != 0 && biobl != 2 && bg.biomeID != ThaumcraftWorldGenerator.biomeMagicalForest.biomeID) {
-                if (bg.biomeID == ThaumcraftWorldGenerator.biomeTaint.biomeID) {
-                    Utils.setBiomeAt(this.level, x, z, ThaumcraftWorldGenerator.biomeMagicalForest);
-                } else if (this.level.getBlock(pos.getX(), pos.getY(), pos.getZ()) == ConfigBlocks.blockMagicalLog) {
-                    Utils.setBiomeAt(this.level, x, z, ThaumcraftWorldGenerator.biomeMagicalForest);
-                }
-            }
-        }
-
-        return change;
-    }
-
-    private boolean handleDarkNode(boolean change) {
-        if (!(this.level instanceof ServerLevel serverLevel)) return false;
-        var pos = this.getBlockPos();
-        int dimbl = ThaumcraftWorldGenerator.getDimBlacklist(this.level.dimension());
-        int biobl = ThaumcraftWorldGenerator.getBiomeBlacklist(
-                this.level.getBiomeGenForCoords(pos.getX(), pos.getZ()).biomeID);
-        if (biobl != 0 && biobl != 2 && this.level.dimension() != -1 && this.level.dimension() != 1 && dimbl != 0 && dimbl != 2 && this.getNodeType() == NodeType.DARK && this.tickCount % 50 == 0) {
-            int x = pos.getX() + this.level.random.nextInt(12) - this.level.random.nextInt(12);
-            int z = pos.getZ() + this.level.random.nextInt(12) - this.level.random.nextInt(12);
-            BiomeGenBase bg = this.level.getBiomeGenForCoords(x, z);
-            if (bg.biomeID != ThaumcraftWorldGenerator.biomeEerie.biomeID) {
-                Utils.setBiomeAt(this.level, x, z, ThaumcraftWorldGenerator.biomeEerie);
-            }
-
-            if (Config.hardNode && this.level.random.nextBoolean() && this.level.getClosestPlayer(
-                    (double) pos.getX() + (double) 0.5F, (double) pos.getY() + (double) 0.5F,
-                    (double) pos.getZ() + (double) 0.5F, 24.0F
-            ) != null) {
-                EntityGiantBrainyZombie entity = new EntityGiantBrainyZombie(this.level);
-                if (entity != null) {
-                    int j = this.level.getEntitiesWithinAABB(
-                                    entity.getClass(),
-                                    AxisAlignedBB.getBoundingBox(
-                                                    pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1,
-                                                    pos.getY() + 1, pos.getZ() + 1
-                                            )
-                                            .expand(10.0F, 6.0F, 10.0F)
-                            )
-                            .size();
-                    if (j <= 3) {
-                        double d0 = (double) pos.getX() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double) 5.0F;
-                        double d3 = pos.getY() + this.level.random.nextInt(3) - 1;
-                        double d4 = (double) pos.getZ() + (this.level.random.nextDouble() - this.level.random.nextDouble()) * (double) 5.0F;
-                        LivingEntity entityliving = entity;
-                        entity.setLocationAndAngles(d0, d3, d4, this.level.random.nextFloat() * 360.0F, 0.0F);
-                        if (entityliving == null || entityliving.getCanSpawnHere()) {
-                            this.level.spawnEntityInWorld(entityliving);
-                            this.level.playAuxSFX(2004, pos.getX(), pos.getY(), pos.getZ(), 0);
-                            if (entityliving != null) {
-                                entityliving.spawnExplosionParticle();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return change;
-    }
-
-    private boolean handleHungryNodeSecond(boolean change) {
-        if (this.getNodeType() == NodeType.HUNGRY && this.tickCount % 50 == 0) {
-            var pos = this.getBlockPos();
-            int tx = pos.getX() + this.level.random.nextInt(16) - this.level.random.nextInt(16);
-            int ty = pos.getY() + this.level.random.nextInt(16) - this.level.random.nextInt(16);
-            int tz = pos.getZ() + this.level.random.nextInt(16) - this.level.random.nextInt(16);
-            if (ty > this.level.getHeightValue(tx, tz)) {
-                ty = this.level.getHeightValue(tx, tz);
-            }
-
-            Vec3 v1 = new Vec3(
-                    (double) pos.getX() + (double) 0.5F, (double) pos.getY() + (double) 0.5F,
-                    (double) pos.getZ() + (double) 0.5F
-            );
-            Vec3 v2 = new Vec3((double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
-            HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(this.level, v1, v2, true, false, false);
-            if (mop != null && this.getDistanceFrom(mop.blockX, mop.blockY, mop.blockZ) < (double) 256.0F) {
-                tx = mop.blockX;
-                ty = mop.blockY;
-                tz = mop.blockZ;
-                Block bi = this.level.getBlock(tx, ty, tz);
-                this.level.getBlockMetadata(tx, ty, tz);
-                if (!bi.isAir(this.level, tx, ty, tz)) {
-                    float h = bi.getBlockHardness(this.level, tx, ty, tz);
-                    if (h >= 0.0F && h < 5.0F) {
-                        this.level.func_147480_a(tx, ty, tz, true);
-                    }
-                }
-            }
-        }
-
-        return change;
-    }
 
     public ResourceLocation getLockId() {
         return this.nodeLockId;

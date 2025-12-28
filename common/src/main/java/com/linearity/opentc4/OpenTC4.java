@@ -1,13 +1,10 @@
 package com.linearity.opentc4;
 
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
-import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
-import thaumcraft.client.renderers.block.HungryChestRenderer;
 import thaumcraft.client.renderers.item.RenderUtils;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -20,7 +17,7 @@ import thaumcraft.common.lib.events.EventHandlerEntity;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
 import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
-import thaumcraft.common.lib.world.biomes.BiomeRegistration;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public final class OpenTC4 {
@@ -47,7 +44,7 @@ public final class OpenTC4 {
         BiomeWithTypes.init();
         EventHandlerEntity.init();
         EntityUtils.init();
-        BiomeRegistration.init();
+        ThaumcraftBiomeIDs.init();
         ThaumcraftEnchantments.init();
         ThaumcraftWorldGenConfiguredFeatures.init();
         ThaumcraftStructures.init();
