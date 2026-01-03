@@ -31,7 +31,7 @@ import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
 
-public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock, IWandInteractableBlock, INodeBlock {
+public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock, INodeBlock {
 
     public static final SoundType KNOT_SOUND = new SoundType(
             1.0F, // volume

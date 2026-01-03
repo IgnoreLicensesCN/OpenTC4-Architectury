@@ -34,7 +34,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 
-public class AuraNodeBlock extends Block implements EntityBlock, IWandInteractableBlock, INodeBlock {
+public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
                     0.7 * 16, 0.7 * 16, 0.7 * 16);

@@ -93,7 +93,8 @@
     "item.thaumcraft.greatwood_sapling": "Storträdsplanta",
     "block.thaumcraft.silverwood_sapling": "Silverträplanta",
     "item.thaumcraft.silverwood_sapling": "Silverträplanta",
-    "tile.blockCustomPlant.2.name": "Skimmerblad",
+    "block.thaumcraft.shimmer_leaf": "Skimmerblad",
+    "item.thaumcraft.shimmer_leaf": "Skimmerblad"
     "tile.blockCustomPlant.3.name": "Askpärla",
     "tile.blockCustomPlant.4.name": "Eterblomster",
     "tile.blockMetalDevice.0.name": "Smältdegel",

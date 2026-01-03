@@ -189,7 +189,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public void interactOnWandInteractable(Level level, LivingEntity livingEntity, ItemStack usingWand, int useCount) {
+    public void interactOnWandInteractable(Level level, LivingEntity livingEntity, ItemStack usingWand, int useRemainingCount) {
         boolean mfu = false;
         if (!(livingEntity instanceof Player player)) {
             return;

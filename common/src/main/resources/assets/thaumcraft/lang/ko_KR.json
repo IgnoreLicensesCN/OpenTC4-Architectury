@@ -125,7 +125,8 @@
     "item.thaumcraft.greatwood_sapling": "그레이트우드 묘목",
     "block.thaumcraft.silverwood_sapling": "실버우드 묘목",
     "item.thaumcraft.silverwood_sapling": "실버우드 묘목",
-    "tile.blockCustomPlant.2.name": "시머리프",
+    "block.thaumcraft.shimmer_leaf": "시머리프",
+    "item.thaumcraft.shimmer_leaf": "시머리프"
     "tile.blockCustomPlant.3.name": "신더펄",
     "tile.blockCustomPlant.4.name": "천상의 꽃",
     "tile.blockCustomPlant.5.name": "비쉬룸",

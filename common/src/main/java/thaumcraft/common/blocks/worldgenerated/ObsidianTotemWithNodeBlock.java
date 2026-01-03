@@ -27,7 +27,7 @@ import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
-public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock, IWandInteractableBlock, INodeBlock {
+public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock, INodeBlock {
     public ObsidianTotemWithNodeBlock(Properties properties) {
         super(properties);
     }

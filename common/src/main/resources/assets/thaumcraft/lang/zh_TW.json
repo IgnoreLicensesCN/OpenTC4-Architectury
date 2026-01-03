@@ -165,7 +165,8 @@
     "item.thaumcraft.greatwood_sapling": "宏偉之木樹苗",
     "block.thaumcraft.silverwood_sapling": "銀樹樹苗",
     "item.thaumcraft.silverwood_sapling": "銀樹樹苗",
-    "tile.blockCustomPlant.2.name": "水銀花",
+    "block.thaumcraft.shimmer_leaf": "水銀花",
+    "item.thaumcraft.shimmer_leaf": "水銀花"
     "tile.blockCustomPlant.3.name": "火焰草",
     "tile.blockCustomPlant.4.name": "天域花",
     "tile.blockCustomPlant.5.name": "靈菇",

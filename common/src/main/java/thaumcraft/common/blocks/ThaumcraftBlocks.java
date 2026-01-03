@@ -5,10 +5,12 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
@@ -101,6 +103,8 @@ public class ThaumcraftBlocks {
     public static final TallowCandleBlock GREEN_TALLOW_CANDLE = Registry.SUPPLIER_GREEN_TALLOW_CANDLE.get();
     public static final TallowCandleBlock RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
     public static final TallowCandleBlock BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
+
+    public static final ShimmerLeafBlock SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -377,6 +381,11 @@ public class ThaumcraftBlocks {
                 "black_tallow_candle",
                 () -> new TallowCandleBlock(0x1e1b1b)
         );
+        public static final RegistrySupplier<ShimmerLeafBlock> SUPPLIER_SHIMMER_LEAF = BLOCKS.register(
+                "shimmer_leaf",
+                ShimmerLeafBlock::new
+        );
+
 
 
         static {

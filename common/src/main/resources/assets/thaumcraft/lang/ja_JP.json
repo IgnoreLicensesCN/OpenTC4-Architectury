@@ -157,7 +157,8 @@
     "item.thaumcraft.greatwood_sapling": "グレートウッドの苗木",
     "block.thaumcraft.silverwood_sapling": "シルバーウッドの苗木",
     "item.thaumcraft.silverwood_sapling": "シルバーウッドの苗木",
-    "tile.blockCustomPlant.2.name": "シマーリーフ",
+    "block.thaumcraft.shimmer_leaf": "シマーリーフ",
+    "item.thaumcraft.shimmer_leaf": "シマーリーフ"
     "tile.blockCustomPlant.3.name": "シンダーパール",
     "tile.blockCustomPlant.4.name": "天上の華",
     "tile.blockCustomPlant.5.name": "ヴィシュルーム",

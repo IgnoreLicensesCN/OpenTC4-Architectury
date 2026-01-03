@@ -165,7 +165,8 @@
     "item.thaumcraft.greatwood_sapling": "Greatwood Sapling",
     "block.thaumcraft.silverwood_sapling": "Silverwood Sapling",
     "item.thaumcraft.silverwood_sapling": "Silverwood Sapling",
-    "tile.blockCustomPlant.2.name": "Třpyt lístek",
+    "block.thaumcraft.shimmer_leaf": "Třpyt lístek",
+    "item.thaumcraft.shimmer_leaf": "Třpyt lístek"
     "tile.blockCustomPlant.3.name": "Cinderpearl",
     "tile.blockCustomPlant.4.name": "Éterický květ",
     "tile.blockCustomPlant.5.name": "Vishroom",

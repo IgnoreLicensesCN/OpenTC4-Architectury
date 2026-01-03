@@ -93,7 +93,8 @@
     "item.thaumcraft.greatwood_sapling": "Groothoutkiemplant",
     "block.thaumcraft.silverwood_sapling": "Zilverhoutkiemplant",
     "item.thaumcraft.silverwood_sapling": "Zilverhoutkiemplant",
-    "tile.blockCustomPlant.2.name": "Schemerblad",
+    "block.thaumcraft.shimmer_leaf": "Schemerblad",
+    "item.thaumcraft.shimmer_leaf": "Schemerblad"
     "tile.blockCustomPlant.3.name": "Sintelparel",
     "tile.blockCustomPlant.4.name": "Etherische Bloem",
     "tile.blockCustomPlant.5.name": "Vispaddo",

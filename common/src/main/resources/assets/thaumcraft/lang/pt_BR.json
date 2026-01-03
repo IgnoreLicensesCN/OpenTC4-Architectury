@@ -90,7 +90,8 @@
     "item.thaumcraft.greatwood_sapling": "Muda de Greatwood",
     "block.thaumcraft.silverwood_sapling": "Muda de Silverwood",
     "item.thaumcraft.silverwood_sapling": "Muda de Silverwood",
-    "tile.blockCustomPlant.2.name": "Flor Brilhante",
+    "block.thaumcraft.shimmer_leaf": "Flor Brilhante",
+    "item.thaumcraft.shimmer_leaf": "Flor Brilhante"
     "tile.blockCustomPlant.3.name": "Pérola de Cinzas",
     "tile.blockCustomPlant.4.name": "Flor de Etérea",
     "tile.blockMetalDevice.0.name": "Crisol",

@@ -125,7 +125,8 @@
     "item.thaumcraft.greatwood_sapling": "Arboscello di grandalbero",
     "block.thaumcraft.silverwood_sapling": "Arboscello d'argentalbero",
     "item.thaumcraft.silverwood_sapling": "Arboscello d'argentalbero",
-    "tile.blockCustomPlant.2.name": "Brillanfoglia",
+    "block.thaumcraft.shimmer_leaf": "Brillanfoglia",
+    "item.thaumcraft.shimmer_leaf": "Brillanfoglia"
     "tile.blockCustomPlant.3.name": "Cenerperla",
     "tile.blockCustomPlant.4.name": "Fioritura eterea",
     "tile.blockCustomPlant.5.name": "Fungo vischioso",

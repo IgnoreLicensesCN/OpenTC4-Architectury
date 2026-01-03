@@ -165,7 +165,8 @@
     "item.thaumcraft.greatwood_sapling": "Großholzsetzling",
     "block.thaumcraft.silverwood_sapling": "Silberholzsetzling",
     "item.thaumcraft.silverwood_sapling": "Silberholzsetzling",
-    "tile.blockCustomPlant.2.name": "Schimmerblatt",
+    "block.thaumcraft.shimmer_leaf": "Schimmerblatt",
+    "item.thaumcraft.shimmer_leaf": "Schimmerblatt"
     "tile.blockCustomPlant.3.name": "Aschperle",
     "tile.blockCustomPlant.4.name": "Ätherblüte",
     "tile.blockCustomPlant.5.name": "Flimmerling",

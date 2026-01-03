@@ -164,7 +164,8 @@
     "item.thaumcraft.greatwood_sapling": "Brote de Arbol Magnífico",
     "block.thaumcraft.silverwood_sapling": "Brote de Arbol Plateado",
     "item.thaumcraft.silverwood_sapling": "Brote de Arbol Plateado",
-    "tile.blockCustomPlant.2.name": "Hoja Brillante",
+    "block.thaumcraft.shimmer_leaf": "Hoja Brillante",
+    "item.thaumcraft.shimmer_leaf": "Hoja Brillante"
     "tile.blockCustomPlant.3.name": "Perla de Ceniza",
     "tile.blockCustomPlant.4.name": "Flor Etérea",
     "tile.blockCustomPlant.5.name": "Vishroom",

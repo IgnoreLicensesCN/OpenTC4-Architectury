@@ -96,7 +96,8 @@
     "item.thaumcraft.greatwood_sapling": "Brot d'Arbre Magnífic",
     "block.thaumcraft.silverwood_sapling": "Brot d'Arbre d'Argent",
     "item.thaumcraft.silverwood_sapling": "Brot d'Arbre d'Argent",
-    "tile.blockCustomPlant.2.name": "Fulla Brillant",
+    "block.thaumcraft.shimmer_leaf": "Fulla Brillant",
+    "item.thaumcraft.shimmer_leaf": "Fulla Brillant"
     "tile.blockCustomPlant.3.name": "Perla de Cendra",
     "tile.blockCustomPlant.4.name": "Flor Etérea",
     "tile.blockCustomPlant.5.name": "Vishroom",

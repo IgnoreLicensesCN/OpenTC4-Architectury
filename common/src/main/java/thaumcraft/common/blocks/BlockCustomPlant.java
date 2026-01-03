@@ -27,7 +27,7 @@ import thaumcraft.common.tiles.TileEtherealBloom;
 
 import java.util.List;
 import java.util.Random;
-//"tile.blockCustomPlant.2.name": "水银花",
+//"2": "水银花",
 //    "tile.blockCustomPlant.3.name": "火焰草",
 //    "tile.blockCustomPlant.4.name": "天域花",
 //    "tile.blockCustomPlant.5.name": "纤毛菇",
@@ -47,8 +47,8 @@ public class BlockCustomPlant extends BlockBush {
 
    @SideOnly(Side.CLIENT)
    public void registerBlockIcons(IIconRegister ir) {
-      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
-      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
+//      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
+//      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
       this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
       this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
       this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
@@ -163,18 +163,19 @@ public class BlockCustomPlant extends BlockBush {
    @SideOnly(Side.CLIENT)
    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
       int md = world.getBlockMetadata(i, j, k);
-      if (md == 2 && random.nextInt(3) == 0) {
-         float cr = 0.3F + world.getRandom().nextFloat() * 0.3F;
-         float cg = 0.7F + world.getRandom().nextFloat() * 0.3F;
-         float cb = 0.7F + world.getRandom().nextFloat() * 0.3F;
-         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
-         float yr = (float)j + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.15F;
-         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
-         FXWisp ef = new FXWisp(world, xr, yr, zr, 0.2F, cr, cg, cb);
-         ef.tinkle = false;
-         Minecraft.getInstance().particleEngine.add(ef);
-
-      } else if (md == 3 && random.nextBoolean()) {
+//      if (md == 2 && random.nextInt(3) == 0) {
+//         float cr = 0.3F + world.getRandom().nextFloat() * 0.3F;
+//         float cg = 0.7F + world.getRandom().nextFloat() * 0.3F;
+//         float cb = 0.7F + world.getRandom().nextFloat() * 0.3F;
+//         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+//         float yr = (float)j + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.15F;
+//         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+//         FXWisp ef = new FXWisp(world, xr, yr, zr, 0.2F, cr, cg, cb);
+//         ef.tinkle = false;
+//         Minecraft.getInstance().particleEngine.add(ef);
+//
+//      } else
+         if (md == 3 && random.nextBoolean()) {
          float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
          float yr = (float)j + 0.6F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
          float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
