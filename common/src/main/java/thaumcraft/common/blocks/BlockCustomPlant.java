@@ -28,7 +28,8 @@ import thaumcraft.common.tiles.TileEtherealBloom;
 import java.util.List;
 import java.util.Random;
 //"2": "水银花",
-//    "tile.blockCustomPlant.3.name": "火焰草",
+//    "block.thaumcraft.cinder_pearl": "火焰草",
+    "item.thaumcraft.cinder_pearl": "火焰草",
 //    "tile.blockCustomPlant.4.name": "天域花",
 //    "tile.blockCustomPlant.5.name": "纤毛菇",
 public class BlockCustomPlant extends BlockBush {
@@ -50,7 +51,7 @@ public class BlockCustomPlant extends BlockBush {
 //      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
 //      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
 //      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
-      this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
+//      this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
       this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
       this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
       this.iconLeaves = ir.registerIcon("thaumcraft:purifier_leaves");
@@ -103,44 +104,44 @@ public class BlockCustomPlant extends BlockBush {
       return true;
    }
 
-   public void updateTick(World world, int i, int j, int k, Random random) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         super.updateTick(world, i, j, k, random);
-         int l = world.getBlockMetadata(i, j, k);
-         if (l == 0 && world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(25) == 0) {
-            this.growGreatTree(world, i, j, k, random);
-         } else if (l == 1 && world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(50) == 0) {
-            this.growSilverTree(world, i, j, k, random);
-         }
-      }
+//   public void updateTick(World world, int i, int j, int k, Random random) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         super.updateTick(world, i, j, k, random);
+//         int l = world.getBlockMetadata(i, j, k);
+//         if (l == 0 && world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(25) == 0) {
+//            this.growGreatTree(world, i, j, k, random);
+//         } else if (l == 1 && world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(50) == 0) {
+//            this.growSilverTree(world, i, j, k, random);
+//         }
+//      }
+//
+//   }
 
-   }
-
-   public void growGreatTree(World world, int i, int j, int k, Random random) {
-      if (world != null && world.provider != null) {
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            world.setBlockToAir(i, j, k);
-            WorldGenGreatwoodTrees obj = new WorldGenGreatwoodTrees(true);
-            if (!obj.generateInternal(world, random, i, j, k, false)) {
-               world.setBlock(i, j, k, this, 0, 0);
-            }
-
-         }
-      }
-   }
-
-   public void growSilverTree(World world, int i, int j, int k, Random random) {
-      if (world != null && world.provider != null) {
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            world.setBlockToAir(i, j, k);
-            WorldGenSilverwoodTrees obj = new WorldGenSilverwoodTrees(true, 7, 5);
-            if (!obj.generate(world, random, i, j, k)) {
-               world.setBlock(i, j, k, this, 1, 0);
-            }
-
-         }
-      }
-   }
+//   public void growGreatTree(World world, int i, int j, int k, Random random) {
+//      if (world != null && world.provider != null) {
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            world.setBlockToAir(i, j, k);
+//            WorldGenGreatwoodTrees obj = new WorldGenGreatwoodTrees(true);
+//            if (!obj.generateInternal(world, random, i, j, k, false)) {
+//               world.setBlock(i, j, k, this, 0, 0);
+//            }
+//
+//         }
+//      }
+//   }
+//
+//   public void growSilverTree(World world, int i, int j, int k, Random random) {
+//      if (world != null && world.provider != null) {
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            world.setBlockToAir(i, j, k);
+//            WorldGenSilverwoodTrees obj = new WorldGenSilverwoodTrees(true, 7, 5);
+//            if (!obj.generate(world, random, i, j, k)) {
+//               world.setBlock(i, j, k, this, 1, 0);
+//            }
+//
+//         }
+//      }
+//   }
 
    public int getLightValue(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
@@ -175,13 +176,14 @@ public class BlockCustomPlant extends BlockBush {
 //         Minecraft.getInstance().particleEngine.add(ef);
 //
 //      } else
-         if (md == 3 && random.nextBoolean()) {
-         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
-         float yr = (float)j + 0.6F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
-         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
-         world.spawnParticle("smoke", xr, yr, zr, 0.0F, 0.0F, 0.0F);
-         world.spawnParticle("flame", xr, yr, zr, 0.0F, 0.0F, 0.0F);
-      } else if (md == 5 && random.nextInt(3) == 0) {
+//         if (md == 3 && random.nextBoolean()) {
+//         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+//         float yr = (float)j + 0.6F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+//         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.1F;
+//         world.spawnParticle("smoke", xr, yr, zr, 0.0F, 0.0F, 0.0F);
+//         world.spawnParticle("flame", xr, yr, zr, 0.0F, 0.0F, 0.0F);
+//      } else 
+         if (md == 5 && random.nextInt(3) == 0) {
          float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
          float yr = (float)j + 0.3F;
          float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;

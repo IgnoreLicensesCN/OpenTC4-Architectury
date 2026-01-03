@@ -29,6 +29,7 @@ import thaumcraft.common.entities.ThaumcraftEntities;
 
 import java.util.List;
 
+//TODO:Rewrite biome(GPT made mess and idk what happened before)
 public class BiomeGenEerie /*extends BiomeGenBase*/ {
    public static int waterColor = 0x2E91FF;
    public static int foliageColorOverride = 0x404040;
@@ -57,55 +58,55 @@ public class BiomeGenEerie /*extends BiomeGenBase*/ {
       }
 
       BiomeGenerationSettings.PlainBuilder generation = new BiomeGenerationSettings.PlainBuilder();
-      ConfiguredFeature<TreeConfiguration, ?> birchTreeConfigured = new ConfiguredFeature<>(
-              Feature.TREE,
-              new TreeConfiguration.TreeConfigurationBuilder(
-                      BlockStateProvider.simple(Blocks.BIRCH_LOG),
-                      new StraightTrunkPlacer(5, 2, 0),
-                      BlockStateProvider.simple(Blocks.BIRCH_LEAVES),
-                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                      new TwoLayersFeatureSize(1, 0, 1)
-              ).ignoreVines().build()
-      );
-      Holder<ConfiguredFeature<?, ?>> birchTreeHolder = Holder.direct(birchTreeConfigured);
-      PlacedFeature birchTreePlaced = new PlacedFeature(
-              birchTreeHolder,
-              List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR)
-      );
-
-      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(birchTreePlaced));
-// 1️⃣ 草
-      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> grassFeature =
-              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.GRASS_BLOCK)));
-
-// 2️⃣ 包装成 PlacedFeature
-      PlacedFeature grassPlaced = new PlacedFeature(
-              Holder.direct(grassFeature),
-              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
-      );
-      Holder<PlacedFeature> grassHolder = Holder.direct(grassPlaced);
-
-// 3️⃣ 生成 RandomPatchConfiguration
-      RandomPatchConfiguration grassPatchConfig = FeatureUtils.simpleRandomPatchConfiguration(2, grassHolder);
-
-// 4️⃣ 构造最终 ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>>
-      ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>> grassConfigured =
-              new ConfiguredFeature<>(Feature.RANDOM_PATCH, grassPatchConfig);
-
-      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(grassPlaced));
-
-
-      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> flowerFeature =
-              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DANDELION)));
-// 3️⃣ 构造 PlacedFeature
-      PlacedFeature flowerPlaced = new PlacedFeature(
-              Holder.direct(flowerFeature),
-              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
-      );
-
-      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(flowerPlaced));
+//      ConfiguredFeature<TreeConfiguration, ?> birchTreeConfigured = new ConfiguredFeature<>(
+//              Feature.TREE,
+//              new TreeConfiguration.TreeConfigurationBuilder(
+//                      BlockStateProvider.simple(Blocks.BIRCH_LOG),
+//                      new StraightTrunkPlacer(5, 2, 0),
+//                      BlockStateProvider.simple(Blocks.BIRCH_LEAVES),
+//                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+//                      new TwoLayersFeatureSize(1, 0, 1)
+//              ).ignoreVines().build()
+//      );
+//      Holder<ConfiguredFeature<?, ?>> birchTreeHolder = Holder.direct(birchTreeConfigured);
+//      PlacedFeature birchTreePlaced = new PlacedFeature(
+//              birchTreeHolder,
+//              List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR)
+//      );
+//
+//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(birchTreePlaced));
+//// 1️⃣ 草
+//      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> grassFeature =
+//              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+//                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.GRASS_BLOCK)));
+//
+//// 2️⃣ 包装成 PlacedFeature
+//      PlacedFeature grassPlaced = new PlacedFeature(
+//              Holder.direct(grassFeature),
+//              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
+//      );
+//      Holder<PlacedFeature> grassHolder = Holder.direct(grassPlaced);
+//
+//// 3️⃣ 生成 RandomPatchConfiguration
+//      RandomPatchConfiguration grassPatchConfig = FeatureUtils.simpleRandomPatchConfiguration(2, grassHolder);
+//
+//// 4️⃣ 构造最终 ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>>
+//      ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>> grassConfigured =
+//              new ConfiguredFeature<>(Feature.RANDOM_PATCH, grassPatchConfig);
+//
+//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(grassPlaced));
+//
+//
+//      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> flowerFeature =
+//              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+//                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DANDELION)));
+//// 3️⃣ 构造 PlacedFeature
+//      PlacedFeature flowerPlaced = new PlacedFeature(
+//              Holder.direct(flowerFeature),
+//              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
+//      );
+//
+//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(flowerPlaced));
 
       // 构建 Biome
       return new Biome.BiomeBuilder()
