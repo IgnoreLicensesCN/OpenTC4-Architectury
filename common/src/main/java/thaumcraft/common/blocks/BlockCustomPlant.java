@@ -49,7 +49,7 @@ public class BlockCustomPlant extends BlockBush {
    public void registerBlockIcons(IIconRegister ir) {
 //      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
 //      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
-      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
+//      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
       this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
       this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
       this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
