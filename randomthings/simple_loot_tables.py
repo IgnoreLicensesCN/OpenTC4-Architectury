@@ -50,6 +50,7 @@ block_names = [
     'black_tallow_candle',
     "shimmer_leaf",
     "mana_shroom",
+    "ethereal_bloom",
 ]
 
 slab_names = [

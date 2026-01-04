@@ -2,12 +2,15 @@ package thaumcraft.common.lib.utils;
 
 import com.linearity.opentc4.mixin.ClientPacketListenerAccessor;
 import com.linearity.opentc4.mixin.ServerGamePacketListenerImplAccessor;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -31,14 +34,15 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXVisDrain;
+import thaumcraft.common.lib.network.fx.PacketFXVisDrainS2C;
 
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
+
+import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 public class Utils {
    public static HashMap<Item,ItemStack> specialMiningResult = new HashMap<>();
@@ -171,6 +175,9 @@ public class Utils {
    //inspired by fillbiome
    public static void setBiomeAt(ServerLevel world, int x, int y, int z, Holder<Biome> biome){
       BlockPos pos = new BlockPos(x, y, z);
+      setBiomeAt(world,pos,biome);
+   }
+   public static void setBiomeAt(ServerLevel world, BlockPos pos, Holder<Biome> biome){
       setBiomeRegion(world, pos, pos, biome, b -> true);
    }
    public static void setBiomeRegion(ServerLevel world, BlockPos from, BlockPos to, Holder<Biome> biome, Predicate<Holder<Biome>> predicate) {
@@ -310,7 +317,14 @@ public class Utils {
          }
       } else {
          effectBuffer.put(wc, time + 500L + (long)rand.nextInt(100));
-         PacketHandler.INSTANCE.sendToAllAround(new PacketFXVisDrain(x, y, z, x2, y2, z2, color), new NetworkRegistry.TargetPoint(dim, x, y, z, 64.0F));
+
+         if (Platform.getEnvironment() == Env.SERVER){
+            platformUtils.getServer().getAllLevels().forEach(level -> {
+               if (level.dimension() == dim) {
+                  new PacketFXVisDrainS2C(x, y, z, x2, y2, z2, color).sendToAllAround(level, new Vec3(x, y, z), 64.0F);
+               }
+            });
+         }
       }
 
    }

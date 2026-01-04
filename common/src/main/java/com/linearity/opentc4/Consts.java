@@ -3,6 +3,7 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.utils.CompoundTagHelper;
 
 public class Consts {
+    public static final int TAINT_SPREAD_UP_DISTANCE = 64;
 
 
     public static class AspectCompoundTagAccessors {

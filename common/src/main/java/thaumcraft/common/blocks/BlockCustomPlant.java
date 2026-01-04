@@ -1,32 +1,5 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.BlockBush;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.EnumPlantType;
-import net.minecraft.core.Direction;
-import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.particles.FXWisp;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.world.WorldGenGreatwoodTrees;
-import thaumcraft.common.lib.world.WorldGenSilverwoodTrees;
-import thaumcraft.common.tiles.TileEtherealBloom;
-
-import java.util.List;
-import java.util.Random;
 //"2": "水银花",
 //    "3": "火焰草",
 //    "4": "天域花",
@@ -45,14 +18,14 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //      this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
 //   }
 
-   @SideOnly(Side.CLIENT)
+//   @SideOnly(Side.CLIENT)
    public void registerBlockIcons(IIconRegister ir) {
 //      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
 //      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
 //      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
 //      this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
-      this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
 //      this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
+      this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
       this.iconLeaves = ir.registerIcon("thaumcraft:purifier_leaves");
       this.iconStalk = ir.registerIcon("thaumcraft:purifier_stalk");
       this.blank = ir.registerIcon("thaumcraft:blank");
@@ -74,13 +47,13 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //
 //   }
 
-   public boolean hasTileEntity(int metadata) {
-      return metadata == 4 || super.hasTileEntity(metadata);
-   }
-
-   public TileEntity createTileEntity(World world, int metadata) {
-      return metadata == 4 ? new TileEtherealBloom() : super.createTileEntity(world, metadata);
-   }
+//   public boolean hasTileEntity(int metadata) {
+//      return metadata == 4 || super.hasTileEntity(metadata);
+//   }
+//
+//   public TileEntity createTileEntity(World world, int metadata) {
+//      return metadata == 4 ? new TileEtherealBloom() : super.createTileEntity(world, metadata);
+//   }
 
 //   public int damageDropped(int par1) {
 //      return par1;
@@ -90,14 +63,14 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //      return Item.getItemFromBlock(this);
 //   }
 
-   public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
-      int md = world.getBlockMetadata(x, y, z);
-      if (md == 3) {
-         return EnumPlantType.Desert;
-      } else {
-         return md == 4 ? EnumPlantType.Cave : EnumPlantType.Plains;
-      }
-   }
+//   public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (md == 3) {
+//         return EnumPlantType.Desert;
+//      } else {
+//         return md == 4 ? EnumPlantType.Cave : EnumPlantType.Plains;
+//      }
+//   }
 
 //   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
 //      return true;
@@ -142,14 +115,14 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //      }
 //   }
 
-   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-      int md = world.getBlockMetadata(x, y, z);
-      if (md != 1 && md != 2 && md != 3 && md != 5) {
-         return md == 4 ? 15 : super.getLightValue(world, x, y, z);
-      } else {
-         return 8;
-      }
-   }
+//   public int getLightValue(IBlockAccess world, int x, int y, int z) {
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (md != 1 && md != 2 && md != 3 && md != 5) {
+//         return md == 4 ? 15 : super.getLightValue(world, x, y, z);
+//      } else {
+//         return 8;
+//      }
+//   }
 
 //   public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 //      int md = world.getBlockMetadata(x, y, z);

@@ -1,17 +1,9 @@
 import re
 
 
-a = """public static final RegistrySupplier<ShimmerLeafBlock> SUPPLIER_SHIMMER_LEAF = BLOCKS.register(
-                "shimmer_leaf",
-                ShimmerLeafBlock::new
-        );
-        public static final RegistrySupplier<CinderPearlBlock> SUPPLIER_CINDER_PEARL = BLOCKS.register(
-                "cinder_pearl",
-                CinderPearlBlock::new
-        );
-        public static final RegistrySupplier<ManaShroomBlock> SUPPLIER_MANA_SHROOM = BLOCKS.register(
-                "mana_shroom",
-                ManaShroomBlock::new
+a = """public static final RegistrySupplier<EtherealBloomBlock> SUPPLIER_ETHEREAL_BLOOM = BLOCKS.register(
+                "ethereal_bloom",
+                EtherealBloomBlock::new
         );"""
 
 groups = []

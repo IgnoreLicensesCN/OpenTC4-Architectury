@@ -13,7 +13,7 @@ public class ThaumcraftBiomeIDs {
         //chatgpt go fuck off,bootstrap couldn't be used!
         public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BIOME);
         public static final RegistrySupplier<Biome> SUPPLIER_EERIE = BIOMES.register("eerie", BiomeGenEerie::createEerie);
-        public static final RegistrySupplier<Biome> SUPPLIER_ELDRITCH = BIOMES.register("eldritch", BiomeGenEerie::createEerie);
+        public static final RegistrySupplier<Biome> SUPPLIER_ELDRITCH = BIOMES.register("eldritch", BiomeGenEldritch::createEldritch);
     }
     public static final ResourceLocation EERIE_ID = Registry.SUPPLIER_EERIE.getId();
     public static final ResourceLocation ELDRITCH_ID = Registry.SUPPLIER_ELDRITCH.getId();

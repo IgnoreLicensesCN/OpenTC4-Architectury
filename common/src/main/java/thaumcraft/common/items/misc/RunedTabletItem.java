@@ -45,8 +45,8 @@ public class RunedTabletItem extends Item {
         if (te instanceof TileEldritchLock lock && lock.count < 0) {
             lock.count = 0;
             world.sendBlockUpdated(pos,te.getBlockState(), te.getBlockState(), 3);
-            te.markDirty();
-            --player.getHeldItem().stackSize;
+            lock.markDirtyAndUpdateSelf();
+            useOnContext.getItemInHand().shrink(1);
             world.playSound(null,pos, RUNIC_SHIELD_CHARGE,
                     SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;

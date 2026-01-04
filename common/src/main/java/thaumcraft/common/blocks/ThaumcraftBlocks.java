@@ -21,6 +21,7 @@ import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
+import thaumcraft.common.tiles.EtherealBloomBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ThaumcraftBlocks {
@@ -107,6 +108,8 @@ public class ThaumcraftBlocks {
     public static final ShimmerLeafBlock SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
     public static final CinderPearlBlock CINDER_PEARL = Registry.SUPPLIER_CINDER_PEARL.get();
     public static final ManaShroomBlock MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
+
+    public static final EtherealBloomBlock ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -395,8 +398,10 @@ public class ThaumcraftBlocks {
                 "mana_shroom",
                 ManaShroomBlock::new
         );
-
-
+        public static final RegistrySupplier<EtherealBloomBlock> SUPPLIER_ETHEREAL_BLOOM = BLOCKS.register(
+                "ethereal_bloom",
+                EtherealBloomBlock::new
+        );
 
         static {
             BLOCKS.register();
