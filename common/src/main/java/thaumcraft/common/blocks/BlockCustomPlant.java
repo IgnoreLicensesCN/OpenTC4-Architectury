@@ -28,23 +28,22 @@ import thaumcraft.common.tiles.TileEtherealBloom;
 import java.util.List;
 import java.util.Random;
 //"2": "水银花",
-//    "block.thaumcraft.cinder_pearl": "火焰草",
-    "item.thaumcraft.cinder_pearl": "火焰草",
-//    "tile.blockCustomPlant.4.name": "天域花",
-//    "tile.blockCustomPlant.5.name": "纤毛菇",
-public class BlockCustomPlant extends BlockBush {
+//    "3": "火焰草",
+//    "4": "天域花",
+//    "5": "纤毛菇",
+public class BlockCustomPlant /*extends BlockBush*/ {
    public IIcon[] icon = new IIcon[6];
    public IIcon iconLeaves;
    public IIcon iconStalk;
    IIcon blank;
 
-   public BlockCustomPlant() {
-      super(Material.plants);
-      this.setStepSound(soundTypeGrass);
-      float var3 = 0.4F;
-      this.setCreativeTab(Thaumcraft.tabTC);
-      this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
-   }
+//   public BlockCustomPlant() {
+//      super(Material.plants);
+//      this.setStepSound(soundTypeGrass);
+//      float var3 = 0.4F;
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//      this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.8F, 0.5F + var3);
+//   }
 
    @SideOnly(Side.CLIENT)
    public void registerBlockIcons(IIconRegister ir) {
@@ -53,27 +52,27 @@ public class BlockCustomPlant extends BlockBush {
 //      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
 //      this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
       this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
-      this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
+//      this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
       this.iconLeaves = ir.registerIcon("thaumcraft:purifier_leaves");
       this.iconStalk = ir.registerIcon("thaumcraft:purifier_stalk");
       this.blank = ir.registerIcon("thaumcraft:blank");
    }
 
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(int par1, int par2) {
-      if (par2 == 4 && par1 == 0) {
-         return this.blank;
-      } else {
-         return par2 < this.icon.length ? this.icon[par2] : null;
-      }
-   }
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(int par1, int par2) {
+//      if (par2 == 4 && par1 == 0) {
+//         return this.blank;
+//      } else {
+//         return par2 < this.icon.length ? this.icon[par2] : null;
+//      }
+//   }
 
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      for(int var4 = 0; var4 <= 5; ++var4) {
-         par3List.add(new ItemStack(par1, 1, var4));
-      }
-
-   }
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      for(int var4 = 0; var4 <= 5; ++var4) {
+//         par3List.add(new ItemStack(par1, 1, var4));
+//      }
+//
+//   }
 
    public boolean hasTileEntity(int metadata) {
       return metadata == 4 || super.hasTileEntity(metadata);
@@ -83,13 +82,13 @@ public class BlockCustomPlant extends BlockBush {
       return metadata == 4 ? new TileEtherealBloom() : super.createTileEntity(world, metadata);
    }
 
-   public int damageDropped(int par1) {
-      return par1;
-   }
-
-   public Item getItemDropped(int par1, Random par2Random, int par3) {
-      return Item.getItemFromBlock(this);
-   }
+//   public int damageDropped(int par1) {
+//      return par1;
+//   }
+//
+//   public Item getItemDropped(int par1, Random par2Random, int par3) {
+//      return Item.getItemFromBlock(this);
+//   }
 
    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
@@ -100,9 +99,9 @@ public class BlockCustomPlant extends BlockBush {
       }
    }
 
-   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
-      return true;
-   }
+//   public boolean canPlaceBlockAt(Level par1World, int par2, int par3, int par4) {
+//      return true;
+//   }
 
 //   public void updateTick(World world, int i, int j, int k, Random random) {
 //      if (Platform.getEnvironment() != Env.CLIENT) {
@@ -152,18 +151,18 @@ public class BlockCustomPlant extends BlockBush {
       }
    }
 
-   public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-      int md = world.getBlockMetadata(x, y, z);
-      if (md == 5 && entity instanceof EntityLivingBase) {
-         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
-      }
+//   public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (md == 5 && entity instanceof EntityLivingBase) {
+//         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
+//      }
+//
+//      super.onEntityCollidedWithBlock(world, x, y, z, entity);
+//   }
 
-      super.onEntityCollidedWithBlock(world, x, y, z, entity);
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-      int md = world.getBlockMetadata(i, j, k);
+//   @SideOnly(Side.CLIENT)
+//   public void randomDisplayTick(World world, int i, int j, int k, Random random) {
+//      int md = world.getBlockMetadata(i, j, k);
 //      if (md == 2 && random.nextInt(3) == 0) {
 //         float cr = 0.3F + world.getRandom().nextFloat() * 0.3F;
 //         float cg = 0.7F + world.getRandom().nextFloat() * 0.3F;
@@ -183,25 +182,24 @@ public class BlockCustomPlant extends BlockBush {
 //         world.spawnParticle("smoke", xr, yr, zr, 0.0F, 0.0F, 0.0F);
 //         world.spawnParticle("flame", xr, yr, zr, 0.0F, 0.0F, 0.0F);
 //      } else 
-         if (md == 5 && random.nextInt(3) == 0) {
-         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
-         float yr = (float)j + 0.3F;
-         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
-         FXWisp ef = new FXWisp(world, xr, yr, zr, 0.1F, 0.5F, 0.3F, 0.8F);
-         ef.tinkle = false;
-         ef.shrink = true;
-         ef.setGravity(0.015F);
-         Minecraft.getInstance().particleEngine.add(ef);
+//         if (md == 5 && random.nextInt(3) == 0) {
+//         float xr = (float)i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
+//         float yr = (float)j + 0.3F;
+//         float zr = (float)k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
+//         FXWisp ef = new FXWisp(world, xr, yr, zr, 0.1F, 0.5F, 0.3F, 0.8F);
+//         ef.tinkle = false;
+//         ef.shrink = true;
+//         ef.setGravity(0.015F);
+//         Minecraft.getInstance().particleEngine.add(ef);
+//      }
 
-      }
+//   }
 
-   }
-
-   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
-      return 100;
-   }
-
-   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
-      return 60;
-   }
+//   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
+//      return 100;
+//   }
+//
+//   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
+//      return 60;
+//   }
 }

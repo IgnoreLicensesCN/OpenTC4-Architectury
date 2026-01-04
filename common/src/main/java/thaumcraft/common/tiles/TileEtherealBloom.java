@@ -24,7 +24,13 @@ public class TileEtherealBloom extends TileEntity {
       if (Platform.getEnvironment() != Env.CLIENT && this.counter % 20 == 0) {
          int x = this.level().rand.nextInt(8) - this.level().rand.nextInt(8);
          int z = this.level().rand.nextInt(8) - this.level().rand.nextInt(8);
-         if ((this.level().getBiomeGenForCoords(x + this.xCoord, z + this.zCoord).biomeID == Config.biomeTaintID || this.level().getBiomeGenForCoords(x + this.xCoord, z + this.zCoord).biomeID == Config.biomeEerieID || this.level().getBiomeGenForCoords(x + this.xCoord, z + this.zCoord).biomeID == Config.biomeMagicalForestID) && this.getDistanceFrom((double)(x + this.xCoord) + (double)0.5F, this.yCoord, (double)(z + this.zCoord) + (double)0.5F) <= (double)81.0F) {
+         int biomeID = this.level().getBiomeGenForCoords(x + this.xCoord, z + this.zCoord).biomeID;
+         if (
+                 (biomeID == Config.biomeTaintID
+                         || biomeID == Config.biomeEerieID
+                         || biomeID == Config.biomeMagicalForestID)
+                   && this.getDistanceFrom((double)(x + this.xCoord) + (double)0.5F, this.yCoord, (double)(z + this.zCoord) + (double)0.5F) <= (double)81.0F
+         ) {
             BiomeGenBase[] biomesForGeneration = null;
             biomesForGeneration = this.level().getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, x + this.xCoord, z + this.zCoord, 1, 1);
             if (biomesForGeneration != null && biomesForGeneration[0] != null) {

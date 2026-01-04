@@ -3,15 +3,16 @@ package thaumcraft.common.blocks.worldgenerated;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DeadBushBlock;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
-public class CinderPearlBlock extends DeadBushBlock {
+public class CinderPearlBlock extends BushBlock {
     public CinderPearlBlock(Properties properties) {
         super(properties);
     }
@@ -42,5 +43,10 @@ public class CinderPearlBlock extends DeadBushBlock {
             level.addParticle(ParticleTypes.SMOKE, xr, yr, zr, 0.0, 0.0, 0.0);
             level.addParticle(ParticleTypes.FLAME, xr, yr, zr, 0.0, 0.0, 0.0);
         }
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return true;
     }
 }

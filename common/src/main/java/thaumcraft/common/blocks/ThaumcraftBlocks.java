@@ -106,6 +106,7 @@ public class ThaumcraftBlocks {
 
     public static final ShimmerLeafBlock SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
     public static final CinderPearlBlock CINDER_PEARL = Registry.SUPPLIER_CINDER_PEARL.get();
+    public static final ManaShroomBlock MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -385,11 +386,15 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<ShimmerLeafBlock> SUPPLIER_SHIMMER_LEAF = BLOCKS.register(
                 "shimmer_leaf",
                 ShimmerLeafBlock::new
-        );//TODO:Generation
+        );
         public static final RegistrySupplier<CinderPearlBlock> SUPPLIER_CINDER_PEARL = BLOCKS.register(
                 "cinder_pearl",
                 CinderPearlBlock::new
-        );//TODO:Generation
+        );
+        public static final RegistrySupplier<ManaShroomBlock> SUPPLIER_MANA_SHROOM = BLOCKS.register(
+                "mana_shroom",
+                ManaShroomBlock::new
+        );
 
 
 

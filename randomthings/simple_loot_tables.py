@@ -48,6 +48,8 @@ block_names = [
     'green_tallow_candle',
     'red_tallow_candle',
     'black_tallow_candle',
+    "shimmer_leaf",
+    "mana_shroom",
 ]
 
 slab_names = [

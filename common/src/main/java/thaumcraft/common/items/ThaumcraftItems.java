@@ -161,6 +161,10 @@ public class ThaumcraftItems {
     public static final BlockItem RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
     public static final BlockItem BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
 
+    public static final BlockItem SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
+    public static final BlockItem CINDER_PEARL = Registry.SUPPLIER_CINDER_PEARL.get();
+    public static final BlockItem MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
+
     //===========================================================================================
 
     public static class Registry {
@@ -539,6 +543,20 @@ public class ThaumcraftItems {
                 "black_tallow_candle",
                 () -> new BlockItem(ThaumcraftBlocks.BLACK_TALLOW_CANDLE,new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SHIMMER_LEAF = ITEMS.register(
+                "shimmer_leaf",
+                () -> new BlockItem(ThaumcraftBlocks.SHIMMER_LEAF,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CINDER_PEARL = ITEMS.register(
+                "cinder_pearl",
+                () -> new BlockItem(ThaumcraftBlocks.CINDER_PEARL,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MANA_SHROOM = ITEMS.register(
+                "mana_shroom",
+                () -> new BlockItem(ThaumcraftBlocks.MANA_SHROOM,new Item.Properties())
+        );
+
+
         static {
             Registry.ITEMS.register();
         }

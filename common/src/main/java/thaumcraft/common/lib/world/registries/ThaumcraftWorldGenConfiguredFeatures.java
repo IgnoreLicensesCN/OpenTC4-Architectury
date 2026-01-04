@@ -4,7 +4,6 @@ import dev.architectury.registry.level.biome.BiomeModifications;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -25,17 +24,12 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.world.feature.GreatwoodTreeFeature;
 import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
-
-import java.util.List;
 
 public class ThaumcraftWorldGenConfiguredFeatures {
     public static class Features {
@@ -75,6 +69,11 @@ public class ThaumcraftWorldGenConfiguredFeatures {
 
         public static final RegistrySupplier<Feature<TreeConfiguration>> SUPPLIER_GREATWOOD_GENERATED_FEATURE
                 = WORLD_GEN_FEATURES.register("greatwood_generated_feature", () -> new GreatwoodTreeFeature(false));
+
+
+        static {
+            WORLD_GEN_FEATURES.register();
+        }
 
     }
 
@@ -198,6 +197,10 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                                         )
                                 )
                 );
+
+        static {
+            WORLD_GEN_CONFIGURED_FEATURES.register();
+        }
     }
 
     public static class PlacedFeatureRegistry {
@@ -208,6 +211,10 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                         Registries.PLACED_FEATURE,
                         new ResourceLocation(Thaumcraft.MOD_ID, "cinder_pearl_placed")
                 );
+
+        static {
+            PLACED_FEATURES.register();
+        }
     }
 
     public static class BiomeModifiers {
@@ -229,10 +236,6 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         }
     }
     public static void init() {
-        FeaturesRegistry.WORLD_GEN_FEATURES.register();
-        ConfiguredRegistry.WORLD_GEN_CONFIGURED_FEATURES.register();
-        PlacedFeatureRegistry.PLACED_FEATURES.register();
         BiomeModifiers.init();
-
     }
 }

@@ -62,7 +62,7 @@ public class Config {
 
     public static int biomeTaintID = 192;//oneday all of you numbers order by hand will go fuck off
     public static int biomeMagicalForestID = 193;
-    public static int biomeEerieID = 194;
+//    public static int biomeEerieID = 194;
     public static int biomeEldritchID = 195;
     public static int biomeTaintWeight = 2;
     public static int biomeMagicalForestWeight = 5;
@@ -201,19 +201,19 @@ public class Config {
             Thaumcraft.log.fatal("Could not register Magical Forest Biome");
         }
 
-        Property biomeEerieProp = config.get(CATEGORY_BIOMES, "biome_eerie", biomeEerieID);
-        biomeEerieProp.comment = "Eerie biome id";
-        biomeEerieID = biomeEerieProp.getInt();
-        if (BiomeGenBase.getBiomeGenArray()[biomeEerieID] != null) {
-            biomeEerieID = ThaumcraftWorldGenerator.getFirstFreeBiomeSlot(biomeEerieID);
-            biomeEerieProp.set(biomeEerieID);
-        }
+//        Property biomeEerieProp = config.get(CATEGORY_BIOMES, "biome_eerie", biomeEerieID);
+//        biomeEerieProp.comment = "Eerie biome id";
+//        biomeEerieID = biomeEerieProp.getInt();
+//        if (BiomeGenBase.getBiomeGenArray()[biomeEerieID] != null) {
+//            biomeEerieID = ThaumcraftWorldGenerator.getFirstFreeBiomeSlot(biomeEerieID);
+//            biomeEerieProp.set(biomeEerieID);
+//        }
 
-        try {
-            ThaumcraftWorldGenerator.biomeEerie = new BiomeGenEerie(biomeEerieID);
-        } catch (Exception var12) {
-            Thaumcraft.log.fatal("Could not register Eerie Biome");
-        }
+//        try {
+//            ThaumcraftWorldGenerator.biomeEerie = new BiomeGenEerie(biomeEerieID);
+//        } catch (Exception var12) {
+//            Thaumcraft.log.fatal("Could not register Eerie Biome");
+//        }
 
         Property biomeEldritchProp = config.get(CATEGORY_BIOMES, "biome_eldritch", biomeEldritchID);
         biomeEldritchProp.comment = "Eldritch Lands biome id";

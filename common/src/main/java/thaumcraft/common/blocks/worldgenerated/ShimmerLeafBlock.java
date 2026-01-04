@@ -6,7 +6,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -15,14 +17,12 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import thaumcraft.client.fx.migrated.particles.FXWisp;
 
-public class ShimmerLeafBlock extends FlowerBlock {
-    public ShimmerLeafBlock(MobEffect mobEffect, int i, Properties properties) {
-        super(mobEffect, i, properties);
+public class ShimmerLeafBlock extends BushBlock {
+    public ShimmerLeafBlock(Properties properties) {
+        super(properties);
     }
     public ShimmerLeafBlock() {
         super(
-                MobEffects.POISON,
-                20*30,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .noCollission()
@@ -51,5 +51,10 @@ public class ShimmerLeafBlock extends FlowerBlock {
             ef.tinkle = false;
             Minecraft.getInstance().particleEngine.add(ef);
         }
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return true;
     }
 }

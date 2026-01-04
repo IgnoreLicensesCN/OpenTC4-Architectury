@@ -1,40 +1,21 @@
 package thaumcraft.common.lib.world.biomes;
 
-import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.util.valueproviders.ConstantInt;
+import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.ThaumcraftEntities;
 
-import java.util.List;
-
 //TODO:Rewrite biome(GPT made mess and idk what happened before)
 public class BiomeGenEerie /*extends BiomeGenBase*/ {
-   public static int waterColor = 0x2E91FF;
-   public static int foliageColorOverride = 0x404040;
-   public static int grassColorOverride = 0x404040;
-   public static int skyColor = 0x220011;
+   public static @RGBColor int waterColor = 0x2E535F;
+   public static @RGBColor int foliageColorOverride = 0x405340;
+   public static @RGBColor int grassColorOverride = 0x404840;
+   public static @RGBColor int skyColor = 0x222299;
 
    public static Biome createEerie() {
       MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
@@ -58,59 +39,11 @@ public class BiomeGenEerie /*extends BiomeGenBase*/ {
       }
 
       BiomeGenerationSettings.PlainBuilder generation = new BiomeGenerationSettings.PlainBuilder();
-//      ConfiguredFeature<TreeConfiguration, ?> birchTreeConfigured = new ConfiguredFeature<>(
-//              Feature.TREE,
-//              new TreeConfiguration.TreeConfigurationBuilder(
-//                      BlockStateProvider.simple(Blocks.BIRCH_LOG),
-//                      new StraightTrunkPlacer(5, 2, 0),
-//                      BlockStateProvider.simple(Blocks.BIRCH_LEAVES),
-//                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-//                      new TwoLayersFeatureSize(1, 0, 1)
-//              ).ignoreVines().build()
-//      );
-//      Holder<ConfiguredFeature<?, ?>> birchTreeHolder = Holder.direct(birchTreeConfigured);
-//      PlacedFeature birchTreePlaced = new PlacedFeature(
-//              birchTreeHolder,
-//              List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR)
-//      );
-//
-//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(birchTreePlaced));
-//// 1️⃣ 草
-//      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> grassFeature =
-//              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-//                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.GRASS_BLOCK)));
-//
-//// 2️⃣ 包装成 PlacedFeature
-//      PlacedFeature grassPlaced = new PlacedFeature(
-//              Holder.direct(grassFeature),
-//              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
-//      );
-//      Holder<PlacedFeature> grassHolder = Holder.direct(grassPlaced);
-//
-//// 3️⃣ 生成 RandomPatchConfiguration
-//      RandomPatchConfiguration grassPatchConfig = FeatureUtils.simpleRandomPatchConfiguration(2, grassHolder);
-//
-//// 4️⃣ 构造最终 ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>>
-//      ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>> grassConfigured =
-//              new ConfiguredFeature<>(Feature.RANDOM_PATCH, grassPatchConfig);
-//
-//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(grassPlaced));
-//
-//
-//      ConfiguredFeature<SimpleBlockConfiguration, Feature<SimpleBlockConfiguration>> flowerFeature =
-//              new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-//                      new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DANDELION)));
-//// 3️⃣ 构造 PlacedFeature
-//      PlacedFeature flowerPlaced = new PlacedFeature(
-//              Holder.direct(flowerFeature),
-//              List.of(InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP)
-//      );
-//
-//      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(flowerPlaced));
+
+      //since this biome is from nodetype DARK,no generations needed here
 
       // 构建 Biome
       return new Biome.BiomeBuilder()
-//              .precipitation(Biome.Precipitation.RAIN)
               .temperature(0.5F)
               .downfall(0.5F)
               .specialEffects(
@@ -167,6 +100,7 @@ public class BiomeGenEerie /*extends BiomeGenBase*/ {
 //      return 2237081;
 //   }
 //
+//   @RGBColor
 //   public int getWaterColorMultiplier() {
 //      return 3035999;
 //   }
