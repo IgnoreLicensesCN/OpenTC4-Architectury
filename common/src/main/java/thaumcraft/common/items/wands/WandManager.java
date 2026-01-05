@@ -348,7 +348,22 @@ public class WandManager implements IWandTriggerManager {
         Block bn = Blocks.nether_brick;
         Block bf = Blocks.iron_bars;
         Block bl = Blocks.lava;
-        Block[][][] blueprint = new Block[][][]{{{bn, bo, bn}, {bo, Blocks.air, bo}, {bn, bo, bn}}, {{bn, bo, bn}, {bo, bl, bo}, {bn, bo, bn}}, {{bn, bo, bn}, {bo, bo, bo}, {bn, bo, bn}}};
+        Block[][][] blueprint = new Block[][][]{
+                {
+                    {bn, bo, bn},
+                    {bo, Blocks.air, bo},
+                    {bn, bo, bn}},
+                {
+                    {bn, bo, bn},
+                    {bo, bl, bo},
+                    {bn, bo, bn}
+                },
+                {
+                    {bn, bo, bn},
+                    {bo, bo, bo},
+                    {bn, bo, bn}
+                }
+        };
         boolean fencefound = false;
 
         for (int yy = 0; yy < 3; ++yy) {

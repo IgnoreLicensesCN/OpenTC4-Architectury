@@ -272,7 +272,7 @@ public class BlockArcaneFurnace extends BlockContainer {
       if (meta == 0) {
          for(int yy = -1; yy <= 1; ++yy) {
             for(int xx = -1; xx <= 1; ++xx) {
-               for(int zz = -1; zz <= 1 && (yy != 1 && yy != 0 || zz != 0 || xx != 0); ++zz) {
+               for(int zz = -1; zz <= 1 && (yy != 1 && yy != 0 || zz != 0 || xx != 0); ++zz) {0
                   Block block = par1World.getBlock(par2 + xx, par3 + yy, par4 + zz);
                   if (block != this) {
                      this.restoreBlocks(par1World, par2, par3, par4);

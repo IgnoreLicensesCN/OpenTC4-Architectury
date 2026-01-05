@@ -5,11 +5,12 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
+import thaumcraft.common.Thaumcraft;
 
 
 public class ThaumcraftEnchantments {
     public static class Registry {
-        public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create("thaumcraft", Registries.ENCHANTMENT);
+        public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ENCHANTMENT);
         public static final RegistrySupplier<EnchantmentHaste> SUPPLIER_HASTE = ENCHANTMENTS.register("haste", EnchantmentHaste::new);
         public static final RegistrySupplier<EnchantmentRepair> SUPPLIER_REPAIR = ENCHANTMENTS.register("repair", EnchantmentRepair::new);
     }

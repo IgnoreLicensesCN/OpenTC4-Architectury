@@ -4,11 +4,13 @@ package thaumcraft.common.blocks;
 //    "3": "火焰草",
 //    "4": "天域花",
 //    "5": "纤毛菇",
+
+@Deprecated(forRemoval = true)
 public class BlockCustomPlant /*extends BlockBush*/ {
-   public IIcon[] icon = new IIcon[6];
-   public IIcon iconLeaves;
-   public IIcon iconStalk;
-   IIcon blank;
+//   public IIcon[] icon = new IIcon[6];
+//   public IIcon iconLeaves;
+//   public IIcon iconStalk;
+//   IIcon blank;
 
 //   public BlockCustomPlant() {
 //      super(Material.plants);
@@ -19,17 +21,17 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //   }
 
 //   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
+//   public void registerBlockIcons(IIconRegister ir) {
 //      this.icon[0] = ir.registerIcon("thaumcraft:greatwoodsapling");
 //      this.icon[1] = ir.registerIcon("thaumcraft:silverwoodsapling");
 //      this.icon[2] = ir.registerIcon("thaumcraft:shimmerleaf");
 //      this.icon[3] = ir.registerIcon("thaumcraft:cinderpearl");
 //      this.icon[5] = ir.registerIcon("thaumcraft:manashroom");
-      this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
-      this.iconLeaves = ir.registerIcon("thaumcraft:purifier_leaves");
-      this.iconStalk = ir.registerIcon("thaumcraft:purifier_stalk");
-      this.blank = ir.registerIcon("thaumcraft:blank");
-   }
+//      this.icon[4] = ir.registerIcon("thaumcraft:purifier_seed");
+//      this.iconLeaves = ir.registerIcon("thaumcraft:purifier_leaves");
+//      this.iconStalk = ir.registerIcon("thaumcraft:purifier_stalk");
+//      this.blank = ir.registerIcon("thaumcraft:blank");
+//   }
 
 //   @SideOnly(Side.CLIENT)
 //   public IIcon getIcon(int par1, int par2) {

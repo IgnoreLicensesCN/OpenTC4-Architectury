@@ -2,15 +2,12 @@ package thaumcraft.api.wands;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.linearity.opentc4.recipeclean.blockmatch.BlockMatcher;
+import com.linearity.opentc4.recipeclean.blockmatch.AbstractBlockMatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import oshi.util.tuples.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WandTriggerRegistry {
 
 	//Map<ModID(String),HashMap<>>
-	private static final Map<String, Multimap<BlockMatcher, IWandTriggerManager>> triggers = new ConcurrentHashMap<>();
+	private static final Map<String, Multimap<AbstractBlockMatcher, IWandTriggerManager>> triggers = new ConcurrentHashMap<>();
 	private static final String DEFAULT = "default";
 
 	/**
@@ -40,23 +37,23 @@ public class WandTriggerRegistry {
 	 * @param blockMatcher matches interacted block
 	 * @param modid a unique identifier. It is best to register your own triggers using your mod id to avoid conflicts with mods that register triggers for the same block
 	 */
-	public static void registerWandBlockTrigger(IWandTriggerManager manager, BlockMatcher blockMatcher, String modid) {
-		Multimap<BlockMatcher,IWandTriggerManager> temp = triggers.computeIfAbsent(modid, k -> HashMultimap.create());
+	public static void registerWandBlockTrigger(IWandTriggerManager manager, AbstractBlockMatcher blockMatcher, String modid) {
+		Multimap<AbstractBlockMatcher,IWandTriggerManager> temp = triggers.computeIfAbsent(modid, k -> HashMultimap.create());
 		temp.put(blockMatcher,manager);
 	}
 	
 	/**
 	 * for legacy support
 	 */
-	public static void registerWandBlockTrigger(IWandTriggerManager manager, BlockMatcher block) {
+	public static void registerWandBlockTrigger(IWandTriggerManager manager, AbstractBlockMatcher block) {
 		registerWandBlockTrigger(manager, block, DEFAULT);
 	}
 
-	public static List<IWandTriggerManager> matchesTrigger(BlockState blockState) {
+	public static List<IWandTriggerManager> matchesTrigger(@NotNull BlockState blockState, @NotNull BlockPos pos, @Nullable Level atLevel) {
 		List<IWandTriggerManager> result = new ArrayList<>();
 		for (var matcherToTriggers : triggers.values()) {
 			for (var matcher : matcherToTriggers.keySet()) {
-				if (matcher.match(blockState)){
+				if (matcher.match(atLevel, blockState,pos)){
 					result.addAll(matcherToTriggers.get(matcher));
 				}
 			}
@@ -64,12 +61,12 @@ public class WandTriggerRegistry {
 		return result;
 	}
 
-	public static List<IWandTriggerManager> matchesTrigger(BlockState blockState,String modid) {
+	public static List<IWandTriggerManager> matchesTrigger(@NotNull BlockState blockState, @NotNull BlockPos pos, @Nullable Level atLevel,@NotNull String modid) {
 		List<IWandTriggerManager> result = new ArrayList<>();
 		var matcherToTriggers = triggers.get(modid);
 
 		for (var matcher : matcherToTriggers.keySet()) {
-			if (matcher.match(blockState)){
+			if (matcher.match(atLevel, blockState,pos)){
 				result.addAll(matcherToTriggers.get(matcher));
 			}
 		}
@@ -78,7 +75,7 @@ public class WandTriggerRegistry {
 	/**
 	 * Checks all trigger registries if one exists for the given block and meta
 	 */
-	public static boolean hasTrigger(BlockMatcher matcher) {
+	public static boolean hasTrigger(AbstractBlockMatcher matcher) {
 		for (String modid:triggers.keySet()) {
 			if (triggers.get(modid).containsKey(matcher)){
 				return true;
@@ -90,7 +87,7 @@ public class WandTriggerRegistry {
 	/**
 	 * modid sensitive version
 	 */
-	public static boolean hasTrigger(BlockMatcher matcher, String modid) {
+	public static boolean hasTrigger(AbstractBlockMatcher matcher, String modid) {
 		if (!triggers.containsKey(modid)) return false;
         return triggers.get(modid).containsKey(matcher);
     }

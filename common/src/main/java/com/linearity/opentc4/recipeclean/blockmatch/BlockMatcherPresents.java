@@ -1,0 +1,23 @@
+package com.linearity.opentc4.recipeclean.blockmatch;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class BlockMatcherPresents {
+    public static final AbstractBlockMatcher AIR_BLOCK_MATCHER = new AbstractBlockMatcher() {
+        @Override
+        public boolean match(@Nullable Level atLevel, @NotNull BlockState state, @NotNull BlockPos pos) {
+            return state.isAir();
+        }
+    };
+    public static final SimpleBlockMatcher OBSIDIAN_MATCHER = SimpleBlockMatcher.of(Blocks.OBSIDIAN);
+    public static final SimpleBlockMatcher NETHER_BRICKS_MATCHER = SimpleBlockMatcher.of(Blocks.NETHER_BRICKS);
+    public static final SimpleBlockMatcher IRON_BARS_MATCHER = SimpleBlockMatcher.of(Blocks.IRON_BARS);
+    public static final SimpleFluidMatcher LAVA_SOURCE_MATCHER = new SimpleFluidMatcher(Fluids.LAVA, true);
+
+}
