@@ -34,6 +34,7 @@ public class AncientStoneSlabBlock extends SlabBlock {
         var coord = blockPlaceContext.getClickedPos();
         var hasher = ""+coord.getX() + coord.getY() + coord.getZ() + blockPlaceContext.getLevel().dimension().location();
         var random = new Random(hasher.hashCode());
+
         return super.getStateForPlacement(blockPlaceContext).setValue(FACE_STATE, random.nextInt(64));
     }
 }

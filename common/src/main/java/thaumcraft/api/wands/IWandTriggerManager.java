@@ -1,5 +1,6 @@
 package thaumcraft.api.wands;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,6 @@ public interface IWandTriggerManager {
 	 * true if consume(stop other behind)
 	 */
     boolean performTrigger(Level world, ItemStack wand, Player player,
-                           int x, int y, int z, Direction side);
+						   BlockPos pos, Direction side);
 	
 }

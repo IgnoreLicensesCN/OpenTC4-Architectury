@@ -15,6 +15,7 @@
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
     "DropExperienceBlockMixin",
+    "EntityMixin",
     "EntityTypeMixin",
     "ItemStackMixin",
     "LivingEntityAccessor",

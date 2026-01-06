@@ -37,6 +37,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.common.multiparts.matchers.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
 
 public class WandManager implements IWandTriggerManager {
     static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
@@ -388,6 +389,7 @@ public class WandManager implements IWandTriggerManager {
         return fencefound;
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean replaceArcaneFurnace(World world, int x, int y, int z) {
         boolean fencefound = false;
 
@@ -785,44 +787,51 @@ public class WandManager implements IWandTriggerManager {
 
     }
 
+
+
     @Override
-    public boolean performTrigger(Level world, ItemStack wand, Player player, int x, int y, int z, Direction side) {
+    public boolean performTrigger(Level level, ItemStack wand, Player player, BlockPos pos, Direction side) {
         boolean returnFlag = false;
-        returnFlag = createThaumonomicon(wand, player, world, x, y, z);
+        var playerName = player.getName().getString();
+        returnFlag = createThaumonomicon(wand, player, level, x, y, z);
         if (returnFlag) {return true;}
-        returnFlag = createCrucible(wand, player, world, x, y, z);
+        returnFlag = createCrucible(wand, player, level, x, y, z);
         if (returnFlag) {return true;}
         
         return false;
         switch (event) {
             case 2:
-                if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "INFERNALFURNACE")) {
-                    return createArcaneFurnace(wand, player, world, x, y, z);
+                if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
+                    var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
+                    if (matchResult != null) {
+
+                    }
+                    return createArcaneFurnace(wand, player, level, x, y, z);
                 }
                 break;
             case 3:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "INFUSION")) {
-                    return createInfusionAltar(wand, player, world, x, y, z);
+                    return createInfusionAltar(wand, player, level, x, y, z);
                 }
                 break;
             case 4:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "NODEJAR")) {
-                    return createNodeJar(wand, player, world, x, y, z);
+                    return createNodeJar(wand, player, level, x, y, z);
                 }
                 break;
             case 5:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "THAUMATORIUM")) {
-                    return createThaumatorium(wand, player, world, x, y, z, side);
+                    return createThaumatorium(wand, player, level, x, y, z, side);
                 }
                 break;
             case 6:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "OCULUS")) {
-                    return createOculus(wand, player, world, x, y, z, side);
+                    return createOculus(wand, player, level, x, y, z, side);
                 }
                 break;
             case 7:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "ADVALCHEMYFURNACE")) {
-                    return createAdvancedAlchemicalFurnace(wand, player, world, x, y, z, side);
+                    return createAdvancedAlchemicalFurnace(wand, player, level, x, y, z, side);
                 }
         }
 

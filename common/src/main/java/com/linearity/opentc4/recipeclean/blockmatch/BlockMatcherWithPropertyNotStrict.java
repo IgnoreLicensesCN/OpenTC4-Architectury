@@ -11,8 +11,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class BlockMatcherWithProperty extends AbstractBlockMatcher {
-    public BlockMatcherWithProperty(Block block, PropertyMap<?> properties) {
+//if put null into properties,any value for this property will consider true
+//blockState being matched must have all property in map but state property count no need to equals to property count
+public class BlockMatcherWithPropertyNotStrict extends AbstractBlockMatcher {
+    public BlockMatcherWithPropertyNotStrict(Block block, PropertyMap<?> properties) {
         this.block = block;
         this.properties = properties;
     }
@@ -27,13 +29,14 @@ public class BlockMatcherWithProperty extends AbstractBlockMatcher {
             return false;
         }
         var propertiesInState = state.getProperties();
-        if (propertiesInState.size() != properties.size()) {
-            return false;
-        }
+
         for (var property : propertiesInState){
+            if (!state.hasProperty(property)){
+                return false;
+            }
             var value = properties.get(property);
             if (value == null) {
-                return false;
+                continue;
             }
             var matchingPropertyValue = state.getValue(property);
             if (!Objects.equals(matchingPropertyValue,value)){

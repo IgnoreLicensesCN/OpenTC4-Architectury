@@ -71,7 +71,7 @@ public class NitorBlock extends Block {
     }
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
-        return RenderShape.INVISIBLE; // 像老TC一样不可见，只是光源
+        return RenderShape.INVISIBLE;
     }
     @Deprecated
     public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {

@@ -5,17 +5,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.abstracts.IMultipartComponentBlock;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//I didn't consider about dynamic-sized multipart like mekanism,maybe you need to override match methods and send "null" matchers into constructor args
 public abstract class AbstractMultipartMatcher {
 
     public record MatchInfo(Rotation3D usingRotation, Mirror3D usingMirror) {}
 
-    //[y][x][z]
-    protected final AbstractBlockMatcher[][][] matchers;
+    //[y][x][z] it seems to be left-handed sorry.
+    public final AbstractBlockMatcher[][][] matchers;
     protected final BlockPos defaultCheckBasePosRelated;
     protected final List<Rotation3D> allowedRotations;
     protected final List<Mirror3D> allowedMirrors;
@@ -66,19 +68,53 @@ public abstract class AbstractMultipartMatcher {
         return match(level,basePosInWorld, defaultCheckBasePosRelated);
     }
     public @Nullable MatchInfo match(@NotNull Level level,
-                           BlockPos basePosRelatedInWorld,
+                           BlockPos basePosInWorld,
                            BlockPos basePosRelated) {
 
         for (Rotation3D rotation : allowedRotations) {
             for (Mirror3D mirror : allowedMirrors) {
 
-                if (matchWithTransform(level, basePosRelatedInWorld, basePosRelated, rotation, mirror)) {
+                if (matchWithTransform(level, basePosInWorld, basePosRelated, rotation, mirror)) {
                     return new MatchInfo(rotation, mirror);
                 }
 
             }
         }
         return null;
+    }
+    public void recoverMultipart(Level level, BlockPos basePosInWorld, BlockPos basePosRelated,BlockPos multipartCheckerWorldPos,MatchInfo info) {
+        var rot3D = info.usingRotation;
+        var mirror3D = info.usingMirror;
+        for (int y = 0; y < matchers.length; y++) {
+            AbstractBlockMatcher[][] atY = matchers[y];
+            if (atY == null) continue;
+
+            for (int x = 0; x < matchers.length; x++) {
+                AbstractBlockMatcher[] atXY = atY[x];
+                if (atXY == null) continue;
+
+                for (int z = 0; z < atXY.length; z++) {
+                    AbstractBlockMatcher matcher = atXY[z];
+                    if (matcher == null) continue;
+
+                    BlockPos worldPos = transform(
+                            x, y, z,
+                            basePosRelated,
+                            basePosInWorld,
+                            rot3D,
+                            mirror3D
+                    );
+
+                    var bState = level.getBlockState(worldPos);
+                    if (matcher.match(level,bState, worldPos)
+                            && bState.getBlock() instanceof IMultipartComponentBlock componentBlock
+                            && componentBlock.findMultipartCheckerPosRelatedToSelf(level,bState,worldPos).equals(multipartCheckerWorldPos)
+                    ) {
+                        componentBlock.recoverToOriginalBlock(level,bState,worldPos);
+                    }
+                }
+            }
+        }
     }
     protected boolean matchWithTransform(
             Level level,
@@ -92,7 +128,7 @@ public abstract class AbstractMultipartMatcher {
             if (atY == null) continue;
 
             for (int x = 0; x < matchers.length; x++) {
-                AbstractBlockMatcher[] atXY = atY[y];
+                AbstractBlockMatcher[] atXY = atY[x];
                 if (atXY == null) continue;
 
                 for (int z = 0; z < atXY.length; z++) {
