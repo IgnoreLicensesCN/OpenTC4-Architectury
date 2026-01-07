@@ -3,7 +3,6 @@ package thaumcraft.common.blocks.multipartcomponent.infernalfurnace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -29,7 +28,7 @@ public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent {
     }
     public InfernalFurnaceSideBlock() {
         super(Properties
-                .copy(Blocks.OBSIDIAN)
+                .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
         );

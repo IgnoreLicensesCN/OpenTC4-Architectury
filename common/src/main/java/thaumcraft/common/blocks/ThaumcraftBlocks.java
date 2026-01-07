@@ -5,23 +5,21 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
-import thaumcraft.common.tiles.EtherealBloomBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ThaumcraftBlocks {
@@ -110,6 +108,16 @@ public class ThaumcraftBlocks {
     public static final ManaShroomBlock MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
 
     public static final EtherealBloomBlock ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
+
+
+    public static final InfernalFurnaceBarBlock INFERNAL_FURNACE_BAR = Registry.SUPPLIER_INFERNAL_FURNACE_BAR.get();
+    public static final InfernalFurnaceSideBlock INFERNAL_FURNACE_SIDE = Registry.SUPPLIER_INFERNAL_FURNACE_SIDE.get();
+    public static final InfernalFurnaceBottomBlock INFERNAL_FURNACE_BOTTOM = Registry.SUPPLIER_INFERNAL_FURNACE_BOTTOM.get();
+    public static final InfernalFurnaceCornerBlock INFERNAL_FURNACE_CORNER = Registry.SUPPLIER_INFERNAL_FURNACE_CORNER.get();
+    public static final InfernalFurnaceEdgeXAxisBlock INFERNAL_FURNACE_X_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_X_AXIS.get();
+    public static final InfernalFurnaceEdgeYAxisBlock INFERNAL_FURNACE_Y_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Y_AXIS.get();
+    public static final InfernalFurnaceEdgeZAxisBlock INFERNAL_FURNACE_Z_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Z_AXIS.get();
+    public static final InfernalFurnaceLavaBlock INFERNAL_FURNACE_LAVA = Registry.SUPPLIER_INFERNAL_FURNACE_LAVA.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -402,6 +410,39 @@ public class ThaumcraftBlocks {
                 "ethereal_bloom",
                 EtherealBloomBlock::new
         );
+        public static final RegistrySupplier<InfernalFurnaceBarBlock> SUPPLIER_INFERNAL_FURNACE_BAR = BLOCKS.register(
+                "infernal_furnace_bar",
+                InfernalFurnaceBarBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceSideBlock> SUPPLIER_INFERNAL_FURNACE_SIDE = BLOCKS.register(
+                "infernal_furnace_side",
+                InfernalFurnaceSideBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceBottomBlock> SUPPLIER_INFERNAL_FURNACE_BOTTOM = BLOCKS.register(
+                "infernal_furnace_bottom",
+                InfernalFurnaceBottomBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceCornerBlock> SUPPLIER_INFERNAL_FURNACE_CORNER = BLOCKS.register(
+                "infernal_furnace_corner",
+                InfernalFurnaceCornerBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceEdgeXAxisBlock> SUPPLIER_INFERNAL_FURNACE_X_AXIS = BLOCKS.register(
+                "infernal_furnace_x_axis",
+                InfernalFurnaceEdgeXAxisBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceEdgeYAxisBlock> SUPPLIER_INFERNAL_FURNACE_Y_AXIS = BLOCKS.register(
+                "infernal_furnace_y_axis",
+                InfernalFurnaceEdgeYAxisBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceEdgeZAxisBlock> SUPPLIER_INFERNAL_FURNACE_Z_AXIS = BLOCKS.register(
+                "infernal_furnace_z_axis",
+                InfernalFurnaceEdgeZAxisBlock::new
+        );
+        public static final RegistrySupplier<InfernalFurnaceLavaBlock> SUPPLIER_INFERNAL_FURNACE_LAVA = BLOCKS.register(
+                "infernal_furnace_lava",
+                InfernalFurnaceLavaBlock::new
+        );
+
 
         static {
             BLOCKS.register();

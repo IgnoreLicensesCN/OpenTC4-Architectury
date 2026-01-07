@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockMatcherPresents {
-    public static final AbstractBlockMatcher AIR_BLOCK_MATCHER = new AbstractBlockMatcher() {
+    public static final IBlockMatcher AIR_BLOCK_MATCHER = new IBlockMatcher() {
         @Override
         public boolean match(@Nullable Level atLevel, @NotNull BlockState state, @NotNull BlockPos pos) {
             return state.isAir();

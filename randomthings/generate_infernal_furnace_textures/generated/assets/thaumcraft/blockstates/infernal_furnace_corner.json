@@ -1,0 +1,101 @@
+{
+  "variants": {
+  
+    "corner=0,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_0_rot_0"
+        },
+    "corner=1,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_1_rot_0"
+        },
+    "corner=2,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_2_rot_0"
+        },
+    "corner=3,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_3_rot_0"
+        },
+    "corner=4,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_4_rot_0"
+        },
+    "corner=5,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_5_rot_0"
+        },
+    "corner=6,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_6_rot_0"
+        },
+    "corner=7,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/corner_7_rot_0"
+        },
+    "corner=0,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_0_rot_1"
+        },
+    "corner=1,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_1_rot_1"
+        },
+    "corner=2,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_2_rot_1"
+        },
+    "corner=3,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_3_rot_1"
+        },
+    "corner=4,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_4_rot_1"
+        },
+    "corner=5,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_5_rot_1"
+        },
+    "corner=6,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_6_rot_1"
+        },
+    "corner=7,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/corner_7_rot_1"
+        },
+    "corner=0,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_0_rot_2"
+        },
+    "corner=1,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_1_rot_2"
+        },
+    "corner=2,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_2_rot_2"
+        },
+    "corner=3,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_3_rot_2"
+        },
+    "corner=4,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_4_rot_2"
+        },
+    "corner=5,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_5_rot_2"
+        },
+    "corner=6,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_6_rot_2"
+        },
+    "corner=7,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/corner_7_rot_2"
+        },
+    "corner=0,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_0_rot_3"
+        },
+    "corner=1,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_1_rot_3"
+        },
+    "corner=2,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_2_rot_3"
+        },
+    "corner=3,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_3_rot_3"
+        },
+    "corner=4,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_4_rot_3"
+        },
+    "corner=5,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_5_rot_3"
+        },
+    "corner=6,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_6_rot_3"
+        },
+    "corner=7,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/corner_7_rot_3"
+        }
+    }}
+    

@@ -32,6 +32,7 @@ import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 
 public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
@@ -187,7 +188,11 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
     }
 
     @Override
+    @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.AURA_NODE){
+            return null;
+        }
         return (level1, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);

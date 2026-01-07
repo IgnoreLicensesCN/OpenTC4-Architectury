@@ -1,0 +1,53 @@
+{
+  "variants": {
+  
+    "edge_type_y_axis=0,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_0_rot_0"
+        },
+    "edge_type_y_axis=1,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_1_rot_0"
+        },
+    "edge_type_y_axis=2,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_2_rot_0"
+        },
+    "edge_type_y_axis=3,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_3_rot_0"
+        },
+    "edge_type_y_axis=0,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_0_rot_1"
+        },
+    "edge_type_y_axis=1,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_1_rot_1"
+        },
+    "edge_type_y_axis=2,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_2_rot_1"
+        },
+    "edge_type_y_axis=3,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_3_rot_1"
+        },
+    "edge_type_y_axis=0,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_0_rot_2"
+        },
+    "edge_type_y_axis=1,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_1_rot_2"
+        },
+    "edge_type_y_axis=2,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_2_rot_2"
+        },
+    "edge_type_y_axis=3,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_3_rot_2"
+        },
+    "edge_type_y_axis=0,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_0_rot_3"
+        },
+    "edge_type_y_axis=1,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_1_rot_3"
+        },
+    "edge_type_y_axis=2,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_2_rot_3"
+        },
+    "edge_type_y_axis=3,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/y_axis_3_rot_3"
+        }
+    }}
+    

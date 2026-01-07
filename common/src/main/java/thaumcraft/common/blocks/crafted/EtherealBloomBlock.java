@@ -16,6 +16,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.EtherealBloomBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class EtherealBloomBlock extends BushBlock implements EntityBlock {
     public EtherealBloomBlock(Properties properties) {
@@ -44,10 +45,14 @@ public class EtherealBloomBlock extends BushBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.ETHEREAL_BLOOM){
+            return null;
+        }
         return (level1, blockPos, blockState1, blockEntity) -> {
             if (blockEntity instanceof EtherealBloomBlockEntity etherealBloomBlockEntity) {
-                etherealBloomBlockEntity.serverTick();
+                etherealBloomBlockEntity.blockEntityTick();
             }
         };
     }

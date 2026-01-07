@@ -53,6 +53,16 @@ block_names = [
     "ethereal_bloom",
 ]
 
+drop_b_for_a_names = [
+    ('infernal_furnace_bar','minecraft:iron_bars'),
+    ('infernal_furnace_corner','minecraft:nether_bricks'),
+    ('infernal_furnace_side','minecraft:obsidian'),
+    ('infernal_furnace_bottom','minecraft:obsidian'),
+    ('infernal_furnace_x_axis','minecraft:obsidian'),
+    ('infernal_furnace_y_axis','minecraft:nether_bricks'),
+    ('infernal_furnace_z_axis','minecraft:obsidian'),
+]
+
 slab_names = [
     "ancient_stone_slab",
     "arcane_stone_brick_slab",
@@ -92,6 +102,37 @@ for s in block_names:
 
     # 写文件
     file_path = os.path.join(output_dir, f"{s}.json")
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(loot_table, f, indent=4)
+
+    print(f"Generated {file_path}")
+
+
+for a,b in drop_b_for_a_names:
+    loot_table = {
+      "type": "minecraft:block",
+      "pools": [
+        {
+          "bonus_rolls": 0.0,
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            }
+          ],
+          "entries": [
+            {
+              "type": "minecraft:item",
+              "name": f"{b}"
+            }
+          ],
+          "rolls": 1.0
+        }
+      ],
+      "random_sequence": f"thaumcraft:blocks/{a}"
+    }
+
+    # 写文件
+    file_path = os.path.join(output_dir, f"{a}.json")
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(loot_table, f, indent=4)
 

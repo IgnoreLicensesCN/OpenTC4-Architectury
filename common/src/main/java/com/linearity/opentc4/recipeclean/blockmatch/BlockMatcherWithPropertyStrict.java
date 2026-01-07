@@ -13,7 +13,7 @@ import java.util.Objects;
 
 //if put null into properties,any value for this property will consider true
 //blockState being matched must have all property in map and state property count equals to property count
-public class BlockMatcherWithPropertyStrict extends AbstractBlockMatcher {
+public class BlockMatcherWithPropertyStrict implements IBlockMatcher {
     public BlockMatcherWithPropertyStrict(Block block, PropertyMap<?> properties) {
         this.block = block;
         this.properties = properties;

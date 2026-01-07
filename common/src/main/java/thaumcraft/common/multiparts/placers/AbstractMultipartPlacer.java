@@ -1,12 +1,12 @@
 package thaumcraft.common.multiparts.placers;
 
+import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.multiparts.matchers.AbstractMultipartMatcher;
+import thaumcraft.common.multiparts.matchers.MultipartMatchInfo;
 
-public abstract class AbstractMultipartPlacer {
+public abstract class AbstractMultipartPlacer implements IMultipartPlacer {
     //[y][x][z]
     protected final IBlockPlacer[][][] multipartPlacer;
     protected final BlockPos defaultBlockPosRelated;
@@ -17,17 +17,19 @@ public abstract class AbstractMultipartPlacer {
     }
 
     public void place(@NotNull Level level,
-                      @NotNull BlockPos basePosRelatedInWorld,
-                      @NotNull AbstractMultipartMatcher.MatchInfo matchInfo){
-        place(level,defaultBlockPosRelated,basePosRelatedInWorld,matchInfo);
+                      @NotNull BlockPos baseInWorld,
+                      @NotNull MultipartMatchInfo multipartMatchInfo
+    ){
+        place(level,defaultBlockPosRelated,baseInWorld, multipartMatchInfo);
     }
     public void place(@NotNull Level level,
                       @NotNull BlockPos basePosRelated,
                       @NotNull BlockPos basePosRelatedInWorld,
-                      @NotNull AbstractMultipartMatcher.MatchInfo matchInfo) {
+                      @NotNull MultipartMatchInfo multipartMatchInfo
+    ) {
 
-        AbstractMultipartMatcher.Rotation3D rotation = matchInfo.usingRotation();
-        AbstractMultipartMatcher.Mirror3D mirror = matchInfo.usingMirror();
+        VecTransformations.Rotation3D rotation = multipartMatchInfo.usingRotation();
+        VecTransformations.Mirror3D mirror = multipartMatchInfo.usingMirror();
 
         for (int y = 0; y < multipartPlacer.length; y++) {
             IBlockPlacer[][] atY = multipartPlacer[y];
@@ -41,7 +43,7 @@ public abstract class AbstractMultipartPlacer {
                     IBlockPlacer placer = atYX[z];
                     if (placer == null) continue;
 
-                    BlockPos worldPos = AbstractMultipartMatcher.transform(
+                    BlockPos worldPos = VecTransformations.transform(
                             x, y, z,
                             basePosRelated,
                             basePosRelatedInWorld,
@@ -49,7 +51,7 @@ public abstract class AbstractMultipartPlacer {
                             mirror
                     );
 
-                    placer.place(level, worldPos, matchInfo);
+                    placer.place(level, worldPos, multipartMatchInfo);
                 }
             }
         }

@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractBlockMatcher {
-
-    public abstract boolean match(@Nullable Level atLevel, @NotNull BlockState state, @NotNull BlockPos pos);
+public interface IBlockMatcher {
+    boolean match(@Nullable Level atLevel, @NotNull BlockState state, @NotNull BlockPos pos);
 }

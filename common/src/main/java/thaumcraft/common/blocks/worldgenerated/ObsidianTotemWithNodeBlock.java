@@ -24,6 +24,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
@@ -49,13 +50,13 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
         );
     }
 
-    @Override
-    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = serverLevel.getBlockEntity(blockPos);
-        if (bEntity instanceof ObsidianTotemNodeBlockEntity node){
-            node.serverRandomTickByBlockHandle();
-        }
-    }
+//    @Override
+//    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+//        var bEntity = serverLevel.getBlockEntity(blockPos);
+//        if (bEntity instanceof ObsidianTotemNodeBlockEntity node){
+//            node.serverRandomTickByBlockHandle();
+//        }
+//    }
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
@@ -106,7 +107,11 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
     }
 
     @Override
+    @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.OBSIDIAN_TOTEM_NODE){
+            return null;
+        }
         return (level1, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);

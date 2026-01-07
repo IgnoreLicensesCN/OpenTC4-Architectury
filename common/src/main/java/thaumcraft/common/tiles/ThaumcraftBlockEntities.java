@@ -20,6 +20,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EldritchVoidBlockEntity> ELDRITCH_VOID = Registry.SUPPLIER_ELDRITCH_VOID.get();
     public static final BlockEntityType<OwnedBlockEntity> OWNED = Registry.SUPPLIER_OWNED.get();
     public static final BlockEntityType<EtherealBloomBlockEntity> ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
+    public static final BlockEntityType<InfernalFurnaceBlockEntity> INFERNAL_FURNACE = Registry.SUPPLIER_INFERNAL_FURNACE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -63,6 +64,14 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EtherealBloomBlockEntity::new,
                         ThaumcraftBlocks.ETHEREAL_BLOOM
+                ).build(null)
+        );
+
+        public static final RegistrySupplier<BlockEntityType<InfernalFurnaceBlockEntity>> SUPPLIER_INFERNAL_FURNACE = BLOCK_ENTITIES.register(
+                "infernal_furnace",
+                () -> BlockEntityType.Builder.of(
+                        InfernalFurnaceBlockEntity::new,
+                        ThaumcraftBlocks.INFERNAL_FURNACE_LAVA
                 ).build(null)
         );
     }

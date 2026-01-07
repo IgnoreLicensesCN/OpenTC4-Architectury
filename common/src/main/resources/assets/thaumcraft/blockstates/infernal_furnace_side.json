@@ -1,0 +1,41 @@
+{
+  "variants": {
+  
+    "side=0,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/side_0_rot_0"
+        },
+    "side=1,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/side_1_rot_0"
+        },
+    "side=2,rotation_y_axis=0": {
+          "model": "thaumcraft:block/infernal_furnace/side_2_rot_0"
+        },
+    "side=0,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/side_0_rot_1"
+        },
+    "side=1,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/side_1_rot_1"
+        },
+    "side=2,rotation_y_axis=1": {
+          "model": "thaumcraft:block/infernal_furnace/side_2_rot_1"
+        },
+    "side=0,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/side_0_rot_2"
+        },
+    "side=1,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/side_1_rot_2"
+        },
+    "side=2,rotation_y_axis=2": {
+          "model": "thaumcraft:block/infernal_furnace/side_2_rot_2"
+        },
+    "side=0,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/side_0_rot_3"
+        },
+    "side=1,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/side_1_rot_3"
+        },
+    "side=2,rotation_y_axis=3": {
+          "model": "thaumcraft:block/infernal_furnace/side_2_rot_3"
+        }
+    }}
+    

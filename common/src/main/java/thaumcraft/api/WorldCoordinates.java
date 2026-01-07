@@ -35,7 +35,7 @@ public class WorldCoordinates implements Comparable<WorldCoordinates>
         this.x = pos.getX();
         this.y = pos.getY();
         this.z = pos.getZ();
-        this.dim = tile.getLevel().dimension().registry().toString();
+        this.dim = tile.getLevel().dimension().location().toString();
     }
 
     public WorldCoordinates(WorldCoordinates par1ChunkPos)

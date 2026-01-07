@@ -13,7 +13,7 @@ public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent
     }
     public InfernalFurnaceBottomBlock() {
         super(Properties
-                .copy(Blocks.OBSIDIAN)
+                .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
         );

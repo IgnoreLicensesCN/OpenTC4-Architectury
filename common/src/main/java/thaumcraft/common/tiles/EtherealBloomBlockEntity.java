@@ -30,11 +30,11 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         super(blockEntityType, blockPos, blockState);
     }
     public EtherealBloomBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ThaumcraftBlockEntities.ETHEREAL_BLOOM, blockPos, blockState);
+        this(ThaumcraftBlockEntities.ETHEREAL_BLOOM, blockPos, blockState);
     }
 
 
-    public void serverTick() {
+    public void blockEntityTick() {
         
         if (this.counter == 0) {
             this.counter = this.level.random.nextInt(100);

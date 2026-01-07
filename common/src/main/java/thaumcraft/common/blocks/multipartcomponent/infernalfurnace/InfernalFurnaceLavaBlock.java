@@ -1,13 +1,19 @@
 package thaumcraft.common.blocks.multipartcomponent.infernalfurnace;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,6 +32,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
+import thaumcraft.common.tiles.InfernalFurnaceBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {
 
@@ -72,7 +80,15 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     @Override
     public void recoverToOriginalBlock(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
-            serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState(), 3);
+//            serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState(), 3);
+
+            Blaze blaze = new Blaze(EntityType.BLAZE,serverLevel);
+            blaze.setYRot(0);
+            blaze.setXRot(0);
+            blaze.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+            blaze.addEffect(new MobEffectInstance(MobEffects.REGENERATION,6000,2));
+            blaze.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,12000,0));
+            serverLevel.addFreshEntity(blaze);
         }
     }
 
@@ -91,24 +107,60 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
         }
         return null;
     }
+    public static void putItemStackIntoEntity(Entity entity,ItemStack stack){
+        if (entity instanceof ItemEntity itemEntity){
+            itemEntity.setItem(stack);
+            return;
+        }
+        throw new IllegalArgumentException("entity not supported to set itemStack");
+    }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return ;
+        return new InfernalFurnaceBlockEntity(blockPos, blockState);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType0) {
-        return ((level, blockPos, blockState, blockEntity) ->
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.INFERNAL_FURNACE) {
+            return null;
+        }
+        return ((level, blockPos, blockState, blockEntity) -> {
+            if (blockEntity instanceof InfernalFurnaceBlockEntity infernalFurnaceBlockEntity){
+                infernalFurnaceBlockEntity.blockEntityTick();
+            }
+        }
         );
     }
+
+    public static final Vec3 IN_LAVA_SPEED_MULTIPLIER = new Vec3(0.5, 0.025F, 0.5);
 
     @Override
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         var itemStack = entityAsItemStack(entity);
         if (itemStack != null) {
-            //TODO:store into BlockEntity if can and throw out(yes,new feature) if cant.
-            entity.makeStuckInBlock(blockState, new Vec3(0.25, 0.05F, 0.25));
+            if (entity.onGround() && Platform.getEnvironment() == Env.SERVER){
+
+                var bEntity = level.getBlockEntity(blockPos);
+                if (bEntity instanceof InfernalFurnaceBlockEntity infernalFurnace){
+                    itemStack = infernalFurnace.insertItemStack(itemStack);
+                    if (itemStack.isEmpty()) {
+                        entity.discard();
+                        return;
+                    }
+                    putItemStackIntoEntity(entity, itemStack);
+                }
+
+                //maybe some of you can play some redstone tricks?
+                //throw too high leads to it's so easy to push item to next furnace? idk
+                //but i must tell to others that THIS FURNACE HAS LIMITED CAPACITY.
+                entity.addDeltaMovement(new Vec3(0, 0.9, 0));
+                return;
+            }
+            entity.makeStuckInBlock(blockState, IN_LAVA_SPEED_MULTIPLIER);
+        }else {
+            entity.makeStuckInBlock(blockState, IN_LAVA_SPEED_MULTIPLIER);
         }
     }
 
@@ -135,7 +187,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
         BlockPos blockpos = blockPos.above();
-        if (level.getBlockState(blockpos).isAir() && !level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
+        if (level.getBlockState(blockpos).isAir()) {
             if (randomSource.nextInt(100) == 0) {
                 double d0 = blockPos.getX() + randomSource.nextDouble();
                 double d1 = blockPos.getY() + 1.0;
@@ -155,6 +207,12 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
                         0.9F + randomSource.nextFloat() * 0.15F,
                         false
                 );
+            }
+            for (int i=0;i<3;i++){
+                double d0 = blockPos.getX() + randomSource.nextDouble();
+                double d1 = blockPos.getY() + 1.0 + randomSource.nextDouble()*0.5;
+                double d2 = blockPos.getZ() + randomSource.nextDouble();
+                level.addParticle(ParticleTypes.LARGE_SMOKE, d0, d1, d2, 0.0, 0.0, 0.0);
             }
         }
     }

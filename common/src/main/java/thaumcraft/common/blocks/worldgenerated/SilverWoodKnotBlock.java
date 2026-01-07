@@ -28,6 +28,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
 
@@ -89,13 +90,13 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
         }
 //        super.spawnDestroyParticles(level, player, blockPos, blockState);
     }
-    @Override
-    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = serverLevel.getBlockEntity(blockPos);
-        if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
-            node.serverRandomTickByBlockHandle();
-        }
-    }
+//    @Override
+//    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+//        var bEntity = serverLevel.getBlockEntity(blockPos);
+//        if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
+//            node.serverRandomTickByBlockHandle();
+//        }
+//    }
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
@@ -117,7 +118,11 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
     }
 
     @Override
+    @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.SILVERWOOD_KNOT_NODE) {
+            return null;
+        }
         return (level1, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);

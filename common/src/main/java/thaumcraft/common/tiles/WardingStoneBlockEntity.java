@@ -26,6 +26,6 @@ public class WardingStoneBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public WardingStoneBlockEntity(BlockPos blockPos, BlockState blockState){
-        super(ThaumcraftBlockEntities.WARDING_STONE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.WARDING_STONE, blockPos, blockState);
     }
 }

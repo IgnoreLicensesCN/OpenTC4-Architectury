@@ -44,7 +44,7 @@ public class VisNetHandler {
 		int drainedAmount = 0;
 
 		WorldCoordinates drainer = new WorldCoordinates(x, y, z,
-				world.dimension());
+				world.dimension().location().toString());
 		if (!nearbyNodes.containsKey(drainer)) {
 			calculateNearbyNodes(world, x, y, z);
 		}

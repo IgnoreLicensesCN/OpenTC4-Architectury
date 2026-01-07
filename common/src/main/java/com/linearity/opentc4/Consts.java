@@ -185,4 +185,11 @@ public class Consts {
         private static final String OWNERS = "owners";
         public static final CompoundTagHelper.StringSetTagAccessor OWNERS_ACCESSOR = new CompoundTagHelper.StringSetTagAccessor(OWNERS);
     }
+
+    public static class InfernalFurnaceBlockEntityTagAccessors {
+        private static final String PROCESSED_TICKS = "processed_ticks";
+        public static final CompoundTagHelper.IntTagAccessor PROCESSED_TICKS_ACCESSOR = new CompoundTagHelper.IntTagAccessor(PROCESSED_TICKS);
+        private static final String PROCESSING_ITEM_STACK = "processing_item_stack";
+        public static final CompoundTagHelper.ItemStackTagAccessor PROCESSING_ITEM_STACK_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(PROCESSING_ITEM_STACK);
+    }
 }

@@ -7,7 +7,7 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SimpleFluidMatcher extends AbstractBlockMatcher {
+public class SimpleFluidMatcher implements IBlockMatcher {
     protected final boolean matchSource;
     protected final Fluid fluid;
 

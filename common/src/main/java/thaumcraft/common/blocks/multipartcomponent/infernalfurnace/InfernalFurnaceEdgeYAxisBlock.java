@@ -7,9 +7,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import thaumcraft.common.multiparts.matchers.AbstractMultipartMatcher;
+import thaumcraft.common.multiparts.matchers.IFormedMultipartMatcher;
 
-import static thaumcraft.common.multiparts.matchers.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
+import static thaumcraft.common.multiparts.matchers.FormedMultipartMatcherImpls.INFERNAL_FURNACE_FORMED;
 
 public class InfernalFurnaceEdgeYAxisBlock extends AbstractInfernalFurnaceComponent {
 
@@ -28,7 +28,7 @@ public class InfernalFurnaceEdgeYAxisBlock extends AbstractInfernalFurnaceCompon
     }
     public InfernalFurnaceEdgeYAxisBlock() {
         super(BlockBehaviour.Properties
-                .copy(Blocks.OBSIDIAN)
+                .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
         );
@@ -73,11 +73,6 @@ public class InfernalFurnaceEdgeYAxisBlock extends AbstractInfernalFurnaceCompon
             return SELF_POS_2_1_2;
         }
         throw new IllegalStateException("Unexpected corner type: " + corner);
-    }
-
-    @Override
-    public AbstractMultipartMatcher getMultipartMatcher(Level level, BlockState state, BlockPos pos) {
-        return INFERNAL_FURNACE_BEFORE_FORMING;
     }
 
     @Override

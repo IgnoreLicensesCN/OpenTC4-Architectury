@@ -27,7 +27,7 @@ public class InfernalFurnaceEdgeZAxisBlock extends AbstractInfernalFurnaceCompon
     }
     public InfernalFurnaceEdgeZAxisBlock() {
         super(Properties
-                .copy(Blocks.OBSIDIAN)
+                .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
         );

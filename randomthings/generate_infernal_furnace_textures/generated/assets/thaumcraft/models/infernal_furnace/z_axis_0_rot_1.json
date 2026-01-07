@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "thaumcraft:block/furnace16",
+    "up": "thaumcraft:block/furnace1",
+    "north": "thaumcraft:block/furnace7",
+    "south": "thaumcraft:block/furnace19",
+    "west": "thaumcraft:block/furnace7",
+    "east": "thaumcraft:block/furnace7"
+  }
+}

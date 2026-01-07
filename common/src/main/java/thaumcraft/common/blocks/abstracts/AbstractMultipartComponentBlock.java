@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -9,18 +10,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.multiparts.matchers.AbstractMultipartMatcher;
 
 public abstract class AbstractMultipartComponentBlock extends Block implements IMultipartComponentBlock {
     public static final IntegerProperty ROTATION_X_AXIS = IntegerProperty.create("rotation_x_axis", 0, 3);
     public static final IntegerProperty ROTATION_Y_AXIS = IntegerProperty.create("rotation_y_axis", 0, 3);
     public static final IntegerProperty ROTATION_Z_AXIS = IntegerProperty.create("rotation_z_axis", 0, 3);
+    public static final IntegerProperty ROTATION_XZ_AXIS = IntegerProperty.create("rotation_xz_axis", 0, 6);
 
     public static final int ROTATION_DEGREE_0 = 0;
-    public static final int ROTATION_DEGREE_90 = 90;
-    public static final int ROTATION_DEGREE_180 = 180;
-    public static final int ROTATION_DEGREE_270 = 270;
+    public static final int ROTATION_DEGREE_90 = 1;
+    public static final int ROTATION_DEGREE_180 = 2;
+    public static final int ROTATION_DEGREE_270 = 3;
+
+    //use Rotation3D#ordinal() for this state
+    public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, VecTransformations.Rotation3D.values().length-1);
 
     public AbstractMultipartComponentBlock(Properties properties) {
         super(properties);
@@ -30,7 +33,7 @@ public abstract class AbstractMultipartComponentBlock extends Block implements I
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         var checkerPos = findMultipartCheckerPosRelatedToSelf(serverLevel, blockState, blockPos).offset(blockPos);
         var state = serverLevel.getBlockState(checkerPos);
-        this.chechMultipart(serverLevel, state, checkerPos);
+        this.checkMultipart(serverLevel, state, checkerPos);
     }
 
     @Override
@@ -49,4 +52,6 @@ public abstract class AbstractMultipartComponentBlock extends Block implements I
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         return this.defaultBlockState();
     }
+
+    public abstract VecTransformations.Rotation3D getRotation(BlockState state);
 }

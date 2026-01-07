@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.WardingStoneBlockEntity;
 
 public class PavingStoneWardingBlock extends Block implements EntityBlock {
@@ -45,8 +46,11 @@ public class PavingStoneWardingBlock extends Block implements EntityBlock {
     }
 
     @Override
-    @NotNull
+    @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.WARDING_STONE){
+            return null;
+        }
         return (level1, blockPos, blockState1, blockEntity) -> {
             if (level1 instanceof ServerLevel serverLevel && blockEntity instanceof WardingStoneBlockEntity wardingStoneBlockEntity){
                 if (wardingStoneBlockEntity.tickCounter.get() == 0){

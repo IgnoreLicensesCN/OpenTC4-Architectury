@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.HungryChestBlockEntity;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -49,7 +50,11 @@ public class HungryChestBlock extends ChestBlock implements EntityBlock {
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType != ThaumcraftBlockEntities.HUNGRY_CHEST){
+            return null;
+        }
         return (level1, blockPos, blockState1, blockEntity) -> {
             if (level1 == null || level1.isClientSide()) return;
             if (!(blockEntity instanceof HungryChestBlockEntity hungryChest)){return;}

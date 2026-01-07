@@ -78,7 +78,7 @@ public class TileThaumcraft extends BlockEntity {
                     this.getBlockState(), Block.UPDATE_ALL);
         }
     }
-    //call by Block (Like AuraNodeBlock#tick call NodeBlockEntity#serverTickByBlockHandle）
+
     public void serverRandomTickByBlockHandle(){}
     public void clientTickByBlockHandle(){}
 
