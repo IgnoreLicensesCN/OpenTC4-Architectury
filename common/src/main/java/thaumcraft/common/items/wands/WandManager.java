@@ -38,6 +38,7 @@ import java.util.function.Function;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 import static thaumcraft.common.multiparts.matchers.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
+import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
 public class WandManager implements IWandTriggerManager {
     static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
@@ -804,9 +805,9 @@ public class WandManager implements IWandTriggerManager {
                 if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
                     var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
                     if (matchResult != null) {
-
+                        INFERNAL_FURNACE_PLACER.place(level,pos,matchResult);
+                        return true;
                     }
-                    return createArcaneFurnace(wand, player, level, x, y, z);
                 }
                 break;
             case 3:

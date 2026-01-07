@@ -6,12 +6,12 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.multiparts.matchers.MultipartMatchInfo;
 
-public abstract class AbstractMultipartPlacer implements IMultipartPlacer {
+public class SimpleMultipartPlacer implements IMultipartPlacer {
     //[y][x][z]
     protected final IBlockPlacer[][][] multipartPlacer;
     protected final BlockPos defaultBlockPosRelated;
 
-    protected AbstractMultipartPlacer(IBlockPlacer[][][] multipartPlacer,BlockPos defaultBlockPosRelated) {
+    protected SimpleMultipartPlacer(IBlockPlacer[][][] multipartPlacer, BlockPos defaultBlockPosRelated) {
         this.multipartPlacer = multipartPlacer;
         this.defaultBlockPosRelated = defaultBlockPosRelated;
     }

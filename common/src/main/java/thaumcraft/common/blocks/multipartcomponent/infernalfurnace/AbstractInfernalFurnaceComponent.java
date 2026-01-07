@@ -86,4 +86,20 @@ public abstract class AbstractInfernalFurnaceComponent extends AbstractMultipart
         }
         throw new IllegalArgumentException("Invalid yAxis state: " + yAxis);
     }
+
+    public static BlockState setRotation(BlockState state,VecTransformations.Rotation3D rotation) {
+        if (rotation == VecTransformations.Rotation3D.NONE) {
+            return state.setValue(ROTATION_Y_AXIS,ROTATION_DEGREE_0);
+        }
+        if (rotation == VecTransformations.Rotation3D.Y_90) {
+            return state.setValue(ROTATION_Y_AXIS,ROTATION_DEGREE_90);
+        }
+        if (rotation == VecTransformations.Rotation3D.Y_180) {
+            return state.setValue(ROTATION_Y_AXIS,ROTATION_DEGREE_180);
+        }
+        if (rotation == VecTransformations.Rotation3D.Y_270) {
+            return state.setValue(ROTATION_Y_AXIS,ROTATION_DEGREE_270);
+        }
+        throw new IllegalArgumentException("Invalid rotation state: " + rotation);
+    }
 }

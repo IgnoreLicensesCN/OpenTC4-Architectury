@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+@Deprecated(forRemoval = true)
 public class BlockArcaneFurnace /*extends BlockContainer*/ {
 //   public IIcon[] icon = new IIcon[27];
 //

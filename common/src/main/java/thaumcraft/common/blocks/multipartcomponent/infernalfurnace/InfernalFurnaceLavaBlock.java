@@ -81,7 +81,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     public void recoverToOriginalBlock(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
 //            serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState(), 3);
-
+            serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
             Blaze blaze = new Blaze(EntityType.BLAZE,serverLevel);
             blaze.setYRot(0);
             blaze.setXRot(0);

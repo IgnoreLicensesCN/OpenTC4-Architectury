@@ -116,7 +116,7 @@ public class ConfigBlocks {
       blockCustomPlant = (new BlockCustomPlant()).setBlockName("blockCustomPlant");
       blockMagicalLog = (new BlockMagicalLog()).setBlockName("blockMagicalLog");
       blockMagicalLeaves = (new BlockMagicalLeaves()).setBlockName("blockMagicalLeaves");
-      blockArcaneFurnace = (new BlockArcaneFurnace()).setBlockName("blockArcaneFurnace");
+//      blockArcaneFurnace = (new BlockArcaneFurnace()).setBlockName("blockArcaneFurnace");
       blockMetalDevice = (new BlockMetalDevice()).setBlockName("blockMetalDevice");
       blockAlchemyFurnace = (new BlockAlchemyFurnace()).setBlockName("blockAlchemyFurnace");
       blockTable = (new BlockTable()).setBlockName("blockTable");
