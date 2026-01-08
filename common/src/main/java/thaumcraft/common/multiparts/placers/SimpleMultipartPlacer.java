@@ -4,7 +4,7 @@ import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.multiparts.matchers.MultipartMatchInfo;
+import thaumcraft.common.multiparts.MultipartMatchInfo;
 
 public class SimpleMultipartPlacer implements IMultipartPlacer {
     //[y][x][z]
@@ -17,14 +17,14 @@ public class SimpleMultipartPlacer implements IMultipartPlacer {
     }
 
     public void place(@NotNull Level level,
-                      @NotNull BlockPos baseInWorld,
+                      @NotNull BlockPos transformBaseInWorld,
                       @NotNull MultipartMatchInfo multipartMatchInfo
     ){
-        place(level,defaultBlockPosRelated,baseInWorld, multipartMatchInfo);
+        place(level,defaultBlockPosRelated, transformBaseInWorld, multipartMatchInfo);
     }
     public void place(@NotNull Level level,
-                      @NotNull BlockPos basePosRelated,
-                      @NotNull BlockPos basePosRelatedInWorld,
+                      @NotNull BlockPos transformBaseInMultipart,
+                      @NotNull BlockPos transformBaseInWorld,
                       @NotNull MultipartMatchInfo multipartMatchInfo
     ) {
 
@@ -43,13 +43,15 @@ public class SimpleMultipartPlacer implements IMultipartPlacer {
                     IBlockPlacer placer = atYX[z];
                     if (placer == null) continue;
 
-                    BlockPos worldPos = VecTransformations.transform(
-                            x, y, z,
-                            basePosRelated,
-                            basePosRelatedInWorld,
+                    BlockPos relatedPos = new BlockPos(x,y,z);
+
+                    BlockPos worldPos = VecTransformations.transformRelatedPos(
+                            relatedPos,
+                                    transformBaseInMultipart,
                             rotation,
                             mirror
-                    );
+                    ).offset(transformBaseInMultipart.multiply(-1))
+                            .offset(transformBaseInWorld);
 
                     placer.place(level, worldPos, multipartMatchInfo);
                 }

@@ -31,21 +31,18 @@ public abstract class AbstractMultipartComponentBlock extends Block implements I
 
     @Override
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        var checkerPos = findMultipartCheckerPosRelatedToSelf(serverLevel, blockState, blockPos).offset(blockPos);
-        var state = serverLevel.getBlockState(checkerPos);
-        this.checkMultipart(serverLevel, state, checkerPos);
+        var state = serverLevel.getBlockState(blockPos);
+        this.checkMultipart(serverLevel, state, blockPos);
     }
 
     @Override
     public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean bl) {
-        var checkerPos = findMultipartCheckerPosRelatedToSelf(level, blockState, pos).offset(pos);
-        level.scheduleTick(checkerPos, level.getBlockState(checkerPos).getBlock(), 1);
+        level.scheduleTick(pos, level.getBlockState(pos).getBlock(), 1);
     }
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState blockState2, boolean bl) {
-        var checkerPos = findMultipartCheckerPosRelatedToSelf(level, blockState, pos).offset(pos);
-        level.scheduleTick(checkerPos, level.getBlockState(checkerPos).getBlock(), 1);
+        level.scheduleTick(pos, level.getBlockState(pos).getBlock(), 1);
     }
 
     @Override

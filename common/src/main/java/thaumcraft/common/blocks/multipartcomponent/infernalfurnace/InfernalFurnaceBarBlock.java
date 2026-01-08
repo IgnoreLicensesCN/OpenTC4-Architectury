@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -34,20 +35,15 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
     }
 
 
-    public static final BlockPos CENTER_POS_RELATED_FROM_2_1_1 = new BlockPos(2,1,1);
     public static final BlockPos SELF_POS_2_1_1 = new BlockPos(2,1,1);
-    @Override
-    public BlockPos findMultipartCheckerPosRelatedToSelf(Level level, BlockState state, BlockPos pos) {
-        return CENTER_POS_RELATED_FROM_2_1_1;
-    }
 
     @Override
-    public BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
+    public @NotNull BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
         return SELF_POS_2_1_1;
     }
 
     @Override
-    public void recoverToOriginalBlock(Level level, BlockState state, BlockPos pos) {
+    public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
             serverLevel.setBlock(pos, Blocks.IRON_BARS.defaultBlockState(), 3);
         }

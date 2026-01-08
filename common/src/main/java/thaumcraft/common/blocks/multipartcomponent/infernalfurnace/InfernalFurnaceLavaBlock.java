@@ -30,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
 import thaumcraft.common.tiles.InfernalFurnaceBlockEntity;
@@ -55,15 +56,10 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     }
 
 
-    public static final BlockPos CENTER_POS_RELATED_FROM_1_1_1 = new BlockPos(1,0,0);
     public static final BlockPos SELF_POS_1_1_1 = new BlockPos(1,1,1);
-    @Override
-    public BlockPos findMultipartCheckerPosRelatedToSelf(Level level, BlockState state, BlockPos pos) {
-        return CENTER_POS_RELATED_FROM_1_1_1;
-    }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return STABLE_SHAPE;
     }
 
@@ -73,12 +69,12 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     }
 
     @Override
-    public BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
+    public @NotNull BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
         return SELF_POS_1_1_1;
     }
 
     @Override
-    public void recoverToOriginalBlock(Level level, BlockState state, BlockPos pos) {
+    public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
 //            serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState(), 3);
             serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);

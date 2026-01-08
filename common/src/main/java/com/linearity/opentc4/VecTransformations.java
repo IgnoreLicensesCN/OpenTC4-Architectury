@@ -4,8 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Contract;
 
 public class VecTransformations {
+
+    @Contract(pure = true)
     public static Direction rotate(Direction dir, Rotation3D r) {
         if (r == Rotation3D.NONE) return dir;
 
@@ -20,6 +23,7 @@ public class VecTransformations {
         );
     }
 
+    @Contract(pure = true)
     public static BlockPos rotate(BlockPos p, Rotation3D r) {
         int x = p.getX();
         int y = p.getY();
@@ -41,6 +45,8 @@ public class VecTransformations {
             case Z_270 -> new BlockPos( y, -x,  z);
         };
     }
+
+    @Contract(pure = true)
     public static Vec3i rotate(Vec3i p, Rotation3D r) {
         int x = p.getX();
         int y = p.getY();
@@ -62,6 +68,8 @@ public class VecTransformations {
             case Z_270 -> new Vec3i( y, -x,  z);
         };
     }
+
+    @Contract(pure = true)
     public static Vec3 rotate(Vec3 p, Rotation3D r) {
         double x = p.x();
         double y = p.y();
@@ -84,6 +92,7 @@ public class VecTransformations {
         };
     }
 
+    @Contract(pure = true)
     public static BlockPos mirror(BlockPos p, Mirror3D m) {
         return switch (m) {
             case NONE -> p;
@@ -92,6 +101,8 @@ public class VecTransformations {
             case YZ -> new BlockPos(-p.getX(),  p.getY(),  p.getZ());
         };
     }
+
+    @Contract(pure = true)
     public static Vec3i mirror(Vec3i p, Mirror3D m) {
         return switch (m) {
             case NONE -> p;
@@ -100,6 +111,8 @@ public class VecTransformations {
             case YZ -> new Vec3i(-p.getX(),  p.getY(),  p.getZ());
         };
     }
+
+    @Contract(pure = true)
     public static Vec3 mirror(Vec3 p, Mirror3D m) {
         return switch (m) {
             case NONE -> p;
@@ -109,76 +122,38 @@ public class VecTransformations {
         };
     }
 
-    public static BlockPos transform(
-            int x, int y, int z,
-            BlockPos basePosRelated,
-            BlockPos basePosRelatedInWorld,
+    @Contract(pure = true)
+    public static BlockPos transformRelatedPos(
+            BlockPos selfRelatedPosInMultipart,
+            BlockPos transformBasePosRelated,
             Rotation3D rotation,
             Mirror3D mirror
     ) {
-        // 1. 结构坐标 → 相对基准
-        BlockPos relative = new BlockPos(
-                x - basePosRelated.getX(),
-                y - basePosRelated.getY(),
-                z - basePosRelated.getZ()
-        );
-
-        // 2. 旋转
-        BlockPos rotated = rotate(relative, rotation);
-
-        // 3. 镜像
-        BlockPos mirrored = mirror(rotated, mirror);
-
-        // 4. 世界坐标
-        return basePosRelatedInWorld.offset(mirrored);
+        var relative = selfRelatedPosInMultipart.offset(transformBasePosRelated.multiply(-1));
+        return mirror(rotate(relative, rotation), mirror).offset(transformBasePosRelated);
     }
 
-    public static Vec3i transform(
-            int x, int y, int z,
-            Vec3i basePosRelated,
-            Vec3i basePosRelatedInWorld,
+    @Contract(pure = true)
+    public static Vec3i transformRelatedPos(
+            Vec3i selfRelatedPosInMultipart,
+            Vec3i transformBasePosRelated,
             Rotation3D rotation,
             Mirror3D mirror
     ) {
-        // 1. 结构坐标 → 相对基准
-        Vec3i relative = new Vec3i(
-                x - basePosRelated.getX(),
-                y - basePosRelated.getY(),
-                z - basePosRelated.getZ()
-        );
-
-        // 2. 旋转
-        Vec3i rotated = rotate(relative, rotation);
-
-        // 3. 镜像
-        Vec3i mirrored = mirror(rotated, mirror);
-
-        // 4. 世界坐标
-        return basePosRelatedInWorld.offset(mirrored);
+        var relative = selfRelatedPosInMultipart.offset(transformBasePosRelated.multiply(-1));
+        return mirror(rotate(relative, rotation), mirror).offset(transformBasePosRelated);
     }
 
-    public static Vec3 transform(
-            double x, double y, double z,
-            Vec3 basePosRelated,
-            Vec3 basePosRelatedInWorld,
+
+    @Contract(pure = true)
+    public static Vec3 transformRelatedPos(
+            Vec3 selfRelatedPosInMultipart,
+            Vec3 transformBasePosRelated,
             Rotation3D rotation,
             Mirror3D mirror
     ) {
-        // 1. 结构坐标 → 相对基准
-        Vec3 relative = new Vec3(
-                x - basePosRelated.x(),
-                y - basePosRelated.y(),
-                z - basePosRelated.z()
-        );
-
-        // 2. 旋转
-        Vec3 rotated = rotate(relative, rotation);
-
-        // 3. 镜像
-        Vec3 mirrored = mirror(rotated, mirror);
-
-        // 4. 世界坐标
-        return basePosRelatedInWorld.add(mirrored);
+        var relative = selfRelatedPosInMultipart.subtract(transformBasePosRelated);
+        return mirror(rotate(relative, rotation), mirror).add(transformBasePosRelated);
     }
 
     public enum Rotation3D {

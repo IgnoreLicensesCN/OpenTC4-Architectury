@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.common.multiparts.matchers.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
+import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
 public class WandManager implements IWandTriggerManager {
@@ -798,18 +798,29 @@ public class WandManager implements IWandTriggerManager {
         if (returnFlag) {return true;}
         returnFlag = createCrucible(wand, player, level, x, y, z);
         if (returnFlag) {return true;}
-        
+
+        var clickedBlock = level.getBlockState(pos).getBlock();
+        if (clickedBlock == Blocks.IRON_BARS) {
+            if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
+                var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
+                if (matchResult != null) {
+                    INFERNAL_FURNACE_PLACER.place(level,pos,matchResult);
+                    return true;
+                }
+            }
+        }
+
         return false;
         switch (event) {
-            case 2:
-                if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
-                    var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
-                    if (matchResult != null) {
-                        INFERNAL_FURNACE_PLACER.place(level,pos,matchResult);
-                        return true;
-                    }
-                }
-                break;
+//            case 2:
+//                if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
+//                    var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
+//                    if (matchResult != null) {
+//                        INFERNAL_FURNACE_PLACER.place(level,pos,matchResult);
+//                        return true;
+//                    }
+//                }
+//                break;
             case 3:
                 if (ResearchManager.isResearchComplete(player.getCommandSenderName(), "INFUSION")) {
                     return createInfusionAltar(wand, player, level, x, y, z);

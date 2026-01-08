@@ -33,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.InfernalFurnaceBlockEntityTagAccessors.PROCESSED_TICKS_ACCESSOR;
 import static com.linearity.opentc4.Consts.InfernalFurnaceBlockEntityTagAccessors.PROCESSING_ITEM_STACK_ACCESSOR;
-import static thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock.CENTER_POS_RELATED_FROM_1_1_1;
 
 public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     protected ChestList items = ChestList.withSize(32, ItemStack.EMPTY);
@@ -62,7 +61,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
             }
         }
         if (!processingStack.isEmpty()) {
-            InfernalFurnaceOutput outputs = calculateOutput(processingStack);
+            InfernalFurnaceOutput outputs = calculateOutput(processingStack,serverLevel);
             if (outputs.outputStacks.length == 0) {
                 processedTick = 0;
                 processingStack.setCount(0);
@@ -77,8 +76,17 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
             if (processedTick >= calculateRequiredProcessTick()) {
                 processingStack.shrink(1);
                 outputResult(outputs);
-                level.blockEvent(this.getBlockPos().offset(VecTransformations.rotate(
-                        CENTER_POS_RELATED_FROM_1_1_1,getRotation())),
+                level.blockEvent(
+                        this.getBlockPos().offset(VecTransformations.rotate(
+                                ThaumcraftBlocks.INFERNAL_FURNACE_BAR.
+                                        findTransformBasePosRelatedToSelf(
+                                                level,
+                                                this.getBlockState(),
+                                                this.getBlockPos()
+                                        )
+                                ,getRotation()
+                                )
+                        ),
                         ThaumcraftBlocks.INFERNAL_FURNACE_BAR,
                         1,0
                 );
@@ -159,7 +167,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
 
     //note that multi-items (input count >= 1 or input type != 1) input isn't supported here
     @NotNull
-    public InfernalFurnaceOutput calculateOutput(ItemStack input) {
+    public InfernalFurnaceOutput calculateOutput(ItemStack input,Level level) {
         return outputCache.computeIfAbsent(level, k -> new ConcurrentHashMap<>())
                 .computeIfAbsent(
                         input,

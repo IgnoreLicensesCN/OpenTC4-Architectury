@@ -1,13 +1,14 @@
-package thaumcraft.common.multiparts.matchers;
+package thaumcraft.common.multiparts.constructmatch;
 
 import com.linearity.opentc4.recipeclean.blockmatch.IBlockMatcher;
 import net.minecraft.core.BlockPos;
+import thaumcraft.common.multiparts.formedmatch.SimpleMultipartConstructMatcher;
 
 import static com.linearity.opentc4.recipeclean.blockmatch.BlockMatcherPresents.*;
 
 public class MultipartMatcherImpls {
-    public static final IMultipartMatcher INFERNAL_FURNACE_BEFORE_FORMING =
-            new SimpleMultipartMatcher(
+    public static final IMultipartConstructMatcher INFERNAL_FURNACE_BEFORE_FORMING =
+            SimpleMultipartConstructMatcher.of(
                     new IBlockMatcher[][][]//[y][x][z]
                             {
                                     {

@@ -1,4 +1,4 @@
-package thaumcraft.common.multiparts.matchers;
+package thaumcraft.common.multiparts;
 
 import com.linearity.opentc4.VecTransformations;
 

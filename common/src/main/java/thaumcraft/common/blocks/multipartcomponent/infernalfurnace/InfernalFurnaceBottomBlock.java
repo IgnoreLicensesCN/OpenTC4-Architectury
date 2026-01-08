@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent {
 
@@ -20,20 +21,15 @@ public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent
     }
 
 
-    public static final BlockPos CENTER_POS_RELATED_FROM_1_0_1 = new BlockPos(1,1,0);
     public static final BlockPos SELF_POS_1_0_1 = new BlockPos(1,0,1);
-    @Override
-    public BlockPos findMultipartCheckerPosRelatedToSelf(Level level, BlockState state, BlockPos pos) {
-        return CENTER_POS_RELATED_FROM_1_0_1;
-    }
 
     @Override
-    public BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
+    public @NotNull BlockPos findSelfPosRelatedInMultipart(Level level, BlockState state, BlockPos pos) {
         return SELF_POS_1_0_1;
     }
 
     @Override
-    public void recoverToOriginalBlock(Level level, BlockState state, BlockPos pos) {
+    public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
             serverLevel.setBlock(pos, Blocks.OBSIDIAN.defaultBlockState(), 3);
         }
