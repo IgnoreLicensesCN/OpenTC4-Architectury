@@ -2,6 +2,8 @@ package thaumcraft.common.multiparts.placers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.AbstractInfernalFurnaceComponent;
 
@@ -13,7 +15,8 @@ import static thaumcraft.common.blocks.multipartcomponent.infernalfurnace.Infern
 
 public class MultipartPlacerImpls {
     public static class InfernalFurnaceBlockPlacerImpls {
-        public static IBlockPlacer getCornerPlacerWithState(int stateValue) {
+        @Contract(pure = true)
+        public static @NotNull IBlockPlacer getCornerPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_CORNER.defaultBlockState().setValue(
                         CORNER_TYPE, stateValue);
@@ -21,7 +24,8 @@ public class MultipartPlacerImpls {
                 level.setBlockAndUpdate(pos, state);
             });
         }
-        public static IBlockPlacer getXAxisPlacerWithState(int stateValue) {
+        @Contract(pure = true)
+        public static @NotNull IBlockPlacer getXAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_X_AXIS.defaultBlockState().setValue(
                         EDGE_TYPE_X_AXIS, stateValue);
@@ -29,7 +33,8 @@ public class MultipartPlacerImpls {
                 level.setBlockAndUpdate(pos, state);
             });
         }
-        public static IBlockPlacer getYAxisPlacerWithState(int stateValue) {
+        @Contract(pure = true)
+        public static @NotNull IBlockPlacer getYAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_Y_AXIS.defaultBlockState().setValue(
                         EDGE_TYPE_Y_AXIS, stateValue);
@@ -37,7 +42,8 @@ public class MultipartPlacerImpls {
                 level.setBlockAndUpdate(pos, state);
             });
         }
-        public static IBlockPlacer getZAxisPlacerWithState(int stateValue) {
+        @Contract(pure = true)
+        public static @NotNull IBlockPlacer getZAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_Z_AXIS.defaultBlockState().setValue(
                         EDGE_TYPE_Z_AXIS, stateValue);
@@ -45,7 +51,8 @@ public class MultipartPlacerImpls {
                 level.setBlockAndUpdate(pos, state);
             });
         }
-        public static IBlockPlacer getSidePlacerWithState(int stateValue) {
+        @Contract(pure = true)
+        public static @NotNull IBlockPlacer getSidePlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.defaultBlockState().setValue(
                         SIDE_TYPE, stateValue);

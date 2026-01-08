@@ -39,7 +39,7 @@ public class TileBellowsRenderer extends TileEntitySpecialRenderer {
          scale = MathHelper.sin((float)p.ticksExisted / 8.0F) * 0.3F + 0.7F;
          bellows.orientation = 2;
       } else {
-         scale = bellows.inflation;
+         scale = bellows.renderInflation;
       }
 
       float tscale = 0.125F + scale * 0.875F;

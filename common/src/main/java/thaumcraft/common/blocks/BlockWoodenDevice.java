@@ -34,6 +34,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//"0": "奥术风箱",
+//    "tile.blockWoodenDevice.1.name": "奥术之耳",
+//    "tile.blockWoodenDevice.2.name": "奥术压力盘",
+//    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",
+//    "tile.blockWoodenDevice.5.name": "奥术钻探机",
+//    "tile.blockWoodenDevice.6.name": "宏伟之树木板",
+//    "tile.blockWoodenDevice.7.name": "银树木板",
+//    "tile.blockWoodenDevice.8.name": "血腥教徒旗帜",
+//    "tile.blockWoodenDevice.8.0.name": "白色旗帜",
+//    "tile.blockWoodenDevice.8.1.name": "橙色旗帜",
+//    "tile.blockWoodenDevice.8.2.name": "品红色旗帜",
+//    "tile.blockWoodenDevice.8.3.name": "浅蓝色旗帜",
+//    "tile.blockWoodenDevice.8.4.name": "黄色旗帜",
+//    "tile.blockWoodenDevice.8.5.name": "柠檬色旗帜",
+//    "tile.blockWoodenDevice.8.6.name": "粉色旗帜",
+//    "tile.blockWoodenDevice.8.7.name": "灰色旗帜",
+//    "tile.blockWoodenDevice.8.8.name": "浅灰色旗帜",
+//    "tile.blockWoodenDevice.8.9.name": "青色旗帜",
+//    "tile.blockWoodenDevice.8.10.name": "紫色旗帜",
+//    "tile.blockWoodenDevice.8.11.name": "蓝色旗帜",
+//    "tile.blockWoodenDevice.8.12.name": "棕色旗帜",
+//    "tile.blockWoodenDevice.8.13.name": "绿色旗帜",
+//    "tile.blockWoodenDevice.8.14.name": "红色旗帜",
+//    "tile.blockWoodenDevice.8.15.name": "黑色旗帜",
 public class BlockWoodenDevice extends BlockContainer {
    private Random random = new Random();
    public IIcon iconDefault;

@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_BEFORE_FORMING;
+import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_CONSTRUCT_MATCHER;
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
 public class WandManager implements IWandTriggerManager {
@@ -802,7 +802,7 @@ public class WandManager implements IWandTriggerManager {
         var clickedBlock = level.getBlockState(pos).getBlock();
         if (clickedBlock == Blocks.IRON_BARS) {
             if (ResearchManager.isResearchComplete(playerName, "INFERNALFURNACE")) {
-                var matchResult = INFERNAL_FURNACE_BEFORE_FORMING.match(level,pos);
+                var matchResult = INFERNAL_FURNACE_CONSTRUCT_MATCHER.match(level,pos);
                 if (matchResult != null) {
                     INFERNAL_FURNACE_PLACER.place(level,pos,matchResult);
                     return true;

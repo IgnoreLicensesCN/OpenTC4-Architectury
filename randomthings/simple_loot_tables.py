@@ -51,6 +51,7 @@ block_names = [
     "shimmer_leaf",
     "mana_shroom",
     "ethereal_bloom",
+    "arcane_bellow",
 ]
 
 drop_b_for_a_names = [

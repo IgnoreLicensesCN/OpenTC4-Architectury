@@ -109,7 +109,6 @@ public class ThaumcraftBlocks {
 
     public static final EtherealBloomBlock ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
 
-
     public static final InfernalFurnaceBarBlock INFERNAL_FURNACE_BAR = Registry.SUPPLIER_INFERNAL_FURNACE_BAR.get();
     public static final InfernalFurnaceSideBlock INFERNAL_FURNACE_SIDE = Registry.SUPPLIER_INFERNAL_FURNACE_SIDE.get();
     public static final InfernalFurnaceBottomBlock INFERNAL_FURNACE_BOTTOM = Registry.SUPPLIER_INFERNAL_FURNACE_BOTTOM.get();
@@ -118,6 +117,8 @@ public class ThaumcraftBlocks {
     public static final InfernalFurnaceEdgeYAxisBlock INFERNAL_FURNACE_Y_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Y_AXIS.get();
     public static final InfernalFurnaceEdgeZAxisBlock INFERNAL_FURNACE_Z_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Z_AXIS.get();
     public static final InfernalFurnaceLavaBlock INFERNAL_FURNACE_LAVA = Registry.SUPPLIER_INFERNAL_FURNACE_LAVA.get();
+
+    public static final ArcaneBellowBlock ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -441,6 +442,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<InfernalFurnaceLavaBlock> SUPPLIER_INFERNAL_FURNACE_LAVA = BLOCKS.register(
                 "infernal_furnace_lava",
                 InfernalFurnaceLavaBlock::new
+        );
+        public static final RegistrySupplier<ArcaneBellowBlock> SUPPLIER_ARCANE_BELLOW = BLOCKS.register(
+                "arcane_bellow",
+                ArcaneBellowBlock::new
         );
 
 

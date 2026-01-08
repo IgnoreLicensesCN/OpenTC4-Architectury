@@ -1,4 +1,4 @@
-package thaumcraft.common.multiparts.constructmatch;
+package thaumcraft.common.multiparts.formedmatch;
 
 import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
@@ -6,8 +6,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.abstracts.IMultipartComponentBlock;
 import thaumcraft.common.multiparts.MultipartMatchInfo;
-import thaumcraft.common.multiparts.formedmatch.IFormedMultipartMatcher;
-import thaumcraft.common.multiparts.formedmatch.IFormedBlockMatcher;
 
 /**
  * @param matchers [y][x][z] it seems to be left-handed sorry.

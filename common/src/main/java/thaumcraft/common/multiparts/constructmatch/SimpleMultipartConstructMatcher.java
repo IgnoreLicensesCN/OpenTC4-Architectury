@@ -1,4 +1,4 @@
-package thaumcraft.common.multiparts.formedmatch;
+package thaumcraft.common.multiparts.constructmatch;
 
 import com.linearity.opentc4.VecTransformations;
 import com.linearity.opentc4.recipeclean.blockmatch.IBlockMatcher;
@@ -7,7 +7,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.multiparts.MultipartMatchInfo;
-import thaumcraft.common.multiparts.constructmatch.IMultipartConstructMatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -11,6 +11,7 @@
     "SheetsMixin"
   ],
   "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
     "BiomeMixin",
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",

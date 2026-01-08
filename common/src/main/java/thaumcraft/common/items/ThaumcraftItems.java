@@ -167,6 +167,8 @@ public class ThaumcraftItems {
     public static final BlockItem MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
     public static final BlockItem ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
 
+    public static final BlockItem ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
+
     //===========================================================================================
 
     public static class Registry {
@@ -561,6 +563,10 @@ public class ThaumcraftItems {
                 "ethereal_bloom",
                 () -> new BlockItem(ThaumcraftBlocks.ETHEREAL_BLOOM,new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_BELLOW = ITEMS.register(
+                "arcane_bellow",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_BELLOW,new Item.Properties())
+        );
 
         static {
             Registry.ITEMS.register();
@@ -590,7 +596,6 @@ public class ThaumcraftItems {
                 Registries.ITEM, new ResourceLocation("forge:nuggets/iron"));
         public static final TagKey<Item> IRON_NUGGET_FABRIC_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("c:iron_nuggets"));
-
         public static final TagKey<Item> PLANKS_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("minecraft:planks"));
     }

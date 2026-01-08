@@ -3,13 +3,12 @@ package thaumcraft.common.tiles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 
 public class TileBellows extends TileThaumcraft {
-   public float inflation = 1.0F;
-   boolean direction = false;
+   public float renderInflation = 1.0F;
+   boolean renderMovingDirection = false;
    boolean firstrun = true;
    public byte orientation = 0;
    public boolean onVanillaFurnace = false;
@@ -17,27 +16,29 @@ public class TileBellows extends TileThaumcraft {
 
    public void updateEntity() {
       if ((Platform.getEnvironment() == Env.CLIENT)) {
+
          if (!this.gettingPower()) {
             if (this.firstrun) {
-               this.inflation = 0.35F + this.level().rand.nextFloat() * 0.55F;
+               this.renderInflation = 0.35F + this.level.rand.nextFloat() * 0.55F;
             }
 
             this.firstrun = false;
-            if (this.inflation > 0.35F && !this.direction) {
-               this.inflation -= 0.075F;
+
+            if (this.renderInflation > 0.35F && !this.renderMovingDirection) {
+               this.renderInflation -= 0.075F;
             }
 
-            if (this.inflation <= 0.35F && !this.direction) {
-               this.direction = true;
+            if (this.renderInflation <= 0.35F && !this.renderMovingDirection) {
+               this.renderMovingDirection = true;
             }
 
-            if (this.inflation < 1.0F && this.direction) {
-               this.inflation += 0.025F;
+            if (this.renderInflation < 1.0F && this.renderMovingDirection) {
+               this.renderInflation += 0.025F;
             }
 
-            if (this.inflation >= 1.0F && this.direction) {
-               this.direction = false;
-               this.level().playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "mob.ghast.fireball", 0.01F, 0.5F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, false);
+            if (this.renderInflation >= 1.0F && this.renderMovingDirection) {
+               this.renderMovingDirection = false;
+               this.level.playSound((double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, "mob.ghast.fireball", 0.01F, 0.5F + (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F, false);
             }
          }
       } else if (this.onVanillaFurnace && !this.gettingPower()) {

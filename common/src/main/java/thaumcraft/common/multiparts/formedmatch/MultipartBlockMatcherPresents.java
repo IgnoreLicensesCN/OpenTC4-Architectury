@@ -17,7 +17,7 @@ public class MultipartBlockMatcherPresents {
         public static final IFormedBlockMatcher Z_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_Z_AXIS);
 
     }
-    public static final IFormedBlockMatcher[][][] INFERNAL_FURNACE_MATCHERS_FORMED = {
+    public static final IFormedBlockMatcher[][][] INFERNAL_FURNACE_FORMED_MATCHER = {
             //yxz
             {
                     {InfernalFurnaceMatcherImpls.CORNER_MATCHER,InfernalFurnaceMatcherImpls.Z_AXIS_MATCHER,InfernalFurnaceMatcherImpls.CORNER_MATCHER},
@@ -57,6 +57,5 @@ public class MultipartBlockMatcherPresents {
             }
             return true;
         };
-
     }
 }
