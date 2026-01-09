@@ -5,6 +5,7 @@ block_with_item_names = [
     ['tile.blockWoodenDevice.0.name','arcane_bellow'],
     ['tile.blockWoodenDevice.6.name','greatwood_planks'],
     ['tile.blockWoodenDevice.7.name','silverwood_planks'],
+    ['tile.blockArcaneDoor.name','arcane_door'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

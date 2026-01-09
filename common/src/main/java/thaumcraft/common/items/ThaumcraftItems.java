@@ -5,8 +5,11 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
@@ -168,6 +171,9 @@ public class ThaumcraftItems {
     public static final BlockItem ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
 
     public static final BlockItem ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
+    public static final BlockItem ARCANE_DOOR = Registry.SUPPLIER_ARCANE_DOOR.get();
+
+    public static final BannerPatternItem CULTIST_BANNER_PATTERN = Registry.SUPPLIER_CULTIST_BANNER_PATTERN.get();
 
     //===========================================================================================
 
@@ -567,6 +573,14 @@ public class ThaumcraftItems {
                 "arcane_bellow",
                 () -> new BlockItem(ThaumcraftBlocks.ARCANE_BELLOW,new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_DOOR = ITEMS.register(
+                "arcane_door",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_DOOR,new Item.Properties())
+        );
+        public static final RegistrySupplier<BannerPatternItem> SUPPLIER_CULTIST_BANNER_PATTERN = ITEMS.register(
+                "cultist_banner_pattern",
+                () -> new BannerPatternItem(BannerPatternTags.CULTIST_TAG,new Item.Properties().stacksTo(1).rarity(Rarity.RARE))
+        );
 
         static {
             Registry.ITEMS.register();
@@ -599,6 +613,22 @@ public class ThaumcraftItems {
         public static final TagKey<Item> PLANKS_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("minecraft:planks"));
     }
+
+    public static class BannerPatternTags{
+        //TODO:(maybe)all aspect banner patterns,maybe we will need a map to store.
+        public static final TagKey<BannerPattern> CULTIST_TAG = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(Thaumcraft.MOD_ID+":cultist"));
+    }
+
+    public static class BannerPatternsRegistry{
+        public static final DeferredRegister<BannerPattern> BANNER_PATTERNS =
+                DeferredRegister.create(Thaumcraft.MOD_ID,Registries.BANNER_PATTERN);
+        public static final RegistrySupplier<BannerPattern> SUPPLIER_CULTIST_PATTERN
+                = BANNER_PATTERNS.register("cultist",() -> new BannerPattern("cultist"));
+        static {
+            BANNER_PATTERNS.register();
+        }
+    }
+    public static final BannerPattern CULTIST_PATTERN = BannerPatternsRegistry.SUPPLIER_CULTIST_PATTERN.get();
 
     public static void init() {
 

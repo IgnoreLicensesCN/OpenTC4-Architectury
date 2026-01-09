@@ -96,7 +96,7 @@ public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlo
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new OwnedBlockEntity(blockPos,this.defaultBlockState());
+        return new OwnedBlockEntity(blockPos,blockState);
     }
 
     @Override

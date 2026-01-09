@@ -55,7 +55,8 @@ public class ThaumcraftBlockEntities {
                 "owned",
                 () -> BlockEntityType.Builder.of(
                         OwnedBlockEntity::new,
-                        ThaumcraftBlocks.WARDED_GLASS
+                        ThaumcraftBlocks.WARDED_GLASS,
+                        ThaumcraftBlocks.ARCANE_DOOR
                 ).build(null)
         );
 

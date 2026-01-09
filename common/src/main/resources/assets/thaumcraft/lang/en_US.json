@@ -4,6 +4,7 @@
     "keys.thaumcraft.change_wand_focus": "Change Wand Focus",
     "keys.thaumcraft.active_hover_harness": "Active Hover Harness",
     "keys.thaumcraft.misc_wand_toggle": "Misc Wand Toggle",
+    "thaumcraft.open_arcane_door_failed": "The door refuses to budge.",
 
     "enchantment.haste": "Haste",
     "enchantment.repair": "Repair",
@@ -281,7 +282,8 @@
     "tile.researchtable.noink.1": "Refill your scribing tools.",
     "block.thaumcraft.hungry_chest": "Hungry Chest",
     "item.thaumcraft.hungry_chest": "Hungry Chest",
-    "tile.blockArcaneDoor.name": "Arcane Door",
+    "block.thaumcraft.arcane_door": "Arcane Door",
+    "item.thaumcraft.arcane_door": "Arcane Door",
     "tile.blockLifter.name": "Arcane Levitator",
     "block.thaumcraft.air_crystal_cluster": "Air Crystal Cluster",
     "item.thaumcraft.air_crystal_cluster": "Air Crystal Cluster",
