@@ -26,8 +26,9 @@ public class MazeThread implements Runnable {
         MazeHandler.putToHashMapRaw(new CellLoc(this.x - this.w, this.z + this.h), (short) 0);
         MazeHandler.putToHashMapRaw(new CellLoc(this.x + this.w, this.z - this.h), (short) 0);
 
-        MazeGenerator gen;
-        for (gen = new MazeGenerator(this.w, this.h, this.seed++); !gen.generate(); gen = new MazeGenerator(this.w, this.h, this.seed++)) {
+        MazeGenerator gen = new MazeGenerator(this.w, this.h, this.seed++);
+        while (!gen.generate()) {
+            gen = new MazeGenerator(this.w, this.h, this.seed++);
         }
 
         int col = this.x - (1 + this.w / 2);

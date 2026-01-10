@@ -2,7 +2,6 @@ package thaumcraft.common.items.misc;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -11,15 +10,15 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock;
 
 import java.util.List;
 
 import static thaumcraft.common.ThaumcraftSounds.CRYSTAL;
-import static thaumcraft.common.ThaumcraftSounds.ResourceLocations.RES_CRYSTAL;
 
 public class EldritchEyeItem extends Item {
     public EldritchEyeItem() {
@@ -33,7 +32,6 @@ public class EldritchEyeItem extends Item {
                 .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
-
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var world = useOnContext.getLevel();
@@ -41,23 +39,13 @@ public class EldritchEyeItem extends Item {
         if (world.isClientSide || player == null) {return super.useOn(useOnContext);}
         var pos = useOnContext.getClickedPos();
 
-        BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof TileEldritchAltar altar) {
-            if (altar.getEyes() < 4) {
-                if (altar.getEyes() >= 2) {
-                    altar.setSpawner(true);
-                    altar.setSpawnType((byte)1);
-                }
-
-                altar.setEyes((byte)(altar.getEyes() + 1));
-                altar.checkForMaze();
+        BlockState blockState = world.getBlockState(pos);
+        Block block = blockState.getBlock();
+        if (block instanceof EldritchAltarBlock altar) {
+            if (altar.addEye(world,blockState,pos)) {
                 useOnContext.getItemInHand().shrink(1);
-                altar.updateEntity();
-                world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-//                altar.markDirty();
-//                world.markBlockForUpdate(x, y, z);
+//                world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 world.playSound((null),pos, CRYSTAL, SoundSource.BLOCKS,.2f,1.f);
-//                world.playSoundEffect(x, y, z, "thaumcraft:crystal", 0.2F, 1.0F);
                 return InteractionResult.SUCCESS;
             }
         }

@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles;
+package thaumcraft.common.tiles.crafted;
 
 import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
@@ -25,6 +25,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.AbstractMultipartComponentBlock;
 import thaumcraft.common.blocks.abstracts.IInfernalFurnaceTickDiscounter;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.crafted;
 
-import com.linearity.opentc4.clientrenderapi.IClientRandomTickableBlock;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.WardingStoneBlockEntity;
+import thaumcraft.common.tiles.crafted.WardingStoneBlockEntity;
 
 public class PavingStoneWardingBlock extends Block implements EntityBlock {
     public PavingStoneWardingBlock(Properties properties) {

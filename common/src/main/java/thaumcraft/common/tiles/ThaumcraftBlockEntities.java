@@ -6,6 +6,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.crafted.*;
+import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
+import thaumcraft.common.tiles.eldritch.EldritchVoidBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
@@ -21,6 +24,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<OwnedBlockEntity> OWNED = Registry.SUPPLIER_OWNED.get();
     public static final BlockEntityType<EtherealBloomBlockEntity> ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
     public static final BlockEntityType<InfernalFurnaceBlockEntity> INFERNAL_FURNACE = Registry.SUPPLIER_INFERNAL_FURNACE.get();
+    public static final BlockEntityType<EldritchAltarBlockEntity> ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -73,6 +77,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         InfernalFurnaceBlockEntity::new,
                         ThaumcraftBlocks.INFERNAL_FURNACE_LAVA
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EldritchAltarBlockEntity>> SUPPLIER_ELDRITCH_ALTAR = BLOCK_ENTITIES.register(
+                "eldritch_altar",
+                () -> BlockEntityType.Builder.of(
+                        EldritchAltarBlockEntity::new,
+                        ThaumcraftBlocks.ELDRITCH_ALTAR
                 ).build(null)
         );
     }

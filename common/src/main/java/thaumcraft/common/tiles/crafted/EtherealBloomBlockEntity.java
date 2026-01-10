@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles;
+package thaumcraft.common.tiles.crafted;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -19,6 +19,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 

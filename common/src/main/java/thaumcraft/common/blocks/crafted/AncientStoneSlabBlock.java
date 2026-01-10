@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.worldgenerated.AncientStoneStairBlock;
+import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneStairBlock;
 
 import java.util.Random;
 

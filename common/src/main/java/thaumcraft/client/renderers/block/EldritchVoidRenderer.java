@@ -13,7 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.EldritchVoidBlockEntity;
+import thaumcraft.common.tiles.eldritch.EldritchVoidBlockEntity;
 
 import static net.minecraft.client.renderer.RenderStateShard.RENDERTYPE_END_GATEWAY_SHADER;
 

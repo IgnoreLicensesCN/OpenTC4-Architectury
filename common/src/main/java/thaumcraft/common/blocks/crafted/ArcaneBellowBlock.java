@@ -89,7 +89,10 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
         AbstractFurnaceBlockEntityAccessor accessor = (AbstractFurnaceBlockEntityAccessor) furnaceBlockEntity;
         var tickCount = accessor.opentc4$getTickCount();
         if ((tickCount) % 3 == 0 && accessor.opentc4$isLit()) {
-            AbstractFurnaceBlockEntity.serverTick(level,furnacePos,furnaceState,furnaceBlockEntity);
+            var currentProgress = accessor.opentc4$getCookingProgress();
+            var currentMaxProgress = accessor.opentc4$getCookingTotalTime();
+            accessor.opentc4$setCookingProgress(Math.min(currentMaxProgress-1, currentProgress + 1));
+//            AbstractFurnaceBlockEntity.serverTick(level,furnacePos,furnaceState,furnaceBlockEntity);
         }
     }
 }

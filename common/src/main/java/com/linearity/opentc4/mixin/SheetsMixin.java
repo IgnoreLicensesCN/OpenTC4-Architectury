@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.HungryChestBlockEntity;
+import thaumcraft.common.tiles.crafted.HungryChestBlockEntity;
 
 import static net.minecraft.client.renderer.Sheets.CHEST_SHEET;
 

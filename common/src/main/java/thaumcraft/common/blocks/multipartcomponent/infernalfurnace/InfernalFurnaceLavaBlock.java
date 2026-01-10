@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
-import thaumcraft.common.tiles.InfernalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.InfernalFurnaceBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {

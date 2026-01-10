@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.tiles.EtherealBloomBlockEntity;
+import thaumcraft.common.tiles.crafted.EtherealBloomBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class EtherealBloomBlock extends BushBlock implements EntityBlock {

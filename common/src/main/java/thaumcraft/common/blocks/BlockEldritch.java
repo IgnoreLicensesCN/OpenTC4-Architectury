@@ -31,6 +31,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//    "0: "邪术祭坛",
+//    "tile.blockEldritch.1.name": "邪术方尖碑",
+//    "tile.blockEldritch.2.name": "邪术方尖碑",
+//    "tile.blockEldritch.3.name": "邪术拱顶石",
+//    "tile.blockEldritch.4.name": "发光荒古石头",
+//    "tile.blockEldritch.5.name": "雕文石头",
+//    "tile.blockEldritch.7.name": "荒古门廊",
+//    "tile.blockEldritch.8.name": "荒古锁具",
+//    "tile.blockEldritch.9.name": "荒古锁孔",
+//    "tile.blockEldritch.10.name": "符文石头",
 public class BlockEldritch extends BlockContainer {
    public IIcon icon = null;
    public IIcon[] insIcon = new IIcon[9];
@@ -123,9 +133,10 @@ public class BlockEldritch extends BlockContainer {
    }
 
    public TileEntity createTileEntity(World world, int metadata) {
-      if (metadata == 0) {
-         return new TileEldritchAltar();
-      } else if (metadata == 1) {
+//      if (metadata == 0) {
+//         return new TileEldritchAltar();
+//      } else
+         if (metadata == 1) {
          return new TileEldritchObelisk();
       } else if (metadata == 3) {
          return new TileEldritchCap();
@@ -222,31 +233,29 @@ public class BlockEldritch extends BlockContainer {
       }
    }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
-      int metadata = world.getBlockMetadata(x, y, z);
-      //TODO:Split these two into different class.
-      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof EldritchEyeItem eyeItem) {
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileEldritchAltar) {
-            TileEldritchAltar tile = (TileEldritchAltar)te;
-            if (tile.getEyes() < 4) {
-               if (tile.getEyes() >= 2) {
-                  tile.setSpawner(true);
-                  tile.setSpawnType((byte)1);
-               }
-
-               tile.setEyes((byte)(tile.getEyes() + 1));
-               tile.checkForMaze();
-               --player.getHeldItem().stackSize;
-               tile.markDirty();
-               world.markBlockForUpdate(x, y, z);
-               world.playSoundEffect(x, y, z, "thaumcraft:crystal", 0.2F, 1.0F);
-            }
-         }
-      }
+//   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
+//      int metadata = world.getBlockMetadata(x, y, z);
+//      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof EldritchEyeItem eyeItem) {
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileEldritchAltar) {
+//            TileEldritchAltar tile = (TileEldritchAltar)te;
+//            if (tile.getEyes() < 4) {
+//               if (tile.getEyes() >= 2) {
+//                  tile.setSpawner(true);
+//                  tile.setSpawnType((byte)1);
+//               }
+//
+//               tile.setEyes((byte)(tile.getEyes() + 1));
+//               tile.checkForMaze();
+//               --player.getHeldItem().stackSize;
+//               tile.markDirty();
+//               world.markBlockForUpdate(x, y, z);
+//               world.playSoundEffect(x, y, z, "thaumcraft:crystal", 0.2F, 1.0F);
+//            }
+//         }
+//      }
 
 //      if (metadata == 8 && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof RunedTabletItem) {
-//         //TODO:Migrate this "door-opening" logic to RunedTabletItem
 //         TileEntity te = world.getTileEntity(x, y, z);
 //         if (te instanceof TileEldritchLock && ((TileEldritchLock) te).count < 0) {
 //            ((TileEldritchLock)te).count = 0;
@@ -257,8 +266,8 @@ public class BlockEldritch extends BlockContainer {
 //         }
 //      }
 
-      return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
-   }
+//      return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+//   }
 
    @SideOnly(Side.CLIENT)
    public void randomDisplayTick(World w, int i, int j, int k, Random r) {

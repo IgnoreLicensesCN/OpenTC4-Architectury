@@ -6,11 +6,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
@@ -19,6 +17,7 @@ import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
+import thaumcraft.common.blocks.worldgenerated.eldritch.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
@@ -122,6 +121,8 @@ public class ThaumcraftBlocks {
 
     public static final ArcaneBellowBlock ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
     public static final ArcaneDoorBlock ARCANE_DOOR = Registry.SUPPLIER_ARCANE_DOOR.get();
+
+    public static final EldritchAltarBlock ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
@@ -453,6 +454,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<ArcaneDoorBlock> SUPPLIER_ARCANE_DOOR = BLOCKS.register(
                 "arcane_door",
                 ArcaneDoorBlock::new
+        );
+        public static final RegistrySupplier<EldritchAltarBlock> SUPPLIER_ELDRITCH_ALTAR = BLOCKS.register(
+                "eldritch_altar",
+                EldritchAltarBlock::new
         );
 
 

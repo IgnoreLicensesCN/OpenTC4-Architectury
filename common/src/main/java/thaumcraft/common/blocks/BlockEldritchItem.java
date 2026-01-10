@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+@Deprecated(forRemoval = true)
 public class BlockEldritchItem /*extends ItemBlock*/ {
 //   public BlockEldritchItem(Block par1) {
 //      super(par1);

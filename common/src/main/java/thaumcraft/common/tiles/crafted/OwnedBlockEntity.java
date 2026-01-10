@@ -1,14 +1,12 @@
-package thaumcraft.common.tiles;
+package thaumcraft.common.tiles.crafted;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.TileThaumcraft;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 

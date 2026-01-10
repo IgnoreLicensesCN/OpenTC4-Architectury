@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles;
+package thaumcraft.common.tiles.crafted;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +27,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

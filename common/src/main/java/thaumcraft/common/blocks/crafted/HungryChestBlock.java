@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.tiles.HungryChestBlockEntity;
+import thaumcraft.common.tiles.crafted.HungryChestBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;

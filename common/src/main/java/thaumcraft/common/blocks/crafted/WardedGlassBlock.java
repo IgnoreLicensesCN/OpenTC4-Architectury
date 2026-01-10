@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.tiles.OwnedBlockEntity;
+import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 

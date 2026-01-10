@@ -105,12 +105,12 @@ public abstract class AbstractFurnaceBlockEntityMixin implements AbstractFurnace
         AbstractFurnaceBlockEntityAccessor accessor = (AbstractFurnaceBlockEntityAccessor) abstractFurnaceBlockEntity;
         if (accessor.opentc4$getAndIncrementLoopingCounter() == 0){
             accessor.opentc4$setTickCount(accessor.opentc4$getTickCount() + 1);
-        }
-        for (Direction direction : Direction.values()) {
-            BlockPos expectedAttachmentPos = blockPos.relative(direction);
-            BlockState expectedAttachmentState = level.getBlockState(expectedAttachmentPos);
-            if (expectedAttachmentState.getBlock() instanceof IFurnaceAttachmentBlock attachmentBlock) {
-                attachmentBlock.onFurnaceBurning(level,abstractFurnaceBlockEntity,blockState,blockPos,expectedAttachmentState,expectedAttachmentPos,ci);
+            for (Direction direction : Direction.values()) {
+                BlockPos expectedAttachmentPos = blockPos.relative(direction);
+                BlockState expectedAttachmentState = level.getBlockState(expectedAttachmentPos);
+                if (expectedAttachmentState.getBlock() instanceof IFurnaceAttachmentBlock attachmentBlock) {
+                    attachmentBlock.onFurnaceBurning(level,abstractFurnaceBlockEntity,blockState,blockPos,expectedAttachmentState,expectedAttachmentPos,ci);
+                }
             }
         }
         accessor.opentc4$decrementAndGetDirectionLoopingCounter();

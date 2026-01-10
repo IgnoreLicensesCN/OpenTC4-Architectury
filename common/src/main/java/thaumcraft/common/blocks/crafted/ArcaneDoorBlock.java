@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.tiles.OwnedBlockEntity;
+import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
 public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock,EntityBlock {
     public ArcaneDoorBlock(Properties properties, BlockSetType blockSetType) {
