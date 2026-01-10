@@ -22,14 +22,12 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
-import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
 
 public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock, INodeBlock {
@@ -102,7 +100,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
         var bEntity = level.getBlockEntity(blockPos);
         if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
-            node.clientTickByBlockHandle();
+            node.clientAnimateTickByBlockHandle();
         }
     }
 

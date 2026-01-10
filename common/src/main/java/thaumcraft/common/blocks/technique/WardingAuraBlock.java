@@ -14,7 +14,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.crafted.PavingStoneWardingBlock;
-import thaumcraft.common.tiles.TileWardingStone;
 
 public class WardingAuraBlock extends Block{
     public WardingAuraBlock(Properties properties) {

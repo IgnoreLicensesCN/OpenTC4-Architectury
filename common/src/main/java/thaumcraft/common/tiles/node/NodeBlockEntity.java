@@ -15,7 +15,7 @@ public class NodeBlockEntity extends AbstractNodeBlockEntity {
         this(ThaumcraftBlockEntities.AURA_NODE, blockPos, blockState);
     }
 
-    public NodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public NodeBlockEntity(BlockEntityType<NodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 

@@ -80,6 +80,6 @@ public class TileThaumcraft extends BlockEntity {
     }
 
     public void serverRandomTickByBlockHandle(){}
-    public void clientTickByBlockHandle(){}
+    public void clientAnimateTickByBlockHandle(){}
 
 }

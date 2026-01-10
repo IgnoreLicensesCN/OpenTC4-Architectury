@@ -157,7 +157,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public void clientTickByBlockHandle() {
+    public void clientAnimateTickByBlockHandle() {
         if (this.id == null) {
             this.generateId();
         }

@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
-import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
@@ -178,7 +177,7 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
         var bEntity = level.getBlockEntity(blockPos);
         if (bEntity instanceof NodeBlockEntity node){
-            node.clientTickByBlockHandle();
+            node.clientAnimateTickByBlockHandle();
         }
     }
 

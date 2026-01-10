@@ -6,8 +6,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchObeliskBlock;
+import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchObeliskWithTickerBlock;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
+import thaumcraft.common.tiles.eldritch.EldritchObeliskBlockEntity;
+import thaumcraft.common.tiles.eldritch.EldritchObeliskWithTickerBlockEntity;
 import thaumcraft.common.tiles.eldritch.EldritchVoidBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
@@ -25,6 +29,8 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EtherealBloomBlockEntity> ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
     public static final BlockEntityType<InfernalFurnaceBlockEntity> INFERNAL_FURNACE = Registry.SUPPLIER_INFERNAL_FURNACE.get();
     public static final BlockEntityType<EldritchAltarBlockEntity> ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
+    public static final BlockEntityType<EldritchObeliskBlockEntity> ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
+    public static final BlockEntityType<EldritchObeliskWithTickerBlockEntity> ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -84,6 +90,20 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EldritchAltarBlockEntity::new,
                         ThaumcraftBlocks.ELDRITCH_ALTAR
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EldritchObeliskBlockEntity>> SUPPLIER_ELDRITCH_OBELISK = BLOCK_ENTITIES.register(
+                "eldritch_obelisk",
+                () -> BlockEntityType.Builder.of(
+                        EldritchObeliskBlockEntity::new,
+                        ThaumcraftBlocks.ELDRITCH_OBELISK
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EldritchObeliskWithTickerBlockEntity>> SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER = BLOCK_ENTITIES.register(
+                "eldritch_obelisk_with_ticker",
+                () -> BlockEntityType.Builder.of(
+                        EldritchObeliskWithTickerBlockEntity::new,
+                        ThaumcraftBlocks.ELDRITCH_OBELISK_WITH_TICKER
                 ).build(null)
         );
     }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
@@ -124,8 +125,11 @@ public class ThaumcraftBlocks {
 
     public static final EldritchAltarBlock ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
 
+    public static final EldritchObeliskBlock ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
+    public static final EldritchObeliskWithTickerBlock ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
+
     public static class Registry {
-        public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create("thaumcraft", Registries.BLOCK);
+        public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
                 "flux_goo", FluxGooBlock::new);
         public static final RegistrySupplier<FluxGasBlock> SUPPLIER_FLUX_GAS = BLOCKS.register(
@@ -458,6 +462,14 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<EldritchAltarBlock> SUPPLIER_ELDRITCH_ALTAR = BLOCKS.register(
                 "eldritch_altar",
                 EldritchAltarBlock::new
+        );
+        public static final RegistrySupplier<EldritchObeliskBlock> SUPPLIER_ELDRITCH_OBELISK = BLOCKS.register(
+                "eldritch_obelisk",
+                EldritchObeliskBlock::new
+        );
+        public static final RegistrySupplier<EldritchObeliskWithTickerBlock> SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER = BLOCKS.register(
+                "eldritch_obelisk_with_ticker",
+                EldritchObeliskWithTickerBlock::new
         );
 
 

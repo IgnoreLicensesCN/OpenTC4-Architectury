@@ -73,7 +73,11 @@ public class BlockEldritch extends BlockContainer {
 
    @SideOnly(Side.CLIENT)
    public IIcon getIcon(int side, int meta) {
-      return meta == 4 ? this.insIcon[0] : (meta == 5 ? this.insIcon[1] : (meta == 6 ? this.insIcon[2] : (meta == 7 ? this.insIcon[4] : (meta == 8 ? this.insIcon[3] : (meta == 9 ? ConfigBlocks.blockCosmeticSolid.getIcon(side, 14) : (meta == 10 ? this.insIcon[5] : this.icon))))));
+      return meta == 4 ? this.insIcon[0]
+              : (meta == 5 ? this.insIcon[1] : (meta == 6 ? this.insIcon[2]
+              : (meta == 7 ? this.insIcon[4] : (meta == 8 ? this.insIcon[3]
+              : (meta == 9 ? ConfigBlocks.blockCosmeticSolid.getIcon(side, 14)
+              : (meta == 10 ? this.insIcon[5] : this.icon))))));
    }
 
    @SideOnly(Side.CLIENT)
@@ -136,9 +140,10 @@ public class BlockEldritch extends BlockContainer {
 //      if (metadata == 0) {
 //         return new TileEldritchAltar();
 //      } else
-         if (metadata == 1) {
-         return new TileEldritchObelisk();
-      } else if (metadata == 3) {
+//         if (metadata == 1) {
+//         return new TileEldritchObelisk();
+//      } else
+         if (metadata == 3) {
          return new TileEldritchCap();
       } else if (metadata == 8) {
          return new TileEldritchLock();

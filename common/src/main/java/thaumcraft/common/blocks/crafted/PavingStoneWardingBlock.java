@@ -40,58 +40,28 @@ public class PavingStoneWardingBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @NotNull BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        if (blockState.getBlock() != this){
+            return null;
+        }
         return new WardingStoneBlockEntity(blockPos, blockState);
     }
 
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.WARDING_STONE){
+        if (blockState.getBlock() != this){
+            return null;
+        }
+        if (level.isClientSide()) {
+            return null;
+        }
+        if (blockEntityType != ThaumcraftBlockEntities.WARDING_STONE) {
             return null;
         }
         return (level1, blockPos, blockState1, blockEntity) -> {
-            if (level1 instanceof ServerLevel serverLevel && blockEntity instanceof WardingStoneBlockEntity wardingStoneBlockEntity){
-                if (wardingStoneBlockEntity.tickCounter.get() == 0){
-                    wardingStoneBlockEntity.tickCounter.set(level1.random.nextInt(100));
-                }
-                boolean charged = level1.hasNeighborSignal(blockPos);
-
-                if (wardingStoneBlockEntity.tickCounter.get() % 5 == 0 && !charged) {
-
-                    var x = blockPos.getX();
-                    var y = blockPos.getY();
-                    var z = blockPos.getZ();
-                    AABB box = new AABB(
-                            x, y, z,
-                            x + 1, y + 3, z + 1
-                    ).inflate(0.1D);
-                    serverLevel.getEntitiesOfClass(
-                            LivingEntity.class,
-                            box,
-                            e -> !(e instanceof Player) && !e.onGround()
-                    ).forEach(e -> e.addDeltaMovement(
-                            new Vec3(-MathHelper.sin((e.getYRot() + 180.0F) * (float)Math.PI / 180.0F) * 0.2F,
-                                    -0.1,
-                                    MathHelper.cos((e.getYRot() + 180.0F) * (float)Math.PI / 180.0F) * 0.2F)
-                    ));
-                }
-                if (wardingStoneBlockEntity.tickCounter.incrementAndGet() % 100 == 0){
-                    var poses = new BlockPos[]{blockPos.above(), blockPos.above().above()};
-                    for (var pos:poses){
-                        var bState = serverLevel.getBlockState(pos);
-                        if (bState.canBeReplaced() && bState.getBlock() != ThaumcraftBlocks.WARDING_AURA){
-                            serverLevel.setBlock(pos,ThaumcraftBlocks.WARDING_AURA.defaultBlockState(),3);
-                        }
-                    }
-                }
-
-                if (blockState.getValue(LIT) && !charged) {
-                    serverLevel.setBlock(blockPos, blockState.setValue(LIT, false), 3);
-                }
-                else if (!blockState.getValue(LIT) && charged) {
-                    serverLevel.setBlock(blockPos, blockState.setValue(LIT, true), 3);
-                }
+            if (blockEntity instanceof WardingStoneBlockEntity wardingStoneBlockEntity){
+                wardingStoneBlockEntity.serverTick();
             }
         };
     }

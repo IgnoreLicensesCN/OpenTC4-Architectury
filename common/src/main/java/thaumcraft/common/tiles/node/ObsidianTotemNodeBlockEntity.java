@@ -15,7 +15,7 @@ public class ObsidianTotemNodeBlockEntity extends AbstractNodeBlockEntity {
         this(ThaumcraftBlockEntities.OBSIDIAN_TOTEM_NODE, blockPos, blockState);
     }
 
-    public ObsidianTotemNodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public ObsidianTotemNodeBlockEntity(BlockEntityType<ObsidianTotemNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
