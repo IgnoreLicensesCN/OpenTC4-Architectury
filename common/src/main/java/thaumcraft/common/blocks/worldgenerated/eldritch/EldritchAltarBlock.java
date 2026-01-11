@@ -41,6 +41,7 @@ public class EldritchAltarBlock extends Block implements EntityBlock {
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)
                 .lightLevel(s -> 8)
+                .requiresCorrectToolForDrops()
         );
     }
 

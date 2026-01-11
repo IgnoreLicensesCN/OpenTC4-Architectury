@@ -17,6 +17,7 @@ public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent
                 .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
+                .requiresCorrectToolForDrops()
         );
     }
 

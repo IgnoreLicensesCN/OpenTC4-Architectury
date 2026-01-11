@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.Thaumcraft;
@@ -128,6 +129,7 @@ public class ThaumcraftBlocks {
     public static final EldritchObeliskBlock ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
     public static final EldritchObeliskWithTickerBlock ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
     public static final EldritchCapstoneBlock ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
+    public static final Block GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -475,6 +477,15 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<EldritchCapstoneBlock> SUPPLIER_ELDRITCH_CAPSTONE = BLOCKS.register(
                 "eldritch_capstone",
                 EldritchCapstoneBlock::new
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_GLOWING_CRUSTED_STONE = BLOCKS.register(
+                "glowing_crusted_stone",
+                () -> new Block(
+                        BlockBehaviour.Properties.copy(Blocks.STONE)
+                                .requiresCorrectToolForDrops()
+                                .lightLevel(s -> 12)
+                                .strength(2,30)
+                )
         );
 
 

@@ -3,13 +3,11 @@ package thaumcraft.common.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockContainer;
 import net.minecraft.world.level.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -17,14 +15,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.misc.EldritchEyeItem;
-import thaumcraft.common.items.misc.RunedTabletItem;
 import thaumcraft.common.tiles.*;
 
 import java.util.ArrayList;
@@ -35,7 +30,7 @@ import java.util.Random;
 //    "1": "邪术方尖碑",
 //    "2": "邪术方尖碑",
 //    "3": "邪术拱顶石",
-//    "tile.blockEldritch.4.name": "发光荒古石头",
+//    "4": "发光荒古石头",
 //    "tile.blockEldritch.5.name": "雕文石头",
 //    "tile.blockEldritch.7.name": "荒古门廊",
 //    "tile.blockEldritch.8.name": "荒古锁具",

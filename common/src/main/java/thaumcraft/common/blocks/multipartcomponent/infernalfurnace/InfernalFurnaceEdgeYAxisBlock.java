@@ -27,6 +27,7 @@ public class InfernalFurnaceEdgeYAxisBlock extends AbstractInfernalFurnaceCompon
                 .copy(Blocks.STONE)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
+                .requiresCorrectToolForDrops()
         );
     }
 

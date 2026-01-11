@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:eldritch_capstone",
+    "thaumcraft:eldritch_obelisk_with_ticker",
+    "thaumcraft:eldritch_obelisk",
+    "thaumcraft:eldritch_altar",
+    "thaumcraft:obsidian_tile",
+    "thaumcraft:obsidian_totem_with_node",
+    "thaumcraft:obsidian_totem"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:arcane_bellow",
+    "thaumcraft:hungry_chest",
+    "thaumcraft:silverwood_planks_slab",
+    "thaumcraft:greatwood_planks_slab",
+    "thaumcraft:silverwood_planks_stairs",
+    "thaumcraft:greatwood_planks_stairs",
+    "thaumcraft:silverwood_planks",
+    "thaumcraft:greatwood_planks",
+    "thaumcraft:silverwood_knot_log",
+    "thaumcraft:silverwood_log",
+    "thaumcraft:greatwood_log"
+  ]
+}

@@ -13,12 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.client.lib.UtilsFXMigrated;
 
 public abstract class AbstractInfusedStoneBlock extends DropExperienceBlock {
-    public static final IntProvider EXP_DROP = UniformInt.of(0,3);
+    public static final IntProvider INFUSED_STONE_EXP_DROP = UniformInt.of(0,3);
     public final int rgbColor;
     public final int particleColorIndex;
 
     public AbstractInfusedStoneBlock(Properties properties, int rgbColor, int particleColorIndex) {
-        super(properties, EXP_DROP);
+        super(properties, INFUSED_STONE_EXP_DROP);
         this.rgbColor = rgbColor;
         this.particleColorIndex = particleColorIndex;
     }
@@ -26,7 +26,8 @@ public abstract class AbstractInfusedStoneBlock extends DropExperienceBlock {
     public AbstractInfusedStoneBlock(int rgbColor,int particleColorIndex) {
         super(BlockBehaviour.Properties.copy(Blocks.COPPER_ORE)
                 .sound(SoundType.STONE)
-                .strength(1.5f,5.f), EXP_DROP
+                .strength(1.5f,5.f),
+                INFUSED_STONE_EXP_DROP
         );
         this.rgbColor = rgbColor;
         this.particleColorIndex = particleColorIndex;
@@ -34,7 +35,6 @@ public abstract class AbstractInfusedStoneBlock extends DropExperienceBlock {
 
 
     @Override
-
     protected void spawnDestroyParticles(Level level, Player player, BlockPos blockPos, BlockState blockState) {
         if (level.isClientSide() && level.random.nextBoolean()) {
             UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(),blockPos.getY(),blockPos.getZ(), particleColorIndex);

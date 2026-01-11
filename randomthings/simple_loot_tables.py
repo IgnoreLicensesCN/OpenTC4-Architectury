@@ -2,7 +2,7 @@ import json
 import os
 
 # 这里填你的方块名字列表
-block_names = [
+drop_self_block_names = [
     "cinnabar_ore",
     "greatwood_log",
     "silverwood_log",
@@ -52,6 +52,7 @@ block_names = [
     "mana_shroom",
     "ethereal_bloom",
     "arcane_bellow",
+    'glowing_crusted_stone'
 ]
 
 drop_b_for_a_names = [
@@ -78,7 +79,7 @@ output_dir = "loot_tables/blocks"
 os.makedirs(output_dir, exist_ok=True)
 
 # 遍历生成 JSON
-for s in block_names:
+for s in drop_self_block_names:
     loot_table = {
   "type": "minecraft:block",
   "pools": [

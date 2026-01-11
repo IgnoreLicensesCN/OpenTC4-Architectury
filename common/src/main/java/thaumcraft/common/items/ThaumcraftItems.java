@@ -175,6 +175,8 @@ public class ThaumcraftItems {
 
     public static final BannerPatternItem CULTIST_BANNER_PATTERN = Registry.SUPPLIER_CULTIST_BANNER_PATTERN.get();
 
+    public static final BlockItem GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
+
     //===========================================================================================
 
     public static class Registry {
@@ -580,6 +582,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BannerPatternItem> SUPPLIER_CULTIST_BANNER_PATTERN = ITEMS.register(
                 "cultist_banner_pattern",
                 () -> new BannerPatternItem(BannerPatternTags.CULTIST_TAG,new Item.Properties().stacksTo(1).rarity(Rarity.RARE))
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GLOWING_CRUSTED_STONE = ITEMS.register(
+                "glowing_crusted_stone",
+                () -> new BlockItem(ThaumcraftBlocks.GLOWING_CRUSTED_STONE,new Item.Properties())
         );
 
         static {
