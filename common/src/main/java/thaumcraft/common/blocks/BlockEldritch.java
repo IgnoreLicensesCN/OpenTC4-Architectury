@@ -31,7 +31,7 @@ import java.util.Random;
 //    "2": "邪术方尖碑",
 //    "3": "邪术拱顶石",
 //    "4": "发光荒古石头",
-//    "tile.blockEldritch.5.name": "雕文石头",
+//    "5": "雕文石头",
 //    "tile.blockEldritch.7.name": "荒古门廊",
 //    "tile.blockEldritch.8.name": "荒古锁具",
 //    "tile.blockEldritch.9.name": "荒古锁孔",

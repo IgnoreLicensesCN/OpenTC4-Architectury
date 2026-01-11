@@ -2,6 +2,7 @@
   "_comment": "as you can see,you can use this to mine blocks with mekanism digital miner",
   "replace": false,
   "values": [
-    "thaumcraft:strange_crystals"
+    "thaumcraft:strange_crystals",
+    "thaumcraft:glyphed_stone"
   ]
 }

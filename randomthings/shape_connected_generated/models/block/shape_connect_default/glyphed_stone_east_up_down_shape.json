@@ -1,0 +1,76 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "all": "thaumcraft:block/glyphed_stone"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#all",
+          "uv": [
+            2,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            2,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            2,
+            0,
+            14,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            2,
+            0,
+            14,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        }
+      }
+    }
+  ]
+}

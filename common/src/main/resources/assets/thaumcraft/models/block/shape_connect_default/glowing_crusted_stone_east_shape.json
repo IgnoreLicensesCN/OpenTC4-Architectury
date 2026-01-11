@@ -1,0 +1,76 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "all": "thaumcraft:block/glowing_crusted_stone"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        16,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#all",
+          "uv": [
+            2,
+            2,
+            16,
+            14
+          ]
+        }
+      }
+    }
+  ]
+}
