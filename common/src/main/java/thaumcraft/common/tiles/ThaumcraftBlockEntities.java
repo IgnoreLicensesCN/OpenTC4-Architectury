@@ -27,6 +27,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EldritchObeliskBlockEntity> ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
     public static final BlockEntityType<EldritchObeliskWithTickerBlockEntity> ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
     public static final BlockEntityType<EldritchCapstoneBlockEntity> ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
+    public static final BlockEntityType<AncientLockInsertedBlockEntity> ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
 
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
@@ -108,6 +109,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EldritchCapstoneBlockEntity::new,
                         ThaumcraftBlocks.ELDRITCH_CAPSTONE
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<AncientLockInsertedBlockEntity>> SUPPLIER_ANCIENT_LOCK_INSERTED = BLOCK_ENTITIES.register(
+                "ancient_lock_inserted",
+                () -> BlockEntityType.Builder.of(
+                        AncientLockInsertedBlockEntity::new,
+                        ThaumcraftBlocks.ANCIENT_LOCK_INSERTED
                 ).build(null)
         );
     }

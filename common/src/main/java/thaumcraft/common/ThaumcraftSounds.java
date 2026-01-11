@@ -19,6 +19,8 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_CRAFT_FAIL = new ResourceLocation("thaumcraft:craftfail");
         public static final ResourceLocation RES_ROOT = new ResourceLocation("thaumcraft:root");
         public static final ResourceLocation RES_DOOR_FAIL = new ResourceLocation("thaumcraft:doorfail");
+        public static final ResourceLocation RES_PUMP = new ResourceLocation("thaumcraft:pump");
+        public static final ResourceLocation RES_ICE = new ResourceLocation("thaumcraft:ice");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -35,4 +37,6 @@ public class ThaumcraftSounds {
     public static final SoundEvent CRAFT_FAIL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAFT_FAIL);
     public static final SoundEvent ROOT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ROOT);
     public static final SoundEvent DOOR_FAIL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_DOOR_FAIL);
+    public static final SoundEvent PUMP = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PUMP);
+    public static final SoundEvent ICE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ICE);
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down":  "thaumcraft:block/ancient_gateway",
+    "up":    "thaumcraft:block/ancient_gateway",
+    "north": "thaumcraft:block/ancient_gateway",
+    "south": "thaumcraft:block/ancient_gateway",
+    "west":  "thaumcraft:block/ancient_lock_inserted_face",
+    "east":  "thaumcraft:block/ancient_gateway",
+    "particle": "thaumcraft:block/ancient_gateway"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "thaumcraft:block/ancient_lock/ancient_lock_empty_north"},
+    "facing=east":  { "model": "thaumcraft:block/ancient_lock/ancient_lock_empty_east"},
+    "facing=south": { "model": "thaumcraft:block/ancient_lock/ancient_lock_empty_south"},
+    "facing=west":  { "model": "thaumcraft:block/ancient_lock/ancient_lock_empty_west"}
+  }
+}

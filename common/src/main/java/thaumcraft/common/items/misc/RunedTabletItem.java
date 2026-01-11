@@ -14,6 +14,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.TileEldritchLock;
 
 import java.util.List;
@@ -41,11 +42,11 @@ public class RunedTabletItem extends Item {
 
         if (world.isClientSide() || !(player instanceof ServerPlayer serverPlayer)) {return super.useOn(useOnContext);}
 
-        BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof TileEldritchLock lock && lock.count < 0) {
-            lock.count = 0;
-            world.sendBlockUpdated(pos,te.getBlockState(), te.getBlockState(), 3);
-            lock.markDirtyAndUpdateSelf();
+        var blockState = world.getBlockState(pos);
+        var block = blockState.getBlock();
+
+        if (block == ThaumcraftBlocks.ANCIENT_LOCK_EMPTY) {
+            ThaumcraftBlocks.ANCIENT_LOCK_EMPTY.insertRunedTablet(world,blockState,pos);
             useOnContext.getItemInHand().shrink(1);
             world.playSound(null,pos, RUNIC_SHIELD_CHARGE,
                     SoundSource.BLOCKS, 1.0F, 1.0F);

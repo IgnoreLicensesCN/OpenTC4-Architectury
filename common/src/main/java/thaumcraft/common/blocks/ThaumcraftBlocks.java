@@ -131,6 +131,8 @@ public class ThaumcraftBlocks {
     public static final GlowingClustedStoneBlock GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
     public static final GlyphedStoneBlock GLYPHED_STONE = Registry.SUPPLIER_GLYPHED_STONE.get();
     public static final Block ANCIENT_GATEWAY = Registry.SUPPLIER_ANCIENT_GATEWAY.get();
+    public static final AncientLockEmptyBlock ANCIENT_LOCK_EMPTY = Registry.SUPPLIER_ANCIENT_LOCK_EMPTY.get();
+    public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -495,6 +497,14 @@ public class ThaumcraftBlocks {
                         .mapColor(MapColor.COLOR_BLACK)
                         .lightLevel(s -> 12)
                         .requiresCorrectToolForDrops())
+        );
+        public static final RegistrySupplier<AncientLockEmptyBlock> SUPPLIER_ANCIENT_LOCK_EMPTY = BLOCKS.register(
+                "ancient_lock_empty",
+                AncientLockEmptyBlock::new
+        );
+        public static final RegistrySupplier<AncientLockInsertedBlock> SUPPLIER_ANCIENT_LOCK_INSERTED = BLOCKS.register(
+                "ancient_lock_inserted",
+                AncientLockInsertedBlock::new
         );
 
         static {

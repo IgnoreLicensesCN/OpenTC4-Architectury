@@ -34,7 +34,7 @@ import java.util.Random;
 //    "5": "雕文石头",
 //6 not considered
 //    "7": "荒古门廊",
-//    "tile.blockEldritch.8.name": "荒古锁具",
+//    "8": "荒古锁具",
 //    "tile.blockEldritch.9.name": "荒古锁孔",
 //    "tile.blockEldritch.10.name": "符文石头",
 @Deprecated(forRemoval = true)
@@ -149,8 +149,8 @@ public class BlockEldritch /*extends BlockContainer*/ {
 
    public boolean hasTileEntity(int metadata) {
       return
-//              metadata == 0 || metadata == 1 || metadata == 3 ||
-              metadata == 8 || metadata == 9 || metadata == 10;
+//              metadata == 0 || metadata == 1 || metadata == 3 || metadata == 8 ||
+                      metadata == 9 || metadata == 10;
    }
 
    public TileEntity createTileEntity(World world, int metadata) {
@@ -163,9 +163,10 @@ public class BlockEldritch /*extends BlockContainer*/ {
 //      if (metadata == 3) {
 //         return new TileEldritchCap();
 //      } else
-      if (metadata == 8) {
-         return new TileEldritchLock();
-      } else if (metadata == 9) {
+//      if (metadata == 8) {
+//         return new TileEldritchLock();
+//      } else
+      if (metadata == 9) {
          return new TileEldritchCrabSpawner();
       } else {
          return metadata == 10 ? new TileEldritchTrap() : null;
