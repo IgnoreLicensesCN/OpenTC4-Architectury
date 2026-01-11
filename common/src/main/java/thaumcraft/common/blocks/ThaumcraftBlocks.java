@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.Thaumcraft;
@@ -487,6 +486,8 @@ public class ThaumcraftBlocks {
                 "glyphed_stone",
                 GlyphedStoneBlock::new
         );
+
+
         static {
             BLOCKS.register();
         }

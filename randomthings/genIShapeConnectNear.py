@@ -1,4 +1,4 @@
-from itertools import combinations
+# use this to generate IShapeConnectNearBlock models and needed code
 import json
 from pathlib import Path
 
