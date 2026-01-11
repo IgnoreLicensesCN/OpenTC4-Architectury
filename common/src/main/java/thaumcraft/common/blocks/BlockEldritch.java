@@ -19,7 +19,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.particles.FXSpark;
+import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -32,16 +32,17 @@ import java.util.List;
 import java.util.Random;
 
 //    "0: "邪术祭坛",
-//    "tile.blockEldritch.1.name": "邪术方尖碑",
-//    "tile.blockEldritch.2.name": "邪术方尖碑",
-//    "tile.blockEldritch.3.name": "邪术拱顶石",
+//    "1": "邪术方尖碑",
+//    "2": "邪术方尖碑",
+//    "3": "邪术拱顶石",
 //    "tile.blockEldritch.4.name": "发光荒古石头",
 //    "tile.blockEldritch.5.name": "雕文石头",
 //    "tile.blockEldritch.7.name": "荒古门廊",
 //    "tile.blockEldritch.8.name": "荒古锁具",
 //    "tile.blockEldritch.9.name": "荒古锁孔",
 //    "tile.blockEldritch.10.name": "符文石头",
-public class BlockEldritch extends BlockContainer {
+@Deprecated(forRemoval = true)
+public class BlockEldritch /*extends BlockContainer*/ {
    public IIcon icon = null;
    public IIcon[] insIcon = new IIcon[9];
    private Random rand = new Random();
@@ -73,11 +74,28 @@ public class BlockEldritch extends BlockContainer {
 
    @SideOnly(Side.CLIENT)
    public IIcon getIcon(int side, int meta) {
-      return meta == 4 ? this.insIcon[0]
-              : (meta == 5 ? this.insIcon[1] : (meta == 6 ? this.insIcon[2]
-              : (meta == 7 ? this.insIcon[4] : (meta == 8 ? this.insIcon[3]
-              : (meta == 9 ? ConfigBlocks.blockCosmeticSolid.getIcon(side, 14)
-              : (meta == 10 ? this.insIcon[5] : this.icon))))));
+      if (meta == 4){
+         return this.insIcon[0];
+      }
+      if (meta == 5){
+         return this.insIcon[1];
+      }
+      if (meta == 6){
+         return this.insIcon[2];
+      }
+      if (meta == 7){
+         return this.insIcon[4];
+      }
+      if (meta == 8){
+         return this.insIcon[3];
+      }
+      if (meta == 9){
+         return ConfigBlocks.blockCosmeticSolid.getIcon(side, 14);
+      }
+      if (meta == 10){
+         return this.insIcon[3];
+      }
+      return this.icon;
    }
 
    @SideOnly(Side.CLIENT)
@@ -108,13 +126,14 @@ public class BlockEldritch extends BlockContainer {
             if (meta == 9) {
                return 4;
             } else {
-               return meta == 10 ? 0 : 8;
+               return meta == 10 ? 0
+                       : 8;//== 0,== 1,== 2,== 3
             }
          } else {
-            return 5;
+            return 5;//== 6,== 8
          }
       } else {
-         return 12;
+         return 12;//== 4,== 5,== 7
       }
    }
 
@@ -133,7 +152,9 @@ public class BlockEldritch extends BlockContainer {
    }
 
    public boolean hasTileEntity(int metadata) {
-      return metadata == 0 || metadata == 1 || metadata == 3 || metadata == 8 || metadata == 9 || metadata == 10;
+      return
+//              metadata == 0 || metadata == 1 || metadata == 3 ||
+              metadata == 8 || metadata == 9 || metadata == 10;
    }
 
    public TileEntity createTileEntity(World world, int metadata) {
@@ -143,9 +164,10 @@ public class BlockEldritch extends BlockContainer {
 //         if (metadata == 1) {
 //         return new TileEldritchObelisk();
 //      } else
-         if (metadata == 3) {
-         return new TileEldritchCap();
-      } else if (metadata == 8) {
+//      if (metadata == 3) {
+//         return new TileEldritchCap();
+//      } else
+      if (metadata == 8) {
          return new TileEldritchLock();
       } else if (metadata == 9) {
          return new TileEldritchCrabSpawner();
@@ -176,16 +198,18 @@ public class BlockEldritch extends BlockContainer {
 
    public int getExpDrop(IBlockAccess world, int metadata, int fortune) {
       if (metadata != 5 && metadata != 10) {
-         return metadata == 9 ? MathHelper.getRandomIntegerInRange(this.rand, 6, 10) : super.getExpDrop(world, metadata, fortune);
+         return metadata == 9
+                 ? MathHelper.getRandomIntegerInRange(this.rand, 6, 10) //== 9
+                 : super.getExpDrop(world, metadata, fortune);
       } else {
-         return MathHelper.getRandomIntegerInRange(this.rand, 1, 4);
+         return MathHelper.getRandomIntegerInRange(this.rand, 1, 4);//== 5,== 10
       }
    }
 
    public ArrayList getDrops(World world, int x, int y, int z, int md, int fortune) {
       ArrayList<ItemStack> ret = new ArrayList<>();
       if (md == 5) {
-         ret.add(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT));
+         ret.add(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT));//migrate to loot table
          return ret;
       } else {
          return super.getDrops(world, x, y, z, md, fortune);
@@ -216,12 +240,13 @@ public class BlockEldritch extends BlockContainer {
          if (meta == 6) {
             return 4.0F;
          } else if (meta != 7 && meta != 8) {
-            return meta != 9 && meta != 10 ? super.getBlockHardness(world, x, y, z) : 15.0F;
+            return meta != 9 && meta != 10 ? super.getBlockHardness(world, x, y, z)
+                    : 15.0F;//== 9,== 10
          } else {
-            return -1.0F;
+            return -1.0F;//== 7,== 8
          }
       } else {
-         return 2.0F;
+         return 2.0F;//== 4,== 5
       }
    }
 
@@ -231,10 +256,11 @@ public class BlockEldritch extends BlockContainer {
          if (meta == 6) {
             return 100.0F;
          } else {
-            return meta != 7 && meta != 8 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ) : Float.MAX_VALUE;
+            return meta != 7 && meta != 8 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ)
+                    : Float.MAX_VALUE;//== 7,== 8
          }
       } else {
-         return 30.0F;
+         return 30.0F;//== 4,== 5,== 9,== 10
       }
    }
 
@@ -296,7 +322,6 @@ public class BlockEldritch extends BlockContainer {
             ClientFXUtils.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
          }
       }
-
    }
 
    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {

@@ -24,6 +24,7 @@ public class EldritchObeliskWithTickerBlock extends EldritchObeliskBlock {
                 .strength(50F,20000F)
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)
+                .lightLevel(s -> 8)
         );
     }
 

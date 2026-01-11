@@ -6,13 +6,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchObeliskBlock;
-import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchObeliskWithTickerBlock;
 import thaumcraft.common.tiles.crafted.*;
-import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
-import thaumcraft.common.tiles.eldritch.EldritchObeliskBlockEntity;
-import thaumcraft.common.tiles.eldritch.EldritchObeliskWithTickerBlockEntity;
-import thaumcraft.common.tiles.eldritch.EldritchVoidBlockEntity;
+import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
@@ -31,6 +26,8 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EldritchAltarBlockEntity> ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
     public static final BlockEntityType<EldritchObeliskBlockEntity> ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
     public static final BlockEntityType<EldritchObeliskWithTickerBlockEntity> ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
+    public static final BlockEntityType<EldritchCapstoneBlockEntity> ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
+
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -38,7 +35,7 @@ public class ThaumcraftBlockEntities {
 
         public static final RegistrySupplier<BlockEntityType<NodeBlockEntity>> SUPPLIER_AURA_NODE = BLOCK_ENTITIES.register(
                 "node",
-                () -> BlockEntityType.Builder.of(NodeBlockEntity::new, ThaumcraftBlocks.AURA_NODE).build(null)//seems "type" not used
+                () -> BlockEntityType.Builder.of(NodeBlockEntity::new, ThaumcraftBlocks.AURA_NODE).build(null)//seems "type" not used,mekanism uses "null"
         );
         public static final RegistrySupplier<BlockEntityType<SilverWoodKnotNodeBlockEntity>> SUPPLIER_SILVERWOOD_KNOT_NODE = BLOCK_ENTITIES.register(
                 "silverwood_knot_node",
@@ -104,6 +101,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EldritchObeliskWithTickerBlockEntity::new,
                         ThaumcraftBlocks.ELDRITCH_OBELISK_WITH_TICKER
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EldritchCapstoneBlockEntity>> SUPPLIER_ELDRITCH_CAPSTONE = BLOCK_ENTITIES.register(
+                "eldritch_capstone",
+                () -> BlockEntityType.Builder.of(
+                        EldritchCapstoneBlockEntity::new,
+                        ThaumcraftBlocks.ELDRITCH_CAPSTONE
                 ).build(null)
         );
     }

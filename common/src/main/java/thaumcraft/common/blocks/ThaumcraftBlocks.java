@@ -127,6 +127,7 @@ public class ThaumcraftBlocks {
 
     public static final EldritchObeliskBlock ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
     public static final EldritchObeliskWithTickerBlock ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
+    public static final EldritchCapstoneBlock ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -471,6 +472,11 @@ public class ThaumcraftBlocks {
                 "eldritch_obelisk_with_ticker",
                 EldritchObeliskWithTickerBlock::new
         );
+        public static final RegistrySupplier<EldritchCapstoneBlock> SUPPLIER_ELDRITCH_CAPSTONE = BLOCKS.register(
+                "eldritch_capstone",
+                EldritchCapstoneBlock::new
+        );
+
 
 
         static {
