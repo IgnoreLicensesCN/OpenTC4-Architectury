@@ -12,6 +12,7 @@ block_with_item_names = [
     ['tile.blockEldritch.3.name', 'eldritch_capstone'],
     ['tile.blockEldritch.4.name', 'glowing_crusted_stone'],
     ['tile.blockEldritch.5.name', 'glyphed_stone'],
+    ['tile.blockEldritch.7.name', 'ancient_gateway'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

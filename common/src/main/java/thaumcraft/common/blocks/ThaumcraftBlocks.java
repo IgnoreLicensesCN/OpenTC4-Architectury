@@ -130,6 +130,7 @@ public class ThaumcraftBlocks {
     public static final EldritchCapstoneBlock ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
     public static final GlowingClustedStoneBlock GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
     public static final GlyphedStoneBlock GLYPHED_STONE = Registry.SUPPLIER_GLYPHED_STONE.get();
+    public static final Block ANCIENT_GATEWAY = Registry.SUPPLIER_ANCIENT_GATEWAY.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -486,7 +487,15 @@ public class ThaumcraftBlocks {
                 "glyphed_stone",
                 GlyphedStoneBlock::new
         );
-
+        public static final RegistrySupplier<Block> SUPPLIER_ANCIENT_GATEWAY = BLOCKS.register(
+                "ancient_gateway",
+                () -> new Block(BlockBehaviour.Properties.of()
+                        .strength(-1,Float.MAX_VALUE)
+                        .sound(SoundType.STONE)
+                        .mapColor(MapColor.COLOR_BLACK)
+                        .lightLevel(s -> 12)
+                        .requiresCorrectToolForDrops())
+        );
 
         static {
             BLOCKS.register();
