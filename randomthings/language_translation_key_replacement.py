@@ -27,7 +27,7 @@ for fileName in os.listdir(language_file_folder):
         with open(language_file_path, mode='r', encoding='utf-8') as f2read:
             language_text = f2read.read()
 
-        language_dict:dict = json.loads(language_text)
+        language_dict = json.loads(language_text)
 
         for block_with_item_name_pair in block_with_item_names:
             key = block_with_item_name_pair[0];
@@ -46,8 +46,10 @@ for fileName in os.listdir(language_file_folder):
                     language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:
                 raise Exception(str(block_with_item_name_pair))
+            language_dict = dict(sorted(language_dict.items()))
             with open(language_file_path, mode='w', encoding='utf-8') as f2write:
                 json.dump(language_dict, f2write, indent=2, ensure_ascii=False)
+
             # replace_pattern = ''
             # if isinstance(block_with_item_name_pair[1],list):
             #     for addName in block_with_item_name_pair[1]:
