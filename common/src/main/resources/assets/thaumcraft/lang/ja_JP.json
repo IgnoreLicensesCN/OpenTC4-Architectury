@@ -342,7 +342,6 @@
   "item.thaumcraft.glyphed_stone": "碑石",
   "block.thaumcraft.ancient_gateway": "いにしえの扉",
   "item.thaumcraft.ancient_gateway": "いにしえの扉",
-  "tile.blockEldritch.9.name": "凝り固まった穴",
   "tile.blockEldritch.10.name": "ルーンの刻まれた石",
   "tile.blockPortalEldritch.name": "エルドリッチポータル",
   "tile.blockEssentiaReservoir.name": "エッセンシア貯蔵槽",
@@ -1275,5 +1274,7 @@
   "block.thaumcraft.ancient_lock_empty": "いにしえの施錠機構",
   "item.thaumcraft.ancient_lock_empty": "いにしえの施錠機構",
   "block.thaumcraft.ancient_lock_inserted": "いにしえの施錠機構",
-  "item.thaumcraft.ancient_lock_inserted": "いにしえの施錠機構"
+  "item.thaumcraft.ancient_lock_inserted": "いにしえの施錠機構",
+  "block.thaumcraft.eldritch_crab_spawner": "凝り固まった穴",
+  "item.thaumcraft.eldritch_crab_spawner": "凝り固まった穴"
 }

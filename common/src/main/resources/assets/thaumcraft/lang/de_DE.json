@@ -350,7 +350,6 @@
   "item.thaumcraft.glyphed_stone": "Glyphenstein",
   "block.thaumcraft.ancient_gateway": "Antiker Eingang",
   "item.thaumcraft.ancient_gateway": "Antiker Eingang",
-  "tile.blockEldritch.9.name": "Verkrustete Öffnung",
   "tile.blockEldritch.10.name": "Runenstein",
   "tile.blockPortalEldritch.name": "Unheimliches Portal",
   "tile.blockEssentiaReservoir.name": "Essentiareservoir",
@@ -1628,5 +1627,7 @@
   "block.thaumcraft.ancient_lock_empty": "Antiker Verriegelungsmechanismus",
   "item.thaumcraft.ancient_lock_empty": "Antiker Verriegelungsmechanismus",
   "block.thaumcraft.ancient_lock_inserted": "Antiker Verriegelungsmechanismus",
-  "item.thaumcraft.ancient_lock_inserted": "Antiker Verriegelungsmechanismus"
+  "item.thaumcraft.ancient_lock_inserted": "Antiker Verriegelungsmechanismus",
+  "block.thaumcraft.eldritch_crab_spawner": "Verkrustete Öffnung",
+  "item.thaumcraft.eldritch_crab_spawner": "Verkrustete Öffnung"
 }

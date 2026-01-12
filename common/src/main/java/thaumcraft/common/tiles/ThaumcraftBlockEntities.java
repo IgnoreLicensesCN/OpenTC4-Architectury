@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchCrabSpawnerBlock;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
@@ -28,7 +29,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EldritchObeliskWithTickerBlockEntity> ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
     public static final BlockEntityType<EldritchCapstoneBlockEntity> ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
     public static final BlockEntityType<AncientLockInsertedBlockEntity> ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
-
+    public static final BlockEntityType<EldritchCrabSpawnerBlockEntity> ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -116,6 +117,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         AncientLockInsertedBlockEntity::new,
                         ThaumcraftBlocks.ANCIENT_LOCK_INSERTED
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EldritchCrabSpawnerBlockEntity>> SUPPLIER_ELDRITCH_CRAB_SPAWNER = BLOCK_ENTITIES.register(
+                "eldritch_crab_spawner",
+                () -> BlockEntityType.Builder.of(
+                        EldritchCrabSpawnerBlockEntity::new,
+                        ThaumcraftBlocks.ELDRITCH_CRAB_SPAWNER
                 ).build(null)
         );
     }

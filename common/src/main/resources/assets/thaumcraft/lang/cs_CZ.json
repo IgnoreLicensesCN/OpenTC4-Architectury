@@ -350,7 +350,6 @@
   "item.thaumcraft.glyphed_stone": "Piktogramový kámen",
   "block.thaumcraft.ancient_gateway": "Starověký vchod",
   "item.thaumcraft.ancient_gateway": "Starověký vchod",
-  "tile.blockEldritch.9.name": "Crusted Opening",
   "tile.blockEldritch.10.name": "Runový kámen",
   "tile.blockPortalEldritch.name": "Eldritch Portál",
   "tile.blockEssentiaReservoir.name": "Essentia nádrž",
@@ -1628,5 +1627,7 @@
   "block.thaumcraft.ancient_lock_empty": "Starověký zamykací mechanismus",
   "item.thaumcraft.ancient_lock_empty": "Starověký zamykací mechanismus",
   "block.thaumcraft.ancient_lock_inserted": "Starověký zamykací mechanismus",
-  "item.thaumcraft.ancient_lock_inserted": "Starověký zamykací mechanismus"
+  "item.thaumcraft.ancient_lock_inserted": "Starověký zamykací mechanismus",
+  "block.thaumcraft.eldritch_crab_spawner": "Crusted Opening",
+  "item.thaumcraft.eldritch_crab_spawner": "Crusted Opening"
 }

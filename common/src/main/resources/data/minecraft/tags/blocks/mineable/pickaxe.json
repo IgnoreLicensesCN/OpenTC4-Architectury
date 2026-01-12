@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "thaumcraft:glyphed_stone",
     "thaumcraft:glowing_crusted_stone",
     "thaumcraft:eldritch_capstone",
     "thaumcraft:eldritch_obelisk_with_ticker",

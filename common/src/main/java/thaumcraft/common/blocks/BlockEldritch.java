@@ -32,10 +32,10 @@ import java.util.Random;
 //    "3": "邪术拱顶石",
 //    "4": "发光荒古石头",
 //    "5": "雕文石头",
-//6 not considered
+//6 not considered(not added to game)
 //    "7": "荒古门廊",
 //    "8": "荒古锁具",
-//    "tile.blockEldritch.9.name": "荒古锁孔",
+//    "9": "荒古锁孔",锁你妈，这玩意是那个蜘蛛洞
 //    "tile.blockEldritch.10.name": "符文石头",
 @Deprecated(forRemoval = true)
 public class BlockEldritch /*extends BlockContainer*/ {
@@ -166,9 +166,10 @@ public class BlockEldritch /*extends BlockContainer*/ {
 //      if (metadata == 8) {
 //         return new TileEldritchLock();
 //      } else
-      if (metadata == 9) {
-         return new TileEldritchCrabSpawner();
-      } else {
+//      if (metadata == 9) {
+//         return new TileEldritchCrabSpawner();
+//      }
+      else {
          return metadata == 10 ? new TileEldritchTrap() : null;
       }
    }
@@ -300,18 +301,19 @@ public class BlockEldritch /*extends BlockContainer*/ {
    @SideOnly(Side.CLIENT)
    public void randomDisplayTick(World w, int i, int j, int k, Random r) {
       int md = w.getBlockMetadata(i, j, k);
-      if (md == 8) {
-         TileEntity te = w.getTileEntity(i, j, k);
-         if (!(te instanceof TileEldritchLock) || ((TileEldritchLock) te).count < 0) {
-            return;
-         }
-
-         FXSpark ef = new FXSpark(w, (float)i + w.rand.nextFloat(), (float)j + w.rand.nextFloat(), (float)k + w.rand.nextFloat(), 0.5F);
-         ef.setRBGColorF(0.65F + w.rand.nextFloat() * 0.1F, 1.0F, 1.0F);
-         ef.setAlphaF(0.8F);
-         Minecraft.getInstance().particleEngine.add(ef);
-
-      } else if (md == 10) {
+//      if (md == 8) {
+//         TileEntity te = w.getTileEntity(i, j, k);
+//         if (!(te instanceof TileEldritchLock) || ((TileEldritchLock) te).count < 0) {
+//            return;
+//         }
+//
+//         FXSpark ef = new FXSpark(w, (float)i + w.rand.nextFloat(), (float)j + w.rand.nextFloat(), (float)k + w.rand.nextFloat(), 0.5F);
+//         ef.setRBGColorF(0.65F + w.rand.nextFloat() * 0.1F, 1.0F, 1.0F);
+//         ef.setAlphaF(0.8F);
+//         Minecraft.getInstance().particleEngine.add(ef);
+//
+//      } else
+      if (md == 10) {
          int x = i + r.nextInt(2) - r.nextInt(2);
          int y = j + r.nextInt(2) - r.nextInt(2);
          int z = k + r.nextInt(2) - r.nextInt(2);

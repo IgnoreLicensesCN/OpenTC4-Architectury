@@ -350,7 +350,6 @@
   "item.thaumcraft.glyphed_stone": "Исписанный камень",
   "block.thaumcraft.ancient_gateway": "Древний проход",
   "item.thaumcraft.ancient_gateway": "Древний проход",
-  "tile.blockEldritch.9.name": "Заросший проход",
   "tile.blockEldritch.10.name": "Рунный камень",
   "tile.blockPortalEldritch.name": "Древний портал",
   "tile.blockEssentiaReservoir.name": "Резервуар эссенции",
@@ -1627,5 +1626,7 @@
   "block.thaumcraft.ancient_lock_empty": "Древний замок",
   "item.thaumcraft.ancient_lock_empty": "Древний замок",
   "block.thaumcraft.ancient_lock_inserted": "Древний замок",
-  "item.thaumcraft.ancient_lock_inserted": "Древний замок"
+  "item.thaumcraft.ancient_lock_inserted": "Древний замок",
+  "block.thaumcraft.eldritch_crab_spawner": "Заросший проход",
+  "item.thaumcraft.eldritch_crab_spawner": "Заросший проход"
 }

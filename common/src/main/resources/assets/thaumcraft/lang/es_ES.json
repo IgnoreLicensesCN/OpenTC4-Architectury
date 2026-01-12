@@ -349,7 +349,6 @@
   "item.thaumcraft.glyphed_stone": "Piedra Glifo",
   "block.thaumcraft.ancient_gateway": "Puerta Antigüa",
   "item.thaumcraft.ancient_gateway": "Puerta Antigüa",
-  "tile.blockEldritch.9.name": "Costra Abierta",
   "tile.blockEldritch.10.name": "Piedra Rúnica",
   "tile.blockPortalEldritch.name": "Portal Eldritch",
   "tile.blockEssentiaReservoir.name": "Reserva de Esencia",
@@ -1627,5 +1626,7 @@
   "block.thaumcraft.ancient_lock_empty": "Mecanismo de Bloqueo Antigüo",
   "item.thaumcraft.ancient_lock_empty": "Mecanismo de Bloqueo Antigüo",
   "block.thaumcraft.ancient_lock_inserted": "Mecanismo de Bloqueo Antigüo",
-  "item.thaumcraft.ancient_lock_inserted": "Mecanismo de Bloqueo Antigüo"
+  "item.thaumcraft.ancient_lock_inserted": "Mecanismo de Bloqueo Antigüo",
+  "block.thaumcraft.eldritch_crab_spawner": "Costra Abierta",
+  "item.thaumcraft.eldritch_crab_spawner": "Costra Abierta"
 }

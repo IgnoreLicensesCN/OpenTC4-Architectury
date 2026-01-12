@@ -349,7 +349,6 @@
   "item.thaumcraft.glyphed_stone": "Glyphed Stone",
   "block.thaumcraft.ancient_gateway": "Ancient Doorway",
   "item.thaumcraft.ancient_gateway": "Ancient Doorway",
-  "tile.blockEldritch.9.name": "Crusted Opening",
   "tile.blockEldritch.10.name": "Runed Stone",
   "tile.blockPortalEldritch.name": "Eldritch Portal",
   "tile.blockEssentiaReservoir.name": "Essentia Reservoir",
@@ -1482,5 +1481,7 @@
   "block.thaumcraft.ancient_lock_empty": "Ancient Locking Mechanism",
   "item.thaumcraft.ancient_lock_empty": "Ancient Locking Mechanism",
   "block.thaumcraft.ancient_lock_inserted": "Ancient Locking Mechanism",
-  "item.thaumcraft.ancient_lock_inserted": "Ancient Locking Mechanism"
+  "item.thaumcraft.ancient_lock_inserted": "Ancient Locking Mechanism",
+  "block.thaumcraft.eldritch_crab_spawner": "Crusted Opening",
+  "item.thaumcraft.eldritch_crab_spawner": "Crusted Opening"
 }

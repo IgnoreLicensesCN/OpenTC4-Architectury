@@ -349,7 +349,6 @@
   "item.thaumcraft.glyphed_stone": "Pierre glyphée",
   "block.thaumcraft.ancient_gateway": "Ancienne porte",
   "item.thaumcraft.ancient_gateway": "Ancienne porte",
-  "tile.blockEldritch.9.name": "Ouverture incrustée",
   "tile.blockEldritch.10.name": "Pierre runique",
   "tile.blockPortalEldritch.name": "Portail surnaturel",
   "tile.blockEssentiaReservoir.name": "Réservoir à Essentia",
@@ -1627,5 +1626,7 @@
   "block.thaumcraft.ancient_lock_empty": "Mechanisme de fermeture Ancien",
   "item.thaumcraft.ancient_lock_empty": "Mechanisme de fermeture Ancien",
   "block.thaumcraft.ancient_lock_inserted": "Mechanisme de fermeture Ancien",
-  "item.thaumcraft.ancient_lock_inserted": "Mechanisme de fermeture Ancien"
+  "item.thaumcraft.ancient_lock_inserted": "Mechanisme de fermeture Ancien",
+  "block.thaumcraft.eldritch_crab_spawner": "Ouverture incrustée",
+  "item.thaumcraft.eldritch_crab_spawner": "Ouverture incrustée"
 }
