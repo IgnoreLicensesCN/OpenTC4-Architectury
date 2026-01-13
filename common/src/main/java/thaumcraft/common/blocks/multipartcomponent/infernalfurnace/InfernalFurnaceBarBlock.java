@@ -25,6 +25,10 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
 
     public InfernalFurnaceBarBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ROTATION_Y_AXIS, 0)
+        );
     }
     public InfernalFurnaceBarBlock() {
         super(Properties
@@ -32,6 +36,10 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 13)
                 .requiresCorrectToolForDrops()
+        );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ROTATION_Y_AXIS, 0)
         );
     }
 

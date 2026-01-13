@@ -28,6 +28,10 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
     public TallowCandleBlock(Properties properties,int color) {
         super(properties);
         this.color = color;
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(WAX, 0)
+        );
     }
     public TallowCandleBlock(int color) {
         super(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)
@@ -35,6 +39,10 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
                 .lightLevel(s -> 1)
         );
         this.color = color;
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(WAX, 0)
+        );
     }
 
 
@@ -78,6 +86,15 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
         RandomSource r = ctx.getLevel().getRandom();
         return this.defaultBlockState()
                 .setValue(WAX, 1 + r.nextInt(5));
+    }
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos,
+                        BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (oldState.getBlock() != this){
+
+            level.setBlock(pos,state.setValue(WAX, 1 + level.random.nextInt(5)),3);
+        }
     }
 
 

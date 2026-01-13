@@ -9,6 +9,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -174,6 +175,14 @@ public interface IShapeConnectNearBlock {
 
     default void addStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(NORTH_CONNECTED,SOUTH_CONNECTED, EAST_CONNECTED, WEST_CONNECTED, UP_CONNECTED, DOWN_CONNECTED);
+    }
+    default BlockState setDefaultStateDefinition(StateHolder<Block, BlockState> definition) {
+        return definition.setValue(NORTH_CONNECTED,false)
+                .setValue(SOUTH_CONNECTED,false)
+                .setValue(WEST_CONNECTED,false)
+                .setValue(EAST_CONNECTED,false)
+                .setValue(UP_CONNECTED,false)
+                .setValue(DOWN_CONNECTED,false);
     }
 
     default @NotNull VoxelShape getShapeConnectNear(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {

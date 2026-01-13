@@ -48,6 +48,11 @@ public abstract class AbstractCrystalBlock extends Block implements IInfusionSta
         );
         assert particleColors.length > 0;
         this.particleColors = particleColors;
+
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACING, Direction.DOWN)
+        );
     }
 
     @Override

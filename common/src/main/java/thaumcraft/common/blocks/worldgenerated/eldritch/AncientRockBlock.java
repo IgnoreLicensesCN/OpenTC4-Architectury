@@ -1,6 +1,9 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -8,13 +11,23 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 public class AncientRockBlock extends Block {
 
     public AncientRockBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACE_STATE, 0)
+        );
     }
     public AncientRockBlock() {
         super(Properties.copy(Blocks.STONE).strength(2.F,10.F));
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACE_STATE, 0)
+        );
     }
 
     //i dont want to get all face states,i want to save disk space.
@@ -30,5 +43,15 @@ public class AncientRockBlock extends Block {
         var coord = blockPlaceContext.getClickedPos();
         var stateValue = (coord.getX()%2) + (coord.getY()%2)*2 + (coord.getZ()%2)*4;
         return this.defaultBlockState().setValue(FACE_STATE, stateValue);
+    }
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos,
+                        BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (oldState.getBlock() != this){
+            var stateValue = (pos.getX()%2) + (pos.getY()%2)*2 + (pos.getZ()%2)*4;
+
+            level.setBlock(pos,state.setValue(FACE_STATE, stateValue),3);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -15,9 +17,17 @@ public class AncientStoneBlock extends Block {
 
     public AncientStoneBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACE_STATE, 0)
+        );
     }
     public AncientStoneBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2.F,10.F));
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACE_STATE, 0)
+        );
     }
 
     //i dont want to get all face states,i want to save disk space.
@@ -34,5 +44,17 @@ public class AncientStoneBlock extends Block {
         var hasher = ""+coord.getX() + coord.getY() + coord.getZ() + blockPlaceContext.getLevel().dimension().location();
         var random = new Random(hasher.hashCode());
         return this.defaultBlockState().setValue(FACE_STATE, random.nextInt(64));
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos,
+                        BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (oldState.getBlock() != this){
+            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
+            var random = new Random(hasher.hashCode());
+
+            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
+        }
     }
 }

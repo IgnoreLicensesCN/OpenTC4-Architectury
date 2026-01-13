@@ -23,6 +23,7 @@ import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
     public static final FluxGooBlock FLUX_GOO = Registry.SUPPLIER_FLUX_GOO.get();
@@ -134,6 +135,7 @@ public class ThaumcraftBlocks {
     public static final AncientLockEmptyBlock ANCIENT_LOCK_EMPTY = Registry.SUPPLIER_ANCIENT_LOCK_EMPTY.get();
     public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
     public static final EldritchCrabSpawnerBlock ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
+    public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -509,6 +511,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<EldritchCrabSpawnerBlock> SUPPLIER_ELDRITCH_CRAB_SPAWNER = BLOCKS.register(
                 "eldritch_crab_spawner",
                 EldritchCrabSpawnerBlock::new
+        );
+        public static final RegistrySupplier<RunedStoneBlock> SUPPLIER_RUNED_STONE = BLOCKS.register(
+                "runed_stone",
+                RunedStoneBlock::new
         );
 
         static {

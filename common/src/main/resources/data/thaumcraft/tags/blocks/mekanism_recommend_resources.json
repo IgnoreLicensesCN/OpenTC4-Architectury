@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "thaumcraft:strange_crystals",
-    "thaumcraft:glyphed_stone"
+    "thaumcraft:glyphed_stone",
+    "thaumcraft:eldritch_crab_spawner",
+    "thaumcraft:runed_stone"
   ]
 }

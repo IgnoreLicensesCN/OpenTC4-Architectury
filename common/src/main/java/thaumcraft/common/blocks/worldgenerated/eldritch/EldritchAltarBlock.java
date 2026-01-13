@@ -33,6 +33,14 @@ public class EldritchAltarBlock extends Block implements EntityBlock {
     public static final IntegerProperty SPAWNER_TYPE = IntegerProperty.create("spawner_type", 0, 3);
     public EldritchAltarBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ELDRITCH_ALTAR_EYES,0)
+                        .setValue(SPAWNED_CLERICS, false)
+                        .setValue(IS_SPAWNER, false)
+                        .setValue(OPENED, false)
+                        .setValue(SPAWNER_TYPE, 0)
+        );
     }
 
     public EldritchAltarBlock() {
@@ -42,6 +50,15 @@ public class EldritchAltarBlock extends Block implements EntityBlock {
                 .mapColor(MapColor.COLOR_BLACK)
                 .lightLevel(s -> 8)
                 .requiresCorrectToolForDrops()
+        );
+
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ELDRITCH_ALTAR_EYES,0)
+                        .setValue(SPAWNED_CLERICS, false)
+                        .setValue(IS_SPAWNER, false)
+                        .setValue(OPENED, false)
+                        .setValue(SPAWNER_TYPE, 0)
         );
     }
 

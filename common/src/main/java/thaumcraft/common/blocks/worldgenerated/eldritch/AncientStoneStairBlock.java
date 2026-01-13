@@ -1,6 +1,8 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -20,7 +22,7 @@ public class AncientStoneStairBlock extends StairBlock {
         super(ThaumcraftBlocks.ANCIENT_STONE.defaultBlockState(), BlockBehaviour.Properties.copy(ThaumcraftBlocks.ANCIENT_STONE));
     }
 
-    public static final IntegerProperty FACE_STATE = AncientStoneStairBlock.FACE_STATE;
+    public static final IntegerProperty FACE_STATE = AncientStoneBlock.FACE_STATE;
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -35,4 +37,16 @@ public class AncientStoneStairBlock extends StairBlock {
         return super.getStateForPlacement(blockPlaceContext).setValue(FACE_STATE, random.nextInt(64));
     }
 
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos,
+                        BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (oldState.getBlock() != this){
+            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
+            var random = new Random(hasher.hashCode());
+
+            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
+        }
+    }
 }

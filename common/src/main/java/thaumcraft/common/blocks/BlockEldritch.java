@@ -17,6 +17,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -36,7 +37,7 @@ import java.util.Random;
 //    "7": "荒古门廊",
 //    "8": "荒古锁具",
 //    "9": "荒古锁孔",锁你妈，这玩意是那个蜘蛛洞
-//    "tile.blockEldritch.10.name": "符文石头",
+//    "10": "符文石头",
 @Deprecated(forRemoval = true)
 public class BlockEldritch /*extends BlockContainer*/ {
    public IIcon icon = null;
@@ -298,9 +299,9 @@ public class BlockEldritch /*extends BlockContainer*/ {
 //      return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
 //   }
 
-   @SideOnly(Side.CLIENT)
-   public void randomDisplayTick(World w, int i, int j, int k, Random r) {
-      int md = w.getBlockMetadata(i, j, k);
+//   @SideOnly(Side.CLIENT)
+//   public void randomDisplayTick(World w, int i, int j, int k, Random r) {
+//      int md = w.getBlockMetadata(i, j, k);
 //      if (md == 8) {
 //         TileEntity te = w.getTileEntity(i, j, k);
 //         if (!(te instanceof TileEldritchLock) || ((TileEldritchLock) te).count < 0) {
@@ -313,17 +314,17 @@ public class BlockEldritch /*extends BlockContainer*/ {
 //         Minecraft.getInstance().particleEngine.add(ef);
 //
 //      } else
-      if (md == 10) {
-         int x = i + r.nextInt(2) - r.nextInt(2);
-         int y = j + r.nextInt(2) - r.nextInt(2);
-         int z = k + r.nextInt(2) - r.nextInt(2);
-         if (w.isAirBlock(x, y, z)) {
-            ClientFXUtils.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
-         }
-      }
-   }
+//      if (md == 10) {
+//         int x = i + r.nextInt(3) - 1;
+//         int y = j + r.nextInt(3) - 1;
+//         int z = k + r.nextInt(3) - 1;
+//         if (w.isAirBlock(x, y, z)) {
+//            ClientFXUtils.blockRunes(w, (float)x + r.nextFloat(), (float)y + r.nextFloat(), (float)z + r.nextFloat(), 0.5F + r.nextFloat() * 0.5F, r.nextFloat() * 0.3F, 0.9F + r.nextFloat() * 0.1F, 16 + r.nextInt(4), 0.0F);
+//         }
+//      }
+//   }
 
-   public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-      return null;
-   }
+//   public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+//      return null;
+//   }
 }

@@ -4,6 +4,7 @@ package thaumcraft.common.blocks.worldgenerated.eldritch;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -43,10 +44,12 @@ public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements Ent
 
     public EldritchCrabSpawnerBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
     }
 
     public EldritchCrabSpawnerBlock(Properties properties, IntProvider intProvider) {
         super(properties, intProvider);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
     }
 
     @Override
@@ -70,14 +73,18 @@ public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements Ent
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
-        if (Platform.getEnvironment() != Env.SERVER){
+        if (blockEntityType != ThaumcraftBlockEntities.ELDRITCH_CRAB_SPAWNER){
             return null;
         }
         if (blockState0.getBlock() != this){
             return null;
         }
-        if (blockEntityType != ThaumcraftBlockEntities.ELDRITCH_CRAB_SPAWNER){
-            return null;
+        if (Platform.getEnvironment() != Env.SERVER){
+            return (level, blockPos, blockState, blockEntity) -> {
+                if (blockEntity instanceof EldritchCrabSpawnerBlockEntity crabSpawner){
+                    crabSpawner.clientTick();
+                }
+            };
         }
         return (level, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof EldritchCrabSpawnerBlockEntity crabSpawner){

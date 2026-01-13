@@ -31,11 +31,19 @@ import thaumcraft.common.tiles.crafted.WardingStoneBlockEntity;
 public class PavingStoneWardingBlock extends Block implements EntityBlock {
     public PavingStoneWardingBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(LIT, false)
+        );
     }
 
     public PavingStoneWardingBlock() {
         super(Properties.copy(Blocks.STONE)
                 .strength(2.f, 10.f)
+        );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(LIT, false)
         );
     }
 

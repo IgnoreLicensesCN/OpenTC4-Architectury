@@ -35,9 +35,6 @@ public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
     public void serverTick() {
         if (this.level == null){return;}
         final var pos = getBlockPos();
-        final var posX = pos.getX();
-        final var posY = pos.getY();
-        final var posZ = pos.getZ();
         if (this.ticks == 0) {
             this.ticks = this.level.random.nextInt(500);
         }

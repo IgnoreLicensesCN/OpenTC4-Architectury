@@ -11,6 +11,10 @@ public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent
 
     public InfernalFurnaceBottomBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ROTATION_Y_AXIS, 0)
+        );
     }
     public InfernalFurnaceBottomBlock() {
         super(Properties
@@ -18,6 +22,10 @@ public class InfernalFurnaceBottomBlock extends AbstractInfernalFurnaceComponent
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
                 .requiresCorrectToolForDrops()
+        );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(ROTATION_Y_AXIS, 0)
         );
     }
 

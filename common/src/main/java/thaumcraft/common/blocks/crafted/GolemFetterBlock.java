@@ -25,6 +25,10 @@ public class GolemFetterBlock extends Block {
                 BlockBehaviour.Properties.copy(Blocks.STONE)
                 .strength(2.F,10.F)
         );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(LIT, false)
+        );
     }
 
 

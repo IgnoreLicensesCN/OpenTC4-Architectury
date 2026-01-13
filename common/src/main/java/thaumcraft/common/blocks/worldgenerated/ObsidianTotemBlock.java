@@ -32,9 +32,17 @@ public class ObsidianTotemBlock extends Block {
 
     public ObsidianTotemBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(RENDER_STATE, 0)
+        );
     }
     public ObsidianTotemBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).explosionResistance(999));
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(RENDER_STATE, 0)
+        );
     }
 
     @Override
@@ -75,6 +83,32 @@ public class ObsidianTotemBlock extends Block {
         }
         return state;
     }
+
+    @Override
+    public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        super.onPlace(blockState, level, blockPos, blockState2, bl);
+        if (blockState2.getBlock() != this){
+            if (!level.isClientSide()) {
+                boolean up = level.getBlockState(blockPos.above()).getBlock() instanceof ObsidianTotemBlock;
+                if (up){
+                    level.setBlock(blockPos, RENDER_STATE_UP_HAS_TOTEM, 2);
+                    return;
+                }
+                boolean down = level.getBlockState(blockPos.below()).getBlock() instanceof ObsidianTotemBlock;
+                if (!down){
+                    level.setBlock(blockPos, RENDER_STATE_SINGLE_TOTEM, 2);
+                    return;
+                }
+
+                int x = blockPos.getX(), y = blockPos.getY(), z = blockPos.getZ();
+                int base = (x % 4 + y % 4 + z % 4) % 4;
+
+                level.setBlock(blockPos, RENDER_STATES_TOP_TOTEM[base], 2);
+                return;
+            }
+        }
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(RENDER_STATE);

@@ -24,6 +24,7 @@ import thaumcraft.common.blocks.abstracts.IShapeConnectNearBlock;
 public class GlowingClustedStoneBlock extends Block implements IShapeConnectNearBlock {
     public GlowingClustedStoneBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(setDefaultStateDefinition(this.stateDefinition.any()));
     }
     public GlowingClustedStoneBlock() {
         super(
@@ -32,6 +33,7 @@ public class GlowingClustedStoneBlock extends Block implements IShapeConnectNear
                         .lightLevel(s -> 12)
                         .strength(2,30)
         );
+        this.registerDefaultState(setDefaultStateDefinition(this.stateDefinition.any()));
     }
 
     //template

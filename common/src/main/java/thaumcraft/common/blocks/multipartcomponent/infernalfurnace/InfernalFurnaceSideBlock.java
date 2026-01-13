@@ -30,6 +30,11 @@ public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent {
                 .lightLevel(s -> 1)
                 .requiresCorrectToolForDrops()
         );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(SIDE_TYPE, 0)
+                        .setValue(ROTATION_Y_AXIS, 0)
+        );
     }
 
     @Override

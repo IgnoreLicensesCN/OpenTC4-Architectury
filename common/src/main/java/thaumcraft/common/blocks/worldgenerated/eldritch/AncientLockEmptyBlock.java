@@ -26,6 +26,7 @@ public class AncientLockEmptyBlock extends Block{
                 .mapColor(MapColor.COLOR_BLACK)
                 .lightLevel(s -> 5)
                 .requiresCorrectToolForDrops());
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
     }
 
     @Override

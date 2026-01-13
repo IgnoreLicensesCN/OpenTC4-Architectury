@@ -26,6 +26,11 @@ public class InfernalFurnaceEdgeZAxisBlock extends AbstractInfernalFurnaceCompon
 
     public InfernalFurnaceEdgeZAxisBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(EDGE_TYPE_Z_AXIS,0)
+                        .setValue(ROTATION_Y_AXIS,0)
+        );
     }
     public InfernalFurnaceEdgeZAxisBlock() {
         super(Properties
@@ -33,6 +38,11 @@ public class InfernalFurnaceEdgeZAxisBlock extends AbstractInfernalFurnaceCompon
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
                 .requiresCorrectToolForDrops()
+        );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(EDGE_TYPE_Z_AXIS,0)
+                        .setValue(ROTATION_Y_AXIS,0)
         );
     }
 

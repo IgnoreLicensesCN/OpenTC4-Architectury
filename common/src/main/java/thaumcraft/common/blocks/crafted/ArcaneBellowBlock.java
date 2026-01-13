@@ -27,12 +27,21 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneBellowBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACING,Direction.NORTH)
+        );
     }
     public ArcaneBellowBlock() {
         super(
                 Properties.of()
                         .strength(2.5F, 10.F)
                         .sound(SoundType.WOOD)
+        );
+
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FACING,Direction.NORTH)
         );
     }
 

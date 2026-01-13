@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.multipartcomponent.infernalfurnace;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -33,6 +34,11 @@ public class InfernalFurnaceCornerBlock extends AbstractInfernalFurnaceComponent
     public static final IntegerProperty CORNER_TYPE = IntegerProperty.create("corner", 0, 7);
     public InfernalFurnaceCornerBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(CORNER_TYPE, 0)
+                        .setValue(ROTATION_Y_AXIS, 0)
+        );
     }
     public InfernalFurnaceCornerBlock() {
         super(BlockBehaviour.Properties
@@ -40,6 +46,11 @@ public class InfernalFurnaceCornerBlock extends AbstractInfernalFurnaceComponent
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)
                 .requiresCorrectToolForDrops()
+        );
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(CORNER_TYPE, 0)
+                        .setValue(ROTATION_Y_AXIS, 0)
         );
     }
 

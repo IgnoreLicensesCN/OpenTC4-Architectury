@@ -28,14 +28,15 @@ public class GlyphedStoneBlock extends DropExperienceBlock implements IShapeConn
     }
     public GlyphedStoneBlock(BlockBehaviour.Properties properties, IntProvider intProvider) {
         super(properties, intProvider);
+        this.registerDefaultState(setDefaultStateDefinition(this.stateDefinition.any()));
     }
     public GlyphedStoneBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.STONE)
                 .requiresCorrectToolForDrops()
                 .lightLevel(s -> 12)
                 .strength(2,30),GLYPHED_STONE_EXP_DROP
-
         );
+        this.registerDefaultState(setDefaultStateDefinition(this.stateDefinition.any()));
     }
 
     @Override

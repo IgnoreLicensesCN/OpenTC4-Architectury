@@ -1,6 +1,8 @@
 package thaumcraft.common.blocks.crafted;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -36,5 +38,17 @@ public class AncientStoneSlabBlock extends SlabBlock {
         var random = new Random(hasher.hashCode());
 
         return super.getStateForPlacement(blockPlaceContext).setValue(FACE_STATE, random.nextInt(64));
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos,
+                        BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        if (oldState.getBlock() != this){
+            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
+            var random = new Random(hasher.hashCode());
+
+            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
+        }
     }
 }
