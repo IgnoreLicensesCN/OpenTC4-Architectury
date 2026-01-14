@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "thaumcraft:block/runed_stone_face_4",
+    "up": "thaumcraft:block/runed_stone_face_4",
+    "north": "thaumcraft:block/runed_stone_face_4",
+    "south": "thaumcraft:block/runed_stone_face_3",
+    "west": "thaumcraft:block/runed_stone_face_1",
+    "east": "thaumcraft:block/runed_stone_face_2"
+  }
+}

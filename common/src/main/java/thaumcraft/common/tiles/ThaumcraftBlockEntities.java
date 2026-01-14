@@ -30,6 +30,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EldritchCapstoneBlockEntity> ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
     public static final BlockEntityType<AncientLockInsertedBlockEntity> ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
     public static final BlockEntityType<EldritchCrabSpawnerBlockEntity> ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
+    public static final BlockEntityType<RunedStoneBlockEntity> RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -124,6 +125,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EldritchCrabSpawnerBlockEntity::new,
                         ThaumcraftBlocks.ELDRITCH_CRAB_SPAWNER
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<RunedStoneBlockEntity>> SUPPLIER_RUNED_STONE = BLOCK_ENTITIES.register(
+                "runed_stone",
+                () -> BlockEntityType.Builder.of(
+                        RunedStoneBlockEntity::new,
+                        ThaumcraftBlocks.RUNED_STONE
                 ).build(null)
         );
     }

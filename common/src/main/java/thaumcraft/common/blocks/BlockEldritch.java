@@ -1,32 +1,5 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.migrated.particles.FXSpark;
-import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 //    "0: "邪术祭坛",
 //    "1": "邪术方尖碑",
 //    "2": "邪术方尖碑",
@@ -40,121 +13,122 @@ import java.util.Random;
 //    "10": "符文石头",
 @Deprecated(forRemoval = true)
 public class BlockEldritch /*extends BlockContainer*/ {
-   public IIcon icon = null;
-   public IIcon[] insIcon = new IIcon[9];
-   private Random rand = new Random();
+//   public IIcon icon = null;
+//   public IIcon[] insIcon = new IIcon[9];
+//   private Random rand = new Random();
+//
+//   public BlockEldritch() {
+//      super(Material.rock);
+//      this.setResistance(20000.0F);
+//      this.setHardness(50.0F);
+//      this.setStepSound(soundTypeStone);
+//      this.setTickRandomly(true);
+//      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//      this.setLightOpacity(0);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.icon = ir.registerIcon("thaumcraft:obsidiantile");
+//      this.insIcon[0] = ir.registerIcon("thaumcraft:es_i_1");
+//      this.insIcon[1] = ir.registerIcon("thaumcraft:es_i_2");
+//      this.insIcon[2] = ir.registerIcon("thaumcraft:deco_1");
+//      this.insIcon[3] = ir.registerIcon("thaumcraft:deco_2");
+//      this.insIcon[4] = ir.registerIcon("thaumcraft:deco_3");
+//      this.insIcon[5] = ir.registerIcon("thaumcraft:es_5");
+//      this.insIcon[6] = ir.registerIcon("thaumcraft:es_6");
+//      this.insIcon[7] = ir.registerIcon("thaumcraft:es_7");
+//      this.insIcon[8] = ir.registerIcon("thaumcraft:es_8");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(int side, int meta) {
+//      if (meta == 4){
+//         return this.insIcon[0];
+//      }
+//      if (meta == 5){
+//         return this.insIcon[1];
+//      }
+//      if (meta == 6){
+//         return this.insIcon[2];
+//      }
+//      if (meta == 7){
+//         return this.insIcon[4];
+//      }
+//      if (meta == 8){
+//         return this.insIcon[3];
+//      }
+//      if (meta == 9){
+//         return ConfigBlocks.blockCosmeticSolid.getIcon(side, 14);
+//      }
+//      if (meta == 10){
+//         return this.insIcon[3];
+//      }
+//      return this.icon;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
+//      int md = ba.getBlockMetadata(x, y, z);
+//      if (md == 8) {
+//         TileEntity te = ba.getTileEntity(x, y, z);
+//         return te instanceof TileEldritchLock && ((TileEldritchLock)te).getFacing() == side ? this.insIcon[3] : this.insIcon[4];
+//      } else if (md == 10) {
+//         String l = x + "" + y + z;
+//         Random r1 = new Random(Math.abs(l.hashCode() * 100) + 1);
+//         int i = r1.nextInt(12345 + side) % 4;
+//         return this.insIcon[5 + i];
+//      } else {
+//         return super.getIcon(ba, x, y, z, side);
+//      }
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(par1, 1, 4));
+//   }
+//
+//   public int getLightValue(IBlockAccess world, int x, int y, int z) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      if (meta != 4 && meta != 5 && meta != 7) {
+//         if (meta != 6 && meta != 8) {
+//            if (meta == 9) {
+//               return 4;
+//            } else {
+//               return meta == 10 ? 0
+//                       : 8;//== 0,== 1,== 2,== 3
+//            }
+//         } else {
+//            return 5;//== 6,== 8
+//         }
+//      } else {
+//         return 12;//== 4,== 5,== 7
+//      }
+//   }
 
-   public BlockEldritch() {
-      super(Material.rock);
-      this.setResistance(20000.0F);
-      this.setHardness(50.0F);
-      this.setStepSound(soundTypeStone);
-      this.setTickRandomly(true);
-      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-      this.setLightOpacity(0);
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
+//   public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+//      return false;
+//   }
+//
+//   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
+//      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//      super.setBlockBoundsBasedOnState(world, i, j, k);
+//   }
+//
+//   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
+//      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//      super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.icon = ir.registerIcon("thaumcraft:obsidiantile");
-      this.insIcon[0] = ir.registerIcon("thaumcraft:es_i_1");
-      this.insIcon[1] = ir.registerIcon("thaumcraft:es_i_2");
-      this.insIcon[2] = ir.registerIcon("thaumcraft:deco_1");
-      this.insIcon[3] = ir.registerIcon("thaumcraft:deco_2");
-      this.insIcon[4] = ir.registerIcon("thaumcraft:deco_3");
-      this.insIcon[5] = ir.registerIcon("thaumcraft:es_5");
-      this.insIcon[6] = ir.registerIcon("thaumcraft:es_6");
-      this.insIcon[7] = ir.registerIcon("thaumcraft:es_7");
-      this.insIcon[8] = ir.registerIcon("thaumcraft:es_8");
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(int side, int meta) {
-      if (meta == 4){
-         return this.insIcon[0];
-      }
-      if (meta == 5){
-         return this.insIcon[1];
-      }
-      if (meta == 6){
-         return this.insIcon[2];
-      }
-      if (meta == 7){
-         return this.insIcon[4];
-      }
-      if (meta == 8){
-         return this.insIcon[3];
-      }
-      if (meta == 9){
-         return ConfigBlocks.blockCosmeticSolid.getIcon(side, 14);
-      }
-      if (meta == 10){
-         return this.insIcon[3];
-      }
-      return this.icon;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
-      int md = ba.getBlockMetadata(x, y, z);
-      if (md == 8) {
-         TileEntity te = ba.getTileEntity(x, y, z);
-         return te instanceof TileEldritchLock && ((TileEldritchLock)te).getFacing() == side ? this.insIcon[3] : this.insIcon[4];
-      } else if (md == 10) {
-         String l = x + "" + y + z;
-         Random r1 = new Random(Math.abs(l.hashCode() * 100) + 1);
-         int i = r1.nextInt(12345 + side) % 4;
-         return this.insIcon[5 + i];
-      } else {
-         return super.getIcon(ba, x, y, z, side);
-      }
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(par1, 1, 4));
-   }
-
-   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-      int meta = world.getBlockMetadata(x, y, z);
-      if (meta != 4 && meta != 5 && meta != 7) {
-         if (meta != 6 && meta != 8) {
-            if (meta == 9) {
-               return 4;
-            } else {
-               return meta == 10 ? 0
-                       : 8;//== 0,== 1,== 2,== 3
-            }
-         } else {
-            return 5;//== 6,== 8
-         }
-      } else {
-         return 12;//== 4,== 5,== 7
-      }
-   }
-
-   public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-      return false;
-   }
-
-   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-      super.setBlockBoundsBasedOnState(world, i, j, k);
-   }
-
-   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
-      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-      super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-   }
-
-   public boolean hasTileEntity(int metadata) {
-      return
+//   public boolean hasTileEntity(int metadata) {
+//      return
 //              metadata == 0 || metadata == 1 || metadata == 3 || metadata == 8 ||
-                      metadata == 9 || metadata == 10;
-   }
+//                      metadata == 9 ||
+//                              metadata == 10;
+//   }
 
-   public TileEntity createTileEntity(World world, int metadata) {
+//   public TileEntity createTileEntity(World world, int metadata) {
 //      if (metadata == 0) {
 //         return new TileEldritchAltar();
 //      } else
@@ -170,98 +144,98 @@ public class BlockEldritch /*extends BlockContainer*/ {
 //      if (metadata == 9) {
 //         return new TileEldritchCrabSpawner();
 //      }
-      else {
-         return metadata == 10 ? new TileEldritchTrap() : null;
-      }
-   }
-
-   public int getRenderType() {
-      return ConfigBlocks.blockEldritchRI;
-   }
-
-   public boolean renderAsNormalBlock() {
-      return false;
-   }
-
-   public boolean isOpaqueCube() {
-      return false;
-   }
-
-   public Item getItemDropped(int md, Random rand, int fortune) {
-      return md == 4 ? Item.getItemFromBlock(this) : (md == 5 ? ConfigItems.itemResource : Item.getItemById(0));
-   }
-
-   public int damageDropped(int metadata) {
-      return metadata == 2 ? 1 : metadata;
-   }
-
-   public int getExpDrop(IBlockAccess world, int metadata, int fortune) {
-      if (metadata != 5 && metadata != 10) {
-         return metadata == 9
-                 ? MathHelper.getRandomIntegerInRange(this.rand, 6, 10) //== 9
-                 : super.getExpDrop(world, metadata, fortune);
-      } else {
-         return MathHelper.getRandomIntegerInRange(this.rand, 1, 4);//== 5,== 10
-      }
-   }
-
-   public ArrayList getDrops(World world, int x, int y, int z, int md, int fortune) {
-      ArrayList<ItemStack> ret = new ArrayList<>();
-      if (md == 5) {
-         ret.add(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT));//migrate to loot table
-         return ret;
-      } else {
-         return super.getDrops(world, x, y, z, md, fortune);
-      }
-   }
-
-   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-      if (Platform.getEnvironment() != Env.CLIENT && meta < 4) {
-         for(int xx = x - 3; xx <= x + 3; ++xx) {
-            for(int yy = y - 2; yy <= y + 2; ++yy) {
-               for(int zz = z - 3; zz <= z + 3; ++zz) {
-                  if (world.getBlock(xx, yy, zz) == this && world.getBlockMetadata(xx, yy, zz) < 4) {
-                     world.setBlockToAir(xx, yy, zz);
-                  }
-               }
-            }
-         }
-
-         world.createExplosion(null, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F, false);
-      }
-
-      super.breakBlock(world, x, y, z, block, meta);
-   }
-
-   public float getBlockHardness(World world, int x, int y, int z) {
-      int meta = world.getBlockMetadata(x, y, z);
-      if (meta != 4 && meta != 5) {
-         if (meta == 6) {
-            return 4.0F;
-         } else if (meta != 7 && meta != 8) {
-            return meta != 9 && meta != 10 ? super.getBlockHardness(world, x, y, z)
-                    : 15.0F;//== 9,== 10
-         } else {
-            return -1.0F;//== 7,== 8
-         }
-      } else {
-         return 2.0F;//== 4,== 5
-      }
-   }
-
-   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-      int meta = world.getBlockMetadata(x, y, z);
-      if (meta != 4 && meta != 5 && meta != 9 && meta != 10) {
-         if (meta == 6) {
-            return 100.0F;
-         } else {
-            return meta != 7 && meta != 8 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ)
-                    : Float.MAX_VALUE;//== 7,== 8
-         }
-      } else {
-         return 30.0F;//== 4,== 5,== 9,== 10
-      }
-   }
+//      else {
+//         return metadata == 10 ? new TileEldritchTrap() : null;
+//      }
+//   }
+//
+//   public int getRenderType() {
+//      return ConfigBlocks.blockEldritchRI;
+//   }
+//
+//   public boolean renderAsNormalBlock() {
+//      return false;
+//   }
+//
+//   public boolean isOpaqueCube() {
+//      return false;
+//   }
+//
+//   public Item getItemDropped(int md, Random rand, int fortune) {
+//      return md == 4 ? Item.getItemFromBlock(this) : (md == 5 ? ConfigItems.itemResource : Item.getItemById(0));
+//   }
+//
+//   public int damageDropped(int metadata) {
+//      return metadata == 2 ? 1 : metadata;
+//   }
+//
+//   public int getExpDrop(IBlockAccess world, int metadata, int fortune) {
+//      if (metadata != 5 && metadata != 10) {
+//         return metadata == 9
+//                 ? MathHelper.getRandomIntegerInRange(this.rand, 6, 10) //== 9
+//                 : super.getExpDrop(world, metadata, fortune);
+//      } else {
+//         return MathHelper.getRandomIntegerInRange(this.rand, 1, 4);//== 5,== 10
+//      }
+//   }
+//
+//   public ArrayList getDrops(World world, int x, int y, int z, int md, int fortune) {
+//      ArrayList<ItemStack> ret = new ArrayList<>();
+//      if (md == 5) {
+//         ret.add(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT));//migrate to loot table
+//         return ret;
+//      } else {
+//         return super.getDrops(world, x, y, z, md, fortune);
+//      }
+//   }
+//
+//   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+//      if (Platform.getEnvironment() != Env.CLIENT && meta < 4) {
+//         for(int xx = x - 3; xx <= x + 3; ++xx) {
+//            for(int yy = y - 2; yy <= y + 2; ++yy) {
+//               for(int zz = z - 3; zz <= z + 3; ++zz) {
+//                  if (world.getBlock(xx, yy, zz) == this && world.getBlockMetadata(xx, yy, zz) < 4) {
+//                     world.setBlockToAir(xx, yy, zz);
+//                  }
+//               }
+//            }
+//         }
+//
+//         world.createExplosion(null, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F, false);
+//      }
+//
+//      super.breakBlock(world, x, y, z, block, meta);
+//   }
+//
+//   public float getBlockHardness(World world, int x, int y, int z) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      if (meta != 4 && meta != 5) {
+//         if (meta == 6) {
+//            return 4.0F;
+//         } else if (meta != 7 && meta != 8) {
+//            return meta != 9 && meta != 10 ? super.getBlockHardness(world, x, y, z)
+//                    : 15.0F;//== 9,== 10
+//         } else {
+//            return -1.0F;//== 7,== 8
+//         }
+//      } else {
+//         return 2.0F;//== 4,== 5
+//      }
+//   }
+//
+//   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      if (meta != 4 && meta != 5 && meta != 9 && meta != 10) {
+//         if (meta == 6) {
+//            return 100.0F;
+//         } else {
+//            return meta != 7 && meta != 8 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ)
+//                    : Float.MAX_VALUE;//== 7,== 8
+//         }
+//      } else {
+//         return 30.0F;//== 4,== 5,== 9,== 10
+//      }
+//   }
 
 //   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
 //      int metadata = world.getBlockMetadata(x, y, z);

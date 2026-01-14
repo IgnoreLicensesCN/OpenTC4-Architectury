@@ -23,12 +23,14 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneBlock;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Random;
 
 public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock {
     public static final IntProvider RUNED_STONE_EXP_DROP = UniformInt.of(1,4);
-    public static final IntegerProperty FACE_STATE = IntegerProperty.create("face_state", 0, 63);
+    public static final IntegerProperty FACE_STATE = AncientStoneBlock.FACE_STATE;
 
     public RunedStoneBlock() {
         super(
@@ -73,15 +75,26 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
         if (blockState.getBlock() != this){
             return null;
         }
-        return ;
+        return new RunedStoneBlockEntity(blockPos, blockState);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockState.getBlock() != this){
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
+        if (blockState0.getBlock() != this){
             return null;
         }
-        return ;
+        if (blockEntityType != ThaumcraftBlockEntities.RUNED_STONE){
+            return null;
+        }
+        if (Platform.getEnvironment() == Env.CLIENT) {
+            return null;
+        }
+        return (level, blockPos, blockState, blockEntity) ->
+        {
+            if (blockEntity instanceof RunedStoneBlockEntity runedStone){
+                runedStone.serverTick();
+            }
+        };
     }
 
     @Override
