@@ -174,7 +174,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         return false;
     }
 
-    private boolean generateWildNodes(Level world, Random random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
+    private boolean generateWildNodes(Level world, RandomSource random, int chunkX, int chunkZ, boolean auraGen, boolean newGen) {
         return NodeGenerationManager.generateWildNodes(world, random, chunkX, chunkZ, auraGen, newGen);
 //        if (Config.genAura && random.nextInt(Config.nodeRarity) == 0 && !auraGen) {
 //            int x = chunkX * 16 + random.nextInt(16);

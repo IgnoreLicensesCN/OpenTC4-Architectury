@@ -125,5 +125,4 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
         }
     }
 
-
 }

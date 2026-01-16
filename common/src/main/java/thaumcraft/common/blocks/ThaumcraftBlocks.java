@@ -20,6 +20,7 @@ import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.eldritch.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
+import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -136,6 +137,7 @@ public class ThaumcraftBlocks {
     public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
     public static final EldritchCrabSpawnerBlock ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
     public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
+    public static final AbstractTaintFibreBlock TAINT_FIBRE = Registry.SUPPLIER_TAINT_FIBRE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -515,6 +517,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<RunedStoneBlock> SUPPLIER_RUNED_STONE = BLOCKS.register(
                 "runed_stone",
                 RunedStoneBlock::new
+        );
+        public static final RegistrySupplier<AbstractTaintFibreBlock> SUPPLIER_TAINT_FIBRE = BLOCKS.register(
+                "taint_fibre",
+                AbstractTaintFibreBlock::new
         );
 
         static {

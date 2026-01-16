@@ -31,6 +31,7 @@ import thaumcraft.common.lib.CustomSoundType;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
+import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -128,7 +129,7 @@ public class BlockTaint extends Block {
             return;
          }
 
-         BlockTaintFibres.taintBiomeSpread(world, x, y, z, random, this);
+         BiomeUtils.taintBiomeSpread(world, x, y, z, random, this);
          if (md == 0) {
             if (this.tryToFall(world, x, y, z, x, y, z)) {
                return;

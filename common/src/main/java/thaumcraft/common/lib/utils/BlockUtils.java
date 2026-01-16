@@ -302,18 +302,23 @@ public class BlockUtils {
       return count;
    }
 
-   public static boolean isBlockExposed(Level world, int x, int y, int z) {
-      return !world.getBlock(x, y, z + 1).isOpaqueCube() || !world.getBlock(x, y, z - 1).isOpaqueCube() || !world.getBlock(x + 1, y, z).isOpaqueCube() || !world.getBlock(x - 1, y, z).isOpaqueCube() || !world.getBlock(x, y + 1, z).isOpaqueCube() || !world.getBlock(x, y - 1, z).isOpaqueCube();
+   public static boolean isBlockExposed(Level world, BlockPos pos) {
+      return !world.getBlockState(pos.above()).isCollisionShapeFullBlock(world, pos)
+              || !world.getBlockState(pos.below()).isCollisionShapeFullBlock(world, pos)
+              || !world.getBlockState(pos.north()).isCollisionShapeFullBlock(world, pos)
+              || !world.getBlockState(pos.west()).isCollisionShapeFullBlock(world, pos)
+              || !world.getBlockState(pos.south()).isCollisionShapeFullBlock(world, pos)
+              || !world.getBlockState(pos.east()).isCollisionShapeFullBlock(world, pos);
    }
 
-   public static boolean isAdjacentToSolidBlock(Level world, int x, int y, int z) {
+   public static boolean isAdjacentToSolidBlock(Level world, BlockPos pos) {
       for(int a = 0; a < 6; ++a) {
-         Direction d = Direction.getOrientation(a);
-         if (world.isSideSolid(x + d.offsetX, y + d.offsetY, z + d.offsetZ, d.getOpposite())) {
+         Direction d = Direction.values()[a];
+         var consideringPos = pos.relative(d);
+         if (world.getBlockState(consideringPos).isFaceSturdy(world,consideringPos,d.getOpposite())) {
             return true;
          }
       }
-
       return false;
    }
 

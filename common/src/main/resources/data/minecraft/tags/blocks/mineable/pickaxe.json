@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "thaumcraft:eldritch_crab_spawner",
+    "thaumcraft:runed_stone",
     "thaumcraft:glyphed_stone",
     "thaumcraft:glowing_crusted_stone",
     "thaumcraft:eldritch_capstone",

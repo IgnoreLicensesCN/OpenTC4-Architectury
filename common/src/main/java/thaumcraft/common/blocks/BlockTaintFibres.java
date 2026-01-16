@@ -28,7 +28,7 @@ import thaumcraft.common.lib.CustomSoundType;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
+import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -133,7 +133,7 @@ public class BlockTaintFibres extends Block {
    public void updateTick(World world, int x, int y, int z, Random random) {
       if (Platform.getEnvironment() != Env.CLIENT) {
          int md = world.getBlockMetadata(x, y, z);
-         taintBiomeSpread(world, x, y, z, random, this);
+         BiomeUtils.taintBiomeSpread(world, x, y, z, random, this);
          if (md == 0 && isOnlyAdjacentToTaint(world, x, y, z) || world.getBiomeGenForCoords(x, z).biomeID != Config.biomeTaintID) {
             world.setBlock(x, y, z, Blocks.air);
             return;
@@ -145,7 +145,7 @@ public class BlockTaintFibres extends Block {
          if (world.getBiomeGenForCoords(xx, zz).biomeID == Config.biomeTaintID) {
             Block bi = world.getBlock(xx, yy, zz);
             if (!spreadFibres(world, xx, yy, zz)) {
-               int adjacentTaint = getAdjacentTaint(world, xx, yy, zz);
+               int adjacentTaint = BiomeUtils.getAdjacentTaint(world, xx, yy, zz);
                Material bm = world.getBlock(xx, yy, zz).getMaterial();
                if (adjacentTaint >= 2 && (Utils.isWoodLog(world, xx, yy, zz) || bm == Material.gourd || bm == Material.cactus)) {
                   world.setBlock(xx, yy, zz, ConfigBlocks.blockTaint, 0, 3);
@@ -196,49 +196,7 @@ public class BlockTaintFibres extends Block {
       }
    }
 
-   public static void taintBiomeSpread(World world, int x, int y, int z, Random rand, Block block) {
-      if (Config.taintSpreadRate > 0) {
-         int xx = rand.nextInt(3) - 1;
-         int zz = rand.nextInt(3) - 1;
-         if (world.getBiomeGenForCoords(x + xx, z + zz).biomeID != Config.biomeTaintID && rand.nextInt(Config.taintSpreadRate * 5) == 0 && getAdjacentTaint(world, x, y, z) >= 2) {
-            Utils.setBiomeAt(world, x + xx, z + zz, ThaumcraftWorldGenerator.biomeTaint);
-            world.addBlockEvent(x, y, z, block, 1, 0);
-         }
-      }
 
-   }
-
-   public static int getAdjacentTaint(IBlockAccess world, int x, int y, int z) {
-      int count = 0;
-
-      for(int a = 0; a < 6; ++a) {
-         Direction d = Direction.getOrientation(a);
-         int xx = x + d.offsetX;
-         int yy = y + d.offsetY;
-         int zz = z + d.offsetZ;
-         Block bi = world.getBlock(xx, yy, zz);
-         if (bi == ConfigBlocks.blockTaint || bi == ConfigBlocks.blockTaintFibres) {
-            ++count;
-         }
-      }
-
-      return count;
-   }
-
-   public static boolean isOnlyAdjacentToTaint(World world, int x, int y, int z) {
-      for(int a = 0; a < 6; ++a) {
-         Direction d = Direction.getOrientation(a);
-         int xx = x + d.offsetX;
-         int yy = y + d.offsetY;
-         int zz = z + d.offsetZ;
-         world.getBlock(xx, yy, zz);
-         if (!world.isAirBlock(xx, yy, zz) && world.getBlock(xx, yy, zz).getMaterial() != Config.taintMaterial) {
-            return false;
-         }
-      }
-
-      return true;
-   }
 
    public Item getItemDropped(int md, Random rand, int fortune) {
       return Item.getItemById(0);
