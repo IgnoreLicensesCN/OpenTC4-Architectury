@@ -20,7 +20,7 @@ import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.eldritch.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
-import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
+import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -137,7 +137,14 @@ public class ThaumcraftBlocks {
     public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
     public static final EldritchCrabSpawnerBlock ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
     public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
-    public static final AbstractTaintFibreBlock TAINT_FIBRE = Registry.SUPPLIER_TAINT_FIBRE.get();
+    public static final CrustedTaintBlock CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
+    public static final TaintedSoilBlock TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
+    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
+    public static final FibrousTaintBlock FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
+    public static final TaintedGrassBlock TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
+    public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
+    public static final SporeStalkBlock SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
+    public static final MatureSporeStalkBlock MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -518,9 +525,37 @@ public class ThaumcraftBlocks {
                 "runed_stone",
                 RunedStoneBlock::new
         );
-        public static final RegistrySupplier<AbstractTaintFibreBlock> SUPPLIER_TAINT_FIBRE = BLOCKS.register(
-                "taint_fibre",
-                AbstractTaintFibreBlock::new
+        public static final RegistrySupplier<CrustedTaintBlock> SUPPLIER_CRUSTED_TAINT = BLOCKS.register(
+                "crusted_taint",
+                CrustedTaintBlock::new
+        );
+        public static final RegistrySupplier<TaintedSoilBlock> SUPPLIER_TAINTED_SOIL = BLOCKS.register(
+                "tainted_soil",
+                TaintedSoilBlock::new
+        );
+        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+                "block_of_flesh",
+                FleshBlock::new
+        );
+        public static final RegistrySupplier<FibrousTaintBlock> SUPPLIER_FIBROUS_TAINT = BLOCKS.register(
+                "fibrous_taint",
+                FibrousTaintBlock::new
+        );
+        public static final RegistrySupplier<TaintedGrassBlock> SUPPLIER_TAINTED_GRASS = BLOCKS.register(
+                "tainted_grass",
+                TaintedGrassBlock::new
+        );
+        public static final RegistrySupplier<TaintedPlantBlock> SUPPLIER_TAINTED_PLANT = BLOCKS.register(
+                "tainted_plant",
+                TaintedPlantBlock::new
+        );
+        public static final RegistrySupplier<SporeStalkBlock> SUPPLIER_SPORE_STALK = BLOCKS.register(
+                "spore_stalk",
+                SporeStalkBlock::new
+        );
+        public static final RegistrySupplier<MatureSporeStalkBlock> SUPPLIER_MATURE_SPORE_STALK = BLOCKS.register(
+                "mature_spore_stalk",
+                MatureSporeStalkBlock::new
         );
 
         static {

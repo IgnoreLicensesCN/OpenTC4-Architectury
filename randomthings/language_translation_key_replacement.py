@@ -17,6 +17,14 @@ block_with_item_names = [
     ['tile.blockEldritch.8.name', ['ancient_lock_empty','ancient_lock_inserted']],
     ['tile.blockEldritch.9.name', 'eldritch_crab_spawner'],
     ['tile.blockEldritch.10.name', 'runed_stone'],
+    ['tile.blockTaint.0.name','crusted_taint'],
+    ['tile.blockTaint.1.name','tainted_soil'],
+    ['tile.blockTaint.2.name','block_of_flesh'],
+    ["tile.blockTaintFibres.0.name", "fibrous_taint"],
+    ["tile.blockTaintFibres.1.name", "tainted_grass"],
+    ["tile.blockTaintFibres.2.name", "tainted_plant"],
+    ["tile.blockTaintFibres.3.name", "spore_stalk"],
+    ["tile.blockTaintFibres.4.name", "mature_spore_stalk"],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

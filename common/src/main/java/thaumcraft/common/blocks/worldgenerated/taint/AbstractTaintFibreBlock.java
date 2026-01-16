@@ -3,16 +3,20 @@ package thaumcraft.common.blocks.worldgenerated.taint;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityTaintSpore;
+import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
@@ -28,10 +32,9 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     @Override
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (Platform.getEnvironment() != Env.CLIENT) {
-            int md = world.getBlockMetadata(x, y, z);
-            BiomeUtils.taintBiomeSpread(world, x, y, z, random, this);
-            if (md == 0 && isOnlyAdjacentToTaint(world, x, y, z) || world.getBiomeGenForCoords(x, z).biomeID != Config.biomeTaintID) {
-                world.setBlock(x, y, z, Blocks.air);
+            BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
+            if (md == 0 && isOnlyAdjacentToTaint(world, blockPos) || world.getBiomeGenForCoords(x, z).biomeID != Config.biomeTaintID) {
+                world.setBlock(blockPos, Blocks.AIR.defaultBlockState(),3);
                 return;
             }
 
@@ -68,5 +71,44 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             }
         }
 
+    }
+
+    public static boolean spreadFibres(ServerLevel world, BlockPos blockPos) {
+        var blockState = world.getBlockState(blockPos);
+        var liquidState = world.getFluidState(blockPos);
+        Block block = world.getBlockState(blockPos).getBlock();
+        if (BlockUtils.isAdjacentToSolidBlock(world, blockPos)
+                && !isOnlyAdjacentToTaint(world, blockPos)
+                && !liquidState.isEmpty()
+                && (blockState.isAir()
+                || blockState.canBeReplaced()
+                || blockState.is(BlockTags.FLOWERS)
+                || blockState.is(BlockTags.LEAVES)
+        )
+        ) {
+            Block blockForEvent = null;
+            if (world.getRandom().nextInt(10) == 0
+                    && world.getBlockState(blockPos.above()).isAir()
+                    && world.getBlockState(blockPos.below()).isFaceSturdy(world,blockPos.below(), Direction.UP)
+            ) {
+                if (world.getRandom().nextInt(10) < 9) {
+                    blockForEvent = ThaumcraftBlocks.TAINTED_GRASS;
+                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3);
+                } else if (world.getRandom().nextInt(12) < 10) {
+                    blockForEvent = ThaumcraftBlocks.TAINTED_PLANT;
+                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 2, 3);
+                } else {
+                    blockForEvent = ThaumcraftBlocks.SPORE_STALK;
+                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3, 3);
+                }
+            } else {
+                blockForEvent = ThaumcraftBlocks.FIBROUS_TAINT;
+                world.setBlock(blockPos, blockForEvent.defaultBlockState(), 0, 3);
+            }
+            world.blockEvent(blockPos, blockForEvent, 1, 0);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
