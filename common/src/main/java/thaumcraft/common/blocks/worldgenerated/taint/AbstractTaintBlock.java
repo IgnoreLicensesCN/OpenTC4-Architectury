@@ -6,32 +6,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
-import thaumcraft.common.blocks.liquid.FluxGooBlock;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityFallingTaint;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
-
-import java.util.List;
 
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
@@ -51,8 +42,7 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
 
             var considerSpreadFibresPos = blockPos.offset(random.nextInt(3) - 1,random.nextInt(3) - 1,random.nextInt(3) - 1);
             if (world.getBiome(considerSpreadFibresPos).is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                if (spreadFibres(world, considerSpreadFibresPos)) {
-                }
+                spreadFibres(world, considerSpreadFibresPos);
                 afterSpread(blockState, world, blockPos, random);
 
             } else {
@@ -120,7 +110,15 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
                 if (!(Platform.getEnvironment() == Env.CLIENT)) {
                     EntityFallingTaint entityfalling = new EntityFallingTaint(
                             level,
-                            (float)x2 + 0.5F, (float)y2 + 0.5F, (float)z2 + 0.5F, this, md, x, y, z);//TODO
+                            (float)fallingPos.getX() + 0.5F,
+                            (float)fallingPos.getY() + 0.5F,
+                            (float)fallingPos.getZ() + 0.5F,
+                            this,
+                            md,
+                            blockToCopyFrom.getX(),
+                            blockToCopyFrom.getY(),
+                            blockToCopyFrom.getZ()
+                    );//TODO
                     this.onStartFalling(entityfalling);
                     level.addFreshEntity(entityfalling);
                     return true;
@@ -148,7 +146,7 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
             if (entity instanceof LivingEntity living &&
                     (
                             living.getMobType() != MobType.UNDEAD
-                            && !living.getType().is(ThaumcraftEntities.Tags.UNDEAD)
+                            && !living.getType().is(ThaumcraftEntities.EntityTags.UNDEAD)
                     )
             ) {
                 if (living instanceof ServerPlayer && level.random.nextInt(100) == 0) {

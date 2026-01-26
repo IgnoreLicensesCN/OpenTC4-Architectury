@@ -82,10 +82,10 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
         }
         return super.triggerEvent(state, level, pos, id, param);
     }
-    public static final VoxelShape BASIC_SHAPE = Shapes.box(14,0,14,16,16,16);
-    public static final VoxelShape SHAPE_Y_90 = Shapes.box(0, 0, 14, 2, 16, 16);
-    public static final VoxelShape SHAPE_Y_180 = Shapes.box(0, 0, 0, 2, 16, 2);
-    public static final VoxelShape SHAPE_Y_270 = Shapes.box(14, 0, 0, 16, 16, 2);
+    public static final VoxelShape BASIC_SHAPE = Block.box(14,0,14,16,16,16);
+    public static final VoxelShape SHAPE_Y_90 = Block.box(0, 0, 14, 2, 16, 16);
+    public static final VoxelShape SHAPE_Y_180 = Block.box(0, 0, 0, 2, 16, 2);
+    public static final VoxelShape SHAPE_Y_270 = Block.box(14, 0, 0, 16, 16, 2);
 
     public static final VoxelShape[] collisionShapeByIndex = makeShapes(1,1,16,0,16);
     public static final VoxelShape[] shapeByIndex = makeShapes(1,1,16,0,16);

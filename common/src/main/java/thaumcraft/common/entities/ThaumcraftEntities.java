@@ -20,9 +20,9 @@ public class ThaumcraftEntities {
         );
         public static final RegistrySupplier<EntityType<EntityAlumentum>> SUPPLIER_ALUMENTUM = ENTITIES.register("alumentum",
                 () -> EntityType.Builder.<EntityAlumentum>of(EntityAlumentum::new, MobCategory.MISC)
-                        .sized(0.1f, 0.1f)       // 实体大小
-                        .clientTrackingRange(8)    // 客户端跟踪范围
-                        .updateInterval(1)         // 客户端更新间隔
+                        .sized(0.1f, 0.1f)
+                        .clientTrackingRange(8)
+                        .updateInterval(1)
                         .build("alumentum")
         );
         static {
@@ -30,7 +30,7 @@ public class ThaumcraftEntities {
         }
     }
 
-    public static class Tags {
+    public static class EntityTags {
         public static final TagKey<EntityType<?>> UNDEAD = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation("minecraft","undead"));
     }
 

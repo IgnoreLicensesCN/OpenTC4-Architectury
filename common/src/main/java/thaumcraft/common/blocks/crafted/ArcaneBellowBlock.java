@@ -45,7 +45,7 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
         );
     }
 
-    public static final VoxelShape SHAPE = Shapes.box(16*0.1, 0, 16*0.1, 16*0.9, 16, 16*0.9);
+    public static final VoxelShape SHAPE = Block.box(16*0.1, 0, 16*0.1, 16*0.9, 16, 16*0.9);
     @Override
     public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;

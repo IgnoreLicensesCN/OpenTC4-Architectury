@@ -89,7 +89,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         }
 
         if ((Platform.getEnvironment() == Env.CLIENT) && this.growthCounter == 0) {
-            this.level.playSound(null,this.getBlockPos(), ThaumcraftSounds.ROOT, SoundSource.BLOCKS);
+            this.level.playSound(null,this.getBlockPos(), ThaumcraftSounds.ROOTS, SoundSource.BLOCKS);
         }
 
         ++this.growthCounter;
