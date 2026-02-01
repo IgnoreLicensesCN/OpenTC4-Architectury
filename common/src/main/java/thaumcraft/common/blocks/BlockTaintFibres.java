@@ -1,69 +1,35 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockFlower;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.ColorizerGrass;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
-import net.minecraft.core.Direction;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
-import thaumcraft.common.lib.CustomSoundType;
-import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.utils.BlockUtils;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.biomes.BiomeUtils;
+public class BlockTaintFibres /*extends Block*/ {
+//   public IIcon[] iconOver = new IIcon[4];
+//   public IIcon[] icon = new IIcon[5];
+//   protected int currentPass;
 
-import java.util.List;
-import java.util.Random;
+//   public BlockTaintFibres() {
+//      super(Config.taintMaterial);
+//      this.setHardness(1.0F);
+//      this.setResistance(5.0F);
+//      this.setStepSound(new CustomSoundType("gore", 0.5F, 0.8F));
+//      this.setTickRandomly(true);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//      float f = 0.2F;
+//      this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 3.0F, 0.5F + f);
+//      this.currentPass = 1;
+//   }
 
-public class BlockTaintFibres extends Block {
-   public IIcon[] iconOver = new IIcon[4];
-   public IIcon[] icon = new IIcon[5];
-   protected int currentPass;
-
-   public BlockTaintFibres() {
-      super(Config.taintMaterial);
-      this.setHardness(1.0F);
-      this.setResistance(5.0F);
-      this.setStepSound(new CustomSoundType("gore", 0.5F, 0.8F));
-      this.setTickRandomly(true);
-      this.setCreativeTab(Thaumcraft.tabTC);
-      float f = 0.2F;
-      this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 3.0F, 0.5F + f);
-      this.currentPass = 1;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.icon[0] = ir.registerIcon("thaumcraft:taint_fibres");
-      this.icon[1] = ir.registerIcon("thaumcraft:taintgrass1");
-      this.icon[2] = ir.registerIcon("thaumcraft:taintgrass2");
-      this.icon[3] = ir.registerIcon("thaumcraft:taint_spore_stalk_1");
-      this.icon[4] = ir.registerIcon("thaumcraft:taint_spore_stalk_2");
-      this.iconOver[0] = ir.registerIcon("thaumcraft:blank");
-
-      for(int a = 1; a < 4; ++a) {
-         this.iconOver[a] = ir.registerIcon("thaumcraft:taint_over_" + a);
-      }
-
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.icon[0] = ir.registerIcon("thaumcraft:taint_fibres");
+//      this.icon[1] = ir.registerIcon("thaumcraft:taintgrass1");
+//      this.icon[2] = ir.registerIcon("thaumcraft:taintgrass2");
+//      this.icon[3] = ir.registerIcon("thaumcraft:taint_spore_stalk_1");
+//      this.icon[4] = ir.registerIcon("thaumcraft:taint_spore_stalk_2");
+//      this.iconOver[0] = ir.registerIcon("thaumcraft:blank");
+//
+//      for(int a = 1; a < 4; ++a) {
+//         this.iconOver[a] = ir.registerIcon("thaumcraft:taint_over_" + a);
+//      }
+//   }
 
 //   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 //      for(int var4 = 0; var4 <= 3; ++var4) {
@@ -72,14 +38,14 @@ public class BlockTaintFibres extends Block {
 //
 //   }
 
-   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-      int md = world.getBlockMetadata(x, y, z);
-      if (md == 2) {
-         return 8;
-      } else {
-         return md == 4 ? 10 : super.getLightValue(world, x, y, z);
-      }
-   }
+//   public int getLightValue(IBlockAccess world, int x, int y, int z) {
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (md == 2) {
+//         return 8;
+//      } else {
+//         return md == 4 ? 10 : super.getLightValue(world, x, y, z);
+//      }
+//   }
 
 //   @SideOnly(Side.CLIENT)
 //   public int getBlockColor() {
@@ -111,11 +77,11 @@ public class BlockTaintFibres extends Block {
 //      return (l / 9 & 255) << 16 | (i1 / 9 & 255) << 8 | j1 / 9 & 255;
 //   }
 
-   @SideOnly(Side.CLIENT)
-   public IIcon getOverlayBlockTexture(int x, int y, int z, int side) {
-      Random r = new Random(side + y + (long) x * z);
-      return r.nextInt(100) < 95 ? this.iconOver[0] : this.iconOver[r.nextInt(3) + 1];
-   }
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getOverlayBlockTexture(int x, int y, int z, int side) {
+//      Random r = new Random(side + y + (long) x * z);
+//      return r.nextInt(100) < 95 ? this.iconOver[0] : this.iconOver[r.nextInt(3) + 1];
+//   }//TODO:impl this
 
 //   @SideOnly(Side.CLIENT)
 //   public IIcon getIcon(int par1, int par2) {

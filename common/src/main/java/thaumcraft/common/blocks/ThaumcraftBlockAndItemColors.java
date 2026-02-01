@@ -3,8 +3,11 @@ package thaumcraft.common.blocks;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 
 public class ThaumcraftBlockAndItemColors {
 
@@ -38,7 +41,7 @@ public class ThaumcraftBlockAndItemColors {
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, pos, i)
-                        -> ThaumcraftBlocks.MIXED_CRYSTAL.particleColors[(int) (((pos==null?0x39c5bb:pos.asLong() * 3129871L) ^ 0xBADC0FFEEL) % ThaumcraftBlocks.MIXED_CRYSTAL.particleColors.length)],
+                        -> ThaumcraftBlocks.MIXED_CRYSTAL.particleColors[(int) (((pos == null ? 0x39c5bb : pos.asLong() * 3129871L) ^ 0xBADC0FFEEL) % ThaumcraftBlocks.MIXED_CRYSTAL.particleColors.length)],
                 ThaumcraftBlocks.STRANGE_CRYSTALS
         );
         blockColors.register(
@@ -75,73 +78,132 @@ public class ThaumcraftBlockAndItemColors {
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.AIR_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.AIR_INFUSED_STONE
+                }, ThaumcraftBlocks.AIR_INFUSED_STONE
         );
 
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.FIRE_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.FIRE_INFUSED_STONE
+                }, ThaumcraftBlocks.FIRE_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.WATER_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.WATER_INFUSED_STONE
+                }, ThaumcraftBlocks.WATER_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.EARTH_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.EARTH_INFUSED_STONE
+                }, ThaumcraftBlocks.EARTH_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.ORDER_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.ORDER_INFUSED_STONE
+                }, ThaumcraftBlocks.ORDER_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
-                    if (i == 0){
+                    if (i == 0) {
                         return ThaumcraftBlocks.ENTROPY_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                },ThaumcraftBlocks.ENTROPY_INFUSED_STONE
+                }, ThaumcraftBlocks.ENTROPY_INFUSED_STONE
         );
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.WHITE_TALLOW_CANDLE.color,ThaumcraftBlocks.WHITE_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.ORANGE_TALLOW_CANDLE.color,ThaumcraftBlocks.ORANGE_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE.color,ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE.color,ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.YELLOW_TALLOW_CANDLE.color,ThaumcraftBlocks.YELLOW_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIME_TALLOW_CANDLE.color,ThaumcraftBlocks.LIME_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.PINK_TALLOW_CANDLE.color,ThaumcraftBlocks.PINK_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.GRAY_TALLOW_CANDLE.color,ThaumcraftBlocks.GRAY_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE.color,ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.CYAN_TALLOW_CANDLE.color,ThaumcraftBlocks.CYAN_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.PURPLE_TALLOW_CANDLE.color,ThaumcraftBlocks.PURPLE_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BLUE_TALLOW_CANDLE.color,ThaumcraftBlocks.BLUE_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BROWN_TALLOW_CANDLE.color,ThaumcraftBlocks.BROWN_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.GREEN_TALLOW_CANDLE.color,ThaumcraftBlocks.GREEN_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.RED_TALLOW_CANDLE.color,ThaumcraftBlocks.RED_TALLOW_CANDLE);
-        blockColors.register((blockState, blockAndTintGetter, blockPos, i)-> ThaumcraftBlocks.BLACK_TALLOW_CANDLE.color,ThaumcraftBlocks.BLACK_TALLOW_CANDLE);
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.WHITE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.WHITE_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ORANGE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ORANGE_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.YELLOW_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.YELLOW_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIME_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.LIME_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.PINK_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.PINK_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.GRAY_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.GRAY_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.CYAN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.CYAN_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.PURPLE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.PURPLE_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BLUE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.BLUE_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BROWN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.BROWN_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.GREEN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.GREEN_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.RED_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.RED_TALLOW_CANDLE
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BLACK_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.BLACK_TALLOW_CANDLE
+        );
+
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i) -> {
+                    if (i == 1) {
+                        return BiomeGenTaint.TAINT_COLOR;
+                    }
+                    return GrassColor.get(0.5D, 1.0D);
+                },
+                ThaumcraftBlocks.CRUSTED_TAINT,
+                ThaumcraftBlocks.TAINTED_GRASS
+        );
     }
 }

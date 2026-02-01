@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:crusted_taint",
+    "thaumcraft:tainted_soil",
+    "thaumcraft:fibrous_taint",
+    "thaumcraft:tainted_grass",
+    "thaumcraft:tainted_plant",
+    "thaumcraft:spore_stalk",
+    "thaumcraft:mature_spore_stalk"
+  ]
+}

@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated.taint;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
@@ -19,10 +20,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
@@ -32,6 +36,9 @@ import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
+import java.awt.*;
+
+//TODO:impl getOverlayBlockTexture
 public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     public static final SoundType TAINT_FIBRE_SOUND = new SoundType(
             1.0F,
@@ -43,15 +50,17 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             SoundEvents.GRASS_FALL
     );
     public AbstractTaintFibreBlock(Properties properties) {
-        super(
-                properties
+        super(properties);
+    }
+    public AbstractTaintFibreBlock() {
+        super(BlockBehaviour.Properties.of()
                         .noOcclusion()
                         .randomTicks()
                         .noCollission()
                         .requiresCorrectToolForDrops()
                         .sound(TAINT_FIBRE_SOUND)
                         .strength(1,5)
-        );
+                        .mapColor(MapColor.COLOR_PURPLE));
     }
 
     @Override
@@ -99,12 +108,12 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     public static final VoxelShape SHAPE = Shapes.box(0.2, 0.0, 0.2, 0.8, 0.8, 0.8);
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return Shapes.empty();
     }
 

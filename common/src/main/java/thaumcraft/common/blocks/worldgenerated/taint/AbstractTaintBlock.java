@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +16,10 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.entities.EntityFallingTaint;
@@ -27,9 +32,24 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
 public abstract class AbstractTaintBlock extends Block implements ITaintMaterial{
-    public AbstractTaintBlock(Properties properties) {
+    public static final SoundType TAINT_BLOCK_SOUND = new SoundType(
+            1.0F, 1.0F,
+            SoundEvents.GRAVEL_BREAK,
+            ThaumcraftSounds.GORE,
+            SoundEvents.GRAVEL_PLACE,
+            SoundEvents.GRAVEL_HIT,
+            SoundEvents.GRAVEL_FALL
+    );
+    public AbstractTaintBlock(BlockBehaviour.Properties properties) {
         super(properties.randomTicks());
-
+    }
+    public AbstractTaintBlock() {
+        super(
+                BlockBehaviour.Properties.of()
+                        .randomTicks()
+                        .strength(2,10)
+                        .sound(TAINT_BLOCK_SOUND)
+        );
     }
 
     @Override
@@ -37,13 +57,12 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
         super.randomTick(blockState, world, blockPos, random);
         if (Platform.getEnvironment() != Env.CLIENT) {
             BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
-            beforeSpreading(blockState, world, blockPos, random);
-
+            beforeSpreadingFibres(blockState, world, blockPos, random);
 
             var considerSpreadFibresPos = blockPos.offset(random.nextInt(3) - 1,random.nextInt(3) - 1,random.nextInt(3) - 1);
             if (world.getBiome(considerSpreadFibresPos).is(ThaumcraftBiomeIDs.TAINT_ID)) {
                 spreadFibres(world, considerSpreadFibresPos);
-                afterSpread(blockState, world, blockPos, random);
+                afterSpreadFibres(blockState, world, blockPos, random);
 
             } else {
                 onBlockOutOfTaintBiome(blockState, world, blockPos, random);
@@ -51,8 +70,8 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
         }
     }
     public void onBlockOutOfTaintBiome(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){};
-    public void beforeSpreading(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){}
-    public void afterSpread(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){}
+    public void beforeSpreadingFibres(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){}
+    public void afterSpreadFibres(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){}
 
 
     public static boolean isOnlyAdjacentToTaint(Level world, BlockPos pos) {
@@ -118,7 +137,7 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
                             blockToCopyFrom.getX(),
                             blockToCopyFrom.getY(),
                             blockToCopyFrom.getZ()
-                    );//TODO
+                    );//TODO:entity
                     this.onStartFalling(entityfalling);
                     level.addFreshEntity(entityfalling);
                     return true;
@@ -158,5 +177,17 @@ public abstract class AbstractTaintBlock extends Block implements ITaintMaterial
             }
         }
         super.stepOn(level, blockPos, blockState, entity);
+    }
+
+    @Override
+    public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
+        if (i != 1){
+            return super.triggerEvent(blockState, level, blockPos, i, j);
+        }
+
+        if ((Platform.getEnvironment() == Env.CLIENT)) {
+            level.playSound(null,blockPos, ThaumcraftSounds.ROOTS, SoundSource.BLOCKS, 0.1F, 0.9F + level.getRandom().nextFloat() * 0.2F);
+        }
+        return true;
     }
 }

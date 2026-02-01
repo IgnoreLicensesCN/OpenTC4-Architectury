@@ -81,17 +81,20 @@ for definitionLine in mapColorDefinitions:
 def rgb_from_int(c):
     return ((c >> 16) & 255, (c >> 8) & 255, c & 255)
 
+
 def quantize(rgb, bits=4):
     shift = 8 - bits
     return tuple((c >> shift) << shift for c in rgb)
 
+
 def color_distance(c1, c2):
     # 加权 RGB 距离（感知更合理）
     return (
-        0.30 * (c1[0] - c2[0]) ** 2 +
-        0.59 * (c1[1] - c2[1]) ** 2 +
-        0.11 * (c1[2] - c2[2]) ** 2
+            0.30 * (c1[0] - c2[0]) ** 2 +
+            0.59 * (c1[1] - c2[1]) ** 2 +
+            0.11 * (c1[2] - c2[2]) ** 2
     )
+
 
 # ===== 主逻辑 =====
 
@@ -148,13 +151,14 @@ def analyze_texture(path, threshold=0.6):
 
     return avg, best_name, best_dist
 
+
 # ===== 运行示例 =====
 
 if __name__ == "__main__":
     print(len(MAP_COLORS))
     for texture in os.listdir("pick_map_color_images"):
         print(f"========={texture}==============")
-        texture = "./pick_map_color_images/"+texture
+        texture = "./pick_map_color_images/" + texture
         avg_color, map_color, dist = analyze_texture(texture)
         r, g, b = [int(c) for c in avg_color]
         mapColorInt = MAP_COLORS[map_color]

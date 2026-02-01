@@ -12,10 +12,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
+//blocktaintfibres:0
 public class FibrousTaintBlock extends AbstractTaintFibreBlock{
     public FibrousTaintBlock(Properties properties) {
         super(properties);
@@ -32,7 +34,7 @@ public class FibrousTaintBlock extends AbstractTaintFibreBlock{
     static final VoxelShape EAST  = Shapes.box(1-F, 0, 0, 1, 1, 1);
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
         for (Direction side : Direction.values()) {
             BlockPos checkPos = pos.relative(side);
             BlockState other = level.getBlockState(checkPos);

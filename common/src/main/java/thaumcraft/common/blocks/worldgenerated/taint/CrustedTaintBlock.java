@@ -1,26 +1,49 @@
 package thaumcraft.common.blocks.worldgenerated.taint;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
 
 import java.util.List;
-
+//blocktaint:0
 public class CrustedTaintBlock extends AbstractTaintBlock {
     public CrustedTaintBlock(Properties properties) {
         super(properties);
     }
     public CrustedTaintBlock() {
-        super();
+        super(
+                BlockBehaviour.Properties.of()
+                        .randomTicks()
+                        .strength(1.75F,10)
+                        .sound(TAINT_BLOCK_SOUND)
+        );
+    }
+
+    @Override
+    public void animateTick(BlockState blockState, Level world, BlockPos blockPos, RandomSource random) {
+        if (world instanceof ClientLevel clientLevel && world.getBlockState(blockPos.below()).isAir()) {
+            if (random.nextInt(10) == 0) {
+                int i = blockPos.getX();
+                int j = blockPos.getY();
+                int k = blockPos.getZ();
+                ClientFXUtils.dropletFX(clientLevel, (float)i + 0.1F + world.getRandom().nextFloat() * 0.8F, (float)j, (float)k + 0.1F + world.getRandom().nextFloat() * 0.8F, 0.3F, 0.1F, 0.8F);
+            }
+        }
     }
 
     @Override
@@ -31,51 +54,65 @@ public class CrustedTaintBlock extends AbstractTaintBlock {
     }
 
     @Override
-    public void beforeSpreading(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
-        if (this.tryToFall(world, x, y, z, x, y, z)) {
+    public void beforeSpreadingFibres(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
+        if (this.tryToFall(world, blockPos,blockPos)) {
             return;
         }
 
-        if (world.isAirBlock(x, y + 1, z)) {
+        if (world.getBlockState(blockPos.above()).isAir()) {
             boolean doIt = true;
-            Direction dir = Direction.getOrientation(2 + random.nextInt(4));
-
+            Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);//got trick from chatGPT
+            var posNear = blockPos.relative(dir);
             for(int a = 0; a < 4; ++a) {
-                if (!world.isAirBlock(x + dir.offsetX, y - a, z + dir.offsetZ)) {
+                var pickBlockState = world.getBlockState(posNear.below(a));
+                if (!pickBlockState.isAir()) {
                     doIt = false;
                     break;
                 }
 
-                if (world.getBlock(x, y - a, z) != this) {
+                if (world.getBlockState(blockPos.below(a)).getBlock() != this) {
                     doIt = false;
                     break;
                 }
             }
 
-            if (doIt && this.tryToFall(world, x, y, z, x + dir.offsetX, y, z + dir.offsetZ)) {
+            if (doIt && this.tryToFall(world, blockPos, posNear)) {
                 return;
             }
         }
     }
 
     @Override
-    public void afterSpread(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
-        if (Config.spawnTaintSpore && world.isAirBlock(x, y + 1, z) && random.nextInt(200) == 0) {
-            List<Entity> targets = world.getEntitiesWithinAABB(
-                    EntityTaintSporeSwarmer.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16.0F, 16.0F, 16.0F));
+    public void afterSpreadFibres(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
+        var stateAbove = world.getBlockState(blockPos.above());
+        if (Config.spawnTaintSpore && stateAbove.isAir() && random.nextInt(200) == 0) {
+
+            AABB box = new AABB(
+                    blockPos,
+                    blockPos.offset(1,1,1)
+            ).inflate(16.0D);
+
+            List<EntityTaintSporeSwarmer> targets =
+                    world.getEntitiesOfClass(EntityTaintSporeSwarmer.class, box);
             if (targets.isEmpty()) {
-                world.setBlockToAir(x, y, z);
-                EntityTaintSporeSwarmer spore = new EntityTaintSporeSwarmer(world);
-                spore.setLocationAndAngles((float)x + 0.5F, y, (float)z + 0.5F, 0.0F, 0.0F);
-                world.spawnEntityInWorld(spore);
-                world.playSoundAtEntity(spore, "thaumcraft:roots", 0.1F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                EntityTaintSporeSwarmer spore = new EntityTaintSporeSwarmer(world);//TODO(we didnt rewrite entity yet.
+                spore.moveTo(blockPos,0,0);
+                world.addFreshEntity(spore);
+                world.playSound(
+                        spore,
+                        blockPos,
+                        ThaumcraftSounds.ROOTS,
+                        SoundSource.HOSTILE,
+                        0.1F, 0.9F + world.getRandom().nextFloat() * 0.2F
+                );
             }
         } else {
-            boolean doIt = world.getBlock(x, y + 1, z) == this;
+            boolean doIt = stateAbove.getBlock() == this;
             if (doIt) {
-                for(int a = 2; a < 6; ++a) {
-                    Direction dir = Direction.getOrientation(a);
-                    if (world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) != this) {
+                for (Direction horizontalDir : Direction.Plane.HORIZONTAL) {
+                    var stateNear = world.getBlockState(blockPos.relative(horizontalDir));
+                    if (stateNear.getBlock() != this) {
                         doIt = false;
                         break;
                     }
@@ -83,7 +120,7 @@ public class CrustedTaintBlock extends AbstractTaintBlock {
             }
 
             if (doIt) {
-                world.setBlock(x, y, z, ConfigBlocks.blockFluxGoo, ((FluxGooBlock)ConfigBlocks.blockFluxGoo).getQuanta(), 3);
+                world.setBlock(blockPos, FluxGooBlock.fullOfGoo(), 3);
             }
         }
     }

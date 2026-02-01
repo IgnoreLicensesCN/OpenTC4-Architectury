@@ -64,6 +64,9 @@ drop_b_for_a_names = [
     ('infernal_furnace_y_axis','minecraft:nether_bricks'),
     ('infernal_furnace_z_axis','minecraft:obsidian'),
     ('glyphed_stone','thaumcraft:knowledge_fragment'),
+    ('glyphed_stone','thaumcraft:knowledge_fragment'),
+    ('tainted_soil','minecraft:dirt'),
+    ('crusted_taint','minecraft:dirt'),
 ]
 
 slab_names = [

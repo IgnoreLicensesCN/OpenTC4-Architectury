@@ -12,6 +12,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.eldritch.AncientLockEmptyBlock;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
@@ -177,6 +178,21 @@ public class ThaumcraftItems {
 
     public static final BlockItem GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
 
+    public static final BlockItem GLYPHED_STONE = Registry.SUPPLIER_GLYPHED_STONE.get();
+    public static final BlockItem ANCIENT_GATEWAY = Registry.SUPPLIER_ANCIENT_GATEWAY.get();
+    public static final BlockItem ANCIENT_LOCK_EMPTY = Registry.SUPPLIER_ANCIENT_LOCK_EMPTY.get();
+    public static final BlockItem ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
+    public static final BlockItem ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
+    public static final BlockItem RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
+
+
+    public static final BlockItem CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
+    public static final BlockItem TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
+    public static final BlockItem FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
+    public static final BlockItem TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
+    public static final BlockItem TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
+    public static final BlockItem SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
+    public static final BlockItem MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
     //===========================================================================================
 
     public static class Registry {
@@ -586,6 +602,57 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_GLOWING_CRUSTED_STONE = ITEMS.register(
                 "glowing_crusted_stone",
                 () -> new BlockItem(ThaumcraftBlocks.GLOWING_CRUSTED_STONE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GLYPHED_STONE = ITEMS.register(
+                "glyphed_stone",
+                () -> new BlockItem(ThaumcraftBlocks.GLYPHED_STONE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_GATEWAY = ITEMS.register(
+                "ancient_gateway",
+                () -> new BlockItem(ThaumcraftBlocks.ANCIENT_GATEWAY,new Item.Properties())
+        );public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_LOCK_EMPTY = ITEMS.register(
+                "ancient_lock_empty",
+                () -> new BlockItem(ThaumcraftBlocks.ANCIENT_LOCK_EMPTY,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ANCIENT_LOCK_INSERTED = ITEMS.register(
+                "ancient_lock_inserted",
+                () -> new BlockItem(ThaumcraftBlocks.ANCIENT_LOCK_INSERTED,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ELDRITCH_CRAB_SPAWNER = ITEMS.register(
+                "eldritch_crab_spawner",
+                () -> new BlockItem(ThaumcraftBlocks.ELDRITCH_CRAB_SPAWNER,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_RUNED_STONE = ITEMS.register(
+                "runed_stone",
+                () -> new BlockItem(ThaumcraftBlocks.RUNED_STONE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CRUSTED_TAINT = ITEMS.register(
+                "crusted_taint",
+                () -> new BlockItem(ThaumcraftBlocks.CRUSTED_TAINT,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_TAINTED_SOIL = ITEMS.register(
+                "tainted_soil",
+                () -> new BlockItem(ThaumcraftBlocks.TAINTED_SOIL,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_FIBROUS_TAINT = ITEMS.register(
+                "fibrous_taint",
+                () -> new BlockItem(ThaumcraftBlocks.FIBROUS_TAINT,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_TAINTED_GRASS = ITEMS.register(
+                "tainted_grass",
+                () -> new BlockItem(ThaumcraftBlocks.TAINTED_GRASS,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_TAINTED_PLANT = ITEMS.register(
+                "tainted_plant",
+                () -> new BlockItem(ThaumcraftBlocks.TAINTED_PLANT,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_SPORE_STALK = ITEMS.register(
+                "spore_stalk",
+                () -> new BlockItem(ThaumcraftBlocks.SPORE_STALK,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MATURE_SPORE_STALK = ITEMS.register(
+                "mature_spore_stalk",
+                () -> new BlockItem(ThaumcraftBlocks.MATURE_SPORE_STALK,new Item.Properties())
         );
 
         static {

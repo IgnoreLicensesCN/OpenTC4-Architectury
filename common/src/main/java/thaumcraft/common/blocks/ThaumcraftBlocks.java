@@ -139,7 +139,7 @@ public class ThaumcraftBlocks {
     public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
     public static final CrustedTaintBlock CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
     public static final TaintedSoilBlock TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
-    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
+//    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
     public static final FibrousTaintBlock FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
     public static final TaintedGrassBlock TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
     public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
@@ -525,6 +525,11 @@ public class ThaumcraftBlocks {
                 "runed_stone",
                 RunedStoneBlock::new
         );
+
+        //        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+//                "block_of_flesh",
+//                FleshBlock::new
+//        );//shouldn't be this.This is crafted and cant spread taint in latest 1.7.10 TC4
         public static final RegistrySupplier<CrustedTaintBlock> SUPPLIER_CRUSTED_TAINT = BLOCKS.register(
                 "crusted_taint",
                 CrustedTaintBlock::new
@@ -532,10 +537,6 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<TaintedSoilBlock> SUPPLIER_TAINTED_SOIL = BLOCKS.register(
                 "tainted_soil",
                 TaintedSoilBlock::new
-        );
-        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
-                "block_of_flesh",
-                FleshBlock::new
         );
         public static final RegistrySupplier<FibrousTaintBlock> SUPPLIER_FIBROUS_TAINT = BLOCKS.register(
                 "fibrous_taint",

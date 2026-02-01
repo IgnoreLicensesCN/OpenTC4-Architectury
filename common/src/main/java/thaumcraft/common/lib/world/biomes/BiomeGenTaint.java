@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.world.biomes;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +23,7 @@ public class BiomeGenTaint extends BiomeGenBase {
    public static WorldGenBlockBlob blobs = null;
    protected WorldGenBigMagicTree bigTree = new WorldGenBigMagicTree(false);
 
+   public static final  @RGBColor int TAINT_COLOR = 0x6d4189;
    public BiomeGenTaint(int par1) {
       super(par1);
       this.theBiomeDecorator.treesPerChunk = 2;
@@ -29,7 +31,7 @@ public class BiomeGenTaint extends BiomeGenBase {
       this.theBiomeDecorator.grassPerChunk = 2;
       this.theBiomeDecorator.reedsPerChunk = -999;
       this.setBiomeName("Tainted Land");
-      this.setColor(7160201);
+      this.setColor(TAINT_COLOR);
       this.spawnableCreatureList.clear();
       this.spawnableMonsterList.clear();
       this.spawnableWaterCreatureList.clear();

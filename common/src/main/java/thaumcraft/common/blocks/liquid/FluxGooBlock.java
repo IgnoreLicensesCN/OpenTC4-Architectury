@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityThaumicSlime;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
@@ -30,6 +31,9 @@ public class FluxGooBlock extends FiniteLiquidBlock {
                         .liquid()
                 , Direction.DOWN);
     }
+    public static BlockState fullOfGoo(){
+        return ThaumcraftBlocks.FLUX_GOO.defaultBlockState().setValue(FiniteLiquidBlock.LEVEL,8);
+    };
 
     //    @Override
 //    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +24,7 @@ import thaumcraft.common.config.ConfigItems;
 
 import java.util.ArrayList;
 
-public class EntityTaintSpore extends EntityMob implements ITaintedMob, IEntityAdditionalSpawnData {
+public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdditionalSpawnData {
    public ArrayList swarm = new ArrayList<>();
    protected int growth = 0;
    public float displaySize = 0.0F;
