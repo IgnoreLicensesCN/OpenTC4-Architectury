@@ -2,10 +2,12 @@ package thaumcraft.api.wands;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public interface IWandCapOwner {
     default IWandCapPropertiesOwner getWandCapItem(ItemStack stack){
-        return getWandCapAsItem(stack) instanceof IWandCapPropertiesOwner owner ? owner : null;
+        return getWandCapAsItemStack(stack).getItem() instanceof IWandCapPropertiesOwner owner ? owner : null;
     };
-    Item getWandCapAsItem(ItemStack stack);
+    @NotNull("null -> empty")
+    ItemStack getWandCapAsItemStack(ItemStack stack);
 }

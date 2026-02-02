@@ -5,10 +5,8 @@ import com.linearity.opentc4.AttackBlockListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -57,46 +55,42 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    @Nullable
-    public Item getWandCapAsItem(@NotNull ItemStack stack) {
+    @NotNull("null -> empty")
+    public ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()){
-            return null;
+            return ItemStack.EMPTY;
         }
         var tag = stack.getTag();
         if (tag == null){
-            return null;
+            return ItemStack.EMPTY;
         }
         if (!WAND_CAP_ACCESSOR.compoundTagHasKey(tag)){
-            return null;
+            return ItemStack.EMPTY;
         }
-        var capString = WAND_CAP_ACCESSOR.readFromCompoundTag(tag);
-        ResourceLocation key = new ResourceLocation(capString);
-        return BuiltInRegistries.ITEM.get(key);
+        return WAND_CAP_ACCESSOR.readFromCompoundTag(tag);
     }
 
     @Override
-    @Nullable
-    public Item getWandRodAsItem(@NotNull ItemStack stack) {
+    @NotNull("null -> empty")
+    public ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()){
-            return null;
+            return ItemStack.EMPTY;
         }
         var tag = stack.getTag();
         if (tag == null){
-            return null;
+            return ItemStack.EMPTY;
         }
         if (!WAND_ROD_ACCESSOR.compoundTagHasKey(tag)){
-            return null;
+            return ItemStack.EMPTY;
         }
-        var rodString = WAND_ROD_ACCESSOR.readFromCompoundTag(tag);
-        ResourceLocation key = new ResourceLocation(rodString);
-        return BuiltInRegistries.ITEM.get(key);
+        return WAND_ROD_ACCESSOR.readFromCompoundTag(tag);
     }
 
     @Override
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof IWandSpellEventListenable listener){
+            if (component.getItem() instanceof IWandSpellEventListenable listener){
                 listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
             }
         }
@@ -106,7 +100,7 @@ public class WandCastingItem extends Item
     public void inventoryTick(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof InventoryTickableComponent listener){
+            if (component.getItem() instanceof InventoryTickableComponent listener){
                 listener.tickAsComponent(usingWand, level, entity, i, bl);
             }
         }
@@ -117,7 +111,7 @@ public class WandCastingItem extends Item
         float result = 1.0F;
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof IArcaneCraftingVisProvider provider){
+            if (component.getItem() instanceof IArcaneCraftingVisProvider provider){
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -179,7 +173,7 @@ public class WandCastingItem extends Item
         Map<Aspect, Integer> result = new HashMap<>();
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component instanceof IAspectCapacityOwner owner){
+            if (component.getItem() instanceof IAspectCapacityOwner owner){
                 owner.getAspectCapacity().forEach(
                         (aspect,integer) -> result.merge(aspect,integer * getVisCapacityMultiplier(),Integer::sum));
             }
@@ -194,14 +188,14 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public List<Item> getWandComponents(ItemStack stack) {
-        List<Item> items = new ArrayList<>(2);
-        var cap = getWandCapAsItem(stack);
-        if (cap != null) {
+    public List<ItemStack> getWandComponents(ItemStack stack) {
+        List<ItemStack> items = new ArrayList<>(2);
+        var cap = getWandCapAsItemStack(stack);
+        if (!cap.isEmpty()) {
             items.add(cap);
         }
-        var rod = getWandRodAsItem(stack);
-        if (rod != null) {
+        var rod = getWandRodAsItemStack(stack);
+        if (!rod.isEmpty()) {
             items.add(rod);
         }
         return Collections.unmodifiableList(items);
@@ -209,15 +203,15 @@ public class WandCastingItem extends Item
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        StringBuilder wandComponentNames = new StringBuilder();
+        var wandComponentNames = Component.empty();
         var components = getWandComponents(itemStack);
         for (var component : components){
-            if (component instanceof IWandComponentNameOwner owner){
-                wandComponentNames.append(owner.getComponentName().getString());
+            if (component.getItem() instanceof IWandComponentNameOwner owner){
+                wandComponentNames = wandComponentNames.append(owner.getComponentName().getString());
             }
         }
-        wandComponentNames.append(this.getComponentName());
-        return Component.literal(wandComponentNames.toString());
+        wandComponentNames = wandComponentNames.append(this.getComponentName());
+        return wandComponentNames;
     }
 
     @Override

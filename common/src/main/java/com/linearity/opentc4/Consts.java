@@ -163,8 +163,8 @@ public class Consts {
         private static final String WAND_ROD = "rod";
         private static final String WAND_FOCUS = "focus";
         private static final String WAND_OWING_VIS = "owningVis";
-        public static final CompoundTagHelper.StringTagAccessor WAND_CAP_ACCESSOR = new CompoundTagHelper.StringTagAccessor(WAND_CAP);
-        public static final CompoundTagHelper.StringTagAccessor WAND_ROD_ACCESSOR = new CompoundTagHelper.StringTagAccessor(WAND_ROD);
+        public static final CompoundTagHelper.ItemStackTagAccessor WAND_CAP_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(WAND_CAP);
+        public static final CompoundTagHelper.ItemStackTagAccessor WAND_ROD_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(WAND_ROD);
         public static final CompoundTagHelper.ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(WAND_FOCUS);
         public static final CompoundTagHelper.VisOwningTagAccessor WAND_OWING_VIS_ACCESSOR = new CompoundTagHelper.VisOwningTagAccessor(WAND_OWING_VIS);
     }

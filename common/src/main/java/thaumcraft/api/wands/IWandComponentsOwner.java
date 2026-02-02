@@ -6,5 +6,5 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public interface IWandComponentsOwner {
-    List<Item> getWandComponents(ItemStack stack);
+    List<ItemStack> getWandComponents(ItemStack stack);
 }
