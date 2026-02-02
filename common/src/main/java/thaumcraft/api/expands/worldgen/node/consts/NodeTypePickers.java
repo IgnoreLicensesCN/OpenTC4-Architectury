@@ -8,9 +8,7 @@ import net.minecraft.world.level.biome.Biome;
 import thaumcraft.api.expands.worldgen.node.listeners.NodeTypePicker;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.config.Config;
-
-
-import static thaumcraft.common.lib.world.ThaumcraftWorldGenerator.biomeTaint;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
 
 public class NodeTypePickers {
@@ -24,29 +22,17 @@ public class NodeTypePickers {
             } else if (eerie) {
                 type = NodeType.DARK;
             } else if (random.nextInt(Config.specialNodeRarity) == 0) {
-                switch (random.nextInt(10)) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        type = NodeType.DARK;
-                        break;
-                    case 3:
-                    case 4:
-                    case 5:
-                        type = NodeType.UNSTABLE;
-                        break;
-                    case 6:
-                    case 7:
-                    case 8:
-                        type = NodeType.PURE;
-                        break;
-                    case 9:
-                        type = NodeType.HUNGRY;
-                }
+                type = switch (random.nextInt(10)) {
+                    case 0, 1, 2 -> NodeType.DARK;
+                    case 3, 4, 5 -> NodeType.UNSTABLE;
+                    case 6, 7, 8 -> NodeType.PURE;
+                    case 9 -> NodeType.HUNGRY;
+                    default -> type;
+                };
             }
 //            BiomeGenBase bg = world.getBiomeGenForCoords(x, z);
             Holder<Biome> biome = world.getBiome(pos);
-            if (type != NodeType.PURE && biome.is(biomeTaint)) {
+            if (type != NodeType.PURE && biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
                 if (random.nextBoolean()) {
                     type = NodeType.TAINTED;
                 }

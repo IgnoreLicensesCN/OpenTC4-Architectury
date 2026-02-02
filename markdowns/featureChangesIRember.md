@@ -16,4 +16,4 @@
 * *   //tile.blockCosmeticSolid.13.name=Ancient Stone
 * *   //tile.blockCosmeticSolid.14.name=Crusted Stone
 * *   //tile.blockCosmeticSolid.15.name=Ancient Stone Pedestal
-* 
+* creating arcane table with wand will no longer place wand inside automatically.

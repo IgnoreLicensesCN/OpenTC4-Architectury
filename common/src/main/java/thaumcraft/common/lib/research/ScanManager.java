@@ -374,6 +374,7 @@ public class ScanManager implements IScanEventHandler {
                     }
 
                     var nodeType = iNodeBlockEntity.getNodeType();
+                    //TODO:API
                     if (nodeType == UNSTABLE) {
                         tags.mergeWithHighest(Aspect.ENTROPY, 4);
                     }

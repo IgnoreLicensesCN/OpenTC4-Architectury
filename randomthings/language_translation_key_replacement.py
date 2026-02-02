@@ -25,6 +25,8 @@ block_with_item_names = [
     ["tile.blockTaintFibres.2.name", "tainted_plant"],
     ["tile.blockTaintFibres.3.name", "spore_stalk"],
     ["tile.blockTaintFibres.4.name", "mature_spore_stalk"],
+    ["tile.blockTable.0.name","table"],
+    ["tile.blockTable.1.name","table"]
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

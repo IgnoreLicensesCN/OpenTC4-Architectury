@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+@Deprecated(forRemoval = true)
 public class BlockTaint /*extends Block*/ {
 //   private IIcon iconCrust;
 //   private IIcon iconSoil;

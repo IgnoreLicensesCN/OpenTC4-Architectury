@@ -1,21 +1,13 @@
-package thaumcraft.common.blocks.worldgenerated;
+package thaumcraft.common.blocks.worldgenerated.decorations;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DeadBushBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,46 +17,39 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thaumcraft.client.fx.migrated.particles.FXWisp;
 
-public class ManaShroomBlock extends BushBlock {
-    public ManaShroomBlock(Properties properties) {
+public class ShimmerLeafBlock extends BushBlock {
+    public ShimmerLeafBlock(Properties properties) {
         super(properties);
     }
-    public ManaShroomBlock() {
+    public ShimmerLeafBlock() {
         super(
                 BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.COLOR_MAGENTA)
-                        .replaceable()
+                        .mapColor(MapColor.PLANT)
                         .noCollission()
                         .instabreak()
                         .sound(SoundType.GRASS)
+                        .offsetType(BlockBehaviour.OffsetType.XZ)
                         .pushReaction(PushReaction.DESTROY)
                         .lightLevel(s -> 8)
         );
     }
 
     @Override
-    public void animateTick(BlockState blockState, Level world, BlockPos blockPos, RandomSource random) {
-        if (random.nextInt(3) == 0 && world instanceof ClientLevel clientLevel) {
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+        if (!(level instanceof ClientLevel clientLevel)) {return;}
+        if (randomSource.nextInt(3) == 0) {
             float i = blockPos.getX();
             float j = blockPos.getY();
             float k = blockPos.getZ();
-            float xr = i + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
-            float yr = j + 0.3F;
-            float zr = k + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F;
-            FXWisp ef = new FXWisp(clientLevel, xr, yr, zr, 0.1F, 0.5F, 0.3F, 0.8F);
+            float cr = 0.3F + randomSource.nextFloat() * 0.3F;
+            float cg = 0.7F + randomSource.nextFloat() * 0.3F;
+            float cb = 0.7F + randomSource.nextFloat() * 0.3F;
+            float xr = i + 0.5F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.1F;
+            float yr = j + 0.5F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.15F;
+            float zr = k + 0.5F + (randomSource.nextFloat() - randomSource.nextFloat()) * 0.1F;
+            FXWisp ef = new FXWisp(clientLevel, xr, yr, zr, 0.2F, cr, cg, cb);
             ef.tinkle = false;
-            ef.shrink = true;
-            ef.setGravity(0.015F);
             Minecraft.getInstance().particleEngine.add(ef);
-
-        }
-    }
-
-    @Override
-    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
-        //inspired by cobweb
-        if (Platform.getEnvironment() == Env.SERVER && entity instanceof LivingEntity livingEntity){
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 1));
         }
     }
 

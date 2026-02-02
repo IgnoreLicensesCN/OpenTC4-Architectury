@@ -193,6 +193,7 @@ public class ThaumcraftItems {
     public static final BlockItem TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
     public static final BlockItem SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
     public static final BlockItem MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
+    public static final BlockItem TABLE = Registry.SUPPLIER_TABLE.get();
     //===========================================================================================
 
     public static class Registry {
@@ -653,6 +654,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_MATURE_SPORE_STALK = ITEMS.register(
                 "mature_spore_stalk",
                 () -> new BlockItem(ThaumcraftBlocks.MATURE_SPORE_STALK,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_TABLE = ITEMS.register(
+                "table",
+                () -> new BlockItem(ThaumcraftBlocks.TABLE,new Item.Properties())
         );
 
         static {

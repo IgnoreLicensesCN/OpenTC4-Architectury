@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+@Deprecated(forRemoval = true)
 public class BlockTaintFibres /*extends Block*/ {
 //   public IIcon[] iconOver = new IIcon[4];
 //   public IIcon[] icon = new IIcon[5];

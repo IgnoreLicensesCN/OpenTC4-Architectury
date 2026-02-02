@@ -28,6 +28,10 @@ a = """public static final RegistrySupplier<CrustedTaintBlock> SUPPLIER_CRUSTED_
         public static final RegistrySupplier<MatureSporeStalkBlock> SUPPLIER_MATURE_SPORE_STALK = BLOCKS.register(
                 "mature_spore_stalk",
                 MatureSporeStalkBlock::new
+        );
+        public static final RegistrySupplier<TableBlock> SUPPLIER_TABLE = BLOCKS.register(
+                "table",
+                TableBlock::new
         );"""
 
 groups = []

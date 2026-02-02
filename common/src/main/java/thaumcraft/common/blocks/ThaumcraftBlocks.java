@@ -18,6 +18,9 @@ import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
+import thaumcraft.common.blocks.worldgenerated.decorations.CinderPearlBlock;
+import thaumcraft.common.blocks.worldgenerated.decorations.ManaShroomBlock;
+import thaumcraft.common.blocks.worldgenerated.decorations.ShimmerLeafBlock;
 import thaumcraft.common.blocks.worldgenerated.eldritch.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.blocks.worldgenerated.taint.*;
@@ -145,6 +148,7 @@ public class ThaumcraftBlocks {
     public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
     public static final SporeStalkBlock SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
     public static final MatureSporeStalkBlock MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
+    public static final TableBlock TABLE = Registry.SUPPLIER_TABLE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -557,6 +561,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<MatureSporeStalkBlock> SUPPLIER_MATURE_SPORE_STALK = BLOCKS.register(
                 "mature_spore_stalk",
                 MatureSporeStalkBlock::new
+        );
+        public static final RegistrySupplier<TableBlock> SUPPLIER_TABLE = BLOCKS.register(
+                "table",
+                TableBlock::new
         );
 
         static {

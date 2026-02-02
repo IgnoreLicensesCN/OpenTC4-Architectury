@@ -1,67 +1,42 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockContainer;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
-import net.minecraft.core.Direction;
-import thaumcraft.api.wands.IWandable;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.tiles.TileArcaneWorkbench;
-import thaumcraft.common.tiles.TileDeconstructionTable;
-import thaumcraft.common.tiles.TileResearchTable;
-import thaumcraft.common.tiles.TileTable;
+//  "tile.blockTable.0.name": "台桌",
+//          "tile.blockTable.1.name": "台桌",
+//          "tile.blockTable.14.name": "解構工作台",
+//          "tile.blockTable.15.name": "奧術工作台",
+//          "tile.blockTable.research.name": "研究桌",//2~9
+public class BlockTable /*extends BlockContainer implements IWandable*/ {
+//   public IIcon icon;
+//   public IIcon iconQuill;
 
-import java.util.List;
+//   public BlockTable() {
+//      super(Material.wood);
+//      this.setHardness(2.5F);
+//      this.setStepSound(soundTypeWood);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
 
-public class BlockTable extends BlockContainer implements IWandable {
-   public IIcon icon;
-   public IIcon iconQuill;
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.icon = ir.registerIcon("thaumcraft:woodplain");
+//      this.iconQuill = ir.registerIcon("thaumcraft:tablequill");
+//   }
 
-   public BlockTable() {
-      super(Material.wood);
-      this.setHardness(2.5F);
-      this.setStepSound(soundTypeWood);
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(int side, int meta) {
+//      return this.icon;
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.icon = ir.registerIcon("thaumcraft:woodplain");
-      this.iconQuill = ir.registerIcon("thaumcraft:tablequill");
-   }
+//   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
+//      return side == Direction.UP || super.isSideSolid(world, x, y, z, side);
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(int side, int meta) {
-      return this.icon;
-   }
-
-   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, Direction side) {
-      return side == Direction.UP || super.isSideSolid(world, x, y, z, side);
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(par1, 1, 0));
-      par3List.add(new ItemStack(par1, 1, 14));
-      par3List.add(new ItemStack(par1, 1, 15));
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(par1, 1, 0));
+//      par3List.add(new ItemStack(par1, 1, 14));
+//      par3List.add(new ItemStack(par1, 1, 15));
+//   }
 
    public TileEntity createTileEntity(World world, int metadata) {
       if ((metadata <= 1 || metadata >= 6) && metadata < 14) {
@@ -83,35 +58,35 @@ public class BlockTable extends BlockContainer implements IWandable {
 
    }
 
-   public boolean isOpaqueCube() {
-      return false;
-   }
+//   public boolean isOpaqueCube() {
+//      return false;
+//   }
 
-   public boolean renderAsNormalBlock() {
-      return false;
-   }
+//   public boolean renderAsNormalBlock() {
+//      return false;
+//   }
 
-   public int getRenderType() {
-      return ConfigBlocks.blockTableRI;
-   }
+//   public int getRenderType() {
+//      return ConfigBlocks.blockTableRI;
+//   }
 
-   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
-      InventoryUtils.dropItems(par1World, par2, par3, par4);
-      super.breakBlock(par1World, par2, par3, par4, par5, par6);
-   }
+//   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
+//      InventoryUtils.dropItems(par1World, par2, par3, par4);
+//      super.breakBlock(par1World, par2, par3, par4, par5, par6);
+//   }
 
-   public int getDamageValue(Level par1World, int par2, int par3, int par4) {
-      int md = par1World.getBlockMetadata(par2, par3, par4);
-      return md >= 2 && md <= 9 ? 2 : super.getDamageValue(par1World, par2, par3, par4);
-   }
+//   public int getDamageValue(Level par1World, int par2, int par3, int par4) {
+//      int md = par1World.getBlockMetadata(par2, par3, par4);
+//      return md >= 2 && md <= 9 ? 2 : super.getDamageValue(par1World, par2, par3, par4);
+//   }
 
-   public int damageDropped(int par1) {
-      if (par1 == 14) {
-         return 14;
-      } else {
-         return par1 == 15 ? 15 : 0;
-      }
-   }
+//   public int damageDropped(int par1) {
+//      if (par1 == 14) {
+//         return 14;
+//      } else {
+//         return par1 == 15 ? 15 : 0;
+//      }
+//   }
 
    public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
       TileEntity tile = world.getTileEntity(x, y, z);
@@ -165,9 +140,9 @@ public class BlockTable extends BlockContainer implements IWandable {
       }
    }
 
-   public TileEntity createNewTileEntity(World var1, int md) {
-      return null;
-   }
+//   public TileEntity createNewTileEntity(World var1, int md) {
+//      return null;
+//   }
 
    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
@@ -209,13 +184,13 @@ public class BlockTable extends BlockContainer implements IWandable {
       }
    }
 
-   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
-      return null;
-   }
-
-   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
-   }
-
-   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
-   }
+//   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
+//      return null;
+//   }
+//
+//   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
+//   }
+//
+//   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
+//   }
 }

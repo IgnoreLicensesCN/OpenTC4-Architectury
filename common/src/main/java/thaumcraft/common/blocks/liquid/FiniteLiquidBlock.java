@@ -23,7 +23,7 @@ public abstract class FiniteLiquidBlock extends LiquidBlock {
     public FiniteLiquidBlock(FlowingFluid fluid, Properties props, Direction gravity) {
         super(fluid, props);
         this.gravity = gravity;
-        this.registerDefaultState(this.defaultBlockState().setValue(LEVEL, 8));
+        this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 8));
     }
 
     @Override
