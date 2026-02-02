@@ -71,7 +71,7 @@ public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlo
         if (blockEntity instanceof OwnedBlockEntity owned){
             var player = useOnContext.getPlayer();
             if (player == null) return InteractionResult.PASS;
-            var playerName = player.getName().getString();
+            var playerName = player.getGameProfile().getName();
             if (owned.owners.contains(playerName)){
                 level.destroyBlock(clickedPos, true, player);
                 level.playSound(player,clickedPos,SoundType.STONE.getBreakSound(), SoundSource.BLOCKS);
@@ -107,10 +107,10 @@ public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlo
             if (player != null) {
                 var ownedBlockEntity = level.getBlockEntity(pos);
                 if (ownedBlockEntity instanceof OwnedBlockEntity owned){
-                    owned.owners.add(player.getName().getString());
+                    owned.owners.add(player.getGameProfile().getName());
                 }else if (ownedBlockEntity == null){
                     var owned = new OwnedBlockEntity(pos,this.defaultBlockState());
-                    owned.owners.add(player.getName().getString());
+                    owned.owners.add(player.getGameProfile().getName());
                     level.setBlockEntity(owned);
                 }
             }

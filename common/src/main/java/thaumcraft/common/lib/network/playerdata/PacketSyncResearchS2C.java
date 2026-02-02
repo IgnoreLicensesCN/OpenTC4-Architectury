@@ -26,7 +26,7 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用构造
      */
     public PacketSyncResearchS2C(Player player) {
-        List<String> list = ResearchManager.getResearchForPlayer(player.getName().getString());
+        List<String> list = ResearchManager.getResearchForPlayer(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
     }
 
@@ -80,7 +80,7 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
                 Thaumcraft.researchManager.completeResearch(player, key);
             }
 
-            GuiResearchBrowser.completedResearch.put(player.getName().getString(), msg.data);
+            GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), msg.data);
         }
     }
 }

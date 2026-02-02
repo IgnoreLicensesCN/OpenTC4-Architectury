@@ -28,7 +28,7 @@ public class PacketSyncWarpS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用构造
      */
     public PacketSyncWarpS2C(Player player, byte type) {
-        String name = player.getName().getString();
+        String name = player.getGameProfile().getName();
 
         if (type == 0)
             this.data = Thaumcraft.playerKnowledge.getWarpPerm(name);
@@ -83,7 +83,7 @@ public class PacketSyncWarpS2C extends ThaumcraftBaseS2CMessage {
             Player player = Minecraft.getInstance().player;
             if (player == null) return;
 
-            String name = player.getName().getString();
+            String name = player.getGameProfile().getName();
 
             if (msg.type == 0) {
                 Thaumcraft.playerKnowledge.setWarpPerm(name, msg.data);

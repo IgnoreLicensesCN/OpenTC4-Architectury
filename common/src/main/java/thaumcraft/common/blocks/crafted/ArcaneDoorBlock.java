@@ -55,10 +55,10 @@ public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock
             if (player != null) {
                 var ownedBlockEntity = level.getBlockEntity(pos);
                 if (ownedBlockEntity instanceof OwnedBlockEntity owned){
-                    owned.owners.add(player.getName().getString());
+                    owned.owners.add(player.getGameProfile().getName());
                 }else if (ownedBlockEntity == null){
                     var owned = new OwnedBlockEntity(pos,this.defaultBlockState());
-                    owned.owners.add(player.getName().getString());
+                    owned.owners.add(player.getGameProfile().getName());
                     level.setBlockEntity(owned);
                 }
             }
@@ -74,7 +74,7 @@ public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock
         if (blockEntity instanceof OwnedBlockEntity owned){
             var player = useOnContext.getPlayer();
             if (player == null) return InteractionResult.PASS;
-            var playerName = player.getName().getString();
+            var playerName = player.getGameProfile().getName();
             if (owned.owners.contains(playerName)){
                 level.destroyBlock(clickedPos, true, player);
                 level.playSound(player,clickedPos, SoundType.STONE.getBreakSound(), SoundSource.BLOCKS);
@@ -100,7 +100,7 @@ public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock
         var ownedBlockEntity = level.getBlockEntity(pos);
         if (ownedBlockEntity instanceof OwnedBlockEntity owned){
 
-            if (owned.owners.contains(player.getName().getString())){
+            if (owned.owners.contains(player.getGameProfile().getName())){
                 arg = arg.cycle(OPEN);
                 level.setBlock(pos, arg, 10);
                 this.playSound(player, level, pos, arg.getValue(OPEN));

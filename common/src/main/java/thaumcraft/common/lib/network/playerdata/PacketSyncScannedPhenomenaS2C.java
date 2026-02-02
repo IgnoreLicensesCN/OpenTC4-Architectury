@@ -31,7 +31,7 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用构造
      */
     public PacketSyncScannedPhenomenaS2C(Player player) {
-        List<String> list = Thaumcraft.getScannedPhenomena().get(player.getName().getString());
+        List<String> list = Thaumcraft.getScannedPhenomena().get(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
     }
 
@@ -84,7 +84,7 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
             if (player == null) return;
 
             for (String key : msg.data) {
-                Thaumcraft.researchManager.completeScannedPhenomena(player.getName().getString(), key);
+                Thaumcraft.researchManager.completeScannedPhenomena(player.getGameProfile().getName(), key);
             }
         }
     }

@@ -355,7 +355,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
             //TODO:Migrate this part to block
             if ((bi == ConfigBlocks.blockWoodenDevice && md == 2 
                     || bi == ConfigBlocks.blockCosmeticOpaque && md == 2) 
-                    && (!Config.wardedStone || tile instanceof TileOwned && player.getName().getString().equals(((TileOwned) tile).owner))
+                    && (!Config.wardedStone || tile instanceof TileOwned && player.getGameProfile().getName().equals(((TileOwned) tile).owner))
             ) {
                 if (Platform.getEnvironment() != Env.CLIENT) {
                     ((TileOwned) tile).safeToRemove = true;

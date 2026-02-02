@@ -171,7 +171,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     @Override
     public boolean matches(Container inv, Level world, Player player)
     {
-    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), research)) {
+    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
     		return false;
     	}
 

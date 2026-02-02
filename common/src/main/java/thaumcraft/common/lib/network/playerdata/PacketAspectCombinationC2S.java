@@ -42,7 +42,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
                                      Aspect aspect1, Aspect aspect2,
                                      boolean ab1, boolean ab2) {
       this.dim = player.level().dimension();
-      this.playerName = player.getName().getString();
+      this.playerName = player.getGameProfile().getName();
       this.x = x;
       this.y = y;
       this.z = z;
@@ -107,7 +107,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       // 获取组合结果
       Aspect combo = ResearchManager.getCombinationResult(aspect1, aspect2);
 
-      String playerName = serverPlayer.getName().getString();
+      String playerName = serverPlayer.getGameProfile().getName();
 
       // 处理第一个 aspect
       if (Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect1) <= 0 && ab1) {
@@ -137,7 +137,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       }
 
       // 保存玩家知识
-      ResearchManager.scheduleSave(serverPlayer.getName().getString());
+      ResearchManager.scheduleSave(serverPlayer.getGameProfile().getName());
    }
 
    /**

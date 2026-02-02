@@ -793,7 +793,7 @@ public class WandManager implements IWandTriggerManager {
     @Override
     public boolean performTrigger(Level level, ItemStack wand, Player player, BlockPos pos, Direction side) {
         boolean returnFlag = false;
-        var playerName = player.getName().getString();
+        var playerName = player.getGameProfile().getName();
         returnFlag = createThaumonomicon(wand, player, level, x, y, z);
         if (returnFlag) {return true;}
         returnFlag = createCrucible(wand, player, level, x, y, z);

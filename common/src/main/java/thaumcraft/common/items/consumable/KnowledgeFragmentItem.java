@@ -34,9 +34,9 @@ public class KnowledgeFragmentItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             for(Aspect a : Aspect.getPrimalAspects()) {
                 short q = (short)(world.getRandom().nextInt(2) + 1);
-                Thaumcraft.playerKnowledge.addAspectPool(player.getName().getString(), a, q);
-                ResearchManager.scheduleSave(serverPlayer.getName().getString());
-                new PacketAspectPoolS2C(a.getTag(), q, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getName().getString(), a)).sendTo(serverPlayer);
+                Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), a, q);
+                ResearchManager.scheduleSave(serverPlayer.getGameProfile().getName());
+                new PacketAspectPoolS2C(a.getTag(), q, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), a)).sendTo(serverPlayer);
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());

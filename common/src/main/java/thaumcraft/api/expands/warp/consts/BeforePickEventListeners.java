@@ -28,7 +28,7 @@ public class BeforePickEventListeners {
         public void beforePickEvent(PickWarpEventContext e, Player player) {
             e.warp = Math.min(100, (e.warp + e.warp + e.warpCounter) / 3);
             e.warpCounter = (int)((double)e.warpCounter - Math.max(5.0F, Math.sqrt(e.warpCounter) * (double)2.0F));
-            Thaumcraft.playerKnowledge.setWarpCounter(player.getName().getString(), e.warpCounter);
+            Thaumcraft.playerKnowledge.setWarpCounter(player.getGameProfile().getName(), e.warpCounter);
         }
     };
 }

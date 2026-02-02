@@ -96,8 +96,8 @@ public class EventHandlerEntity {
          }));
          PlayerEvent.PLAYER_JOIN.register(serverPlayer -> {
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-             Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer.getName().getString());
-            File playerThaumFile = getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getName().getString());
+             Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer.getGameProfile().getName());
+            File playerThaumFile = getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName());
             boolean legacy = false;
             if (!playerThaumFile.exists()) {
                try {
@@ -110,7 +110,7 @@ public class EventHandlerEntity {
 //               if (filep.exists()) {
 //                  try {
 //                     Files.copy(filep, playerThaumFile);
-//                     Thaumcraft.log.info("Using and converting UUID Thaumcraft savefile for {}", serverPlayer.getName().getString());
+//                     Thaumcraft.log.info("Using and converting UUID Thaumcraft savefile for {}", serverPlayer.getGameProfile().getName());
 //                     legacy = true;
 //                     filep.delete();
 //                     File fb = event.getPlayerFile("thaumback");
@@ -122,7 +122,7 @@ public class EventHandlerEntity {
 //               } 
             }
 
-            ResearchManager.loadPlayerData(serverPlayer.getName().getString(), playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getName().getString()), legacy);
+            ResearchManager.loadPlayerData(serverPlayer.getGameProfile().getName(), playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()), legacy);
 
             for(ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
                for(ResearchItem ri : cat.research.values()) {
@@ -134,9 +134,9 @@ public class EventHandlerEntity {
          });
          PlayerEvent.PLAYER_QUIT.register(serverPlayer -> {
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-            ResearchManager.savePlayerData(serverPlayer.getName().getString(),
-                    getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getName().getString()),
-                    getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getName().getString()));
+            ResearchManager.savePlayerData(serverPlayer.getGameProfile().getName(),
+                    getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()),
+                    getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()));
          });
 
          ClientTickEvent.CLIENT_POST.register(mc -> {
@@ -150,7 +150,7 @@ public class EventHandlerEntity {
 
          TickEvent.PLAYER_PRE.register(player -> {
             var world = player.level();
-            var playerName = player.getName().getString();
+            var playerName = player.getGameProfile().getName();
             boolean hoverFlag = Hover.getHover(playerName);
             if (world.dimension() == Config.dimensionOuter
                     && !player.isCreative()
@@ -369,7 +369,7 @@ public class EventHandlerEntity {
    public void playerInteract(EntityInteractEvent event) {
       if (event.target instanceof EntityGolemBase
               && !((EntityGolemBase) event.target).getOwnerName().isEmpty()
-              && !((EntityGolemBase)event.target).getOwnerName().equals(event.Player.getName().getString())
+              && !((EntityGolemBase)event.target).getOwnerName().equals(event.Player.getGameProfile().getName())
       ) {
          if (Platform.getEnvironment() != Env.CLIENT) {
             event.Player.displayClientMessage(new ChatComponentTranslation("You are not my Master!"));
@@ -436,7 +436,7 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void itemPickup(EntityItemPickupEvent event) {
-      if (event.Player.getName().getString().startsWith("FakeThaumcraft")) {
+      if (event.Player.getGameProfile().getName().startsWith("FakeThaumcraft")) {
          event.setCanceled(true);
       }
 

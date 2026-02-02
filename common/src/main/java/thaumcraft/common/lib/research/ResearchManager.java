@@ -62,7 +62,7 @@ public class ResearchManager {
         for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getName().getString(), ri.key) && !isResearchComplete(player.getName().getString(), "@" + ri.key);
+                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isResearchComplete(player.getGameProfile().getName(), "@" + ri.key);
                 if (valid) {
                     if (ri.getItemTriggers() != null) {
                         for (ItemStack stack : ri.getItemTriggers()) {
@@ -94,7 +94,7 @@ public class ResearchManager {
             if (player instanceof ServerPlayer serverPlayer) {
                 new PacketResearchCompleteS2C("@" + key).sendTo(serverPlayer);
             }else {
-                LOGGER.warn("createclue:not a server playere:{}",player.getName().getString());
+                LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
             }
             Thaumcraft.researchManager.completeResearch(player, "@" + key);
             return true;
@@ -108,7 +108,7 @@ public class ResearchManager {
         for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getName().getString(), ri.key) && !isResearchComplete(player.getName().getString(), "@" + ri.key);
+                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isResearchComplete(player.getGameProfile().getName(), "@" + ri.key);
                 if (valid) {
                     {
                         if (ri.getEntityTriggers() != null) {
@@ -140,7 +140,7 @@ public class ResearchManager {
             if (player instanceof ServerPlayer serverPlayer) {
                 new PacketResearchCompleteS2C("@" + key).sendTo(serverPlayer);
             }else {
-                LOGGER.warn("createclue:not a server playere:{}",player.getName().getString());
+                LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
             }
             Thaumcraft.researchManager.completeResearch(player, "@" + key);
             return true;
@@ -207,8 +207,8 @@ public class ResearchManager {
         ArrayList<String> keys = new ArrayList<>();
 
         for (ResearchItem research : allHiddenResearch) {
-            if (!isResearchComplete(player.getName().getString(), research.key)
-                    && doesPlayerHaveRequisites(player.getName().getString(), research.key)
+            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
+                    && doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
                     && (research.getItemTriggers() != null
                     || research.getEntityTriggers() != null
                     || research.getAspectTriggers() != null
@@ -245,7 +245,7 @@ public class ResearchManager {
         ArrayList<String> keys = new ArrayList<>();
 
         for (ResearchItem research : allValidResearch) {
-            if (!isResearchComplete(player.getName().getString(), research.key) && doesPlayerHaveRequisites(player.getName().getString(), research.key) && research.tags.getAmount(aspect) > 0) {
+            if (!isResearchComplete(player.getGameProfile().getName(), research.key) && doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key) && research.tags.getAmount(aspect) > 0) {
                 keys.add(research.key);
             }
         }
@@ -809,16 +809,16 @@ public class ResearchManager {
 
     public static void unlockResearchForPlayer(Level world, ServerPlayer player, String research, String... preRequsites) {
         for (String preReq : preRequsites) {
-            if (!isResearchComplete(player.getName().getString(), preReq)){return;}
+            if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
         }
-        if (isResearchComplete(player.getName().getString(), research)){return;}
+        if (isResearchComplete(player.getGameProfile().getName(), research)){return;}
         new PacketResearchCompleteS2C(research).sendTo(player);
         Thaumcraft.researchManager.completeResearch(player, research);
         player.playSound(LEARN);//,.75f,1.f
     }
 
     public void completeResearch(Player player, String key) {
-        String playerName = player.getName().getString();
+        String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
             int warp = ThaumcraftApi.getWarp(key);
             if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {

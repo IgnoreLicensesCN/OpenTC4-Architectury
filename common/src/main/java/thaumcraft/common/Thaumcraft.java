@@ -66,20 +66,20 @@ public class Thaumcraft {
             if (temporary || amount >= 0) {
                 if (amount != 0) {
                     if (temporary) {
-                        if (amount < 0 && playerKnowledge.getWarpTemp(player.getName().getString()) <= 0) {
+                        if (amount < 0 && playerKnowledge.getWarpTemp(player.getGameProfile().getName()) <= 0) {
                             return;
                         }
 
-                        playerKnowledge.addWarpTemp(player.getName().getString(), amount);
+                        playerKnowledge.addWarpTemp(player.getGameProfile().getName(), amount);
                         new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
                         new PacketWarpMessageS2C((byte)2, amount).sendTo(player);
                     } else {
-                        playerKnowledge.addWarpPerm(player.getName().getString(), amount);
+                        playerKnowledge.addWarpPerm(player.getGameProfile().getName(), amount);
                         new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
                         new PacketWarpMessageS2C((byte)0, amount).sendTo(player);
                     }
 
-                    playerKnowledge.setWarpCounter(player.getName().getString(), playerKnowledge.getWarpTotal(player.getName().getString()));
+                    playerKnowledge.setWarpCounter(player.getGameProfile().getName(), playerKnowledge.getWarpTotal(player.getGameProfile().getName()));
                 }
             }
         }
@@ -93,11 +93,11 @@ public class Thaumcraft {
         if (Platform.getEnvironment() != Env.SERVER){return;}
         if (playerKnowledge != null) {
             if (amount != 0) {
-                if (amount >= 0 || playerKnowledge.getWarpSticky(player.getName().getString()) > 0) {
-                    playerKnowledge.addWarpSticky(player.getName().getString(), amount);
+                if (amount >= 0 || playerKnowledge.getWarpSticky(player.getGameProfile().getName()) > 0) {
+                    playerKnowledge.addWarpSticky(player.getGameProfile().getName(), amount);
                     new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
                     new PacketWarpMessageS2C((byte)1, amount).sendTo(player);
-                    playerKnowledge.setWarpCounter(player.getName().getString(), playerKnowledge.getWarpTotal(player.getName().getString()));
+                    playerKnowledge.setWarpCounter(player.getGameProfile().getName(), playerKnowledge.getWarpTotal(player.getGameProfile().getName()));
                 }
             }
         }

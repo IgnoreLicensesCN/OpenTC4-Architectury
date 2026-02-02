@@ -684,7 +684,7 @@ public class ThaumcraftApi {
         SimplePair<Item, Integer> key = new SimplePair<>(stack.getItem(), stack.getDamageValue());
         if (keyCache.containsKey(key)) {
             if (keyCache.get(key) == null) return null;
-            if (ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), (keyCache.get(key)).research))
+            if (ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), (keyCache.get(key)).research))
                 return keyCache.get(key);
             else
                 return null;
@@ -698,7 +698,7 @@ public class ThaumcraftApi {
                         for (CrucibleRecipe cr : crs) {
                             if (cr.matchViaOutput(stack)) {
                                 keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                                if (ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), ri.key))
+                                if (ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), ri.key))
                                     return new ResearchKeyAndPage(ri.key, a);
                             }
                         }
@@ -707,7 +707,7 @@ public class ThaumcraftApi {
                             && Objects.equals(page.recipeOutput.getItem(), stack.getItem())
                     ) {
                         keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                        if (ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), ri.key))
+                        if (ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), ri.key))
                             return new ResearchKeyAndPage(ri.key, a);
                         else
                             return null;

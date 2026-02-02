@@ -62,8 +62,8 @@ public class PrimalCharmItem extends Item {
                 }
             } else if (r == 42
                     && entity instanceof ServerPlayer player
-                    && !ResearchManager.isResearchComplete(player.getName().getString(), "FOCUSPRIMAL")
-                    && !ResearchManager.isResearchComplete(player.getName().getString(), "@FOCUSPRIMAL")
+                    && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "FOCUSPRIMAL")
+                    && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "@FOCUSPRIMAL")
             ) {
                 player.sendSystemMessage(
                         Component.literal("§5§o" + StatCollector.translateToLocal("tc.primalcharm.trigger")));

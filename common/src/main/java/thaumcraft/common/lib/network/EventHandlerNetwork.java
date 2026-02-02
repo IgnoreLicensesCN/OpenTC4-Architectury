@@ -39,7 +39,7 @@ public class EventHandlerNetwork {
    @SubscribeEvent
    public void clientLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
       if (Thaumcraft.getClientWorld() != null && Minecraft.getMinecraft().thePlayer != null) {
-         GuiResearchBrowser.completedResearch.put(Minecraft.getMinecraft().thePlayer.getName().getString(), new ArrayList());
+         GuiResearchBrowser.completedResearch.put(Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), new ArrayList());
          Thaumcraft.log.info("Resetting research to defaults.");
       }
 

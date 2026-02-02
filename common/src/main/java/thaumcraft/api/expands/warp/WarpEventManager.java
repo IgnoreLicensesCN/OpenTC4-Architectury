@@ -113,12 +113,12 @@ public class WarpEventManager {
     public static void tryTriggerRandomWarpEvent(@NotNull ServerPlayer player) {
         PlayerKnowledge knowledge = Thaumcraft.playerKnowledge;
         PickWarpEventContext warpContext = new PickWarpEventContext(
-                knowledge.getWarpTotal(player.getName().getString())
+                knowledge.getWarpTotal(player.getGameProfile().getName())
                         + getWarpFromGear(player),
                 player,
-                knowledge.getWarpPerm(player.getName().getString())
-                        + knowledge.getWarpSticky(player.getName().getString()),
-                knowledge.getWarpCounter(player.getName().getString())
+                knowledge.getWarpPerm(player.getGameProfile().getName())
+                        + knowledge.getWarpSticky(player.getGameProfile().getName()),
+                knowledge.getWarpCounter(player.getGameProfile().getName())
         );
         for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
             if (!condition.check(warpContext,player)) {

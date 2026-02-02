@@ -60,7 +60,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player) {
 
 			
-		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), research)) {
+		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
     		return false;
     	}
 

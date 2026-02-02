@@ -41,7 +41,7 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
       Aspect aspect = Aspect.getAspect(key);
       if (aspect == null) return;
 
-      Thaumcraft.playerKnowledge.addDiscoveredAspect(mc.player.getName().getString(), aspect);
+      Thaumcraft.playerKnowledge.addDiscoveredAspect(mc.player.getGameProfile().getName(), aspect);
 
       String text = StatCollector.translateToLocal("tc.addaspectdiscovery").replace("%n", aspect.getName());
       PlayerNotifications.addNotification("§6" + text, aspect);

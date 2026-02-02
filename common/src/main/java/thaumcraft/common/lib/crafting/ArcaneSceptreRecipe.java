@@ -142,7 +142,7 @@ public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 //   }
 //
 //   public boolean matches(Container inv, Level world, Player player) {
-//      if (!ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "SCEPTRE")) {
+//      if (!ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "SCEPTRE")) {
 //         return false;
 //      } else {
 //         ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 0);
@@ -159,14 +159,14 @@ public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 //      boolean br = false;
 //      if (cap1 != null && cap2 != null && cap3 != null && rod != null && focus != null && this.checkItemEquals(focus, new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) && this.checkItemEquals(cap1, cap2) && this.checkItemEquals(cap1, cap3)) {
 //         for(WandCap wc : WandCap.caps.values()) {
-//            if (this.checkItemEquals(cap1, wc.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), wc.getResearch())) {
+//            if (this.checkItemEquals(cap1, wc.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wc.getResearch())) {
 //               bc = true;
 //               break;
 //            }
 //         }
 //
 //         for(WandRod wr : WandRod.rods.values()) {
-//            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), wr.getResearch())) {
+//            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wr.getResearch())) {
 //               br = true;
 //               break;
 //            }

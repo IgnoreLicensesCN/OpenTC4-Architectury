@@ -53,7 +53,7 @@ public class AspectList implements Serializable {
     public static void addAspectDescriptionToList(AspectList aspects, Player player, List<String> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(Aspect tag : aspects.getAspectsSorted()) {
-             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getName().getString(), tag)) {
+             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getGameProfile().getName(), tag)) {
                 aspectDescriptions.add(tag.getName() + " x " + aspects.getAmount(tag));
              } else {
                 aspectDescriptions.add(StatCollector.translateToLocal("tc.aspect.unknown"));

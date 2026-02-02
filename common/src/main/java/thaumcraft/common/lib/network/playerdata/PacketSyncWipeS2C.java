@@ -54,7 +54,7 @@ public class PacketSyncWipeS2C extends ThaumcraftBaseS2CMessage {
             Player player = Minecraft.getInstance().player;
             if (player == null) return;
 
-            String name = player.getName().getString();
+            String name = player.getGameProfile().getName();
             Thaumcraft.playerKnowledge.wipePlayerKnowledge(name);
         }
     }

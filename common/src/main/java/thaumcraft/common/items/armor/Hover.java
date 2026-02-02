@@ -65,27 +65,27 @@ public class Hover {
     }
 
     public static void handleHoverArmor(Player player, ItemStack armor) {
-        if (hovering.get(player.getName().getString()) == null && armor.hasTagCompound() && armor.stackTagCompound.hasKey("hover")) {
-            hovering.put(player.getName().getString(), armor.stackTagCompound.getByte("hover") == 1);
+        if (hovering.get(player.getGameProfile().getName()) == null && armor.hasTagCompound() && armor.stackTagCompound.hasKey("hover")) {
+            hovering.put(player.getGameProfile().getName(), armor.stackTagCompound.getByte("hover") == 1);
             if ((Platform.getEnvironment() == Env.CLIENT)) {
                 PacketHandler.INSTANCE.sendToServer(new PacketFlyToServer(player, armor.stackTagCompound.getByte("hover") == 1));
             }
         }
 
-        boolean hover = hovering.get(player.getName().getString()) != null && hovering.get(player.getName().getString());
+        boolean hover = hovering.get(player.getGameProfile().getName()) != null && hovering.get(player.getGameProfile().getName());
         World world = player.level();
         player.capabilities.isFlying = hover;
         if ((Platform.getEnvironment() == Env.CLIENT) && player instanceof LocalPlayer) {
             if (hover && expendCharge(player, armor)) {
                 long currenttime = System.currentTimeMillis();
                 long time = 0L;
-                if (timing.get(player.getName().getString()) != null) {
-                    time = timing.get(player.getName().getString());
+                if (timing.get(player.getGameProfile().getName()) != null) {
+                    time = timing.get(player.getGameProfile().getName());
                 }
 
                 if (time < currenttime) {
                     time = currenttime + 1200L;
-                    timing.put(player.getName().getString(), time);
+                    timing.put(player.getGameProfile().getName(), time);
                     player.level().playSound(player.posX, player.posY, player.posZ, "thaumcraft:jacobs", 0.05F, 1.0F + player.level().rand.nextFloat() * 0.05F, false);
                 }
 
@@ -113,7 +113,7 @@ public class Hover {
                 player.motionX *= mod[0];
                 player.motionZ *= mod[0];
             } else if (hover) {
-                toggleHover(player, player.getName().getString(), armor);
+                toggleHover(player, player.getGameProfile().getName(), armor);
             }
         } else {
             if (armor.hasTagCompound() && !armor.stackTagCompound.hasKey("hover")) {
@@ -133,7 +133,7 @@ public class Hover {
                 }
             } else {
                 if (hover) {
-                    toggleHover(player, player.getName().getString(), armor);
+                    toggleHover(player, player.getGameProfile().getName(), armor);
                 }
 
                 player.fallDistance *= 0.75F;

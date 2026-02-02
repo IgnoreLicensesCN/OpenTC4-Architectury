@@ -44,7 +44,7 @@ public class InfusionRunicAugmentRecipe /*extends InfusionRecipe*/ {
    }
 
    public boolean matches(ArrayList<ItemStack> input, ItemStack central, Level world, Player player) {
-      if (!this.research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), this.research)) {
+      if (!this.research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), this.research)) {
          return false;
       } else if (!(central.getItem() instanceof IRunicArmor)) {
          return false;

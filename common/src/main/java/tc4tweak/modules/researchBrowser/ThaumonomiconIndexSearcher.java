@@ -88,7 +88,7 @@ public class ThaumonomiconIndexSearcher {
         Set<SearchQuery> recipeBased = new HashSet<>();
         Set<String> usedResearches = new HashSet<>();
         for (String key : keys)
-            if (key != null && !key.isEmpty() && ResearchCategories.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getName().getString(), key)) {
+            if (key != null && !key.isEmpty() && ResearchCategories.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), key)) {
                 if (ResearchCategories.getResearch(key).getName().startsWith("tc.research_name"))
                     continue;
                 recipeBased.clear();

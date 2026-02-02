@@ -29,7 +29,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用
      */
     public PacketSyncAspectsS2C(Player player) {
-        AspectList aspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getName().getString());
+        AspectList aspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
         List<AspectAmount> list = new ArrayList<>();
         if (aspects != null) {
             for (Aspect a : aspects.getAspectTypes()) {
@@ -91,7 +91,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
             for (AspectAmount a : msg.data) {
                 Aspect aspect = Aspect.getAspect(a.tag);
                 if (aspect != null) {
-                    Thaumcraft.researchManager.completeAspect(player.getName().getString(), aspect, a.amount);
+                    Thaumcraft.researchManager.completeAspect(player.getGameProfile().getName(), aspect, a.amount);
                 }
             }
         }

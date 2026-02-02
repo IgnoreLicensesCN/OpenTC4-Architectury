@@ -140,14 +140,14 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
 //      boolean br = false;
 //      if (cap1 != null && cap2 != null && rod != null && this.checkItemEquals(cap1, cap2)) {
 //         for(WandCap wc : WandCap.caps.values()) {
-//            if (this.checkItemEquals(cap1, wc.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), wc.getResearch())) {
+//            if (this.checkItemEquals(cap1, wc.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wc.getResearch())) {
 //               bc = true;
 //               break;
 //            }
 //         }
 //
 //         for(WandRod wr : WandRod.rods.values()) {
-//            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), wr.getResearch())) {
+//            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wr.getResearch())) {
 //               br = true;
 //               break;
 //            }

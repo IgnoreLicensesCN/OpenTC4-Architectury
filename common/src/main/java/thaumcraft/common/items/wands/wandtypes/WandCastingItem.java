@@ -47,8 +47,6 @@ public class WandCastingItem extends Item
         AttackBlockListener,
         IArchitect {
 
-
-
     public WandCastingItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
         platformUtils.registerOnLeftClickBlockForItem(this,this);

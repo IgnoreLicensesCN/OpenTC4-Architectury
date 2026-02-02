@@ -24,7 +24,7 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用构造
      */
     public PacketSyncScannedEntitiesS2C(Player player) {
-        List<String> list = Thaumcraft.getScannedEntities().get(player.getName().getString());
+        List<String> list = Thaumcraft.getScannedEntities().get(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
     }
 
@@ -75,7 +75,7 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
             if (player == null) return;
 
             for (String key : msg.data) {
-                Thaumcraft.researchManager.completeScannedEntity(player.getName().getString(), key);
+                Thaumcraft.researchManager.completeScannedEntity(player.getGameProfile().getName(), key);
             }
         }
     }

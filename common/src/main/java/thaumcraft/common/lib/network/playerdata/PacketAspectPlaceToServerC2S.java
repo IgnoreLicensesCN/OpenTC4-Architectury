@@ -31,7 +31,7 @@ public class PacketAspectPlaceToServerC2S extends BaseC2SMessage {
 
    public PacketAspectPlaceToServerC2S(Player player, byte q, byte r, int x, int y, int z, Aspect aspect) {
       this.dim = player.level().dimension();
-      this.playerName = player.getName().getString();
+      this.playerName = player.getGameProfile().getName();
       this.x = x;
       this.y = y;
       this.z = z;

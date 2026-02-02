@@ -71,10 +71,10 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
         // GUI 更新
         if (Minecraft.getInstance().screen instanceof GuiResearchBrowser gui) {
-            List<String> al = GuiResearchBrowser.completedResearch.get(player.getName().getString());
+            List<String> al = GuiResearchBrowser.completedResearch.get(player.getGameProfile().getName());
             if (al == null) al = new ArrayList<>();
             al.add(key);
-            GuiResearchBrowser.completedResearch.put(player.getName().getString(), al);
+            GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), al);
             gui.updateResearch();
         }
     }

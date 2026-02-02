@@ -158,7 +158,7 @@ public class ThaumometerItem extends Item {
    public void onUsingTick(ItemStack stack, Player p, int useRemainingCount) {//TODO:migrate
       var count = counter.decrementAndGet();
       var localPlayer = Minecraft.getInstance().player;
-      if (p.level().isClientSide() && localPlayer != null && Objects.equals(localPlayer.getName().getString(),p.getName().getString())) {
+      if (p.level().isClientSide() && localPlayer != null && Objects.equals(localPlayer.getGameProfile().getName(),p.getName().getString())) {
          ScanResult scan = this.doScan(stack, p.level(), p, count);
          if (scan != null && scan.equals(this.startScan)) {
             if (count <= 5) {

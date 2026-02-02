@@ -23,7 +23,7 @@ public class PacketCheck {
     }
 
     public static boolean hasAspect(ServerPlayer player, Aspect aspect, int threshold) {
-        return Thaumcraft.playerKnowledge.getAspectPoolFor(player.getName().getString(), aspect) >= threshold;
+        return Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect) >= threshold;
     }
 
     public static boolean isSecondaryResearch(ResearchItem research) {

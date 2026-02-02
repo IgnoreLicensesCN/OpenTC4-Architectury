@@ -28,7 +28,7 @@ public class DrawResearchCompletionCounter {
     }
 
     private static boolean canUnlockResearch(ResearchItem res) {
-        String playerName = Minecraft.getMinecraft().thePlayer.getName().getString();
+        String playerName = Minecraft.getMinecraft().thePlayer.getGameProfile().getName();
         if (res.parents != null) {
             for (String pt : res.parents) {
                 ResearchItem parent = ResearchCategories.getResearch(pt);
@@ -59,7 +59,7 @@ public class DrawResearchCompletionCounter {
         // but I'm not entirely sure how that field is actually used in practice, so let's be conservative for now
         Map<String, ResearchItem> all = category.research.entrySet().stream().filter(e -> !(e.getValue().isAutoUnlock() && e.getValue().isVirtual())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         int total = all.size();
-        ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getName().getString());
+        ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getGameProfile().getName());
         long completed = completedKeys.stream().filter(all::containsKey).count();
         long revealed = all.entrySet().stream().filter(e ->
                 completedKeys.contains(e.getKey())

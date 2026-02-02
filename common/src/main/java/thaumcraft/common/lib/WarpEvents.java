@@ -32,16 +32,16 @@ public class WarpEvents {
 
    public static void checkWarpEvent(ServerPlayer player) {
       tryTriggerRandomWarpEvent(player);
-//      int warp = Thaumcraft.playerKnowledge.getWarpTotal(player.getName().getString());
-//      int actualwarp = Thaumcraft.playerKnowledge.getWarpPerm(player.getName().getString())
-//              + Thaumcraft.playerKnowledge.getWarpSticky(player.getName().getString());
+//      int warp = Thaumcraft.playerKnowledge.getWarpTotal(player.getGameProfile().getName());
+//      int actualwarp = Thaumcraft.playerKnowledge.getWarpPerm(player.getGameProfile().getName())
+//              + Thaumcraft.playerKnowledge.getWarpSticky(player.getGameProfile().getName());
 //      warp += getWarpFromGear(player);
-//      int warpCounter = Thaumcraft.playerKnowledge.getWarpCounter(player.getName().getString());
+//      int warpCounter = Thaumcraft.playerKnowledge.getWarpCounter(player.getGameProfile().getName());
 //      int r = player.getRandom().nextInt(100);
 //      if (warpCounter > 0 && warp > 0 && (double)r <= Math.sqrt(warpCounter)) {
 //         warp = Math.min(100, (warp + warp + warpCounter) / 3);
 //         warpCounter = (int)((double)warpCounter - Math.max(5.0F, Math.sqrt(warpCounter) * (double)2.0F));
-//         Thaumcraft.playerKnowledge.setWarpCounter(player.getName().getString(), warpCounter);
+//         Thaumcraft.playerKnowledge.setWarpCounter(player.getGameProfile().getName(), warpCounter);
 //         int eff = player.getRandom().nextInt(warp);
 //         ItemStack helm = player.inventory.armorInventory[3];
 //         if (helm != null
@@ -178,8 +178,8 @@ public class WarpEvents {
 //                  }
 //               }
 //               else if (eff == 76) {//??? "=="?
-//                  if (Thaumcraft.playerKnowledge.getWarpSticky(player.getName().getString()) > 0) {
-//                     Thaumcraft.playerKnowledge.addWarpSticky(player.getName().getString(), -1);
+//                  if (Thaumcraft.playerKnowledge.getWarpSticky(player.getGameProfile().getName()) > 0) {
+//                     Thaumcraft.playerKnowledge.addWarpSticky(player.getGameProfile().getName(), -1);
 //                     PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)1), (ServerPlayer)player);
 //                     PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)1, -1), (ServerPlayer)player);
 //                  }
@@ -214,26 +214,26 @@ public class WarpEvents {
 //            }
 //         }
 //
-//         if (actualwarp > 10 && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "BATHSALTS") && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "@BATHSALTS")) {
+//         if (actualwarp > 10 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "BATHSALTS") && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "@BATHSALTS")) {
 //            player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.8")));
 //            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("@BATHSALTS"), (ServerPlayer)player);
 //            Thaumcraft.researchManager.completeResearch(player, "@BATHSALTS");
 //         }
 //
-//         if (actualwarp > 25 && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "ELDRITCHMINOR")) {
+//         if (actualwarp > 25 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMINOR")) {
 //            grantResearch(player, 10);
 //            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMINOR"), (ServerPlayer)player);
 //            Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMINOR");
 //         }
 //
-//         if (actualwarp > 50 && !ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "ELDRITCHMAJOR")) {
+//         if (actualwarp > 50 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMAJOR")) {
 //            grantResearch(player, 20);
 //            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMAJOR"), (ServerPlayer)player);
 //            Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMAJOR");
 //         }
 //      }
 //
-//      Thaumcraft.playerKnowledge.addWarpTemp(player.getName().getString(), -1);
+//      Thaumcraft.playerKnowledge.addWarpTemp(player.getGameProfile().getName(), -1);
 //      PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), (ServerPlayer)player);
    }
 
@@ -255,12 +255,12 @@ public class WarpEvents {
 
       for(int a = 0; a < amt; ++a) {
          Aspect aspect = Aspect.getPrimalAspects().get(player.getRandom().nextInt(6));
-         Thaumcraft.playerKnowledge.addAspectPool(player.getName().getString(), aspect, (short)1);
+         Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)1);
 
-         new PacketAspectPoolS2C(aspect.getTag(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getName().getString(), aspect)).sendTo((ServerPlayer)player);
+         new PacketAspectPoolS2C(aspect.getTag(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect)).sendTo((ServerPlayer)player);
       }
 
-      ResearchManager.scheduleSave(player.getName().getString());
+      ResearchManager.scheduleSave(player.getGameProfile().getName());
    }
 
    public static void spawnGuardian(Player player) {
@@ -316,7 +316,7 @@ public class WarpEvents {
             spider.setTarget(player);
             spider.setAttackTarget(player);
             if (!real) {
-               spider.setViewer(player.getName().getString());
+               spider.setViewer(player.getGameProfile().getName());
                spider.setHarmless(true);
             }
 

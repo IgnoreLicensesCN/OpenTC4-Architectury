@@ -74,7 +74,7 @@ public class PrimePearlItem extends Item {
             if (!world.isClientSide) {
                 var itemstack = useOnContext.getItemInHand();
                 itemstack.shrink(1);
-                boolean research = ThaumcraftApiHelper.isResearchComplete(player.getName().getString(), "PRIMNODE");
+                boolean research = ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "PRIMNODE");
 
                 for(Aspect a : node.getAspects().getAspects().keySet()) {
                     int m = node.getNodeVisBase(a);

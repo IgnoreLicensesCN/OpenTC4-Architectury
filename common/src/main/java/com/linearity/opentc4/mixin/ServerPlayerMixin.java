@@ -81,51 +81,51 @@ public class ServerPlayerMixin {
                 });
 
                 if (max[0] > 0) {
-                    EventHandlerRunic.runicInfo.put(player.getName().getString(), new Integer[]{max[0], charged[0], kinetic[0], healing[0], emergency[0]});
-                    if (EventHandlerRunic.runicCharge.containsKey(player.getName().getString())) {
-                        int charge = EventHandlerRunic.runicCharge.get(player.getName().getString());
+                    EventHandlerRunic.runicInfo.put(player.getGameProfile().getName(), new Integer[]{max[0], charged[0], kinetic[0], healing[0], emergency[0]});
+                    if (EventHandlerRunic.runicCharge.containsKey(player.getGameProfile().getName())) {
+                        int charge = EventHandlerRunic.runicCharge.get(player.getGameProfile().getName());
                         if (charge > max[0]) {
-                            EventHandlerRunic.runicCharge.put(player.getName().getString(), max[0]);
+                            EventHandlerRunic.runicCharge.put(player.getGameProfile().getName(), max[0]);
                             PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) max[0], max[0]), player);
                         }
                     }
                 } else {
-                    EventHandlerRunic.runicInfo.remove(player.getName().getString());
-                    EventHandlerRunic.runicCharge.put(player.getName().getString(), 0);
+                    EventHandlerRunic.runicInfo.remove(player.getGameProfile().getName());
+                    EventHandlerRunic.runicCharge.put(player.getGameProfile().getName(), 0);
                     PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short) 0, 0), player);
                 }
             }
 
             if (EventHandlerRunic.rechargeDelay > 0) {
                 --EventHandlerRunic.rechargeDelay;
-            } else if (EventHandlerRunic.runicInfo.containsKey(player.getName().getString())) {
-                if (!EventHandlerRunic.lastCharge.containsKey(player.getName().getString())) {
-                    EventHandlerRunic.lastCharge.put(player.getName().getString(), -1);
+            } else if (EventHandlerRunic.runicInfo.containsKey(player.getGameProfile().getName())) {
+                if (!EventHandlerRunic.lastCharge.containsKey(player.getGameProfile().getName())) {
+                    EventHandlerRunic.lastCharge.put(player.getGameProfile().getName(), -1);
                 }
 
-                if (!EventHandlerRunic.runicCharge.containsKey(player.getName().getString())) {
-                    EventHandlerRunic.runicCharge.put(player.getName().getString(), 0);
+                if (!EventHandlerRunic.runicCharge.containsKey(player.getGameProfile().getName())) {
+                    EventHandlerRunic.runicCharge.put(player.getGameProfile().getName(), 0);
                 }
 
-                if (!EventHandlerRunic.nextCycle.containsKey(player.getName().getString())) {
-                    EventHandlerRunic.nextCycle.put(player.getName().getString(), 0L);
+                if (!EventHandlerRunic.nextCycle.containsKey(player.getGameProfile().getName())) {
+                    EventHandlerRunic.nextCycle.put(player.getGameProfile().getName(), 0L);
                 }
 
                 long time = System.currentTimeMillis();
-                int charge = EventHandlerRunic.runicCharge.get(player.getName().getString());
-                if (charge > ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0]) {
-                    charge = ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0];
-                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0] && EventHandlerRunic.nextCycle.get(player.getName().getString()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).addAll(
+                int charge = EventHandlerRunic.runicCharge.get(player.getGameProfile().getName());
+                if (charge > ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0]) {
+                    charge = ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0];
+                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0] && EventHandlerRunic.nextCycle.get(player.getGameProfile().getName()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).addAll(
                         Aspect.AIR, Config.shieldCost).addAll(Aspect.EARTH, Config.shieldCost))) {
-                    long interval = Config.shieldRecharge - ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[1] * 500;
-                    EventHandlerRunic.nextCycle.put(player.getName().getString(), time + interval);
+                    long interval = Config.shieldRecharge - ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[1] * 500;
+                    EventHandlerRunic.nextCycle.put(player.getGameProfile().getName(), time + interval);
                     ++charge;
-                    EventHandlerRunic.runicCharge.put(player.getName().getString(), charge);
+                    EventHandlerRunic.runicCharge.put(player.getGameProfile().getName(), charge);
                 }
 
-                if (EventHandlerRunic.lastCharge.get(player.getName().getString()) != charge) {
-                    PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])EventHandlerRunic.runicInfo.get(player.getName().getString()))[0]), player);
-                    EventHandlerRunic.lastCharge.put(player.getName().getString(), charge);
+                if (EventHandlerRunic.lastCharge.get(player.getGameProfile().getName()) != charge) {
+                    PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0]), player);
+                    EventHandlerRunic.lastCharge.put(player.getGameProfile().getName(), charge);
                 }
             }
         }

@@ -70,7 +70,7 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
          Aspect aspect = Aspect.getAspect(message.key);
          if (aspect != null) {
             boolean success = Thaumcraft.playerKnowledge.setAspectPool(
-                    Minecraft.getInstance().player.getName().getString(),
+                    Minecraft.getInstance().player.getGameProfile().getName(),
                     aspect,
                     message.total
             );
