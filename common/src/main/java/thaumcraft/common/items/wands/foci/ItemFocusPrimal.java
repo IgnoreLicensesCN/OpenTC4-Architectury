@@ -8,8 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
@@ -62,7 +62,9 @@ public class ItemFocusPrimal extends ItemFocusBasic {
 
    public AspectList getVisCost(ItemStack itemstack) {
       Random rand = new Random(System.currentTimeMillis() / 200L);
-      AspectList cost = (new AspectList()).addAll(Aspect.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspect.AIR, 50 + rand.nextInt(5) * 50).addAll(Aspect.EARTH, 50 + rand.nextInt(5) * 50).addAll(Aspect.FIRE, 50 + rand.nextInt(5) * 50).addAll(Aspect.ORDER, 50 + rand.nextInt(5) * 50).addAll(Aspect.ENTROPY, 50 + rand.nextInt(5) * 50);
+      AspectList cost = (new AspectList()).addAll(Aspects.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspects.AIR, 50 + rand.nextInt(5) * 50).addAll(
+              Aspects.EARTH, 50 + rand.nextInt(5) * 50).addAll(Aspects.FIRE, 50 + rand.nextInt(5) * 50).addAll(Aspects.ORDER, 50 + rand.nextInt(5) * 50).addAll(
+              Aspects.ENTROPY, 50 + rand.nextInt(5) * 50);
       return cost;
    }
 
@@ -84,6 +86,7 @@ public class ItemFocusPrimal extends ItemFocusBasic {
    }
 
    static {
-      seeker = new FocusUpgradeType(16, new ResourceLocation("thaumcraft", "textures/foci/seeker.png"), "focus.upgrade.seeker.name", "focus.upgrade.seeker.text", (new AspectList()).addAll(Aspect.SENSES, 1).addAll(Aspect.MIND, 1));
+      seeker = new FocusUpgradeType(16, new ResourceLocation("thaumcraft", "textures/foci/seeker.png"), "focus.upgrade.seeker.name", "focus.upgrade.seeker.text", (new AspectList()).addAll(
+              Aspects.SENSES, 1).addAll(Aspects.MIND, 1));
    }
 }

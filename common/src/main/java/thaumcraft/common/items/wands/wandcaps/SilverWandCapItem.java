@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandcaps;
 
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
@@ -21,10 +22,10 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
     }
 
     private final Map<Aspect,Float> specialCostModifierAspects = Map.of(
-            Aspect.AIR,.95f,
-            Aspect.EARTH,.95f,
-            Aspect.FIRE,.95f,
-            Aspect.WATER,.95f
+            Aspects.AIR,.95f,
+            Aspects.EARTH,.95f,
+            Aspects.FIRE,.95f,
+            Aspects.WATER,.95f
     );
     @Override
     public @NotNull Map<Aspect,Float> getSpecialCostModifierAspects() {

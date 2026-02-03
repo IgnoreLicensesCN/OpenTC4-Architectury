@@ -16,6 +16,7 @@ import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
@@ -157,7 +158,8 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
                return false;
             }
 
-             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(Aspect.PLANT, 1, this.facing.getOpposite()) == 1;
+             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(
+                     Aspects.PLANT, 1, this.facing.getOpposite()) == 1;
          }
 
          return false;
@@ -188,7 +190,7 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
    }
 
    public Aspect getSuctionType(Direction face) {
-      return Aspect.PLANT;
+      return Aspects.PLANT;
    }
 
    public int getSuctionAmount(Direction face) {

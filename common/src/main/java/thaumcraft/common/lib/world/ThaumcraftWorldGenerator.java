@@ -27,6 +27,7 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.expands.worldgen.node.NodeGenerationManager;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -302,31 +303,31 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         if (type == NodeType.HUNGRY) {
-            al.mergeWithHighest(Aspect.HUNGER, 2);
+            al.mergeWithHighest(Aspects.HUNGER, 2);
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.GREED, 1);
+                al.mergeWithHighest(Aspects.GREED, 1);
             }
         } else if (type == NodeType.PURE) {
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.LIFE, 2);
+                al.mergeWithHighest(Aspects.LIFE, 2);
             } else {
-                al.mergeWithHighest(Aspect.ORDER, 2);
+                al.mergeWithHighest(Aspects.ORDER, 2);
             }
         } else if (type == NodeType.DARK) {
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.DEATH, 1);
+                al.mergeWithHighest(Aspects.DEATH, 1);
             }
 
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.UNDEAD, 1);
+                al.mergeWithHighest(Aspects.UNDEAD, 1);
             }
 
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.ENTROPY, 1);
+                al.mergeWithHighest(Aspects.ENTROPY, 1);
             }
 
             if (random.nextBoolean()) {
-                al.mergeWithHighest(Aspect.DARKNESS, 1);
+                al.mergeWithHighest(Aspects.DARKNESS, 1);
             }
         }
 
@@ -361,20 +362,20 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         }
 
         if (water > 100) {
-            al.mergeWithHighest(Aspect.WATER, 1);
+            al.mergeWithHighest(Aspects.WATER, 1);
         }
 
         if (lava > 100) {
-            al.mergeWithHighest(Aspect.FIRE, 1);
-            al.mergeWithHighest(Aspect.EARTH, 1);
+            al.mergeWithHighest(Aspects.FIRE, 1);
+            al.mergeWithHighest(Aspects.EARTH, 1);
         }
 
         if (stone > 500) {
-            al.mergeWithHighest(Aspect.EARTH, 1);
+            al.mergeWithHighest(Aspects.EARTH, 1);
         }
 
         if (foliage > 100) {
-            al.mergeWithHighest(Aspect.PLANT, 1);
+            al.mergeWithHighest(Aspects.PLANT, 1);
         }
 
         int[] spread = new int[al.size()];
@@ -551,17 +552,17 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
                         Aspect tag = BiomeHandler.getRandomBiomeTag(world.getBiomeGenForCoords(randPosX, randPosZ).biomeID, random);
                         if (tag == null) {
                             md = 1 + random.nextInt(6);
-                        } else if (tag == Aspect.AIR) {
+                        } else if (tag == Aspects.AIR) {
                             md = 1;
-                        } else if (tag == Aspect.FIRE) {
+                        } else if (tag == Aspects.FIRE) {
                             md = 2;
-                        } else if (tag == Aspect.WATER) {
+                        } else if (tag == Aspects.WATER) {
                             md = 3;
-                        } else if (tag == Aspect.EARTH) {
+                        } else if (tag == Aspects.EARTH) {
                             md = 4;
-                        } else if (tag == Aspect.ORDER) {
+                        } else if (tag == Aspects.ORDER) {
                             md = 5;
-                        } else if (tag == Aspect.ENTROPY) {
+                        } else if (tag == Aspects.ENTROPY) {
                             md = 6;
                         }
                     }
@@ -629,7 +630,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
     }
 
     static {
-        c = Aspect.aspects.values();
+        c = Aspects.ALL_ASPECTS.values();
         basicAspects = new ArrayList<>();
         complexAspects = new ArrayList<>();
         dimensionBlacklist = new HashMap<>();

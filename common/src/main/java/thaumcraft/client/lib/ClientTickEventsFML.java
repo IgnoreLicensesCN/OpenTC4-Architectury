@@ -29,6 +29,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
@@ -556,7 +557,7 @@ public class ClientTickEventsFML {
          if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
             AspectList aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
             if (aspects != null && aspects.size() > 0) {
-               fuel = (short)aspects.getAmount(Aspect.ENERGY);
+               fuel = (short)aspects.getAmount(Aspects.ENERGY);
             }
          }
       }

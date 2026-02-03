@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.monster;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import dev.architectury.utils.Env;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +17,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.misc.ItemWispEssence;
@@ -112,28 +114,28 @@ public class EntityWisp extends EntityFlying implements IMob {
          if (bg.biomeID == ThaumcraftWorldGenerator.biomeEerie.biomeID) {
             switch (this.rand.nextInt(6)) {
                case 0:
-                  this.setType(Aspect.DARKNESS.getTag());
+                  this.setType(Aspects.DARKNESS.getTag());
                   break;
                case 1:
-                  this.setType(Aspect.UNDEAD.getTag());
+                  this.setType(Aspects.UNDEAD.getTag());
                   break;
                case 2:
-                  this.setType(Aspect.ENTROPY.getTag());
+                  this.setType(Aspects.ENTROPY.getTag());
                   break;
                case 3:
-                  this.setType(Aspect.ELDRITCH.getTag());
+                  this.setType(Aspects.ELDRITCH.getTag());
                   break;
                case 4:
-                  this.setType(Aspect.POISON.getTag());
+                  this.setType(Aspects.POISON.getTag());
                   break;
                case 5:
-                  this.setType(Aspect.DEATH.getTag());
+                  this.setType(Aspects.DEATH.getTag());
             }
          } else if (this.level().rand.nextInt(10) != 0) {
-            ArrayList<Aspect> as = Aspect.getPrimalAspects();
+            varr as = Aspect.getPrimalAspects();
             this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          } else {
-            ArrayList<Aspect> as = Aspect.getCompoundAspects();
+            var as = Aspect.getCompoundAspects();
             this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          }
       }

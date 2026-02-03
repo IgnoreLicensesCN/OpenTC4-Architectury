@@ -11,10 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
@@ -194,7 +191,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
                this.fillReservoir();
                this.progress = 0;
             } else {
-               this.progress += 1 + VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.EARTH, Math.min(20, Math.max(1, (200 - this.progress) / 2))) * 2;
+               this.progress += 1 + VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.EARTH, Math.min(20, Math.max(1, (200 - this.progress) / 2))) * 2;
             }
          }
 

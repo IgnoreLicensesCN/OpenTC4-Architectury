@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagList;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -20,7 +21,8 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    String id;
 
    public TileNodeEnergized() {
-      this.auraBase = (new AspectList()).addAll(Aspect.AIR, 20).addAll(Aspect.FIRE, 20).addAll(Aspect.EARTH, 20).addAll(Aspect.WATER, 20).addAll(Aspect.ORDER, 20).addAll(Aspect.ENTROPY, 20);
+      this.auraBase = (new AspectList()).addAll(Aspects.AIR, 20).addAll(Aspects.FIRE, 20).addAll(Aspects.EARTH, 20).addAll(
+              Aspects.WATER, 20).addAll(Aspects.ORDER, 20).addAll(Aspects.ENTROPY, 20);
       this.visBase = new AspectList();
       this.vis = new AspectList();
       this.nodeType = NodeType.NORMAL;

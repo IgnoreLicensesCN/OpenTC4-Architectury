@@ -32,6 +32,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -117,12 +118,12 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
             ItemStack wand = new ItemStack(ConfigItems.WandCastingItem);
             ItemStack focus = new ItemStack(ConfigItems.itemFocusPech);
             ((WandCastingItem)wand.getItem()).setFocus(wand, focus);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.EARTH, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.ENTROPY, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.WATER, 2 + this.rand.nextInt(6), true);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.AIR, this.rand.nextInt(4), true);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.FIRE, this.rand.nextInt(4), true);
-            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspect.ORDER, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.EARTH, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.ENTROPY, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.WATER, 2 + this.rand.nextInt(6), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.AIR, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.FIRE, this.rand.nextInt(4), true);
+            ((WandCastingItem)wand.getItem()).addCentiVis(wand, Aspects.ORDER, this.rand.nextInt(4), true);
             this.setCurrentItemOrArmor(0, wand);
             break;
          case 1:
@@ -669,7 +670,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (!value) {
             AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
-            if (al.getAmount(Aspect.GREED) > 0) {
+            if (al.getAmount(Aspects.GREED) > 0) {
                value = true;
             }
          }
@@ -686,7 +687,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (value == 0) {
             AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
-            value = Math.min(32, al.getAmount(Aspect.GREED));
+            value = Math.min(32, al.getAmount(Aspects.GREED));
          }
 
          return value;

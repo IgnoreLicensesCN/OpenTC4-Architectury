@@ -21,6 +21,7 @@ import thaumcraft.api.IScribeTools;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
@@ -748,7 +749,7 @@ public class ResearchManager {
     }
 
     public static Aspect getCombinationResult(Aspect aspect1, Aspect aspect2) {
-        for (Aspect aspect : Aspect.aspects.values()) {
+        for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
             if (aspect.getComponents() != null && (aspect.getComponents()[0] == aspect1 && aspect.getComponents()[1] == aspect2 || aspect.getComponents()[0] == aspect2 && aspect.getComponents()[1] == aspect1)) {
                 return aspect;
             }
@@ -998,7 +999,7 @@ public class ResearchManager {
                 }
 
             } else {
-                for (Aspect aspect : Aspect.aspects.values()) {
+                for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
                     if (aspect.getComponents() == null) {
 //                        Thaumcraft.researchManager;
                         completeAspectUnsaved(playerName, aspect, (short) (15 + ThreadLocalRandom.current().nextInt(5)));

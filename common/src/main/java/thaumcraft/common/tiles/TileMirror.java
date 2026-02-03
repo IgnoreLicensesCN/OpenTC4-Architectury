@@ -17,6 +17,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -306,7 +307,7 @@ public class TileMirror extends TileThaumcraft implements IInventory {
       }
 
       if (this.instability > 0) {
-         int amt = VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.ORDER, Math.min(this.instability, 1));
+         int amt = VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.ORDER, Math.min(this.instability, 1));
          if (amt > 0) {
             World targetWorld = MinecraftServer.getServer().worldServerForDimension(this.linkDim);
             this.addInstability(targetWorld, -amt);

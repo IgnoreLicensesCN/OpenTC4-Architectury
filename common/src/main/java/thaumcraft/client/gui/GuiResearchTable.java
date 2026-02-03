@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
@@ -78,7 +79,7 @@ public class GuiResearchTable extends GuiContainer {
       RESEARCHDUPE = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHDUPE");
       int count = 0;
 
-      for(Aspect aspect : Aspect.aspects.values()) {
+      for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
          this.aspectlist.addAll(aspect, count);
          ++count;
       }

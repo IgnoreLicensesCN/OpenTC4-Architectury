@@ -17,6 +17,7 @@ import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
@@ -296,7 +297,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspect.EARTH, 25).addAll(Aspect.ORDER, 25).addAll(Aspect.WATER, 10);
+      cost = (new AspectList()).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.WATER, 10);
       delay = new HashMap<>();
    }
 }

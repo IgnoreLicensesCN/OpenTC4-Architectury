@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 
@@ -54,7 +55,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
                return false;
             }
 
-            if (ic.getSuctionAmount(facing.getOpposite()) < this.getSuctionAmount(facing) && ic.takeEssentia(Aspect.ENTROPY, 1, facing.getOpposite()) == 1) {
+            if (ic.getSuctionAmount(facing.getOpposite()) < this.getSuctionAmount(facing) && ic.takeEssentia(Aspects.ENTROPY, 1, facing.getOpposite()) == 1) {
                return true;
             }
          }
@@ -79,7 +80,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
    }
 
    public Aspect getSuctionType(Direction face) {
-      return Aspect.ENTROPY;
+      return Aspects.ENTROPY;
    }
 
    public int getSuctionAmount(Direction face) {

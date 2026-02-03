@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -86,7 +87,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
          if (this.aspect == null) {
             if (this.level().rand.nextInt(8) == 0) {
-               this.aspect = Aspect.PLANT;
+               this.aspect = Aspects.PLANT;
             } else {
                ArrayList<Aspect> outlist = Aspect.getPrimalAspects();
                this.aspect = outlist.get(this.level().rand.nextInt(outlist.size()));

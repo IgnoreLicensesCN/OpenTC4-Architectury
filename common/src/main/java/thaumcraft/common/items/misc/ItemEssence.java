@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -74,7 +75,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List stacks) {
       stacks.add(new ItemStack(this, 1, 0));
 
-      for(Aspect tag : Aspect.aspects.values()) {
+      for(Aspect tag : Aspects.ALL_ASPECTS.values()) {
          ItemStack i = new ItemStack(this, 1, 1);
          this.setAspects(i, (new AspectList()).addAll(tag, 8));
          stacks.add(i);

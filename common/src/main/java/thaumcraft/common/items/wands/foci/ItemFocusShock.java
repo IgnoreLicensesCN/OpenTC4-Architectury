@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
@@ -211,10 +212,12 @@ public class ItemFocusShock extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).addAll(Aspect.AIR, 25);
-      costChain = (new AspectList()).addAll(Aspect.AIR, 40).addAll(Aspect.WATER, 10);
-      costGround = (new AspectList()).addAll(Aspect.AIR, 75).addAll(Aspect.EARTH, 25);
-      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new AspectList()).addAll(Aspect.WEATHER, 1));
-      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new AspectList()).addAll(Aspect.WEATHER, 1));
+      costBase = (new AspectList()).addAll(Aspects.AIR, 25);
+      costChain = (new AspectList()).addAll(Aspects.AIR, 40).addAll(Aspects.WATER, 10);
+      costGround = (new AspectList()).addAll(Aspects.AIR, 75).addAll(Aspects.EARTH, 25);
+      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new AspectList()).addAll(
+              Aspects.WEATHER, 1));
+      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new AspectList()).addAll(
+              Aspects.WEATHER, 1));
    }
 }

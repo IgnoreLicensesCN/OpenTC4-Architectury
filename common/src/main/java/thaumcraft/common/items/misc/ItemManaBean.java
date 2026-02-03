@@ -22,6 +22,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -180,6 +181,6 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
    }
 
    static {
-      displayAspects = Aspect.aspects.values().toArray(new Aspect[0]);
+      displayAspects = Aspects.ALL_ASPECTS.values().toArray(new Aspect[0]);
    }
 }

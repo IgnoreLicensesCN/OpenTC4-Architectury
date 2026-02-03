@@ -20,6 +20,7 @@ import tc4tweak.modules.objectTag.GetObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.expands.aspects.item.ItemAspectBonusTagsCalculator;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
@@ -184,78 +185,78 @@ public class ThaumcraftCraftingManager {
                 totalAvgAspects += craftCostTotalAspect / aspectCount;
             }
 
-            tmp.mergeWithHighest(Aspect.MAGIC, (totalAvgAspects) / 2);
-            tmp.mergeWithHighest(Aspect.TOOL, (totalAvgAspects) / 3);
+            tmp.mergeWithHighest(Aspects.MAGIC, (totalAvgAspects) / 2);
+            tmp.mergeWithHighest(Aspects.TOOL, (totalAvgAspects) / 3);
         }
 
         //TODO:Potion effect aspects to API
         if (item instanceof PotionItem potionItem) {
-            tmp.mergeWithHighest(Aspect.WATER, 1);
+            tmp.mergeWithHighest(Aspects.WATER, 1);
             List<MobEffectInstance> effects = PotionUtils.getMobEffects(itemstack);
             if (!effects.isEmpty()) {
                 if (potionItem instanceof ThrowablePotionItem) {
-                    tmp.mergeWithHighest(Aspect.ENTROPY, 2);
+                    tmp.mergeWithHighest(Aspects.ENTROPY, 2);
                 }
 
                 for (MobEffectInstance var6 : effects) {
-                    tmp.mergeWithHighest(Aspect.MAGIC, (var6.getAmplifier() + 1) * 2);
+                    tmp.mergeWithHighest(Aspects.MAGIC, (var6.getAmplifier() + 1) * 2);
                     MobEffect effect = var6.getEffect();
                     if (effect == MobEffects.BLINDNESS) {
-                        tmp.mergeWithHighest(Aspect.DARKNESS, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.DARKNESS, (var6.getAmplifier() + 1) * 3);
                     } else if (effect == MobEffects.CONFUSION) { // Potion.confusion
-                        tmp.mergeWithHighest(Aspect.ELDRITCH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.ELDRITCH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DAMAGE_BOOST) { // Potion.damageBoost
-                        tmp.mergeWithHighest(Aspect.WEAPON, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.WEAPON, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DIG_SLOWDOWN) { // Potion.digSlowdown
-                        tmp.mergeWithHighest(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.TRAP, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DIG_SPEED) { // Potion.digSpeed
-                        tmp.mergeWithHighest(Aspect.TOOL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.TOOL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.FIRE_RESISTANCE) { // Potion.fireResistance
-                        tmp.mergeWithHighest(Aspect.ARMOR, var6.getAmplifier() + 1);
-                        tmp.mergeWithHighest(Aspect.FIRE, (var6.getAmplifier() + 1) * 2);
+                        tmp.mergeWithHighest(Aspects.ARMOR, var6.getAmplifier() + 1);
+                        tmp.mergeWithHighest(Aspects.FIRE, (var6.getAmplifier() + 1) * 2);
 
                     } else if (effect == MobEffects.HARM) { // Potion.harm
-                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.DEATH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.HEAL) { // Potion.heal
-                        tmp.mergeWithHighest(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.HEAL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.HUNGER) { // Potion.hunger
-                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.DEATH, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.INVISIBILITY) { // Potion.invisibility
-                        tmp.mergeWithHighest(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.SENSES, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.JUMP) { // Potion.jump
-                        tmp.mergeWithHighest(Aspect.FLIGHT, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.FLIGHT, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.MOVEMENT_SLOWDOWN) { // Potion.moveSlowdown
-                        tmp.mergeWithHighest(Aspect.TRAP, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.TRAP, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.MOVEMENT_SPEED) { // Potion.moveSpeed
-                        tmp.mergeWithHighest(Aspect.MOTION, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.MOTION, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.NIGHT_VISION) { // Potion.nightVision
-                        tmp.mergeWithHighest(Aspect.SENSES, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.SENSES, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.POISON) { // Potion.poison
-                        tmp.mergeWithHighest(Aspect.POISON, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.POISON, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.REGENERATION) { // Potion.regeneration
-                        tmp.mergeWithHighest(Aspect.HEAL, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.HEAL, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.DAMAGE_RESISTANCE) { // Potion.resistance
-                        tmp.mergeWithHighest(Aspect.ARMOR, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.ARMOR, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.WATER_BREATHING) { // Potion.waterBreathing
-                        tmp.mergeWithHighest(Aspect.AIR, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.AIR, (var6.getAmplifier() + 1) * 3);
 
                     } else if (effect == MobEffects.WEAKNESS) { // Potion.weakness
-                        tmp.mergeWithHighest(Aspect.DEATH, (var6.getAmplifier() + 1) * 3);
+                        tmp.mergeWithHighest(Aspects.DEATH, (var6.getAmplifier() + 1) * 3);
                     }
                 }
             }

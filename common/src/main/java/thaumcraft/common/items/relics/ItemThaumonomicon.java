@@ -10,8 +10,8 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
@@ -68,7 +68,7 @@ public class ItemThaumonomicon extends Item {
                }
             }
 
-            for(Aspect aspect : Aspect.aspects.values()) {
+            for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
                if (!Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(player.getCommandSenderName(), aspect)) {
                   Thaumcraft.proxy.researchManager.completeAspect(player, aspect, (short)50);
                }

@@ -22,6 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.EntityFallingTaint;
@@ -703,22 +704,26 @@ public class Config {
                                 switch (ore) {
                                     case "woodRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.TREE, 3).addAll(Aspect.TOOL, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.TREE, 3).addAll(
+                                                    Aspects.TOOL, 1));
                                         }
                                         break;
                                     case "itemRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.MOTION, 2).addAll(Aspect.TOOL, 2));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.MOTION, 2).addAll(
+                                                    Aspects.TOOL, 2));
                                         }
                                         break;
                                     case "ingotSteel":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 3).addAll(Aspect.ORDER, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.METAL, 3).addAll(
+                                                    Aspects.ORDER, 1));
                                         }
                                         break;
                                     case "crystalQuartz":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.CRYSTAL, 1).addAll(Aspect.ENERGY, 1));
+                                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.CRYSTAL, 1).addAll(
+                                                    Aspects.ENERGY, 1));
                                         }
                                         break;
                                     case "woodLog":
@@ -749,22 +754,26 @@ public class Config {
                                 }
                             } else {
                                 for (ItemStack is : OreDictionary.getOres(ore)) {
-                                    ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.CRYSTAL, 2).addAll(Aspect.GREED, 2));
+                                    ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.CRYSTAL, 2).addAll(
+                                            Aspects.GREED, 2));
                                 }
                             }
                         } else {
                             for (ItemStack is : OreDictionary.getOres(ore)) {
-                                ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 2).addAll(Aspect.ENTROPY, 1).addAll(Aspect.TOOL, 1));
+                                ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.METAL, 2).addAll(
+                                        Aspects.ENTROPY, 1).addAll(Aspects.TOOL, 1));
                             }
                         }
                     } else {
                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 3).addAll(Aspect.TOOL, 1));
+                            ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.METAL, 3).addAll(
+                                    Aspects.TOOL, 1));
                         }
                     }
                 } else {
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspect.METAL, 2).addAll(Aspect.POISON, 2).addAll(Aspect.ENERGY, 2));
+                        ThaumcraftApi.registerObjectTag(is, (new AspectList()).addAll(Aspects.METAL, 2).addAll(Aspects.POISON, 2).addAll(
+                                Aspects.ENERGY, 2));
                     }
                 }
             }
@@ -804,37 +813,37 @@ public class Config {
         BiomeDictionary.registerBiomeType(ThaumcraftWorldGenerator.biomeEerie, Type.MAGICAL, Type.SPOOKY);
         BiomeDictionary.registerBiomeType(ThaumcraftWorldGenerator.biomeEldritchLands, Type.MAGICAL, Type.SPOOKY, Type.END);
         BiomeDictionary.registerBiomeType(ThaumcraftWorldGenerator.biomeMagicalForest, Type.MAGICAL, Type.FOREST);
-        BiomeHandler.registerBiomeInfo(Type.WATER, 100, Aspect.WATER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.OCEAN, 120, Aspect.WATER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.RIVER, 100, Aspect.WATER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.WET, 80, Aspect.WATER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.HOT, 100, Aspect.FIRE, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.DESERT, 100, Aspect.FIRE, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.NETHER, 120, Aspect.FIRE, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.MESA, 80, Aspect.FIRE, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.DENSE, 100, Aspect.ORDER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.SNOWY, 80, Aspect.ORDER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.COLD, 80, Aspect.ORDER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.FROZEN, 100, Aspect.ORDER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.MUSHROOM, 140, Aspect.ORDER, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.CONIFEROUS, 100, Aspect.EARTH, true, 0.2F);
-        BiomeHandler.registerBiomeInfo(Type.FOREST, 120, Aspect.EARTH, true, 1.0F);
-        BiomeHandler.registerBiomeInfo(Type.SANDY, 80, Aspect.EARTH, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.BEACH, 80, Aspect.EARTH, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.SAVANNA, 80, Aspect.AIR, true, 0.2F);
-        BiomeHandler.registerBiomeInfo(Type.MOUNTAIN, 100, Aspect.AIR, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.HILLS, 120, Aspect.AIR, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.PLAINS, 80, Aspect.AIR, true, 0.2F);
-        BiomeHandler.registerBiomeInfo(Type.DRY, 80, Aspect.ENTROPY, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.SPARSE, 80, Aspect.ENTROPY, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.SWAMP, 120, Aspect.ENTROPY, true, 0.2F);
-        BiomeHandler.registerBiomeInfo(Type.WASTELAND, 80, Aspect.ENTROPY, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.JUNGLE, 100, Aspect.PLANT, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.LUSH, 100, Aspect.PLANT, true, 0.5F);
+        BiomeHandler.registerBiomeInfo(Type.WATER, 100, Aspects.WATER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.OCEAN, 120, Aspects.WATER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.RIVER, 100, Aspects.WATER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.WET, 80, Aspects.WATER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.HOT, 100, Aspects.FIRE, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.DESERT, 100, Aspects.FIRE, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.NETHER, 120, Aspects.FIRE, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.MESA, 80, Aspects.FIRE, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.DENSE, 100, Aspects.ORDER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.SNOWY, 80, Aspects.ORDER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.COLD, 80, Aspects.ORDER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.FROZEN, 100, Aspects.ORDER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.MUSHROOM, 140, Aspects.ORDER, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.CONIFEROUS, 100, Aspects.EARTH, true, 0.2F);
+        BiomeHandler.registerBiomeInfo(Type.FOREST, 120, Aspects.EARTH, true, 1.0F);
+        BiomeHandler.registerBiomeInfo(Type.SANDY, 80, Aspects.EARTH, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.BEACH, 80, Aspects.EARTH, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.SAVANNA, 80, Aspects.AIR, true, 0.2F);
+        BiomeHandler.registerBiomeInfo(Type.MOUNTAIN, 100, Aspects.AIR, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.HILLS, 120, Aspects.AIR, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.PLAINS, 80, Aspects.AIR, true, 0.2F);
+        BiomeHandler.registerBiomeInfo(Type.DRY, 80, Aspects.ENTROPY, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.SPARSE, 80, Aspects.ENTROPY, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.SWAMP, 120, Aspects.ENTROPY, true, 0.2F);
+        BiomeHandler.registerBiomeInfo(Type.WASTELAND, 80, Aspects.ENTROPY, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.JUNGLE, 100, Aspects.PLANT, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.LUSH, 100, Aspects.PLANT, true, 0.5F);
         BiomeHandler.registerBiomeInfo(Type.MAGICAL, 100, null, true, 1.0F);
-        BiomeHandler.registerBiomeInfo(Type.END, 80, Aspect.VOID, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.SPOOKY, 80, Aspect.SOUL, false, 0.0F);
-        BiomeHandler.registerBiomeInfo(Type.DEAD, 50, Aspect.DEATH, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.END, 80, Aspects.VOID, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.SPOOKY, 80, Aspects.SOUL, false, 0.0F);
+        BiomeHandler.registerBiomeInfo(Type.DEAD, 50, Aspects.DEATH, false, 0.0F);
     }
 
     public static void initMisc() {
@@ -847,7 +856,7 @@ public class Config {
         Utils.addSpecialMiningResult(new ItemStack(Blocks.gold_ore), new ItemStack(ConfigItems.itemNugget, 1, 31), 0.9F);
         Utils.addSpecialMiningResult(new ItemStack(ConfigBlocks.blockCustomOre, 1, 0), new ItemStack(ConfigItems.itemNugget, 1, 21), 0.9F);
 
-        aspectOrder.addAll(Aspect.aspects.values());
+        aspectOrder.addAll(Aspects.ALL_ASPECTS.values());
 
     }
 

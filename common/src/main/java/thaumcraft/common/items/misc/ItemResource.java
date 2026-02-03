@@ -23,6 +23,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -138,12 +139,12 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
          if (r < 20) {
             Aspect aspect = switch (world.getRandom()
                     .nextInt(6)) {
-                case 0 -> Aspect.AIR;
-                case 1 -> Aspect.EARTH;
-                case 2 -> Aspect.FIRE;
-                case 3 -> Aspect.WATER;
-                case 4 -> Aspect.ORDER;
-                case 5 -> Aspect.ENTROPY;
+                case 0 -> Aspects.AIR;
+                case 1 -> Aspects.EARTH;
+                case 2 -> Aspects.FIRE;
+                case 3 -> Aspects.WATER;
+                case 4 -> Aspects.ORDER;
+                case 5 -> Aspects.ENTROPY;
                 default -> null;
             };
 

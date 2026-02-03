@@ -15,6 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -186,7 +187,7 @@ public class ThaumcraftApiHelper {
     public static AspectList getAllAspects(int amount) {
         if (allAspects.get(amount) == null) {
             AspectList al = new AspectList();
-            for (Aspect aspect : Aspect.aspects.values()) {
+            for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
                 al.addAll(aspect, amount);
             }
             allAspects.put(amount, al);

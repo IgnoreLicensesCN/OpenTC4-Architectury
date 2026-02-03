@@ -7,6 +7,7 @@ import com.linearity.opentc4.simpleutils.ListenerManager;
 import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.expands.worldgen.node.listeners.*;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -76,7 +77,7 @@ public class NodeGenerationManager {
     }
     public static void tryInitAspects(){
         if (basicAspects.isEmpty()) {
-            for (Aspect as : Aspect.aspects.values()) {
+            for (Aspect as : Aspects.ALL_ASPECTS.values()) {
                 if (as.getComponents() != null) {
                     complexAspects.add(as);
                 } else {

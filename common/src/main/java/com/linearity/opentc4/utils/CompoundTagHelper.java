@@ -1,16 +1,13 @@
 package com.linearity.opentc4.utils;
 
-import com.google.gson.*;
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.nbt.*;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
-import static net.minecraft.nbt.Tag.*;
-import static thaumcraft.api.aspects.Aspect.aspects;
+import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 
 public class CompoundTagHelper {
     public static abstract class CompoundTagAccessor<T>{
@@ -107,7 +104,7 @@ public class CompoundTagHelper {
             if (json == null) return map;
             for (var entry : json.entrySet()) {
                 String aspectName = entry.getKey();
-                var aspect = aspects.get(aspectName);
+                var aspect = ALL_ASPECTS.get(aspectName);
                 if (aspect == null) {
                     OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", aspectName, tagKey);
                     continue;

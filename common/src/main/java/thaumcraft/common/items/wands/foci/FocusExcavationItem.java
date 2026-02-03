@@ -34,8 +34,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.IVisContainer;
@@ -49,16 +49,17 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FocusExcavationItem extends FocusBasicItem{
-    public static final AspectList wandCost = (new AspectList()).addAll(Aspect.EARTH, 15);
+    public static final AspectList wandCost = (new AspectList()).addAll(Aspects.EARTH, 15);
     public static final AspectList wandCostWithSilkTouchOrDowsing = (new AspectList())
-            .addAll(Aspect.AIR, 1)
-            .addAll(Aspect.FIRE, 1)
-            .addAll(Aspect.EARTH, 1)
-            .addAll(Aspect.WATER, 1)
-            .addAll(Aspect.ORDER, 1)
-            .addAll(Aspect.ENTROPY, 1)
+            .addAll(Aspects.AIR, 1)
+            .addAll(Aspects.FIRE, 1)
+            .addAll(Aspects.EARTH, 1)
+            .addAll(Aspects.WATER, 1)
+            .addAll(Aspects.ORDER, 1)
+            .addAll(Aspects.ENTROPY, 1)
             .addAll(wandCost);
-    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).addAll(Aspect.MINE, 1));
+    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).addAll(
+            Aspects.MINE, 1));
 
     public FocusExcavationItem() {
         super(new Properties().stacksTo(1));

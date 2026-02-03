@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
@@ -23,7 +24,8 @@ public class ItemNodeRenderer implements IItemRenderer {
    AspectList aspects;
 
    public ItemNodeRenderer() {
-      this.aspects = (new AspectList()).addAll(Aspect.AIR, 40).addAll(Aspect.FIRE, 40).addAll(Aspect.EARTH, 40).addAll(Aspect.WATER, 40);
+      this.aspects = (new AspectList()).addAll(Aspects.AIR, 40).addAll(Aspects.FIRE, 40).addAll(Aspects.EARTH, 40).addAll(
+              Aspects.WATER, 40);
    }
 
    public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {

@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.TileVisNode;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.IWandable;
@@ -160,17 +161,17 @@ public class TileVisRelay extends TileVisNode implements IWandable {
 
    protected void addPulse(Aspect aspect) {
       int c = -1;
-      if (aspect == Aspect.AIR) {
+      if (aspect == Aspects.AIR) {
          c = 0;
-      } else if (aspect == Aspect.FIRE) {
+      } else if (aspect == Aspects.FIRE) {
          c = 1;
-      } else if (aspect == Aspect.WATER) {
+      } else if (aspect == Aspects.WATER) {
          c = 2;
-      } else if (aspect == Aspect.EARTH) {
+      } else if (aspect == Aspects.EARTH) {
          c = 3;
-      } else if (aspect == Aspect.ORDER) {
+      } else if (aspect == Aspects.ORDER) {
          c = 4;
-      } else if (aspect == Aspect.ENTROPY) {
+      } else if (aspect == Aspects.ENTROPY) {
          c = 5;
       }
 

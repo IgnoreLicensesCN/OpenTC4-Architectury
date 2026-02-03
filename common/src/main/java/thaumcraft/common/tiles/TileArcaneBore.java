@@ -34,6 +34,7 @@ import thaumcraft.api.IRepairableExtended;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -138,7 +139,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
     @Override
     public void tick() {
         if (Platform.getEnvironment() != Env.CLIENT && this.speedyTime < 20.0F) {
-            this.speedyTime += (float) VisNetHandler.drainVis(this.level, this.getPos(), Aspect.ENTROPY, 100) / 5.0F;
+            this.speedyTime += (float) VisNetHandler.drainVis(this.level, this.getPos(), Aspects.ENTROPY, 100) / 5.0F;
             if (this.speedyTime < 20.0F && this.base != null && this.base.drawEssentia()) {
                 float var10001 = this.speedyTime;
                 this.getClass();

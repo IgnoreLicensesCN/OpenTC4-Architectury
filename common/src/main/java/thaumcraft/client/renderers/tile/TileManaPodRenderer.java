@@ -10,6 +10,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelManaPod;
 import thaumcraft.common.tiles.TileManaPod;
@@ -26,7 +27,7 @@ public class TileManaPodRenderer extends TileEntitySpecialRenderer {
    public void renderEntityAt(TileManaPod pod, double x, double y, double z, float fq) {
       int meta = 0;
       int bright = 20;
-      Aspect aspect = Aspect.PLANT;
+      Aspect aspect = Aspects.PLANT;
 
       if (!pod.hasWorldObj()) {
          meta = 5;

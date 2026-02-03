@@ -9,6 +9,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
@@ -137,10 +138,12 @@ public class ItemFocusFire extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).addAll(Aspect.FIRE, 10);
-      costBeam = (new AspectList()).addAll(Aspect.FIRE, 10).addAll(Aspect.ORDER, 3);
-      costBall = (new AspectList()).addAll(Aspect.FIRE, 66).addAll(Aspect.ENTROPY, 33);
-      fireball = new FocusUpgradeType(9, new ResourceLocation("thaumcraft", "textures/foci/fireball.png"), "focus.upgrade.fireball.name", "focus.upgrade.fireball.text", (new AspectList()).addAll(Aspect.DARKNESS, 1));
-      firebeam = new FocusUpgradeType(10, new ResourceLocation("thaumcraft", "textures/foci/firebeam.png"), "focus.upgrade.firebeam.name", "focus.upgrade.firebeam.text", (new AspectList()).addAll(Aspect.ENERGY, 1).addAll(Aspect.AIR, 1));
+      costBase = (new AspectList()).addAll(Aspects.FIRE, 10);
+      costBeam = (new AspectList()).addAll(Aspects.FIRE, 10).addAll(Aspects.ORDER, 3);
+      costBall = (new AspectList()).addAll(Aspects.FIRE, 66).addAll(Aspects.ENTROPY, 33);
+      fireball = new FocusUpgradeType(9, new ResourceLocation("thaumcraft", "textures/foci/fireball.png"), "focus.upgrade.fireball.name", "focus.upgrade.fireball.text", (new AspectList()).addAll(
+              Aspects.DARKNESS, 1));
+      firebeam = new FocusUpgradeType(10, new ResourceLocation("thaumcraft", "textures/foci/firebeam.png"), "focus.upgrade.firebeam.name", "focus.upgrade.firebeam.text", (new AspectList()).addAll(
+              Aspects.ENERGY, 1).addAll(Aspects.AIR, 1));
    }
 }

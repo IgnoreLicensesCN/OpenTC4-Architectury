@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
 import java.util.ArrayList;
@@ -109,7 +110,8 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
                return false;
             }
 
-             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(Aspect.LIFE, 1, this.facing.getOpposite()) == 1;
+             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(
+                     Aspects.LIFE, 1, this.facing.getOpposite()) == 1;
          }
 
          return false;
@@ -140,7 +142,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
    }
 
    public Aspect getSuctionType(Direction face) {
-      return Aspect.LIFE;
+      return Aspects.LIFE;
    }
 
    public int getSuctionAmount(Direction face) {

@@ -7,6 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.expands.UnmodifiableAspectList;
 import thaumcraft.api.expands.aspects.item.listeners.BonusTagForItemListener;
@@ -42,7 +43,8 @@ public class BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof ArmorItem armorItem) {
-                currentAspects.mergeWithHighest(Aspect.ARMOR, armorItem.getMaterial()
+                currentAspects.mergeWithHighest(
+                        Aspects.ARMOR, armorItem.getMaterial()
                         .getDefenseForType(armorItem.getType())
                 );
             }
@@ -56,7 +58,7 @@ public class BonusTagForItemListeners {
                 float damage = swordItem.getTier()
                         .getAttackDamageBonus() + swordItem.getDamage();
                 if (damage > 0.F) {
-                    currentAspects.mergeWithHighest(Aspect.WEAPON, (int) damage);
+                    currentAspects.mergeWithHighest(Aspects.WEAPON, (int) damage);
                 }
             }
         }
@@ -66,8 +68,8 @@ public class BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof BowItem) {
-                currentAspects.mergeWithHighest(Aspect.WEAPON, 3)
-                        .mergeWithHighest(Aspect.FLIGHT, 1);
+                currentAspects.mergeWithHighest(Aspects.WEAPON, 3)
+                        .mergeWithHighest(Aspects.FLIGHT, 1);
             }
         }
     };
@@ -77,7 +79,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof PickaxeItem pickaxe) {
                 Tier tier = pickaxe.getTier();
-                currentAspects.mergeWithHighest(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
+                currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
             }
         }
     };
@@ -86,7 +88,7 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof TieredItem tiered) {
                 Tier tier = tiered.getTier();
-                currentAspects.mergeWithHighest(Aspect.MINE, tier.getLevel() + 1);//yeah harvest lvl
+                currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
             }
         }
     };
@@ -119,7 +121,8 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof ShearsItem shears) {
                 int maxDamage = shears.getMaxDamage();
-                currentAspects.mergeWithHighest(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
+                currentAspects.mergeWithHighest(
+                        Aspects.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
                         .getValue()
                 );
             }
@@ -130,7 +133,8 @@ public class BonusTagForItemListeners {
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList sourceTags, @NotNull AspectList currentAspects) {
             if (item instanceof HoeItem hoe) {
                 int maxDamage = hoe.getMaxDamage();
-                currentAspects.mergeWithHighest(Aspect.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
+                currentAspects.mergeWithHighest(
+                        Aspects.HARVEST, aspectValueByDurabilityMap.higherEntry(maxDamage)
                         .getValue()
                 );
             }
@@ -141,47 +145,47 @@ public class BonusTagForItemListeners {
     public static final Map<Enchantment, AspectList> ENCHANTMENT_ASPECT_MAP = new ConcurrentHashMap<>();
 
     static {
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.AQUA_AFFINITY, AspectList.of(Aspect.WATER));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BANE_OF_ARTHROPODS, AspectList.of(Aspect.BEAST));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLAST_PROTECTION, AspectList.of(Aspect.ARMOR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLOCK_EFFICIENCY, AspectList.of(Aspect.TOOL));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FALL_PROTECTION, AspectList.of(Aspect.FLIGHT));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FIRE_ASPECT, AspectList.of(Aspect.FIRE));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FIRE_PROTECTION, AspectList.of(Aspect.ARMOR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FLAMING_ARROWS, AspectList.of(Aspect.FIRE));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLOCK_FORTUNE, AspectList.of(Aspect.GREED));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.INFINITY_ARROWS, AspectList.of(Aspect.CRAFT));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.KNOCKBACK, AspectList.of(Aspect.AIR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MOB_LOOTING, AspectList.of(Aspect.GREED));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.POWER_ARROWS, AspectList.of(Aspect.WEAPON));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PROJECTILE_PROTECTION, AspectList.of(Aspect.ARMOR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.ALL_DAMAGE_PROTECTION, AspectList.of(Aspect.ARMOR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PUNCH_ARROWS, AspectList.of(Aspect.AIR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.RESPIRATION, AspectList.of(Aspect.AIR));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SHARPNESS, AspectList.of(Aspect.WEAPON));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SILK_TOUCH, AspectList.of(Aspect.EXCHANGE));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.THORNS, AspectList.of(Aspect.WEAPON));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SMITE, AspectList.of(Aspect.ENTROPY));
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.UNBREAKING, AspectList.of(Aspect.EARTH));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.AQUA_AFFINITY, AspectList.of(Aspects.WATER));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BANE_OF_ARTHROPODS, AspectList.of(Aspects.BEAST));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLAST_PROTECTION, AspectList.of(Aspects.ARMOR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLOCK_EFFICIENCY, AspectList.of(Aspects.TOOL));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FALL_PROTECTION, AspectList.of(Aspects.FLIGHT));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FIRE_ASPECT, AspectList.of(Aspects.FIRE));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FIRE_PROTECTION, AspectList.of(Aspects.ARMOR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FLAMING_ARROWS, AspectList.of(Aspects.FIRE));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BLOCK_FORTUNE, AspectList.of(Aspects.GREED));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.INFINITY_ARROWS, AspectList.of(Aspects.CRAFT));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.KNOCKBACK, AspectList.of(Aspects.AIR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MOB_LOOTING, AspectList.of(Aspects.GREED));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.POWER_ARROWS, AspectList.of(Aspects.WEAPON));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PROJECTILE_PROTECTION, AspectList.of(Aspects.ARMOR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.ALL_DAMAGE_PROTECTION, AspectList.of(Aspects.ARMOR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PUNCH_ARROWS, AspectList.of(Aspects.AIR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.RESPIRATION, AspectList.of(Aspects.AIR));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SHARPNESS, AspectList.of(Aspects.WEAPON));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SILK_TOUCH, AspectList.of(Aspects.EXCHANGE));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.THORNS, AspectList.of(Aspects.WEAPON));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SMITE, AspectList.of(Aspects.ENTROPY));
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.UNBREAKING, AspectList.of(Aspects.EARTH));
 
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SOUL_SPEED, AspectList.of(Aspect.SOUL, Aspect.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.DEPTH_STRIDER, AspectList.of(Aspect.MOTION,Aspect.WATER));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FROST_WALKER, AspectList.of(Aspect.COLD));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BINDING_CURSE, AspectList.of(Aspect.TRAP,Aspect.TRAP));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.VANISHING_CURSE, AspectList.of(Aspect.TRAP,Aspect.VOID));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SWIFT_SNEAK, AspectList.of(Aspect.VOID,Aspect.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SWEEPING_EDGE, AspectList.of(Aspect.WEAPON,Aspect.AIR));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.LOYALTY, AspectList.of(Aspect.MIND));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.IMPALING, AspectList.of(Aspect.WEAPON,Aspect.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.RIPTIDE, AspectList.of(Aspect.WATER,Aspect.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, AspectList.of(Aspect.WEATHER,Aspect.ENTROPY));//added,a source of weather aspect
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MULTISHOT,AspectList.of(Aspect.WEAPON,Aspect.ORDER));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.QUICK_CHARGE,AspectList.of(Aspect.MECHANISM,Aspect.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PIERCING,AspectList.of(Aspect.WEAPON,Aspect.ENTROPY));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MENDING,AspectList.of(Aspect.MAGIC,Aspect.CRAFT));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SOUL_SPEED, AspectList.of(Aspects.SOUL, Aspects.MOTION));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.DEPTH_STRIDER, AspectList.of(Aspects.MOTION, Aspects.WATER));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.FROST_WALKER, AspectList.of(Aspects.COLD));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.BINDING_CURSE, AspectList.of(Aspects.TRAP, Aspects.TRAP));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.VANISHING_CURSE, AspectList.of(Aspects.TRAP, Aspects.VOID));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SWIFT_SNEAK, AspectList.of(Aspects.VOID, Aspects.MOTION));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.SWEEPING_EDGE, AspectList.of(Aspects.WEAPON, Aspects.AIR));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.LOYALTY, AspectList.of(Aspects.MIND));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.IMPALING, AspectList.of(Aspects.WEAPON, Aspects.MOTION));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.RIPTIDE, AspectList.of(Aspects.WATER, Aspects.MOTION));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, AspectList.of(Aspects.WEATHER, Aspects.ENTROPY));//added,a source of weather aspect
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MULTISHOT,AspectList.of(Aspects.WEAPON, Aspects.ORDER));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.QUICK_CHARGE,AspectList.of(Aspects.MECHANISM, Aspects.MOTION));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.PIERCING,AspectList.of(Aspects.WEAPON, Aspects.ENTROPY));//added
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.MENDING,AspectList.of(Aspects.MAGIC, Aspects.CRAFT));//added
 
-        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.HASTE, AspectList.of(Aspect.MOTION));
-        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.REPAIR, AspectList.of(Aspect.TOOL));
+        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.HASTE, AspectList.of(Aspects.MOTION));
+        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.REPAIR, AspectList.of(Aspects.TOOL));
 
     }
 
@@ -211,7 +215,7 @@ public class BonusTagForItemListeners {
                 }
 
                 if (totalLevel > 0) {
-                    currentAspects.mergeWithHighest(Aspect.MAGIC, totalLevel);
+                    currentAspects.mergeWithHighest(Aspects.MAGIC, totalLevel);
                 }
             }
         }

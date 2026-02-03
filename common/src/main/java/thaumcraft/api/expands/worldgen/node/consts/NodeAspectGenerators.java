@@ -4,7 +4,6 @@ import com.linearity.opentc4.utils.vanilla1710.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.expands.worldgen.node.listeners.NodeAspectGenerator;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -70,31 +70,31 @@ public class NodeAspectGenerators {
             }
 
             if (type == NodeType.HUNGRY) {
-                previous.mergeWithHighest(Aspect.HUNGER, 2);
+                previous.mergeWithHighest(Aspects.HUNGER, 2);
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.GREED, 1);
+                    previous.mergeWithHighest(Aspects.GREED, 1);
                 }
             } else if (type == NodeType.PURE) {
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.LIFE, 2);
+                    previous.mergeWithHighest(Aspects.LIFE, 2);
                 } else {
-                    previous.mergeWithHighest(Aspect.ORDER, 2);
+                    previous.mergeWithHighest(Aspects.ORDER, 2);
                 }
             } else if (type == NodeType.DARK) {
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.DEATH, 1);
+                    previous.mergeWithHighest(Aspects.DEATH, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.UNDEAD, 1);
+                    previous.mergeWithHighest(Aspects.UNDEAD, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.ENTROPY, 1);
+                    previous.mergeWithHighest(Aspects.ENTROPY, 1);
                 }
 
                 if (random.nextBoolean()) {
-                    previous.mergeWithHighest(Aspect.DARKNESS, 1);
+                    previous.mergeWithHighest(Aspects.DARKNESS, 1);
                 }
             }
 
@@ -130,20 +130,20 @@ public class NodeAspectGenerators {
             }
 
             if (water > 100) {
-                previous.mergeWithHighest(Aspect.WATER, 1);
+                previous.mergeWithHighest(Aspects.WATER, 1);
             }
 
             if (lava > 100) {
-                previous.mergeWithHighest(Aspect.FIRE, 1);
-                previous.mergeWithHighest(Aspect.EARTH, 1);
+                previous.mergeWithHighest(Aspects.FIRE, 1);
+                previous.mergeWithHighest(Aspects.EARTH, 1);
             }
 
             if (stone > 500) {
-                previous.mergeWithHighest(Aspect.EARTH, 1);
+                previous.mergeWithHighest(Aspects.EARTH, 1);
             }
 
             if (foliage > 100) {
-                previous.mergeWithHighest(Aspect.PLANT, 1);
+                previous.mergeWithHighest(Aspects.PLANT, 1);
             }
 
             int[] spread = new int[previous.size()];

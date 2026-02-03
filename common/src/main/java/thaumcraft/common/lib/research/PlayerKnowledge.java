@@ -2,6 +2,7 @@ package thaumcraft.common.lib.research;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,28 +62,28 @@ public class PlayerKnowledge {
          known = new AspectList();
       }
 
-      if (!known.getAspects().containsKey(Aspect.AIR)) {
-         known.addAll(Aspect.AIR, 0);
+      if (!known.getAspects().containsKey(Aspects.AIR)) {
+         known.addAll(Aspects.AIR, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspect.FIRE)) {
-         known.addAll(Aspect.FIRE, 0);
+      if (!known.getAspects().containsKey(Aspects.FIRE)) {
+         known.addAll(Aspects.FIRE, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspect.EARTH)) {
-         known.addAll(Aspect.EARTH, 0);
+      if (!known.getAspects().containsKey(Aspects.EARTH)) {
+         known.addAll(Aspects.EARTH, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspect.WATER)) {
-         known.addAll(Aspect.WATER, 0);
+      if (!known.getAspects().containsKey(Aspects.WATER)) {
+         known.addAll(Aspects.WATER, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspect.ORDER)) {
-         known.addAll(Aspect.ORDER, 0);
+      if (!known.getAspects().containsKey(Aspects.ORDER)) {
+         known.addAll(Aspects.ORDER, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspect.ENTROPY)) {
-         known.addAll(Aspect.ENTROPY, 0);
+      if (!known.getAspects().containsKey(Aspects.ENTROPY)) {
+         known.addAll(Aspects.ENTROPY, 0);
       }
 
       this.aspectsDiscovered.put(player, known);

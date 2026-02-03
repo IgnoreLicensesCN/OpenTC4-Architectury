@@ -6,7 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.IScribeTools;
-import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.misc.ItemResearchNotes;
 import thaumcraft.common.tiles.TileResearchTable;
 
@@ -18,7 +18,7 @@ public class ContainerResearchTable extends Container {
    public ContainerResearchTable(InventoryPlayer iinventory, TileResearchTable iinventory1) {
       this.player = iinventory.player;
       this.tileEntity = iinventory1;
-      this.aspects = Aspect.aspects.keySet().toArray(new String[0]);
+      this.aspects = Aspects.ALL_ASPECTS.keySet().toArray(new String[0]);
       this.addSlotToContainer(new SlotLimitedByClass(IScribeTools.class, iinventory1, 0, 14, 10));
       this.addSlotToContainer(new SlotLimitedByClass(ItemResearchNotes.class, iinventory1, 1, 70, 10));
       this.bindPlayerInventory(iinventory);

@@ -13,6 +13,7 @@ import net.minecraft.util.HitResult.MovingObjectType;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
@@ -153,6 +154,6 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspect.ENTROPY, 10).addAll(Aspect.AIR, 10);
+      cost = (new AspectList()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
    }
 }

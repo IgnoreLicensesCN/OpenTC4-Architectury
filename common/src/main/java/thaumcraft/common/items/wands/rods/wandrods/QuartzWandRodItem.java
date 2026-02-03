@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.rods.wandrods;
 
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsWandRod;
@@ -14,7 +15,7 @@ import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
 public class QuartzWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwner {
     public QuartzWandRodItem() {
-        super(new Properties(), Map.of(Aspect.ORDER,7));
+        super(new Properties(), Map.of(Aspects.ORDER,7));
     }
 
     private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(75));

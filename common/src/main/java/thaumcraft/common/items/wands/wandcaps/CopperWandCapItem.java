@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandcaps;
 
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
@@ -20,7 +21,7 @@ public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftin
         return 1.1f;
     }
 
-    private final Map<Aspect,Float> specialCostModifierAspects = Map.of(Aspect.ORDER,1.f,Aspect.ENTROPY,1.f);
+    private final Map<Aspect,Float> specialCostModifierAspects = Map.of(Aspects.ORDER,1.f, Aspects.ENTROPY,1.f);
     @Override
     public @NotNull Map<Aspect,Float> getSpecialCostModifierAspects() {
         return specialCostModifierAspects;

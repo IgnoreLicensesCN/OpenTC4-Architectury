@@ -19,6 +19,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -191,7 +192,7 @@ public class BlockManaPod extends Block {
                b0 = 2;
            }
 
-           Aspect aspect = Aspect.PLANT;
+           Aspect aspect = Aspects.PLANT;
            if (st.containsKey(new WorldCoordinates(x, y, z, world.dimension()))) {
                aspect = (Aspect) st.get(new WorldCoordinates(x, y, z, world.dimension()));
            } else {

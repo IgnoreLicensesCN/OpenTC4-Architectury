@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
 public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentiaTransport {
@@ -59,7 +60,8 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
                return false;
             }
 
-             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(Aspect.FIRE, 1, this.facing.getOpposite()) == 1;
+             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(
+                     Aspects.FIRE, 1, this.facing.getOpposite()) == 1;
          }
 
          return false;
@@ -90,7 +92,7 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
    }
 
    public Aspect getSuctionType(Direction face) {
-      return Aspect.FIRE;
+      return Aspects.FIRE;
    }
 
    public int getSuctionAmount(Direction face) {

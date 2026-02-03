@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 
@@ -41,7 +42,7 @@ public class ItemWispEssence extends Item implements IEssentiaContainerItem {
 
    @SideOnly(Side.CLIENT)
    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      for(Aspect tag : Aspect.aspects.values()) {
+      for(Aspect tag : Aspects.ALL_ASPECTS.values()) {
          ItemStack i = new ItemStack(this, 1, 0);
          this.setAspects(i, (new AspectList()).addAll(tag, 2));
          par3List.add(i);
@@ -89,6 +90,6 @@ public class ItemWispEssence extends Item implements IEssentiaContainerItem {
    }
 
    static {
-      displayAspects = Aspect.aspects.values().toArray(new Aspect[0]);
+      displayAspects = Aspects.ALL_ASPECTS.values().toArray(new Aspect[0]);
    }
 }

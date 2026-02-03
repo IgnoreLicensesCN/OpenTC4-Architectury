@@ -23,6 +23,7 @@ import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.renderers.models.gear.ModelHoverHarness;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ItemJarFilled;
@@ -79,7 +80,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairable, IVisDisc
    }
 
    public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
-      return aspect == Aspect.AIR ? 5 : 2;
+      return aspect == Aspects.AIR ? 5 : 2;
    }
 
    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, Player par3Player) {
@@ -110,6 +111,6 @@ public class ItemHoverHarness extends ArmorItem implements IRepairable, IVisDisc
       }
 
       list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(is, player, null) + "%");
-      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + " (Aer): " + this.getVisDiscount(is, player, Aspect.AIR) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + " (Aer): " + this.getVisDiscount(is, player, Aspects.AIR) + "%");
    }
 }

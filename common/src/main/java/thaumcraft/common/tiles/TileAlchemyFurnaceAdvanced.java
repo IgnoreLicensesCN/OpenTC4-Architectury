@@ -12,6 +12,7 @@ import net.minecraft.world.EnumSkyBlock;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
@@ -95,15 +96,15 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
          if (this.count % 5 == 0) {
             int pt = this.heat--;
             if (this.heat <= this.maxPower) {
-               this.heat += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.FIRE, 50);
+               this.heat += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.FIRE, 50);
             }
 
             if (this.power1 <= this.maxPower) {
-               this.power1 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.ENTROPY, 50);
+               this.power1 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.ENTROPY, 50);
             }
 
             if (this.power2 <= this.maxPower) {
-               this.power2 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspect.WATER, 50);
+               this.power2 += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.WATER, 50);
             }
 
             if (pt / 50 != this.heat / 50) {

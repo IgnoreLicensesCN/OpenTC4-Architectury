@@ -26,6 +26,7 @@ import tc4tweak.modules.generateItemHash.GenerateItemHash;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ScanResult;
@@ -307,26 +308,26 @@ public class ScanManager implements IScanEventHandler {
             s = "player_" + entity.getName()
                     .getString();
             tags = new AspectList();
-            tags.addAll(Aspect.MAN, 4);
+            tags.addAll(Aspects.MAN, 4);
             if (entity.getName()
                     .getString()
                     .equalsIgnoreCase("azanor")) {
-                tags.addAll(Aspect.ELDRITCH, 20);
+                tags.addAll(Aspects.ELDRITCH, 20);
             } else if (entity.getName()
                     .getString()
                     .equalsIgnoreCase("direwolf20")) {//https://www.youtube.com/user/direwolf20
-                tags.addAll(Aspect.BEAST, 20);
+                tags.addAll(Aspects.BEAST, 20);
             } else if (entity.getName()
                     .getString()
                     .equalsIgnoreCase("pahimar")) {//ee3 author?idk
-                tags.addAll(Aspect.EXCHANGE, 20);
+                tags.addAll(Aspects.EXCHANGE, 20);
             } else if (entity.getName()
                     .getString()
                     .equalsIgnoreCase("acdeasdff")) {//yeah this is just for me XD
-                tags.addAll(Aspect.MECHANISM, 20);
+                tags.addAll(Aspects.MECHANISM, 20);
             } else {
                 Random rand = new Random(s.hashCode());
-                Aspect[] posa = Aspect.aspects.values()
+                Aspect[] posa = Aspects.ALL_ASPECTS.values()
                         .toArray(new Aspect[0]);
                 tags.addAll(posa[rand.nextInt(posa.length)], 4);
                 tags.addAll(posa[rand.nextInt(posa.length)], 4);
@@ -376,21 +377,21 @@ public class ScanManager implements IScanEventHandler {
                     var nodeType = iNodeBlockEntity.getNodeType();
                     //TODO:API
                     if (nodeType == UNSTABLE) {
-                        tags.mergeWithHighest(Aspect.ENTROPY, 4);
+                        tags.mergeWithHighest(Aspects.ENTROPY, 4);
                     }
                     if (nodeType == HUNGRY) {
-                        tags.mergeWithHighest(Aspect.HUNGER, 4);
+                        tags.mergeWithHighest(Aspects.HUNGER, 4);
                     }
                     if (nodeType == TAINTED) {
-                        tags.mergeWithHighest(Aspect.TAINT, 4);
+                        tags.mergeWithHighest(Aspects.TAINT, 4);
                     }
                     if (nodeType == PURE) {
-                        tags.mergeWithHighest(Aspect.HEAL, 2);
-                        tags.addAll(Aspect.ORDER, 2);
+                        tags.mergeWithHighest(Aspects.HEAL, 2);
+                        tags.addAll(Aspects.ORDER, 2);
                     }
                     if (nodeType == DARK) {
-                        tags.mergeWithHighest(Aspect.DEATH, 2);
-                        tags.addAll(Aspect.DARKNESS, 2);
+                        tags.mergeWithHighest(Aspects.DEATH, 2);
+                        tags.addAll(Aspects.DARKNESS, 2);
                     }
                 }
             }

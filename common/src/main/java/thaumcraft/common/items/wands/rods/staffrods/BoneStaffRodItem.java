@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.rods.staffrods;
 
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsStaffRod;
@@ -14,7 +15,7 @@ import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
 public class BoneStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner {
     public BoneStaffRodItem() {
-        super(new Properties(), Map.of(Aspect.ENTROPY,17));
+        super(new Properties(), Map.of(Aspects.ENTROPY,17));
     }
 
     private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(175));

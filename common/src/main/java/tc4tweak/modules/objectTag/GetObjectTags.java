@@ -9,8 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
@@ -84,8 +84,8 @@ public class GetObjectTags {
      * Add wand related aspects
      */
     private static void addWandTags(ItemStack itemstack, AspectList tmp, WandCastingItem wand) {
-        tmp.mergeWithHighest(Aspect.MAGIC, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 2);
-        tmp.mergeWithHighest(Aspect.TOOL, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 3);
+        tmp.mergeWithHighest(Aspects.MAGIC, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 2);
+        tmp.mergeWithHighest(Aspects.TOOL, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 3);
     }
 
     /**
@@ -94,56 +94,56 @@ public class GetObjectTags {
     //TODO:API adds aspects for effects and item types
     @SuppressWarnings("unchecked")
     private static void addPotionTags(ItemStack itemstack, PotionItem item, AspectList tmp) {
-        tmp.mergeWithHighest(Aspect.WATER, 1);
+        tmp.mergeWithHighest(Aspects.WATER, 1);
         List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
         if (!effects.isEmpty()) {
             if (item instanceof ThrowablePotionItem) {
-                tmp.mergeWithHighest(Aspect.ENTROPY, 2);
+                tmp.mergeWithHighest(Aspects.ENTROPY, 2);
             }
 
             for (MobEffectInstance effect : effects) {
                 int amplifier = effect.getAmplifier();
                 int potionID = effect.getPotionID();
-                tmp.mergeWithHighest(Aspect.MAGIC, (amplifier + 1) * 2);
+                tmp.mergeWithHighest(Aspects.MAGIC, (amplifier + 1) * 2);
                 if (potionID == Potion.blindness.id) {
-                    tmp.mergeWithHighest(Aspect.DARKNESS, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.DARKNESS, (amplifier + 1) * 3);
                 } else if (potionID == Potion.confusion.id) {
-                    tmp.mergeWithHighest(Aspect.ELDRITCH, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.ELDRITCH, (amplifier + 1) * 3);
                 } else if (potionID == Potion.damageBoost.id) {
-                    tmp.mergeWithHighest(Aspect.WEAPON, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.WEAPON, (amplifier + 1) * 3);
                 } else if (potionID == Potion.digSlowdown.id) {
-                    tmp.mergeWithHighest(Aspect.TRAP, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.TRAP, (amplifier + 1) * 3);
                 } else if (potionID == Potion.digSpeed.id) {
-                    tmp.mergeWithHighest(Aspect.TOOL, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.TOOL, (amplifier + 1) * 3);
                 } else if (potionID == Potion.fireResistance.id) {
-                    tmp.mergeWithHighest(Aspect.ARMOR, amplifier + 1);
-                    tmp.mergeWithHighest(Aspect.FIRE, (amplifier + 1) * 2);
+                    tmp.mergeWithHighest(Aspects.ARMOR, amplifier + 1);
+                    tmp.mergeWithHighest(Aspects.FIRE, (amplifier + 1) * 2);
                 } else if (potionID == Potion.harm.id) {
-                    tmp.mergeWithHighest(Aspect.DEATH, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.DEATH, (amplifier + 1) * 3);
                 } else if (potionID == Potion.heal.id) {
-                    tmp.mergeWithHighest(Aspect.HEAL, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.HEAL, (amplifier + 1) * 3);
                 } else if (potionID == Potion.hunger.id) {
-                    tmp.mergeWithHighest(Aspect.DEATH, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.DEATH, (amplifier + 1) * 3);
                 } else if (potionID == Potion.invisibility.id) {
-                    tmp.mergeWithHighest(Aspect.SENSES, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.SENSES, (amplifier + 1) * 3);
                 } else if (potionID == Potion.jump.id) {
-                    tmp.mergeWithHighest(Aspect.FLIGHT, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.FLIGHT, (amplifier + 1) * 3);
                 } else if (potionID == Potion.moveSlowdown.id) {
-                    tmp.mergeWithHighest(Aspect.TRAP, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.TRAP, (amplifier + 1) * 3);
                 } else if (potionID == Potion.moveSpeed.id) {
-                    tmp.mergeWithHighest(Aspect.MOTION, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.MOTION, (amplifier + 1) * 3);
                 } else if (potionID == Potion.nightVision.id) {
-                    tmp.mergeWithHighest(Aspect.SENSES, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.SENSES, (amplifier + 1) * 3);
                 } else if (potionID == Potion.poison.id) {
-                    tmp.mergeWithHighest(Aspect.POISON, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.POISON, (amplifier + 1) * 3);
                 } else if (potionID == Potion.regeneration.id) {
-                    tmp.mergeWithHighest(Aspect.HEAL, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.HEAL, (amplifier + 1) * 3);
                 } else if (potionID == Potion.resistance.id) {
-                    tmp.mergeWithHighest(Aspect.ARMOR, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.ARMOR, (amplifier + 1) * 3);
                 } else if (potionID == Potion.waterBreathing.id) {
-                    tmp.mergeWithHighest(Aspect.AIR, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.AIR, (amplifier + 1) * 3);
                 } else if (potionID == Potion.weakness.id) {
-                    tmp.mergeWithHighest(Aspect.DEATH, (amplifier + 1) * 3);
+                    tmp.mergeWithHighest(Aspects.DEATH, (amplifier + 1) * 3);
                 }
             }
         }

@@ -15,6 +15,7 @@ import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -98,7 +99,9 @@ public class WandManager implements IWandTriggerManager {
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
-                    if (fitInfusionAltar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.FIRE, 25).addAll(Aspect.EARTH, 25).addAll(Aspect.ORDER, 25).addAll(Aspect.AIR, 25).addAll(Aspect.ENTROPY, 25).addAll(Aspect.WATER, 25), true)) {
+                    if (fitInfusionAltar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(
+                            Aspects.FIRE, 25).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.AIR, 25).addAll(
+                            Aspects.ENTROPY, 25).addAll(Aspects.WATER, 25), true)) {
                         if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceInfusionAltar(world, xx, yy, zz);
                             return true;
@@ -185,7 +188,9 @@ public class WandManager implements IWandTriggerManager {
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 3; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
-                    if (fitNodeJar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.FIRE, 70).addAll(Aspect.EARTH, 70).addAll(Aspect.ORDER, 70).addAll(Aspect.AIR, 70).addAll(Aspect.ENTROPY, 70).addAll(Aspect.WATER, 70), true)) {
+                    if (fitNodeJar(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(
+                            Aspects.FIRE, 70).addAll(Aspects.EARTH, 70).addAll(Aspects.ORDER, 70).addAll(Aspects.AIR, 70).addAll(
+                            Aspects.ENTROPY, 70).addAll(Aspects.WATER, 70), true)) {
                         if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceNodeJar(world, xx, yy, zz);
                             return true;
@@ -210,7 +215,8 @@ public class WandManager implements IWandTriggerManager {
             --y;
         }
 
-        if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.FIRE, 15).addAll(Aspect.ORDER, 30).addAll(Aspect.WATER, 30), true) && Platform.getEnvironment() != Env.CLIENT) {
+        if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspects.FIRE, 15).addAll(Aspects.ORDER, 30).addAll(
+                Aspects.WATER, 30), true) && Platform.getEnvironment() != Env.CLIENT) {
             world.setBlock(x, y, z, ConfigBlocks.blockMetalDevice, 10, 0);
             world.setBlock(x, y + 1, z, ConfigBlocks.blockMetalDevice, 11, 0);
             TileEntity tile = world.getTileEntity(x, y, z);
@@ -330,7 +336,8 @@ public class WandManager implements IWandTriggerManager {
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
-                    if (fitArcaneFurnace(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.FIRE, 50).addAll(Aspect.EARTH, 50), true)) {
+                    if (fitArcaneFurnace(world, xx, yy, zz) && wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(
+                            Aspects.FIRE, 50).addAll(Aspects.EARTH, 50), true)) {
                         if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceArcaneFurnace(world, xx, yy, zz);
                             return true;
@@ -458,7 +465,9 @@ public class WandManager implements IWandTriggerManager {
             TileEntity node = world.getTileEntity(x, y + 1, z);
             if (node != null && tile instanceof TileEldritchAltar && ((TileEldritchAltar) tile).getEyes() == 4 && !((TileEldritchAltar) tile).isOpen() && node instanceof AbstractNodeBlockEntity && ((AbstractNodeBlockEntity) node).getNodeType() == NodeType.DARK && ((TileEldritchAltar) tile).checkForMaze()) {
                 WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-                if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.AIR, 100).addAll(Aspect.FIRE, 100).addAll(Aspect.EARTH, 100).addAll(Aspect.WATER, 100).addAll(Aspect.ORDER, 100).addAll(Aspect.ENTROPY, 100), true)) {
+                if (wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspects.AIR, 100).addAll(
+                        Aspects.FIRE, 100).addAll(Aspects.EARTH, 100).addAll(Aspects.WATER, 100).addAll(Aspects.ORDER, 100).addAll(
+                        Aspects.ENTROPY, 100), true)) {
                     world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
                     ((TileEldritchAltar) tile).setOpen(true);
                     world.setBlockToAir(x, y + 1, z);
@@ -886,7 +895,8 @@ public class WandManager implements IWandTriggerManager {
                             }
 
                             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-                            if (!wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspect.FIRE, 50).addAll(Aspect.WATER, 50).addAll(Aspect.ORDER, 50), true)) {
+                            if (!wand.consumeAllVisCrafting(itemstack, player, (new AspectList()).addAll(Aspects.FIRE, 50).addAll(
+                                    Aspects.WATER, 50).addAll(Aspects.ORDER, 50), true)) {
                                 return false;
                             }
 

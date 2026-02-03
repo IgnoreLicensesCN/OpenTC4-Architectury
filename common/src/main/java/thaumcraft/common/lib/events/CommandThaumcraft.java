@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
@@ -255,7 +256,7 @@ public class CommandThaumcraft{
 //
    private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, String string, int i) {
       if (string.equalsIgnoreCase("all")) {
-         for(Aspect aspect : Aspect.aspects.values()) {
+         for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
             Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)i);
          }
 
@@ -266,7 +267,7 @@ public class CommandThaumcraft{
       } else {
          Aspect aspect = Aspect.getAspect(string);
          if (aspect == null) {
-            for(Aspect a : Aspect.aspects.values()) {
+            for(Aspect a : Aspects.ALL_ASPECTS.values()) {
                if (string.equalsIgnoreCase(a.getName())) {
                   aspect = a;
                   break;

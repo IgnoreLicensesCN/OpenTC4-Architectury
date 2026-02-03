@@ -10,6 +10,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
@@ -82,8 +83,10 @@ public class ItemFocusPech extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspect.EARTH, 10).addAll(Aspect.ENTROPY, 10).addAll(Aspect.WATER, 10);
-      costAll = (new AspectList()).addAll(Aspect.AIR, 10).addAll(Aspect.FIRE, 10).addAll(Aspect.EARTH, 10).addAll(Aspect.ORDER, 10).addAll(Aspect.ENTROPY, 10).addAll(Aspect.WATER, 10);
-      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new AspectList()).addAll(Aspect.LIFE, 1).addAll(Aspect.POISON, 1).addAll(Aspect.MAGIC, 1));
+      cost = (new AspectList()).addAll(Aspects.EARTH, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
+      costAll = (new AspectList()).addAll(Aspects.AIR, 10).addAll(Aspects.FIRE, 10).addAll(Aspects.EARTH, 10).addAll(
+              Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
+      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new AspectList()).addAll(
+              Aspects.LIFE, 1).addAll(Aspects.POISON, 1).addAll(Aspects.MAGIC, 1));
    }
 }
