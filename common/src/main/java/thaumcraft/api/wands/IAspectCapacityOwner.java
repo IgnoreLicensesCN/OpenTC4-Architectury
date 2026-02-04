@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface IAspectCapacityOwner {
 
-    Map<Aspect,Integer> getAspectCapacity();
+    Map<Aspect,Integer> getCentiVisCapacity();
 }

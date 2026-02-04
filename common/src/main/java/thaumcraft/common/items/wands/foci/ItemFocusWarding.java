@@ -15,7 +15,6 @@ import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -94,7 +93,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
          boolean solid = world.isBlockNormalCubeDefault(mop.blockX, mop.blockY, mop.blockZ, true);
          if (tt == null && solid) {
             for(BlockCoordinates c : this.getArchitectBlocks(itemstack, world, mop.blockX, mop.blockY, mop.blockZ, mop.sideHit, player)) {
-               if (!wand.consumeAllVis(itemstack, player, this.getVisCost(itemstack), true, false)) {
+               if (!wand.consumeAllCentiVis(itemstack, player, this.getVisCost(itemstack), true, false)) {
                   break;
                }
 

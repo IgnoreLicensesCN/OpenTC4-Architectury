@@ -16,7 +16,7 @@ public abstract class ThaumcraftWandRodItem extends Item implements IWandRodProp
 
     @Override
     @UnmodifiableView
-    public Map<Aspect,Integer> getAspectCapacity() {
+    public Map<Aspect,Integer> getCentiVisCapacity() {
         return Collections.emptyMap();
     }
 }

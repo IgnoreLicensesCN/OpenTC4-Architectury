@@ -221,7 +221,7 @@ public class ThaumcraftApiHelper {
      */
     public static boolean consumeVisFromWand(ItemStack wand, Player player,
                                              AspectList cost, boolean doit, boolean crafting) {
-        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllVis(wand, player, cost, doit, crafting);
+        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVis(wand, player, cost, doit, crafting);
     }
 
     /**
@@ -237,7 +237,7 @@ public class ThaumcraftApiHelper {
      */
     public static boolean consumeVisFromWandCrafting(ItemStack wand, Player player,
                                                      AspectList cost, boolean doit) {
-        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllVisCrafting(wand, player, cost, doit);
+        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVisCrafting(wand, player, cost, doit);
     }
 
     /**

@@ -1,8 +1,14 @@
 package com.linearity.opentc4.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.nbt.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.*;
@@ -126,8 +132,8 @@ public class CompoundTagHelper {
             if (value.isEmpty()) return;
             JsonObject json = new JsonObject();
             for (var entry : value.entrySet()) {
-                var aspect = entry.getKey().getTag();
-                json.addProperty(aspect,entry.getValue());
+                var aspectResourceLocation = entry.getKey().getTag();
+                json.addProperty(String.valueOf(aspectResourceLocation),entry.getValue());
             }
             internalAccessor.writeToCompoundTag(tag,json);
 //            tag.put(tagKey, value.save(new CompoundTag()));
@@ -177,6 +183,27 @@ public class CompoundTagHelper {
         @Override
         public void writeToCompoundTag(CompoundTag tag, String value) {
             tag.putString(tagKey, value);
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey, Tag.TAG_STRING);
+        }
+    }
+    public static class ResourceLocationTagAccessor extends CompoundTagAccessor<ResourceLocation> {
+
+        public ResourceLocationTagAccessor(String tagKey) {
+            super(tagKey, ResourceLocation.class);
+        }
+
+        @Override
+        public ResourceLocation readFromCompoundTag(CompoundTag tag) {
+            return new ResourceLocation(tag.getString(tagKey));
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag,@NotNull ResourceLocation value) {
+            tag.putString(tagKey, String.valueOf(value));
         }
 
         @Override

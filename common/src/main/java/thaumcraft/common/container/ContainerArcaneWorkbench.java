@@ -59,7 +59,7 @@ public class ContainerArcaneWorkbench extends Container {
               && this.tileEntity.getStackInSlot(10).getItem() instanceof WandCastingItem
       ) {
          WandCastingItem wand = (WandCastingItem)this.tileEntity.getStackInSlot(10).getItem();
-         if (wand.consumeAllVisCrafting(
+         if (wand.consumeAllCentiVisCrafting(
                  this.tileEntity.getStackInSlot(10), this.ip.player,
                  ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.tileEntity, this.ip.player), false)) {
             this.tileEntity.setInventorySlotContentsSoftly(9, ThaumcraftCraftingManager.findMatchingArcaneRecipe(this.tileEntity, this.ip.player));

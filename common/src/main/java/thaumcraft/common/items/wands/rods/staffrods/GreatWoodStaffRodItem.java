@@ -10,22 +10,24 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 import java.util.Collections;
 import java.util.Map;
 
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+
 public class GreatWoodStaffRodItem extends ThaumcraftWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner {
     public GreatWoodStaffRodItem() {
         super(new Properties());
     }
 
 
-    public static final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(125));
+    public static final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(125 * CENTIVIS_MULTIPLIER));
     @Override
-    public @UnmodifiableView Map<Aspect, Integer> getAspectCapacity() {
+    public @UnmodifiableView Map<Aspect, Integer> getCentiVisCapacity() {
         return capacity;
     }
 
-    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(8));
+    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(8 * CENTIVIS_MULTIPLIER));
     @Override
     @UnmodifiableView
-    public Map<Aspect, Integer> getCraftingCostAspect() {
+    public Map<Aspect, Integer> getCraftingCostCentiVis() {
         return cost;
     }
 }

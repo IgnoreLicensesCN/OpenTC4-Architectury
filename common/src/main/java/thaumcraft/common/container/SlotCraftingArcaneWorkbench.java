@@ -28,7 +28,7 @@ public class SlotCraftingArcaneWorkbench extends SlotCrafting {
       AspectList aspects = ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.craftMatrix, this.thePlayer);
       if (aspects.size() > 0 && this.craftMatrix.getStackInSlot(10) != null) {
          WandCastingItem wand = (WandCastingItem)this.craftMatrix.getStackInSlot(10).getItem();
-         wand.consumeAllVisCrafting(this.craftMatrix.getStackInSlot(10), par1Player, aspects, true);
+         wand.consumeAllCentiVisCrafting(this.craftMatrix.getStackInSlot(10), par1Player, aspects, true);
       }
 
       for(int var2 = 0; var2 < 9; ++var2) {

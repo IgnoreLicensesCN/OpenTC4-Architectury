@@ -6,67 +6,41 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.wands.InventoryTickableComponent;
-import thaumcraft.api.wands.IVisContainer;
+import thaumcraft.api.wands.ICentiVisContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+
 public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements InventoryTickableComponent {
-    public ThaumcraftAspectRegenWandRodItem(Properties properties, Map<Aspect,Integer> canRegenAspectAndValue) {
+    public ThaumcraftAspectRegenWandRodItem(Properties properties, Map<Aspect,Integer> canRegenCentiVisAndValue) {
         super(properties);
-        this.canRegenAspectAndValue = canRegenAspectAndValue;
-        this.canRegenAspectAndValueAsList = canRegenAspectAndValue.entrySet().stream().map(e -> new SimplePair(e.getKey(), e.getValue())).collect(Collectors.toList());
+        this.canRegenCentiVisAndValue = canRegenCentiVisAndValue;
+        this.canRegenCentiVisAndValueAsList = canRegenCentiVisAndValue.entrySet().stream().map(e -> new SimplePair(e.getKey(), e.getValue())).collect(Collectors.toList());
     }
-    protected final Map<Aspect, Integer> canRegenAspectAndValue;
-    protected final List<SimplePair<Aspect, Integer>> canRegenAspectAndValueAsList;
+    protected final Map<Aspect, Integer> canRegenCentiVisAndValue;
+    protected final List<SimplePair<Aspect, Integer>> canRegenCentiVisAndValueAsList;
 
     @Override
     public void tickAsComponent(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
         var wandStackItem = usingWand.getItem();
-        if (wandStackItem instanceof IVisContainer container) {
+        if (wandStackItem instanceof ICentiVisContainer container) {
             if (entity.tickCount % 200 == 0){
-                var capacity = container.getAllVisCapacity(usingWand);
-                var owningVis = container.getAllVisOwning(usingWand);
-                for (Map.Entry<Aspect,Integer> entry:capacity.entrySet()) {
+                var owningVis = container.getAllCentiVisOwning(usingWand);
+                for (Map.Entry<Aspect,Integer> entry: canRegenCentiVisAndValue.entrySet()) {
                     var owningAspectValue = owningVis.getOrDefault(entry.getKey(),0);
-                    if (owningAspectValue < (entry.getValue()/10)) {
-                        owningVis.merge(entry.getKey(),1,Integer::sum);
+                    var upperBound = entry.getValue();
+                    if (owningAspectValue < upperBound) {
+                        owningVis.merge(entry.getKey(),
+                                CENTIVIS_MULTIPLIER,
+                                (oldValue, newValue) ->
+                                Math.min(oldValue + newValue, upperBound));
                     }
                 }
-            }else
-            if (entity.tickCount % 200 == 0){
-                var owningVis = container.getAllVisOwning(usingWand);
-                for (Map.Entry<Aspect,Integer> entry:canRegenAspectAndValue.entrySet()) {
-                    var owningAspectValue = owningVis.getOrDefault(entry.getKey(),0);
-                    if (owningAspectValue < entry.getValue()) {
-                        owningVis.merge(entry.getKey(),1,Integer::sum);
-                    }
-                }
-                container.storeVisOwning(usingWand, owningVis);
-            } else if (entity.tickCount % 50 == 0) {
-
-
-                var owningVis = container.getAllVisOwning(usingWand);
-                List<Aspect> candidates = new ArrayList<>();
-                for (var entry : canRegenAspectAndValue.entrySet()) {
-                    var aspect = entry.getKey();
-                    var maxValue = entry.getValue();
-                    var current = owningVis.getOrDefault(aspect, 0);
-
-                    if (current < maxValue) {
-                        candidates.add(aspect);
-                    }
-                }
-
-                // 如果全部都满了 → 不回复
-                if (!candidates.isEmpty()) {
-                    Aspect chosen = candidates.get(level.random.nextInt(candidates.size()));
-                    owningVis.merge(chosen, 1, Integer::sum);
-                    container.storeVisOwning(usingWand, owningVis);
-                }
-
+                container.storeCentiVisOwning(usingWand, owningVis);
             }
         }
     }

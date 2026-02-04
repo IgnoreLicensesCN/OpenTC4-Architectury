@@ -8,7 +8,7 @@ public class Consts {
 
     public static class AspectCompoundTagAccessors {
         private static final String ASPECT_KEY = "key";//String
-        public static final CompoundTagHelper.StringTagAccessor ASPECT_KEY_ACCESSOR = new CompoundTagHelper.StringTagAccessor(ASPECT_KEY);
+        public static final CompoundTagHelper.ResourceLocationTagAccessor ASPECT_KEY_ACCESSOR = new CompoundTagHelper.ResourceLocationTagAccessor(ASPECT_KEY);
         private static final String ASPECT_AMOUNT = "amount";//int
         public static final CompoundTagHelper.IntTagAccessor ASPECT_AMOUNT_ACCESSOR = new CompoundTagHelper.IntTagAccessor(ASPECT_AMOUNT);
         private static final String ASPECT_ASPECTS = "Aspects";//List<CompoundTag>
@@ -192,4 +192,5 @@ public class Consts {
         private static final String PROCESSING_ITEM_STACK = "processing_item_stack";
         public static final CompoundTagHelper.ItemStackTagAccessor PROCESSING_ITEM_STACK_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(PROCESSING_ITEM_STACK);
     }
+
 }

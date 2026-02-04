@@ -74,7 +74,7 @@ public class GuiArcaneWorkbench extends GuiContainer {
             }
         }
 
-        if (wand != null && cost != null && !wand.consumeAllVisCrafting(this.tileEntity.getStackInSlot(10), this.ip.player, cost, false)) {
+        if (wand != null && cost != null && !wand.consumeAllCentiVisCrafting(this.tileEntity.getStackInSlot(10), this.ip.player, cost, false)) {
             GL11.glPushMatrix();
             float var40 = 0.33F;
             GL11.glColor4f(var40, var40, var40, 0.66F);

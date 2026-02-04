@@ -38,7 +38,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
-import thaumcraft.api.wands.IVisContainer;
+import thaumcraft.api.wands.ICentiVisContainer;
 import thaumcraft.api.wands.IWandFocusEngine;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
@@ -158,12 +158,12 @@ public class FocusExcavationItem extends FocusBasicItem{
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
         var wandItem = usingWand.getItem();
         var focusItem = focusStack.getItem();
-        if (!((wandItem instanceof IVisContainer container) && (focusItem instanceof IWandFocusItem wandFocusItem))
+        if (!((wandItem instanceof ICentiVisContainer container) && (focusItem instanceof IWandFocusItem wandFocusItem))
         ){
             user.stopUsingItem();
             return;
         }
-        if (!(container.consumeAllVis(usingWand,user,getVisCost(focusStack,usingWand),false,false))
+        if (!(container.consumeAllCentiVis(usingWand,user,getVisCost(focusStack,usingWand),false,false))
         ){
             user.stopUsingItem();
             return;
@@ -239,12 +239,12 @@ public class FocusExcavationItem extends FocusBasicItem{
                             } else {
                                 breakCount.put(user, bc + speed);
                             }
-                        } else if (bc >= hardness && container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false)) {
+                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
-                                    if (container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), false, false)
+                                    if (container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), false, false)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false);
+                                        container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false);
                                     }
                                 }
                             }
@@ -282,7 +282,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         }
         var wandItem = usingWand.getItem();
         if (!(
-                (wandItem instanceof IVisContainer IVisContainer)
+                (wandItem instanceof ICentiVisContainer ICentiVisContainer)
                 && (wandItem instanceof IWandFocusEngine focusEngine)
         )){
             return false;

@@ -395,7 +395,7 @@ public class InventoryUtils {
          int negated = 0;
 
          for (int i = 0; i < damageAmount && unbreaking > 0; i++) {
-            if (negateDamage(stack, unbreaking, world.getRandom()om)) {
+            if (negateDamage(stack, unbreaking, world.getRandom())) {
                negated++;
             }
          }

@@ -11,23 +11,24 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodI
 import java.util.Collections;
 import java.util.Map;
 
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
 
 public class BoneStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner {
     public BoneStaffRodItem() {
-        super(new Properties(), Map.of(Aspects.ENTROPY,17));
+        super(new Properties(), Map.of(Aspects.ENTROPY,17 * CENTIVIS_MULTIPLIER));
     }
 
-    private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(175));
+    private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(175 * CENTIVIS_MULTIPLIER));
     @Override
     @UnmodifiableView
-    public Map<Aspect, Integer> getAspectCapacity() {
+    public Map<Aspect, Integer> getCentiVisCapacity() {
         return capacity;
     }
-    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(14));
+    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(14 * CENTIVIS_MULTIPLIER));
     @Override
     @UnmodifiableView
-    public Map<Aspect, Integer> getCraftingCostAspect() {
+    public Map<Aspect, Integer> getCraftingCostCentiVis() {
         return cost;
     }
 }

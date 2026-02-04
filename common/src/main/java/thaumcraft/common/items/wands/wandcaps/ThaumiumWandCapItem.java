@@ -21,7 +21,7 @@ public class ThaumiumWandCapItem extends ThaumcraftWandCapItem implements ICraft
 
     private final Map<Aspect,Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(6));
     @Override
-    public Map<Aspect, Integer> getCraftingCostAspect() {
+    public Map<Aspect, Integer> getCraftingCostCentiVis() {
         return cost;
     }
 }

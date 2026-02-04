@@ -10,7 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -92,7 +91,7 @@ public class ItemFocusShock extends ItemFocusBasic {
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult HitResult) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       if (this.isUpgradedWith(wand.getFocusItem(itemstack), earthshock)) {
-         if (wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), Platform.getEnvironment() != Env.CLIENT, false)) {
+         if (wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), Platform.getEnvironment() != Env.CLIENT, false)) {
             if (Platform.getEnvironment() != Env.CLIENT) {
                EntityShockOrb orb = new EntityShockOrb(world, p);
                orb.area += this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.enlarge) * 2;
@@ -117,7 +116,7 @@ public class ItemFocusShock extends ItemFocusBasic {
 
    public void doLightningBolt(ItemStack stack, Player p, int count) {
       WandCastingItem wand = (WandCastingItem)stack.getItem();
-      if (!wand.consumeAllVis(stack, p, this.getVisCost(stack), Platform.getEnvironment() != Env.CLIENT, false)) {
+      if (!wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), Platform.getEnvironment() != Env.CLIENT, false)) {
          p.stopUsingItem();
       } else {
          int potency = wand.getFocusPotency(stack);

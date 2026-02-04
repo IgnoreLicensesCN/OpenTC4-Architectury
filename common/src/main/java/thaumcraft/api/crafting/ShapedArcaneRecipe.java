@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.common.tiles.TileMagicWorkbench;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     public final RecipeItemMatcher[] input;
     protected final Function<ItemStack[],ItemStack> resultGenerator;
 //    public final AspectList aspects;
-    public final Function<ItemStack[],AspectList> aspectsGenerator;
+    public final Function<ItemStack[],CentiVisList> aspectsGenerator;
     public final String research;
     public final int width;
     public final int height;
@@ -35,9 +36,12 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
 
     //since the original is too messy,i should do some cleaning for this.
     public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
+        this(research,resultGenerator,arr -> CentiVisList.of(aspects),input,width,height,outMatcher);
+    }
+    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, CentiVisList aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
         this(research,resultGenerator,arr -> aspects,input,width,height,outMatcher);
     }
-    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, Function<ItemStack[],AspectList> aspectsGenerator, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
+    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, Function<ItemStack[],CentiVisList> aspectsGenerator, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
         if (input.length != width*height){
             throw new IllegalArgumentException("Invalid recipe shape!");
         }//yeah that's quite easy
@@ -294,12 +298,12 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     }
     
     @Override		
-	public AspectList getAspects() {
+	public CentiVisList getAspects() {
 		return aspectsGenerator.apply(null);
 	}
     
     @Override		
-	public AspectList getAspects(Container inv) {
+	public CentiVisList getAspects(Container inv) {
 		return aspectsGenerator.apply(getInputItemStacks(inv));
 	}
 	

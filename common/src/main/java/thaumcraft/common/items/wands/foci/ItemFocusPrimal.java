@@ -47,7 +47,7 @@ public class ItemFocusPrimal extends ItemFocusBasic {
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult mob) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       EntityPrimalOrb shard = new EntityPrimalOrb(world, p, this.isUpgradedWith(wand.getFocusItem(itemstack), seeker));
-      if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
+      if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
          world.spawnEntityInWorld(shard);
          world.playSoundAtEntity(shard, "thaumcraft:ice", 0.3F, 0.8F + world.getRandom().nextFloat() * 0.1F);
       }

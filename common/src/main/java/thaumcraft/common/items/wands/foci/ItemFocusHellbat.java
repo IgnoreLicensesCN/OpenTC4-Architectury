@@ -94,7 +94,7 @@ public class ItemFocusHellbat extends ItemFocusBasic {
                firebat.setIsVampire(true);
             }
 
-            if (wand.consumeAllVis(itemstack, player, this.getVisCost(itemstack), true, false) && world.spawnEntityInWorld(firebat)) {
+            if (wand.consumeAllCentiVis(itemstack, player, this.getVisCost(itemstack), true, false) && world.spawnEntityInWorld(firebat)) {
                world.playAuxSFX(2004, (int)px, (int)py, (int)pz, 0);
                world.playSoundAtEntity(firebat, "thaumcraft:ice", 0.2F, 0.95F + world.getRandom().nextFloat() * 0.1F);
             } else {

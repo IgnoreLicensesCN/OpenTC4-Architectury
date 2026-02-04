@@ -6,5 +6,5 @@ import java.util.Map;
 
 //for crafting
 public interface ICraftingCostAspectOwner {
-    Map<Aspect, Integer> getCraftingCostAspect();
+    Map<Aspect, Integer> getCraftingCostCentiVis();
 }

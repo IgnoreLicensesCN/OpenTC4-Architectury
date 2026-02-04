@@ -7,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -62,7 +61,7 @@ public class ItemFocusFire extends ItemFocusBasic {
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult HitResult) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       if (this.isUpgradedWith(wand.getFocusItem(itemstack), fireball)) {
-         if (wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), Platform.getEnvironment() != Env.CLIENT, false)) {
+         if (wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), Platform.getEnvironment() != Env.CLIENT, false)) {
             if (Platform.getEnvironment() != Env.CLIENT) {
                EntityExplosiveOrb orb = new EntityExplosiveOrb(world, p);
                orb.strength += (float)wand.getFocusPotency(itemstack) * 0.4F;
@@ -83,7 +82,7 @@ public class ItemFocusFire extends ItemFocusBasic {
 
    public void onUsingFocusTick(ItemStack itemstack, Player p, int count) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
-      if (!wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), false, false)) {
+      if (!wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), false, false)) {
          p.stopUsingItem();
       } else {
          int range = 17;
@@ -93,7 +92,7 @@ public class ItemFocusFire extends ItemFocusBasic {
             this.soundDelay = System.currentTimeMillis() + 500L;
          }
 
-         if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
+         if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
             float scatter = this.isUpgradedWith(wand.getFocusItem(itemstack), firebeam) ? 0.25F : 15.0F;
 
             for(int a = 0; a < 2 + wand.getFocusPotency(itemstack); ++a) {

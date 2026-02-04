@@ -70,7 +70,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //
 //   public void onUsingFocusTick(ItemStack stack, Player p, int count) {
 //      WandCastingItem wand = (WandCastingItem)stack.getItem();
-//      if (!wand.consumeAllVis(stack, p, this.getVisCost(stack), false, false)) {
+//      if (!wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), false, false)) {
 //         p.stopUsingItem();
 //      } else {
 //         String pp = "R" + p.getCommandSenderName();
@@ -139,11 +139,11 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //                     } else {
 //                        breakcount.put(pp, bc + speed);
 //                     }
-//                  } else if (bc >= hardness && wand.consumeAllVis(stack, p, this.getVisCost(stack), true, false)) {
+//                  } else if (bc >= hardness && wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), true, false)) {
 //                     if (this.excavate(p.level(), stack, p, bi, md, mop.blockX, mop.blockY, mop.blockZ)) {
 //                        for(int a = 0; a < wand.getFocusEnlarge(stack); ++a) {
-//                           if (wand.consumeAllVis(stack, p, this.getVisCost(stack), false, false) && this.breakNeighbour(p, mop.blockX, mop.blockY, mop.blockZ, bi, md, stack)) {
-//                              wand.consumeAllVis(stack, p, this.getVisCost(stack), true, false);
+//                           if (wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), false, false) && this.breakNeighbour(p, mop.blockX, mop.blockY, mop.blockZ, bi, md, stack)) {
+//                              wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), true, false);
 //                           }
 //                        }
 //                     }

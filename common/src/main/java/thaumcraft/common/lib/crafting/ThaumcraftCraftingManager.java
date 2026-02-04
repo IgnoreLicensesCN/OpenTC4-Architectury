@@ -176,7 +176,7 @@ public class ThaumcraftCraftingManager {
                 var craftCostTotalAspect = 0;
                 var aspectCount = 0;
                 if (componentItem instanceof ICraftingCostAspectOwner costAspectOwner) {
-                    var aspectMap = costAspectOwner.getCraftingCostAspect();
+                    var aspectMap = costAspectOwner.getCraftingCostCentiVis();
                     for (var aspectValue : aspectMap.values()) {
                         craftCostTotalAspect += aspectValue;
                         aspectCount += 1;

@@ -108,7 +108,7 @@ public class ServerTickEventsFML {
                             && wand != null
                             && focus != null
                             && !ForgeEventFactory.onPlayerInteract(vs.player, Action.RIGHT_CLICK_BLOCK, vs.x, vs.y, vs.z, 1, world).isCanceled()
-                            && wand.consumeAllVis(
+                            && wand.consumeAllCentiVis(
                                     vs.player.inventory.getStackInSlot(vs.wand),
                             vs.player,
                             focus.getVisCost(focusStack), false, false)
@@ -142,7 +142,7 @@ public class ServerTickEventsFML {
                                     }
                                 }
 
-                                wand.consumeAllVis(vs.player.inventory.getStackInSlot(vs.wand), vs.player, focus.getVisCost(focusStack), true, false);
+                                wand.consumeAllCentiVis(vs.player.inventory.getStackInSlot(vs.wand), vs.player, focus.getVisCost(focusStack), true, false);
                             }
 
                             world.setBlock(vs.x, vs.y, vs.z, Block.getBlockFromItem(vs.target.getItem()), vs.target.getDamageValue(), 3);

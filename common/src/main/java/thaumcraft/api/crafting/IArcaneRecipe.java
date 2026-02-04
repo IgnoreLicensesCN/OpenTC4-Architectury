@@ -6,7 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
 
 /**
  * dont store crafting result or anything here,it's a singleton.
@@ -33,8 +33,8 @@ public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputS
     int getRecipeSize();
 
     ItemStack getRecipeOutput();
-    AspectList getAspects();
-    AspectList getAspects(Container var1);
+    CentiVisList getAspects();
+    CentiVisList getAspects(Container var1);
     String getResearch();
 
     

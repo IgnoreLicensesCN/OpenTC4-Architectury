@@ -34,7 +34,7 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
     private final Map<Aspect,Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(4));
     @Override
-    public Map<Aspect, Integer> getCraftingCostAspect() {
+    public Map<Aspect, Integer> getCraftingCostCentiVis() {
         return cost;
     }
 }

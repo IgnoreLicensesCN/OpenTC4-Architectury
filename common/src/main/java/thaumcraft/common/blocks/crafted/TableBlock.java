@@ -54,7 +54,7 @@ public class TableBlock extends Block implements IWandInteractableBlock {
     @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
         var usingWand = useOnContext.getItemInHand();
-        if (usingWand.getItem() instanceof IArcaneCraftingWand craftingWand && craftingWand.canInsertIntoArcaneCraftingTable()) {
+        if (usingWand.getItem() instanceof IArcaneCraftingWand craftingWand && craftingWand.canInsertIntoArcaneCraftingTable(usingWand)) {
             //TODO:new ArcaneWorktable but **do not place wand on**(yes i want that)
 
             var level = useOnContext.getLevel();
@@ -77,16 +77,17 @@ public class TableBlock extends Block implements IWandInteractableBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        return switch (blockState.getValue(AXIS)) {
-            case Z -> Z_AXIS_SHAPE;
-            default -> X_AXIS_SHAPE;
-        };
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        var axisValue = blockState.getValue(AXIS);
+        if (axisValue == Direction.Axis.X) {
+            return X_AXIS_SHAPE;
+        }
+        return Z_AXIS_SHAPE;
     }
 
 
     @Override
-    public BlockState rotate(BlockState blockState, Rotation rotation) {
+    public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
         return switch (rotation) {
             case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (blockState.getValue(AXIS)) {
                 case Z -> blockState.setValue(AXIS, Direction.Axis.X);

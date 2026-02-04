@@ -238,7 +238,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        return this.getFocus(itemstack) == null ? 0 : this.getFocus(itemstack).getUpgradeLevel(this.getFocusItem(itemstack), FocusUpgradeType.extend);
 //    }
 
-//    public boolean consumeVis(ItemStack is, Player player, Aspect aspect, int amount, boolean crafting) {
+//    public boolean consumeCentiVisNoThrow(ItemStack is, Player player, Aspect aspect, int amount, boolean crafting) {
 //        amount = (int) ((float) amount * this.getConsumptionModifier(is, player, aspect, crafting));
 //        if (this.getVis(is, aspect) >= amount) {
 //            this.storeVis(is, aspect, this.getVis(is, aspect) - amount);
@@ -248,7 +248,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        }
 //    }
 
-//    public boolean consumeAllVisCrafting(ItemStack is, Player player, AspectList aspects, boolean doit) {
+//    public boolean consumeAllCentiVisCrafting(ItemStack is, Player player, AspectList aspects, boolean doit) {
 //        if (aspects != null && aspects.size() != 0) {
 //            AspectList nl = new AspectList();
 //
@@ -257,13 +257,13 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //                nl.add(aspect, cost);
 //            }
 //
-//            return this.consumeAllVis(is, player, nl, doit, true);
+//            return this.consumeAllCentiVis(is, player, nl, doit, true);
 //        } else {
 //            return false;
 //        }
 //    }
 //
-//    public boolean consumeAllVis(ItemStack is, Player player, AspectList aspects, boolean doit, boolean crafting) {
+//    public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList aspects, boolean doit, boolean crafting) {
 //        if (aspects != null && aspects.size() != 0) {
 //            AspectList nl = new AspectList();
 //

@@ -38,10 +38,10 @@ public class WandCastingItem extends Item
         IWandCapOwner,
         IWandRodOwner,
         IEnchantmentRepairVisProvider,
-        IArcaneCraftingVisProvider,
+        IArcaneCraftingVisMultiplierProvider,
         IArcaneCraftingWand,
         IWandFocusEngine,
-        IVisContainer,
+        ICentiVisContainer,
         IWandComponentsOwner,
         IWandComponentNameOwner,
         AttackBlockListener,
@@ -109,7 +109,7 @@ public class WandCastingItem extends Item
         float result = 1.0F;
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component.getItem() instanceof IArcaneCraftingVisProvider provider){
+            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProvider provider){
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -156,24 +156,24 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public Map<Aspect, Integer> getAllVisOwning(ItemStack usingWand) {
+    public Map<Aspect, Integer> getAllCentiVisOwning(ItemStack usingWand) {
         CompoundTag tag = usingWand.getOrCreateTag();
         return WAND_OWING_VIS_ACCESSOR.readFromCompoundTag(tag);
     }
     @Override
-    public void storeVisOwning(ItemStack itemStack, Map<Aspect, Integer> aspects) {
+    public void storeCentiVisOwning(ItemStack itemStack, Map<Aspect, Integer> aspects) {
         CompoundTag tag = itemStack.getOrCreateTag();
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
     @Override
-    public Map<Aspect, Integer> getAllVisCapacity(ItemStack usingWand) {
+    public Map<Aspect, Integer> getAllCentiVisCapacity(ItemStack usingWand) {
         Map<Aspect, Integer> result = new HashMap<>();
         var components = getWandComponents(usingWand);
         for (var component : components){
             if (component.getItem() instanceof IAspectCapacityOwner owner){
-                owner.getAspectCapacity().forEach(
-                        (aspect,integer) -> result.merge(aspect,integer * getVisCapacityMultiplier(),Integer::sum));
+                owner.getCentiVisCapacity().forEach(
+                        (aspect,integer) -> result.merge(aspect,integer,Integer::sum));
             }
         }
         return result;

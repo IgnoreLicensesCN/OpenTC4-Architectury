@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -48,7 +47,7 @@ public class ItemFocusPech extends ItemFocusBasic {
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult mob) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       EntityPechBlast blast = new EntityPechBlast(world, p, wand.getFocusPotency(itemstack), wand.getFocusExtend(itemstack), this.isUpgradedWith(wand.getFocusItem(itemstack), nightshade));
-      if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
+      if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
          world.spawnEntityInWorld(blast);
          world.playSoundAtEntity(blast, "thaumcraft:ice", 0.4F, 1.0F + world.getRandom().nextFloat() * 0.1F);
       }

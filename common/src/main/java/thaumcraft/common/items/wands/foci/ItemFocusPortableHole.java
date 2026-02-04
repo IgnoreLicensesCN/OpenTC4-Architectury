@@ -121,7 +121,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
             c.mergeWithHighest(a, c.getAmount(a) * distance);
          }
 
-         if (wand.consumeAllVis(itemstack, player, c, true, false)) {
+         if (wand.consumeAllCentiVis(itemstack, player, c, true, false)) {
             int di = this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.extend);
             short dur = (short)(120 + 60 * di);
             createHole(world, mop.blockX, mop.blockY, mop.blockZ, mop.sideHit, (byte)(distance + 1), dur);

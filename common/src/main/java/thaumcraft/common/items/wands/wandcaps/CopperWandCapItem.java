@@ -29,7 +29,7 @@ public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
     private final Map<Aspect,Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(2));
     @Override
-    public Map<Aspect, Integer> getCraftingCostAspect() {
+    public Map<Aspect, Integer> getCraftingCostCentiVis() {
         return cost;
     }
 }

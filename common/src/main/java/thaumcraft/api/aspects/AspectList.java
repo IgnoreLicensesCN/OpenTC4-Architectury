@@ -8,15 +8,13 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.Thaumcraft;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 import static com.linearity.opentc4.Consts.AspectCompoundTagAccessors.*;
@@ -33,14 +31,12 @@ public class AspectList implements Serializable {
 	 * @param stack the itemstack of the given item
 	 */
 	public AspectList(ItemStack stack) {
-		try {
-			AspectList temp = ThaumcraftApiHelper.getObjectAspects(stack);
-			if (temp!=null) {
-				for (Aspect tag : temp.getAspectTypes()) {
-					addAll(tag, temp.getAmount(tag));
-				}
+		AspectList temp = ThaumcraftApiHelper.getObjectAspects(stack);
+		if (temp!=null) {
+			for (Aspect tag : temp.getAspectTypes()) {
+				addAll(tag, temp.getAmount(tag));
 			}
-		} catch (Exception ignored) {}
+		}
 	}
 	
 	public AspectList() {
@@ -120,7 +116,7 @@ public class AspectList implements Serializable {
 	public Aspect[] getPrimalAspects() {
 		AspectList t = new AspectList();
 		for (Aspect as:aspects.keySet()) {
-			if (as.isPrimal()) {
+			if (as instanceof PrimalAspect) {
 				t.addAll(as,1);
 			}
 		}
@@ -435,5 +431,20 @@ public class AspectList implements Serializable {
 		}
 		return this.getAspects().keySet()
 				.toArray(new Aspect[0])[randomSource.nextInt(this.size())];
+	}
+
+	public boolean isEmpty(){
+		return this.aspects.isEmpty();
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass() + "{" +
+				"aspects=" + aspects +
+				", aspectView=" + Arrays.toString(aspectView.entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + ":" + entry.getValue())
+                .toArray()) +
+				'}';
 	}
 }
