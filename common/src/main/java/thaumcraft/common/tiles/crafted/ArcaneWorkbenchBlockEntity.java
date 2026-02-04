@@ -1,10 +1,12 @@
 package thaumcraft.common.tiles.crafted;
 
 import com.linearity.opentc4.OpenTC4;
+import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.ICentiVisContainer;
@@ -27,7 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 
-public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements WorldlyContainer, MenuProvider {
+public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements WorldlyContainer, ExtendedMenuProvider {
     public static final int SIZE = 11;
     public static final int INPUT_SIZE = 11;
     public static final int WAND_SLOT = 9;
@@ -170,7 +173,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements Worldl
         return inventory.get(WAND_SLOT);
     }
 
-    public boolean canWandSatisfyCentiVisConsumption(CentiVisList centiVisList){
+    public boolean canWandSatisfyCentiVisConsumption(CentiVisList<Aspect> centiVisList){
         if (centiVisList.isEmpty()){
             return true;
         }
@@ -234,12 +237,11 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements Worldl
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new ArcaneWorkbenchMenu(
-                i,inventory,
-                this.level == null
-                        ? ContainerLevelAccess.NULL
-                        : ContainerLevelAccess.create(this.level, this.getBlockPos()),
-                this
-        );
+        return new ArcaneWorkbenchMenu(i,inventory, this);
+    }
+
+    @Override
+    public void saveExtraData(FriendlyByteBuf buf) {
+        buf.writeBlockPos(this.getBlockPos());
     }
 }

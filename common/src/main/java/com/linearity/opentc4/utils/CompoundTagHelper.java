@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 
 import java.util.*;
 
@@ -110,7 +111,7 @@ public class CompoundTagHelper {
             if (json == null) return map;
             for (var entry : json.entrySet()) {
                 String aspectName = entry.getKey();
-                var aspect = ALL_ASPECTS.get(aspectName);
+                var aspect = ALL_ASPECTS.get(new ResourceLocation(aspectName));
                 if (aspect == null) {
                     OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", aspectName, tagKey);
                     continue;
@@ -204,6 +205,38 @@ public class CompoundTagHelper {
         @Override
         public void writeToCompoundTag(CompoundTag tag,@NotNull ResourceLocation value) {
             tag.putString(tagKey, String.valueOf(value));
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey, Tag.TAG_STRING);
+        }
+    }
+    public static class AspectAccessor extends CompoundTagAccessor<Aspect> {
+        protected final ResourceLocationTagAccessor resourceLocationAccessor;
+        public AspectAccessor(String tagKey) {
+            super(tagKey, Aspect.class);
+            resourceLocationAccessor = new ResourceLocationTagAccessor(tagKey);
+        }
+
+        @Override
+        @NotNull
+        public Aspect readFromCompoundTag(CompoundTag tag) {
+            var resLoc = resourceLocationAccessor.readFromCompoundTag(tag);
+            if (resLoc.getPath().isEmpty()){
+                return Aspects.EMPTY;
+            }
+            var result = Aspects.ALL_ASPECTS.get(resLoc);
+            if (result == null) {
+                OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", resLoc, tag,new Exception());
+                return Aspects.EMPTY;
+            }
+            return result;
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag,@NotNull Aspect value) {
+            resourceLocationAccessor.writeToCompoundTag(tag,value.getTag());
         }
 
         @Override

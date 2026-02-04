@@ -13,7 +13,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.gui.ThaumcraftGUI;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
@@ -28,36 +27,23 @@ import static thaumcraft.api.ThaumcraftApi.getIArcaneRecipes;
 public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 
 
-    protected final ArcaneWorkbenchBlockEntity workbench;
+    protected final @NotNull ArcaneWorkbenchBlockEntity workbench;
     protected final CraftingContainer craftingContainer;
     protected final ArcaneWorkbenchResultContainer resultContainer = new ArcaneWorkbenchResultContainer();
-    protected final ContainerLevelAccess access;
     protected final Player player;
-
-    public ArcaneWorkbenchMenu(int id, Inventory inventory) {
-        this(ThaumcraftGUI.ARCANE_WORKBENCH,
-                id,
-                inventory,
-                ContainerLevelAccess.NULL,
-                new ArcaneWorkbenchBlockEntity(inventory.player.blockPosition(),ThaumcraftBlocks.ARCANE_WORKBENCH.defaultBlockState())
-        );
-    }
 
     public ArcaneWorkbenchMenu(
             int containerID,
             Inventory inventory,
-            ContainerLevelAccess containerLevelAccess,
             ArcaneWorkbenchBlockEntity workbench){
-        this(ThaumcraftGUI.ARCANE_WORKBENCH,containerID,inventory,containerLevelAccess,workbench);
+        this(ThaumcraftGUI.ARCANE_WORKBENCH,containerID,inventory,workbench);
     }
     public ArcaneWorkbenchMenu(
             MenuType<ArcaneWorkbenchMenu> menuType,
             int containerID,
             Inventory inventory,
-            ContainerLevelAccess containerLevelAccess,
-            ArcaneWorkbenchBlockEntity workbench) {
+            @NotNull ArcaneWorkbenchBlockEntity workbench) {
         super(menuType, containerID);
-        this.access = containerLevelAccess;
         this.workbench = workbench;
         this.player = inventory.player;
 
@@ -89,17 +75,17 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             }
 
             @Override
-            public ItemStack getItem(int i) {
+            public @NotNull ItemStack getItem(int i) {
                 return workbench.getItem(i);
             }
 
             @Override
-            public ItemStack removeItem(int i, int j) {
+            public @NotNull ItemStack removeItem(int i, int j) {
                 return workbench.removeItem(i, j);
             }
 
             @Override
-            public ItemStack removeItemNoUpdate(int i) {
+            public @NotNull ItemStack removeItemNoUpdate(int i) {
                 return workbench.removeItemNoUpdate(i);
             }
 
@@ -169,10 +155,8 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 
     @Override
     public void slotsChanged(Container container) {
-        this.access.execute((level, blockPos) ->
-                slotChangedCraftingGrid(this, level,
-                this.player, this.craftingContainer, this.resultContainer)
-        );
+        slotChangedCraftingGrid(this, this.workbench.getLevel(),
+                this.player, this.craftingContainer, this.resultContainer);
     }
 
 
@@ -183,6 +167,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             CraftingContainer craftingContainer,
             ArcaneWorkbenchResultContainer resultContainer
     ) {
+        assert level != null;
         if (!level.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             ItemStack itemStack = ItemStack.EMPTY;
@@ -233,7 +218,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (i == 0) {
-                this.access.execute((level, blockPos) -> itemStack2.getItem().onCraftedBy(itemStack2, level, player));
+                itemStack2.getItem().onCraftedBy(itemStack2, this.workbench.getLevel(), player);
                 if (!this.moveItemStackTo(itemStack2, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }
@@ -275,7 +260,12 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.access, player, ThaumcraftBlocks.ARCANE_WORKBENCH);
+        var blockPos = workbench.getBlockPos();
+        if (player.distanceToSqr(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5) <= 64.0){
+            return true;
+        }
+        var level = workbench.getLevel();
+        return level != null && level.getBlockEntity(blockPos) == workbench;
     }
 
     @Override

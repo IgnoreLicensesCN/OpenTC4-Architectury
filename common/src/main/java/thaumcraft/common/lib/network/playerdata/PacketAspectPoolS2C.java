@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,14 +16,14 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
    public static MessageType messageType;
 
-   private String key;
+   private ResourceLocation key;
    private int amount;
    private int total;
    private static long lastSound = 0L;
 
    public PacketAspectPoolS2C() {}
 
-   public PacketAspectPoolS2C(String key, int amount, int total) {
+   public PacketAspectPoolS2C(ResourceLocation key, int amount, int total) {
       this.key = key;
       this.amount = amount;
       this.total = total;
@@ -30,13 +31,13 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
 
    // ------------------ 编码/解码 ------------------
    public static void encode(PacketAspectPoolS2C msg, FriendlyByteBuf buf) {
-      buf.writeUtf(msg.key);
+      buf.writeResourceLocation(msg.key);
       buf.writeInt(msg.amount);
       buf.writeInt(msg.total);
    }
 
    public static PacketAspectPoolS2C decode(FriendlyByteBuf buf) {
-      String key = buf.readUtf();
+      ResourceLocation key = buf.readResourceLocation();
       short amount = buf.readShort();
       short total = buf.readShort();
       return new PacketAspectPoolS2C(key, amount, total);

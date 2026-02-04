@@ -207,4 +207,11 @@ public class Consts {
         public static final CompoundTagHelper.ItemStackTagAccessor PROCESSING_ITEM_STACK_ACCESSOR = new CompoundTagHelper.ItemStackTagAccessor(PROCESSING_ITEM_STACK);
     }
 
+    public static class DeconstructionTableBlockEntityTagAccessors {
+        private static final String STORING_ASPECT = "storing_aspect";
+        public static final CompoundTagHelper.AspectAccessor STORING_ASPECT_ACCESSOR = new CompoundTagHelper.AspectAccessor(STORING_ASPECT);
+        private static final String BREAK_TIME_REMAINING = "break_time_remaining";
+        public static final CompoundTagHelper.IntTagAccessor BREAK_TIME_ACCESSOR = new CompoundTagHelper.IntTagAccessor(BREAK_TIME_REMAINING);
+    }
+
 }

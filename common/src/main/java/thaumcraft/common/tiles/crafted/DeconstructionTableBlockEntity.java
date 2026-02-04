@@ -1,15 +1,19 @@
 package thaumcraft.common.tiles.crafted;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.registry.menu.ExtendedMenuProvider;
+import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,16 +21,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.blocks.crafted.DeconstructionTableBlock;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.gui.menu.DeconstructionTableMenu;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.BREAK_TIME_ACCESSOR;
+import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.STORING_ASPECT_ACCESSOR;
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusTags;
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
 
-public class DeconstructionTableBlockEntity extends TileThaumcraft implements WorldlyContainer, MenuProvider {
+public class DeconstructionTableBlockEntity extends TileThaumcraft implements WorldlyContainer, ExtendedMenuProvider {
 
-    public Aspect currentContainingAspect;
+    public @NotNull Aspect storingAspect = Aspects.EMPTY;
     public int breakTimeRemaining = 0;
     public static final int MAX_BREAK_TIME = 40;
     protected NonNullList<ItemStack> inventory = NonNullList.withSize(1,ItemStack.EMPTY);
@@ -52,11 +59,21 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-
+        ContainerHelper.loadAllItems(compoundTag, inventory);
+        storingAspect = STORING_ASPECT_ACCESSOR.readFromCompoundTag(compoundTag);
+        breakTimeRemaining = BREAK_TIME_ACCESSOR.readFromCompoundTag(compoundTag);
     }
 
     @Override
-    public int[] getSlotsForFace(Direction direction) {
+    public void writeCustomNBT(CompoundTag compoundTag) {
+        super.writeCustomNBT(compoundTag);
+        ContainerHelper.saveAllItems(compoundTag, inventory);
+        STORING_ASPECT_ACCESSOR.writeToCompoundTag(compoundTag,storingAspect);
+        BREAK_TIME_ACCESSOR.writeToCompoundTag(compoundTag,breakTimeRemaining);
+    }
+
+    @Override
+    public int @NotNull [] getSlotsForFace(Direction direction) {
         return SLOTS;
     }
 
@@ -81,7 +98,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
     }
 
     @Override
-    public ItemStack getItem(int i) {
+    public @NotNull ItemStack getItem(int i) {
         return inventory.get(i);
     }
 
@@ -135,17 +152,13 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.translatable("block.thaumcraft.deconstruction_table");
     }
 
-    @Override
-    public @NotNull DeconstructionTableMenu createMenu(int i, Inventory inventory, Player player) {
-        return ;
-    }
 
     public void tick(){
-        if (currentContainingAspect != null) {
+        if (!storingAspect.isEmpty()) {
             breakTimeRemaining = 0;
             return;
         }
@@ -164,13 +177,28 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
             breakTimeRemaining-=1;
             return;
         }
-        deconstructingStack.shrink(1);
-        if (deconstructingStack.isEmpty()){
-            inventory.set(THE_ONLY_SLOT,ItemStack.EMPTY);
+        breakTimeRemaining = MAX_BREAK_TIME;
+        if (Platform.getEnvironment() == Env.SERVER){
+            deconstructingStack.shrink(1);
+            if (deconstructingStack.isEmpty()){
+                inventory.set(THE_ONLY_SLOT,ItemStack.EMPTY);
+            }
+            var randomSource = this.level != null? this.level.random : RandomSource.createNewThreadLocalInstance();
+            var reducedAspects = ResearchManager.reduceToPrimals(additionalAspects);
+            if (randomSource.nextInt(80) < reducedAspects.visSize()) {
+                this.storingAspect = reducedAspects.randomAspect(randomSource);
+            }
         }
-        var reducedAspects = ResearchManager.reduceToPrimals(additionalAspects);
-        if (this.level.random.nextInt(80) < reducedAspects.visSize()) {
-            this.currentContainingAspect = reducedAspectsArray[this.level.random.nextInt(reducedAspectsArray.length)];
-        }
+        markDirtyAndUpdateSelf();
+    }
+
+    @Override
+    public void saveExtraData(FriendlyByteBuf buf) {
+        buf.writeBlockPos(this.worldPosition);
+    }
+
+    @Override
+    public @Nullable DeconstructionTableMenu createMenu(int i, Inventory inventory, Player player) {
+        return new DeconstructionTableMenu(i,inventory,this);
     }
 }

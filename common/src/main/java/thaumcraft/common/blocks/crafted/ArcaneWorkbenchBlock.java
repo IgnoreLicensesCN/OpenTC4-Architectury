@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,6 +18,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
+
+import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
 public class ArcaneWorkbenchBlock extends Block implements EntityBlock {
     //TODO:BER
@@ -40,8 +43,8 @@ public class ArcaneWorkbenchBlock extends Block implements EntityBlock {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity be = level.getBlockEntity(blockPos);
-            if (be instanceof ArcaneWorkbenchBlockEntity arcaneWorkbench) {
-                player.openMenu(arcaneWorkbench);
+            if (be instanceof ArcaneWorkbenchBlockEntity arcaneWorkbench && player instanceof ServerPlayer serverPlayer) {
+                openExtendedMenu(serverPlayer,arcaneWorkbench);
             }
             return InteractionResult.CONSUME;
         }

@@ -1,9 +1,14 @@
 package thaumcraft.api.aspects;
 
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.displayhelper.AspectItem;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Aspects {
     public static final LinkedHashMap<ResourceLocation,Aspect> ALL_ASPECTS = new LinkedHashMap<>();
@@ -68,4 +73,35 @@ public class Aspects {
     public static final CompoundAspect CLOTH = new CompoundAspect(new ResourceLocation(Thaumcraft.MOD_ID, "pannus"),0xeaeac2, new AspectComponent(TOOL, BEAST));
     public static final CompoundAspect MECHANISM = new CompoundAspect(new ResourceLocation(Thaumcraft.MOD_ID, "machina"),0x8080a0, new AspectComponent(MOTION, TOOL));
     public static final CompoundAspect TRAP = new CompoundAspect(new ResourceLocation(Thaumcraft.MOD_ID, "vinculum"),0x9a8080, new AspectComponent(MOTION, ENTROPY));
+    public static final Aspect EMPTY = new Aspect(
+            new ResourceLocation(Thaumcraft.MOD_ID,""),
+            0x000000,
+            new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
+            1,
+            true) {
+        @Override
+        public boolean isEmpty() {
+            return true;
+        }
+    };
+
+    public static final Map<ResourceLocation, AspectItem> ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP = new HashMap<>();
+    public static final Map<ResourceLocation, RegistrySupplier<AspectItem>> ASPECT_RESOURCE_LOCATION_TO_ITEM_SUPPLIER_MAP = new HashMap<>();
+    public static void init(){
+        //you can surly call it many times.
+        for (var aspectResAndInstanceLoc:ALL_ASPECTS.entrySet()){
+            var aspectResLoc = aspectResAndInstanceLoc.getKey();
+            var aspectInstance = aspectResAndInstanceLoc.getValue();
+            ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP.computeIfAbsent(aspectResLoc,
+                    aspResLocation -> {
+                var supplier = ASPECT_RESOURCE_LOCATION_TO_ITEM_SUPPLIER_MAP.computeIfAbsent(
+                        aspResLocation, aspResLocationToCompute -> ThaumcraftItems.Registry.ITEMS.register(
+                                aspResLocationToCompute,() -> new AspectItem(aspectInstance)
+                        )
+                );
+                return supplier.get();
+                    }
+            );
+        }
+    }
 }

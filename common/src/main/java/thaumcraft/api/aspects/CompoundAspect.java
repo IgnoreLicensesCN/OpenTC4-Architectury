@@ -1,5 +1,6 @@
 package thaumcraft.api.aspects;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +11,7 @@ public class CompoundAspect extends Aspect {
     public final @NotNull AspectComponent components;
 
 
-    public CompoundAspect(ResourceLocation tag, int color, @NotNull AspectComponent components, ResourceLocation image, int blend) {
+    public CompoundAspect(ResourceLocation tag, @RGBColor int color, @NotNull AspectComponent components, ResourceLocation image, int blend) {
         super(tag,color,image,blend);
         this.components = components;
         COMPOUND_ASPECTS.put(tag,this);
@@ -19,14 +20,14 @@ public class CompoundAspect extends Aspect {
     /**
      * Shortcut constructor I use for the default aspects - you shouldn't be using this.
      */
-    public CompoundAspect(ResourceLocation tag, int color, AspectComponent components) {
+    public CompoundAspect(ResourceLocation tag, @RGBColor int color, AspectComponent components) {
         this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
     }
 
     /**
      * Shortcut constructor I use for the default aspects - you shouldn't be using this.
      */
-    public CompoundAspect(ResourceLocation tag, int color, AspectComponent components, int blend) {
+    public CompoundAspect(ResourceLocation tag, @RGBColor int color, AspectComponent components, int blend) {
         this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
     }
 

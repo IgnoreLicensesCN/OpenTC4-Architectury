@@ -1,16 +1,15 @@
 package thaumcraft.api.aspects;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class Aspect {
 
-	
 	public final @NotNull ResourceLocation tag;
 	public final int color;
 	public final @NotNull ResourceLocation image;
@@ -23,7 +22,7 @@ public abstract class Aspect {
 	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
-	public Aspect(@NotNull ResourceLocation tag, int color, @NotNull ResourceLocation image, int blend) {
+	public Aspect(@NotNull ResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
 		if (Aspects.ALL_ASPECTS.containsKey(tag)) throw new IllegalArgumentException(tag+" already registered!");
 		this.tag = tag;
 		this.color = color;
@@ -31,18 +30,24 @@ public abstract class Aspect {
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(tag, this);
 	}
+	protected Aspect(@NotNull ResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend,boolean noRegisterArg) {
+		this.tag = tag;
+		this.color = color;
+		this.image = image;
+		this.blend = blend;
+	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(ResourceLocation tag, int color) {
+	public Aspect(ResourceLocation tag, @RGBColor int color) {
 		this(tag,color,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
 	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(ResourceLocation tag, int color, int blend) {
+	public Aspect(ResourceLocation tag, @RGBColor int color, int blend) {
 		this(tag,color,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
 	}
 
@@ -61,6 +66,10 @@ public abstract class Aspect {
 	
 	public ResourceLocation getTag() {
 		return tag;
+	}
+
+	public boolean isEmpty() {
+		return false;
 	}
 	
 	public static Aspect getAspect(ResourceLocation tag) {
