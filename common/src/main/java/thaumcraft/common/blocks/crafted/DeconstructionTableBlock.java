@@ -2,6 +2,8 @@ package thaumcraft.common.blocks.crafted;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +25,7 @@ import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
 public class DeconstructionTableBlock extends Block implements EntityBlock {
+    //TODO:BER
     public DeconstructionTableBlock(Properties properties) {
         super(properties);
     }
@@ -62,5 +65,18 @@ public class DeconstructionTableBlock extends Block implements EntityBlock {
             };
         }
         return null;
+    }
+
+    @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        if (!blockState.is(blockState2.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof Container container) {
+                Containers.dropContents(level, blockPos, container);
+                level.updateNeighbourForOutputSignal(blockPos, this);
+            }
+
+            super.onRemove(blockState, level, blockPos, blockState2, bl);
+        }
     }
 }

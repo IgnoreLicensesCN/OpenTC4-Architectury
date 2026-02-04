@@ -11,6 +11,9 @@
     "thaumcraft:greatwood_planks",
     "thaumcraft:silverwood_knot_log",
     "thaumcraft:silverwood_log",
-    "thaumcraft:greatwood_log"
+    "thaumcraft:greatwood_log",
+    "thaumcraft:table",
+    "thaumcraft:arcane_workbench",
+    "thaumcraft:deconstruction_table"
   ]
 }

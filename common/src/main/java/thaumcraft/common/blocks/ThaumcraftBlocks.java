@@ -532,7 +532,7 @@ public class ThaumcraftBlocks {
                 RunedStoneBlock::new
         );
 
-        //        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+//        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
 //                "block_of_flesh",
 //                FleshBlock::new
 //        );//shouldn't be this.This is crafted and cant spread taint in latest 1.7.10 TC4

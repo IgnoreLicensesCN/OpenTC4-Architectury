@@ -32,7 +32,6 @@ import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusT
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
 
 public class DeconstructionTableBlockEntity extends TileThaumcraft implements WorldlyContainer, ExtendedMenuProvider {
-
     public @NotNull Aspect storingAspect = Aspects.EMPTY;
     public int breakTimeRemaining = 0;
     public static final int MAX_BREAK_TIME = 40;

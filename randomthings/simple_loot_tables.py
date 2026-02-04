@@ -1,7 +1,6 @@
 import json
 import os
 
-# 这里填你的方块名字列表
 drop_self_block_names = [
     "cinnabar_ore",
     "greatwood_log",
@@ -52,7 +51,10 @@ drop_self_block_names = [
     "mana_shroom",
     "ethereal_bloom",
     "arcane_bellow",
-    'glowing_crusted_stone'
+    'glowing_crusted_stone',
+    'table',
+    'arcane_workbench',
+    'deconstruction_table'
 ]
 
 drop_b_for_a_names = [

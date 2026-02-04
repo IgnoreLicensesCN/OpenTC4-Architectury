@@ -3,9 +3,7 @@ package thaumcraft.common.blocks.crafted;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -47,6 +45,20 @@ public class ArcaneWorkbenchBlock extends Block implements EntityBlock {
                 openExtendedMenu(serverPlayer,arcaneWorkbench);
             }
             return InteractionResult.CONSUME;
+        }
+    }
+
+
+    @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        if (!blockState.is(blockState2.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof Container container) {
+                Containers.dropContents(level, blockPos, container);
+                level.updateNeighbourForOutputSignal(blockPos, this);
+            }
+
+            super.onRemove(blockState, level, blockPos, blockState2, bl);
         }
     }
 }
