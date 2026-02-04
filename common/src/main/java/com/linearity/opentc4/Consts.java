@@ -38,9 +38,22 @@ public class Consts {
         private static final String RESEARCH = "THAUMCRAFT.RESEARCH";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(RESEARCH);
+        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor("research");
+        private static final String CLUE = "THAUMCRAFT.CLUE";
+
+        public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
+                new CompoundTagHelper.ListTagAccessor(CLUE);
+        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_CLUE_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor("clue");
         private static final String ASPECTS = "THAUMCRAFT.ASPECTS";
+
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(ASPECTS);
+        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_ASPECT_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor("aspect");
+        public static final CompoundTagHelper.IntTagAccessor LIST_TAG_ASPECT_INT_ACCESSOR =
+                new CompoundTagHelper.IntTagAccessor("aspect_amount");
 
         private static final String SCAN_OBJECTS = "THAUMCRAFT.SCAN.OBJECTS";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR =
@@ -56,14 +69,14 @@ public class Consts {
 
 
         private static final String SCAN_OBJECT_ITEM = "scannedObj";
-        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_OBJECT_ACCESSOR =
+        public static final CompoundTagHelper.StringTagAccessor LIST_TAG_SCANNED_OBJECT_ACCESSOR =
                 new CompoundTagHelper.StringTagAccessor(SCAN_OBJECT_ITEM);
 
         private static final String SCAN_ENTITY_ITEM = "scannedEntity";
-        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_ENTITY_ACCESSOR =
+        public static final CompoundTagHelper.StringTagAccessor LIST_TAG_SCANNED_ENTITY_ACCESSOR =
                 new CompoundTagHelper.StringTagAccessor(SCAN_ENTITY_ITEM);
         private static final String SCAN_PHENOMENA_ITEM = "scannedPhenomena";
-        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_PHENOMENA_ACCESSOR =
+        public static final CompoundTagHelper.StringTagAccessor LIST_TAG_SCANNED_PHENOMENA_ACCESSOR =
                 new CompoundTagHelper.StringTagAccessor(SCAN_PHENOMENA_ITEM);
     }
 
@@ -98,8 +111,8 @@ public class Consts {
 
     public static class ResearchNoteCompoundTagAccessors {
         private static final String RESEARCH_NOTE_KEY = "key";
-        public static final CompoundTagHelper.StringTagAccessor RESEARCH_NOTE_KEY_ACCESSOR =
-                new CompoundTagHelper.StringTagAccessor(RESEARCH_NOTE_KEY);
+        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_KEY_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor(RESEARCH_NOTE_KEY);
 
         private static final String RESEARCH_NOTE_COLOR = "color";
         public static final CompoundTagHelper.IntTagAccessor RESEARCH_NOTE_COLOR_ACCESSOR =

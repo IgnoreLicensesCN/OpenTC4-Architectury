@@ -11,14 +11,14 @@ import java.util.LinkedHashMap;
 public class ResearchCategories {
 	
 	//Research
-	public static LinkedHashMap <String, ResearchCategoryList> researchCategories = new LinkedHashMap<>();
+	public static LinkedHashMap <ResourceLocation, ResearchCategoryList> researchCategories = new LinkedHashMap<>();
 	
 	/**
-	 * @param key
-	 * @return the research item linked to this key
+	 * @param categoryKey
+	 * @return the research item linked to this categoryKey
 	 */
-	public static ResearchCategoryList getResearchList(String key) {
-		return researchCategories.get(key);
+	public static ResearchCategoryList getResearchList(ResourceLocation categoryKey) {
+		return researchCategories.get(categoryKey);
 	}
 	
 	/**
@@ -26,15 +26,15 @@ public class ResearchCategories {
 	 * @return the name of the research category linked to this key. 
 	 * Must be stored as localization information in the LanguageRegistry.
 	 */
-	public static String getCategoryName(String key) {
-		return StatCollector.translateToLocal("tc.research_category."+key);
+	public static String getCategoryName(ResourceLocation key) {
+		return StatCollector.translateToLocal("tc.research_category."+key.getNamespace()+"."+key.getPath());
 	}
 
 	/**
 	 * @param key the research key
 	 * @return the ResearchItem object.
 	 */
-	public static ResearchItem getResearch(String key) {
+	public static ResearchItem getResearch(ResourceLocation key) {
 		return GetResearch.getResearch(key);
 //		Collection<ResearchCategoryList> rc = researchCategories.values();
 //		for (ResearchCategoryList cat:rc) {
@@ -55,7 +55,7 @@ public class ResearchCategories {
 	 * @param background the resource location of the background image to use for this category
 	 * @return the name of the research linked to this key
 	 */
-	public static void registerCategory(String key, ResourceLocation icon, ResourceLocation background) {
+	public static void registerCategory(ResourceLocation key, ResourceLocation icon, ResourceLocation background) {
 		if (getResearchList(key)==null) {
 			ResearchCategoryList rl = new ResearchCategoryList(icon, background);
 			researchCategories.put(key, rl);

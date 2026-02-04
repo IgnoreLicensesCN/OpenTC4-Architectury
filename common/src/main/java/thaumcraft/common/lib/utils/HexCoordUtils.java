@@ -5,17 +5,16 @@ import net.minecraft.util.RandomSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 //not 0xffffff hex,it's for research
-public class HexUtils {
+public class HexCoordUtils {
    static final int[][] NEIGHBOURS = new int[][]{{1, 0}, {1, -1}, {0, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
-   public static int getDistance(Hex a1, Hex a2) {
+   public static int getDistance(HexCoord a1, HexCoord a2) {
       return (Math.abs(a1.q - a2.q) + Math.abs(a1.r - a2.r) + Math.abs(a1.q + a1.r - a2.q - a2.r)) / 2;
    }
 
-   public static Hex getRoundedHex(double qq, double rr) {
+   public static HexCoord getRoundedHex(double qq, double rr) {
       return getRoundedCubicHex(qq, rr, -qq - rr).toHex();
    }
 
@@ -37,14 +36,14 @@ public class HexUtils {
       return new CubicHex(rx, ry, rz);
    }
 
-   public static List<Hex> getRing(int radius) {
-      Hex h = new Hex(0, 0);
+   public static List<HexCoord> getRing(int radius) {
+      HexCoord h = new HexCoord(0, 0);
 
       for(int k = 0; k < radius; ++k) {
          h = h.getNeighbour(4);
       }
 
-      ArrayList<Hex> ring = new ArrayList<>();
+      ArrayList<HexCoord> ring = new ArrayList<>();
 
       for(int i = 0; i < 6; ++i) {
          for(int j = 0; j < radius; ++j) {
@@ -56,9 +55,9 @@ public class HexUtils {
       return ring;
    }
 
-   public static List<Hex> distributeRingRandomly(int radius, int entries, RandomSource random) {
-      List<Hex> ring = getRing(radius);
-      List<Hex> results = new ArrayList<>();
+   public static List<HexCoord> distributeRingRandomly(int radius, int entries, RandomSource random) {
+      List<HexCoord> ring = getRing(radius);
+      List<HexCoord> results = new ArrayList<>();
       float spacing = (float)ring.size() / (float)entries;
       random.nextInt(ring.size());
       float pos = 0.0F;
@@ -71,14 +70,14 @@ public class HexUtils {
       return results;
    }
 
-   public static HashMap<String, Hex> generateHexes(int radius) {
-      HashMap<String, Hex> results = new HashMap<>();
-      Hex h = new Hex(0, 0);
+   public static HashMap<String, HexCoord> generateHexes(int radius) {
+      HashMap<String, HexCoord> results = new HashMap<>();
+      HexCoord h = new HexCoord(0, 0);
       results.put(h.toString(), h);
 
       for(int k = 0; k < radius; ++k) {
          h = h.getNeighbour(4);
-         Hex hd = new Hex(h.q, h.r);
+         HexCoord hd = new HexCoord(h.q, h.r);
 
          for(int i = 0; i < 6; ++i) {
             for(int j = 0; j <= k; ++j) {
@@ -91,11 +90,11 @@ public class HexUtils {
       return results;
    }
 
-   public static class Hex {
+   public static class HexCoord {
       public int q = 0;
       public int r = 0;
 
-      public Hex(int q, int r) {
+      public HexCoord(int q, int r) {
          this.q = q;
          this.r = r;
       }
@@ -108,12 +107,12 @@ public class HexUtils {
          return new Pixel((double)size * (double)1.5F * (double)this.q, (double)size * Math.sqrt(3.0F) * ((double)this.r + (double)this.q / (double)2.0F));
       }
 
-      public Hex getNeighbour(int direction) {
-         int[] d = HexUtils.NEIGHBOURS[direction];
-         return new Hex(this.q + d[0], this.r + d[1]);
+      public HexCoord getNeighbour(int direction) {
+         int[] d = HexCoordUtils.NEIGHBOURS[direction];
+         return new HexCoord(this.q + d[0], this.r + d[1]);
       }
 
-      public boolean equals(Hex h) {
+      public boolean equals(HexCoord h) {
          return h.q == this.q && h.r == this.r;
       }
 
@@ -133,8 +132,8 @@ public class HexUtils {
          this.z = z;
       }
 
-      public Hex toHex() {
-         return new Hex(this.x, this.z);
+      public HexCoord toHex() {
+         return new HexCoord(this.x, this.z);
       }
    }
 
@@ -147,10 +146,10 @@ public class HexUtils {
          this.y = y;
       }
 
-      public Hex toHex(int size) {
+      public HexCoord toHex(int size) {
          double qq = 0.6666666666666666 * this.x / (double)size;
          double rr = (0.3333333333333333 * Math.sqrt(3.0F) * -this.y - 0.3333333333333333 * this.x) / (double)size;
-         return HexUtils.getRoundedHex(qq, rr);
+         return HexCoordUtils.getRoundedHex(qq, rr);
       }
    }
 }

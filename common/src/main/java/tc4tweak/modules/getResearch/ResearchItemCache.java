@@ -1,5 +1,6 @@
 package tc4tweak.modules.getResearch;
 
+import net.minecraft.resources.ResourceLocation;
 import tc4tweak.modules.FlushableCache;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
@@ -9,9 +10,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class ResearchItemCache extends FlushableCache<Map<String, ResearchItem>> {
+class ResearchItemCache extends FlushableCache<Map<ResourceLocation, ResearchItem>> {
     @Override
-    protected Map<String, ResearchItem> createCache() {
+    protected Map<ResourceLocation, ResearchItem> createCache() {
         return ResearchCategories.researchCategories.values().stream()
                 .flatMap(l -> l.research.values().stream())
                 .collect(Collectors.toMap(

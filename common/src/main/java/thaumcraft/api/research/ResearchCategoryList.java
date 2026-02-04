@@ -29,7 +29,7 @@ public class ResearchCategoryList {
 	}
 
 	//Research
-	public Map<String, ResearchItem> research = new HashMap<>();
+	public Map<ResourceLocation, ResearchItem> research = new HashMap<>();
 		
 		
 	

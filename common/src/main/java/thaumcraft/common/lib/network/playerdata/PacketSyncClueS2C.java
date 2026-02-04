@@ -1,20 +1,20 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
+public class PacketSyncClueS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_research";
     public static MessageType messageType;
 
@@ -22,11 +22,11 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
 
     // ---------------- 构造 ----------------
 
-    public PacketSyncResearchS2C(){}
+    public PacketSyncClueS2C(){}
     /**
      * 服务端发送用构造
      */
-    public PacketSyncResearchS2C(Player player) {
+    public PacketSyncClueS2C(Player player) {
         List<ResourceLocation> list = ResearchManager.getResearchForPlayer(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
     }
@@ -34,7 +34,7 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
     /**
      * 解码用构造
      */
-    public PacketSyncResearchS2C(List<ResourceLocation> data) {
+    public PacketSyncClueS2C(List<ResourceLocation> data) {
         this.data = data;
     }
 
@@ -48,13 +48,13 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
         }
     }
 
-    public static PacketSyncResearchS2C decode(FriendlyByteBuf buf) {
+    public static PacketSyncClueS2C decode(FriendlyByteBuf buf) {
         int size = buf.readInt();
         List<ResourceLocation> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(buf.readResourceLocation());
         }
-        return new PacketSyncResearchS2C(list);
+        return new PacketSyncClueS2C(list);
     }
 
     @Override
@@ -73,15 +73,15 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
     // ---------------- 客户端逻辑 ----------------
 
     public static class ClientHandler {
-        public static void handle(PacketSyncResearchS2C msg) {
+        public static void handle(PacketSyncClueS2C msg) {
             Player player = Minecraft.getInstance().player;
             if (player == null) return;
 
             for (var key : msg.data) {
-                Thaumcraft.researchManager.completeResearch(player, key);
+                Thaumcraft.researchManager.completeClue(player, key);
             }
 
-            GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), msg.data);
+            GuiResearchBrowser.completedClue.put(player.getGameProfile().getName(), msg.data);
         }
     }
 }

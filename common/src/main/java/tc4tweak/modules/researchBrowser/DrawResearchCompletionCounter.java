@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import tc4tweak.ClientUtils;
@@ -15,6 +16,7 @@ import thaumcraft.client.gui.GuiResearchBrowser;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -24,13 +26,13 @@ import static thaumcraft.client.gui.GuiResearchBrowser.completedResearch;
 
 public class DrawResearchCompletionCounter {
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+//        MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
     }
 
     private static boolean canUnlockResearch(ResearchItem res) {
         String playerName = Minecraft.getMinecraft().thePlayer.getGameProfile().getName();
         if (res.parents != null) {
-            for (String pt : res.parents) {
+            for (var pt : res.parents) {
                 ResearchItem parent = ResearchCategories.getResearch(pt);
                 if (parent != null && !completedResearch.get(playerName).contains(parent.key)) {
                     return false;
@@ -39,7 +41,7 @@ public class DrawResearchCompletionCounter {
         }
 
         if (res.parentsHidden != null) {
-            for (String pt : res.parentsHidden) {
+            for (var pt : res.parentsHidden) {
                 ResearchItem parent = ResearchCategories.getResearch(pt);
                 if (parent != null && !completedResearch.get(playerName).contains(parent.key)) {
                     return false;
@@ -57,17 +59,29 @@ public class DrawResearchCompletionCounter {
         ResearchCategoryList category = ResearchCategories.getResearchList(Utils.getActiveCategory());
         // filter away stuff that are auto unlocked but never shown. probably should just filter away virtual research,
         // but I'm not entirely sure how that field is actually used in practice, so let's be conservative for now
-        Map<String, ResearchItem> all = category.research.entrySet().stream().filter(e -> !(e.getValue().isAutoUnlock() && e.getValue().isVirtual())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<ResourceLocation, ResearchItem> all =
+                category.research.entrySet()
+                        .stream()
+                .filter(
+                        e ->
+                                !(e.getValue().isAutoUnlock()
+                                        && e.getValue().isVirtual()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         int total = all.size();
-        ArrayList<String> completedKeys = completedResearch.get(Minecraft.getMinecraft().thePlayer.getGameProfile().getName());
-        long completed = completedKeys.stream().filter(all::containsKey).count();
+        var player = Minecraft.getInstance().player;
+        if (player == null){
+            return;//player not exist?maybe not in game
+        }
+        List<ResourceLocation> completedResearches = completedResearch.get(player.getGameProfile().getName());
+        List<ResourceLocation> completedClues = completedResearch.get(player.getGameProfile().getName());
+        long completed = completedResearches.stream().filter(all::containsKey).count();
         long revealed = all.entrySet().stream().filter(e ->
-                completedKeys.contains(e.getKey())
-                || completedKeys.contains("@" + e.getKey())
+                completedResearches.contains(e.getKey())
+                || completedClues.contains(e.getKey())
                         ||
                         !(e.getValue().isLost()
                                 || e.getValue().isHidden()
-                                && !completedKeys.contains("@" + e.getValue().key)
+                                && !completedClues.contains(e.getValue().key)
                                 || e.getValue().isConcealed()
                                 && !canUnlockResearch(e.getValue()))
         ).count();

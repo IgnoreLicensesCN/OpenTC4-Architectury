@@ -10,17 +10,18 @@ import thaumcraft.api.aspects.AspectList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+//TODO:Separate
 public class ResearchItem
 {
 	/**
 	 * A short string used as a key for this research. Must be unique
 	 */
-	public final String key;
+	public final ResourceLocation key;
 	
 	/**
 	 * A short string used as a reference to the research category to which this must be added.
 	 */
-	public final String category;
+	public final ResourceLocation category;
 
 	/**
 	 * The aspect tags and their values required to complete this research
@@ -30,16 +31,16 @@ public class ResearchItem
     /**
      * This links to any research that needs to be completed before this research can be discovered or learnt.
      */
-    public String[] parents = null;
+    public ResourceLocation[] parents = null;
     
     /**
      * Like parent above, but a line will not be displayed in the thaumonomicon linking them. Just used to prevent clutter.
      */
-    public String[] parentsHidden = null;
+    public ResourceLocation[] parentsHidden = null;
     /**
      * any research linked to this that will be unlocked automatically when this research is complete
      */
-    public String[] siblings = null;
+    public ResourceLocation[] siblings = null;
 	
     /**
      * the horizontal position of the research icon
@@ -134,11 +135,11 @@ public class ResearchItem
 
 	private ResearchPage[] pages = null;
 	
-	public ResearchItem(String key, String category)
+	public ResearchItem(ResourceLocation key, ResourceLocation category)
     {
     	this.key = key;
     	this.category = category;
-    	this.tags = new AspectList();    	
+    	this.tags = new AspectList<>();
         this.icon_resource = null;
         this.icon_item = null;
         this.displayColumn = 0;
@@ -147,7 +148,7 @@ public class ResearchItem
         
     }
     
-    public ResearchItem(String key, String category, AspectList tags, int col, int row, int complex, ResourceLocation icon)
+    public ResearchItem(ResourceLocation key, ResourceLocation category, AspectList<Aspect> tags, int col, int row, int complex, ResourceLocation icon)
     {
     	this.key = key;
     	this.category = category;
@@ -160,8 +161,8 @@ public class ResearchItem
         if (complexity < 1) this.complexity = 1;
         if (complexity > 3) this.complexity = 3;
     }
-    
-    public ResearchItem(String key, String category, AspectList tags, int col, int row, int complex, ItemStack icon)
+
+    public ResearchItem(ResourceLocation key, ResourceLocation category, AspectList<Aspect> tags, int col, int row, int complex, ItemStack icon)
     {
     	this.key = key;
     	this.category = category;
@@ -211,7 +212,7 @@ public class ResearchItem
         return this;
     }
     
-    public ResearchItem setParents(String... par)
+    public ResearchItem setParents(ResourceLocation... par)
     {
         this.parents = par;
         return this;
@@ -219,13 +220,13 @@ public class ResearchItem
     
     
 
-	public ResearchItem setParentsHidden(String... par)
+	public ResearchItem setParentsHidden(ResourceLocation... par)
     {
         this.parentsHidden = par;
         return this;
     }
     
-    public ResearchItem setSiblings(String... sib)
+    public ResearchItem setSiblings(ResourceLocation... sib)
     {
         this.siblings = sib;
         return this;

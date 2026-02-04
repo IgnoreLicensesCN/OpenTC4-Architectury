@@ -1,14 +1,15 @@
 package thaumcraft.common.lib.research;
 
-import thaumcraft.common.lib.utils.HexUtils;
+import net.minecraft.resources.ResourceLocation;
+import thaumcraft.common.lib.utils.HexCoordUtils;
 
 import java.util.HashMap;
 
 public class ResearchNoteData {
-   public String key;
+   public ResourceLocation key;
    public int color;
    public HashMap<String,ResearchManager.HexEntry> hexEntries = new HashMap<>();
-   public HashMap<String, HexUtils.Hex> hexes = new HashMap<>();
+   public HashMap<String, HexCoordUtils.HexCoord> hexes = new HashMap<>();
    public boolean complete;
    public int copies;
 

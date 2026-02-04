@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.EnumChatFormatting;
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -43,7 +44,7 @@ public class ThaumonomiconIndexSearcher {
     private static Field f_mouseBuffer;
     private static GuiTextField thaumSearchField;
     private static int listDisplayOffset = 0;
-    private static String searchCategory;
+    private static ResourceLocation searchCategory;
     private static List<SearchQuery> searchResults = new ArrayList<>();
 
     public static void init() {

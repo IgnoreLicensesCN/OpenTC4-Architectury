@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerKnowledge {
    //TODO:Research string -> ResourceLocation
    public final Map<String, List<ResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
+   public final Map<String, List<ResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
    public final Map<String, AspectList<Aspect>> aspectsDiscovered = new ConcurrentHashMap<>();
    public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();
@@ -23,6 +24,7 @@ public class PlayerKnowledge {
 
    public void wipePlayerKnowledge(String player) {
       this.researchCompleted.remove(player);
+      this.clueCompleted.remove(player);
       this.aspectsDiscovered.remove(player);
       this.objectsScanned.remove(player);
       this.entitiesScanned.remove(player);

@@ -19,6 +19,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.research.IScanEventHandler;
 import thaumcraft.api.research.ScanResult;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.network.playerdata.PacketScannedToServerC2S;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;

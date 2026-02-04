@@ -491,7 +491,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static boolean completeScan(Player player, ScanResult scan, String prefix) {
-        AspectList aspects = null;
+        AspectList<Aspect> aspects = null;
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         boolean ret = false;

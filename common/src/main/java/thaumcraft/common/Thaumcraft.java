@@ -2,19 +2,14 @@ package thaumcraft.common;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.migrated.particles.FXBlockRunes;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.FakeThaumcraftPlayer;
 import thaumcraft.common.lib.events.EventHandlerRunic;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
 import thaumcraft.common.lib.research.PlayerKnowledge;
@@ -43,6 +38,9 @@ public class Thaumcraft {
 
     public static Map<String, List<ResourceLocation>> getCompletedResearch(){
         return playerKnowledge.researchCompleted;
+    }
+    public static Map<String, List<ResourceLocation>> getCompletedClue(){
+        return playerKnowledge.clueCompleted;
     }
 
     public static Map<String, List<String>> getScannedObjects(){

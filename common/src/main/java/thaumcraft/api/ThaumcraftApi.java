@@ -796,6 +796,7 @@ public class ThaumcraftApi {
     //WARP ///////////////////////////////////////////////////////////////////////////////////////
     private static final Map<Item, Integer> itemWarpMap = new ConcurrentHashMap<>();
     private static final Map<ResourceLocation, Integer> researchWarpMap = new ConcurrentHashMap<>();
+    private static final Map<ResourceLocation, Integer> clueWarpMap = new ConcurrentHashMap<>();
 
     /**
      * This method is used to determine how much warp is gained if the item is crafted. The warp
@@ -817,6 +818,9 @@ public class ThaumcraftApi {
     public static void addWarpToResearch(ResourceLocation research, int amount) {
         researchWarpMap.put(research, amount);
     }
+    public static void addWarpToClue(ResourceLocation research, int amount) {
+        clueWarpMap.put(research, amount);
+    }
 
 
     /**
@@ -825,7 +829,7 @@ public class ThaumcraftApi {
      * @param in itemstack or string
      * @return how much warp it will give
      */
-    public static int getWarp(Item in) {
+    public static int getResearchWarp(Item in) {
         return itemWarpMap.getOrDefault(in,0);
 //        if (in == null) return 0;
 //        if (in instanceof ItemStack && warpMap.containsKey(Arrays.asList(((ItemStack) in).getItem(), ((ItemStack) in).getDamageValue()))) {
@@ -835,8 +839,11 @@ public class ThaumcraftApi {
 //        }
 //        return 0;
     }
-    public static int getWarp(ResourceLocation in) {
+    public static int getResearchWarp(ResourceLocation in) {
         return researchWarpMap.getOrDefault(in,0);
+    }
+    public static int getClueWarp(ResourceLocation in) {
+        return clueWarpMap.getOrDefault(in,0);
     }
 
     //LOOT BAGS //////////////////////////////////////////////////////////////////////////////////////////

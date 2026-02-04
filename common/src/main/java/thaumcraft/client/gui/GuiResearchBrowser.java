@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
@@ -26,7 +27,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.Thaumcraft;
@@ -62,9 +62,11 @@ public class GuiResearchBrowser extends GuiScreen {
     public static int lastY = -6;
     private GuiButton button;
     private final LinkedList<ResearchItem> research = new LinkedList<>();
-    public static Map<String, List<String>> completedResearch = new HashMap<>();
-    public static ArrayList<String> highlightedItem = new ArrayList<>();
-    private static String selectedCategory = null;
+    public static Map<String, List<ResourceLocation>> completedResearch = new HashMap<>();
+    public static Map<String, List<ResourceLocation>> completedClue = new HashMap<>();
+    public static ArrayList<ResourceLocation> highlightedResearch = new ArrayList<>();
+    public static ArrayList<ResourceLocation> highlightedCategory = new ArrayList<>();
+    public static ResourceLocation selectedCategory = null;
     private final FontRenderer galFontRenderer;
     private ResearchItem currentHighlight = null;
     private String player = "";
@@ -133,12 +135,12 @@ public class GuiResearchBrowser extends GuiScreen {
 
     protected void keyTyped(char par1, int par2) {
         if (par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-            highlightedItem.clear();
+            highlightedResearch.clear();
             this.mc.displayGuiScreen(null);
             this.mc.setIngameFocus();
         } else {
             if (par2 == 1) {
-                highlightedItem.clear();
+                highlightedResearch.clear();
             }
 
             super.keyTyped(par1, par2);
@@ -413,7 +415,7 @@ public class GuiResearchBrowser extends GuiScreen {
                     }
 
                     GL11.glDisable(GL11.GL_BLEND);
-                    if (highlightedItem.contains(var35.key)) {
+                    if (highlightedResearch.contains(var35.key)) {
                         GL11.glPushMatrix();
                         GL11.glEnable(GL11.GL_BLEND);
                         GL11.glBlendFunc(770, 771);
@@ -505,7 +507,7 @@ public class GuiResearchBrowser extends GuiScreen {
                     this.drawTexturedModalRect(var8 - 24 + s0, var9 + count * 24, 152 + s1, 232, 24, 24);
                 }
 
-                if (highlightedItem.contains(obj)) {
+                if (highlightedResearch.contains(obj)) {
                     GL11.glPushMatrix();
                     this.mc.renderEngine.bindTexture(ParticleEngine.particleTexture);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

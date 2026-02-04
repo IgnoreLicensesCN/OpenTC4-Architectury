@@ -7,6 +7,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.aspects.Aspect;
@@ -15,10 +16,9 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.playerdata.PacketSyncAspects;
-import thaumcraft.common.lib.network.playerdata.PacketSyncResearch;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
+import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
+import thaumcraft.common.lib.network.playerdata.PacketSyncResearchS2C;
+import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -58,7 +58,27 @@ public class CommandThaumcraft{
                                                  }else if (Objects.equals(action,"reset")){
                                                      resetResearch(ctx.getSource(), player);
                                                  }else{
-                                                     giveResearch(ctx.getSource(), player, action);
+                                                     if (action == null){
+                                                         ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                         return 0;
+                                                     }
+                                                     if (action.startsWith("@")){
+                                                         var clueLoc = ResourceLocation.tryParse(action.substring(1));
+                                                         if (clueLoc != null) {
+                                                             giveClue(ctx.getSource(), player, clueLoc);
+                                                             return 1;
+                                                         }else {
+                                                             ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                             return 0;
+                                                         }
+                                                     }
+                                                     var researchLoc = ResourceLocation.tryParse(action);
+                                                     if (researchLoc != null) {
+                                                         giveResearch(ctx.getSource(), player, researchLoc);
+                                                     }else {
+                                                         ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                         return 0;
+                                                     }
                                                  }
                                                  return 1;
                                               })
@@ -77,7 +97,16 @@ public class CommandThaumcraft{
                                                          }
                                                          String aspect = StringArgumentType.getString(ctx, "aspect");
                                                          int amount = IntegerArgumentType.getInteger(ctx, "amount");
-                                                         giveAspect(ctx.getSource(), player, aspect, amount);
+                                                         if ("all".equalsIgnoreCase(aspect)){
+                                                             giveAllAspect(ctx.getSource(), player, amount);
+                                                         }else{
+                                                             var resLoc = ResourceLocation.tryParse(aspect);
+                                                             if (resLoc == null) {
+                                                                 ctx.getSource().sendFailure(Component.literal("aspect not found"));
+                                                                 return 0;
+                                                             }
+                                                             giveAspect(ctx.getSource(), player, resLoc, amount);
+                                                         }
                                                          return 1;
                                                       })
                                               )
@@ -254,21 +283,22 @@ public class CommandThaumcraft{
 //      }
 //   }
 //
-   private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, String string, int i) {
-      if (string.equalsIgnoreCase("all")) {
-         for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
+    private static void giveAllAspect(CommandSourceStack icommandsender, ServerPlayer player, int i) {
+        for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
             Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)i);
-         }
+        }
 
-         ResearchManager.scheduleSave(player);
-         player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."),false);
-          icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncAspects(player), player);
-      } else {
-         Aspect aspect = Aspect.getAspect(string);
+        ResearchManager.scheduleSave(player.getGameProfile().getName());
+        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."),false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
+        new PacketSyncAspectsS2C(player).sendTo(player);
+    }
+   private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, ResourceLocation aspectTag, int i) {
+
+         Aspect aspect = Aspect.getAspect(aspectTag);
          if (aspect == null) {
-            for(Aspect a : Aspects.ALL_ASPECTS.values()) {
-               if (string.equalsIgnoreCase(a.getName())) {
+            for(var a : Aspects.ALL_ASPECTS.values()) {
+               if (aspectTag.equals(a.getTag())) {
                   aspect = a;
                   break;
                }
@@ -277,30 +307,30 @@ public class CommandThaumcraft{
 
          if (aspect != null) {
             Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)i);
-            ResearchManager.scheduleSave(player);
-            PacketHandler.INSTANCE.sendTo(new PacketSyncAspects(player), player);
+            ResearchManager.scheduleSave(player.getGameProfile().getName());
+            new PacketSyncAspectsS2C(player).sendTo(player);
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()),false);
             icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
          } else {
             icommandsender.sendSuccess(() -> Component.literal("§cAspect does not exist."),false);
          }
-      }
+
 
    }
 
    private static void setWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
       if (type.equalsIgnoreCase("PERM")) {
          Thaumcraft.playerKnowledge.setWarpPerm(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)0), player);
+         ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
       } else if (type.equalsIgnoreCase("TEMP")) {
          Thaumcraft.playerKnowledge.setWarpTemp(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), player);
+         ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
       } else {
          Thaumcraft.playerKnowledge.setWarpSticky(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)1), player);
+         ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
       }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i),false);
@@ -310,19 +340,19 @@ public class CommandThaumcraft{
    private static void addWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
       if (type.equalsIgnoreCase("PERM")) {
          Thaumcraft.playerKnowledge.addWarpPerm(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)0), player);
-         PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)0, i), player);
+         ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
+          new PacketWarpMessageS2C((byte)0, i).sendTo(player);
       } else if (type.equalsIgnoreCase("TEMP")) {
          Thaumcraft.playerKnowledge.addWarpTemp(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), player);
-         PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)2, i), player);
+         ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
+          new PacketWarpMessageS2C((byte)2, i).sendTo(player);
       } else {
          Thaumcraft.playerKnowledge.addWarpSticky(player.getGameProfile().getName(), i);
-         ResearchManager.scheduleSave(player);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)1), player);
-         PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)1, i), player);
+          ResearchManager.scheduleSave(player.getGameProfile().getName());
+          new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
+          new PacketWarpMessageS2C((byte)1, i).sendTo(player);
       }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."),false);
@@ -337,35 +367,44 @@ public class CommandThaumcraft{
       }
    }
 
-   static void giveResearch(CommandSourceStack icommandsender, ServerPlayer player, String research) {
+    static void giveClue(CommandSourceStack icommandsender, ServerPlayer player, ResourceLocation clueForResearch) {
+        if (ResearchCategories.getResearch(clueForResearch) != null) {
+            Thaumcraft.researchManager.completeClue(player, clueForResearch);
+            new PacketSyncResearchS2C(player).sendTo(player);
+            player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you clue " + clueForResearch));
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
+        } else {
+            icommandsender.sendSuccess(() -> Component.literal("§cResearch does not exist."),false);
+        }
+    }
+   static void giveResearch(CommandSourceStack icommandsender, ServerPlayer player, ResourceLocation research) {
       if (ResearchCategories.getResearch(research) != null) {
          giveRecursiveResearch(player, research);
-         PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(player), player);
+          new PacketSyncResearchS2C(player).sendTo(player);
          player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + research + " research and its requisites."));
          icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
       } else {
          icommandsender.sendSuccess(() -> Component.literal("§cResearch does not exist."),false);
       }
-
    }
 
-   static void giveRecursiveResearch(ServerPlayer player, String research) {
+   static void giveRecursiveResearch(ServerPlayer player, ResourceLocation research) {
       if (!ResearchManager.isResearchComplete(player.getGameProfile().getName(), research)) {
          Thaumcraft.researchManager.completeResearch(player, research);
          if (ResearchCategories.getResearch(research).parents != null) {
-            for(String rsi : ResearchCategories.getResearch(research).parents) {
+            for(var rsi : ResearchCategories.getResearch(research).parents) {
                giveRecursiveResearch(player, rsi);
             }
          }
 
          if (ResearchCategories.getResearch(research).parentsHidden != null) {
-            for(String rsi : ResearchCategories.getResearch(research).parentsHidden) {
+            for(var rsi : ResearchCategories.getResearch(research).parentsHidden) {
                giveRecursiveResearch(player, rsi);
             }
          }
 
          if (ResearchCategories.getResearch(research).siblings != null) {
-            for(String rsi : ResearchCategories.getResearch(research).siblings) {
+            for(var rsi : ResearchCategories.getResearch(research).siblings) {
                giveRecursiveResearch(player, rsi);
             }
          }
@@ -384,7 +423,7 @@ public class CommandThaumcraft{
 
       player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has given you all research."),false);
       icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-      PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(player), player);
+       new PacketSyncResearchS2C(player).sendTo(player);
    }
 
    static void resetResearch(CommandSourceStack icommandsender, ServerPlayer player) {
@@ -400,6 +439,6 @@ public class CommandThaumcraft{
 
       player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has reset you research."),false);
       icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-      PacketHandler.INSTANCE.sendTo(new PacketSyncResearch(player), player);
+       new PacketSyncResearchS2C(player).sendTo(player);
    }
 }

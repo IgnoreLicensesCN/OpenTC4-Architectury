@@ -31,7 +31,7 @@ import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexUtils;
+import thaumcraft.common.lib.utils.HexCoordUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 public class TileResearchTable extends TileThaumcraft implements IInventory {
@@ -131,7 +131,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
          if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes && this.data != null && this.contents[1].getItemDamage() < 64) {
             boolean r1 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER1");
             boolean r2 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER2");
-            HexUtils.Hex hex = new HexUtils.Hex(q, r);
+            HexCoordUtils.HexCoord hex = new HexCoordUtils.HexCoord(q, r);
             ResearchManager.HexEntry he = null;
             if (aspect != null) {
                he = new ResearchManager.HexEntry(aspect, 2);

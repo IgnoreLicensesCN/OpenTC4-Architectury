@@ -52,8 +52,8 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
               0.5F + mc.level.random.nextFloat() * 0.2F
       );
 
-      GuiResearchBrowser.highlightedItem.add("ASPECTS");
-      GuiResearchBrowser.highlightedItem.add("BASICS");
+      GuiResearchBrowser.highlightedResearch.add("ASPECTS");
+      GuiResearchBrowser.highlightedResearch.add("BASICS");
    }
 
    @Override

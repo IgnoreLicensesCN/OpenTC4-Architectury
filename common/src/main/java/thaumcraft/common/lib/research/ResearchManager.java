@@ -27,8 +27,10 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.lib.events.EventHandlerRunic;
+import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
-import thaumcraft.common.lib.utils.HexUtils;
+import thaumcraft.common.lib.utils.HexCoordUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,16 +55,16 @@ public class ResearchManager {
     private static final String SCANNED_ENT_TAG = "THAUMCRAFT.SCAN.ENTITIES";
     private static final String SCANNED_PHE_TAG = "THAUMCRAFT.SCAN.PHENOMENA";
 
-    public static boolean createClue(Level world, Player player, ItemStack clue, AspectList aspects) {
+    public static boolean createClue(Level world, Player player, ItemStack clue, AspectList<Aspect> aspects) {
         return createClue(world, player, clue.getItem(), aspects);
     }
 
-    public static boolean createClue(Level world, Player player, Item clue, AspectList aspects) {
-        ArrayList<String> keys = new ArrayList<>();
+    public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
+        List<ResourceLocation> keys = new ArrayList<>();
         for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isResearchComplete(player.getGameProfile().getName(), "@" + ri.key);
+                boolean valid = ri.tags != null && !ri.tags.isEmpty() && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isClueComplete(player.getGameProfile().getName(), ri.key);
                 if (valid) {
                     if (ri.getItemTriggers() != null) {
                         for (ItemStack stack : ri.getItemTriggers()) {
@@ -76,7 +78,7 @@ public class ResearchManager {
                         }
                     }
 
-                    if (aspects != null && aspects.size() > 0 && ri.getAspectTriggers() != null) {
+                    if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
                         ri.getAspectTriggers();
                         for (Aspect aspect : ri.getAspectTriggers()) {
                             if (aspects.getAmount(aspect) > 0) {
@@ -90,25 +92,25 @@ public class ResearchManager {
         }
 
         if (!keys.isEmpty()) {
-            String key = keys.get(world.getRandom().nextInt(keys.size()));
+            ResourceLocation key = keys.get(world.getRandom().nextInt(keys.size()));
             if (player instanceof ServerPlayer serverPlayer) {
-                new PacketResearchCompleteS2C("@" + key).sendTo(serverPlayer);
+                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
             }else {
-                LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
+                LOGGER.warn("createclue:not a server player:{}",player.getGameProfile().getName());
             }
-            Thaumcraft.researchManager.completeResearch(player, "@" + key);
+            Thaumcraft.researchManager.completeClue(player, key);
             return true;
         } else {
             return false;
         }
     }
 
-    public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList aspects) {
-        ArrayList<String> keys = new ArrayList<>();
+    public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
+        ArrayList<ResourceLocation> keys = new ArrayList<>();
         for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && ri.tags.size() > 0 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isResearchComplete(player.getGameProfile().getName(), "@" + ri.key);
+                boolean valid = ri.tags != null && !ri.tags.isEmpty() && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isClueComplete(player.getGameProfile().getName(), ri.key);
                 if (valid) {
                     {
                         if (ri.getEntityTriggers() != null) {
@@ -122,7 +124,7 @@ public class ResearchManager {
                         }
                     }
 
-                    if (aspects != null && aspects.size() > 0 && ri.getAspectTriggers() != null) {
+                    if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
                         ri.getAspectTriggers();
                         for (Aspect aspect : ri.getAspectTriggers()) {
                             if (aspects.getAmount(aspect) > 0) {
@@ -136,22 +138,22 @@ public class ResearchManager {
         }
 
         if (!keys.isEmpty()) {
-            String key = keys.get(world.getRandom().nextInt(keys.size()));
+            ResourceLocation key = keys.get(world.getRandom().nextInt(keys.size()));
             if (player instanceof ServerPlayer serverPlayer) {
-                new PacketResearchCompleteS2C("@" + key).sendTo(serverPlayer);
+                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
             }else {
                 LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
             }
-            Thaumcraft.researchManager.completeResearch(player, "@" + key);
+            Thaumcraft.researchManager.completeClue(player, key);
             return true;
         } else {
             return false;
         }
     }
 
-    public static ItemStack createResearchNoteForPlayer(Level world, Player player, String key) {
+    public static ItemStack createResearchNoteForPlayer(Level world, Player player, ResourceLocation researchKey) {
         ItemStack note = ItemStack.EMPTY;
-        int slot = getResearchSlot(player, key);
+        int slot = getResearchSlot(player, researchKey);
 
         if (slot >= 0) {
             // 玩家已有笔记
@@ -161,7 +163,7 @@ public class ResearchManager {
             if (consumeInkFromPlayer(player, false) && consumePaperFromPlayer(player)) {
                 consumeInkFromPlayer(player, true);
 
-                note = createNote(new ItemStack(ConfigItems.itemResearchNotes), key, world);
+                note = createNote(new ItemStack(ConfigItems.itemResearchNotes), researchKey, world);
 
                 // 尝试放入背包，放不下则掉落
                 if (!player.getInventory().add(note)) {
@@ -191,20 +193,20 @@ public class ResearchManager {
         return false;
     }
 
-    public static String findHiddenResearch(Player player) {
+    public static ResourceLocation findHiddenResearch(Player player) {
         if (allHiddenResearch == null) {
             allHiddenResearch = new ArrayList<>();
 
             for (ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
                 for (ResearchItem ri : cat.research.values()) {
-                    if (ri.isHidden() && ri.tags != null && ri.tags.size() > 0) {
+                    if (ri.isHidden() && ri.tags != null && !ri.tags.isEmpty()) {
                         allHiddenResearch.add(ri);
                     }
                 }
             }
         }
 
-        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<ResourceLocation> keys = new ArrayList<>();
 
         for (ResearchItem research : allHiddenResearch) {
             if (!isResearchComplete(player.getGameProfile().getName(), research.key)
@@ -223,12 +225,13 @@ public class ResearchManager {
             int r = rand.nextInt(keys.size());
             return keys.get(r);
         } else {
-            return "FAIL";
+            return EMPTY_RESEARCH;
         }
     }
+    public static final ResourceLocation EMPTY_RESEARCH = new ResourceLocation("","");
 
-    public static String findMatchingResearch(Player player, Aspect aspect) {
-        String randomMatch = null;
+    public static ResourceLocation findMatchingResearch(Player player, Aspect aspect) {
+        ResourceLocation randomMatch = null;
         if (allValidResearch == null) {
             allValidResearch = new ArrayList<>();
 
@@ -242,7 +245,7 @@ public class ResearchManager {
             }
         }
 
-        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<ResourceLocation> keys = new ArrayList<>();
 
         for (ResearchItem research : allValidResearch) {
             if (!isResearchComplete(player.getGameProfile().getName(), research.key) && doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key) && research.tags.getAmount(aspect) > 0) {
@@ -257,7 +260,7 @@ public class ResearchManager {
         return randomMatch;
     }
 
-    public static int getResearchSlot(Player player, String key) {
+    public static int getResearchSlot(Player player, ResourceLocation key) {
         NonNullList<ItemStack> inv = player.getInventory().items;
         for (int a = 0; a < inv.size(); a++) {
             ItemStack stack = inv.get(a);
@@ -345,13 +348,13 @@ public class ResearchManager {
         ArrayList<String> main = new ArrayList<>();
         ArrayList<String> remains = new ArrayList<>();
 
-        for (HexUtils.Hex hex : note.hexes.values()) {
+        for (HexCoordUtils.HexCoord hex : note.hexes.values()) {
             if (note.hexEntries.get(hex.toString()).type == 1) {
                 main.add(hex.toString());
             }
         }
 
-        for (HexUtils.Hex hex : note.hexes.values()) {
+        for (HexCoordUtils.HexCoord hex : note.hexes.values()) {
             if (note.hexEntries.get(hex.toString()).type == 1) {
                 main.remove(hex.toString());
                 checkConnections(note, hex, checked, main, remains, username);
@@ -364,7 +367,7 @@ public class ResearchManager {
         } else {
             ArrayList<String> remove = new ArrayList<>();
 
-            for (HexUtils.Hex hex : note.hexes.values()) {
+            for (HexCoordUtils.HexCoord hex : note.hexes.values()) {
                 if (note.hexEntries.get(hex.toString()).type != 1 && !remains.contains(hex.toString())) {
                     remove.add(hex.toString());
                 }
@@ -402,13 +405,13 @@ public class ResearchManager {
 
     }
     private static void checkConnections(ResearchNoteData note,
-                                         HexUtils.Hex hex,
+                                         HexCoordUtils.HexCoord hex,
                                          ArrayList<String> checked, ArrayList<String> main, ArrayList<String> remains,
                                          String username) {
         checked.add(hex.toString());
 
         for (int a = 0; a < 6; ++a) {
-            HexUtils.Hex target = hex.getNeighbour(a);
+            HexCoordUtils.HexCoord target = hex.getNeighbour(a);
             if (!checked.contains(target.toString()) && note.hexEntries.containsKey(target.toString()) && note.hexEntries.get(target.toString()).type >= 1) {
                 Aspect aspect1 = note.hexEntries.get(hex.toString()).aspect;
                 Aspect aspect2 = note.hexEntries.get(target.toString()).aspect;
@@ -427,33 +430,33 @@ public class ResearchManager {
 
     }
 
-    public static ItemStack createNote(ItemStack stack, String key, Level world) {
-        ResearchItem rr = ResearchCategories.getResearch(key);
+    public static ItemStack createNote(ItemStack stack, ResourceLocation researchKey, Level world) {
+        ResearchItem rr = ResearchCategories.getResearch(researchKey);
         Aspect primaryAspect = rr.getResearchPrimaryTag();
         if (primaryAspect == null) {
             return ItemStack.EMPTY;
         }
 
         CompoundTag tag = stack.getOrCreateTag();
-        RESEARCH_NOTE_KEY_ACCESSOR.writeToCompoundTag(tag, key);
+        RESEARCH_NOTE_KEY_ACCESSOR.writeToCompoundTag(tag, researchKey);
         RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, primaryAspect.getColor());
         RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
         RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
 
         int radius = 1 + Math.min(3, rr.getComplexity());
-        HashMap<String, HexUtils.Hex> hexLocs = HexUtils.generateHexes(radius);
-        List<HexUtils.Hex> outerRing = HexUtils.distributeRingRandomly(radius, rr.tags.size(), world.getRandom());
+        HashMap<String, HexCoordUtils.HexCoord> hexLocs = HexCoordUtils.generateHexes(radius);
+        List<HexCoordUtils.HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, rr.tags.size(), world.getRandom());
         HashMap<String, HexEntry> hexEntries = new HashMap<>();
-        HashMap<String, HexUtils.Hex> hexes = new HashMap<>();
+        HashMap<String, HexCoordUtils.HexCoord> hexes = new HashMap<>();
 
-        for (HexUtils.Hex hex : hexLocs.values()) {
+        for (HexCoordUtils.HexCoord hex : hexLocs.values()) {
             hexes.put(hex.toString(), hex);
             hexEntries.put(hex.toString(), new HexEntry(null, 0));
         }
 
         int count = 0;
 
-        for (HexUtils.Hex hex : outerRing) {
+        for (HexCoordUtils.HexCoord hex : outerRing) {
             hexes.put(hex.toString(), hex);
             hexEntries.put(hex.toString(), new HexEntry(rr.tags.getAspectTypes().get(count), 1));
             ++count;
@@ -467,7 +470,7 @@ public class ResearchManager {
         ensureEndpointsConnected(hexes, hexEntries);
 
         ListTag gridTag = new ListTag();
-        for (HexUtils.Hex hex : hexes.values()) {
+        for (HexCoordUtils.HexCoord hex : hexes.values()) {
             CompoundTag gt = new CompoundTag();
             RESEARCH_NOTE_HEX_Q_ACCESSOR.writeToCompoundTag(gt, (byte) hex.q);
             RESEARCH_NOTE_HEX_R_ACCESSOR.writeToCompoundTag(gt, (byte) hex.r);
@@ -486,9 +489,9 @@ public class ResearchManager {
 
     }
 
-    private static void removeRandomBlanks(RandomSource random, ResearchItem rr, HashMap<String, HexUtils.Hex> hexes, HashMap<String, HexEntry> hexEntries) {
+    private static void removeRandomBlanks(RandomSource random, ResearchItem rr, HashMap<String, HexCoordUtils.HexCoord> hexes, HashMap<String, HexEntry> hexEntries) {
         int blanks = rr.getComplexity() * 2;
-        HexUtils.Hex[] temp = hexes.values().toArray(new HexUtils.Hex[0]);
+        HexCoordUtils.HexCoord[] temp = hexes.values().toArray(new HexCoordUtils.HexCoord[0]);
 
         while (blanks > 0) {
             int indx = random.nextInt(temp.length);
@@ -496,7 +499,7 @@ public class ResearchManager {
                 boolean gtg = true;
 
                 for (int n = 0; n < 6; ++n) {
-                    HexUtils.Hex neighbour = temp[indx].getNeighbour(n);
+                    HexCoordUtils.HexCoord neighbour = temp[indx].getNeighbour(n);
                     if (hexes.containsKey(neighbour.toString()) && hexEntries.get(neighbour.toString()).type == 1) {
                         int cc = 0;
 
@@ -520,7 +523,7 @@ public class ResearchManager {
                 if (gtg) {
                     hexes.remove(temp[indx].toString());
                     hexEntries.remove(temp[indx].toString());
-                    temp = hexes.values().toArray(new HexUtils.Hex[0]);
+                    temp = hexes.values().toArray(new HexCoordUtils.HexCoord[0]);
                     --blanks;
                 }
             }
@@ -528,11 +531,11 @@ public class ResearchManager {
     }
 
     private static void ensureEndpointsConnected(
-            Map<String, HexUtils.Hex> hexes,
+            Map<String, HexCoordUtils.HexCoord> hexes,
             Map<String, HexEntry> hexEntries
     ) {
         // 找出端点 hex
-        List<HexUtils.Hex> endpoints = hexEntries.entrySet().stream()
+        List<HexCoordUtils.HexCoord> endpoints = hexEntries.entrySet().stream()
                 .filter(e -> e.getValue().type == 1)
                 .map(e -> hexes.get(e.getKey()))
                 .filter(Objects::nonNull)
@@ -543,13 +546,13 @@ public class ResearchManager {
         // BFS helper
         Set<String> visited = new HashSet<>();
         for (int i = 0; i < endpoints.size() - 1; i++) {
-            HexUtils.Hex start = endpoints.get(i);
-            HexUtils.Hex end = endpoints.get(i + 1);
+            HexCoordUtils.HexCoord start = endpoints.get(i);
+            HexCoordUtils.HexCoord end = endpoints.get(i + 1);
 
             if (!isConnected(start, end, hexes, hexEntries, visited)) {
                 // 找最短路径恢复
-                List<HexUtils.Hex> path = findPathAllowRemoved(start, end, hexes, hexEntries);
-                for (HexUtils.Hex h : path) {
+                List<HexCoordUtils.HexCoord> path = findPathAllowRemoved(start, end, hexes, hexEntries);
+                for (HexCoordUtils.HexCoord h : path) {
                     String key = h.toString();
                     if (!hexEntries.containsKey(key)) {
                         hexEntries.put(key, new HexEntry(null, 0)); // 恢复空 hex
@@ -562,21 +565,22 @@ public class ResearchManager {
 
     // 检查两个端点是否连通
     //author:ChatGPT
-    private static boolean isConnected(HexUtils.Hex start, HexUtils.Hex end,
-                                       Map<String, HexUtils.Hex> hexes,
-                                       Map<String, HexEntry> hexEntries,
-                                       Set<String> visited) {
+    private static boolean isConnected(
+            HexCoordUtils.HexCoord start, HexCoordUtils.HexCoord end,
+            Map<String, HexCoordUtils.HexCoord> hexes,
+            Map<String, HexEntry> hexEntries,
+            Set<String> visited) {
         visited.clear();
-        Queue<HexUtils.Hex> queue = new ArrayDeque<>();
+        Queue<HexCoordUtils.HexCoord> queue = new ArrayDeque<>();
         queue.add(start);
         visited.add(start.toString());
 
         while (!queue.isEmpty()) {
-            HexUtils.Hex current = queue.poll();
+            HexCoordUtils.HexCoord current = queue.poll();
             if (current.equals(end)) return true;
 
             for (int i = 0; i < 6; i++) {
-                HexUtils.Hex n = current.getNeighbour(i);
+                HexCoordUtils.HexCoord n = current.getNeighbour(i);
                 String key = n.toString();
                 if (!visited.contains(key) && hexes.containsKey(key)) {
                     queue.add(n);
@@ -589,20 +593,21 @@ public class ResearchManager {
 
     // 找到 start -> end 的路径，允许穿过被移除 hex
     //author:ChatGPT
-    private static List<HexUtils.Hex> findPathAllowRemoved(HexUtils.Hex start, HexUtils.Hex end,
-                                                           Map<String, HexUtils.Hex> hexes,
-                                                           Map<String, HexEntry> hexEntries) {
-        Map<String, HexUtils.Hex> cameFrom = new HashMap<>();
-        Queue<HexUtils.Hex> queue = new ArrayDeque<>();
+    private static List<HexCoordUtils.HexCoord> findPathAllowRemoved(
+            HexCoordUtils.HexCoord start, HexCoordUtils.HexCoord end,
+            Map<String, HexCoordUtils.HexCoord> hexes,
+            Map<String, HexEntry> hexEntries) {
+        Map<String, HexCoordUtils.HexCoord> cameFrom = new HashMap<>();
+        Queue<HexCoordUtils.HexCoord> queue = new ArrayDeque<>();
         queue.add(start);
         cameFrom.put(start.toString(), null);
 
         while (!queue.isEmpty()) {
-            HexUtils.Hex current = queue.poll();
+            HexCoordUtils.HexCoord current = queue.poll();
             if (current.equals(end)) break;
 
             for (int i = 0; i < 6; i++) {
-                HexUtils.Hex n = current.getNeighbour(i);
+                HexCoordUtils.HexCoord n = current.getNeighbour(i);
                 String key = n.toString();
                 if (!cameFrom.containsKey(key)) {
                     queue.add(n);
@@ -612,8 +617,8 @@ public class ResearchManager {
         }
 
         // 回溯路径
-        List<HexUtils.Hex> path = new ArrayList<>();
-        HexUtils.Hex cursor = end;
+        List<HexCoordUtils.HexCoord> path = new ArrayList<>();
+        HexCoordUtils.HexCoord cursor = end;
         while (cursor != null && !cursor.equals(start)) {
             path.add(cursor);
             cursor = cameFrom.get(cursor.toString());
@@ -650,9 +655,9 @@ public class ResearchManager {
             var aspectTag = RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.readFromCompoundTag(hexTag);
             Aspect aspect = aspectTag != null ? Aspect.getAspect(aspectTag) : null;
 
-            HexUtils.Hex hex = new HexUtils.Hex(q, r);
-            data.hexEntries.put(hex.toString(), new HexEntry(aspect, type));
-            data.hexes.put(hex.toString(), hex);
+            HexCoordUtils.HexCoord hexCoord = new HexCoordUtils.HexCoord(q, r);
+            data.hexEntries.put(hexCoord.toString(), new HexEntry(aspect, type));
+            data.hexes.put(hexCoord.toString(), hexCoord);
         }
 
         stack.setTag(tag);
@@ -672,12 +677,12 @@ public class ResearchManager {
 
         // Hex 网格
         ListTag gridTag = new ListTag();
-        for (HexUtils.Hex hex : data.hexes.values()) {
+        for (HexCoordUtils.HexCoord hexCoord : data.hexes.values()) {
             CompoundTag hexTag = new CompoundTag();
-            HexEntry entry = data.hexEntries.get(hex.toString());
+            HexEntry entry = data.hexEntries.get(hexCoord.toString());
 
-            RESEARCH_NOTE_HEX_Q_ACCESSOR.writeToCompoundTag(hexTag, (byte) hex.q);
-            RESEARCH_NOTE_HEX_R_ACCESSOR.writeToCompoundTag(hexTag, (byte) hex.r);
+            RESEARCH_NOTE_HEX_Q_ACCESSOR.writeToCompoundTag(hexTag, (byte) hexCoord.q);
+            RESEARCH_NOTE_HEX_R_ACCESSOR.writeToCompoundTag(hexTag, (byte) hexCoord.r);
             RESEARCH_NOTE_HEX_TYPE_ACCESSOR.writeToCompoundTag(hexTag, (byte) entry.type);
 
             if (entry.aspect != null) {
@@ -690,15 +695,47 @@ public class ResearchManager {
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, gridTag);
     }
 
-    public static boolean isResearchComplete(String playername, String key) {
-        if (!key.startsWith("@") && ResearchCategories.getResearch(key) == null) {
+    public static boolean isResearchComplete(String playername, ResourceLocation key) {
+        if (ResearchCategories.getResearch(key) == null) {
             return false;
         } else {
             List<ResourceLocation> completed = getResearchForPlayer(playername);
             return completed != null && !completed.isEmpty() && completed.contains(key);
         }
     }
+    public static boolean isClueComplete(String playername, ResourceLocation key) {
+        if (ResearchCategories.getResearch(key) == null) {
+            return false;
+        } else {
+            List<ResourceLocation> completed = getClueForPlayer(playername);
+            return completed != null && !completed.isEmpty() && completed.contains(key);
+        }
+    }
 
+    public static List<ResourceLocation> getClueForPlayer(String playername) {
+        List<ResourceLocation> out = Thaumcraft.getCompletedClue().get(playername);
+
+        try {
+            var server = platformUtils.getServer();
+            if (
+                    out == null && Platform.getEnvironment() == Env.SERVER //Thaumcraft.getClientWorld() == null && server != null
+            ) {
+                Thaumcraft.getCompletedClue().put(playername, new ArrayList<>());
+                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playername).getBytes(Charsets.UTF_8));
+
+
+                File dir = getThaumcraftPlayersDirectory(server);
+                File file1 = new File(dir, id + ".thaum");
+                File file2 = new File(dir, id + ".thaumbak");
+                loadPlayerData(playername, file1, file2, false);
+                out = Thaumcraft.getCompletedClue().get(playername);
+            }
+        } catch (Exception e) {
+            LOGGER.error("getClueForPlayer", e);
+        }
+
+        return out;
+    }
     public static List<ResourceLocation> getResearchForPlayer(String playername) {
         List<ResourceLocation> out = Thaumcraft.getCompletedResearch().get(playername);
 
@@ -727,7 +764,8 @@ public class ResearchManager {
 
                 out = Thaumcraft.getCompletedResearch().get(playername);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            LOGGER.error("getClueForPlayer", e);
         }
 
         return out;
@@ -737,16 +775,20 @@ public class ResearchManager {
         return Thaumcraft.getCompletedResearch().get(playername);
     }
 
-    public static boolean doesPlayerHaveRequisites(String playername, String key) {
+    public static List<ResourceLocation> getClueForPlayerSafe(String playername) {
+        return Thaumcraft.getCompletedClue().get(playername);
+    }
+
+    public static boolean doesPlayerHaveRequisites(String playername, ResourceLocation key) {
         boolean out = true;
-        String[] parents = ResearchCategories.getResearch(key).parents;
+        var parents = ResearchCategories.getResearch(key).parents;
         if (parents != null && parents.length > 0) {
             out = false;
             List<ResourceLocation> completed = getResearchForPlayer(playername);
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
-                for (String item : parents) {
+                for (var item : parents) {
                     if (!completed.contains(item)) {
                         return false;
                     }
@@ -761,7 +803,7 @@ public class ResearchManager {
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
-                for (String item : parents) {
+                for (var item : parents) {
                     if (!completed.contains(item)) {
                         return false;
                     }
@@ -828,6 +870,20 @@ public class ResearchManager {
         return out;
     }
 
+    public static boolean completeClueUnsaved(String username, ResourceLocation key) {
+        List<ResourceLocation> completed = getClueForPlayerSafe(username);
+        if (completed != null && completed.contains(key)) {
+            return false;
+        } else {
+            if (completed == null) {
+                completed = new ArrayList<>();
+            }
+
+            completed.add(key);
+            Thaumcraft.getCompletedClue().put(username, completed);
+            return true;
+        }
+    }
     public static boolean completeResearchUnsaved(String username, ResourceLocation key) {
         List<ResourceLocation> completed = getResearchForPlayerSafe(username);
         if (completed != null && completed.contains(key)) {
@@ -843,8 +899,8 @@ public class ResearchManager {
         }
     }
 
-    public static void unlockResearchForPlayer(Level world, ServerPlayer player, String research, String... preRequsites) {
-        for (String preReq : preRequsites) {
+    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResourceLocation research, ResourceLocation... preRequsites) {
+        for (var preReq : preRequsites) {
             if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
         }
         if (isResearchComplete(player.getGameProfile().getName(), research)){return;}
@@ -853,10 +909,33 @@ public class ResearchManager {
         player.playSound(LEARN);//,.75f,1.f
     }
 
+    public void completeClue(Player player, ResourceLocation key){
+
+        String playerName = player.getGameProfile().getName();
+        if (completeClueUnsaved(playerName, key)) {
+            int warp = ThaumcraftApi.getClueWarp(key);
+            if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
+                if (warp > 1) {
+                    int w2 = warp / 2;
+                    if (warp - w2 > 0) {
+                        Thaumcraft.addWarpToPlayer(player, warp - w2, false);
+                    }
+
+                    if (w2 > 0) {//what anazor did?
+                        Thaumcraft.addStickyWarpToPlayer(player, w2);
+                    }
+                } else {
+                    Thaumcraft.addWarpToPlayer(player, warp, false);
+                }
+            }
+
+            scheduleSave(playerName);
+        }
+    }
     public void completeResearch(Player player, ResourceLocation key) {
         String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
-            int warp = ThaumcraftApi.getWarp(key);
+            int warp = ThaumcraftApi.getResearchWarp(key);
             if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
                 if (warp > 1) {
                     int w2 = warp / 2;
@@ -997,14 +1076,15 @@ public class ResearchManager {
 
             if (data != null) {
                 loadResearchNBT(data, playerName);
+                loadClueNBT(data, playerName);
                 loadAspectNBT(data, playerName);
                 loadScannedNBT(data, playerName);
 
 
                 if (THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR.compoundTagHasKey(data)) {
                     int shielding = THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR.readFromCompoundTag(data);
-                    Thaumcraft.instance.runicEventHandler.runicCharge.put(playerName, shielding);
-                    Thaumcraft.instance.runicEventHandler.isDirty = true;
+                    EventHandlerRunic.runicCharge.put(playerName, shielding);
+                    EventHandlerRunic.isDirty = true;
                 }
 
                 if (THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.compoundTagHasKey(data)) {
@@ -1060,9 +1140,24 @@ public class ResearchManager {
 
         for (int i = 0; i < list.size(); ++i) {
             CompoundTag rs = list.getCompound(i);
-            var key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
+            var key = LIST_TAG_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
             if (key != null) {
                 completeResearchUnsaved(playerName, key);
+            }
+        }
+    }
+    public static void loadClueNBT(CompoundTag entityData, String playerName) {
+
+        ListTag list = THAUMCRAFT_PLAYER_CLUE_ACCESSOR
+                .readFromCompoundTag(entityData);
+
+        if (list == null) return;
+
+        for (int i = 0; i < list.size(); ++i) {
+            CompoundTag rs = list.getCompound(i);
+            var key = LIST_TAG_CLUE_ACCESSOR.readFromCompoundTag(rs);
+            if (key != null) {
+                completeClueUnsaved(playerName, key);
             }
         }
     }
@@ -1076,13 +1171,13 @@ public class ResearchManager {
         for (int i = 0; i < list.size(); ++i) {
             CompoundTag rs = list.getCompound(i);
 
-            var key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+            var key = LIST_TAG_ASPECT_ACCESSOR.readFromCompoundTag(rs);
             if (key == null) continue;
 
             Aspect aspect = Aspect.getAspect(key);
             if (aspect == null) continue;
 
-            int amount = ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs);
+            int amount = LIST_TAG_ASPECT_INT_ACCESSOR.readFromCompoundTag(rs);
 
             completeAspectUnsaved(playerName, aspect, amount);
         }
@@ -1126,7 +1221,7 @@ public class ResearchManager {
         if (objList != null) {
             for (int i = 0; i < objList.size(); ++i) {
                 CompoundTag rs = objList.getCompound(i);
-                String key = THAUMCRAFT_PLAYER_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
+                String key = LIST_TAG_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedObjectUnsaved(playerName, key);
                 }
@@ -1139,7 +1234,7 @@ public class ResearchManager {
         if (entList != null) {
             for (int i = 0; i < entList.size(); ++i) {
                 CompoundTag rs = entList.getCompound(i);
-                String key = THAUMCRAFT_PLAYER_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
+                String key = LIST_TAG_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedEntityUnsaved(playerName, key);
                 }
@@ -1152,7 +1247,7 @@ public class ResearchManager {
         if (pheList != null) {
             for (int i = 0; i < pheList.size(); ++i) {
                 CompoundTag rs = pheList.getCompound(i);
-                String key = THAUMCRAFT_PLAYER_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
+                String key = LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedPhenomenaUnsaved(playerName, key);
                 }
@@ -1200,14 +1295,15 @@ public class ResearchManager {
         try {
             CompoundTag data = new CompoundTag();
             saveResearchNBT(data, playerName);
+            saveClueNBT(data, playerName);
             saveAspectNBT(data, playerName);
             saveScannedNBT(data, playerName);
 
 
             // runic shielding
-            if (Thaumcraft.instance.runicEventHandler.runicCharge.containsKey(playerName)) {
+            if (EventHandlerRunic.runicCharge.containsKey(playerName)) {
                 THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR
-                        .writeToCompoundTag(data, Thaumcraft.instance.runicEventHandler.runicCharge.get(playerName));
+                        .writeToCompoundTag(data, EventHandlerRunic.runicCharge.get(playerName));
             }
 
             // warp values
@@ -1260,24 +1356,40 @@ public class ResearchManager {
     }
 
     public static void saveResearchNBT(CompoundTag entityData, String playerName) {
-        List<String> res = getResearchForPlayer(playerName);
+        List<ResourceLocation> res = getResearchForPlayer(playerName);
         ListTag tagList = new ListTag();
 
         if (res != null && !res.isEmpty()) {
-            for (String key : res) {
-                if (key.startsWith("@") && isResearchComplete(playerName, key.substring(1))) {
-                    continue;
-                }
+            for (var key : res) {
                 ResearchItem rr = ResearchCategories.getResearch(key);
                 if (rr == null || !rr.isAutoUnlock()) {
                     CompoundTag f = new CompoundTag();
-                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, key);
+                    LIST_TAG_RESEARCH_ACCESSOR.writeToCompoundTag(f, key);
                     tagList.add(f);
                 }
             }
         }
 
         THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.writeToCompoundTag(entityData, tagList);
+    }
+
+
+    public static void saveClueNBT(CompoundTag entityData, String playerName) {
+        List<ResourceLocation> res = getClueForPlayer(playerName);
+        ListTag tagList = new ListTag();
+
+        if (res != null && !res.isEmpty()) {
+            for (var key : res) {
+                ResearchItem rr = ResearchCategories.getResearch(key);
+                if (rr == null || !rr.isAutoUnlock()) {
+                    CompoundTag f = new CompoundTag();
+                    LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);
+                    tagList.add(f);
+                }
+            }
+        }
+
+        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.writeToCompoundTag(entityData, tagList);
     }
 //    public static void saveResearchNBT(CompoundTag entityData, String playerName) {
 //        NBTTagList tagList = new NBTTagList();
@@ -1305,10 +1417,10 @@ public class ResearchManager {
 //    }
 
     public static void saveAspectNBT(CompoundTag entityData, String playerName) {
-        AspectList res = Thaumcraft.getKnownAspects().get(playerName);
+        AspectList<Aspect> res = Thaumcraft.getKnownAspects().get(playerName);
         ListTag tagList = new ListTag();
 
-        if (res != null && res.size() > 0) {
+        if (res != null && !res.isEmpty()) {
             for (Aspect aspect : res.getAspectTypes()) {
                 if (aspect != null) {
                     CompoundTag f = new CompoundTag();
@@ -1319,8 +1431,6 @@ public class ResearchManager {
                 }
             }
         }
-
-        // 用 Accessor 写入整个 ListTag
         THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR.writeToCompoundTag(entityData, tagList);
     }
 //    public static void saveAspectNBT(CompoundTag entityData, String playerName) {
@@ -1347,7 +1457,7 @@ public class ResearchManager {
             for (String obj : objects) {
                 if (obj != null) {
                     CompoundTag f = new CompoundTag();
-                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, obj); // 这里 f 只需要 key
+                    LIST_TAG_SCANNED_OBJECT_ACCESSOR.writeToCompoundTag(f, obj); // 这里 f 只需要 key
                     objectTagList.add(f);
                 }
             }
@@ -1360,7 +1470,7 @@ public class ResearchManager {
             for (String e : entities) {
                 if (e != null) {
                     CompoundTag f = new CompoundTag();
-                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, e);
+                    LIST_TAG_SCANNED_ENTITY_ACCESSOR.writeToCompoundTag(f, e);
                     entityTagList.add(f);
                 }
             }
@@ -1373,7 +1483,7 @@ public class ResearchManager {
             for (String p : phenomena) {
                 if (p != null) {
                     CompoundTag f = new CompoundTag();
-                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, p);
+                    LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.writeToCompoundTag(f, p);
                     phenomenaTagList.add(f);
                 }
             }
