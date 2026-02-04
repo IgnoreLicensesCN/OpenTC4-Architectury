@@ -16,6 +16,7 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.gui.ThaumcraftGUI;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
+import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
@@ -133,7 +134,12 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             }
         };
 
-        this.addSlot(new Slot(workbench, ArcaneWorkbenchBlockEntity.WAND_SLOT, 124, 25));//TODO:Offset
+        this.addSlot(
+                new ArcaneWorkbenchWandSlot(
+                        workbench,
+                        ArcaneWorkbenchBlockEntity.WAND_SLOT,
+                        124, 25)//TODO:Offset
+        );
 
         this.addSlot(new ArcaneWorkbenchOutputSlot(inventory.player,
                 this.workbench,
