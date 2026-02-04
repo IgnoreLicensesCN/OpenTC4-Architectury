@@ -8,12 +8,15 @@ package thaumcraft.api.aspects;
  * Used by blocks like the crucible and alembic to hold their aspects. 
  * Tiles extending this interface will have their aspects show up when viewed by goggles of revealing
  *
+ *
+ * Node will no longer use this.they will go to {@link IWorldlyCentiVisContainer}.
+ * Vis and aspect(for infusion) should be different!
  */
-public interface IAspectContainer {
-	AspectList getAspects();
+public interface IAspectContainer<Asp extends Aspect> {
+	AspectList<Asp> getAspects();
 	
 	
-	void setAspects(AspectList aspects);
+	void setAspects(AspectList<Asp> aspects);
 	
 	
 	/**
@@ -21,7 +24,7 @@ public interface IAspectContainer {
 	 * @param tag 
 	 * @return true or false
 	 */
-    boolean doesContainerAccept(Aspect tag);
+    boolean doesContainerAccept(Asp tag);
 	
 	/**
 	 * This method is used to add a certain amount of an aspect to the tile entity.
@@ -29,7 +32,7 @@ public interface IAspectContainer {
 	 * @param amount
 	 * @return the amount of aspect left over that could not be added.
 	 */
-    int addToContainer(Aspect tag, int amount);
+    int addToContainer(Asp tag, int amount);
 
 	/**
 	 * Removes a certain amount of a specific aspect from the tile entity
@@ -37,7 +40,7 @@ public interface IAspectContainer {
 	 * @param amount
 	 * @return true if that amount of aspect was available and was removed
 	 */
-    boolean takeFromContainer(Aspect tag, int amount);
+    boolean takeFromContainer(Asp tag, int amount);
 	
 	/**
 	 * removes a bunch of different aspects and amounts from the tile entity.
@@ -47,7 +50,7 @@ public interface IAspectContainer {
 	 * Going away in the next major patch
 	 */
 	@Deprecated
-    boolean takeFromContainer(AspectList ot);
+    boolean takeFromContainer(AspectList<Asp> ot);
 	
 	/**
 	 * Checks if the tile entity contains the listed amount (or more) of the aspect
@@ -55,7 +58,7 @@ public interface IAspectContainer {
 	 * @param amount
 	 * @return
 	 */
-    boolean doesContainerContainAmount(Aspect tag, int amount);
+    boolean doesContainerContainAmount(Asp tag, int amount);
 	
 	/**
 	 * Checks if the tile entity contains all the listed aspects and their amounts
@@ -65,14 +68,14 @@ public interface IAspectContainer {
 	 * Going away in the next major patch
 	 */
 	@Deprecated
-    boolean doesContainerContain(AspectList ot);
+    boolean doesContainerContain(AspectList<Asp> ot);
 	
 	/**
 	 * Returns how much of the aspect this tile entity contains
 	 * @param tag
 	 * @return the amount of that aspect found
 	 */
-    int containerContains(Aspect tag);
+    int containerContains(Asp tag);
 	
 }
 

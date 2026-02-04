@@ -3,9 +3,11 @@ package thaumcraft.common;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import net.minecraft.client.Minecraft;
 import thaumcraft.client.fx.migrated.particles.FXBlockRunes;
@@ -39,7 +41,7 @@ public class Thaumcraft {
     public static final WandManager wandManager = new WandManager();
 
 
-    public static Map<String, List<String>> getCompletedResearch(){
+    public static Map<String, List<ResourceLocation>> getCompletedResearch(){
         return playerKnowledge.researchCompleted;
     }
 
@@ -53,7 +55,7 @@ public class Thaumcraft {
         return playerKnowledge.phenomenaScanned;
     }
 
-    public static Map<String, AspectList> getKnownAspects() {
+    public static Map<String, AspectList<Aspect>> getKnownAspects() {
         return playerKnowledge.aspectsDiscovered;
     }
 

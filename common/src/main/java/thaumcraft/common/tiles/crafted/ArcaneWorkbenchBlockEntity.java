@@ -75,12 +75,14 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements Worldl
         ItemStack stack = getItem(slot);
         if (stack.getCount() <= amount) {
             setItem(slot, ItemStack.EMPTY);
+            setChanged();
             return stack;
         }
         else {
             stack.shrink(amount);
             stack = stack.copy();
             stack.setCount(amount);
+            setChanged();
             return stack;
         }
     }

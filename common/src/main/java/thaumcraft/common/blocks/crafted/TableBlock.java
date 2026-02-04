@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
@@ -17,12 +19,14 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_AXIS;
 
@@ -52,12 +56,17 @@ public class TableBlock extends Block implements IWandInteractableBlock {
     }
 
     @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        //TODO:Research table(also do not place item on
+        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+    }
+
+    @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
         var usingWand = useOnContext.getItemInHand();
         if (usingWand.getItem() instanceof IArcaneCraftingWand craftingWand && craftingWand.canInsertIntoArcaneCraftingTable(usingWand)) {
-            //TODO:new ArcaneWorktable but **do not place wand on**(yes i want that)
-
             var level = useOnContext.getLevel();
+            level.setBlockAndUpdate(useOnContext.getClickedPos(), ThaumcraftBlocks.ARCANE_WORKBENCH.defaultBlockState());
             level.playSound(
                     useOnContext.getPlayer(),
                     useOnContext.getClickedPos(),

@@ -14,32 +14,36 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	private final Function<ItemStack,ItemStack> recipeOutputGetter;
 	
 	public final RecipeItemMatcher catalyst;
-	public final AspectList aspects;
+	public final AspectList<Aspect> aspects;
 	public final String key;
 	
 	public final int hash;
 
 	private final RecipeItemMatcher outputMatcher;
+	private final ItemStack[] inputSample;
+	private final ItemStack[][] allSample;
 
-	public CrucibleRecipe(String researchKey, Function<ItemStack,ItemStack> resultGetter, RecipeItemMatcher cat, AspectList tags,RecipeItemMatcher outputMatcher) {
+	public CrucibleRecipe(String researchKey, Function<ItemStack,ItemStack> resultGetter, RecipeItemMatcher cat, AspectList<Aspect> tags,RecipeItemMatcher outputMatcher) {
 		recipeOutputGetter = resultGetter;
 		this.aspects = tags;
 		this.key = researchKey;
 		this.catalyst = cat;
 		StringBuilder hc = new StringBuilder(researchKey /*+result.toString()*/);
-		for (Aspect tag:tags.getAspectTypes()) {
-			hc.append(tag.getTag()).append(tags.getAmount(tag));
+		for (var asp:tags.getAspectTypes()) {
+			hc.append(asp.getTag()).append(tags.getAmount(asp));
 		}
 		
 		hash = hc.toString().hashCode();
 		this.inputSample = catalyst.getAvailableItemStackSample().toArray(new ItemStack[0]);
 		this.outputMatcher = outputMatcher;
+		this.allSample = new ItemStack[1][];
+		allSample[0] = inputSample;
 
 	}
 	
 		
 
-	public boolean matches(AspectList itags, ItemStack cat) {
+	public boolean matches(AspectList<Aspect> itags, ItemStack cat) {
 		if (!catalyst.matches(cat)) return false;
 //		if (catalyst instanceof ItemStack &&
 //				!ThaumcraftApiHelper.itemMatches((ItemStack) catalyst,cat,false)) {
@@ -50,7 +54,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 //			if (!ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{cat},ores)) return false;
 //		}
 		if (itags==null) return false;
-		for (Aspect tag:aspects.getAspectTypes()) {
+		for (var tag:aspects.getAspectTypes()) {
 			if (itags.getAmount(tag)<aspects.getAmount(tag)) return false;
 		}
 		return true;
@@ -67,12 +71,12 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return catalyst.matches(cat);
 	}
 	
-	public AspectList removeMatching(AspectList itags) {
-		AspectList temptags = new AspectList(itags);
+	public AspectList<Aspect> removeMatching(AspectList<Aspect> itags) {
+		AspectList<Aspect> temptags = new AspectList<>(itags);
 
 //		temptags.aspects.putAll(itags.aspects);
 		
-		for (Aspect tag:aspects.getAspectTypes()) {
+		for (var tag:aspects.getAspectTypes()) {
 			temptags.reduceAndRemoveIfNegative(tag, aspects.getAmount(tag));
 		}
 		
@@ -85,10 +89,15 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	}
 
 
-	private final ItemStack[] inputSample;
 	@Override
 	public ItemStack[] getInputSample() {
 		return this.inputSample;
+	}
+
+
+	@Override
+	public ItemStack[][] getAllInputSample() {
+		return allSample;
 	}
 
 	private final ItemStack[] resultStore = new ItemStack[1];

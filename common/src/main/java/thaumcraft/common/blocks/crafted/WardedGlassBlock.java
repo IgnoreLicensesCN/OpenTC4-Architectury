@@ -50,7 +50,8 @@ public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlo
                 (level,
                         player.getEyePosition(),
                         player.getEyePosition().add(lookVec.normalize().multiply(new Vec3(10,10,10))),
-                        true
+                        true,
+                        player
                 );
         if (blockHitResult == null) {return;}
         var hitVec = blockHitResult.getLocation();

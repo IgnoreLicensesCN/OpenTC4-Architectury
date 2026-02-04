@@ -6,6 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 
 /**
@@ -33,8 +34,8 @@ public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputS
     int getRecipeSize();
 
     ItemStack getRecipeOutput();
-    CentiVisList getAspects();
-    CentiVisList getAspects(Container var1);
+    CentiVisList<Aspect> getAspects();
+    CentiVisList<Aspect> getAspects(Container var1);
     String getResearch();
 
     

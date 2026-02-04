@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,9 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
@@ -382,7 +381,30 @@ public class ResearchManager {
         }
     }
 
-    private static void checkConnections(ResearchNoteData note, HexUtils.Hex hex, ArrayList checked, ArrayList main, ArrayList remains, String username) {
+    private static boolean canAspectConnectToEachOther(Aspect aspectA, Aspect aspectB) {
+        if (aspectA instanceof CompoundAspect compoundAspectA){
+            if (compoundAspectA.components.aspectA() == aspectB){
+                return true;
+            }
+            if (compoundAspectA.components.aspectB() == aspectB){
+                return true;
+            }
+        }
+        if (aspectB instanceof CompoundAspect compoundAspectB){
+            if (compoundAspectB.components.aspectA() == aspectA){
+                return true;
+            }
+            if (compoundAspectB.components.aspectB() == aspectA){
+                return true;
+            }
+        }
+        return false;
+
+    }
+    private static void checkConnections(ResearchNoteData note,
+                                         HexUtils.Hex hex,
+                                         ArrayList<String> checked, ArrayList<String> main, ArrayList<String> remains,
+                                         String username) {
         checked.add(hex.toString());
 
         for (int a = 0; a < 6; ++a) {
@@ -390,7 +412,9 @@ public class ResearchManager {
             if (!checked.contains(target.toString()) && note.hexEntries.containsKey(target.toString()) && note.hexEntries.get(target.toString()).type >= 1) {
                 Aspect aspect1 = note.hexEntries.get(hex.toString()).aspect;
                 Aspect aspect2 = note.hexEntries.get(target.toString()).aspect;
-                if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect1) && Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect2) && (!aspect1.isPrimal() && (aspect1.getComponents()[0] == aspect2 || aspect1.getComponents()[1] == aspect2) || !aspect2.isPrimal() && (aspect2.getComponents()[0] == aspect1 || aspect2.getComponents()[1] == aspect1))) {
+                if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect1)
+                        && Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect2)
+                        && canAspectConnectToEachOther(aspect1, aspect2)) {
                     remains.add(target.toString());
                     if (note.hexEntries.get(target.toString()).type == 1) {
                         main.remove(target.toString());
@@ -431,7 +455,7 @@ public class ResearchManager {
 
         for (HexUtils.Hex hex : outerRing) {
             hexes.put(hex.toString(), hex);
-            hexEntries.put(hex.toString(), new HexEntry(rr.tags.getAspectTypes()[count], 1));
+            hexEntries.put(hex.toString(), new HexEntry(rr.tags.getAspectTypes().get(count), 1));
             ++count;
         }
 
@@ -623,7 +647,7 @@ public class ResearchManager {
             int q = RESEARCH_NOTE_HEX_Q_ACCESSOR.readFromCompoundTag(hexTag);
             int r = RESEARCH_NOTE_HEX_R_ACCESSOR.readFromCompoundTag(hexTag);
             int type = RESEARCH_NOTE_HEX_TYPE_ACCESSOR.readFromCompoundTag(hexTag);
-            String aspectTag = RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.readFromCompoundTag(hexTag);
+            var aspectTag = RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.readFromCompoundTag(hexTag);
             Aspect aspect = aspectTag != null ? Aspect.getAspect(aspectTag) : null;
 
             HexUtils.Hex hex = new HexUtils.Hex(q, r);
@@ -670,13 +694,13 @@ public class ResearchManager {
         if (!key.startsWith("@") && ResearchCategories.getResearch(key) == null) {
             return false;
         } else {
-            List<String> completed = getResearchForPlayer(playername);
+            List<ResourceLocation> completed = getResearchForPlayer(playername);
             return completed != null && !completed.isEmpty() && completed.contains(key);
         }
     }
 
-    public static List<String> getResearchForPlayer(String playername) {
-        List<String> out = Thaumcraft.getCompletedResearch().get(playername);
+    public static List<ResourceLocation> getResearchForPlayer(String playername) {
+        List<ResourceLocation> out = Thaumcraft.getCompletedResearch().get(playername);
 
         try {
             var server = platformUtils.getServer();
@@ -709,7 +733,7 @@ public class ResearchManager {
         return out;
     }
 
-    public static List<String> getResearchForPlayerSafe(String playername) {
+    public static List<ResourceLocation> getResearchForPlayerSafe(String playername) {
         return Thaumcraft.getCompletedResearch().get(playername);
     }
 
@@ -718,7 +742,7 @@ public class ResearchManager {
         String[] parents = ResearchCategories.getResearch(key).parents;
         if (parents != null && parents.length > 0) {
             out = false;
-            List<String> completed = getResearchForPlayer(playername);
+            List<ResourceLocation> completed = getResearchForPlayer(playername);
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
@@ -733,7 +757,7 @@ public class ResearchManager {
         parents = ResearchCategories.getResearch(key).parentsHidden;
         if (parents != null && parents.length > 0) {
             out = false;
-            List<String> completed = getResearchForPlayer(playername);
+            List<ResourceLocation> completed = getResearchForPlayer(playername);
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
@@ -750,7 +774,8 @@ public class ResearchManager {
 
     public static Aspect getCombinationResult(Aspect aspect1, Aspect aspect2) {
         for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-            if (aspect.getComponents() != null && (aspect.getComponents()[0] == aspect1 && aspect.getComponents()[1] == aspect2 || aspect.getComponents()[0] == aspect2 && aspect.getComponents()[1] == aspect1)) {
+            if (aspect instanceof CompoundAspect compoundAspect &&
+                    compoundAspect.isCombinedFrom(aspect1,aspect2)) {
                 return aspect;
             }
         }
@@ -758,28 +783,38 @@ public class ResearchManager {
         return null;
     }
 
-    public static AspectList reduceToPrimals(AspectList al) {
+    public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al) {
         return reduceToPrimals(al, false);
     }
 
-    public static AspectList reduceToPrimals(AspectList al, boolean merge) {
-        AspectList out = new AspectList();
+    public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al, boolean merge) {
+        AspectList<PrimalAspect> out = new AspectList<>();
 
-        for (Aspect aspect : al.getAspectTypes()) {
+        for (var aspect : al.getAspectTypes()) {
+            var aspAmount = al.getAmount(aspect);
             if (aspect != null) {
-                if (aspect.isPrimal()) {
+                if (aspect instanceof PrimalAspect primalAspect) {
                     if (merge) {
-                        out.mergeWithHighest(aspect, al.getAmount(aspect));
+                        out.mergeWithHighest(primalAspect, aspAmount);
                     } else {
-                        out.addAll(aspect, al.getAmount(aspect));
+                        out.addAll(primalAspect, aspAmount);
                     }
-                } else {
-                    AspectList send = new AspectList();
-                    send.addAll(aspect.getComponents()[0], al.getAmount(aspect));
-                    send.addAll(aspect.getComponents()[1], al.getAmount(aspect));
-                    send = reduceToPrimals(send, merge);
+                } else if (aspect instanceof CompoundAspect compoundAspect) {
+                    AspectList<PrimalAspect> send = new AspectList<>();
+                    send.addAll(
+                            reduceToPrimals(
+                                    AspectList.of(
+                                            Map.of(compoundAspect.components.aspectA(), aspAmount))
+                                    ,merge)
+                    );
+                    send.addAll(
+                            reduceToPrimals(
+                                    AspectList.of(
+                                            Map.of(compoundAspect.components.aspectB(), aspAmount))
+                                    ,merge)
+                    );
 
-                    for (Aspect a : send.getAspectTypes()) {
+                    for (var a : send.getAspectTypes()) {
                         if (merge) {
                             out.mergeWithHighest(a, send.getAmount(a));
                         } else {
@@ -793,8 +828,8 @@ public class ResearchManager {
         return out;
     }
 
-    public static boolean completeResearchUnsaved(String username, String key) {
-        List<String> completed = getResearchForPlayerSafe(username);
+    public static boolean completeResearchUnsaved(String username, ResourceLocation key) {
+        List<ResourceLocation> completed = getResearchForPlayerSafe(username);
         if (completed != null && completed.contains(key)) {
             return false;
         } else {
@@ -818,7 +853,7 @@ public class ResearchManager {
         player.playSound(LEARN);//,.75f,1.f
     }
 
-    public void completeResearch(Player player, String key) {
+    public void completeResearch(Player player, ResourceLocation key) {
         String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
             int warp = ThaumcraftApi.getWarp(key);
@@ -1000,7 +1035,7 @@ public class ResearchManager {
 
             } else {
                 for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-                    if (aspect.getComponents() == null) {
+                    if (!(aspect instanceof CompoundAspect)) {
 //                        Thaumcraft.researchManager;
                         completeAspectUnsaved(playerName, aspect, (short) (15 + ThreadLocalRandom.current().nextInt(5)));
                     }
@@ -1025,7 +1060,7 @@ public class ResearchManager {
 
         for (int i = 0; i < list.size(); ++i) {
             CompoundTag rs = list.getCompound(i);
-            String key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+            var key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
             if (key != null) {
                 completeResearchUnsaved(playerName, key);
             }
@@ -1041,7 +1076,7 @@ public class ResearchManager {
         for (int i = 0; i < list.size(); ++i) {
             CompoundTag rs = list.getCompound(i);
 
-            String key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+            var key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
             if (key == null) continue;
 
             Aspect aspect = Aspect.getAspect(key);
@@ -1091,7 +1126,7 @@ public class ResearchManager {
         if (objList != null) {
             for (int i = 0; i < objList.size(); ++i) {
                 CompoundTag rs = objList.getCompound(i);
-                String key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+                String key = THAUMCRAFT_PLAYER_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedObjectUnsaved(playerName, key);
                 }
@@ -1104,7 +1139,7 @@ public class ResearchManager {
         if (entList != null) {
             for (int i = 0; i < entList.size(); ++i) {
                 CompoundTag rs = entList.getCompound(i);
-                String key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+                String key = THAUMCRAFT_PLAYER_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedEntityUnsaved(playerName, key);
                 }
@@ -1117,7 +1152,7 @@ public class ResearchManager {
         if (pheList != null) {
             for (int i = 0; i < pheList.size(); ++i) {
                 CompoundTag rs = pheList.getCompound(i);
-                String key = ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs);
+                String key = THAUMCRAFT_PLAYER_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
                 if (key != null) {
                     completeScannedPhenomenaUnsaved(playerName, key);
                 }

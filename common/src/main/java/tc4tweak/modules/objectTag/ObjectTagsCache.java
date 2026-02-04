@@ -4,13 +4,14 @@ import com.linearity.opentc4.OpenTC4;
 import net.minecraft.world.item.Item;
 import tc4tweak.modules.FlushableCache;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 //congratulations!we dont need itemmeta! consider all of them 0!
-class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList>> {
+class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList<Aspect>>> {
 
 //    private static TIntObjectMap<AspectList> bakeSubmap(@SuppressWarnings("rawtypes") Map.Entry<List, AspectList> e) {
 //        TIntObjectMap<AspectList> submap = new TIntObjectHashMap<>();
@@ -30,11 +31,11 @@ class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList>> {
 
 
     @Override
-    public ConcurrentMap<Item, AspectList> createCache() {
-        ConcurrentHashMap<Item, AspectList> map = new ConcurrentHashMap<>();
+    public ConcurrentMap<Item, AspectList<Aspect>> createCache() {
+        ConcurrentHashMap<Item, AspectList<Aspect>> map = new ConcurrentHashMap<>();
         ThaumcraftApi.objectTags.entrySet().parallelStream().forEach(e -> {
             Item key = e.getKey();
-            AspectList val = e.getValue();
+            AspectList<Aspect> val = e.getValue();
 
             map.merge(key, val.copy(),
                     (a, b) -> {

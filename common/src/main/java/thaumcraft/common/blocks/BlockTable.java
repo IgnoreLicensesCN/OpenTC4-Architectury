@@ -164,25 +164,25 @@ public class BlockTable /*extends BlockContainer implements IWandable*/ {
       }
    }
 
-   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
-      if (md <= 1) {
-         WandCastingItem wand = (WandCastingItem)wandstack.getItem();
-         world.setBlock(x, y, z, ConfigBlocks.blockTable, 15, 3);
-         world.setTileEntity(x, y, z, new TileArcaneWorkbench());
-         TileArcaneWorkbench tawb = (TileArcaneWorkbench)world.getTileEntity(x, y, z);
-         if (tawb != null && !wand.isStaff(wandstack)) {
-            tawb.setInventorySlotContents(10, wandstack.copy());
-            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-         }
-
-         tawb.markDirty();
-         world.markBlockForUpdate(x, y, z);
-         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.15F, 0.5F);
-         return 0;
-      } else {
-         return -1;
-      }
-   }
+//   public int onWandRightClick(World world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
+//      if (md <= 1) {
+//         WandCastingItem wand = (WandCastingItem)wandstack.getItem();
+//         world.setBlock(x, y, z, ConfigBlocks.blockTable, 15, 3);
+//         world.setTileEntity(x, y, z, new TileArcaneWorkbench());
+//         TileArcaneWorkbench tawb = (TileArcaneWorkbench)world.getTileEntity(x, y, z);
+//         if (tawb != null && !wand.isStaff(wandstack)) {
+//            tawb.setInventorySlotContents(10, wandstack.copy());
+//            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//         }
+//
+//         tawb.markDirty();
+//         world.markBlockForUpdate(x, y, z);
+//         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.15F, 0.5F);
+//         return 0;
+//      } else {
+//         return -1;
+//      }
+//   }
 
 //   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
 //      return null;

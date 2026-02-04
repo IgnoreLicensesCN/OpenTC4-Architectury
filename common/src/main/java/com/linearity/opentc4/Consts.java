@@ -53,6 +53,18 @@ public class Consts {
         private static final String SCAN_PHENOMENA = "THAUMCRAFT.SCAN.PHENOMENA";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(SCAN_PHENOMENA);
+
+
+        private static final String SCAN_OBJECT_ITEM = "scannedObj";
+        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_OBJECT_ACCESSOR =
+                new CompoundTagHelper.StringTagAccessor(SCAN_OBJECT_ITEM);
+
+        private static final String SCAN_ENTITY_ITEM = "scannedEntity";
+        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_ENTITY_ACCESSOR =
+                new CompoundTagHelper.StringTagAccessor(SCAN_ENTITY_ITEM);
+        private static final String SCAN_PHENOMENA_ITEM = "scannedPhenomena";
+        public static final CompoundTagHelper.StringTagAccessor THAUMCRAFT_PLAYER_SCANNED_PHENOMENA_ACCESSOR =
+                new CompoundTagHelper.StringTagAccessor(SCAN_PHENOMENA_ITEM);
     }
 
     public static class WorldCoordsCompoundTagAccessors {
@@ -112,8 +124,10 @@ public class Consts {
                 new CompoundTagHelper.ByteTagAccessor("hexr");
         public static final CompoundTagHelper.ByteTagAccessor RESEARCH_NOTE_HEX_TYPE_ACCESSOR =
                 new CompoundTagHelper.ByteTagAccessor("type");
-        public static final CompoundTagHelper.StringTagAccessor RESEARCH_NOTE_HEX_ASPECT_ACCESSOR =
-                new CompoundTagHelper.StringTagAccessor("aspect");
+        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_HEX_ASPECT_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor("aspect");
+        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_RESEARCH_ACCESSOR =
+                new CompoundTagHelper.ResourceLocationTagAccessor("research");
     }
 
     public static class TileVisNodeCompoundTagAccessors {

@@ -25,7 +25,7 @@ public class ResearchItem
 	/**
 	 * The aspect tags and their values required to complete this research
 	 */
-	public final AspectList tags;
+	public final AspectList<Aspect> tags;
 	
     /**
      * This links to any research that needs to be completed before this research can be discovered or learnt.

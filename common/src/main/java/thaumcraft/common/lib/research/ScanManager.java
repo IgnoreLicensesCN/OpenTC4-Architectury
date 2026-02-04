@@ -283,8 +283,8 @@ public class ScanManager implements IScanEventHandler {
 //      return hash.toString().hashCode();
     }
 
-    public static AspectList generateEntityAspects(Entity entity) {
-        AspectList tags = null;
+    public static AspectList<Aspect> generateEntityAspects(Entity entity) {
+        AspectList<Aspect> tags = null;
         String s = null;
 
         try {
@@ -307,7 +307,7 @@ public class ScanManager implements IScanEventHandler {
         if (entity instanceof Player) {
             s = "player_" + entity.getName()
                     .getString();
-            tags = new AspectList();
+            tags = new AspectList<>();
             tags.addAll(Aspects.MAN, 4);
             if (entity.getName()
                     .getString()
@@ -357,8 +357,8 @@ public class ScanManager implements IScanEventHandler {
         return tags;
     }
 
-    private static AspectList generateNodeAspects(Level world, String node) {
-        AspectList tags = new AspectList();
+    private static AspectList<Aspect> generateNodeAspects(Level world, String node) {
+        AspectList<Aspect> tags = new AspectList<>();
         BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
         if (loc != null) {
             ResourceLocation dim = loc.dim();
@@ -368,9 +368,9 @@ public class ScanManager implements IScanEventHandler {
             )) {
                 BlockEntity tnb = world.getBlockEntity(pos);
                 if (tnb instanceof INodeBlockEntity iNodeBlockEntity) {
-                    AspectList ta = iNodeBlockEntity.getAspects();
+                    AspectList<Aspect> ta = iNodeBlockEntity.getAspects();
 
-                    for (Aspect a : ta.getAspectsSorted()) {
+                    for (var a : ta.getAspectsSorted()) {
                         tags.mergeWithHighest(a, Math.max(4, ta.getAmount(a) / 10));
                     }
 
@@ -688,8 +688,8 @@ public class ScanManager implements IScanEventHandler {
         }
     }
 
-    public static AspectList getScanAspects(ScanResult scan, Level world) {
-        AspectList aspects = new AspectList();
+    public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
+        AspectList<Aspect> aspects = new AspectList<>();
         boolean ret = false;
         if (scan.type == 1) {
 //         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
@@ -700,7 +700,7 @@ public class ScanManager implements IScanEventHandler {
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
             aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
             aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
-            if (aspects.size() == 0 && scan.item != null) {
+            if (aspects.isEmpty() && scan.item != null) {
                 aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
                 aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
             }

@@ -3,6 +3,7 @@ package thaumcraft.api;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,10 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
@@ -30,8 +28,9 @@ import java.util.Objects;
 
 public class ThaumcraftApiHelper {
 
-    public static AspectList cullTags(AspectList temp) {
-        AspectList temp2 = new AspectList();
+    //TODO:new api(maybe)
+    public static AspectList<Aspect> cullTags(AspectList<Aspect> temp) {
+        AspectList<Aspect> temp2 = new AspectList<>();
         for (Aspect tag : temp.getAspectTypes()) {
             if (tag != null)
                 temp2.addAll(tag, temp.getAmount(tag));
@@ -39,27 +38,29 @@ public class ThaumcraftApiHelper {
         while (temp2.size() > 6) {
             Aspect lowest = null;
             float low = Short.MAX_VALUE;
-            for (Aspect tag : temp2.getAspectTypes()) {
+            for (var tag : temp2.getAspectTypes()) {
                 if (tag == null) continue;
                 float ta = temp2.getAmount(tag);
-                if (tag.isPrimal()) {
+                if (tag instanceof PrimalAspect) {
                     ta *= .9f;
-                } else {
-                    if (!tag.getComponents()[0].isPrimal()) {
+                } else if (tag instanceof CompoundAspect compoundAspect) {
+                    var componentA = compoundAspect.components.aspectA();
+                    var componentB = compoundAspect.components.aspectB();
+                    if (componentA instanceof CompoundAspect compoundA) {
                         ta *= 1.1f;
-                        if (!tag.getComponents()[0].getComponents()[0].isPrimal()) {
+                        if (!(compoundA.components.aspectA() instanceof PrimalAspect)) {
                             ta *= 1.05f;
                         }
-                        if (!tag.getComponents()[0].getComponents()[1].isPrimal()) {
+                        if (!(compoundA.components.aspectB() instanceof PrimalAspect)) {
                             ta *= 1.05f;
                         }
                     }
-                    if (!tag.getComponents()[1].isPrimal()) {
+                    if (componentB instanceof CompoundAspect compoundB) {
                         ta *= 1.1f;
-                        if (!tag.getComponents()[1].getComponents()[0].isPrimal()) {
+                        if (!(compoundB.components.aspectA() instanceof PrimalAspect)) {
                             ta *= 1.05f;
                         }
-                        if (!tag.getComponents()[1].getComponents()[1].isPrimal()) {
+                        if (!(compoundB.components.aspectB() instanceof PrimalAspect)) {
                             ta *= 1.05f;
                         }
                     }
@@ -90,7 +91,7 @@ public class ThaumcraftApiHelper {
         return Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect);
     }
 
-    public static AspectList getDiscoveredAspects(String username) {
+    public static AspectList<Aspect> getDiscoveredAspects(String username) {
         return Thaumcraft.playerKnowledge.getAspectsDiscovered(username);
     }
 
@@ -98,15 +99,15 @@ public class ThaumcraftApiHelper {
         return instance.getStackInRowAndColumn(row, column);
     }
 
-    public static AspectList getObjectAspects(ItemStack is) {
+    public static AspectList<Aspect> getObjectAspects(ItemStack is) {
         return ThaumcraftCraftingManager.getObjectTags(is);
     }
 
-    public static AspectList getBonusObjectTags(ItemStack is, AspectList ot) {
+    public static AspectList<Aspect> getBonusObjectTags(ItemStack is, AspectList<Aspect> ot) {
         return ThaumcraftCraftingManager.getBonusTags(is, ot);
     }
 
-    public static AspectList generateTags(Item item) {
+    public static AspectList<Aspect> generateTags(Item item) {
         return ThaumcraftCraftingManager.generateTags(item);
     }
 
@@ -181,12 +182,12 @@ public class ThaumcraftApiHelper {
             return null;
     }
 
-    private static HashMap<Integer, AspectList> allAspects = new HashMap<>();
-    private static HashMap<Integer, AspectList> allCompoundAspects = new HashMap<>();
+    private static final HashMap<Integer, AspectList<Aspect>> allAspects = new HashMap<>();
+    private static final HashMap<Integer, AspectList<CompoundAspect>> allCompoundAspects = new HashMap<>();
 
-    public static AspectList getAllAspects(int amount) {
+    public static AspectList<Aspect> getAllAspectsWithAmount(int amount) {
         if (allAspects.get(amount) == null) {
-            AspectList al = new AspectList();
+            AspectList<Aspect> al = new AspectList<>();
             for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
                 al.addAll(aspect, amount);
             }
@@ -195,10 +196,10 @@ public class ThaumcraftApiHelper {
         return allAspects.get(amount);
     }
 
-    public static AspectList getAllCompoundAspects(int amount) {
+    public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
         if (allCompoundAspects.get(amount) == null) {
-            AspectList al = new AspectList();
-            for (Aspect aspect : Aspect.getCompoundAspects()) {
+            AspectList<CompoundAspect> al = new AspectList<>();
+            for (var aspect : Aspect.getCompoundAspects()) {
                 al.addAll(aspect, amount);
             }
             allCompoundAspects.put(amount, al);
@@ -220,7 +221,7 @@ public class ThaumcraftApiHelper {
      * @return was the vis successfully subtracted
      */
     public static boolean consumeVisFromWand(ItemStack wand, Player player,
-                                             AspectList cost, boolean doit, boolean crafting) {
+                                             CentiVisList<Aspect> cost, boolean doit, boolean crafting) {
         return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVis(wand, player, cost, doit, crafting);
     }
 
@@ -236,7 +237,7 @@ public class ThaumcraftApiHelper {
      * @return was the vis successfully subtracted
      */
     public static boolean consumeVisFromWandCrafting(ItemStack wand, Player player,
-                                                     AspectList cost, boolean doit) {
+                                                     CentiVisList<Aspect> cost, boolean doit) {
         return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVisCrafting(wand, player, cost, doit);
     }
 
@@ -249,7 +250,7 @@ public class ThaumcraftApiHelper {
      * @param cost   the cost of the operation.
      * @return was the vis successfully subtracted
      */
-    public static boolean consumeVisFromInventory(Player player, AspectList cost) {
+    public static boolean consumeVisFromInventory(Player player, AspectList<Aspect> cost) {
         return WandManager.consumeVisFromInventory(player, cost);
     }
 
@@ -276,19 +277,17 @@ public class ThaumcraftApiHelper {
         Thaumcraft.addStickyWarpToPlayer(player, amount);
     }
 
-    public static BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource) {
+    public static BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource, Entity sourceEntity) {
         // 构造射线上下文
         ClipContext context = new ClipContext(
                 start,
                 end,
                 ClipContext.Block.OUTLINE, // 检测方块碰撞
                 ClipContext.Fluid.NONE,    // 不检测液体
-                null                       // 射线来源实体，可为空
+                sourceEntity                       // 射线来源实体，可为空
         );
 
         BlockHitResult hit = world.clip(context);
-
-        if (hit == null) return null;
 
         // 如果忽略起点方块
         if (ignoreSource) {

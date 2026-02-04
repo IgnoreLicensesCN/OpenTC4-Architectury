@@ -9,6 +9,7 @@ import thaumcraft.client.renderers.item.RenderUtils;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
+import thaumcraft.common.gui.ThaumcraftGUI;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.misc.dispensebehavior.ThaumcraftDispenseBehaviors;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
@@ -48,6 +49,7 @@ public final class OpenTC4 {
         ThaumcraftEnchantments.init();
         ThaumcraftWorldGenConfiguredFeatures.init();
         ThaumcraftStructures.init();
+        ThaumcraftGUI.init();
     }
 
     public static void onClientStarting() {

@@ -36,10 +36,10 @@ public class ItemAspectBonusTagsCalculator {
      * @param sourceTags will be added to result(it won't be modified)
      * @return tags added with bonus
      */
-    public static AspectList getBonusTags(ItemStack itemstack, AspectList sourceTags) {
-        AspectList aspects = new AspectList();
+    public static AspectList<Aspect> getBonusTags(ItemStack itemstack, AspectList<Aspect> sourceTags) {
+        AspectList<Aspect> aspects = new AspectList<>();
         Item item = itemstack.getItem();
-        UnmodifiableAspectList sourceTagsView = new UnmodifiableAspectList(sourceTags);
+        UnmodifiableAspectList<Aspect> sourceTagsView = new UnmodifiableAspectList<>(sourceTags);
 
         if (sourceTags != null) {
             for (Aspect tag : sourceTags.getAspectTypes()) {

@@ -1,15 +1,18 @@
 package thaumcraft.common.lib.research;
 
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.CompoundAspect;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerKnowledge {
-   public final Map<String, List<String>> researchCompleted = new ConcurrentHashMap<>();
-   public final Map<String, AspectList> aspectsDiscovered = new ConcurrentHashMap<>();
+   //TODO:Research string -> ResourceLocation
+   public final Map<String, List<ResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
+   public final Map<String, AspectList<Aspect>> aspectsDiscovered = new ConcurrentHashMap<>();
    public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> phenomenaScanned = new ConcurrentHashMap<>();
@@ -29,8 +32,8 @@ public class PlayerKnowledge {
       this.warpSticky.remove(player);
    }
 
-   public AspectList getAspectsDiscovered(String player) {
-      AspectList known = this.aspectsDiscovered.get(player);
+   public AspectList<Aspect> getAspectsDiscovered(String player) {
+      AspectList<Aspect> known = this.aspectsDiscovered.get(player);
       if (known == null || known.size() <= 6) {
          this.addDiscoveredPrimalAspects(player);
          known = this.aspectsDiscovered.get(player);
@@ -44,22 +47,18 @@ public class PlayerKnowledge {
    }
 
    public boolean hasDiscoveredParentAspects(String player, Aspect aspect) {
-      if (aspect == null) {
+      if (!(aspect instanceof CompoundAspect compoundAspect)) {
          return false;
-      } else {
-         Aspect[] components = aspect.getComponents();
-         if (components == null) {
-            return true;
-         } else {
-            return new HashSet<>(Arrays.asList(this.getAspectsDiscovered(player).getAspectTypes())).containsAll(Arrays.asList(components));
-         }
       }
+      var components = compoundAspect.components;
+      var discovered = this.getAspectsDiscovered(player).getAspects();
+      return discovered.containsKey(components.aspectA()) && discovered.containsKey(components.aspectB());
    }
 
    public void addDiscoveredPrimalAspects(String player) {
-      AspectList known = this.aspectsDiscovered.get(player);
+      AspectList<Aspect> known = this.aspectsDiscovered.get(player);
       if (known == null) {
-         known = new AspectList();
+         known = new AspectList<>();
       }
 
       if (!known.getAspects().containsKey(Aspects.AIR)) {
@@ -90,7 +89,7 @@ public class PlayerKnowledge {
    }
 
    public boolean addDiscoveredAspect(String player, Aspect aspect) {
-      AspectList known = this.getAspectsDiscovered(player);
+      AspectList<Aspect> known = this.getAspectsDiscovered(player);
       if (!known.getAspects().containsKey(aspect)) {
          known.addAll(aspect, 0);
          this.aspectsDiscovered.put(player, known);
@@ -101,14 +100,14 @@ public class PlayerKnowledge {
    }
 
    public short getAspectPoolFor(String username, Aspect aspect) {
-      AspectList known = this.getAspectsDiscovered(username);
+      AspectList<Aspect> known = this.getAspectsDiscovered(username);
       return known != null ? (short)known.getAmount(aspect) : 0;
    }
 
    public boolean addAspectPool(String username, Aspect aspect, short amount) {
-      AspectList al = this.getAspectsDiscovered(username);
+      AspectList<Aspect> al = this.getAspectsDiscovered(username);
       if (al == null) {
-         al = new AspectList();
+         al = new AspectList<>();
       }
 
       if (aspect != null && amount != 0) {
@@ -132,9 +131,9 @@ public class PlayerKnowledge {
    }
 
    public boolean setAspectPool(String username, Aspect aspect, int amount) {
-      AspectList al = this.getAspectsDiscovered(username);
+      AspectList<Aspect> al = this.getAspectsDiscovered(username);
       if (al == null) {
-         al = new AspectList();
+         al = new AspectList<>();
       }
 
       if (aspect != null) {

@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import java.util.ArrayList;
@@ -28,9 +29,10 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
  * **/
 public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample
 {
-	protected AspectList aspects;
+	protected AspectList<Aspect> aspects;
 	protected String research;
 	private final RecipeItemMatcher[] components;
+	private final ItemStack[][] allSample;
 	private final RecipeItemMatcher recipeInput;
 	private final RecipeItemMatcher recipeOutputMatcher;
 //	protected Object recipeOutput;
@@ -40,7 +42,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	protected int instability;
 	
 	public InfusionRecipe(String research,Function<ItemStack[],ItemStack> recipeOutputGenerator, int inst,
-			AspectList aspects2, RecipeItemMatcher input, RecipeItemMatcher[] recipe,RecipeItemMatcher outputMatcher) {
+			AspectList<Aspect> aspects2, RecipeItemMatcher input, RecipeItemMatcher[] recipe,RecipeItemMatcher outputMatcher) {
 		this.research = research;
 //		this.recipeOutput = output;
 		this.recipeOutputGenerator = recipeOutputGenerator;
@@ -51,6 +53,10 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		this.recipeInputSampleArr = new ItemStack[components.length + 1];
 		this.instability = inst;
 		this.recipeOutputMatcher = outputMatcher;
+		this.allSample = new ItemStack[components.length][];
+		for (int i = 0; i < components.length; i++){
+			allSample[i] = components[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+		}
 	}
 
 	/**
@@ -137,7 +143,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return getRecipeOutput(this.getRecipeInput());
     }
     
-    public AspectList getAspects() {
+    public AspectList<Aspect> getAspects() {
 		return getAspects(this.getRecipeInput());
     }
 
@@ -171,7 +177,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return recipeOutputGenerator.apply(recipeInputSampleArr);
     }
     
-    public AspectList getAspects(ItemStack input) {
+    public AspectList<Aspect> getAspects(ItemStack input) {
 		return aspects;
     }
     
@@ -187,6 +193,11 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 			recipeInputSampleArr[i] = pickByTime(components[i].getAvailableItemStackSample());
 		}
 		return recipeInputSampleArr;
+	}
+
+	@Override
+	public ItemStack[][] getAllInputSample() {
+		return allSample;
 	}
 
 	@Override

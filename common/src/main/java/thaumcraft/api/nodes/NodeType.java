@@ -59,7 +59,7 @@ public class NodeType {
             var result = super.nodeTypeTick(thisNode);
             
             
-            if (level != null && level.random.nextBoolean()) {
+            if (level.random.nextBoolean()) {
                 var nodeLock = INodeLock.getNodeLock(thisNode.getLockId());
                 if (nodeLock == null) {
                     Aspect aspect = null;
@@ -202,7 +202,8 @@ public class NodeType {
                     Vec3 v2 = new Vec3(
                             (double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
                     HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(
-                            clientLevel, v1, v2, true/*, false, false (always these two flags)*/);
+                            clientLevel, v1, v2, true/*, false, false (always these two flags)*/
+                    ,null);
 
                     if (mop != null && mop.getLocation()
                             .distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < (double) 256.0F) {
@@ -303,7 +304,7 @@ public class NodeType {
                 );
                 Vec3 v2 = new Vec3(
                         (double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
-                HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(serverLevel, v1, v2, true);
+                HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(serverLevel, v1, v2, true,null);
                 if (mop != null) {
                     var mopPos = mop.getLocation();
                     if (mopPos.distanceToSqr(pos.getCenter()) <  256.0F * 256.0F){

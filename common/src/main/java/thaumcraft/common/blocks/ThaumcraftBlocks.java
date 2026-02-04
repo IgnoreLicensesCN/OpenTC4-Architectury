@@ -150,6 +150,7 @@ public class ThaumcraftBlocks {
     public static final MatureSporeStalkBlock MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
     public static final TableBlock TABLE = Registry.SUPPLIER_TABLE.get();
     public static final ArcaneWorkbenchBlock ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
+    public static final DeconstructionTableBlock DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -568,8 +569,12 @@ public class ThaumcraftBlocks {
                 TableBlock::new
         );
         public static final RegistrySupplier<ArcaneWorkbenchBlock> SUPPLIER_ARCANE_WORKBENCH = BLOCKS.register(
-                "table",
+                "arcane_workbench",
                 ArcaneWorkbenchBlock::new
+        );
+        public static final RegistrySupplier<DeconstructionTableBlock> SUPPLIER_DECONSTRUCTION_TABLE = BLOCKS.register(
+                "deconstruction_table",
+                DeconstructionTableBlock::new
         );
 
         static {

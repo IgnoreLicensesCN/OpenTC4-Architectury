@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -33,7 +34,7 @@ public class GetObjectTags {
 //        return Stream.empty();
 //    }
 
-    public static Stream<Entry<ItemStack, AspectList>> stream() {
+    public static Stream<Entry<ItemStack, AspectList<Aspect>>> stream() {
         if (!cache.isEnabled()) return Stream.empty();
 
         return cache.getCache().entrySet().stream()
@@ -41,10 +42,10 @@ public class GetObjectTags {
     }
 
     @Nullable
-    public static AspectList getObjectTags(@NotNull ItemStack itemstack) {
+    public static AspectList<Aspect> getObjectTags(@NotNull ItemStack itemstack) {
         Item item = itemstack.getItem();
 
-        AspectList tmp = getBaseObjectTags(item);
+        AspectList<Aspect> tmp = getBaseObjectTags(item);
         if (tmp == null) {
             // cache disabled, try find it as is
             tmp = ThaumcraftApi.objectTags.get(item);
@@ -74,8 +75,8 @@ public class GetObjectTags {
         return tmp;
     }
 
-    private static AspectList truncateAspectList(AspectList tmp) {
-        AspectList out = tmp.copy();
+    private static AspectList<Aspect> truncateAspectList(AspectList<Aspect> tmp) {
+        AspectList<Aspect> out = tmp.copy();
         out.replaceAll((a, n) -> Math.min(64, n));
         return out;
     }
@@ -83,7 +84,7 @@ public class GetObjectTags {
     /**
      * Add wand related aspects
      */
-    private static void addWandTags(ItemStack itemstack, AspectList tmp, WandCastingItem wand) {
+    private static void addWandTags(ItemStack itemstack, AspectList<Aspect> tmp, WandCastingItem wand) {
         tmp.mergeWithHighest(Aspects.MAGIC, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 2);
         tmp.mergeWithHighest(Aspects.TOOL, (wand.getRod(itemstack).getCraftCost() + wand.getCap(itemstack).getCraftCost()) / 3);
     }
@@ -93,7 +94,7 @@ public class GetObjectTags {
      */
     //TODO:API adds aspects for effects and item types
     @SuppressWarnings("unchecked")
-    private static void addPotionTags(ItemStack itemstack, PotionItem item, AspectList tmp) {
+    private static void addPotionTags(ItemStack itemstack, PotionItem item, AspectList<Aspect> tmp) {
         tmp.mergeWithHighest(Aspects.WATER, 1);
         List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
         if (!effects.isEmpty()) {
@@ -155,12 +156,12 @@ public class GetObjectTags {
      * @return null if cache disabled. non null if cache enabled. might be an empty aspect list if the generateTag failed.
      */
     @Nullable
-    private static AspectList getBaseObjectTags(Item item) {
-        ConcurrentMap<Item, AspectList> cache = GetObjectTags.cache.getCache();
+    private static AspectList<Aspect> getBaseObjectTags(Item item) {
+        ConcurrentMap<Item, AspectList<Aspect>> cache = GetObjectTags.cache.getCache();
         if (cache == null)
             return null;
 
-        AspectList aspect = cache.get(item);
+        AspectList<Aspect> aspect = cache.get(item);
         if (aspect != null)
             return aspect;
 
@@ -168,6 +169,6 @@ public class GetObjectTags {
         aspect = ThaumcraftCraftingManager.generateTags(item);
 
         // 不返回 null，因为 null 表示 cache disabled
-        return aspect == null ? new AspectList() : aspect;
+        return aspect == null ? new AspectList<>() : aspect;
     }
 }

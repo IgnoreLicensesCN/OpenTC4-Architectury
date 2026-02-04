@@ -1,30 +1,36 @@
 package thaumcraft.api.aspects;
 
-import net.minecraft.world.item.ItemStack;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
-public class CentiVisList extends AspectList {//just mark we are using centiVis
+public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just mark we are using centiVis
 
-    public CentiVisList(ItemStack stack) {
-        super(stack);
-    }
+
+//    public static CentiVisList<Aspect> of(ItemStack stack) {
+//        var result = new CentiVisList<>();
+//        AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
+//        if (temp!=null) {
+//            for (Aspect tag : temp.getAspectTypes()) {
+//                result.addAll(tag, temp.getAmount(tag));
+//            }
+//        }
+//        return result;
+//    }
     public CentiVisList() {
         super();
     }
 
-    public CentiVisList copy() {
-        CentiVisList out = new CentiVisList();
-        for (Aspect a:this.getAspectTypes())
+    public CentiVisList<Asp> copy() {
+        CentiVisList<Asp> out = new CentiVisList<>();
+        for (var a:this.getAspectTypes())
             out.addAll(a, this.getAmount(a));
         return out;
     }
 
-    public static CentiVisList of(Map<Aspect,Integer> aspects) {
-        CentiVisList out = new CentiVisList();
+    public static <Asp extends Aspect> CentiVisList<Asp> of(Map<Asp,Integer> aspects) {
+        CentiVisList<Asp> out = new CentiVisList<>();
         for (var entry:aspects.entrySet()) {
             var key = entry.getKey();
             var value = entry.getValue();
@@ -33,8 +39,8 @@ public class CentiVisList extends AspectList {//just mark we are using centiVis
         return out;
     }
 
-    public static CentiVisList of(AspectList aspects) {
-        if (aspects instanceof CentiVisList centiVisList){
+    public static <Asp extends Aspect> CentiVisList<Asp> of(AspectList<Asp> aspects) {
+        if (aspects instanceof CentiVisList<Asp> centiVisList){
             return centiVisList;
         }
         return CentiVisList.of(
@@ -53,17 +59,14 @@ public class CentiVisList extends AspectList {//just mark we are using centiVis
         );
     }
 
-    public static CentiVisList of(Aspect... aspects){
-        CentiVisList out = new CentiVisList();
-        for (Aspect aspect : aspects){
+    @SafeVarargs
+    public static <Asp extends Aspect> CentiVisList<Asp> of(Asp... aspects){
+        CentiVisList<Asp> out = new CentiVisList<>();
+        for (var aspect : aspects){
             if (aspect != null){
                 out.addAll(aspect,1);
             }
         }
         return out;
-    }
-    @Override
-    public AspectList addAll(AspectList in) {
-        return super.addAll(in);
     }
 }

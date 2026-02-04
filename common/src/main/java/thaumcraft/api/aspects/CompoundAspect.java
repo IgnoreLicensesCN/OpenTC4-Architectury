@@ -30,4 +30,8 @@ public class CompoundAspect extends Aspect {
         this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
     }
 
+    public boolean isCombinedFrom(Aspect a, Aspect b) {
+        return components.isCombinedFrom(a,b);
+    }
+
 }

@@ -8,48 +8,48 @@ import thaumcraft.api.aspects.AspectList;
 import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
-public class UnmodifiableAspectList extends AspectList {
+public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
-    public static final AspectList EMPTY = new UnmodifiableAspectList(new AspectList());
+    public static final AspectList<Aspect> EMPTY = new UnmodifiableAspectList(new AspectList());
 
-    public UnmodifiableAspectList(AspectList viewingList) {
+    public UnmodifiableAspectList(AspectList<Aspect> viewingList) {
         if (viewingList != null) {
             this.aspects.putAll(viewingList.getAspects());
         }
     }
 
     @Override
-    public AspectList copy() {
+    public AspectList<A> copy() {
         return super.copy();
     }
 
     @Override
-    public AspectList mergeWithHighest(AspectList in) throws RuntimeException {
+    public AspectList<A> mergeWithHighest(AspectList<A> in) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList mergeWithHighest(Aspect aspect, int amount) throws RuntimeException {
+    public AspectList<A> mergeWithHighest(Aspect aspect, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList addAll(AspectList in) throws RuntimeException {
+    public AspectList<A> addAll(AspectList<A> in) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList addAll(Aspect aspect, int amount) throws RuntimeException {
+    public AspectList<A> addAll(Aspect aspect, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList reduceAndRemoveIfNegative(Aspect key) throws RuntimeException {
+    public AspectList<A> reduceAndRemoveIfNegative(Aspect key) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList reduceAndRemoveIfNegative(Aspect key, int amount) throws RuntimeException {
+    public AspectList<A> reduceAndRemoveIfNegative(Aspect key, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 

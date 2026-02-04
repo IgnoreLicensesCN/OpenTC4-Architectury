@@ -16,7 +16,7 @@ import java.util.Map;
 import static thaumcraft.api.expands.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
 public interface ICentiVisContainer {
-    public static final int CENTIVIS_MULTIPLIER = 100;
+    int CENTIVIS_MULTIPLIER = 100;
     /**
      *
      * @param stack which owns vis
@@ -35,7 +35,7 @@ public interface ICentiVisContainer {
     void storeCentiVisOwning(ItemStack itemStack, Map<Aspect,Integer> aspects);
     default void storeCentiVisOwning(ItemStack itemStack, Aspect aspect, int vis){
         storeCentiVisOwning(itemStack,Map.of(aspect,vis));
-    };
+    }
     //not multiplied by getVisCapacityMultiplier()
     @UnmodifiableView
     Map<Aspect,Integer> getAllCentiVisCapacity(ItemStack stack);
@@ -74,7 +74,7 @@ public interface ICentiVisContainer {
         return result;
     }
 
-    default Map<Aspect,Integer> addAllVis(ItemStack stack, CentiVisList centiVisList){
+    default <Asp extends Aspect> Map<Asp,Integer> addAllVis(ItemStack stack, CentiVisList<Asp> centiVisList){
         return addAllCentiVis(stack,centiVisList.getAspects());
     }
 
@@ -84,10 +84,10 @@ public interface ICentiVisContainer {
      * @param addInto a map to add many aspects into.
      * @return remaining centiVis
      */
-    default Map<Aspect,Integer> addAllCentiVis(ItemStack stack, Map<Aspect,Integer> addInto) {
+    default <Asp extends Aspect> Map<Asp,Integer> addAllCentiVis(ItemStack stack, Map<Asp,Integer> addInto) {
         var capacity = getAllCentiVisCapacity(stack);
         var visOwning = getAllCentiVisOwning(stack);
-        Map<Aspect,Integer> remainingVis = new HashMap<>(addInto.size(),1.F);
+        Map<Asp,Integer> remainingVis = new HashMap<>(addInto.size(),1.F);
         for (var entry : addInto.entrySet()) {
             int currentCapacity = capacity.getOrDefault(entry.getKey(),0);
             if (currentCapacity == 0){
@@ -139,9 +139,9 @@ public interface ICentiVisContainer {
         }
     }
 
-    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList aspects, boolean doit) {
+    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Aspect> aspects, boolean doit) {
         if (!aspects.isEmpty()) {
-            CentiVisList nl = new CentiVisList();
+            CentiVisList<Aspect> nl = new CentiVisList<>();
 
             for (var entry : aspects.getAspects().entrySet()) {
                 var aspect = entry.getKey();
@@ -150,21 +150,23 @@ public interface ICentiVisContainer {
                 nl.addAll(aspect, cost);
             }
 
-            for (var entry : nl.getAspects().entrySet()) {
-                var aspect = entry.getKey();
-                var amount = entry.getValue();
-                if (getCentiVisOwning(is, aspect) < amount) {
-                    return false;
-                }
+            if (nl.getAspects().entrySet().stream().anyMatch(
+                    aspectIntegerEntry ->
+                            getCentiVisOwning(
+                                    is, aspectIntegerEntry.getKey())
+                                    < aspectIntegerEntry.getValue()
+            )){
+                return false;
             }
 
             if (doit && Platform.getEnvironment() != Env.CLIENT) {
-
-                for (var entry : nl.getAspects().entrySet()) {
-                    var aspect = entry.getKey();
-                    var amount = entry.getValue();
-                    storeCentiVisOwning(is, aspect, getCentiVisOwning(is, aspect) - amount);
-                }
+                nl.getAspects()
+                        .forEach((aspect, amount) ->
+                                storeCentiVisOwning(
+                                        is,
+                                        aspect,
+                                        getCentiVisOwning(is, aspect) - amount
+                        ));
             }
             return true;
         } else {
@@ -172,13 +174,13 @@ public interface ICentiVisContainer {
         }
     }
 
-    default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList aspects, boolean doit) {
+    default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList<Aspect> aspects, boolean doit) {
         return this.consumeAllCentiVis(is, user, aspects, doit, true);
     }
 
-    default boolean consumeAllCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull CentiVisList aspects, boolean doit, boolean crafting) {
+    default boolean consumeAllCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull CentiVisList<Aspect> aspects, boolean doit, boolean crafting) {
         if (!aspects.isEmpty()) {
-            CentiVisList nl = new CentiVisList();
+            CentiVisList<Aspect> nl = new CentiVisList<>();
 
             for (var entry : aspects.getAspects().entrySet()) {
                 var aspect = entry.getKey();
@@ -197,11 +199,13 @@ public interface ICentiVisContainer {
 
             if (doit && Platform.getEnvironment() != Env.CLIENT) {
 
-                for (var entry : nl.getAspects().entrySet()) {
-                    var aspect = entry.getKey();
-                    var amount = entry.getValue();
-                    storeCentiVisOwning(is, aspect, getCentiVisOwning(is, aspect) - amount);
-                }
+                nl.getAspects()
+                        .forEach((aspect, amount) ->
+                                storeCentiVisOwning(
+                                        is,
+                                        aspect,
+                                        getCentiVisOwning(is, aspect) - amount
+                                ));
             }
             return true;
         } else {

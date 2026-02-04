@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +26,7 @@ import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.nodes.*;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.api.wands.ICentiVisContainer;
@@ -49,8 +51,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         INodeBlockEntity
         , IWandInteractableBlock {
     long lastActiveMillis = 0L;
-    AspectList aspects = new AspectList();
-    AspectList aspectsBase = new AspectList();
+    AspectList<Aspect> aspects = new AspectList<>();
+    AspectList<Aspect> aspectsBase = new AspectList<>();
     public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
     private NodeType nodeType;
     private NodeModifier nodeModifier;
@@ -225,7 +227,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             //TODO:Some listeners
             boolean hasNodeHarmfulComponentsFlag = false;
             for (var component : componentsOwner.getWandComponents(usingWand)) {
-                if (component instanceof INodeHarmfulComponent) {
+                if (component.getItem() instanceof INodeHarmfulComponent) {
                     hasNodeHarmfulComponentsFlag = true;
                     break;
                 }
@@ -237,7 +239,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             )
                     && !hasNodeHarmfulComponentsFlag;
             boolean success = false;
-            Aspect aspect = null;
+            Aspect aspect;
             if ((aspect = this.chooseRandomFilteredFromSource(
                     visContainer.getAspectsWithRoom(usingWand), preserve)) != null) {
                 int amt = this.getAspects()
@@ -302,19 +304,20 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 //      return wandstack;
 //   }
 
-    public AspectList getAspects() {
+    public AspectList<Aspect> getAspects() {
         return this.aspects;
     }
 
-    public AspectList getAspectsBase() {
+    public AspectList<Aspect> getAspectsBase() {
         return this.aspectsBase;
     }
 
-    public void setAspects(AspectList aspects) {
+    public void setAspects(AspectList<Aspect> aspects) {
         this.aspects = aspects;
         this.aspectsBase = aspects.copy();
     }
 
+    @Override
     public int addToContainer(Aspect aspect, int amount) {
         int left = amount + this.aspects.getAmount(aspect) - this.aspectsBase.getAmount(aspect);
         left = Math.max(left, 0);
@@ -322,13 +325,14 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return left;
     }
 
+    @Override
     public boolean takeFromContainer(Aspect aspect, int amount) {
         return this.aspects.reduce(aspect, amount);
     }
 
     public Aspect takeRandomPrimalFromSource() {
-        Aspect[] primals = this.aspects.getPrimalAspects();
-        Aspect asp = primals[this.level.random.nextInt(primals.length)];
+        AspectList<PrimalAspect> primals = this.aspects.getPrimalAspects();
+        Aspect asp = primals.randomAspect(this.level != null?this.level.random: RandomSource.createNewThreadLocalInstance());//[this.level.random.nextInt(primals.length)];
         return asp != null && this.aspects.reduce(asp, 1) ? asp : null;
     }
 
@@ -336,7 +340,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return chooseRandomFilteredFromSource(AspectList.of(aspectIntegerMap), preserve);
     }
 
-    public Aspect chooseRandomFilteredFromSource(AspectList filter, boolean preserve) {
+    public Aspect chooseRandomFilteredFromSource(AspectList<Aspect> filter, boolean preserve) {
         int min = preserve ? 1 : 0;
         ArrayList<Aspect> validaspects = new ArrayList<>();
 
@@ -358,26 +362,32 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return null;
     }
 
+    @Override
     public @NotNull NodeType getNodeType() {
         return this.nodeType != null?this.nodeType:NodeType.EMPTY;
     }
 
+    @Override
     public void setNodeType(NodeType nodeType) {
         this.nodeType = nodeType;
     }
 
+    @Override
     public void setNodeModifier(NodeModifier nodeModifier) {
         this.nodeModifier = nodeModifier;
     }
 
+    @Override
     public @NotNull NodeModifier getNodeModifier() {
         return this.nodeModifier != null?this.nodeModifier:NodeModifier.EMPTY;
     }
 
+    @Override
     public int getNodeVisBase(Aspect aspect) {
         return this.aspectsBase.getAmount(aspect);
     }
 
+    @Override
     public void setNodeVisBase(Aspect aspect, short nodeVisBase) {
         if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
             this.aspectsBase.mergeWithHighest(aspect, nodeVisBase);
@@ -417,7 +427,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 //      this.drainColor = nbttagcompound.getInteger("draincolor");
 
         this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readFromCompoundTag(tag);
-        AspectList al = new AspectList();
+        AspectList<Aspect> al = new AspectList<>();
         al.loadFrom(tag, NODE_ASPECTS_BASE_ACCESSOR);
         this.aspectsBase = al;
 
@@ -472,25 +482,30 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 //      this.drainCollision = null;
 //   }
 
-    public boolean takeFromContainer(AspectList ot) {
-        return false;
-    }
-
-    public boolean doesContainerContainAmount(Aspect tag, int amount) {
-        return false;
-    }
-
-    public boolean doesContainerContain(AspectList ot) {
-        return false;
-    }
-
-    public int containerContains(Aspect tag) {
-        return 0;
-    }
-
-    public boolean doesContainerAccept(Aspect tag) {
-        return true;
-    }
+//    @Override
+//    public boolean takeFromContainer(AspectList<Aspect> ot) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean doesContainerContainAmount(Aspect tag, int amount) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean doesContainerContain(AspectList<Aspect> ot) {
+//        return false;
+//    }
+//
+//    @Override
+//    public int containerContains(Aspect tag) {
+//        return 0;
+//    }
+//
+//    @Override
+//    public boolean doesContainerAccept(Aspect tag) {
+//        return true;
+//    }
 
 
     //attack another node(zap~),take vis from there.
@@ -537,7 +552,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                     / 2;
             int visSizeAvgOfThisNode = (this.getAspects().visSize() + this.getAspectsBase().visSize())
                     / 2;
-            boolean anotherNodeHaveVis = anotherNode.getAspects().size() > 0;
+            boolean anotherNodeHaveVis = !anotherNode.getAspects()
+                    .isEmpty();
             if (visSizeAvgOfAnotherNode < visSizeAvgOfThisNode
                     && anotherNodeHaveVis
             ) {

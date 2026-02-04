@@ -5,6 +5,7 @@ import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
@@ -721,7 +722,7 @@ public class ThaumcraftApi {
 
     //ASPECTS////////////////////////////////////////
 
-    public static ConcurrentHashMap<Item, AspectList> objectTags = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<Item, AspectList<Aspect>> objectTags = new ConcurrentHashMap<>();
 
     /**
      * Checks to see if the passed item/block already has aspects associated with it.
@@ -740,7 +741,7 @@ public class ThaumcraftApi {
      * @param item    the item passed. Pass OreDictionary.WILDCARD_VALUE if all damage values of this item/block should have the same aspects
      * @param aspects A ObjectTags object of the associated aspects
      */
-    public static void registerObjectTag(ItemStack item, @Nullable AspectList aspects) {
+    public static void registerObjectTag(ItemStack item, @Nullable AspectList<Aspect> aspects) {
         if (aspects == null) aspects = UnmodifiableAspectList.EMPTY;
         objectTags.put(item.getItem(), aspects);
     }
@@ -774,17 +775,17 @@ public class ThaumcraftApi {
      * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects
      * @param aspects A ObjectTags object of the associated aspects
      */
-    public static void registerComplexObjectTag(ItemStack item, AspectList aspects) {
+    public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
         if (!exists(item.getItem())) {
-            AspectList tmp = ThaumcraftApiHelper.generateTags(item.getItem());
-            if (tmp != null && tmp.size() > 0) {
+            AspectList<Aspect> tmp = ThaumcraftApiHelper.generateTags(item.getItem());
+            if (tmp != null && !tmp.isEmpty()) {
                 for (Aspect tag : tmp.getAspectTypes()) {
                     aspects.addAll(tag, tmp.getAmount(tag));
                 }
             }
             registerObjectTag(item, aspects);
         } else {
-            AspectList tmp = ThaumcraftApiHelper.getObjectAspects(item);
+            AspectList<Aspect> tmp = ThaumcraftApiHelper.getObjectAspects(item);
             for (Aspect tag : aspects.getAspectTypes()) {
                 tmp.mergeWithHighest(tag, tmp.getAmount(tag));
             }
@@ -794,7 +795,7 @@ public class ThaumcraftApi {
 
     //WARP ///////////////////////////////////////////////////////////////////////////////////////
     private static final Map<Item, Integer> itemWarpMap = new ConcurrentHashMap<>();
-    private static final Map<String, Integer> researchWarpMap = new ConcurrentHashMap<>();
+    private static final Map<ResourceLocation, Integer> researchWarpMap = new ConcurrentHashMap<>();
 
     /**
      * This method is used to determine how much warp is gained if the item is crafted. The warp
@@ -813,7 +814,7 @@ public class ThaumcraftApi {
      *
      * @param amount how much warp is gained
      */
-    public static void addWarpToResearch(String research, int amount) {
+    public static void addWarpToResearch(ResourceLocation research, int amount) {
         researchWarpMap.put(research, amount);
     }
 
@@ -834,7 +835,7 @@ public class ThaumcraftApi {
 //        }
 //        return 0;
     }
-    public static int getWarp(String in) {
+    public static int getWarp(ResourceLocation in) {
         return researchWarpMap.getOrDefault(in,0);
     }
 
