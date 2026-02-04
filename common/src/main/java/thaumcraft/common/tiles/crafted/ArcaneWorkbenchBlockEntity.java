@@ -9,20 +9,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.ICentiVisContainer;
 import thaumcraft.common.gui.menu.ArcaneWorkbenchMenu;
@@ -30,7 +29,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 
-public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements WorldlyContainer, ExtendedMenuProvider {
+public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity> implements WorldlyContainer, ExtendedMenuProvider {
     public static final int SIZE = 11;
     public static final int INPUT_SIZE = 11;
     public static final int WAND_SLOT = 9;
@@ -39,7 +38,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements Worldl
     public static final int[] WAND_SLOT_ARR = {WAND_SLOT};
     protected final NonNullList<ItemStack> inventory = NonNullList.withSize(INPUT_SIZE, ItemStack.EMPTY);
     public ArcaneWorkbenchBlockEntity(BlockEntityType<ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState);
+        super(blockEntityType, blockPos, blockState,ArcaneWorkbenchMenu::new);
     }
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ARCANE_WORKBENCH, blockPos, blockState);
@@ -235,13 +234,4 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraft implements Worldl
         return Component.translatable("block.thaumcraft.arcane_workbench");//TODO:Separate a new name
     }
 
-    @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new ArcaneWorkbenchMenu(i,inventory, this);
-    }
-
-    @Override
-    public void saveExtraData(FriendlyByteBuf buf) {
-        buf.writeBlockPos(this.getBlockPos());
-    }
 }

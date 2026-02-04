@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.utils.EntityUtils;

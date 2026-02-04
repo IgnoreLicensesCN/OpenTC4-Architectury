@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransport;

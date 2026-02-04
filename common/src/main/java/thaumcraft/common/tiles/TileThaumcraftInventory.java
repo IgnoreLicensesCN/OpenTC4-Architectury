@@ -5,7 +5,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 
 public class TileThaumcraftInventory extends TileThaumcraft implements ISidedInventory {
    protected ItemStack[] itemStacks = new ItemStack[1];

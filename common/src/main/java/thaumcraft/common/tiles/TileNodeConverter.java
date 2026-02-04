@@ -2,7 +2,7 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
@@ -10,6 +10,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class TileNodeConverter extends TileThaumcraft {
    public int count = -1;

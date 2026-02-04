@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles;
+package thaumcraft.common.tiles.abstracts;
 
 import com.linearity.opentc4.utils.BlockPosWithDim;
 import dev.architectury.platform.Platform;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -59,8 +59,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     int tickCount;
     public int regenerationTickPeriod;
     int wait;
-    String id;
-    ResourceLocation nodeLockId;
+    public String id;
+    public ResourceLocation nodeLockId;
     boolean catchUp;
     public int drainColor;
     public Color targetColor;

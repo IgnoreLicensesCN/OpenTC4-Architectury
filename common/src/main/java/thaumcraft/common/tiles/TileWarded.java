@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 
 public class TileWarded extends TileThaumcraft {
    public int owner = 0;

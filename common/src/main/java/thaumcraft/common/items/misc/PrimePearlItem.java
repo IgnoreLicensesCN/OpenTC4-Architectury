@@ -26,7 +26,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.List;
 

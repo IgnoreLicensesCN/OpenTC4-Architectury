@@ -32,6 +32,7 @@ import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.*;
 import java.util.function.Function;

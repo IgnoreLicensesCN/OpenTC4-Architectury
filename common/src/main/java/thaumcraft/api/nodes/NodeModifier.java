@@ -3,7 +3,7 @@ package thaumcraft.api.nodes;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.*;
 

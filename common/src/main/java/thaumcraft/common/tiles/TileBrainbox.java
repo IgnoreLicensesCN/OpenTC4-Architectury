@@ -2,7 +2,7 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.core.Direction;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 
 public class TileBrainbox extends TileThaumcraft {
    public Direction facing;

@@ -1,7 +1,7 @@
 package thaumcraft.api.nodes;
 
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -9,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -24,13 +23,12 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.*;
 

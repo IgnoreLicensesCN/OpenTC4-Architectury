@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
+//you can see that i didn't make Asp PrimalAspect,maybe someone wants special cases.Remember TODO:Render as many aspects as possible in some rules in workbench
 public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just mark we are using centiVis
 
 

@@ -39,7 +39,7 @@ import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;

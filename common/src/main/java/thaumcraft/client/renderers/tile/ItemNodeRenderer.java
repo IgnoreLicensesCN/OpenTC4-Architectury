@@ -18,7 +18,7 @@ import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class ItemNodeRenderer implements IItemRenderer {
    AspectList aspects;

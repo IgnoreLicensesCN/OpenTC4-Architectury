@@ -13,6 +13,7 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class TileJarNode extends TileJar implements IAspectContainer, INodeBlockEntity, IWandable {
    private AspectList aspects = new AspectList();

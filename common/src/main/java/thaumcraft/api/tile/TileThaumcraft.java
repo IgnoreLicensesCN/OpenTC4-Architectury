@@ -1,4 +1,4 @@
-package thaumcraft.api;
+package thaumcraft.api.tile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

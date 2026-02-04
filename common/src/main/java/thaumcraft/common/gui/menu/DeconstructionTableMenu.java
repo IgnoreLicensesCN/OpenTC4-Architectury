@@ -7,10 +7,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.gui.ThaumcraftGUI;
+import thaumcraft.common.gui.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.gui.slot.DeconstructionTableResultSlot;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
-public class DeconstructionTableMenu extends AbstractContainerMenu {
+public class DeconstructionTableMenu extends AbstractThaumcraftMenu {
     protected final Inventory inventory;
     protected final DeconstructionTableBlockEntity deconstructionTable;
 //    public DeconstructionTableMenu(
@@ -38,12 +39,12 @@ public class DeconstructionTableMenu extends AbstractContainerMenu {
 //        this.containerLevelAccess = containerLevelAccess;
         this.deconstructionTable = deconstructionTable;
         this.addSlot(
-                new Slot(
-                        deconstructionTable,DeconstructionTableBlockEntity.THE_ONLY_SLOT, 84, 25)//TODO:Offset
+                new Slot(deconstructionTable,DeconstructionTableBlockEntity.THE_ONLY_SLOT, 84, 25)//TODO:Offset
         );
         this.addSlot(
                 new DeconstructionTableResultSlot(deconstructionTable,1,124,25)//TODO:Offset
         );
+        addPlayerInventorySlots(inventory);
     }
 
     @Override

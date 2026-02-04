@@ -19,9 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.gui.menu.DeconstructionTableMenu;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -31,7 +32,7 @@ import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAcce
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusTags;
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
 
-public class DeconstructionTableBlockEntity extends TileThaumcraft implements WorldlyContainer, ExtendedMenuProvider {
+public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<DeconstructionTableMenu,DeconstructionTableBlockEntity> implements WorldlyContainer {
     public @NotNull Aspect storingAspect = Aspects.EMPTY;
     public int breakTimeRemaining = 0;
     public static final int MAX_BREAK_TIME = 40;
@@ -40,7 +41,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
     public static final int THE_ONLY_SLOT = 0;
 
     public DeconstructionTableBlockEntity(BlockEntityType<DeconstructionTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState);
+        super(blockEntityType, blockPos, blockState,DeconstructionTableMenu::new);
     }
     public DeconstructionTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.DECONSTRUCTION_TABLE, blockPos, blockState);
@@ -191,13 +192,4 @@ public class DeconstructionTableBlockEntity extends TileThaumcraft implements Wo
         markDirtyAndUpdateSelf();
     }
 
-    @Override
-    public void saveExtraData(FriendlyByteBuf buf) {
-        buf.writeBlockPos(this.worldPosition);
-    }
-
-    @Override
-    public @Nullable DeconstructionTableMenu createMenu(int i, Inventory inventory, Player player) {
-        return new DeconstructionTableMenu(i,inventory,this);
-    }
 }

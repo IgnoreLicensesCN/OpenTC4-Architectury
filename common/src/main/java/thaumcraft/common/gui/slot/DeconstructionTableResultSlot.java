@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
@@ -40,10 +41,6 @@ public class DeconstructionTableResultSlot extends Slot {
 
     @Override
     public void onTake(Player player, ItemStack itemStack) {
-        if (!deconstructionTable.storingAspect.isEmpty()) {
-
-        }
-        setChanged();
     }
 
     @Override
@@ -57,19 +54,19 @@ public class DeconstructionTableResultSlot extends Slot {
     }
 
     @Override
-    public Optional<ItemStack> tryRemove(int i, int j, Player player) {
+    public @NotNull Optional<ItemStack> tryRemove(int i, int j, Player player) {
         onClick(player);
         return Optional.empty();
     }
 
     @Override
-    public ItemStack safeTake(int i, int j, Player player) {
+    public @NotNull ItemStack safeTake(int i, int j, Player player) {
         return ItemStack.EMPTY;
     }
 
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         var aspect = deconstructionTable.storingAspect;
         if (aspect.isEmpty()) {
             return ItemStack.EMPTY;

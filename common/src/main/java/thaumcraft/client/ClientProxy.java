@@ -77,6 +77,7 @@ import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.projectile.*;
 import thaumcraft.common.lib.events.KeyHandler;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.awt.*;
 import java.lang.reflect.Field;

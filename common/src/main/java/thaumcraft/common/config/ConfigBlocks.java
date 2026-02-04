@@ -11,6 +11,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.common.blocks.*;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class ConfigBlocks {
    public static Fluid FLUXGOO = (new Fluid("fluxGoo")).setGaseous(false).setLuminosity(7).setDensity(8).setViscosity(6000);

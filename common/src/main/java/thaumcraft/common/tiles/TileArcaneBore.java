@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.IRepairableExtended;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;

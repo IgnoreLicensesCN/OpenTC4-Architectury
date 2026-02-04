@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.common.gui.ThaumcraftGUI;
+import thaumcraft.common.gui.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 import static thaumcraft.api.ThaumcraftApi.getIArcaneRecipes;
 
-public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
+public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
 
 
     protected final @NotNull ArcaneWorkbenchBlockEntity workbench;
@@ -140,15 +141,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             }
         }
 
-        for (int j = 0; j < 3; j++) {
-            for (int k = 0; k < 9; k++) {
-                this.addSlot(new Slot(inventory, k + j * 9 + 9, 8 + k * 18, 84 + j * 18));
-            }
-        }
-
-        for (int j = 0; j < 9; j++) {
-            this.addSlot(new Slot(inventory, j, 8 + j * 18, 142));
-        }
+        addPlayerInventorySlots(inventory);
     }
 
 

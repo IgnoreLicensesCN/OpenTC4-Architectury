@@ -40,6 +40,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.projectile.EntityShockOrb;
 import thaumcraft.common.items.misc.ItemWispEssence;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.List;
 import java.util.Random;

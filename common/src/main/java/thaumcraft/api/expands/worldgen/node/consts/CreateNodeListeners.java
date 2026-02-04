@@ -1,14 +1,12 @@
 package thaumcraft.api.expands.worldgen.node.consts;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.expands.worldgen.node.CreateNodeContext;
 import thaumcraft.api.expands.worldgen.node.listeners.CreateNodeListener;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class CreateNodeListeners {
     public static CreateNodeListener DEFAULT_NODE_CREATOR = new CreateNodeListener(0) {

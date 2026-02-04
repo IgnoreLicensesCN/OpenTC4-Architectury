@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
-import thaumcraft.api.TileThaumcraft;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.misc.ItemBathSalts;
 import thaumcraft.common.lib.utils.BlockUtils;
