@@ -21,7 +21,6 @@ import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -29,14 +28,16 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.misc.ItemResearchNotes;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
+import thaumcraft.common.lib.research.HexEntry;
+import thaumcraft.common.lib.research.HexType;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexCoordUtils;
+import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 public class TileResearchTable extends TileThaumcraft implements IInventory {
    public ItemStack[] contents = new ItemStack[2];
-   public AspectList<Aspect>bonusAspects = new AspectList();
+   public AspectList<Aspect>bonusAspects = new AspectList<>();
    int nextRecalc = 0;
    Player researcher = null;
    public ResearchNoteData data = null;
@@ -54,7 +55,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       }
 
       this.nextRecalc = nbttagcompound.getInteger("nextRecalc");
-      this.bonusAspects = new AspectList();
+      this.bonusAspects = new AspectList<>();
       var2 = nbttagcompound.getTagList("bonusAspects", 10);
 
       for(int var3 = 0; var3 < var2.tagCount(); ++var3) {
@@ -128,15 +129,16 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
 
       if (ResearchManager.consumeInkFromTable(this.contents[0], false)) {
          if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes && this.data != null && this.contents[1].getItemDamage() < 64) {
-            boolean r1 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER1");
-            boolean r2 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER2");
-            HexCoordUtils.HexCoord hex = new HexCoordUtils.HexCoord(q, r);
-            ResearchManager.HexEntry he = null;
+            boolean researchExpertiseUnlocked = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER1");
+            boolean researchMasteryUnlocked = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER2");
+            HexCoord hex = new HexCoord(q, r);
+            HexEntry he = null;
             if (aspect != null) {
-               he = new ResearchManager.HexEntry(aspect, 2);
-               if (r2 && this.level().rand.nextFloat() < 0.1F) {
-                  this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
-               } else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
+               he = new HexEntry(aspect, HexType.WRITTEN);
+               if (researchMasteryUnlocked && this.level.rand.nextFloat() < 0.1F) {
+                  this.level.playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
+               }
+               else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
                   this.bonusAspects.reduceAndRemoveIfNegative(aspect, 1);
                   player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.markDirty();
@@ -147,17 +149,17 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                }
             } else {
                float f = this.level().rand.nextFloat();
-               if (this.data.hexEntries.get(hex.toString()).aspect != null && (r1 && f < 0.25F || r2 && f < 0.5F)) {
+               if (this.data.hexGrid.get(hex.toString()).aspect != null && (researchExpertiseUnlocked && f < 0.25F || researchMasteryUnlocked && f < 0.5F)) {
                   this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
-                  Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect, (short)1);
+                  Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), this.data.hexGrid.get(hex.toString()).aspect, (short)1);
                   ResearchManager.scheduleSave(player);
-                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexEntries.get(hex.toString()).aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect)), (ServerPlayer)player);
+                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexGrid.get(hex.toString()).aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexGrid.get(hex.toString()).aspect)), (ServerPlayer)player);
                }
 
-               he = new ResearchManager.HexEntry(null, 0);
+               he = HexEntry.EMPTY;
             }
 
-            this.data.hexEntries.put(hex.toString(), he);
+            this.data.hexGrid.put(hex.toString(), he);
             this.data.hexes.put(hex.toString(), hex);
             ResearchManager.updateData(this.contents[1], this.data);
             ResearchManager.consumeInkFromTable(this.contents[0], true);
@@ -173,7 +175,10 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
    }
 
    private void recalculateBonus() {
-      if (!this.level().isDaytime() && this.level().getBlockLightValue(this.xCoord, this.yCoord + 1, this.zCoord) < 4 && !this.level().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && this.level().rand.nextInt(20) == 0) {
+      if (!this.level().isDaytime()
+              && this.level().getBlockLightValue(this.xCoord, this.yCoord + 1, this.zCoord) < 4
+              && !this.level().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord)
+              && this.level().rand.nextInt(20) == 0) {
          this.bonusAspects.mergeWithHighest(Aspects.ENTROPY, 1);
       }
 
@@ -402,7 +407,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       }
 
       if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes && this.data != null && this.contents[1].getItemDamage() == 64 && InventoryUtils.isPlayerCarrying(player, new ItemStack(Items.paper)) >= 0 && InventoryUtils.isPlayerCarrying(player, new ItemStack(Items.dye, 1, 0)) >= 0) {
-         ResearchItem rr = ResearchCategories.getResearch(this.data.key);
+         ResearchItem rr = ResearchItem.getResearch(this.data.key);
 
          for(Aspect aspect : rr.tags.getAspects()) {
             if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) < rr.tags.getAmount(aspect) + this.data.copies) {

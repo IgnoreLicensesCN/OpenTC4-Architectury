@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import tc4tweak.PacketCheck;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -85,7 +84,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
         ResearchItem research = research();
         if (research == null || ResearchManager.isResearchComplete(username, key)) return;
 
-        if (!ResearchManager.doesPlayerHaveRequisites(username, key)) {
+        if (!ResearchItem.doesPlayerHaveRequisites(username, key)) {
             target.displayClientMessage(Component.translatable("tc.researcherror"), true);
             return;
         }
@@ -115,7 +114,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
             if (research.siblings != null) {
                 for (String sibling : research.siblings) {
                     if (!ResearchManager.isResearchComplete(username, sibling) &&
-                            ResearchManager.doesPlayerHaveRequisites(username, sibling)) {
+                            ResearchItem.doesPlayerHaveRequisites(username, sibling)) {
                        new PacketResearchCompleteS2C(sibling).sendTo(serverPlayer);
                         Thaumcraft.researchManager.completeResearch(target, sibling);
                     }
@@ -130,7 +129,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
     // ------------------ 逻辑 ------------------
 
     public ResearchItem research() {
-        return ResearchCategories.getResearch(key);
+        return ResearchItem.getResearch(key);
     }
 
     public byte type() {

@@ -1,6 +1,5 @@
 package tc4tweak.modules.getResearch;
 
-import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -11,6 +10,7 @@ import java.util.stream.Stream;
 /**
  * getResearch speed up
  */
+@Deprecated(forRemoval = true)
 public class GetResearch {
     private static final ResearchItemCache cache = new ResearchItemCache();
 
@@ -18,7 +18,7 @@ public class GetResearch {
     }
 
     /**
-     * Called from {@link ResearchCategories#getResearch(ResearchItemResourceLocation)}
+     * Called from {@link ResearchItem#getResearch(ResearchItemResourceLocation)}
      */
     public static ResearchItem getResearch(ResearchItemResourceLocation key) {
         if (key == null) return null;

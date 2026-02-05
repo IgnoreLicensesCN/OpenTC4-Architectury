@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexCoordUtils;
+import thaumcraft.common.lib.utils.HexCoord;
 
 //for research note and maybe you can do something else?
 public interface IResearchNoteDataOwner extends IResearchTableWriteAspectListener{
@@ -24,7 +24,7 @@ public interface IResearchNoteDataOwner extends IResearchTableWriteAspectListene
             ItemStack noteStack,
             Player player,
             Aspect aspect,
-            HexCoordUtils.HexCoord placedAt
+            HexCoord placedAt
     );
     @Nullable ResearchNoteData getResearchNoteData(ItemStack researchNoteStack);
 }

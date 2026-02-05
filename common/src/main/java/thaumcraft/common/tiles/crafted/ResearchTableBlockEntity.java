@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.expands.listeners.researchtable.WriteAspectManager;
 import thaumcraft.api.researchtable.IResearchNoteDataOwner;
 import thaumcraft.api.researchtable.IResearchTableAspectWriteTool;
 import thaumcraft.api.researchtable.IResearchTableWriteAspectListener;
@@ -27,9 +28,11 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.gui.menu.ResearchTableMenu;
 import thaumcraft.common.items.misc.ItemResearchNotes;
 import thaumcraft.common.lib.network.PacketHandler;
+import thaumcraft.common.lib.research.HexEntry;
+import thaumcraft.common.lib.research.HexType;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexCoordUtils;
+import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTableMenu, ResearchTableBlockEntity> implements WorldlyContainer {
@@ -182,7 +185,9 @@ public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTab
         }
         return null;
     }
-    public boolean canWriteAspect(HexCoordUtils.HexCoord hexCoord, Aspect aspect, Player player) {
+    public boolean canWriteAspect(HexCoord hexCoord, Aspect aspect, Player player) {
+        var probablyInkStack = inventory.get(INK_SLOT);
+        var probablyNoteStack = inventory.get(RESEARCH_NOTE_SLOT);
         for (var stack : inventory) {
             if (stack.getItem() instanceof IResearchTableWriteAspectListener writeListener){
                 if (writeListener.canWriteAspect(
@@ -201,10 +206,10 @@ public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTab
         return true;
     }
 
-    public void placeAspect(HexCoordUtils.HexCoord hexCoord, Aspect aspect, Player player) {
+    public void placeAspect(HexCoord hexCoord, Aspect aspect, ServerPlayer player) {
         var canWriteResult = canWriteAspect(hexCoord, aspect, player);
         if (canWriteResult) {
-            var writeToolStack = inventory.get(RESEARCH_NOTE_SLOT);
+            var writeToolStack = inventory.get(INK_SLOT);
             var dataOwnerStack = inventory.get(RESEARCH_NOTE_SLOT);
             if (!(dataOwnerStack.getItem() instanceof IResearchNoteDataOwner dataOwner)) {
                 return;
@@ -234,6 +239,15 @@ public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTab
                         aspect,
                         hexCoord
                 )){
+                    WriteAspectManager.afterWriteAspect(
+                            this.getLevel(),
+                            this.getBlockPos(),
+                            writeToolStack,
+                            dataOwnerStack,
+                            player,
+                            aspect,
+                            hexCoord
+                    );
                     for (var stack : inventory) {
                         if (stack.getItem() instanceof IResearchTableWriteAspectListener writeListener){
                             writeListener.afterWriteAspect(
@@ -256,10 +270,10 @@ public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTab
             if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes && this.data != null && this.contents[1].getItemDamage() < 64) {
                 boolean r1 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER1");
                 boolean r2 = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER2");
-                HexCoordUtils.HexCoord hex = new HexCoordUtils.HexCoord(q, r);
-                ResearchManager.HexEntry he = null;
+                HexCoord hex = new HexCoord(q, r);
+                HexEntry he = null;
                 if (aspect != null) {
-                    he = new ResearchManager.HexEntry(aspect, 2);
+                    he = new HexEntry(aspect, HexType.WRITTEN);
                     if (r2 && this.level().rand.nextFloat() < 0.1F) {
                         this.level()
                                 .playSoundAtEntity(
@@ -309,7 +323,7 @@ public class ResearchTableBlockEntity extends TileThaumcraftWithMenu<ResearchTab
                         );
                     }
 
-                    he = new ResearchManager.HexEntry(null, 0);
+                    he = HexEntry.EMPTY;
                 }
 
                 this.data.hexEntries.put(hex.toString(), he);

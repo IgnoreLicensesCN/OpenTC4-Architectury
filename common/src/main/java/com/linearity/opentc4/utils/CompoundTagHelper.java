@@ -11,9 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.lib.research.HexEntry;
+import thaumcraft.common.lib.research.HexType;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.lib.utils.HexCoord;
 
 import java.util.*;
 
@@ -48,7 +51,7 @@ public class CompoundTagHelper {
             try {
                 return JsonParser.parseString(jsonString).getAsJsonObject();
             } catch (JsonSyntaxException | IllegalStateException e) {
-                e.printStackTrace();
+                OpenTC4.LOGGER.error("Error parsing JSON object", e);
                 return new JsonObject(); // 解析失败返回空对象
             }
         }
@@ -66,10 +69,9 @@ public class CompoundTagHelper {
     }
 
     public static class StringSetTagAccessor extends CompoundTagAccessor<Set<String>> {
-        private static final Set<String> CLASS_CHEATER = Set.of();
         private final ListTagAccessor LIST_TAG_ACCESSOR;
         public StringSetTagAccessor(String tagKey) {
-            super(tagKey, (Class<Set<String>>) CLASS_CHEATER.getClass());
+            super(tagKey, (Class<Set<String>>) (Class<?>)Set.class);
             this.LIST_TAG_ACCESSOR = new ListTagAccessor(tagKey);
         }
 
@@ -98,11 +100,10 @@ public class CompoundTagHelper {
     }
 
     public static class VisOwningTagAccessor extends CompoundTagAccessor<Map<Aspect,Integer>> {
-        private static final Map<Aspect,Integer> classProvider = Collections.emptyMap();
         private final JsonObjectTagAccessor internalAccessor;
 
         public VisOwningTagAccessor(String tagKey) {
-            super(tagKey, (Class<Map<Aspect, Integer>>) classProvider.getClass());
+            super(tagKey, (Class<Map<Aspect, Integer>>) (Class<?>)Map.class);
             internalAccessor = new JsonObjectTagAccessor(tagKey);
         }
 
@@ -114,12 +115,12 @@ public class CompoundTagHelper {
             if (json == null) return map;
             for (var entry : json.entrySet()) {
                 String aspectName = entry.getKey();
-                var aspect = ALL_ASPECTS.get(new ResourceLocation(aspectName));
+                var aspect = ALL_ASPECTS.get(new AspectResourceLocation(aspectName));
                 if (aspect == null) {
                     OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", aspectName, tagKey);
                     continue;
                 }
-                int value = 0;
+                int value;
                 try {
                     value = entry.getValue().getAsInt();
                 }catch (Exception e) {
@@ -488,30 +489,6 @@ public class CompoundTagHelper {
 
     }
 
-//    public static class ByteListAccessor extends GenericListTagAccessor<ByteTag> {
-//        public ByteListAccessor(String tagKey) {
-//            super(tagKey, Tag.TAG_BYTE);
-//        }
-//    }
-//
-//    public static class IntListAccessor extends GenericListTagAccessor<IntTag> {
-//        public IntListAccessor(String tagKey) {
-//            super(tagKey, Tag.TAG_INT);
-//        }
-//    }
-//
-//    public static class LongListAccessor extends GenericListTagAccessor<LongTag> {
-//        public LongListAccessor(String tagKey) {
-//            super(tagKey, Tag.TAG_LONG);
-//        }
-//    }
-//
-//    public static class StringListAccessor extends GenericListTagAccessor<StringTag> {
-//        public StringListAccessor(String tagKey) {
-//            super(tagKey, Tag.TAG_STRING);
-//        }
-//    }
-
     public static class CompoundListAccessor extends GenericListTagAccessor<CompoundTag> {
         public CompoundListAccessor(String tagKey) {
             super(tagKey, Tag.TAG_COMPOUND);
@@ -537,6 +514,128 @@ public class CompoundTagHelper {
         @Override
         public boolean compoundTagHasKey(CompoundTag tag) {
             return tag.contains(tagKey, Tag.TAG_LIST);
+        }
+    }
+
+    public static class HexCoordAccessor extends CompoundTagAccessor<HexCoord> {
+        protected final IntTagAccessor qAccessorInternal;
+        protected final IntTagAccessor rAccessorInternal;
+
+        protected HexCoordAccessor(String tagKey) {
+            super(tagKey, HexCoord.class);
+            this.qAccessorInternal = new IntTagAccessor(tagKey + "_q");
+            this.rAccessorInternal = new IntTagAccessor(tagKey + "_r");
+        }
+
+        @Override
+        public HexCoord readFromCompoundTag(CompoundTag tag) {
+            var q = qAccessorInternal.readFromCompoundTag(tag);
+            var r = rAccessorInternal.readFromCompoundTag(tag);
+            return new HexCoord(q,r);
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag, HexCoord value) {
+            qAccessorInternal.writeToCompoundTag(tag, value.q());
+            rAccessorInternal.writeToCompoundTag(tag, value.r());
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return qAccessorInternal.compoundTagHasKey(tag) && rAccessorInternal.compoundTagHasKey(tag);
+        }
+    }
+    public static class HexTypeAccessor extends CompoundTagAccessor<HexType> {
+        protected final IntTagAccessor intTypeAccessorInternal;
+        public HexTypeAccessor(String tagKey) {
+            super(tagKey, HexType.class);
+            this.intTypeAccessorInternal = new IntTagAccessor(tagKey + "_type_int");
+        }
+
+        @Override
+        public HexType readFromCompoundTag(CompoundTag tag) {
+            return HexType.values()[intTypeAccessorInternal.readFromCompoundTag(tag)];
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag, HexType value){
+            intTypeAccessorInternal.writeToCompoundTag(tag,value.ordinal());
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return intTypeAccessorInternal.compoundTagHasKey(tag);
+        }
+    }
+    public static class HexEntryAccessor extends CompoundTagAccessor<HexEntry> {
+        protected final AspectResourceLocationTagAccessor aspectResLocAccessorInternal;
+        protected final HexTypeAccessor hexTypeAccessorInternal;
+        public HexEntryAccessor(String tagKey) {
+            super(tagKey, HexEntry.class);
+            this.aspectResLocAccessorInternal = new AspectResourceLocationTagAccessor(tagKey + "_aspect_res");
+            this.hexTypeAccessorInternal = new HexTypeAccessor(tagKey + "_hex_type");
+        }
+
+        @Override
+        public HexEntry readFromCompoundTag(CompoundTag tag) {
+            var aspectLoc = aspectResLocAccessorInternal.readFromCompoundTag(tag);
+            var hexType = hexTypeAccessorInternal.readFromCompoundTag(tag);
+            return new HexEntry(Aspect.getAspect(aspectLoc),hexType);
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag, HexEntry value) {
+            aspectResLocAccessorInternal.writeToCompoundTag(tag,value.aspect().aspectKey);
+            hexTypeAccessorInternal.writeToCompoundTag(tag,value.type());
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return aspectResLocAccessorInternal.compoundTagHasKey(tag)
+                    && hexTypeAccessorInternal.compoundTagHasKey(tag);
+        }
+    }
+
+    public static class HexGridAccessor extends CompoundTagAccessor<Map<HexCoord, HexEntry>> {
+        protected final ListTagAccessor listTagAccessorInternal;
+        protected final HexCoordAccessor hexCoordAccessorInternal;
+        protected final HexEntryAccessor hexEntryAccessorInternal;
+        public HexGridAccessor(String tagKey) {
+            super(tagKey,(Class<Map<HexCoord, HexEntry>>) (Class<?>) Map.class);
+            listTagAccessorInternal = new ListTagAccessor(tagKey+"_list");
+            hexCoordAccessorInternal = new HexCoordAccessor(tagKey + "_hex_coord");
+            hexEntryAccessorInternal = new HexEntryAccessor(tagKey + "_hex_type");
+        }
+        @Override
+        public Map<HexCoord, HexEntry> readFromCompoundTag(CompoundTag tag) {
+            Map<HexCoord, HexEntry> result = new HashMap<>();
+            var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
+            for (int i=0;i<listTag.size();i++) {
+                var compoundTag = listTag.getCompound(i);
+                var hexCoord = hexCoordAccessorInternal.readFromCompoundTag(compoundTag);
+                var hexType = hexEntryAccessorInternal.readFromCompoundTag(compoundTag);
+                result.put(hexCoord,hexType);
+            }
+            return result;
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag, Map<HexCoord, HexEntry> value) {
+            var listTag = new ListTag();
+            for (var entry : value.entrySet()) {
+                var coord = entry.getKey();
+                var hexEntry = entry.getValue();
+                var compound = new CompoundTag();
+                hexCoordAccessorInternal.writeToCompoundTag(compound,coord);
+                hexEntryAccessorInternal.writeToCompoundTag(compound,hexEntry);
+                listTag.add(compound);
+            }
+            listTagAccessorInternal.writeToCompoundTag(tag,listTag);
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return listTagAccessorInternal.compoundTagHasKey(tag);
         }
     }
 

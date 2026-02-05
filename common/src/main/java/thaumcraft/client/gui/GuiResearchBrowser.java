@@ -10,7 +10,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
@@ -298,8 +297,8 @@ public class GuiResearchBrowser extends GuiScreen {
                 ResearchItem var33 = o;
                 if (var33.parents != null && var33.parents.length > 0) {
                     for (int a = 0; a < var33.parents.length; ++a) {
-                        if (var33.parents[a] != null && ResearchCategories.getResearch(var33.parents[a]).category.equals(selectedCategory)) {
-                            ResearchItem parent = ResearchCategories.getResearch(var33.parents[a]);
+                        if (var33.parents[a] != null && ResearchItem.getResearch(var33.parents[a]).category.equals(selectedCategory)) {
+                            ResearchItem parent = ResearchItem.getResearch(var33.parents[a]);
                             if (!parent.isVirtual()) {
                                 int var24 = var33.displayColumn * 24 - var4 + 11 + var10;
                                 int var25 = var33.displayRow * 24 - var5 + 11 + var11;
@@ -324,8 +323,8 @@ public class GuiResearchBrowser extends GuiScreen {
 
                 if (var33.siblings != null && var33.siblings.length > 0) {
                     for (int a = 0; a < var33.siblings.length; ++a) {
-                        if (var33.siblings[a] != null && ResearchCategories.getResearch(var33.siblings[a]).category.equals(selectedCategory)) {
-                            ResearchItem sibling = ResearchCategories.getResearch(var33.siblings[a]);
+                        if (var33.siblings[a] != null && ResearchItem.getResearch(var33.siblings[a]).category.equals(selectedCategory)) {
+                            ResearchItem sibling = ResearchItem.getResearch(var33.siblings[a]);
                             if (!sibling.isVirtual() && (sibling.parents == null || sibling.parents != null && !Arrays.asList(sibling.parents).contains(var33.key))) {
                                 int var24 = var33.displayColumn * 24 - var4 + 11 + var10;
                                 int var25 = var33.displayRow * 24 - var5 + 11 + var11;
@@ -761,7 +760,7 @@ public class GuiResearchBrowser extends GuiScreen {
     private boolean canUnlockResearch(ResearchItem res) {
         if (res.parents != null) {
             for (String pt : res.parents) {
-                ResearchItem parent = ResearchCategories.getResearch(pt);
+                ResearchItem parent = ResearchItem.getResearch(pt);
                 if (parent != null && !completedResearch.get(this.player).contains(parent.key)) {
                     return false;
                 }
@@ -770,7 +769,7 @@ public class GuiResearchBrowser extends GuiScreen {
 
         if (res.parentsHidden != null) {
             for (String pt : res.parentsHidden) {
-                ResearchItem parent = ResearchCategories.getResearch(pt);
+                ResearchItem parent = ResearchItem.getResearch(pt);
                 if (parent != null && !completedResearch.get(this.player).contains(parent.key)) {
                     return false;
                 }

@@ -1,19 +1,21 @@
 package thaumcraft.common.lib.research;
 
-import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.lib.utils.HexCoordUtils;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.lib.utils.HexCoord;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ResearchNoteData {
-   public ResourceLocation key;
+   public ResearchItemResourceLocation key;
    public int color;
-   public HashMap<String,ResearchManager.HexEntry> hexEntries = new HashMap<>();
-   public HashMap<String, HexCoordUtils.HexCoord> hexes = new HashMap<>();
-   public boolean complete;
+   public Map<HexCoord, HexEntry> hexGrid = new HashMap<>();
+   @Deprecated(forRemoval = true)
+   public Map<String, HexCoord> hexes = new HashMap<>();
+   public boolean completed;
    public int copies;
 
-   public boolean isComplete() {
-      return this.complete;
+   public boolean isCompleted() {
+      return this.completed;
    }
 }

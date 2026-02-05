@@ -11,13 +11,12 @@ import thaumcraft.api.aspects.AspectList;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.render.ShownInfoInResearchCategory;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 //TODO:Separate
 public class ResearchItem
@@ -120,6 +119,36 @@ public class ResearchItem
     	this.key = key;
         this.categoryInternal.add(category);
         this.setVirtual();
+        registerResearchItem();
+    }
+
+    public static boolean doesPlayerHaveRequisites(String playerName, ResearchItemResourceLocation key) {
+        var research = getResearch(key);
+        return research.doesPlayerHaveRequisites(playerName);
+    }
+
+    public boolean doesPlayerHaveRequisites(String playerName) {
+        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
+        var parents = getResearch(key).parents;
+        var parentsHidden = getResearch(key).parentsHidden;
+        if (parents != null){
+            if (!researched.containsAll(Arrays.asList(getResearch(key).parents))) {
+                return false;
+            }
+        }
+        if (parentsHidden != null){
+            if (!researched.containsAll(Arrays.asList(getResearch(key).parentsHidden))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void registerResearchItem(){
+        if (researchItems.containsKey(this.key)){
+            throw new IllegalStateException("ResearchItem already exists");
+        }
+        researchItems.put(this.key, this);
     }
     
     public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category, AspectList<Aspect> tags, int complex)
@@ -128,11 +157,13 @@ public class ResearchItem
         this.categoryInternal.add(category);
     	this.tags.addAll(tags);
         this.complexity = Math.min(Math.max(complex, 1),3);
+        registerResearchItem();
     }
     public ResearchItem(ResearchItemResourceLocation key)
     {
         this.key = key;
         this.setVirtual();
+        registerResearchItem();
     }
 
     public ResearchItem(ResearchItemResourceLocation key, AspectList<Aspect> tags, int complex)
@@ -140,8 +171,18 @@ public class ResearchItem
         this.key = key;
         this.tags.addAll(tags);
         this.complexity = Math.min(Math.max(complex, 1),3);
+        registerResearchItem();
     }
-    
+
+    private static final Map<ResearchItemResourceLocation, ResearchItem> researchItems = new ConcurrentHashMap<>();
+    /**
+     * @param key the research key
+     * @return the ResearchItem object.
+     */
+    public static ResearchItem getResearch(ResearchItemResourceLocation key) {
+        return researchItems.get(key);
+    }
+
     public ResearchItem setStub()
     {
         this.isStub = true;
@@ -306,7 +347,7 @@ public class ResearchItem
 	 * @return the aspect aspects ordinal with the highest value. Used to determine scroll color and similar things
 	 */
     @NotNull("null->empty")
-	public Aspect getResearchPrimaryTag() {
+	public Aspect getResearchThemedAspect() {
 		Aspect aspect = Aspects.EMPTY;
 		int highest=0;
         for (Aspect tag : tags.getAspectTypes()) {

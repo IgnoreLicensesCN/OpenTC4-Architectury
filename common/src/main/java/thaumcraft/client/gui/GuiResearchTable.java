@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
 import thaumcraft.client.lib.PlayerNotifications;
@@ -29,6 +28,7 @@ import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationToServer;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPlaceToServer;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
+import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.lib.utils.HexCoordUtils;
 import thaumcraft.common.tiles.TileResearchTable;
 
@@ -62,7 +62,7 @@ public class GuiResearchTable extends GuiContainer {
    private Aspect draggedAspect;
    public ResearchNoteData note = null;
    long lastRuneCheck = 0L;
-   private HashMap<String, HexCoordUtils.HexCoord[]> lines = new HashMap<>();
+   private HashMap<String, HexCoord[]> lines = new HashMap<>();
    private ArrayList<String> checked = new ArrayList<>();
    private ArrayList<String> highlight = new ArrayList<>();
 
@@ -105,13 +105,13 @@ public class GuiResearchTable extends GuiContainer {
       int var6 = this.guiTop;
       int gx = (this.width - this.xSize) / 2;
       int gy = (this.height - this.ySize) / 2;
-      if (this.note != null && RESEARCHDUPE && this.note.isComplete()) {
+      if (this.note != null && RESEARCHDUPE && this.note.isCompleted()) {
          int var7 = mx - (gx + 37);
          int var8 = my - (gy + 5);
          if (var7 >= 0 && var8 >= 0 && var7 < 24 && var8 < 24) {
             RenderHelper.enableGUIStandardItemLighting();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            ResearchItem rr = ResearchCategories.getResearch(this.note.key);
+            ResearchItem rr = ResearchItem.getResearch(this.note.key);
             String ss = StatCollector.translateToLocal("tc.research.copy");
             GL11.glEnable(GL11.GL_BLEND);
             UtilsFX.bindTexture("textures/gui/guiresearchtable2.png");
@@ -156,11 +156,11 @@ public class GuiResearchTable extends GuiContainer {
             if (this.note != null) {
                int mouseX = mx - (gx + 169);
                int mouseY = my - (gy + 83);
-               HexCoordUtils.HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
-               if (this.note.hexEntries.containsKey(hp.toString()) && this.note.hexEntries.get(hp.toString()).type == 0) {
+               HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
+               if (this.note.hexGrid.containsKey(hp.toString()) && this.note.hexGrid.get(hp.toString()).type == 0) {
                   this.playButtonCombine();
                   this.playButtonWrite();
-                  PacketHandler.INSTANCE.sendToServer(new PacketAspectPlaceToServer(this.player, (byte)hp.q, (byte)hp.r, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, this.draggedAspect));
+                  PacketHandler.INSTANCE.sendToServer(new PacketAspectPlaceToServer(this.player, (byte) hp.q(), (byte) hp.r(), this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, this.draggedAspect));
                   this.draggedAspect = null;
                }
             }
@@ -232,7 +232,7 @@ public class GuiResearchTable extends GuiContainer {
          this.drawTexturedModalRect(var5 + 35, var6 + 139, 184, 168, 32, 16);
       }
 
-      if (RESEARCHDUPE && this.note != null && this.note.isComplete()) {
+      if (RESEARCHDUPE && this.note != null && this.note.isCompleted()) {
          this.drawTexturedModalRect(var5 + 37, var6 + 5, 232, 200, 24, 24);
       }
 
@@ -353,14 +353,14 @@ public class GuiResearchTable extends GuiContainer {
       GL11.glPopMatrix();
    }
 
-   private void drawHex(HexCoordUtils.HexCoord hex, int x, int y) {
+   private void drawHex(HexCoord hex, int x, int y) {
       GL11.glPushMatrix();
       GL11.glAlphaFunc(516, 0.003921569F);
       GL11.glEnable(GL11.GL_BLEND);
       UtilsFX.bindTexture("textures/gui/hex1.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.25F);
       HexCoordUtils.Pixel pix = hex.toPixel(9);
-      GL11.glTranslated((double)x + pix.x, (double)y + pix.y, 0.0F);
+      GL11.glTranslated((double)x + pix.x(), (double)y + pix.y(), 0.0F);
       Tessellator tessellator = Tessellator.instance;
       tessellator.startDrawingQuads();
       tessellator.setBrightness(240);
@@ -374,7 +374,7 @@ public class GuiResearchTable extends GuiContainer {
       GL11.glPopMatrix();
    }
 
-   private void drawHexHighlight(HexCoordUtils.HexCoord hex, int x, int y) {
+   private void drawHexHighlight(HexCoord hex, int x, int y) {
       GL11.glPushMatrix();
       GL11.glAlphaFunc(516, 0.003921569F);
       GL11.glEnable(GL11.GL_BLEND);
@@ -382,7 +382,7 @@ public class GuiResearchTable extends GuiContainer {
       UtilsFX.bindTexture("textures/gui/hex2.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       HexCoordUtils.Pixel pix = hex.toPixel(9);
-      GL11.glTranslated((double)x + pix.x, (double)y + pix.y, 0.0F);
+      GL11.glTranslated((double)x + pix.x(), (double)y + pix.y(), 0.0F);
       Tessellator tessellator = Tessellator.instance;
       tessellator.startDrawingQuads();
       tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
@@ -425,9 +425,9 @@ public class GuiResearchTable extends GuiContainer {
             this.lastRuneCheck = time + 250L;
             int k = this.mc.theworld.getRandom().nextInt(120) - 60;
             int l = this.mc.theworld.getRandom().nextInt(120) - 60;
-            HexCoordUtils.HexCoord hp = (new HexCoordUtils.Pixel(k, l)).toHex(9);
+            HexCoord hp = (new HexCoordUtils.Pixel(k, l)).toHex(9);
             if (!this.runes.containsKey(hp.toString()) && !this.note.hexes.containsKey(hp.toString())) {
-               this.runes.put(hp.toString(), new Rune(hp.q, hp.r, time, this.lastRuneCheck + 15000L + (long) this.mc.theworld.getRandom().nextInt(10000), this.mc.theworld.getRandom().nextInt(16)));
+               this.runes.put(hp.toString(), new Rune(hp.q(), hp.r(), time, this.lastRuneCheck + 15000L + (long) this.mc.theworld.getRandom().nextInt(10000), this.mc.theworld.getRandom().nextInt(16)));
             }
          }
 
@@ -438,7 +438,7 @@ public class GuiResearchTable extends GuiContainer {
                  if (rune.decay < time) {
                      this.runes.remove(rune.q + ":" + rune.r);
                  } else {
-                     HexCoordUtils.Pixel pix = (new HexCoordUtils.HexCoord(rune.q, rune.r)).toPixel(9);
+                     HexCoordUtils.Pixel pix = (new HexCoord(rune.q, rune.r)).toPixel(9);
                      float progress = (float) (time - rune.start) / (float) (rune.decay - rune.start);
                      float alpha = 0.5F;
                      if (progress < 0.25F) {
@@ -447,36 +447,36 @@ public class GuiResearchTable extends GuiContainer {
                          alpha = 1.0F - progress;
                      }
 
-                     this.drawRune((double) (x + 169) + pix.x, (double) (y + 83) + pix.y, rune.rune, alpha * 0.66F);
+                     this.drawRune((double) (x + 169) + pix.x(), (double) (y + 83) + pix.y(), rune.rune, alpha * 0.66F);
                  }
              }
          }
 
          int mouseX = mx - (x + 169);
          int mouseY = my - (y + 83);
-         HexCoordUtils.HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
+         HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
          this.lines.clear();
          this.checked.clear();
          this.highlight.clear();
 
-         for(HexCoordUtils.HexCoord hex : this.note.hexes.values()) {
-            if (this.note.hexEntries.get(hex.toString()).type == 1 && Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, this.note.hexEntries.get(hex.toString()).aspect)) {
+         for(HexCoord hex : this.note.hexes.values()) {
+            if (this.note.hexGrid.get(hex.toString()).type == 1 && Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, this.note.hexGrid.get(hex.toString()).aspect)) {
                this.checkConnections(hex);
             }
          }
 
-         for(HexCoordUtils.HexCoord[] con : this.lines.values()) {
+         for(HexCoord[] con : this.lines.values()) {
             HexCoordUtils.Pixel p1 = con[0].toPixel(9);
             HexCoordUtils.Pixel p2 = con[1].toPixel(9);
-            this.drawLine((double)(x + 169) + p1.x, (double)(y + 83) + p1.y, (double)(x + 169) + p2.x, (double)(y + 83) + p2.y);
+            this.drawLine((double)(x + 169) + p1.x(), (double)(y + 83) + p1.y(), (double)(x + 169) + p2.x(), (double)(y + 83) + p2.y());
          }
 
          UtilsFX.bindTexture("textures/gui/hex1.png");
          GL11.glPushMatrix();
-         if (!this.note.isComplete()) {
-            for(HexCoordUtils.HexCoord hex : this.note.hexes.values()) {
-               if (this.note.hexEntries.get(hex.toString()).type != 1) {
-                  if (!this.note.isComplete()) {
+         if (!this.note.isCompleted()) {
+            for(HexCoord hex : this.note.hexes.values()) {
+               if (this.note.hexGrid.get(hex.toString()).type != 1) {
+                  if (!this.note.isCompleted()) {
                      if (hex.equals(hp)) {
                         this.drawHexHighlight(hex, x + 169, y + 83);
                      }
@@ -484,31 +484,34 @@ public class GuiResearchTable extends GuiContainer {
                      this.drawHex(hex, x + 169, y + 83);
                   }
                } else {
-                  this.drawOrb((double)(x + 161) + hex.toPixel(9).x, (double)(y + 75) + hex.toPixel(9).y);
+                  this.drawOrb((double)(x + 161) + hex.toPixel(9)
+                          .x(), (double)(y + 75) + hex.toPixel(9)
+                          .y()
+                  );
                }
             }
          }
 
-         for(HexCoordUtils.HexCoord hex : this.note.hexes.values()) {
-            if (this.note.hexEntries.get(hex.toString()).aspect != null && !Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, this.note.hexEntries.get(hex.toString()).aspect)) {
+         for(HexCoord hex : this.note.hexes.values()) {
+            if (this.note.hexGrid.get(hex.toString()).aspect != null && !Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, this.note.hexGrid.get(hex.toString()).aspect)) {
                HexCoordUtils.Pixel pix = hex.toPixel(9);
                UtilsFX.bindTexture("textures/aspects/_unknown.png");
                GL11.glPushMatrix();
                GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
                GL11.glEnable(GL11.GL_BLEND);
                GL11.glBlendFunc(770, 771);
-               GL11.glTranslated((double)(x + 161) + pix.x, (double)(y + 75) + pix.y, 0.0F);
+               GL11.glTranslated((double)(x + 161) + pix.x(), (double)(y + 75) + pix.y(), 0.0F);
                UtilsFX.drawTexturedQuadFull(0, 0, this.zLevel);
                GL11.glDisable(GL11.GL_BLEND);
                GL11.glPopMatrix();
-            } else if (this.note.hexEntries.get(hex.toString()).type != 1 && !this.highlight.contains(hex.toString())) {
-               if (this.note.hexEntries.get(hex.toString()).type == 2) {
+            } else if (this.note.hexGrid.get(hex.toString()).type != 1 && !this.highlight.contains(hex.toString())) {
+               if (this.note.hexGrid.get(hex.toString()).type == 2) {
                   HexCoordUtils.Pixel pix = hex.toPixel(9);
-                  UtilsFX.drawTag((double)(x + 161) + pix.x, (double)(y + 75) + pix.y, this.note.hexEntries.get(hex.toString()).aspect, 0.0F, 0, this.zLevel, 771, 0.66F, true);
+                  UtilsFX.drawTag((double)(x + 161) + pix.x(), (double)(y + 75) + pix.y(), this.note.hexGrid.get(hex.toString()).aspect, 0.0F, 0, this.zLevel, 771, 0.66F, true);
                }
             } else {
                HexCoordUtils.Pixel pix = hex.toPixel(9);
-               UtilsFX.drawTag((double)(x + 161) + pix.x, (double)(y + 75) + pix.y, this.note.hexEntries.get(hex.toString()).aspect, 0.0F, 0, this.zLevel, 771, 1.0F, false);
+               UtilsFX.drawTag((double)(x + 161) + pix.x(), (double)(y + 75) + pix.y(), this.note.hexGrid.get(hex.toString()).aspect, 0.0F, 0, this.zLevel, 771, 1.0F, false);
             }
          }
 
@@ -518,19 +521,19 @@ public class GuiResearchTable extends GuiContainer {
       }
    }
 
-   private void checkConnections(HexCoordUtils.HexCoord hex) {
+   private void checkConnections(HexCoord hex) {
       this.checked.add(hex.toString());
 
       for(int a = 0; a < 6; ++a) {
-         HexCoordUtils.HexCoord target = hex.getNeighbour(a);
-         if (!this.checked.contains(target.toString()) && this.note.hexEntries.containsKey(target.toString()) && this.note.hexEntries.get(target.toString()).type >= 1) {
-            Aspect aspect1 = this.note.hexEntries.get(hex.toString()).aspect;
-            Aspect aspect2 = this.note.hexEntries.get(target.toString()).aspect;
+         HexCoord target = hex.getNeighbour(a);
+         if (!this.checked.contains(target.toString()) && this.note.hexGrid.containsKey(target.toString()) && this.note.hexGrid.get(target.toString()).type >= 1) {
+            Aspect aspect1 = this.note.hexGrid.get(hex.toString()).aspect;
+            Aspect aspect2 = this.note.hexGrid.get(target.toString()).aspect;
             if (Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, aspect1) && Thaumcraft.proxy.getPlayerKnowledge().hasDiscoveredAspect(this.username, aspect2) && (!aspect1.isPrimal() && (aspect1.getComponents()[0] == aspect2 || aspect1.getComponents()[1] == aspect2) || !aspect2.isPrimal() && (aspect2.getComponents()[0] == aspect1 || aspect2.getComponents()[1] == aspect1))) {
                String k1 = hex + ":" + target;
                String k2 = target + ":" + hex;
                if (!this.lines.containsKey(k1) && !this.lines.containsKey(k2)) {
-                  this.lines.put(k1, new HexCoordUtils.HexCoord[]{hex, target});
+                  this.lines.put(k1, new HexCoord[]{hex, target});
                   this.highlight.add(target.toString());
                }
 
@@ -612,7 +615,7 @@ public class GuiResearchTable extends GuiContainer {
 
                   if (this.note != null) {
                      this.checkClickedHex(mx, my, gx, gy);
-                     if (RESEARCHDUPE && this.note.isComplete()) {
+                     if (RESEARCHDUPE && this.note.isCompleted()) {
                         var7 = mx - (gx + 37);
                         var8 = my - (gy + 5);
                         if (var7 >= 0 && var8 >= 0 && var7 < 24 && var8 < 24) {
@@ -644,11 +647,11 @@ public class GuiResearchTable extends GuiContainer {
    private void checkClickedHex(int mx, int my, int gx, int gy) {
       int mouseX = mx - (gx + 169);
       int mouseY = my - (gy + 83);
-      HexCoordUtils.HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
-      if (this.note.hexes.containsKey(hp.toString()) && this.note.hexEntries.get(hp.toString()).type == 2) {
+      HexCoord hp = (new HexCoordUtils.Pixel(mouseX, mouseY)).toHex(9);
+      if (this.note.hexes.containsKey(hp.toString()) && this.note.hexGrid.get(hp.toString()).type == 2) {
          this.playButtonCombine();
          this.playButtonErase();
-         PacketHandler.INSTANCE.sendToServer(new PacketAspectPlaceToServer(this.player, (byte)hp.q, (byte)hp.r, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, null));
+         PacketHandler.INSTANCE.sendToServer(new PacketAspectPlaceToServer(this.player, (byte) hp.q(), (byte) hp.r(), this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, null));
       }
    }
 

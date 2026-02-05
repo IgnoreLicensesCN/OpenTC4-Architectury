@@ -89,11 +89,11 @@ public class ThaumonomiconIndexSearcher {
         Set<SearchQuery> recipeBased = new HashSet<>();
         Set<String> usedResearches = new HashSet<>();
         for (String key : keys)
-            if (key != null && !key.isEmpty() && ResearchCategories.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), key)) {
-                if (ResearchCategories.getResearch(key).getName().startsWith("tc.research_name"))
+            if (key != null && !key.isEmpty() && ResearchItem.getResearch(key) != null && ThaumcraftApiHelper.isResearchComplete(Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), key)) {
+                if (ResearchItem.getResearch(key).getName().startsWith("tc.research_name"))
                     continue;
                 recipeBased.clear();
-                ResearchPage[] pages = ResearchCategories.getResearch(key).getPages();
+                ResearchPage[] pages = ResearchItem.getResearch(key).getPages();
                 if (pages != null)
                     for (ResearchPage page : pages) {
                         if (page.recipeOutput != null && page.recipeOutput.getDisplayName().toLowerCase().contains(query)) {
@@ -114,10 +114,10 @@ public class ThaumonomiconIndexSearcher {
                     }
                 boolean rAdded = false;
                 if (recipeBased.size() <= 1) {
-                    if (!usedResearches.contains(ResearchCategories.getResearch(key).getName()))
-                        if (key.toLowerCase().contains(query) || ResearchCategories.getResearch(key).getName().toLowerCase().contains(query)) {
+                    if (!usedResearches.contains(ResearchItem.getResearch(key).getName()))
+                        if (key.toLowerCase().contains(query) || ResearchItem.getResearch(key).getName().toLowerCase().contains(query)) {
                             valids.add(new SearchQuery(key, null));
-                            usedResearches.add(ResearchCategories.getResearch(key).getName());
+                            usedResearches.add(ResearchItem.getResearch(key).getName());
                             rAdded = true;
                         }
                 }
@@ -164,7 +164,7 @@ public class ThaumonomiconIndexSearcher {
                             clicked /= 11;
                             int selected = clicked + listDisplayOffset;
                             if (selected < searchResults.size()) {
-                                ResearchItem item = ResearchCategories.getResearch(searchResults.get(selected).research);
+                                ResearchItem item = ResearchItem.getResearch(searchResults.get(selected).research);
                                 event.gui.mc.displayGuiScreen(new GuiResearchRecipe(item, 0, item.displayColumn, item.displayRow));
                             }
                         }
@@ -212,7 +212,7 @@ public class ThaumonomiconIndexSearcher {
             else
                 for (int i = 0; i < 20; i++)
                     if (i + listDisplayOffset < searchResults.size()) {
-                        String name = searchResults.get(listDisplayOffset + i).display != null ? searchResults.get(listDisplayOffset + i).display : ResearchCategories.getResearch(searchResults.get(listDisplayOffset + i).research).getName();
+                        String name = searchResults.get(listDisplayOffset + i).display != null ? searchResults.get(listDisplayOffset + i).display : ResearchItem.getResearch(searchResults.get(listDisplayOffset + i).research).getName();
                         name = searchResults.get(listDisplayOffset + i).modifier + event.gui.mc.fontRenderer.trimStringToWidth(name, maxWidth - 10);
                         event.gui.mc.fontRenderer.drawString(name, x + 6, y + 6 + i * 11, 0xffffff, false);
                     }
@@ -253,8 +253,8 @@ public class ThaumonomiconIndexSearcher {
 
         @Override
         public int compare(SearchQuery o1, SearchQuery o2) {
-            String c1 = o1.display != null ? o1.display : ResearchCategories.getResearch(o1.research).getName();
-            String c2 = o2.display != null ? o2.display : ResearchCategories.getResearch(o2.research).getName();
+            String c1 = o1.display != null ? o1.display : ResearchItem.getResearch(o1.research).getName();
+            String c2 = o2.display != null ? o2.display : ResearchItem.getResearch(o2.research).getName();
             return c1.compareToIgnoreCase(c2);
         }
     }

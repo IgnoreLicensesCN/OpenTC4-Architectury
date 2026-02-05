@@ -13,9 +13,8 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -61,13 +60,13 @@ public class ItemResearchNotes extends Item {
 
    public ItemStack onItemRightClick(ItemStack stack, World world, Player player) {
       if (Platform.getEnvironment() != Env.CLIENT) {
-         if (ResearchManager.getData(stack) != null && ResearchManager.getData(stack).isComplete() && !ResearchManager.isResearchComplete(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
-            if (ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
+         if (ResearchManager.getData(stack) != null && ResearchManager.getData(stack).isCompleted() && !ResearchManager.isResearchComplete(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
+            if (ResearchItem.doesPlayerHaveRequisites(player.getCommandSenderName(), ResearchManager.getData(stack).key)) {
                PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(ResearchManager.getData(stack).key), (ServerPlayer)player);
                Thaumcraft.proxy.getResearchManager().completeResearch(player, ResearchManager.getData(stack).key);
-               if (ResearchCategories.getResearch(ResearchManager.getData(stack).key).siblings != null) {
-                  for(String sibling : ResearchCategories.getResearch(ResearchManager.getData(stack).key).siblings) {
-                     if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), sibling) && ResearchManager.doesPlayerHaveRequisites(player.getCommandSenderName(), sibling)) {
+               if (ResearchItem.getResearch(ResearchManager.getData(stack).key).siblings != null) {
+                  for(String sibling : ResearchItem.getResearch(ResearchManager.getData(stack).key).siblings) {
+                     if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), sibling) && ResearchItem.doesPlayerHaveRequisites(player.getCommandSenderName(), sibling)) {
                         PacketHandler.INSTANCE.sendTo(new PacketResearchComplete(sibling), (ServerPlayer)player);
                         Thaumcraft.proxy.getResearchManager().completeResearch(player, sibling);
                      }
@@ -133,9 +132,9 @@ public class ItemResearchNotes extends Item {
       }
 
       ResearchNoteData rd = ResearchManager.getData(stack);
-      if (rd != null && rd.key != null && ResearchCategories.getResearch(rd.key) != null) {
-         list.add("§6" + ResearchCategories.getResearch(rd.key).getName());
-         list.add("§o" + ResearchCategories.getResearch(rd.key).getText());
+      if (rd != null && rd.key != null && ResearchItem.getResearch(rd.key) != null) {
+         list.add("§6" + ResearchItem.getResearch(rd.key).getName());
+         list.add("§o" + ResearchItem.getResearch(rd.key).getText());
          int warp = ThaumcraftApi.getWarp(rd.key);
          if (warp > 0) {
             if (warp > 5) {

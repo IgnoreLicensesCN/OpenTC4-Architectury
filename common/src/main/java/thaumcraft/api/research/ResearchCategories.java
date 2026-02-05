@@ -3,10 +3,8 @@ package thaumcraft.api.research;
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import tc4tweak.modules.getResearch.GetResearch;
 import thaumcraft.api.research.render.ShownInfoInResearchCategory;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
-import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,24 +37,6 @@ public class ResearchCategories {
 		return Component.translatable("tc.research_category."+key.getNamespace()+"."+key.getPath());
 	}
 
-	/**
-	 * @param key the research key
-	 * @return the ResearchItem object.
-	 */
-	public static ResearchItem getResearch(ResearchItemResourceLocation key) {
-		return GetResearch.getResearch(key);
-//		Collection<ResearchCategoryList> rc = researchCategories.values();
-//		for (ResearchCategoryList cat:rc) {
-//			Collection<ResearchItem> rl = cat.research.values();
-//			for (ResearchItem ri:rl) {
-//				if (ri.key.equals(key)) {
-//					return ri;
-//				}
-//			}
-//		}
-//		return null;
-	}
-	
 	/**
 	 * This should only be done at the PostInit stage
 	 * @param key the key used for this category

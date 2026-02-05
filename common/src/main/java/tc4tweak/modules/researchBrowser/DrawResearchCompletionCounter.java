@@ -32,7 +32,7 @@ public class DrawResearchCompletionCounter {
         String playerName = Minecraft.getMinecraft().thePlayer.getGameProfile().getName();
         if (res.parents != null) {
             for (var pt : res.parents) {
-                ResearchItem parent = ResearchCategories.getResearch(pt);
+                ResearchItem parent = ResearchItem.getResearch(pt);
                 if (parent != null && !completedResearch.get(playerName).contains(parent.key)) {
                     return false;
                 }
@@ -41,7 +41,7 @@ public class DrawResearchCompletionCounter {
 
         if (res.parentsHidden != null) {
             for (var pt : res.parentsHidden) {
-                ResearchItem parent = ResearchCategories.getResearch(pt);
+                ResearchItem parent = ResearchItem.getResearch(pt);
                 if (parent != null && !completedResearch.get(playerName).contains(parent.key)) {
                     return false;
                 }

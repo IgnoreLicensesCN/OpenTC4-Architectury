@@ -26,7 +26,6 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.client.ClientProxy;
@@ -1345,7 +1344,7 @@ public class GuiResearchRecipe extends GuiScreen {
             if (mx >= 0 && my >= 0 && mx < 20 && my < 12) {
                 Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ, "thaumcraft:page", 0.66F, 1.0F, false);
                 Object[] o = history.pop();
-                this.mc.displayGuiScreen(new GuiResearchRecipe(ResearchCategories.getResearch((String) o[0]), (Integer) o[1], this.guiMapX, this.guiMapY));
+                this.mc.displayGuiScreen(new GuiResearchRecipe(ResearchItem.getResearch((String) o[0]), (Integer) o[1], this.guiMapX, this.guiMapY));
             }
         }
 
@@ -1354,7 +1353,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 if (par1 >= (Integer) coords.get(0) && par2 >= (Integer) coords.get(1) && par1 < (Integer) coords.get(0) + 16 && par2 < (Integer) coords.get(1) + 16) {
                     Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ, "thaumcraft:page", 0.66F, 1.0F, false);
                     history.push(new Object[]{this.research.key, this.page});
-                    this.mc.displayGuiScreen(new GuiResearchRecipe(ResearchCategories.getResearch((String) coords.get(2)), (Integer) coords.get(3), this.guiMapX, this.guiMapY));
+                    this.mc.displayGuiScreen(new GuiResearchRecipe(ResearchItem.getResearch((String) coords.get(2)), (Integer) coords.get(3), this.guiMapX, this.guiMapY));
                 }
             }
         }

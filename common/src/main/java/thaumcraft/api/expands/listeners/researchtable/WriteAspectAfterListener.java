@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.lib.utils.HexCoordUtils;
+import thaumcraft.common.lib.utils.HexCoord;
 
 public abstract class WriteAspectAfterListener implements Comparable<WriteAspectAfterListener> {
     public final int weight;
@@ -22,7 +22,7 @@ public abstract class WriteAspectAfterListener implements Comparable<WriteAspect
             ItemStack noteStack,
             ServerPlayer player,
             Aspect aspect,
-            HexCoordUtils.HexCoord placedAt
+            HexCoord placedAt
     );
 
     @Override

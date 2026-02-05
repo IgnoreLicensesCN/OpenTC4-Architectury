@@ -1,17 +1,19 @@
 package thaumcraft.common.lib.utils;
 
 import net.minecraft.util.RandomSource;
+import thaumcraft.common.lib.research.HexEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //not 0xffffff hex,it's for research
 public class HexCoordUtils {
    static final int[][] NEIGHBOURS = new int[][]{{1, 0}, {1, -1}, {0, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
    public static int getDistance(HexCoord a1, HexCoord a2) {
-      return (Math.abs(a1.q - a2.q) + Math.abs(a1.r - a2.r) + Math.abs(a1.q + a1.r - a2.q - a2.r)) / 2;
+      return (Math.abs(a1.q() - a2.q()) + Math.abs(a1.r() - a2.r()) + Math.abs(a1.q() + a1.r() - a2.q() - a2.r())) / 2;
    }
 
    public static HexCoord getRoundedHex(double qq, double rr) {
@@ -70,18 +72,19 @@ public class HexCoordUtils {
       return results;
    }
 
-   public static HashMap<String, HexCoord> generateHexes(int radius) {
-      HashMap<String, HexCoord> results = new HashMap<>();
+   public static Map<HexCoord, HexEntry> generateHexGridWithRadius(int radius) {
+      HashMap<HexCoord, HexEntry> results = new HashMap<>();
       HexCoord h = new HexCoord(0, 0);
-      results.put(h.toString(), h);
+
+      results.put(h,HexEntry.EMPTY);
 
       for(int k = 0; k < radius; ++k) {
          h = h.getNeighbour(4);
-         HexCoord hd = new HexCoord(h.q, h.r);
+         HexCoord hd = new HexCoord(h.q(), h.r());
 
          for(int i = 0; i < 6; ++i) {
             for(int j = 0; j <= k; ++j) {
-               results.put(hd.toString(), hd);
+               results.put(hd,HexEntry.EMPTY);
                hd = hd.getNeighbour(i);
             }
          }
@@ -90,66 +93,19 @@ public class HexCoordUtils {
       return results;
    }
 
-   public static class HexCoord {
-      public int q = 0;
-      public int r = 0;
-
-      public HexCoord(int q, int r) {
-         this.q = q;
-         this.r = r;
-      }
-
-      public CubicHex toCubicHex() {
-         return new CubicHex(this.q, this.r, -this.q - this.r);
-      }
-
-      public Pixel toPixel(int size) {
-         return new Pixel((double)size * (double)1.5F * (double)this.q, (double)size * Math.sqrt(3.0F) * ((double)this.r + (double)this.q / (double)2.0F));
-      }
-
-      public HexCoord getNeighbour(int direction) {
-         int[] d = HexCoordUtils.NEIGHBOURS[direction];
-         return new HexCoord(this.q + d[0], this.r + d[1]);
-      }
-
-      public boolean equals(HexCoord h) {
-         return h.q == this.q && h.r == this.r;
-      }
-
-      public String toString() {
-         return this.q + ":" + this.r;
-      }
-   }
-
-   public static class CubicHex {
-      public int x = 0;
-      public int y = 0;
-      public int z = 0;
-
-      public CubicHex(int x, int y, int z) {
-         this.x = x;
-         this.y = y;
-         this.z = z;
-      }
+   public record CubicHex(int x, int y, int z) {
 
       public HexCoord toHex() {
-         return new HexCoord(this.x, this.z);
+            return new HexCoord(this.x, this.z);
+         }
       }
-   }
 
-   public static class Pixel {
-      public double x = 0.0F;
-      public double y = 0.0F;
-
-      public Pixel(double x, double y) {
-         this.x = x;
-         this.y = y;
-      }
+   public record Pixel(double x, double y) {
 
       public HexCoord toHex(int size) {
-         double qq = 0.6666666666666666 * this.x / (double)size;
-         double rr = (0.3333333333333333 * Math.sqrt(3.0F) * -this.y - 0.3333333333333333 * this.x) / (double)size;
-         return HexCoordUtils.getRoundedHex(qq, rr);
+            double qq = 0.6666666666666666 * this.x / (double) size;
+            double rr = (0.3333333333333333 * Math.sqrt(3.0F) * -this.y - 0.3333333333333333 * this.x) / (double) size;
+            return HexCoordUtils.getRoundedHex(qq, rr);
+         }
       }
-   }
 }

@@ -368,7 +368,7 @@ public class CommandThaumcraft{
    }
 
     static void giveClue(CommandSourceStack icommandsender, ServerPlayer player, ResourceLocation clueForResearch) {
-        if (ResearchCategories.getResearch(clueForResearch) != null) {
+        if (ResearchItem.getResearch(clueForResearch) != null) {
             Thaumcraft.researchManager.completeClue(player, clueForResearch);
             new PacketSyncResearchS2C(player).sendTo(player);
             player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you clue " + clueForResearch));
@@ -378,7 +378,7 @@ public class CommandThaumcraft{
         }
     }
    static void giveResearch(CommandSourceStack icommandsender, ServerPlayer player, ResourceLocation research) {
-      if (ResearchCategories.getResearch(research) != null) {
+      if (ResearchItem.getResearch(research) != null) {
          giveRecursiveResearch(player, research);
           new PacketSyncResearchS2C(player).sendTo(player);
          player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + research + " research and its requisites."));
@@ -391,20 +391,20 @@ public class CommandThaumcraft{
    static void giveRecursiveResearch(ServerPlayer player, ResourceLocation research) {
       if (!ResearchManager.isResearchComplete(player.getGameProfile().getName(), research)) {
          Thaumcraft.researchManager.completeResearch(player, research);
-         if (ResearchCategories.getResearch(research).parents != null) {
-            for(var rsi : ResearchCategories.getResearch(research).parents) {
+         if (ResearchItem.getResearch(research).parents != null) {
+            for(var rsi : ResearchItem.getResearch(research).parents) {
                giveRecursiveResearch(player, rsi);
             }
          }
 
-         if (ResearchCategories.getResearch(research).parentsHidden != null) {
-            for(var rsi : ResearchCategories.getResearch(research).parentsHidden) {
+         if (ResearchItem.getResearch(research).parentsHidden != null) {
+            for(var rsi : ResearchItem.getResearch(research).parentsHidden) {
                giveRecursiveResearch(player, rsi);
             }
          }
 
-         if (ResearchCategories.getResearch(research).siblings != null) {
-            for(var rsi : ResearchCategories.getResearch(research).siblings) {
+         if (ResearchItem.getResearch(research).siblings != null) {
+            for(var rsi : ResearchItem.getResearch(research).siblings) {
                giveRecursiveResearch(player, rsi);
             }
          }

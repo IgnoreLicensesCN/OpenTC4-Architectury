@@ -65,7 +65,7 @@ public abstract class Aspect {
 		return StatCollector.translateToLocal("tc.aspect."+ aspectKey);
 	}
 	
-	public ResourceLocation getAspectKey() {
+	public @NotNull AspectResourceLocation getAspectKey() {
 		return aspectKey;
 	}
 

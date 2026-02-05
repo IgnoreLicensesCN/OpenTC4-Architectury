@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
@@ -78,11 +78,11 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
       Player player = context.getPlayer();
       if (!(player instanceof ServerPlayer serverPlayer)) return;
 
-      Level world = serverPlayer.getServer().getLevel(dim);
+      var world = serverPlayer.getServer().getLevel(dim);
       if (world == null) return;
 
-      Player target = null;
-      for (Player p:world.players()) {
+      ServerPlayer target = null;
+      for (ServerPlayer p:world.players()) {
          if (Objects.equals(p.getName().getString(),playerName)) {
             target = p;
          }
@@ -91,7 +91,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
 
       BlockEntity tile = world.getBlockEntity(pos);
       if (tile instanceof ResearchTableBlockEntity researchTable) {
-         researchTable.placeAspect(q, r, aspect, target);
+         researchTable.placeAspect(new HexCoord(q, r), aspect, target);
       }
    }
 

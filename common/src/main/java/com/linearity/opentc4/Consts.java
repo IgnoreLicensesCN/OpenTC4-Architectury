@@ -110,9 +110,6 @@ public class Consts {
     }
 
     public static class ResearchNoteCompoundTagAccessors {
-        private static final String RESEARCH_NOTE_KEY = "key";
-        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_KEY_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor(RESEARCH_NOTE_KEY);
 
         private static final String RESEARCH_NOTE_COLOR = "color";
         public static final CompoundTagHelper.IntTagAccessor RESEARCH_NOTE_COLOR_ACCESSOR =
@@ -127,20 +124,10 @@ public class Consts {
                 new CompoundTagHelper.IntTagAccessor(RESEARCH_NOTE_COPIES);
 
         private static final String RESEARCH_NOTE_HEXGRID = "hexgrid";
-        public static final CompoundTagHelper.ListTagAccessor RESEARCH_NOTE_HEXGRID_ACCESSOR =
-                new CompoundTagHelper.ListTagAccessor(RESEARCH_NOTE_HEXGRID);
-
-        // HexEntry 子项
-        public static final CompoundTagHelper.ByteTagAccessor RESEARCH_NOTE_HEX_Q_ACCESSOR =
-                new CompoundTagHelper.ByteTagAccessor("hexq");
-        public static final CompoundTagHelper.ByteTagAccessor RESEARCH_NOTE_HEX_R_ACCESSOR =
-                new CompoundTagHelper.ByteTagAccessor("hexr");
-        public static final CompoundTagHelper.ByteTagAccessor RESEARCH_NOTE_HEX_TYPE_ACCESSOR =
-                new CompoundTagHelper.ByteTagAccessor("type");
-        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_HEX_ASPECT_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor("aspect");
-        public static final CompoundTagHelper.ResourceLocationTagAccessor RESEARCH_NOTE_RESEARCH_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor("research");
+        public static final CompoundTagHelper.HexGridAccessor RESEARCH_NOTE_HEXGRID_ACCESSOR =
+                new CompoundTagHelper.HexGridAccessor(RESEARCH_NOTE_HEXGRID);
+        public static final CompoundTagHelper.ResearchItemResourceLocationTagAccessor RESEARCH_NOTE_RESEARCH_ACCESSOR =
+                new CompoundTagHelper.ResearchItemResourceLocationTagAccessor("research");
     }
 
     public static class TileVisNodeCompoundTagAccessors {
