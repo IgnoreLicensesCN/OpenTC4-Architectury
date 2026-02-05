@@ -10,11 +10,10 @@ import net.minecraftforge.common.MinecraftForge;
 import tc4tweak.ClientUtils;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.gui.GuiResearchBrowser;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +55,11 @@ public class DrawResearchCompletionCounter {
         if (style == ConfigurationHandler.CompletionCounterStyle.None)
             return;
         // draw completion text progress text
-        ResearchCategoryList category = ResearchCategories.getResearchList(Utils.getActiveCategory());
+        ResearchCategory category = ResearchCategories.getResearchCategory(Utils.getActiveCategory());
         // filter away stuff that are auto unlocked but never shown. probably should just filter away virtual research,
         // but I'm not entirely sure how that field is actually used in practice, so let's be conservative for now
         Map<ResourceLocation, ResearchItem> all =
-                category.research.entrySet()
+                category.researches.entrySet()
                         .stream()
                 .filter(
                         e ->
@@ -82,7 +81,7 @@ public class DrawResearchCompletionCounter {
                         !(e.getValue().isLost()
                                 || e.getValue().isHidden()
                                 && !completedClues.contains(e.getValue().key)
-                                || e.getValue().isConcealed()
+                                || e.getValue().wouldShowAfterParentDiscovered()
                                 && !canUnlockResearch(e.getValue()))
         ).count();
         String tooltip;

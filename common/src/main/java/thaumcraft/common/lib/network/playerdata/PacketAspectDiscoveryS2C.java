@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,21 +16,21 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_discovery";
    public static MessageType messageType;
 
-   private String key;
+   private ResourceLocation key;
 
    // 构造
    public PacketAspectDiscoveryS2C() {}
-   public PacketAspectDiscoveryS2C(String key) { this.key = key; }
+   public PacketAspectDiscoveryS2C(ResourceLocation key) { this.key = key; }
 
    // 编码
    @Override
    public void write(FriendlyByteBuf buf) {
-      buf.writeUtf(key);
+      buf.writeResourceLocation(key);
    }
 
    // 解码
    public static PacketAspectDiscoveryS2C decode(FriendlyByteBuf buf) {
-      return new PacketAspectDiscoveryS2C(buf.readUtf());
+      return new PacketAspectDiscoveryS2C(buf.readResourceLocation());
    }
 
    // 客户端处理逻辑

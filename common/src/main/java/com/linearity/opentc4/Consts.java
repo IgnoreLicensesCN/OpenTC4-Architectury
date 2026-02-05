@@ -38,20 +38,20 @@ public class Consts {
         private static final String RESEARCH = "THAUMCRAFT.RESEARCH";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(RESEARCH);
-        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor("research");
-        private static final String CLUE = "THAUMCRAFT.CLUE";
+        public static final CompoundTagHelper.ResearchItemResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
+                new CompoundTagHelper.ResearchItemResourceLocationTagAccessor("research");
 
+        private static final String CLUE = "THAUMCRAFT.CLUE";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(CLUE);
-        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_CLUE_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor("clue");
-        private static final String ASPECTS = "THAUMCRAFT.ASPECTS";
+        public static final CompoundTagHelper.ClueResourceLocationTagAccessor LIST_TAG_CLUE_ACCESSOR =
+                new CompoundTagHelper.ClueResourceLocationTagAccessor("clue");
 
+        private static final String ASPECTS = "THAUMCRAFT.ASPECTS";
         public static final CompoundTagHelper.ListTagAccessor THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR =
                 new CompoundTagHelper.ListTagAccessor(ASPECTS);
-        public static final CompoundTagHelper.ResourceLocationTagAccessor LIST_TAG_ASPECT_ACCESSOR =
-                new CompoundTagHelper.ResourceLocationTagAccessor("aspect");
+        public static final CompoundTagHelper.AspectResourceLocationTagAccessor LIST_TAG_ASPECT_ACCESSOR =
+                new CompoundTagHelper.AspectResourceLocationTagAccessor("aspect");
         public static final CompoundTagHelper.IntTagAccessor LIST_TAG_ASPECT_INT_ACCESSOR =
                 new CompoundTagHelper.IntTagAccessor("aspect_amount");
 

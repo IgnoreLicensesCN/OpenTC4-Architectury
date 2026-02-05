@@ -11,6 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 
@@ -204,6 +207,68 @@ public class CompoundTagHelper {
 
         @Override
         public void writeToCompoundTag(CompoundTag tag,@NotNull ResourceLocation value) {
+            tag.putString(tagKey, String.valueOf(value));
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey, Tag.TAG_STRING);
+        }
+    }
+    public static class AspectResourceLocationTagAccessor extends CompoundTagAccessor<AspectResourceLocation> {
+        public AspectResourceLocationTagAccessor(String tagKey) {
+            super(tagKey, AspectResourceLocation.class);
+        }
+
+        @Override
+        public AspectResourceLocation readFromCompoundTag(CompoundTag tag) {
+            return new AspectResourceLocation(tag.getString(tagKey));
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag,@NotNull AspectResourceLocation value) {
+            tag.putString(tagKey, String.valueOf(value));
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey, Tag.TAG_STRING);
+        }
+    }
+    public static class ResearchItemResourceLocationTagAccessor extends CompoundTagAccessor<ResearchItemResourceLocation> {
+
+        public ResearchItemResourceLocationTagAccessor(String tagKey) {
+            super(tagKey, ResearchItemResourceLocation.class);
+        }
+
+        @Override
+        public ResearchItemResourceLocation readFromCompoundTag(CompoundTag tag) {
+            return new ResearchItemResourceLocation(tag.getString(tagKey));
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag,@NotNull ResearchItemResourceLocation value) {
+            tag.putString(tagKey, String.valueOf(value));
+        }
+
+        @Override
+        public boolean compoundTagHasKey(CompoundTag tag) {
+            return tag.contains(tagKey, Tag.TAG_STRING);
+        }
+    }
+    public static class ClueResourceLocationTagAccessor extends CompoundTagAccessor<ClueResourceLocation> {
+
+        public ClueResourceLocationTagAccessor(String tagKey) {
+            super(tagKey, ClueResourceLocation.class);
+        }
+
+        @Override
+        public ClueResourceLocation readFromCompoundTag(CompoundTag tag) {
+            return new ClueResourceLocation(tag.getString(tagKey));
+        }
+
+        @Override
+        public void writeToCompoundTag(CompoundTag tag,@NotNull ClueResourceLocation value) {
             tag.putString(tagKey, String.valueOf(value));
         }
 

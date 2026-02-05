@@ -1,7 +1,6 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
@@ -11,6 +10,7 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     public static MessageType messageType;
 
-    private ResourceLocation key;
+    private ResearchItemResourceLocation key;
 
     public PacketResearchCompleteS2C(){}
-    public PacketResearchCompleteS2C(ResourceLocation key) {
+    public PacketResearchCompleteS2C(ResearchItemResourceLocation key) {
         this.key = key;
     }
 
@@ -34,7 +34,7 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     // 解码
     public static PacketResearchCompleteS2C decode(FriendlyByteBuf buf) {
-        return new PacketResearchCompleteS2C(buf.readResourceLocation());
+        return new PacketResearchCompleteS2C(new ResearchItemResourceLocation(buf.readResourceLocation()));
     }
 
     @Override
@@ -57,12 +57,16 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
         if (!ResearchCategories.getResearch(key).isVirtual()) {
             ClientTickEventsFML.researchPopup.queueResearchInformation(ResearchCategories.getResearch(key));
             GuiResearchBrowser.highlightedResearch.add(key);
-            GuiResearchBrowser.highlightedCategory.add(ResearchCategories.getResearch(key).category);
+            for (var category:ResearchCategories.researchCategories.values()) {
+                if (category.researches.containsKey(key)) {
+                    GuiResearchBrowser.highlightedCategory.add(category.categoryKey);
+                }
+            }
         }
 
         // GUI 更新
         if (Minecraft.getInstance().screen instanceof GuiResearchBrowser gui) {
-            List<ResourceLocation> al = GuiResearchBrowser.completedResearch.get(player.getGameProfile().getName());
+            List<ResearchItemResourceLocation> al = GuiResearchBrowser.completedResearch.get(player.getGameProfile().getName());
             if (al == null) al = new ArrayList<>();
             al.add(key);
             GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), al);

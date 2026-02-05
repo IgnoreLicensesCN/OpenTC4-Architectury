@@ -22,7 +22,7 @@ import thaumcraft.api.IScribeTools;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -30,6 +30,8 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.utils.HexCoordUtils;
 
 import java.io.File;
@@ -60,29 +62,36 @@ public class ResearchManager {
     }
 
     public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
-        List<ResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
+        List<ClueResourceLocation> keys = new ArrayList<>();
+        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
             label110:
-            for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && !ri.tags.isEmpty() && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isClueComplete(player.getGameProfile().getName(), ri.key);
+            for (ResearchItem researchItem : rcl.researches.values()) {
+                var asClueKey = researchItem.key.convertToResearchItemResLoc();
+                boolean valid = !researchItem.tags.isEmpty() && (researchItem.isLost() || researchItem.isHidden()) && !isResearchComplete(
+                        player.getGameProfile()
+                                .getName(), researchItem.key
+                ) && !isClueComplete(
+                        player.getGameProfile()
+                                .getName(), asClueKey
+                );
                 if (valid) {
-                    if (ri.getItemTriggers() != null) {
-                        for (ItemStack stack : ri.getItemTriggers()) {
+                    if (researchItem.getItemTriggers() != null) {
+                        for (ItemStack stack : researchItem.getItemTriggers()) {
                             if (
                                     Objects.equals(stack.getItem(), clue)
 //                             InventoryUtils.areItemStacksEqual(stack, clue, true, true)
                             ) {
-                                keys.add(ri.key);
+                                keys.add(asClueKey);
                                 continue label110;
                             }
                         }
                     }
 
-                    if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
-                        ri.getAspectTriggers();
-                        for (Aspect aspect : ri.getAspectTriggers()) {
+                    if (aspects != null && !aspects.isEmpty() && researchItem.getAspectTriggers() != null) {
+                        researchItem.getAspectTriggers();
+                        for (Aspect aspect : researchItem.getAspectTriggers()) {
                             if (aspects.getAmount(aspect) > 0) {
-                                keys.add(ri.key);
+                                keys.add(asClueKey);
                                 break;
                             }
                         }
@@ -92,7 +101,7 @@ public class ResearchManager {
         }
 
         if (!keys.isEmpty()) {
-            ResourceLocation key = keys.get(world.getRandom().nextInt(keys.size()));
+            var key = keys.get(world.getRandom().nextInt(keys.size()));
             if (player instanceof ServerPlayer serverPlayer) {
                 new PacketClueCompleteS2C(key).sendTo(serverPlayer);
             }else {
@@ -106,18 +115,28 @@ public class ResearchManager {
     }
 
     public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
-        ArrayList<ResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
+        List<ClueResourceLocation> keys = new ArrayList<>();
+        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
             label110:
-            for (ResearchItem ri : rcl.research.values()) {
-                boolean valid = ri.tags != null && !ri.tags.isEmpty() && (ri.isLost() || ri.isHidden()) && !isResearchComplete(player.getGameProfile().getName(), ri.key) && !isClueComplete(player.getGameProfile().getName(), ri.key);
+            for (ResearchItem ri : rcl.researches.values()) {
+                var convertedKey = ri.key.convertToResearchItemResLoc();
+                boolean valid =
+                        !ri.tags.isEmpty()
+                                && (ri.isLost() || ri.isHidden()) && !isResearchComplete(
+                                player.getGameProfile()
+                                        .getName(), ri.key
+                        ) && !isClueComplete(
+                                player.getGameProfile()
+                                        .getName(),
+                                convertedKey
+                        );
                 if (valid) {
                     {
                         if (ri.getEntityTriggers() != null) {
                             ri.getEntityTriggers();
                             for (ResourceKey<EntityType<?>> entity : ri.getEntityTriggers()) {
                                 if (clue.equals(entity)) {
-                                    keys.add(ri.key);
+                                    keys.add(new ClueResourceLocation(ri.key));
                                     continue label110;
                                 }
                             }
@@ -128,7 +147,7 @@ public class ResearchManager {
                         ri.getAspectTriggers();
                         for (Aspect aspect : ri.getAspectTriggers()) {
                             if (aspects.getAmount(aspect) > 0) {
-                                keys.add(ri.key);
+                                keys.add(new ClueResourceLocation(ri.key));
                                 break;
                             }
                         }
@@ -138,7 +157,7 @@ public class ResearchManager {
         }
 
         if (!keys.isEmpty()) {
-            ResourceLocation key = keys.get(world.getRandom().nextInt(keys.size()));
+            var key = keys.get(world.getRandom().nextInt(keys.size()));
             if (player instanceof ServerPlayer serverPlayer) {
                 new PacketClueCompleteS2C(key).sendTo(serverPlayer);
             }else {
@@ -151,7 +170,11 @@ public class ResearchManager {
         }
     }
 
-    public static ItemStack createResearchNoteForPlayer(Level world, Player player, ResourceLocation researchKey) {
+    public static ItemStack createResearchNoteForPlayer(
+            Level world,
+            Player player,
+            ResearchItemResourceLocation researchKey
+    ) {
         ItemStack note = ItemStack.EMPTY;
         int slot = getResearchSlot(player, researchKey);
 
@@ -197,8 +220,8 @@ public class ResearchManager {
         if (allHiddenResearch == null) {
             allHiddenResearch = new ArrayList<>();
 
-            for (ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
-                for (ResearchItem ri : cat.research.values()) {
+            for (ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+                for (ResearchItem ri : cat.researches.values()) {
                     if (ri.isHidden() && ri.tags != null && !ri.tags.isEmpty()) {
                         allHiddenResearch.add(ri);
                     }
@@ -235,8 +258,8 @@ public class ResearchManager {
         if (allValidResearch == null) {
             allValidResearch = new ArrayList<>();
 
-            for (ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
-                for (ResearchItem ri : cat.research.values()) {
+            for (ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+                for (ResearchItem ri : cat.researches.values()) {
                     boolean secondary = ri.isSecondary() && Config.researchDifficulty == 0 || Config.researchDifficulty == -1;
                     if (!secondary && !ri.isHidden() && !ri.isLost() && !ri.isAutoUnlock() && !ri.isVirtual() && !ri.isStub()) {
                         allValidResearch.add(ri);
@@ -430,10 +453,10 @@ public class ResearchManager {
 
     }
 
-    public static ItemStack createNote(ItemStack stack, ResourceLocation researchKey, Level world) {
+    public static ItemStack createNote(ItemStack stack, ResearchItemResourceLocation researchKey, Level world) {
         ResearchItem rr = ResearchCategories.getResearch(researchKey);
         Aspect primaryAspect = rr.getResearchPrimaryTag();
-        if (primaryAspect == null) {
+        if (primaryAspect.isEmpty()) {
             return ItemStack.EMPTY;
         }
 
@@ -695,25 +718,25 @@ public class ResearchManager {
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, gridTag);
     }
 
-    public static boolean isResearchComplete(String playername, ResourceLocation key) {
+    public static boolean isResearchComplete(String playername, ResearchItemResourceLocation key) {
         if (ResearchCategories.getResearch(key) == null) {
             return false;
         } else {
-            List<ResourceLocation> completed = getResearchForPlayer(playername);
+            var completed = getResearchForPlayer(playername);
             return completed != null && !completed.isEmpty() && completed.contains(key);
         }
     }
-    public static boolean isClueComplete(String playername, ResourceLocation key) {
-        if (ResearchCategories.getResearch(key) == null) {
+    public static boolean isClueComplete(String playername, ClueResourceLocation key) {
+        if (ResearchCategories.getResearch(new ResearchItemResourceLocation(key)) == null) {
             return false;
         } else {
-            List<ResourceLocation> completed = getClueForPlayer(playername);
+            var completed = getClueForPlayer(playername);
             return completed != null && !completed.isEmpty() && completed.contains(key);
         }
     }
 
-    public static List<ResourceLocation> getClueForPlayer(String playername) {
-        List<ResourceLocation> out = Thaumcraft.getCompletedClue().get(playername);
+    public static List<ClueResourceLocation> getClueForPlayer(String playername) {
+        var out = Thaumcraft.getCompletedClue().get(playername);
 
         try {
             var server = platformUtils.getServer();
@@ -736,8 +759,8 @@ public class ResearchManager {
 
         return out;
     }
-    public static List<ResourceLocation> getResearchForPlayer(String playername) {
-        List<ResourceLocation> out = Thaumcraft.getCompletedResearch().get(playername);
+    public static List<ResearchItemResourceLocation> getResearchForPlayer(String playername) {
+        var out = Thaumcraft.getCompletedResearch().get(playername);
 
         try {
             var server = platformUtils.getServer();
@@ -771,20 +794,20 @@ public class ResearchManager {
         return out;
     }
 
-    public static List<ResourceLocation> getResearchForPlayerSafe(String playername) {
+    public static List<ResearchItemResourceLocation> getResearchForPlayerSafe(String playername) {
         return Thaumcraft.getCompletedResearch().get(playername);
     }
 
-    public static List<ResourceLocation> getClueForPlayerSafe(String playername) {
+    public static List<ClueResourceLocation> getClueForPlayerSafe(String playername) {
         return Thaumcraft.getCompletedClue().get(playername);
     }
 
-    public static boolean doesPlayerHaveRequisites(String playername, ResourceLocation key) {
+    public static boolean doesPlayerHaveRequisites(String playername, ResearchItemResourceLocation key) {
         boolean out = true;
         var parents = ResearchCategories.getResearch(key).parents;
         if (parents != null && parents.length > 0) {
             out = false;
-            List<ResourceLocation> completed = getResearchForPlayer(playername);
+            var completed = getResearchForPlayer(playername);
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
@@ -799,7 +822,7 @@ public class ResearchManager {
         parents = ResearchCategories.getResearch(key).parentsHidden;
         if (parents != null && parents.length > 0) {
             out = false;
-            List<ResourceLocation> completed = getResearchForPlayer(playername);
+            var completed = getResearchForPlayer(playername);
             if (completed != null && !completed.isEmpty()) {
                 out = true;
 
@@ -870,8 +893,8 @@ public class ResearchManager {
         return out;
     }
 
-    public static boolean completeClueUnsaved(String username, ResourceLocation key) {
-        List<ResourceLocation> completed = getClueForPlayerSafe(username);
+    public static boolean completeClueUnsaved(String username, ClueResourceLocation key) {
+        var completed = getClueForPlayerSafe(username);
         if (completed != null && completed.contains(key)) {
             return false;
         } else {
@@ -884,8 +907,8 @@ public class ResearchManager {
             return true;
         }
     }
-    public static boolean completeResearchUnsaved(String username, ResourceLocation key) {
-        List<ResourceLocation> completed = getResearchForPlayerSafe(username);
+    public static boolean completeResearchUnsaved(String username, ResearchItemResourceLocation key) {
+        var completed = getResearchForPlayerSafe(username);
         if (completed != null && completed.contains(key)) {
             return false;
         } else {
@@ -899,7 +922,7 @@ public class ResearchManager {
         }
     }
 
-    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResourceLocation research, ResourceLocation... preRequsites) {
+    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequsites) {
         for (var preReq : preRequsites) {
             if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
         }
@@ -909,7 +932,7 @@ public class ResearchManager {
         player.playSound(LEARN);//,.75f,1.f
     }
 
-    public void completeClue(Player player, ResourceLocation key){
+    public void completeClue(Player player, ClueResourceLocation key){
 
         String playerName = player.getGameProfile().getName();
         if (completeClueUnsaved(playerName, key)) {
@@ -932,7 +955,7 @@ public class ResearchManager {
             scheduleSave(playerName);
         }
     }
-    public void completeResearch(Player player, ResourceLocation key) {
+    public void completeResearch(Player player, ResearchItemResourceLocation key) {
         String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
             int warp = ThaumcraftApi.getResearchWarp(key);
@@ -970,7 +993,6 @@ public class ResearchManager {
         if (completeAspectUnsaved(playerName, aspect, amount)) {
             scheduleSave(playerName);
         }
-
     }
 
     public static boolean completeScannedObjectUnsaved(String username, String object) {
@@ -1356,7 +1378,7 @@ public class ResearchManager {
     }
 
     public static void saveResearchNBT(CompoundTag entityData, String playerName) {
-        List<ResourceLocation> res = getResearchForPlayer(playerName);
+        var res = getResearchForPlayer(playerName);
         ListTag tagList = new ListTag();
 
         if (res != null && !res.isEmpty()) {
@@ -1375,12 +1397,12 @@ public class ResearchManager {
 
 
     public static void saveClueNBT(CompoundTag entityData, String playerName) {
-        List<ResourceLocation> res = getClueForPlayer(playerName);
+        var res = getClueForPlayer(playerName);
         ListTag tagList = new ListTag();
 
         if (res != null && !res.isEmpty()) {
             for (var key : res) {
-                ResearchItem rr = ResearchCategories.getResearch(key);
+                ResearchItem rr = ResearchCategories.getResearch(key.convertToResearchItemResLoc());
                 if (rr == null || !rr.isAutoUnlock()) {
                     CompoundTag f = new CompoundTag();
                     LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);

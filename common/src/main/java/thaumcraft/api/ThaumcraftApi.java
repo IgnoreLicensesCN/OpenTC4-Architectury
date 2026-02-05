@@ -690,8 +690,8 @@ public class ThaumcraftApi {
             else
                 return null;
         }
-        for (ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
-            for (ResearchItem ri : rcl.research.values()) {
+        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
+            for (ResearchItem ri : rcl.researches.values()) {
                 if (ri.getPages() == null) continue;
                 for (int a = 0; a < ri.getPages().length; a++) {
                     ResearchPage page = ri.getPages()[a];

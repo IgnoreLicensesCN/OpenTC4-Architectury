@@ -23,6 +23,8 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public final class OpenTC4 {
+    public static boolean DEBUG_FLAG = false;;
+    public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;;
     public static final String MOD_ID = "opentc4";
     public static final String MOD_NAME = "OpenTC4";
     public static PlatformUniqueUtils platformUtils;

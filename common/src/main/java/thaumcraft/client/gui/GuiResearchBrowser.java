@@ -25,7 +25,7 @@ import tc4tweak.modules.researchBrowser.DrawResearchBrowserBorders;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
@@ -34,6 +34,9 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketPlayerCompleteToServer;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.*;
@@ -62,11 +65,11 @@ public class GuiResearchBrowser extends GuiScreen {
     public static int lastY = -6;
     private GuiButton button;
     private final LinkedList<ResearchItem> research = new LinkedList<>();
-    public static Map<String, List<ResourceLocation>> completedResearch = new HashMap<>();
-    public static Map<String, List<ResourceLocation>> completedClue = new HashMap<>();
-    public static ArrayList<ResourceLocation> highlightedResearch = new ArrayList<>();
-    public static ArrayList<ResourceLocation> highlightedCategory = new ArrayList<>();
-    public static ResourceLocation selectedCategory = null;
+    public static Map<String, List<ResearchItemResourceLocation>> completedResearch = new HashMap<>();
+    public static Map<String, List<ClueResourceLocation>> completedClue = new HashMap<>();
+    public static ArrayList<ResearchItemResourceLocation> highlightedResearch = new ArrayList<>();
+    public static ArrayList<ResearchCategoryResourceLocation> highlightedCategory = new ArrayList<>();
+    public static ResearchCategoryResourceLocation selectedCategory = null;
     private final FontRenderer galFontRenderer;
     private ResearchItem currentHighlight = null;
     private String player = "";
@@ -105,16 +108,16 @@ public class GuiResearchBrowser extends GuiScreen {
             selectedCategory = cats.iterator().next();
         }
 
-        this.research.addAll(ResearchCategories.getResearchList(selectedCategory).research.values());
+        this.research.addAll(ResearchCategories.getResearchCategory(selectedCategory).researches.values());
 
         if (ResearchManager.consumeInkFromPlayer(this.mc.thePlayer, false) && InventoryUtils.isPlayerCarrying(this.mc.thePlayer, new ItemStack(Items.paper)) >= 0) {
             this.hasScribestuff = true;
         }
 
-        guiMapTop = getNewGuiMapTop(ResearchCategories.getResearchList(selectedCategory).minDisplayColumn * 24 - 85);
-        guiMapLeft = getNewGuiMapLeft(ResearchCategories.getResearchList(selectedCategory).minDisplayRow * 24 - 112);
-        guiMapBottom = getNewGuiMapBottom(ResearchCategories.getResearchList(selectedCategory).maxDisplayColumn * 24 - 112);
-        guiMapRight = getNewGuiMapRight(ResearchCategories.getResearchList(selectedCategory).maxDisplayRow * 24 - 61);
+        guiMapTop = getNewGuiMapTop(ResearchCategories.getResearchCategory(selectedCategory).minDisplayColumn * 24 - 85);
+        guiMapLeft = getNewGuiMapLeft(ResearchCategories.getResearchCategory(selectedCategory).minDisplayRow * 24 - 112);
+        guiMapBottom = getNewGuiMapBottom(ResearchCategories.getResearchCategory(selectedCategory).maxDisplayColumn * 24 - 112);
+        guiMapRight = getNewGuiMapRight(ResearchCategories.getResearchCategory(selectedCategory).maxDisplayRow * 24 - 61);
     }
 
     public void onGuiClosed() {
@@ -211,7 +214,7 @@ public class GuiResearchBrowser extends GuiScreen {
                 swop = true;
             }
 
-            ResearchCategoryList rcl = ResearchCategories.getResearchList(obj);
+            ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
             if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                 int mposx = mx - (var4 - 24 + (swop ? getTabIconDistance()//280
                         : 0));
@@ -279,7 +282,7 @@ public class GuiResearchBrowser extends GuiScreen {
         int vx = (int) ((float) (var4 - guiMapTop) / (float) Math.abs(guiMapTop - guiMapBottom) * 288.0F);
         int vy = (int) ((float) (var5 - guiMapLeft) / (float) Math.abs(guiMapLeft - guiMapRight) * 316.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(ResearchCategories.getResearchList(selectedCategory).background);
+        Minecraft.getMinecraft().renderEngine.bindTexture(ResearchCategories.getResearchCategory(selectedCategory).background);
 //      this.drawTexturedModalRect
         drawResearchBrowserBackground
                 (
@@ -307,10 +310,10 @@ public class GuiResearchBrowser extends GuiScreen {
                                 int var30 = Math.sin((double) (Minecraft.getSystemTime() % 600L) / (double) 600.0F * Math.PI * (double) 2.0F) > 0.6 ? 255 : 130;
                                 if (var28) {
                                     this.drawLine(var24, var25, var26, var27, 0.1F, 0.1F, 0.1F, par3, false);
-                                } else if (!var33.isLost() && (!var33.isHidden() && !var33.isLost() || completedResearch.get(this.player).contains("@" + var33.key)) && (!var33.isConcealed() || this.canUnlockResearch(var33))) {
+                                } else if (!var33.isLost() && (!var33.isHidden() && !var33.isLost() || completedResearch.get(this.player).contains("@" + var33.key)) && (!var33.wouldShowAfterParentDiscovered() || this.canUnlockResearch(var33))) {
                                     if (var29) {
                                         this.drawLine(var24, var25, var26, var27, 0.0F, 1.0F, 0.0F, par3, true);
-                                    } else if ((!parent.isHidden() && !var33.isLost() || completedResearch.get(this.player).contains("@" + parent.key)) && (!parent.isConcealed() || this.canUnlockResearch(parent))) {
+                                    } else if ((!parent.isHidden() && !var33.isLost() || completedResearch.get(this.player).contains("@" + parent.key)) && (!parent.wouldShowAfterParentDiscovered() || this.canUnlockResearch(parent))) {
                                         this.drawLine(var24, var25, var26, var27, 0.0F, 0.0F, 1.0F, par3, true);
                                     }
                                 }
@@ -332,10 +335,10 @@ public class GuiResearchBrowser extends GuiScreen {
                                 boolean var29 = completedResearch.get(this.player).contains(sibling.key);
                                 if (var28) {
                                     this.drawLine(var24, var25, var26, var27, 0.1F, 0.1F, 0.2F, par3, false);
-                                } else if (!var33.isLost() && (!var33.isHidden() || completedResearch.get(this.player).contains("@" + var33.key)) && (!var33.isConcealed() || this.canUnlockResearch(var33))) {
+                                } else if (!var33.isLost() && (!var33.isHidden() || completedResearch.get(this.player).contains("@" + var33.key)) && (!var33.wouldShowAfterParentDiscovered() || this.canUnlockResearch(var33))) {
                                     if (var29) {
                                         this.drawLine(var24, var25, var26, var27, 0.0F, 1.0F, 0.0F, par3, true);
-                                    } else if ((!sibling.isHidden() || completedResearch.get(this.player).contains("@" + sibling.key)) && (!sibling.isConcealed() || this.canUnlockResearch(sibling))) {
+                                    } else if ((!sibling.isHidden() || completedResearch.get(this.player).contains("@" + sibling.key)) && (!sibling.wouldShowAfterParentDiscovered() || this.canUnlockResearch(sibling))) {
                                         this.drawLine(var24, var25, var26, var27, 0.0F, 0.0F, 1.0F, par3, true);
                                     }
                                 }
@@ -369,7 +372,7 @@ public class GuiResearchBrowser extends GuiScreen {
                         float var38 = 1.0F;
                         GL11.glColor4f(var38, var38, var38, 1.0F);
                     } else {
-                        if (!completedResearch.get(this.player).contains("@" + var35.key) && (var35.isLost() || var35.isHidden() && !completedResearch.get(this.player).contains("@" + var35.key) || var35.isConcealed() && !this.canUnlockResearch(var35))) {
+                        if (!completedResearch.get(this.player).contains("@" + var35.key) && (var35.isLost() || var35.isHidden() && !completedResearch.get(this.player).contains("@" + var35.key) || var35.wouldShowAfterParentDiscovered() && !this.canUnlockResearch(var35))) {
                             continue;
                         }
 
@@ -482,7 +485,7 @@ public class GuiResearchBrowser extends GuiScreen {
         boolean swop = false;
 
         for (String obj : cats) {
-            ResearchCategoryList rcl = ResearchCategories.getResearchList(obj);
+            ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
             if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                 GL11.glPushMatrix();
                 if (count == getTabPerSide()//9
@@ -712,7 +715,7 @@ public class GuiResearchBrowser extends GuiScreen {
             boolean swop = false;
 
             for (String obj : cats) {
-                ResearchCategoryList rcl = ResearchCategories.getResearchList(obj);
+                ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
                 if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                     if (count == getTabPerSide()//9
                     ) {
@@ -922,7 +925,7 @@ public class GuiResearchBrowser extends GuiScreen {
     }
 
     //@Callhook(adder = GuiResearchBrowserVisitor.class, module = ASMConstants.Modules.BiggerResearchBrowser)
-    public static LinkedHashMap<String, ResearchCategoryList> getTabsOnCurrentPage(String player) {
+    public static LinkedHashMap<String, ResearchCategory> getTabsOnCurrentPage(String player) {
         return BrowserPaging.getTabsOnCurrentPage(player);
     }
 

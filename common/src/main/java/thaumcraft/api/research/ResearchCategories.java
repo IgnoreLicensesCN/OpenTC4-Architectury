@@ -1,40 +1,49 @@
 package thaumcraft.api.research;
 
 import com.linearity.opentc4.OpenTC4;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import com.linearity.opentc4.utils.StatCollector;
-import org.apache.logging.log4j.Level;
 import tc4tweak.modules.getResearch.GetResearch;
+import thaumcraft.api.research.render.ShownInfoInResearchCategory;
+import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.LinkedHashMap;
+import java.util.List;
+
+import static com.linearity.opentc4.OpenTC4.CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG;
 
 public class ResearchCategories {
 	
 	//Research
-	public static LinkedHashMap <ResourceLocation, ResearchCategoryList> researchCategories = new LinkedHashMap<>();
+	public static LinkedHashMap<ResearchCategoryResourceLocation,ResearchCategory> researchCategories = new LinkedHashMap<>();
 	
 	/**
 	 * @param categoryKey
 	 * @return the research item linked to this categoryKey
 	 */
-	public static ResearchCategoryList getResearchList(ResourceLocation categoryKey) {
+	public static ResearchCategory getResearchCategory(ResearchCategoryResourceLocation categoryKey) {
 		return researchCategories.get(categoryKey);
 	}
 	
 	/**
-	 * @param key
 	 * @return the name of the research category linked to this key. 
 	 * Must be stored as localization information in the LanguageRegistry.
 	 */
-	public static String getCategoryName(ResourceLocation key) {
-		return StatCollector.translateToLocal("tc.research_category."+key.getNamespace()+"."+key.getPath());
+	public static Component getCategoryName(ResearchCategory category) {
+		return getCategoryName(category.categoryKey);
+	}
+
+	public static Component getCategoryName(ResearchCategoryResourceLocation key) {
+
+		return Component.translatable("tc.research_category."+key.getNamespace()+"."+key.getPath());
 	}
 
 	/**
 	 * @param key the research key
 	 * @return the ResearchItem object.
 	 */
-	public static ResearchItem getResearch(ResourceLocation key) {
+	public static ResearchItem getResearch(ResearchItemResourceLocation key) {
 		return GetResearch.getResearch(key);
 //		Collection<ResearchCategoryList> rc = researchCategories.values();
 //		for (ResearchCategoryList cat:rc) {
@@ -55,48 +64,54 @@ public class ResearchCategories {
 	 * @param background the resource location of the background image to use for this category
 	 * @return the name of the research linked to this key
 	 */
-	public static void registerCategory(ResourceLocation key, ResourceLocation icon, ResourceLocation background) {
-		if (getResearchList(key)==null) {
-			ResearchCategoryList rl = new ResearchCategoryList(icon, background);
+	public static void registerCategory(
+			ResearchCategoryResourceLocation key,
+			ResourceLocation icon,
+			ResourceLocation background) {
+		if (getResearchCategory(key)==null) {
+			ResearchCategory rl = new ResearchCategory(key,icon, background);
 			researchCategories.put(key, rl);
 		}
 	}
 	
-	public static void addResearch(ResearchItem ri) {
-		ResearchCategoryList rl = getResearchList(ri.category);
-		if (rl!=null && !rl.research.containsKey(ri.key)) {
-			
-			if (!ri.isVirtual()) {
-				for (ResearchItem rr:rl.research.values()) {
-					if (rr.displayColumn == ri.displayColumn && rr.displayRow == ri.displayRow) {
-						OpenTC4.LOGGER.log(Level.FATAL, "[Thaumcraft] Research ["+ri.getName()+"] not added as it overlaps with existing research ["+rr.getName()+"]");
-						return;
+	public static void addResearchToItsCategory(
+			ResearchItem researchItemToAdd,
+			List<ShownInfoInResearchCategory> shownInfos) {
+		for (var shownInfo : shownInfos) {
+			var categoryKeyToAddInto = shownInfo.category();
+			if (categoryKeyToAddInto==null) {
+				continue;
+			}
+			var category = getResearchCategory(categoryKeyToAddInto);
+			if (category==null) {
+				OpenTC4.LOGGER.error("Category {} not found for {}",categoryKeyToAddInto,researchItemToAdd);
+				continue;
+			}
+			if (CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG){
+				for (var researchAndShowInfoEntry : category.researchesShownInfo.entrySet()) {
+					var researchShowInfoAdded = researchAndShowInfoEntry.getValue();
+					if (researchShowInfoAdded.row() == shownInfo.row()
+					&& researchShowInfoAdded.column() == shownInfo.column()){
+						OpenTC4.LOGGER.error("Research showInfo collision:{} and {}",researchAndShowInfoEntry.getKey(),researchItemToAdd.key);
 					}
 				}
 			}
-			
-			
-			rl.research.put(ri.key, ri);
-			
-			if (ri.displayColumn < rl.minDisplayColumn) 
-	        {
-	            rl.minDisplayColumn = ri.displayColumn;
-	        }
-
-	        if (ri.displayRow < rl.minDisplayRow)
-	        {
-	            rl.minDisplayRow = ri.displayRow;
-	        }
-
-	        if (ri.displayColumn > rl.maxDisplayColumn)
-	        {
-	            rl.maxDisplayColumn = ri.displayColumn;
-	        }
-
-	        if (ri.displayRow > rl.maxDisplayRow)
-	        {
-	            rl.maxDisplayRow = ri.displayRow;
-	        }
+			category.addResearch(researchItemToAdd,shownInfo);
 		}
+//		ResearchCategory category = getResearchCategory(researchItemToAdd.category);
+//		if (category!=null && !category.researches.containsKey(researchItemToAdd.key)) {
+//
+//			if (!researchItemToAdd.isVirtual()) {
+//				for (ResearchItem rr:category.researches.values()) {
+//					if (rr.displayColumn == researchItemToAdd.displayColumn && rr.displayRow == researchItemToAdd.displayRow) {
+//						OpenTC4.LOGGER.log(Level.FATAL, "[Thaumcraft] Research ["+researchItemToAdd.getName()+"] not added as it overlaps with existing research ["+rr.getName()+"]");
+//						return;
+//					}
+//				}
+//			}
+//
+//
+//			category.researches.put(researchItemToAdd.key, researchItemToAdd);
+//		}
 	}
 }

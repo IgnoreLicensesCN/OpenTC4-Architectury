@@ -2,86 +2,68 @@ package thaumcraft.api.research;
 
 import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.research.render.ShownInfoInResearchCategory;
+import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 //TODO:Separate
 public class ResearchItem
 {
-	/**
+
+    /**
 	 * A short string used as a key for this research. Must be unique
 	 */
-	public final ResourceLocation key;
+	public final ResearchItemResourceLocation key;
 	
-	/**
-	 * A short string used as a reference to the research category to which this must be added.
-	 */
-	public final ResourceLocation category;
+	//although we have ThaumcraftShownResearchItem it's still fine to add category here
+	protected final List<ResearchCategoryResourceLocation> categoryInternal = new ArrayList<>();
+    @UnmodifiableView
+    public final List<ResearchCategoryResourceLocation> category = Collections.unmodifiableList(categoryInternal);
 
 	/**
 	 * The aspect tags and their values required to complete this research
 	 */
-	public final AspectList<Aspect> tags;
+	public final AspectList<Aspect> tags = new AspectList<>();
 	
     /**
      * This links to any research that needs to be completed before this research can be discovered or learnt.
      */
-    public ResourceLocation[] parents = null;
+    public ResearchItemResourceLocation[] parents = null;
     
     /**
      * Like parent above, but a line will not be displayed in the thaumonomicon linking them. Just used to prevent clutter.
      */
-    public ResourceLocation[] parentsHidden = null;
+    public ResearchItemResourceLocation[] parentsHidden = null;
     /**
      * any research linked to this that will be unlocked automatically when this research is complete
      */
-    public ResourceLocation[] siblings = null;
-	
-    /**
-     * the horizontal position of the research icon
-     */
-    public final int displayColumn;
+    public ResearchItemResourceLocation[] siblings = null;
 
-    /**
-     * the vertical position of the research icon
-     */
-    public final int displayRow;
-    
-    /**
-     * the icon to be used for this research 
-     */
-    public final ItemStack icon_item;
-    
-    /**
-     * the icon to be used for this research 
-     */
-    public final ResourceLocation icon_resource;
     
     /**
      * How large the research grid is. Valid values are 1 to 3.
      */
-    private int complexity;
+    private @Range(from=1,to=3) int complexity;
 
-    /**
-     * Special research has a spiky border. Used for important research milestones.
-     */
-    private boolean isSpecial;
     
     /**
      * Research that can be directly purchased with RP in normal research difficulty.
      */
     private boolean isSecondary;
-    
-	/**
-     * This indicates if the research should use a circular icon border. Usually used for "passive" research 
-     * that doesn't have recipes and grants passive effects, or that unlock automatically.
-     */
-    private boolean isRound;
+
     
     /**
      * Stub research cannot be discovered by normal means, but can be unlocked via the sibling system.
@@ -95,13 +77,11 @@ public class ResearchItem
      * the various cap and rod combos for wands.
      */
     private boolean isVirtual;    
-    
-    
-    
+
     /**
      * Concealed research does not display in the thaumonomicon until parent researches are discovered.
      */
-    private boolean isConcealed;
+    private boolean showAfterParentDiscovered;
     
     /**
      * Hidden research can only be discovered via scanning or knowledge fragments 
@@ -135,51 +115,31 @@ public class ResearchItem
 
 	private ResearchPage[] pages = null;
 	
-	public ResearchItem(ResourceLocation key, ResourceLocation category)
+	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
     {
     	this.key = key;
-    	this.category = category;
-    	this.tags = new AspectList<>();
-        this.icon_resource = null;
-        this.icon_item = null;
-        this.displayColumn = 0;
-        this.displayRow = 0;
+        this.categoryInternal.add(category);
         this.setVirtual();
-        
     }
     
-    public ResearchItem(ResourceLocation key, ResourceLocation category, AspectList<Aspect> tags, int col, int row, int complex, ResourceLocation icon)
+    public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category, AspectList<Aspect> tags, int complex)
     {
     	this.key = key;
-    	this.category = category;
-    	this.tags = tags;    	
-        this.icon_resource = icon;
-        this.icon_item = null;
-        this.displayColumn = col;
-        this.displayRow = row;
-        this.complexity = complex;
-        if (complexity < 1) this.complexity = 1;
-        if (complexity > 3) this.complexity = 3;
+        this.categoryInternal.add(category);
+    	this.tags.addAll(tags);
+        this.complexity = Math.min(Math.max(complex, 1),3);
+    }
+    public ResearchItem(ResearchItemResourceLocation key)
+    {
+        this.key = key;
+        this.setVirtual();
     }
 
-    public ResearchItem(ResourceLocation key, ResourceLocation category, AspectList<Aspect> tags, int col, int row, int complex, ItemStack icon)
+    public ResearchItem(ResearchItemResourceLocation key, AspectList<Aspect> tags, int complex)
     {
-    	this.key = key;
-    	this.category = category;
-    	this.tags = tags;    	
-        this.icon_item = icon;
-        this.icon_resource = null;
-        this.displayColumn = col;
-        this.displayRow = row;
-        this.complexity = complex;
-        if (complexity < 1) this.complexity = 1;
-        if (complexity > 3) this.complexity = 3;
-    }
-
-    public ResearchItem setSpecial()
-    {
-        this.isSpecial = true;
-        return this;
+        this.key = key;
+        this.tags.addAll(tags);
+        this.complexity = Math.min(Math.max(complex, 1),3);
     }
     
     public ResearchItem setStub()
@@ -194,9 +154,9 @@ public class ResearchItem
         return this;
     }
     
-    public ResearchItem setConcealed()
+    public ResearchItem setShowAfterParentDiscovered()
     {
-        this.isConcealed = true;
+        this.showAfterParentDiscovered = true;
         return this;
     }
     
@@ -212,7 +172,7 @@ public class ResearchItem
         return this;
     }
     
-    public ResearchItem setParents(ResourceLocation... par)
+    public ResearchItem setParents(ResearchItemResourceLocation... par)
     {
         this.parents = par;
         return this;
@@ -220,13 +180,13 @@ public class ResearchItem
     
     
 
-	public ResearchItem setParentsHidden(ResourceLocation... par)
+	public ResearchItem setParentsHidden(ResearchItemResourceLocation... par)
     {
         this.parentsHidden = par;
         return this;
     }
     
-    public ResearchItem setSiblings(ResourceLocation... sib)
+    public ResearchItem setSiblings(ResearchItemResourceLocation... sib)
     {
         this.siblings = sib;
         return this;
@@ -248,7 +208,8 @@ public class ResearchItem
         return this;
     }
     
-    public ResearchItem setEntityTriggers(ResourceKey<EntityType<?>>... par)
+    @SafeVarargs
+    public final ResearchItem setEntityTriggers(ResourceKey<EntityType<?>>... par)
     {
         this.entityTriggers = par;
         return this;
@@ -272,9 +233,9 @@ public class ResearchItem
 		return aspectTriggers;
 	}
 
-	public ResearchItem registerResearchItem()
+	public ResearchItem registerResearchItem(List<ShownInfoInResearchCategory> shownInfos)
     {
-        ResearchCategories.addResearch(this);
+        ResearchCategories.addResearchToItsCategory(this,shownInfos);
         return this;
     }
 
@@ -287,11 +248,6 @@ public class ResearchItem
     {
     	return StatCollector.translateToLocal("tc.research_text."+key);
     }
-
-    public boolean isSpecial()
-    {
-        return this.isSpecial;
-    }
     
     public boolean isStub()
     {
@@ -303,9 +259,9 @@ public class ResearchItem
         return this.isLost;
     }
     
-    public boolean isConcealed()
+    public boolean wouldShowAfterParentDiscovered()
     {
-        return this.isConcealed;
+        return this.showAfterParentDiscovered;
     }
     
     public boolean isHidden()
@@ -328,15 +284,6 @@ public class ResearchItem
         return this;
     }
 	
-	public boolean isRound() {
-		return isRound;
-	}
-
-	public ResearchItem setRound() {
-		this.isRound = true;
-		return this;
-	}
-	
 	public boolean isSecondary() {
 		return isSecondary;
 	}
@@ -358,18 +305,46 @@ public class ResearchItem
 	/**
 	 * @return the aspect aspects ordinal with the highest value. Used to determine scroll color and similar things
 	 */
+    @NotNull("null->empty")
 	public Aspect getResearchPrimaryTag() {
-		Aspect aspect=null;
+		Aspect aspect = Aspects.EMPTY;
 		int highest=0;
-		if (tags!=null) {
-            for (Aspect tag : tags.getAspectTypes()) {
-                if (tags.getAmount(tag) > highest) {
-                    aspect = tag;
-                    highest = tags.getAmount(tag);
-                }
+        for (Aspect tag : tags.getAspectTypes()) {
+            if (tags.getAmount(tag) > highest) {
+                aspect = tag;
+                highest = tags.getAmount(tag);
             }
         }
-		return aspect;
+        return aspect;
 	}
-	
+
+    public ResearchItem addCategory(ResearchCategoryResourceLocation category){
+        this.categoryInternal.add(category);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ResearchItem{" +
+                "key=" + key +
+                ", categoryInternal=" + categoryInternal +
+                ", category=" + category +
+                ", tags=" + tags +
+                ", parents=" + Arrays.toString(parents) +
+                ", parentsHidden=" + Arrays.toString(parentsHidden) +
+                ", siblings=" + Arrays.toString(siblings) +
+                ", complexity=" + complexity +
+                ", isSecondary=" + isSecondary +
+                ", isStub=" + isStub +
+                ", isVirtual=" + isVirtual +
+                ", showAfterParentDiscovered=" + showAfterParentDiscovered +
+                ", isHidden=" + isHidden +
+                ", isLost=" + isLost +
+                ", isAutoUnlock=" + isAutoUnlock +
+                ", itemTriggers=" + Arrays.toString(itemTriggers) +
+                ", entityTriggers=" + Arrays.toString(entityTriggers) +
+                ", aspectTriggers=" + Arrays.toString(aspectTriggers) +
+                ", pages=" + Arrays.toString(pages) +
+                '}';
+    }
 }

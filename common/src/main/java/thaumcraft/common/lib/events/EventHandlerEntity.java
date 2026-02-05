@@ -31,7 +31,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.wands.IEnchantmentRepairVisProvider;
 import thaumcraft.common.Thaumcraft;
@@ -123,8 +123,8 @@ public class EventHandlerEntity {
 
             ResearchManager.loadPlayerData(serverPlayer.getGameProfile().getName(), playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()), legacy);
 
-            for(ResearchCategoryList cat : ResearchCategories.researchCategories.values()) {
-               for(ResearchItem ri : cat.research.values()) {
+            for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+               for(ResearchItem ri : cat.researches.values()) {
                   if (ri.isAutoUnlock()) {
                      Thaumcraft.researchManager.completeResearch(serverPlayer, ri.key);
                   }

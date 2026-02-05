@@ -5,12 +5,13 @@ import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.Collection;
 
 public abstract class Aspect {
 
-	public final @NotNull ResourceLocation tag;
+	public final @NotNull AspectResourceLocation tag;
 	public final int color;
 	public final @NotNull ResourceLocation image;
 	public final int blend;
@@ -22,7 +23,7 @@ public abstract class Aspect {
 	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
-	public Aspect(@NotNull ResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
+	public Aspect(@NotNull AspectResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
 		if (Aspects.ALL_ASPECTS.containsKey(tag)) throw new IllegalArgumentException(tag+" already registered!");
 		this.tag = tag;
 		this.color = color;
@@ -30,7 +31,7 @@ public abstract class Aspect {
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(tag, this);
 	}
-	protected Aspect(@NotNull ResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend,boolean noRegisterArg) {
+	protected Aspect(@NotNull AspectResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend,boolean noRegisterArg) {
 		this.tag = tag;
 		this.color = color;
 		this.image = image;
@@ -40,15 +41,15 @@ public abstract class Aspect {
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(ResourceLocation tag, @RGBColor int color) {
-		this(tag,color,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
+	public Aspect(AspectResourceLocation tag, @RGBColor int color) {
+		this(tag,color,new AspectResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
 	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(ResourceLocation tag, @RGBColor int color, int blend) {
-		this(tag,color,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
+	public Aspect(AspectResourceLocation tag, @RGBColor int color, int blend) {
+		this(tag,color,new AspectResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
 	}
 
 	

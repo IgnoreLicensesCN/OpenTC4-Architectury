@@ -52,15 +52,13 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static int generateEntityHash(Entity entity) {
-        // 基础类型 hash
-        String rl = entity.getType()
-                .toString(); // 或 entity.getType().arch$registryName()
-        String hash = /*rl == null ? "generic" :*/ rl;
+        String hash;
 
-        // 玩家用名字区分
         if (entity instanceof Player player) {
             hash = "player_" + player.getName()
                     .getString();
+        }else{
+            hash = entity.getType().toString();
         }
 
         // Thaumcraft 自定义 NBT 匹配

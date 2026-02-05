@@ -7,27 +7,28 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.client.gui.GuiResearchBrowser;
-import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":clue_complete";
 
     public static MessageType messageType;
 
-    private ResourceLocation key;
+    private ClueResourceLocation key;
 
     public PacketClueCompleteS2C(){}
-    public PacketClueCompleteS2C(ResourceLocation key) {
+    public PacketClueCompleteS2C(ClueResourceLocation key) {
         this.key = key;
+    }
+    public PacketClueCompleteS2C(ResourceLocation key) {
+        this.key = new ClueResourceLocation(key);
     }
 
     // 编码
@@ -64,7 +65,7 @@ public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
 
         // GUI 更新
         if (Minecraft.getInstance().screen instanceof GuiResearchBrowser gui) {
-            List<ResourceLocation> al = GuiResearchBrowser.completedClue.get(player.getGameProfile().getName());
+            var al = GuiResearchBrowser.completedClue.get(player.getGameProfile().getName());
             if (al == null) al = new ArrayList<>();
             al.add(key);
             GuiResearchBrowser.completedClue.put(player.getGameProfile().getName(), al);

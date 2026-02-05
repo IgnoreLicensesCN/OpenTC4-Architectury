@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 
@@ -20,7 +21,7 @@ public class PrimalAspect extends Aspect {
      * and many compatibility issue you have to fix.
      * TODO:[maybe wont finished]easier to add new primal aspect
      */
-    public PrimalAspect(ResourceLocation tag, @RGBColor int color, @NotNull String chatcolor, int blend) {
+    public PrimalAspect(AspectResourceLocation tag, @RGBColor int color, @NotNull String chatcolor, int blend) {
         super(tag,color, blend);
         this.chatcolor = chatcolor;
         PRIMAL_ASPECTS.put(tag,this);

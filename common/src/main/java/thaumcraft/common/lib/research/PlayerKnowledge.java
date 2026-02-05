@@ -5,14 +5,16 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerKnowledge {
    //TODO:Research string -> ResourceLocation
-   public final Map<String, List<ResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
-   public final Map<String, List<ResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
+   public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
+   public final Map<String, List<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
    public final Map<String, AspectList<Aspect>> aspectsDiscovered = new ConcurrentHashMap<>();
    public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();

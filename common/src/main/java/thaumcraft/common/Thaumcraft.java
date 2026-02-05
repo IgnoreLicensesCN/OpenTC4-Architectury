@@ -14,6 +14,8 @@ import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
 import thaumcraft.common.lib.research.PlayerKnowledge;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
 import java.util.List;
@@ -36,13 +38,12 @@ public class Thaumcraft {
     public static final WandManager wandManager = new WandManager();
 
 
-    public static Map<String, List<ResourceLocation>> getCompletedResearch(){
+    public static Map<String, List<ResearchItemResourceLocation>> getCompletedResearch(){
         return playerKnowledge.researchCompleted;
     }
-    public static Map<String, List<ResourceLocation>> getCompletedClue(){
+    public static Map<String, List<ClueResourceLocation>> getCompletedClue(){
         return playerKnowledge.clueCompleted;
     }
-
     public static Map<String, List<String>> getScannedObjects(){
         return playerKnowledge.objectsScanned;
     }
@@ -52,7 +53,6 @@ public class Thaumcraft {
     public static Map<String, List<String>> getScannedPhenomena(){
         return playerKnowledge.phenomenaScanned;
     }
-
     public static Map<String, AspectList<Aspect>> getKnownAspects() {
         return playerKnowledge.aspectsDiscovered;
     }

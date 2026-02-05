@@ -20,7 +20,7 @@ import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.client.gui.GuiResearchRecipe;
@@ -79,11 +79,11 @@ public class ThaumonomiconIndexSearcher {
         List<SearchQuery> valids = new ArrayList<>();
         Set<String> keys;
         if (searchCategory != null && !searchCategory.isEmpty())
-            keys = ResearchCategories.getResearchList(searchCategory).research.keySet();
+            keys = ResearchCategories.getResearchCategory(searchCategory).researches.keySet();
         else {
             keys = new HashSet<>();
-            for (ResearchCategoryList cat : ResearchCategories.researchCategories.values())
-                keys.addAll(cat.research.keySet());
+            for (ResearchCategory cat : ResearchCategories.researchCategories.values())
+                keys.addAll(cat.researches.keySet());
         }
 
         Set<SearchQuery> recipeBased = new HashSet<>();

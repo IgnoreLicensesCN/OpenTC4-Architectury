@@ -3,6 +3,7 @@ package tc4tweak.modules.getResearch;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -17,11 +18,11 @@ public class GetResearch {
     }
 
     /**
-     * Called from {@link ResearchCategories#getResearch(ResourceLocation)}
+     * Called from {@link ResearchCategories#getResearch(ResearchItemResourceLocation)}
      */
-    public static ResearchItem getResearch(ResourceLocation key) {
+    public static ResearchItem getResearch(ResearchItemResourceLocation key) {
         if (key == null) return null;
-        final Map<ResourceLocation, ResearchItem> map = cache.getCache();
+        final Map<ResearchItemResourceLocation, ResearchItem> map = cache.getCache();
         return map == null ? getResearchSlow(key) : map.get(key);
     }
 
@@ -32,9 +33,9 @@ public class GetResearch {
     /**
      * Fallback for when server starting
      */
-    private static ResearchItem getResearchSlow(ResourceLocation key) {
+    private static ResearchItem getResearchSlow(ResearchItemResourceLocation key) {
         return ResearchCategories.researchCategories.values().stream()
-                .flatMap(l -> l.research.values().stream())
+                .flatMap(l -> l.researches.values().stream())
                 .filter(i -> key.equals(i.key))
                 .findFirst().orElse(null);
     }

@@ -14,7 +14,7 @@ import tc4tweak.ClientUtils;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -33,7 +33,7 @@ public class BrowserPaging {
     private static final int NAVIGATION_BUTTON_Z_LEVEL = -50;
     static int currentPageIndex;
     static int maxPageIndex;
-    private static final LinkedHashMap<String, ResearchCategoryList> currentPageTabs = new LinkedHashMap<>();
+    private static final LinkedHashMap<String, ResearchCategory> currentPageTabs = new LinkedHashMap<>();
     public static final AtomicBoolean currentPageTabsInitialized = new AtomicBoolean(false);
     private static boolean recalculateCurrentTabs = true;
 
@@ -60,7 +60,7 @@ public class BrowserPaging {
         }
     }
 
-    public static LinkedHashMap<String, ResearchCategoryList> getTabsOnCurrentPage(String player) {
+    public static LinkedHashMap<String, ResearchCategory> getTabsOnCurrentPage(String player) {
         if (!currentPageTabsInitialized.get()) {
             int tabsPerPage = getTabPerSide() * 2;
             // reset in case tab count changed
@@ -68,7 +68,7 @@ public class BrowserPaging {
                 currentPageIndex = 0;
             }
             int toSkip = tabsPerPage * currentPageIndex;
-            for (Map.Entry<String, ResearchCategoryList> e : ResearchCategories.researchCategories.entrySet()) {
+            for (Map.Entry<String, ResearchCategory> e : ResearchCategories.researchCategories.entrySet()) {
                 // pretend eldritch tab doesn't exist if ELDRITCHMINOR is not complete
                 if ("ELDRITCH".equals(e.getKey()) && !ResearchManager.isResearchComplete(player, "ELDRITCHMINOR"))
                     continue;
