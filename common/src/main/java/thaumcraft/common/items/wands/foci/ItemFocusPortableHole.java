@@ -24,7 +24,7 @@ import thaumcraft.common.tiles.TileHole;
 
 public class ItemFocusPortableHole extends ItemFocusBasic {
    IIcon depthIcon = null;
-   private static final AspectList cost;
+   private static final AspectList<Aspect>cost;
 
    public ItemFocusPortableHole() {
       this.setCreativeTab(Thaumcraft.tabTC);
@@ -48,7 +48,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
       return 594985;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return cost.copy();
    }
 
@@ -115,7 +115,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
             }
          }
 
-         AspectList c = this.getVisCost(itemstack);
+         AspectList<Aspect>c = this.getVisCost(itemstack);
 
          for(Aspect a : c.getAspects()) {
             c.mergeWithHighest(a, c.getAmount(a) * distance);

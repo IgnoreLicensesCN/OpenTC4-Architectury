@@ -20,13 +20,13 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     private final RecipeItemMatcher[] input;
     private final ItemStack[] inputSampleArr;
     
-    public final AspectList aspects;
+    public final AspectList<Aspect>aspects;
     public final String research;
     private final RecipeItemMatcher outMatcher;
 
 
     //do not set ItemStack.EMPTY matcher here.
-    public ShapelessArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList aspects, RecipeItemMatcher[] recipe,RecipeItemMatcher outMatcher)
+    public ShapelessArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList<Aspect>aspects, RecipeItemMatcher[] recipe,RecipeItemMatcher outMatcher)
     {
         this.resultGenerator = resultGenerator;
         this.research = research;
@@ -161,12 +161,12 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
 //    }
     
     @Override		
-	public AspectList getAspects() {
+	public AspectList<Aspect>getAspects() {
 		return aspects;
 	}
     
     @Override		
-	public AspectList getAspects(Container inv) {
+	public AspectList<Aspect>getAspects(Container inv) {
 		return aspects;
 	}
 	

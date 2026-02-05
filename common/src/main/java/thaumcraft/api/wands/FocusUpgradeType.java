@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *                The amounts given is ignored,
  *                just the type is used for the calculation.
  */
-public record FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList aspects) {
+public record FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<Aspect>aspects) {
 
 	private static final Map<String, FocusUpgradeType> types = new ConcurrentHashMap<>();
 	public static final Map<String, FocusUpgradeType> typesView = Collections.unmodifiableMap(types);
@@ -35,7 +35,7 @@ public record FocusUpgradeType(String id, ResourceLocation icon, String name, St
 		return type;
 	}
 
-	public FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList aspects) {
+	public FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<Aspect>aspects) {
 		this.id = id;
 		this.icon = icon;
 		this.name = name;

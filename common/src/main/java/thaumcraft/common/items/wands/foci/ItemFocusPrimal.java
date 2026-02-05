@@ -60,9 +60,9 @@ public class ItemFocusPrimal extends ItemFocusBasic {
       return 10854849;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       Random rand = new Random(System.currentTimeMillis() / 200L);
-      AspectList cost = (new AspectList()).addAll(Aspects.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspects.AIR, 50 + rand.nextInt(5) * 50).addAll(
+      AspectList<Aspect>cost = (new AspectList()).addAll(Aspects.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspects.AIR, 50 + rand.nextInt(5) * 50).addAll(
               Aspects.EARTH, 50 + rand.nextInt(5) * 50).addAll(Aspects.FIRE, 50 + rand.nextInt(5) * 50).addAll(Aspects.ORDER, 50 + rand.nextInt(5) * 50).addAll(
               Aspects.ENTROPY, 50 + rand.nextInt(5) * 50);
       return cost;

@@ -561,7 +561,7 @@ public class ScanManager implements IScanEventHandler {
         }
 
         if (Platform.getEnvironment() != Env.CLIENT && ret && aspects != null) {
-            AspectList aspectsFinal = new AspectList();
+            AspectList<Aspect>aspectsFinal = new AspectList();
 
             for (Aspect aspect : aspects.getAspectTypes()) {
                 if (rp.hasDiscoveredParentAspects(
@@ -603,7 +603,7 @@ public class ScanManager implements IScanEventHandler {
                 player.getName()
                         .getString(), aspect
         )) {
-            new PacketAspectDiscoveryS2C(aspect.getTag()).sendTo((ServerPlayer) player);
+            new PacketAspectDiscoveryS2C(aspect.getAspectKey()).sendTo((ServerPlayer) player);
             amount += 2;
             save = amount;
         }
@@ -626,7 +626,7 @@ public class ScanManager implements IScanEventHandler {
                 player.getName()
                         .getString(), aspect, (short) amount
         )) {
-            new PacketAspectPoolS2C(aspect.getTag(), (short) amount, rp.getAspectPoolFor(
+            new PacketAspectPoolS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
                     player.getName()
                             .getString(), aspect
             )
@@ -647,7 +647,7 @@ public class ScanManager implements IScanEventHandler {
         return save;
     }
 
-    public static boolean validScan(AspectList aspects, Player player) {
+    public static boolean validScan(AspectList<Aspect>aspects, Player player) {
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         if (aspects != null && aspects.size() > 0) {
@@ -665,7 +665,7 @@ public class ScanManager implements IScanEventHandler {
                             )) {
                                 PlayerNotifications.addNotification((StatCollector.translateToLocal(
                                         "tc.discoveryerror") + StatCollector.translateToLocal(
-                                        "tc.aspect.help." + parent.getTag())));
+                                        "tc.aspect.help." + parent.getAspectKey())));
                                 break;
                             }
                         }

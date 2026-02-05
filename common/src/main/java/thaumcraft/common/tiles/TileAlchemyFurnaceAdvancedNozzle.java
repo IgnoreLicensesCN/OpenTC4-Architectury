@@ -37,11 +37,11 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
 
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.furnace != null ? this.furnace.aspects : null;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public int addToContainer(Aspect tt, int am) {
@@ -62,7 +62,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       }
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -82,7 +82,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       return false;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 

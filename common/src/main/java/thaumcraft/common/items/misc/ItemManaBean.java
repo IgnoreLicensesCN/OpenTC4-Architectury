@@ -67,7 +67,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
          }
 
          if (world.getRandom().nextFloat() < 0.25F) {
-            AspectList al = ((ItemManaBean)stack.getItem()).getAspects(stack);
+            AspectList<Aspect>al = ((ItemManaBean)stack.getItem()).getAspects(stack);
             if (al != null && al.size() > 0) {
                Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), al.getAspects()[0], (short)1);
                ResearchManager.scheduleSave(player);
@@ -94,7 +94,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
    }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      AspectList aspects = this.getAspects(stack);
+      AspectList<Aspect>aspects = this.getAspects(stack);
       addAspectDescriptionToList(aspects,player,list);
 
       super.addInformation(stack, player, list, par4);
@@ -125,9 +125,9 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
 
    }
 
-   public AspectList getAspects(ItemStack itemstack) {
+   public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {
@@ -135,7 +135,7 @@ public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
       }
    }
 
-   public void setAspects(ItemStack itemstack, AspectList aspects) {
+   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
       if (!itemstack.hasTagCompound()) {
          itemstack.setTagCompound(new NBTTagCompound());
       }

@@ -668,7 +668,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       } else {
          boolean value = valuedItems.containsKey(BuiltInRegistries.ITEM.getKey(item.getItem()));
          if (!value) {
-            AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
+            AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
             if (al.getAmount(Aspects.GREED) > 0) {
                value = true;
@@ -685,7 +685,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       } else {
          int value = valuedItems.containsKey(BuiltInRegistries.ITEM.getKey(item.getItem())) ? (Integer)valuedItems.get(BuiltInRegistries.ITEM.getKey(item.getItem())) : 0;
          if (value == 0) {
-            AspectList al = ThaumcraftCraftingManager.getObjectTags(item);
+            AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusTags(item, al);
             value = Math.min(32, al.getAmount(Aspects.GREED));
          }

@@ -59,8 +59,8 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       buf.writeInt(x);
       buf.writeInt(y);
       buf.writeInt(z);
-      buf.writeUtf(aspect1.getTag());
-      buf.writeUtf(aspect2.getTag());
+      buf.writeUtf(aspect1.getAspectKey());
+      buf.writeUtf(aspect2.getAspectKey());
       buf.writeBoolean(ab1);
       buf.writeBoolean(ab2);
    }
@@ -116,7 +116,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
          te.setChanged();
       } else {
          Thaumcraft.playerKnowledge.addAspectPool(playerName, aspect1, (short) -1);
-         new PacketAspectPoolS2C(aspect1.getTag(), (short) 0,
+         new PacketAspectPoolS2C(aspect1.getAspectKey(), (short) 0,
                  Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect1)).sendTo(serverPlayer);
       }
 
@@ -127,7 +127,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
          te.setChanged();
       } else {
          Thaumcraft.playerKnowledge.addAspectPool(playerName, aspect2, (short) -1);
-         new PacketAspectPoolS2C(aspect2.getTag(), (short) 0,
+         new PacketAspectPoolS2C(aspect2.getAspectKey(), (short) 0,
                  Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect2)).sendTo(serverPlayer);
       }
 

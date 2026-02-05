@@ -28,7 +28,10 @@ block_with_item_names = [
     ["tile.blockTable.0.name","table"],
     ["tile.blockTable.1.name","table"],
     ['tile.blockTable.15.name','arcane_workbench'],
-    ['tile.blockTable.14.name','deconstruction_table']
+    ['tile.blockTable.14.name','deconstruction_table'],
+    ['tile.blockTable.research.name',['research_table_left_part','research_table_right_part']],
+    ['block.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
+    ['item.thaumcraft.research_table',['research_table_left_part','research_table_right_part']]
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

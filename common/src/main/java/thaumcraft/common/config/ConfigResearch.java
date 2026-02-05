@@ -112,9 +112,9 @@ public class ConfigResearch {
       (new ResearchItem("ROD_silverwood", "THAUMATURGY", (new AspectList()).addAll(Aspects.TOOL, 6).addAll(Aspects.TREE, 6).addAll(
               Aspects.MAGIC, 9), -2, 5, 3, new ItemStack(ConfigItems.itemWandRod, 1, 2))).setPages(new ResearchPage("tc.research_page.ROD_silverwood.1"), new ResearchPage((InfusionRecipe)recipes.get("WandRodSilverwood"))).setParents("ROD_greatwood", "INFUSION").registerResearchItem();
       ArrayList<IArcaneRecipe> scer = new ArrayList<>();
-      AspectList al1 = new AspectList();
-      AspectList al2 = new AspectList();
-      AspectList al3 = new AspectList();
+      AspectList<Aspect>al1 = new AspectList();
+      AspectList<Aspect>al2 = new AspectList();
+      AspectList<Aspect>al3 = new AspectList();
       int cost = (int)((float)(ConfigItems.WAND_CAP_IRON.getCraftCost() * ConfigItems.WAND_ROD_WOOD.getCraftCost()) * 1.5F);
 
       for(Aspect as : Aspect.getPrimalAspects()) {

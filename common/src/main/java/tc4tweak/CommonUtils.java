@@ -5,6 +5,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.research.ResearchCategories;
@@ -21,7 +22,7 @@ public class CommonUtils {
     // only keep the strings, so tab objects doesn't leak if they are ever removed
     private static final LinkedHashSet<String> originalTabOrders = new LinkedHashSet<>();
 
-    public static String toString(AspectList al) {
+    public static String toString(AspectList<Aspect> al) {
         return al.getAspects().entrySet().stream().filter(e -> e.getKey() != null && e.getValue() != null).map(e -> String.format("%dx%s", e.getValue(), e.getKey().getName())).collect(Collectors.joining(";"));
     }
 

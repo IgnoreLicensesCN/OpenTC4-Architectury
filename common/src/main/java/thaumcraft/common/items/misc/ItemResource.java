@@ -260,7 +260,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 //   }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      AspectList aspects = this.getAspects(stack);
+      AspectList<Aspect>aspects = this.getAspects(stack);
       addAspectDescriptionToList(aspects,player,list);
 
 //      if (stack.getItemDamage() == 15) {
@@ -274,9 +274,9 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       super.addInformation(stack, player, list, par4);
    }
 
-   public AspectList getAspects(ItemStack itemstack) {
+   public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {
@@ -284,7 +284,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public void setAspects(ItemStack itemstack, AspectList aspects) {
+   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
       if (!itemstack.hasTagCompound()) {
          itemstack.setTagCompound(new NBTTagCompound());
       }

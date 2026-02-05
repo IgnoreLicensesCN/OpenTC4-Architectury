@@ -18,8 +18,8 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class ItemFocusPech extends ItemFocusBasic {
    IIcon depthIcon = null;
-   private static final AspectList cost;
-   private static final AspectList costAll;
+   private static final AspectList<Aspect>cost;
+   private static final AspectList<Aspect>costAll;
    public static FocusUpgradeType nightshade;
 
    public ItemFocusPech() {
@@ -60,7 +60,7 @@ public class ItemFocusPech extends ItemFocusBasic {
       return 2267460;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return this.isUpgradedWith(itemstack, nightshade) ? costAll : cost;
    }
 

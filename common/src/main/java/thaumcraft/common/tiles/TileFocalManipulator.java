@@ -15,7 +15,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileFocalManipulator extends TileThaumcraftInventory {
-   public AspectList aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList();
    public int size = 0;
    public int upgrade = -1;
    public int rank = -1;
@@ -146,7 +146,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                      amt *= 2;
                   }
 
-                  AspectList tal = new AspectList();
+                  AspectList<Aspect>tal = new AspectList();
 
                   for(Aspect as : FocusUpgradeType.types[id].aspects.getAspects()) {
                      tal.addAll(as, amt);

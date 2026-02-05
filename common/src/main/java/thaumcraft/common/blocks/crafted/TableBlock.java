@@ -24,10 +24,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.researchtable.IResearchTableAspectWriteTool;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_AXIS;
 
 public class TableBlock extends Block implements IWandInteractableBlock {
@@ -55,9 +57,46 @@ public class TableBlock extends Block implements IWandInteractableBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X));
     }
 
+    public static final Direction[] X_AXIS_DIRECTIONS = {Direction.WEST, Direction.EAST};
+    public static final Direction[] Z_AXIS_DIRECTIONS = {Direction.NORTH, Direction.SOUTH};
+    public static final Direction[] Y_AXIS_DIRECTIONS = {Direction.UP, Direction.DOWN};
+    public Direction[] getDirectionsForAxis(Direction.Axis axis) {
+        return switch (axis) {
+            case X->X_AXIS_DIRECTIONS;
+            case Y->Y_AXIS_DIRECTIONS;
+            case Z->Z_AXIS_DIRECTIONS;
+        };
+    }
+
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        //TODO:Research table(also do not place item on
+        var usingStack = player.getItemInHand(interactionHand);
+        if (!usingStack.isEmpty()) {
+            if (usingStack.getItem() instanceof IResearchTableAspectWriteTool writeTool
+                    && writeTool.canCreateResearchTable(level,blockPos,usingStack)) {
+                var thisAxis = blockState.getValue(AXIS);
+                var probablyLeftPartDirections = getDirectionsForAxis(thisAxis);
+                for (Direction probablyLeftPartDirection : probablyLeftPartDirections){
+                    var probablyRightPartPos = blockPos.relative(probablyLeftPartDirection);
+                    var probablyRightPartState = level.getBlockState(probablyRightPartPos);
+                    if (probablyRightPartState.getBlock() == this && probablyRightPartState.getValue(AXIS) == thisAxis) {
+                        level.setBlockAndUpdate(
+                                blockPos,
+                                ThaumcraftBlocks.RESEARCH_TABLE_LEFT_PART
+                                        .defaultBlockState()
+                                        .setValue(FACING,probablyLeftPartDirection)
+                        );
+                        level.setBlockAndUpdate(
+                                probablyRightPartPos,
+                                ThaumcraftBlocks.RESEARCH_TABLE_RIGHT_PART
+                                        .defaultBlockState()
+                                        .setValue(FACING,probablyLeftPartDirection.getOpposite())
+                        );
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 

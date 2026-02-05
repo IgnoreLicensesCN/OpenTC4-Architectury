@@ -25,7 +25,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.aspect != null) {
-         nbttagcompound.setString("aspect", this.aspect.getTag());
+         nbttagcompound.setString("aspect", this.aspect.getAspectKey());
       }
 
    }
@@ -39,7 +39,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
       if (l > 2) {
          if (l == 3) {
-            AspectList al = new AspectList();
+            AspectList<Aspect>al = new AspectList();
             if (this.aspect != null) {
                al.addAll(this.aspect, 1);
             }
@@ -99,11 +99,11 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspect != null && this.getBlockMetadata() == 7 ? (new AspectList()).addAll(this.aspect, 1) : null;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public boolean doesContainerAccept(Aspect tag) {
@@ -118,7 +118,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
       return false;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -126,7 +126,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

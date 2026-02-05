@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.level.Level;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBrain;
@@ -62,7 +61,7 @@ public class TileJarRenderer extends TileEntitySpecialRenderer {
                   GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
             }
 
-            float rot = (float)((((TileJarFillable)tile).aspectFilter.getTag().hashCode() + tile.xCoord + ((TileJarFillable)tile).facing) % 4 - 2);
+            float rot = (float)((((TileJarFillable)tile).aspectFilter.getAspectKey().hashCode() + tile.xCoord + ((TileJarFillable)tile).facing) % 4 - 2);
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, -0.4F, 0.315F);
             if (Config.crooked) {

@@ -6,7 +6,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchCrabSpawnerBlock;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
@@ -33,6 +32,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<RunedStoneBlockEntity> RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
     public static final BlockEntityType<ArcaneWorkbenchBlockEntity> ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
     public static final BlockEntityType<DeconstructionTableBlockEntity> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
+    public static final BlockEntityType<ResearchTableBlockEntity> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -148,6 +148,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         DeconstructionTableBlockEntity::new,
                         ThaumcraftBlocks.DECONSTRUCTION_TABLE
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<ResearchTableBlockEntity>> SUPPLIER_RESEARCH_TABLE = BLOCK_ENTITIES.register(
+                "research_table",
+                () -> BlockEntityType.Builder.of(
+                        ResearchTableBlockEntity::new,
+                        ThaumcraftBlocks.RESEARCH_TABLE_LEFT_PART
                 ).build(null)
         );
     }

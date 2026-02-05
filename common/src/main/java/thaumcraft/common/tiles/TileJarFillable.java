@@ -34,19 +34,19 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.aspect != null) {
-         nbttagcompound.setString("Aspect", this.aspect.getTag());
+         nbttagcompound.setString("Aspect", this.aspect.getAspectKey());
       }
 
       if (this.aspectFilter != null) {
-         nbttagcompound.setString("AspectFilter", this.aspectFilter.getTag());
+         nbttagcompound.setString("AspectFilter", this.aspectFilter.getAspectKey());
       }
 
       nbttagcompound.setShort("Amount", (short)this.amount);
       nbttagcompound.setByte("facing", (byte)this.facing);
    }
 
-   public AspectList getAspects() {
-      AspectList al = new AspectList();
+   public AspectList<Aspect>getAspects() {
+      AspectList<Aspect>al = new AspectList();
       if (this.aspect != null && this.amount > 0) {
          al.addAll(this.aspect, this.amount);
       }
@@ -54,7 +54,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       return al;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public int addToContainer(Aspect tt, int am) {
@@ -88,7 +88,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -96,7 +96,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       return this.amount >= amt && tag == this.aspect;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       for(Aspect tt : ot.getAspects()) {
          if (this.amount > 0 && tt == this.aspect) {
             return true;

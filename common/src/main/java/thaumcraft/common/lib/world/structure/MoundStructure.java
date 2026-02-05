@@ -38,7 +38,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.Optional;
 import java.util.Set;
 
-import static thaumcraft.api.expands.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.api.expands.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.MOUND_STRUCTURE_TYPE;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 

@@ -44,7 +44,7 @@ public interface IWandFocusItem {
     /**
      * How much vis does this focus consume per activation.
      */
-    AspectList getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack);
+    AspectList<Aspect>getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack);
 
     /**
      * This returns how many milliseconds must pass before the focus can be activated again.

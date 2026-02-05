@@ -247,7 +247,7 @@ public class NodeType {
                                 );
                                 if (!entity.isAlive()) {
                                     ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
-                                    AspectList al = ScanManager.getScanAspects(scan, serverLevel);
+                                    AspectList<Aspect>al = ScanManager.getScanAspects(scan, serverLevel);
                                     if (al != null && al.size() > 0) {
                                         al = ResearchManager.reduceToPrimals(al.copy());
                                         if (al.size() > 0) {

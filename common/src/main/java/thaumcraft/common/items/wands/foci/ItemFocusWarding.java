@@ -34,7 +34,7 @@ import java.util.List;
 public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
    public IIcon iconOrnament;
    IIcon depthIcon = null;
-   private static final AspectList cost;
+   private static final AspectList<Aspect>cost;
    public static HashMap<String,Long> delay;
    ArrayList<BlockCoordinates> checked = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
       return 16771535;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return cost.copy();
    }
 

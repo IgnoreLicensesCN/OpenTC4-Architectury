@@ -151,7 +151,8 @@ public class ThaumcraftBlocks {
     public static final TableBlock TABLE = Registry.SUPPLIER_TABLE.get();
     public static final ArcaneWorkbenchBlock ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
     public static final DeconstructionTableBlock DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
-
+    public static final ResearchTableLeftPartBlock RESEARCH_TABLE_LEFT_PART = Registry.SUPPLIER_RESEARCH_TABLE_LEFT_PART.get();
+    public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -575,6 +576,14 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<DeconstructionTableBlock> SUPPLIER_DECONSTRUCTION_TABLE = BLOCKS.register(
                 "deconstruction_table",
                 DeconstructionTableBlock::new
+        );
+        public static final RegistrySupplier<ResearchTableLeftPartBlock> SUPPLIER_RESEARCH_TABLE_LEFT_PART = BLOCKS.register(
+                "research_table_left_part",
+                ResearchTableLeftPartBlock::new
+        );
+        public static final RegistrySupplier<ResearchTableRightPartBlock> SUPPLIER_RESEARCH_TABLE_RIGHT_PART = BLOCKS.register(
+                "research_table_right_part",
+                ResearchTableRightPartBlock::new
         );
 
         static {

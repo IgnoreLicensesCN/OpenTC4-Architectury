@@ -1,32 +1,24 @@
 package thaumcraft.common.lib;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.server.MinecraftServer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.linearity.opentc4.utils.StatCollector;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.events.EventHandlerRunic;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.utils.EntityUtils;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.api.expands.warp.WarpEventManager.tryTriggerRandomWarpEvent;
+import static thaumcraft.api.expands.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
 
 public class WarpEvents {
 
@@ -257,7 +249,7 @@ public class WarpEvents {
          Aspect aspect = Aspect.getPrimalAspects().get(player.getRandom().nextInt(6));
          Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)1);
 
-         new PacketAspectPoolS2C(aspect.getTag(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect)).sendTo((ServerPlayer)player);
+         new PacketAspectPoolS2C(aspect.getAspectKey(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect)).sendTo((ServerPlayer)player);
       }
 
       ResearchManager.scheduleSave(player.getGameProfile().getName());

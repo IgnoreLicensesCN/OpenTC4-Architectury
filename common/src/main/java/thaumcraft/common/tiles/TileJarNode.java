@@ -16,8 +16,8 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class TileJarNode extends TileJar implements IAspectContainer, INodeBlockEntity, IWandable {
-   private AspectList aspects = new AspectList();
-   private AspectList aspectsBase = new AspectList();
+   private AspectList<Aspect>aspects = new AspectList();
+   private AspectList<Aspect>aspectsBase = new AspectList();
    private NodeType nodeType;
    private NodeModifier nodeModifier;
    private String id;
@@ -39,7 +39,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
       this.aspects.readFromNBT(nbttagcompound);
       this.id = nbttagcompound.getString("nodeId");
-      AspectList al = new AspectList();
+      AspectList<Aspect>al = new AspectList();
       NBTTagList tlist = nbttagcompound.getTagList("AspectsBase", 10);
 
       for(int j = 0; j < tlist.tagCount(); ++j) {
@@ -78,7 +78,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       for(Aspect aspect : this.aspectsBase.getAspects()) {
          if (aspect != null) {
             NBTTagCompound f = new NBTTagCompound();
-            f.setString("key", aspect.getTag());
+            f.setString("key", aspect.getAspectKey());
             f.setInteger("amount", this.aspectsBase.getAmount(aspect));
             tlist.appendTag(f);
          }
@@ -88,15 +88,15 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       nbttagcompound.setByte("modifier", this.getNodeModifier() == null ? -1 : (byte)this.getNodeModifier().ordinal());
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
-   public AspectList getAspectsBase() {
+   public AspectList<Aspect>getAspectsBase() {
       return this.aspectsBase;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
       this.aspects = aspects.copy();
       this.aspectsBase = aspects.copy();
    }
@@ -124,7 +124,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -132,7 +132,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       return this.aspects.getAmount(tag) >= amt;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       for(Aspect tt : ot.getAspects()) {
          if (this.aspects.getAmount(tt) < ot.getAmount(tt)) {
             return false;

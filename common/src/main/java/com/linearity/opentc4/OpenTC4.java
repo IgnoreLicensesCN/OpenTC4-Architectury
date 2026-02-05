@@ -3,7 +3,7 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.expands.listeners.EventListeners;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
 import thaumcraft.client.renderers.item.RenderUtils;
@@ -53,6 +53,8 @@ public final class OpenTC4 {
         ThaumcraftWorldGenConfiguredFeatures.init();
         ThaumcraftStructures.init();
         ThaumcraftGUI.init();
+
+        EventListeners.init();
     }
 
     public static void onClientStarting() {

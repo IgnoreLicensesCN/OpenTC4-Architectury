@@ -26,7 +26,6 @@ import thaumcraft.common.lib.network.fx.PacketFXWispZap;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EntityWisp extends EntityFlying implements IMob {
@@ -114,22 +113,22 @@ public class EntityWisp extends EntityFlying implements IMob {
          if (bg.biomeID == ThaumcraftWorldGenerator.biomeEerie.biomeID) {
             switch (this.rand.nextInt(6)) {
                case 0:
-                  this.setType(Aspects.DARKNESS.getTag());
+                  this.setType(Aspects.DARKNESS.getAspectKey());
                   break;
                case 1:
-                  this.setType(Aspects.UNDEAD.getTag());
+                  this.setType(Aspects.UNDEAD.getAspectKey());
                   break;
                case 2:
-                  this.setType(Aspects.ENTROPY.getTag());
+                  this.setType(Aspects.ENTROPY.getAspectKey());
                   break;
                case 3:
-                  this.setType(Aspects.ELDRITCH.getTag());
+                  this.setType(Aspects.ELDRITCH.getAspectKey());
                   break;
                case 4:
-                  this.setType(Aspects.POISON.getTag());
+                  this.setType(Aspects.POISON.getAspectKey());
                   break;
                case 5:
-                  this.setType(Aspects.DEATH.getTag());
+                  this.setType(Aspects.DEATH.getAspectKey());
             }
          } else if (this.level().rand.nextInt(10) != 0) {
             varr as = Aspect.getPrimalAspects();

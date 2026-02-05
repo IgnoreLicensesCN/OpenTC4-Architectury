@@ -69,7 +69,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.LOGGER;
-import static thaumcraft.api.expands.warp.WarpEventManager.getWarpEventDelayForPlayer;
+import static thaumcraft.api.expands.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
 
 
 //TODO
@@ -292,10 +292,10 @@ public class EventHandlerEntity {
             level = 2;
          }
 
-         AspectList cost = ThaumcraftCraftingManager.getObjectTags(is);
+         AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
          if (cost != null && cost.size() != 0) {
             cost = ResearchManager.reduceToPrimals(cost);
-            AspectList finalCost = new AspectList();
+            AspectList<Aspect>finalCost = new AspectList();
 
             for(Aspect a : cost.getAspectTypes()) {
                if (a != null) {
@@ -478,7 +478,7 @@ public class EventHandlerEntity {
       }
 
       if (event.source == DamageSourceThaumcraft.dissolve) {
-         AspectList aspects = ScanManager.generateEntityAspects(event.entityLiving);
+         AspectList<Aspect>aspects = ScanManager.generateEntityAspects(event.entityLiving);
          if (aspects != null && aspects.size() > 0) {
             for(Aspect aspect : aspects.getAspectTypes()) {
                if (!event.entity.getRandom().nextBoolean()) {
@@ -523,9 +523,9 @@ public class EventHandlerEntity {
             event.entityLiving.setDead();
          }
       } else if (Platform.getEnvironment() != Env.CLIENT && EntityUtils.getRecentlyHit(event.entityLiving) > 0) {
-         AspectList aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
+         AspectList<Aspect>aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
          if (aspectsCompound != null && aspectsCompound.size() > 0) {
-            AspectList aspects = ResearchManager.reduceToPrimals(aspectsCompound);
+            AspectList<Aspect>aspects = ResearchManager.reduceToPrimals(aspectsCompound);
 
             for(Aspect aspect : aspects.getAspectTypes()) {
                if (event.entityLiving.getRandom().nextBoolean()) {

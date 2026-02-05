@@ -56,7 +56,7 @@ public class GuiResearchTable extends GuiContainer {
    Player player;
    public Aspect select1 = null;
    public Aspect select2 = null;
-   private AspectList aspectlist = new AspectList();
+   private AspectList<Aspect>aspectlist = new AspectList();
    private HashMap runes = new HashMap<>();
    private float popupScale = 0.05F;
    private Aspect draggedAspect;
@@ -116,7 +116,7 @@ public class GuiResearchTable extends GuiContainer {
             GL11.glEnable(GL11.GL_BLEND);
             UtilsFX.bindTexture("textures/gui/guiresearchtable2.png");
             this.drawTexturedModalRect(gx + 100, gy + 21, 184, 224, 48, 16);
-            AspectList al = rr.tags.copy();
+            AspectList<Aspect>al = rr.tags.copy();
 
             for(Aspect aspect : al.getAspects()) {
                al.addAll(aspect, this.note.copies);
@@ -243,7 +243,7 @@ public class GuiResearchTable extends GuiContainer {
    }
 
    private void drawAspects(int x, int y) {
-      AspectList aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
+      AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
       if (aspects != null) {
          int count = aspects.size();
          this.lastPage = (count - 20) / 5;
@@ -283,7 +283,7 @@ public class GuiResearchTable extends GuiContainer {
    private void drawAspectText(int x, int y, int mx, int my) {
       int var7 = 0;
       int var8 = 0;
-      AspectList aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
+      AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
       if (aspects != null) {
          int count = 0;
          int drawn = 0;
@@ -626,7 +626,7 @@ public class GuiResearchTable extends GuiContainer {
                   if (isShiftKeyDown() && RESEARCHER_2) {
                      Aspect aspect = this.getClickedAspect(mx, my, gx, gy, true);
                      if (aspect != null && !aspect.isPrimal()) {
-                        AspectList aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
+                        AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
                         if (aspects != null && (aspects.getAmount(aspect.getComponents()[0]) > 0 || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0) && (aspects.getAmount(aspect.getComponents()[1]) > 0 || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0)) {
                            this.draggedAspect = null;
                            this.playButtonCombine();
@@ -653,7 +653,7 @@ public class GuiResearchTable extends GuiContainer {
    }
 
    private Aspect getClickedAspect(int mx, int my, int gx, int gy, boolean ignoreZero) {
-      AspectList aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
+      AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
       if (aspects != null) {
          int count = 0;
          int drawn = 0;

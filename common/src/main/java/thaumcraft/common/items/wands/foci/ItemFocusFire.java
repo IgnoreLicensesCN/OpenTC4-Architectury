@@ -18,9 +18,9 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 
 public class ItemFocusFire extends ItemFocusBasic {
-   private static final AspectList costBase;
-   private static final AspectList costBeam;
-   private static final AspectList costBall;
+   private static final AspectList<Aspect>costBase;
+   private static final AspectList<Aspect>costBeam;
+   private static final AspectList<Aspect>costBall;
    long soundDelay = 0L;
    public static FocusUpgradeType fireball;
    public static FocusUpgradeType firebeam;
@@ -42,7 +42,7 @@ public class ItemFocusFire extends ItemFocusBasic {
       return 15028484;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return this.isUpgradedWith(itemstack, firebeam) ? costBeam : (this.isUpgradedWith(itemstack, fireball) ? costBall : costBase);
    }
 

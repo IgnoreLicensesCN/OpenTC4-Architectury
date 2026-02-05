@@ -38,7 +38,7 @@ public class GuiFocalManipulator extends GuiContainer {
    DecimalFormat myFormatter = new DecimalFormat("#######.#");
    ArrayList<FocusUpgradeType> possibleUpgrades = new ArrayList<>();
    ArrayList<FocusUpgradeType> upgrades = new ArrayList<>();
-   AspectList aspects = new AspectList();
+   AspectList<Aspect>aspects = new AspectList();
    HashMap<Long,Sparkle> sparkles = new HashMap<>();
 
    public GuiFocalManipulator(InventoryPlayer par1InventoryPlayer, TileFocalManipulator table) {
@@ -173,7 +173,7 @@ public class GuiFocalManipulator extends GuiContainer {
          }
 
          this.fontRendererObj.drawStringWithShadow("" + xp, k + 125, l + 64, xp > this.mc.thePlayer.experienceLevel ? 16151160 : 10092429);
-         AspectList al = this.aspects;
+         AspectList<Aspect>al = this.aspects;
          if (this.table.size > 0) {
             al = this.table.aspects;
          }
@@ -318,7 +318,7 @@ public class GuiFocalManipulator extends GuiContainer {
                         amt *= 2;
                      }
 
-                     AspectList tal = new AspectList();
+                     AspectList<Aspect>tal = new AspectList();
 
                      for(Aspect as : FocusUpgradeType.types[this.selected].aspects.getAspects()) {
                         tal.addAll(as, amt);

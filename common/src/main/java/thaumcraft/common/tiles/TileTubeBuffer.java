@@ -21,7 +21,7 @@ import thaumcraft.codechicken.lib.vec.Cuboid6;
 import java.util.List;
 
 public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, IWandable {
-   public AspectList aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList();
    public final int MAXAMOUNT = 8;
    public boolean[] openSides = new boolean[]{true, true, true, true, true, true};
    public byte[] chokedSides = new byte[]{0, 0, 0, 0, 0, 0};
@@ -60,11 +60,11 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       nbttagcompound.setByteArray("choke", this.chokedSides);
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public int addToContainer(Aspect tt, int am) {
@@ -91,7 +91,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -99,7 +99,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       return this.aspects.getAmount(tag) >= amt;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

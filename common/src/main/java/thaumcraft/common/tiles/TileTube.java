@@ -64,7 +64,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.essentiaType != null) {
-         nbttagcompound.setString("type", this.essentiaType.getTag());
+         nbttagcompound.setString("type", this.essentiaType.getAspectKey());
       }
 
       nbttagcompound.setInteger("amount", this.essentiaAmount);
@@ -87,7 +87,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    public void writeToNBT(NBTTagCompound nbttagcompound) {
       super.writeToNBT(nbttagcompound);
       if (this.suctionType != null) {
-         nbttagcompound.setString("stype", this.suctionType.getTag());
+         nbttagcompound.setString("stype", this.suctionType.getAspectKey());
       }
 
       nbttagcompound.setInteger("samount", this.suction);

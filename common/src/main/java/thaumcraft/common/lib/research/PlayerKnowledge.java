@@ -1,6 +1,5 @@
 package thaumcraft.common.lib.research;
 
-import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -12,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerKnowledge {
-   //TODO:Research string -> ResourceLocation
    public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
    public final Map<String, List<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
    public final Map<String, AspectList<Aspect>> aspectsDiscovered = new ConcurrentHashMap<>();
@@ -92,6 +90,9 @@ public class PlayerKnowledge {
       this.aspectsDiscovered.put(player, known);
    }
 
+   /**
+    * @return true if succeed added aspect,false if already exists
+    */
    public boolean addDiscoveredAspect(String player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
       if (!known.getAspects().containsKey(aspect)) {

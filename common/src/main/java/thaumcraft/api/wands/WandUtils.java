@@ -11,7 +11,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.expands.wandconsumption.ConsumptionModifierCalculator;
+import thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator;
 
 import java.text.DecimalFormat;
 import java.util.List;

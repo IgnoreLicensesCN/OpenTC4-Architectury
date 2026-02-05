@@ -16,11 +16,8 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.research.ResearchManager;
-import com.linearity.opentc4.utils.StatCollector;
 
-import java.util.List;
 import java.util.Objects;
 
 import static tc4tweak.PacketCheck.isSecondaryResearch;
@@ -103,7 +100,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
                 Thaumcraft.playerKnowledge.addAspectPool(username, a, (short) (-research.tags.getAmount(a)));
                 ResearchManager.scheduleSave(target.getName().getString());
                 new PacketAspectPoolS2C(
-                        a.getTag(),
+                        a.getAspectKey(),
                         (short) (-research.tags.getAmount(a)),
                         Thaumcraft.playerKnowledge.getAspectPoolFor(username, a))
                         .sendTo(serverPlayer);

@@ -104,8 +104,8 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
     public Direction orientation;
     public Direction baseOrientation;
     FakeThaumcraftPlayer fakePlayer;
-    private AspectList repairCost;
-    private AspectList currentRepairVis;
+    private AspectList<Aspect>repairCost;
+    private AspectList<Aspect>currentRepairVis;
     public int fortune;
     public int speed;
     public int area;
@@ -236,7 +236,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
             }
 
             if (is.getItem() instanceof IRepairable) {
-                AspectList cost = ThaumcraftCraftingManager.getObjectTags(is);
+                AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
                 if (cost == null || cost.size() == 0) {
                     return;
                 }

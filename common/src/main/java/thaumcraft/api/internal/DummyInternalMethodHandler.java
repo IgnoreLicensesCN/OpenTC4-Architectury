@@ -27,7 +27,7 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	}
 	
 	@Override
-	public AspectList getDiscoveredAspects(String username) {
+	public AspectList<Aspect>getDiscoveredAspects(String username) {
 		return null;
 	}
 
@@ -37,34 +37,34 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public AspectList getObjectAspects(ItemStack is) {
+	public AspectList<Aspect>getObjectAspects(ItemStack is) {
 		return null;
 	}
 
 	@Override
-	public AspectList getBonusObjectTags(ItemStack is, AspectList ot) {
+	public AspectList<Aspect>getBonusObjectTags(ItemStack is, AspectList<Aspect>ot) {
 		return null;
 	}
 
 	@Override
-	public AspectList generateTags(Item item, int meta) {
+	public AspectList<Aspect>generateTags(Item item, int meta) {
 		return null;
 	}
 
 	@Override
 	public boolean consumeVisFromWand(ItemStack wand, Player player,
-			AspectList cost, boolean doit, boolean crafting) {
+			AspectList<Aspect>cost, boolean doit, boolean crafting) {
 		return false;
 	}
 
 	@Override
 	public boolean consumeVisFromWandCrafting(ItemStack wand,
-			Player player, AspectList cost, boolean doit) {
+			Player player, AspectList<Aspect>cost, boolean doit) {
 		return false;
 	}
 
 	@Override
-	public boolean consumeVisFromInventory(Player player, AspectList cost) {
+	public boolean consumeVisFromInventory(Player player, AspectList<Aspect>cost) {
 		return false;
 	}
 

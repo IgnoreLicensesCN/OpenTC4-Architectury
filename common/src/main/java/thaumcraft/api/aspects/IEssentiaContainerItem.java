@@ -12,16 +12,16 @@ import net.minecraft.world.item.ItemStack;
  *
  */
 public interface IEssentiaContainerItem {
-	AspectList getAspects(ItemStack itemstack);
-	void setAspects(ItemStack itemstack, AspectList aspects);
+	AspectList<Aspect> getAspects(ItemStack itemstack);
+	void setAspects(ItemStack itemstack, AspectList<Aspect> aspects);
 }
 
 //Example implementation
 /*  
 	@Override
-	public AspectList getAspects(ItemStack itemstack) {
+	public AspectList<Aspect>getAspects(ItemStack itemstack) {
 		if (itemstack.hasTagCompound()) {
-			AspectList aspects = new AspectList();
+			AspectList<Aspect>aspects = new AspectList();
 			aspects.load(itemstack.getTagCompound());
 			return aspects.size()>0?aspects:null;
 		}
@@ -29,7 +29,7 @@ public interface IEssentiaContainerItem {
 	}
 	
 	@Override
-	public void setAspects(ItemStack itemstack, AspectList aspects) {
+	public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
 		if (!itemstack.hasTagCompound()) itemstack.setTagCompound(new CompoundTag());
 		aspects.saveAdditional(itemstack.getTagCompound());
 	}

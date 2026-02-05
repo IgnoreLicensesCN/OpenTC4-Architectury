@@ -19,16 +19,15 @@ import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
+import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 import static thaumcraft.api.ThaumcraftApi.getIArcaneRecipes;
 
-public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
+public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchBlockEntity> {
 
-
-    protected final @NotNull ArcaneWorkbenchBlockEntity workbench;
     protected final CraftingContainer craftingContainer;
     protected final ArcaneWorkbenchResultContainer resultContainer = new ArcaneWorkbenchResultContainer();
     protected final Player player;
@@ -39,13 +38,13 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
             ArcaneWorkbenchBlockEntity workbench){
         this(ThaumcraftGUI.ARCANE_WORKBENCH,containerID,inventory,workbench);
     }
+
     public ArcaneWorkbenchMenu(
             MenuType<ArcaneWorkbenchMenu> menuType,
             int containerID,
             Inventory inventory,
             @NotNull ArcaneWorkbenchBlockEntity workbench) {
-        super(menuType, containerID);
-        this.workbench = workbench;
+        super(menuType, containerID,workbench,ArcaneWorkbenchBlockEntity.INPUT_AND_WAND_SLOTS.length);
         this.player = inventory.player;
 
         this.craftingContainer = new CraftingContainer(){
@@ -128,27 +127,25 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
                         124, 25)//TODO:Offset
         );
 
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                this.addSlot(new Slot(this.craftingContainer,k+j * 3, 30 + k * 18, 17 + j * 18));
+            }
+        }
+
         this.addSlot(new ArcaneWorkbenchOutputSlot(inventory.player,
-                this.workbench,
+                this.blockEntity,
                 this.craftingContainer,
                 this.resultContainer,
                 ArcaneWorkbenchBlockEntity.WAND_SLOT + 1, 124, 35)
         );
 
-        for (int j = 0; j < 3; j++) {
-            for (int k = 0; k < 3; k++) {
-                this.addSlot(new Slot(this.craftingContainer, k + j * 3, 30 + k * 18, 17 + j * 18));
-            }
-        }
-
         addPlayerInventorySlots(inventory);
     }
 
-
-
     @Override
     public void slotsChanged(Container container) {
-        slotChangedCraftingGrid(this, this.workbench.getLevel(),
+        slotChangedCraftingGrid(this, this.blockEntity.getLevel(),
                 this.player, this.craftingContainer, this.resultContainer);
     }
 
@@ -165,7 +162,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             ItemStack itemStack = ItemStack.EMPTY;
             var aspects = CentiVisList.of();
-            var workbench = arcaneWorkbenchMenu.workbench;
+            var workbench = arcaneWorkbenchMenu.blockEntity;
             for (var arcaneRecipe: getIArcaneRecipes()) {
                 if (arcaneRecipe.matches(workbench,level,serverPlayer)){
                     itemStack = arcaneRecipe.getCraftingResult(workbench);
@@ -204,61 +201,42 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int i) {
-        ItemStack itemStack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(i);
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack ret = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+
         if (slot.hasItem()) {
-            ItemStack itemStack2 = slot.getItem();
-            itemStack = itemStack2.copy();
-            if (i == 0) {
-                itemStack2.getItem().onCraftedBy(itemStack2, this.workbench.getLevel(), player);
-                if (!this.moveItemStackTo(itemStack2, 10, 46, true)) {
+            ItemStack stack = slot.getItem();
+            ret = stack.copy();
+
+            int containerSlotCount = ArcaneWorkbenchBlockEntity.INPUT_AND_WAND_SLOTS.length/* 你的容器槽位数 */;
+
+            if (index < containerSlotCount) {
+                // 容器 → 玩家背包
+                if (!this.moveItemStackTo(stack,
+                        containerSlotCount,
+                        this.slots.size(),
+                        true)) {
                     return ItemStack.EMPTY;
                 }
-
-                slot.onQuickCraft(itemStack2, itemStack);
-            } else if (i >= 10 && i < 46) {
-                if (!this.moveItemStackTo(itemStack2, 1, 10, false)) {
-                    if (i < 37) {
-                        if (!this.moveItemStackTo(itemStack2, 37, 46, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (!this.moveItemStackTo(itemStack2, 10, 37, false)) {
-                        return ItemStack.EMPTY;
-                    }
+            } else {
+                // 玩家背包 → 容器
+                if (!this.moveItemStackTo(stack,
+                        0,
+                        containerSlotCount,
+                        false)) {
+                    return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemStack2, 10, 46, false)) {
-                return ItemStack.EMPTY;
             }
 
-            if (itemStack2.isEmpty()) {
-                slot.setByPlayer(ItemStack.EMPTY);
+            if (stack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
-
-            if (itemStack2.getCount() == itemStack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, itemStack2);
-            if (i == 0) {
-                player.drop(itemStack2, false);
-            }
         }
 
-        return itemStack;
-    }
-
-
-    @Override
-    public boolean stillValid(Player player) {
-        var blockPos = workbench.getBlockPos();
-        if (player.distanceToSqr(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5) <= 64.0){
-            return true;
-        }
-        var level = workbench.getLevel();
-        return level != null && level.getBlockEntity(blockPos) == workbench;
+        return ret;
     }
 
     @Override

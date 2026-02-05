@@ -22,7 +22,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
-import thaumcraft.api.expands.aspects.item.ItemAspectBonusTagsCalculator;
+import thaumcraft.api.expands.listeners.aspects.item.ItemAspectBonusTagsCalculator;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;

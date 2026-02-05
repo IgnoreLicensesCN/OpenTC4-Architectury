@@ -88,7 +88,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
    }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      AspectList aspects = this.getAspects(stack);
+      AspectList<Aspect>aspects = this.getAspects(stack);
       addAspectDescriptionToList(aspects,player,list);
 
       super.addInformation(stack, player, list, par4);
@@ -156,7 +156,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
                return false;
             }
 
-            Aspect asp = Aspect.getAspect(tile.aspect.getTag());
+            Aspect asp = Aspect.getAspect(tile.aspect.getAspectKey());
             if (tile.takeFromContainer(asp, 8)) {
                --itemstack.stackSize;
                ItemStack phial = new ItemStack(this, 1, 1);
@@ -172,7 +172,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
          }
       }
 
-      AspectList al = this.getAspects(itemstack);
+      AspectList<Aspect>al = this.getAspects(itemstack);
       if (al != null && al.size() == 1) {
          Aspect aspect = al.getAspects()[0];
          if (itemstack.getItemDamage() != 0 && bi == ConfigBlocks.blockJar && (md == 0 || md == 3)) {
@@ -202,9 +202,9 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
       return false;
    }
 
-   public AspectList getAspects(ItemStack itemstack) {
+   public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {
@@ -212,7 +212,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public void setAspects(ItemStack itemstack, AspectList aspects) {
+   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
       if (!itemstack.hasTagCompound()) {
          itemstack.setTagCompound(new NBTTagCompound());
       }

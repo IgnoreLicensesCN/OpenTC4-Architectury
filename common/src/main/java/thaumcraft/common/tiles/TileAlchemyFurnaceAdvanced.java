@@ -16,7 +16,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
-   public AspectList aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList();
    public int vis;
    public int maxVis = 500;
    int bellows = -1;
@@ -116,7 +116,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
 
    public boolean process(ItemStack stack) {
       if (this.processed == 0 && this.canSmelt(stack)) {
-         AspectList al = ThaumcraftCraftingManager.getObjectTags(stack);
+         AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(stack);
          al = ThaumcraftCraftingManager.getBonusTags(stack, al);
          int aa = al.visSize();
          if (aa * 2 <= this.heat && aa <= this.power1 && aa <= this.power2) {
@@ -141,7 +141,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
       if (stack == null) {
          return false;
       } else {
-         AspectList al = ThaumcraftCraftingManager.getObjectTags(stack);
+         AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(stack);
          al = ThaumcraftCraftingManager.getBonusTags(stack, al);
          if (al != null && al.size() != 0) {
             int vs = al.visSize();

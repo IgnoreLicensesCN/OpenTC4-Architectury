@@ -17,7 +17,7 @@ public interface IWandFocus {
 
    WandFocusAnimation getAnimation();
 
-   AspectList getVisCost();
+   AspectList<Aspect>getVisCost();
 
    boolean isVisCostPerTick();
 

@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands.foci;
 
 @Deprecated(forRemoval = true)
 public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
-//   private static final AspectList cost = (new AspectList()).add(Aspect.EARTH, 15);
+//   private static final AspectList<Aspect>cost = (new AspectList()).add(Aspect.EARTH, 15);
 //   static HashMap soundDelay;
 //   static HashMap beam;
 //   static HashMap breakcount;
@@ -38,7 +38,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      return 409606;
 //   }
 //
-//   private static final AspectList withSilkTouchOrDowsing = (new AspectList())
+//   private static final AspectList<Aspect>withSilkTouchOrDowsing = (new AspectList())
 //           .add(Aspect.AIR, 1)
 //           .add(Aspect.FIRE, 1)
 //           .add(Aspect.EARTH, 1)
@@ -46,7 +46,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //           .add(Aspect.ORDER, 1)
 //           .add(Aspect.ENTROPY, 1)
 //           .add(cost);
-//   public AspectList getVisCost(ItemStack itemstack) {
+//   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
 //      if (!(itemstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
 //         return cost;
 //      }

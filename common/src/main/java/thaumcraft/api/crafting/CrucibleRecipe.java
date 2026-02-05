@@ -30,7 +30,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		this.catalyst = cat;
 		StringBuilder hc = new StringBuilder(researchKey /*+result.toString()*/);
 		for (var asp:tags.getAspectTypes()) {
-			hc.append(asp.getTag()).append(tags.getAmount(asp));
+			hc.append(asp.getAspectKey()).append(tags.getAmount(asp));
 		}
 		
 		hash = hc.toString().hashCode();

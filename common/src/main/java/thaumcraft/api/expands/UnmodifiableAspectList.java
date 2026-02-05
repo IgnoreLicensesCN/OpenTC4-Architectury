@@ -68,7 +68,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         throw new RuntimeException("Unmodifiable!");
     }
 
-    public void putAllAspects(AspectList aspects) {
+    public void putAllAspects(AspectList<Aspect> aspects) {
         throw new RuntimeException("Unmodifiable!");
     }
 

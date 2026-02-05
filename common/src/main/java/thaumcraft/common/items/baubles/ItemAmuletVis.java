@@ -72,7 +72,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       if (Platform.getEnvironment() != Env.CLIENT && player.ticksExisted % 5 == 0) {
          if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem)player.getHeldItem().getItem();
-            AspectList al = wand.getAspectsWithRoom(player.getHeldItem());
+            AspectList<Aspect>al = wand.getAspectsWithRoom(player.getHeldItem());
 
             for(Aspect aspect : al.getAspects()) {
                if (aspect != null && this.getVis(itemstack, aspect) > 0) {
@@ -86,7 +86,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
          if (TileVisRelay.nearbyPlayers.containsKey(player.getEntityId())) {
             if (((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get() != null && ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < (double)26.0F) {
-               AspectList al = this.getAspectsWithRoom(itemstack);
+               AspectList<Aspect>al = this.getAspectsWithRoom(itemstack);
 
                for(Aspect aspect : al.getAspects()) {
                   if (aspect != null) {
@@ -119,8 +119,8 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
       if (stack.hasTagCompound()) {
          for(Aspect aspect : Aspect.getPrimalAspects()) {
-            if (stack.stackTagCompound.hasKey(aspect.getTag())) {
-               String amount = this.myFormatter.format((float)stack.stackTagCompound.getInteger(aspect.getTag()) / 100.0F);
+            if (stack.stackTagCompound.hasKey(aspect.getAspectKey())) {
+               String amount = this.myFormatter.format((float)stack.stackTagCompound.getInteger(aspect.getAspectKey()) / 100.0F);
                list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount);
             }
          }
@@ -134,20 +134,20 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
    public int getVis(ItemStack is, Aspect aspect) {
       int out = 0;
-      if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getTag())) {
-         out = is.stackTagCompound.getInteger(aspect.getTag());
+      if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
+         out = is.stackTagCompound.getInteger(aspect.getAspectKey());
       }
 
       return out;
    }
 
    public void storeVis(ItemStack is, Aspect aspect, int amount) {
-      is.setTagInfo(aspect.getTag(), new NBTTagInt(amount));
+      is.setTagInfo(aspect.getAspectKey(), new NBTTagInt(amount));
    }
 
-   public AspectList getAspectsWithRoom(ItemStack wandstack) {
-      AspectList out = new AspectList();
-      AspectList cur = this.getAllVis(wandstack);
+   public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
+      AspectList<Aspect>out = new AspectList();
+      AspectList<Aspect>cur = this.getAllVis(wandstack);
 
       for(Aspect aspect : cur.getAspects()) {
          if (cur.getAmount(aspect) < this.getMaxVis(wandstack)) {
@@ -158,12 +158,12 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       return out;
    }
 
-   public AspectList getAllVis(ItemStack is) {
-      AspectList out = new AspectList();
+   public AspectList<Aspect>getAllVis(ItemStack is) {
+      AspectList<Aspect>out = new AspectList();
 
       for(Aspect aspect : Aspect.getPrimalAspects()) {
-         if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getTag())) {
-            out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getTag()));
+         if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
+            out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getAspectKey()));
          } else {
             out.mergeWithHighest(aspect, 0);
          }
@@ -172,7 +172,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       return out;
    }
 
-   public boolean consumeAllVis(ItemStack is, Player player, AspectList aspects, boolean doit, boolean crafting) {
+   public boolean consumeAllVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
       if (aspects != null && aspects.size() != 0) {
          for(Aspect aspect : aspects.getAspects()) {
             if (this.getVis(is, aspect) < aspects.getAmount(aspect)) {

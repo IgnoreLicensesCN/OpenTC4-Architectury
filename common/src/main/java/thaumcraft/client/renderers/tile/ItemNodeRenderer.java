@@ -21,7 +21,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 public class ItemNodeRenderer implements IItemRenderer {
-   AspectList aspects;
+   AspectList<Aspect>aspects;
 
    public ItemNodeRenderer() {
       this.aspects = (new AspectList()).addAll(Aspects.AIR, 40).addAll(Aspects.FIRE, 40).addAll(Aspects.EARTH, 40).addAll(

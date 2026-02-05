@@ -111,7 +111,7 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
 
     @Override
     public void appendHoverText(ItemStack focusStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        AspectList al = this.getVisCost(focusStack,null);
+        AspectList<Aspect>al = this.getVisCost(focusStack,null);
         if (al!=null && al.size()>0) {
             list.add(Component.literal(StatCollector.translateToLocal(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1")));
             for (Aspect aspect:al.getAspectsSorted()) {

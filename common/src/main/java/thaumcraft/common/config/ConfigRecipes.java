@@ -87,7 +87,7 @@ public class ConfigRecipes {
       Aspect[] aspect = new Aspect[]{Aspects.AIR, Aspects.FIRE, Aspects.WATER, Aspects.EARTH, Aspects.ORDER, Aspects.ENTROPY};
 
       for(int a = 0; a < 6; ++a) {
-         AspectList al = new AspectList();
+         AspectList<Aspect>al = new AspectList();
 
          for(int b = 0; b < 6; ++b) {
             if (b != a) {

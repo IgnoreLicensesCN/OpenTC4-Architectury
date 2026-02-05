@@ -27,9 +27,9 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.ArrayList;
 
 public class ItemFocusShock extends ItemFocusBasic {
-   private static final AspectList costBase;
-   private static final AspectList costChain;
-   private static final AspectList costGround;
+   private static final AspectList<Aspect>costBase;
+   private static final AspectList<Aspect>costChain;
+   private static final AspectList<Aspect>costGround;
    public static FocusUpgradeType chainlightning;
    public static FocusUpgradeType earthshock;
 
@@ -50,7 +50,7 @@ public class ItemFocusShock extends ItemFocusBasic {
       return 10466239;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return this.isUpgradedWith(itemstack, chainlightning) ? costChain : (this.isUpgradedWith(itemstack, earthshock) ? costGround : costBase);
    }
 

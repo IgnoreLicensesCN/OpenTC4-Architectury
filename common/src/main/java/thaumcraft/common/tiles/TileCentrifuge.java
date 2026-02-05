@@ -42,18 +42,18 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.aspectIn != null) {
-         nbttagcompound.setString("aspectIn", this.aspectIn.getTag());
+         nbttagcompound.setString("aspectIn", this.aspectIn.getAspectKey());
       }
 
       if (this.aspectOut != null) {
-         nbttagcompound.setString("aspectOut", this.aspectOut.getTag());
+         nbttagcompound.setString("aspectOut", this.aspectOut.getAspectKey());
       }
 
       nbttagcompound.setInteger("facing", this.facing.ordinal());
    }
 
-   public AspectList getAspects() {
-      AspectList al = new AspectList();
+   public AspectList<Aspect>getAspects() {
+      AspectList<Aspect>al = new AspectList();
       if (this.aspectOut != null) {
          al.addAll(this.aspectOut, 1);
       }
@@ -83,7 +83,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -91,7 +91,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       return amt == 1 && tag == this.aspectOut;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       for(Aspect tt : ot.getAspects()) {
          if (tt == this.aspectOut) {
             return true;
@@ -229,7 +229,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
 
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    @SideOnly(Side.CLIENT)

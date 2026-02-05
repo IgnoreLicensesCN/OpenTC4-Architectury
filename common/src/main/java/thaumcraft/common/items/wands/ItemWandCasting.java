@@ -145,8 +145,8 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //
 //    }
 
-//    public AspectList getAllVis(ItemStack is) {
-//        AspectList out = new AspectList();
+//    public AspectList<Aspect>getAllVis(ItemStack is) {
+//        AspectList<Aspect>out = new AspectList();
 //
 //        for (Aspect aspect : Aspect.getPrimalAspects()) {
 //            if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getTag())) {
@@ -159,9 +159,9 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        return out;
 //    }
 
-//    public AspectList getAspectsWithRoom(ItemStack wandstack) {
-//        AspectList out = new AspectList();
-//        AspectList cur = this.getAllVis(wandstack);
+//    public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
+//        AspectList<Aspect>out = new AspectList();
+//        AspectList<Aspect>cur = this.getAllVis(wandstack);
 //
 //        for (Aspect aspect : cur.getAspects()) {
 //            if (cur.getAmount(aspect) < this.getMaxVis(wandstack)) {
@@ -172,7 +172,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        return out;
 //    }
 
-//    public void storeAllVis(ItemStack is, AspectList in) {
+//    public void storeAllVis(ItemStack is, AspectList<Aspect>in) {
 //        for (Aspect aspect : in.getAspects()) {
 //            is.setTagInfo(aspect.getTag(), new NBTTagInt(in.getAmount(aspect)));
 //        }
@@ -248,9 +248,9 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        }
 //    }
 
-//    public boolean consumeAllCentiVisCrafting(ItemStack is, Player player, AspectList aspects, boolean doit) {
+//    public boolean consumeAllCentiVisCrafting(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit) {
 //        if (aspects != null && aspects.size() != 0) {
-//            AspectList nl = new AspectList();
+//            AspectList<Aspect>nl = new AspectList();
 //
 //            for (Aspect aspect : aspects.getAspects()) {
 //                int cost = aspects.getAmount(aspect) * 100;
@@ -263,9 +263,9 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        }
 //    }
 //
-//    public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList aspects, boolean doit, boolean crafting) {
+//    public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
 //        if (aspects != null && aspects.size() != 0) {
-//            AspectList nl = new AspectList();
+//            AspectList<Aspect>nl = new AspectList();
 //
 //            for (Aspect aspect : aspects.getAspects()) {
 //                int cost = aspects.getAmount(aspect);

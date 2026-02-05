@@ -26,7 +26,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
 //    public ItemStack output = null;
     public final RecipeItemMatcher[] input;
     protected final Function<ItemStack[],ItemStack> resultGenerator;
-//    public final AspectList aspects;
+//    public final AspectList<Aspect>aspects;
     public final Function<ItemStack[],CentiVisList> aspectsGenerator;
     public final String research;
     public final int width;
@@ -35,7 +35,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     private boolean mirrored = true;
 
     //since the original is too messy,i should do some cleaning for this.
-    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
+    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList<Aspect>aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
         this(research,resultGenerator,arr -> CentiVisList.of(aspects),input,width,height,outMatcher);
     }
     public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, CentiVisList aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {

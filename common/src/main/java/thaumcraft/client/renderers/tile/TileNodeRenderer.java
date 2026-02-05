@@ -34,7 +34,7 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
               Math.min(scale, ConfigurationHandler.INSTANCE.getNodeVisualSizeLimit()),
               alpha, frames, strip, frame, partialTicks, color);
    }
-   public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
+   public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList<Aspect>aspects, NodeType type, NodeModifier mod) {
       long nt = System.nanoTime();
       UtilsFX.bindTexture(nodetex);
       int frames = 32;

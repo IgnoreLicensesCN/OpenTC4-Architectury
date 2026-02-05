@@ -29,7 +29,7 @@ public class TileMagicWorkbenchCharger extends TileVisRelay {
             TileMagicWorkbench tm = (TileMagicWorkbench)te;
             ItemStack wand = tm.getStackInSlot(10);
             if (wand != null && wand.getItem() instanceof WandCastingItem) {
-               AspectList al = ((WandCastingItem)wand.getItem()).getAspectsWithRoom(wand);
+               AspectList<Aspect>al = ((WandCastingItem)wand.getItem()).getAspectsWithRoom(wand);
                if (al.size() > 0) {
                   for(Aspect aspect : al.getAspects()) {
                      int drain = Math.min(5, ((WandCastingItem)wand.getItem()).getMaxVis(tm.getStackInSlot(10)) - ((WandCastingItem)wand.getItem()).getVis(tm.getStackInSlot(10), aspect));

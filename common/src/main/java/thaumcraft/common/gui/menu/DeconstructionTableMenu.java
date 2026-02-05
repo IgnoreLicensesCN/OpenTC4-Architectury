@@ -11,18 +11,10 @@ import thaumcraft.common.gui.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.gui.slot.DeconstructionTableResultSlot;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
-public class DeconstructionTableMenu extends AbstractThaumcraftMenu {
+public class DeconstructionTableMenu extends AbstractThaumcraftMenu<DeconstructionTableBlockEntity> {
     protected final Inventory inventory;
     protected final DeconstructionTableBlockEntity deconstructionTable;
-//    public DeconstructionTableMenu(
-//            int containerID,
-//            Inventory inventory){
-//        this(containerID,inventory,
-//                null);
-//
-//TODO
-//
-//   }
+
     public DeconstructionTableMenu(
             int containerID,
             Inventory inventory,
@@ -34,7 +26,7 @@ public class DeconstructionTableMenu extends AbstractThaumcraftMenu {
             int containerID,
             Inventory inventory,
             DeconstructionTableBlockEntity deconstructionTable) {
-        super(menuType, containerID);
+        super(menuType, containerID,deconstructionTable,DeconstructionTableBlockEntity.SLOTS.length);
         this.inventory = inventory;
 //        this.containerLevelAccess = containerLevelAccess;
         this.deconstructionTable = deconstructionTable;
@@ -45,46 +37,5 @@ public class DeconstructionTableMenu extends AbstractThaumcraftMenu {
                 new DeconstructionTableResultSlot(deconstructionTable,1,124,25)//TODO:Offset
         );
         addPlayerInventorySlots(inventory);
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int index) {
-        Slot slot = this.slots.get(index);
-        if (!slot.hasItem()) {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack stack = slot.getItem();
-        ItemStack copy = stack.copy();
-
-        if (index == 0) {
-            // 从自定义槽 → 玩家背包
-            if (!this.moveItemStackTo(stack, 1, this.slots.size(), true)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
-            // 从玩家背包 → 自定义槽
-            if (!this.moveItemStackTo(stack, 0, 1, false)) {
-                return ItemStack.EMPTY;
-            }
-        }
-
-        if (stack.isEmpty()) {
-            slot.setByPlayer(ItemStack.EMPTY);
-        } else {
-            slot.setChanged();
-        }
-
-        return copy;
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        var blockPos = deconstructionTable.getBlockPos();
-        if (player.distanceToSqr(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5) <= 64.0){
-            return true;
-        }
-        var level = deconstructionTable.getLevel();
-        return level != null && level.getBlockEntity(blockPos) == deconstructionTable;
     }
 }

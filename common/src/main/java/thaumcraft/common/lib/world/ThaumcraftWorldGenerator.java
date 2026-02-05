@@ -28,7 +28,7 @@ import net.minecraftforge.common.BiomeManager.BiomeType;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.expands.worldgen.node.NodeGenerationManager;
+import thaumcraft.api.expands.listeners.worldgen.node.NodeGenerationManager;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.Thaumcraft;
@@ -280,7 +280,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
         int value = random.nextInt(baura / 2) + baura / 2;
         Aspect ra = BiomeHandler.getRandomBiomeTag(bg.biomeID, random);
-        AspectList al = new AspectList();
+        AspectList<Aspect>al = new AspectList();
         if (ra != null) {
             al.addAll(ra, 2);
         } else {
@@ -398,7 +398,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         createNodeAt(world, x, y, z, type, modifier, al);
     }
 
-    public static void createNodeAt(Level world, int x, int y, int z, NodeType nt, NodeModifier nm, AspectList al) {
+    public static void createNodeAt(Level world, int x, int y, int z, NodeType nt, NodeModifier nm, AspectList<Aspect>al) {
         if (world.isAirBlock(x, y, z)) {
             world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 0);
         }

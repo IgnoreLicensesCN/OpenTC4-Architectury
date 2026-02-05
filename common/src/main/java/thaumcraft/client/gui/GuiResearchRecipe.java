@@ -92,7 +92,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
         this.pages = p2.toArray(new ResearchPage[0]);
         if (research.key.equals("ASPECTS")) {
-            AspectList aspectsKnownSorted = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+            AspectList<Aspect>aspectsKnownSorted = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
             List<String> list = Thaumcraft.proxy.getScannedObjects().get(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
             if (list != null && !list.isEmpty()) {
                 for (String s : list) {
@@ -100,7 +100,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         String s2 = s.substring(1);
                         ItemStack is = getFromCache(Integer.parseInt(s2));
                         if (is != null) {
-                            AspectList tags = ThaumcraftCraftingManager.getObjectTags(is);
+                            AspectList<Aspect>tags = ThaumcraftCraftingManager.getObjectTags(is);
                             tags = ThaumcraftCraftingManager.getBonusTags(is, tags);
                             if (tags != null && tags.size() > 0) {
                                 for (Aspect a : tags.getAspects()) {
@@ -123,7 +123,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
             ArrayList<ResearchPage> tpl = new ArrayList<>(Arrays.asList(research.getPages()));
 
-            AspectList tal = new AspectList();
+            AspectList<Aspect>tal = new AspectList();
             if (aspectsKnownSorted != null) {
                 int count = 0;
 
@@ -308,7 +308,7 @@ public class GuiResearchRecipe extends GuiScreen {
     private void drawCompoundCraftingPage(int side, int x, int y, int mx, int my, ResearchPage page) {
         List r = (List) page.recipe;
         if (r != null) {
-            AspectList aspects = (AspectList) r.get(0);
+            AspectList<Aspect>aspects = (AspectList) r.get(0);
             int dx = (Integer) r.get(1);
             int dy = (Integer) r.get(2);
             int dz = (Integer) r.get(3);
@@ -430,7 +430,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
     }
 
-    private void drawAspectPage(int side, int x, int y, int mx, int my, AspectList aspects) {
+    private void drawAspectPage(int side, int x, int y, int mx, int my, AspectList<Aspect>aspects) {
         if (aspects != null && aspects.size() > 0) {
             GL11.glPushMatrix();
             int start = side * 152;
@@ -563,7 +563,7 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glPopMatrix();
             int mposx = mx;
             int mposy = my;
-            AspectList tags = recipe.getAspects();
+            AspectList<Aspect>tags = recipe.getAspects();
             if (tags != null && tags.size() > 0) {
                 int count = 0;
 

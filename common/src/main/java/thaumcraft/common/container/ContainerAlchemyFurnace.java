@@ -114,7 +114,7 @@ public class ContainerAlchemyFurnace extends Container {
          ItemStack itemstack1 = slot.getStack();
          itemstack = itemstack1.copy();
          if (par2 != 1 && par2 != 0) {
-            AspectList al = ThaumcraftCraftingManager.getObjectTags(itemstack1);
+            AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(itemstack1);
             al = ThaumcraftCraftingManager.getBonusTags(itemstack1, al);
             if (TileAlchemyFurnace.isItemFuel(itemstack1)) {
                if (!this.mergeItemStack(itemstack1, 1, 2, false) && !this.mergeItemStack(itemstack1, 0, 1, false)) {

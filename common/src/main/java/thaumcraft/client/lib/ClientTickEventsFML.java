@@ -394,7 +394,7 @@ public class ClientTickEventsFML {
       ItemFocusBasic focus = wand.getFocus(wandstack);
       ItemStack focusStack = wand.getFocusItem(wandstack);
       int count = 0;
-      AspectList aspects = wand.getAllVis(wandstack);
+      AspectList<Aspect>aspects = wand.getAllVis(wandstack);
 
       for(Aspect aspect : aspects.getAspects()) {
          int amt = aspects.getAmount(aspect);
@@ -555,7 +555,7 @@ public class ClientTickEventsFML {
       if (armor.hasTagCompound() && armor.stackTagCompound.hasKey("jar")) {
          ItemStack jar = ItemStack.loadItemStackFromNBT(armor.stackTagCompound.getCompoundTag("jar"));
          if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
-            AspectList aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
+            AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
             if (aspects != null && aspects.size() > 0) {
                fuel = (short)aspects.getAmount(Aspects.ENERGY);
             }

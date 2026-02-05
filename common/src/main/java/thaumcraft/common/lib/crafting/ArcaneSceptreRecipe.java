@@ -97,8 +97,8 @@ public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 //      }
 //   }
 //
-//   public AspectList getAspects(Container inv) {
-//      AspectList al = new AspectList();
+//   public AspectList<Aspect>getAspects(Container inv) {
+//      AspectList<Aspect>al = new AspectList();
 //      int cc = -1;
 //      int cr = -1;
 //      ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 0);
@@ -188,7 +188,7 @@ public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 //      return 9;
 //   }
 //
-//   public AspectList getAspects() {
+//   public AspectList<Aspect>getAspects() {
 //      return null;
 //   }
 //

@@ -37,7 +37,7 @@ public class Hover {
         if (armor.hasTagCompound() && armor.stackTagCompound.hasKey("jar")) {
             ItemStack jar = ItemStack.loadItemStackFromNBT(armor.stackTagCompound.getCompoundTag("jar"));
             if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
-                AspectList aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
+                AspectList<Aspect>aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
                 if (aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0) {
                     fuel = (short) aspects.getAmount(Aspects.ENERGY);
                 }
@@ -151,7 +151,7 @@ public class Hover {
             ItemStack jar = ItemStack.loadItemStackFromNBT(is.stackTagCompound.getCompoundTag("jar"));
             short fuel = 0;
             if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
-                AspectList aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
+                AspectList<Aspect>aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
                 if (aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0) {
                     fuel = (short) aspects.getAmount(Aspects.ENERGY);
                 }

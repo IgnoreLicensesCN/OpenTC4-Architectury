@@ -71,7 +71,7 @@ public class DeconstructionTableResultSlot extends Slot {
         if (aspect.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        return ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP.get(aspect.tag)
+        return ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP.get(aspect.aspectKey)
                 .getDefaultInstance();
     }
 
@@ -94,7 +94,7 @@ public class DeconstructionTableResultSlot extends Slot {
             deconstructionTable.storingAspect = Aspects.EMPTY;
             Thaumcraft.playerKnowledge.addAspectPool(p.getGameProfile().getName(), aspect, (short)1);
             ResearchManager.scheduleSave(p.getGameProfile().getName());
-            new PacketAspectPoolS2C(aspect.getTag(),
+            new PacketAspectPoolS2C(aspect.getAspectKey(),
                     (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(p.getGameProfile().getName(), aspect)).sendTo(serverPlayer);
             setChanged();
         }

@@ -13,9 +13,9 @@ import thaumcraft.api.visnet.TileVisNode;
 import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
-   private AspectList auraBase;
-   AspectList visBase;
-   AspectList vis;
+   private AspectList<Aspect>auraBase;
+   AspectList<Aspect>visBase;
+   AspectList<Aspect>vis;
    private NodeType nodeType;
    private NodeModifier nodeModifier;
    String id;
@@ -52,7 +52,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
 
    public void setupNode() {
       this.visBase = new AspectList();
-      AspectList temp = ResearchManager.reduceToPrimals(this.getAuraBase(), true);
+      AspectList<Aspect>temp = ResearchManager.reduceToPrimals(this.getAuraBase(), true);
 
       for(Aspect aspect : temp.getAspects()) {
          int amt = temp.getAmount(aspect);
@@ -123,7 +123,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       for(Aspect aspect : this.visBase.getAspects()) {
          if (aspect != null) {
             NBTTagCompound f = new NBTTagCompound();
-            f.setString("key", aspect.getTag());
+            f.setString("key", aspect.getAspectKey());
             f.setInteger("amount", this.visBase.getAmount(aspect));
             tlist.appendTag(f);
          }
@@ -169,15 +169,15 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       return drain;
    }
 
-   public AspectList getAuraBase() {
+   public AspectList<Aspect>getAuraBase() {
       return this.auraBase;
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.visBase;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
       this.auraBase = aspects;
    }
 
@@ -193,7 +193,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       return false;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -201,7 +201,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

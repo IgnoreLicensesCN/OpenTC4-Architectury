@@ -172,7 +172,7 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
       par1NBTTagCompound.setShort("Health", (byte)this.orbHealth);
       par1NBTTagCompound.setShort("Age", (short)this.orbAge);
       par1NBTTagCompound.setShort("Value", (short)this.aspectValue);
-      par1NBTTagCompound.setString("Aspect", this.getAspect().getTag());
+      par1NBTTagCompound.setString("Aspect", this.getAspect().getAspectKey());
    }
 
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -198,9 +198,9 @@ public class EntityAspectOrb extends Entity implements IEntityAdditionalSpawnDat
 
    public void writeSpawnData(ByteBuf data) {
       if (this.getAspect() != null) {
-         data.writeShort(this.getAspect().getTag().length());
+         data.writeShort(this.getAspect().getAspectKey().length());
 
-         for(char c : this.getAspect().getTag().toCharArray()) {
+         for(char c : this.getAspect().getAspectKey().toCharArray()) {
             data.writeChar(c);
          }
       }

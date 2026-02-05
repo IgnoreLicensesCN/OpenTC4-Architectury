@@ -102,7 +102,7 @@ public class ItemThaumometerRenderer /*implements IItemRenderer*/ {
 ////         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
 ////         ScanResult scan = this.doScan(playermp.inventory.getCurrentItem(), playermp);
 ////         if (scan != null) {
-////            AspectList aspects = null;
+////            AspectList<Aspect>aspects = null;
 ////            GL11.glTranslatef(0.0F, 0.0F, -0.01F);
 ////            String text = "?";
 ////            ItemStack stack = null;

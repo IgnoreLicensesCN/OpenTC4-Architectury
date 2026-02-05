@@ -48,7 +48,7 @@ public class GuiArcaneWorkbench extends GuiContainer {
             wand = (WandCastingItem) this.tileEntity.getStackInSlot(10).getItem();
         }
 
-        AspectList cost = null;
+        AspectList<Aspect>cost = null;
         if (ThaumcraftCraftingManager.findMatchingArcaneRecipe(this.tileEntity, this.ip.player) != null) {
             cost = ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.tileEntity, this.ip.player);
             int count = 0;

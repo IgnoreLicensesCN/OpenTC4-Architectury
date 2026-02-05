@@ -197,7 +197,7 @@ public class TileDeconstructionTable /*extends TileThaumcraft implements ISidedI
 //   }
 //
 //   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-//      AspectList al = ThaumcraftCraftingManager.getObjectTags(par2ItemStack);
+//      AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(par2ItemStack);
 //      al = ThaumcraftCraftingManager.getBonusTags(par2ItemStack, al);
 //      return al != null && al.size() > 0;
 //   }

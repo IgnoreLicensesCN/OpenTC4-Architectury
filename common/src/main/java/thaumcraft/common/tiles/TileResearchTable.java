@@ -36,7 +36,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 public class TileResearchTable extends TileThaumcraft implements IInventory {
    public ItemStack[] contents = new ItemStack[2];
-   public AspectList bonusAspects = new AspectList();
+   public AspectList<Aspect>bonusAspects = new AspectList();
    int nextRecalc = 0;
    Player researcher = null;
    public ResearchNoteData data = null;
@@ -86,7 +86,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       for(Aspect aspect : this.bonusAspects.getAspects()) {
          if (aspect != null && this.bonusAspects.getAmount(aspect) > 0) {
             NBTTagCompound var4 = new NBTTagCompound();
-            var4.setString("tag", aspect.getTag());
+            var4.setString("tag", aspect.getAspectKey());
             var2.appendTag(var4);
          }
       }
@@ -119,7 +119,6 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
       if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes) {
          this.data = ResearchManager.getData(this.contents[1]);
       }
-
    }
 
    public void placeAspect(int q, int r, Aspect aspect, Player player) {
@@ -144,7 +143,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                } else {
                   Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)-1);
                   ResearchManager.scheduleSave(player);
-                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
+                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
                }
             } else {
                float f = this.level().rand.nextFloat();
@@ -152,7 +151,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                   this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                   Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect, (short)1);
                   ResearchManager.scheduleSave(player);
-                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexEntries.get(hex.toString()).aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect)), (ServerPlayer)player);
+                  PacketHandler.INSTANCE.sendTo(new PacketAspectPool(this.data.hexEntries.get(hex.toString()).aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect)), (ServerPlayer)player);
                }
 
                he = new ResearchManager.HexEntry(null, 0);
@@ -414,7 +413,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
          for(Aspect aspect : rr.tags.getAspects()) {
             Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)(-(rr.tags.getAmount(aspect) + this.data.copies)));
             ResearchManager.scheduleSave(player);
-            PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getTag(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
+            PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
          }
 
          InventoryUtils.consumeInventoryItem(player, Items.paper, 0);

@@ -143,7 +143,7 @@ public class ConfigAspects {
 
       for(Aspect tag : Aspects.ALL_ASPECTS.values()) {
          ThaumcraftApi.registerEntityTag("Thaumcraft.Wisp", (new AspectList()).addAll(tag, 2).addAll(Aspects.MAGIC, 1).addAll(
-                 Aspects.AIR, 1), new ThaumcraftApi.EntityTagsNBT("Type", tag.getTag()));
+                 Aspects.AIR, 1), new ThaumcraftApi.EntityTagsNBT("Type", tag.getAspectKey()));
       }
 
       ThaumcraftApi.registerEntityTag("Thaumcraft.Golem", (new AspectList()).addAll(Aspects.AIR, 2).addAll(Aspects.EARTH, 2).addAll(

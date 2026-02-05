@@ -27,11 +27,11 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    public boolean aboveFurnace = false;
    Direction fd = null;
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspect != null ? (new AspectList()).addAll(this.aspect, this.amount) : new AspectList();
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    @SideOnly(Side.CLIENT)
@@ -53,11 +53,11 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.aspect != null) {
-         nbttagcompound.setString("aspect", this.aspect.getTag());
+         nbttagcompound.setString("aspect", this.aspect.getAspectKey());
       }
 
       if (this.aspectFilter != null) {
-         nbttagcompound.setString("AspectFilter", this.aspectFilter.getTag());
+         nbttagcompound.setString("AspectFilter", this.aspectFilter.getAspectKey());
       }
 
       nbttagcompound.setShort("amount", (short)this.amount);
@@ -102,7 +102,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
       }
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return this.amount > 0 && this.aspect != null && ot.getAmount(this.aspect) > 0;
    }
 
@@ -118,7 +118,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
       return true;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 

@@ -46,10 +46,10 @@ public class WandManager implements IWandTriggerManager {
     static Map<Entity, Long> cooldownClient = new WeakHashMap<>();
 
 
-    public static boolean consumeVisFromInventory(Player player, AspectList cost){
+    public static boolean consumeVisFromInventory(Player player, AspectList<Aspect>cost){
         return consumeVisFromInventory(player, cost, ignore -> true);
     }
-    public static boolean consumeVisFromInventory(Player player, AspectList cost, Function<ItemStack,Boolean> additionalCondition) {
+    public static boolean consumeVisFromInventory(Player player, AspectList<Aspect>cost, Function<ItemStack,Boolean> additionalCondition) {
         BaubleConsumer<ItemAmuletVis> amuletVisBaubleConsumer = (slot, stack, itemAmuletVis)
                 -> {
             if (!additionalCondition.apply(stack)) {return false;}
@@ -288,7 +288,7 @@ public class WandManager implements IWandTriggerManager {
                         if (blueprint[yy][xx][zz] == 3) {
                             TileEntity tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
                             INodeBlockEntity node = (INodeBlockEntity) tile;
-                            AspectList na = node.getAspects().copy();
+                            AspectList<Aspect>na = node.getAspects().copy();
                             int nt = node.getNodeType().ordinal();
                             int nm = -1;
                             if (node.getNodeModifier() != null) {

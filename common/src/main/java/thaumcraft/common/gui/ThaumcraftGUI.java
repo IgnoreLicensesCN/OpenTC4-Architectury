@@ -11,14 +11,17 @@ import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.gui.menu.ArcaneWorkbenchMenu;
 import thaumcraft.common.gui.menu.DeconstructionTableMenu;
+import thaumcraft.common.gui.menu.ResearchTableMenu;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
+import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
 import java.util.function.Supplier;
 
 public class ThaumcraftGUI {
     public static final MenuType<ArcaneWorkbenchMenu> ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
     public static final MenuType<DeconstructionTableMenu> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
+    public static final MenuType<ResearchTableMenu> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static class Registry{
         public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MENU);
 
@@ -29,6 +32,10 @@ public class ThaumcraftGUI {
         public static final RegistrySupplier<MenuType<DeconstructionTableMenu>> SUPPLIER_DECONSTRUCTION_TABLE = MENUS.register(
                 "deconstruction_table",
                 simpleMenuTypeSupplier(DeconstructionTableMenu::new,DeconstructionTableBlockEntity.class)
+        );
+        public static final RegistrySupplier<MenuType<ResearchTableMenu>> SUPPLIER_RESEARCH_TABLE = MENUS.register(
+                "research_Table",
+                simpleMenuTypeSupplier(ResearchTableMenu::new, ResearchTableBlockEntity.class)
         );
     }
 

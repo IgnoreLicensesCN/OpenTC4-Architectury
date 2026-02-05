@@ -86,8 +86,8 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
 //      }
 //   }
 //
-//   public AspectList getAspects(Container inv) {
-//      AspectList al = new AspectList();
+//   public AspectList<Aspect>getAspects(Container inv) {
+//      AspectList<Aspect>al = new AspectList();
 //      int cc = -1;
 //      int cr = -1;
 //      ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 2);
@@ -169,7 +169,7 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
 //      return 9;
 //   }
 //
-//   public AspectList getAspects() {
+//   public AspectList<Aspect>getAspects() {
 //      return null;
 //   }
 //

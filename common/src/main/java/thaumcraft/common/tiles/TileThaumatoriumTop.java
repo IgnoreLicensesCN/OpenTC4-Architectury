@@ -41,11 +41,11 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return this.thaumatorium != null && this.thaumatorium.takeFromContainer(tt, am);
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -111,11 +111,11 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return false;
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.thaumatorium == null ? null : this.thaumatorium.essentia;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
       if (this.thaumatorium != null) {
          this.thaumatorium.setAspects(aspects);
       }

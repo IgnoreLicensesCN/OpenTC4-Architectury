@@ -563,7 +563,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       }
 
       if (this.getCore() == 6 && this.essentia != null && this.essentiaAmount > 0) {
-         nbt.setString("essentia", this.essentia.getTag());
+         nbt.setString("essentia", this.essentia.getAspectKey());
          nbt.setByte("essentiaAmount", (byte)this.essentiaAmount);
       }
 

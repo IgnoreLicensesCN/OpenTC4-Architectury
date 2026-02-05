@@ -16,7 +16,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       super.writeCustomNBT(nbttagcompound);
       if (this.aspectFilter != null) {
-         nbttagcompound.setString("AspectFilter", this.aspectFilter.getTag());
+         nbttagcompound.setString("AspectFilter", this.aspectFilter.getAspectKey());
       }
 
    }
@@ -25,11 +25,11 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
       super.calculateSuction(this.aspectFilter, restrict, dir);
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspectFilter != null ? (new AspectList()).addAll(this.aspectFilter, -1) : null;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public boolean doesContainerAccept(Aspect tag) {
@@ -44,7 +44,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
       return false;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -52,7 +52,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

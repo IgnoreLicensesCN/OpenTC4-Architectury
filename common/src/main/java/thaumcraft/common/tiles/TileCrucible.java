@@ -28,7 +28,7 @@ import java.awt.*;
 
 public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWandable, IAspectContainer {
    public short heat;
-   public AspectList aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList();
    public final int maxTags = 100;
    int bellows = -1;
    private int delay = 0;
@@ -97,7 +97,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
          }
 
          if (this.tagAmount() > 100 && this.counter % 5L == 0L) {
-            AspectList tt = this.takeRandomFromSource();
+            AspectList<Aspect>tt = this.takeRandomFromSource();
             this.spill();
          }
 
@@ -259,7 +259,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             --stacksize;
             this.counter = -250L;
          } else {
-            AspectList ot = ThaumcraftCraftingManager.getObjectTags(item);
+            AspectList<Aspect>ot = ThaumcraftCraftingManager.getObjectTags(item);
             ot = ThaumcraftCraftingManager.getBonusTags(item, ot);
             if (ot == null || ot.size() == 0) {
                entity.motionY = 0.35F;
@@ -327,8 +327,8 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return out;
    }
 
-   public AspectList takeRandomFromSource() {
-      AspectList output = new AspectList();
+   public AspectList<Aspect>takeRandomFromSource() {
+      AspectList<Aspect>output = new AspectList();
       if (this.aspects.size() > 0) {
          Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
          output.addAll(tag, 1);
@@ -444,11 +444,11 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public int addToContainer(Aspect tag, int amount) {
@@ -459,7 +459,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return false;
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -467,7 +467,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

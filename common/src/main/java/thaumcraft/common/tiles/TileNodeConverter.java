@@ -29,7 +29,7 @@ public class TileNodeConverter extends TileThaumcraft {
       if (this.status == 1 && Platform.getEnvironment() != Env.CLIENT && this.count >= 1000) {
          TileEntity tile = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
          if (tile instanceof AbstractNodeBlockEntity) {
-            AspectList base = ((AbstractNodeBlockEntity)tile).getAspectsBase();
+            AspectList<Aspect>base = ((AbstractNodeBlockEntity)tile).getAspectsBase();
             NodeType type = ((AbstractNodeBlockEntity)tile).getNodeType();
             NodeModifier mod = ((AbstractNodeBlockEntity)tile).getNodeModifier();
             this.level().setBlock(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockAiry, 5, 3);
@@ -51,7 +51,7 @@ public class TileNodeConverter extends TileThaumcraft {
       if (this.status == 2 && Platform.getEnvironment() != Env.CLIENT && this.count <= 50) {
          TileEntity tile = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
          if (tile instanceof TileNodeEnergized) {
-            AspectList base = ((TileNodeEnergized)tile).getAuraBase();
+            AspectList<Aspect>base = ((TileNodeEnergized)tile).getAuraBase();
             NodeType type = ((TileNodeEnergized)tile).getNodeType();
             NodeModifier mod = ((TileNodeEnergized)tile).getNodeModifier();
             this.level().setBlock(this.xCoord, this.yCoord - 1, this.zCoord, ConfigBlocks.blockAiry, 0, 3);
@@ -80,7 +80,7 @@ public class TileNodeConverter extends TileThaumcraft {
                TileEntity tilenew = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
                if (tilenew instanceof AbstractNodeBlockEntity) {
                   AbstractNodeBlockEntity nd = (AbstractNodeBlockEntity)tilenew;
-                  AspectList al = nd.getAspects();
+                  AspectList<Aspect>al = nd.getAspects();
                   if (al.getAspects().length > 0) {
                      nd.takeFromContainer(al.getAspects()[this.level().rand.nextInt(al.getAspects().length)], 1);
                      if (this.count % 5 == 0 || nd.getAspects().visSize() == 0) {

@@ -43,7 +43,7 @@ public class ItemJarFilledRenderer implements IItemRenderer {
                tjf = new TileJarFillableVoid();
             }
 
-            AspectList aspects = ((ItemJarFilled)item.getItem()).getAspects(item);
+            AspectList<Aspect>aspects = ((ItemJarFilled)item.getItem()).getAspects(item);
             if (aspects != null && aspects.size() == 1) {
                tjf.amount = aspects.getAmount(aspects.getAspects()[0]);
                tjf.aspect = aspects.getAspects()[0];

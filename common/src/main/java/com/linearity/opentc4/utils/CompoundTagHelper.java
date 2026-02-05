@@ -136,7 +136,7 @@ public class CompoundTagHelper {
             if (value.isEmpty()) return;
             JsonObject json = new JsonObject();
             for (var entry : value.entrySet()) {
-                var aspectResourceLocation = entry.getKey().getTag();
+                var aspectResourceLocation = entry.getKey().getAspectKey();
                 json.addProperty(String.valueOf(aspectResourceLocation),entry.getValue());
             }
             internalAccessor.writeToCompoundTag(tag,json);
@@ -301,7 +301,7 @@ public class CompoundTagHelper {
 
         @Override
         public void writeToCompoundTag(CompoundTag tag,@NotNull Aspect value) {
-            resourceLocationAccessor.writeToCompoundTag(tag,value.getTag());
+            resourceLocationAccessor.writeToCompoundTag(tag,value.getAspectKey());
         }
 
         @Override

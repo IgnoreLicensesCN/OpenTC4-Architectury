@@ -163,11 +163,11 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
       }
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return null;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public boolean doesContainerAccept(Aspect tag) {
@@ -192,7 +192,7 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -200,7 +200,7 @@ public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource 
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 

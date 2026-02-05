@@ -104,7 +104,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
          if (this.placeBlockAt(stack, player, world, x, y, z, side, par8, par9, par10, var14)) {
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof TileJarNode && stack.hasTagCompound()) {
-               AspectList aspects = this.getAspects(stack);
+               AspectList<Aspect>aspects = this.getAspects(stack);
                if (aspects != null) {
                   ((TileJarNode)te).setAspects(aspects);
                   ((TileJarNode)te).setNodeType(this.getNodeType(stack));
@@ -136,9 +136,9 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public AspectList getAspects(ItemStack itemstack) {
+   public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {
@@ -146,7 +146,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
       }
    }
 
-   public void setAspects(ItemStack itemstack, AspectList aspects) {
+   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
       if (!itemstack.hasTagCompound()) {
          itemstack.setTagCompound(new NBTTagCompound());
       }

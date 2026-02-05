@@ -37,8 +37,8 @@ import java.util.List;
 
 public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
    public IIcon iconOrnament;
-   private static final AspectList cost;
-   private static AspectList cost2;
+   private static final AspectList<Aspect>cost;
+   private static AspectList<Aspect>cost2;
    ArrayList<BlockCoordinates> checked = new ArrayList<>();
 
    public ItemFocusTrade() {
@@ -181,7 +181,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
       return 8747923;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       if (this.isUpgradedWith(itemstack, FocusUpgradeType.silktouch)) {
          if (cost2 == null) {
             cost2 = (new AspectList()).addAll(Aspects.AIR, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.EARTH, 1).addAll(

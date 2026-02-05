@@ -426,7 +426,7 @@ public class ThaumcraftApi {
     }
 
     public static class EntityTags {
-        public EntityTags(String entityName, AspectList aspects, EntityTagsNBT... nbts) {
+        public EntityTags(String entityName, AspectList<Aspect>aspects, EntityTagsNBT... nbts) {
             this.entityName = entityName;
             this.nbts = nbts;
             this.aspects = aspects;
@@ -434,7 +434,7 @@ public class ThaumcraftApi {
 
         public String entityName;
         public EntityTagsNBT[] nbts;
-        public AspectList aspects;
+        public AspectList<Aspect>aspects;
     }
 
     /**
@@ -457,7 +457,7 @@ public class ThaumcraftApi {
      *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList()).add(Aspect.DEATH, 5));
      *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
      */
-    public static void registerEntityTag(String entityName, AspectList aspects, EntityTagsNBT... nbt) {
+    public static void registerEntityTag(String entityName, AspectList<Aspect>aspects, EntityTagsNBT... nbt) {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
     }
 
@@ -752,7 +752,7 @@ public class ThaumcraftApi {
      * @param tagString the ore dictionary name
      * @param aspects   A ObjectTags object of the associated aspects
      */
-    public static void registerObjectTag(String tagString, AspectList aspects) {
+    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
         if (aspects == null) aspects = new AspectList();
         List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
         if (!ores.isEmpty()) {

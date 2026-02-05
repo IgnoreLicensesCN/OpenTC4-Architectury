@@ -298,7 +298,7 @@ public class CommandThaumcraft{
          Aspect aspect = Aspect.getAspect(aspectTag);
          if (aspect == null) {
             for(var a : Aspects.ALL_ASPECTS.values()) {
-               if (aspectTag.equals(a.getTag())) {
+               if (aspectTag.equals(a.getAspectKey())) {
                   aspect = a;
                   break;
                }

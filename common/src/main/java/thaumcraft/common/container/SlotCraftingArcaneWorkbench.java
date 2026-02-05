@@ -25,7 +25,7 @@ public class SlotCraftingArcaneWorkbench extends SlotCrafting {
    public void onPickupFromSlot(Player par1Player, ItemStack par1ItemStack) {
       FMLCommonHandler.instance().firePlayerCraftingEvent(this.thePlayer, par1ItemStack, this.craftMatrix);
       this.onCrafting(par1ItemStack);
-      AspectList aspects = ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.craftMatrix, this.thePlayer);
+      AspectList<Aspect>aspects = ThaumcraftCraftingManager.findMatchingArcaneRecipeAspects(this.craftMatrix, this.thePlayer);
       if (aspects.size() > 0 && this.craftMatrix.getStackInSlot(10) != null) {
          WandCastingItem wand = (WandCastingItem)this.craftMatrix.getStackInSlot(10).getItem();
          wand.consumeAllCentiVisCrafting(this.craftMatrix.getStackInSlot(10), par1Player, aspects, true);

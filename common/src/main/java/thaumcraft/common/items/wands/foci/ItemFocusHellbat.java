@@ -20,9 +20,9 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 public class ItemFocusHellbat extends ItemFocusBasic {
    public IIcon iconOrnament;
-   private static final AspectList costBase;
-   private static final AspectList costBomb;
-   private static final AspectList costDevil;
+   private static final AspectList<Aspect>costBase;
+   private static final AspectList<Aspect>costBomb;
+   private static final AspectList<Aspect>costDevil;
    public static FocusUpgradeType batbombs;
    public static FocusUpgradeType devilbats;
    public static FocusUpgradeType vampirebats;
@@ -112,7 +112,7 @@ public class ItemFocusHellbat extends ItemFocusBasic {
       return 14431746;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return this.isUpgradedWith(itemstack, batbombs) ? costBomb : (this.isUpgradedWith(itemstack, devilbats) ? costDevil : costBase);
    }
 

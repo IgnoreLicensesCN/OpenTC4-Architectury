@@ -29,11 +29,11 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用
      */
     public PacketSyncAspectsS2C(Player player) {
-        AspectList aspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
+        AspectList<Aspect>aspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
         List<AspectAmount> list = new ArrayList<>();
         if (aspects != null) {
             for (Aspect a : aspects.getAspectTypes()) {
-                if (a != null) list.add(new AspectAmount(a.getTag(), (short) aspects.getAmount(a)));
+                if (a != null) list.add(new AspectAmount(a.getAspectKey(), (short) aspects.getAmount(a)));
             }
         }
         this.data = list;

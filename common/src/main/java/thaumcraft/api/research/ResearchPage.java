@@ -32,7 +32,7 @@ public abstract class ResearchPage {
 	public String text=null;
 	public String research=null;
 	public ResourceLocation image=null;
-	public AspectList aspects=null;
+	public AspectList<Aspect>aspects=null;
 	public Object recipe = null;
 	public ItemStack recipeOutput=null;
 	
@@ -169,7 +169,7 @@ public abstract class ResearchPage {
 //	/**
 //	 * This function should really not be called directly - used internally
 //	 */
-//	public ResearchPage(AspectList as) {
+//	public ResearchPage(AspectList<Aspect>as) {
 //		this.type = PageType.ASPECTS;
 //		this.aspects = as;
 //	}

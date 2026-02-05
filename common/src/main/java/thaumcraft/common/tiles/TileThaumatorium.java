@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class TileThaumatorium extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, ISidedInventory {
    public ItemStack inputStack = null;
-   public AspectList essentia = new AspectList();
+   public AspectList<Aspect>essentia = new AspectList();
    public ArrayList<Integer> recipeHash = new ArrayList<>();
    public ArrayList<AspectList> recipeEssentia = new ArrayList<>();
    public ArrayList<String> recipePlayer = new ArrayList<>();
@@ -310,11 +310,11 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -390,11 +390,11 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       return false;
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.essentia;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
       this.essentia = aspects;
    }
 

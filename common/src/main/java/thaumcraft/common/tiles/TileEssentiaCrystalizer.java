@@ -68,14 +68,14 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
       if (this.aspect != null) {
-         nbttagcompound.setString("Aspect", this.aspect.getTag());
+         nbttagcompound.setString("Aspect", this.aspect.getAspectKey());
       }
 
       nbttagcompound.setByte("face", (byte)this.facing.ordinal());
    }
 
-   public AspectList getAspects() {
-      AspectList al = new AspectList();
+   public AspectList<Aspect>getAspects() {
+      AspectList<Aspect>al = new AspectList();
       if (this.aspect != null) {
          al.addAll(this.aspect, 1);
       }
@@ -83,7 +83,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return al;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
    }
 
    public int addToContainer(Aspect tt, int am) {
@@ -110,7 +110,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -118,7 +118,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return amt == 1 && this.aspect != null && tag == this.aspect;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       for(Aspect tt : ot.getAspects()) {
          if (this.aspect == null || this.aspect != tt || ot.getAmount(tt) != 1) {
             return false;

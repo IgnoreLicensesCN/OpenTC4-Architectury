@@ -5,11 +5,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
-import static thaumcraft.api.expands.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
+import static thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
 public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
@@ -27,9 +28,9 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
         return canWandSatisfyCentiVisConsumption(centiVisCost);
     }
 
-    protected CentiVisList getFinalCentiVisCost(Player player) {
-        CentiVisList centiVisCostOriginal = workbenchResultContainer.getCostsCentiVis();
-        CentiVisList centiVisCostFinal = CentiVisList.of();
+    protected CentiVisList<Aspect> getFinalCentiVisCost(Player player) {
+        var centiVisCostOriginal = workbenchResultContainer.getCostsCentiVis();
+        var centiVisCostFinal = CentiVisList.of();
         var wandStack = workbench.getWand();
         for (var aspect:centiVisCostOriginal.getAspects().keySet()){
             float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect,true);
@@ -37,7 +38,7 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
         }
         return centiVisCostFinal;
     }
-    protected boolean canWandSatisfyCentiVisConsumption(CentiVisList centiVisConsumption) {
+    protected boolean canWandSatisfyCentiVisConsumption(CentiVisList<Aspect> centiVisConsumption) {
         return workbench.canWandSatisfyCentiVisConsumption(centiVisConsumption);
     }
 

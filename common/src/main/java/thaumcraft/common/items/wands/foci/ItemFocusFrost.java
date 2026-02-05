@@ -16,9 +16,9 @@ import thaumcraft.common.entities.projectile.EntityFrostShard;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class ItemFocusFrost extends ItemFocusBasic {
-   private static final AspectList costBase;
-   private static final AspectList costScatter;
-   private static final AspectList costBoulder;
+   private static final AspectList<Aspect>costBase;
+   private static final AspectList<Aspect>costScatter;
+   private static final AspectList<Aspect>costBoulder;
    public static FocusUpgradeType scattershot;
    public static FocusUpgradeType iceboulder;
 
@@ -73,7 +73,7 @@ public class ItemFocusFrost extends ItemFocusBasic {
       return 5204428;
    }
 
-   public AspectList getVisCost(ItemStack itemstack) {
+   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       return this.isUpgradedWith(itemstack, scattershot) ? costScatter : (this.isUpgradedWith(itemstack, iceboulder) ? costBoulder : costBase);
    }
 

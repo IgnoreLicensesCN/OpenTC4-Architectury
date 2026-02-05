@@ -58,7 +58,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
     public boolean checkSurroundings = true;
     public int symmetry = 0;
     public int instability = 0;
-    private AspectList recipeEssentia = new AspectList();
+    private AspectList<Aspect>recipeEssentia = new AspectList();
     private ArrayList<ItemStack> recipeIngredients = null;
     private Object recipeOutput = null;
     private String recipePlayer = null;
@@ -303,7 +303,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
 
                             this.recipeOutput = recipe2.getEnchantment();
                             this.recipeInstability = recipe2.calcInstability(this.recipeInput);
-                            AspectList esscost = recipe2.aspects.copy();
+                            AspectList<Aspect>esscost = recipe2.aspects.copy();
                             float essmod = recipe2.getEssentiaMod(this.recipeInput);
 
                             for (Aspect as : esscost.getAspects()) {
@@ -837,11 +837,11 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
 
     }
 
-    public AspectList getAspects() {
+    public AspectList<Aspect>getAspects() {
         return this.recipeEssentia;
     }
 
-    public void setAspects(AspectList aspects) {
+    public void setAspects(AspectList<Aspect>aspects) {
     }
 
     public int addToContainer(Aspect tag, int amount) {
@@ -852,7 +852,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
         return false;
     }
 
-    public boolean takeFromContainer(AspectList ot) {
+    public boolean takeFromContainer(AspectList<Aspect>ot) {
         return false;
     }
 
@@ -860,7 +860,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
         return false;
     }
 
-    public boolean doesContainerContain(AspectList ot) {
+    public boolean doesContainerContain(AspectList<Aspect>ot) {
         return false;
     }
 

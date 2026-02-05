@@ -11,28 +11,28 @@ import java.util.Collection;
 
 public abstract class Aspect {
 
-	public final @NotNull AspectResourceLocation tag;
+	public final @NotNull AspectResourceLocation aspectKey;
 	public final int color;
 	public final @NotNull ResourceLocation image;
 	public final int blend;
 
 	/**
 	 * Use this constructor to register your own aspects.
-	 * @param tag the key that will be used to reference this aspect, as well as its latin display name
+	 * @param aspectKey the key that will be used to reference this aspect, as well as its latin display name
 	 * @param color color to display the tag in
 	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
-	public Aspect(@NotNull AspectResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
-		if (Aspects.ALL_ASPECTS.containsKey(tag)) throw new IllegalArgumentException(tag+" already registered!");
-		this.tag = tag;
+	public Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
+		if (Aspects.ALL_ASPECTS.containsKey(aspectKey)) throw new IllegalArgumentException(aspectKey +" already registered!");
+		this.aspectKey = aspectKey;
 		this.color = color;
 		this.image = image;
 		this.blend = blend;
-		Aspects.ALL_ASPECTS.put(tag, this);
+		Aspects.ALL_ASPECTS.put(aspectKey, this);
 	}
-	protected Aspect(@NotNull AspectResourceLocation tag, @RGBColor int color, @NotNull ResourceLocation image, int blend,boolean noRegisterArg) {
-		this.tag = tag;
+	protected Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
+		this.aspectKey = aspectKey;
 		this.color = color;
 		this.image = image;
 		this.blend = blend;
@@ -41,15 +41,15 @@ public abstract class Aspect {
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(AspectResourceLocation tag, @RGBColor int color) {
-		this(tag,color,new AspectResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
+	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color) {
+		this(aspectKey,color,new AspectResourceLocation(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),1);
 	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
-	public Aspect(AspectResourceLocation tag, @RGBColor int color, int blend) {
-		this(tag,color,new AspectResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
+	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color, int blend) {
+		this(aspectKey,color,new AspectResourceLocation(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
 	}
 
 	
@@ -58,22 +58,22 @@ public abstract class Aspect {
 	}
 	
 	public String getName() {
-		return WordUtils.capitalizeFully(tag.getPath());
+		return WordUtils.capitalizeFully(aspectKey.getPath());
 	}
 	
 	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("tc.aspect."+tag);
+		return StatCollector.translateToLocal("tc.aspect."+ aspectKey);
 	}
 	
-	public ResourceLocation getTag() {
-		return tag;
+	public ResourceLocation getAspectKey() {
+		return aspectKey;
 	}
 
 	public boolean isEmpty() {
 		return false;
 	}
 	
-	public static Aspect getAspect(ResourceLocation tag) {
+	public static Aspect getAspect(AspectResourceLocation tag) {
 		return Aspects.ALL_ASPECTS.get(tag);
 	}
 	

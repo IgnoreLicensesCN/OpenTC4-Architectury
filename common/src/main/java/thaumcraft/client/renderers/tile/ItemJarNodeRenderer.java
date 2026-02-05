@@ -38,7 +38,7 @@ public class ItemJarNodeRenderer implements IItemRenderer {
 
          TileJarNode tjf = new TileJarNode();
          if (item.hasTagCompound()) {
-            AspectList aspects = ((ItemJarNode)item.getItem()).getAspects(item);
+            AspectList<Aspect>aspects = ((ItemJarNode)item.getItem()).getAspects(item);
             if (aspects != null) {
                tjf.setAspects(aspects);
                tjf.setNodeType(((ItemJarNode)item.getItem()).getNodeType(item));

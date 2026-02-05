@@ -629,7 +629,7 @@ public class BlockMetalDevice extends BlockContainer {
 
                         if (amount > 0) {
                            ((TileAlembic) te).amount -= amount;
-                           AspectList as = ((ItemJarFilled) drop.getItem()).getAspects(drop);
+                           AspectList<Aspect>as = ((ItemJarFilled) drop.getItem()).getAspects(drop);
                            if (as == null) {
                               as = new AspectList();
                            }

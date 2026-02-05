@@ -330,7 +330,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		for (var aspect : getAspectTypes()) {
 			if (aspect != null) {
 				CompoundTag f = new CompoundTag();
-				ASPECT_KEY_ACCESSOR.writeToCompoundTag(f,aspect.getTag());
+				ASPECT_KEY_ACCESSOR.writeToCompoundTag(f,aspect.getAspectKey());
 				ASPECT_AMOUNT_ACCESSOR.writeToCompoundTag(f,getAmount(aspect));
 				tlist.add(f);
 			}

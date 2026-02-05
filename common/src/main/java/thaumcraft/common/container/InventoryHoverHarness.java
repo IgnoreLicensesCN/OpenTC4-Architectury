@@ -70,7 +70,7 @@ public class InventoryHoverHarness implements IInventory {
 
    public boolean isItemValidForSlot(int i, ItemStack jar) {
       if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
-         AspectList aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
+         AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
           return aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0;
       }
 

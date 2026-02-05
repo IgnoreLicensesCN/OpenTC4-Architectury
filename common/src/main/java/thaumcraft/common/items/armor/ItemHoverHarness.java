@@ -104,7 +104,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairable, IVisDisc
          ItemStack jar = ItemStack.loadItemStackFromNBT(is.stackTagCompound.getCompoundTag("jar"));
 
          try {
-            AspectList aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
+            AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
             addAspectDescriptionToList(aspects,player,list);
          } catch (Exception ignored) {
          }

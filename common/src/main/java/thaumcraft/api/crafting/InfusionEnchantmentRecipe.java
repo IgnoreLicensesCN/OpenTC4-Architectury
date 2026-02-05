@@ -22,7 +22,7 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
 {
 	
-	public final AspectList aspects;
+	public final AspectList<Aspect>aspects;
 	public final String research;
 	public final RecipeItemMatcher[] components;
 	public final Enchantment enchantment;
@@ -31,7 +31,7 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
 	private final ItemStack[] inputSampleArr;
 	
 	public InfusionEnchantmentRecipe(String research, Enchantment input, int inst,
-									 AspectList aspects2, RecipeItemMatcher[] recipe) {
+									 AspectList<Aspect>aspects2, RecipeItemMatcher[] recipe) {
 		this.research = research;
 		this.enchantment = input;
 		this.aspects = aspects2;
@@ -134,7 +134,7 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
     	
     }
     
-    public AspectList getAspects() {
+    public AspectList<Aspect>getAspects() {
 		return aspects;
     	
     }

@@ -16,7 +16,7 @@ import thaumcraft.api.wands.IWandable;
 import java.awt.*;
 
 public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSource, IWandable, IEssentiaTransport {
-   public AspectList essentia = new AspectList();
+   public AspectList<Aspect>essentia = new AspectList();
    public int maxAmount = 256;
    public Direction facing;
    int count;
@@ -64,11 +64,11 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       nbttagcompound.setByte("face", (byte)this.facing.ordinal());
    }
 
-   public AspectList getAspects() {
+   public AspectList<Aspect>getAspects() {
       return this.essentia;
    }
 
-   public void setAspects(AspectList aspects) {
+   public void setAspects(AspectList<Aspect>aspects) {
       this.essentia = aspects.copy();
    }
 
@@ -103,7 +103,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       }
    }
 
-   public boolean takeFromContainer(AspectList ot) {
+   public boolean takeFromContainer(AspectList<Aspect>ot) {
       return false;
    }
 
@@ -111,7 +111,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       return this.essentia.getAmount(tag) >= amt;
    }
 
-   public boolean doesContainerContain(AspectList ot) {
+   public boolean doesContainerContain(AspectList<Aspect>ot) {
       for(Aspect tt : ot.getAspects()) {
          if (this.essentia.getAmount(tt) < ot.getAmount(tt)) {
             return false;

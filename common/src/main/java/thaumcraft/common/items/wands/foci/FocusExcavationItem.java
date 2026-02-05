@@ -49,8 +49,8 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FocusExcavationItem extends FocusBasicItem{
-    public static final AspectList wandCost = (new AspectList()).addAll(Aspects.EARTH, 15);
-    public static final AspectList wandCostWithSilkTouchOrDowsing = (new AspectList())
+    public static final AspectList<Aspect>wandCost = (new AspectList()).addAll(Aspects.EARTH, 15);
+    public static final AspectList<Aspect>wandCostWithSilkTouchOrDowsing = (new AspectList())
             .addAll(Aspects.AIR, 1)
             .addAll(Aspects.FIRE, 1)
             .addAll(Aspects.EARTH, 1)
@@ -71,7 +71,7 @@ public class FocusExcavationItem extends FocusBasicItem{
     }
 
     @Override
-    public AspectList getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack) {
+    public AspectList<Aspect>getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack) {
         if (!(focusstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
             return wandCost;
         }

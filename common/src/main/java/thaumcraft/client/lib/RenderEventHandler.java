@@ -167,7 +167,7 @@ public class RenderEventHandler {
          int x = (Integer)blockTags.get(0);
          int y = (Integer)blockTags.get(1);
          int z = (Integer)blockTags.get(2);
-         AspectList ot = (AspectList)blockTags.get(3);
+         AspectList<Aspect>ot = (AspectList)blockTags.get(3);
          Direction dir = Direction.getOrientation((Integer)blockTags.get(4));
          if (x == target.blockX && y == target.blockY && z == target.blockZ) {
             if (tagscale < 0.5F) {
@@ -262,7 +262,7 @@ public class RenderEventHandler {
 
    }
 
-   public void drawTagsOnContainer(double x, double y, double z, AspectList tags, int bright, Direction dir, float partialTicks) {
+   public void drawTagsOnContainer(double x, double y, double z, AspectList<Aspect>tags, int bright, Direction dir, float partialTicks) {
       if (Minecraft.getMinecraft().renderViewEntity instanceof Player && tags != null && tags.size() > 0) {
          Player player = (Player)Minecraft.getMinecraft().renderViewEntity;
          double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;

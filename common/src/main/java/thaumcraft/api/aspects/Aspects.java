@@ -12,9 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Aspects {
-    public static final LinkedHashMap<ResourceLocation,Aspect> ALL_ASPECTS = new LinkedHashMap<>();
-    public static final LinkedHashMap<ResourceLocation,PrimalAspect> PRIMAL_ASPECTS = new LinkedHashMap<>();
-    public static final LinkedHashMap<ResourceLocation,CompoundAspect> COMPOUND_ASPECTS = new LinkedHashMap<>();
+    public static final LinkedHashMap<AspectResourceLocation,Aspect> ALL_ASPECTS = new LinkedHashMap<>();
+    public static final LinkedHashMap<AspectResourceLocation,PrimalAspect> PRIMAL_ASPECTS = new LinkedHashMap<>();
+    public static final LinkedHashMap<AspectResourceLocation,CompoundAspect> COMPOUND_ASPECTS = new LinkedHashMap<>();
 
     //PRIMAL
     public static final PrimalAspect AIR = new PrimalAspect(new AspectResourceLocation(Thaumcraft.MOD_ID, "aer"),0xffff7e,"e",1);

@@ -501,7 +501,7 @@ public class ResearchManager {
 
             if (hexEntries.get(hex.toString()).aspect != null) {
                 RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.writeToCompoundTag(gt,
-                        hexEntries.get(hex.toString()).aspect.getTag());
+                        hexEntries.get(hex.toString()).aspect.getAspectKey());
             }
             gridTag.add(gt);
         }
@@ -709,7 +709,7 @@ public class ResearchManager {
             RESEARCH_NOTE_HEX_TYPE_ACCESSOR.writeToCompoundTag(hexTag, (byte) entry.type);
 
             if (entry.aspect != null) {
-                RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.writeToCompoundTag(hexTag, entry.aspect.getTag());
+                RESEARCH_NOTE_HEX_ASPECT_ACCESSOR.writeToCompoundTag(hexTag, entry.aspect.getAspectKey());
             }
 
             gridTag.add(hexTag);
@@ -1447,7 +1447,7 @@ public class ResearchManager {
                 if (aspect != null) {
                     CompoundTag f = new CompoundTag();
                     // 用 Accessor 写入 key 和 amount
-                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, aspect.getTag());
+                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, aspect.getAspectKey());
                     ASPECT_AMOUNT_ACCESSOR.writeToCompoundTag(f, (int) res.getAmount(aspect));
                     tagList.add(f);
                 }
@@ -1457,7 +1457,7 @@ public class ResearchManager {
     }
 //    public static void saveAspectNBT(CompoundTag entityData, String playerName) {
 //        NBTTagList tagList = new NBTTagList();
-//        AspectList res = Thaumcraft.getKnownAspects().get(playerName);
+//        AspectList<Aspect>res = Thaumcraft.getKnownAspects().get(playerName);
 //        if (res != null && res.size() > 0) {
 //            for (Aspect aspect : res.getAspectTypes()) {
 //                if (aspect != null) {

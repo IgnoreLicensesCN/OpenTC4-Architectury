@@ -164,7 +164,7 @@ public class BlockJar extends BlockContainer {
                   drop.setTagCompound(new NBTTagCompound());
                }
 
-               drop.stackTagCompound.setString("AspectFilter", ((TileJarFillable) te).aspectFilter.getTag());
+               drop.stackTagCompound.setString("AspectFilter", ((TileJarFillable) te).aspectFilter.getAspectKey());
             }
 
             drops.add(drop);
