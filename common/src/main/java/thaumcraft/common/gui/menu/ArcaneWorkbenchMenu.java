@@ -19,7 +19,6 @@ import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
 import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
-import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
 import java.util.List;
 import java.util.Optional;

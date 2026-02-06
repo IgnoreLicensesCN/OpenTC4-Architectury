@@ -11,19 +11,20 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import com.linearity.opentc4.utils.StatCollector;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
    public static MessageType messageType;
 
-   private ResourceLocation key;
+   private AspectResourceLocation key;
    private int amount;
    private int total;
    private static long lastSound = 0L;
 
    public PacketAspectPoolS2C() {}
 
-   public PacketAspectPoolS2C(ResourceLocation key, int amount, int total) {
+   public PacketAspectPoolS2C(AspectResourceLocation key, int amount, int total) {
       this.key = key;
       this.amount = amount;
       this.total = total;
@@ -40,7 +41,7 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
       ResourceLocation key = buf.readResourceLocation();
       short amount = buf.readShort();
       short total = buf.readShort();
-      return new PacketAspectPoolS2C(key, amount, total);
+      return new PacketAspectPoolS2C(new AspectResourceLocation(key), amount, total);
    }
 
    // ------------------ 客户端处理 ------------------

@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects;
 
-import com.linearity.opentc4.utils.CompoundTagHelper;
 import com.linearity.opentc4.utils.StatCollector;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import fromhodgepodge.util.AspectNameSorter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -310,7 +310,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public void loadFrom(CompoundTag tag) {
 		loadFrom(tag,ASPECT_ASPECTS_ACCESSOR);
 	}
-	public void loadFrom(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+	public void loadFrom(CompoundTag tag, ListTagAccessor accessor) {
 		aspects.clear();
 		ListTag tlist = accessor.readFromCompoundTag(tag); // 10 = CompoundTag
 		for (int j = 0; j < tlist.size(); j++) {
@@ -325,7 +325,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public void saveTo(CompoundTag tag) {
 		saveTo(tag,ASPECT_ASPECTS_ACCESSOR);
 	}
-	public void saveTo(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+	public void saveTo(CompoundTag tag, ListTagAccessor accessor) {
 		ListTag tlist = new ListTag();
 		for (var aspect : getAspectTypes()) {
 			if (aspect != null) {

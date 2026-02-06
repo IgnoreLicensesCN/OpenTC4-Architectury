@@ -5,6 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
+import java.util.Objects;
+
 import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 
 public class PrimalAspect extends Aspect {
@@ -27,5 +29,26 @@ public class PrimalAspect extends Aspect {
         PRIMAL_ASPECTS.put(tag,this);
     }
 
+    @Override
+    public String toString() {
+        return "PrimalAspect{" +
+                "chatcolor='" + chatcolor + '\'' +
+                ", aspectKey=" + aspectKey +
+                ", color=" + color +
+                ", image=" + image +
+                ", blend=" + blend +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof PrimalAspect that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(chatcolor, that.chatcolor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), chatcolor);
+    }
 }

@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
@@ -60,7 +59,7 @@ public class ItemThaumonomicon extends Item {
    public ItemStack onItemRightClick(ItemStack stack, World par2World, Player player) {
       if (!(Platform.getEnvironment() == Env.CLIENT)) {
          if (Config.allowCheatSheet && stack.getItemDamage() == 42) {
-            for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
                for(ResearchItem ri : cat.researches.values()) {
                   if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), ri.key)) {
                      Thaumcraft.proxy.getResearchManager().completeResearch(player, ri.key);
@@ -74,7 +73,7 @@ public class ItemThaumonomicon extends Item {
                }
             }
          } else {
-            for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
                for(ResearchItem ri : cat.researches.values()) {
                   if (ResearchManager.isResearchComplete(player.getCommandSenderName(), ri.key) && ri.siblings != null) {
                      for(String sib : ri.siblings) {

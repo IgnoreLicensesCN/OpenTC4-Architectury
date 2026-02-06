@@ -53,9 +53,17 @@ public class ItemInkwell extends Item implements IScribeTools {
             if (tile2 instanceof TileTable && md2 < 6) {
                world.setBlock(x, y, z, bi, a, 0);
                world.setTileEntity(x, y, z, new TileResearchTable());
-               world.setBlock(x + Direction.getOrientation(a).offsetX, y + Direction.getOrientation(a).offsetY, z + Direction.getOrientation(a).offsetZ, bi, Direction.getOrientation(a).getOpposite().ordinal() + 4, 0);
+               world.setBlock(x + Direction.getOrientation(a).offsetX,
+                       y + Direction.getOrientation(a).offsetY,
+                       z + Direction.getOrientation(a).offsetZ, bi,
+                       Direction.getOrientation(a).getOpposite().ordinal() + 4,
+                       0);
                world.markBlockForUpdate(x, y, z);
-               world.markBlockForUpdate(x + Direction.getOrientation(a).offsetX, y + Direction.getOrientation(a).offsetY, z + Direction.getOrientation(a).offsetZ);
+               world.markBlockForUpdate(
+                       x + Direction.getOrientation(a).offsetX,
+                       y + Direction.getOrientation(a).offsetY,
+                       z + Direction.getOrientation(a).offsetZ
+               );
                TileEntity tile3 = world.getTileEntity(x, y, z);
                if (tile3 instanceof TileResearchTable) {
                   ((TileResearchTable)tile3).setInventorySlotContents(0, stack.copy());

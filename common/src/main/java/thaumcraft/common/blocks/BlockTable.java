@@ -1,10 +1,10 @@
 package thaumcraft.common.blocks;
 
 //  "tile.blockTable.0.name": "台桌",
-//          "tile.blockTable.1.name": "台桌",
+//          "tile.blockTable.1.name": "台桌",//also 6~9? in tileEntity
 //          "tile.blockTable.14.name": "解構工作台",
 //          "tile.blockTable.15.name": "奧術工作台",
-//          "tile.blockTable.research.name": "研究桌",//2~9
+//          "tile.blockTable.research.name": "研究桌",//2~5
 public class BlockTable /*extends BlockContainer implements IWandable*/ {
 //   public IIcon icon;
 //   public IIcon iconQuill;

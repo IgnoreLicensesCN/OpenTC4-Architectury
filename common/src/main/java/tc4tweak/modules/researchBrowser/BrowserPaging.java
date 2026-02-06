@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.ClientUtils;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.UtilsFX;
@@ -51,7 +50,7 @@ public class BrowserPaging {
 
     private static void updateMaxPageIndex(GuiResearchBrowser gui) {
         int tabsPerPage = getTabPerSide() * 2;
-        int newMaxPageIndex = (ResearchCategories.researchCategories.size() - (isEldritchUnlocked(gui) ? 0 : 1) + tabsPerPage) / tabsPerPage - 1;
+        int newMaxPageIndex = (ResearchCategory.researchCategories.size() - (isEldritchUnlocked(gui) ? 0 : 1) + tabsPerPage) / tabsPerPage - 1;
         if (newMaxPageIndex != maxPageIndex) {
             maxPageIndex = newMaxPageIndex;
             currentPageIndex = Math.min(currentPageIndex, BrowserPaging.maxPageIndex);
@@ -68,7 +67,7 @@ public class BrowserPaging {
                 currentPageIndex = 0;
             }
             int toSkip = tabsPerPage * currentPageIndex;
-            for (Map.Entry<String, ResearchCategory> e : ResearchCategories.researchCategories.entrySet()) {
+            for (Map.Entry<String, ResearchCategory> e : ResearchCategory.researchCategories.entrySet()) {
                 // pretend eldritch tab doesn't exist if ELDRITCHMINOR is not complete
                 if ("ELDRITCH".equals(e.getKey()) && !ResearchManager.isResearchComplete(player, "ELDRITCHMINOR"))
                     continue;
@@ -95,7 +94,7 @@ public class BrowserPaging {
 
     static void setPage(int nextIndex) {
         int tabsPerPage = getTabPerSide() * 2;
-        currentPageIndex = CommonUtils.clamp(nextIndex, 0, (ResearchCategories.researchCategories.size() + tabsPerPage) / tabsPerPage - 1);
+        currentPageIndex = CommonUtils.clamp(nextIndex, 0, (ResearchCategory.researchCategories.size() + tabsPerPage) / tabsPerPage - 1);
         recalculateCurrentTabs = true;
     }
 
@@ -212,7 +211,7 @@ public class BrowserPaging {
                 do {
                     oldScale = ConfigurationHandler.INSTANCE.getBrowserScale();
                     int searchAreaSizeTimesTwo = ConfigurationHandler.INSTANCE.isInferBrowserScaleConsiderSearch() ? ThaumonomiconIndexSearcher.getResultDisplayAreaWidth(e.gui) * 2 : 0;
-                    float factorByWidth = ((float) e.gui.width - BORDER_WIDTH * 2 - searchAreaSizeTimesTwo - 24 * Math.min(2, ResearchCategories.researchCategories.size() / getTabPerSide())) / TEXTURE_WIDTH;
+                    float factorByWidth = ((float) e.gui.width - BORDER_WIDTH * 2 - searchAreaSizeTimesTwo - 24 * Math.min(2, ResearchCategory.researchCategories.size() / getTabPerSide())) / TEXTURE_WIDTH;
                     float factorByHeight = ((float) e.gui.height - BORDER_HEIGHT * 2) / TEXTURE_HEIGHT;
                     ConfigurationHandler.INSTANCE.setBrowserScale(Math.max(1, Math.min(factorByWidth, factorByHeight)));
                 } while (Math.abs(oldScale - ConfigurationHandler.INSTANCE.getBrowserScale()) > 1e-4 && iterations++ < 1000);

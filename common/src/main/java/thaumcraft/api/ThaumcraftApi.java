@@ -690,7 +690,7 @@ public class ThaumcraftApi {
             else
                 return null;
         }
-        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
+        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             for (ResearchItem ri : rcl.researches.values()) {
                 if (ri.getPages() == null) continue;
                 for (int a = 0; a < ri.getPages().length; a++) {
@@ -795,6 +795,7 @@ public class ThaumcraftApi {
 
     //WARP ///////////////////////////////////////////////////////////////////////////////////////
     private static final Map<Item, Integer> itemWarpMap = new ConcurrentHashMap<>();
+    @Deprecated(forRemoval = true)
     private static final Map<ResourceLocation, Integer> researchWarpMap = new ConcurrentHashMap<>();
     private static final Map<ResourceLocation, Integer> clueWarpMap = new ConcurrentHashMap<>();
 
@@ -815,6 +816,7 @@ public class ThaumcraftApi {
      *
      * @param amount how much warp is gained
      */
+    @Deprecated(forRemoval = true)
     public static void addWarpToResearch(ResourceLocation research, int amount) {
         researchWarpMap.put(research, amount);
     }

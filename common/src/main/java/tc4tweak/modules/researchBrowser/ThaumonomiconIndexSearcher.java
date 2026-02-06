@@ -19,7 +19,6 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -67,7 +66,7 @@ public class ThaumonomiconIndexSearcher {
     }
 
     private static int getResultDisplayAreaX(GuiScreen gui) {
-        return gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategories.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 0);
+        return gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategory.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 0);
     }
 
     private static void buildEntryList(String query) {
@@ -79,10 +78,10 @@ public class ThaumonomiconIndexSearcher {
         List<SearchQuery> valids = new ArrayList<>();
         Set<String> keys;
         if (searchCategory != null && !searchCategory.isEmpty())
-            keys = ResearchCategories.getResearchCategory(searchCategory).researches.keySet();
+            keys = ResearchCategory.getResearchCategory(searchCategory).researches.keySet();
         else {
             keys = new HashSet<>();
-            for (ResearchCategory cat : ResearchCategories.researchCategories.values())
+            for (ResearchCategory cat : ResearchCategory.researchCategories.values())
                 keys.addAll(cat.researches.keySet());
         }
 
@@ -159,7 +158,7 @@ public class ThaumonomiconIndexSearcher {
                         if (thaumSearchField.isFocused() && button == 1) {
                             thaumSearchField.setText("");
                             searchResults.clear();
-                        } else if (mx > (event.gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategories.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 2)) && my > event.gui.height / 2 - ConfigurationHandler.INSTANCE.getBrowserHeight() / 2 && my < event.gui.height / 2 + ConfigurationHandler.INSTANCE.getBrowserHeight() / 2) {
+                        } else if (mx > (event.gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategory.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 2)) && my > event.gui.height / 2 - ConfigurationHandler.INSTANCE.getBrowserHeight() / 2 && my < event.gui.height / 2 + ConfigurationHandler.INSTANCE.getBrowserHeight() / 2) {
                             int clicked = my - (event.gui.height / 2 - ConfigurationHandler.INSTANCE.getBrowserHeight() / 2 + 6);
                             clicked /= 11;
                             int selected = clicked + listDisplayOffset;
@@ -168,7 +167,7 @@ public class ThaumonomiconIndexSearcher {
                                 event.gui.mc.displayGuiScreen(new GuiResearchRecipe(item, 0, item.displayColumn, item.displayRow));
                             }
                         }
-                    } else if (wheel != 0 && mx > (event.gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategories.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 2))) {
+                    } else if (wheel != 0 && mx > (event.gui.width / 2 + ConfigurationHandler.INSTANCE.getBrowserWidth() / 2 + (ResearchCategory.researchCategories.size() > BrowserPaging.getTabPerSide() ? 24 : 2))) {
                         if (wheel < 0)
                             listDisplayOffset++;
                         else

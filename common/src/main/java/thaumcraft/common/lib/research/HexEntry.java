@@ -1,11 +1,12 @@
 package thaumcraft.common.lib.research;
 
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 
 import java.util.Objects;
 
 public record HexEntry(Aspect aspect, HexType type) {
-    public static final HexEntry EMPTY = new HexEntry(null, HexType.NONE);
+    public static final HexEntry EMPTY = new HexEntry(Aspects.EMPTY, HexType.NONE);
 
     @Override
     public String toString() {

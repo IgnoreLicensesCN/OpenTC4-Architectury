@@ -1,6 +1,6 @@
 package tc4tweak.modules.getResearch;
 
-import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -34,7 +34,7 @@ public class GetResearch {
      * Fallback for when server starting
      */
     private static ResearchItem getResearchSlow(ResearchItemResourceLocation key) {
-        return ResearchCategories.researchCategories.values().stream()
+        return ResearchCategory.researchCategories.values().stream()
                 .flatMap(l -> l.researches.values().stream())
                 .filter(i -> key.equals(i.key))
                 .findFirst().orElse(null);

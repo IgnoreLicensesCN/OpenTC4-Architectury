@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public abstract class Aspect {
 
@@ -94,4 +95,25 @@ public abstract class Aspect {
 //		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(EARTH, ENTROPY));
 
 
+	@Override
+	public String toString() {
+		return "Aspect{" +
+				"aspectKey=" + aspectKey +
+				", color=" + color +
+				", image=" + image +
+				", blend=" + blend +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Aspect aspect)) return false;
+        return color == aspect.color && blend == aspect.blend && Objects.equals(
+				aspectKey, aspect.aspectKey) && Objects.equals(image, aspect.image);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(aspectKey, color, image, blend);
+	}
 }

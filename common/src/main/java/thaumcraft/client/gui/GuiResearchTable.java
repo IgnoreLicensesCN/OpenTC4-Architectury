@@ -24,6 +24,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.container.ContainerResearchTable;
 import thaumcraft.common.lib.network.PacketHandler;
+import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationC2S;
 import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationToServer;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPlaceToServer;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -630,10 +631,17 @@ public class GuiResearchTable extends GuiContainer {
                      Aspect aspect = this.getClickedAspect(mx, my, gx, gy, true);
                      if (aspect != null && !aspect.isPrimal()) {
                         AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
-                        if (aspects != null && (aspects.getAmount(aspect.getComponents()[0]) > 0 || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0) && (aspects.getAmount(aspect.getComponents()[1]) > 0 || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0)) {
+                        if (aspects != null
+                                && (aspects.getAmount(aspect.getComponents()[0]) > 0
+                                    || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0
+                        )
+                                && (aspects.getAmount(aspect.getComponents()[1]) > 0
+                                    || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0
+                        )
+                        ) {
                            this.draggedAspect = null;
                            this.playButtonCombine();
-                           PacketHandler.INSTANCE.sendToServer(new PacketAspectCombinationToServer(this.player, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, aspect.getComponents()[0], aspect.getComponents()[1], this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0, this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0, true));
+                           PacketHandler.INSTANCE.sendToServer(new PacketAspectCombinationC2S(this.player, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, aspect.getComponents()[0], aspect.getComponents()[1], this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0, this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0, true));
                         }
                      }
                   }

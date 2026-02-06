@@ -107,16 +107,16 @@ public class GuiResearchBrowser extends GuiScreen {
             selectedCategory = cats.iterator().next();
         }
 
-        this.research.addAll(ResearchCategories.getResearchCategory(selectedCategory).researches.values());
+        this.research.addAll(ResearchCategory.getResearchCategory(selectedCategory).researches.values());
 
         if (ResearchManager.consumeInkFromPlayer(this.mc.thePlayer, false) && InventoryUtils.isPlayerCarrying(this.mc.thePlayer, new ItemStack(Items.paper)) >= 0) {
             this.hasScribestuff = true;
         }
 
-        guiMapTop = getNewGuiMapTop(ResearchCategories.getResearchCategory(selectedCategory).minDisplayColumn * 24 - 85);
-        guiMapLeft = getNewGuiMapLeft(ResearchCategories.getResearchCategory(selectedCategory).minDisplayRow * 24 - 112);
-        guiMapBottom = getNewGuiMapBottom(ResearchCategories.getResearchCategory(selectedCategory).maxDisplayColumn * 24 - 112);
-        guiMapRight = getNewGuiMapRight(ResearchCategories.getResearchCategory(selectedCategory).maxDisplayRow * 24 - 61);
+        guiMapTop = getNewGuiMapTop(ResearchCategory.getResearchCategory(selectedCategory).minDisplayColumn * 24 - 85);
+        guiMapLeft = getNewGuiMapLeft(ResearchCategory.getResearchCategory(selectedCategory).minDisplayRow * 24 - 112);
+        guiMapBottom = getNewGuiMapBottom(ResearchCategory.getResearchCategory(selectedCategory).maxDisplayColumn * 24 - 112);
+        guiMapRight = getNewGuiMapRight(ResearchCategory.getResearchCategory(selectedCategory).maxDisplayRow * 24 - 61);
     }
 
     public void onGuiClosed() {
@@ -213,7 +213,7 @@ public class GuiResearchBrowser extends GuiScreen {
                 swop = true;
             }
 
-            ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
+            ResearchCategory rcl = ResearchCategory.getResearchCategory(obj);
             if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                 int mposx = mx - (var4 - 24 + (swop ? getTabIconDistance()//280
                         : 0));
@@ -281,7 +281,7 @@ public class GuiResearchBrowser extends GuiScreen {
         int vx = (int) ((float) (var4 - guiMapTop) / (float) Math.abs(guiMapTop - guiMapBottom) * 288.0F);
         int vy = (int) ((float) (var5 - guiMapLeft) / (float) Math.abs(guiMapLeft - guiMapRight) * 316.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(ResearchCategories.getResearchCategory(selectedCategory).background);
+        Minecraft.getMinecraft().renderEngine.bindTexture(ResearchCategory.getResearchCategory(selectedCategory).background);
 //      this.drawTexturedModalRect
         drawResearchBrowserBackground
                 (
@@ -484,7 +484,7 @@ public class GuiResearchBrowser extends GuiScreen {
         boolean swop = false;
 
         for (String obj : cats) {
-            ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
+            ResearchCategory rcl = ResearchCategory.getResearchCategory(obj);
             if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                 GL11.glPushMatrix();
                 if (count == getTabPerSide()//9
@@ -714,7 +714,7 @@ public class GuiResearchBrowser extends GuiScreen {
             boolean swop = false;
 
             for (String obj : cats) {
-                ResearchCategory rcl = ResearchCategories.getResearchCategory(obj);
+                ResearchCategory rcl = ResearchCategory.getResearchCategory(obj);
                 if (!obj.equals("ELDRITCH") || ResearchManager.isResearchComplete(this.player, "ELDRITCHMINOR")) {
                     if (count == getTabPerSide()//9
                     ) {

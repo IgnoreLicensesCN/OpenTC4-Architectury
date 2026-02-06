@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import tc4tweak.ClientUtils;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.gui.GuiResearchBrowser;
@@ -55,7 +54,7 @@ public class DrawResearchCompletionCounter {
         if (style == ConfigurationHandler.CompletionCounterStyle.None)
             return;
         // draw completion text progress text
-        ResearchCategory category = ResearchCategories.getResearchCategory(Utils.getActiveCategory());
+        ResearchCategory category = ResearchCategory.getResearchCategory(Utils.getActiveCategory());
         // filter away stuff that are auto unlocked but never shown. probably should just filter away virtual research,
         // but I'm not entirely sure how that field is actually used in practice, so let's be conservative for now
         Map<ResourceLocation, ResearchItem> all =

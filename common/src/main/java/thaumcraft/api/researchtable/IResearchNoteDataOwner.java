@@ -1,30 +1,22 @@
 package thaumcraft.api.researchtable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
+import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexCoord;
 
 //for research note and maybe you can do something else?
-public interface IResearchNoteDataOwner extends IResearchTableWriteAspectListener{
+public interface IResearchNoteDataOwner extends IResearchTableEditAspectListener {
     default boolean canPlaceIntoResearchTable(
             Level atLevel,
             BlockPos tablePos,
             ItemStack noteStack){
         return true;
     }
-    boolean onWriteAspect(
-            Level atLevel,
-            BlockPos tablePos,
-            ItemStack writeToolStack,
-            ItemStack noteStack,
-            Player player,
-            Aspect aspect,
-            HexCoord placedAt
-    );
+    boolean onWriteAspect(WriteAspectContext context);
+    boolean onRemoveAspect(RemoveAspectContext context);
     @Nullable ResearchNoteData getResearchNoteData(ItemStack researchNoteStack);
 }

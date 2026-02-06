@@ -8,4 +8,23 @@ public record AspectComponent(Aspect aspectA, Aspect aspectB) {
         return (Objects.equals(aspectA, a) && Objects.equals(aspectB, b))
                 || (Objects.equals(aspectA, b) && Objects.equals(aspectB, a));
     }
+
+    @Override
+    public String toString() {
+        return "AspectComponent{" +
+                "aspectA=" + aspectA +
+                ", aspectB=" + aspectB +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AspectComponent that)) return false;
+        return Objects.equals(aspectA, that.aspectA) && Objects.equals(aspectB, that.aspectB);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(aspectA, aspectB);
+    }
 }

@@ -10,7 +10,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.render.ShownInfoInResearchCategory;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -113,6 +112,8 @@ public class ResearchItem
     private Aspect[] aspectTriggers;
 
 	private ResearchPage[] pages = null;
+
+    protected int warp = 0;
 	
 	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
     {
@@ -274,12 +275,6 @@ public class ResearchItem
 		return aspectTriggers;
 	}
 
-	public ResearchItem registerResearchItem(List<ShownInfoInResearchCategory> shownInfos)
-    {
-        ResearchCategories.addResearchToItsCategory(this,shownInfos);
-        return this;
-    }
-
     public String getName()
     {
     	return StatCollector.translateToLocal("tc.research_name."+key);
@@ -387,5 +382,21 @@ public class ResearchItem
                 ", aspectTriggers=" + Arrays.toString(aspectTriggers) +
                 ", pages=" + Arrays.toString(pages) +
                 '}';
+    }
+
+    public ResearchItem setWarp(int warp) {
+        this.warp = warp;
+        return this;
+    }
+
+    public int getWarp() {
+        return warp;
+    }
+
+    public boolean isPlayerCompletedResearch(String playerName){
+        return ResearchManager.getResearchForPlayer(playerName).contains(this.key);
+    }
+    public boolean canPlayerResearch(String playerName){
+        //TODO
     }
 }

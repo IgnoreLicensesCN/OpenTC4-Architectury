@@ -1,0 +1,30 @@
+package com.linearity.opentc4.utils.compoundtag.accessors;
+
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+
+public class ItemStackTagAccessor extends CompoundTagAccessor<ItemStack> {
+
+    public ItemStackTagAccessor(String tagKey) {
+        super(tagKey, ItemStack.class);
+    }
+
+    @Override
+    public ItemStack readFromCompoundTag(CompoundTag tag) {
+        if (!tag.contains(tagKey)) return ItemStack.EMPTY; // 没有该tag返回空
+        return ItemStack.of(tag.getCompound(tagKey));
+    }
+
+    @Override
+    public void writeToCompoundTag(CompoundTag tag, ItemStack value) {
+        if (value.isEmpty()) return;
+        tag.put(tagKey, value.save(new CompoundTag()));
+    }
+
+    @Override
+    public boolean compoundTagHasKey(CompoundTag tag) {
+        return tag.contains(tagKey);
+    }
+
+}

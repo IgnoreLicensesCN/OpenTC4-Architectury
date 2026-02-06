@@ -4,6 +4,8 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -607,5 +609,10 @@ public class ThaumcraftBlocks {
                         .sound(SoundType.WOOD)
                         .ignitedByLava()
         );
+    }
+
+    public static class Tags{
+        public static final TagKey<Block> JAR_BLOCK = TagKey.create(
+                Registries.BLOCK, new ResourceLocation("thaumcraft:jar_block"));//TODO:Jars put in
     }
 }

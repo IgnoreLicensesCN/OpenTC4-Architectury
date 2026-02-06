@@ -143,13 +143,14 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                   player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.markDirty();
                } else {
-                  Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)-1);
+                  Thaumcraft.playerKnowledge.addAspectPool(player.getCommandSenderName(), aspect, (short)-1);
                   ResearchManager.scheduleSave(player);
                   PacketHandler.INSTANCE.sendTo(new PacketAspectPool(aspect.getAspectKey(), (short) 0, Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect)), (ServerPlayer)player);
                }
             } else {
                float f = this.level().rand.nextFloat();
-               if (this.data.hexGrid.get(hex.toString()).aspect != null && (researchExpertiseUnlocked && f < 0.25F || researchMasteryUnlocked && f < 0.5F)) {
+               if (this.data.hexGrid.get(hex.toString()).aspect != null
+                       && (researchExpertiseUnlocked && f < 0.25F || researchMasteryUnlocked && f < 0.5F)) {
                   this.level().playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                   Thaumcraft.proxy.playerKnowledge.addAspectPool(player.getCommandSenderName(), this.data.hexGrid.get(hex.toString()).aspect, (short)1);
                   ResearchManager.scheduleSave(player);

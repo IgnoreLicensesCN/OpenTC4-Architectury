@@ -1,11 +1,10 @@
 package thaumcraft.api.expands;
 
-import com.linearity.opentc4.utils.CompoundTagHelper;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
-import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
 public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
@@ -64,7 +63,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public void loadFrom(CompoundTag tag, CompoundTagHelper.ListTagAccessor accessor) {
+    public void loadFrom(CompoundTag tag, ListTagAccessor accessor) {
         throw new RuntimeException("Unmodifiable!");
     }
 

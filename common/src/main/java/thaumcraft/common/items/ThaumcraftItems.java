@@ -194,6 +194,8 @@ public class ThaumcraftItems {
     public static final BlockItem SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
     public static final BlockItem MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
     public static final BlockItem TABLE = Registry.SUPPLIER_TABLE.get();
+    public static final InkWellItem INK_WELL = Registry.SUPPLIER_INK_WELL.get();
+    public static final ResearchNoteItem RESEARCH_NOTE = Registry.SUPPLIER_RESEARCH_NOTE.get();
     //===========================================================================================
 
     public static class Registry {
@@ -658,6 +660,14 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_TABLE = ITEMS.register(
                 "table",
                 () -> new BlockItem(ThaumcraftBlocks.TABLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<InkWellItem> SUPPLIER_INK_WELL = ITEMS.register(
+                "ink_well",
+                InkWellItem::new
+        );
+        public static final RegistrySupplier<ResearchNoteItem> SUPPLIER_RESEARCH_NOTE = ITEMS.register(
+                "research_note",
+                ResearchNoteItem::new
         );
 
         static {

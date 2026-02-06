@@ -3,7 +3,6 @@ package tc4tweak.modules.visrelay;
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -122,14 +121,7 @@ public class SavedLinkHandler {
         ) {
             return null;
         }
-        ListTag linkRaw = TILE_VIS_NODE_LINKS_ACCESSOR.readFromCompoundTag(tag);
-        OpenTC4.LOGGER.trace("Reading link for node {} at {}. {} nodes.", getNodeType(thiz), thiz.getBlockPos(), linkRaw.size());
-        List<BlockPos> link = new ArrayList<>();
-        int end = Math.min(linkRaw.size(), 2);
-        for (int i = 0; i < end; i++) {
-            link.add(readOne((CompoundTag) linkRaw.get(i)));
-        }
-        return link;
+        return TILE_VIS_NODE_LINKS_ACCESSOR.readFromCompoundTag(tag);
     }
 
     public static void saveAdditional(TileVisNode thiz, CompoundTag tag) {
@@ -137,38 +129,20 @@ public class SavedLinkHandler {
         TileVisNode root = CommonUtils.deref(thiz.getRootSource());
         if (root == null)
             return;
-        ListTag path = new ListTag();
-//        NBTTagList path = new NBTTagList();
+        List<BlockPos> path = new ArrayList<>();
         TileVisNode node = CommonUtils.deref(thiz.getParent());
         // historically we store the whole path up to source node (hence the name link
         // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds of weirdness
         // due to unloading order, but 2 nodes seem to stable enough
         while (node != null && (path.size() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
-            path.add(writeOne(node));
+            path.add(node.getBlockPos());
             node = CommonUtils.deref(node.getParent());
         }
+
         TILE_VIS_NODE_LINKS_ACCESSOR.writeToCompoundTag(tag,path);
-//        tag.setTag("Link", path);
         var pos = thiz.getBlockPos();
         OpenTC4.LOGGER.trace("Written link for node {} at {}. {} element.", getNodeType(thiz),
                 pos, path.size()
-        );
-    }
-
-    private static CompoundTag writeOne(TileVisNode node) {
-        CompoundTag elem = new CompoundTag();
-        var pos = node.getBlockPos();
-        TILE_VIS_NODE_PATH_X_ACCESSOR.writeToCompoundTag(elem,pos.getX());
-        TILE_VIS_NODE_PATH_Y_ACCESSOR.writeToCompoundTag(elem,pos.getY());
-        TILE_VIS_NODE_PATH_Z_ACCESSOR.writeToCompoundTag(elem,pos.getZ());
-        return elem;
-    }
-
-    private static BlockPos readOne(CompoundTag elem) {
-        return new BlockPos(
-                TILE_VIS_NODE_PATH_X_ACCESSOR.readFromCompoundTag(elem),
-                TILE_VIS_NODE_PATH_Y_ACCESSOR.readFromCompoundTag(elem),
-                TILE_VIS_NODE_PATH_Z_ACCESSOR.readFromCompoundTag(elem)
         );
     }
 }

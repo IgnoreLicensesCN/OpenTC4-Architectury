@@ -13,7 +13,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.nodes.NodeType;
-import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.blocks.ItemJarNode;
@@ -43,12 +43,12 @@ public class ConfigResearch {
    }
 
    private static void initCategories() {
-      ResearchCategories.registerCategory("BASICS", new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-      ResearchCategories.registerCategory("THAUMATURGY", new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-      ResearchCategories.registerCategory("ALCHEMY", new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-      ResearchCategories.registerCategory("ARTIFICE", new ResourceLocation("thaumcraft", "textures/misc/r_artifice.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-      ResearchCategories.registerCategory("GOLEMANCY", new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-      ResearchCategories.registerCategory("ELDRITCH", new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
+      ResearchCategory.registerCategory("BASICS", new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+      ResearchCategory.registerCategory("THAUMATURGY", new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+      ResearchCategory.registerCategory("ALCHEMY", new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+      ResearchCategory.registerCategory("ARTIFICE", new ResourceLocation("thaumcraft", "textures/misc/r_artifice.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+      ResearchCategory.registerCategory("GOLEMANCY", new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+      ResearchCategory.registerCategory("ELDRITCH", new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
    }
 
    private static void initThaumaturgyResearch() {

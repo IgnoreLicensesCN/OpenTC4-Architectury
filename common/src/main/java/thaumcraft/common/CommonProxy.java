@@ -9,7 +9,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
@@ -24,15 +23,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.core.Direction;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.modules.FlushableCache;
 import tc4tweak.network.MessageSendConfiguration;
 import tc4tweak.network.MessageSendConfigurationV2;
 import tc4tweak.network.NetworkedConfiguration;
 import tc4tweak.network.TileHoleSyncPacket;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.container.*;
 import thaumcraft.common.entities.ContainerPech;
@@ -42,13 +39,7 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 import thaumcraft.common.entities.monster.EntityPech;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
-import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.research.PlayerKnowledge;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.*;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class CommonProxy implements IGuiHandler {
 //   public PlayerKnowledge playerKnowledge;
@@ -369,7 +360,7 @@ public class CommonProxy implements IGuiHandler {
 
    private void addDummyCategories(int amount, String categoryPrefix) {
       for (int i = 0; i < amount; i++) {
-         ResearchCategories.registerCategory(categoryPrefix + i, new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+         ResearchCategory.registerCategory(categoryPrefix + i, new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
       }
    }
 

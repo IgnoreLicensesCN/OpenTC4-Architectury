@@ -8,7 +8,6 @@ import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 
 import java.lang.ref.Reference;
@@ -37,7 +36,7 @@ public class CommonUtils {
             // then create a local copy
             // then replace the reference to that immutable collection with our local copy,
             // which is a simple PUTFIELD, which is atomic.
-            LinkedHashMap<String, ResearchCategory> categories = ResearchCategories.researchCategories;
+            LinkedHashMap<String, ResearchCategory> categories = ResearchCategory.researchCategories;
             originalTabOrders.addAll(categories.keySet());
             Set<String> realOrder = new LinkedHashSet<>(ConfigurationHandler.INSTANCE.getCategoryOrder());
             realOrder.addAll(originalTabOrders);
@@ -46,7 +45,7 @@ public class CommonUtils {
                 if (categories.containsKey(tab))
                     newCategories.put(tab, categories.get(tab));
             }
-            ResearchCategories.researchCategories = newCategories;
+            ResearchCategory.researchCategories = newCategories;
         }
     }
 

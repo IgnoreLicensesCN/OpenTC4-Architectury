@@ -31,7 +31,9 @@ block_with_item_names = [
     ['tile.blockTable.14.name','deconstruction_table'],
     ['tile.blockTable.research.name',['research_table_left_part','research_table_right_part']],
     ['block.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
-    ['item.thaumcraft.research_table',['research_table_left_part','research_table_right_part']]
+    ['item.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
+    ['item.researchnotes.name','research_note'],
+    ['item.ItemInkwell.name','ink_well']
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

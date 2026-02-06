@@ -18,10 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.IScribeTools;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
@@ -59,7 +57,7 @@ public class ResearchManager {
 
     public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
         List<ClueResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
+        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             label110:
             for (ResearchItem researchItem : rcl.researches.values()) {
                 var asClueKey = researchItem.key.convertToResearchItemResLoc();
@@ -112,7 +110,7 @@ public class ResearchManager {
 
     public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
         List<ClueResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategory rcl : ResearchCategories.researchCategories.values()) {
+        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.researches.values()) {
                 var convertedKey = ri.key.convertToResearchItemResLoc();
@@ -216,7 +214,7 @@ public class ResearchManager {
         if (allHiddenResearch == null) {
             allHiddenResearch = new ArrayList<>();
 
-            for (ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
                 for (ResearchItem ri : cat.researches.values()) {
                     if (ri.isHidden() && ri.tags != null && !ri.tags.isEmpty()) {
                         allHiddenResearch.add(ri);
@@ -254,7 +252,7 @@ public class ResearchManager {
         if (allValidResearch == null) {
             allValidResearch = new ArrayList<>();
 
-            for (ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
                 for (ResearchItem ri : cat.researches.values()) {
                     boolean secondary = ri.isSecondary() && Config.researchDifficulty == 0 || Config.researchDifficulty == -1;
                     if (!secondary && !ri.isHidden() && !ri.isLost() && !ri.isAutoUnlock() && !ri.isVirtual() && !ri.isStub()) {
@@ -293,60 +291,6 @@ public class ResearchManager {
         }
         return -1;
     }
-
-    @Deprecated(forRemoval = true)
-    public static boolean consumeInkFromPlayer(Player player, boolean doit) {
-        NonNullList<ItemStack> inv = player.getInventory().items;
-        for (ItemStack stack : inv) {
-            if (!stack.isEmpty() && stack.getItem() instanceof IScribeTools && stack.getDamageValue() < stack.getMaxDamage()) {
-                if (doit) {
-                    stack.hurtAndBreak(1, player, p -> {}); // 玩家对象回调
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-//    public static boolean consumeInkFromPlayer(Player player, boolean doit) {
-//        ItemStack[] inv = player.inventory.mainInventory;
-//
-//        for (ItemStack itemStack : inv) {
-//            if (itemStack != null && itemStack.getItem() instanceof IScribeTools && itemStack.getDamageValue() < itemStack.getMaxDamage()) {
-//                if (doit) {
-//                    itemStack.damageItem(1, player);
-//                }
-//
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean consumeInkFromTable(ItemStack stack, boolean doit) {
-        if (!stack.isEmpty() && stack.getItem() instanceof IScribeTools && stack.getDamageValue() < stack.getMaxDamage()) {
-            if (doit) {
-                //yeah it's on the table
-                stack.hurt(1, RandomSource.create(), null); // 无玩家回调
-            }
-            return true;
-        }
-        return false;
-    }
-    
-//    public static boolean consumeInkFromTable(ItemStack stack, boolean doit) {
-//        if (stack != null && stack.getItem() instanceof IScribeTools && stack.getDamageValue() < stack.getMaxDamage()) {
-//            if (doit) {
-//                stack.setItemDamage(stack.getDamageValue() + 1);
-//            }
-//
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 
     public static boolean checkResearchCompletion(ItemStack contents, ResearchNoteData note, String username) {
         List<HexCoord> checked = new ArrayList<>();
@@ -446,16 +390,16 @@ public class ResearchManager {
 
     public static ItemStack createNote(
             ItemStack stack,
-            ResearchItemResourceLocation researchKey,
+            ResearchItem researchItem,
             Level world) {
-        ResearchItem researchItem = ResearchItem.getResearch(researchKey);
+        var researchKey = researchItem.key;
         Aspect researchThemedAspect = researchItem.getResearchThemedAspect();
         if (researchThemedAspect.isEmpty()) {
             return ItemStack.EMPTY;
         }
 
         CompoundTag tag = stack.getOrCreateTag();
-        
+
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
         RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
         RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
@@ -464,7 +408,7 @@ public class ResearchManager {
         int radius = 1 + Math.min(3, researchItem.getComplexity());
         var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
         List<HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, researchItem.tags.size(), world.getRandom());
-        
+
         int count = 0;
 
         for (HexCoord hex : outerRing) {
@@ -482,7 +426,6 @@ public class ResearchManager {
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, hexLocs);
 
         return stack;
-
     }
 
     private static void removeRandomBlanks(
@@ -510,7 +453,7 @@ public class ResearchManager {
                         int cc = 0;
 
                         for (int q = 0; q < 6; ++q) {
-                            
+
                             if (hexGird.containsKey(
                                     neighbour.getNeighbour(q)
                             )
@@ -631,6 +574,7 @@ public class ResearchManager {
         return path;
     }
 
+    @Deprecated(forRemoval = true)
     public static ResearchNoteData getData(ItemStack stack) {
         if (stack == null || stack.isEmpty()) {
             return null;
@@ -645,6 +589,8 @@ public class ResearchManager {
         stack.setTag(tag);
         return data;
     }
+
+    @Deprecated(forRemoval = true)
     public static void updateData(ItemStack stack, ResearchNoteData data) {
         if (stack == null || stack.isEmpty() || data == null) return;
 
@@ -658,14 +604,15 @@ public class ResearchManager {
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, data.hexGrid);
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean isResearchComplete(String playername, ResearchItemResourceLocation key) {
-        if (ResearchItem.getResearch(key) == null) {
+        var research = ResearchItem.getResearch(key);
+        if (research == null) {
             return false;
-        } else {
-            var completed = getResearchForPlayer(playername);
-            return completed != null && !completed.isEmpty() && completed.contains(key);
         }
+        return research.isPlayerCompletedResearch(playername);
     }
+
     public static boolean isClueComplete(String playername, ClueResourceLocation key) {
         if (ResearchItem.getResearch(new ResearchItemResourceLocation(key)) == null) {
             return false;
@@ -826,8 +773,8 @@ public class ResearchManager {
         }
     }
 
-    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequsites) {
-        for (var preReq : preRequsites) {
+    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequisites) {
+        for (var preReq : preRequisites) {
             if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
         }
         if (isResearchComplete(player.getGameProfile().getName(), research)){return;}

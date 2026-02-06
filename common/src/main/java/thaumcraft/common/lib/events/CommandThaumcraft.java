@@ -12,7 +12,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
@@ -360,7 +359,7 @@ public class CommandThaumcraft{
    }
 
     static void listResearch(CommandSourceStack icommandsender) {
-      for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
          for(ResearchItem ri : cat.researches.values()) {
             icommandsender.sendSuccess(() -> Component.literal("§5" + ri.key),false);
          }
@@ -413,7 +412,7 @@ public class CommandThaumcraft{
    }
 
    static void giveAllResearch(CommandSourceStack icommandsender, ServerPlayer player) {
-      for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
          for(ResearchItem ri : cat.researches.values()) {
             if (!ResearchManager.isResearchComplete(player.getGameProfile().getName(), ri.key)) {
                Thaumcraft.researchManager.completeResearch(player, ri.key);
@@ -429,7 +428,7 @@ public class CommandThaumcraft{
    static void resetResearch(CommandSourceStack icommandsender, ServerPlayer player) {
       Thaumcraft.playerKnowledge.researchCompleted.remove(player.getGameProfile().getName());
 
-      for(ResearchCategory cat : ResearchCategories.researchCategories.values()) {
+      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
          for(ResearchItem ri : cat.researches.values()) {
             if (ri.isAutoUnlock()) {
                Thaumcraft.researchManager.completeResearch(player, ri.key);

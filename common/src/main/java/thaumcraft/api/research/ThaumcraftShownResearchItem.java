@@ -1,9 +1,11 @@
 package thaumcraft.api.research;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.render.ShownInfoInResearchCategory;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -33,8 +35,11 @@ public class ThaumcraftShownResearchItem extends ResearchItem
     public ThaumcraftShownResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category) {
         super(key, category);
     }
-    public ThaumcraftShownResearchItem addShownInfo(ShownInfoInResearchCategory... infos) {
+    public ThaumcraftShownResearchItem addShownInfo(@NotNull ShownInfoInResearchCategory @NotNull... infos) {
         this.shownInfosInternal.addAll(Arrays.asList(infos));
+        for (var info : infos){
+            ResearchCategory.getResearchCategory(info.category()).addResearch(this,info);
+        }
         return this;
     }
 }

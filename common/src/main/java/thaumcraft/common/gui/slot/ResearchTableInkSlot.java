@@ -5,7 +5,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.researchtable.IResearchTableAspectWriteTool;
+import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 
 public class ResearchTableInkSlot extends Slot {
     protected final Level atLevel;
@@ -18,7 +18,7 @@ public class ResearchTableInkSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack itemStack) {
-        return itemStack.getItem() instanceof IResearchTableAspectWriteTool writeTool
+        return itemStack.getItem() instanceof IResearchTableAspectEditTool writeTool
                 && writeTool.canPlaceIntoResearchTable(atLevel, pos, itemStack);
     }
 }

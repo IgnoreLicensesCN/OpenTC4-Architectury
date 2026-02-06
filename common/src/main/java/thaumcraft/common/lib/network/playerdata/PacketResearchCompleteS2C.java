@@ -1,13 +1,13 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.ClientTickEventsFML;
 import thaumcraft.common.Thaumcraft;
@@ -58,7 +58,7 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
         if (!ResearchItem.getResearch(key).isVirtual()) {
             ClientTickEventsFML.researchPopup.queueResearchInformation(ResearchItem.getResearch(key));
             GuiResearchBrowser.highlightedResearch.add(key);
-            for (var category:ResearchCategories.researchCategories.values()) {
+            for (var category: ResearchCategory.researchCategories.values()) {
                 if (category.researches.containsKey(key)) {
                     GuiResearchBrowser.highlightedCategory.add(category.categoryKey);
                 }
