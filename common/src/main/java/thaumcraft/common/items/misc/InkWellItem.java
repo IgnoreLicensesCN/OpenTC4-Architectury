@@ -68,7 +68,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
             Player player,
             ItemStack writeToolStack,
             ResearchItem researchItem) {
-        if (!researchItem.canPlayerResearch(player.getGameProfile().getName())){
+        if (!researchItem.canPlayerCreateResearchNote(player.getGameProfile().getName())){
             return NO_PREREQUISITES;
         }
         if (!durabilityEnough(writeToolStack) || !player.getInventory().hasAnyOf(Set.of(Items.PAPER))){
@@ -83,6 +83,9 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
         var paperSlot = inv.findSlotMatchingItem(Items.PAPER.getDefaultInstance());
         writeToolStack.hurt(1,atLevel.random,player);
         inv.getItem(paperSlot).shrink(1);
+        if (inv.getItem(paperSlot).isEmpty()) {
+            inv.setItem(paperSlot, ItemStack.EMPTY);
+        }
         var noteStack = ResearchNoteItem.createResearchNote(atLevel.random,researchItem);
         if (inv.getFreeSlot() >= 0){
             inv.add(noteStack);

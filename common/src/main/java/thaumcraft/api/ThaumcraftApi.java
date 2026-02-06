@@ -22,6 +22,7 @@ import thaumcraft.api.crafting.*;
 import thaumcraft.api.expands.UnmodifiableAspectList;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
 import thaumcraft.api.research.*;
+import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.common.items.ThaumcraftItems;
 
 import java.util.*;

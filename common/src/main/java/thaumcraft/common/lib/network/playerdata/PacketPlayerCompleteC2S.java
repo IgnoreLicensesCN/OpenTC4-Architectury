@@ -15,13 +15,15 @@ import tc4tweak.PacketCheck;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.Objects;
 
 import static tc4tweak.PacketCheck.isSecondaryResearch;
 
-public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
+@Deprecated(forRemoval = true,since = "i think i have to separate 'create research note' and 'unlock research with aspect'")
+public class PacketPlayerCompleteC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":player_complete";
     public static MessageType messageType;
 
@@ -32,9 +34,9 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
 
     // ------------------ 构造 ------------------
 
-    public PacketPlayerCompleteToServerC2S() {}
+    public PacketPlayerCompleteC2S() {}
 
-    public PacketPlayerCompleteToServerC2S(String key, String username, ResourceKey<Level> dim, byte type) {
+    public PacketPlayerCompleteC2S(String key, String username, ResourceKey<Level> dim, byte type) {
         this.key = key;
         this.username = username;
         this.dim = dim;
@@ -51,12 +53,12 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
         buf.writeByte(type);
     }
 
-    public static PacketPlayerCompleteToServerC2S decode(FriendlyByteBuf buf) {
+    public static PacketPlayerCompleteC2S decode(FriendlyByteBuf buf) {
         String key = buf.readUtf();
         ResourceKey<Level> dim = buf.readResourceKey(Registries.DIMENSION);
         String username = buf.readUtf();
         byte type = buf.readByte();
-        return new PacketPlayerCompleteToServerC2S(key, username, dim, type);
+        return new PacketPlayerCompleteC2S(key, username, dim, type);
     }
 
     // ------------------ 处理 ------------------
@@ -123,7 +125,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
         }
 
         //TODO:Sound
-        world.playSound(null, target.blockPosition(), Thaumcraft.SOUNDS.LEARN, target.getSoundSource(), 0.75F, 1.0F);
+        world.playSound(null, target.blockPosition(), ThaumcraftSounds.LEARN, target.getSoundSource(), 0.75F, 1.0F);
     }
 
     // ------------------ 逻辑 ------------------
@@ -136,7 +138,7 @@ public class PacketPlayerCompleteToServerC2S extends BaseC2SMessage {
         return type;
     }
 
-    public static boolean sanityPlayerComplete(PacketPlayerCompleteToServerC2S packet, ServerPlayer playerEntity) {
+    public static boolean sanityPlayerComplete(PacketPlayerCompleteC2S packet, ServerPlayer playerEntity) {
         if (packet.type() != 0) return true;
         ResearchItem research = packet.research();
         if (research == null) return false;

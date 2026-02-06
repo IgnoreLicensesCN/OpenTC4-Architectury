@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.research.ScanResult;
+import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.blocks.ThaumcraftBlocks;

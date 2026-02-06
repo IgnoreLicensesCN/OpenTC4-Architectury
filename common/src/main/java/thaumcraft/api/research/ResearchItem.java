@@ -1,6 +1,8 @@
 package thaumcraft.api.research;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.StatCollector;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +12,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.research.interfaces.IRenderableResearch;
+import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
+import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -18,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 //TODO:Separate
-public class ResearchItem
+public abstract class ResearchItem
 {
 
     /**
@@ -30,31 +35,21 @@ public class ResearchItem
 	protected final List<ResearchCategoryResourceLocation> categoryInternal = new ArrayList<>();
     @UnmodifiableView
     public final List<ResearchCategoryResourceLocation> category = Collections.unmodifiableList(categoryInternal);
-
-	/**
-	 * The aspect tags and their values required to complete this research
-	 */
-	public final AspectList<Aspect> tags = new AspectList<>();
 	
-    /**
-     * This links to any research that needs to be completed before this research can be discovered or learnt.
-     */
-    public ResearchItemResourceLocation[] parents = null;
-    
-    /**
-     * Like parent above, but a line will not be displayed in the thaumonomicon linking them. Just used to prevent clutter.
-     */
-    public ResearchItemResourceLocation[] parentsHidden = null;
-    /**
-     * any research linked to this that will be unlocked automatically when this research is complete
-     */
-    public ResearchItemResourceLocation[] siblings = null;
+//    /**
+//     * This links to any research that needs to be completed before this research can be discovered or learnt.
+//     */
+//    public ResearchItemResourceLocation[] parents = null;
+//
+//    /**
+//     * Like parent above, but a line will not be displayed in the thaumonomicon linking them. Just used to prevent clutter.
+//     */
+//    public ResearchItemResourceLocation[] parentsHidden = null;
+//    /**
+//     * any research linked to this that will be unlocked automatically when this research is complete
+//     */
+//    public ResearchItemResourceLocation[] siblings = null;
 
-    
-    /**
-     * How large the research grid is. Valid values are 1 to 3.
-     */
-    private @Range(from=1,to=3) int complexity;
 
     
     /**
@@ -130,15 +125,13 @@ public class ResearchItem
 
     public boolean doesPlayerHaveRequisites(String playerName) {
         Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
-        var parents = getResearch(key).parents;
-        var parentsHidden = getResearch(key).parentsHidden;
-        if (parents != null){
-            if (!researched.containsAll(Arrays.asList(getResearch(key).parents))) {
+        if (this instanceof IResearchParentsOwner parentsOwner) {
+            if (!researched.containsAll(parentsOwner.getParents())){
                 return false;
             }
         }
-        if (parentsHidden != null){
-            if (!researched.containsAll(Arrays.asList(getResearch(key).parentsHidden))) {
+        if (this instanceof IResearchParentsHiddenOwner parentsHiddenOwner) {
+            if (!researched.containsAll(parentsHiddenOwner.getParentsHidden())){
                 return false;
             }
         }
@@ -152,12 +145,10 @@ public class ResearchItem
         researchItems.put(this.key, this);
     }
     
-    public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category, AspectList<Aspect> tags, int complex)
+    public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category, int complex)
     {
     	this.key = key;
         this.categoryInternal.add(category);
-    	this.tags.addAll(tags);
-        this.complexity = Math.min(Math.max(complex, 1),3);
         registerResearchItem();
     }
     public ResearchItem(ResearchItemResourceLocation key)
@@ -167,11 +158,9 @@ public class ResearchItem
         registerResearchItem();
     }
 
-    public ResearchItem(ResearchItemResourceLocation key, AspectList<Aspect> tags, int complex)
+    public ResearchItem(ResearchItemResourceLocation key, int complex)
     {
         this.key = key;
-        this.tags.addAll(tags);
-        this.complexity = Math.min(Math.max(complex, 1),3);
         registerResearchItem();
     }
 
@@ -184,178 +173,28 @@ public class ResearchItem
         return researchItems.get(key);
     }
 
-    public ResearchItem setStub()
+    public Component getName()
     {
-        this.isStub = true;
-        return this;
+    	return Component.translatable("tc.research_name."+key);
     }
     
-    public ResearchItem setLost()
+    public Component getText()
     {
-        this.isLost = true;
-        return this;
-    }
-    
-    public ResearchItem setShowAfterParentDiscovered()
-    {
-        this.showAfterParentDiscovered = true;
-        return this;
-    }
-    
-    public ResearchItem setHidden()
-    {
-        this.isHidden = true;
-        return this;
-    }
-    
-    public ResearchItem setVirtual()
-    {
-        this.isVirtual = true;
-        return this;
-    }
-    
-    public ResearchItem setParents(ResearchItemResourceLocation... par)
-    {
-        this.parents = par;
-        return this;
-    }
-    
-    
-
-	public ResearchItem setParentsHidden(ResearchItemResourceLocation... par)
-    {
-        this.parentsHidden = par;
-        return this;
-    }
-    
-    public ResearchItem setSiblings(ResearchItemResourceLocation... sib)
-    {
-        this.siblings = sib;
-        return this;
-    }
-    
-    public ResearchItem setPages(ResearchPage... par)
-    {
-        this.pages = par;
-        return this;
-    }
-    
-    public ResearchPage[] getPages() {
-		return pages;
-	}
-    
-    public ResearchItem setItemTriggers(ItemStack... par)
-    {
-        this.itemTriggers = par;
-        return this;
-    }
-    
-    @SafeVarargs
-    public final ResearchItem setEntityTriggers(ResourceKey<EntityType<?>>... par)
-    {
-        this.entityTriggers = par;
-        return this;
-    }
-    
-    public ResearchItem setAspectTriggers(Aspect... par)
-    {
-        this.aspectTriggers = par;
-        return this;
+    	return Component.translatable("tc.research_text."+key);
     }
 
-    public ItemStack[] getItemTriggers() {
-		return itemTriggers;
-	}
-
-	public ResourceKey<EntityType<?>>[] getEntityTriggers() {
-		return entityTriggers;
-	}
-	
-	public Aspect[] getAspectTriggers() {
-		return aspectTriggers;
-	}
-
-    public String getName()
-    {
-    	return StatCollector.translateToLocal("tc.research_name."+key);
-    }
-    
-    public String getText()
-    {
-    	return StatCollector.translateToLocal("tc.research_text."+key);
-    }
-    
-    public boolean isStub()
-    {
-        return this.isStub;
-    }
-        
-    public boolean isLost()
-    {
-        return this.isLost;
-    }
-    
-    public boolean wouldShowAfterParentDiscovered()
-    {
-        return this.showAfterParentDiscovered;
-    }
-    
-    public boolean isHidden()
-    {
-        return this.isHidden;
-    }
-    
-    public boolean isVirtual()
-    {
-        return this.isVirtual;
-    }
-    
-    public boolean isAutoUnlock() {
-		return isAutoUnlock;
-	}
-	
-	public ResearchItem setAutoUnlock()
-    {
-        this.isAutoUnlock = true;
-        return this;
-    }
-	
-	public boolean isSecondary() {
-		return isSecondary;
-	}
-
-	public ResearchItem setSecondary() {
-		this.isSecondary = true;
-		return this;
-	}
-
-	public int getComplexity() {
-		return complexity;
-	}
-
-	public ResearchItem setComplexity(int complexity) {
-		this.complexity = complexity;
-		return this;
-	}
-
-	/**
-	 * @return the aspect aspects ordinal with the highest value. Used to determine scroll color and similar things
-	 */
-    @NotNull("null->empty")
-	public Aspect getResearchThemedAspect() {
-		Aspect aspect = Aspects.EMPTY;
-		int highest=0;
-        for (Aspect tag : tags.getAspectTypes()) {
-            if (tags.getAmount(tag) > highest) {
-                aspect = tag;
-                highest = tags.getAmount(tag);
-            }
+    public ResearchItem addCategory(ResearchCategoryResourceLocation categoryKey){
+        var category = ResearchCategory.getResearchCategory(categoryKey);
+        if (category == null){
+            OpenTC4.LOGGER.error("ResearchCategory {} does not exist",categoryKey);
+            return this;
         }
-        return aspect;
-	}
-
-    public ResearchItem addCategory(ResearchCategoryResourceLocation category){
-        this.categoryInternal.add(category);
+        if (this instanceof IRenderableResearch renderableResearch){
+            category.addResearch(this,renderableResearch.getShownInfo(category));
+        }else {
+            category.researches.put(this.key,this);
+        }
+        this.categoryInternal.add(categoryKey);
         return this;
     }
 
@@ -365,11 +204,6 @@ public class ResearchItem
                 "key=" + key +
                 ", categoryInternal=" + categoryInternal +
                 ", category=" + category +
-                ", tags=" + tags +
-                ", parents=" + Arrays.toString(parents) +
-                ", parentsHidden=" + Arrays.toString(parentsHidden) +
-                ", siblings=" + Arrays.toString(siblings) +
-                ", complexity=" + complexity +
                 ", isSecondary=" + isSecondary +
                 ", isStub=" + isStub +
                 ", isVirtual=" + isVirtual +
@@ -384,19 +218,7 @@ public class ResearchItem
                 '}';
     }
 
-    public ResearchItem setWarp(int warp) {
-        this.warp = warp;
-        return this;
-    }
-
-    public int getWarp() {
-        return warp;
-    }
-
     public boolean isPlayerCompletedResearch(String playerName){
         return ResearchManager.getResearchForPlayer(playerName).contains(this.key);
-    }
-    public boolean canPlayerResearch(String playerName){
-        //TODO
     }
 }

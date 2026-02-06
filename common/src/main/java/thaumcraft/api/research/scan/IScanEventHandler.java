@@ -1,4 +1,4 @@
-package thaumcraft.api.research;
+package thaumcraft.api.research.scan;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

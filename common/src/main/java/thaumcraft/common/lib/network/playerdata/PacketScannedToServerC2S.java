@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.research.ScanResult;
+import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ScanManager;
 

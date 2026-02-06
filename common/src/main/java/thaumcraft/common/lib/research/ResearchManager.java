@@ -163,53 +163,6 @@ public class ResearchManager {
             return false;
         }
     }
-
-    public static ItemStack createResearchNoteForPlayer(
-            Level world,
-            Player player,
-            ResearchItemResourceLocation researchKey
-    ) {
-        ItemStack note = ItemStack.EMPTY;
-        int slot = getResearchSlot(player, researchKey);
-
-        if (slot >= 0) {
-            // 玩家已有笔记
-            note = player.getInventory().getItem(slot);
-        } else {
-            // 检查玩家是否有墨水和纸
-            if (consumeInkFromPlayer(player, false) && consumePaperFromPlayer(player)) {
-                consumeInkFromPlayer(player, true);
-
-                note = createNote(new ItemStack(ConfigItems.itemResearchNotes), researchKey, world);
-
-                // 尝试放入背包，放不下则掉落
-                if (!player.getInventory().add(note)) {
-                    player.drop(note, false);
-                }
-
-                // 更新容器界面（客户端同步）
-                player.containerMenu.broadcastChanges();
-            }
-        }
-
-        return note;
-    }
-
-    // 1.20.1 获取纸张的方法（Inventory.consumeInventoryItem 已废弃）
-    private static boolean consumePaperFromPlayer(Player player) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack stack = player.getInventory().getItem(i);
-            if (stack.is(Items.PAPER)) {
-                stack.shrink(1);
-                if (stack.isEmpty()) {
-                    player.getInventory().setItem(i, ItemStack.EMPTY);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static ResourceLocation findHiddenResearch(Player player) {
         if (allHiddenResearch == null) {
             allHiddenResearch = new ArrayList<>();
