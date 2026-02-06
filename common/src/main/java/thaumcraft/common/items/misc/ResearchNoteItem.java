@@ -9,9 +9,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
+import thaumcraft.api.research.interfaces.IThemedAspectOwner;
 import thaumcraft.api.researchtable.IResearchNoteDataOwner;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.research.HexEntry;
@@ -123,32 +126,34 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
             RandomSource randomSource,
             ResearchItem researchItem
     ){
+        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+            throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
+        }
         var stack = ThaumcraftItems.RESEARCH_NOTE.getDefaultInstance();
         var researchKey = researchItem.key;
-        Aspect researchThemedAspect = researchItem.getResearchThemedAspect();
-        if (researchThemedAspect.isEmpty()) {
-            return ItemStack.EMPTY;
+        Aspect researchThemedAspect = Aspects.EMPTY;
+        if (researchItem instanceof IThemedAspectOwner themedAspectOwner){
+            researchThemedAspect = themedAspectOwner.getResearchThemedAspect();
         }
 
         CompoundTag tag = stack.getOrCreateTag();
-
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
         RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
         RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
         RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
 
-        int radius = 1 + Math.min(3, researchItem.getComplexity());
+        int radius = 1 + noteCreatable.getComplexity();
         var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
-        List<HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, researchItem.tags.size(), randomSource);
+        List<HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, noteCreatable.getResearchGivenAspects().size(), randomSource);
 
-        int count = 0;
+        int placedAspectCount = 0;
 
         for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(researchItem.tags.getAspectTypes().get(count), HexType.GIVEN));
-            ++count;
+            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().get(placedAspectCount), HexType.GIVEN));
+            ++placedAspectCount;
         }
 
-        if (researchItem.getComplexity() > 1) {
+        if (noteCreatable.getComplexity() > 1) {
             removeRandomBlanks(randomSource, researchItem, hexLocs);
         }
 
@@ -165,7 +170,10 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
             ResearchItem rr,
             Map<HexCoord, HexEntry> hexGird
     ) {
-        int blanks = rr.getComplexity() * 2;
+        if (!(rr instanceof IResearchNoteCreatable noteCreatable)){
+            throw new IllegalArgumentException("research cannot create ResearchNote:"+rr);
+        }
+        int blanks = noteCreatable.getComplexity() * 2;
         var temp = hexGird.keySet().toArray(new HexCoord[0]);
 
         while (blanks > 0) {

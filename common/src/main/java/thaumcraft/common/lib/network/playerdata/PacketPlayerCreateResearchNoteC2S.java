@@ -6,6 +6,8 @@ import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
+import thaumcraft.api.research.interfaces.IResearchable;
 import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -42,8 +44,13 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
         }
         var research = ResearchItem.getResearch(researchToCreateNote);
         var player = context.getPlayer();
-        if (player instanceof ServerPlayer serverPlayer) {
-            if (research.canPlayerResearch(player.getGameProfile().getName())){
+        if (player instanceof ServerPlayer serverPlayer
+                && research instanceof IResearchable researchable
+                && research instanceof IResearchNoteCreatable researchNoteCreatable) {
+            if (!researchNoteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
+                return;
+            }
+            if (researchable.canPlayerResearch(player.getGameProfile().getName())){
                 var inv = player.getInventory();
                 if (inv.getContainerSize() <= inventorySlotWithInkWell){
                     return;

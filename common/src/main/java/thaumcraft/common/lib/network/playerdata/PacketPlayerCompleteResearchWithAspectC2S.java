@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockable;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
@@ -43,5 +44,28 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (research == null){return;}
         if (!(research instanceof IAspectUnlockable aspectUnlockable)){return;}
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(playerName)){return;}
+        var aspectsCost = aspectUnlockable.getAspectCost();
+        var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(playerName);
+        for (var aspectCostPair:aspectsCost.getAspects().entrySet()){
+            var aspectTypeRequired = aspectCostPair.getKey();
+            var aspectCost = aspectCostPair.getValue();
+            if (!(playerOwningAspect.getAspects().getOrDefault(aspectTypeRequired, 0) >= aspectCost)){
+                return;
+            }
+        }
+        for (var aspectCostPair:aspectsCost.getAspects().entrySet()){
+            var aspectTypeRequired = aspectCostPair.getKey();
+            var aspectCost = aspectCostPair.getValue();
+
+            Thaumcraft.playerKnowledge.addAspectPool(playerName, aspectTypeRequired, (short) (-aspectCost));
+            ResearchManager.scheduleSave(playerName);
+            new PacketAspectPoolS2C(
+                    aspectTypeRequired.aspectKey,
+                    (short) (-aspectCost),
+                    Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspectTypeRequired))
+                    .sendTo(player);
+        }
+        new PacketResearchCompleteS2C(research.key).sendTo(player);
+        Thaumcraft.researchManager.completeResearch(player, research.key);
     }
 }

@@ -285,17 +285,17 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.monster_egg, 1, 32767), (new AspectList()).addAll(Aspects.EARTH, 2).addAll(
               Aspects.BEAST, 1).addAll(Aspects.TRAP, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 32767), (new AspectList()).addAll(Aspects.EARTH, 2));
-      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 1), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNegative(
+      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 1), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNotPositive(
               Aspects.EARTH, 1).addAll(Aspects.PLANT, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 2), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNegative(
+      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 2), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNotPositive(
               Aspects.EARTH, 1).addAll(Aspects.ENTROPY, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 3), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNegative(
+      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.stonebrick, 1, 3), (new AspectList(new ItemStack(Blocks.stonebrick))).reduceAndRemoveIfNotPositive(
               Aspects.EARTH, 1).addAll(Aspects.ORDER, 1));
       ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.sandstone, 1, 32767), (new AspectList()).addAll(
-              Aspects.EARTH, 1).reduceAndRemoveIfNegative(Aspects.EARTH, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.sandstone, 1, 1), (new AspectList(new ItemStack(Blocks.sandstone))).reduceAndRemoveIfNegative(
+              Aspects.EARTH, 1).reduceAndRemoveIfNotPositive(Aspects.EARTH, 1));
+      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.sandstone, 1, 1), (new AspectList(new ItemStack(Blocks.sandstone))).reduceAndRemoveIfNotPositive(
               Aspects.EARTH, 1).addAll(Aspects.MAGIC, 1));
-      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.sandstone, 1, 2), (new AspectList(new ItemStack(Blocks.sandstone))).reduceAndRemoveIfNegative(
+      ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.sandstone, 1, 2), (new AspectList(new ItemStack(Blocks.sandstone))).reduceAndRemoveIfNotPositive(
               Aspects.EARTH, 1).addAll(Aspects.ORDER, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.tallgrass, 1, 32767), (new AspectList()).addAll(Aspects.PLANT, 1).addAll(
               Aspects.AIR, 1));
@@ -345,7 +345,7 @@ public class ConfigAspects {
               Aspects.POISON, 2));
       ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.pumpkin, 1, 32767), (new AspectList()).addAll(Aspects.CROP, 2));
       ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.melon_block, 1, 32767), (new AspectList()).addAll(
-              Aspects.CROP, 2).reduceAndRemoveIfNegative(Aspects.HUNGER, 4));
+              Aspects.CROP, 2).reduceAndRemoveIfNotPositive(Aspects.HUNGER, 4));
       ThaumcraftApi.registerObjectTag(new ItemStack(Items.name_tag, 1, 32767), (new AspectList()).addAll(Aspects.MIND, 2).addAll(
               Aspects.BEAST, 2));
       ThaumcraftApi.registerObjectTag(new ItemStack(Items.iron_horse_armor, 1, 32767), (new AspectList()).addAll(
@@ -691,7 +691,7 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemNuggetFish, 1, 32767), (new AspectList()).addAll(
               Aspects.HUNGER, 1));
       ThaumcraftApi.registerComplexObjectTag(new ItemStack(ConfigItems.itemTripleMeatTreat, 1, 32767), (new AspectList()).addAll(
-              Aspects.HEAL, 1).reduceAndRemoveIfNegative(Aspects.HUNGER, 1));
+              Aspects.HEAL, 1).reduceAndRemoveIfNotPositive(Aspects.HUNGER, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 0), (new AspectList()).addAll(Aspects.MAGIC, 1).addAll(
               Aspects.AIR, 2).addAll(Aspects.CRYSTAL, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 1), (new AspectList()).addAll(Aspects.MAGIC, 1).addAll(
@@ -705,7 +705,7 @@ public class ConfigAspects {
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigItems.itemShard, 1, 5), (new AspectList()).addAll(Aspects.MAGIC, 1).addAll(
               Aspects.ENTROPY, 2).addAll(Aspects.CRYSTAL, 1));
       ThaumcraftApi.registerObjectTag(new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1), (new AspectList(new ItemStack(ConfigItems.itemShard, 1, 6))).addAll(
-              Aspects.MAGIC, 2).reduceAndRemoveIfNegative(
+              Aspects.MAGIC, 2).reduceAndRemoveIfNotPositive(
               Aspects.CRYSTAL));
       ThaumcraftApi.registerObjectTag(new ItemStack(ConfigBlocks.blockMetalDevice), (new AspectList(new ItemStack(Items.cauldron, 1, 32767))).addAll(
               Aspects.CRAFT, 4).addAll(Aspects.MAGIC, 4));

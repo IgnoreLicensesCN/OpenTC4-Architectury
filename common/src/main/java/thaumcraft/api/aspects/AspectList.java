@@ -215,7 +215,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @param amount to remove
 	 * @return slef
 	 */
-	public AspectList<Asp> reduceAndRemoveIfNegative(Asp key, int amount) {
+	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key, int amount) {
 		int am = getAmount(key) - amount;
 		if (am<=0) {
 			aspects.remove(key);
@@ -232,7 +232,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 //	 * @param amount
 	 * @return self
 	 */
-	public AspectList<Asp> reduceAndRemoveIfNegative(Asp key) {
+	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key) {
 		aspects.remove(key); 
 		return this;
 	}

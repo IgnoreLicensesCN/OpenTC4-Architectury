@@ -107,8 +107,6 @@ public abstract class ResearchItem
     private Aspect[] aspectTriggers;
 
 	private ResearchPage[] pages = null;
-
-    protected int warp = 0;
 	
 	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
     {

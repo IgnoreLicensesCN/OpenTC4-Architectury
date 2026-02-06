@@ -8,7 +8,7 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.List;
 
-public class ResearchNoteUnlockedResearchWithParentsAndWarp
+public abstract class ResearchNoteUnlockedResearchWithParentsAndWarp
         extends ResearchNoteUnlockedResearchWithParents
         implements IResearchWarpOwner {
     private final int warp;

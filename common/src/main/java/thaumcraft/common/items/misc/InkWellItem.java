@@ -11,6 +11,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
 import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.api.researchtable.ResearchCreateReason;
 import thaumcraft.common.lib.utils.HexCoord;
@@ -68,7 +69,10 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
             Player player,
             ItemStack writeToolStack,
             ResearchItem researchItem) {
-        if (!researchItem.canPlayerCreateResearchNote(player.getGameProfile().getName())){
+        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+            return SUSPICIOUS_CALL;
+        }
+        if (!noteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
             return NO_PREREQUISITES;
         }
         if (!durabilityEnough(writeToolStack) || !player.getInventory().hasAnyOf(Set.of(Items.PAPER))){
@@ -78,7 +82,15 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
     }
 
     @Override
-    public void createResearchNote(Level atLevel, ServerPlayer player, ItemStack writeToolStack, ResearchItem researchItem) {
+    public void createResearchNote(
+            Level atLevel,
+            ServerPlayer player,
+            ItemStack writeToolStack,
+            ResearchItem researchItem
+    ) {
+        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+            return;
+        }
         var inv = player.getInventory();
         var paperSlot = inv.findSlotMatchingItem(Items.PAPER.getDefaultInstance());
         writeToolStack.hurt(1,atLevel.random,player);

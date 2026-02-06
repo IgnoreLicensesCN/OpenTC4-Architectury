@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ResearchNoteUnlockedResearchWithParents
+public abstract class ResearchNoteUnlockedResearchWithParents
         extends ResearchNoteUnlockedResearch
         implements IResearchParentsOwner {
     List<ResearchItemResourceLocation> parents;

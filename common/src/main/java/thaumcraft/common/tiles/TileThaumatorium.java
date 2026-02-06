@@ -301,7 +301,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.essentia.getAmount(tt) >= am) {
-         this.essentia.reduceAndRemoveIfNegative(tt, am);
+         this.essentia.reduceAndRemoveIfNotPositive(tt, am);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;

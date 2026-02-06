@@ -619,7 +619,7 @@ public class GuiResearchBrowser extends GuiScreen {
                     GL11.glPushMatrix();
                     GL11.glTranslatef((float) var26, (float) (var27 + var41 + 8), 0.0F);
                     GL11.glScalef(0.5F, 0.5F, 0.5F);
-                    if (ResearchManager.getResearchSlot(this.mc.thePlayer, this.currentHighlight.key) >= 0) {
+                    if (ResearchManager.getAlreadyExistsResearchSlot(this.mc.thePlayer, this.currentHighlight.key) >= 0) {
                         this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.hasnote"), 0, 0, 16753920);
                     } else if (this.hasScribestuff) {
                         this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.getprim"), 0, 0, 8900331);
@@ -699,7 +699,7 @@ public class GuiResearchBrowser extends GuiScreen {
                 if (enough) {
                     PacketHandler.INSTANCE.sendToServer(new PacketPlayerCompleteToServer(this.currentHighlight.key, this.mc.thePlayer.getCommandSenderName(), this.mc.thePlayer.level().dimension(), (byte) 0));
                 }
-            } else if (this.hasScribestuff && ResearchManager.getResearchSlot(this.mc.thePlayer, this.currentHighlight.key) == -1) {
+            } else if (this.hasScribestuff && ResearchManager.getAlreadyExistsResearchSlot(this.mc.thePlayer, this.currentHighlight.key) == -1) {
                 PacketHandler.INSTANCE.sendToServer(new PacketPlayerCompleteToServer(this.currentHighlight.key, this.mc.thePlayer.getCommandSenderName(), this.mc.thePlayer.level().dimension(), (byte) 1));
                 this.popuptime = System.currentTimeMillis() + 3000L;
                 this.popupmessage = (new ChatComponentTranslation(StatCollector.translateToLocal("tc.research.popup"), this.currentHighlight.getName())).getUnformattedText();

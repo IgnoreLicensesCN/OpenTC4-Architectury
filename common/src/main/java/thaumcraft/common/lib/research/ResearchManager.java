@@ -4,24 +4,22 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
@@ -30,8 +28,6 @@ import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.common.lib.utils.HexCoord;
-import thaumcraft.common.lib.utils.HexCoordUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +36,6 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.linearity.opentc4.Consts.AspectCompoundTagAccessors.*;
-import static com.linearity.opentc4.Consts.ResearchNoteCompoundTagAccessors.*;
 import static com.linearity.opentc4.Consts.ThaumcraftPlayerCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.LOGGER;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
@@ -51,19 +46,21 @@ public class ResearchManager {
     static ArrayList<ResearchItem> allHiddenResearch = null;
     static ArrayList<ResearchItem> allValidResearch = null;
 
+    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
     public static boolean createClue(Level world, Player player, ItemStack clue, AspectList<Aspect> aspects) {
         return createClue(world, player, clue.getItem(), aspects);
     }
 
+    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
     public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
         List<ClueResourceLocation> keys = new ArrayList<>();
         for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             label110:
             for (ResearchItem researchItem : rcl.researches.values()) {
                 var asClueKey = researchItem.key.convertToResearchItemResLoc();
-                boolean valid = !researchItem.tags.isEmpty() && (researchItem.isLost() || researchItem.isHidden()) && !isResearchComplete(
-                        player.getGameProfile()
-                                .getName(), researchItem.key
+                boolean valid = !researchItem.tags.isEmpty()
+                        && (researchItem.isLost() || researchItem.isHidden())
+                        && !isResearchComplete(player.getGameProfile().getName(), researchItem.key
                 ) && !isClueComplete(
                         player.getGameProfile()
                                 .getName(), asClueKey
@@ -108,6 +105,7 @@ public class ResearchManager {
         }
     }
 
+    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
     public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
         List<ClueResourceLocation> keys = new ArrayList<>();
         for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
@@ -163,6 +161,8 @@ public class ResearchManager {
             return false;
         }
     }
+
+    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface,or PERISH")
     public static ResourceLocation findHiddenResearch(Player player) {
         if (allHiddenResearch == null) {
             allHiddenResearch = new ArrayList<>();
@@ -200,6 +200,7 @@ public class ResearchManager {
     }
     public static final ResourceLocation EMPTY_RESEARCH = new ResourceLocation("","");
 
+    @Deprecated(forRemoval = true,since = "unused,should be called mental illness")
     public static ResourceLocation findMatchingResearch(Player player, Aspect aspect) {
         ResourceLocation randomMatch = null;
         if (allValidResearch == null) {
@@ -218,7 +219,9 @@ public class ResearchManager {
         ArrayList<ResourceLocation> keys = new ArrayList<>();
 
         for (ResearchItem research : allValidResearch) {
-            if (!isResearchComplete(player.getGameProfile().getName(), research.key) && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key) && research.tags.getAmount(aspect) > 0) {
+            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
+                    && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
+                    && research.tags.getAmount(aspect) > 0) {
                 keys.add(research.key);
             }
         }
@@ -230,8 +233,8 @@ public class ResearchManager {
         return randomMatch;
     }
 
-    public static int getResearchSlot(Player player, ResourceLocation key) {
-        NonNullList<ItemStack> inv = player.getInventory().items;
+    public static int getAlreadyExistsResearchSlot(Player player, ResearchItemResourceLocation key) {
+        var inv = player.getInventory().items;
         for (int a = 0; a < inv.size(); a++) {
             ItemStack stack = inv.get(a);
             if (!stack.isEmpty()
@@ -243,318 +246,6 @@ public class ResearchManager {
             }
         }
         return -1;
-    }
-
-    public static boolean checkResearchCompletion(ItemStack contents, ResearchNoteData note, String username) {
-        List<HexCoord> checked = new ArrayList<>();
-        List<HexCoord> main = new ArrayList<>();
-        List<HexCoord> remains = new ArrayList<>();
-
-        for (var hexPair : note.hexGrid.entrySet()) {
-            var coord = hexPair.getKey();
-            var entry = hexPair.getValue();
-            if (entry.type() == HexType.GIVEN) {
-                main.add(coord);
-            }
-        }
-
-        for (var hexPair : note.hexGrid.entrySet()) {
-            var coord = hexPair.getKey();
-            var entry = hexPair.getValue();
-            if (entry.type() == HexType.GIVEN) {
-                main.remove(coord);
-                checkConnections(note, coord, checked, main, remains, username);
-                break;
-            }
-        }
-
-        if (!main.isEmpty()) {
-            return false;
-        } else {
-            List<HexCoord> remove = new ArrayList<>();
-
-            for (var hexPair : note.hexGrid.entrySet()) {
-                var hexCoord = hexPair.getKey();
-                var entry = hexPair.getValue();
-                if (entry.type() != HexType.GIVEN && !remains.contains(hexCoord)) {
-                    remove.add(hexCoord);
-                }
-            }
-
-            for (var s : remove) {
-                note.hexGrid.remove(s);
-            }
-
-            note.completed = true;
-            updateData(contents, note);
-            return true;
-        }
-    }
-
-    private static boolean canAspectConnectToEachOther(Aspect aspectA, Aspect aspectB) {
-        if (aspectA instanceof CompoundAspect compoundAspectA){
-            if (compoundAspectA.components.aspectA() == aspectB){
-                return true;
-            }
-            if (compoundAspectA.components.aspectB() == aspectB){
-                return true;
-            }
-        }
-        if (aspectB instanceof CompoundAspect compoundAspectB){
-            if (compoundAspectB.components.aspectA() == aspectA){
-                return true;
-            }
-            if (compoundAspectB.components.aspectB() == aspectA){
-                return true;
-            }
-        }
-        return false;
-
-    }
-    private static void checkConnections(ResearchNoteData note,
-                                         HexCoord hex,
-                                         List<HexCoord> checked,
-                                         List<HexCoord> main,
-                                         List<HexCoord> remains,
-                                         String username) {
-        checked.add(hex);
-
-        for (int a = 0; a < 6; ++a) {
-            HexCoord target = hex.getNeighbour(a);
-            var targetType = note.hexGrid.get(target).type();
-            if (!checked.contains(target)
-                    && note.hexGrid.containsKey(target)
-                    && (targetType == HexType.GIVEN || targetType == HexType.WRITTEN)
-            ) {
-                Aspect aspect1 = note.hexGrid.get(hex).aspect();
-                Aspect aspect2 = note.hexGrid.get(target).aspect();
-                if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect1)
-                        && Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect2)
-                        && canAspectConnectToEachOther(aspect1, aspect2)) {
-                    remains.add(target);
-                    if (note.hexGrid.get(target).type() == HexType.GIVEN) {
-                        main.remove(target);
-                    }
-                    checkConnections(note, target, checked, main, remains, username);
-                }
-            }
-        }
-    }
-
-    public static ItemStack createNote(
-            ItemStack stack,
-            ResearchItem researchItem,
-            Level world) {
-        var researchKey = researchItem.key;
-        Aspect researchThemedAspect = researchItem.getResearchThemedAspect();
-        if (researchThemedAspect.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-
-        CompoundTag tag = stack.getOrCreateTag();
-
-        RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
-
-        int radius = 1 + Math.min(3, researchItem.getComplexity());
-        var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
-        List<HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, researchItem.tags.size(), world.getRandom());
-
-        int count = 0;
-
-        for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(researchItem.tags.getAspectTypes().get(count), HexType.GIVEN));
-            ++count;
-        }
-
-        if (researchItem.getComplexity() > 1) {
-            removeRandomBlanks(world.getRandom(), researchItem, hexLocs);
-        }
-
-        //got angry with some research with some node blocked and whole note can't be finished
-        ensureEndpointsConnected(hexLocs);
-
-        RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, hexLocs);
-
-        return stack;
-    }
-
-    private static void removeRandomBlanks(
-            RandomSource random,
-            ResearchItem rr,
-            Map<HexCoord, HexEntry> hexGird
-    ) {
-        int blanks = rr.getComplexity() * 2;
-        var temp = hexGird.keySet().toArray(new HexCoord[0]);
-
-        while (blanks > 0) {
-            int pickIndex = random.nextInt(temp.length);
-            var pickEntry = hexGird.get(temp[pickIndex]);
-            if (pickEntry != null
-                    && pickEntry.type() == HexType.NONE
-            ) {
-                boolean gtg = true;
-
-                for (int n = 0; n < 6; ++n) {
-                    HexCoord neighbour = temp[pickIndex].getNeighbour(n);
-                    var neighborEntry = hexGird.get(neighbour);
-                    if (neighborEntry != null
-                            && neighborEntry.type() == HexType.WRITTEN
-                    ) {
-                        int cc = 0;
-
-                        for (int q = 0; q < 6; ++q) {
-
-                            if (hexGird.containsKey(
-                                    neighbour.getNeighbour(q)
-                            )
-                            ) {
-                                ++cc;
-                            }
-
-                            if (cc >= 2) {
-                                break;
-                            }
-                        }
-
-                        if (cc < 2) {
-                            gtg = false;
-                            break;
-                        }
-                    }
-                }
-
-                if (gtg) {
-                    hexGird.remove(temp[pickIndex]);
-                    temp = hexGird.keySet().toArray(new HexCoord[0]);
-                    --blanks;
-                }
-            }
-        }
-    }
-
-    private static void ensureEndpointsConnected(
-            Map<HexCoord, HexEntry> hexGrid
-    ) {
-        // 找出端点 hex
-        List<HexCoord> endpoints = hexGrid.entrySet().stream()
-                .filter(e -> e.getValue().type() == HexType.GIVEN)
-                .map(Map.Entry::getKey)
-                .filter(Objects::nonNull)
-                .toList();
-
-        if (endpoints.size() < 2) return;
-
-        // BFS helper
-        Set<HexCoord> visited = new HashSet<>();
-        for (int i = 0; i < endpoints.size() - 1; i++) {
-            HexCoord start = endpoints.get(i);
-            HexCoord end = endpoints.get(i + 1);
-
-            if (!isConnected(start, end, hexGrid, visited)) {
-                // 找最短路径恢复
-                List<HexCoord> path = findPathAllowRemoved(start, end, hexGrid);
-                for (HexCoord key : path) {
-                    if (!hexGrid.containsKey(key)) {
-                        hexGrid.put(key, HexEntry.EMPTY);
-                    }
-                }
-            }
-        }
-    }
-
-    // 检查两个端点是否连通
-    //author:ChatGPT
-    private static boolean isConnected(
-            HexCoord start,
-            HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid,
-            Set<HexCoord> visited) {
-        visited.clear();
-        Queue<HexCoord> queue = new ArrayDeque<>();
-        queue.add(start);
-        visited.add(start);
-
-        while (!queue.isEmpty()) {
-            HexCoord current = queue.poll();
-            if (current.equals(end)) return true;
-
-            for (int i = 0; i < 6; i++) {
-                HexCoord key = current.getNeighbour(i);
-                if (!visited.contains(key) && hexGrid.containsKey(key)) {
-                    queue.add(key);
-                    visited.add(key);
-                }
-            }
-        }
-        return false;
-    }
-
-    // 找到 start -> end 的路径，允许穿过被移除 hex
-    //author:ChatGPT
-    private static List<HexCoord> findPathAllowRemoved(
-            HexCoord start, HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid
-    ) {
-        Map<HexCoord, HexCoord> cameFromMap = new HashMap<>();
-        Queue<HexCoord> queue = new ArrayDeque<>();
-        queue.add(start);
-        cameFromMap.put(start, null);
-
-        while (!queue.isEmpty()) {
-            HexCoord current = queue.poll();
-            if (current.equals(end)) break;
-
-            for (int i = 0; i < 6; i++) {
-                HexCoord key = current.getNeighbour(i);
-                if (!cameFromMap.containsKey(key)) {
-                    queue.add(key);
-                    cameFromMap.put(key, current);
-                }
-            }
-        }
-
-        // 回溯路径
-        List<HexCoord> path = new ArrayList<>();
-        HexCoord cursor = end;
-        while (cursor != null && !cursor.equals(start)) {
-            path.add(cursor);
-            cursor = cameFromMap.get(cursor);
-        }
-        Collections.reverse(path);
-        return path;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static ResearchNoteData getData(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) {
-            return null;
-        }
-        CompoundTag tag = stack.getOrCreateTag();
-        ResearchNoteData data = new ResearchNoteData();
-        data.key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(tag);
-        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readFromCompoundTag(tag);
-        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readFromCompoundTag(tag);
-        data.copies = RESEARCH_NOTE_COPIES_ACCESSOR.readFromCompoundTag(tag);
-        data.hexGrid = RESEARCH_NOTE_HEXGRID_ACCESSOR.readFromCompoundTag(tag);
-        stack.setTag(tag);
-        return data;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void updateData(ItemStack stack, ResearchNoteData data) {
-        if (stack == null || stack.isEmpty() || data == null) return;
-
-        CompoundTag tag = stack.getOrCreateTag();
-
-        // 基本信息
-        RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, data.key);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, data.color);
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, data.completed);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, data.copies);
-        RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, data.hexGrid);
     }
 
     @Deprecated(forRemoval = true)
@@ -741,46 +432,36 @@ public class ResearchManager {
         String playerName = player.getGameProfile().getName();
         if (completeClueUnsaved(playerName, key)) {
             int warp = ThaumcraftApi.getClueWarp(key);
-            if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
-                if (warp > 1) {
-                    int w2 = warp / 2;
-                    if (warp - w2 > 0) {
-                        Thaumcraft.addWarpToPlayer(player, warp - w2, false);
-                    }
-
-                    if (w2 > 0) {//what anazor did?
-                        Thaumcraft.addStickyWarpToPlayer(player, w2);
-                    }
-                } else {
-                    Thaumcraft.addWarpToPlayer(player, warp, false);
-                }
-            }
-
+            addKindsOfWarps(player, warp);
             scheduleSave(playerName);
         }
     }
     public void completeResearch(Player player, ResearchItemResourceLocation key) {
         String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
-            int warp = ThaumcraftApi.getResearchWarp(key);
-            if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
-                if (warp > 1) {
-                    int w2 = warp / 2;
-                    if (warp - w2 > 0) {
-                        Thaumcraft.addWarpToPlayer(player, warp - w2, false);
-                    }
-
-                    if (w2 > 0) {//what anazor did?
-                        Thaumcraft.addStickyWarpToPlayer(player, w2);
-                    }
-                } else {
-                    Thaumcraft.addWarpToPlayer(player, warp, false);
-                }
+            int warp;
+            var research = ResearchItem.getResearch(key);
+            if (research instanceof IResearchWarpOwner warpOwner){
+                warp = warpOwner.getWarp();
+                addKindsOfWarps(player, warp);
             }
-
             scheduleSave(playerName);
         }
 
+    }
+
+    public static void addKindsOfWarps(Player player, int warp) {
+        if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
+            if (warp > 1) {
+                int halved = warp / 2;
+                if (warp - halved > 0) {
+                    Thaumcraft.addWarpToPlayer(player, warp - halved, false);
+                }
+                Thaumcraft.addStickyWarpToPlayer(player, halved);
+            } else {
+                Thaumcraft.addWarpToPlayer(player, warp, false);
+            }
+        }
     }
 
     public static boolean completeAspectUnsaved(String username, Aspect aspect, int amount) {
@@ -808,7 +489,8 @@ public class ResearchManager {
         if (!completed.contains(object)) {
             completed.add(object);
             String t = object.replaceFirst("#", "@");
-            if (object.startsWith("#") && completed.contains(t) && completed.remove(t)) {
+            if (object.startsWith("#") && completed.contains(t)) {
+                completed.remove(t);
             }
 
             Thaumcraft.getScannedObjects().put(username, completed);
@@ -1159,13 +841,10 @@ public class ResearchManager {
         ListTag tagList = new ListTag();
 
         if (res != null && !res.isEmpty()) {
-            for (var key : res) {
-                ResearchItem rr = ResearchItem.getResearch(key);
-                if (rr == null || !rr.isAutoUnlock()) {
-                    CompoundTag f = new CompoundTag();
-                    LIST_TAG_RESEARCH_ACCESSOR.writeToCompoundTag(f, key);
-                    tagList.add(f);
-                }
+            for (var playerResearch : res) {
+                CompoundTag f = new CompoundTag();
+                LIST_TAG_RESEARCH_ACCESSOR.writeToCompoundTag(f, playerResearch);
+                tagList.add(f);
             }
         }
 
@@ -1179,12 +858,9 @@ public class ResearchManager {
 
         if (res != null && !res.isEmpty()) {
             for (var key : res) {
-                ResearchItem rr = ResearchItem.getResearch(key.convertToResearchItemResLoc());
-                if (rr == null || !rr.isAutoUnlock()) {
-                    CompoundTag f = new CompoundTag();
-                    LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);
-                    tagList.add(f);
-                }
+                CompoundTag f = new CompoundTag();
+                LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);
+                tagList.add(f);
             }
         }
 

@@ -71,7 +71,7 @@ public class ThaumcraftApiHelper {
                     lowest = tag;
                 }
             }
-            temp2.reduceAndRemoveIfNegative(lowest);
+            temp2.reduceAndRemoveIfNotPositive(lowest);
         }
         return temp2;
     }

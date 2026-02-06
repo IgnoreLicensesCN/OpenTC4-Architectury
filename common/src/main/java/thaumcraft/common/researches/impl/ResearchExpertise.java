@@ -62,4 +62,9 @@ public class ResearchExpertise
     public List<ResearchPage> getPages(@NotNull ResearchCategory category, @Nullable Player player) {
         return pages;
     }
+
+    @Override
+    public AspectList<Aspect> getResearchGivenAspects() {
+        return aspects;
+    }
 }

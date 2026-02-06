@@ -43,12 +43,12 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public AspectList<A> reduceAndRemoveIfNegative(Aspect key) throws RuntimeException {
+    public AspectList<A> reduceAndRemoveIfNotPositive(Aspect key) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public AspectList<A> reduceAndRemoveIfNegative(Aspect key, int amount) throws RuntimeException {
+    public AspectList<A> reduceAndRemoveIfNotPositive(Aspect key, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 

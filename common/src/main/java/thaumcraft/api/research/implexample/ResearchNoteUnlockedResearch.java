@@ -6,7 +6,7 @@ import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-public class ResearchNoteUnlockedResearch extends ResearchItem implements IResearchNoteCreatable {
+public abstract class ResearchNoteUnlockedResearch extends ResearchItem implements IResearchNoteCreatable {
 
     private final @Range(from = 1, to = 3) int complexity;
 

@@ -1,18 +1,12 @@
 package thaumcraft.api.expands.listeners.researchtable.consts;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.listeners.WriteAspectAfterListener;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.researches.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
@@ -47,7 +41,7 @@ public enum WriteAspectAfterListenerEnums {
                         return;
                     }
                     if (table.bonusAspect.getAspects().getOrDefault(usingAspect, 0) > 0){
-                        table.bonusAspect.reduceAndRemoveIfNegative(usingAspect);
+                        table.bonusAspect.reduceAndRemoveIfNotPositive(usingAspect);
                         context.doDrainAspect= false;;
                         table.markDirtyAndUpdateSelf();
                     }

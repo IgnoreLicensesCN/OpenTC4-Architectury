@@ -22,8 +22,10 @@ import thaumcraft.api.crafting.*;
 import thaumcraft.api.expands.UnmodifiableAspectList;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
 import thaumcraft.api.research.*;
+import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -796,8 +798,6 @@ public class ThaumcraftApi {
 
     //WARP ///////////////////////////////////////////////////////////////////////////////////////
     private static final Map<Item, Integer> itemWarpMap = new ConcurrentHashMap<>();
-    @Deprecated(forRemoval = true)
-    private static final Map<ResourceLocation, Integer> researchWarpMap = new ConcurrentHashMap<>();
     private static final Map<ResourceLocation, Integer> clueWarpMap = new ConcurrentHashMap<>();
 
     /**
@@ -811,16 +811,6 @@ public class ThaumcraftApi {
         itemWarpMap.put(craftresult.getItem(), amount);
     }
 
-    /**
-     * This method is used to determine how much permanent warp is gained if the research is completed
-     * //		 * @param in The item crafted
-     *
-     * @param amount how much warp is gained
-     */
-    @Deprecated(forRemoval = true)
-    public static void addWarpToResearch(ResourceLocation research, int amount) {
-        researchWarpMap.put(research, amount);
-    }
     public static void addWarpToClue(ResourceLocation research, int amount) {
         clueWarpMap.put(research, amount);
     }
@@ -834,16 +824,14 @@ public class ThaumcraftApi {
      */
     public static int getResearchWarp(Item in) {
         return itemWarpMap.getOrDefault(in,0);
-//        if (in == null) return 0;
-//        if (in instanceof ItemStack && warpMap.containsKey(Arrays.asList(((ItemStack) in).getItem(), ((ItemStack) in).getDamageValue()))) {
-//            return warpMap.get(Arrays.asList(((ItemStack) in).getItem(), ((ItemStack) in).getDamageValue()));
-//        } else if (in instanceof String && warpMap.containsKey(in)) {
-//            return warpMap.get(in);
-//        }
-//        return 0;
     }
-    public static int getResearchWarp(ResourceLocation in) {
-        return researchWarpMap.getOrDefault(in,0);
+    @Deprecated(forRemoval = true)
+    public static int getResearchWarp(ResearchItemResourceLocation in) {
+        var research = ResearchItem.getResearch(in);
+        if (!(research instanceof IResearchWarpOwner warpOwner)){
+            return 0;
+        }
+        return warpOwner.getWarp();
     }
     public static int getClueWarp(ResourceLocation in) {
         return clueWarpMap.getOrDefault(in,0);

@@ -111,7 +111,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
                }
 
                this.tank.drain(2, true);
-               this.aspects.reduceAndRemoveIfNegative(a, 1);
+               this.aspects.reduceAndRemoveIfNotPositive(a, 1);
                if (!a.isPrimal()) {
                   if (this.level().rand.nextBoolean()) {
                      this.aspects.addAll(a.getComponents()[0], 1);
@@ -332,7 +332,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       if (this.aspects.size() > 0) {
          Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
          output.addAll(tag, 1);
-         this.aspects.reduceAndRemoveIfNegative(tag, 1);
+         this.aspects.reduceAndRemoveIfNotPositive(tag, 1);
       }
 
       this.markDirty();

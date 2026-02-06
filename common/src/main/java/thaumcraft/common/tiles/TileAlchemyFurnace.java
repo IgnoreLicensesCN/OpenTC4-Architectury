@@ -382,13 +382,13 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          AspectList<Aspect>temp = this.aspects.copy();
          if (exlude.size() > 0) {
             for(Aspect a : exlude.getAspects()) {
-               temp.reduceAndRemoveIfNegative(a);
+               temp.reduceAndRemoveIfNotPositive(a);
             }
          }
 
          if (temp.size() > 0) {
             Aspect tag = temp.getAspects()[this.level().rand.nextInt(temp.getAspects().length)];
-            this.aspects.reduceAndRemoveIfNegative(tag, 1);
+            this.aspects.reduceAndRemoveIfNotPositive(tag, 1);
             --this.vis;
             return tag;
          }
@@ -399,7 +399,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
    public boolean takeFromContainer(Aspect tag, int amount) {
       if (this.aspects != null && this.aspects.getAmount(tag) >= amount) {
-         this.aspects.reduceAndRemoveIfNegative(tag, amount);
+         this.aspects.reduceAndRemoveIfNotPositive(tag, amount);
          this.vis -= amount;
          return true;
       } else {

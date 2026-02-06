@@ -516,7 +516,7 @@ public class ResearchTableBlockEntity
                 this.data.hexes.put(hex.toString(), hex);
                 ResearchManager.updateData(this.contents[1], this.data);
                 ResearchManager.consumeInkFromTable(this.contents[0], true);
-                if (Platform.getEnvironment() == Env.SERVER && ResearchManager.checkResearchCompletion(
+                if (Platform.getEnvironment() == Env.SERVER && ResearchNoteData.checkResearchNoteCompletion(
                         this.contents[1], this.data, player.getCommandSenderName())) {
                     this.contents[1].setItemDamage(64);
                     this.level()

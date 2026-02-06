@@ -9,6 +9,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.tiles.TileResearchTable;
 
+@Deprecated(forRemoval = true)
 public class PacketCheck {
     public static final Marker securityMarker = MarkerManager.getMarker("SuspiciousPackets");
 

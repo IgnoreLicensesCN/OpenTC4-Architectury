@@ -115,7 +115,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
 
    public boolean takeFromContainer(Aspect tt, int am) {
       if (this.aspects.getAmount(tt) >= am) {
-         this.aspects.reduceAndRemoveIfNegative(tt, am);
+         this.aspects.reduceAndRemoveIfNotPositive(tt, am);
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
          return true;

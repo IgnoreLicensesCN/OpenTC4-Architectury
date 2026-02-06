@@ -139,7 +139,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
                   this.level.playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
                }
                else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
-                  this.bonusAspects.reduceAndRemoveIfNegative(aspect, 1);
+                  this.bonusAspects.reduceAndRemoveIfNotPositive(aspect, 1);
                   player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                   this.markDirty();
                } else {
@@ -164,7 +164,7 @@ public class TileResearchTable extends TileThaumcraft implements IInventory {
             this.data.hexes.put(hex.toString(), hex);
             ResearchManager.updateData(this.contents[1], this.data);
             ResearchManager.consumeInkFromTable(this.contents[0], true);
-            if (Platform.getEnvironment() != Env.CLIENT && ResearchManager.checkResearchCompletion(this.contents[1], this.data, player.getCommandSenderName())) {
+            if (Platform.getEnvironment() != Env.CLIENT && ResearchNoteData.checkResearchNoteCompletion(this.contents[1], this.data, player.getCommandSenderName())) {
                this.contents[1].setItemDamage(64);
                this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
             }

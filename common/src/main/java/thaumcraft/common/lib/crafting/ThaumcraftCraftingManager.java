@@ -333,7 +333,7 @@ public class ThaumcraftCraftingManager {
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.reduceAndRemoveIfNegative(as);
+                    out.reduceAndRemoveIfNotPositive(as);
                 }
             }
 
@@ -384,7 +384,7 @@ public class ThaumcraftCraftingManager {
                                 .getAspectTypes()) {
                             //remove <=0(why this will be executed?)
                             if (ph.getAmount(as) <= 0) {
-                                ph.reduceAndRemoveIfNegative(as);
+                                ph.reduceAndRemoveIfNotPositive(as);
                             }
                         }
 
@@ -440,7 +440,7 @@ public class ThaumcraftCraftingManager {
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.reduceAndRemoveIfNegative(as);
+                    out.reduceAndRemoveIfNotPositive(as);
                 }
             }
 
@@ -479,7 +479,7 @@ public class ThaumcraftCraftingManager {
                                 for (var as : ph.copy()
                                         .getAspectTypes()) {
                                     if (ph.getAmount(as) <= 0) {
-                                        ph.reduceAndRemoveIfNegative(as);
+                                        ph.reduceAndRemoveIfNotPositive(as);
                                     }
                                 }
 
@@ -510,7 +510,7 @@ public class ThaumcraftCraftingManager {
 
                     for (Aspect as : out.getAspectTypes()) {
                         if (out.getAmount(as) <= 0) {
-                            out.reduceAndRemoveIfNegative(as);
+                            out.reduceAndRemoveIfNotPositive(as);
                         }
                     }
 
