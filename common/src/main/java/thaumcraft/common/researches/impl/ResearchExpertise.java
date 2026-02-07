@@ -3,6 +3,7 @@ package thaumcraft.common.researches.impl;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -11,6 +12,7 @@ import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.research.implexample.ResearchNoteUnlockedResearchWithParents;
 import thaumcraft.api.research.interfaces.IRenderableResearch;
+import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
 import thaumcraft.api.research.render.ShownInfoInResearchCategory;
 import thaumcraft.api.research.render.impls.ShownIconsBackground;
@@ -24,7 +26,7 @@ import java.util.List;
 
 public class ResearchExpertise
         extends ResearchNoteUnlockedResearchWithParents
-        implements IThemedAspectOwner, IRenderableResearch {
+        implements IThemedAspectOwner, IRenderableResearch , IResearchNoteCopyable {
     private static final ShownInfoInResearchCategory shownInfo = new ShownInfoInResearchCategory(
             ThaumcraftResearchCategories.BASICS.categoryKey,
             4,
@@ -34,11 +36,11 @@ public class ResearchExpertise
     );
     public ResearchExpertise(){
         super(
-                new ResearchItemResourceLocation(Thaumcraft.MOD_ID, "researcher1"),
+                ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "researcher1"),
                 ThaumcraftResearchCategories.BASICS.categoryKey,
                 1, List.of(ThaumcraftResearches.RESEARCH.key)
         );
-        ResearchCategory.getResearchCategory(shownInfo.category()).addResearch(this,shownInfo);
+        ResearchCategory.getResearchCategory(shownInfo.category()).addResearchAndShownInfo(this,shownInfo);
     }
 
     private final AspectList<Aspect> aspects = UnmodifiableAspectList.of(
@@ -67,4 +69,16 @@ public class ResearchExpertise
     public AspectList<Aspect> getResearchGivenAspects() {
         return aspects;
     }
+
+
+    @Override
+    public boolean canPlayerCopyResearch(String playerName) {
+        return canPlayerResearch(playerName);
+    }
+
+    @Override
+    public @UnmodifiableView AspectList<Aspect> getCopyResearchBaseAspects() {
+        return aspects;
+    }
+
 }

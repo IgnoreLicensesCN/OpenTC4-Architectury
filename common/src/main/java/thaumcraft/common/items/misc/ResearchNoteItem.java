@@ -1,31 +1,32 @@
 package thaumcraft.common.items.misc;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
-import thaumcraft.api.research.interfaces.IThemedAspectOwner;
+import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
 import thaumcraft.api.researchtable.IResearchNoteDataOwner;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.HexEntry;
 import thaumcraft.common.lib.research.HexType;
+import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
-import thaumcraft.common.lib.utils.HexCoordUtils;
 
-import java.util.*;
-
-import static com.linearity.opentc4.Consts.ResearchNoteCompoundTagAccessors.*;
+import java.util.function.Predicate;
 
 public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
     public ResearchNoteItem(Properties props) {
@@ -38,21 +39,26 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
     @Override
     public boolean onWriteAspect(WriteAspectContext context) {
         if (context.aspectToWrite.isEmpty()) {return false;}
-        var existing = context.noteData.hexGrid.get(context.coordToWrite);
-        if (existing == null) {return false;}
+        var grid = context.noteData.hexGrid;
+        var existence = grid.containsKey(context.coordToWrite);
+        if (!existence) {return false;}
+        var existing = grid.get(context.coordToWrite);
         if (existing.type() == HexType.GIVEN){
             return false;
         }
         if (existing.type() == HexType.WRITTEN && !existing.aspect().isEmpty()){
             return false;
         }
-        context.noteData.hexGrid.put(context.coordToWrite,new HexEntry(context.aspectToWrite, HexType.WRITTEN));
+        grid.put(context.coordToWrite,new HexEntry(context.aspectToWrite, HexType.WRITTEN));
         return true;
     }
 
     @Override
     public boolean onRemoveAspect(RemoveAspectContext context) {
         if (context.aspectToRemove.isEmpty()) {return false;}
+        var grid = context.noteData.hexGrid;
+        var existence = grid.containsKey(context.coordToRemove);
+        if (!existence) {return false;}
         var existing = context.noteData.hexGrid.get(context.coordToRemove);
         if (existing.type() == HexType.GIVEN || existing.type() == HexType.NONE){
             return false;
@@ -64,39 +70,138 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         }
 
         context.noteData.hexGrid.put(context.coordToRemove,HexEntry.EMPTY);
+        if (context.noteData.checkResearchNoteCompletion(context.player.getGameProfile().getName())){
+            context.noteData.completed = true;
+        }
         updateResearchNoteData(context.noteStack,context.noteData);
         return true;
     }
 
     @Override
-    public @Nullable ResearchNoteData getResearchNoteData(ItemStack stack) {
-
-        if (stack == null || stack.isEmpty()) {
-            return null;
-        }
-        CompoundTag tag = stack.getOrCreateTag();
-        ResearchNoteData data = new ResearchNoteData();
-        data.key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(tag);
-        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readFromCompoundTag(tag);
-        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readFromCompoundTag(tag);
-        data.copies = RESEARCH_NOTE_COPIES_ACCESSOR.readFromCompoundTag(tag);
-        data.hexGrid = RESEARCH_NOTE_HEXGRID_ACCESSOR.readFromCompoundTag(tag);
-        stack.setTag(tag);
-        return data;
+    public @Nullable ResearchNoteData getResearchNoteData(ItemStack researchNoteStack) {
+        return ResearchNoteData.readFrom(researchNoteStack);
     }
 
-    public void updateResearchNoteData(ItemStack stack, ResearchNoteData data) {
-        if (stack == null || stack.isEmpty() || data == null) return;
+    public static final Predicate<ItemStack> blackDyePredication = stack -> stack.is(Items.BLACK_DYE)
+            || stack.is(ThaumcraftItems.ItemTags.BLACK_DYE_FORGE_TAG)
+            || stack.is(ThaumcraftItems.ItemTags.BLACK_DYE_FABRIC_TAG);
+    public static final Predicate<ItemStack> paperPredication = stack -> stack.is(Items.PAPER);//TODO:[maybe wont finished]Tag it?
 
-        CompoundTag tag = stack.getOrCreateTag();
-        RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, data.key);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, data.color);
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, data.completed);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, data.copies);
-        RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, data.hexGrid);
+    @Override
+    public boolean canCopyResearchNote(ItemStack researchNoteStack, ServerPlayer player) {
+        var data = getResearchNoteData(researchNoteStack);
+        if (data == null){return false;}
+        var researchItem = ResearchItem.getResearch(data.key);
+        if (researchItem == null){return false;}
+        if (!(researchItem instanceof IResearchNoteCopyable copyable)){return false;}
+        if (!copyable.canPlayerCopyResearch(player.getGameProfile().getName())){return false;}
+
+        boolean foundDyeBlack = false;
+        boolean foundPaper = false;
+        for (var i:player.getInventory().items){
+            if (blackDyePredication.test(i)){
+                foundDyeBlack = true;
+            }
+            if (paperPredication.test(i)){
+                foundPaper = true;
+            }
+            if (foundDyeBlack && foundPaper){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void copyResearchNote(ItemStack researchNoteStack, ServerPlayer player) {
+        var researchData = getResearchNoteData(researchNoteStack);
+        if (researchData == null){return;}
+        var researchItem = ResearchItem.getResearch(researchData.key);
+        if (researchItem == null){return;}
+        if (!(researchItem instanceof IResearchNoteCopyable copyable)){return;}
+
+        var aspectsToCopy = copyable.getCopyResearchBaseAspects();
+        var copiedCount = researchData.copiedCount;
+        var playerName = player.getGameProfile().getName();
+        var playerOwnedAspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(playerName);
+
+        //checkToConsume
+        var playerInventory = player.getInventory();
+        int paperIndex = -1;
+        int dyeIndex = -1;
+        int currentIndex = 0;
+        for (var i:playerInventory.items){
+
+            if (blackDyePredication.test(i)){
+                paperIndex = currentIndex;
+            }
+            if (paperPredication.test(i)){
+                dyeIndex = currentIndex;
+            }
+            if (paperIndex != -1 && dyeIndex != -1){
+                break;
+            }
+            currentIndex += 1;
+        }
+        if (!(paperIndex != -1 && dyeIndex != -1)){
+            return;
+        }
+        for (var entry:aspectsToCopy.getAspects().entrySet()){
+            var aspect = entry.getKey();
+            var count = entry.getValue() + copiedCount;
+            if (playerOwnedAspects.getAspects().getOrDefault(aspect,0) < count){
+                return;
+            }
+        }
+        //checked
+        //consume
+        for (var entry:aspectsToCopy.getAspects().entrySet()){
+            var aspect = entry.getKey();
+            var count = entry.getValue() + copiedCount;
+            Thaumcraft.playerKnowledge.addAspectPool(playerName,aspect,-count);
+            ResearchManager.scheduleSave(playerName);
+            new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect)).sendTo(player);
+        }
+        playerInventory.items.get(paperIndex).shrink(1);
+        if (playerInventory.items.get(paperIndex).isEmpty()){
+            playerInventory.items.set(paperIndex, ItemStack.EMPTY);
+        }
+        playerInventory.items.get(dyeIndex).shrink(1);
+        if (playerInventory.items.get(dyeIndex).isEmpty()){
+            playerInventory.items.set(dyeIndex, ItemStack.EMPTY);
+        }
+        //consumed
+
+        player.level().playSound(player,player.blockPosition(), ThaumcraftSounds.LEARN, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+        researchData.copiedCount += 1;
+        researchData.saveTo(researchNoteStack);
+        var copied = researchNoteStack.copy();
+        copied.setCount(1);
+        currentIndex = 0;
+        for (var itemStackInSlot : playerInventory.items){
+            if (itemStackInSlot.isEmpty()){
+                playerInventory.items.set(currentIndex, copied);
+                return;
+            }
+            currentIndex += 1;
+        }
+        player.drop(copied, false);
+    }
+
+    public void updateResearchNoteData(@NotNull ItemStack researchNoteStack,@NotNull ResearchNoteData data) {
+        if (researchNoteStack.isEmpty()) return;
+        data.saveTo(researchNoteStack);
     }
     @Override
-    public boolean canWriteAspect(Level atLevel, BlockPos researchTableBEPos, ItemStack writeToolStack, ItemStack researchNoteStack, Player player, Aspect aspect, HexCoord placedAt) {
+    public boolean canWriteAspect(
+            Level atLevel,
+            BlockPos researchTableBEPos,
+            ItemStack writeToolStack,
+            ItemStack researchNoteStack,
+            Player player,
+            Aspect aspect,
+            HexCoord placedAt) {
         var data = getResearchNoteData(researchNoteStack);
         if (data == null) {return false;}
         return !data.completed;
@@ -122,195 +227,4 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
 
     }
 
-    public static ItemStack createResearchNote(
-            RandomSource randomSource,
-            ResearchItem researchItem
-    ){
-        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
-            throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
-        }
-        var stack = ThaumcraftItems.RESEARCH_NOTE.getDefaultInstance();
-        var researchKey = researchItem.key;
-        Aspect researchThemedAspect = Aspects.EMPTY;
-        if (researchItem instanceof IThemedAspectOwner themedAspectOwner){
-            researchThemedAspect = themedAspectOwner.getResearchThemedAspect();
-        }
-
-        CompoundTag tag = stack.getOrCreateTag();
-        RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
-
-        int radius = 1 + noteCreatable.getComplexity();
-        var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
-        List<HexCoord> outerRing = HexCoordUtils.distributeRingRandomly(radius, noteCreatable.getResearchGivenAspects().size(), randomSource);
-
-        int placedAspectCount = 0;
-
-        for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().get(placedAspectCount), HexType.GIVEN));
-            ++placedAspectCount;
-        }
-
-        if (noteCreatable.getComplexity() > 1) {
-            removeRandomBlanks(randomSource, researchItem, hexLocs);
-        }
-
-        //got angry with some research with some node blocked and whole note can't be finished
-        ensureEndpointsConnected(hexLocs);
-
-        RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, hexLocs);
-
-        return stack;
-    }
-
-    private static void removeRandomBlanks(
-            RandomSource random,
-            ResearchItem rr,
-            Map<HexCoord, HexEntry> hexGird
-    ) {
-        if (!(rr instanceof IResearchNoteCreatable noteCreatable)){
-            throw new IllegalArgumentException("research cannot create ResearchNote:"+rr);
-        }
-        int blanks = noteCreatable.getComplexity() * 2;
-        var temp = hexGird.keySet().toArray(new HexCoord[0]);
-
-        while (blanks > 0) {
-            int pickIndex = random.nextInt(temp.length);
-            var pickEntry = hexGird.get(temp[pickIndex]);
-            if (pickEntry != null
-                    && pickEntry.type() == HexType.NONE
-            ) {
-                boolean gtg = true;
-
-                for (int n = 0; n < 6; ++n) {
-                    HexCoord neighbour = temp[pickIndex].getNeighbour(n);
-                    var neighborEntry = hexGird.get(neighbour);
-                    if (neighborEntry != null
-                            && neighborEntry.type() == HexType.WRITTEN
-                    ) {
-                        int cc = 0;
-
-                        for (int q = 0; q < 6; ++q) {
-
-                            if (hexGird.containsKey(
-                                    neighbour.getNeighbour(q)
-                            )
-                            ) {
-                                ++cc;
-                            }
-
-                            if (cc >= 2) {
-                                break;
-                            }
-                        }
-
-                        if (cc < 2) {
-                            gtg = false;
-                            break;
-                        }
-                    }
-                }
-
-                if (gtg) {
-                    hexGird.remove(temp[pickIndex]);
-                    temp = hexGird.keySet().toArray(new HexCoord[0]);
-                    --blanks;
-                }
-            }
-        }
-    }
-
-    private static void ensureEndpointsConnected(
-            Map<HexCoord, HexEntry> hexGrid
-    ) {
-        // 找出端点 hex
-        List<HexCoord> endpoints = hexGrid.entrySet().stream()
-                .filter(e -> e.getValue().type() == HexType.GIVEN)
-                .map(Map.Entry::getKey)
-                .filter(Objects::nonNull)
-                .toList();
-
-        if (endpoints.size() < 2) return;
-
-        // BFS helper
-        Set<HexCoord> visited = new HashSet<>();
-        for (int i = 0; i < endpoints.size() - 1; i++) {
-            HexCoord start = endpoints.get(i);
-            HexCoord end = endpoints.get(i + 1);
-
-            if (!isConnected(start, end, hexGrid, visited)) {
-                // 找最短路径恢复
-                List<HexCoord> path = findPathAllowRemoved(start, end, hexGrid);
-                for (HexCoord key : path) {
-                    if (!hexGrid.containsKey(key)) {
-                        hexGrid.put(key, HexEntry.EMPTY);
-                    }
-                }
-            }
-        }
-    }
-
-    // 检查两个端点是否连通
-    //author:ChatGPT
-    private static boolean isConnected(
-            HexCoord start,
-            HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid,
-            Set<HexCoord> visited) {
-        visited.clear();
-        Queue<HexCoord> queue = new ArrayDeque<>();
-        queue.add(start);
-        visited.add(start);
-
-        while (!queue.isEmpty()) {
-            HexCoord current = queue.poll();
-            if (current.equals(end)) return true;
-
-            for (int i = 0; i < 6; i++) {
-                HexCoord key = current.getNeighbour(i);
-                if (!visited.contains(key) && hexGrid.containsKey(key)) {
-                    queue.add(key);
-                    visited.add(key);
-                }
-            }
-        }
-        return false;
-    }
-
-    // 找到 start -> end 的路径，允许穿过被移除 hex
-    //author:ChatGPT
-    private static List<HexCoord> findPathAllowRemoved(
-            HexCoord start, HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid
-    ) {
-        Map<HexCoord, HexCoord> cameFromMap = new HashMap<>();
-        Queue<HexCoord> queue = new ArrayDeque<>();
-        queue.add(start);
-        cameFromMap.put(start, null);
-
-        while (!queue.isEmpty()) {
-            HexCoord current = queue.poll();
-            if (current.equals(end)) break;
-
-            for (int i = 0; i < 6; i++) {
-                HexCoord key = current.getNeighbour(i);
-                if (!cameFromMap.containsKey(key)) {
-                    queue.add(key);
-                    cameFromMap.put(key, current);
-                }
-            }
-        }
-
-        // 回溯路径
-        List<HexCoord> path = new ArrayList<>();
-        HexCoord cursor = end;
-        while (cursor != null && !cursor.equals(start)) {
-            path.add(cursor);
-            cursor = cameFromMap.get(cursor);
-        }
-        Collections.reverse(path);
-        return path;
-    }
 }

@@ -1,7 +1,6 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 

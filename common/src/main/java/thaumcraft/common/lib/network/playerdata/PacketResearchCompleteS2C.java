@@ -35,7 +35,7 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     // 解码
     public static PacketResearchCompleteS2C decode(FriendlyByteBuf buf) {
-        return new PacketResearchCompleteS2C(new ResearchItemResourceLocation(buf.readResourceLocation()));
+        return new PacketResearchCompleteS2C(ResearchItemResourceLocation.of(buf.readResourceLocation()));
     }
 
     @Override

@@ -700,6 +700,10 @@ public class ThaumcraftItems {
                 Registries.ITEM, new ResourceLocation("c:iron_nuggets"));
         public static final TagKey<Item> PLANKS_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("minecraft:planks"));
+        public static final TagKey<Item> BLACK_DYE_FORGE_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("forge:dyes/black"));
+        public static final TagKey<Item> BLACK_DYE_FABRIC_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("c:black_dyes"));
     }
 
     public static class BannerPatternTags{

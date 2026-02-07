@@ -14,6 +14,7 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
 import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.api.researchtable.ResearchCreateReason;
+import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 
 import java.util.Set;
@@ -75,6 +76,9 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
         if (!noteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
             return NO_PREREQUISITES;
         }
+        if (researchItem.isPlayerCompletedResearch(player.getGameProfile().getName())){
+            return SUSPICIOUS_CALL;
+        }
         if (!durabilityEnough(writeToolStack) || !player.getInventory().hasAnyOf(Set.of(Items.PAPER))){
             return NO_INK_OR_PAPER;
         }
@@ -98,7 +102,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
         if (inv.getItem(paperSlot).isEmpty()) {
             inv.setItem(paperSlot, ItemStack.EMPTY);
         }
-        var noteStack = ResearchNoteItem.createResearchNote(atLevel.random,researchItem);
+        var noteStack = ResearchNoteData.createResearchNote(atLevel.random,researchItem);
         if (inv.getFreeSlot() >= 0){
             inv.add(noteStack);
         }else {

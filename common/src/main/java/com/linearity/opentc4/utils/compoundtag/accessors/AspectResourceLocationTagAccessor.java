@@ -13,7 +13,7 @@ public class AspectResourceLocationTagAccessor extends CompoundTagAccessor<Aspec
 
     @Override
     public AspectResourceLocation readFromCompoundTag(CompoundTag tag) {
-        return new AspectResourceLocation(tag.getString(tagKey));
+        return AspectResourceLocation.of(tag.getString(tagKey));
     }
 
     @Override

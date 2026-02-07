@@ -109,7 +109,7 @@ public class PlayerKnowledge {
       return known != null ? (short)known.getAmount(aspect) : 0;
    }
 
-   public boolean addAspectPool(String username, Aspect aspect, short amount) {
+   public boolean addAspectPool(String username, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(username);
       if (al == null) {
          al = new AspectList<>();

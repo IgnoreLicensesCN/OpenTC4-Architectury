@@ -30,7 +30,7 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
     }
 
     public static PacketPlayerCompleteResearchWithAspectC2S decode(FriendlyByteBuf buf) {
-        return new PacketPlayerCompleteResearchWithAspectC2S(new ResearchItemResourceLocation(buf.readResourceLocation()));
+        return new PacketPlayerCompleteResearchWithAspectC2S(ResearchItemResourceLocation.of(buf.readResourceLocation()));
     }
 
 
@@ -42,6 +42,9 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         var playerName = player.getGameProfile().getName();
         var research = ResearchItem.getResearch(researchToCompleteWithAspect);
         if (research == null){return;}
+        if (research.isPlayerCompletedResearch(playerName)){
+            return;
+        }
         if (!(research instanceof IAspectUnlockable aspectUnlockable)){return;}
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(playerName)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();

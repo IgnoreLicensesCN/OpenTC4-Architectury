@@ -4,27 +4,47 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.research.ResearchItem;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, ClueResourceLocation> {
-    public static final VariedResourceLocationBuilder<ResearchItem, ClueResourceLocation> BUILDER = ClueResourceLocation::new;
-    public static final VariedResourceLocationParser<ResearchItem, ClueResourceLocation> PARSER = ClueResourceLocation::new;
+    public static final VariedResourceLocationBuilder<ResearchItem, ClueResourceLocation> BUILDER = ClueResourceLocation::of;
+    public static final VariedResourceLocationParser<ResearchItem, ClueResourceLocation> PARSER = ClueResourceLocation::of;
 
 
     protected ClueResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
         super(string, string2, dummy);
     }
 
-    public ClueResourceLocation(String string, String string2) {
+    protected ClueResourceLocation(String string, String string2) {
         super(string, string2);
     }
 
-    public ClueResourceLocation(String string) {
+    protected ClueResourceLocation(String string) {
         super(string);
     }
-    public ClueResourceLocation(ResourceLocation resourceLocation) {
+    protected ClueResourceLocation(ResourceLocation resourceLocation) {
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
+    public static final Map<ResourceLocation, ClueResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String,Map<String, ClueResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    public static ClueResourceLocation of(ResourceLocation resourceLocation) {
+        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, ClueResourceLocation::new);
+    }
+    public static ClueResourceLocation of(String namespace, String path) {
+        return mapFromNamespaceAndPathToResourceLocation
+                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> ClueResourceLocation.of(namespace,path));
+    }
+    public static ClueResourceLocation of(String namespaceAndPath){
+        var split = namespaceAndPath.split(":");
+        if (split.length != 2){
+            throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
+        }
+        return of(split[0],split[1]);
+    }
     public ResearchItemResourceLocation convertToResearchItemResLoc(){
-        return new ResearchItemResourceLocation(this.getNamespace(),this.getPath());
+        return ResearchItemResourceLocation.of(this.getNamespace(),this.getPath());
     }
 }

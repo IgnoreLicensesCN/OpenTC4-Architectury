@@ -29,4 +29,9 @@ public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspec
     public AspectList<Aspect> getAspectCost() {
         return aspects;
     }
+
+    @Override
+    public boolean canPlayerResearch(String playerName) {
+        return true;
+    }
 }

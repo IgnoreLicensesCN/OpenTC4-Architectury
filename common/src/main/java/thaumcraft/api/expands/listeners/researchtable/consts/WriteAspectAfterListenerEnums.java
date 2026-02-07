@@ -4,7 +4,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.listeners.WriteAspectAfterListener;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.researches.ThaumcraftResearches;
@@ -40,8 +42,8 @@ public enum WriteAspectAfterListenerEnums {
                     if (usingAspect.isEmpty()){
                         return;
                     }
-                    if (table.bonusAspect.getAspects().getOrDefault(usingAspect, 0) > 0){
-                        table.bonusAspect.reduceAndRemoveIfNotPositive(usingAspect);
+                    if (table.bonusAspects.getAspects().getOrDefault(usingAspect, 0) > 0){
+                        table.bonusAspects.reduceAndRemoveIfNotPositive(usingAspect);
                         context.doDrainAspect= false;;
                         table.markDirtyAndUpdateSelf();
                     }
@@ -66,6 +68,17 @@ public enum WriteAspectAfterListenerEnums {
             }
         }
     }),
+    IF_RESEARCH_FINISHED(new WriteAspectAfterListener(COST_ASPECT.listener.weight + 1) {
+        @Override
+        public void onEventTriggered(WriteAspectContext context) {
+            if (context.noteData.completed){
+                context.atLevel.playSound(context.player,context.tablePos, ThaumcraftSounds.LEARN,SoundSource.BLOCKS, 1.0F, 1.0F);
+                if (context.atLevel.getBlockEntity(context.tablePos) instanceof TileThaumcraft tile){
+                    tile.markDirtyAndUpdateSelf();
+                };
+            }
+        }
+    })
     ;
 
     public final WriteAspectAfterListener listener;

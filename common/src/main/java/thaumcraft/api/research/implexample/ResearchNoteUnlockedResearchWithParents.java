@@ -1,14 +1,13 @@
 package thaumcraft.api.research.implexample;
 
+import com.linearity.opentc4.OpenTC4;
 import org.jetbrains.annotations.Range;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class ResearchNoteUnlockedResearchWithParents
         extends ResearchNoteUnlockedResearch
@@ -26,12 +25,31 @@ public abstract class ResearchNoteUnlockedResearchWithParents
 
     @Override
     public boolean canPlayerCreateResearchNote(String playerName) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
-        return researched.containsAll(getParents());
+        return researchedAllParents(playerName);
     }
 
     @Override
     public List<ResearchItemResourceLocation> getParents() {
         return parents;
+    }
+
+
+    @Override
+    public boolean canPlayerResearch(String playerName) {
+        return researchedAllParents(playerName);
+    }
+
+    protected boolean researchedAllParents(String playerName) {
+        for (ResearchItemResourceLocation researchKey : getParents()) {
+            var researchParent = ResearchItem.getResearch(researchKey);
+            if (researchParent == null) {
+                OpenTC4.LOGGER.error("Research not found: {}",researchKey);
+                return false;
+            }
+            if (!researchParent.isPlayerCompletedResearch(playerName)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

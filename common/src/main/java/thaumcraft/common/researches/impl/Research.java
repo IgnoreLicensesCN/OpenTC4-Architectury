@@ -25,9 +25,9 @@ public final class Research extends AutoUnlockedResearchItem implements IRendera
             );
     public Research(){
         super(
-                new ResearchItemResourceLocation(Thaumcraft.MOD_ID, "research"),
+                ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "research"),
                 ThaumcraftResearchCategories.BASICS.categoryKey);
-        ResearchCategory.getResearchCategory(shownInfo.category()).addResearch(this, shownInfo);
+        ResearchCategory.getResearchCategory(shownInfo.category()).addResearchAndShownInfo(this, shownInfo);
     }
 
     @Override

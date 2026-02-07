@@ -10,6 +10,7 @@ import thaumcraft.api.research.render.ShownInfoInResearchCategory;
 import java.util.List;
 
 public interface IRenderableResearch {
+    @Nullable
     ShownInfoInResearchCategory getShownInfo(@NotNull ResearchCategory category);
     List<ResearchPage> getPages(@NotNull ResearchCategory category, @Nullable Player player);
 }

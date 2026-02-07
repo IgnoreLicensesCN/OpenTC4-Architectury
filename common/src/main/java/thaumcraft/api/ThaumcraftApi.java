@@ -72,7 +72,6 @@ public class ThaumcraftApi {
             return Ingredient.of(ThaumcraftItems.THAUMIUM_INGOT);
         }
     };
-
     public static final Tier TOOL_VOID = new Tier() {
         @Override
         public int getUses() {
@@ -104,7 +103,6 @@ public class ThaumcraftApi {
             return Ingredient.of(ThaumcraftItems.VOID_INGOT);
         }
     };
-
     public static final Tier TOOL_THAUMIUM_ELEMENTAL = new Tier() {
         @Override
         public int getUses() {
@@ -187,7 +185,6 @@ public class ThaumcraftApi {
             return 0;
         }
     };
-
     public static final ArmorMaterial SPECIAL = new ArmorMaterial() {
         @Override
         public int getDurabilityForType(ArmorItem.Type type) {
@@ -239,7 +236,6 @@ public class ThaumcraftApi {
             return 0;
         }
     };
-
     public static final ArmorMaterial THAUMIUM_FORTRESS = new ArmorMaterial() {
         @Override
         public int getDurabilityForType(ArmorItem.Type type) {
@@ -291,7 +287,6 @@ public class ThaumcraftApi {
             return 0;
         }
     };
-
     public static final ArmorMaterial VOID = new ArmorMaterial() {
         @Override
         public int getDurabilityForType(ArmorItem.Type type) {
@@ -343,7 +338,6 @@ public class ThaumcraftApi {
             return 0;
         }
     };
-
     public static final ArmorMaterial VOID_FORTRESS = new ArmorMaterial() {
         @Override
         public int getDurabilityForType(ArmorItem.Type type) {
@@ -733,6 +727,7 @@ public class ThaumcraftApi {
      * @param item
      * @return existence
      */
+    @Deprecated(forRemoval = true,since = "prepare for new api")
     public static boolean exists(Item item) {
         return ThaumcraftApi.objectTags.contains(item);
     }
@@ -744,6 +739,7 @@ public class ThaumcraftApi {
      * @param item    the item passed. Pass OreDictionary.WILDCARD_VALUE if all damage values of this item/block should have the same aspects
      * @param aspects A ObjectTags object of the associated aspects
      */
+    @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerObjectTag(ItemStack item, @Nullable AspectList<Aspect> aspects) {
         if (aspects == null) aspects = UnmodifiableAspectList.EMPTY;
         objectTags.put(item.getItem(), aspects);
@@ -755,8 +751,9 @@ public class ThaumcraftApi {
      * @param tagString the ore dictionary name
      * @param aspects   A ObjectTags object of the associated aspects
      */
+    @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
-        if (aspects == null) aspects = new AspectList();
+        if (aspects == null) aspects = new AspectList<>();
         List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
         if (!ores.isEmpty()) {
             for (ItemStack ore : ores) {
@@ -778,6 +775,7 @@ public class ThaumcraftApi {
      * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects
      * @param aspects A ObjectTags object of the associated aspects
      */
+    @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
         if (!exists(item.getItem())) {
             AspectList<Aspect> tmp = ThaumcraftApiHelper.generateTags(item.getItem());

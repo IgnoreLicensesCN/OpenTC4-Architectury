@@ -14,7 +14,7 @@ public class ResearchItemResourceLocationTagAccessor extends CompoundTagAccessor
 
     @Override
     public ResearchItemResourceLocation readFromCompoundTag(CompoundTag tag) {
-        return new ResearchItemResourceLocation(tag.getString(tagKey));
+        return ResearchItemResourceLocation.of(tag.getString(tagKey));
     }
 
     @Override

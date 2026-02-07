@@ -1,6 +1,7 @@
 package thaumcraft.api.researchtable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -19,4 +20,6 @@ public interface IResearchNoteDataOwner extends IResearchTableEditAspectListener
     boolean onWriteAspect(WriteAspectContext context);
     boolean onRemoveAspect(RemoveAspectContext context);
     @Nullable ResearchNoteData getResearchNoteData(ItemStack researchNoteStack);
+    boolean canCopyResearchNote(ItemStack researchNoteStack, ServerPlayer player);
+    void copyResearchNote(ItemStack researchNoteStack, ServerPlayer player);
 }

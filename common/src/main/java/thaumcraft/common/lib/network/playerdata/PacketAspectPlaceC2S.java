@@ -56,7 +56,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
       ResourceKey<Level> dim = buf.readResourceKey(Registries.DIMENSION);
       String playerName = buf.readUtf();
       var blockPos = buf.readBlockPos();
-      Aspect aspect = Aspect.getAspect(new AspectResourceLocation(buf.readResourceLocation()));
+      Aspect aspect = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
       byte q = buf.readByte();
       byte r = buf.readByte();
       return new PacketAspectPlaceC2S(playerName, dim, blockPos, aspect, q, r);

@@ -14,7 +14,7 @@ public class ClueResourceLocationTagAccessor extends CompoundTagAccessor<ClueRes
 
     @Override
     public ClueResourceLocation readFromCompoundTag(CompoundTag tag) {
-        return new ClueResourceLocation(tag.getString(tagKey));
+        return ClueResourceLocation.of(tag.getString(tagKey));
     }
 
     @Override

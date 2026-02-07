@@ -28,7 +28,7 @@ public class VisOwningTagAccessor extends CompoundTagAccessor<Map<Aspect, Intege
         if (json == null) return map;
         for (var entry : json.entrySet()) {
             String aspectName = entry.getKey();
-            var aspect = ALL_ASPECTS.get(new AspectResourceLocation(aspectName));
+            var aspect = ALL_ASPECTS.get(AspectResourceLocation.of(aspectName));
             if (aspect == null) {
                 OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", aspectName, tagKey);
                 continue;

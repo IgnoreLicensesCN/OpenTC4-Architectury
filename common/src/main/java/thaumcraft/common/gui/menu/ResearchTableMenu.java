@@ -36,4 +36,6 @@ public class ResearchTableMenu extends AbstractThaumcraftMenu<ResearchTableBlock
         this.addSlot(new ResearchTableNoteSlot(this.table, 1, 96, 17,table.getLevel(),table.getBlockPos()));//TODO:Offset
         addPlayerInventorySlots(inventory);
     }
+
+    //TODO:place aspect on research note,combine aspects and copy researches
 }

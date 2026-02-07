@@ -34,7 +34,7 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
     }
 
     public static PacketPlayerCreateResearchNoteC2S decode(FriendlyByteBuf buf) {
-        return new PacketPlayerCreateResearchNoteC2S(new ResearchItemResourceLocation(buf.readResourceLocation()),buf.readInt());
+        return new PacketPlayerCreateResearchNoteC2S(ResearchItemResourceLocation.of(buf.readResourceLocation()),buf.readInt());
     }
 
     @Override
@@ -45,12 +45,11 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
         var research = ResearchItem.getResearch(researchToCreateNote);
         var player = context.getPlayer();
         if (player instanceof ServerPlayer serverPlayer
-                && research instanceof IResearchable researchable
                 && research instanceof IResearchNoteCreatable researchNoteCreatable) {
             if (!researchNoteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
                 return;
             }
-            if (researchable.canPlayerResearch(player.getGameProfile().getName())){
+            if (researchNoteCreatable.canPlayerResearch(player.getGameProfile().getName())){
                 var inv = player.getInventory();
                 if (inv.getContainerSize() <= inventorySlotWithInkWell){
                     return;

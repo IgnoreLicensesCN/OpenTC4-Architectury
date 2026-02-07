@@ -14,10 +14,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.research.ScanManager;
-
-import static tc4tweak.PacketCheck.hasAspect;
+import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
 public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_combination";
@@ -25,7 +24,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
    private ResourceKey<Level> dim;
    private String playerName;
-   private int x, y, z;
+   private BlockPos tablePos;
    private Aspect aspect1;
    private Aspect aspect2;
    private boolean ab1;
@@ -38,14 +37,23 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       return messageType;
    }
 
-   public PacketAspectCombinationC2S(ServerPlayer player, int x, int y, int z,
+   public PacketAspectCombinationC2S(ServerPlayer player, BlockPos pos,
                                      Aspect aspect1, Aspect aspect2,
                                      boolean ab1, boolean ab2) {
       this.dim = player.level().dimension();
       this.playerName = player.getGameProfile().getName();
-      this.x = x;
-      this.y = y;
-      this.z = z;
+      this.tablePos = pos;
+      this.aspect1 = aspect1;
+      this.aspect2 = aspect2;
+      this.ab1 = ab1;
+      this.ab2 = ab2;
+   }
+   public PacketAspectCombinationC2S(ResourceKey<Level> dim,String playerName, BlockPos pos,
+                                     Aspect aspect1, Aspect aspect2,
+                                     boolean ab1, boolean ab2) {
+      this.dim = dim;
+      this.playerName = playerName;
+      this.tablePos = pos;
       this.aspect1 = aspect1;
       this.aspect2 = aspect2;
       this.ab1 = ab1;
@@ -56,11 +64,9 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public void write(FriendlyByteBuf buf) {
       buf.writeResourceKey(dim);
       buf.writeUtf(playerName);
-      buf.writeInt(x);
-      buf.writeInt(y);
-      buf.writeInt(z);
-      buf.writeUtf(aspect1.getAspectKey());
-      buf.writeUtf(aspect2.getAspectKey());
+      buf.writeBlockPos(tablePos);
+      buf.writeResourceLocation(aspect1.getAspectKey());
+      buf.writeResourceLocation(aspect2.getAspectKey());
       buf.writeBoolean(ab1);
       buf.writeBoolean(ab2);
    }
@@ -68,24 +74,12 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public static PacketAspectCombinationC2S decode(FriendlyByteBuf buf) {
       ResourceKey<Level> dim = buf.readResourceKey(Registries.DIMENSION);
       String playerId = buf.readUtf();
-      int x = buf.readInt();
-      int y = buf.readInt();
-      int z = buf.readInt();
-      Aspect aspect1 = Aspect.getAspect(buf.readUtf());
-      Aspect aspect2 = Aspect.getAspect(buf.readUtf());
+      var tablePos = buf.readBlockPos();
+      Aspect aspect1 = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
+      Aspect aspect2 = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
       boolean ab1 = buf.readBoolean();
       boolean ab2 = buf.readBoolean();
-      PacketAspectCombinationC2S pkt = new PacketAspectCombinationC2S();
-      pkt.dim = dim;
-      pkt.playerName = playerId;
-      pkt.x = x;
-      pkt.y = y;
-      pkt.z = z;
-      pkt.aspect1 = aspect1;
-      pkt.aspect2 = aspect2;
-      pkt.ab1 = ab1;
-      pkt.ab2 = ab2;
-      return pkt;
+      return new PacketAspectCombinationC2S(dim,playerId,tablePos,aspect1,aspect2,ab1,ab2);
    }
 
    @Override
@@ -98,8 +92,8 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       if (world == null) return;
 
       // 获取研究台 TileEntity
-      BlockEntity te = world.getBlockEntity(new BlockPos(x, y, z));
-      if (!(te instanceof TileResearchTable table)) return;
+      BlockEntity te = world.getBlockEntity(tablePos);
+      if (!(te instanceof ResearchTableBlockEntity table)) return;
 
       // Sanity check：研究台和玩家都有该两个原始 aspect
       if (!sanityCheckAspectCombination0(this, serverPlayer, table)) return;
@@ -112,7 +106,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       // 处理第一个 aspect
       if (Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect1) <= 0 && ab1) {
          table.bonusAspects.reduceAndRemoveIfNotPositive(aspect1, 1);
-         world.sendBlockUpdated(new BlockPos(x, y, z), te.getBlockState(), te.getBlockState(), 3);
+         world.sendBlockUpdated(tablePos, te.getBlockState(), te.getBlockState(), 3);
          te.setChanged();
       } else {
          Thaumcraft.playerKnowledge.addAspectPool(playerName, aspect1, (short) -1);
@@ -123,7 +117,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       // 处理第二个 aspect
       if (Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect2) <= 0 && ab2) {
          table.bonusAspects.reduceAndRemoveIfNotPositive(aspect2, 1);
-         world.sendBlockUpdated(new BlockPos(x, y, z), te.getBlockState(), te.getBlockState(), 3);
+         world.sendBlockUpdated(tablePos, te.getBlockState(), te.getBlockState(), 3);
          te.setChanged();
       } else {
          Thaumcraft.playerKnowledge.addAspectPool(playerName, aspect2, (short) -1);
@@ -145,7 +139,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
     */
    private static boolean sanityCheckAspectCombination0(PacketAspectCombinationC2S packet,
                                                         ServerPlayer player,
-                                                        TileResearchTable table) {
+                                                        ResearchTableBlockEntity table) {
       return packet.lhs() != null &&
               packet.rhs() != null &&
               hasAspect(table, player, packet.lhs()) &&
@@ -157,6 +151,13 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public Aspect rhs(){
       return aspect2;
    };
+
+   private static boolean hasAspect(ResearchTableBlockEntity table, ServerPlayer player, Aspect aspect) {
+      return hasAspect(player, aspect, 0) || table.bonusAspects.getAmount(aspect) > 0;
+   }
+   public static boolean hasAspect(ServerPlayer player, Aspect aspect, int threshold) {
+      return Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect) >= threshold;
+   }
 
 }
 

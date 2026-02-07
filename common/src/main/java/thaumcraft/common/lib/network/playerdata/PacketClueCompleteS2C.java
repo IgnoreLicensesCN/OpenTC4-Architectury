@@ -28,7 +28,7 @@ public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
         this.key = key;
     }
     public PacketClueCompleteS2C(ResourceLocation key) {
-        this.key = new ClueResourceLocation(key);
+        this.key = ClueResourceLocation.of(key);
     }
 
     // 编码

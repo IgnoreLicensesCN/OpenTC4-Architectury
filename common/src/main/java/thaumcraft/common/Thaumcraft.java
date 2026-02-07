@@ -2,7 +2,6 @@ package thaumcraft.common;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;

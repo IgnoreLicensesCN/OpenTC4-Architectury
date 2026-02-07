@@ -6,7 +6,6 @@ import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
@@ -18,35 +17,31 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
    public static MessageType messageType;
 
    private AspectResourceLocation key;
-   private int amount;
+   private int amountChanged;
    private int total;
    private static long lastSound = 0L;
+   public static final long SOUND_DELAY = 100L;
 
    public PacketAspectPoolS2C() {}
 
-   public PacketAspectPoolS2C(AspectResourceLocation key, int amount, int total) {
+   public PacketAspectPoolS2C(AspectResourceLocation key, int amountChanged, int total) {
       this.key = key;
-      this.amount = amount;
+      this.amountChanged = amountChanged;
       this.total = total;
    }
 
    // ------------------ 编码/解码 ------------------
    public static void encode(PacketAspectPoolS2C msg, FriendlyByteBuf buf) {
       buf.writeResourceLocation(msg.key);
-      buf.writeInt(msg.amount);
+      buf.writeInt(msg.amountChanged);
       buf.writeInt(msg.total);
    }
 
    public static PacketAspectPoolS2C decode(FriendlyByteBuf buf) {
       ResourceLocation key = buf.readResourceLocation();
-      short amount = buf.readShort();
-      short total = buf.readShort();
-      return new PacketAspectPoolS2C(new AspectResourceLocation(key), amount, total);
-   }
-
-   // ------------------ 客户端处理 ------------------
-   public static void receive(PacketAspectPoolS2C msg, Player player) {
-      ClientHandler.handle(msg);
+      int amount = buf.readInt();
+      int total = buf.readInt();
+      return new PacketAspectPoolS2C(AspectResourceLocation.of(key), amount, total);
    }
 
    @Override
@@ -61,41 +56,33 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
 
    @Override
    public void handle(NetworkManager.PacketContext context) {
-      if (context.getPlayer().level().isClientSide) {
-         ClientHandler.handle(this);
-      }
-   }
+      Aspect aspect = Aspect.getAspect(this.key);
+      var player = Minecraft.getInstance().player;
+      if (aspect != null && player != null) {
+         boolean success = Thaumcraft.playerKnowledge.setAspectPool(
+                 player.getGameProfile().getName(),
+                 aspect,
+                 this.total
+         );
 
-   // ------------------ CLIENT LOGIC -------------------
-   public static class ClientHandler {
-      public static void handle(PacketAspectPoolS2C message) {
-         Aspect aspect = Aspect.getAspect(message.key);
-         if (aspect != null) {
-            boolean success = Thaumcraft.playerKnowledge.setAspectPool(
-                    Minecraft.getInstance().player.getGameProfile().getName(),
-                    aspect,
-                    message.total
-            );
+         if (success && this.amountChanged > 0) {
+            String text = StatCollector.translateToLocal("tc.addaspectpool")
+                    .replace("%s", String.valueOf(this.amountChanged))
+                    .replace("%n", aspect.getName());
 
-            if (success && message.amount > 0) {
-               String text = StatCollector.translateToLocal("tc.addaspectpool")
-                       .replace("%s", String.valueOf(message.amount))
-                       .replace("%n", aspect.getName());
+            PlayerNotifications.addNotification(text, aspect);
 
-               PlayerNotifications.addNotification(text, aspect);
+            for (int i = 0; i < this.amountChanged; i++) {
+               PlayerNotifications.addAspectNotification(aspect);
+            }
 
-               for (int i = 0; i < message.amount; i++) {
-                  PlayerNotifications.addAspectNotification(aspect);
-               }
-
-               if (System.currentTimeMillis() > lastSound) {
-                  Minecraft.getInstance().player.playSound(
-                          net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP, // 可换成原来的 random.orb
-                          0.1F,
-                          0.9F + Minecraft.getInstance().player.getRandom().nextFloat() * 0.2F
-                  );
-                  lastSound = System.currentTimeMillis() + 100L;
-               }
+            if (System.currentTimeMillis() > lastSound) {
+               Minecraft.getInstance().player.playSound(
+                       net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP,
+                       0.1F,
+                       0.9F + Minecraft.getInstance().player.getRandom().nextFloat() * 0.2F
+               );
+               lastSound = System.currentTimeMillis() +SOUND_DELAY;
             }
          }
       }

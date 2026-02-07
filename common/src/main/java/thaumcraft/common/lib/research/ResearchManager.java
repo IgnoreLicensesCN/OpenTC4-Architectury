@@ -57,7 +57,7 @@ public class ResearchManager {
         for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             label110:
             for (ResearchItem researchItem : rcl.researches.values()) {
-                var asClueKey = researchItem.key.convertToResearchItemResLoc();
+                var asClueKey = researchItem.key.convertToClueResLoc();
                 boolean valid = !researchItem.tags.isEmpty()
                         && (researchItem.isLost() || researchItem.isHidden())
                         && !isResearchComplete(player.getGameProfile().getName(), researchItem.key
@@ -111,7 +111,7 @@ public class ResearchManager {
         for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
             label110:
             for (ResearchItem ri : rcl.researches.values()) {
-                var convertedKey = ri.key.convertToResearchItemResLoc();
+                var convertedKey = ri.key.convertToClueResLoc();
                 boolean valid =
                         !ri.tags.isEmpty()
                                 && (ri.isLost() || ri.isHidden()) && !isResearchComplete(
@@ -128,7 +128,7 @@ public class ResearchManager {
                             ri.getEntityTriggers();
                             for (ResourceKey<EntityType<?>> entity : ri.getEntityTriggers()) {
                                 if (clue.equals(entity)) {
-                                    keys.add(new ClueResourceLocation(ri.key));
+                                    keys.add(ClueResourceLocation.of(ri.key));
                                     continue label110;
                                 }
                             }
@@ -139,7 +139,7 @@ public class ResearchManager {
                         ri.getAspectTriggers();
                         for (Aspect aspect : ri.getAspectTriggers()) {
                             if (aspects.getAmount(aspect) > 0) {
-                                keys.add(new ClueResourceLocation(ri.key));
+                                keys.add(ClueResourceLocation.of(ri.key));
                                 break;
                             }
                         }
@@ -258,7 +258,7 @@ public class ResearchManager {
     }
 
     public static boolean isClueComplete(String playername, ClueResourceLocation key) {
-        if (ResearchItem.getResearch(new ResearchItemResourceLocation(key)) == null) {
+        if (ResearchItem.getResearch(ResearchItemResourceLocation.of(key)) == null) {
             return false;
         } else {
             var completed = getClueForPlayer(playername);

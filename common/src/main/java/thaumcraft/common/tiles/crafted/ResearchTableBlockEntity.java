@@ -1,7 +1,5 @@
 package thaumcraft.common.tiles.crafted;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -32,14 +30,8 @@ import thaumcraft.api.researchtable.IResearchNoteDataOwner;
 import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.api.researchtable.IResearchTableEditAspectListener;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.gui.menu.ResearchTableMenu;
-import thaumcraft.common.items.misc.ItemResearchNotes;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.research.HexEntry;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -122,7 +114,7 @@ public class ResearchTableBlockEntity
     public static final int INK_SLOT = 0;
     public static final int RESEARCH_NOTE_SLOT = 1;
     public final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
-    public final AspectList<Aspect> bonusAspect = new AspectList<>();
+    public final AspectList<Aspect> bonusAspects = new AspectList<>();
     public int tickCounter = 0;
     public static final int BONUS_ASPECT_REGEN_PERIOD = 600;
 
@@ -149,19 +141,19 @@ public class ResearchTableBlockEntity
                 && !level.canSeeSky(posAbove)
                 && level.random.nextInt(20) == 0
         ) {
-            bonusAspect.mergeWithHighest(Aspects.ENTROPY, 1);
+            bonusAspects.mergeWithHighest(Aspects.ENTROPY, 1);
         }
         if (heightAtPercent > 0.5
                 && level.random.nextInt(20) == 0) {
-            bonusAspect.mergeWithHighest(Aspects.AIR, 1);
+            bonusAspects.mergeWithHighest(Aspects.AIR, 1);
         }
         if (heightAtPercent > 0.66
                 && level.random.nextInt(20) == 0) {
-            bonusAspect.mergeWithHighest(Aspects.AIR, 1);
+            bonusAspects.mergeWithHighest(Aspects.AIR, 1);
         }
         if (heightAtPercent > 0.75
                 && level.random.nextInt(20) == 0) {
-            bonusAspect.mergeWithHighest(Aspects.AIR, 1);
+            bonusAspects.mergeWithHighest(Aspects.AIR, 1);
         }
         for (int xOffset = -8; xOffset <= 8; xOffset++) {
             for (int yOffset = -8; yOffset <= 8; yOffset++) {
@@ -174,7 +166,7 @@ public class ResearchTableBlockEntity
                                     || pickBlock == ThaumcraftBlocks.AIR_CRYSTAL
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.AIR, 1);
+                            bonusAspects.mergeWithHighest(Aspects.AIR, 1);
                         }
                     }
                     if (
@@ -184,7 +176,7 @@ public class ResearchTableBlockEntity
                                     || pickBlockState.getFluidState().is(FluidTags.LAVA)
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.FIRE, 1);
+                            bonusAspects.mergeWithHighest(Aspects.FIRE, 1);
                         }
                     }
                     if (
@@ -195,7 +187,7 @@ public class ResearchTableBlockEntity
 
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.EARTH, 1);
+                            bonusAspects.mergeWithHighest(Aspects.EARTH, 1);
                         }
                     }
 
@@ -206,7 +198,7 @@ public class ResearchTableBlockEntity
 
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.WATER, 1);
+                            bonusAspects.mergeWithHighest(Aspects.WATER, 1);
                         }
                     }
 
@@ -216,7 +208,7 @@ public class ResearchTableBlockEntity
                             || CONSIDERED_REDSTONE_COMPONENTS.contains(pickBlock)
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.WATER, 1);
+                            bonusAspects.mergeWithHighest(Aspects.WATER, 1);
                         }
                     }
 
@@ -225,13 +217,13 @@ public class ResearchTableBlockEntity
                                     || pickBlock == ThaumcraftBlocks.ENTROPY_INFUSED_STONE
                     ) {
                         if (level.random.nextInt(20) == 0) {
-                            bonusAspect.mergeWithHighest(Aspects.ENTROPY, 1);
+                            bonusAspects.mergeWithHighest(Aspects.ENTROPY, 1);
                         }
                     }
                     if ((pickBlock == Blocks.BOOKSHELF && level.random.nextInt(300) == 0)
                     || (pickBlockState.is(ThaumcraftBlocks.Tags.JAR_BLOCK) && level.random.nextInt(200) == 0)) {
                         var allAspects = ALL_ASPECTS.values().toArray(new Aspect[0]);
-                        bonusAspect.mergeWithHighest(allAspects[level.random.nextInt(allAspects.length)],1);
+                        bonusAspects.mergeWithHighest(allAspects[level.random.nextInt(allAspects.length)],1);
                     }
 
                 }
@@ -267,7 +259,7 @@ public class ResearchTableBlockEntity
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, inventory);
-        this.bonusAspect.addAll(BONUS_ASPECT_ACCESSOR.readFromCompoundTag(compoundTag));
+        this.bonusAspects.addAll(BONUS_ASPECT_ACCESSOR.readFromCompoundTag(compoundTag));
         this.tickCounter = TICK_COUNT_ACCESSOR.readFromCompoundTag(compoundTag);
     }
 
@@ -275,7 +267,7 @@ public class ResearchTableBlockEntity
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         ContainerHelper.saveAllItems(compoundTag, inventory);
-        BONUS_ASPECT_ACCESSOR.writeToCompoundTag(compoundTag, bonusAspect);
+        BONUS_ASPECT_ACCESSOR.writeToCompoundTag(compoundTag, bonusAspects);
         TICK_COUNT_ACCESSOR.writeToCompoundTag(compoundTag, tickCounter);
     }
 
@@ -376,8 +368,9 @@ public class ResearchTableBlockEntity
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int i, ItemStack itemStack, Direction direction) {
-        return true;
+    public boolean canTakeItemThroughFace(int slot, ItemStack itemStack, Direction direction) {
+        if (direction != Direction.DOWN){return slot == INK_SLOT;}
+        return slot == RESEARCH_NOTE_SLOT;//then we have hopper in hopper out
     }
 
     public @Nullable ResearchNoteData getResearchNoteData() {
@@ -422,7 +415,6 @@ public class ResearchTableBlockEntity
             }
             var data = dataOwner.getResearchNoteData(dataOwnerStack);
             if (data != null) {
-                //TODO:WriteAspect
                 if (!aspect.isEmpty()){
                     var writeContext = new WriteAspectContext(
                             level,
@@ -477,53 +469,16 @@ public class ResearchTableBlockEntity
             }
             this.markDirtyAndUpdateSelf();
         }
+    }
 
-        if (ResearchManager.consumeInkFromTable(this.contents[0], false)) {
-            if (this.contents[1] != null && this.contents[1].getItem() instanceof ItemResearchNotes && this.data != null && this.contents[1].getItemDamage() < 64) {
-                boolean expertiseFlag = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER1");
-                boolean masteryFlag = ResearchManager.isResearchComplete(player.getCommandSenderName(), "RESEARCHER2");
-                HexCoord hex = new HexCoord(q, r);
-                HexEntry he = null;
-                if (aspect != null) {
-                } else {
-                    float f = this.level().rand.nextFloat();
-                    if (this.data.hexEntries.get(
-                            hex.toString()).aspect != null && (expertiseFlag && f < 0.25F || masteryFlag && f < 0.5F)) {
-                        this.level()
-                                .playSoundAtEntity(
-                                        player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
-                        Thaumcraft.proxy.playerKnowledge.addAspectPool(
-                                player.getCommandSenderName(), this.data.hexEntries.get(hex.toString()).aspect,
-                                (short) 1
-                        );
-                        ResearchManager.scheduleSave(player);
-                        PacketHandler.INSTANCE.sendTo(
-                                new PacketAspectPool(
-                                        this.data.hexEntries.get(hex.toString()).aspect.getAspectKey(),
-                                        (short) 0,
-                                        Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(
-                                                player.getCommandSenderName(),
-                                                this.data.hexEntries.get(hex.toString()).aspect
-                                        )
-                                ), (ServerPlayer) player
-                        );
-                    }
-
-                    he = HexEntry.EMPTY;
-                }
-
-                this.data.hexEntries.put(hex.toString(), he);
-                this.data.hexes.put(hex.toString(), hex);
-                ResearchManager.updateData(this.contents[1], this.data);
-                ResearchManager.consumeInkFromTable(this.contents[0], true);
-                if (Platform.getEnvironment() == Env.SERVER && ResearchNoteData.checkResearchNoteCompletion(
-                        this.contents[1], this.data, player.getCommandSenderName())) {
-                    this.contents[1].setItemDamage(64);
-                    this.level()
-                            .addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockTable, 1, 1);
-                }
+    public void copyResearch(ServerPlayer player){
+        var researchStack = inventory.get(RESEARCH_NOTE_SLOT);
+        if (researchStack.isEmpty()){return;}
+        if (researchStack.getItem() instanceof IResearchNoteDataOwner dataOwner) {
+            if (dataOwner.canCopyResearchNote(researchStack, player)){
+                dataOwner.copyResearchNote(researchStack, player);
             }
-
         }
     }
+
 }

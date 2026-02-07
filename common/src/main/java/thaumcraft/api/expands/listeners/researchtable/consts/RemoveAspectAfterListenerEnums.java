@@ -4,31 +4,23 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.expands.listeners.researchtable.listeners.RemoveAspectAfterListener;
-import thaumcraft.api.researchtable.IResearchTableEditAspectListener;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.researches.ThaumcraftResearches;
 
 public enum RemoveAspectAfterListenerEnums {
-    RESEARCH_EXPERTISE(
+    RESEARCH_EXPERTISE_AMD_MASTERY(
             new RemoveAspectAfterListener(20) {
                 @Override
                 public void onEventTriggered(RemoveAspectContext context) {
                     if (ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
-                        if (!context.doReturnAspect && context.atLevel.random.nextFloat() < 0.25F){
-                            context.doReturnAspect = true;
+                        float returnAspectChance = 0.25F;
+
+                        if (ThaumcraftResearches.RESEARCH_MASTERY.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
+                            returnAspectChance = 0.5F;
                         }
-                    }
-                }
-            }
-    ),
-    RESEARCH_MASTERY(
-            new RemoveAspectAfterListener(20) {
-                @Override
-                public void onEventTriggered(RemoveAspectContext context) {
-                    if (ThaumcraftResearches.RESEARCH_MASTERY.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
-                        if (!context.doReturnAspect && context.atLevel.random.nextFloat() < 0.5F){
+                        if (!context.doReturnAspect && context.atLevel.random.nextFloat() < returnAspectChance){
                             context.doReturnAspect = true;
                         }
                     }

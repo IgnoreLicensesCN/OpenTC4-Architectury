@@ -1,17 +1,12 @@
 package thaumcraft.api.research;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.interfaces.IRenderableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
@@ -188,7 +183,7 @@ public abstract class ResearchItem
             return this;
         }
         if (this instanceof IRenderableResearch renderableResearch){
-            category.addResearch(this,renderableResearch.getShownInfo(category));
+            category.addResearchAndShownInfo(this,renderableResearch.getShownInfo(category));
         }else {
             category.researches.put(this.key,this);
         }

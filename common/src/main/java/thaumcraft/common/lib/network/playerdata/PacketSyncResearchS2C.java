@@ -1,7 +1,6 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
@@ -10,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_research";
     public static MessageType messageType;
 
-    public List<ResourceLocation> data;
+    public List<ResearchItemResourceLocation> data;
 
     // ---------------- 构造 ----------------
 
@@ -27,14 +27,14 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
      * 服务端发送用构造
      */
     public PacketSyncResearchS2C(Player player) {
-        List<ResourceLocation> list = ResearchManager.getResearchForPlayer(player.getGameProfile().getName());
+        List<ResearchItemResourceLocation> list = ResearchManager.getResearchForPlayer(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
     }
 
     /**
      * 解码用构造
      */
-    public PacketSyncResearchS2C(List<ResourceLocation> data) {
+    public PacketSyncResearchS2C(List<ResearchItemResourceLocation> data) {
         this.data = data;
     }
 
@@ -43,16 +43,16 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(data.size());
-        for (ResourceLocation s : data) {
+        for (var s : data) {
             buf.writeResourceLocation(s);
         }
     }
 
     public static PacketSyncResearchS2C decode(FriendlyByteBuf buf) {
         int size = buf.readInt();
-        List<ResourceLocation> list = new ArrayList<>();
+        List<ResearchItemResourceLocation> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            list.add(buf.readResourceLocation());
+            list.add(ResearchItemResourceLocation.of(buf.readResourceLocation()));
         }
         return new PacketSyncResearchS2C(list);
     }

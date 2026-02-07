@@ -43,14 +43,14 @@ public abstract class Aspect {
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color) {
-		this(aspectKey,color,new AspectResourceLocation(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),1);
+		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),1);
 	}
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color, int blend) {
-		this(aspectKey,color,new AspectResourceLocation(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
+		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
 	}
 
 	

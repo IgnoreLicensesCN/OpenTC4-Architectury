@@ -120,7 +120,7 @@ public class GuiResearchTable extends GuiContainer {
             AspectList<Aspect>al = rr.tags.copy();
 
             for(Aspect aspect : al.getAspects()) {
-               al.addAll(aspect, this.note.copies);
+               al.addAll(aspect, this.note.copiedCount);
             }
 
             int count = 0;

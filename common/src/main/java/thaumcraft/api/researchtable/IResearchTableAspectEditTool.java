@@ -22,6 +22,8 @@ public interface IResearchTableAspectEditTool extends IResearchTableEditAspectLi
     ) {
         return true;
     }
+
+    //should ensure that player can call #createResearchNote
     ResearchCreateReason canCreateResearchNote(
             Level atLevel,
             Player player,
