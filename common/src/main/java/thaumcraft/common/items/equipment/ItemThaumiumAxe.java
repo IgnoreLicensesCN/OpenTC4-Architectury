@@ -9,13 +9,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemAxe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 import java.util.Set;
 
-public class ItemThaumiumAxe extends ItemAxe implements IRepairable {
+public class ItemThaumiumAxe extends ItemAxe implements IRepairEnchantable {
    public IIcon icon;
 
    public ItemThaumiumAxe(Item.ToolMaterial enumtoolmaterial) {

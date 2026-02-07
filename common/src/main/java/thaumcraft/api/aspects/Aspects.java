@@ -2,11 +2,13 @@ package thaumcraft.api.aspects;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.displayhelper.AspectItem;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -104,5 +106,26 @@ public class Aspects {
                     }
             );
         }
+    }
+
+    ///////////////////////////////
+    @SuppressWarnings("unchecked cast") //a bit wild but i need this(maybe).
+    @UnmodifiableView
+    public static Collection<Aspect> getPrimalAspectsCasted() {
+        return (Collection<Aspect>)(Collection<?>)getPrimalAspects();
+    }
+
+    @SuppressWarnings("unchecked cast")
+    @UnmodifiableView
+    public static Collection<Aspect> getCompoundAspectsCasted() {
+        return (Collection<Aspect>)(Collection<?>)getCompoundAspects();
+    }
+    @UnmodifiableView
+    public static Collection<PrimalAspect> getPrimalAspects() {
+        return PRIMAL_ASPECTS.values();
+    }
+    @UnmodifiableView
+    public static Collection<CompoundAspect> getCompoundAspects() {
+        return COMPOUND_ASPECTS.values();
     }
 }

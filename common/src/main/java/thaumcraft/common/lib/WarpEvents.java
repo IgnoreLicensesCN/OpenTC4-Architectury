@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.linearity.opentc4.utils.StatCollector;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
@@ -246,7 +247,7 @@ public class WarpEvents {
       int amt = 1 + player.getRandom().nextInt(times);
 
       for(int a = 0; a < amt; ++a) {
-         Aspect aspect = Aspect.getPrimalAspects().get(player.getRandom().nextInt(6));
+         Aspect aspect = Aspects.getPrimalAspects().get(player.getRandom().nextInt(6));
          Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)1);
 
          new PacketAspectPoolS2C(aspect.getAspectKey(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect)).sendTo((ServerPlayer)player);

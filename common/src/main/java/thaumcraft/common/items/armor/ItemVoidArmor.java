@@ -10,14 +10,13 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 
-public class ItemVoidArmor extends ItemArmor implements IRepairable, IRunicArmor, IWarpingGear {
+public class ItemVoidArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor, IWarpingGear {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

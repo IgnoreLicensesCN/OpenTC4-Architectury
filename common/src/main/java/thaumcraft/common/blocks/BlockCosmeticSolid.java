@@ -291,8 +291,8 @@ public class BlockCosmeticSolid /*extends Block*/ {
 //                  for(int a = 0; a <= ((INode)te).getAspects().getAmount(aspect) / 10; ++a) {
 //                     if (((INode)te).getAspects().getAmount(aspect) >= 5) {
 //                        ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-//                        new AspectList();
-//                        ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
+//                        new AspectList<>();
+//                        ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(aspect, 2));
 //                        this.dropBlockAsItem(par1World, par2, par3, par4, ess);
 //                     }
 //                  }

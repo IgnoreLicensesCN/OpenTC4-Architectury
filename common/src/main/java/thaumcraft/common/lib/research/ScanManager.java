@@ -561,7 +561,7 @@ public class ScanManager implements IScanEventHandler {
         }
 
         if (Platform.getEnvironment() != Env.CLIENT && ret && aspects != null) {
-            AspectList<Aspect>aspectsFinal = new AspectList();
+            AspectList<Aspect>aspectsFinal = new AspectList<>();
 
             for (Aspect aspect : aspects.getAspectTypes()) {
                 if (rp.hasDiscoveredParentAspects(

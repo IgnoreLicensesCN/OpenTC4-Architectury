@@ -1,8 +1,10 @@
 package thaumcraft.api.wands;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import com.linearity.opentc4.utils.StatCollector;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
@@ -17,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *                The amounts given is ignored,
  *                just the type is used for the calculation.
  */
-public record FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<Aspect>aspects) {
+public record FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<? extends Aspect>aspects) {
 
 	private static final Map<String, FocusUpgradeType> types = new ConcurrentHashMap<>();
 	public static final Map<String, FocusUpgradeType> typesView = Collections.unmodifiableMap(types);
@@ -35,7 +37,7 @@ public record FocusUpgradeType(String id, ResourceLocation icon, String name, St
 		return type;
 	}
 
-	public FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<Aspect>aspects) {
+	public FocusUpgradeType(String id, ResourceLocation icon, String name, String text, AspectList<? extends Aspect>aspects) {
 		this.id = id;
 		this.icon = icon;
 		this.name = name;
@@ -81,12 +83,12 @@ public record FocusUpgradeType(String id, ResourceLocation icon, String name, St
 		return false;
 	}
 
-	public String getLocalizedName() {
-		return StatCollector.translateToLocal(name);
+	public Component getLocalizedName() {
+		return Component.translatable(name);
 	}
 
-	public String getLocalizedText() {
-		return StatCollector.translateToLocal(text);
+	public Component getLocalizedText() {
+		return Component.translatable(text);
 	}
 
 
@@ -94,47 +96,47 @@ public record FocusUpgradeType(String id, ResourceLocation icon, String name, St
 	public static FocusUpgradeType potency = new FocusUpgradeType("potency",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/potency.png"),
 			"focus.upgrade.potency.name", "focus.upgrade.potency.text",
-			new AspectList().addAll(Aspects.WEAPON, 1));
+			new AspectList<>(Aspects.WEAPON, 1));
 
 	public static FocusUpgradeType frugal = new FocusUpgradeType("frugal",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/frugal.png"),
 			"focus.upgrade.frugal.name", "focus.upgrade.frugal.text",
-			new AspectList().addAll(Aspects.HUNGER, 1));
+			new AspectList<>(Aspects.HUNGER, 1));
 
 	public static FocusUpgradeType treasure = new FocusUpgradeType("treasure",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/treasure.png"),
 			"focus.upgrade.treasure.name", "focus.upgrade.treasure.text",
-			new AspectList().addAll(Aspects.GREED, 1));
+			new AspectList<>(Aspects.GREED, 1));
 
 	public static FocusUpgradeType enlarge = new FocusUpgradeType("enlarge",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/enlarge.png"),
 			"focus.upgrade.enlarge.name", "focus.upgrade.enlarge.text",
-			new AspectList().addAll(Aspects.TRAVEL, 1));
+			new AspectList<>(Aspects.TRAVEL, 1));
 
 	public static FocusUpgradeType alchemistsfire = new FocusUpgradeType("alchemistsfire",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/alchemistsfire.png"),
 			"focus.upgrade.alchemistsfire.name", "focus.upgrade.alchemistsfire.text",
-			new AspectList().addAll(Aspects.ENERGY, 1).addAll(Aspects.SLIME, 1));
+			new AspectList<>(Aspects.ENERGY, 1).addAll(Aspects.SLIME, 1));
 
 	public static FocusUpgradeType alchemistsfrost = new FocusUpgradeType("alchemistsfrost",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/alchemistsfrost.png"),
 			"focus.upgrade.alchemistsfrost.name", "focus.upgrade.alchemistsfrost.text",
-			new AspectList().addAll(Aspects.COLD, 1).addAll(Aspects.TRAP, 1));
+			new AspectList<>(Aspects.COLD, 1).addAll(Aspects.TRAP, 1));
 
 	public static FocusUpgradeType architect = new FocusUpgradeType("architect",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/architect.png"),
 			"focus.upgrade.architect.name", "focus.upgrade.architect.text",
-			new AspectList().addAll(Aspects.CRAFT, 1));
+			new AspectList<>(Aspects.CRAFT, 1));
 
 	public static FocusUpgradeType extend = new FocusUpgradeType("extend",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/extend.png"),
 			"focus.upgrade.extend.name", "focus.upgrade.extend.text",
-			new AspectList().addAll(Aspects.EXCHANGE, 1));
+			new AspectList<>(Aspects.EXCHANGE, 1));
 
 	public static FocusUpgradeType silktouch = new FocusUpgradeType("silktouch",
 			new ResourceLocation(Thaumcraft.MOD_ID, "textures/foci/silktouch.png"),
 			"focus.upgrade.silktouch.name", "focus.upgrade.silktouch.text",
-			new AspectList().addAll(Aspects.GREED, 1));
+			new AspectList<>(Aspects.GREED, 1));
 
 
 }

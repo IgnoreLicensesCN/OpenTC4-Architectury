@@ -82,10 +82,10 @@ public class ItemFocusPech extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspects.EARTH, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
-      costAll = (new AspectList()).addAll(Aspects.AIR, 10).addAll(Aspects.FIRE, 10).addAll(Aspects.EARTH, 10).addAll(
+      cost = (new AspectList<>()).addAll(Aspects.EARTH, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
+      costAll = (new AspectList<>()).addAll(Aspects.AIR, 10).addAll(Aspects.FIRE, 10).addAll(Aspects.EARTH, 10).addAll(
               Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
-      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new AspectList()).addAll(
+      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new AspectList<>()).addAll(
               Aspects.LIFE, 1).addAll(Aspects.POISON, 1).addAll(Aspects.MAGIC, 1));
    }
 }

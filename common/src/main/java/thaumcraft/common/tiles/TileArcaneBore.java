@@ -29,8 +29,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.IRepairable;
-import thaumcraft.api.IRepairableExtended;
+import thaumcraft.api.IRepairEnchantable;
+import thaumcraft.api.IRepairEnchantableExtended;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -124,8 +124,8 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
         this.orientation = Direction.UP;
         this.baseOrientation = Direction.UP;
         this.fakePlayer = null;
-        this.repairCost = new AspectList();
-        this.currentRepairVis = new AspectList();
+        this.repairCost = new AspectList<>();
+        this.currentRepairVis = new AspectList<>();
         this.fortune = 0;
         this.speed = 0;
         this.area = 0;
@@ -209,7 +209,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
             }
 
             if (this.repairCost != null && this.repairCost.size() > 0 && this.repairCounter % 5L == 0L) {
-                for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                for (Map.Entry<Aspect,Integer> a : this.repairCost.entrySet()) {
                     var repairAspect = a.getKey();
                     var repairAmount = a.getValue();
                     if (this.currentRepairVis.getAmount(repairAspect) < repairAmount) {
@@ -235,27 +235,27 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
                 level = 2;
             }
 
-            if (is.getItem() instanceof IRepairable) {
-                AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
-                if (cost == null || cost.size() == 0) {
+            if (is.getItem() instanceof IRepairEnchantable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,is) > 0) {
+                AspectList<Aspect> cost = ThaumcraftCraftingManager.getObjectTags(is);
+                if (cost == null || cost.isEmpty()) {
                     return;
                 }
 
-                cost = ResearchManager.reduceToPrimals(cost);
+                cost = ResearchManager.reduceToPrimalsAndCast(cost);
 
-                for (Map.Entry<Aspect,Integer> a : cost.getAspects().entrySet()) {
+                for (Map.Entry<Aspect,Integer> a : cost.entrySet()) {
                     var repairCostAspect = a.getKey();
                     var repairCostAmount = a.getValue();
                     this.repairCost.mergeWithHighest(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2) * level);
                 }
 
                 boolean doIt = true;
-                if (is.getItem() instanceof IRepairableExtended) {
-                    doIt = ((IRepairableExtended) is.getItem()).doRepair(is, player, level);
+                if (is.getItem() instanceof IRepairEnchantableExtended) {
+                    doIt = ((IRepairEnchantableExtended) is.getItem()).doRepair(is, player, level);
                 }
 
                 if (doIt) {
-                    for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                    for (Map.Entry<Aspect,Integer> a : this.repairCost.entrySet()) {
                         var repairCostAspect = a.getKey();
                         var repairCostAmount = a.getValue();
                         if (this.currentRepairVis.getAmount(repairCostAspect) < repairCostAmount) {
@@ -267,7 +267,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
 
                 if (doIt) {
 
-                    for (Map.Entry<Aspect,Integer> a : this.repairCost.getAspects().entrySet()) {
+                    for (Map.Entry<Aspect,Integer> a : this.repairCost.entrySet()) {
                         var repairCostAspect = a.getKey();
                         var repairCostAmount = a.getValue();
                         this.currentRepairVis.reduce(repairCostAspect, repairCostAmount);
@@ -277,7 +277,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
                     this.setChanged();
                 }
             } else {
-                this.repairCost = new AspectList();
+                this.repairCost = new AspectList<>();
             }
 
         }

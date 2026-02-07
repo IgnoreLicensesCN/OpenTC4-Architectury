@@ -21,10 +21,10 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    String id;
 
    public TileNodeEnergized() {
-      this.auraBase = (new AspectList()).addAll(Aspects.AIR, 20).addAll(Aspects.FIRE, 20).addAll(Aspects.EARTH, 20).addAll(
+      this.auraBase = (new AspectList<>()).addAll(Aspects.AIR, 20).addAll(Aspects.FIRE, 20).addAll(Aspects.EARTH, 20).addAll(
               Aspects.WATER, 20).addAll(Aspects.ORDER, 20).addAll(Aspects.ENTROPY, 20);
-      this.visBase = new AspectList();
-      this.vis = new AspectList();
+      this.visBase = new AspectList<>();
+      this.vis = new AspectList<>();
       this.nodeType = NodeType.NORMAL;
       this.nodeModifier = null;
       this.id = "blank";
@@ -34,7 +34,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
       super.updateEntity();
       if (Platform.getEnvironment() != Env.CLIENT) {
          if (this.getNodeType() == NodeType.UNSTABLE && this.level().rand.nextInt(500) == 1) {
-            this.visBase = new AspectList();
+            this.visBase = new AspectList<>();
          }
 
          if (this.visBase.size() == 0 && this.getAuraBase().size() > 0) {
@@ -51,7 +51,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    }
 
    public void setupNode() {
-      this.visBase = new AspectList();
+      this.visBase = new AspectList<>();
       AspectList<Aspect>temp = ResearchManager.reduceToPrimals(this.getAuraBase(), true);
 
       for(Aspect aspect : temp.getAspects()) {

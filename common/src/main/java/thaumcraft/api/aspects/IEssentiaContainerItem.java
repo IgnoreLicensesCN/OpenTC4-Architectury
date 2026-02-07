@@ -21,7 +21,7 @@ public interface IEssentiaContainerItem {
 	@Override
 	public AspectList<Aspect>getAspects(ItemStack itemstack) {
 		if (itemstack.hasTagCompound()) {
-			AspectList<Aspect>aspects = new AspectList();
+			AspectList<Aspect>aspects = new AspectList<>();
 			aspects.load(itemstack.getTagCompound());
 			return aspects.size()>0?aspects:null;
 		}

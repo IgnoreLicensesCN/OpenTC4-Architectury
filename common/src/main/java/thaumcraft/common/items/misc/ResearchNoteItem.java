@@ -146,16 +146,16 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         if (!(paperIndex != -1 && dyeIndex != -1)){
             return;
         }
-        for (var entry:aspectsToCopy.getAspects().entrySet()){
+        for (var entry:aspectsToCopy.entrySet()){
             var aspect = entry.getKey();
             var count = entry.getValue() + copiedCount;
-            if (playerOwnedAspects.getAspects().getOrDefault(aspect,0) < count){
+            if (playerOwnedAspects.getOrDefault(aspect,0) < count){
                 return;
             }
         }
         //checked
         //consume
-        for (var entry:aspectsToCopy.getAspects().entrySet()){
+        for (var entry:aspectsToCopy.entrySet()){
             var aspect = entry.getKey();
             var count = entry.getValue() + copiedCount;
             Thaumcraft.playerKnowledge.addAspectPool(playerName,aspect,-count);

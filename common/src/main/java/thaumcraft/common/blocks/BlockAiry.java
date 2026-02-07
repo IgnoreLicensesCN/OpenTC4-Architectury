@@ -250,8 +250,8 @@ public class BlockAiry extends BlockContainer {
                for(int a = 0; a <= ((INodeBlockEntity)te).getAspects().getAmount(aspect) / 10; ++a) {
                   if (((INodeBlockEntity)te).getAspects().getAmount(aspect) >= 5) {
                      ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-                     new AspectList();
-                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(aspect, 2));
+                     new AspectList<>();
+                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(aspect, 2));
                      this.dropBlockAsItem(par1World, par2, par3, par4, ess);
                   }
                }

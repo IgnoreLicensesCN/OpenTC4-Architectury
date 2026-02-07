@@ -16,16 +16,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.EnumHelper;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
-public class ItemCrimsonSword extends ItemSword implements IRepairable, IWarpingGear {
+public class ItemCrimsonSword extends ItemSword implements IRepairEnchantable, IWarpingGear {
    public static Item.ToolMaterial toolMatCrimsonVoid = EnumHelper.addToolMaterial("CVOID", 4, 200, 8.0F, 3.5F, 20);
    public IIcon icon;
 

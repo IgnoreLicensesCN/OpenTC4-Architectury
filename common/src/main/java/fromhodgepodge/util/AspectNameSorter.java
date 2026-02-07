@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated(forRemoval = true)
 public class AspectNameSorter implements Comparator<Aspect> {
 
     private static final Comparator<Aspect> INSTANCE = new AspectNameSorter();
@@ -20,7 +21,7 @@ public class AspectNameSorter implements Comparator<Aspect> {
     }
 
     public static <Asp extends Aspect> List<Asp> sort(AspectList<Asp> list) {
-        return list.getAspects().keySet().stream().sorted(INSTANCE).collect(Collectors.toList());
+        return list.keySet().stream().sorted(INSTANCE).collect(Collectors.toList());
     }
 
 }

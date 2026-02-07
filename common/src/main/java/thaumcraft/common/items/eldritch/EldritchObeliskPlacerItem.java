@@ -1,8 +1,7 @@
-package thaumcraft.common.items.misc;
+package thaumcraft.common.items.eldritch;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

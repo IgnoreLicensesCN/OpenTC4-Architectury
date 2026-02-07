@@ -17,16 +17,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 import thaumcraft.api.IGoggles;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.client.renderers.models.gear.ModelFortressArmor;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
-public class ItemFortressArmor extends ItemArmor implements IRepairable, IRunicArmor, ISpecialArmor, IGoggles, IRevealer {
+public class ItemFortressArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor, ISpecialArmor, IGoggles, IRevealer {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

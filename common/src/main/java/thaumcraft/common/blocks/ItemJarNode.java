@@ -138,7 +138,7 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
 
    public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {

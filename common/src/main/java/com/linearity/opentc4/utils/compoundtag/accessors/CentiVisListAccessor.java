@@ -6,14 +6,15 @@ import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> {
+public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
     protected final ListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
-    public AspectListAccessor(String tagKey) {
-        super(tagKey, (Class<AspectList<Aspect>>) (Class<?>)AspectList.class);
+    public CentiVisListAccessor(String tagKey) {
+        super(tagKey, (Class<CentiVisList<Aspect>>) (Class<?>)CentiVisList.class);
         this.aspectAndAmountsAccessor = new ListAccessor<>(
                 tagKey
                 ,new SimplePairAccessor<>(
@@ -24,9 +25,9 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
     }
 
     @Override
-    public AspectList<Aspect> readFromCompoundTag(CompoundTag tag) {
+    public CentiVisList<Aspect> readFromCompoundTag(CompoundTag tag) {
         var list = this.aspectAndAmountsAccessor.readFromCompoundTag(tag);
-        AspectList<Aspect> result = new AspectList<>();
+        CentiVisList<Aspect> result = new CentiVisList<>();
         for(var pair : list) {
             result.addAll(pair.a(),pair.b());
         }
@@ -34,7 +35,7 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tag, AspectList<Aspect> toWrite) {
+    public void writeToCompoundTag(CompoundTag tag, CentiVisList<Aspect> toWrite) {
         List<SimplePair<Aspect,Integer>> toWriteList = new ArrayList<>(toWrite.size());
         toWrite.forEach((key, value1) -> toWriteList.add(new SimplePair<>(key, value1)));
         this.aspectAndAmountsAccessor.writeToCompoundTag(tag, toWriteList);

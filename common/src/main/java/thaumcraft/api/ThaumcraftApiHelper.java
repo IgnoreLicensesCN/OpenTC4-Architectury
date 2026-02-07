@@ -199,7 +199,7 @@ public class ThaumcraftApiHelper {
     public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
         if (allCompoundAspects.get(amount) == null) {
             AspectList<CompoundAspect> al = new AspectList<>();
-            for (var aspect : Aspect.getCompoundAspects()) {
+            for (var aspect : Aspects.getCompoundAspects()) {
                 al.addAll(aspect, amount);
             }
             allCompoundAspects.put(amount, al);
@@ -251,7 +251,7 @@ public class ThaumcraftApiHelper {
      * @return was the vis successfully subtracted
      */
     public static boolean consumeVisFromInventory(Player player, AspectList<Aspect> cost) {
-        return WandManager.consumeVisFromInventory(player, cost);
+        return WandManager.consumeCentiVisFromInventory(player, cost);
     }
 
 

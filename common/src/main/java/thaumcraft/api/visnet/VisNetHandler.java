@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.lib.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -61,7 +62,7 @@ public class VisNetHandler {
 				drainedAmount += a;
 				amount -= a;
 				if (a > 0) {
-					int color = Aspect.getPrimalAspects().indexOf(aspect);
+					int color = Aspects.getPrimalAspects().indexOf(aspect);
 					var pos = node.getBlockPos();
 					generateVisEffect(world.dimension(), x, y, z, pos.getX(),pos.getY(),pos.getZ(), color);
 				}

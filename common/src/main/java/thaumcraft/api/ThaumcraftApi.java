@@ -451,8 +451,8 @@ public class ThaumcraftApi {
      * @param aspects
      * @param nbt        you can specify certain nbt keys and their values
      *                   to differentiate between mobs. <br>For example the normal and wither skeleton:
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList()).add(Aspect.DEATH, 5));
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 5));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
      */
     public static void registerEntityTag(String entityName, AspectList<Aspect>aspects, EntityTagsNBT... nbt) {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
@@ -734,7 +734,7 @@ public class ThaumcraftApi {
 
     /**
      * Used to assign apsects to the given item/block. Here is an example of the declaration for cobblestone:<p>
-     * <i>ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList()).add(Aspect.ENTROPY, 1).add(Aspect.EARTH, 1));</i>
+     * <i>ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.ENTROPY, 1).add(Aspect.EARTH, 1));</i>
      *
      * @param item    the item passed. Pass OreDictionary.WILDCARD_VALUE if all damage values of this item/block should have the same aspects
      * @param aspects A ObjectTags object of the associated aspects
@@ -769,7 +769,7 @@ public class ThaumcraftApi {
      * Used to assign aspects to the given item/block.
      * Attempts to automatically generate aspect tags by checking registered recipes.
      * Here is an example of the declaration for pistons:<p>
-     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
+     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
      * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
      *
      * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects

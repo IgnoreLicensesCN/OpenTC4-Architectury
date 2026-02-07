@@ -100,7 +100,7 @@ public class NodeGenerationManager {
             modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
         }
 
-        AspectList<Aspect>nodeAspects = new AspectList();
+        AspectList<Aspect>nodeAspects = new AspectList<>();
         for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
             nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
         }
@@ -120,7 +120,7 @@ public class NodeGenerationManager {
             modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
         }
 
-        AspectList<Aspect>nodeAspects = new AspectList();
+        AspectList<Aspect>nodeAspects = new AspectList<>();
         for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
             nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
         }

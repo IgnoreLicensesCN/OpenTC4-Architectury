@@ -57,7 +57,7 @@ public class GuiResearchTable extends GuiContainer {
    Player player;
    public Aspect select1 = null;
    public Aspect select2 = null;
-   private AspectList<Aspect>aspectlist = new AspectList();
+   private AspectList<Aspect>aspectlist = new AspectList<>();
    private HashMap runes = new HashMap<>();
    private float popupScale = 0.05F;
    private Aspect draggedAspect;

@@ -38,7 +38,7 @@ public class GuiFocalManipulator extends GuiContainer {
    DecimalFormat myFormatter = new DecimalFormat("#######.#");
    ArrayList<FocusUpgradeType> possibleUpgrades = new ArrayList<>();
    ArrayList<FocusUpgradeType> upgrades = new ArrayList<>();
-   AspectList<Aspect>aspects = new AspectList();
+   AspectList<Aspect>aspects = new AspectList<>();
    HashMap<Long,Sparkle> sparkles = new HashMap<>();
 
    public GuiFocalManipulator(InventoryPlayer par1InventoryPlayer, TileFocalManipulator table) {
@@ -131,7 +131,7 @@ public class GuiFocalManipulator extends GuiContainer {
          this.selected = -1;
          this.possibleUpgrades.clear();
          this.upgrades.clear();
-         this.aspects = new AspectList();
+         this.aspects = new AspectList<>();
          this.table.reset = false;
          this.table.rank = 0;
       }
@@ -236,7 +236,7 @@ public class GuiFocalManipulator extends GuiContainer {
    private void gatherInfo() {
       this.possibleUpgrades.clear();
       this.upgrades.clear();
-      this.aspects = new AspectList();
+      this.aspects = new AspectList<>();
       ItemFocusBasic focus = (ItemFocusBasic)this.table.getStackInSlot(0).getItem();
       short[] s = focus.getAppliedUpgrades(this.table.getStackInSlot(0));
       this.rank = 1;
@@ -307,7 +307,7 @@ public class GuiFocalManipulator extends GuiContainer {
                var7 = mx - (gx + 48 + a * 16);
                var8 = my - (gy + 104);
                if (var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
-                  this.aspects = new AspectList();
+                  this.aspects = new AspectList<>();
                   if (this.selected == u.id()) {
                      this.selected = -1;
                   } else {
@@ -318,7 +318,7 @@ public class GuiFocalManipulator extends GuiContainer {
                         amt *= 2;
                      }
 
-                     AspectList<Aspect>tal = new AspectList();
+                     AspectList<Aspect>tal = new AspectList<>();
 
                      for(Aspect as : FocusUpgradeType.types[this.selected].aspects.getAspects()) {
                         tal.addAll(as, amt);

@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.IRunicArmor;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
@@ -116,7 +115,7 @@ public class ServerPlayerMixin {
                 int charge = EventHandlerRunic.runicCharge.get(player.getGameProfile().getName());
                 if (charge > ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0]) {
                     charge = ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0];
-                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0] && EventHandlerRunic.nextCycle.get(player.getGameProfile().getName()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).addAll(
+                } else if (charge < ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[0] && EventHandlerRunic.nextCycle.get(player.getGameProfile().getName()) < time && WandManager.consumeCentiVisFromInventory(player, (new AspectList<>()).addAll(
                         Aspects.AIR, Config.shieldCost).addAll(Aspects.EARTH, Config.shieldCost))) {
                     long interval = Config.shieldRecharge - ((Integer[])EventHandlerRunic.runicInfo.get(player.getGameProfile().getName()))[1] * 500;
                     EventHandlerRunic.nextCycle.put(player.getGameProfile().getName(), time + interval);

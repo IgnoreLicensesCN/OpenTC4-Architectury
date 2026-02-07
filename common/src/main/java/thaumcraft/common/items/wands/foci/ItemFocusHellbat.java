@@ -142,15 +142,15 @@ public class ItemFocusHellbat extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
-      costBomb = (new AspectList()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
-      costDevil = (new AspectList()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
+      costBase = (new AspectList<>()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
+      costBomb = (new AspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
+      costDevil = (new AspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
               Aspects.EARTH, 100);
-      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new AspectList()).addAll(
+      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new AspectList<>()).addAll(
               Aspects.ENERGY, 1).addAll(Aspects.TRAP, 1));
-      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new AspectList()).addAll(
+      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new AspectList<>()).addAll(
               Aspects.ARMOR, 1));
-      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new AspectList()).addAll(
+      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new AspectList<>()).addAll(
               Aspects.HUNGER, 1).addAll(
               Aspects.LIFE, 1));
    }

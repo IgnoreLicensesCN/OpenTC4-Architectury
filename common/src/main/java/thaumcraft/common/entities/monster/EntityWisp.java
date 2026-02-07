@@ -131,10 +131,10 @@ public class EntityWisp extends EntityFlying implements IMob {
                   this.setType(Aspects.DEATH.getAspectKey());
             }
          } else if (this.level().rand.nextInt(10) != 0) {
-            varr as = Aspect.getPrimalAspects();
+            varr as = Aspects.getPrimalAspects();
             this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          } else {
-            var as = Aspect.getCompoundAspects();
+            var as = Aspects.getCompoundAspects();
             this.setType(as.get(this.level().rand.nextInt(as.size())).getTag());
          }
       }
@@ -263,8 +263,8 @@ public class EntityWisp extends EntityFlying implements IMob {
    protected void dropFewItems(boolean flag, int i) {
       if (Aspect.getAspect(this.getType()) != null) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(Aspect.getAspect(this.getType()), 2));
+         new AspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspect.getAspect(this.getType()), 2));
          this.entityDropItem(ess, 0.0F);
       }
 

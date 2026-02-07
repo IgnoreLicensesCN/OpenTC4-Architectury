@@ -12,13 +12,15 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.worldgenerated.eldritch.AncientLockEmptyBlock;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
+import thaumcraft.common.items.eldritch.CrimsonRitesItem;
+import thaumcraft.common.items.eldritch.EldritchEyeItem;
+import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.misc.*;
-import thaumcraft.common.items.relics.ThaumometerItem;
+import thaumcraft.common.items.misc.ThaumometerItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -195,7 +197,10 @@ public class ThaumcraftItems {
     public static final BlockItem MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
     public static final BlockItem TABLE = Registry.SUPPLIER_TABLE.get();
     public static final InkWellItem INK_WELL = Registry.SUPPLIER_INK_WELL.get();
+    public static final BlockItem ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
+    public static final BlockItem DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final ResearchNoteItem RESEARCH_NOTE = Registry.SUPPLIER_RESEARCH_NOTE.get();
+
     //===========================================================================================
 
     public static class Registry {
@@ -660,6 +665,14 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_TABLE = ITEMS.register(
                 "table",
                 () -> new BlockItem(ThaumcraftBlocks.TABLE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_WORKBENCH = ITEMS.register(
+                "arcane_workbench",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_WORKBENCH,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_DECONSTRUCTION_TABLE = ITEMS.register(
+                "deconstruction_table",
+                () -> new BlockItem(ThaumcraftBlocks.DECONSTRUCTION_TABLE,new Item.Properties())
         );
         public static final RegistrySupplier<InkWellItem> SUPPLIER_INK_WELL = ITEMS.register(
                 "ink_well",

@@ -9,12 +9,17 @@ import java.util.function.BiFunction;
 
 public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
-    public static final AspectList<Aspect> EMPTY = new UnmodifiableAspectList(new AspectList());
+    public static final AspectList<Aspect> EMPTY = new UnmodifiableAspectList<>(new AspectList<>());
 
-    public UnmodifiableAspectList(AspectList<Aspect> viewingList) {
+    public UnmodifiableAspectList(AspectList<A> viewingList) {
         if (viewingList != null) {
-            this.aspects.putAll(viewingList.getAspects());
+            this.aspects.putAll(viewingList.aspectView);
         }
+    }
+
+    @Override
+    public Integer put(A aspect, int amount) {
+        throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
@@ -29,6 +34,11 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
     @Override
     public AspectList<A> mergeWithHighest(Aspect aspect, int amount) throws RuntimeException {
+        throw new RuntimeException("Unmodifiable!");
+    }
+
+    @Override
+    public int merge(A aspect, int amount, BiFunction<Integer, Integer, Integer> chooser) {
         throw new RuntimeException("Unmodifiable!");
     }
 
@@ -57,22 +67,12 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         throw new RuntimeException("Unmodifiable!");
     }
 
-    @Override
-    public void loadFrom(CompoundTag tag) {
+    public void putAllAspects(AspectList<A> aspects) {
         throw new RuntimeException("Unmodifiable!");
     }
 
     @Override
-    public void loadFrom(CompoundTag tag, ListTagAccessor accessor) {
-        throw new RuntimeException("Unmodifiable!");
-    }
-
-    public void putAllAspects(AspectList<Aspect> aspects) {
-        throw new RuntimeException("Unmodifiable!");
-    }
-
-    @Override
-    public void replaceAll(BiFunction<Aspect, Integer, Integer> biFunction) {
+    public void replaceAll(BiFunction<A, Integer, Integer> biFunction) {
         throw new RuntimeException("Unmodifiable!");
     }
 }

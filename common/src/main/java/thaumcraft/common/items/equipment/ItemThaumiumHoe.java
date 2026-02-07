@@ -8,11 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemHoe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
-public class ItemThaumiumHoe extends ItemHoe implements IRepairable {
+public class ItemThaumiumHoe extends ItemHoe implements IRepairEnchantable {
    public IIcon icon;
 
    public ItemThaumiumHoe(Item.ToolMaterial enumtoolmaterial) {

@@ -49,14 +49,14 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(playerName)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
         var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(playerName);
-        for (var aspectCostPair:aspectsCost.getAspects().entrySet()){
+        for (var aspectCostPair:aspectsCost.entrySet()){
             var aspectTypeRequired = aspectCostPair.getKey();
             var aspectCost = aspectCostPair.getValue();
-            if (!(playerOwningAspect.getAspects().getOrDefault(aspectTypeRequired, 0) >= aspectCost)){
+            if (!(playerOwningAspect.getOrDefault(aspectTypeRequired, 0) >= aspectCost)){
                 return;
             }
         }
-        for (var aspectCostPair:aspectsCost.getAspects().entrySet()){
+        for (var aspectCostPair:aspectsCost.entrySet()){
             var aspectTypeRequired = aspectCostPair.getKey();
             var aspectCost = aspectCostPair.getValue();
 

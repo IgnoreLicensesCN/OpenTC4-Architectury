@@ -15,15 +15,13 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 import java.util.Set;
 
-public class ItemVoidAxe extends ItemAxe implements IRepairable, IWarpingGear {
+public class ItemVoidAxe extends ItemAxe implements IRepairEnchantable, IWarpingGear {
    public IIcon icon;
 
    public ItemVoidAxe(Item.ToolMaterial enumtoolmaterial) {

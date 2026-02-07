@@ -46,7 +46,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
    }
 
    public AspectList<Aspect>getAspects() {
-      AspectList<Aspect>al = new AspectList();
+      AspectList<Aspect>al = new AspectList<>();
       if (this.aspect != null && this.amount > 0) {
          al.addAll(this.aspect, this.amount);
       }

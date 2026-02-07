@@ -34,8 +34,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.ICentiVisContainer;
@@ -48,17 +50,21 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FocusExcavationItem extends FocusBasicItem{
-    public static final AspectList<Aspect>wandCost = (new AspectList()).addAll(Aspects.EARTH, 15);
-    public static final AspectList<Aspect>wandCostWithSilkTouchOrDowsing = (new AspectList())
-            .addAll(Aspects.AIR, 1)
-            .addAll(Aspects.FIRE, 1)
-            .addAll(Aspects.EARTH, 1)
-            .addAll(Aspects.WATER, 1)
-            .addAll(Aspects.ORDER, 1)
-            .addAll(Aspects.ENTROPY, 1)
-            .addAll(wandCost);
-    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).addAll(
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+
+public class FocusExcavationItem extends FocusBasicItem {
+    public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15*CENTIVIS_MULTIPLIER);
+    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.of(
+            new AspectList<>()
+                    .addAll(Aspects.AIR, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.FIRE, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.EARTH, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.WATER, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.ORDER, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.ENTROPY, CENTIVIS_MULTIPLIER)
+                    .addAll(wandCost)
+    );
+    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList<>()).addAll(
             Aspects.MINE, 1));
 
     public FocusExcavationItem() {
@@ -71,8 +77,8 @@ public class FocusExcavationItem extends FocusBasicItem{
     }
 
     @Override
-    public AspectList<Aspect>getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack) {
-        if (!(focusstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
+    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusstack, @Nullable ItemStack wandStack) {
+        if (!(focusstack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem)) {
             return wandCost;
         }
         var upgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusstack,wandStack);
@@ -115,7 +121,7 @@ public class FocusExcavationItem extends FocusBasicItem{
     public List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusstack) {
         if (focusstack == null) {return List.of();}
         var item = focusstack.getItem();
-        if (item instanceof IWandFocusItem focusItem) {
+        if (item instanceof IWandFocusItem<? extends Aspect> focusItem) {
             int rank = focusItem.getAppliedWandUpgrades(focusstack)
                     .values()
                     .stream()
@@ -158,12 +164,13 @@ public class FocusExcavationItem extends FocusBasicItem{
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
         var wandItem = usingWand.getItem();
         var focusItem = focusStack.getItem();
-        if (!((wandItem instanceof ICentiVisContainer container) && (focusItem instanceof IWandFocusItem wandFocusItem))
+        if (!((wandItem instanceof ICentiVisContainer<? extends Aspect> containerNotCasted) && (focusItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem))
         ){
             user.stopUsingItem();
             return;
         }
-        if (!(container.consumeAllCentiVis(usingWand,user,getVisCost(focusStack,usingWand),false,false))
+        var container = (ICentiVisContainer<Aspect>) containerNotCasted;
+        if (!(container.consumeAllCentiVis(usingWand,user, getCentiVisCost(focusStack,usingWand),false,false))
         ){
             user.stopUsingItem();
             return;
@@ -187,6 +194,9 @@ public class FocusExcavationItem extends FocusBasicItem{
                 breakCount.put(user,0.F);
                 soundDelay.put(user, 0L);
                 beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
+                return;
+            }
+            if (mop == null) {
                 return;
             }
             var mopVec = mop.getLocation();
@@ -239,12 +249,12 @@ public class FocusExcavationItem extends FocusBasicItem{
                             } else {
                                 breakCount.put(user, bc + speed);
                             }
-                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false)) {
+                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
-                                    if (container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), false, false)
+                                    if (container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), false, false)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllCentiVis(usingWand, user, wandFocusItem.getVisCost(focusStack,usingWand), true, false);
+                                        container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false);
                                     }
                                 }
                             }
@@ -282,7 +292,7 @@ public class FocusExcavationItem extends FocusBasicItem{
         }
         var wandItem = usingWand.getItem();
         if (!(
-                (wandItem instanceof ICentiVisContainer ICentiVisContainer)
+                (wandItem instanceof ICentiVisContainer<? extends Aspect> centiVisContainer)
                 && (wandItem instanceof IWandFocusEngine focusEngine)
         )){
             return false;
@@ -295,7 +305,7 @@ public class FocusExcavationItem extends FocusBasicItem{
             return false;
         }
         var fItem = focusStack.getItem();
-        if (!(fItem instanceof IWandFocusItem wandFocusItem)){
+        if (!(fItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem)){
             return false;
         }
         var wandUpgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand);
@@ -310,19 +320,12 @@ public class FocusExcavationItem extends FocusBasicItem{
                     !state.requiresCorrectToolForDrops();
             if (silk && canSilk
             ) {
-                if (level instanceof ServerLevel serverLevel) {
+                if (Platform.getEnvironment() == Env.SERVER) {
                     Block.popResource(world,pos,state.getBlock().asItem().getDefaultInstance());
                 }
-//                ArrayList<ItemStack> items = new ArrayList<>();
-//                ItemStack itemstack = state.getBlock().asItem().getDefaultInstance();
-//                items.add(itemstack);
-//
 //                //TODO:Multi-platform
-////                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
-//
-//                for(ItemStack is : items) {
-//                    Block.popResource(world,pos,is);
-//                }
+//                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
+
             } else {
                 //x,y,z -> pos(BlockPos)
                 //md:metadata(removed,dont care)

@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -88,7 +89,7 @@ public class PrimePearlItem extends Item {
                     }
                 }
 
-                for(Aspect a : Aspect.getPrimalAspects()) {
+                for(Aspect a : Aspects.getPrimalAspects()) {
                     int m = node.getNodeVisBase(a);
                     int r = world.getRandom().nextInt(research ? 4 : 3);
                     if (r > 0 && r > m) {

@@ -181,7 +181,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             return false;
         }
         var visOwning = visContainer.getAllCentiVisOwning(wandStack);
-        for (var centiVisAndAmount:centiVisList.getAspects().entrySet()){
+        for (var centiVisAndAmount:centiVisList.entrySet()){
             var aspect = centiVisAndAmount.getKey();
             var amount = centiVisAndAmount.getValue();
             if (visOwning.getOrDefault(aspect,0) < amount){

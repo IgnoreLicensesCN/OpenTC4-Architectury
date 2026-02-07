@@ -27,7 +27,7 @@ import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemVoidRobeArmor extends ItemArmor implements IRepairable, IRunicArmor, IVisDiscountGear, IGoggles, IRevealer, ISpecialArmor, IWarpingGear {
+public class ItemVoidRobeArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor, IVisDiscountGear, IGoggles, IRevealer, ISpecialArmor, IWarpingGear {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

@@ -122,7 +122,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
             ArrayList<ResearchPage> tpl = new ArrayList<>(Arrays.asList(research.getPages()));
 
-            AspectList<Aspect>tal = new AspectList();
+            AspectList<Aspect>tal = new AspectList<>();
             if (aspectsKnownSorted != null) {
                 int count = 0;
 
@@ -135,7 +135,7 @@ public class GuiResearchRecipe extends GuiScreen {
                     if (count == 4) {
                         count = 0;
                         tpl.add(new ResearchPage(tal.copy()));
-                        tal = new AspectList();
+                        tal = new AspectList<>();
                     }
                 }
 

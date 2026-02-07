@@ -39,7 +39,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
       if (l > 2) {
          if (l == 3) {
-            AspectList<Aspect>al = new AspectList();
+            AspectList<Aspect>al = new AspectList<>();
             if (this.aspect != null) {
                al.addAll(this.aspect, 1);
             }
@@ -89,7 +89,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
             if (this.level().rand.nextInt(8) == 0) {
                this.aspect = Aspects.PLANT;
             } else {
-               ArrayList<Aspect> outlist = Aspect.getPrimalAspects();
+               ArrayList<Aspect> outlist = Aspects.getPrimalAspects();
                this.aspect = outlist.get(this.level().rand.nextInt(outlist.size()));
             }
 
@@ -100,7 +100,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
    }
 
    public AspectList<Aspect>getAspects() {
-      return this.aspect != null && this.getBlockMetadata() == 7 ? (new AspectList()).addAll(this.aspect, 1) : null;
+      return this.aspect != null && this.getBlockMetadata() == 7 ? (new AspectList<>()).addAll(this.aspect, 1) : null;
    }
 
    public void setAspects(AspectList<Aspect>aspects) {

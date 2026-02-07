@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityFollowingItem;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ItemElementalAxe extends ItemAxe implements IRepairable {
+public class ItemElementalAxe extends ItemAxe implements IRepairEnchantable {
     public IIcon icon;
     boolean alternateServer = false;
     boolean alternateClient = false;

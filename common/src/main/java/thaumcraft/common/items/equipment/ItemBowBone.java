@@ -11,14 +11,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemBow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
 
-public class ItemBowBone extends ItemBow implements IRepairable {
+public class ItemBowBone extends ItemBow implements IRepairEnchantable {
    public static final String[] bowPullIconNameArray = new String[]{"pulling_0", "pulling_1", "pulling_2"};
    @SideOnly(Side.CLIENT)
    private IIcon[] iconArray;

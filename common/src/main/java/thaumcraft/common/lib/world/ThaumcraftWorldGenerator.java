@@ -280,7 +280,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
         int value = random.nextInt(baura / 2) + baura / 2;
         Aspect ra = BiomeHandler.getRandomBiomeTag(bg.biomeID, random);
-        AspectList<Aspect>al = new AspectList();
+        AspectList<Aspect>al = new AspectList<>();
         if (ra != null) {
             al.addAll(ra, 2);
         } else {

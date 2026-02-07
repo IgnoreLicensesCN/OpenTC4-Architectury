@@ -136,16 +136,6 @@ public class Consts {
         private static final String TILE_VIS_NODE_LINKS = "Link";
         public static final ListAccessor<BlockPos> TILE_VIS_NODE_LINKS_ACCESSOR =
                 new ListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
-        private static final String TILE_VIS_NODE_PATH_X = "x";
-        private static final String TILE_VIS_NODE_PATH_Y = "y";
-        private static final String TILE_VIS_NODE_PATH_Z = "z";
-        public static final IntTagAccessor TILE_VIS_NODE_PATH_X_ACCESSOR
-                = new IntTagAccessor(TILE_VIS_NODE_PATH_X);
-        public static final IntTagAccessor TILE_VIS_NODE_PATH_Y_ACCESSOR
-                = new IntTagAccessor(TILE_VIS_NODE_PATH_Y);
-        public static final IntTagAccessor TILE_VIS_NODE_PATH_Z_ACCESSOR
-                = new IntTagAccessor(TILE_VIS_NODE_PATH_Z);
-
     }
     public static class NodeBlockEntityCompoundTagAccessors {
         private static final String NODE_ID = "nodeId";
@@ -157,9 +147,9 @@ public class Consts {
         public static final String NODE_LAST_ACTIVE = "lastActive";
         public static final LongTagAccessor NODE_LAST_ACTIVE_ACCESSOR = new LongTagAccessor(NODE_LAST_ACTIVE);
         public static final String NODE_ASPECTS = "nodeAspects";
-        public static final ListTagAccessor NODE_ASPECTS_ACCESSOR = new ListTagAccessor(NODE_ASPECTS);
+        public static final AspectListAccessor NODE_ASPECTS_ACCESSOR = new AspectListAccessor(NODE_ASPECTS);
         public static final String NODE_ASPECTS_BASE = "nodeAspectsBase";
-        public static final ListTagAccessor NODE_ASPECTS_BASE_ACCESSOR = new ListTagAccessor(NODE_ASPECTS_BASE);
+        public static final AspectListAccessor NODE_ASPECTS_BASE_ACCESSOR = new AspectListAccessor(NODE_ASPECTS_BASE);
     }
 
 
@@ -182,7 +172,7 @@ public class Consts {
         public static final ItemStackTagAccessor WAND_CAP_ACCESSOR = new ItemStackTagAccessor(WAND_CAP);
         public static final ItemStackTagAccessor WAND_ROD_ACCESSOR = new ItemStackTagAccessor(WAND_ROD);
         public static final ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new ItemStackTagAccessor(WAND_FOCUS);
-        public static final VisOwningTagAccessor WAND_OWING_VIS_ACCESSOR = new VisOwningTagAccessor(WAND_OWING_VIS);
+        public static final CentiVisListAccessor WAND_OWING_VIS_ACCESSOR = new CentiVisListAccessor(WAND_OWING_VIS);
     }
 
     public static class FocusUpgradeCompoundTagAccessors {

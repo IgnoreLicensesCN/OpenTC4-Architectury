@@ -22,16 +22,15 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.lib.utils.Utils;
 
 import java.util.List;
 import java.util.Objects;
 
-public class ItemElementalSword extends ItemSword implements IRepairable {
+public class ItemElementalSword extends ItemSword implements IRepairEnchantable {
     public IIcon icon;
 
     public ItemElementalSword(Item.ToolMaterial enumtoolmaterial) {

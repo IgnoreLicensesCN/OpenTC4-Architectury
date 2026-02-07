@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.WandManager;
 
@@ -41,7 +42,7 @@ public class WandCastingItem extends Item
         IArcaneCraftingVisMultiplierProvider,
         IArcaneCraftingWand,
         IWandFocusEngine,
-        ICentiVisContainer,
+        ICentiVisContainer<Aspect>,
         IWandComponentsOwner,
         IWandComponentNameOwner,
         AttackBlockListener,
@@ -156,22 +157,27 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public Map<Aspect, Integer> getAllCentiVisOwning(ItemStack usingWand) {
+    public boolean tryCastAspectClass(Class<? extends Aspect> aspClass) {
+        return Aspect.class.isAssignableFrom(aspClass);
+    }
+
+    @Override
+    public CentiVisList<Aspect> getAllCentiVisOwning(ItemStack usingWand) {
         CompoundTag tag = usingWand.getOrCreateTag();
         return WAND_OWING_VIS_ACCESSOR.readFromCompoundTag(tag);
     }
     @Override
-    public void storeCentiVisOwning(ItemStack itemStack, Map<Aspect, Integer> aspects) {
+    public void storeCentiVisOwning(ItemStack itemStack, CentiVisList<Aspect> aspects) {
         CompoundTag tag = itemStack.getOrCreateTag();
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
     @Override
-    public Map<Aspect, Integer> getAllCentiVisCapacity(ItemStack usingWand) {
-        Map<Aspect, Integer> result = new HashMap<>();
+    public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
+        CentiVisList<Aspect> result = new CentiVisList<>();
         var components = getWandComponents(usingWand);
         for (var component : components){
-            if (component.getItem() instanceof IAspectCapacityOwner owner){
+            if (component.getItem() instanceof IAspectCapacityOwner<?> owner && owner.tryCastAspectClass(Aspect.class)){
                 owner.getCentiVisCapacity().forEach(
                         (aspect,integer) -> result.merge(aspect,integer,Integer::sum));
             }
@@ -270,7 +276,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(livingEntity)){
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(livingEntity)){
                     focus.onUsingFocusTick(usingWand,focusStack,livingEntity,useRemainingCount);
                 }
             }
@@ -285,7 +291,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(player)){
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(player)){
                     return focus.onFocusRightClick(usingWand,focusStack,level,player,interactionHand);
                 }
             }
@@ -311,7 +317,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(user)){
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)){
                     focus.onPlayerStoppedUsingFocus(usingWand,focusStack,level,user,useRemainingTicks);
                 }
             }
@@ -325,7 +331,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus && !WandManager.isOnCooldown(user)){
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)){
                     focus.onLeftClickBlock(usingWand,focusStack,user,interactionHand);
                 }
             }
@@ -338,7 +344,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
                         && focus instanceof IArchitect architect
                 ){
@@ -354,7 +360,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (focusStack != null){
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem focus
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
                         && focus instanceof IArchitect architect
                 ){

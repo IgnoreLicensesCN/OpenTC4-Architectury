@@ -21,7 +21,7 @@ import thaumcraft.codechicken.lib.vec.Cuboid6;
 import java.util.List;
 
 public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, IWandable {
-   public AspectList<Aspect>aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList<>();
    public final int MAXAMOUNT = 8;
    public boolean[] openSides = new boolean[]{true, true, true, true, true, true};
    public byte[] chokedSides = new byte[]{0, 0, 0, 0, 0, 0};

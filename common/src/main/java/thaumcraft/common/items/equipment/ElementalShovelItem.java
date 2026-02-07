@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IArchitect;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.ClientFXUtils;
 
 import java.util.*;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.ThaumcraftApi.TOOL_THAUMIUM_ELEMENTAL;
 
-public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairable, IArchitect {
+public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairEnchantable, IArchitect {
     public static final Set<Block> effectiveBlockForElementalShovel = ConcurrentHashMap.newKeySet();
     public static final Set<TagKey<Block>> effectiveTagForElementalShovel = ConcurrentHashMap.newKeySet();
 
@@ -98,16 +98,21 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
+        if (player == null){
+            return InteractionResult.PASS;
+        }
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Direction face = context.getClickedFace();
         InteractionHand hand = context.getHand();
-        ItemStack stack = player.getItemInHand(hand);
+        ItemStack stack = context.getItemInHand();
+        boolean isCrouching = player.isCrouching();
+
 
         boolean didPlace = false;
 
         // 你的3x3放置逻辑
-        if (!player.isCrouching() && world.getBlockEntity(pos) == null) {
+        if (!isCrouching && world.getBlockEntity(pos) == null) {
             BlockState clickedState = world.getBlockState(pos);
             Block clickedBlock = clickedState.getBlock();
 
@@ -267,21 +272,20 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity living) {
+    public boolean mineBlock(ItemStack stack, Level world, BlockState minedState, BlockPos pos, LivingEntity living) {
 
         // 按住潜行时使用普通挖掘（与旧版一致）
         if (living.isCrouching()) {
-            return super.mineBlock(stack, world, state, pos, living);
+            return super.mineBlock(stack, world, minedState, pos, living);
         }
 
         // 确保只在服务器执行（Platform.getEnvironment == SERVER）
         if (!world.isClientSide) {
 
             // 旧版的 bi = blockState
-            BlockState targetState = state;
 
             // 判断是否有效方块
-            if (isEffective(stack, targetState)) {
+            if (isEffective(stack, minedState)) {
 
                 // 决定 3x3 挖掘方向 → 替代 this.side
                 Direction digDir = getDigDirection(living);
@@ -291,7 +295,6 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
                     for (int ay = -1; ay <= 1; ay++) {
 
                         BlockPos off = offsetBySide(pos, digDir, ax, ay);
-                        if (off == null) continue;
 
                         if (living instanceof Player player) {
                             if (!world.mayInteract(player, off)) continue;

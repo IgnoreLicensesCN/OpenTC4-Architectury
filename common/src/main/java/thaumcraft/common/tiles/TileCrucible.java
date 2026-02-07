@@ -28,7 +28,7 @@ import java.awt.*;
 
 public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWandable, IAspectContainer {
    public short heat;
-   public AspectList<Aspect>aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList<>();
    public final int maxTags = 100;
    int bellows = -1;
    private int delay = 0;
@@ -206,7 +206,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             this.spill();
          }
 
-         this.aspects = new AspectList();
+         this.aspects = new AspectList<>();
          this.markDirty();
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
@@ -328,7 +328,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
    }
 
    public AspectList<Aspect>takeRandomFromSource() {
-      AspectList<Aspect>output = new AspectList();
+      AspectList<Aspect>output = new AspectList<>();
       if (this.aspects.size() > 0) {
          Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
          output.addAll(tag, 1);

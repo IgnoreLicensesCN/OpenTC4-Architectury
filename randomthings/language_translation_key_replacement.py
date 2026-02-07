@@ -33,7 +33,7 @@ block_with_item_names = [
     ['block.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
     ['item.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
     ['item.researchnotes.name','research_note'],
-    ['item.ItemInkwell.name','ink_well']
+    ['item.ItemInkwell.name','ink_well'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
@@ -48,7 +48,7 @@ for fileName in os.listdir(language_file_folder):
         language_dict = json.loads(language_text)
 
         for block_with_item_name_pair in block_with_item_names:
-            key = block_with_item_name_pair[0];
+            key = block_with_item_name_pair[0]
             if key not in language_dict.keys():
                 continue
             value = language_dict[key]

@@ -62,7 +62,7 @@ public class ItemFocusPrimal extends ItemFocusBasic {
 
    public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       Random rand = new Random(System.currentTimeMillis() / 200L);
-      AspectList<Aspect>cost = (new AspectList()).addAll(Aspects.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspects.AIR, 50 + rand.nextInt(5) * 50).addAll(
+      AspectList<Aspect>cost = (new AspectList<>()).addAll(Aspects.WATER, 50 + rand.nextInt(5) * 50).addAll(Aspects.AIR, 50 + rand.nextInt(5) * 50).addAll(
               Aspects.EARTH, 50 + rand.nextInt(5) * 50).addAll(Aspects.FIRE, 50 + rand.nextInt(5) * 50).addAll(Aspects.ORDER, 50 + rand.nextInt(5) * 50).addAll(
               Aspects.ENTROPY, 50 + rand.nextInt(5) * 50);
       return cost;
@@ -86,7 +86,7 @@ public class ItemFocusPrimal extends ItemFocusBasic {
    }
 
    static {
-      seeker = new FocusUpgradeType(16, new ResourceLocation("thaumcraft", "textures/foci/seeker.png"), "focus.upgrade.seeker.name", "focus.upgrade.seeker.text", (new AspectList()).addAll(
+      seeker = new FocusUpgradeType(16, new ResourceLocation("thaumcraft", "textures/foci/seeker.png"), "focus.upgrade.seeker.name", "focus.upgrade.seeker.text", (new AspectList<>()).addAll(
               Aspects.SENSES, 1).addAll(Aspects.MIND, 1));
    }
 }

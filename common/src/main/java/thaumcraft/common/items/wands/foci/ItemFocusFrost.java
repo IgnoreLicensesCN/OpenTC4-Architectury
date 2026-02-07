@@ -99,14 +99,14 @@ public class ItemFocusFrost extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new AspectList()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
-      costScatter = (new AspectList()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+      costBase = (new AspectList<>()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
+      costScatter = (new AspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
               Aspects.AIR, 5);
-      costBoulder = (new AspectList()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+      costBoulder = (new AspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
               Aspects.EARTH, 5);
-      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new AspectList()).addAll(
+      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new AspectList<>()).addAll(
               Aspects.COLD, 1).addAll(Aspects.WEAPON, 1));
-      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new AspectList()).addAll(
+      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new AspectList<>()).addAll(
               Aspects.COLD, 1).addAll(Aspects.CRYSTAL, 1));
    }
 }

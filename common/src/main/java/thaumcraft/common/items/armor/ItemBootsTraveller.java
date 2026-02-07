@@ -9,12 +9,11 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.common.Thaumcraft;
 
-public class ItemBootsTraveller extends ItemArmor implements IRepairable, IRunicArmor {
+public class ItemBootsTraveller extends ItemArmor implements IRepairEnchantable, IRunicArmor {
    public IIcon icon;
 
    public ItemBootsTraveller(ItemArmor.ArmorMaterial enumarmormaterial, int j, int k) {

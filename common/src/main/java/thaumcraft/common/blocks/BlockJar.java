@@ -156,7 +156,7 @@ public class BlockJar extends BlockContainer {
             }
 
             if (((TileJarFillable) te).amount > 0) {
-               ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList()).addAll(((TileJarFillable) te).aspect, ((TileJarFillable) te).amount));
+               ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList<>()).addAll(((TileJarFillable) te).aspect, ((TileJarFillable) te).amount));
             }
 
             if (((TileJarFillable) te).aspectFilter != null) {

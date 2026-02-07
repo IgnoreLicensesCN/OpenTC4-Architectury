@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
  * ThaumcraftItems, armor and tools with this interface can receive the Repair enchantment.
  * Repairs 1 point of durability every 10 seconds (2 for repair II)
  */
-public interface IRepairableExtended extends IRepairable {
+public interface IRepairEnchantableExtended extends IRepairEnchantable {
 	
 	boolean doRepair(ItemStack stack, Player player, int enchantlevel);
 

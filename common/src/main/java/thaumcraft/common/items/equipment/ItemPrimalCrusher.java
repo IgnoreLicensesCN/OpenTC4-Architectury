@@ -18,19 +18,17 @@ import net.minecraft.world.item.ItemTool;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.EnumHelper;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.Set;
 
-public class ItemPrimalCrusher extends ItemTool implements IRepairable, IWarpingGear {
+public class ItemPrimalCrusher extends ItemTool implements IRepairEnchantable, IWarpingGear {
    public static Item.ToolMaterial material = EnumHelper.addToolMaterial("PRIMALVOID", 5, 500, 8.0F, 4.0F, 20);
    private static final Set isEffective;
    public IIcon icon;

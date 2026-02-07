@@ -18,6 +18,7 @@ import net.minecraft.util.StatCollector;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -118,7 +119,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
       list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
       if (stack.hasTagCompound()) {
-         for(Aspect aspect : Aspect.getPrimalAspects()) {
+         for(Aspect aspect : Aspects.getPrimalAspects()) {
             if (stack.stackTagCompound.hasKey(aspect.getAspectKey())) {
                String amount = this.myFormatter.format((float)stack.stackTagCompound.getInteger(aspect.getAspectKey()) / 100.0F);
                list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount);
@@ -146,7 +147,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
-      AspectList<Aspect>out = new AspectList();
+      AspectList<Aspect>out = new AspectList<>();
       AspectList<Aspect>cur = this.getAllVis(wandstack);
 
       for(Aspect aspect : cur.getAspects()) {
@@ -159,9 +160,9 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAllVis(ItemStack is) {
-      AspectList<Aspect>out = new AspectList();
+      AspectList<Aspect>out = new AspectList<>();
 
-      for(Aspect aspect : Aspect.getPrimalAspects()) {
+      for(Aspect aspect : Aspects.getPrimalAspects()) {
          if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
             out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getAspectKey()));
          } else {
@@ -172,7 +173,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       return out;
    }
 
-   public boolean consumeAllVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
+   public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
       if (aspects != null && aspects.size() != 0) {
          for(Aspect aspect : aspects.getAspects()) {
             if (this.getVis(is, aspect) < aspects.getAmount(aspect)) {

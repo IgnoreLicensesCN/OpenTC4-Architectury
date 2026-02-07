@@ -120,7 +120,7 @@ public class ThaumcraftCraftingManager {
 //         }
 //      }
 //
-//      return var13 == null ? new AspectList() : (var13.getAspects() != null ? var13.getAspects() : var13.getAspects(awb));
+//      return var13 == null ? new AspectList<>() : (var13.getAspects() != null ? var13.getAspects() : var13.getAspects(awb));
     }
 
     public static InfusionRecipe findMatchingInfusionRecipe(List<ItemStack> items, ItemStack input, Player player) {

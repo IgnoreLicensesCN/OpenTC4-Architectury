@@ -42,7 +42,7 @@ public enum WriteAspectAfterListenerEnums {
                     if (usingAspect.isEmpty()){
                         return;
                     }
-                    if (table.bonusAspects.getAspects().getOrDefault(usingAspect, 0) > 0){
+                    if (table.bonusAspects.getOrDefault(usingAspect, 0) > 0){
                         table.bonusAspects.reduceAndRemoveIfNotPositive(usingAspect);
                         context.doDrainAspect= false;;
                         table.markDirtyAndUpdateSelf();

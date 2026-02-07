@@ -50,4 +50,9 @@ public class PrimalAspect extends Aspect {
     public int hashCode() {
         return Objects.hash(super.hashCode(), chatcolor);
     }
+
+    @Override
+    public boolean hasPlayerDiscovered(String playerName) {
+        return true;
+    }
 }

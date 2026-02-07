@@ -1,7 +1,6 @@
 package thaumcraft.common.lib.events;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.StatCollector;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientTickEvent;
@@ -24,14 +23,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import thaumcraft.api.IRepairable;
-import thaumcraft.api.IRepairableExtended;
+import thaumcraft.api.IRepairEnchantable;
+import thaumcraft.api.IRepairEnchantableExtended;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.api.research.ResearchCategory;
-import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.wands.IEnchantmentRepairVisProvider;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -69,6 +67,7 @@ import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.LOGGER;
 import static thaumcraft.api.expands.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 
 //TODO
@@ -104,31 +103,18 @@ public class EventHandlerEntity {
                   LOGGER.error(e);
                   throw new RuntimeException(e);
                }
-//               File filep = event.getPlayerFile("thaum");
-//               if (filep.exists()) {
-//                  try {
-//                     Files.copy(filep, playerThaumFile);
-//                     Thaumcraft.log.info("Using and converting UUID Thaumcraft savefile for {}", serverPlayer.getGameProfile().getName());
-//                     legacy = true;
-//                     filep.delete();
-//                     File fb = event.getPlayerFile("thaumback");
-//                     if (fb.exists()) {
-//                        fb.delete();
-//                     }
-//                  } catch (IOException ignored) {
-//                  }
-//               } 
             }
 
             ResearchManager.loadPlayerData(serverPlayer.getGameProfile().getName(), playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()), legacy);
 
-            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-               for(ResearchItem ri : cat.researches.values()) {
-                  if (ri.isAutoUnlock()) {
-                     Thaumcraft.researchManager.completeResearch(serverPlayer, ri.key);
-                  }
-               }
-            }
+            //since research unlock check migrated to ResearchItem,this is not needed
+//            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
+//               for(ResearchItem ri : cat.researches.values()) {
+//                  if (ri.isAutoUnlock()) {
+//                     Thaumcraft.researchManager.completeResearch(serverPlayer, ri.key);
+//                  }
+//               }
+//            }
          });
          PlayerEvent.PLAYER_QUIT.register(serverPlayer -> {
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
@@ -158,7 +144,7 @@ public class EventHandlerEntity {
                player.getAbilities().flying = false;
                player.onUpdateAbilities();
                Hover.setHover(playerName, false);
-               player.sendSystemMessage(Component.literal(ChatFormatting.ITALIC + "" + ChatFormatting.GRAY + StatCollector.translateToLocal("tc.break.fly")));
+               player.sendSystemMessage(Component.literal("tc.break.fly").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
             }
             ItemStack chestArmor = player.getItemBySlot(EquipmentSlot.CHEST);
             if (hoverFlag && !(chestArmor.getItem() instanceof ItemHoverHarness)
@@ -182,7 +168,7 @@ public class EventHandlerEntity {
                if (serverPlayer.tickCount % 40 == 0) {
                   int a = 0;
                   Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && stack.getItem() instanceof IRepairable && !serverPlayer.isCreative()) {
+                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairEnchantable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()) {
                         doRepair(stack, serverPlayer);
                      }
                   };
@@ -287,27 +273,28 @@ public class EventHandlerEntity {
 
       int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
       if (level > 0) {
-         if (level > 2) {
-            level = 2;
-         }
+//         if (level > 2) {
+//            level = 2;
+//         }
 
          AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
-         if (cost != null && cost.size() != 0) {
-            cost = ResearchManager.reduceToPrimals(cost);
-            AspectList<Aspect>finalCost = new AspectList();
+         if (cost != null && !cost.isEmpty()) {
+            cost = ResearchManager.reduceToPrimalsAndCast(cost);
+            CentiVisList<Aspect> finalCost = new CentiVisList<>();
 
             for(Aspect a : cost.getAspectTypes()) {
                if (a != null) {
-                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
+                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2 * CENTIVIS_MULTIPLIER) * level);
                }
             }
             boolean doRepair = false;
-            if (is.getItem() instanceof IRepairableExtended repairable) {
-               if (repairable.doRepair(is, player, level) && WandManager.consumeVisFromInventory(player, finalCost, checkIfCanConsumeForRepair)) {
+            if (is.getItem() instanceof IRepairEnchantableExtended repairable) {
+               if (repairable.doRepair(is, player, level)
+                       && WandManager.consumeCentiVisFromInventory(player, finalCost, checkIfCanConsumeForRepair)) {
 //                  is.damageItem(-level, player);
                   doRepair = true;
                }
-            } else if (WandManager.consumeVisFromInventory(player, finalCost,checkIfCanConsumeForRepair)) {
+            } else if (WandManager.consumeCentiVisFromInventory(player, finalCost,checkIfCanConsumeForRepair)) {
 //               is.damageItem(-level, player);
                doRepair = true;
             }
@@ -331,7 +318,7 @@ public class EventHandlerEntity {
 
    private static void updateSpeed(Player player) {
       try {
-         if (!player.capabilities.isFlying
+         if (!player.getAbilities().flying
                  && player.inventory.armorItemInSlot(0) != null
                  && player.moveForward > 0.0F) {
             int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.HASTE.effectId, player.inventory.armorItemInSlot(0));
@@ -484,7 +471,7 @@ public class EventHandlerEntity {
                   int size = 1 + event.entity.getRandom().nextInt(aspects.getAmount(aspect));
                   size = Math.max(1, size / 2);
                   ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
-                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList()).addAll(aspect, 1));
+                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList<>()).addAll(aspect, 1));
                   event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
                }
             }
@@ -523,8 +510,8 @@ public class EventHandlerEntity {
          }
       } else if (Platform.getEnvironment() != Env.CLIENT && EntityUtils.getRecentlyHit(event.entityLiving) > 0) {
          AspectList<Aspect>aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
-         if (aspectsCompound != null && aspectsCompound.size() > 0) {
-            AspectList<Aspect>aspects = ResearchManager.reduceToPrimals(aspectsCompound);
+         if (aspectsCompound != null && !aspectsCompound.isEmpty()) {
+            AspectList<Aspect>aspects = ResearchManager.reduceToPrimalsAndCast(aspectsCompound);
 
             for(Aspect aspect : aspects.getAspectTypes()) {
                if (event.entityLiving.getRandom().nextBoolean()) {

@@ -16,7 +16,7 @@ import thaumcraft.api.wands.IWandable;
 import java.awt.*;
 
 public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSource, IWandable, IEssentiaTransport {
-   public AspectList<Aspect>essentia = new AspectList();
+   public AspectList<Aspect>essentia = new AspectList<>();
    public int maxAmount = 256;
    public Direction facing;
    int count;
@@ -53,7 +53,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
       this.essentia.readFromNBT(nbttagcompound);
       if (this.essentia.visSize() > this.maxAmount) {
-         this.essentia = new AspectList();
+         this.essentia = new AspectList<>();
       }
 
       this.facing = Direction.getOrientation(nbttagcompound.getByte("face"));

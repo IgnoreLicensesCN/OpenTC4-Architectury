@@ -10,15 +10,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemHoe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockCustomPlant;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.Utils;
 
-public class ItemElementalHoe extends ItemHoe implements IRepairable {
+public class ItemElementalHoe extends ItemHoe implements IRepairEnchantable {
    public IIcon icon;
 
    public ItemElementalHoe(Item.ToolMaterial enumtoolmaterial) {

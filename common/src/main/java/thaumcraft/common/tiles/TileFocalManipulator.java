@@ -15,7 +15,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileFocalManipulator extends TileThaumcraftInventory {
-   public AspectList<Aspect>aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList<>();
    public int size = 0;
    public int upgrade = -1;
    public int rank = -1;
@@ -61,7 +61,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
       if ((Platform.getEnvironment() == Env.CLIENT)) {
          this.reset = true;
       } else {
-         this.aspects = new AspectList();
+         this.aspects = new AspectList<>();
       }
 
    }
@@ -105,7 +105,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
       if (complete) {
          this.size = 0;
          this.rank = -1;
-         this.aspects = new AspectList();
+         this.aspects = new AspectList<>();
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
@@ -146,7 +146,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                      amt *= 2;
                   }
 
-                  AspectList<Aspect>tal = new AspectList();
+                  AspectList<Aspect>tal = new AspectList<>();
 
                   for(Aspect as : FocusUpgradeType.types[id].aspects.getAspects()) {
                      tal.addAll(as, amt);

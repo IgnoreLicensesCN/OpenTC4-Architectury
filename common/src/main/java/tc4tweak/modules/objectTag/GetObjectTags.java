@@ -56,10 +56,10 @@ public class GetObjectTags {
 
         if (itemstack.getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-            if (tmp == null) tmp = new AspectList();
+            if (tmp == null) tmp = new AspectList<>();
             addWandTags(itemstack, tmp, wand);
         } else if (item instanceof PotionItem potionItem) {
-            if (tmp == null) tmp = new AspectList();
+            if (tmp == null) tmp = new AspectList<>();
             addPotionTags(itemstack, potionItem, tmp);
         }
 

@@ -43,7 +43,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //
 //	@Override
 //	public void addInformation(ItemStack stack,Player player, List list, boolean par4) {
-//		AspectList<Aspect>al = this.getVisCost(stack);
+//		AspectList<Aspect>al = this.getCentiVisCost(stack);
 //		if (al!=null && al.size()>0) {
 //			list.add(StatCollector.translateToLocal(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
 //			for (Aspect aspect:al.getAspectsSorted()) {
@@ -132,7 +132,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //	/**
 //	 * How much vis does this focus consume per activation.
 //	 */
-//	public AspectList<Aspect>getVisCost(ItemStack focusstack) {
+//	public AspectList<Aspect>getCentiVisCost(ItemStack focusstack) {
 //		return null;
 //	}
 //

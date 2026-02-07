@@ -2,9 +2,9 @@ package thaumcraft.common.items.wands.foci;
 
 import com.google.gson.JsonObject;
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -17,23 +17,25 @@ import thaumcraft.api.wands.IWandFocusItem;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_JSON_ACCESSOR;
 
-public abstract class FocusBasicItem extends Item implements IWandFocusItem {
+public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspect> {
     public FocusBasicItem(Properties properties) {
         super(properties);
     }
 
     public void addFocusInformation(ItemStack focusstack, List<Component> list) {
-        Map<String, Integer> map = new LinkedHashMap<>();
         for (Map.Entry<FocusUpgradeType, Integer> entry:this.getAppliedWandUpgrades(focusstack).entrySet()) {
             var upgradeType = FocusUpgradeType.getType(entry.getKey().id());
-            list.add(Component.literal(ChatFormatting.DARK_PURPLE +upgradeType.getLocalizedName()+
-                    (" "+ StatCollector.translateToLocal("enchantment.level." + entry.getValue()))));
+            list.add(
+                    upgradeType.getLocalizedName().copy()
+                            .append(" ")
+                            .append("enchantment.level." + entry.getValue())
+                                    .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
+            );
         }
     }
 
@@ -111,13 +113,16 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem {
 
     @Override
     public void appendHoverText(ItemStack focusStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        AspectList<Aspect>al = this.getVisCost(focusStack,null);
-        if (al!=null && al.size()>0) {
-            list.add(Component.literal(StatCollector.translateToLocal(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1")));
+        AspectList<Aspect>al = this.getCentiVisCost(focusStack,null);
+        if (al!=null && !al.isEmpty()) {
+            list.add(Component.translatable(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
             for (Aspect aspect:al.getAspectsSorted()) {
                 DecimalFormat myFormatter = new DecimalFormat("#####.##");
                 String amount = myFormatter.format(al.getAmount(aspect)/100f);
-                list.add(Component.literal(" §"+aspect.getChatcolor()+aspect.getName()+"§r x "+ amount));
+                list.add(aspect.getName().copy()
+                        .withStyle(style -> style.withColor(TextColor.fromRgb(aspect.getColor())))
+                        .append(Component.literal(" x " + amount))
+                );
             }
         }
         addFocusInformation(focusStack,list);

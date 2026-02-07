@@ -1,4 +1,4 @@
-package thaumcraft.common.items.relics;
+package thaumcraft.common.items.misc;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;

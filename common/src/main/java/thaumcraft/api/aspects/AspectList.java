@@ -1,30 +1,23 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.opentc4.utils.StatCollector;
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
-import fromhodgepodge.util.AspectNameSorter;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.Thaumcraft;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-import static com.linearity.opentc4.Consts.AspectCompoundTagAccessors.*;
-
-//but usually i use Map<Aspect,Integer>
-//why Serializable?idk.
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public class AspectList<Asp extends Aspect> implements Serializable {
 	
-	protected final LinkedHashMap<Asp,Integer> aspects = new LinkedHashMap<>();//aspects associated with this object
-
+	protected final Map<Asp,Integer> aspects;//aspects associated with this object
+	public final Map<Asp,Integer> aspectView;
 	
 	/**
 	 * this creates a new aspect list with preloaded values based off the aspects of the given item.
@@ -42,29 +35,65 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	public AspectList() {
+		this.aspects = new LinkedHashMap<>();
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
+	}
+	public AspectList(Asp aspect, int value) {
+		this.aspects = new LinkedHashMap<>();
+		this.aspects.put(aspect,value);
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
+	}
+	public AspectList(Map<Asp,Integer> aspects) {
+		this.aspects = new LinkedHashMap<>(aspects);
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
+	}
+
+	public AspectList(int size,float loadFactor) {
+		this.aspects = new LinkedHashMap<>(size,loadFactor);
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
 	}
 
 	public AspectList(AspectList<Asp> another) {
+		this.aspects = new LinkedHashMap<>();
 		this.aspects.putAll(another.aspects);
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
 	}
 
-    public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, Player player, List<String> aspectDescriptions) {
+
+    public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, Player player, List<Component> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
-          for(var tag : aspects.getAspectsSorted()) {
-             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getGameProfile().getName(), tag)) {
-                aspectDescriptions.add(tag.getName() + " x " + aspects.getAmount(tag));
+          for(var aspect : aspects.getAspectsSorted()) {
+             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getGameProfile().getName(), aspect)) {
+                aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
              } else {
-                aspectDescriptions.add(StatCollector.translateToLocal("tc.aspect.unknown"));
+                aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
              }
           }
        }
     }
 
+	public int getOrDefault(Asp aspect, int defaultValue) {
+		return aspects.getOrDefault(aspect,defaultValue);
+	}
+	public Integer put(Asp aspect, int amount) {
+		return aspects.put(aspect,amount);
+	}
     public AspectList<Asp> copy() {
 		AspectList<Asp> out = new AspectList<>();
 		for (var a:this.getAspectTypes())
 			out.addAll(a, this.getAmount(a));
 		return out;
+	}
+
+	public Set<Map.Entry<Asp,Integer>> entrySet(){
+		return aspects.entrySet();
+	}
+	public Set<Asp> keySet() {
+		return aspects.keySet();
+	}
+
+	public Integer get(Asp aspect) {
+		return aspects.get(aspect);
 	}
 
 	public static <A extends Aspect> AspectList<A> of(Map<A,Integer> aspects) {
@@ -100,15 +129,8 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	/**
 	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection
 	 */
-	public List<Asp> getAspectTypes() {
-		return aspects.keySet().stream().toList();
-	}
-
-	@UnmodifiableView
-	private final Map<Asp,Integer> aspectView = Collections.unmodifiableMap(aspects);
-	@UnmodifiableView
-	public Map<Asp,Integer> getAspects() {
-		return aspectView;
+	public Set<Asp> getAspectTypes() {
+		return aspects.keySet();
 	}
 	
 	/**
@@ -128,29 +150,15 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	
 	/**
 	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by name
+	 * --from Hodgepodge
 	 */
 	public List<Asp> getAspectsSorted() {
-		return AspectNameSorter.sort(this);
-//		try {
-//			Aspect[] out = aspects.keySet().toArray(new Aspect[]{});
-//			boolean change=false;
-//			do {
-//				change=false;
-//				for(int a=0;a<out.length-1;a++) {
-//					Aspect e1 = out[a];
-//					Aspect e2 = out[a+1];
-//					if (e1!=null && e2!=null && e1.getTag().compareTo(e2.getTag())>0) {
-//						out[a] = e2;
-//						out[a+1] = e1;
-//						change = true;
-//						break;
-//					}
-//				}
-//			} while (change);
-//			return out;
-//		} catch (Exception e) {
-//			return this.getAspects();
-//		}
+		return this.keySet().stream()
+				.sorted(Comparator.comparing(
+						Aspect::getName,
+						String.CASE_INSENSITIVE_ORDER
+				))
+				.toList();
 	}
 	
 	/**
@@ -161,28 +169,6 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 				.filter(a -> getAmount(a) > 0)
 				.sorted(Comparator.comparingInt(this::getAmount).reversed())
 				.toList();//anazor knows little about java's own sorting?
-//		try {
-//			List<Asp> out = new ArrayList<>(aspects.keySet().stream().toList());
-//			boolean change=false;
-//			do {
-//				change=false;
-//				for(int a=0;a<out.size()-1;a++) {
-//					int e1 = getAmount( out.get(a));
-//					int e2 = getAmount(out.get(a+1));
-//					if (e1>0 && e2>0 && e2>e1) {
-//						Asp ea = out.get(a);
-//						Asp eb = out.get(a+1);
-//						out.set(a,eb);
-//						out.set(a+1,ea);
-//						change = true;
-//						break;
-//					}
-//				}
-//			} while (change);
-//			return out;
-//		} catch (Exception e) {
-//			return this.getAspectTypes();
-//		}
 	}
 	
 	/**
@@ -280,6 +266,9 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspects.put( aspect, amount );
 		return this;
 	}
+	public int merge(Asp aspect, int amount,BiFunction<Integer,Integer,Integer> chooser) {
+		return this.aspects.merge(aspect, amount, chooser);
+	}
 	
 	public AspectList<Asp> addAll(AspectList<Asp> in) {
 		for (var a:in.getAspectTypes())
@@ -294,126 +283,12 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 
 
-
-	public static <Asp extends Aspect> AspectList<Asp> generateFromNBT(CompoundTag tag) {
-		AspectList<Asp> out = new AspectList<>();
-		ListTag tlist = ASPECT_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
-		for (int i = 0; i < tlist.size(); i++) {
-			CompoundTag rs = tlist.getCompound(i);
-			if (rs.contains(ASPECT_KEY_ACCESSOR.tagKey)) {
-				out.addAll((Asp)Aspect.getAspect(ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs)), ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs));
-			}
-		}
-		return out;
+	public void forEach(BiConsumer<Asp,Integer> action) {
+		aspects.forEach(action);
 	}
-
-	public void loadFrom(CompoundTag tag) {
-		loadFrom(tag,ASPECT_ASPECTS_ACCESSOR);
-	}
-	public void loadFrom(CompoundTag tag, ListTagAccessor accessor) {
-		aspects.clear();
-		ListTag tlist = accessor.readFromCompoundTag(tag); // 10 = CompoundTag
-		for (int j = 0; j < tlist.size(); j++) {
-			CompoundTag rs = tlist.getCompound(j);
-			if (rs.contains(ASPECT_KEY_ACCESSOR.tagKey)) {
-				addAll((Asp) Aspect.getAspect(ASPECT_KEY_ACCESSOR.readFromCompoundTag(rs)), ASPECT_AMOUNT_ACCESSOR.readFromCompoundTag(rs));
-			}
-		}
-	}
-
-
-	public void saveTo(CompoundTag tag) {
-		saveTo(tag,ASPECT_ASPECTS_ACCESSOR);
-	}
-	public void saveTo(CompoundTag tag, ListTagAccessor accessor) {
-		ListTag tlist = new ListTag();
-		for (var aspect : getAspectTypes()) {
-			if (aspect != null) {
-				CompoundTag f = new CompoundTag();
-				ASPECT_KEY_ACCESSOR.writeToCompoundTag(f,aspect.getAspectKey());
-				ASPECT_AMOUNT_ACCESSOR.writeToCompoundTag(f,getAmount(aspect));
-				tlist.add(f);
-			}
-		}
-		accessor.writeToCompoundTag(tag,tlist);
-	}
-//	public void saveAdditional(CompoundTag CompoundTag, String label)
-//	{
-//		NBTTagList tlist = new NBTTagList();
-//		CompoundTag.setTag(label, tlist);
-//		for (Aspect aspect : getAspects())
-//			if (aspect != null) {
-//				CompoundTag f = new CompoundTag();
-//				f.setString("key", aspect.getTag());
-//				f.setInteger("amount", getAmount(aspect));
-//				tlist.appendTag(f);
-//			}
-//	}
-
-//	/**
-//	 * Reads the list of aspects from nbt
-//	 * @param CompoundTag
-//	 * @return
-//	 */
-//	public void load(CompoundTag CompoundTag)
-//    {
-//        aspects.clear();
-//        NBTTagList tlist = CompoundTag.getTagList("Aspects",(byte)10);
-//		for (int j = 0; j < tlist.tagCount(); j++) {
-//			CompoundTag rs = tlist.getCompoundTagAt(j);
-//			if (rs.hasKey("key")) {
-//				add(	Aspect.getAspect(rs.getString("key")),
-//						rs.getInteger("amount"));
-//			}
-//		}
-//    }
-	
-//	public void load(CompoundTag CompoundTag, String label)
-//    {
-//        aspects.clear();
-//        NBTTagList tlist = CompoundTag.getTagList(label,(byte)10);
-//		for (int j = 0; j < tlist.tagCount(); j++) {
-//			CompoundTag rs = tlist.getCompoundTagAt(j);
-//			if (rs.hasKey("key")) {
-//				add(	Aspect.getAspect(rs.getString("key")),
-//						rs.getInteger("amount"));
-//			}
-//		}
-//    }
-	
-//	/**
-//	 * Writes the list of aspects to nbt
-//	 * @param CompoundTag
-//	 * @return
-//	 */
-//	public void saveAdditional(CompoundTag CompoundTag)
-//    {
-//        NBTTagList tlist = new NBTTagList();
-//		CompoundTag.setTag("Aspects", tlist);
-//		for (Aspect aspect : getAspects())
-//			if (aspect != null) {
-//				CompoundTag f = new CompoundTag();
-//				f.setString("key", aspect.getTag());
-//				f.setInteger("amount", getAmount(aspect));
-//				tlist.appendTag(f);
-//			}
-//    }
-	
-//	public void saveAdditional(CompoundTag CompoundTag, String label)
-//    {
-//        NBTTagList tlist = new NBTTagList();
-//		CompoundTag.setTag(label, tlist);
-//		for (Aspect aspect : getAspects())
-//			if (aspect != null) {
-//				CompoundTag f = new CompoundTag();
-//				f.setString("key", aspect.getTag());
-//				f.setInteger("amount", getAmount(aspect));
-//				tlist.appendTag(f);
-//			}
-//    }
 
 	public void putAllAspects(AspectList<Asp> aspects) {
-		this.aspects.putAll(aspects.getAspects());
+		this.aspects.putAll(aspects.aspects);
 	}
 
 
@@ -436,7 +311,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		if (this.size() == 0){
 			return null;
 		}
-		var list = this.getAspects().keySet().stream().toList();
+		var list = this.aspects.keySet().stream().toList();
 		return list.get(randomSource.nextInt(list.size()));
 	}
 
@@ -448,7 +323,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public String toString() {
 		return this.getClass() + "{" +
 				"aspects=" + aspects +
-				", aspectView=" + Arrays.toString(aspectView.entrySet()
+				", aspectView=" + Arrays.toString(aspects.entrySet()
                 .stream()
                 .map(entry -> entry.getKey() + ":" + entry.getValue())
                 .toArray()) +

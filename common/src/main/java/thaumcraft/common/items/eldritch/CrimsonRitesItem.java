@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc;
+package thaumcraft.common.items.eldritch;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

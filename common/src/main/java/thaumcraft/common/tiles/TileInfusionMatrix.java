@@ -58,7 +58,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
     public boolean checkSurroundings = true;
     public int symmetry = 0;
     public int instability = 0;
-    private AspectList<Aspect>recipeEssentia = new AspectList();
+    private AspectList<Aspect>recipeEssentia = new AspectList<>();
     private ArrayList<ItemStack> recipeIngredients = null;
     private Object recipeOutput = null;
     private String recipePlayer = null;
@@ -399,7 +399,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
             //cancel infusion
             this.instability = 0;
             this.crafting = false;
-            this.recipeEssentia = new AspectList();
+            this.recipeEssentia = new AspectList<>();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.level().playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "thaumcraft:craftfail", 1.0F, 0.6F);
             this.markDirty();
@@ -635,7 +635,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 }
             }
 
-            this.recipeEssentia = new AspectList();
+            this.recipeEssentia = new AspectList<>();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.markDirty();
             this.level().addBlockEvent(this.xCoord, this.yCoord - 2, this.zCoord, ConfigBlocks.blockStoneDevice, 12, 0);

@@ -54,7 +54,7 @@ drop_self_block_names = [
     'glowing_crusted_stone',
     'table',
     'arcane_workbench',
-    'deconstruction_table'
+    'deconstruction_table',
 ]
 
 drop_b_for_a_names = [
@@ -69,6 +69,8 @@ drop_b_for_a_names = [
     ('glyphed_stone','thaumcraft:knowledge_fragment'),
     ('tainted_soil','minecraft:dirt'),
     ('crusted_taint','minecraft:dirt'),
+    ('research_table_left_part','thaumcraft:table'),
+    ('research_table_right_part','thaumcraft:table'),
 ]
 
 slab_names = [

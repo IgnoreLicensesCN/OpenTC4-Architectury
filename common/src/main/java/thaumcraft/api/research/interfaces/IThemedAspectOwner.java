@@ -11,7 +11,7 @@ public interface IThemedAspectOwner {
         Aspect aspect=null;
         int highest=0;
         if (aspects!=null) {
-            for (var entry : aspects.getAspects().entrySet()) {
+            for (var entry : aspects.entrySet()) {
                 var tag = entry.getKey();
                 if (aspects.getAmount(tag) > highest) {
                     aspect = tag;

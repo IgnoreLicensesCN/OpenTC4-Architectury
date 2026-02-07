@@ -1,10 +1,10 @@
 package thaumcraft.api.wands;
 
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CentiVisList;
 
-import java.util.Map;
+public interface IAspectCapacityOwner<Asp extends Aspect> {
 
-public interface IAspectCapacityOwner {
-
-    Map<Aspect,Integer> getCentiVisCapacity();
+    CentiVisList<Asp> getCentiVisCapacity();
+    boolean tryCastAspectClass(Class<? extends Aspect> aspClass);
 }

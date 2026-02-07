@@ -320,12 +320,12 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
            }
        }
 
-      Aspect[] aspects = Aspect.getPrimalAspects().toArray(new Aspect[0]);
+      Aspect[] aspects = Aspects.getPrimalAspects().toArray(new Aspect[0]);
 
       for(int a = 0; a < 1 + i; ++a) {
          if (this.rand.nextBoolean()) {
             ItemStack is = new ItemStack(ConfigItems.itemManaBean);
-            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
+            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
             this.entityDropItem(is, 1.5F);
          }
       }

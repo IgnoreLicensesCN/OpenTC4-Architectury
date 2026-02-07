@@ -296,7 +296,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.WATER, 10);
+      cost = (new AspectList<>()).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.WATER, 10);
       delay = new HashMap<>();
    }
 }

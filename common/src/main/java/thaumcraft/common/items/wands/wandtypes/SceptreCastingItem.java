@@ -10,10 +10,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwner;
 
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwner {
@@ -43,9 +43,12 @@ public class SceptreCastingItem extends WandCastingItem implements IArcaneCrafti
     }
 
     @Override
-    public Map<Aspect, Integer> getAllCentiVisCapacity(ItemStack usingWand) {
-        return super.getAllCentiVisCapacity(usingWand).entrySet().stream().map(entry -> Map.entry(entry.getKey(),entry.getValue()*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)).collect(
-                Collectors.toMap(Map.Entry::getKey, aspectFloatEntry -> aspectFloatEntry.getValue().intValue())
+    public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
+        return new CentiVisList<>(super.getAllCentiVisCapacity(usingWand)
+                .entrySet()
+                .stream()
+                .map(entry -> Map.entry(entry.getKey(),(int)(entry.getValue()*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
         );
     }
 }

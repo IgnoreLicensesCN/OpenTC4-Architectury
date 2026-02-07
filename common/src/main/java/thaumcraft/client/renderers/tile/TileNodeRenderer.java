@@ -21,7 +21,7 @@ import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.relics.ThaumometerItem;
+import thaumcraft.common.items.misc.ThaumometerItem;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 

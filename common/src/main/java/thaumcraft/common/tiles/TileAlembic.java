@@ -28,7 +28,7 @@ public class TileAlembic extends TileThaumcraft implements IAspectContainer, IWa
    Direction fd = null;
 
    public AspectList<Aspect>getAspects() {
-      return this.aspect != null ? (new AspectList()).addAll(this.aspect, this.amount) : new AspectList();
+      return this.aspect != null ? (new AspectList<>()).addAll(this.aspect, this.amount) : new AspectList<>();
    }
 
    public void setAspects(AspectList<Aspect>aspects) {

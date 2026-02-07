@@ -1,9 +1,10 @@
 package thaumcraft.api.wands;
 
 import com.linearity.opentc4.OpenTC4CommonProxy;
-import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -11,18 +12,30 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WandUtils {
 
     //generate capacity? or whatever you like
-    public static Map<Aspect, Integer> getPrimalAspectMapWithValue(int value) {
-        return Aspect.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value));
+    public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCasted(int value) {
+        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+    }
+    public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValue(int value) {
+        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+    }
+    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Collection<Aspect> aspects, int value) {
+        return new CentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
+    }
+    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Aspect aspect, int value) {
+        return new CentiVisList<>(aspect,value);
     }
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
@@ -30,11 +43,11 @@ public class WandUtils {
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
-        if (wandItem instanceof ICentiVisContainer ICentiVisContainer) {
-            StringBuilder tt = new StringBuilder();
-
-            var visOwning = ICentiVisContainer.getAllCentiVisOwning(wandStack);
-            var visCapacity = ICentiVisContainer.getAllCentiVisCapacity(wandStack);
+        if (wandItem instanceof ICentiVisContainer<?> centiVisContainerNotCasted) {
+            var tt = Component.empty();
+            var centiVisContainer = (ICentiVisContainer<Aspect>) centiVisContainerNotCasted;
+            var visOwning = centiVisContainer.getAllCentiVisOwning(wandStack);
+            var visCapacity = centiVisContainer.getAllCentiVisCapacity(wandStack);
 
 
             for (var entry : visOwning.entrySet()) {
@@ -48,30 +61,40 @@ public class WandUtils {
                         aspect,
                         false);
                 String consumptionString = decimalFormat.format(mod * 100.0F);
-                String focusConsumptionString = "";
+                var focusConsumptionComponent = Component.empty();
                 if (wandItem instanceof IWandFocusEngine engine && engine.canApplyFocus()) {
                     var focusStack = engine.getFocusItemStack(wandStack);
                     var focusItem = focusStack.getItem();
-                    if (focusItem instanceof IWandFocusItem wandFocusItem) {
-                        int amt = wandFocusItem.getVisCost(focusStack,wandStack).getAmount(aspect);
+                    if (focusItem instanceof IWandFocusItem<?> wandFocusItemNotCasted) {
+                        IWandFocusItem<Aspect> wandFocusItem = (IWandFocusItem<Aspect>) wandFocusItemNotCasted;
+                        int amt = wandFocusItem.getCentiVisCost(focusStack,wandStack).getAmount(aspect);
                         if (amt > 0) {
-                            focusConsumptionString = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(wandFocusItem.isVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
+                            focusConsumptionComponent =
+                                    Component.literal(", "+decimalFormat.format((float) amt * mod / 100.0F) + " ")
+                                            .append(Component.translatable(wandFocusItem.isVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
+                            ;
                         }
                     }
                 }
                 if (shiftKeyDownFlag) {
-                    list.add(Component.literal(
-                            " §" + aspect.getChatcolor() + aspect.getName()
-                                    + "§r x " + amountString + "/" + capacityString
-                                    + ", §o(" + consumptionString + "% " + StatCollector.translateToLocal("tc.vis.cost") + ")"
-                                    + focusConsumptionString)
+                    list.add(aspect.getName().copy()
+                            .withStyle(style -> style.withColor(TextColor.fromRgb(aspect.getColor())))
+                            .append(Component.literal(" x "+amountString + "/" + capacityString).withStyle(style -> Style.EMPTY))
+                            .append(Component.literal(" ,").withStyle(style -> Style.EMPTY))
+                            .append(Component.literal("(" + consumptionString + "% ")
+                                    .append(Component.translatable("tc.vis.cost"))
+                                    .append( ")")
+                                    .append(focusConsumptionComponent)
+                                    .withStyle(style -> Style.EMPTY.withItalic(true))
+                                    )
                     );
+
                 } else {
-                    if (!tt.isEmpty()) {
+                    if (!tt.copy().getString().isEmpty()) {
                         tt.append(" | ");
                     }
 
-                    tt.append("§").append(aspect.getChatcolor()).append(amountString).append("§r");
+                    tt.append(Component.literal(amountString).withStyle(style -> style.withColor(TextColor.fromRgb(aspect.color))));
                 }
             }
 
@@ -88,7 +111,7 @@ public class WandUtils {
 //                    String text = "";
 //                    ItemStack focus = this.getFocusItem(wandStack);
 //                    if (focus != null) {
-//                        int amt = ((ItemFocusBasic) focus.getItem()).getVisCost(focus).getAmount(aspect);
+//                        int amt = ((ItemFocusBasic) focus.getItem()).getCentiVisCost(focus).getAmount(aspect);
 //                        if (amt > 0) {
 //                            text = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
 //                        }
@@ -118,7 +141,7 @@ public class WandUtils {
         if (wandItem instanceof IWandFocusEngine engine && engine.canApplyFocus()) {
             var focus = engine.getFocusItemStack(wandStack);
             var focusItem = focus.getItem();
-            if (focusItem instanceof IWandFocusItem wandFocusItem) {
+            if (focusItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
 
                 list.add(Component.literal(ChatFormatting.BOLD + "" + ChatFormatting.ITALIC + ChatFormatting.GREEN + focusItem.getName(focus)));
                 if (OpenTC4CommonProxy.INSTANCE.isShiftKeyDown()){
@@ -129,15 +152,17 @@ public class WandUtils {
 
     }
 
-    public static void addFocusInformation(IWandFocusItem focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
+    public static void addFocusInformation(IWandFocusItem<? extends Aspect> focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
 		for (var entry:focus.getAppliedWandUpgrades(focusstack).entrySet()) {
             FocusUpgradeType type = entry.getKey();
             var id = type.id();
             var lvl = entry.getValue();
-            list.add(Component.literal(
-                    ChatFormatting.DARK_PURPLE
-                            + type.getLocalizedName()
-                            + (lvl>1?" "+StatCollector.translateToLocal("enchantment.level." + lvl):"")));
+            var lvlComponent = (lvl>1?Component.literal(" ").append(Component.translatable("enchantment.level." + lvl)):Component.empty());
+            list.add(
+                    type.getLocalizedName().copy()
+                            .append(lvlComponent)
+                            .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
+            );
 		}
 	}
 }

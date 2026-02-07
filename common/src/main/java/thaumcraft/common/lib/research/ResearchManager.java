@@ -346,6 +346,9 @@ public class ResearchManager {
     public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al) {
         return reduceToPrimals(al, false);
     }
+    public static AspectList<Aspect> reduceToPrimalsAndCast(AspectList<Aspect> al) {
+        return (AspectList<Aspect>)(AspectList<?>)reduceToPrimals(al, false);
+    }
 
     public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al, boolean merge) {
         AspectList<PrimalAspect> out = new AspectList<>();

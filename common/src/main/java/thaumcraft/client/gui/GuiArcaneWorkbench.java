@@ -8,6 +8,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerArcaneWorkbench;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -21,7 +22,7 @@ public class GuiArcaneWorkbench extends GuiContainer {
     private TileArcaneWorkbench tileEntity;
     private InventoryPlayer ip;
     private int[][] aspectLocs = new int[][]{{72, 21}, {24, 43}, {24, 102}, {72, 124}, {120, 102}, {120, 43}};
-    ArrayList<Aspect> primals = Aspect.getPrimalAspects();
+    ArrayList<Aspect> primals = Aspects.getPrimalAspects();
 
     public GuiArcaneWorkbench(InventoryPlayer par1InventoryPlayer, TileArcaneWorkbench e) {
         super(new ContainerArcaneWorkbench(par1InventoryPlayer, e));

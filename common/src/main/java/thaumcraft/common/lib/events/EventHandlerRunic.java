@@ -117,7 +117,7 @@ public class EventHandlerRunic {
 //            int charge = this.runicCharge.get(player.getEntityId());
 //            if (charge > ((Integer[])this.runicInfo.get(player.getEntityId()))[0]) {
 //               charge = ((Integer[])this.runicInfo.get(player.getEntityId()))[0];
-//            } else if (charge < ((Integer[])this.runicInfo.get(player.getEntityId()))[0] && this.nextCycle.get(player.getEntityId()) < time && WandManager.consumeVisFromInventory(player, (new AspectList()).add(Aspect.AIR, Config.shieldCost).add(Aspect.EARTH, Config.shieldCost))) {
+//            } else if (charge < ((Integer[])this.runicInfo.get(player.getEntityId()))[0] && this.nextCycle.get(player.getEntityId()) < time && WandManager.consumeCentiVisFromInventory(player, (new AspectList<>()).add(Aspect.AIR, Config.shieldCost).add(Aspect.EARTH, Config.shieldCost))) {
 //               long interval = Config.shieldRecharge - ((Integer[])this.runicInfo.get(player.getEntityId()))[1] * 500;
 //               this.nextCycle.put(player.getEntityId(), time + interval);
 //               ++charge;

@@ -23,7 +23,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    private static final int[] slots_bottom = new int[]{1};
    private static final int[] slots_top = new int[0];
    private static final int[] slots_sides = new int[]{0};
-   public AspectList<Aspect>aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList<>();
    public int vis;
    private int maxVis = 50;
    public int smeltTime = 100;
@@ -207,7 +207,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          }
 
          if (this.count % (this.speedBoost ? 20 : 40) == 0 && this.aspects.size() > 0) {
-            AspectList<Aspect>exlude = new AspectList();
+            AspectList<Aspect>exlude = new AspectList<>();
             int deep = 0;
 
             Object var10;

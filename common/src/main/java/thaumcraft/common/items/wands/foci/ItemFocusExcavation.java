@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands.foci;
 
 @Deprecated(forRemoval = true)
 public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
-//   private static final AspectList<Aspect>cost = (new AspectList()).add(Aspect.EARTH, 15);
+//   private static final AspectList<Aspect>cost = (new AspectList<>()).add(Aspect.EARTH, 15);
 //   static HashMap soundDelay;
 //   static HashMap beam;
 //   static HashMap breakcount;
@@ -18,7 +18,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      lastX = new HashMap<>();
 //      lastY = new HashMap<>();
 //      lastZ = new HashMap<>();
-//      dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList()).add(Aspect.MINE, 1));
+//      dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList<>()).add(Aspect.MINE, 1));
 //   }
 //
 //   public ItemFocusExcavation() {
@@ -38,7 +38,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      return 409606;
 //   }
 //
-//   private static final AspectList<Aspect>withSilkTouchOrDowsing = (new AspectList())
+//   private static final AspectList<Aspect>withSilkTouchOrDowsing = (new AspectList<>())
 //           .add(Aspect.AIR, 1)
 //           .add(Aspect.FIRE, 1)
 //           .add(Aspect.EARTH, 1)
@@ -46,8 +46,8 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //           .add(Aspect.ORDER, 1)
 //           .add(Aspect.ENTROPY, 1)
 //           .add(cost);
-//   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
-//      if (!(itemstack.getItem() instanceof IWandFocusItem wandFocusItem)) {
+//   public AspectList<Aspect>getCentiVisCost(ItemStack itemstack) {
+//      if (!(itemstack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem)) {
 //         return cost;
 //      }
 //      var upgrades = wandFocusItem.getAppliedWandUpgrades(itemstack);
@@ -70,7 +70,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //
 //   public void onUsingFocusTick(ItemStack stack, Player p, int count) {
 //      WandCastingItem wand = (WandCastingItem)stack.getItem();
-//      if (!wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), false, false)) {
+//      if (!wand.consumeAllCentiVis(stack, p, this.getCentiVisCost(stack), false, false)) {
 //         p.stopUsingItem();
 //      } else {
 //         String pp = "R" + p.getCommandSenderName();
@@ -139,11 +139,11 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //                     } else {
 //                        breakcount.put(pp, bc + speed);
 //                     }
-//                  } else if (bc >= hardness && wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), true, false)) {
+//                  } else if (bc >= hardness && wand.consumeAllCentiVis(stack, p, this.getCentiVisCost(stack), true, false)) {
 //                     if (this.excavate(p.level(), stack, p, bi, md, mop.blockX, mop.blockY, mop.blockZ)) {
 //                        for(int a = 0; a < wand.getFocusEnlarge(stack); ++a) {
-//                           if (wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), false, false) && this.breakNeighbour(p, mop.blockX, mop.blockY, mop.blockZ, bi, md, stack)) {
-//                              wand.consumeAllCentiVis(stack, p, this.getVisCost(stack), true, false);
+//                           if (wand.consumeAllCentiVis(stack, p, this.getCentiVisCost(stack), false, false) && this.breakNeighbour(p, mop.blockX, mop.blockY, mop.blockZ, bi, md, stack)) {
+//                              wand.consumeAllCentiVis(stack, p, this.getCentiVisCost(stack), true, false);
 //                           }
 //                        }
 //                     }

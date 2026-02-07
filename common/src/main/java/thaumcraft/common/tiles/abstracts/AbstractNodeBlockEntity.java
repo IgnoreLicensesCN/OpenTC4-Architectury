@@ -44,6 +44,7 @@ import java.util.List;
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
 import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.researches.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
@@ -210,17 +211,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         if (tickCount % 5 == 0) {
             int tap = 1;
-            if (ResearchManager.isResearchComplete(
-                    player.getName()
-                            .getString(), "NODETAPPER1"
-            )) {
+            if (NODE_TAKE_IT_ALL.isPlayerCompletedResearch(player.getGameProfile().getName())) {
                 ++tap;
             }
 
-            if (ResearchManager.isResearchComplete(
-                    player.getName()
-                            .getString(), "NODETAPPER2"
-            )) {
+            if (MASTER_NODE_TRAPPING.isPlayerCompletedResearch(player.getGameProfile().getName())
+            ) {
                 ++tap;
             }
 
@@ -233,10 +229,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 }
             }
             boolean preserve = !player.isCrouching()
-                    && ResearchManager.isResearchComplete(
-                    player.getName()
-                            .getString(), "NODEPRESERVE"
-            )
+                    && NODE_PRESERVE.isPlayerCompletedResearch(player.getGameProfile().getName())
                     && !hasNodeHarmfulComponentsFlag;
             boolean success = false;
             Aspect aspect;
@@ -336,15 +329,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return asp != null && this.aspects.reduce(asp, 1) ? asp : null;
     }
 
-    public Aspect chooseRandomFilteredFromSource(Map<Aspect, Integer> aspectIntegerMap, boolean preserve) {
-        return chooseRandomFilteredFromSource(AspectList.of(aspectIntegerMap), preserve);
-    }
-
     public Aspect chooseRandomFilteredFromSource(AspectList<Aspect> filter, boolean preserve) {
         int min = preserve ? 1 : 0;
         ArrayList<Aspect> validaspects = new ArrayList<>();
 
-        for (var entry : this.aspects.getAspects()
+        for (var entry : this.aspects
                 .entrySet()) {
             var prim = entry.getKey();
             var amount = entry.getValue();
@@ -412,7 +401,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             this.setNodeModifier(null);
         }
 
-        this.aspects.loadFrom(tag, NODE_ASPECTS_ACCESSOR);
+        this.aspects = NODE_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
 
 //      String de = nbttagcompound.getString("drainer");
 //      if (de != null && !de.isEmpty() && this.getlevel != null) {
@@ -427,9 +416,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 //      this.drainColor = nbttagcompound.getInteger("draincolor");
 
         this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readFromCompoundTag(tag);
-        AspectList<Aspect> al = new AspectList<>();
-        al.loadFrom(tag, NODE_ASPECTS_BASE_ACCESSOR);
-        this.aspectsBase = al;
+        this.aspectsBase = NODE_ASPECTS_BASE_ACCESSOR.readFromCompoundTag(tag);
 
         var modifier = this.getNodeModifier();
         int regen = modifier.getRegenValue(this);
@@ -456,7 +443,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     @Override
     public void writeCustomNBT(CompoundTag tag) {
         NODE_LAST_ACTIVE_ACCESSOR.writeToCompoundTag(tag, this.lastActiveMillis);
-        this.aspectsBase.saveTo(tag, NODE_ASPECTS_BASE_ACCESSOR);
+        NODE_ASPECTS_BASE_ACCESSOR.writeToCompoundTag(tag, this.aspectsBase);
 
 
         if (this.id == null) {
@@ -468,8 +455,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         NODE_ID_ACCESSOR.writeToCompoundTag(tag, this.id);
         NODE_TYPE_ACCESSOR.writeToCompoundTag(tag, this.getNodeType().name());
         NODE_MODIFIER_ACCESSOR.writeToCompoundTag(tag, this.getNodeModifier().name());
-
-        this.aspects.saveTo(tag, NODE_ASPECTS_ACCESSOR);
+        NODE_ASPECTS_ACCESSOR.writeToCompoundTag(tag, this.aspects);
     }
 
 //   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
@@ -644,7 +630,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         if (this.tickCount % 1200 == 0) {
             for (var aspectEntry : this.getAspects()
-                    .getAspects()
                     .entrySet()) {
                 var aspect = aspectEntry.getKey();
                 var amount = aspectEntry.getValue();
@@ -688,7 +673,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     private List<Aspect> getVisCanRegen(){
         List<Aspect> result = new ArrayList<>(this.getAspects().size());
         for (var aspectEntry : this.getAspects()
-                .getAspects()
                 .entrySet()) {
             var aspect = aspectEntry.getKey();
             var amount = aspectEntry.getValue();

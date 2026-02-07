@@ -16,15 +16,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
-public class ItemVoidSword extends ItemSword implements IRepairable, IWarpingGear {
+public class ItemVoidSword extends ItemSword implements IRepairEnchantable, IWarpingGear {
    public IIcon icon;
 
    public ItemVoidSword(Item.ToolMaterial enumtoolmaterial) {

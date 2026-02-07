@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
@@ -407,7 +407,7 @@ public class Utils {
       if (stack.getItem() == ConfigItems.itemAmuletVis) {
          ItemAmuletVis ai = (ItemAmuletVis)stack.getItem();
 
-         for(Aspect a : Aspect.getPrimalAspects()) {
+         for(Aspect a : Aspects.getPrimalAspects()) {
             ai.storeVis(stack, a, ThreadLocalRandom.current().nextInt(5) * 100);
          }
       }

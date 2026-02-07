@@ -1,19 +1,18 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import com.linearity.opentc4.utils.StatCollector;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
-import java.util.Collection;
 import java.util.Objects;
 
 public abstract class Aspect {
 
 	public final @NotNull AspectResourceLocation aspectKey;
-	public final int color;
+	public final @RGBColor int color;
 	public final @NotNull ResourceLocation image;
 	public final int blend;
 
@@ -53,17 +52,19 @@ public abstract class Aspect {
 		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
 	}
 
+
+
 	
-	public int getColor() {
+	public @RGBColor int getColor() {
 		return color;
 	}
 	
-	public String getName() {
-		return WordUtils.capitalizeFully(aspectKey.getPath());
+	public Component getName() {
+		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
 	}
 	
-	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("tc.aspect."+ aspectKey);
+	public Component getLocalizedDescription() {
+		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
 	}
 	
 	public @NotNull AspectResourceLocation getAspectKey() {
@@ -76,15 +77,6 @@ public abstract class Aspect {
 	
 	public static Aspect getAspect(AspectResourceLocation tag) {
 		return Aspects.ALL_ASPECTS.get(tag);
-	}
-	
-	///////////////////////////////
-	public static Collection<PrimalAspect> getPrimalAspects() {
-		return Aspects.PRIMAL_ASPECTS.values();
-	}
-	
-	public static Collection<CompoundAspect> getCompoundAspects() {
-		return Aspects.COMPOUND_ASPECTS.values();
 	}
 
 
@@ -115,5 +107,9 @@ public abstract class Aspect {
 	@Override
 	public int hashCode() {
 		return Objects.hash(aspectKey, color, image, blend);
+	}
+
+	public boolean hasPlayerDiscovered(String playerName) {
+		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(playerName, this);
 	}
 }

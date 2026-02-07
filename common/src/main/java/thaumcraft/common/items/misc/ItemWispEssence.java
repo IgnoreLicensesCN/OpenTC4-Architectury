@@ -44,7 +44,7 @@ public class ItemWispEssence extends Item implements IEssentiaContainerItem {
    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
       for(Aspect tag : Aspects.ALL_ASPECTS.values()) {
          ItemStack i = new ItemStack(this, 1, 0);
-         this.setAspects(i, (new AspectList()).addAll(tag, 2));
+         this.setAspects(i, (new AspectList<>()).addAll(tag, 2));
          par3List.add(i);
       }
 
@@ -73,7 +73,7 @@ public class ItemWispEssence extends Item implements IEssentiaContainerItem {
          return null;
       }
       if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new AspectList();
+         AspectList<Aspect>aspects = new AspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {

@@ -885,7 +885,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
          ItemStack disp = new ItemStack(ConfigItems.itemJarFilled);
          int amt = (int)(64.0F * ((float)this.essentiaAmount / (float)this.getCarryLimit()));
          if (this.essentia != null && this.essentiaAmount > 0) {
-            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new AspectList()).addAll(this.essentia, amt));
+            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new AspectList<>()).addAll(this.essentia, amt));
          }
 
          this.getDataWatcher().updateObject(16, disp);

@@ -13,13 +13,13 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.client.renderers.models.gear.ModelKnightArmor;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityInhabitedZombie;
 
-public class ItemCultistPlateArmor extends ItemArmor implements IRepairable, IRunicArmor {
+public class ItemCultistPlateArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

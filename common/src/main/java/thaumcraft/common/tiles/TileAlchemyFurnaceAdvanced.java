@@ -16,7 +16,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
-   public AspectList<Aspect>aspects = new AspectList();
+   public AspectList<Aspect>aspects = new AspectList<>();
    public int vis;
    public int maxVis = 500;
    int bellows = -1;

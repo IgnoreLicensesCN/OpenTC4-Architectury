@@ -4,16 +4,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CentiVisList;
 
 import java.util.List;
 import java.util.Map;
 
-public interface IWandFocusItem {
+public interface IWandFocusItem<Asp extends Aspect> {
 
     Map<FocusUpgradeType,Integer> getAppliedWandUpgrades(ItemStack focusStack);
     default Map<FocusUpgradeType,Integer> getWandUpgradesWithWandModifiers(ItemStack focusStack,@Nullable ItemStack wandStack) {
@@ -22,8 +22,8 @@ public interface IWandFocusItem {
             return appliedUpgrades;
         }
         if (wandStack.getItem() instanceof IWandComponentsOwner componentsOwner) {
-            for (Item component: componentsOwner.getWandComponents(wandStack)) {
-                if (component instanceof IWandUpgradeModifier modifier) {
+            for (ItemStack component: componentsOwner.getWandComponents(wandStack)) {
+                if (component.getItem() instanceof IWandUpgradeModifier modifier) {
                     appliedUpgrades = modifier.modifyWandUpgrades(appliedUpgrades);
                 }
             }
@@ -44,7 +44,7 @@ public interface IWandFocusItem {
     /**
      * How much vis does this focus consume per activation.
      */
-    AspectList<Aspect>getVisCost(ItemStack focusstack,@Nullable ItemStack wandStack);
+    CentiVisList<Asp> getCentiVisCost(ItemStack focusstack, @Nullable ItemStack wandStack);
 
     /**
      * This returns how many milliseconds must pass before the focus can be activated again.

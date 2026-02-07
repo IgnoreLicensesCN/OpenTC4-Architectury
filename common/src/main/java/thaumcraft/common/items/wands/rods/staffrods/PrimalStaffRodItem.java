@@ -6,33 +6,33 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
-import static thaumcraft.api.wands.WandUtils.getPrimalAspectMapWithValue;
+import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner, IWandUpgradeModifier {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect>, IWandUpgradeModifier {
     public PrimalStaffRodItem() {
-        super(new Properties().rarity(Rarity.RARE), getPrimalAspectMapWithValue(25 * CENTIVIS_MULTIPLIER));
+        super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCasted(25 * CENTIVIS_MULTIPLIER));
     }
 
-    private final Map<Aspect, Integer> capacity = Collections.unmodifiableMap(getPrimalAspectMapWithValue(250 * CENTIVIS_MULTIPLIER));
+    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCasted(250 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
-    public Map<Aspect, Integer> getCentiVisCapacity() {
+    public CentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 
-    private final Map<Aspect, Integer> cost = Collections.unmodifiableMap(WandUtils.getPrimalAspectMapWithValue(32 * CENTIVIS_MULTIPLIER));
+    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCasted(32 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
-    public Map<Aspect, Integer> getCraftingCostCentiVis() {
+    public CentiVisList<Aspect> getCraftingCostCentiVis() {
         return cost;
     }
 
@@ -45,7 +45,8 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     @Override
     public void tickAsComponent(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
         var wandItem = usingWand.getItem();
-        if (wandItem instanceof ICentiVisContainer container){
+        if (wandItem instanceof ICentiVisContainer<?> containerNotCasted){
+            var container = (ICentiVisContainer<Aspect>)containerNotCasted;
             if (entity.tickCount % 50 == 0) {
                 var owningVis = container.getAllCentiVisOwning(usingWand);
                 List<Aspect> candidates = new ArrayList<>();

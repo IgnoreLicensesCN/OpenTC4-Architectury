@@ -631,7 +631,7 @@ public class BlockMetalDevice extends BlockContainer {
                            ((TileAlembic) te).amount -= amount;
                            AspectList<Aspect>as = ((ItemJarFilled) drop.getItem()).getAspects(drop);
                            if (as == null) {
-                              as = new AspectList();
+                              as = new AspectList<>();
                            }
 
                            as.addAll(((TileAlembic) te).aspect, amount);
@@ -652,7 +652,7 @@ public class BlockMetalDevice extends BlockContainer {
                   } else {
                      drop = new ItemStack(ConfigItems.itemJarFilled, 1, player.getHeldItem().getItemDamage());
                      doit = true;
-                     ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList()).addAll(((TileAlembic) te).aspect, ((TileAlembic) te).amount));
+                     ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList<>()).addAll(((TileAlembic) te).aspect, ((TileAlembic) te).amount));
                      ((TileAlembic) te).amount = 0;
                      ((TileAlembic) te).aspect = null;
                      --player.getHeldItem().stackSize;

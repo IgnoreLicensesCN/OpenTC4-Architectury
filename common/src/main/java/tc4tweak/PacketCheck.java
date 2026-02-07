@@ -14,7 +14,7 @@ public class PacketCheck {
     public static final Marker securityMarker = MarkerManager.getMarker("SuspiciousPackets");
 
     public static boolean hasAspect(ServerPlayer playerEntity, ResearchItem research) {
-        return research.tags.getAspects().entrySet().stream().noneMatch(e ->
+        return research.tags.entrySet().stream().noneMatch(e ->
                 e.getValue() != null
                         && !hasAspect(playerEntity, e.getKey(), e.getValue()));
     }

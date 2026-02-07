@@ -154,6 +154,6 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
+      cost = (new AspectList<>()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
    }
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.resources.language.I18n;
 
 //lots of translateToLocal
 public class StatCollector {
+    @Deprecated(forRemoval = true)
     public static String translateToLocal(String key) {
         // 客户端：使用 I18n.get()
         if (Platform.getEnvironment() == Env.CLIENT) {

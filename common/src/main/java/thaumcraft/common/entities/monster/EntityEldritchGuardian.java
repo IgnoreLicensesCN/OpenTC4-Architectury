@@ -152,15 +152,15 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    protected void dropFewItems(boolean flag, int i) {
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(Aspects.UNDEAD, 2));
+         new AspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.UNDEAD, 2));
          this.entityDropItem(ess, 1.0F);
       }
 
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList()).addAll(Aspects.ELDRITCH, 2));
+         new AspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.ELDRITCH, 2));
          this.entityDropItem(ess, 1.0F);
       }
 
