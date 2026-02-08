@@ -1,11 +1,10 @@
-package com.linearity.opentc4.utils.compoundtag.accessors;
+package com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
-import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class FocusUpgradeTypeResourceLocationTagAccessor extends CompoundTagAccessor<FocusUpgradeTypeResourceLocation> {
 

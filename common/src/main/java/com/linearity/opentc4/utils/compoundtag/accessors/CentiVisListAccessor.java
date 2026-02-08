@@ -3,6 +3,8 @@ package com.linearity.opentc4.utils.compoundtag.accessors;
 import com.linearity.opentc4.simpleutils.SimplePair;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.SimplePairAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
@@ -11,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
-    protected final ArrayListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
+    protected final ModifiableListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
     public CentiVisListAccessor(String tagKey) {
         super(tagKey, (Class<CentiVisList<Aspect>>) (Class<?>)CentiVisList.class);
-        this.aspectAndAmountsAccessor = new ArrayListAccessor<>(
+        this.aspectAndAmountsAccessor = new ModifiableListAccessor<>(
                 tagKey
                 ,new SimplePairAccessor<>(
                 tagKey+"_pair",

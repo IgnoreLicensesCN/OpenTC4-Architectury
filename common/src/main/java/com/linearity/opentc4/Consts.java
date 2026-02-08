@@ -2,6 +2,13 @@ package com.linearity.opentc4;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.AspectResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.FocusUpgradeTypeResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResearchItemResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;
 import net.minecraft.core.BlockPos;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
@@ -135,8 +142,8 @@ public class Consts {
 
     public static class TileVisNodeCompoundTagAccessors {
         private static final String TILE_VIS_NODE_LINKS = "Link";
-        public static final ArrayListAccessor<BlockPos> TILE_VIS_NODE_LINKS_ACCESSOR =
-                new ArrayListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
+        public static final ModifiableListAccessor<BlockPos> TILE_VIS_NODE_LINKS_ACCESSOR =
+                new ModifiableListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
     }
     public static class NodeBlockEntityCompoundTagAccessors {
         private static final String NODE_ID = "nodeId";
@@ -178,8 +185,8 @@ public class Consts {
 
     public static class FocusUpgradeCompoundTagAccessors {
         private static final String WAND_UPGRADE = "upgrade";
-        public static final ArrayListAccessor<FocusUpgradeTypeResourceLocation> FOCUS_UPGRADE_ACCESSOR =
-                new ArrayListAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeResourceLocationTagAccessor(WAND_UPGRADE));
+        public static final ModifiableListAccessor<FocusUpgradeTypeResourceLocation> FOCUS_UPGRADE_ACCESSOR =
+                new ModifiableListAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeResourceLocationTagAccessor(WAND_UPGRADE));
         public static final JsonObjectTagAccessor FOCUS_UPGRADE_JSON_ACCESSOR = new JsonObjectTagAccessor(WAND_UPGRADE);
     }
 
@@ -192,7 +199,7 @@ public class Consts {
 
     public static class OwnedBlockEntityTagAccessors {
         private static final String OWNERS = "owners";
-        public static final StringSetTagAccessor OWNERS_ACCESSOR = new StringSetTagAccessor(OWNERS);
+        public static final ModifiableStringSetTagAccessor OWNERS_ACCESSOR = new ModifiableStringSetTagAccessor(OWNERS);
     }
 
     public static class InfernalFurnaceBlockEntityTagAccessors {

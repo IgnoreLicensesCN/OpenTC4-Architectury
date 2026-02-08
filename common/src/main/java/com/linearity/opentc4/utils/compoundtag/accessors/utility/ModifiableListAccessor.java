@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.compoundtag.accessors;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
@@ -6,10 +6,11 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.ArrayList;
 import java.util.List;
-public class ArrayListAccessor<T> extends CompoundTagAccessor<List<T>> {
+
+public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
     protected final ListTagAccessor listAccessor;
     protected final CompoundTagAccessor<T> listItemAccessor;
-    public ArrayListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
+    public ModifiableListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
         super(tagKey, (Class<List<T>>) (Class<?>) List.class);
         this.listItemAccessor = listItemAccessor;
         this.listAccessor = new ListTagAccessor(tagKey + "_list");

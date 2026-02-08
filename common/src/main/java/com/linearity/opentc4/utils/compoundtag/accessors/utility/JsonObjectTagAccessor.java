@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.compoundtag.accessors;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
