@@ -34,7 +34,6 @@ import thaumcraft.api.wands.IWandComponentsOwner;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.awt.*;
@@ -122,12 +121,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         super.setRemoved();
     }
 
-
-    private void bothSidedTickPart() {
-
-    }
-
-
     public static void serverTick(AbstractNodeBlockEntity thiz) {
         if (thiz.id == null) {
             thiz.generateId();
@@ -171,7 +164,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         var usingStack = useOnContext.getItemInHand();
         var usingItem = usingStack.getItem();
         var player = useOnContext.getPlayer();
-        if (usingItem instanceof ICentiVisContainer container && player != null) {
+        if (usingItem instanceof ICentiVisContainer<? extends Aspect> && player != null) {
             player.startUsingItem(useOnContext.getHand());
             return InteractionResult.CONSUME;
         }

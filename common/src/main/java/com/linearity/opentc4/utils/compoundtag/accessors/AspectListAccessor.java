@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> {
-    protected final ListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
+    protected final ArrayListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
     public AspectListAccessor(String tagKey) {
         super(tagKey, (Class<AspectList<Aspect>>) (Class<?>)AspectList.class);
-        this.aspectAndAmountsAccessor = new ListAccessor<>(
+        this.aspectAndAmountsAccessor = new ArrayListAccessor<>(
                 tagKey
                 ,new SimplePairAccessor<>(
                 tagKey+"_pair",

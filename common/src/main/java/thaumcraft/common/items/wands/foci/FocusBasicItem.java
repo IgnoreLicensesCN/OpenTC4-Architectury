@@ -1,7 +1,5 @@
 package thaumcraft.common.items.wands.foci;
 
-import com.google.gson.JsonObject;
-import com.linearity.opentc4.OpenTC4;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -16,11 +14,12 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_JSON_ACCESSOR;
+import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_ACCESSOR;
 
 public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspect> {
     public FocusBasicItem(Properties properties) {
@@ -40,75 +39,40 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> getAppliedWandUpgrades(ItemStack focusStack) {
-        Map<FocusUpgradeType, Integer> map = new HashMap<>();
-        if (!focusStack.hasTag()) {
-            return map;
+    public List<FocusUpgradeType> getAppliedWandUpgradesWithOrder(ItemStack focusStack) {
+        var tag = focusStack.getOrCreateTag();
+        if (!FOCUS_UPGRADE_ACCESSOR.compoundTagHasKey(tag)){
+            FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,List.of());
+            return List.of();
         }
-        var tag = focusStack.getTag();
-        if (tag == null){
-            return map;
-        }
-        var json = FOCUS_UPGRADE_JSON_ACCESSOR.readFromCompoundTag(tag);
-        if (json == null){
-            return map;
-        }
-
-        for (var element:json.entrySet()){
-            map.put(FocusUpgradeType.getType(element.getKey()),element.getValue().getAsInt());
-        }
-
-        return map;
+        return FOCUS_UPGRADE_ACCESSOR.readFromCompoundTag(focusStack.getOrCreateTag())
+                .stream()
+                .map(FocusUpgradeType::getType)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void storeWandUpgrades(ItemStack stack, Map<FocusUpgradeType, Integer> wandUpgrades) {
-        if (wandUpgrades == null || wandUpgrades.isEmpty()) {
-            // 如果没有升级，就删除 tag 中对应的 key
-            if (stack.hasTag()) {
-                var tag = stack.getTag();
-                if (tag == null){return;}
-                tag.remove(FOCUS_UPGRADE_JSON_ACCESSOR.tagKey);
-            }
-            return;
-        }
+    public Map<FocusUpgradeType, Integer> getAppliedWandUpgrades(ItemStack focusStack) {
+        return getAppliedWandUpgradesWithOrder(focusStack).stream()
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.summingInt(e -> 1)
+                ));
+    }
 
+    @Override
+    public void storeWandUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades) {
         var tag = stack.getOrCreateTag();
-        JsonObject json = new JsonObject();
-
-        // 填充 JsonObject
-        for (var entry : wandUpgrades.entrySet()) {
-            if (entry.getKey() != null && entry.getValue() != null) {
-                json.addProperty(entry.getKey().id(), entry.getValue());
-            }
-        }
-
-        // 写入 CompoundTag
-        FOCUS_UPGRADE_JSON_ACCESSOR.writeToCompoundTag(tag, json);
+        FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,wandUpgrades.stream().map(FocusUpgradeType::id).collect(Collectors.toList()));
     }
 
 
     @Override
     public void addWandUpgrade(ItemStack stack, FocusUpgradeType type) {
         var tag = stack.getOrCreateTag();
-        var json = FOCUS_UPGRADE_JSON_ACCESSOR.readFromCompoundTag(tag);
-        if (json == null){
-            json = new JsonObject();
-        }
-        int level = 0;
-        if (json.has(type.id())) { // has() 判断 key 是否存在
-            try {
-                level = json.get(type.id()).getAsInt();
-            } catch (Exception e) {
-                OpenTC4.LOGGER.error("Failed to parse level {}",json, e);
-            }
-        }
-        level += 1;
-
-        // 放回 JsonObject
-        json.addProperty(type.id(), level);
-        FOCUS_UPGRADE_JSON_ACCESSOR.writeToCompoundTag(tag, json);
-
+        var upgrades = FOCUS_UPGRADE_ACCESSOR.readFromCompoundTag(tag);
+        upgrades.add(type.id());
+        FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,upgrades);
     }
 
     @Override
@@ -116,7 +80,7 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
         AspectList<Aspect>al = this.getCentiVisCost(focusStack,null);
         if (al!=null && !al.isEmpty()) {
             list.add(Component.translatable(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
-            for (Aspect aspect:al.getAspectsSorted()) {
+            for (var aspect:al.getAspectsSorted()) {
                 DecimalFormat myFormatter = new DecimalFormat("#####.##");
                 String amount = myFormatter.format(al.getAmount(aspect)/100f);
                 list.add(aspect.getName().copy()

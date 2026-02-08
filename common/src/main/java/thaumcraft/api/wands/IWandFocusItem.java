@@ -15,6 +15,7 @@ import java.util.Map;
 
 public interface IWandFocusItem<Asp extends Aspect> {
 
+    List<FocusUpgradeType> getAppliedWandUpgradesWithOrder(ItemStack focusStack);
     Map<FocusUpgradeType,Integer> getAppliedWandUpgrades(ItemStack focusStack);
     default Map<FocusUpgradeType,Integer> getWandUpgradesWithWandModifiers(ItemStack focusStack,@Nullable ItemStack wandStack) {
         var appliedUpgrades = getAppliedWandUpgrades(focusStack);
@@ -30,7 +31,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
         }
         return appliedUpgrades;
     };
-    void storeWandUpgrades(ItemStack stack, Map<FocusUpgradeType,Integer> wandUpgrades);
+    void storeWandUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades);
     void addWandUpgrade(ItemStack stack, FocusUpgradeType type);
 
     default boolean isUpgradedWith(ItemStack focusstack, FocusUpgradeType focusUpgradetype) {

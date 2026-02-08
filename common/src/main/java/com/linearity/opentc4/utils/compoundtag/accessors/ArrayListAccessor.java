@@ -6,10 +6,10 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.ArrayList;
 import java.util.List;
-public class ListAccessor<T> extends CompoundTagAccessor<List<T>> {
+public class ArrayListAccessor<T> extends CompoundTagAccessor<List<T>> {
     protected final ListTagAccessor listAccessor;
     protected final CompoundTagAccessor<T> listItemAccessor;
-    public ListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
+    public ArrayListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
         super(tagKey, (Class<List<T>>) (Class<?>) List.class);
         this.listItemAccessor = listItemAccessor;
         this.listAccessor = new ListTagAccessor(tagKey + "_list");
