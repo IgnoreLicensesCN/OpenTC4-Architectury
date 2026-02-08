@@ -1,6 +1,5 @@
 package thaumcraft.api.aspects;
 
-import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +15,10 @@ import java.util.function.BiFunction;
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public class AspectList<Asp extends Aspect> implements Serializable {
 	
-	protected final Map<Asp,Integer> aspects;//aspects associated with this object
+	protected final LinkedHashMap<Asp,Integer> aspects;//aspects associated with this object
+	public LinkedHashMap<Asp,Integer> getAspectsInternal(){
+		return aspects;
+	}
 	public final Map<Asp,Integer> aspectView;
 	
 	/**
@@ -155,7 +157,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public List<Asp> getAspectsSorted() {
 		return this.keySet().stream()
 				.sorted(Comparator.comparing(
-						Aspect::getName,
+						Aspect::getNameString,
 						String.CASE_INSENSITIVE_ORDER
 				))
 				.toList();

@@ -1,11 +1,13 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.AspectResourceLocationTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.FocusUpgradeTypeResourceLocationTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResearchItemResourceLocationTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;

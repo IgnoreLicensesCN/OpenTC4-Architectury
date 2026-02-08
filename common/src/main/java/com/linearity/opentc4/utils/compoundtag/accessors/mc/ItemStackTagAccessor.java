@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.compoundtag.accessors;
+package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;

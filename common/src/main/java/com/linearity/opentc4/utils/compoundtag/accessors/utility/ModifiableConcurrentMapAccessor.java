@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.compoundtag.accessors;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
@@ -9,41 +9,42 @@ import thaumcraft.common.lib.utils.HexCoord;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class HexGridAccessor extends CompoundTagAccessor<Map<HexCoord, HexEntry>> {
+public class ModifiableConcurrentMapAccessor<K,V> extends CompoundTagAccessor<Map<K,V>> {
     protected final ListTagAccessor listTagAccessorInternal;
-    protected final HexCoordAccessor hexCoordAccessorInternal;
-    protected final HexEntryAccessor hexEntryAccessorInternal;
+    protected final CompoundTagAccessor<K> keyAccessor;
+    protected final CompoundTagAccessor<V> valueAccessor;
 
-    public HexGridAccessor(String tagKey) {
-        super(tagKey, (Class<Map<HexCoord, HexEntry>>) (Class<?>) Map.class);
-        listTagAccessorInternal = new ListTagAccessor(tagKey + "_list");
-        hexCoordAccessorInternal = new HexCoordAccessor(tagKey + "_hex_coord");
-        hexEntryAccessorInternal = new HexEntryAccessor(tagKey + "_hex_type");
+    public ModifiableConcurrentMapAccessor(String tagKey,CompoundTagAccessor<K> keyAccessor,CompoundTagAccessor<V> valueAccessor) {
+        super(tagKey, (Class<Map<K, V>>)(Class<?>)Map.class);
+        this.keyAccessor = keyAccessor;
+        this.valueAccessor = valueAccessor;
+        this.listTagAccessorInternal = new ListTagAccessor(tagKey);
     }
 
     @Override
-    public Map<HexCoord, HexEntry> readFromCompoundTag(CompoundTag tag) {
-        Map<HexCoord, HexEntry> result = new HashMap<>();
+    public Map<K, V> readFromCompoundTag(CompoundTag tag) {
         var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
+        Map<K, V> result = new ConcurrentHashMap<>(listTag.size());
         for (int i = 0; i < listTag.size(); i++) {
             var compoundTag = listTag.getCompound(i);
-            var hexCoord = hexCoordAccessorInternal.readFromCompoundTag(compoundTag);
-            var hexType = hexEntryAccessorInternal.readFromCompoundTag(compoundTag);
+            var hexCoord = keyAccessor.readFromCompoundTag(compoundTag);
+            var hexType = valueAccessor.readFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
         return result;
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tag, Map<HexCoord, HexEntry> value) {
+    public void writeToCompoundTag(CompoundTag tag, Map<K, V> value) {
         var listTag = new ListTag();
         for (var entry : value.entrySet()) {
             var coord = entry.getKey();
             var hexEntry = entry.getValue();
             var compound = new CompoundTag();
-            hexCoordAccessorInternal.writeToCompoundTag(compound, coord);
-            hexEntryAccessorInternal.writeToCompoundTag(compound, hexEntry);
+            keyAccessor.writeToCompoundTag(compound, coord);
+            valueAccessor.writeToCompoundTag(compound, hexEntry);
             listTag.add(compound);
         }
         listTagAccessorInternal.writeToCompoundTag(tag, listTag);

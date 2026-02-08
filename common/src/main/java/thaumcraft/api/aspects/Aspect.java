@@ -62,6 +62,9 @@ public abstract class Aspect {
 	public Component getName() {
 		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
 	}
+	public String getNameString() {
+		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath()).getString();
+	}
 	
 	public Component getLocalizedDescription() {
 		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
