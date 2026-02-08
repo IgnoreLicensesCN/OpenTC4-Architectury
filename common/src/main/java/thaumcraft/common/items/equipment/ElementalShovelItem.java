@@ -322,8 +322,8 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
 
     private boolean isEffective(ItemStack stack, BlockState state) {
         return state.is(BlockTags.MINEABLE_WITH_SHOVEL)
-                || effectiveBlockForElementalShovel.contains(state.getBlock())
-                || effectiveTagForElementalShovel.stream().anyMatch(state::is);
+                || effectiveTagForElementalShovel.stream().anyMatch(state::is)
+                || effectiveBlockForElementalShovel.contains(state.getBlock());
     }
 
     private Direction getDigDirection(LivingEntity living) {

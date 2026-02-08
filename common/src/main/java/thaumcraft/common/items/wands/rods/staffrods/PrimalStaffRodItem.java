@@ -4,6 +4,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
@@ -43,11 +44,11 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     }
 
     @Override
-    public void tickAsComponent(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
+    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
         var wandItem = usingWand.getItem();
         if (wandItem instanceof ICentiVisContainer<?> containerNotCasted){
             var container = (ICentiVisContainer<Aspect>)containerNotCasted;
-            if (entity.tickCount % 50 == 0) {
+            if (owner.tickCount % 50 == 0) {
                 var owningVis = container.getAllCentiVisOwning(usingWand);
                 List<Aspect> candidates = new ArrayList<>();
                 for (var entry : canRegenCentiVisAndValue.entrySet()) {

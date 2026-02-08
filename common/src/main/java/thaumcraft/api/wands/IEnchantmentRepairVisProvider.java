@@ -1,7 +1,9 @@
 package thaumcraft.api.wands;
 
 
+import net.minecraft.world.item.ItemStack;
+
 public interface IEnchantmentRepairVisProvider {
-    boolean canProvideVisForRepair();
+    default boolean canProvideVisForRepair(ItemStack stack){return true;};
 
 }

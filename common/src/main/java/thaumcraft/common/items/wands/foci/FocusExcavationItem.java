@@ -53,15 +53,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 public class FocusExcavationItem extends FocusBasicItem {
-    public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15*CENTIVIS_MULTIPLIER);
+    public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15);
     public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.of(
             new AspectList<>()
-                    .addAll(Aspects.AIR, CENTIVIS_MULTIPLIER)
-                    .addAll(Aspects.FIRE, CENTIVIS_MULTIPLIER)
-                    .addAll(Aspects.EARTH, CENTIVIS_MULTIPLIER)
-                    .addAll(Aspects.WATER, CENTIVIS_MULTIPLIER)
-                    .addAll(Aspects.ORDER, CENTIVIS_MULTIPLIER)
-                    .addAll(Aspects.ENTROPY, CENTIVIS_MULTIPLIER)
+                    .addAll(Aspects.AIR, 1)
+                    .addAll(Aspects.FIRE, 1)
+                    .addAll(Aspects.EARTH, 1)
+                    .addAll(Aspects.WATER, 1)
+                    .addAll(Aspects.ORDER, 1)
+                    .addAll(Aspects.ENTROPY, 1)
                     .addAll(wandCost)
     );
     public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList<>()).addAll(

@@ -46,7 +46,8 @@ public class WandCastingItem extends Item
         IWandComponentsOwner,
         IWandComponentNameOwner,
         AttackBlockListener,
-        IArchitect {
+        IArchitect,
+        IInventoryTickableComponent {
 
     public WandCastingItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -95,14 +96,19 @@ public class WandCastingItem extends Item
         }
     }
 
+
     @Override
-    public void inventoryTick(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
-        var components = getWandComponents(usingWand);
+    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack directParentStack, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
+        var components = getWandComponents(selfStack);
         for (var component : components){
-            if (component.getItem() instanceof InventoryTickableComponent listener){
-                listener.tickAsComponent(usingWand, level, entity, i, bl);
+            if (component.getItem() instanceof IInventoryTickableComponent listener){
+                listener.tickAsComponent(finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
             }
         }
+    }
+    @Override
+    public void inventoryTick(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
+        this.tickAsComponent(usingWand,usingWand,usingWand,level,entity,i,bl);
     }
 
     @Override
@@ -116,11 +122,6 @@ public class WandCastingItem extends Item
         }
 
         return result;
-    }
-
-    @Override
-    public boolean canProvideVisForRepair() {
-        return true;
     }
 
     @Override
@@ -375,4 +376,5 @@ public class WandCastingItem extends Item
     public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BOW;
     }
+
 }

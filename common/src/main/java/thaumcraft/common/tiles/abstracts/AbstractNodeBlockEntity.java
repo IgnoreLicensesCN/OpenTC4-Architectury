@@ -188,9 +188,10 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             player.stopUsingItem();
             return;
         }
-        if (!(usingWand.getItem() instanceof ICentiVisContainer visContainer) || !(usingWand.getItem() instanceof IWandComponentsOwner componentsOwner)) {
+        if (!(usingWand.getItem() instanceof ICentiVisContainer<? extends Aspect> visContainerNotCasted) || !(usingWand.getItem() instanceof IWandComponentsOwner componentsOwner)) {
             return;
         }
+        var visContainer = (ICentiVisContainer<Aspect>)visContainerNotCasted;
         HitResult hitResult = EntityUtils.getHitResultFromPlayer(this.level, player, true);
         if (hitResult.getType() != Type.BLOCK) {
             player.stopUsingItem();
@@ -220,7 +221,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 ++tap;
             }
 
-            //TODO:Some listeners
             boolean hasNodeHarmfulComponentsFlag = false;
             for (var component : componentsOwner.getWandComponents(usingWand)) {
                 if (component.getItem() instanceof INodeHarmfulComponent) {
@@ -285,17 +285,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             this.color = new Color((r + r2) / 5, (g + g2) / 5, (b + b2) / 5);
         }
     }
-
-//   public int onWandRightClick(Level world, ItemStack wandstack, Player player, int x, int y, int z, int side, int md) {
-//      return -1;
-//   }
-//
-//   public ItemStack onWandRightClick(World world, ItemStack wandstack, Player player) {
-//      player.setItemInUse(wandstack, Integer.MAX_VALUE);
-//      WandCastingItem wand = (WandCastingItem)wandstack.getItem();
-//      wand.setObjectInUse(wandstack, pos.getX(), pos.getY(), pos.getZ());
-//      return wandstack;
-//   }
 
     public AspectList<Aspect> getAspects() {
         return this.aspects;
@@ -402,19 +391,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         this.aspects = NODE_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
-
-//      String de = nbttagcompound.getString("drainer");
-//      if (de != null && !de.isEmpty() && this.getlevel != null) {
-//         this.drainEntity = this.getlevel.getPlayerEntityByName(de);
-//         if (this.drainEntity != null) {
-//            this.drainCollision = new HitResult(
-//                    pos.getX(), pos.getY(), pos.getZ(),
-//                    0, new Vec3(this.drainEntity.posX, this.drainEntity.posY, this.drainEntity.posZ));
-//         }
-//      }
-//
-//      this.drainColor = nbttagcompound.getInteger("draincolor");
-
         this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readFromCompoundTag(tag);
         this.aspectsBase = NODE_ASPECTS_BASE_ACCESSOR.readFromCompoundTag(tag);
 
@@ -457,42 +433,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         NODE_MODIFIER_ACCESSOR.writeToCompoundTag(tag, this.getNodeModifier().name());
         NODE_ASPECTS_ACCESSOR.writeToCompoundTag(tag, this.aspects);
     }
-
-//   public void onUsingWandTick(ItemStack wandstack, Player player, int count) {
-//
-//
-//   }
-//
-//   public void onWandStoppedUsing(ItemStack wandstack, World world, Player player, int count) {
-//      this.drainEntity = null;
-//      this.drainCollision = null;
-//   }
-
-//    @Override
-//    public boolean takeFromContainer(AspectList<Aspect> ot) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean doesContainerContainAmount(Aspect tag, int amount) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean doesContainerContain(AspectList<Aspect> ot) {
-//        return false;
-//    }
-//
-//    @Override
-//    public int containerContains(Aspect tag) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public boolean doesContainerAccept(Aspect tag) {
-//        return true;
-//    }
-
 
     //attack another node(zap~),take vis from there.
     private boolean handleAttackAnotherNode() {
@@ -718,16 +658,4 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
     }
-//
-//    @Override
-//    public void tick() {
-//
-//    }
-//
-//    @Override
-//    public BlockPos getPos() {
-//        return this.getBlockPos();
-//    }
-
-
 }

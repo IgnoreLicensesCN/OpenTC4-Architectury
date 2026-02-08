@@ -51,21 +51,21 @@ public class WandManager implements IWandTriggerManager {
     public static boolean consumeCentiVisFromInventory(Player player, CentiVisList<Aspect> cost){
         return consumeCentiVisFromInventory(player, cost, ignore -> true);
     }
-    public static boolean consumeCentiVisFromInventory(Player player, CentiVisList<Aspect>cost, Function<ItemStack,Boolean> additionalCondition) {
+    public static boolean consumeCentiVisFromInventory(Player player, CentiVisList<Aspect>cost, Function<ItemStack,Boolean> checkCondition) {
         BaubleConsumer<ItemAmuletVis> amuletVisBaubleConsumer = (slot, stack, itemAmuletVis)
                 -> {
-            if (!additionalCondition.apply(stack)) {return false;}
-            return itemAmuletVis.consumeAllCentiVis(stack, player, cost, true, true);
+            if (!checkCondition.apply(stack)) {return false;}
+            return itemAmuletVis.consumeAllCentiVis(stack, player, cost, true, false);
         };
         if (forEachBauble(player, ItemAmuletVis.class, amuletVisBaubleConsumer)) {
             return true;
         }
 
 
-        BaubleConsumer<WandCastingItem> wandCastingBaubleConsumer = (slot, stack, WandCastingItem) ->
+        BaubleConsumer<WandCastingItem> wandCastingBaubleConsumer = (slot, stack, wandCastingItem) ->
         {
-            if (!additionalCondition.apply(stack)) {return false;}
-            return WandCastingItem.consumeAllCentiVis(stack, player, cost, true, true);
+            if (!checkCondition.apply(stack)) {return false;}
+            return wandCastingItem.consumeAllCentiVis(stack, player, cost, true, false);
         };
         return forEachBauble(player, WandCastingItem.class, wandCastingBaubleConsumer);
 

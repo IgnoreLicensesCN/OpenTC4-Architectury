@@ -23,8 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRepairEnchantableExtended;
+import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
@@ -168,7 +167,7 @@ public class EventHandlerEntity {
                if (serverPlayer.tickCount % 40 == 0) {
                   int a = 0;
                   Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairEnchantable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()) {
+                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()) {
                         doRepair(stack, serverPlayer);
                      }
                   };
@@ -268,15 +267,16 @@ public class EventHandlerEntity {
       }
    }
 
-   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair();
+   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair(itemStack);
    public static void doRepair(ItemStack is, ServerPlayer player) {
 
       int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
+      var item = is.getItem();
+      if (item instanceof IRepairable repairable){
+         repairable.doRepair(is,player,level);
+         return;
+      }
       if (level > 0) {
-//         if (level > 2) {
-//            level = 2;
-//         }
-
          AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
          if (cost != null && !cost.isEmpty()) {
             cost = ResearchManager.reduceToPrimalsAndCast(cost);
@@ -284,21 +284,11 @@ public class EventHandlerEntity {
 
             for(Aspect a : cost.getAspectTypes()) {
                if (a != null) {
-                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2 * CENTIVIS_MULTIPLIER) * level);
+                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
                }
             }
-            boolean doRepair = false;
-            if (is.getItem() instanceof IRepairEnchantableExtended repairable) {
-               if (repairable.doRepair(is, player, level)
-                       && WandManager.consumeCentiVisFromInventory(player, finalCost, checkIfCanConsumeForRepair)) {
-//                  is.damageItem(-level, player);
-                  doRepair = true;
-               }
-            } else if (WandManager.consumeCentiVisFromInventory(player, finalCost,checkIfCanConsumeForRepair)) {
-//               is.damageItem(-level, player);
-               doRepair = true;
-            }
-            if (doRepair) {
+            boolean doRepair = WandManager.consumeCentiVisFromInventory(player, finalCost, checkIfCanConsumeForRepair);
+             if (doRepair) {
                is.hurtAndBreak(-level,player,(p) -> {});
             }
          }

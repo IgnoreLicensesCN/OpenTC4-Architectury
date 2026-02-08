@@ -4,19 +4,18 @@ import com.linearity.opentc4.simpleutils.SimplePair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.InventoryTickableComponent;
+import thaumcraft.api.wands.IInventoryTickableComponent;
 import thaumcraft.api.wands.ICentiVisContainer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
-public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements InventoryTickableComponent {
+public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements IInventoryTickableComponent {
     public ThaumcraftAspectRegenWandRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {
         super(properties);
         this.canRegenCentiVisAndValue = canRegenCentiVisAndValue;
@@ -26,11 +25,11 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
     protected final List<SimplePair<Aspect, Integer>> canRegenCentiVisAndValueAsList;
 
     @Override
-    public void tickAsComponent(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
+    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
         var wandStackItem = usingWand.getItem();
         if (wandStackItem instanceof ICentiVisContainer<?> containerNotCasted && containerNotCasted.tryCastAspectClass(Aspect.class)) {
             var container = (ICentiVisContainer<Aspect>) containerNotCasted;
-            if (entity.tickCount % 200 == 0){
+            if (owner.tickCount % 200 == 0){
                 var owningVis = container.getAllCentiVisOwning(usingWand);
                 for (Map.Entry<Aspect,Integer> entry: canRegenCentiVisAndValue.entrySet()) {
                     var owningAspectValue = owningVis.getOrDefault(entry.getKey(),0);

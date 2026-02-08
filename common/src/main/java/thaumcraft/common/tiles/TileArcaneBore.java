@@ -29,8 +29,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRepairEnchantableExtended;
+import thaumcraft.api.IRepairable;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -60,6 +59,8 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 public class TileArcaneBore extends TileThaumcraft implements Container, IWandInteractableBlock, TickingBlockEntity {
     public int spiral = 0;
@@ -235,7 +236,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
                 level = 2;
             }
 
-            if (is.getItem() instanceof IRepairEnchantable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,is) > 0) {
+            if (is.getItem() instanceof IRepairable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,is) > 0) {
                 AspectList<Aspect> cost = ThaumcraftCraftingManager.getObjectTags(is);
                 if (cost == null || cost.isEmpty()) {
                     return;
@@ -246,12 +247,12 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
                 for (Map.Entry<Aspect,Integer> a : cost.entrySet()) {
                     var repairCostAspect = a.getKey();
                     var repairCostAmount = a.getValue();
-                    this.repairCost.mergeWithHighest(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2) * level);
+                    this.repairCost.mergeWithHighest(repairCostAspect, (int) Math.sqrt(repairCostAmount * 2 * CENTIVIS_MULTIPLIER) * level);
                 }
 
                 boolean doIt = true;
-                if (is.getItem() instanceof IRepairEnchantableExtended) {
-                    doIt = ((IRepairEnchantableExtended) is.getItem()).doRepair(is, player, level);
+                if (is.getItem() instanceof IRepairable) {
+                    doIt = ((IRepairable) is.getItem()).doRepair(is, player, level);
                 }
 
                 if (doIt) {
