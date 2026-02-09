@@ -7,7 +7,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.expands.UnmodifiableAspectList;
+import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.research.implexample.ResearchNoteUnlockedResearchWithParentsAndWarp;

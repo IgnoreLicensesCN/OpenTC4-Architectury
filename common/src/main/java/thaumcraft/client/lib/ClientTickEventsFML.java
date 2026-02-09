@@ -44,7 +44,6 @@ import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
-import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.TileInfusionMatrix;
@@ -679,7 +678,7 @@ public class ClientTickEventsFML {
             List<String> list = Thaumcraft.getScannedObjects().get(player.getCommandSenderName());
             if (list != null && (list.contains("@" + h) || list.contains("#" + h))) {
                var tags = ThaumcraftCraftingManager.getObjectTags(var23.getStack());
-               tags = ThaumcraftCraftingManager.getBonusTags(var23.getStack(), tags);
+               tags = ThaumcraftCraftingManager.getBonusAspects(var23.getStack(), tags);
                if (tags != null) {
                   int x = var16 + 17;
                   int y = var17 + 7 - 33;

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,32 +18,16 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_aspects";
     public static MessageType messageType;
 
-    public List<AspectAmount> data;
+    public AspectList<Aspect> data;
 
-    // ---------------- 内部类，封装 Aspect+数量 ----------------
-    public record AspectAmount(String tag, short amount) {
-    }
-
-    // ---------------- 构造 ----------------
-    public PacketSyncAspectsS2C(){}
-    /**
-     * 服务端发送用
-     */
     public PacketSyncAspectsS2C(Player player) {
-        AspectList<Aspect>aspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
-        List<AspectAmount> list = new ArrayList<>();
-        if (aspects != null) {
-            for (Aspect a : aspects.getAspectTypes()) {
-                if (a != null) list.add(new AspectAmount(a.getAspectKey(), (short) aspects.getAmount(a)));
-            }
-        }
-        this.data = list;
+        this.data = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
     }
 
     /**
      * 解码用构造
      */
-    public PacketSyncAspectsS2C(List<AspectAmount> data) {
+    public PacketSyncAspectsS2C(AspectList<Aspect> data) {
         this.data = data;
     }
 
@@ -50,30 +35,30 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeShort(data.size());
-        for (AspectAmount a : data) {
-            buf.writeUtf(a.tag);
-            buf.writeShort(a.amount);
-        }
+        buf.writeMap(
+                data.aspectView,
+                (aspBuf,asp) -> aspBuf.writeResourceLocation(asp.aspectKey),
+                FriendlyByteBuf::writeInt
+        );
     }
 
     public static PacketSyncAspectsS2C decode(FriendlyByteBuf buf) {
-        short size = buf.readShort();
-        List<AspectAmount> list = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            String tag = buf.readUtf();
-            short amount = buf.readShort();
-            list.add(new AspectAmount(tag, amount));
-        }
-        return new PacketSyncAspectsS2C(list);
+        return new PacketSyncAspectsS2C(
+                new AspectList<>(
+                        buf.readMap(
+                                aspBuf -> Aspect.getAspect(AspectResourceLocation.of(aspBuf.readResourceLocation())),
+                                FriendlyByteBuf::readInt
+                        )
+                )
+        );
     }
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
-        if (player != null && player.level().isClientSide) {
-            ClientHandler.handle(this);
-        }
+        data.forEach(
+                (asp,amount) ->Thaumcraft.researchManager.completeAspect(
+                        context.getPlayer().getGameProfile().getName(), asp, amount)
+        );
     }
 
     @Override
@@ -81,19 +66,4 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
         return messageType;
     }
 
-    // ---------------- 客户端逻辑 ----------------
-
-    public static class ClientHandler {
-        public static void handle(PacketSyncAspectsS2C msg) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            for (AspectAmount a : msg.data) {
-                Aspect aspect = Aspect.getAspect(a.tag);
-                if (aspect != null) {
-                    Thaumcraft.researchManager.completeAspect(player.getGameProfile().getName(), aspect, a.amount);
-                }
-            }
-        }
-    }
 }

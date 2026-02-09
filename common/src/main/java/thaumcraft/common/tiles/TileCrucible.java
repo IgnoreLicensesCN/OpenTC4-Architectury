@@ -260,7 +260,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             this.counter = -250L;
          } else {
             AspectList<Aspect>ot = ThaumcraftCraftingManager.getObjectTags(item);
-            ot = ThaumcraftCraftingManager.getBonusTags(item, ot);
+            ot = ThaumcraftCraftingManager.getBonusAspects(item, ot);
             if (ot == null || ot.size() == 0) {
                entity.motionY = 0.35F;
                entity.motionX = (this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.2F;

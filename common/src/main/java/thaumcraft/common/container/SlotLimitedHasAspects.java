@@ -13,7 +13,7 @@ public class SlotLimitedHasAspects extends Slot {
 
    public boolean isItemValid(ItemStack par1ItemStack) {
       AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(par1ItemStack);
-      al = ThaumcraftCraftingManager.getBonusTags(par1ItemStack, al);
+      al = ThaumcraftCraftingManager.getBonusAspects(par1ItemStack, al);
       return al != null && al.size() > 0;
    }
 }

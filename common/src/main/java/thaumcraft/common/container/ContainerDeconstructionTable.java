@@ -87,7 +87,7 @@ public class ContainerDeconstructionTable extends Container {
          itemstack = itemstack1.copy();
          if (par2 != 0) {
             AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(itemstack1);
-            al = ThaumcraftCraftingManager.getBonusTags(itemstack1, al);
+            al = ThaumcraftCraftingManager.getBonusAspects(itemstack1, al);
             if (al != null && al.size() > 0) {
                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                   return null;

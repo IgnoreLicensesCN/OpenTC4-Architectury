@@ -3,7 +3,10 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import thaumcraft.api.expands.listeners.EventListeners;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.listeners.EventListeners;
+import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
+import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
 import thaumcraft.client.renderers.item.RenderUtils;
@@ -38,10 +41,11 @@ public final class OpenTC4 {
 
 
     }
-    public static void onServerStarting(){
+    public static void onInitialize() {
         ThaumcraftEnchantments.init();
         ThaumcraftBlocks.init();
         ThaumcraftItems.init();
+        Aspects.init();
         ThaumcraftBlockEntities.init();
         ThaumcraftEntities.init();
         ThaumcraftDispenseBehaviors.init();
@@ -55,15 +59,27 @@ public final class OpenTC4 {
         ThaumcraftGUI.init();
 
         EventListeners.init();
-    }
 
-    public static void onClientStarting() {
-        onServerStarting();
+    }
+    public static void onInitializeClient() {
+        onInitialize();
 
         Particles.init();
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
         RenderUtils.init();
         ThaumcraftBlockAndItemColors.init();
         ThaumcraftRenderers.init();
+
+    }
+
+    public static void onServerStarting(){
+    }
+
+    public static void onClientStarting() {
+    }
+
+    public static void onDatapackReload(){
+        ItemBasicAspectCalculator.onDatapackReload();
+        ItemBasicAspectGetter.onDatapackReload();
     }
 }

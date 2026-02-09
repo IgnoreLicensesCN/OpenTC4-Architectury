@@ -53,6 +53,7 @@ import thaumcraft.common.lib.effects.effectshaderhandlers.DeathGazeShaderHandler
 import thaumcraft.common.lib.effects.effectshaderhandlers.SunScornedShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.UnnaturalHungerShaderHandler;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
+import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -65,8 +66,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.LOGGER;
-import static thaumcraft.api.expands.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
 
 
 //TODO
@@ -91,6 +91,7 @@ public class EventHandlerEntity {
             return EventResult.pass();
          }));
          PlayerEvent.PLAYER_JOIN.register(serverPlayer -> {
+            new PacketSyncItemAspectsS2C().sendTo(serverPlayer);
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
              Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer.getGameProfile().getName());
             File playerThaumFile = getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName());

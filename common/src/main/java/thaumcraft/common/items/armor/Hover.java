@@ -178,7 +178,7 @@ public class Hover {
                 if (fuel > 0) {
                     ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList<>()).addAll(Aspects.ENERGY, fuel));
                 } else {
-                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList<>()).reduceAndRemoveIfNotPositive(
+                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList<>()).remove(
                             Aspects.ENERGY));
                 }
 

@@ -505,10 +505,10 @@ public class ScanManager implements IScanEventHandler {
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
 
             aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-            aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
+            aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
             if (aspects.size() == 0 && scan.item != null && !scan.item.isEmpty()) {
                 aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-                aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
+                aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
             }
 
             if (validScan(aspects, player)) {
@@ -526,7 +526,7 @@ public class ScanManager implements IScanEventHandler {
                 t.setCount(1);
 
                 aspects = ThaumcraftCraftingManager.getObjectTags(t);
-                aspects = ThaumcraftCraftingManager.getBonusTags(t, aspects);
+                aspects = ThaumcraftCraftingManager.getBonusAspects(t, aspects);
                 if (validScan(aspects, player)) {
                     clueStack = item.getItem();
                     Thaumcraft.researchManager.completeScannedObject(
@@ -697,10 +697,10 @@ public class ScanManager implements IScanEventHandler {
             var itemResLoc = new ResourceLocation(scan.item);
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
             aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-            aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
+            aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
             if (aspects.isEmpty() && scan.item != null) {
                 aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-                aspects = ThaumcraftCraftingManager.getBonusTags(new ItemStack(item), aspects);
+                aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
             }
         } else if (scan.type == 2) {
             if (scan.entity instanceof ItemEntity item
@@ -713,7 +713,7 @@ public class ScanManager implements IScanEventHandler {
 //            }
 
                 aspects = ThaumcraftCraftingManager.getObjectTags(t);
-                aspects = ThaumcraftCraftingManager.getBonusTags(t, aspects);
+                aspects = ThaumcraftCraftingManager.getBonusAspects(t, aspects);
             } else {
                 aspects = generateEntityAspects(scan.entity);
             }

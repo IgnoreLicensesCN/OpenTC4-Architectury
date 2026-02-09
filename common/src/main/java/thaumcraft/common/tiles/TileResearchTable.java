@@ -105,7 +105,7 @@ public class TileResearchTable /*extends TileThaumcraft implements IInventory*/ 
 //                  this.level.playSoundAtEntity(player, "random.orb", 0.2F, 0.9F + player.level().rand.nextFloat() * 0.2F);
 //               }
 //               else if (Thaumcraft.proxy.playerKnowledge.getAspectPoolFor(player.getCommandSenderName(), aspect) <= 0) {
-//                  this.bonusAspects.reduceAndRemoveIfNotPositive(aspect, 1);
+//                  this.bonusAspects.remove(aspect, 1);
 //                  player.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 //                  this.markDirty();
 //               } else {

@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.world.WorldGenCustomFlowers;
 
-import static thaumcraft.api.expands.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 
 //note that TreeConfiguration isnt used.
 public class SilverwoodTreeFeature extends Feature<TreeConfiguration> {

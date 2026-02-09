@@ -4,6 +4,8 @@ package thaumcraft.common.lib.network;
 import dev.architectury.networking.simple.SimpleNetworkManager;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.fx.*;
+import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
+import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.*;
 
@@ -25,7 +27,7 @@ public class PacketHandler {
         PacketRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketRunicChargeS2C.ID, PacketRunicChargeS2C::decode);
         PacketResearchCompleteS2C.messageType = INSTANCE.registerS2C(PacketResearchCompleteS2C.ID, PacketResearchCompleteS2C::decode);
         PacketClueCompleteS2C.messageType = INSTANCE.registerS2C(PacketClueCompleteS2C.ID, PacketClueCompleteS2C::decode);
-        PacketPlayerCompleteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCompleteC2S.ID, PacketPlayerCompleteC2S::decode);
+//        PacketPlayerCompleteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCompleteC2S.ID, PacketPlayerCompleteC2S::decode);
         PacketPlayerCreateResearchNoteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCreateResearchNoteC2S.ID,PacketPlayerCreateResearchNoteC2S::decode);
         PacketPlayerCompleteResearchWithAspectC2S.messageType = INSTANCE.registerC2S(PacketPlayerCompleteResearchWithAspectC2S.ID,PacketPlayerCompleteResearchWithAspectC2S::decode);
         PacketAspectPoolS2C.messageType = INSTANCE.registerS2C(PacketAspectPoolS2C.ID, PacketAspectPoolS2C::decode);
@@ -56,6 +58,9 @@ public class PacketHandler {
         PacketFXVisDrainS2C.messageType = INSTANCE.registerS2C(PacketFXVisDrainS2C.ID, PacketFXVisDrainS2C::decode);
         PacketFXWispZapS2C.messageType = INSTANCE.registerS2C(PacketFXWispZapS2C.ID, PacketFXWispZapS2C::decode);
         PacketFXZapS2C.messageType = INSTANCE.registerS2C(PacketFXZapS2C.ID, PacketFXZapS2C::decode);
+
+        PacketSyncItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncItemAspectsS2C.ID,PacketSyncItemAspectsS2C::decode);
+        PacketSyncItemAspectsC2S.messageType = INSTANCE.registerC2S(PacketSyncItemAspectsC2S.ID,PacketSyncItemAspectsC2S::decode);
 
 //        int idx = 0;
 //      INSTANCE.registerMessage(PacketBiomeChange.class, PacketBiomeChange.class, idx++, Side.CLIENT);

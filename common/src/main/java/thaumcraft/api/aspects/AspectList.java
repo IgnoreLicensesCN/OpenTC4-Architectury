@@ -45,6 +45,10 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspects.put(aspect,value);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
 	}
+	protected AspectList(LinkedHashMap<Asp,Integer> aspects) {
+		this.aspects = aspects;
+		this.aspectView = Collections.unmodifiableMap(this.aspects);
+	}
 	public AspectList(Map<Asp,Integer> aspects) {
 		this.aspects = new LinkedHashMap<>(aspects);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
@@ -220,7 +224,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 //	 * @param amount
 	 * @return self
 	 */
-	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key) {
+	public AspectList<Asp> remove(Asp key) {
 		aspects.remove(key); 
 		return this;
 	}
@@ -248,6 +252,25 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 			throw new NullPointerException("aspect is null");
 		}
 		this.aspects.put( aspect, amount );
+		return this;
+	}
+	public AspectList<Asp> divideAndCeil(int divideBy){
+		if (divideBy==0){
+			throw new IllegalArgumentException("division by zero");
+		}
+		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
+			int value = entry.getValue();
+			// 除以 divideBy 向上取整
+			int divided = (value + divideBy - 1) / divideBy; // ceil 整数除法
+			entry.setValue(divided);
+		}
+		return this;
+	}
+	public AspectList<Asp> multiply(int multiplier){
+		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
+			int value = entry.getValue();
+			entry.setValue(value*multiplier);
+		}
 		return this;
 	}
 

@@ -10,7 +10,7 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
-import static thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
+import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
 public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 

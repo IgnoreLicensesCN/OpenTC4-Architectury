@@ -22,7 +22,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
-import thaumcraft.api.expands.listeners.aspects.item.ItemAspectBonusTagsCalculator;
+import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
+import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -34,6 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 public class ThaumcraftCraftingManager {
 
@@ -164,7 +166,7 @@ public class ThaumcraftCraftingManager {
 
         AspectList<Aspect> tmp = ThaumcraftApi.objectTags.get(item);
         if (tmp == null) {
-            tmp = generateTags(item);
+            tmp = generateBaseAspects(item);
         }
 
         //TODO:Separate to wand additional aspects to API
@@ -174,16 +176,16 @@ public class ThaumcraftCraftingManager {
             }
             var totalAvgAspects = 0;
             for (var componentItem : wand.getWandComponents(itemstack)) {
-                var craftCostTotalAspect = 0;
+                var craftCostTotalCentiVis = 0;
                 var aspectCount = 0;
-                if (componentItem.getItem() instanceof ICraftingCostAspectOwner costAspectOwner) {
-                    var aspectMap = costAspectOwner.getCraftingCostCentiVis();
-                    for (var aspectValue : aspectMap.values()) {
-                        craftCostTotalAspect += aspectValue;
+                if (componentItem.getItem() instanceof ICraftingCostAspectOwner<? extends Aspect> costAspectOwner) {
+                    var aspectList = costAspectOwner.getCraftingCostCentiVis();
+                    for (var centiVisValue : aspectList.aspectView.values()) {
+                        craftCostTotalCentiVis += centiVisValue;
                         aspectCount += 1;
                     }
                 }
-                totalAvgAspects += craftCostTotalAspect / aspectCount;
+                totalAvgAspects += (craftCostTotalCentiVis / CENTIVIS_MULTIPLIER) / aspectCount;
             }
 
             tmp.mergeWithHighest(Aspects.MAGIC, (totalAvgAspects) / 2);
@@ -281,27 +283,29 @@ public class ThaumcraftCraftingManager {
         }
     }
 
-    public static AspectList<Aspect> getBonusTags(ItemStack itemstack, AspectList<Aspect> sourcetags) {
-        return ItemAspectBonusTagsCalculator.getBonusTags(itemstack, sourcetags);
+    @Deprecated(forRemoval = true)
+    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, AspectList<Aspect> sourcetags) {
+        return ItemBonusAspectCalculator.getBonusAspects(itemstack, sourcetags);
     }
 
-    public static AspectList<Aspect> generateTags(Item item) {
-        return generateTags(item, new ArrayList<>());
+    public static AspectList<Aspect> generateBaseAspects(Item item) {
+        return generateBaseAspects(item, new ArrayList<>());
     }
 
-    public static AspectList<Aspect> generateTags(Item item, List<ItemStack> history) {
-
+    public static AspectList<Aspect> generateBaseAspects(Item item, List<ItemStack> history) {
 
         if (ThaumcraftApi.exists(item)) {
             return getObjectTagsOriginal(new ItemStack(item));
-        } else if (history.contains((item.getDefaultInstance()))) {
+        } else if (
+                history.contains((item.getDefaultInstance()))
+        ) {
             return null;
         } else {
             history.add(item.getDefaultInstance());
             if (history.size() < 100) {
                 AspectList<Aspect> ret = generateTagsFromRecipes(item, history);
                 ret = capAspects(ret, 64);
-                ThaumcraftApi.registerObjectTag(new ItemStack(item), ret);
+                ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(item), ret);
                 return ret;
             } else {
                 return null;
@@ -317,7 +321,7 @@ public class ThaumcraftCraftingManager {
                     .getCount();
             AspectList<Aspect> ot2 = null;
             for (var cat:cr.catalyst.getAvailableItemStackSample()){
-                ot2 = generateTags(cat.getItem(), history);
+                ot2 = generateBaseAspects(cat.getItem(), history);
             }
             AspectList<Aspect> out = new AspectList<>();
             if (ot2 != null && !ot2.isEmpty()) {
@@ -333,7 +337,7 @@ public class ThaumcraftCraftingManager {
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.reduceAndRemoveIfNotPositive(as);
+                    out.remove(as);
                 }
             }
 
@@ -359,7 +363,7 @@ public class ThaumcraftCraftingManager {
                         for (var stackArr:arcaneRecipe.getAllInputSample()){
                             for (var stack : stackArr){
                                 if (stack == null || stack.isEmpty()) continue;
-                                AspectList<Aspect> obj = generateTags(stack.getItem(), history);
+                                AspectList<Aspect> obj = generateBaseAspects(stack.getItem(), history);
                                 if (obj != null && !obj.isEmpty()) {
                                     ItemStack is = stack.copy();
                                     is.setCount(1);
@@ -384,7 +388,7 @@ public class ThaumcraftCraftingManager {
                                 .getAspectTypes()) {
                             //remove <=0(why this will be executed?)
                             if (ph.getAmount(as) <= 0) {
-                                ph.reduceAndRemoveIfNotPositive(as);
+                                ph.remove(as);
                             }
                         }
 
@@ -440,7 +444,7 @@ public class ThaumcraftCraftingManager {
 
             for (Aspect as : out.getAspectTypes()) {
                 if (out.getAmount(as) <= 0) {
-                    out.reduceAndRemoveIfNotPositive(as);
+                    out.remove(as);
                 }
             }
 
@@ -465,7 +469,7 @@ public class ThaumcraftCraftingManager {
                                 NonNullList<Ingredient> ingredientsInternal = recipe.getIngredients();
                                 for (var ingredientInner : ingredientsInternal) {
                                     for (ItemStack stack : ingredientInner.getItems()) {
-                                        AspectList<Aspect> obj = generateTags(stack.getItem(), history);
+                                        AspectList<Aspect> obj = generateBaseAspects(stack.getItem(), history);
                                         if (obj != null && !obj.isEmpty()) {
                                             ItemStack is = stack.copy();
                                             is.setCount(1);
@@ -479,7 +483,7 @@ public class ThaumcraftCraftingManager {
                                 for (var as : ph.copy()
                                         .getAspectTypes()) {
                                     if (ph.getAmount(as) <= 0) {
-                                        ph.reduceAndRemoveIfNotPositive(as);
+                                        ph.remove(as);
                                     }
                                 }
 
@@ -510,7 +514,7 @@ public class ThaumcraftCraftingManager {
 
                     for (Aspect as : out.getAspectTypes()) {
                         if (out.getAmount(as) <= 0) {
-                            out.reduceAndRemoveIfNotPositive(as);
+                            out.remove(as);
                         }
                     }
 
@@ -518,7 +522,7 @@ public class ThaumcraftCraftingManager {
                 }
 
                 ItemStack is = i$.next();
-                obj = generateTags(is.getItem(), history);
+                obj = generateBaseAspects(is.getItem(), history);
                 if (!is.getItem()
                         .hasCraftingRemainingItem()) {
                     break;
@@ -526,12 +530,12 @@ public class ThaumcraftCraftingManager {
 
                 if (is.getItem()
                         .getCraftingRemainingItem() != is.getItem()) {
-                    AspectList<Aspect> objC = generateTags(
+                    AspectList<Aspect> objC = generateBaseAspects(
                             is.getItem()
                                     .getCraftingRemainingItem(), history
                     );
                     if (objC != null && !objC.isEmpty()) {
-                        List<Aspect> arr$ = objC.getAspectTypes();
+                        var arr$ = objC.getAspectTypes().stream().toList();
                         int len$ = arr$.size();
                         int counter = 0;
 

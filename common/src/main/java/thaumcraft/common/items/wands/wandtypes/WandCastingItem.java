@@ -25,7 +25,10 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.WandManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
@@ -50,21 +53,22 @@ public class WandCastingItem extends Item
         IInventoryTickableComponent {
 
     public WandCastingItem() {
-        super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-        platformUtils.registerOnLeftClickBlockForItem(this,this);
+        super(new Properties().stacksTo(1)
+                .rarity(Rarity.UNCOMMON));
+        platformUtils.registerOnLeftClickBlockForItem(this, this);
     }
 
     @Override
     @NotNull("null -> empty")
     public ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
-        if (!stack.hasTag()){
+        if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
         var tag = stack.getTag();
-        if (tag == null){
+        if (tag == null) {
             return ItemStack.EMPTY;
         }
-        if (!WAND_CAP_ACCESSOR.compoundTagHasKey(tag)){
+        if (!WAND_CAP_ACCESSOR.compoundTagHasKey(tag)) {
             return ItemStack.EMPTY;
         }
         return WAND_CAP_ACCESSOR.readFromCompoundTag(tag);
@@ -73,14 +77,14 @@ public class WandCastingItem extends Item
     @Override
     @NotNull("null -> empty")
     public ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
-        if (!stack.hasTag()){
+        if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
         var tag = stack.getTag();
-        if (tag == null){
+        if (tag == null) {
             return ItemStack.EMPTY;
         }
-        if (!WAND_ROD_ACCESSOR.compoundTagHasKey(tag)){
+        if (!WAND_ROD_ACCESSOR.compoundTagHasKey(tag)) {
             return ItemStack.EMPTY;
         }
         return WAND_ROD_ACCESSOR.readFromCompoundTag(tag);
@@ -89,34 +93,45 @@ public class WandCastingItem extends Item
     @Override
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
         var components = getWandComponents(usingWand);
-        for (var component : components){
-            if (component.getItem() instanceof IWandSpellEventListenable listener){
+        for (var component : components) {
+            if (component.getItem() instanceof IWandSpellEventListenable listener) {
                 listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
             }
         }
     }
 
 
+    //a wand wont be component for something in vanilla tc4 but i want it tick in a bag.(can be a big one from thaumicTinker?)
     @Override
-    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack directParentStack, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
+    public void tickAsComponent(
+            @NotNull ItemStack finalParentStack,
+            @NotNull ItemStack directParentStack,
+            @NotNull ItemStack selfStack,
+            Level level,
+            Entity owner,
+            int finalParentAtContainerIndex,
+            boolean bl
+    ) {
         var components = getWandComponents(selfStack);
-        for (var component : components){
-            if (component.getItem() instanceof IInventoryTickableComponent listener){
-                listener.tickAsComponent(finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
+        for (var component : components) {
+            if (component.getItem() instanceof IInventoryTickableComponent listener) {
+                listener.tickAsComponent(
+                        finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
             }
         }
     }
+
     @Override
     public void inventoryTick(ItemStack usingWand, Level level, Entity entity, int i, boolean bl) {
-        this.tickAsComponent(usingWand,usingWand,usingWand,level,entity,i,bl);
+        this.tickAsComponent(usingWand, usingWand, usingWand, level, entity, i, bl);
     }
 
     @Override
     public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
         float result = 1.0F;
         var components = getWandComponents(usingWand);
-        for (var component : components){
-            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProvider provider){
+        for (var component : components) {
+            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProvider provider) {
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -126,14 +141,14 @@ public class WandCastingItem extends Item
 
     @Override
     public ItemStack getFocusItemStack(ItemStack wand) {
-        if (!wand.hasTag()){
+        if (!wand.hasTag()) {
             return null;
         }
         var tag = wand.getTag();
-        if (tag == null){
+        if (tag == null) {
             return null;
         }
-        if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)){
+        if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)) {
             return null;
         }
         return WAND_FOCUS_ACCESSOR.readFromCompoundTag(tag);
@@ -141,14 +156,14 @@ public class WandCastingItem extends Item
 
     @Override
     public ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus) {
-        if (!canApplyFocus()){
+        if (!canApplyFocus()) {
             throw new IllegalStateException("cannot change focus but called changeFocusItemStack!");
         }
         var tag = wand.getTag();
-        if (tag == null){
+        if (tag == null) {
             return null;
         }
-        if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)){
+        if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)) {
             WAND_FOCUS_ACCESSOR.writeToCompoundTag(tag, focus);
             return null;
         }
@@ -167,6 +182,7 @@ public class WandCastingItem extends Item
         CompoundTag tag = usingWand.getOrCreateTag();
         return WAND_OWING_VIS_ACCESSOR.readFromCompoundTag(tag);
     }
+
     @Override
     public void storeCentiVisOwning(ItemStack itemStack, CentiVisList<Aspect> aspects) {
         CompoundTag tag = itemStack.getOrCreateTag();
@@ -177,10 +193,12 @@ public class WandCastingItem extends Item
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
         CentiVisList<Aspect> result = new CentiVisList<>();
         var components = getWandComponents(usingWand);
-        for (var component : components){
-            if (component.getItem() instanceof IAspectCapacityOwner<?> owner && owner.tryCastAspectClass(Aspect.class)){
-                owner.getCentiVisCapacity().forEach(
-                        (aspect,integer) -> result.merge(aspect,integer,Integer::sum));
+        for (var component : components) {
+            if (component.getItem() instanceof IAspectCapacityOwner<?> owner && owner.tryCastAspectClass(
+                    Aspect.class)) {
+                owner.getCentiVisCapacity()
+                        .forEach(
+                                (aspect, integer) -> result.merge(aspect, integer, Integer::sum));
             }
         }
         return result;
@@ -189,7 +207,7 @@ public class WandCastingItem extends Item
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        appendWandHoverText(this,stack, level, list, tooltipFlag, Minecraft.getInstance().player);
+        appendWandHoverText(this, stack, level, list, tooltipFlag, Minecraft.getInstance().player);
     }
 
     @Override
@@ -210,9 +228,10 @@ public class WandCastingItem extends Item
     public @NotNull Component getName(ItemStack itemStack) {
         var wandComponentNames = Component.empty();
         var components = getWandComponents(itemStack);
-        for (var component : components){
-            if (component.getItem() instanceof IWandComponentNameOwner owner){
-                wandComponentNames = wandComponentNames.append(owner.getComponentName().getString());
+        for (var component : components) {
+            if (component.getItem() instanceof IWandComponentNameOwner owner) {
+                wandComponentNames = wandComponentNames.append(owner.getComponentName()
+                        .getString());
             }
         }
         wandComponentNames = wandComponentNames.append(this.getComponentName());
@@ -229,21 +248,26 @@ public class WandCastingItem extends Item
         return Integer.MAX_VALUE;
     }
 
-    public static Map<LivingEntity, BlockPos> entityUsingBlockMapping = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+    public static Map<LivingEntity, BlockPos> entityUsingBlockMapping = new MapMaker().weakKeys()
+            .concurrencyLevel(2)
+            .makeMap();
+
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var player = useOnContext.getPlayer();
-        if (player != null){
-            var onBlockState = player.level().getBlockState(useOnContext.getClickedPos());
+        if (player != null) {
+            var onBlockState = player.level()
+                    .getBlockState(useOnContext.getClickedPos());
             InteractionResult result = InteractionResult.PASS;
-            if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock){
-                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME){
+            if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock) {
+                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
             }
-            if (player.level().getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlock interactableBlock){
-                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME){
+            if (player.level()
+                    .getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlock interactableBlock) {
+                if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
@@ -255,16 +279,16 @@ public class WandCastingItem extends Item
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack usingWand, int useRemainingCount) {
-        var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity,null);
-        if (usingBlockPos != null){
+        var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity, null);
+        if (usingBlockPos != null) {
             var blockState = level.getBlockState(usingBlockPos);
             var blockEntity = level.getBlockEntity(usingBlockPos);
             var interacting = false;
-            if (blockState.getBlock() instanceof IWandInteractableBlock wandInteractableBlock){
+            if (blockState.getBlock() instanceof IWandInteractableBlock wandInteractableBlock) {
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
                 interacting = true;
             }
-            if (blockEntity instanceof IWandInteractableBlock wandInteractableBlock){
+            if (blockEntity instanceof IWandInteractableBlock wandInteractableBlock) {
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
                 interacting = true;
             }
@@ -273,12 +297,13 @@ public class WandCastingItem extends Item
             }
         }
 
-        if (canApplyFocus()){
+        if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(livingEntity)){
-                    focus.onUsingFocusTick(usingWand,focusStack,livingEntity,useRemainingCount);
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(
+                        livingEntity)) {
+                    focus.onUsingFocusTick(usingWand, focusStack, livingEntity, useRemainingCount);
                 }
             }
         }
@@ -287,13 +312,13 @@ public class WandCastingItem extends Item
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
-        if (canApplyFocus()){
-            var usingWand = interactionHand == InteractionHand.MAIN_HAND?player.getMainHandItem():player.getOffhandItem();
+        if (canApplyFocus()) {
+            var usingWand = interactionHand == InteractionHand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(player)){
-                    return focus.onFocusRightClick(usingWand,focusStack,level,player,interactionHand);
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(player)) {
+                    return focus.onFocusRightClick(usingWand, focusStack, level, player, interactionHand);
                 }
             }
         }
@@ -314,12 +339,12 @@ public class WandCastingItem extends Item
     @Override
     public void releaseUsing(ItemStack usingWand, Level level, LivingEntity user, int useRemainingTicks) {
         entityUsingBlockMapping.remove(user);
-        if (canApplyFocus()){
+        if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)){
-                    focus.onPlayerStoppedUsingFocus(usingWand,focusStack,level,user,useRemainingTicks);
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
+                    focus.onPlayerStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
                 }
             }
         }
@@ -327,13 +352,13 @@ public class WandCastingItem extends Item
 
     @Override
     public InteractionResult onLeftClickBlock(Player user, Level level, InteractionHand interactionHand, BlockPos blockPos, Direction direction) {
-        if (canApplyFocus()){
-            var usingWand = interactionHand == InteractionHand.MAIN_HAND?user.getMainHandItem():user.getOffhandItem();
+        if (canApplyFocus()) {
+            var usingWand = interactionHand == InteractionHand.MAIN_HAND ? user.getMainHandItem() : user.getOffhandItem();
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)){
-                    focus.onLeftClickBlock(usingWand,focusStack,user,interactionHand);
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
+                    focus.onLeftClickBlock(usingWand, focusStack, user, interactionHand);
                 }
             }
         }
@@ -341,14 +366,14 @@ public class WandCastingItem extends Item
     }
 
     public List<BlockPos> getArchitectBlocks(ItemStack usingWand, Level world, BlockPos pos, Direction side, Player player) {
-        if (canApplyFocus()){
+        if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
                         && focus instanceof IArchitect architect
-                ){
+                ) {
                     return architect.getArchitectBlocks(usingWand, world, pos, side, player);
                 }
             }
@@ -357,15 +382,15 @@ public class WandCastingItem extends Item
     }
 
     public boolean showAxis(ItemStack usingWand, Level world, Player player, Direction side, EnumAxis axis) {
-        if (canApplyFocus()){
+        if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null){
+            if (focusStack != null) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
                         && focus instanceof IArchitect architect
-                ){
-                    return architect.showAxis(usingWand,world,player,side,axis);
+                ) {
+                    return architect.showAxis(usingWand, world, player, side, axis);
                 }
             }
         }

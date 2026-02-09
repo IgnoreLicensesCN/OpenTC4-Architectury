@@ -28,7 +28,7 @@ import net.minecraftforge.common.BiomeManager.BiomeType;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.expands.listeners.worldgen.node.NodeGenerationManager;
+import thaumcraft.api.listeners.worldgen.node.NodeGenerationManager;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.Thaumcraft;

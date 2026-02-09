@@ -45,7 +45,7 @@ import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import java.util.List;
 import java.util.Random;
 
-import static thaumcraft.api.expands.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 
 //tile.blockAiry.0.name=灵气节点
 //tile.blockAiry.1.name=闪耀之光

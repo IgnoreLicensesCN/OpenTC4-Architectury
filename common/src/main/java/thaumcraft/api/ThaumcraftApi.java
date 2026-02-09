@@ -19,8 +19,8 @@ import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
-import thaumcraft.api.expands.UnmodifiableAspectList;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
+import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.research.*;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
@@ -733,19 +733,6 @@ public class ThaumcraftApi {
     }
 
     /**
-     * Used to assign apsects to the given item/block. Here is an example of the declaration for cobblestone:<p>
-     * <i>ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.ENTROPY, 1).add(Aspect.EARTH, 1));</i>
-     *
-     * @param item    the item passed. Pass OreDictionary.WILDCARD_VALUE if all damage values of this item/block should have the same aspects
-     * @param aspects A ObjectTags object of the associated aspects
-     */
-    @Deprecated(forRemoval = true,since = "prepare for new api")
-    public static void registerObjectTag(ItemStack item, @Nullable AspectList<Aspect> aspects) {
-        if (aspects == null) aspects = UnmodifiableAspectList.EMPTY;
-        objectTags.put(item.getItem(), aspects);
-    }
-
-    /**
      * Used to assign apsects to the given ore dictionary item.
      *
      * @param tagString the ore dictionary name
@@ -778,19 +765,19 @@ public class ThaumcraftApi {
     @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
         if (!exists(item.getItem())) {
-            AspectList<Aspect> tmp = ThaumcraftApiHelper.generateTags(item.getItem());
+            AspectList<Aspect> tmp = ThaumcraftApiHelper.generateBaseAspects(item.getItem());
             if (tmp != null && !tmp.isEmpty()) {
                 for (Aspect tag : tmp.getAspectTypes()) {
                     aspects.addAll(tag, tmp.getAmount(tag));
                 }
             }
-            registerObjectTag(item, aspects);
+            ItemBasicAspectRegistration.registerItemBasicAspects(item, aspects);
         } else {
             AspectList<Aspect> tmp = ThaumcraftApiHelper.getObjectAspects(item);
             for (Aspect tag : aspects.getAspectTypes()) {
                 tmp.mergeWithHighest(tag, tmp.getAmount(tag));
             }
-            registerObjectTag(item, tmp);
+            ItemBasicAspectRegistration.registerItemBasicAspects(item, tmp);
         }
     }
 

@@ -166,12 +166,17 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
             throw new IllegalStateException("server is null, too early to call this method");
         }
 
-        List<Item> items = new ArrayList<>();
-        RegistryAccess registryAccess = server.registryAccess();
 
         TagKey<Item> tagKey = TagKey.create(Registries.ITEM, new ResourceLocation(key));//无法访问 net. fabricmc. fabric. api. tag. FabricTagKey
-        Registry<Item> itemRegistry = registryAccess.registryOrThrow(Registries.ITEM);
 
+        return getItemsFromTag(tagKey);
+    }
+
+    @Override
+    public List<Item> getItemsFromTag(TagKey<Item> tagKey) {
+        RegistryAccess registryAccess = server.registryAccess();
+        List<Item> items = new ArrayList<>();
+        Registry<Item> itemRegistry = registryAccess.registryOrThrow(Registries.ITEM);
         Optional<HolderSet.Named<Item>> optHolders = itemRegistry.getTag(tagKey);
         if (optHolders.isPresent()) {
             HolderSet.Named<Item> holders = optHolders.get();

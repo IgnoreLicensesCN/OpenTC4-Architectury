@@ -162,7 +162,7 @@ public class TileDeconstructionTable /*extends TileThaumcraft implements ISidedI
 //   private boolean canBreak() {
 //      if (this.itemStacks[0] != null && this.aspect == null) {
 //         AspectList<Aspect> al = ThaumcraftCraftingManager.getObjectTags(this.itemStacks[0]);
-//         al = ThaumcraftCraftingManager.getBonusTags(this.itemStacks[0], al);
+//         al = ThaumcraftCraftingManager.getBonusAspects(this.itemStacks[0], al);
 //         return !al.isEmpty();
 //      } else {
 //         return false;
@@ -172,7 +172,7 @@ public class TileDeconstructionTable /*extends TileThaumcraft implements ISidedI
 //   public void breakItem() {
 //      if (this.canBreak()) {
 //         AspectList<Aspect>  al = ThaumcraftCraftingManager.getObjectTags(this.itemStacks[0]);
-//         al = ThaumcraftCraftingManager.getBonusTags(this.itemStacks[0], al);
+//         al = ThaumcraftCraftingManager.getBonusAspects(this.itemStacks[0], al);
 //         AspectList<PrimalAspect>  primals = ResearchManager.reduceToPrimals(al);
 //         if (this.level().rand.nextInt(80) < primals.visSize()) {
 //            this.aspect = primals.getAspects()[this.level().rand.nextInt(primals.getAspects().length)];
@@ -198,7 +198,7 @@ public class TileDeconstructionTable /*extends TileThaumcraft implements ISidedI
 //
 //   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
 //      AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(par2ItemStack);
-//      al = ThaumcraftCraftingManager.getBonusTags(par2ItemStack, al);
+//      al = ThaumcraftCraftingManager.getBonusAspects(par2ItemStack, al);
 //      return al != null && al.size() > 0;
 //   }
 //

@@ -302,7 +302,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          return false;
       } else {
          AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(this.furnaceItemStacks[0]);
-         al = ThaumcraftCraftingManager.getBonusTags(this.furnaceItemStacks[0], al);
+         al = ThaumcraftCraftingManager.getBonusAspects(this.furnaceItemStacks[0], al);
          if (al != null && al.size() != 0) {
             int vs = al.visSize();
             if (vs > this.maxVis - this.vis) {
@@ -324,7 +324,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    public void smeltItem() {
       if (this.canSmelt()) {
          AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(this.furnaceItemStacks[0]);
-         al = ThaumcraftCraftingManager.getBonusTags(this.furnaceItemStacks[0], al);
+         al = ThaumcraftCraftingManager.getBonusAspects(this.furnaceItemStacks[0], al);
 
          for(Aspect a : al.getAspects()) {
             this.aspects.addAll(a, al.getAmount(a));
@@ -356,7 +356,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
       if (par1 == 0) {
          AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(par2ItemStack);
-         al = ThaumcraftCraftingManager.getBonusTags(par2ItemStack, al);
+         al = ThaumcraftCraftingManager.getBonusAspects(par2ItemStack, al);
          if (al != null && al.size() > 0) {
             return true;
          }
@@ -382,7 +382,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
          AspectList<Aspect>temp = this.aspects.copy();
          if (exlude.size() > 0) {
             for(Aspect a : exlude.getAspects()) {
-               temp.reduceAndRemoveIfNotPositive(a);
+               temp.remove(a);
             }
          }
 

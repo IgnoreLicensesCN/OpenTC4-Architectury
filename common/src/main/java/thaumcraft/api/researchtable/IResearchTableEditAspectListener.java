@@ -5,8 +5,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
-import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
+import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
+import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.common.lib.utils.HexCoord;
 
 public interface IResearchTableEditAspectListener {

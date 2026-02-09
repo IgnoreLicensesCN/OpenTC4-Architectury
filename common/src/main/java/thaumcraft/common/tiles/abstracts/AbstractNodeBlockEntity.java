@@ -570,7 +570,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                     //so if we're unlucky to meet this period,aspect size will -1!
                     this.setNodeVisBase(aspect, (short) (this.getNodeVisBase(aspect) - 1));
                     if (this.level.random.nextInt(20) == 0 || this.getNodeVisBase(aspect) <= 0) {
-                        this.getAspects().reduceAndRemoveIfNotPositive(aspect);
+                        this.getAspects().remove(aspect);
                         this.getNodeModifier().onPeriodicReduceSize(this);
                         this.nodeChange();
                         break;

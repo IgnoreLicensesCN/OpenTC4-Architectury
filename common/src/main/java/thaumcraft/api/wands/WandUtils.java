@@ -15,7 +15,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator;
+import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
 
 import java.text.DecimalFormat;
 import java.util.Collection;

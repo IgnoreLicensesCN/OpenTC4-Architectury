@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.research.interfaces.IRenderableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -44,70 +45,67 @@ public abstract class ResearchItem
 //     * any research linked to this that will be unlocked automatically when this research is complete
 //     */
 //    public ResearchItemResourceLocation[] siblings = null;
+//    /**
+//     * Research that can be directly purchased with RP in normal research difficulty.
+//     */
+//    private boolean isSecondary;
+//
+//
+//    /**
+//     * Stub research cannot be discovered by normal means, but can be unlocked via the sibling system.
+//     */
+//    private boolean isStub;
+//
+//    /**
+//     * This indicated that the research is completely hidden and cannot be discovered by any
+//     * player-controlled means. The recipes will never show up in the thaumonomicon.
+//     * Usually used to unlock "hidden" recipes via sibling unlocking, like
+//     * the various cap and rod combos for wands.
+//     */
+//    private boolean isVirtual;
+//
+//    /**
+//     * Concealed research does not display in the thaumonomicon until parent researches are discovered.
+//     */
+//    private boolean showAfterParentDiscovered;
+//
+//    /**
+//     * Hidden research can only be discovered via scanning or knowledge fragments
+//     */
+//    private boolean isHidden;
+//
+//    /**
+//     * This is the same as isHidden, except it cannot be discovered with knowledge fragments, only scanning.
+//     */
+//    private boolean isLost;
+//
+//    /**
+//     * These research items will automatically unlock for all players on game start
+//     */
+//    private boolean isAutoUnlock;
+//
+//    /**
+//     * Scanning these items will have a chance of revealing hidden knowledge in the thaumonomicon
+//     */
+//    private ItemStack[] itemTriggers;
+//
+//    /**
+//     * Scanning these entities will have a chance of revealing hidden knowledge in the thaumonomicon
+//     */
+//    private ResourceKey<EntityType<?>>[] entityTriggers;
+//
+//    /**
+//     * Scanning things with these aspects will have a chance of revealing hidden knowledge in the thaumonomicon
+//     */
+//    private Aspect[] aspectTriggers;
 
-
-    
-    /**
-     * Research that can be directly purchased with RP in normal research difficulty.
-     */
-    private boolean isSecondary;
-
-    
-    /**
-     * Stub research cannot be discovered by normal means, but can be unlocked via the sibling system.
-     */
-    private boolean isStub;
-    
-    /**
-     * This indicated that the research is completely hidden and cannot be discovered by any 
-     * player-controlled means. The recipes will never show up in the thaumonomicon.
-     * Usually used to unlock "hidden" recipes via sibling unlocking, like 
-     * the various cap and rod combos for wands.
-     */
-    private boolean isVirtual;    
-
-    /**
-     * Concealed research does not display in the thaumonomicon until parent researches are discovered.
-     */
-    private boolean showAfterParentDiscovered;
-    
-    /**
-     * Hidden research can only be discovered via scanning or knowledge fragments 
-     */
-    private boolean isHidden;
-    
-    /**
-     * This is the same as isHidden, except it cannot be discovered with knowledge fragments, only scanning.  
-     */
-    private boolean isLost;
-    
-    /**
-     * These research items will automatically unlock for all players on game start
-     */
-    private boolean isAutoUnlock;
-    
-    /**
-     * Scanning these items will have a chance of revealing hidden knowledge in the thaumonomicon
-     */
-    private ItemStack[] itemTriggers;
-    
-    /**
-     * Scanning these entities will have a chance of revealing hidden knowledge in the thaumonomicon
-     */
-    private ResourceKey<EntityType<?>>[] entityTriggers;
-    
-    /**
-     * Scanning things with these aspects will have a chance of revealing hidden knowledge in the thaumonomicon
-     */
-    private Aspect[] aspectTriggers;
-
-	private ResearchPage[] pages = null;
+//	private ResearchPage[] pages = null;
 	
 	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
     {
     	this.key = key;
         this.categoryInternal.add(category);
-        this.setVirtual();
+//        this.setVirtual();
         registerResearchItem();
     }
 
@@ -147,7 +145,7 @@ public abstract class ResearchItem
     public ResearchItem(ResearchItemResourceLocation key)
     {
         this.key = key;
-        this.setVirtual();
+//        this.setVirtual();
         registerResearchItem();
     }
 
@@ -196,22 +194,26 @@ public abstract class ResearchItem
         return "ResearchItem{" +
                 "key=" + key +
                 ", categoryInternal=" + categoryInternal +
-                ", category=" + category +
-                ", isSecondary=" + isSecondary +
-                ", isStub=" + isStub +
-                ", isVirtual=" + isVirtual +
-                ", showAfterParentDiscovered=" + showAfterParentDiscovered +
-                ", isHidden=" + isHidden +
-                ", isLost=" + isLost +
-                ", isAutoUnlock=" + isAutoUnlock +
-                ", itemTriggers=" + Arrays.toString(itemTriggers) +
-                ", entityTriggers=" + Arrays.toString(entityTriggers) +
-                ", aspectTriggers=" + Arrays.toString(aspectTriggers) +
-                ", pages=" + Arrays.toString(pages) +
+//                ", category=" + category +
+//                ", isSecondary=" + isSecondary +
+//                ", isStub=" + isStub +
+//                ", isVirtual=" + isVirtual +
+//                ", showAfterParentDiscovered=" + showAfterParentDiscovered +
+//                ", isHidden=" + isHidden +
+//                ", isLost=" + isLost +
+//                ", isAutoUnlock=" + isAutoUnlock +
+//                ", itemTriggers=" + Arrays.toString(itemTriggers) +
+//                ", entityTriggers=" + Arrays.toString(entityTriggers) +
+//                ", aspectTriggers=" + Arrays.toString(aspectTriggers) +
+//                ", pages=" + Arrays.toString(pages) +
                 '}';
     }
 
     public boolean isPlayerCompletedResearch(String playerName){
         return ResearchManager.getResearchForPlayer(playerName).contains(this.key);
+    }
+
+    public void completeResearch(String playerName){
+        Thaumcraft.researchManager.completeResearch(playerName, key);
     }
 }

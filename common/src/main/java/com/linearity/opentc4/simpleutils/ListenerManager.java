@@ -3,6 +3,7 @@ package com.linearity.opentc4.simpleutils;
 import java.util.Collections;
 import java.util.List;
 
+//so it maybe just a AutoSortThreadSafeList
 public class ListenerManager<T extends Comparable<T>> {
     private final List<T> listeners = new AutoSortThreadSafeList<>();
     public ListenerManager() {

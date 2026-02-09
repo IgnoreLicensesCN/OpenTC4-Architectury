@@ -1,9 +1,9 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.gui.GuiResearchBrowser;
@@ -60,28 +60,19 @@ public class PacketSyncResearchS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
-        if (player != null && player.level().isClientSide) {
-            ClientHandler.handle(this);
+
+        for (var key : data) {
+            var research = ResearchItem.getResearch(key);
+            if (research != null) {
+                research.completeResearch(player.getGameProfile().getName());
+            }
         }
+
+        GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), data);
     }
 
     @Override
     public MessageType getType() {
         return messageType;
-    }
-
-    // ---------------- 客户端逻辑 ----------------
-
-    public static class ClientHandler {
-        public static void handle(PacketSyncResearchS2C msg) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            for (var key : msg.data) {
-                Thaumcraft.researchManager.completeResearch(player, key);
-            }
-
-            GuiResearchBrowser.completedResearch.put(player.getGameProfile().getName(), msg.data);
-        }
     }
 }

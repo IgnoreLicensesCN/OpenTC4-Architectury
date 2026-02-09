@@ -233,6 +233,7 @@ public class ResearchManager {
         return randomMatch;
     }
 
+    @Deprecated(forRemoval = true)
     public static int getAlreadyExistsResearchSlot(Player player, ResearchItemResourceLocation key) {
         var inv = player.getInventory().items;
         for (int a = 0; a < inv.size(); a++) {
@@ -439,6 +440,7 @@ public class ResearchManager {
             scheduleSave(playerName);
         }
     }
+    @Deprecated(forRemoval = true)
     public void completeResearch(Player player, ResearchItemResourceLocation key) {
         String playerName = player.getGameProfile().getName();
         if (completeResearchUnsaved(playerName, key)) {
@@ -452,9 +454,21 @@ public class ResearchManager {
         }
 
     }
+    public void completeResearch(String playerName, ResearchItemResourceLocation key) {
+        if (completeResearchUnsaved(playerName, key)) {
+            int warp;
+            var research = ResearchItem.getResearch(key);
+            if (research instanceof IResearchWarpOwner warpOwner){
+                warp = warpOwner.getWarp();
+                addKindsOfWarps(playerName, warp);
+            }
+            scheduleSave(playerName);
+        }
+
+    }
 
     public static void addKindsOfWarps(Player player, int warp) {
-        if (warp > 0 && !Config.wuss && Platform.getEnvironment() != Env.CLIENT) {
+        if (warp > 0 && !Config.wuss && Platform.getEnvironment() == Env.SERVER) {
             if (warp > 1) {
                 int halved = warp / 2;
                 if (warp - halved > 0) {
@@ -465,6 +479,12 @@ public class ResearchManager {
                 Thaumcraft.addWarpToPlayer(player, warp, false);
             }
         }
+    }
+    public static void addKindsOfWarps(String playerName, int warp) {
+        if (Platform.getEnvironment() != Env.SERVER) {return;}
+        var player = platformUtils.getServer().getPlayerList().getPlayerByName(playerName);
+        if (player == null) {return;}
+        addKindsOfWarps(player, warp);
     }
 
     public static boolean completeAspectUnsaved(String username, Aspect aspect, int amount) {

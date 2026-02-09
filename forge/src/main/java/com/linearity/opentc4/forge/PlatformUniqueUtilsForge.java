@@ -36,6 +36,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.tags.ITag;
 import net.minecraftforge.registries.tags.ITagManager;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -140,16 +141,17 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         if (key == null) {
             return null;
         }
-        List<Item> items = new ArrayList<>();
 
         // 创建 TagKey
         TagKey<Item> tagKey = TagKey.create(Registries.ITEM, ResourceLocation.tryParse(key));
+        return getItemsFromTag(tagKey);
+    }
 
-        // Forge 的注册表 tags
+    @Override
+    public List<Item> getItemsFromTag(@NotNull TagKey<Item> tagKey) {
+        List<Item> items = new ArrayList<>();
         ITag<Item> tag = net.minecraftforge.registries.ForgeRegistries.ITEMS.tags().getTag(tagKey);
-        // Forge 1.20 的 ITag 里 getAllElements() 返回 Collection<Item>
         tag.forEach(items::add);
-
         return items;
     }
 
@@ -303,7 +305,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         Set<String> slotTypes = new HashSet<>();
 
         CuriosApi.getCuriosInventory(livingEntity).ifPresent(handler -> {
-            handler.getCurios().keySet().forEach(slotTypes::add);
+            slotTypes.addAll(handler.getCurios().keySet());
         });
         return slotTypes.toArray(new String[0]);
 

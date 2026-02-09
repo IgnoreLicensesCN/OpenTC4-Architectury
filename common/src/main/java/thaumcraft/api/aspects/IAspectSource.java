@@ -9,8 +9,6 @@ package thaumcraft.api.aspects;
  * so that they can act as an essentia source for blocks like the infusion altar.
  *
  */
-public interface IAspectSource extends IAspectContainer {
-	
-	
-	
+public interface IAspectSource<Asp extends Aspect> extends IAspectContainer<Asp> {
+
 }

@@ -71,7 +71,7 @@ public class ThaumcraftApiHelper {
                     lowest = tag;
                 }
             }
-            temp2.reduceAndRemoveIfNotPositive(lowest);
+            temp2.remove(lowest);
         }
         return temp2;
     }
@@ -104,11 +104,11 @@ public class ThaumcraftApiHelper {
     }
 
     public static AspectList<Aspect> getBonusObjectTags(ItemStack is, AspectList<Aspect> ot) {
-        return ThaumcraftCraftingManager.getBonusTags(is, ot);
+        return ThaumcraftCraftingManager.getBonusAspects(is, ot);
     }
 
-    public static AspectList<Aspect> generateTags(Item item) {
-        return ThaumcraftCraftingManager.generateTags(item);
+    public static AspectList<Aspect> generateBaseAspects(Item item) {
+        return ThaumcraftCraftingManager.generateBaseAspects(item);
     }
 
 //    public static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets) {

@@ -18,3 +18,5 @@
 * *   //tile.blockCosmeticSolid.15.name=Ancient Stone Pedestal
 * creating arcane table with wand will no longer place wand inside automatically. also for ink well and Research table
 * inkwell can work with unbreaking enchantment(if there is enchantment for some reason)
+* IRepairable renamed to IRepairEnchantable which can be enchanted Repair,and any item with Repair enchantment can be repaired
+* IRepairableExtended renamed to IRepairable which can be called doRepair to repair(even without enchantment).However,if want to repair as component,you should impl IInventoryTickableComponent and call doRepair.

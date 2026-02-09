@@ -2,7 +2,7 @@ package thaumcraft.api.research.implexample;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.expands.UnmodifiableAspectList;
+import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockable;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;

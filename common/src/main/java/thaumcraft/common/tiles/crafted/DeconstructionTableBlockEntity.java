@@ -1,25 +1,21 @@
 package thaumcraft.common.tiles.crafted;
 
 import dev.architectury.platform.Platform;
-import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
@@ -29,7 +25,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.BREAK_TIME_ACCESSOR;
 import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.STORING_ASPECT_ACCESSOR;
-import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusTags;
+import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusAspects;
 import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
 
 public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<DeconstructionTableMenu,DeconstructionTableBlockEntity> implements WorldlyContainer {
@@ -168,7 +164,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
             return;
         }
         var itemAspects = getObjectTags(deconstructingStack);
-        var additionalAspects = getBonusTags(deconstructingStack, itemAspects);
+        var additionalAspects = getBonusAspects(deconstructingStack, itemAspects);
         if (additionalAspects.isEmpty()) {
             breakTimeRemaining = 0;
             return;

@@ -19,7 +19,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.api.expands.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
+import static thaumcraft.api.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
 
 public class WarpEvents {
 

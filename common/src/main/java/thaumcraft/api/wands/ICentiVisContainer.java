@@ -10,9 +10,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 
-import java.util.Map;
-
-import static thaumcraft.api.expands.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
+import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
 public interface ICentiVisContainer<Asp extends Aspect> {
     int CENTIVIS_MULTIPLIER = 100;

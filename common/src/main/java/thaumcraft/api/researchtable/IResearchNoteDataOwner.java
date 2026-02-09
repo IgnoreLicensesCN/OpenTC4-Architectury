@@ -5,8 +5,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.expands.listeners.researchtable.RemoveAspectContext;
-import thaumcraft.api.expands.listeners.researchtable.WriteAspectContext;
+import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
+import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.common.lib.research.ResearchNoteData;
 
 //for research note and maybe you can do something else?

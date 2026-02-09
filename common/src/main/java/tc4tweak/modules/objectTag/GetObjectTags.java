@@ -51,7 +51,7 @@ public class GetObjectTags {
             tmp = ThaumcraftApi.objectTags.get(item);
         }
         if (tmp == null) {
-            tmp = ThaumcraftCraftingManager.generateTags(item);
+            tmp = ThaumcraftCraftingManager.generateBaseAspects(item);
         }
 
         if (itemstack.getItem() instanceof WandCastingItem) {
@@ -66,7 +66,7 @@ public class GetObjectTags {
         if (tmp == null) {
             return null;
         }
-        for (Integer size : tmp.getAspects().values()) {
+        for (Integer size : tmp.aspectView.values()) {
             if (size > 64) {
                 return truncateAspectList(tmp);
             }
@@ -165,8 +165,8 @@ public class GetObjectTags {
         if (aspect != null)
             return aspect;
 
-        // 新版 generateTags 不再接收 meta，因为 meta 已废除
-        aspect = ThaumcraftCraftingManager.generateTags(item);
+        // 新版 generateBaseAspects 不再接收 meta，因为 meta 已废除
+        aspect = ThaumcraftCraftingManager.generateBaseAspects(item);
 
         // 不返回 null，因为 null 表示 cache disabled
         return aspect == null ? new AspectList<>() : aspect;

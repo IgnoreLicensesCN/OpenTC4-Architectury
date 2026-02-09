@@ -117,7 +117,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
    public boolean process(ItemStack stack) {
       if (this.processed == 0 && this.canSmelt(stack)) {
          AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(stack);
-         al = ThaumcraftCraftingManager.getBonusTags(stack, al);
+         al = ThaumcraftCraftingManager.getBonusAspects(stack, al);
          int aa = al.visSize();
          if (aa * 2 <= this.heat && aa <= this.power1 && aa <= this.power2) {
             this.heat -= aa * 2;
@@ -142,7 +142,7 @@ public class TileAlchemyFurnaceAdvanced extends TileThaumcraft {
          return false;
       } else {
          AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(stack);
-         al = ThaumcraftCraftingManager.getBonusTags(stack, al);
+         al = ThaumcraftCraftingManager.getBonusAspects(stack, al);
          if (al != null && al.size() != 0) {
             int vs = al.visSize();
             return vs + this.aspects.visSize() <= this.maxVis;

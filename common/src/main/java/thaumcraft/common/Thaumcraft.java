@@ -57,9 +57,7 @@ public class Thaumcraft {
     }
 
     public static void addWarpToPlayer(Player _player, int amount, boolean temporary) {
-        if (_player instanceof FakeThaumcraftPlayer) {
-            return;
-        }
+        if (_player instanceof FakeThaumcraftPlayer) {return;}
         if (!(_player instanceof ServerPlayer player)) {return;}
         if (playerKnowledge != null) {
             if (temporary || amount >= 0) {

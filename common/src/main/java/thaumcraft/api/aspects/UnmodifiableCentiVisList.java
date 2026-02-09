@@ -30,7 +30,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     }
 
     @Override
-    public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key) {
+    public AspectList<Asp> remove(Asp key) {
         throw new RuntimeException("Unmodifiable!");
     }
 

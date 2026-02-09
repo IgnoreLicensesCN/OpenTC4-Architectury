@@ -100,7 +100,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         ItemStack is = getFromCache(Integer.parseInt(s2));
                         if (is != null) {
                             AspectList<Aspect>tags = ThaumcraftCraftingManager.getObjectTags(is);
-                            tags = ThaumcraftCraftingManager.getBonusTags(is, tags);
+                            tags = ThaumcraftCraftingManager.getBonusAspects(is, tags);
                             if (tags != null && tags.size() > 0) {
                                 for (Aspect a : tags.getAspects()) {
                                     ArrayList<ItemStack> items = this.aspectItems.get(a);
