@@ -2,11 +2,8 @@ package thaumcraft.api.research;
 
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.api.aspects.Aspect;
-import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.research.interfaces.IRenderableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
@@ -85,17 +82,17 @@ public abstract class ResearchItem
 //    private boolean isAutoUnlock;
 //
 //    /**
-//     * Scanning these items will have a chance of revealing hidden knowledge in the thaumonomicon
+//     * Scanning these items will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private ItemStack[] itemTriggers;
 //
 //    /**
-//     * Scanning these entities will have a chance of revealing hidden knowledge in the thaumonomicon
+//     * Scanning these entities will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private ResourceKey<EntityType<?>>[] entityTriggers;
 //
 //    /**
-//     * Scanning things with these aspects will have a chance of revealing hidden knowledge in the thaumonomicon
+//     * Scanning things with these aspects will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private Aspect[] aspectTriggers;
 
@@ -109,13 +106,13 @@ public abstract class ResearchItem
         registerResearchItem();
     }
 
-    public static boolean doesPlayerHaveRequisites(String playerName, ResearchItemResourceLocation key) {
+    public static boolean doesPlayerHaveRequisites(Player player, ResearchItemResourceLocation key) {
         var research = getResearch(key);
-        return research.doesPlayerHaveRequisites(playerName);
+        return research.doesPlayerHaveRequisites(player);
     }
 
-    public boolean doesPlayerHaveRequisites(String playerName) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
+    public boolean doesPlayerHaveRequisites(Player player) {
+        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
         if (this instanceof IResearchParentsOwner parentsOwner) {
             if (!researched.containsAll(parentsOwner.getParents())){
                 return false;
@@ -209,8 +206,8 @@ public abstract class ResearchItem
                 '}';
     }
 
-    public boolean isPlayerCompletedResearch(String playerName){
-        return ResearchManager.getResearchForPlayer(playerName).contains(this.key);
+    public boolean isPlayerCompletedResearch(Player player){
+        return ResearchManager.getResearchForPlayer(player).contains(this.key);
     }
 
     public void completeResearch(String playerName){

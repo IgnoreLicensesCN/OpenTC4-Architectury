@@ -1,5 +1,9 @@
 package thaumcraft.common.blocks.multipartcomponent.infernalfurnace;
 
+import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
@@ -36,9 +40,14 @@ import thaumcraft.api.blockapi.IEntityInLavaBlock;
 import thaumcraft.common.tiles.crafted.InfernalFurnaceBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {
 
     public static final VoxelShape STABLE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
+    public static final Map<RecipeItemMatcher, ItemStack> infernalFurnaceSmeltingBonus = new ConcurrentHashMap();
+
     public InfernalFurnaceLavaBlock(Properties properties) {
         super(properties);
     }
@@ -57,6 +66,55 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
 
 
     public static final BlockPos SELF_POS_1_1_1 = new BlockPos(1,1,1);
+
+    /**
+     * Returns the bonus item produced from a smelting operation in the infernal furnace
+     *
+     * @param in The input ofAspectVisList the smelting operation. e.g. new ItemStack(oreGold)
+     * @return the The bonus item that can be produced
+     */
+    public static ItemStack getSmeltingBonus(ItemStack in) {
+        ItemStack out = infernalFurnaceSmeltingBonus.get(ItemAndDamageMatcher.of(in.getItem(), in.getDamageValue()));
+        if (out == null) {
+            out = infernalFurnaceSmeltingBonus.get(ItemMatcher.of(in.getItem()));
+        }
+        if (out == null) {
+            for (Map.Entry<RecipeItemMatcher, ItemStack> entry : infernalFurnaceSmeltingBonus.entrySet()) {
+                if (entry.getKey().matches(in)) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return out;
+    }
+
+    /**
+     * This method is used to determine what bonus items are generated when the infernal furnace smelts items
+     *
+     * @param in  The input ofAspectVisList the smelting operation. e.g. new ItemStack(Block.oreGold)
+     * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
+     *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
+     */
+    public static void addInfernalFurnaceSmeltingBonus(ItemStack in, ItemStack out) {
+        var setIn = new ItemStack(out.getItem(), 0);
+        setIn.setDamageValue(out.getDamageValue());
+        infernalFurnaceSmeltingBonus.put(
+                ItemAndDamageMatcher.of(in.getItem(), in.getDamageValue()),
+                setIn);
+    }
+
+    /**
+     * This method is used to determine what bonus items are generated when the infernal furnace smelts items
+     *
+     * @param in  The tag string input ofAspectVisList the smelting operation. e.g. "oreGold"
+     * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
+     *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
+     */
+    public static void addInfernalFurnaceSmeltingBonus(String in, ItemStack out) {
+        var setIn = new ItemStack(out.getItem(), 0);
+        setIn.setDamageValue(out.getDamageValue());
+        infernalFurnaceSmeltingBonus.put(TagItemMatcher.of(in), setIn);
+    }
 
     @Override
     public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
@@ -148,7 +206,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
                     putItemStackIntoEntity(entity, itemStack);
                 }
 
-                //maybe some of you can play some redstone tricks?
+                //maybe some ofAspectVisList you can play some redstone tricks?
                 //throw too high leads to it's so easy to push item to next furnace? idk
                 //but i must tell to others that THIS FURNACE HAS LIMITED CAPACITY.
                 entity.addDeltaMovement(new Vec3(0, 0.9, 0));

@@ -8,15 +8,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.api.listeners.aspects.item.basic.RecipeResolveContext;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 
 import java.util.*;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
-public class VanillaRecipeResolver extends AbstractRecipeResolver {
-    public VanillaRecipeResolver(int weight) {
+public class AllVanillaRecipeResolver extends AbstractRecipeResolver {
+    public AllVanillaRecipeResolver(int weight) {
         super(weight);
     }
 

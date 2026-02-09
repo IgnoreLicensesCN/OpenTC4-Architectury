@@ -20,12 +20,15 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.ICentiVisContainer;
-import thaumcraft.common.gui.menu.ArcaneWorkbenchMenu;
+import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.List;
 
-public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity> implements WorldlyContainer, ExtendedMenuProvider {
+public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity>
+        implements
+        WorldlyContainer, ExtendedMenuProvider, IArcaneWorkbenchContainer {
     public static final int SIZE = 11;
     public static final int INPUT_SIZE = 11;
     public static final int WAND_SLOT = 9;
@@ -33,6 +36,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public static final int[] INPUT_AND_WAND_SLOTS = {WAND_SLOT,0,1,2,3,4,5,6,7,8};
     public static final int[] WAND_SLOT_ARR = {WAND_SLOT};
     protected final NonNullList<ItemStack> inventory = NonNullList.withSize(INPUT_SIZE, ItemStack.EMPTY);
+    protected final List<ItemStack> inputSlotsView = inventory.subList(0,INPUT_SLOTS.length);
     public ArcaneWorkbenchBlockEntity(BlockEntityType<ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState,ArcaneWorkbenchMenu::new);
     }
@@ -151,28 +155,38 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         return true;
     }
 
-    public ItemStack getStackInRowAndColumn(int par1, int par2) {
-        if (par1 >= 0 && par1 < 3) {
-            int var3 = par1 + par2 * 3;
+
+    @Override
+    @NotNull("null->empty")
+    public ItemStack getStackInRowAndColumn(int row, int column) {
+        if ((0 <= row && row <= 2) && (0 <= column && column <= 2)) {
+            int var3 = row + column * 3;
             return this.getItem(var3);
         } else {
-            return null;
+            throw new IndexOutOfBoundsException("row: " + row + ", column: " + column + "out ofAspectVisList bound");
         }
+    }
+    @Override
+    @NotNull("null->empty")
+    public ItemStack getStackInWandSlot(){
+        return inventory.get(WAND_SLOT);
+    }
+
+    @Override
+    public @NotNull List<ItemStack> getInputItemStacks() {
+        return inputSlotsView;
     }
 
     public List<ItemStack> getCraftingGridItems() {
         return List.copyOf(inventory.subList(0, WAND_SLOT));
     }
 
-    public ItemStack getWand(){
-        return inventory.get(WAND_SLOT);
-    }
 
     public boolean canWandSatisfyCentiVisConsumption(CentiVisList<Aspect> centiVisList){
         if (centiVisList.isEmpty()){
             return true;
         }
-        var wandStack = getWand();
+        var wandStack = getStackInWandSlot();
         if (wandStack.isEmpty()){
             return false;
         }
@@ -194,7 +208,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         if (centiVisList.isEmpty()){
             return true;
         }
-        var wandStack = getWand();
+        var wandStack = getStackInWandSlot();
         if (wandStack.isEmpty()){
             OpenTC4.LOGGER.warn("wand not found but centiVis cost required:" + centiVisList
                     + " player:" + player.getStringUUID()

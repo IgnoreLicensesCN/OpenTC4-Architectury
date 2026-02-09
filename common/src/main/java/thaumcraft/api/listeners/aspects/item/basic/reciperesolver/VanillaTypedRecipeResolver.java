@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.api.listeners.aspects.item.basic.RecipeResolveContext;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.RecipeResolveContext;
 
 import java.util.*;
 

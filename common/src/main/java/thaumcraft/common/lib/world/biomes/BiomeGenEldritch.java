@@ -32,7 +32,7 @@ public class BiomeGenEldritch /*extends BiomeGenBase*/ {
 //                      BlockStateProvider.simple(Blocks.DARK_OAK_LOG),
 //                      new StraightTrunkPlacer(4, 2, 0),
 //                      BlockStateProvider.simple(Blocks.DARK_OAK_LEAVES),
-//                      new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+//                      new BlobFoliagePlacer(ConstantInt.ofAspectVisList(2), ConstantInt.ofAspectVisList(0), 3),
 //                      new TwoLayersFeatureSize(1, 0, 1)
 //              ).ignoreVines().build()
 //      );
@@ -40,7 +40,7 @@ public class BiomeGenEldritch /*extends BiomeGenBase*/ {
 //      Holder<ConfiguredFeature<?, ?>> treeHolder = Holder.direct(treeConfigured);
 //      PlacedFeature treePlaced = new PlacedFeature(
 //              treeHolder,
-//              List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread())
+//              List.ofAspectVisList(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread())
 //      );
 //      generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION.ordinal(), Holder.direct(treePlaced));
 

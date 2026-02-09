@@ -1,23 +1,32 @@
 package thaumcraft.api.crafting;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
+import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.UnmodifiableCentiVisList;
+import thaumcraft.api.research.ResearchItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 /**
- * <p>i have to say it's a fool idea to write like this.</p>
+ * <p>i have to say sometimes it's a fool idea to write like this.(inspired by nodalDynamics)</p>
  * <p>
  * if two infusion(i mean matrix in world) with same recipe instance(this is a singleton for each recipe).the last recipe Output will override those before!
  * </p>
@@ -25,48 +34,131 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
  *     so there's something
  *     TODO:store real output into infusion matrix.
  * </p>
- * --IgnoreLicensesCN
+ * <p>
+ *     --IgnoreLicensesCN
+ * </p>
  * **/
-public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample
+public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe
 {
-	protected AspectList<Aspect> aspects;
-	protected String research;
+	//RECIPES/////////////////////////////////////////
+//	private static final List<RecipeInAndOutSampler> craftingRecipes = new CopyOnWriteArrayList<>();
+	public static final List<InfusionRecipe> infusionRecipes = new CopyOnWriteArrayList<>();
+	public static final List<InfusionRecipe> unmodifiableInfusionRecipes = Collections.unmodifiableList(infusionRecipes);
+	private static final List<ThaumcraftInfusionEnchantmentRecipe> infusionEnchantmentRecipes = new CopyOnWriteArrayList<>();
+	private static final List<ThaumcraftInfusionEnchantmentRecipe> unmodifiableInfusionEnchantmentRecipes = Collections.unmodifiableList(infusionEnchantmentRecipes);
+	public final AspectList<Aspect> aspects;
+	public final ResearchItem research;
 	private final RecipeItemMatcher[] components;
-	private final ItemStack[][] allSample;
-	private final RecipeItemMatcher recipeInput;
+	private final RecipeItemMatcher centralInput;
 	private final RecipeItemMatcher recipeOutputMatcher;
 //	protected Object recipeOutput;
 
 	//the last in ItemStack[] will be in center
-	protected Function<ItemStack[],ItemStack> recipeOutputGenerator;
-	protected int instability;
-	
-	public InfusionRecipe(String research,Function<ItemStack[],ItemStack> recipeOutputGenerator, int inst,
-			AspectList<Aspect> aspects2, RecipeItemMatcher input, RecipeItemMatcher[] recipe,RecipeItemMatcher outputMatcher) {
+	protected final Function<ItemStack[],ItemStack> recipeOutputGenerator;
+	protected final int instability;
+
+
+	private final boolean supportsAspectCalculation;
+	private final List<List<ItemStack>> inputForAspectCalculation;
+	private final ItemStack outputForAspectCalculation;
+	private final List<List<ItemStack>> remainingForAspectCalculation;
+	public InfusionRecipe(
+			ResearchItem research,
+			Function<ItemStack[],ItemStack> recipeOutputGenerator,
+			int inst,
+			AspectList<Aspect> aspects,
+			RecipeItemMatcher input,
+			RecipeItemMatcher[] recipe,
+			RecipeItemMatcher outputMatcher
+	){
+		this(research,recipeOutputGenerator,inst,aspects,input,recipe,outputMatcher,null,null,null);
+	}
+	public InfusionRecipe(
+			ResearchItem research,
+			Function<ItemStack[],ItemStack> recipeOutputGenerator,
+			int inst,
+			AspectList<Aspect> aspects,
+			RecipeItemMatcher input,
+			RecipeItemMatcher[] recipe,
+			RecipeItemMatcher outputMatcher,
+			ItemStack outputForAspectCalculation,
+			List<List<ItemStack>> inputForAspectCalculation,
+			List<List<ItemStack>> remainingForAspectCalculation
+	) {
 		this.research = research;
 //		this.recipeOutput = output;
 		this.recipeOutputGenerator = recipeOutputGenerator;
-		this.recipeInput = input;
-		this.aspects = aspects2;
+		this.centralInput = input;
+		this.aspects = aspects;
 		this.components = recipe;
 		this.componentsSampleArr = new ItemStack[components.length];
 		this.recipeInputSampleArr = new ItemStack[components.length + 1];
 		this.instability = inst;
 		this.recipeOutputMatcher = outputMatcher;
-		this.allSample = new ItemStack[components.length][];
-		for (int i = 0; i < components.length; i++){
-			allSample[i] = components[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+
+		this.supportsAspectCalculation =
+				inputForAspectCalculation != null
+						&& outputForAspectCalculation != null
+						&& remainingForAspectCalculation != null;
+		if (!this.supportsAspectCalculation
+				&& !(inputForAspectCalculation == null
+				&& outputForAspectCalculation == null
+				&& remainingForAspectCalculation == null
+		)
+		){
+			OpenTC4.LOGGER.warn(
+					"""
+                            not all aspect calculation elements are null or notnull,
+                            this might be a bug or misunderstanding.
+                            using researchItem:{}
+                            """,research,new Exception());
 		}
+		this.inputForAspectCalculation = inputForAspectCalculation;
+		this.remainingForAspectCalculation = remainingForAspectCalculation;
+		this.outputForAspectCalculation = outputForAspectCalculation;
+	}
+
+	@UnmodifiableView
+	public static List<ThaumcraftInfusionEnchantmentRecipe> getInfusionEnchantmentRecipes() {
+		return unmodifiableInfusionEnchantmentRecipes;
+	}
+
+	public static InfusionRecipe addInfusionCraftingRecipe(InfusionRecipe r) {
+		infusionRecipes.add(r);
+		return r;
+	}
+
+	@Deprecated(since = "one day i will migrate to infusionRecipe")
+	public static ThaumcraftInfusionEnchantmentRecipe addInfusionEnchantmentRecipe(ThaumcraftInfusionEnchantmentRecipe r) {
+//		InfusionEnchantmentRecipe r= new InfusionEnchantmentRecipe(research, enchantment, instability, aspects, recipe);
+//        craftingRecipes.add(r);
+		infusionEnchantmentRecipes.add(r);
+		return r;
+	}
+
+	@Nullable
+	public static InfusionRecipe getInfusionRecipe(ItemStack res) {
+		for (InfusionRecipe r : infusionRecipes) {
+			if (r.matchViaOutput(res)) {
+				return r;
+			}
+		}
+		return null;
+	}
+
+	@UnmodifiableView
+	public static List<InfusionRecipe> getInfusionRecipes() {
+		return unmodifiableInfusionRecipes;
 	}
 
 	/**
      * Used to check if a recipe matches current crafting inventory
-     * @param player 
+     * @param player crafting it
      */
 	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player) {
 
 			
-		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
+		if (research.isPlayerCompletedResearch(player)) {
     		return false;
     	}
 
@@ -75,7 +167,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		}
 		
 		ItemStack i2 = central.copy();
-		if (!recipeInput.matches(i2)) {
+		if (!centralInput.matches(i2)) {
 			return false;
 		}
 
@@ -151,12 +243,12 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return getInstability(this.getRecipeInput());
     }
     
-    public String getResearch() {
+    public ResearchItem getResearch() {
 		return research;
     }
     
 	public ItemStack getRecipeInput() {
-		return pickByTime(recipeInput.getAvailableItemStackSample());
+		return pickByTime(centralInput.getAvailableItemStackSample());
 //		List<ItemStack> sample = recipeInput.getAvailableItemStackSample();
 //		return sample.get(indexByTime(sample.size()));
 	}
@@ -195,10 +287,6 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return recipeInputSampleArr;
 	}
 
-	@Override
-	public ItemStack[][] getAllInputSample() {
-		return allSample;
-	}
 
 	@Override
 	public ItemStack[] getOutputSample(ItemStack[] inputSample) {
@@ -209,4 +297,38 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	public boolean matchViaOutput(ItemStack res) {
 		return recipeOutputMatcher.matches(res);
 	}
+
+	@Override
+	public boolean supportsAspectCalculation() {
+		return supportsAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+		return inputForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+		return outputForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+		return remainingForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+		return aspects;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+		return UnmodifiableCentiVisList.EMPTY;
+	}
+
+
+	public void onInfusionStart(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
+	public void onInfusionEnd(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
 }

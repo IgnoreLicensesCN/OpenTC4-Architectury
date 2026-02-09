@@ -1,4 +1,4 @@
-package thaumcraft.api.crafting;
+package thaumcraft.api.crafting.interfaces;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

@@ -14,7 +14,7 @@ public class MessageSendConfigurationV2 /*implements IMessage,  IMessageHandler<
 //
 //    public MessageSendConfigurationV2() {
 //        tag = new CompoundTag();
-//        // yeah I said NBT is an unfortunate piece of tech, but it does give us a bit of flexibility over network
+//        // yeah I said NBT is an unfortunate piece ofAspectVisList tech, but it does give us a bit ofAspectVisList flexibility over network
 //        // protocol
 //        tag.setBoolean("sj", ConfigurationHandler.INSTANCE.isSmallerJars());
 //    }

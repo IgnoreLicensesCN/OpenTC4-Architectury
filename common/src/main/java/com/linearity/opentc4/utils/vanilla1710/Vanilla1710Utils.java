@@ -5,9 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class Vanilla1710Utils {
-    public static boolean isItemTool(ItemStack p_77616_1_)
+    public static boolean isItemTool(ItemStack stack)
     {
-        return p_77616_1_.getMaxStackSize() == 1 && p_77616_1_.getMaxDamage() != 0;
+        return stack.getMaxStackSize() == 1 && stack.getMaxDamage() != 0;
     }
     public static boolean isItemTool(Item p_77616_1_)
     {

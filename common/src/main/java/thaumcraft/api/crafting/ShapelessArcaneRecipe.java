@@ -1,12 +1,14 @@
 package thaumcraft.api.crafting;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.*;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +22,65 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     private final RecipeItemMatcher[] input;
     private final ItemStack[] inputSampleArr;
     
-    public final AspectList<Aspect>aspects;
-    public final String research;
+    public final CentiVisList<Aspect>aspects;
+    public final ResearchItem research;
     private final RecipeItemMatcher outMatcher;
 
+    private final boolean supportsAspectCalculation;
+    private final List<List<ItemStack>> inputForAspectCalculation;
+    private final ItemStack outputForAspectCalculation;
+    private final List<List<ItemStack>> remainingForAspectCalculation;
 
     //do not set ItemStack.EMPTY matcher here.
-    public ShapelessArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList<Aspect>aspects, RecipeItemMatcher[] recipe,RecipeItemMatcher outMatcher)
+    public ShapelessArcaneRecipe(
+            ResearchItem research,
+            Function<ItemStack[],ItemStack> resultGenerator,
+            CentiVisList<Aspect>aspects,
+            RecipeItemMatcher[] recipe,
+            RecipeItemMatcher outMatcher,
+            ItemStack outputForAspectCalculation,
+            List<List<ItemStack>> inputForAspectCalculation,
+            List<List<ItemStack>> remainingForAspectCalculation
+    )
     {
         this.resultGenerator = resultGenerator;
         this.research = research;
-        this.aspects = aspects.copy();
+        this.aspects = new UnmodifiableCentiVisList<>(aspects.aspectView);
         this.input = recipe;
         this.inputSampleArr = new ItemStack[input.length];
         this.outMatcher = outMatcher;
-        this.allSampled = new ItemStack[input.length][];
-        for (int i=0;i<allSampled.length;i++){
-            allSampled[i] = input[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+
+        this.supportsAspectCalculation =
+                inputForAspectCalculation != null
+                        && outputForAspectCalculation != null
+                        && remainingForAspectCalculation != null;
+        if (!this.supportsAspectCalculation
+                && !(inputForAspectCalculation == null
+                        && outputForAspectCalculation == null
+                        && remainingForAspectCalculation == null
+                )
+        ){
+            OpenTC4.LOGGER.warn(
+                    """
+                            not all aspect calculation elements are null or notnull,
+                            this might be a bug or misunderstanding.
+                            using researchItem:{}
+                            """,research,new Exception());
         }
+        this.inputForAspectCalculation = inputForAspectCalculation;
+        this.remainingForAspectCalculation = remainingForAspectCalculation;
+        this.outputForAspectCalculation = outputForAspectCalculation;
+    }
+
+    public ShapelessArcaneRecipe(
+            ResearchItem research,
+            Function<ItemStack[],ItemStack> resultGenerator,
+            CentiVisList<Aspect>aspects,
+            RecipeItemMatcher[] recipe,
+            RecipeItemMatcher outMatcher
+    )
+    {
+        this(research,resultGenerator,aspects,recipe,outMatcher,null,null,null);
     }
 
     @Override
@@ -47,7 +90,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     public ItemStack getRecipeOutput(){ return getOutputSample(getInputSample())[0]; }
 
     @Override
-    public ItemStack getCraftingResult(Container var1){
+    public ItemStack getCraftingResult(IArcaneWorkbenchContainer var1){
         List<ItemStack> inStacks = new ArrayList<>(9);
         int inCounter = 0;
         for (int x = 0; x < 9; x++)
@@ -91,9 +134,9 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     }
 
     @Override
-    public boolean matches(Container var1, Level world, Player player)
+    public boolean matches(IArcaneWorkbenchContainer var1, Level world, Player player)
     {
-    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
+    	if (!research.isPlayerCompletedResearch(player)) {
     		return false;
     	}
 
@@ -161,17 +204,17 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
 //    }
     
     @Override		
-	public AspectList<Aspect>getAspects() {
+	public CentiVisList<Aspect> getAspects() {
 		return aspects;
 	}
     
     @Override		
-	public AspectList<Aspect>getAspects(Container inv) {
+	public CentiVisList<Aspect> getAspects(IArcaneWorkbenchContainer inv) {
 		return aspects;
 	}
 	
 	@Override
-	public String getResearch() {
+	public ResearchItem getResearch() {
 		return research;
 	}
 
@@ -183,11 +226,6 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
         return inputSampleArr;
     }
 
-    private final ItemStack[][] allSampled;
-    @Override
-    public ItemStack[][] getAllInputSample() {
-        return allSampled;
-    }
 
     private final ItemStack[] outputSampleArr = new ItemStack[1];
     @Override
@@ -198,5 +236,35 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     @Override
     public boolean matchViaOutput(ItemStack res) {
         return outMatcher.matches(res);
+    }
+
+    @Override
+    public boolean supportsAspectCalculation() {
+        return supportsAspectCalculation;
+    }
+
+    @Override
+    public List<List<ItemStack>> getAspectCalculationInputs() {
+        return inputForAspectCalculation;
+    }
+
+    @Override
+    public ItemStack getAspectCalculationOutput() {
+        return outputForAspectCalculation;
+    }
+
+    @Override
+    public List<List<ItemStack>> getAspectCalculationRemaining() {
+        return remainingForAspectCalculation;
+    }
+
+    @Override
+    public AspectList<Aspect> getAspectCalculationAspectsList() {
+        return UnmodifiableAspectList.EMPTY;
+    }
+
+    @Override
+    public CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+        return new UnmodifiableCentiVisList<>(aspects);
     }
 }

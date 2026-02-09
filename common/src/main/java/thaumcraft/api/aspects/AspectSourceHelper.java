@@ -11,7 +11,7 @@ public class AspectSourceHelper {
 
 	/**
 	 * This method is what is used to drain essentia from jars and other sources for things like 
-	 * infusion crafting or powering the arcane furnace. A record of possible sources are kept track of
+	 * infusion crafting or powering the arcane furnace. A record ofAspectVisList possible sources are kept track ofAspectVisList
 	 * and refreshed as needed around the calling tile entity. This also renders the essentia trail particles.
 	 * Only 1 essentia is drained at a time
 	 * @param tile the tile entity that is draining the essentia
@@ -25,7 +25,7 @@ public class AspectSourceHelper {
 	}
 	
 	/**
-	 * This method returns if there is any essentia of the passed type that can be drained. It in no way checks how
+	 * This method returns if there is any essentia ofAspectVisList the passed type that can be drained. It in no way checks how
 	 * much there is, only if an essentia container nearby contains at least 1 point worth.
 	 * @param tile the tile entity that is checking the essentia
 	 * @param aspect the aspect that you are looking for

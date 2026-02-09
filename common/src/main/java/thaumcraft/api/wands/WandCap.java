@@ -29,7 +29,7 @@ public class WandCap {
 	float baseCostModifier; 
 	
 	/**
-	 * specifies a list of primal aspects that use the special discount figure instead of the normal discount.
+	 * specifies a list ofAspectVisList primal aspects that use the special discount figure instead ofAspectVisList the normal discount.
 	 */
 	List<Aspect> specialCostModifierAspects;
 	

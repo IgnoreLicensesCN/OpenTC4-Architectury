@@ -26,7 +26,7 @@ public class CommonUtils {
     }
 
     public static String toString(CrucibleRecipe r) {
-        return "CrucibleRecipe{key=" + r.key + ",catalyst=" + r.catalyst + ",output=" + r.getRecipeOutput() + ",aspects=" + toString(r.aspects) + "}";
+        return "CrucibleRecipe{key=" + r.research + ",catalyst=" + r.catalyst + ",output=" + r.getRecipeOutput() + ",aspects=" + toString(r.aspects) + "}";
     }
 
     public static void sortResearchCategories(boolean force) {

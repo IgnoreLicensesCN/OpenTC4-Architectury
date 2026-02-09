@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class MathHelper
 {
-    /** A table of sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps of 2*PI / 65536. */
+    /** A table ofAspectVisList sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps ofAspectVisList 2*PI / 65536. */
     private static float[] SIN_TABLE = new float[65536];
     /**
-     * Though it looks like an array, this is really more like a mapping.  Key (index of this array) is the upper 5 bits
-     * of the result of multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
-     * (value stored in the array) is the unique index (from the right) of the leftmost one-bit in a 32-bit unsigned
-     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 of
+     * Though it looks like an array, this is really more like a mapping.  Key (index ofAspectVisList this array) is the upper 5 bits
+     * ofAspectVisList the result ofAspectVisList multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
+     * (value stored in the array) is the unique index (from the right) ofAspectVisList the leftmost one-bit in a 32-bit unsigned
+     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 ofAspectVisList
      * this number" calculations.
      */
     private static final int[] multiplyDeBruijnBitPosition;
@@ -70,7 +70,7 @@ public class MathHelper
     }
 
     /**
-     * Long version of floor_double
+     * Long version ofAspectVisList floor_double
      */
     public static long floor_double_long(double p_76124_0_)
     {
@@ -90,7 +90,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the unsigned value of an int.
+     * Returns the unsigned value ofAspectVisList an int.
      */
     public static int abs_int(int p_76130_0_)
     {
@@ -110,7 +110,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the value ofAspectVisList the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters.
      */
     public static int clamp_int(int p_76125_0_, int p_76125_1_, int p_76125_2_)
@@ -119,7 +119,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the value ofAspectVisList the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters
      */
     public static float clamp_float(float p_76131_0_, float p_76131_1_, float p_76131_2_)
@@ -138,7 +138,7 @@ public class MathHelper
     }
 
     /**
-     * Maximum of the absolute value of two numbers.
+     * Maximum ofAspectVisList the absolute value ofAspectVisList two numbers.
      */
     public static double abs_max(double p_76132_0_, double p_76132_2_)
     {
@@ -165,7 +165,7 @@ public class MathHelper
     }
 
     /**
-     * Tests if a string is null or of length zero
+     * Tests if a string is null or ofAspectVisList length zero
      */
     
     public static boolean stringNullOrLengthZero(String p_76139_0_)
@@ -327,7 +327,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the input value rounded up to the next highest power of two.
+     * Returns the input value rounded up to the next highest power ofAspectVisList two.
      */
     
     public static int roundUpToPowerOfTwo(int p_151236_0_)
@@ -342,7 +342,7 @@ public class MathHelper
     }
 
     /**
-     * Is the given value a power of two?  (1, 2, 4, 8, 16, ...)
+     * Is the given value a power ofAspectVisList two?  (1, 2, 4, 8, 16, ...)
      */
     
     private static boolean isPowerOfTwo(int p_151235_0_)
@@ -351,8 +351,8 @@ public class MathHelper
     }
 
     /**
-     * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
-     * value.  Optimized for cases where the input value is a power-of-two.  If the input value is not a power-of-two,
+     * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two ofAspectVisList the given
+     * value.  Optimized for cases where the input value is a power-ofAspectVisList-two.  If the input value is not a power-ofAspectVisList-two,
      * then subtract 1 from the return value.
      */
     
@@ -363,15 +363,15 @@ public class MathHelper
     }
 
     /**
-     * Efficiently calculates the floor of the base-2 log of an integer value.  This is effectively the index of the
+     * Efficiently calculates the floor ofAspectVisList the base-2 log ofAspectVisList an integer value.  This is effectively the index ofAspectVisList the
      * highest bit that is set.  For example, if the number in binary is 0...100101, this will return 5.
      */
     
     public static int calculateLogBaseTwo(int p_151239_0_)
     {
         /**
-         * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
-         * value.  Optimized for cases where the input value is a power-of-two.  If the input value is not a power-of-
+         * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two ofAspectVisList the given
+         * value.  Optimized for cases where the input value is a power-ofAspectVisList-two.  If the input value is not a power-ofAspectVisList-
          * two, then subtract 1 from the return value.
          */
         return calculateLogBaseTwoDeBruijn(p_151239_0_) - (isPowerOfTwo(p_151239_0_) ? 0 : 1);

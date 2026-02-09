@@ -34,7 +34,7 @@ import java.util.*;
  * Adapted from
  * <a href="https://github.com/GTNewHorizons/WitchingGadgets/blob/1.2.13-GTNH/src/main/java/witchinggadgets/client/ThaumonomiconIndexSearcher.java">Witching Gadgets</a>
  * Credit to BluSunrize for originally creating this class.
- * Slightly modified to adapt to research browser scaling functionality of this mod.
+ * Slightly modified to adapt to research browser scaling functionality ofAspectVisList this mod.
  */
 public class ThaumonomiconIndexSearcher {
     private static final int mouseBufferIdent = 17;

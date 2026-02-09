@@ -4,7 +4,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.modules.FlushableCache;
-import thaumcraft.api.crafting.IArcaneRecipe;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 
 import java.util.Iterator;
 import java.util.LinkedList;

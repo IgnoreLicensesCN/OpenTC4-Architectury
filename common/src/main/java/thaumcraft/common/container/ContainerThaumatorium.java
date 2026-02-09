@@ -55,7 +55,7 @@ public class ContainerThaumatorium extends Container {
       if (this.thaumatorium.inputStack != null || this.thaumatorium.recipeHash != null) {
          for(Object r : ThaumcraftApi.getCraftingRecipes()) {
             if (r instanceof CrucibleRecipe) {
-               if (ResearchManager.isResearchComplete(this.player.getCommandSenderName(), ((CrucibleRecipe)r).key) && ((CrucibleRecipe)r).catalystMatches(this.thaumatorium.inputStack)) {
+               if (ResearchManager.isResearchComplete(this.player.getCommandSenderName(), ((CrucibleRecipe)r).research) && ((CrucibleRecipe)r).catalystMatches(this.thaumatorium.inputStack)) {
                   this.recipes.add((CrucibleRecipe)r);
                } else if (this.thaumatorium.recipeHash != null && !this.thaumatorium.recipeHash.isEmpty()) {
                   for(Integer hash : this.thaumatorium.recipeHash) {

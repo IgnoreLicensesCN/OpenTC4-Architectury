@@ -22,6 +22,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
@@ -46,7 +47,7 @@ public class ThaumcraftCraftingManager {
         for (CrucibleRecipe recipe : ThaumcraftApi.getCrucibleRecipes()) {
             ItemStack temp = lastDrop.copy();
             temp.setCount(1);
-            if (ResearchManager.isResearchComplete(username, recipe.key) && recipe.matches(aspects, temp)) {
+            if (ResearchManager.isResearchComplete(username, recipe.research) && recipe.matches(aspects, temp)) {
                 int result = recipe.aspects.size();
                 if (result > highest) {
                     highest = result;
@@ -128,7 +129,7 @@ public class ThaumcraftCraftingManager {
     public static InfusionRecipe findMatchingInfusionRecipe(List<ItemStack> items, ItemStack input, Player player) {
         InfusionRecipe var13 = null;
 
-        for (InfusionRecipe var11 : ThaumcraftApi.getInfusionRecipes()) {
+        for (InfusionRecipe var11 : InfusionRecipe.getInfusionRecipes()) {
             if (var11 instanceof InfusionRecipe && var11.matches(items, input, player.level(), player)) {
                 var13 = var11;
                 break;
@@ -138,11 +139,11 @@ public class ThaumcraftCraftingManager {
         return var13;
     }
 
-    public static InfusionEnchantmentRecipe findMatchingInfusionEnchantmentRecipe(List<ItemStack> items, ItemStack input, Player player) {
-        InfusionEnchantmentRecipe var13 = null;
+    public static ThaumcraftInfusionEnchantmentRecipe findMatchingInfusionEnchantmentRecipe(List<ItemStack> items, ItemStack input, Player player) {
+        ThaumcraftInfusionEnchantmentRecipe var13 = null;
 
-        for (InfusionEnchantmentRecipe var11 : ThaumcraftApi.getInfusionEnchantmentRecipes()) {
-            if (var11 instanceof InfusionEnchantmentRecipe && var11.matches(items, input, player.level(), player)) {
+        for (ThaumcraftInfusionEnchantmentRecipe var11 : InfusionRecipe.getInfusionEnchantmentRecipes()) {
+            if (var11 instanceof ThaumcraftInfusionEnchantmentRecipe && var11.matches(items, input, player.level(), player)) {
                 var13 = var11;
                 break;
             }
@@ -350,7 +351,7 @@ public class ThaumcraftCraftingManager {
     private static AspectList<Aspect> generateTagsFromArcaneRecipes(Item item, List<ItemStack> history) {
         AspectList<Aspect> ret = null;
         int value = 0;
-        List<IArcaneRecipe> recipeList = ThaumcraftApi.getIArcaneRecipes();
+        List<IArcaneRecipe> recipeList = IArcaneRecipe.getIArcaneRecipes();
 
         for (var arcaneRecipe : recipeList) {
             if (arcaneRecipe.getRecipeOutput() != null) {
@@ -413,7 +414,7 @@ public class ThaumcraftCraftingManager {
     }
 
     private static AspectList<Aspect> generateTagsFromInfusionRecipes(Item item, List<ItemStack> history) {
-        InfusionRecipe cr = ThaumcraftApi.getInfusionRecipe(new ItemStack(item, 1));
+        InfusionRecipe cr = InfusionRecipe.getInfusionRecipe(new ItemStack(item, 1));
         if (cr == null) {
             return null;
         } else {
@@ -464,7 +465,7 @@ public class ThaumcraftCraftingManager {
                     manager.getAllRecipesFor(RecipeType.CRAFTING)
                             .forEach(recipe -> {
                                 var resultStack = recipe.getResultItem(level.registryAccess());
-                                if (!resultStack.is(item)) {return;}//of course recipe need to match item we expect for.
+                                if (!resultStack.is(item)) {return;}//ofAspectVisList course recipe need to match item we expect for.
                                 List<ItemStack> ingredients = new ArrayList<>();
                                 NonNullList<Ingredient> ingredientsInternal = recipe.getIngredients();
                                 for (var ingredientInner : ingredientsInternal) {

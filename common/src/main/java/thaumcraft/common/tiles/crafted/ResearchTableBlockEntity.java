@@ -31,7 +31,7 @@ import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.api.researchtable.IResearchTableEditAspectListener;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.gui.menu.ResearchTableMenu;
+import thaumcraft.common.menu.menu.ResearchTableMenu;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -133,7 +133,7 @@ public class ResearchTableBlockEntity
         var pos = getBlockPos();
         var posAbove = pos.above();
         var heightMax = level.getMaxBuildHeight();
-        var heightMin = level.getMinBuildHeight();//when heightMax==heightMin,i should be out of world
+        var heightMin = level.getMinBuildHeight();//when heightMax==heightMin,i should be out ofAspectVisList world
         double heightAtPercent = ((double) (pos.getY() - heightMin)) / (heightMax - heightMin);
 
         if (!level.isDay()

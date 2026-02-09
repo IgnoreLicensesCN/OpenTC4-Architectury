@@ -20,7 +20,7 @@ public abstract class Aspect {
 	 * Use this constructor to register your own aspects.
 	 * @param aspectKey the key that will be used to reference this aspect, as well as its latin display name
 	 * @param color color to display the tag in
-	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
+	 * @param image ResourceLocation pointing to a 32x32 icon ofAspectVisList the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
 	public Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend) {

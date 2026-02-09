@@ -6,22 +6,20 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.CalculateStage;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.RecipeResolveContext;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.SimpleCalculateStageImpl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration.ITEMS_WITH_REGISTERED_BASIC_ASPECTS;
 import static thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration.getCalculatedRegisteredBasicAspect;
 
 public class ItemBasicAspectCalculator {
     private static final Map<Item, UnmodifiableAspectList<Aspect>> ITEM_BASIC_ASPECTS_CALCULATED = new HashMap<>();
-    public static final ListenerManager<AbstractRecipeResolver> recipeAspectResolvers = new ListenerManager<>();
-
-    static {
-        for (var resolverWrapper: RecipeAspectResolvers.values()) {
-            recipeAspectResolvers.registerListener(resolverWrapper.resolver);
-        }
-    }
 
     private static final RecipeResolveContext.ResolvedAspectAdder adder = (item, aspects) -> {
         var current = ITEM_BASIC_ASPECTS_CALCULATED.getOrDefault(item,UnmodifiableAspectList.EMPTY);
@@ -42,16 +40,58 @@ public class ItemBasicAspectCalculator {
         return ITEM_BASIC_ASPECTS_CALCULATED.get(item);
     };
 
+    public static final ListenerManager<AbstractRecipeResolver> STONE_CUTTER_RESOLVERS = new ListenerManager<>();
+    public static final ListenerManager<AbstractRecipeResolver> VANILLA_CRAFTING_RESOLVER = new ListenerManager<>();
+    public static final ListenerManager<AbstractRecipeResolver> VANILLA_SMITHING_RESOLVER = new ListenerManager<>();
+    public static final ListenerManager<AbstractRecipeResolver> ALL_RESOLVERS = new ListenerManager<>();
+    static {
+        STONE_CUTTER_RESOLVERS.registerListener(RecipeAspectResolvers.VANILLA_STONE_CUTTER.resolver);
+        VANILLA_SMITHING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_SMITHING.resolver);
+        VANILLA_CRAFTING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_CRAFTING.resolver);
+        for (var vanillaResolver:RecipeAspectResolvers.values()) {
+            ALL_RESOLVERS.registerListener(vanillaResolver.resolver);
+        }
+        //TODO:TC4's own
+    }
+    public static final ListenerManager<CalculateStage> calculateStages = new ListenerManager<>();
+
+    public static final CalculateStage STAGE_STONE_CUTTER = new SimpleCalculateStageImpl(
+            100, STONE_CUTTER_RESOLVERS
+    );
+    public static final CalculateStage STAGE_VANILLA_SMITHING = new SimpleCalculateStageImpl(
+            200, VANILLA_SMITHING_RESOLVER
+    );
+    public static final CalculateStage STAGE_VANILLA_CRAFTING = new SimpleCalculateStageImpl(
+            300, VANILLA_CRAFTING_RESOLVER
+    );
+    public static final CalculateStage STAGE_ALL_RESOLVERS = new SimpleCalculateStageImpl(
+            1000, ALL_RESOLVERS
+    );
+
+    static {
+        calculateStages.registerListener(STAGE_STONE_CUTTER);
+        calculateStages.registerListener(STAGE_VANILLA_SMITHING);
+        calculateStages.registerListener(STAGE_VANILLA_CRAFTING);
+
+        calculateStages.registerListener(STAGE_ALL_RESOLVERS);
+    }
+
+
     public static void onDatapackReload(){
         ItemBasicAspectRegistration.onDatapackReload();
-        var recipeResolveContext = new RecipeResolveContext(getter,adder,ITEMS_WITH_REGISTERED_BASIC_ASPECTS);
-        recipeAspectResolvers.getListeners().forEach(AbstractRecipeResolver::reloadRecipes);
-
-        recipeAspectResolvers.getListeners().forEach(l -> l.resolveItems(recipeResolveContext));
-        while (recipeResolveContext.prepareForNextRun()){
-            recipeAspectResolvers.getListeners().forEach(l -> l.resolveItems(recipeResolveContext));
+        var context = new RecipeResolveContext(getter,adder,ITEMS_WITH_REGISTERED_BASIC_ASPECTS);
+        for (CalculateStage listener : calculateStages.getListeners()) {
+            listener.startStage(context);
+            Set<Item> calculatedNow = new HashSet<>(ITEM_BASIC_ASPECTS_CALCULATED.size());
+            ITEM_BASIC_ASPECTS_CALCULATED.forEach(
+                    (item,aspects) -> {
+                        if (!aspects.isEmpty()) {
+                            calculatedNow.add(item);
+                        }
+                    }
+            );
+            context = new RecipeResolveContext(getter,adder,calculatedNow);
         }
-
     }
 
     @NotNull("null -> empty")

@@ -11,6 +11,9 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     public UnmodifiableCentiVisList() {
         super();
     }
+    public UnmodifiableCentiVisList(AspectList<Asp> aspects) {
+        super(aspects);
+    }
     public UnmodifiableCentiVisList(Map<Asp, Integer> aspects) {
         super(aspects);
     }

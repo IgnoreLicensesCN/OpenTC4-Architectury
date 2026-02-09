@@ -62,7 +62,7 @@ public class Config {
     public static final String CATEGORY_SPAWN = "Monster_Spawning";
     public static final String CATEGORY_RUNIC = "Runic_Shielding";
 
-    public static int biomeTaintID = 192;//oneday all of you numbers order by hand will go fuck off
+    public static int biomeTaintID = 192;//oneday all ofAspectVisList you numbers order by hand will go fuck off
     public static int biomeMagicalForestID = 193;
 //    public static int biomeEerieID = 194;
     public static int biomeEldritchID = 195;
@@ -170,7 +170,7 @@ public class Config {
         config.load();
         syncConfigurable();
         Property btcp = config.get(CATEGORY_BIOMES, "taint_biome_weight", 2);
-        btcp.comment = "higher values increases number of taint biomes. If you are using biome addon mods you probably want to increase this weight quite a bit";
+        btcp.comment = "higher values increases number ofAspectVisList taint biomes. If you are using biome addon mods you probably want to increase this weight quite a bit";
         biomeTaintWeight = btcp.getInt();
         Property biomeTaintProp = config.get(CATEGORY_BIOMES, "biome_taint", biomeTaintID);
         biomeTaintProp.comment = "Taint biome id";
@@ -187,7 +187,7 @@ public class Config {
         }
 
         Property mfcp = config.get(CATEGORY_BIOMES, "magical_forest_biome_weight", 5);
-        mfcp.comment = "higher values increases number of magical forest biomes. If you are using biome addon mods you probably want to increase this weight quite a bit";
+        mfcp.comment = "higher values increases number ofAspectVisList magical forest biomes. If you are using biome addon mods you probably want to increase this weight quite a bit";
         biomeMagicalForestWeight = mfcp.getInt();
         Property biomeMFProp = config.get(CATEGORY_BIOMES, "biome_magical_forest", biomeMagicalForestID);
         biomeMFProp.comment = "Magical Forest biome id";
@@ -253,7 +253,7 @@ public class Config {
         int customPotions = 8;
         int potionOffset = Potion.potionTypes.length;
         int start = 0;
-        Thaumcraft.log.info("Found potion array with a size of {}", potionOffset);
+        Thaumcraft.log.info("Found potion array with a size ofAspectVisList {}", potionOffset);
         if (potionOffset < 128 - customPotions) {
             Thaumcraft.log.info("Extending Potion.potionTypes array to {}", potionOffset + customPotions);
             Potion[] potionTypes = new Potion[potionOffset + customPotions];
@@ -362,7 +362,7 @@ public class Config {
         gt.comment = "Can taint biomes generate at worldgen";
         genTaint = gt.getBoolean(true);
         Property regKey = config.get(CATEGORY_REGEN, "regen_key", "DEFAULT");
-        regKey.comment = "This key is used to keep track of which chunk have been generated/regenerated. Changing it will cause the regeneration code to run again, so only change it if you want it to happen. Useful to regen only one world feature at a time.";
+        regKey.comment = "This key is used to keep track ofAspectVisList which chunk have been generated/regenerated. Changing it will cause the regeneration code to run again, so only change it if you want it to happen. Useful to regen only one world feature at a time.";
         regenKey = regKey.getString();
         regenAura = config.get(CATEGORY_REGEN, "aura_nodes", false).getBoolean(false);
         regenStructure = config.get(CATEGORY_REGEN, "structures", false).getBoolean(false);
@@ -375,7 +375,7 @@ public class Config {
         resDif.comment = "0 = normal, -1 = easy (all research items are directly purchased with RP), 1 = Hard (all research items need to be solved via the research table)";
         CresearchDifficulty = researchDifficulty = resDif.getInt(8);
         Property aspTotCap = config.get(CATEGORY_RESEARCH, "aspect_total_cap", 100);
-        aspTotCap.comment = "The total amount of RP you can have in your pool per aspect before the scanning soft cap kicks in.";
+        aspTotCap.comment = "The total amount ofAspectVisList RP you can have in your pool per aspect before the scanning soft cap kicks in.";
         CaspectTotalCap = aspectTotalCap = aspTotCap.getInt(100);
         spawnAngryZombie = config.get(CATEGORY_SPAWN, "spawn_angry_zombies", true).getBoolean(true);
         spawnFireBat = config.get(CATEGORY_SPAWN, "spawn_fire_bats", true).getBoolean(true);
@@ -385,7 +385,7 @@ public class Config {
         spawnPech = config.get(CATEGORY_SPAWN, "spawn_pechs", true).getBoolean(true);
         spawnElder = config.get(CATEGORY_SPAWN, "spawn_eldercreatures", true).getBoolean(true);
         Property cm = config.get(CATEGORY_SPAWN, "champion_mobs", championMobs);
-        cm.comment = "Setting this to false will disable spawning champion mobs. Even when false they will still have a greatly reduced chance of spawning in certain dangerous places.";
+        cm.comment = "Setting this to false will disable spawning champion mobs. Even when false they will still have a greatly reduced chance ofAspectVisList spawning in certain dangerous places.";
         championMobs = cm.getBoolean(true);
         Property am = config.get("general", "allow_mirrors", allowMirrors);
         am.comment = "Setting this to false will disable arcane mirror research and crafting recipes.";
@@ -406,7 +406,7 @@ public class Config {
         wm.comment = "Setting this to true disables Warp and similar mechanics. You wuss.";
         Cwuss = wuss = wm.getBoolean(false);
         Property dbp = config.get("general", "wand_dial_bottom", dialBottom);
-        dbp.comment = "Set to true to have the wand dial display in the bottom left instead of the top left.";
+        dbp.comment = "Set to true to have the wand dial display in the bottom left instead ofAspectVisList the top left.";
         dialBottom = dbp.getBoolean(false);
         Property golDel = config.get("general", "golem_delay", golemDelay);
         golDel.comment = "How many ticks a golem waits between checking for tasks. Setting it higher will save server ticks, but will make the golems slower to react.";
@@ -423,7 +423,7 @@ public class Config {
         }
 
         Property golLinkQual = config.get("general", "golem_link_quality", golemLinkQuality);
-        golLinkQual.comment = "The fx quality of the line connecting golems to marked blocks. Setting this below 4 deactives the effect entirely.";
+        golLinkQual.comment = "The fx quality ofAspectVisList the line connecting golems to marked blocks. Setting this below 4 deactives the effect entirely.";
         golemLinkQuality = golLinkQual.getInt();
         if (golemLinkQuality < 4) {
             golemLinkQuality = 0;
@@ -433,13 +433,13 @@ public class Config {
         notDel.comment = "Determines how fast notifications scroll downwards.";
         notificationDelay = notDel.getInt();
         Property notMax = config.get("general", "notification_max", notificationMax);
-        notMax.comment = "The maximum amount of notifications that are displayed onscreen.";
+        notMax.comment = "The maximum amount ofAspectVisList notifications that are displayed onscreen.";
         notificationMax = notMax.getInt();
         Property nodRare = config.get("general", "node_rarity", nodeRarity);
         nodRare.comment = "How rare nodes are in the world. The number means there will be (on average) one node per N chunks.";
         nodeRarity = nodRare.getInt();
         Property nodSpec = config.get("general", "special_node_rarity", specialNodeRarity);
-        nodSpec.comment = "The chance of a node being special (pure, dark, unstable, etc.). The number means roughly 1 in N nodes will be special, so setting the number to 5 will mean 1 in 5 nodes may be special.";
+        nodSpec.comment = "The chance ofAspectVisList a node being special (pure, dark, unstable, etc.). The number means roughly 1 in N nodes will be special, so setting the number to 5 will mean 1 in 5 nodes may be special.";
         specialNodeRarity = nodSpec.getInt();
         if (specialNodeRarity < 3) {
             specialNodeRarity = 3;
@@ -449,7 +449,7 @@ public class Config {
         showtags.comment = "Item aspects are hidden by default and pressing shift reveals them. Changing this setting to 'true' will reverse this behaviour and always display aspects unless shift is pressed.";
         showTags = showtags.getBoolean(false);
         Property cheatsheet = config.get("general", "allow_cheat_sheet", false);
-        cheatsheet.comment = "Enables a version of the Thauminomicon in creative mode that grants you all the research when you first use it.";
+        cheatsheet.comment = "Enables a version ofAspectVisList the Thauminomicon in creative mode that grants you all the research when you first use it.";
         CallowCheatSheet = allowCheatSheet = cheatsheet.getBoolean(false);
         Property wardstone = config.get("general", "allow_warded_stone", true);
         wardstone.comment = "If set to false, warded stone, doors and glass will just be cosmetic in nature and not have its hardened properties (everyone will be able to break it with equal ease).";
@@ -464,7 +464,7 @@ public class Config {
         gci.comment = "If set to true golems will attempt to play the chest opening animations and sounds whenever they interact with them.";
         golemChestInteract = gci.getBoolean(false);
         Property phblacklist = config.get("general", "portablehole_blacklist", "iron_door");
-        phblacklist.comment = "This is a comma-delimited list of any block names the portable hole is not allowed to pass through.";
+        phblacklist.comment = "This is a comma-delimited list ofAspectVisList any block names the portable hole is not allowed to pass through.";
         String[] phbl = phblacklist.getString().split(",");
         for (String s : phbl) {
             try {
@@ -483,19 +483,19 @@ public class Config {
         bff.comment = "Can Taint be caused by flux effects.";
         taintFromFlux = bff.getBoolean(true);
         Property ts = config.get("general", "biome_taint_spread", taintSpreadRate);
-        ts.comment = "The chance per block update (1 in n) of the Taint biome spreading. Setting it to 0 prevents the spread of Taint biomes.";
+        ts.comment = "The chance per block update (1 in n) ofAspectVisList the Taint biome spreading. Setting it to 0 prevents the spread ofAspectVisList Taint biomes.";
         taintSpreadRate = ts.getInt();
         Property glowT = config.get("general", "glowing_taint", glowyTaint);
         glowT.comment = "Setting this to false will remove the glowing purple nodules from taint fibres. This might prevent crashes some people experience and improve performance.";
         glowyTaint = glowT.getBoolean(true);
         Property rss = config.get(CATEGORY_RUNIC, "runic_recharge_speed", shieldRecharge);
-        rss.comment = "How many milliseconds pass between runic shielding recharge ticks. Lower values equals faster recharge. Minimum of 500.";
+        rss.comment = "How many milliseconds pass between runic shielding recharge ticks. Lower values equals faster recharge. Minimum ofAspectVisList 500.";
         shieldRecharge = Math.max(500, rss.getInt());
         Property rsd = config.get(CATEGORY_RUNIC, "runic_recharge_delay", shieldWait);
-        rsd.comment = "How many game ticks pass after a shield has been reduced to zero before it can start recharging again. Minimum of 0.";
+        rsd.comment = "How many game ticks pass after a shield has been reduced to zero before it can start recharging again. Minimum ofAspectVisList 0.";
         shieldWait = Math.max(0, rsd.getInt());
         Property rsc = config.get(CATEGORY_RUNIC, "runic_cost", shieldCost);
-        rsc.comment = "How much aer and terra centi-vis (0.01 vis) it costs to reacharge a single unit of shielding. Minimum of 0.";
+        rsc.comment = "How much aer and terra centi-vis (0.01 vis) it costs to reacharge a single unit ofAspectVisList shielding. Minimum ofAspectVisList 0.";
         shieldCost = Math.max(0, rsc.getInt());
     }
 

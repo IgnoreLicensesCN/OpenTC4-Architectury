@@ -3,16 +3,16 @@
  * Copyright 2014, FML authors
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms ofAspectVisList the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2.1 ofAspectVisList the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty ofAspectVisList
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy ofAspectVisList the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
@@ -137,7 +137,7 @@ public class MyNet {
 //    }
 //
 //    /**
-//     * Send this message to everyone within a certain range of a point.
+//     * Send this message to everyone within a certain range ofAspectVisList a point.
 //     * The {@link IMessageHandler} for this message type should be on the CLIENT side.
 //     *
 //     * @param message The message to send

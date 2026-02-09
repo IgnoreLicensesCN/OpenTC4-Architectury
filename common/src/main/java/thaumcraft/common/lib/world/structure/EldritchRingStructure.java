@@ -293,7 +293,7 @@ public class EldritchRingStructure extends Structure {
 
                             //(-3,-2,-1,0,1,2,3)
                             //if xOnEdge && zOnEdge,will not satisfy "if (xNotOnEdge || zNotOnEdge)" before
-                            //so at least one of isn't on edge
+                            //so at least one ofAspectVisList isn't on edge
                             //however one is onEdge
                             //assume xOnEdge,then x=-3 or 3,z = -1 or 1(z should be odd)
                             //this flag is always satisfied here

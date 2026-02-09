@@ -1,4 +1,4 @@
-package thaumcraft.common.gui;
+package thaumcraft.common.menu;
 
 import com.linearity.opentc4.OpenTC4;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -9,9 +9,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.gui.menu.ArcaneWorkbenchMenu;
-import thaumcraft.common.gui.menu.DeconstructionTableMenu;
-import thaumcraft.common.gui.menu.ResearchTableMenu;
+import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
+import thaumcraft.common.menu.menu.DeconstructionTableMenu;
+import thaumcraft.common.menu.menu.ResearchTableMenu;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;

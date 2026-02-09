@@ -1,6 +1,8 @@
 package thaumcraft.api.crafting;
 
+import com.linearity.opentc4.recipeclean.itemmatch.EnchantmentItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
+import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils;
 import net.minecraft.world.entity.player.Player;
@@ -9,8 +11,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
+import thaumcraft.api.research.ResearchItem;
 
 import java.util.*;
 
@@ -18,28 +25,58 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static com.linearity.opentc4.utils.IndexPicker.indexByTime;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-//TODO:Extends InfusionRecipe
-public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
+//TODO:no more rely on this special class case if anyone want to create infusion enchantment recipe(even supports another class copied this but different source code)
+public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
+		implements RecipeInAndOutSampler,
+		IAspectCalculableRecipe,
+		IInfusionAspectsModifiable
 {
 	
-	public final AspectList<Aspect>aspects;
-	public final String research;
+	public final AspectList<Aspect> basicCostAspects;
 	public final RecipeItemMatcher[] components;
 	public final Enchantment enchantment;
 	public final int recipeXP;
 	public final int instability;
 	private final ItemStack[] inputSampleArr;
 	
-	public InfusionEnchantmentRecipe(String research, Enchantment input, int inst,
-									 AspectList<Aspect>aspects2, RecipeItemMatcher[] recipe) {
-		this.research = research;
-		this.enchantment = input;
-		this.aspects = aspects2;
+	public ThaumcraftInfusionEnchantmentRecipe(
+			ResearchItem research,
+			Enchantment toApply,
+			AspectList<Aspect> basicCostAspects,
+			int inst,
+			RecipeItemMatcher[] recipe
+	) {
+        super(
+				research, itemStacks -> {
+                    var inCenter = itemStacks[itemStacks.length - 1];
+                    if (inCenter == null || inCenter.isEmpty()) {
+                        return ItemStack.EMPTY;
+                    }
+                    inCenter = inCenter.copy();
+                    if (!toApply.canEnchant(inCenter)) {
+                        return ItemStack.EMPTY;
+                    }
+                    var currentLevel = EnchantmentHelper.getItemEnchantmentLevel(toApply, inCenter);
+                    if (toApply.getMaxLevel() <= currentLevel) {
+                        return ItemStack.EMPTY;
+                    }
+                    EnchantmentHelper.setEnchantmentLevel(inCenter.getOrCreateTag(), currentLevel + 1);
+                    return inCenter;
+
+                },
+				inst,
+				basicCostAspects,
+				EnchantmentItemMatcher.of(toApply),
+				recipe,
+				EnchantmentItemMatcher.of(toApply)
+		);
+		this.enchantment = toApply;
 		this.components = recipe;
 		this.inputSampleArr = new ItemStack[components.length + 1];
 		this.inputSampleArr[components.length] = new ItemStack(Items.ENCHANTED_BOOK);
+		this.basicCostAspects = basicCostAspects;
 		this.instability = inst;
-		this.recipeXP = Math.max(1, input.getMinCost(1)/3);
+		this.recipeXP = Math.max(1, toApply.getMinCost(1)/3);
 	}
 
 	/**
@@ -47,7 +84,7 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
      * @param player 
      */
 	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player) {
-		if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
+		if (research.isPlayerCompletedResearch(player)) {
     		return false;
     	}
 		
@@ -71,7 +108,7 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
             }
         }
 		
-		ItemStack i2 = null;
+		ItemStack i2;
 		
 		ArrayList<ItemStack> inputCopy = new ArrayList<>();
 		for (ItemStack is:input) {
@@ -134,14 +171,8 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
     	
     }
     
-    public AspectList<Aspect>getAspects() {
-		return aspects;
-    	
-    }
-    
-    public String getResearch() {
-		return research;
-    	
+    public AspectList<Aspect> getAspects() {
+		return basicCostAspects;
     }
 
 	public int calcInstability(ItemStack recipeInput) {
@@ -159,7 +190,7 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
 		return recipeXP * (1 + EnchantmentHelper.getEnchantments(recipeInput).get(enchantment));
 	}
 
-	public float getEssentiaMod(ItemStack recipeInput) {
+	public AspectList<Aspect> getAspectsModified(ItemStack recipeInput,AspectList<Aspect> basicCostAspects) {
 		float mod = EnchantmentHelper.getEnchantments(recipeInput).get(enchantment);
 		Map<Enchantment,Integer> map1 = EnchantmentHelper.getEnchantments(recipeInput);
 		for (Map.Entry<Enchantment,Integer> entry: map1.entrySet()) {
@@ -168,7 +199,10 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
             if (ench != enchantment)
                 mod += lvl * .1f;
         }
-		return mod;
+		LinkedHashMap<Aspect,Integer> aspsResult = new LinkedHashMap<>(basicCostAspects.aspectView);
+		float finalMod = mod;
+		aspsResult.forEach((asp, amount)-> aspsResult.put(asp, (int) (amount * finalMod)));
+		return new UnmodifiableAspectList<>(aspsResult);
 	}
 
 	@Override
@@ -205,5 +239,35 @@ public class InfusionEnchantmentRecipe implements RecipeInAndOutSampler
 				,enchantmentSampleBook[0]
 		);
 		return enchantmentSampleBook;
+	}
+
+	@Override
+	public boolean supportsAspectCalculation() {
+		return false;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+		return null;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+		return null;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+		return null;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+		return null;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+		return null;
 	}
 }

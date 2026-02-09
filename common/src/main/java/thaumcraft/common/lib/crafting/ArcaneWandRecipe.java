@@ -5,13 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
-import thaumcraft.api.wands.WandCap;
-import thaumcraft.api.wands.WandRod;
 
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
 

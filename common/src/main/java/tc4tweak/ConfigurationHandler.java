@@ -100,7 +100,7 @@ public enum ConfigurationHandler {
 
     private void loadConfig(boolean send) {
         checkWorkbenchRecipes = config.getBoolean("checkWorkbenchRecipes", "general", true, "When false, Arcane Workbench will not perform vanilla crafting bench recipes. Arcane Workbench GUI will behave slightly awkwardly if the client has it false but not on server, but nothing would be broken.");
-        arcaneCraftingHistorySize = config.getInt("arcaneCraftingHistorySize", "general", 16, 0, 256, "The maximum size of arcane crafting cache. 0 will effectively turn off the cache. It is suggested to keep a size of at least 1 to ensure shift crafting does not lag the server.");
+        arcaneCraftingHistorySize = config.getInt("arcaneCraftingHistorySize", "general", 16, 0, 256, "The maximum size ofAspectVisList arcane crafting cache. 0 will effectively turn off the cache. It is suggested to keep a size ofAspectVisList at least 1 to ensure shift crafting does not lag the server.");
 
         inverted = config.getBoolean("inverted", "client", false, "Flip it if you find the scrolling unintuitive");
         updateInterval = config.getInt("updateInterval", "client", 4, 0, 40, "How often should Arcane Workbench update displayed crafting result. Unit is in game ticks.");
@@ -114,13 +114,13 @@ public enum ConfigurationHandler {
                 mappingThreadNice = false;
                 break;
             default:
-                // 1 for integrated server. 1 for client thread. both of these are critical foreground tasks
+                // 1 for integrated server. 1 for client thread. both ofAspectVisList these are critical foreground tasks
                 // so if less than 3 hardware threads available, let's be nice. otherwise, being nice only cause more
                 // preemption and does no good to preserve good CPU time for foreground tasks
                 mappingThreadNice = Runtime.getRuntime().availableProcessors() < 3;
                 break;
         }
-        browserScale = config.getFloat("scale", "client.browser_scale", 1, 1, 4, "Tweak the size of the book gui. No longer works if inferBrowserScale is set to true.");
+        browserScale = config.getFloat("scale", "client.browser_scale", 1, 1, 4, "Tweak the size ofAspectVisList the book gui. No longer works if inferBrowserScale is set to true.");
         limitBookSearchToCategory = config.getBoolean("limitBookSearchToCategory", "client", false, "Whether the book gui search should search current tab only.");
         nodeVisualSizeLimit = config.getFloat("limitOversizedNodeRender", "client", 1, 0.5f, 1e10f,
                 "The upper limit on how big nodes can be rendered." +
@@ -129,22 +129,22 @@ public enum ConfigurationHandler {
                         "Setting a value like 10000.0 will effectively turn off this functionality," +
                         " i.e. not limit the rendered size."
         );
-        inferBrowserScale = config.getBoolean("infer", "client.browser_scale", true, "Tweak the size of the book gui based on screen size automatically. The value of browserScale set manually will not function any more.");
-        inferBrowserScaleUpperBound = config.getFloat("maximum", "client.browser_scale", 4, 1, 16, "The minimum inferred scale. Cannot be smaller than the value of inferBrowserScaleLowerBound. This shouldn't be too high as a huge browser would be rendered with really poor image quality.");
-        inferBrowserScaleLowerBound = config.getFloat("minimum", "client.browser_scale", 1, 1, 16, "The maximum inferred scale. Cannot be bigger than the value of inferBrowserScaleUpperBound.");
+        inferBrowserScale = config.getBoolean("infer", "client.browser_scale", true, "Tweak the size ofAspectVisList the book gui based on screen size automatically. The value ofAspectVisList browserScale set manually will not function any more.");
+        inferBrowserScaleUpperBound = config.getFloat("maximum", "client.browser_scale", 4, 1, 16, "The minimum inferred scale. Cannot be smaller than the value ofAspectVisList inferBrowserScaleLowerBound. This shouldn't be too high as a huge browser would be rendered with really poor image quality.");
+        inferBrowserScaleLowerBound = config.getFloat("minimum", "client.browser_scale", 1, 1, 16, "The maximum inferred scale. Cannot be bigger than the value ofAspectVisList inferBrowserScaleUpperBound.");
         inferBrowserScaleConsiderSearch = config.getBoolean("considerSearchArea", "client.browser_scale", true, "The search result area, even if it's not disabled, will be considered while inferring browserScale.");
-        smallerJars = config.getBoolean("smallerJars", "general", FMLLaunchHandler.side().isServer(), "If true, jars (brain in jar, essentia jars, etc) will have a collision box the same as block outline. Otherwise it will have a collision box of 1x1x1, which is the vanilla tc4 behavior.");
+        smallerJars = config.getBoolean("smallerJars", "general", FMLLaunchHandler.side().isServer(), "If true, jars (brain in jar, essentia jars, etc) will have a collision box the same as block outline. Otherwise it will have a collision box ofAspectVisList 1x1x1, which is the vanilla tc4 behavior.");
         moreRandomizedLoot = config.getBoolean("moreRandomizedLoot", "general", true, "If true, enchanted books will have randomized enchantment and vis stone will have different vis stored even without server restart.");
         infusionOreDictMode = InfusionOreDictMode.get(config.getString("infusionOreDictMode", "general", infusionOreDictMode.name(), "Select the infusion oredict mode. Default: vanilla TC4 behavior. Strict: all oredict names must match to count as oredict substitute. Relaxed: oredict names needs only overlaps to count as oredict substitute. None: no oredict substitute at all.", Arrays.stream(InfusionOreDictMode.values()).map(Enum::name).toArray(String[]::new)));
-        categoryOrder = ImmutableList.copyOf(config.getStringList("categoryOrder", "client", new String[]{"BASICS", "THAUMATURGY", "ALCHEMY", "ARTIFICE", "GOLEMANCY", "ELDRITCH",}, "Specify a full sorting order of research tabs. An empty list here means the feature is disabled. any research tab not listed here will be appended to the end in their original order. Use NEI utility to dump a list of all research tabs. Default is the list of all vanilla thaumcraft tabs."));
-        dispenserShootPrimalArrow = config.getBoolean("dispenserShootPrimalArrow", "general", false, "If true, dispenser will shoot primal arrow instead of dropping it into world.");
-        addClearButton = config.getBoolean("addClearButton", "client", true, "If true, a button will be shown when there is any amount of tc4 notifications AND when sending chat.");
-        addResearchSearch = config.getBoolean("addResearchSearch", "client", true, "If true, a search box will appear on the top right bar of thaumonomicon gui. This feature is taken from WitchingGadgets due to the said GUI is being upsized by this mod and without modifying its code, the search box would not be positioned correctly. Will disable WitchingGadget's search feature (if it is present) regardless of whether this is true.");
-        counterStyle = CompletionCounterStyle.get(config.getString("completionCounterStyle", "client", counterStyle.name(), "Select the style of completion counter. None: disable completion progress counter. Current: display how many you have completed already, and only show the total count for this tab when everything here has been learnt. All: show all counters at all times.", Arrays.stream(CompletionCounterStyle.values()).map(Enum::name).toArray(String[]::new)));
-        decantMaxBlocks = config.getInt("decantMaxBlocks", "general", 1000, 1, Integer.MAX_VALUE, "Max blocks in queue of decant golem. High values can lead to severe server lag if golem is marked to empty very large body of fluid and has very long visibility range");
-        earthShockHarmMode = EarthShockHarmMode.get(config.getString("earthShockHarmMode", "general", earthShockHarmMode.name(), "Select the entities to be damaged by earth shock. Note: certain entity (e.g. most projectiles) cannot be damaged even if it's on the list. OnlyLiving: only harm living entities, e.g. cows, players, zombies, the most intuitive behavior. ExceptItemXp: harm everything except items and xp orbs, e.g. item frames, all living entities like mentioned before. AllEntity: harm everything, like thaumcraft does out of box", Arrays.stream(EarthShockHarmMode.values()).map(Enum::name).toArray(String[]::new)));
+        categoryOrder = ImmutableList.copyOf(config.getStringList("categoryOrder", "client", new String[]{"BASICS", "THAUMATURGY", "ALCHEMY", "ARTIFICE", "GOLEMANCY", "ELDRITCH",}, "Specify a full sorting order ofAspectVisList research tabs. An empty list here means the feature is disabled. any research tab not listed here will be appended to the end in their original order. Use NEI utility to dump a list ofAspectVisList all research tabs. Default is the list ofAspectVisList all vanilla thaumcraft tabs."));
+        dispenserShootPrimalArrow = config.getBoolean("dispenserShootPrimalArrow", "general", false, "If true, dispenser will shoot primal arrow instead ofAspectVisList dropping it into world.");
+        addClearButton = config.getBoolean("addClearButton", "client", true, "If true, a button will be shown when there is any amount ofAspectVisList tc4 notifications AND when sending chat.");
+        addResearchSearch = config.getBoolean("addResearchSearch", "client", true, "If true, a search box will appear on the top right bar ofAspectVisList thaumonomicon gui. This feature is taken from WitchingGadgets due to the said GUI is being upsized by this mod and without modifying its code, the search box would not be positioned correctly. Will disable WitchingGadget's search feature (if it is present) regardless ofAspectVisList whether this is true.");
+        counterStyle = CompletionCounterStyle.get(config.getString("completionCounterStyle", "client", counterStyle.name(), "Select the style ofAspectVisList completion counter. None: disable completion progress counter. Current: display how many you have completed already, and only show the total count for this tab when everything here has been learnt. All: show all counters at all times.", Arrays.stream(CompletionCounterStyle.values()).map(Enum::name).toArray(String[]::new)));
+        decantMaxBlocks = config.getInt("decantMaxBlocks", "general", 1000, 1, Integer.MAX_VALUE, "Max blocks in queue ofAspectVisList decant golem. High values can lead to severe server lag if golem is marked to empty very large body ofAspectVisList fluid and has very long visibility range");
+        earthShockHarmMode = EarthShockHarmMode.get(config.getString("earthShockHarmMode", "general", earthShockHarmMode.name(), "Select the entities to be damaged by earth shock. Note: certain entity (e.g. most projectiles) cannot be damaged even if it's on the list. OnlyLiving: only harm living entities, e.g. cows, players, zombies, the most intuitive behavior. ExceptItemXp: harm everything except items and xp orbs, e.g. item frames, all living entities like mentioned before. AllEntity: harm everything, like thaumcraft does out ofAspectVisList box", Arrays.stream(EarthShockHarmMode.values()).map(Enum::name).toArray(String[]::new)));
         savedLink = config.getBoolean("enable", "general.saved_link", true, "Enable this feature. When disabled, no additional data will be saved to disk");
-        savedLinkSaveWholeLink = config.getBoolean("saveCompleteLink", "general.saved_link", false, "When enabled, save the entire link up to source node. There is no actual benefit of this beyond more debug info. You probably don't want to change this.");
+        savedLinkSaveWholeLink = config.getBoolean("saveCompleteLink", "general.saved_link", false, "When enabled, save the entire link up to source node. There is no actual benefit ofAspectVisList this beyond more debug info. You probably don't want to change this.");
         savedLinkDebug = config.getBoolean("debug", "general.saved_link", false, "When enabled, print more debug info for this feature. You probably don't want to change this.");
         alternativeAddStack = config.getBoolean("alternativeAddStack", "general", true, "When enabled, using a phial will cause the new stack to be added to current player inventory using an alternative rule that prefers partial stacks and current slot.");
         sendSupplementaryS35 = config.getBoolean("sendSupplementaryS35", "general", true, "When enabled, will try harder at sending server side states for some particular tile entities. Enabling this might leads to very slight bandwidth usage increase, but can fix some rare desync.");
@@ -174,8 +174,8 @@ public enum ConfigurationHandler {
             p.setMinValue(0.0D);
             this.championMods.put(UUID.fromString(championMods[i][0]), p.getDouble());
         }
-        config.getCategory("general.champion_mods").setComment("Tweak the stat buffs applied to champion mobs. Do note that those boss buffs can stack. If 5 player is present then all of DAMAGE BUFF 1 to DAMAGE BUFF 5 will be applied!");
-        config.getCategory("general.saved_link").setComment("Persist the parents of vis relays into save file and use it as a hint for ");
+        config.getCategory("general.champion_mods").setComment("Tweak the stat buffs applied to champion mobs. Do note that those boss buffs can stack. If 5 player is present then all ofAspectVisList DAMAGE BUFF 1 to DAMAGE BUFF 5 will be applied!");
+        config.getCategory("general.saved_link").setComment("Persist the parents ofAspectVisList vis relays into save file and use it as a hint for ");
 
         // validation
         if (inferBrowserScaleLowerBound > inferBrowserScaleUpperBound)
@@ -183,7 +183,7 @@ public enum ConfigurationHandler {
 
         browserWidth = (int) (browserScale * 256);
         browserHeight = (int) (browserScale * 230);
-        // it has been proven that the lack of this mod on client side is not a concern at all, for now
+        // it has been proven that the lack ofAspectVisList this mod on client side is not a concern at all, for now
 //        TC4Tweak.INSTANCE.setAllowAll(true);
         if (send) {
 //            TC4Tweak.INSTANCE.detectAndSendConfigChanges();

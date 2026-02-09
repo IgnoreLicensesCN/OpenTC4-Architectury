@@ -1,4 +1,4 @@
-package thaumcraft.common.gui.menu.abstracts;
+package thaumcraft.common.menu.menu.abstracts;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
 public abstract class AbstractThaumcraftMenu<BE extends BlockEntity> extends AbstractContainerMenu {
     protected final BE blockEntity;

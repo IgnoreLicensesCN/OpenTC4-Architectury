@@ -50,11 +50,9 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
-
 public class FocusExcavationItem extends FocusBasicItem {
     public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15);
-    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.of(
+    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.ofAspectVisList(
             new AspectList<>()
                     .addAll(Aspects.AIR, 1)
                     .addAll(Aspects.FIRE, 1)

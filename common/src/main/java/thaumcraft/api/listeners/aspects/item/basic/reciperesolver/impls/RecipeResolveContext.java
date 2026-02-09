@@ -1,4 +1,4 @@
-package thaumcraft.api.listeners.aspects.item.basic;
+package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls;
 
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +12,10 @@ import java.util.Set;
 public class RecipeResolveContext {
     public final ResolvedAspectGetter resolvedAspect;
     public final ResolvedAspectAdder aspectAdder;
+
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Set<Item> itemsResolvedLastTurn;
+
     public final Set<Item> itemsResolvedLastTurnView;
     private final Set<Item> itemsNewlyResolved;
     public final Set<Item> itemsNewlyResolvedView;

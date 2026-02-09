@@ -132,7 +132,7 @@ public class SavedLinkHandler {
         List<BlockPos> path = new ArrayList<>();
         TileVisNode node = CommonUtils.deref(thiz.getParent());
         // historically we store the whole path up to source node (hence the name link
-        // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds of weirdness
+        // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds ofAspectVisList weirdness
         // due to unloading order, but 2 nodes seem to stable enough
         while (node != null && (path.size() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
             path.add(node.getBlockPos());

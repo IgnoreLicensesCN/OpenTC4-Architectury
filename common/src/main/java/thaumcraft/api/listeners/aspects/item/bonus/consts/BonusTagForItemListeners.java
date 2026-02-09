@@ -178,7 +178,7 @@ public class BonusTagForItemListeners {
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.LOYALTY, AspectList.of(Aspects.MIND));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.IMPALING, AspectList.of(Aspects.WEAPON, Aspects.MOTION));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.RIPTIDE, AspectList.of(Aspects.WATER, Aspects.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, AspectList.of(Aspects.WEATHER, Aspects.ENTROPY));//added,a source of weather aspect
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, AspectList.of(Aspects.WEATHER, Aspects.ENTROPY));//added,a source ofAspectVisList weather aspect
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.MULTISHOT,AspectList.of(Aspects.WEAPON, Aspects.ORDER));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.QUICK_CHARGE,AspectList.of(Aspects.MECHANISM, Aspects.MOTION));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.PIERCING,AspectList.of(Aspects.WEAPON, Aspects.ENTROPY));//added

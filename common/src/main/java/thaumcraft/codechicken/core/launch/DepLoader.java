@@ -411,7 +411,7 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
 //                    }
 //
 //                    if (cmp > 0) {
-//                        System.err.println("Warning: version of " + dep.file.name + ", " + vfile.version + " is newer than request " + dep.file.version);
+//                        System.err.println("Warning: version ofAspectVisList " + dep.file.name + ", " + vfile.version + " is newer than request " + dep.file.version);
 //                        return f.getName();
 //                    }
 //

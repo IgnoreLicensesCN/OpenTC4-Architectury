@@ -1,47 +1,93 @@
 package thaumcraft.api.crafting;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
+import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.UnmodifiableCentiVisList;
+import thaumcraft.api.research.ResearchItem;
 
+import java.util.List;
 import java.util.function.Function;
 
-public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample {
+public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe {
 
 	private final Function<ItemStack,ItemStack> recipeOutputGetter;
-	
+
 	public final RecipeItemMatcher catalyst;
 	public final AspectList<Aspect> aspects;
-	public final String key;
-	
+	public final ResearchItem research;
+
 	public final int hash;
+
 
 	private final RecipeItemMatcher outputMatcher;
 	private final ItemStack[] inputSample;
-	private final ItemStack[][] allSample;
+	private final boolean supportsAspectCalculation;
+    private final List<List<ItemStack>> inputForAspectCalculation;
+    private final ItemStack outputForAspectCalculation;
+    private final List<List<ItemStack>> remainingForAspectCalculation;
 
-	public CrucibleRecipe(String researchKey, Function<ItemStack,ItemStack> resultGetter, RecipeItemMatcher cat, AspectList<Aspect> tags,RecipeItemMatcher outputMatcher) {
-		recipeOutputGetter = resultGetter;
-		this.aspects = tags;
-		this.key = researchKey;
-		this.catalyst = cat;
-		StringBuilder hc = new StringBuilder(researchKey /*+result.toString()*/);
-		for (var asp:tags.getAspectTypes()) {
-			hc.append(asp.getAspectKey()).append(tags.getAmount(asp));
-		}
-		
-		hash = hc.toString().hashCode();
-		this.inputSample = catalyst.getAvailableItemStackSample().toArray(new ItemStack[0]);
-		this.outputMatcher = outputMatcher;
-		this.allSample = new ItemStack[1][];
-		allSample[0] = inputSample;
-
+	public CrucibleRecipe(
+            ResearchItem researchKey,
+            Function<ItemStack,ItemStack> resultGetter,
+            RecipeItemMatcher cat,
+            AspectList<Aspect> tags,
+            RecipeItemMatcher outputMatcher
+    ) {
+		this(researchKey,resultGetter,cat,tags,outputMatcher,null,null,null);
 	}
-	
-		
+    public CrucibleRecipe(
+            ResearchItem researchKey,
+            Function<ItemStack,ItemStack> resultGetter,
+            RecipeItemMatcher cat,
+            AspectList<Aspect> tags,
+            RecipeItemMatcher outputMatcher,
+            ItemStack outputForAspectCalculation,
+            List<List<ItemStack>> inputForAspectCalculation,
+            List<List<ItemStack>> remainingForAspectCalculation
+    ){
+
+        this.recipeOutputGetter = resultGetter;
+        this.aspects = tags;
+        this.research = researchKey;
+        this.catalyst = cat;
+        StringBuilder hc = new StringBuilder(researchKey.key.toString());
+        for (var asp:tags.getAspectTypes()) {
+            hc.append(asp.getAspectKey()).append(tags.getAmount(asp));
+        }
+        this.hash = hc.toString().hashCode();
+        this.inputSample = catalyst.getAvailableItemStackSample().toArray(new ItemStack[0]);
+        this.outputMatcher = outputMatcher;
+        this.supportsAspectCalculation =
+                inputForAspectCalculation != null
+                && outputForAspectCalculation != null
+                && remainingForAspectCalculation != null;
+		if (!this.supportsAspectCalculation
+				&& !(inputForAspectCalculation == null
+				&& outputForAspectCalculation == null
+				&& remainingForAspectCalculation == null
+		)
+		){
+			OpenTC4.LOGGER.warn(
+					"""
+                            not all aspect calculation elements are null or notnull,
+                            this might be a bug or misunderstanding.
+                            using researchItem:{}
+                            """,research,new Exception());
+		}
+        this.inputForAspectCalculation = inputForAspectCalculation;
+        this.outputForAspectCalculation = outputForAspectCalculation;
+        this.remainingForAspectCalculation = remainingForAspectCalculation;
+    }
+
+
 
 	public boolean matches(AspectList<Aspect> itags, ItemStack cat) {
 		if (!catalyst.matches(cat)) return false;
@@ -59,31 +105,24 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		}
 		return true;
 	}
-	
+
 	public boolean catalystMatches(ItemStack cat) {
-//		if (catalyst instanceof ItemStack && ThaumcraftApiHelper.itemMatches((ItemStack) catalyst,cat,false)) {
-//			return true;
-//		} else
-//		if (catalyst instanceof ArrayList && !((ArrayList<ItemStack>) catalyst).isEmpty()) {
-//			ItemStack[] ores = ((ArrayList<ItemStack>)catalyst).toArray(new ItemStack[]{});
-//            return ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{cat}, ores);
-//		}
 		return catalyst.matches(cat);
 	}
-	
+
 	public AspectList<Aspect> removeMatching(AspectList<Aspect> itags) {
 		AspectList<Aspect> temptags = new AspectList<>(itags);
 
 //		temptags.aspects.putAll(itags.aspects);
-		
+
 		for (var tag:aspects.getAspectTypes()) {
 			temptags.reduceAndRemoveIfNotPositive(tag, aspects.getAmount(tag));
 		}
-		
+
 		itags = temptags;
 		return itags;
 	}
-	
+
 	public ItemStack getRecipeOutput() {
 		return getOutputSample(getInputSample())[0];
 	}
@@ -95,11 +134,6 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	}
 
 
-	@Override
-	public ItemStack[][] getAllInputSample() {
-		return allSample;
-	}
-
 	private final ItemStack[] resultStore = new ItemStack[1];
 	@Override
 	public ItemStack[] getOutputSample(ItemStack[] inputSample) {
@@ -110,5 +144,35 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	@Override
 	public boolean matchViaOutput(ItemStack res) {
 		return outputMatcher.matches(res);
+	}
+
+	@Override
+	public boolean supportsAspectCalculation() {
+		return supportsAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+		return inputForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+		return outputForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+		return remainingForAspectCalculation;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+		return aspects;
+	}
+
+	@Override
+	public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+		return UnmodifiableCentiVisList.EMPTY;
 	}
 }

@@ -18,13 +18,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ChestList;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.AbstractMultipartComponentBlock;
 import thaumcraft.common.blocks.abstracts.IInfernalFurnaceTickDiscounter;
+import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.ArrayList;
@@ -189,7 +189,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
                                 }
                                 var vanillaResult = smeltingRecipe.getResultItem(level.registryAccess());
                                 float exp = smeltingRecipe.getExperience();
-                                var thaumcraftSmeltingBonus = ThaumcraftApi.getSmeltingBonus(inStack);
+                                var thaumcraftSmeltingBonus = InfernalFurnaceLavaBlock.getSmeltingBonus(inStack);
                                 if (vanillaResult != null) {
                                     outputStacks.add(vanillaResult);
                                 }

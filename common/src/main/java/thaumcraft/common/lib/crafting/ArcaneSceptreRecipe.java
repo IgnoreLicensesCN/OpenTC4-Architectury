@@ -1,23 +1,12 @@
 package thaumcraft.common.lib.crafting;
 
-import com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher;
-import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
-import thaumcraft.api.wands.WandCap;
-import thaumcraft.api.wands.WandRod;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
 //TODO:Impl with current API

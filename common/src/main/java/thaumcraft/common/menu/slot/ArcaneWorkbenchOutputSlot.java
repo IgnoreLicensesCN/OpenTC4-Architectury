@@ -1,4 +1,4 @@
-package thaumcraft.common.gui.slot;
+package thaumcraft.common.menu.slot;
 
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,7 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
     protected CentiVisList<Aspect> getFinalCentiVisCost(Player player) {
         var centiVisCostOriginal = workbenchResultContainer.getCostsCentiVis();
         var centiVisCostFinal = CentiVisList.of();
-        var wandStack = workbench.getWand();
+        var wandStack = workbench.getStackInWandSlot();
         for (var aspect:centiVisCostOriginal.getAspects().keySet()){
             float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect,true);
             centiVisCostFinal.addAll(aspect, (int) (centiVisCostOriginal.getAmount(aspect) * modifier));

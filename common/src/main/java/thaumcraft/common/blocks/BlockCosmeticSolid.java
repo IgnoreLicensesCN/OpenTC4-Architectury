@@ -333,7 +333,7 @@ public class BlockCosmeticSolid /*extends Block*/ {
 //   }
 //
 //   public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
-//      return worldObj.getBlock(x, y, z) == this;//anazor drunk too much so that a lot of blocks can be used to activate beacon--this comment will be sent to OpenTC4-1.7.10
+//      return worldObj.getBlock(x, y, z) == this;//anazor drunk too much so that a lot ofAspectVisList blocks can be used to activate beacon--this comment will be sent to OpenTC4-1.7.10
 //   }
 //
 //   public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {

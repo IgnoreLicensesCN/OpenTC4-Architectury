@@ -33,9 +33,9 @@ public class VisNetHandler {
 	 * take that into account.
 	 * 
 	 * @param world node at world
-	 * @param x the x position of the draining block or entity
-	 * @param y the y position of the draining block or entity
-	 * @param z the z position of the draining block or entity
+	 * @param x the x position ofAspectVisList the draining block or entity
+	 * @param y the y position ofAspectVisList the draining block or entity
+	 * @param z the z position ofAspectVisList the draining block or entity
 	 * @param aspect what aspect to drain
 	 * @param amount how much to drain
 	 * @return how much was actually drained

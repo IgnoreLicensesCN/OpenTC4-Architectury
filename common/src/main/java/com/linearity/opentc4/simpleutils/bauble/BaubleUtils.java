@@ -14,7 +14,7 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 public class BaubleUtils {
 
     /**
-     * iterate through every bauble itemstack of a player
+     * iterate through every bauble itemstack ofAspectVisList a player
      * @param player the victim
      * @param operation what will be done for every itemstack,return true inside to break the loop
      * @return whether the loop is broken by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, Object)} returning true.
@@ -25,7 +25,7 @@ public class BaubleUtils {
     }
 
     /**
-     * iterate through every bauble itemstack of a player,
+     * iterate through every bauble itemstack ofAspectVisList a player,
      * only item class meets {@code expectedItemType} will be accepted by {@link BaubleConsumer#accept(EquippedBaubleSlot, ItemStack, T)}
      * @param player the victim
      * @param expectedItemType class to judge item type,judge with it's method {@link Class#isAssignableFrom(Class)}.

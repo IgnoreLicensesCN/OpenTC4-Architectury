@@ -333,7 +333,7 @@ public class CommonProxy implements IGuiHandler {
                EntityPrimalArrow e = (EntityPrimalArrow) getProjectileEntity(w, pos);
                e.type = toDrop.getItemDamage();
                if (e.type == 3)
-                  // inherent power of earth arrow
+                  // inherent power ofAspectVisList earth arrow
                   // this is unfortunately not done on hit, but at bow draw time, so we must emulate this as well
                   e.setKnockbackStrength(1);
                e.setThrowableHeading(facing.getFrontOffsetX(), facing.getFrontOffsetY() + 0.1F, facing.getFrontOffsetZ(), this.func_82500_b(), this.func_82498_a());

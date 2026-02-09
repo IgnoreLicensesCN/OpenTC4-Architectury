@@ -12,7 +12,7 @@ import java.util.List;
 public interface IArchitect {
 
 	/**
-	 * Returns a list of blocks that should be highlighted in world.
+	 * Returns a list ofAspectVisList blocks that should be highlighted in world.
 	 */
 //    List<BlockPos> getArchitectBlocks(ItemStack stack, Level world,
 //									  int x, int y, int z, Direction side, Player player);

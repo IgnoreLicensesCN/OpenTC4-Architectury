@@ -26,6 +26,7 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.client.ClientProxy;
@@ -1180,7 +1181,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
     private void drawInfusionEnchantingPage(int side, int x, int y, int mx, int my, ResearchPage pageParm) {
         Object tr = pageParm.recipe;
-        InfusionEnchantmentRecipe ri = (InfusionEnchantmentRecipe) tr;
+        ThaumcraftInfusionEnchantmentRecipe ri = (ThaumcraftInfusionEnchantmentRecipe) tr;
         if (ri != null) {
             GL11.glPushMatrix();
             int start = side * 152;
@@ -1211,20 +1212,20 @@ public class GuiResearchRecipe extends GuiScreen {
             int mposx = mx;
             int mposy = my;
             int total = 0;
-            int rows = (ri.aspects.size() - 1) / 5;
-            int shift = (5 - ri.aspects.size() % 5) * 10;
+            int rows = (ri.basicCostAspects.size() - 1) / 5;
+            int shift = (5 - ri.basicCostAspects.size() % 5) * 10;
             int sx = x + start + 8;
             int sy = y + 164 - 10 * rows;
 
-            for (Aspect tag : ri.aspects.getAspectsSorted()) {
+            for (Aspect tag : ri.basicCostAspects.getAspectsSorted()) {
                 int m = 0;
-                if (total / 5 >= rows && (rows > 1 || ri.aspects.size() < 5)) {
+                if (total / 5 >= rows && (rows > 1 || ri.basicCostAspects.size() < 5)) {
                     m = 1;
                 }
 
                 int vx = sx + total % 5 * 20 + shift * m;
                 int vy = sy + total / 5 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) (ri.aspects.getAmount(tag) * level), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) (ri.basicCostAspects.getAmount(tag) * level), 0, this.zLevel);
                 ++total;
             }
 
@@ -1284,14 +1285,14 @@ public class GuiResearchRecipe extends GuiScreen {
             }
 
             total = 0;
-            rows = (ri.aspects.size() - 1) / 5;
-            shift = (5 - ri.aspects.size() % 5) * 10;
+            rows = (ri.basicCostAspects.size() - 1) / 5;
+            shift = (5 - ri.basicCostAspects.size() % 5) * 10;
             sx = x + start + 8;
             sy = y + 164 - 10 * rows;
 
-            for (Aspect tag : ri.aspects.getAspectsSorted()) {
+            for (Aspect tag : ri.basicCostAspects.getAspectsSorted()) {
                 int m = 0;
-                if (total / 5 >= rows && (rows > 1 || ri.aspects.size() < 5)) {
+                if (total / 5 >= rows && (rows > 1 || ri.basicCostAspects.size() < 5)) {
                     m = 1;
                 }
 

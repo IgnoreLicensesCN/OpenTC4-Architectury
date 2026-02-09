@@ -1,14 +1,11 @@
-package thaumcraft.common.gui.menu;
+package thaumcraft.common.menu.menu;
 
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.gui.ThaumcraftGUI;
-import thaumcraft.common.gui.menu.abstracts.AbstractThaumcraftMenu;
-import thaumcraft.common.gui.slot.DeconstructionTableResultSlot;
+import thaumcraft.common.menu.ThaumcraftGUI;
+import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
+import thaumcraft.common.menu.slot.DeconstructionTableResultSlot;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
 public class DeconstructionTableMenu extends AbstractThaumcraftMenu<DeconstructionTableBlockEntity> {

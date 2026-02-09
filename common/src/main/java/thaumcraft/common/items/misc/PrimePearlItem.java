@@ -118,7 +118,7 @@ public class PrimePearlItem extends Item {
                     var pos1 = new BlockPos(xx, yy, zz);
                     var stateToSet = world.getBlockState(pos1);
                     if (stateToSet.isAir()) {
-                        //TODO:I left meta behind,all meta are 8(a kind of fluid state?)
+                        //TODO:I left meta behind,all meta are 8(a kind ofAspectVisList fluid state?)
                         if (yy < pos.getY()) {
                             BlockState state = FLUX_GOO.defaultBlockState().setValue(FluxGooBlock.LEVEL,8);
                             world.setBlock(pos1, state, Block.UPDATE_CLIENTS | Block.UPDATE_NEIGHBORS);

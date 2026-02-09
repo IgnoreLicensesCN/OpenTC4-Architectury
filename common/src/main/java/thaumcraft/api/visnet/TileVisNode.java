@@ -29,19 +29,19 @@ public abstract class TileVisNode extends TileThaumcraft {
 	List<BlockPos> loadedLink = null;
 	
 	/**
-	 * @return the WorldCoordinates location of where this node is located
+	 * @return the WorldCoordinates location ofAspectVisList where this node is located
 	 */
 	public WorldCoordinates getLocation() {
 		return new WorldCoordinates(this);
 	}
 	
 	/**
-	 * @return the number of blocks away this node will check for parent nodes to connect to. 
+	 * @return the number ofAspectVisList blocks away this node will check for parent nodes to connect to.
 	 */
 	public abstract int getRange();
 	
 	/**
-	 * @return true if this is the source or root node of the vis network. 
+	 * @return true if this is the source or root node ofAspectVisList the vis network.
 	 */
 	public abstract boolean isSource();
 		
@@ -191,7 +191,7 @@ public abstract class TileVisNode extends TileThaumcraft {
 	public void parentChanged() { }
 	
 	/**
-	 * @return the type of shard this is attuned to:
+	 * @return the type ofAspectVisList shard this is attuned to:
 	 * none -1, air 0, fire 1, water 2, earth 3, order 4, entropy 5
 	 * Should return -1 for most implementations
 	 */

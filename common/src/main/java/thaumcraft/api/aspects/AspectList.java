@@ -22,8 +22,8 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public final Map<Asp,Integer> aspectView;
 	
 	/**
-	 * this creates a new aspect list with preloaded values based off the aspects of the given item.
-	 * @param stack the itemstack of the given item
+	 * this creates a new aspect list with preloaded values based off the aspects ofAspectVisList the given item.
+	 * @param stack the itemstack ofAspectVisList the given item
 	 */
 	public static AspectList<Aspect> of(ItemStack stack) {
 		var result = new AspectList<>();
@@ -113,14 +113,14 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * @return the amount of different aspects in this collection
+	 * @return the amount ofAspectVisList different aspects in this collection
 	 */
 	public int size() {
 		return aspects.size();
 	}
 	
 	/**
-	 * @return the amount of total vis in this collection
+	 * @return the amount ofAspectVisList total vis in this collection
 	 */
 	public int visSize() {
 		int q = 0;
@@ -133,14 +133,14 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection
+	 * @return an array(a list now because Asp[] is not so fine) ofAspectVisList all the aspects in this collection
 	 */
 	public Set<Asp> getAspectTypes() {
 		return aspects.keySet();
 	}
 	
 	/**
-	 * @return an array of all the aspects in this collection
+	 * @return an array ofAspectVisList all the aspects in this collection
 	 */
 	public AspectList<PrimalAspect> getPrimalAspects() {
 		AspectList<PrimalAspect> result = new AspectList<>();
@@ -155,7 +155,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by name
+	 * @return an array(a list now because Asp[] is not so fine) ofAspectVisList all the aspects in this collection sorted by name
 	 * --from Hodgepodge
 	 */
 	public List<Asp> getAspectsSorted() {
@@ -168,7 +168,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by amount
+	 * @return an array(a list now because Asp[] is not so fine) ofAspectVisList all the aspects in this collection sorted by amount
 	 */
 	public List<Asp> getAspectsSortedAmount() {
 		return aspects.keySet().stream()
@@ -186,7 +186,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * Reduces the amount of an aspect in this collection by the given amount. 
+	 * Reduces the amount ofAspectVisList an aspect in this collection by the given amount.
 	 * @param key to remove
 	 * @param amount to remove
 	 * @return succeed(false if will lead to negative)
@@ -201,7 +201,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * Reduces the amount of an aspect in this collection by the given amount. 
+	 * Reduces the amount ofAspectVisList an aspect in this collection by the given amount.
 	 * If reduced to 0 or less the aspect will be removed completely. 
 	 * @param key to remove
 	 * @param amount to remove
@@ -277,7 +277,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	
 	/**
 	 * Adds this aspect and amount to the collection. 
-	 * If the aspect exists then only the highest of the old or new amount will be used.
+	 * If the aspect exists then only the highest ofAspectVisList the old or new amount will be used.
 	 * @param aspect to merge
 	 * @param amount to merge
 	 * @return self

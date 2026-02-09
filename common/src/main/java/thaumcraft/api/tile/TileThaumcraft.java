@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author azanor
  * <p>
- * Custom tile entity class I use for most of my tile entities. Setup in such a way that only
+ * Custom tile entity class I use for most ofAspectVisList my tile entities. Setup in such a way that only
  * the nbt data within readCustomNBT / writeCustomNBT will be sent to the client when the tile
  * updates. Apart from all the normal TE data that gets sent that is.
  */

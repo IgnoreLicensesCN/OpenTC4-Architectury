@@ -1,10 +1,6 @@
 package thaumcraft.api;
 
 import com.linearity.opentc4.simpleutils.SimplePair;
-import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
-import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
-import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
-import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -34,11 +30,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 
-/**
+/**<p>
  * @author Azanor
- * <p>
- * <p>
- * IMPORTANT: If you are adding your own aspects to items it is a good idea to do it AFTER Thaumcraft adds its aspects, otherwise odd things may happen.
+ * </p>
+  <p>
+<s>
+IMPORTANT: If you are adding your own aspects to items it is a good idea to do it AFTER Thaumcraft adds its aspects, otherwise odd things may happen.
+</s>
+</p>
+ * <p><u>from IgnoreLicensesCN:it's doesnt matter now,
+ * just remember to initialize Aspects.class,
+ * but when you create an aspect you will surly attach to its <a><</a>clinit<a>></a>
+ * because calling new Aspect() will put it into a static map in Aspects.class</u></p>
  */
 public class ThaumcraftApi {
     public static final Tier TOOL_THAUMIUM = new Tier() {
@@ -161,17 +164,17 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public SoundEvent getEquipSound() {
+        public @NotNull SoundEvent getEquipSound() {
             return SoundEvents.ARMOR_EQUIP_IRON;
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.THAUMIUM_INGOT);
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "thaumium";
         }
 
@@ -212,17 +215,17 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public SoundEvent getEquipSound() {
+        public @NotNull SoundEvent getEquipSound() {
             return SoundEvents.ARMOR_EQUIP_IRON;
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.EMPTY;
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "special";
         }
 
@@ -263,17 +266,17 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public SoundEvent getEquipSound() {
+        public @NotNull SoundEvent getEquipSound() {
             return SoundEvents.ARMOR_EQUIP_IRON;
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.THAUMIUM_INGOT);
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "fortress";
         }
 
@@ -314,17 +317,17 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public SoundEvent getEquipSound() {
+        public @NotNull SoundEvent getEquipSound() {
             return SoundEvents.ARMOR_EQUIP_IRON;
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.VOID_INGOT);
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "void";
         }
 
@@ -365,17 +368,17 @@ public class ThaumcraftApi {
         }
 
         @Override
-        public SoundEvent getEquipSound() {
+        public @NotNull SoundEvent getEquipSound() {
             return SoundEvents.ARMOR_EQUIP_IRON;
         }
 
         @Override
-        public Ingredient getRepairIngredient() {
+        public @NotNull Ingredient getRepairIngredient() {
             return Ingredient.of(ThaumcraftItems.VOID_INGOT);
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "voidfortress";
         }
 
@@ -400,7 +403,7 @@ public class ThaumcraftApi {
     //Miscellaneous
     /**
      * Portable Hole Block-id Blacklist.
-     * Simply add the block-id's of blocks you don't want the portable hole to go through.
+     * Simply add the block-id's ofAspectVisList blocks you don't want the portable hole to go through.
      */
     public static ArrayList<Block> portableHoleBlackList = new ArrayList<>();
 
@@ -458,160 +461,22 @@ public class ThaumcraftApi {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
     }
 
-    //RECIPES/////////////////////////////////////////
-//	private static final List<RecipeInAndOutSampler> craftingRecipes = new CopyOnWriteArrayList<>();
-    private static final List<InfusionRecipe> infusionRecipes = new CopyOnWriteArrayList<>();
-    private static final List<InfusionEnchantmentRecipe> infusionEnchantmentRecipes = new CopyOnWriteArrayList<>();
     private static final List<CrucibleRecipe> crucibleRecipes = new CopyOnWriteArrayList<>();
-    private static final List<IArcaneRecipe> arcaneRecipes = new CopyOnWriteArrayList<>();
-    private static final List<ShapedArcaneRecipe> shapedArcaneRecipes = new CopyOnWriteArrayList<>();
-    private static final List<ShapelessArcaneRecipe> shapelessArcaneRecipes = new CopyOnWriteArrayList<>();
 
 //	@Deprecated(forRemoval = true)
 //	private static HashMap<Object,ItemStack> smeltingBonus = new HashMap<>();
 
-    private static final Map<RecipeItemMatcher, ItemStack> smeltingBonus = new ConcurrentHashMap();
 
-
-    /**
-     * This method is used to determine what bonus items are generated when the infernal furnace smelts items
-     *
-     * @param in  The input of the smelting operation. e.g. new ItemStack(Block.oreGold)
-     * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
-     *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
-     */
-    public static void addSmeltingBonus(ItemStack in, ItemStack out) {
-        var setIn = new ItemStack(out.getItem(), 0);
-        setIn.setDamageValue(out.getDamageValue());
-        smeltingBonus.put(
-                ItemAndDamageMatcher.of(in.getItem(), in.getDamageValue()),
-                setIn);
-    }
-
-    /**
-     * This method is used to determine what bonus items are generated when the infernal furnace smelts items
-     *
-     * @param in  The tag string input of the smelting operation. e.g. "oreGold"
-     * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
-     *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
-     */
-    public static void addSmeltingBonus(String in, ItemStack out) {
-        var setIn = new ItemStack(out.getItem(), 0);
-        setIn.setDamageValue(out.getDamageValue());
-        smeltingBonus.put(TagItemMatcher.of(in), setIn);
-    }
-
-    /**
-     * Returns the bonus item produced from a smelting operation in the infernal furnace
-     *
-     * @param in The input of the smelting operation. e.g. new ItemStack(oreGold)
-     * @return the The bonus item that can be produced
-     */
-    public static ItemStack getSmeltingBonus(ItemStack in) {
-        ItemStack out = smeltingBonus.get(ItemAndDamageMatcher.of(in.getItem(), in.getDamageValue()));
-        if (out == null) {
-            out = smeltingBonus.get(ItemMatcher.of(in.getItem()));
-        }
-        if (out == null) {
-            for (Map.Entry<RecipeItemMatcher, ItemStack> entry : smeltingBonus.entrySet()) {
-                if (entry.getKey().matches(in)) {
-                    return entry.getValue();
-                }
-            }
-        }
-        return out;
-    }
-
-//	@UnmodifiableView
+    //	@UnmodifiableView
 //	public static List<RecipeInAndOutSampler> getCraftingRecipes() {
 //		return Collections.unmodifiableList(craftingRecipes);
 //	}
-
-    private static final List<InfusionEnchantmentRecipe> unmodifiableInfusionEnchantmentRecipes = Collections.unmodifiableList(infusionEnchantmentRecipes);
-
-    @UnmodifiableView
-    public static List<InfusionEnchantmentRecipe> getInfusionEnchantmentRecipes() {
-        return unmodifiableInfusionEnchantmentRecipes;
-    }
-
-    private static final List<InfusionRecipe> unmodifiableInfusionRecipes = Collections.unmodifiableList(infusionRecipes);
-
-    @UnmodifiableView
-    public static List<InfusionRecipe> getInfusionRecipes() {
-        return unmodifiableInfusionRecipes;
-    }
 
     private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
 
     @UnmodifiableView
     public static List<CrucibleRecipe> getCrucibleRecipes() {
         return unmodifiableCrucibleRecipes;
-    }
-
-    private static final List<IArcaneRecipe> unmodifiableArcaneRecipes = Collections.unmodifiableList(arcaneRecipes);
-
-    @UnmodifiableView
-    public static List<IArcaneRecipe> getIArcaneRecipes() {
-        return unmodifiableArcaneRecipes;
-    }
-
-    private static final List<ShapedArcaneRecipe> unmodifiableShapedArcaneRecipes = Collections.unmodifiableList(shapedArcaneRecipes);
-
-    @UnmodifiableView
-    public static List<ShapedArcaneRecipe> getShapedArcaneRecipes() {
-        return unmodifiableShapedArcaneRecipes;
-    }
-
-    private static final List<ShapelessArcaneRecipe> unmodifiableShapelessArcaneRecipes = Collections.unmodifiableList(shapelessArcaneRecipes);
-
-    @UnmodifiableView
-    public static List<ShapelessArcaneRecipe> getShapelessArcaneRecipes() {
-        return unmodifiableShapelessArcaneRecipes;
-    }
-
-    public static ShapedArcaneRecipe addArcaneCraftingRecipe(ShapedArcaneRecipe r) {
-        shapedArcaneRecipes.add(r);
-        arcaneRecipes.add(r);
-        return r;
-    }
-
-    public static void registerIArcaneRecipe(IArcaneRecipe recipe) {
-        arcaneRecipes.add(recipe);
-        if (recipe instanceof ShapedArcaneRecipe shaped) {
-            shapedArcaneRecipes.add(shaped);
-        }
-        if (recipe instanceof ShapelessArcaneRecipe shapeless) {
-            shapelessArcaneRecipes.add(shapeless);
-        }
-    }
-
-    public static ShapelessArcaneRecipe addShapelessArcaneCraftingRecipe(ShapelessArcaneRecipe r) {
-        shapelessArcaneRecipes.add(r);
-        arcaneRecipes.add(r);
-        return r;
-    }
-
-    public static InfusionRecipe addInfusionCraftingRecipe(InfusionRecipe r) {
-        infusionRecipes.add(r);
-        return r;
-    }
-
-    @Deprecated(since = "one day i will migrate to infusionRecipe")
-    public static InfusionEnchantmentRecipe addInfusionEnchantmentRecipe(InfusionEnchantmentRecipe r) {
-//		InfusionEnchantmentRecipe r= new InfusionEnchantmentRecipe(research, enchantment, instability, aspects, recipe);
-//        craftingRecipes.add(r);
-        infusionEnchantmentRecipes.add(r);
-        return r;
-    }
-
-    @Nullable
-    public static InfusionRecipe getInfusionRecipe(ItemStack res) {
-        for (InfusionRecipe r : infusionRecipes) {
-            if (r.matchViaOutput(res)) {
-                return r;
-            }
-        }
-        return null;
     }
 
 
@@ -736,7 +601,7 @@ public class ThaumcraftApi {
      * Used to assign apsects to the given ore dictionary item.
      *
      * @param tagString the ore dictionary name
-     * @param aspects   A ObjectTags object of the associated aspects
+     * @param aspects   A ObjectTags object ofAspectVisList the associated aspects
      */
     @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
@@ -755,12 +620,12 @@ public class ThaumcraftApi {
     /**
      * Used to assign aspects to the given item/block.
      * Attempts to automatically generate aspect tags by checking registered recipes.
-     * Here is an example of the declaration for pistons:<p>
+     * Here is an example ofAspectVisList the declaration for pistons:<p>
      * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
      * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
      *
-     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects
-     * @param aspects A ObjectTags object of the associated aspects
+     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values ofAspectVisList this item/block should have the same aspects
+     * @param aspects A ObjectTags object ofAspectVisList the associated aspects
      */
     @Deprecated(forRemoval = true,since = "prepare for new api")
     public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
@@ -825,14 +690,14 @@ public class ThaumcraftApi {
     //LOOT BAGS //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Used to add possible loot to treasure bags. As a reference, the weight of gold coins are 2000
+     * Used to add possible loot to treasure bags. As a reference, the weight ofAspectVisList gold coins are 2000
      * and a diamond is 50.
      * The weights are the same for all loot bag types - the only difference is how many items the bag
      * contains.
      *
      * @param item
      * @param weight
-     * @param bagTypes array of which type of bag to add this loot to. Multiple types can be specified
+     * @param bagTypes array ofAspectVisList which type ofAspectVisList bag to add this loot to. Multiple types can be specified
      *                 0 = common, 1 = uncommon, 2 = rare
      */
     //TODO:More LootBag
@@ -860,26 +725,26 @@ public class ThaumcraftApi {
 
     /**
      * To define mod crops you need to use FMLInterModComms in your @Mod.Init method.
-     * There are two 'types' of crops you can add. Standard crops and clickable crops.
+     * There are two 'types' ofAspectVisList crops you can add. Standard crops and clickable crops.
      *
      * Standard crops work like normal vanilla crops - they grow until a certain metadata
      * value is reached and you harvest them by destroying the block and collecting the blocks.
      * You need to create and ItemStack that tells the golem what block id and metadata represents
-     * the crop when fully grown. Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get
+     * the crop when fully grown. Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get
      * checked.
      * Example for vanilla wheat:
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestStandardCrop", new ItemStack(Block.crops,1,7));
      *
-     * Clickable crops are crops that you right click to gather their bounty instead of destroying them.
+     * Clickable crops are crops that you right click to gather their bounty instead ofAspectVisList destroying them.
      * As for standard crops, you need to create and ItemStack that tells the golem what block id
      * and metadata represents the crop when fully grown. The golem will trigger the blocks onBlockActivated method.
-     * Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
+     * Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
      * Example (this will technically do nothing since clicking wheat does nothing, but you get the idea):
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestClickableCrop", new ItemStack(Block.crops,1,7));
      *
      * Stacked crops (like reeds) are crops that you wish the bottom block should remain after harvesting.
      * As for standard crops, you need to create and ItemStack that tells the golem what block id
-     * and metadata represents the crop when fully grown. Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the actualy md won't get
+     * and metadata represents the crop when fully grown. Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the actualy md won't get
      * checked. If it has the order upgrade it will only harvest if the crop is more than one block high.
      * Example:
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestStackedCrop", new ItemStack(Block.reed,1,7));
@@ -893,17 +758,17 @@ public class ThaumcraftApi {
      * The format should be:
      * "[ore item/block id],[ore item/block metadata],[cluster item/block id],[cluster item/block metadata],[chance modifier float]"
      *
-     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe of the core)
+     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe ofAspectVisList the core)
      *
-     * Example for vanilla iron ore to produce one of my own native iron clusters (assuming default id's) at double the default chance:
+     * Example for vanilla iron ore to produce one ofAspectVisList my own native iron clusters (assuming default id's) at double the default chance:
      * FMLInterModComms.sendMessage("Thaumcraft", "nativeCluster","15,0,25016,16,2.0");
      */
 
     //LAMP OF GROWTH BLACKLIST ///////////////////////////////////////////////////////////////////////////
     /**
-     * You can blacklist crops that should not be effected by the Lamp of Growth via FMLInterModComms
+     * You can blacklist crops that should not be effected by the Lamp ofAspectVisList Growth via FMLInterModComms
      * in your @Mod.Init method using the "lampBlacklist" itemstack message.
-     * Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
+     * Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
      * Example for vanilla wheat:
      * FMLInterModComms.sendMessage("Thaumcraft", "lampBlacklist", new ItemStack(Block.crops,1,OreDictionary.WILDCARD_VALUE));
      */
@@ -941,7 +806,7 @@ public class ThaumcraftApi {
      * The entity must extend EntityMob.
      * [Entity] is in a similar format to what is used for mob spawners and such (see EntityList.class for vanilla examples).
      * The [level] value indicate how rare the champion version will be - the higher the number the more common.
-     * The number roughly equals the [n] in 100 chance of a mob being a champion version.
+     * The number roughly equals the [n] in 100 chance ofAspectVisList a mob being a champion version.
      * You can give 0 or negative numbers to allow champions to spawn with a very low chance only in particularly dangerous places.
      * However anything less than about -2 will probably result in no spawns at all.
      * Example:

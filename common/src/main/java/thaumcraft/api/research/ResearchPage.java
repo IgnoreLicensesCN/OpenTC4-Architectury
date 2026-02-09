@@ -5,12 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.IArcaneRecipe;
-import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
 
-import java.util.List;
 //TODO:Migrate page render impl here and subclasses
 public abstract class ResearchPage {
 //	public enum PageType
@@ -65,7 +60,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection of vanilla crafting recipes.
+//	 * @param recipe a collection ofAspectVisList vanilla crafting recipes.
 //	 */
 //	public ResearchPage(CraftingRecipe[] recipe) {
 //		this.type = PageType.NORMAL_CRAFTING;
@@ -73,7 +68,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection of arcane crafting recipes.
+//	 * @param recipe a collection ofAspectVisList arcane crafting recipes.
 //	 */
 //	public ResearchPage(IArcaneRecipe[] recipe) {
 //		this.type = PageType.ARCANE_CRAFTING;
@@ -81,7 +76,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection of arcane crafting recipes.
+//	 * @param recipe a collection ofAspectVisList arcane crafting recipes.
 //	 */
 //	public ResearchPage(CrucibleRecipe[] recipe) {
 //		this.type = PageType.CRUCIBLE_CRAFTING;
@@ -89,7 +84,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection of infusion crafting recipes.
+//	 * @param recipe a collection ofAspectVisList infusion crafting recipes.
 //	 */
 //	public ResearchPage(InfusionRecipe[] recipe) {
 //		this.type = PageType.INFUSION_CRAFTING;
@@ -176,7 +171,7 @@ public abstract class ResearchPage {
 //	}
 	
 	/**
-	 * returns a localized text of the text field (if one exists). Returns the text field itself otherwise.
+	 * returns a localized text ofAspectVisList the text field (if one exists). Returns the text field itself otherwise.
 	 * @return
 	 */
 	public String getTranslatedText() {

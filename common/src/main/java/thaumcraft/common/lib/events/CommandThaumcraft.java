@@ -151,7 +151,7 @@ public class CommandThaumcraft{
    }
 
    private static void sendHelp(CommandSourceStack source) {
-      source.sendSuccess(() -> Component.literal("§3You can also use /thaum or /tc instead of /thaumcraft."), false);
+      source.sendSuccess(() -> Component.literal("§3You can also use /thaum or /tc instead ofAspectVisList /thaumcraft."), false);
       source.sendSuccess(() -> Component.literal("§3Use /thaumcraft research <player> <all|reset|<research>>"), false);
       source.sendSuccess(() -> Component.literal("§3Use /thaumcraft aspect <player> <aspect|all> <amount>"), false);
       source.sendSuccess(() -> Component.literal("§3Use /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>"), false);
@@ -224,7 +224,7 @@ public class CommandThaumcraft{
 //         icommandsender.displayClientMessage(new ChatComponentTranslation("§cUse /thaumcraft help to get help"));
 //      } else {
 //         if (astring[0].equalsIgnoreCase("help")) {
-//            icommandsender.displayClientMessage(new ChatComponentTranslation("§3You can also use /thaum or /tc instead of /thaumcraft."));
+//            icommandsender.displayClientMessage(new ChatComponentTranslation("§3You can also use /thaum or /tc instead ofAspectVisList /thaumcraft."));
 //            icommandsender.displayClientMessage(new ChatComponentTranslation("§3Use this to give research to a player."));
 //            icommandsender.displayClientMessage(new ChatComponentTranslation("  /thaumcraft research <list|player> <all|reset|<research>>"));
 //            icommandsender.displayClientMessage(new ChatComponentTranslation("§3Use this to give aspect research points to a player."));
@@ -288,7 +288,7 @@ public class CommandThaumcraft{
         }
 
         ResearchManager.scheduleSave(player.getGameProfile().getName());
-        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."),false);
+        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " ofAspectVisList all the aspects."),false);
         icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
         new PacketSyncAspectsS2C(player).sendTo(player);
     }

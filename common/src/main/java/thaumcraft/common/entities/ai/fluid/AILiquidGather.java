@@ -264,7 +264,7 @@ public class AILiquidGather extends EntityAIBase {
 
     public static void getConnectedFluidBlocks_tweak(World world, int x, int y, int z, Fluid fluid, ArrayList<SourceBlock> sources, float pumpDist) {
         if (fluid == null) return;
-        Set<ChunkCoordinates> seen = new HashSet<>();  // ChunkCoordinates has quite terrible hash function, but there are multiple different optimization mod that optimize this. given the popularity of those I'd say it's fine to use it
+        Set<ChunkCoordinates> seen = new HashSet<>();  // ChunkCoordinates has quite terrible hash function, but there are multiple different optimization mod that optimize this. given the popularity ofAspectVisList those I'd say it's fine to use it
         Queue<ChunkCoordinates> toVisit = new ArrayDeque<>();
         ChunkCoordinates origin = new ChunkCoordinates(x, y, z);
         toVisit.add(origin);

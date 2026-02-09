@@ -371,7 +371,7 @@ public class EventHandlerEntity {
                      BlockEntity tile = event.world.getBlockEntity(x + xx, y + yy, z + zz);
                      if (tile instanceof TileOwned) {
                         if (((EntityEnderPearl)event.entity).getThrower() instanceof Player) {
-                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic of a nearby warded object destroys the ender pearl."));
+                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic ofAspectVisList a nearby warded object destroys the ender pearl."));
                         }
 
                         event.entity.setDead();

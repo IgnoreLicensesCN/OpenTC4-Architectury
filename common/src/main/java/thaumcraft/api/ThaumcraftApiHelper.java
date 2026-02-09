@@ -28,61 +28,14 @@ import java.util.Objects;
 
 public class ThaumcraftApiHelper {
 
-    //TODO:new api(maybe)
-    public static AspectList<Aspect> cullTags(AspectList<Aspect> temp) {
-        AspectList<Aspect> temp2 = new AspectList<>();
-        for (Aspect tag : temp.getAspectTypes()) {
-            if (tag != null)
-                temp2.addAll(tag, temp.getAmount(tag));
-        }
-        while (temp2.size() > 6) {
-            Aspect lowest = null;
-            float low = Short.MAX_VALUE;
-            for (var tag : temp2.getAspectTypes()) {
-                if (tag == null) continue;
-                float ta = temp2.getAmount(tag);
-                if (tag instanceof PrimalAspect) {
-                    ta *= .9f;
-                } else if (tag instanceof CompoundAspect compoundAspect) {
-                    var componentA = compoundAspect.components.aspectA();
-                    var componentB = compoundAspect.components.aspectB();
-                    if (componentA instanceof CompoundAspect compoundA) {
-                        ta *= 1.1f;
-                        if (!(compoundA.components.aspectA() instanceof PrimalAspect)) {
-                            ta *= 1.05f;
-                        }
-                        if (!(compoundA.components.aspectB() instanceof PrimalAspect)) {
-                            ta *= 1.05f;
-                        }
-                    }
-                    if (componentB instanceof CompoundAspect compoundB) {
-                        ta *= 1.1f;
-                        if (!(compoundB.components.aspectA() instanceof PrimalAspect)) {
-                            ta *= 1.05f;
-                        }
-                        if (!(compoundB.components.aspectB() instanceof PrimalAspect)) {
-                            ta *= 1.05f;
-                        }
-                    }
-                }
-
-                if (ta < low) {
-                    low = ta;
-                    lowest = tag;
-                }
-            }
-            temp2.remove(lowest);
-        }
-        return temp2;
-    }
-
-//    public static boolean areItemsEqual(ItemStack s1, ItemStack s2) {
+    //    public static boolean areItemsEqual(ItemStack s1, ItemStack s2) {
 //        if (s1.isDamageableItem() && s2.isDamageableItem()) {
 //            return s1.getItem() == s2.getItem();
 //        } else
 //            return s1.getItem() == s2.getItem() && s1.getDamageValue() == s2.getDamageValue();
 //    }
 
+    @Deprecated(forRemoval = true,since = "use researchItem's method")
     public static boolean isResearchComplete(String username, String researchkey) {
         return ResearchManager.isResearchComplete(username, researchkey);
     }
@@ -95,18 +48,23 @@ public class ThaumcraftApiHelper {
         return Thaumcraft.playerKnowledge.getAspectsDiscovered(username);
     }
 
+    @Deprecated(forRemoval = true,since = "use object method instead")
     public static ItemStack getStackInRowAndColumn(TileMagicWorkbench instance, int row, int column) {
-        return instance.getStackInRowAndColumn(row, column);
+//        return instance.getStackInRowAndColumn(row, column);
+        throw new RuntimeException("use object method instead");
     }
 
+    @Deprecated(forRemoval = true,since = "newer api")
     public static AspectList<Aspect> getObjectAspects(ItemStack is) {
         return ThaumcraftCraftingManager.getObjectTags(is);
     }
 
+    @Deprecated(forRemoval = true,since = "newer api")
     public static AspectList<Aspect> getBonusObjectTags(ItemStack is, AspectList<Aspect> ot) {
         return ThaumcraftCraftingManager.getBonusAspects(is, ot);
     }
 
+    @Deprecated(forRemoval = true,since = "newer api")
     public static AspectList<Aspect> generateBaseAspects(Item item) {
         return ThaumcraftCraftingManager.generateBaseAspects(item);
     }
@@ -214,7 +172,7 @@ public class ThaumcraftApiHelper {
      *
      * @param wand     the wand itemstack
      * @param player   the player using the wand
-     * @param cost     the cost of the operation.
+     * @param cost     the cost ofAspectVisList the operation.
      * @param doit     actually subtract the vis from the wand if true - if false just simulate the result
      * @param crafting is this a crafting operation or not - if
      *                 false then things like frugal and potency will apply to the costs
@@ -232,7 +190,7 @@ public class ThaumcraftApiHelper {
      *
      * @param wand   the wand itemstack
      * @param player the player using the wand
-     * @param cost   the cost of the operation.
+     * @param cost   the cost ofAspectVisList the operation.
      * @param doit   actually subtract the vis from the wand if true - if false just simulate the result
      * @return was the vis successfully subtracted
      */
@@ -247,7 +205,7 @@ public class ThaumcraftApiHelper {
      * frugal don't effect them
      *
      * @param player the player using the wand
-     * @param cost   the cost of the operation.
+     * @param cost   the cost ofAspectVisList the operation.
      * @return was the vis successfully subtracted
      */
     public static boolean consumeVisFromInventory(Player player, AspectList<Aspect> cost) {
@@ -260,7 +218,7 @@ public class ThaumcraftApiHelper {
      *
      * @param player    the player using the wand
      * @param amount    how much warp to add. Negative amounts are only valid for temporary warp
-     * @param temporary add temporary warp instead of permanent
+     * @param temporary add temporary warp instead ofAspectVisList permanent
      */
     public static void addWarpToPlayer(Player player, int amount, boolean temporary) {
         Thaumcraft.addWarpToPlayer(player, amount, temporary);

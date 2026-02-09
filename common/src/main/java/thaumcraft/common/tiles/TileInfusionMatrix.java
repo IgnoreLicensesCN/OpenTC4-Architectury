@@ -29,8 +29,8 @@ import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.crafting.IInfusionStabiliser;
-import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
+import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
+import thaumcraft.api.crafting.ThaumcraftInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.Thaumcraft;
@@ -292,7 +292,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         this.markDirty();
                     } else {
-                        InfusionEnchantmentRecipe recipe2 = ThaumcraftCraftingManager.findMatchingInfusionEnchantmentRecipe(components, this.recipeInput, player);
+                        ThaumcraftInfusionEnchantmentRecipe recipe2 = ThaumcraftCraftingManager.findMatchingInfusionEnchantmentRecipe(components, this.recipeInput, player);
                         if (recipe2 != null) {
                             this.recipeType = 1;
                             this.recipeIngredients = new ArrayList<>();
@@ -303,8 +303,8 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
 
                             this.recipeOutput = recipe2.getEnchantment();
                             this.recipeInstability = recipe2.calcInstability(this.recipeInput);
-                            AspectList<Aspect>esscost = recipe2.aspects.copy();
-                            float essmod = recipe2.getEssentiaMod(this.recipeInput);
+                            AspectList<Aspect>esscost = recipe2.basicCostAspects.copy();
+                            float essmod = recipe2.getAspectsModified(this.recipeInput);
 
                             for (Aspect as : esscost.getAspects()) {
                                 esscost.addAll(as, (int) ((float) esscost.getAmount(as) * essmod));

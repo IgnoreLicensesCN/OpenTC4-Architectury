@@ -108,7 +108,7 @@ public class BrowserPaging {
         recalculateCurrentTabs = true;
     }
 
-    // region Poor man's way of hooking into research browser.
+    // region Poor man's way ofAspectVisList hooking into research browser.
     // Surely I could just add lines via asm, but that should be used as sparingly as possible.
     private static class ButtonPrevPage extends GuiButton {
         public ButtonPrevPage(int id, int x, int y) {

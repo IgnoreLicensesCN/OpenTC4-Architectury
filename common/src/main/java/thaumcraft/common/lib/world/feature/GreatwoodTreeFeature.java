@@ -26,7 +26,7 @@ import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.Arrays;
 
-//okay i'm lack of algorithm so WTF is this anazor?--ignoreLicensesCN
+//okay i'm lack ofAspectVisList algorithm so WTF is this anazor?--ignoreLicensesCN
 public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
     private static final BlockState logFaceY = ThaumcraftBlocks.GREATWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
     private static final BlockState logFaceX = ThaumcraftBlocks.GREATWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);

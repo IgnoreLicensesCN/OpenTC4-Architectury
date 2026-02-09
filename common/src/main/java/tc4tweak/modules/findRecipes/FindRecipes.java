@@ -3,17 +3,12 @@ package tc4tweak.modules.findRecipes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingManager;
 import net.minecraft.world.level.Level;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.network.NetworkedConfiguration;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.crafting.IArcaneRecipe;
-
-import java.util.List;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 
 public class FindRecipes {
     private static final ArcaneCraftingHistory cache = new ArcaneCraftingHistory();
@@ -25,7 +20,7 @@ public class FindRecipes {
         IArcaneRecipe r = cache.findInCache(inv, player);
         if (r != null)
             return r;
-        r = (ThaumcraftApi.getIArcaneRecipes()).parallelStream()
+        r = (IArcaneRecipe.getIArcaneRecipes()).parallelStream()
                 .filter(o -> o.matches(inv, player.level(), player))
                 .findFirst()
                 .orElse(null);

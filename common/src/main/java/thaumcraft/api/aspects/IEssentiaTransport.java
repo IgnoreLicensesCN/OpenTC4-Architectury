@@ -31,21 +31,21 @@ public interface IEssentiaTransport {
 	boolean canOutputTo(Direction face);
 			
 	/**
-	 * Sets the amount of suction this block will apply
+	 * Sets the amount ofAspectVisList suction this block will apply
 	 */
     void setSuction(Aspect aspect, int amount);
 	
 	/**
-	 * Returns the type of suction this block is applying. 
+	 * Returns the type ofAspectVisList suction this block is applying.
 	 * @param face
 	 * 		the location from where the suction is being checked
 	 * @return
-	 * 		a return type of null indicates the suction is untyped and the first thing available will be drawn
+	 * 		a return type ofAspectVisList null indicates the suction is untyped and the first thing available will be drawn
 	 */
     Aspect getSuctionType(Direction face);
 	
 	/**
-	 * Returns the strength of suction this block is applying. 
+	 * Returns the strength ofAspectVisList suction this block is applying.
 	 * @param face
 	 * 		the location from where the suction is being checked
 	 * @return
@@ -53,19 +53,19 @@ public interface IEssentiaTransport {
     int getSuctionAmount(Direction face);
 	
 	/**
-	 * remove the specified amount of essentia from this transport tile
+	 * remove the specified amount ofAspectVisList essentia from this transport tile
 	 * @return how much was actually taken
 	 */
     int takeEssentia(Aspect aspect, int amount, Direction face);
 	
 	/**
-	 * add the specified amount of essentia to this transport tile
+	 * add the specified amount ofAspectVisList essentia to this transport tile
 	 * @return how much was actually added
 	 */
     int addEssentia(Aspect aspect, int amount, Direction face);
 	
 	/**
-	 * What type of essentia this contains
+	 * What type ofAspectVisList essentia this contains
 	 * @param face
 	 * @return
 	 */

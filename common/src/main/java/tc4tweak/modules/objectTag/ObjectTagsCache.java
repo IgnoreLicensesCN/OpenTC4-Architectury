@@ -10,7 +10,7 @@ import thaumcraft.api.aspects.AspectList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-//congratulations!we dont need itemmeta! consider all of them 0!
+//congratulations!we dont need itemmeta! consider all ofAspectVisList them 0!
 class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList<Aspect>>> {
 
 //    private static TIntObjectMap<AspectList> bakeSubmap(@SuppressWarnings("rawtypes") Map.Entry<List, AspectList> e) {

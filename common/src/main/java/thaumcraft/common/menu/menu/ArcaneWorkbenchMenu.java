@@ -1,4 +1,4 @@
-package thaumcraft.common.gui.menu;
+package thaumcraft.common.menu.menu;
 
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,17 +13,17 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.common.gui.ThaumcraftGUI;
-import thaumcraft.common.gui.menu.abstracts.AbstractThaumcraftMenu;
-import thaumcraft.common.gui.slot.ArcaneWorkbenchOutputSlot;
-import thaumcraft.common.gui.slot.ArcaneWorkbenchWandSlot;
+import thaumcraft.common.menu.ThaumcraftGUI;
+import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
+import thaumcraft.common.menu.slot.ArcaneWorkbenchOutputSlot;
+import thaumcraft.common.menu.slot.ArcaneWorkbenchWandSlot;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-import static thaumcraft.api.ThaumcraftApi.getIArcaneRecipes;
+import static thaumcraft.api.crafting.interfaces.IArcaneRecipe.getIArcaneRecipes;
 
 public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchBlockEntity> {
 

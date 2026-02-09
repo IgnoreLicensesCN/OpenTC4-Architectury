@@ -1,52 +1,110 @@
 package thaumcraft.api.crafting;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.ThaumcraftApiHelper;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.common.tiles.TileMagicWorkbench;
+import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-public class ShapedArcaneRecipe implements IArcaneRecipe
-{
-    //Added in for future ease of change, but hard coded for now.
+public class ShapedArcaneRecipe implements IArcaneRecipe {
+    //Added in for future ease ofAspectVisList change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
 
-//    public ItemStack output = null;
+    //    public ItemStack output = null;
     public final RecipeItemMatcher[] input;
-    protected final Function<ItemStack[],ItemStack> resultGenerator;
-//    public final AspectList<Aspect>aspects;
-    public final Function<ItemStack[],CentiVisList> aspectsGenerator;
-    public final String research;
+    private final ItemStack[] sampleArr;
+    protected final Function<List<ItemStack>, ItemStack> resultGenerator;
+    //    public final AspectList<Aspect>aspects;
+    public final Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator;
+    public final ResearchItem research;
     public final int width;
     public final int height;
     public final RecipeItemMatcher outMatcher;
     private boolean mirrored = true;
 
+    private final boolean supportsAspectCalculation;
+    private final List<List<ItemStack>> inputForAspectCalculation;
+    private final ItemStack outputForAspectCalculation;
+    private final List<List<ItemStack>> remainingForAspectCalculation;
+    private final CentiVisList<Aspect> centiVisListForCalculation;
     //since the original is too messy,i should do some cleaning for this.
-    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, AspectList<Aspect>aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
-        this(research,resultGenerator,arr -> CentiVisList.of(aspects),input,width,height,outMatcher);
+    public ShapedArcaneRecipe(
+            ResearchItem research,
+            Function<List<ItemStack>, ItemStack> resultGenerator,
+            AspectList<Aspect> aspects,
+            RecipeItemMatcher[] input,
+            int width,
+            int height,
+            RecipeItemMatcher outMatcher
+    ) {
+        this(research, resultGenerator, arr -> CentiVisList.ofAspectVisList(aspects), input, width, height, outMatcher);
     }
-    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, CentiVisList aspects, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
-        this(research,resultGenerator,arr -> aspects,input,width,height,outMatcher);
+
+    public ShapedArcaneRecipe(
+            ResearchItem research,
+            Function<List<ItemStack>, ItemStack> resultGenerator,
+            CentiVisList<Aspect> aspects,
+            RecipeItemMatcher[] input,
+            int width,
+            int height,
+            RecipeItemMatcher outMatcher
+    ) {
+        this(
+                research,
+                resultGenerator,
+                arr -> aspects,
+                input,
+                width,
+                height,
+                outMatcher
+        );
     }
-    public ShapedArcaneRecipe(String research, Function<ItemStack[],ItemStack> resultGenerator, Function<ItemStack[],CentiVisList> aspectsGenerator, RecipeItemMatcher[] input, int width, int height,RecipeItemMatcher outMatcher) {
-        if (input.length != width*height){
+
+    public ShapedArcaneRecipe(
+            ResearchItem research,
+            Function<List<ItemStack>, ItemStack> resultGenerator,
+            Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
+            RecipeItemMatcher[] input,
+            int width,
+            int height,
+            RecipeItemMatcher outMatcher
+    ){
+        this(research,resultGenerator,aspectsGenerator,input,width,height,outMatcher,null,null,null,null);
+    }
+    public ShapedArcaneRecipe(
+            ResearchItem research,
+            Function<List<ItemStack>, ItemStack> resultGenerator,
+            Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
+            RecipeItemMatcher[] input,
+            int width,
+            int height,
+            RecipeItemMatcher outMatcher,
+            ItemStack outputForAspectCalculation,
+            List<List<ItemStack>> inputForAspectCalculation,
+            List<List<ItemStack>> remainingForAspectCalculation,
+            CentiVisList<Aspect> centiVisListForCalculation
+    ) {
+        if (input.length != width * height) {
             throw new IllegalArgumentException("Invalid recipe shape!");
         }//yeah that's quite easy
-        for (RecipeItemMatcher recipe : input){
-            if (recipe == null){
+        for (RecipeItemMatcher recipe : input) {
+            if (recipe == null) {
                 throw new IllegalArgumentException("Invalid recipe content!null should be replace with EMPTY_MATCHER!");
             }
         }
@@ -56,14 +114,34 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
 //        this.aspects = aspects;
 //        StringBuilder shape = new StringBuilder();
         this.input = input;
+        this.sampleArr = new ItemStack[input.length];
         this.width = width;
         this.height = height;
         this.outMatcher = outMatcher;
-        this.allSampled = new ItemStack[input.length][];
-        for (int i=0;i<allSampled.length;i++){
-            allSampled[i] = input[i].getAvailableItemStackSample().toArray(new ItemStack[0]);
+
+
+        this.supportsAspectCalculation =
+                inputForAspectCalculation != null
+                        && outputForAspectCalculation != null
+                        && remainingForAspectCalculation != null;
+        if (!this.supportsAspectCalculation
+                && !(inputForAspectCalculation == null
+                && outputForAspectCalculation == null
+                && remainingForAspectCalculation == null
+        )
+        ){
+            OpenTC4.LOGGER.warn(
+                    """
+                            not all aspect calculation elements are null or notnull,
+                            this might be a bug or misunderstanding.
+                            using researchItem:{}
+                            """,research,new Exception());
         }
-        
+        this.inputForAspectCalculation = inputForAspectCalculation;
+        this.remainingForAspectCalculation = remainingForAspectCalculation;
+        this.outputForAspectCalculation = outputForAspectCalculation;
+        this.centiVisListForCalculation = centiVisListForCalculation;
+
 //        int idx = 0;
 
 //        if (recipe[idx] instanceof Boolean)
@@ -157,86 +235,69 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     }
 
     @Override
-    public ItemStack getCraftingResult(Container var1){
-        if (!matchesItems(var1)){
+    public ItemStack getCraftingResult(IArcaneWorkbenchContainer var1) {
+        if (!matchesItems(var1)) {
             return ItemStack.EMPTY;
         }
-        return resultGenerator.apply(getInputItemStacks(var1));
+        return resultGenerator.apply(var1.getInputItemStacks());
     }
 
     @Override
-    public int getRecipeSize(){ return input.length; }
-
-    @Override
-    public ItemStack getRecipeOutput(){
-        return resultGenerator.apply(getInputSample());
+    public int getRecipeSize() {
+        return input.length;
     }
 
     @Override
-    public boolean matches(Container inv, Level world, Player player)
-    {
-    	if (!research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), research)) {
-    		return false;
-    	}
+    public ItemStack getRecipeOutput() {
+        return resultGenerator.apply(List.of(getInputSample()));
+    }
+
+    @Override
+    public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
+        if (research.isPlayerCompletedResearch(player)) {
+            return false;
+        }
 
         return matchesItems(inv);
     }
 
-    private boolean matchesItems(Container inv){
-        for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++)
-        {
-            for (int y = 0; y <= MAX_CRAFT_GRID_HEIGHT - height; ++y)
-            {
-                if (checkMatch(inv, x, y, false))
-                {
-                    return !resultGenerator.apply(getInputItemStacks(inv)).isEmpty();
+    private boolean matchesItems(IArcaneWorkbenchContainer inv) {
+        for (int xOffset = 0; xOffset <= MAX_CRAFT_GRID_WIDTH - this.width; xOffset++) {
+            for (int yOffset = 0; yOffset <= MAX_CRAFT_GRID_HEIGHT - this.height; ++yOffset) {
+                if (checkMatch(inv, xOffset, yOffset, false)) {
+                    return !resultGenerator.apply(inv.getInputItemStacks())
+                            .isEmpty();
                 }
 
-                if (mirrored && checkMatch(inv, x, y, true))
-                {
-                    return !resultGenerator.apply(getInputItemStacks(inv)).isEmpty();
+                if (mirrored && checkMatch(inv, xOffset, yOffset, true)) {
+                    return !resultGenerator.apply(inv.getInputItemStacks())
+                            .isEmpty();
                 }
             }
         }
         return false;
     }
 
-    public static ItemStack[] getInputItemStacks(Container inv){
-        ItemStack[] inputItemStacks = new ItemStack[9];
-        for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++){
-            for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++){
-                inputItemStacks[x + (y*2)] = ThaumcraftApiHelper.getStackInRowAndColumn((TileMagicWorkbench) inv, x, y);
-            }
-        }
-        return inputItemStacks;
-    }
 
     //so i've thrown item check job to RecipeItemMatcher.
-    private boolean checkMatch(Container inv, int startX, int startY, boolean mirror)
-    {
-        for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++)
-        {
-            for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++)
-            {
+    private boolean checkMatch(IArcaneWorkbenchContainer inv, int startX, int startY, boolean mirror) {
+        for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++) {
+            for (int y = 0; y < MAX_CRAFT_GRID_HEIGHT; y++) {
                 int subX = x - startX;
                 int subY = y - startY;
                 RecipeItemMatcher target = EMPTY_MATCHER;
 
-                if (subX >= 0 && subY >= 0 && subX < width && subY < height)
-                {
-                    if (mirror)
-                    {
-                        target = input[width - subX - 1 + subY * width];
-                    }
-                    else
-                    {
-                        target = input[subX + subY * width];
+                if (subX >= 0 && subY >= 0 && subX < this.width && subY < this.height) {
+                    if (mirror) {
+                        target = input[this.width - subX - 1 + subY * this.width];
+                    } else {
+                        target = input[subX + subY * this.width];
                     }
                 }
 
-                ItemStack slot = ThaumcraftApiHelper.getStackInRowAndColumn((TileMagicWorkbench) inv, x, y);
+                ItemStack slot = inv.getStackInRowAndColumn(x,y);
 
-                if (!target.matches(slot)){
+                if (!target.matches(slot)) {
                     return false;
                 }
 //                if (target instanceof ItemStack)
@@ -281,8 +342,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
 //        		(ignoresDamage(target)|| target.getDamageValue() == input.getDamageValue()));
 //    }
 
-    public ShapedArcaneRecipe setMirrored(boolean mirror)
-    {
+    public ShapedArcaneRecipe setMirrored(boolean mirror) {
         mirrored = mirror;
         return this;
     }
@@ -290,52 +350,76 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     /**
      * Returns the input for this recipe, any mod accessing this value should never
      * manipulate the values in this array as it will effect the recipe itself.
+     *
      * @return The recipes input vales.
      */
-    public RecipeItemMatcher[] getInput()
-    {
+    public RecipeItemMatcher[] getInput() {
         return this.input;
     }
-    
-    @Override		
-	public CentiVisList getAspects() {
-		return aspectsGenerator.apply(null);
-	}
-    
-    @Override		
-	public CentiVisList getAspects(Container inv) {
-		return aspectsGenerator.apply(getInputItemStacks(inv));
-	}
-	
-	@Override
-	public String getResearch() {
-		return research;
-	}
+
+    @Override
+    public CentiVisList<Aspect> getAspects() {
+        return aspectsGenerator.apply(null);
+    }
+
+    @Override
+    public CentiVisList<Aspect> getAspects(IArcaneWorkbenchContainer inv) {
+        return aspectsGenerator.apply(inv.getInputItemStacks());
+    }
+
+    @Override
+    public ResearchItem getResearch() {
+        return research;
+    }
 
     @Override
     public ItemStack[] getInputSample() {
-        ItemStack[] sampled = new ItemStack[input.length];
-        for (int i = 0; i < input.length; i++){
-            sampled[i] = pickByTime(input[i].getAvailableItemStackSample());
+        for (int i = 0; i < input.length; i++) {
+            sampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
         }
-        return sampled;
-    }
-
-    private final ItemStack[][] allSampled;
-    @Override
-    public ItemStack[][] getAllInputSample(){
-        return allSampled;
+        return sampleArr;
     }
 
     private final ItemStack[] resultStore = new ItemStack[1];
+
     @Override
     public ItemStack[] getOutputSample(ItemStack[] inputSample) {
-        resultStore[0] = resultGenerator.apply(inputSample);
+        resultStore[0] = resultGenerator.apply(Arrays.asList(inputSample));
         return resultStore;
     }
 
     @Override
     public boolean matchViaOutput(ItemStack res) {
         return outMatcher.matches(res);
+    }
+
+    @Override
+    public boolean supportsAspectCalculation() {
+        return supportsAspectCalculation;
+    }
+
+    @Override
+    public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+        return inputForAspectCalculation;
+    }
+
+    @Override
+    public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+        return outputForAspectCalculation;
+    }
+
+    @Override
+    public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+        return remainingForAspectCalculation;
+    }
+
+    @Override
+    public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+        return UnmodifiableAspectList.EMPTY;
+    }
+
+    @Override
+    public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+        return centiVisListForCalculation;
     }
 }

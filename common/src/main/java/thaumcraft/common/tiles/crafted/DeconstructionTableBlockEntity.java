@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
-import thaumcraft.common.gui.menu.DeconstructionTableMenu;
+import thaumcraft.common.menu.menu.DeconstructionTableMenu;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 

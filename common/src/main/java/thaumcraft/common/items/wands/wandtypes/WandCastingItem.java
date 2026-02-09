@@ -35,7 +35,7 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
-//i will use interface instead of (item instanceof WandCastingItem wandCasting)
+//i will use interface instead ofAspectVisList (item instanceof WandCastingItem wandCasting)
 public class WandCastingItem extends Item
         implements
         IWandSpellEventListenable,

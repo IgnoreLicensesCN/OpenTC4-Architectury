@@ -7,7 +7,7 @@ import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 //you can see that i didn't make Asp PrimalAspect,maybe someone wants special cases.Remember TODO:Render as many aspects as possible in some rules in workbench
 public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just mark we are using centiVis
-//    public static CentiVisList<Aspect> of(ItemStack stack) {
+//    public static CentiVisList<Aspect> ofAspectVisList(ItemStack stack) {
 //        var result = new CentiVisList<>();
 //        AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
 //        if (temp!=null) {
@@ -19,6 +19,9 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
 //    }
     public CentiVisList() {
         super();
+    }
+    public CentiVisList(AspectList<Asp> aspects) {
+        super(aspects);
     }
     public CentiVisList(Map<Asp, Integer> aspects) {
         super(aspects);
@@ -47,7 +50,7 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
         return out;
     }
 
-    public static <Asp extends Aspect> CentiVisList<Asp> of(AspectList<Asp> aspects) {
+    public static <Asp extends Aspect> CentiVisList<Asp> ofAspectVisList(AspectList<Asp> aspects) {
         if (aspects instanceof CentiVisList<Asp> centiVisList){
             return centiVisList;
         }

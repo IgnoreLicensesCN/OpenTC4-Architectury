@@ -25,7 +25,7 @@ public class WandRod {
 //	private int craftCost;
 //
 //	/**
-//	 * The amount of vis that can be stored - this number is actually multiplied
+//	 * The amount ofAspectVisList vis that can be stored - this number is actually multiplied
 //	 * by 100 for use by the wands internals
 //	 */
 //	int capacity;

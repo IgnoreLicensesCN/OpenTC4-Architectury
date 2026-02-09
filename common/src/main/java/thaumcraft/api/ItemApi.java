@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
  * 
  * This is used to gain access to the items in my mod. 
  * I only give some examples and it will probably still 
- * require a bit of work for you to get hold of everything you need.
+ * require a bit ofAspectVisList work for you to get hold ofAspectVisList everything you need.
  *
  * IgnoreLicensesCN:
  * since we're open,it's suitable to remove it

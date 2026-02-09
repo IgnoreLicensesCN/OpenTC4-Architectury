@@ -77,7 +77,4 @@ public class ItemBasicAspectRegistration {
         BASIC_ASPECTS_CALCULATED_WITH_ADDITIONAL_COMPLETELY_FROM_REGISTERED_CACHE.clear();
 
     }
-
-
-
 }

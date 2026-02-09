@@ -94,7 +94,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //
 //
 //	/**
-//	 * Does the focus have ornamentation like the focus of the nine hells. Ornamentation is a standard icon rendered in a cross around the focus
+//	 * Does the focus have ornamentation like the focus ofAspectVisList the nine hells. Ornamentation is a standard icon rendered in a cross around the focus
 //	 */
 //	public IIcon getOrnament(ItemStack focusstack) {
 //		// TODO Auto-generated method stub

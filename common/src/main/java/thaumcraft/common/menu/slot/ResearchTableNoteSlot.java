@@ -1,4 +1,4 @@
-package thaumcraft.common.gui.slot;
+package thaumcraft.common.menu.slot;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;

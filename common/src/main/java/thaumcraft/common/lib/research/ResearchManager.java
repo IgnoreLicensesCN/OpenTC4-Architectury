@@ -291,33 +291,25 @@ public class ResearchManager {
 
         return out;
     }
-    public static List<ResearchItemResourceLocation> getResearchForPlayer(String playername) {
-        var out = Thaumcraft.getCompletedResearch().get(playername);
+    public static List<ResearchItemResourceLocation> getResearchForPlayer(Player player) {
+        var playerName = player.getGameProfile().getName();
+        var out = Thaumcraft.getCompletedResearch().get(playerName);
 
         try {
             var server = platformUtils.getServer();
             if (
                     out == null && Platform.getEnvironment() == Env.SERVER //Thaumcraft.getClientWorld() == null && server != null
             ) {
-                Thaumcraft.getCompletedResearch().put(playername, new ArrayList<>());
-                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playername).getBytes(Charsets.UTF_8));
+                Thaumcraft.getCompletedResearch().put(playerName, new ArrayList<>());
+                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
 
 
                 File dir = getThaumcraftPlayersDirectory(server);
                 File file1 = new File(dir, id + ".thaum");
                 File file2 = new File(dir, id + ".thaumbak");
-                loadPlayerData(playername, file1, file2, false);
-//                ServerPlayer ServerPlayer = new ServerPlayer(server, server.worldServerForDimension(0), new GameProfile(id, playername), new ItemInWorldManager(MinecraftServer.getServer().worldServerForDimension(0)));
-//                if (ServerPlayer != null) {
-//                    IPlayerFileData playerNBTManagerObj = server.worldServerForDimension(0).getSaveHandler().getSaveHandler();
-//                    SaveHandler sh = (SaveHandler) playerNBTManagerObj;
-//                    File dir = getThaumcraftPlayersDirectory(server);
-//                    File file1 = new File(dir, id + ".thaum");
-//                    File file2 = new File(dir, id + ".thaumbak");
-//                    loadPlayerData(ServerPlayer, file1, file2, false);
-//                }
+                loadPlayerData(playerName, file1, file2, false);
 
-                out = Thaumcraft.getCompletedResearch().get(playername);
+                out = Thaumcraft.getCompletedResearch().get(playerName);
             }
         } catch (Exception e) {
             LOGGER.error("getClueForPlayer", e);
@@ -326,12 +318,12 @@ public class ResearchManager {
         return out;
     }
 
-    public static List<ResearchItemResourceLocation> getResearchForPlayerSafe(String playername) {
-        return Thaumcraft.getCompletedResearch().get(playername);
+    public static List<ResearchItemResourceLocation> getResearchForPlayerSafe(Player player) {
+        return Thaumcraft.getCompletedResearch().get(player.getGameProfile().getName());
     }
 
-    public static List<ClueResourceLocation> getClueForPlayerSafe(String playername) {
-        return Thaumcraft.getCompletedClue().get(playername);
+    public static List<ClueResourceLocation> getClueForPlayerSafe(Player player) {
+        return Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
     }
 
     public static Aspect getCombinationResult(Aspect aspect1, Aspect aspect2) {

@@ -4,7 +4,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.client.resources.language.I18n;
 
-//lots of translateToLocal
+//lots ofAspectVisList translateToLocal
 public class StatCollector {
     @Deprecated(forRemoval = true)
     public static String translateToLocal(String key) {
