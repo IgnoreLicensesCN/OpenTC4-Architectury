@@ -454,7 +454,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 for (Aspect aspect : this.recipeEssentia.getAspects()) {
                     if (this.recipeEssentia.getAmount(aspect) > 0) {
                         if (EssentiaHandler.drainEssentia(this, aspect, Direction.UNKNOWN, 12)) {
-                            this.recipeEssentia.reduce(aspect, 1);
+                            this.recipeEssentia.tryReduce(aspect, 1);
                             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                             this.markDirty();
                             return;

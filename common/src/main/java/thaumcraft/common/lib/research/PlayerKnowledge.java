@@ -121,7 +121,7 @@ public class PlayerKnowledge {
             al.addAll(aspect, amount);
             ret = true;
          } else if (al.getAmount(aspect) > 0) {
-            al.reduce(aspect, -amount);
+            al.tryReduce(aspect, -amount);
             ret = true;
          }
 

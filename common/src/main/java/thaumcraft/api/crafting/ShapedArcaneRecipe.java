@@ -5,11 +5,8 @@ import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
@@ -39,10 +36,10 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     private boolean mirrored = true;
 
     private final boolean supportsAspectCalculation;
-    private final List<List<ItemStack>> inputForAspectCalculation;
-    private final ItemStack outputForAspectCalculation;
-    private final List<List<ItemStack>> remainingForAspectCalculation;
-    private final CentiVisList<Aspect> centiVisListForCalculation;
+    private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
+    private final @NotNull ItemStack outputForAspectCalculation;
+    private final @NotNull List<List<ItemStack>> remainingForAspectCalculation;
+    private final @NotNull CentiVisList<Aspect> centiVisListForCalculation;
     //since the original is too messy,i should do some cleaning for this.
     public ShapedArcaneRecipe(
             ResearchItem research,
@@ -137,10 +134,10 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
                             using researchItem:{}
                             """,research,new Exception());
         }
-        this.inputForAspectCalculation = inputForAspectCalculation;
-        this.remainingForAspectCalculation = remainingForAspectCalculation;
-        this.outputForAspectCalculation = outputForAspectCalculation;
-        this.centiVisListForCalculation = centiVisListForCalculation;
+        this.inputForAspectCalculation = inputForAspectCalculation == null?List.of():inputForAspectCalculation;
+        this.outputForAspectCalculation = outputForAspectCalculation == null?ItemStack.EMPTY:outputForAspectCalculation;
+        this.remainingForAspectCalculation = remainingForAspectCalculation == null?List.of():remainingForAspectCalculation;
+        this.centiVisListForCalculation = centiVisListForCalculation == null? UnmodifiableCentiVisList.EMPTY:centiVisListForCalculation;
 
 //        int idx = 0;
 
@@ -399,27 +396,42 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     }
 
     @Override
-    public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+    public @NotNull List<List<ItemStack>> getAspectCalculationInputs() {
+        if (!supportsAspectCalculation){
+            throw new RuntimeException("check supportsAspectCalculation() first!");
+        }
         return inputForAspectCalculation;
     }
 
     @Override
-    public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+    public @NotNull ItemStack getAspectCalculationOutput() {
+        if (!supportsAspectCalculation){
+            throw new RuntimeException("check supportsAspectCalculation() first!");
+        }
         return outputForAspectCalculation;
     }
 
     @Override
-    public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+    public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+        if (!supportsAspectCalculation){
+            throw new RuntimeException("check supportsAspectCalculation() first!");
+        }
         return remainingForAspectCalculation;
     }
 
     @Override
-    public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+    public @NotNull AspectList<Aspect> getAspectCalculationAspectsList() {
+        if (!supportsAspectCalculation){
+            throw new RuntimeException("check supportsAspectCalculation() first!");
+        }
         return UnmodifiableAspectList.EMPTY;
     }
 
     @Override
-    public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+    public @NotNull CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+        if (!supportsAspectCalculation){
+            throw new RuntimeException("check supportsAspectCalculation() first!");
+        }
         return centiVisListForCalculation;
     }
 }

@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.CalculateStage;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.RecipeResolveContext;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.SimpleCalculateStageImpl;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.RecipeCalculateStage;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.SimpleCalculateStageImpl;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,23 +48,23 @@ public class ItemBasicAspectCalculator {
         STONE_CUTTER_RESOLVERS.registerListener(RecipeAspectResolvers.VANILLA_STONE_CUTTER.resolver);
         VANILLA_SMITHING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_SMITHING.resolver);
         VANILLA_CRAFTING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_CRAFTING.resolver);
+        //TODO:TC4's own
         for (var vanillaResolver:RecipeAspectResolvers.values()) {
             ALL_RESOLVERS.registerListener(vanillaResolver.resolver);
         }
-        //TODO:TC4's own
     }
-    public static final ListenerManager<CalculateStage> calculateStages = new ListenerManager<>();
+    public static final ListenerManager<RecipeCalculateStage> calculateStages = new ListenerManager<>();
 
-    public static final CalculateStage STAGE_STONE_CUTTER = new SimpleCalculateStageImpl(
+    public static final RecipeCalculateStage STAGE_STONE_CUTTER = new SimpleCalculateStageImpl(
             100, STONE_CUTTER_RESOLVERS
     );
-    public static final CalculateStage STAGE_VANILLA_SMITHING = new SimpleCalculateStageImpl(
+    public static final RecipeCalculateStage STAGE_VANILLA_SMITHING = new SimpleCalculateStageImpl(
             200, VANILLA_SMITHING_RESOLVER
     );
-    public static final CalculateStage STAGE_VANILLA_CRAFTING = new SimpleCalculateStageImpl(
+    public static final RecipeCalculateStage STAGE_VANILLA_CRAFTING = new SimpleCalculateStageImpl(
             300, VANILLA_CRAFTING_RESOLVER
     );
-    public static final CalculateStage STAGE_ALL_RESOLVERS = new SimpleCalculateStageImpl(
+    public static final RecipeCalculateStage STAGE_ALL_RESOLVERS = new SimpleCalculateStageImpl(
             1000, ALL_RESOLVERS
     );
 
@@ -80,7 +80,7 @@ public class ItemBasicAspectCalculator {
     public static void onDatapackReload(){
         ItemBasicAspectRegistration.onDatapackReload();
         var context = new RecipeResolveContext(getter,adder,ITEMS_WITH_REGISTERED_BASIC_ASPECTS);
-        for (CalculateStage listener : calculateStages.getListeners()) {
+        for (RecipeCalculateStage listener : calculateStages.getListeners()) {
             listener.startStage(context);
             Set<Item> calculatedNow = new HashSet<>(ITEM_BASIC_ASPECTS_CALCULATED.size());
             ITEM_BASIC_ASPECTS_CALCULATED.forEach(

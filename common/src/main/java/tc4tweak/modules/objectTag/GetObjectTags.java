@@ -92,6 +92,7 @@ public class GetObjectTags {
     /**
      * Add potion related aspects
      */
+    //TODO:Migrate to BonusTags(since a specific potion isn't a specific Item class usually)
     //TODO:API adds aspects for effects and item types
     @SuppressWarnings("unchecked")
     private static void addPotionTags(ItemStack itemstack, PotionItem item, AspectList<Aspect> tmp) {

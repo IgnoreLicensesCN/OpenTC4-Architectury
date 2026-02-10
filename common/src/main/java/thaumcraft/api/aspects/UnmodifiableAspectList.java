@@ -66,7 +66,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public boolean reduce(Aspect key, int amount) throws RuntimeException {
+    public boolean tryReduce(Aspect key, int amount) throws RuntimeException {
         throw new RuntimeException("Unmodifiable!");
     }
 

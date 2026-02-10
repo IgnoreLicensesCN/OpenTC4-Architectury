@@ -531,13 +531,13 @@ public class ThaumcraftCraftingManager {
 
                 if (is.getItem()
                         .getCraftingRemainingItem() != is.getItem()) {
-                    AspectList<Aspect> objC = generateBaseAspects(
+                    AspectList<Aspect> remainingItemAspects = generateBaseAspects(
                             is.getItem()
                                     .getCraftingRemainingItem(), history
                     );
-                    if (objC != null && !objC.isEmpty()) {
-                        var arr$ = objC.getAspectTypes().stream().toList();
-                        int len$ = arr$.size();
+                    if (remainingItemAspects != null && !remainingItemAspects.isEmpty()) {
+                        var aspTypes = remainingItemAspects.getAspectTypes().stream().toList();
+                        int len$ = aspTypes.size();
                         int counter = 0;
 
                         while (true) {
@@ -545,8 +545,8 @@ public class ThaumcraftCraftingManager {
                                 break label57;
                             }
 
-                            Aspect as = arr$.get(counter);
-                            out.reduce(as, objC.getAmount(as));
+                            Aspect as = aspTypes.get(counter);
+                            out.tryReduce(as, remainingItemAspects.getAmount(as));
                             ++counter;
                         }
                     }

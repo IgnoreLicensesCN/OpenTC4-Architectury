@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
@@ -59,9 +60,9 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 
 
 	private final boolean supportsAspectCalculation;
-	private final List<List<ItemStack>> inputForAspectCalculation;
-	private final ItemStack outputForAspectCalculation;
-	private final List<List<ItemStack>> remainingForAspectCalculation;
+	private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
+	private final @NotNull ItemStack outputForAspectCalculation;
+	private final @NotNull List<List<ItemStack>> remainingForAspectCalculation;
 	public InfusionRecipe(
 			ResearchItem research,
 			Function<ItemStack[],ItemStack> recipeOutputGenerator,
@@ -113,9 +114,9 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
                             using researchItem:{}
                             """,research,new Exception());
 		}
-		this.inputForAspectCalculation = inputForAspectCalculation;
-		this.remainingForAspectCalculation = remainingForAspectCalculation;
-		this.outputForAspectCalculation = outputForAspectCalculation;
+		this.inputForAspectCalculation = inputForAspectCalculation == null?List.of():inputForAspectCalculation;
+		this.outputForAspectCalculation = outputForAspectCalculation == null?ItemStack.EMPTY:outputForAspectCalculation;
+		this.remainingForAspectCalculation = remainingForAspectCalculation == null?List.of():remainingForAspectCalculation;
 	}
 
 	@UnmodifiableView
@@ -128,7 +129,6 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		return r;
 	}
 
-	@Deprecated(since = "one day i will migrate to infusionRecipe")
 	public static ThaumcraftInfusionEnchantmentRecipe addInfusionEnchantmentRecipe(ThaumcraftInfusionEnchantmentRecipe r) {
 //		InfusionEnchantmentRecipe r= new InfusionEnchantmentRecipe(research, enchantment, instability, aspects, recipe);
 //        craftingRecipes.add(r);
@@ -304,27 +304,42 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
+	public @NotNull List<List<ItemStack>> getAspectCalculationInputs() {
+		if (!supportsAspectCalculation){
+			throw new RuntimeException("check supportsAspectCalculation() first!");
+		}
 		return inputForAspectCalculation;
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
+	public @NotNull ItemStack getAspectCalculationOutput() {
+		if (!supportsAspectCalculation){
+			throw new RuntimeException("check supportsAspectCalculation() first!");
+		}
 		return outputForAspectCalculation;
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
+	public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+		if (!supportsAspectCalculation){
+			throw new RuntimeException("check supportsAspectCalculation() first!");
+		}
 		return remainingForAspectCalculation;
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
+	public @NotNull AspectList<Aspect> getAspectCalculationAspectsList() {
+		if (!supportsAspectCalculation){
+			throw new RuntimeException("check supportsAspectCalculation() first!");
+		}
 		return aspects;
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+	public @NotNull CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+		if (!supportsAspectCalculation){
+			throw new RuntimeException("check supportsAspectCalculation() first!");
+		}
 		return UnmodifiableCentiVisList.EMPTY;
 	}
 

@@ -271,7 +271,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
                     for (Map.Entry<Aspect,Integer> a : this.repairCost.entrySet()) {
                         var repairCostAspect = a.getKey();
                         var repairCostAmount = a.getValue();
-                        this.currentRepairVis.reduce(repairCostAspect, repairCostAmount);
+                        this.currentRepairVis.tryReduce(repairCostAspect, repairCostAmount);
                     }
 
                     is.hurtAndBreak(-level, player,(ignored)->{});

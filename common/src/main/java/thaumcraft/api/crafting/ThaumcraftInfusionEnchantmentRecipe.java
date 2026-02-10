@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -247,27 +248,27 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationInputs() {
-		return null;
+	public @NotNull List<List<ItemStack>> getAspectCalculationInputs() {
+		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") ItemStack getAspectCalculationOutput() {
-		return null;
+	public @NotNull ItemStack getAspectCalculationOutput() {
+		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") List<List<ItemStack>> getAspectCalculationRemaining() {
-		return null;
+	public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") AspectList<Aspect> getAspectCalculationAspectsList() {
-		return null;
+	public @NotNull AspectList<Aspect> getAspectCalculationAspectsList() {
+		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 
 	@Override
-	public @Nullable("when supportsAspectCalculation returns false") CentiVisList<Aspect> getAspectCalculationCentiVisList() {
-		return null;
+	public @NotNull CentiVisList<Aspect> getAspectCalculationCentiVisList() {
+		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 }

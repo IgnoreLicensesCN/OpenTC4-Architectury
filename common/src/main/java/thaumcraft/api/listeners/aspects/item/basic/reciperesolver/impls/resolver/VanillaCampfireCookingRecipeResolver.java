@@ -1,4 +1,4 @@
-package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls;
+package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.CampfireCookingRecipe;

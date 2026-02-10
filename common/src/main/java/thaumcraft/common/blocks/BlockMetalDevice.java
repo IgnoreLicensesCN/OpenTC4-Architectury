@@ -637,7 +637,7 @@ public class BlockMetalDevice extends BlockContainer {
                            as.addAll(((TileAlembic) te).aspect, amount);
                            if (as.getAmount(((TileAlembic) te).aspect) > 64) {
                               int q = as.getAmount(((TileAlembic) te).aspect) - 64;
-                              as.reduce(((TileAlembic) te).aspect, q);
+                              as.tryReduce(((TileAlembic) te).aspect, q);
                            }
 
                            ((ItemJarFilled) drop.getItem()).setAspects(drop, as);

@@ -84,7 +84,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                for(Aspect aspect : this.aspects.getAspectsSortedAmount()) {
                   int drain = VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, aspect, Math.min(100, this.aspects.getAmount(aspect)));
                   if (drain > 0) {
-                     this.aspects.reduce(aspect, drain);
+                     this.aspects.tryReduce(aspect, drain);
                      this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                      this.markDirty();
                   }

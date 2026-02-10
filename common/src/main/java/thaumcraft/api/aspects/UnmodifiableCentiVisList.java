@@ -23,7 +23,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     }
 
     @Override
-    public boolean reduce(Asp key, int amount) {
+    public boolean tryReduce(Asp key, int amount) {
         throw new RuntimeException("Unmodifiable!");
     }
 

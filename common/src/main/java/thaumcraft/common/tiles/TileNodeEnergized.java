@@ -163,7 +163,7 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    public int consumeVis(Aspect aspect, int amount) {
       int drain = Math.min(this.vis.getAmount(aspect), amount);
       if (drain > 0) {
-         this.vis.reduce(aspect, drain);
+         this.vis.tryReduce(aspect, drain);
       }
 
       return drain;

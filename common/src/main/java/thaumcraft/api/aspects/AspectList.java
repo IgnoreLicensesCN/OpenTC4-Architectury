@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+//TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public class AspectList<Asp extends Aspect> implements Serializable {
 	
@@ -191,7 +192,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @param amount to remove
 	 * @return succeed(false if will lead to negative)
 	 */
-	public boolean reduce(Asp key, int amount) {
+	public boolean tryReduce(Asp key, int amount) {
 		if (getAmount(key)>=amount) {
 			int am = getAmount(key)-amount;
 			aspects.put(key, am);

@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.RecipeResolveContext;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.*;
 
@@ -128,6 +128,9 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                             for (var ingredient : recipe.getIngredients()) {
                                 for (var ingredientStack : ingredient.getItems()) {
                                     ITEM_IN_RECIPES.put(ingredientStack.getItem(), recipe);
+                                    if (ingredientStack.getItem().hasCraftingRemainingItem()){
+                                        ITEM_IN_RECIPES.put(ingredientStack.getItem().getCraftingRemainingItem(),recipe);
+                                    }
                                 }
                             }
                         }

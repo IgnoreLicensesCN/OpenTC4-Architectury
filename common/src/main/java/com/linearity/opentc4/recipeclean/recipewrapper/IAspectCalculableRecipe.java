@@ -2,6 +2,7 @@ package com.linearity.opentc4.recipeclean.recipewrapper;
 
 
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -14,16 +15,16 @@ public interface IAspectCalculableRecipe {
     boolean supportsAspectCalculation();
 
     //note that we just want count and item in stack not CompoundTag
-    @Nullable("when supportsAspectCalculation returns false")
+    @NotNull
     List<List<ItemStack>> getAspectCalculationInputs();
-    @Nullable("when supportsAspectCalculation returns false")
+    @NotNull
     ItemStack getAspectCalculationOutput();
-    @Nullable("when supportsAspectCalculation returns false")
+    @NotNull
     List<List<ItemStack>> getAspectCalculationRemaining();
 
-    @Nullable("when supportsAspectCalculation returns false")
+    @NotNull
     AspectList<Aspect> getAspectCalculationAspectsList();
-    @Nullable("when supportsAspectCalculation returns false")
+    @NotNull
     CentiVisList<Aspect> getAspectCalculationCentiVisList();
 
 }

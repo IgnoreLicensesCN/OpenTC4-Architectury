@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.basic.interfaces;
 
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.RecipeResolveContext;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 public interface IRecipeAspectFinder {
     //return newlyResolved after execute this

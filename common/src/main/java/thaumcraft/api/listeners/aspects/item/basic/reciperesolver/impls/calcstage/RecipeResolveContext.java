@@ -1,13 +1,11 @@
-package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls;
+package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage;
 
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class RecipeResolveContext {
     public final ResolvedAspectGetter resolvedAspect;
@@ -15,10 +13,11 @@ public class RecipeResolveContext {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Set<Item> itemsResolvedLastTurn;
-
     public final Set<Item> itemsResolvedLastTurnView;
+
     private final Set<Item> itemsNewlyResolved;
     public final Set<Item> itemsNewlyResolvedView;
+    private final Map<Item, UnmodifiableAspectList<Aspect>> adderCache = new HashMap<>();
 
     public RecipeResolveContext(ResolvedAspectGetter resolvedAspect, ResolvedAspectAdder aspectAdder, Set<Item> itemsResolvedLastTurn) {
         this.resolvedAspect = resolvedAspect;
@@ -40,13 +39,24 @@ public class RecipeResolveContext {
         itemsResolvedLastTurn.clear();
         itemsResolvedLastTurn.addAll(itemsNewlyResolved);
         itemsNewlyResolved.clear();
+
+        adderCache.forEach(aspectAdder::addResolvedAspectForItem);
+        adderCache.clear();
         return true;
     }
     public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item){
         return resolvedAspect.getAlreadyCalculatedAspectForItem(item);
     }
     public void addResolvedAspectForItem(Item item, UnmodifiableAspectList<Aspect> aspects){
-        aspectAdder.addResolvedAspectForItem(item,aspects);
+        var current = adderCache.getOrDefault(item,UnmodifiableAspectList.EMPTY);
+        if (current.isEmpty()) {
+            adderCache.put(item,aspects);
+        }
+        else if (!aspects.isEmpty()) {
+            if (current.visSize() > aspects.visSize()) {
+                adderCache.put(item,aspects);
+            }
+        }
     };
 
 

@@ -178,7 +178,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
          this.aspectsBase.mergeWithHighest(aspect, nodeVisBase);
       } else {
-         this.aspectsBase.reduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
+         this.aspectsBase.tryReduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
       }
 
    }

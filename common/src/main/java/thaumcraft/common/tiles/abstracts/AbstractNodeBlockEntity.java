@@ -302,13 +302,13 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
     @Override
     public boolean takeFromContainer(Aspect aspect, int amount) {
-        return this.aspects.reduce(aspect, amount);
+        return this.aspects.tryReduce(aspect, amount);
     }
 
     public Aspect takeRandomPrimalFromSource() {
         AspectList<PrimalAspect> primals = this.aspects.getPrimalAspects();
         Aspect asp = primals.randomAspect(this.level != null?this.level.random: RandomSource.createNewThreadLocalInstance());//[this.level.random.nextInt(primals.length)];
-        return asp != null && this.aspects.reduce(asp, 1) ? asp : null;
+        return asp != null && this.aspects.tryReduce(asp, 1) ? asp : null;
     }
 
     public Aspect chooseRandomFilteredFromSource(AspectList<Aspect> filter, boolean preserve) {
@@ -363,7 +363,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
             this.aspectsBase.mergeWithHighest(aspect, nodeVisBase);
         } else {
-            this.aspectsBase.reduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
+            this.aspectsBase.tryReduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
         }
 
     }
