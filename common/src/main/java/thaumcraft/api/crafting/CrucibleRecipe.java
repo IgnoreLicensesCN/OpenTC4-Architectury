@@ -17,6 +17,8 @@ import thaumcraft.api.research.ResearchItem;
 import java.util.List;
 import java.util.function.Function;
 
+import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.RETURN_EMPTY_ITEM_LIST_LIST;
+
 public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe {
 
 	private final Function<ItemStack,ItemStack> recipeOutputGetter;
@@ -33,7 +35,6 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	private final boolean supportsAspectCalculation;
     private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
     private final @NotNull ItemStack outputForAspectCalculation;
-    private final @NotNull List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation;
 
 	public CrucibleRecipe(
             ResearchItem researchKey,
@@ -85,7 +86,6 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		}
         this.inputForAspectCalculation = inputForAspectCalculation == null?List.of():inputForAspectCalculation;
         this.outputForAspectCalculation = outputForAspectCalculation == null?ItemStack.EMPTY:outputForAspectCalculation;
-        this.remainingForAspectCalculation = remainingForAspectCalculation == null?List.of():remainingForAspectCalculation;
     }
 
 
@@ -173,7 +173,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 		if (!supportsAspectCalculation){
 			throw new RuntimeException("check supportsAspectCalculation() first!");
 		}
-		return remainingForAspectCalculation;
+		return RETURN_EMPTY_ITEM_LIST_LIST;
 	}
 
 	@Override

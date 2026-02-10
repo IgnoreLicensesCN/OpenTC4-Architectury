@@ -26,5 +26,7 @@ public class UtilityConsts {
 
     public static final List<Function<ItemStack,ItemStack>> VANILLA_RETURN_ITEMS_LIST = new SameValueList<>(VANILLA_RETURN_ITEMS);
     public static final List<List<Function<ItemStack,ItemStack>>> VANILLA_RETURN_ITEMS_LIST_LIST = new SameValueList<>(VANILLA_RETURN_ITEMS_LIST);
+    public static final List<Function<ItemStack,ItemStack>> RETURN_EMPTY_ITEM_LIST = new SameValueList<>(i -> ItemStack.EMPTY);
+    public static final List<List<Function<ItemStack,ItemStack>>> RETURN_EMPTY_ITEM_LIST_LIST = new SameValueList<>(RETURN_EMPTY_ITEM_LIST);
 
 }
