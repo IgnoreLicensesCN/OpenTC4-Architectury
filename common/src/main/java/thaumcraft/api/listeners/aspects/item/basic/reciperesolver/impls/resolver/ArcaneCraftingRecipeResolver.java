@@ -2,19 +2,22 @@ package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolve
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Recipe;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static thaumcraft.api.crafting.interfaces.IArcaneRecipe.getIArcaneRecipes;
+import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.VanillaTypedRecipeResolver.resolveItemsCommon;
+import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.VANILLA_RETURN_ITEMS_LIST_LIST;
 
 public class ArcaneCraftingRecipeResolver extends AbstractRecipeResolver {
 
@@ -53,8 +56,23 @@ public class ArcaneCraftingRecipeResolver extends AbstractRecipeResolver {
         }
 
     }
+
+    private static final float CRAFTING_ASPECTS_MULTIPLIER = 0.75F;//anazor's strange idea.
+
     @Override
     public void resolveItems(RecipeResolveContext context) {
-        //TODO
+        resolveItemsCommon(
+                context.itemsResolvedLastTurnView,
+                RECIPES_RESOLVED,
+                ITEM_CRAFTED_FROM_RECIPES,
+                ITEM_IN_RECIPES,
+                IAspectCalculableRecipe::getAspectCalculationOutput,
+                context::getAlreadyCalculatedAspectForItem,
+                IAspectCalculableRecipe::getAspectCalculationInputs,
+                IAspectCalculableRecipe::getAspectCalculationRemaining,
+                context::addResolvedItem,
+                context::addResolvedAspectForItem,
+                aspList -> aspList.multiplyAndCeil(CRAFTING_ASPECTS_MULTIPLIER)//not floor i dont want aspect completely lost.
+        );
     }
 }

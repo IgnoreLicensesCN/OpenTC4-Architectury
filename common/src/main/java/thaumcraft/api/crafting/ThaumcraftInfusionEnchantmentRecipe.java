@@ -21,6 +21,7 @@ import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
 import thaumcraft.api.research.ResearchItem;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static com.linearity.opentc4.utils.IndexPicker.indexByTime;
@@ -258,7 +259,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
 	}
 
 	@Override
-	public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+	public @NotNull List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining() {
 		throw new RuntimeException("check supportsAspectCalculation() first!");
 	}
 

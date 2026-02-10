@@ -274,6 +274,13 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		}
 		return this;
 	}
+	public AspectList<Asp> multiplyAndCeil(float multiplier){
+		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
+			int value = entry.getValue();
+			entry.setValue((int)Math.ceil(value*multiplier));
+		}
+		return this;
+	}
 
 	
 	/**

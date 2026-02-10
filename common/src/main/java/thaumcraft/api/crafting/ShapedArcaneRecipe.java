@@ -38,7 +38,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     private final boolean supportsAspectCalculation;
     private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
     private final @NotNull ItemStack outputForAspectCalculation;
-    private final @NotNull List<List<ItemStack>> remainingForAspectCalculation;
+    private final @NotNull List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation;
     private final @NotNull CentiVisList<Aspect> centiVisListForCalculation;
     //since the original is too messy,i should do some cleaning for this.
     public ShapedArcaneRecipe(
@@ -94,7 +94,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             RecipeItemMatcher outMatcher,
             ItemStack outputForAspectCalculation,
             List<List<ItemStack>> inputForAspectCalculation,
-            List<List<ItemStack>> remainingForAspectCalculation,
+            List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation,
             CentiVisList<Aspect> centiVisListForCalculation
     ) {
         if (input.length != width * height) {
@@ -412,7 +412,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     }
 
     @Override
-    public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+    public @NotNull List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining() {
         if (!supportsAspectCalculation){
             throw new RuntimeException("check supportsAspectCalculation() first!");
         }

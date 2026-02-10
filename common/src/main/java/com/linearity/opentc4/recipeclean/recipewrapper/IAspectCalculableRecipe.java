@@ -9,6 +9,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
 
 import java.util.List;
+import java.util.function.Function;
 
 public interface IAspectCalculableRecipe {
     //true if this recipe supports aspect calculation
@@ -20,7 +21,7 @@ public interface IAspectCalculableRecipe {
     @NotNull
     ItemStack getAspectCalculationOutput();
     @NotNull
-    List<List<ItemStack>> getAspectCalculationRemaining();
+    List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining();
 
     @NotNull
     AspectList<Aspect> getAspectCalculationAspectsList();

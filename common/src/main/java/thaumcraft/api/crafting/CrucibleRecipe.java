@@ -33,7 +33,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	private final boolean supportsAspectCalculation;
     private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
     private final @NotNull ItemStack outputForAspectCalculation;
-    private final @NotNull List<List<ItemStack>> remainingForAspectCalculation;
+    private final @NotNull List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation;
 
 	public CrucibleRecipe(
             ResearchItem researchKey,
@@ -52,7 +52,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
             RecipeItemMatcher outputMatcher,
             ItemStack outputForAspectCalculation,
             List<List<ItemStack>> inputForAspectCalculation,
-            List<List<ItemStack>> remainingForAspectCalculation
+            List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation
     ){
 
         this.recipeOutputGetter = resultGetter;
@@ -169,7 +169,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	}
 
 	@Override
-	public @NotNull List<List<ItemStack>> getAspectCalculationRemaining() {
+	public @NotNull List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining() {
 		if (!supportsAspectCalculation){
 			throw new RuntimeException("check supportsAspectCalculation() first!");
 		}

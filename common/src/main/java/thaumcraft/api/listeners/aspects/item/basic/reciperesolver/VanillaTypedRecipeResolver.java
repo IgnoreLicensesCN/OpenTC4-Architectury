@@ -5,16 +5,24 @@ import com.google.common.collect.Multimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.SameValueList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.VANILLA_RETURN_ITEMS;
+import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.VANILLA_RETURN_ITEMS_LIST_LIST;
 
 public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends Container> extends AbstractRecipeResolver {
     private final RecipeType<T> recipeType;
@@ -26,68 +34,19 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
     @Override
     public void resolveItems(RecipeResolveContext context) {
         var registryAccess = platformUtils.getServer().registryAccess();
-        context.itemsResolvedLastTurnView.forEach(
-                item -> {
-                    RECIPES_RESOLVED.addAll(ITEM_CRAFTED_FROM_RECIPES.removeAll(item));
-                    var recipesToConsider = ITEM_IN_RECIPES.get(item);
-                    List<Recipe<C>> recipesToRemove = new ArrayList<>(recipesToConsider.size());
-                    recipesToConsider.forEach(recipe -> {
-                        if (RECIPES_RESOLVED.contains(recipe)) {
-                            recipesToRemove.add(recipe);
-                            return;
-                        }
-                        var resultStack = recipe.getResultItem(registryAccess);
-                        var resultCount = resultStack.getCount();
-                        if (context.getAlreadyCalculatedAspectForItem(resultStack.getItem()) != null) {
-                            recipesToRemove.add(recipe);
-                            RECIPES_RESOLVED.add(recipe);
-                            return;
-                        }
-                        if (resultCount == 0){
-                            return;
-                        }
-                        AspectList<Aspect> allAdded = new AspectList<>();
-                        AspectList<Aspect> remainingItemAspects = new AspectList<>();
-                        for (var ingredient : recipe.getIngredients()) {
-                            AspectList<Aspect> minimizedButNotEmpty = UnmodifiableAspectList.EMPTY;
-                            for (var stack:ingredient.getItems()) {
-                                var ingredientItem = stack.getItem();
-                                var remainingItem = ingredientItem.getCraftingRemainingItem();
-                                var count = stack.getCount();
-                                if (remainingItem != null){
-                                    var aspectRemaining = context.getAlreadyCalculatedAspectForItem(remainingItem);
-                                    if (aspectRemaining == null) {
-                                        return;
-                                    }
-                                    remainingItemAspects.addAll(aspectRemaining.multiply(count));
-                                }
-                                var alreadyCalculated = context.getAlreadyCalculatedAspectForItem(ingredientItem);
-                                if (alreadyCalculated == null) {
-                                    return;
-                                }
-                                alreadyCalculated = alreadyCalculated.multiplyAsNew(count);
-                                if (!alreadyCalculated.isEmpty()) {
-                                    if (minimizedButNotEmpty.isEmpty()) {
-                                        minimizedButNotEmpty = alreadyCalculated;
-                                    }else if (minimizedButNotEmpty.visSize() > alreadyCalculated.visSize()) {
-                                        minimizedButNotEmpty = alreadyCalculated;
-                                    }
-                                }
-                            }
-                            if (minimizedButNotEmpty.isEmpty()) {
-                                return;
-                            }
-                            allAdded.addAll(minimizedButNotEmpty);
-                        }
-                        remainingItemAspects.forEach(allAdded::reduceAndRemoveIfNotPositive);
-                        context.addResolvedItem(item);
-                        allAdded = allAdded.divideAndCeil(recipe.getResultItem(registryAccess).getCount());
-                        context.addResolvedAspectForItem(item,new UnmodifiableAspectList<>(allAdded));
-                        RECIPES_RESOLVED.add(recipe);
-                        recipesToRemove.add(recipe);
-                    });
-                    recipesToConsider.removeAll(recipesToRemove);
-                }
+        resolveItemsCommon(
+                context.itemsResolvedLastTurnView,
+                RECIPES_RESOLVED,
+                ITEM_CRAFTED_FROM_RECIPES,
+                ITEM_IN_RECIPES,
+                r -> r.getResultItem(registryAccess),
+                context::getAlreadyCalculatedAspectForItem,
+                r -> r.getIngredients().stream()
+                        .map(ingredient -> Arrays.asList(ingredient.getItems()))
+                        .toList(),
+                r -> VANILLA_RETURN_ITEMS_LIST_LIST,
+                context::addResolvedItem,
+                context::addResolvedAspectForItem
         );
     }
 
@@ -135,5 +94,134 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                             }
                         }
                 );
+    }
+
+    public static <Recipe> void resolveItemsCommon(
+            Collection<Item> toSolve,
+            Collection<Recipe> resolvedRecipes,
+            Multimap<Item, Recipe> itemCraftedFromRecipes,
+            Multimap<Item, Recipe> itemInRecipes,
+            Function<Recipe, ItemStack> resultItemGetter,
+            Function<Item, UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter,
+            Function<Recipe, @Unmodifiable List<List<ItemStack>>> ingredientItemsGetter,
+            Function<Recipe, @Unmodifiable /* only call get(i) get(j) */
+                    //should have same structure as above,like arr[A][B] and arr[A][B]
+                    List<List<Function<ItemStack, ItemStack>>>> ingredientRemainingItemsGetter,
+            Consumer<Item> resolvedItemAdder,
+            BiConsumer<Item, UnmodifiableAspectList<Aspect>> resolvedAspectAdder
+    ) {
+        resolveItemsCommon(
+                toSolve,
+                resolvedRecipes,
+                itemCraftedFromRecipes,
+                itemInRecipes,
+                resultItemGetter,
+                alreadyCalculatedAspectGetter,
+                ingredientItemsGetter,
+                ingredientRemainingItemsGetter,
+                resolvedItemAdder,
+                resolvedAspectAdder,
+                aspList -> aspList
+        );
+    }
+
+    public static <Recipe> void resolveItemsCommon(
+            Collection<Item> toSolve,
+            Collection<Recipe> resolvedRecipes,
+            Multimap<Item,Recipe> itemCraftedFromRecipes,
+            Multimap<Item,Recipe> itemInRecipes,
+            Function<Recipe, ItemStack> resultItemGetter,
+            Function<Item, UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter,
+            Function<Recipe,@Unmodifiable List<List<ItemStack>>> ingredientItemsGetter,
+            Function<Recipe,@Unmodifiable /* only call get(i) get(j) */
+                    //should have same structure as above,like arr[A][B] and arr[A][B]
+                    //at least,we will access them.When accessing please give the correct value
+                    List<List<Function<ItemStack,ItemStack>>>> ingredientRemainingItemsGetter,
+            Consumer<Item> resolvedItemAdder,
+            BiConsumer<Item,UnmodifiableAspectList<Aspect>> resolvedAspectAdder,
+            Function<AspectList<Aspect>, AspectList<Aspect>> resolvedAspectsModifier
+    ) {
+        toSolve.forEach(
+                item -> {
+                    resolvedRecipes.addAll(itemCraftedFromRecipes.removeAll(item));
+                    var recipesToConsider = itemInRecipes.get(item);
+                    List<Recipe> recipesToRemove = new ArrayList<>(recipesToConsider.size());
+                    recipesToConsider.forEach(recipe -> {
+                        if (resolvedRecipes.contains(recipe)) {
+                            recipesToRemove.add(recipe);
+                            return;
+                        }
+                        var resultStack = resultItemGetter.apply(recipe);//recipe.getResultItem(registryAccess);
+                        var resultCount = resultStack.getCount();
+                        if (
+                                alreadyCalculatedAspectGetter.apply(resultStack.getItem()) != null
+                                //context.getAlreadyCalculatedAspectForItem(resultStack.getItem()) != null
+                        ) {
+                            recipesToRemove.add(recipe);
+                            resolvedRecipes.add(recipe);
+                            return;
+                        }
+                        if (resultCount == 0){
+                            return;
+                        }
+                        AspectList<Aspect> allAdded = new AspectList<>();
+                        AspectList<Aspect> remainingItemAspects = new AspectList<>();
+                        var ingredientItems = ingredientItemsGetter.apply(recipe);
+                        var remainingItemList = ingredientRemainingItemsGetter.apply(recipe);
+
+                        for (var possibleItemsIndex=0; possibleItemsIndex<ingredientItems.size(); possibleItemsIndex++) {
+                            var possibleItems = ingredientItems.get(possibleItemsIndex);
+                            if (possibleItems == null || possibleItems.isEmpty()){
+                                continue;
+                            }
+                            AspectList<Aspect> minimizedButNotEmpty = UnmodifiableAspectList.EMPTY;
+                            for (var possibleStackIndex=0;possibleStackIndex<possibleItems.size(); possibleStackIndex++) {
+                                var possibleStack = possibleItems.get(possibleStackIndex);
+                                if (possibleStack == null || possibleStack.isEmpty()){
+                                    continue;
+                                }
+                                var remainingItem = remainingItemList.get(possibleItemsIndex)
+                                        .get(possibleStackIndex)
+                                        .apply(possibleStack);
+                                var count = possibleStack.getCount();
+                                if (remainingItem != null && !remainingItem.isEmpty()){
+                                    var aspectRemaining = alreadyCalculatedAspectGetter.apply(possibleStack.getItem());
+                                    if (aspectRemaining == null){
+                                        return;
+                                    }
+                                    remainingItemAspects.addAll(aspectRemaining.multiplyAsNew(remainingItem.getCount()));
+                                }
+
+                                var alreadyCalculated = alreadyCalculatedAspectGetter.apply(possibleStack.getItem());
+                                if (alreadyCalculated == null) {
+                                    return;
+                                }
+
+                                alreadyCalculated = alreadyCalculated.multiplyAsNew(count);
+                                if (!alreadyCalculated.isEmpty()) {
+                                    if (minimizedButNotEmpty.isEmpty()) {
+                                        minimizedButNotEmpty = alreadyCalculated;
+                                    }else if (minimizedButNotEmpty.visSize() > alreadyCalculated.visSize()) {
+                                        minimizedButNotEmpty = alreadyCalculated;
+                                    }
+                                }
+                            }
+                            if (minimizedButNotEmpty.isEmpty()) {
+                                return;
+                            }
+                            allAdded.addAll(minimizedButNotEmpty);
+                        }
+
+                        remainingItemAspects.forEach(allAdded::reduceAndRemoveIfNotPositive);
+                        resolvedItemAdder.accept(item);
+                        allAdded = allAdded.divideAndCeil(resultStack.getCount());
+                        allAdded = resolvedAspectsModifier.apply(allAdded);
+                        resolvedAspectAdder.accept(item,new UnmodifiableAspectList<>(allAdded));
+                        resolvedRecipes.add(recipe);
+                        recipesToRemove.add(recipe);
+                    });
+                    recipesToConsider.removeAll(recipesToRemove);
+                }
+        );
     }
 }
