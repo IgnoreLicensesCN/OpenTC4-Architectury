@@ -1,9 +1,10 @@
 package thaumcraft.api.listeners.aspects.item.bonus.consts;
 
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -11,15 +12,17 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
-import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
+import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.IWandComponentsOwner;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.ENCHANTMENT_ASPECT_MAP;
-import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.aspectValueByDurabilityMap;
+import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.*;
 
 
 public enum BonusTagForItemListeners {
@@ -150,6 +153,64 @@ public enum BonusTagForItemListeners {
 
                 if (totalLevel > 0) {
                     currentAspects.mergeWithHighest(Aspects.MAGIC, totalLevel);
+                }
+            }
+        }
+    }),
+    MIGRATED_CASTING(new BonusTagForItemListener(90) {
+        @Override
+        public void onItem(@NotNull Item item,
+                           @NotNull ItemStack itemstack,
+                           @NotNull UnmodifiableAspectList<Aspect> sourceTags,
+                           @NotNull AspectList<Aspect> currentAspects) {
+            if (item instanceof IWandComponentsOwner componentsOwner){
+                double totalCraftingCostCentiVisDividedByType = 0;
+                for (var component:componentsOwner.getWandComponents(itemstack)){
+                    double craftingCostCentiVis = 0;
+                    Set<Aspect> totalCraftingAspectTypes = new HashSet<>(6);
+                    if (component.getItem() instanceof ICraftingCostAspectOwner<? extends Aspect> craftingCostOwner){
+                        for (var entry:craftingCostOwner.getCraftingCostCentiVis().entrySet()){
+                            totalCraftingAspectTypes.add(entry.getKey());
+                            craftingCostCentiVis += entry.getValue();
+                        }
+                    }
+                    if (totalCraftingAspectTypes.isEmpty()){
+                        continue;
+                    }
+                    totalCraftingCostCentiVisDividedByType += craftingCostCentiVis/totalCraftingAspectTypes.size();
+                }
+                if (totalCraftingCostCentiVisDividedByType < 0){return;}
+                currentAspects.mergeWithHighest(Aspects.MAGIC,(int)Math.floor(totalCraftingCostCentiVisDividedByType / (2*100)));
+                currentAspects.mergeWithHighest(Aspects.TOOL,(int)Math.floor(totalCraftingCostCentiVisDividedByType / (3*100)));
+            }
+        }
+    }),
+    MIGRATED_POTION( new BonusTagForItemListener(100) {
+        @Override
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+            currentAspects.mergeWithHighest(Aspects.WATER, 1);
+            List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
+            if (!effects.isEmpty()) {
+                if (item instanceof SplashPotionItem) {
+                    currentAspects.mergeWithHighest(Aspects.ENTROPY, 2);
+                }
+                if (item instanceof LingeringPotionItem){
+                    currentAspects.mergeWithHighest(Aspects.ORDER, 2);//added
+                }
+
+                for (MobEffectInstance effectInstance : effects) {
+                    int effectLvl = effectInstance.getAmplifier() + 1;
+                    if (effectLvl < 0){
+                        continue;
+                    }
+                    var effect = effectInstance.getEffect();
+                    currentAspects.mergeWithHighest(Aspects.MAGIC, effectLvl*2);
+                    var aspectForEffect = ASPECTS_FOR_EFFECT_PER_LEVEL.getOrDefault(effect,UnmodifiableAspectList.EMPTY);
+                    if (!aspectForEffect.isEmpty()) {
+                        for (var entry:aspectForEffect.entrySet()){
+                            currentAspects.mergeWithHighest(entry.getKey(), entry.getValue()*effectLvl);
+                        }
+                    }
                 }
             }
         }

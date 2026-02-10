@@ -19,6 +19,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     public UnmodifiableAspectList(Map<A, Integer> aspects) {
         super(aspects);
     }
+    public UnmodifiableAspectList(){
+        super();
+    }
 
     @Override
     public Integer put(A aspect, int amount) {
@@ -123,5 +126,48 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(aspectsA.aspectView);
         aspectsB.aspectView.forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<>(resultMap);
+    }
+
+
+    @SafeVarargs
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp... aspects){
+        AspectList<Asp> out = new AspectList<>();
+        for (var aspect : aspects){
+            if (aspect != null){
+                out.addAll(aspect,1);
+            }
+        }
+        return new UnmodifiableAspectList<>(out);
+    }
+
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value){
+        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
+        out.aspects.put(aspect,value);
+
+        return out;
+    }
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2){
+        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
+        out.aspects.put(aspect,value);
+        out.aspects.put(aspect2,value2);
+
+        return out;
+    }
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2,Asp aspect3,int value3){
+        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
+        out.aspects.put(aspect,value);
+        out.aspects.put(aspect2,value2);
+        out.aspects.put(aspect3,value3);
+
+        return out;
+    }
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2,Asp aspect3,int value3,Asp aspect4,int value4){
+        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
+        out.aspects.put(aspect,value);
+        out.aspects.put(aspect2,value2);
+        out.aspects.put(aspect3,value3);
+        out.aspects.put(aspect4,value4);
+
+        return out;
     }
 }

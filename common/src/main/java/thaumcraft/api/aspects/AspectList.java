@@ -311,6 +311,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> mergeWithHighest(Asp aspect, int amount) {
+		if (amount < 0){return this;}
 		if (this.aspects.containsKey(aspect)) {
 			int oldamount = this.aspects.get(aspect);
 			if (amount<oldamount) amount=oldamount;

@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
 
+@Deprecated(forRemoval = true)
 public class GetObjectTags {
     static final Logger log = LogManager.getLogger("GetObjectTags");
     private static final ObjectTagsCache cache = new ObjectTagsCache();
