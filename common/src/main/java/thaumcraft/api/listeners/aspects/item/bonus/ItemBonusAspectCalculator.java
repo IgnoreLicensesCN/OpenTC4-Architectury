@@ -4,25 +4,20 @@ import net.minecraft.world.item.*;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
 
 import static thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners.*;
 
 public class ItemBonusAspectCalculator {
 
-    public static final ListenerManager<@NotNull BonusTagForItemListener> BonusTagForItemListenerManager = new ListenerManager<>();
+    public static final ListenerManager<@NotNull BonusTagForItemListener> bonusTagForItemListenerManager = new ListenerManager<>();
 
 
     public static void init(){
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_ESSENTIA_CONTAINER);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_ARMOR);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_SWORD);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_BOW);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_PICKAXE);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_TOOL);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_SHEARS);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ON_HOE);
-        BonusTagForItemListenerManager.registerListener(DEFAULT_ENCHANTMENTS);
+        for (var listenerEnum : BonusTagForItemListeners.values()) {
+            bonusTagForItemListenerManager.registerListener(listenerEnum.listener);
+        }
     }
 
     /**
@@ -46,7 +41,7 @@ public class ItemBonusAspectCalculator {
             }
         }
 
-        for (BonusTagForItemListener listener : BonusTagForItemListenerManager.getListeners()) {
+        for (BonusTagForItemListener listener : bonusTagForItemListenerManager.getListeners()) {
             listener.onItem(item,itemstack,sourceTagsView,aspects);
         }
 

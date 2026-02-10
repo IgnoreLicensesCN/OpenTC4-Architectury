@@ -10,6 +10,7 @@ import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
 import thaumcraft.client.renderers.item.RenderUtils;
+import thaumcraft.common.aspects.ThaumcraftItemAspects;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
@@ -59,6 +60,7 @@ public final class OpenTC4 {
         ThaumcraftGUI.init();
 
         EventListeners.init();
+        ThaumcraftItemAspects.init();
 
     }
     public static void onInitializeClient() {

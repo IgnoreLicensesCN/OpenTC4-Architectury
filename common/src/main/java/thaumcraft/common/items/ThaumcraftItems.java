@@ -24,6 +24,9 @@ import thaumcraft.common.items.misc.ThaumometerItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
+import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
+import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
+import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 public class ThaumcraftItems {
 
@@ -200,6 +203,9 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
     public static final BlockItem DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final ResearchNoteItem RESEARCH_NOTE = Registry.SUPPLIER_RESEARCH_NOTE.get();
+    public static final WandCastingItem WAND_CASTING = Registry.SUPPLIER_WAND_CASTING.get();
+    public static final StaffCastingItem STAFF_CASTING = Registry.SUPPLIER_STAFF_CASTING.get();
+    public static final SceptreCastingItem SCEPTRE_CASTING = Registry.SUPPLIER_SCEPTRE_CASTING.get();
 
     //===========================================================================================
 
@@ -681,6 +687,18 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ResearchNoteItem> SUPPLIER_RESEARCH_NOTE = ITEMS.register(
                 "research_note",
                 ResearchNoteItem::new
+        );
+        public static final RegistrySupplier<WandCastingItem> SUPPLIER_WAND_CASTING = ITEMS.register(
+                "wand_casting",
+                WandCastingItem::new
+        );
+        public static final RegistrySupplier<SceptreCastingItem> SUPPLIER_SCEPTRE_CASTING = ITEMS.register(
+                "sceptre_casting",
+                SceptreCastingItem::new
+        );
+        public static final RegistrySupplier<StaffCastingItem> SUPPLIER_STAFF_CASTING = ITEMS.register(
+                "staff_casting",
+                StaffCastingItem::new
         );
 
         static {

@@ -18,7 +18,7 @@ public enum ItemBasicAspectGetListeners {
                 }
             }
     ),
-    VANILLA_RECIPE(
+    VANILLA_AND_THAUMCRAFT_RECIPE(
             new ItemBasicAspectGetListener(1000) {
 
                 @Override
@@ -31,7 +31,6 @@ public enum ItemBasicAspectGetListeners {
                 }
             }
     ),
-    //TODO:TC4 Recipes
     //TODO:[maybe wont finished](at least maybe wont finished in this mod)Mek recipes and more?
     ;
 

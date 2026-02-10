@@ -40,6 +40,7 @@ import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
 public class ThaumcraftCraftingManager {
 
+    @Deprecated(forRemoval = true)
     public static CrucibleRecipe findMatchingCrucibleRecipe(String username, AspectList<Aspect> aspects, ItemStack lastDrop) {
         int highest = Integer.MIN_VALUE;
         CrucibleRecipe resultRecipe = null;
@@ -59,6 +60,7 @@ public class ThaumcraftCraftingManager {
         return resultRecipe;
     }
 
+    @Deprecated(forRemoval = true)
     public static ItemStack findMatchingArcaneRecipe(Container awb, Player player) {
         IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
         return recipe == null ? null : recipe.getCraftingResult(awb);
@@ -91,6 +93,7 @@ public class ThaumcraftCraftingManager {
 //      return var13 == null ? null : var13.getCraftingResult(awb);
     }
 
+    @Deprecated(forRemoval = true)
     public static AspectList<Aspect> findMatchingArcaneRecipeAspects(Container awb, Player player) {
         IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
         return recipe == null ? new AspectList<>() :
@@ -126,6 +129,7 @@ public class ThaumcraftCraftingManager {
 //      return var13 == null ? new AspectList<>() : (var13.getAspects() != null ? var13.getAspects() : var13.getAspects(awb));
     }
 
+    @Deprecated(forRemoval = true)
     public static InfusionRecipe findMatchingInfusionRecipe(List<ItemStack> items, ItemStack input, Player player) {
         InfusionRecipe var13 = null;
 
@@ -139,6 +143,7 @@ public class ThaumcraftCraftingManager {
         return var13;
     }
 
+    @Deprecated(forRemoval = true)
     public static ThaumcraftInfusionEnchantmentRecipe findMatchingInfusionEnchantmentRecipe(List<ItemStack> items, ItemStack input, Player player) {
         ThaumcraftInfusionEnchantmentRecipe var13 = null;
 
@@ -285,15 +290,17 @@ public class ThaumcraftCraftingManager {
         }
     }
 
-    @Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true,since = "ItemBonusAspectCalculator.getBonusAspects")
     public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, AspectList<Aspect> sourcetags) {
         return ItemBonusAspectCalculator.getBonusAspects(itemstack, sourcetags);
     }
 
+    @Deprecated(forRemoval = true,since = "ItemBasicAspectGetter.getBasicAspects")
     public static AspectList<Aspect> generateBaseAspects(Item item) {
         return generateBaseAspects(item, new ArrayList<>());
     }
 
+    @Deprecated(forRemoval = true)
     public static AspectList<Aspect> generateBaseAspects(Item item, List<ItemStack> history) {
 
         if (ThaumcraftApi.exists(item)) {
