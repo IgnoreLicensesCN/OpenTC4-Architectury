@@ -2,7 +2,6 @@ package tc4tweak.modules.findCrucibleRecipe;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.CrucibleRecipe;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class FindCrucibleRecipe {
     public static CrucibleRecipe getCrucibleRecipeFromHash(int hash) {
         if (cache.isEnabled())
             return cache.getCache().get(hash);
-        List<CrucibleRecipe> list = ThaumcraftApi.getCrucibleRecipes();
+        List<CrucibleRecipe> list = CrucibleRecipe.getCrucibleRecipes();
         return list.stream().filter(
                         r -> r.hash == hash)
                 .findAny().orElse(null);

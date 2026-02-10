@@ -44,7 +44,7 @@ public class ThaumcraftCraftingManager {
         int highest = Integer.MIN_VALUE;
         CrucibleRecipe resultRecipe = null;
 
-        for (CrucibleRecipe recipe : ThaumcraftApi.getCrucibleRecipes()) {
+        for (CrucibleRecipe recipe : CrucibleRecipe.getCrucibleRecipes()) {
             ItemStack temp = lastDrop.copy();
             temp.setCount(1);
             if (ResearchManager.isResearchComplete(username, recipe.research) && recipe.matches(aspects, temp)) {
@@ -270,6 +270,7 @@ public class ThaumcraftCraftingManager {
     }
 
     //set aspect no more than (amount)
+    @Deprecated(forRemoval = true)
     private static <Asp extends Aspect> AspectList<Asp> capAspects(AspectList<Asp> sourcetags, int amount) {
         if (sourcetags == null) {
             return sourcetags;
@@ -314,8 +315,9 @@ public class ThaumcraftCraftingManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> generateTagsFromCrucibleRecipes(Item item, List<ItemStack> history) {
-        CrucibleRecipe cr = ThaumcraftApi.getCrucibleRecipe(new ItemStack(item, 1));
+        CrucibleRecipe cr = CrucibleRecipe.getCrucibleRecipe(new ItemStack(item, 1));
         if (cr != null) {
             AspectList<Aspect> ot = cr.aspects.copy();
             int ss = cr.getRecipeOutput()
@@ -348,6 +350,7 @@ public class ThaumcraftCraftingManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> generateTagsFromArcaneRecipes(Item item, List<ItemStack> history) {
         AspectList<Aspect> ret = null;
         int value = 0;
@@ -413,6 +416,7 @@ public class ThaumcraftCraftingManager {
         return ret;
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> generateTagsFromInfusionRecipes(Item item, List<ItemStack> history) {
         InfusionRecipe cr = InfusionRecipe.getInfusionRecipe(new ItemStack(item, 1));
         if (cr == null) {
@@ -453,6 +457,7 @@ public class ThaumcraftCraftingManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> generateTagsFromCraftingRecipes(Item item, List<ItemStack> history) {
         AtomicReference<AspectList<Aspect>> ret = new AtomicReference<>();
         AtomicInteger value = new AtomicInteger(Integer.MAX_VALUE);
@@ -497,6 +502,7 @@ public class ThaumcraftCraftingManager {
         return ret.get();
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> getAspectsFromIngredients(List<ItemStack> ingredients, ItemStack recipeOut, List<ItemStack> history) {
         AspectList<Aspect> out = new AspectList<>();
         AspectList<Aspect> mid = new AspectList<>();
@@ -563,6 +569,7 @@ public class ThaumcraftCraftingManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     private static AspectList<Aspect> generateTagsFromRecipes(Item item, List<ItemStack> history) {
         AspectList<Aspect> ret;
         ret = generateTagsFromCrucibleRecipes(item, history);

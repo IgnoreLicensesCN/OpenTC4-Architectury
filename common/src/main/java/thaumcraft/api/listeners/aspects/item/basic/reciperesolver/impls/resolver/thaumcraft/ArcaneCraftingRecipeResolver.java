@@ -1,4 +1,4 @@
-package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver;
+package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.thaumcraft;
 
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.IAspectCalculableRecipeResolver;

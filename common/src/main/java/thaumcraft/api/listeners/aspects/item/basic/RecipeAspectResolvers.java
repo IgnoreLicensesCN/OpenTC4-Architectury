@@ -1,10 +1,12 @@
 package thaumcraft.api.listeners.aspects.item.basic;
 
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.ArcaneCraftingRecipeResolver;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.VanillaCraftingRecipeResolver;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.VanillaSmithingRecipeResolver;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.VanillaStoneCutterRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.thaumcraft.ArcaneCraftingRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.thaumcraft.CrucibleRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.thaumcraft.InfusionRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.vanilla.VanillaCraftingRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.vanilla.VanillaSmithingRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.vanilla.VanillaStoneCutterRecipeResolver;
 
 public enum RecipeAspectResolvers {
     VANILLA_STONE_CUTTER(new VanillaStoneCutterRecipeResolver(100)),
@@ -15,9 +17,9 @@ public enum RecipeAspectResolvers {
     VANILLA_SMITHING(new VanillaSmithingRecipeResolver(600)),
     VANILLA_CRAFTING(new VanillaCraftingRecipeResolver(650)),
 //    VANILLA_ALL(new VanillaRecipeResolver(700)),
-    ARCANE_CRAFTING(new ArcaneCraftingRecipeResolver(1000)),
-
-    //TODO:TC4's RecipeResolver
+    CRUCIBLE_RECIPE(new CrucibleRecipeResolver(1000)),
+    ARCANE_CRAFTING(new ArcaneCraftingRecipeResolver(1100)),
+    INFUSION_RECIPE(new InfusionRecipeResolver(1200)),
     ;
     public final AbstractRecipeResolver resolver;
 

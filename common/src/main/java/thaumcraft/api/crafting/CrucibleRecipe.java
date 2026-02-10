@@ -8,19 +8,25 @@ import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
+import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.RETURN_EMPTY_ITEM_LIST_LIST;
 
 public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe {
 
+	private static final List<CrucibleRecipe> crucibleRecipes = new CopyOnWriteArrayList<>();
+	private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
 	private final Function<ItemStack,ItemStack> recipeOutputGetter;
 
 	public final RecipeItemMatcher catalyst;
@@ -88,6 +94,50 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
         this.outputForAspectCalculation = outputForAspectCalculation == null?ItemStack.EMPTY:outputForAspectCalculation;
     }
 
+	@UnmodifiableView
+	public static List<CrucibleRecipe> getCrucibleRecipes() {
+		return unmodifiableCrucibleRecipes;
+	}
+
+	public static CrucibleRecipe addCrucibleRecipe(CrucibleRecipe rc) {
+		crucibleRecipes.add(rc);
+		return rc;
+	}
+
+	/**
+	 * @param stack the recipe result
+	 * @return the recipe
+	 */
+	@Nullable
+	public static CrucibleRecipe getCrucibleRecipe(ItemStack stack) {
+		for (CrucibleRecipe crucibleRecipe : getCrucibleRecipes()) {
+			if (crucibleRecipe.matchViaOutput(stack)) {
+				return crucibleRecipe;
+			}
+		}
+//		for (Object r:getCraftingRecipes()) {
+//			if (r instanceof CrucibleRecipe) {
+//				if (((CrucibleRecipe)r).getRecipeOutput().isItemEqual(stack))
+//					return (CrucibleRecipe)r;
+//			}
+//		}
+		return null;
+	}
+
+	/**
+	 * @param hash the unique recipe code
+	 * @return the recipe
+	 */
+	public static CrucibleRecipe getCrucibleRecipeFromHash(int hash) {
+		return FindCrucibleRecipe.getCrucibleRecipeFromHash(hash);
+//		for (Object r:getCraftingRecipes()) {
+//			if (r instanceof CrucibleRecipe) {
+//				if (((CrucibleRecipe)r).hash==hash)
+//					return (CrucibleRecipe)r;
+//			}
+//		}
+//		return null;
+	}
 
 
 	public boolean matches(AspectList<Aspect> itags, ItemStack cat) {

@@ -4,6 +4,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.world.item.Item;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
@@ -13,6 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static thaumcraft.api.crafting.interfaces.IArcaneRecipe.getIArcaneRecipes;
@@ -20,15 +23,20 @@ import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.Vanilla
 
 public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
 
-    public IAspectCalculableRecipeResolver(int weight, Supplier<? extends Collection<? extends IAspectCalculableRecipe>> onReloadRecipesGetter) {
+    public IAspectCalculableRecipeResolver(int weight,Supplier<? extends Collection<? extends IAspectCalculableRecipe>> onReloadRecipesGetter) {
+        this(weight,onReloadRecipesGetter,(recipe,aspList) -> aspList);
+    }
+    public IAspectCalculableRecipeResolver(int weight, Supplier<? extends Collection<? extends IAspectCalculableRecipe>> onReloadRecipesGetter, BiFunction<IAspectCalculableRecipe, AspectList<Aspect>, AspectList<Aspect>> resolvedAspectResultModifier) {
         super(weight);
         this.onReloadRecipesGetter = onReloadRecipesGetter;
+        this.resolvedAspectResultModifier = resolvedAspectResultModifier;
     }
 //    private final Map<Item, Multimap<CompoundTag, Recipe<?>>> ITEM_WITH_NBT_CRAFTED_FROM_RECIPES = new HashMap<>();
     private final Multimap<Item, IAspectCalculableRecipe> ITEM_CRAFTED_FROM_RECIPES = HashMultimap.create();
     private final Multimap<Item, IAspectCalculableRecipe> ITEM_IN_RECIPES = HashMultimap.create();
     private final Set<IAspectCalculableRecipe> RECIPES_RESOLVED = new HashSet<>();
     private final Supplier<? extends Collection<? extends IAspectCalculableRecipe>> onReloadRecipesGetter;
+    private final BiFunction<IAspectCalculableRecipe, AspectList<Aspect>,AspectList<Aspect>> resolvedAspectResultModifier;
 
     @Override
     public void reloadRecipes() {
@@ -71,8 +79,9 @@ public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
                 IAspectCalculableRecipe::getAspectCalculationInputs,
                 IAspectCalculableRecipe::getAspectCalculationRemaining,
                 context::addResolvedItem,
-                context::addResolvedAspectForItem
-//                aspList -> aspList.multiplyAndCeil(CRAFTING_ASPECTS_MULTIPLIER)//i dont want this now
+                context::addResolvedAspectForItem,
+                resolvedAspectResultModifier
+//                (recipe,aspList) -> aspList.multiplyAndCeil(CRAFTING_ASPECTS_MULTIPLIER)//i dont want this now
         );
     }
 }

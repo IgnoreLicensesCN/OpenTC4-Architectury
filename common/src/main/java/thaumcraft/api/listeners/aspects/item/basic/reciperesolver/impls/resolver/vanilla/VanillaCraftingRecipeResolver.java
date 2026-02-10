@@ -1,4 +1,4 @@
-package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver;
+package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.vanilla;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.CraftingRecipe;

@@ -20,6 +20,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.wands.WandCap;
@@ -98,144 +99,144 @@ public class ConfigRecipes {
             }
          }
 
-         ConfigResearch.recipes.put("BalancedShard_" + a, ThaumcraftApi.addCrucibleRecipe("CRUCIBLE", new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, a), al));
+         ConfigResearch.recipes.put("BalancedShard_" + a, CrucibleRecipe.addCrucibleRecipe("CRUCIBLE", new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, a), al));
       }
 
-      ConfigResearch.recipes.put("Alumentum", ThaumcraftApi.addCrucibleRecipe("ALUMENTUM", new ItemStack(ThaumcraftItems.ALUMENTUM), new ItemStack(Items.coal, 1, 32767), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Alumentum", CrucibleRecipe.addCrucibleRecipe("ALUMENTUM", new ItemStack(ThaumcraftItems.ALUMENTUM), new ItemStack(Items.coal, 1, 32767), (new AspectList<>()).mergeWithHighest(
               Aspects.ENERGY, 3).mergeWithHighest(Aspects.FIRE, 3).mergeWithHighest(Aspects.ENTROPY, 3)));
-      ConfigResearch.recipes.put("Nitor", ThaumcraftApi.addCrucibleRecipe("NITOR", new ItemStack(ThaumcraftItems.NITOR), "dustGlowstone", (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Nitor", CrucibleRecipe.addCrucibleRecipe("NITOR", new ItemStack(ThaumcraftItems.NITOR), "dustGlowstone", (new AspectList<>()).mergeWithHighest(
               Aspects.ENERGY, 3).mergeWithHighest(Aspects.FIRE, 3).mergeWithHighest(Aspects.LIGHT, 3)));
-      ConfigResearch.recipes.put("Thaumium", ThaumcraftApi.addCrucibleRecipe("THAUMIUM", new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), new ItemStack(Items.iron_ingot), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Thaumium", CrucibleRecipe.addCrucibleRecipe("THAUMIUM", new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), new ItemStack(Items.iron_ingot), (new AspectList<>()).mergeWithHighest(
               Aspects.MAGIC, 4)));
-      ConfigResearch.recipes.put("VoidMetal", ThaumcraftApi.addCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.VOID_INGOT,1), new ItemStack(ThaumcraftItems.VOID_SEED, 1), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("VoidMetal", CrucibleRecipe.addCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.VOID_INGOT,1), new ItemStack(ThaumcraftItems.VOID_SEED, 1), (new AspectList<>()).mergeWithHighest(
               Aspects.METAL, 8)));
-      ConfigResearch.recipes.put("VoidSeed", ThaumcraftApi.addCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.VOID_SEED, 1), new ItemStack(Items.wheat_seeds), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("VoidSeed", CrucibleRecipe.addCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.VOID_SEED, 1), new ItemStack(Items.wheat_seeds), (new AspectList<>()).mergeWithHighest(
               Aspects.DARKNESS, 8).mergeWithHighest(Aspects.VOID, 8).mergeWithHighest(Aspects.ELDRITCH, 2)));
-      ConfigResearch.recipes.put("Tallow", ThaumcraftApi.addCrucibleRecipe("TALLOW", new ItemStack(ThaumcraftItems.MAGIC_TALLOW), new ItemStack(Items.rotten_flesh), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Tallow", CrucibleRecipe.addCrucibleRecipe("TALLOW", new ItemStack(ThaumcraftItems.MAGIC_TALLOW), new ItemStack(Items.rotten_flesh), (new AspectList<>()).mergeWithHighest(
               Aspects.MAGIC, 2)));
-      ConfigResearch.recipes.put("AltGunpowder", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.gunpowder, 2, 0), new ItemStack(Items.gunpowder), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltGunpowder", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.gunpowder, 2, 0), new ItemStack(Items.gunpowder), (new AspectList<>()).mergeWithHighest(
               Aspects.FIRE, 4).mergeWithHighest(Aspects.ENTROPY, 4)));
-      ConfigResearch.recipes.put("AltSlime", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.slime_ball, 2, 0), new ItemStack(Items.slime_ball), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltSlime", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.slime_ball, 2, 0), new ItemStack(Items.slime_ball), (new AspectList<>()).mergeWithHighest(
               Aspects.WATER, 2).mergeWithHighest(Aspects.LIFE, 2)));
-      ConfigResearch.recipes.put("AltClay", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.clay_ball, 2, 0), new ItemStack(Items.clay_ball), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltClay", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.clay_ball, 2, 0), new ItemStack(Items.clay_ball), (new AspectList<>()).mergeWithHighest(
               Aspects.WATER, 1).mergeWithHighest(Aspects.EARTH, 2)));
-      ConfigResearch.recipes.put("AltGlowstone", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.glowstone_dust, 2, 0), "dustGlowstone", (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltGlowstone", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.glowstone_dust, 2, 0), "dustGlowstone", (new AspectList<>()).mergeWithHighest(
               Aspects.LIGHT, 3).mergeWithHighest(Aspects.SENSES, 1)));
-      ConfigResearch.recipes.put("AltInk", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.dye, 2, 0), new ItemStack(Items.dye, 1, 0), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltInk", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.dye, 2, 0), new ItemStack(Items.dye, 1, 0), (new AspectList<>()).mergeWithHighest(
               Aspects.WATER, 2).mergeWithHighest(Aspects.SENSES, 2)));
-      ConfigResearch.recipes.put("AltWeb", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.web), new ItemStack(Items.string), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltWeb", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.web), new ItemStack(Items.string), (new AspectList<>()).mergeWithHighest(
               Aspects.TRAP, 2).mergeWithHighest(Aspects.CLOTH, 2)));
-      ConfigResearch.recipes.put("AltMossyCobble", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.mossy_cobblestone), new ItemStack(Blocks.cobblestone), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltMossyCobble", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.mossy_cobblestone), new ItemStack(Blocks.cobblestone), (new AspectList<>()).mergeWithHighest(
               Aspects.PLANT, 2).mergeWithHighest(
               Aspects.MAGIC, 1)));
-      ConfigResearch.recipes.put("AltIce", ThaumcraftApi.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.ice), new ItemStack(Blocks.snow), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltIce", CrucibleRecipe.addCrucibleRecipe("ALCHEMICALMANUFACTURE", new ItemStack(Blocks.ice), new ItemStack(Blocks.snow), (new AspectList<>()).mergeWithHighest(
               Aspects.ORDER, 1).mergeWithHighest(Aspects.COLD, 1)));
-      ConfigResearch.recipes.put("AltCrackedBrick", ThaumcraftApi.addCrucibleRecipe("ENTROPICPROCESSING", new ItemStack(Blocks.stonebrick, 1, 2), new ItemStack(Blocks.stonebrick), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltCrackedBrick", CrucibleRecipe.addCrucibleRecipe("ENTROPICPROCESSING", new ItemStack(Blocks.stonebrick, 1, 2), new ItemStack(Blocks.stonebrick), (new AspectList<>()).mergeWithHighest(
               Aspects.ENTROPY, 2)));
-      ConfigResearch.recipes.put("AltBonemeal", ThaumcraftApi.addCrucibleRecipe("ENTROPICPROCESSING", new ItemStack(Items.dye, 4, 15), new ItemStack(Items.bone), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("AltBonemeal", CrucibleRecipe.addCrucibleRecipe("ENTROPICPROCESSING", new ItemStack(Items.dye, 4, 15), new ItemStack(Items.bone), (new AspectList<>()).mergeWithHighest(
               Aspects.ENTROPY, 1)));
-      ConfigResearch.recipes.put("PureIron", ThaumcraftApi.addCrucibleRecipe("PUREIRON", new ItemStack(ConfigItems.itemNugget, 1, 16), "oreIron", (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("PureIron", CrucibleRecipe.addCrucibleRecipe("PUREIRON", new ItemStack(ConfigItems.itemNugget, 1, 16), "oreIron", (new AspectList<>()).mergeWithHighest(
               Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
-      ConfigResearch.recipes.put("PureGold", ThaumcraftApi.addCrucibleRecipe("PUREGOLD", new ItemStack(ConfigItems.itemNugget, 1, 31), "oreGold", (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("PureGold", CrucibleRecipe.addCrucibleRecipe("PUREGOLD", new ItemStack(ConfigItems.itemNugget, 1, 31), "oreGold", (new AspectList<>()).mergeWithHighest(
               Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
       if (Config.foundCopperIngot) {
-         ConfigResearch.recipes.put("PureCopper", ThaumcraftApi.addCrucibleRecipe("PURECOPPER", new ItemStack(ConfigItems.itemNugget, 1, 17), "oreCopper", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("PureCopper", CrucibleRecipe.addCrucibleRecipe("PURECOPPER", new ItemStack(ConfigItems.itemNugget, 1, 17), "oreCopper", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
       }
 
       if (Config.foundTinIngot) {
-         ConfigResearch.recipes.put("PureTin", ThaumcraftApi.addCrucibleRecipe("PURETIN", new ItemStack(ConfigItems.itemNugget, 1, 18), "oreTin", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("PureTin", CrucibleRecipe.addCrucibleRecipe("PURETIN", new ItemStack(ConfigItems.itemNugget, 1, 18), "oreTin", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
       }
 
       if (Config.foundSilverIngot) {
-         ConfigResearch.recipes.put("PureSilver", ThaumcraftApi.addCrucibleRecipe("PURESILVER", new ItemStack(ConfigItems.itemNugget, 1, 19), "oreSilver", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("PureSilver", CrucibleRecipe.addCrucibleRecipe("PURESILVER", new ItemStack(ConfigItems.itemNugget, 1, 19), "oreSilver", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
       }
 
       if (Config.foundLeadIngot) {
-         ConfigResearch.recipes.put("PureLead", ThaumcraftApi.addCrucibleRecipe("PURELEAD", new ItemStack(ConfigItems.itemNugget, 1, 20), "oreLead", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("PureLead", CrucibleRecipe.addCrucibleRecipe("PURELEAD", new ItemStack(ConfigItems.itemNugget, 1, 20), "oreLead", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 1).mergeWithHighest(Aspects.ORDER, 1)));
       }
 
-      ConfigResearch.recipes.put("TransIron", ThaumcraftApi.addCrucibleRecipe("TRANSIRON", new ItemStack(ConfigItems.itemNugget, 3, 0), "nuggetIron", (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("TransIron", CrucibleRecipe.addCrucibleRecipe("TRANSIRON", new ItemStack(ConfigItems.itemNugget, 3, 0), "nuggetIron", (new AspectList<>()).mergeWithHighest(
               Aspects.METAL, 2)));
-      ConfigResearch.recipes.put("TransGold", ThaumcraftApi.addCrucibleRecipe("TRANSGOLD", new ItemStack(Items.gold_nugget, 3, 0), new ItemStack(Items.gold_nugget), (new AspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("TransGold", CrucibleRecipe.addCrucibleRecipe("TRANSGOLD", new ItemStack(Items.gold_nugget, 3, 0), new ItemStack(Items.gold_nugget), (new AspectList<>()).mergeWithHighest(
               Aspects.METAL, 2).mergeWithHighest(Aspects.GREED, 1)));
       if (Config.foundCopperIngot) {
-         ConfigResearch.recipes.put("TransCopper", ThaumcraftApi.addCrucibleRecipe("TRANSCOPPER", new ItemStack(ConfigItems.itemNugget, 3, 1), "nuggetCopper", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("TransCopper", CrucibleRecipe.addCrucibleRecipe("TRANSCOPPER", new ItemStack(ConfigItems.itemNugget, 3, 1), "nuggetCopper", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 2).mergeWithHighest(Aspects.EXCHANGE, 1)));
       }
 
       if (Config.foundTinIngot) {
-         ConfigResearch.recipes.put("TransTin", ThaumcraftApi.addCrucibleRecipe("TRANSTIN", new ItemStack(ConfigItems.itemNugget, 3, 2), "nuggetTin", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("TransTin", CrucibleRecipe.addCrucibleRecipe("TRANSTIN", new ItemStack(ConfigItems.itemNugget, 3, 2), "nuggetTin", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 2).mergeWithHighest(Aspects.CRYSTAL, 1)));
       }
 
       if (Config.foundSilverIngot) {
-         ConfigResearch.recipes.put("TransSilver", ThaumcraftApi.addCrucibleRecipe("TRANSSILVER", new ItemStack(ConfigItems.itemNugget, 3, 3), "nuggetSilver", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("TransSilver", CrucibleRecipe.addCrucibleRecipe("TRANSSILVER", new ItemStack(ConfigItems.itemNugget, 3, 3), "nuggetSilver", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 2).mergeWithHighest(Aspects.GREED, 1)));
       }
 
       if (Config.foundLeadIngot) {
-         ConfigResearch.recipes.put("TransLead", ThaumcraftApi.addCrucibleRecipe("TRANSLEAD", new ItemStack(ConfigItems.itemNugget, 3, 4), "nuggetLead", (new AspectList<>()).mergeWithHighest(
+         ConfigResearch.recipes.put("TransLead", CrucibleRecipe.addCrucibleRecipe("TRANSLEAD", new ItemStack(ConfigItems.itemNugget, 3, 4), "nuggetLead", (new AspectList<>()).mergeWithHighest(
                  Aspects.METAL, 2).mergeWithHighest(Aspects.ORDER, 1)));
       }
 
-      ConfigResearch.recipes.put("EtherealBloom", ThaumcraftApi.addCrucibleRecipe("ETHEREALBLOOM", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 4), new ItemStack(ConfigBlocks.blockCustomPlant, 1, 2), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("EtherealBloom", CrucibleRecipe.addCrucibleRecipe("ETHEREALBLOOM", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 4), new ItemStack(ConfigBlocks.blockCustomPlant, 1, 2), (new AspectList<>()).addAll(
               Aspects.MAGIC, 16).addAll(Aspects.PLANT, 16).addAll(Aspects.HEAL, 16).addAll(Aspects.TAINT, 8)));
-      ConfigResearch.recipes.put("LiquidDeath", ThaumcraftApi.addCrucibleRecipe("LIQUIDDEATH", new ItemStack(ConfigItems.itemBucketDeath), new ItemStack(Items.bucket), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("LiquidDeath", CrucibleRecipe.addCrucibleRecipe("LIQUIDDEATH", new ItemStack(ConfigItems.itemBucketDeath), new ItemStack(Items.bucket), (new AspectList<>()).addAll(
               Aspects.DEATH, 32).addAll(Aspects.POISON, 32).addAll(Aspects.ENTROPY, 32)));
       ItemStack bt = new ItemStack(ConfigItems.itemEssence, 1, 1);
       ((IEssentiaContainerItem) bt.getItem()).setAspects(bt, (new AspectList<>()).addAll(Aspects.TAINT, 8));
-      ConfigResearch.recipes.put("BottleTaint", ThaumcraftApi.addCrucibleRecipe("BOTTLETAINT", new ItemStack(ConfigItems.itemBottleTaint), bt, (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("BottleTaint", CrucibleRecipe.addCrucibleRecipe("BOTTLETAINT", new ItemStack(ConfigItems.itemBottleTaint), bt, (new AspectList<>()).addAll(
               Aspects.TAINT, 8).addAll(
               Aspects.MAGIC, 8)));
-      ConfigResearch.recipes.put("GolemStraw", ThaumcraftApi.addCrucibleRecipe("GOLEMSTRAW", new ItemStack(ConfigItems.itemGolemPlacer, 1, 0), new ItemStack(Blocks.hay_block), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemStraw", CrucibleRecipe.addCrucibleRecipe("GOLEMSTRAW", new ItemStack(ConfigItems.itemGolemPlacer, 1, 0), new ItemStack(Blocks.hay_block), (new AspectList<>()).addAll(
               Aspects.MAN, 4).addAll(
               Aspects.MOTION, 4).addAll(Aspects.SOUL, 4)));
-      ConfigResearch.recipes.put("GolemWood", ThaumcraftApi.addCrucibleRecipe("GOLEMWOOD", new ItemStack(ConfigItems.itemGolemPlacer, 1, 1), new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemWood", CrucibleRecipe.addCrucibleRecipe("GOLEMWOOD", new ItemStack(ConfigItems.itemGolemPlacer, 1, 1), new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0), (new AspectList<>()).addAll(
               Aspects.MAN, 4).addAll(
               Aspects.MOTION, 4).addAll(Aspects.SOUL, 4)));
-      ConfigResearch.recipes.put("GolemTallow", ThaumcraftApi.addCrucibleRecipe("GOLEMTALLOW", new ItemStack(ConfigItems.itemGolemPlacer, 1, 2), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemTallow", CrucibleRecipe.addCrucibleRecipe("GOLEMTALLOW", new ItemStack(ConfigItems.itemGolemPlacer, 1, 2), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), (new AspectList<>()).addAll(
               Aspects.MAN, 8).addAll(
               Aspects.MOTION, 8).addAll(Aspects.SOUL, 8)));
-      ConfigResearch.recipes.put("GolemClay", ThaumcraftApi.addCrucibleRecipe("GOLEMCLAY", new ItemStack(ConfigItems.itemGolemPlacer, 1, 3), new ItemStack(Blocks.brick_block), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemClay", CrucibleRecipe.addCrucibleRecipe("GOLEMCLAY", new ItemStack(ConfigItems.itemGolemPlacer, 1, 3), new ItemStack(Blocks.brick_block), (new AspectList<>()).addAll(
               Aspects.MAN, 4).addAll(
               Aspects.MOTION, 4).addAll(Aspects.SOUL, 4)));
-      ConfigResearch.recipes.put("GolemFlesh", ThaumcraftApi.addCrucibleRecipe("GOLEMFLESH", new ItemStack(ConfigItems.itemGolemPlacer, 1, 4), new ItemStack(ConfigBlocks.blockTaint, 1, 2), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemFlesh", CrucibleRecipe.addCrucibleRecipe("GOLEMFLESH", new ItemStack(ConfigItems.itemGolemPlacer, 1, 4), new ItemStack(ConfigBlocks.blockTaint, 1, 2), (new AspectList<>()).addAll(
               Aspects.MAN, 8).addAll(
               Aspects.MOTION, 8).addAll(Aspects.SOUL, 8)));
-      ConfigResearch.recipes.put("GolemStone", ThaumcraftApi.addCrucibleRecipe("GOLEMSTONE", new ItemStack(ConfigItems.itemGolemPlacer, 1, 5), new ItemStack(Blocks.stonebrick), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemStone", CrucibleRecipe.addCrucibleRecipe("GOLEMSTONE", new ItemStack(ConfigItems.itemGolemPlacer, 1, 5), new ItemStack(Blocks.stonebrick), (new AspectList<>()).addAll(
               Aspects.MAN, 4).addAll(
               Aspects.MOTION, 4).addAll(Aspects.SOUL, 4)));
-      ConfigResearch.recipes.put("GolemIron", ThaumcraftApi.addCrucibleRecipe("GOLEMIRON", new ItemStack(ConfigItems.itemGolemPlacer, 1, 6), new ItemStack(Blocks.iron_block), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemIron", CrucibleRecipe.addCrucibleRecipe("GOLEMIRON", new ItemStack(ConfigItems.itemGolemPlacer, 1, 6), new ItemStack(Blocks.iron_block), (new AspectList<>()).addAll(
               Aspects.MAN, 4).addAll(
               Aspects.MOTION, 4).addAll(Aspects.SOUL, 4)));
-      ConfigResearch.recipes.put("GolemThaumium", ThaumcraftApi.addCrucibleRecipe("GOLEMTHAUMIUM", new ItemStack(ConfigItems.itemGolemPlacer, 1, 7), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemThaumium", CrucibleRecipe.addCrucibleRecipe("GOLEMTHAUMIUM", new ItemStack(ConfigItems.itemGolemPlacer, 1, 7), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4), (new AspectList<>()).addAll(
               Aspects.MAN, 8).addAll(
               Aspects.MOTION, 8).addAll(Aspects.SOUL, 8)));
-      ConfigResearch.recipes.put("CoreGather", ThaumcraftApi.addCrucibleRecipe("COREGATHER", new ItemStack(ConfigItems.itemGolemCore, 1, 2), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreGather", CrucibleRecipe.addCrucibleRecipe("COREGATHER", new ItemStack(ConfigItems.itemGolemCore, 1, 2), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.GREED, 5).addAll(
               Aspects.EARTH, 5)));
-      ConfigResearch.recipes.put("CoreFill", ThaumcraftApi.addCrucibleRecipe("COREFILL", new ItemStack(ConfigItems.itemGolemCore, 1, 0), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreFill", CrucibleRecipe.addCrucibleRecipe("COREFILL", new ItemStack(ConfigItems.itemGolemCore, 1, 0), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.HUNGER, 5).addAll(
               Aspects.VOID, 5)));
-      ConfigResearch.recipes.put("CoreEmpty", ThaumcraftApi.addCrucibleRecipe("COREEMPTY", new ItemStack(ConfigItems.itemGolemCore, 1, 1), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreEmpty", CrucibleRecipe.addCrucibleRecipe("COREEMPTY", new ItemStack(ConfigItems.itemGolemCore, 1, 1), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.GREED, 5).addAll(
               Aspects.VOID, 5)));
-      ConfigResearch.recipes.put("CoreHarvest", ThaumcraftApi.addCrucibleRecipe("COREHARVEST", new ItemStack(ConfigItems.itemGolemCore, 1, 3), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreHarvest", CrucibleRecipe.addCrucibleRecipe("COREHARVEST", new ItemStack(ConfigItems.itemGolemCore, 1, 3), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.HARVEST, 5).addAll(Aspects.CROP, 5)));
-      ConfigResearch.recipes.put("CoreGuard", ThaumcraftApi.addCrucibleRecipe("COREGUARD", new ItemStack(ConfigItems.itemGolemCore, 1, 4), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreGuard", CrucibleRecipe.addCrucibleRecipe("COREGUARD", new ItemStack(ConfigItems.itemGolemCore, 1, 4), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.WEAPON, 5).addAll(Aspects.TRAP, 5)));
-      ConfigResearch.recipes.put("CoreButcher", ThaumcraftApi.addCrucibleRecipe("COREBUTCHER", new ItemStack(ConfigItems.itemGolemCore, 1, 9), new ItemStack(ConfigItems.itemGolemCore, 1, 4), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreButcher", CrucibleRecipe.addCrucibleRecipe("COREBUTCHER", new ItemStack(ConfigItems.itemGolemCore, 1, 9), new ItemStack(ConfigItems.itemGolemCore, 1, 4), (new AspectList<>()).addAll(
               Aspects.FLESH, 5).addAll(Aspects.BEAST, 5)));
-      ConfigResearch.recipes.put("CoreLiquid", ThaumcraftApi.addCrucibleRecipe("CORELIQUID", new ItemStack(ConfigItems.itemGolemCore, 1, 5), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreLiquid", CrucibleRecipe.addCrucibleRecipe("CORELIQUID", new ItemStack(ConfigItems.itemGolemCore, 1, 5), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new AspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.VOID, 5)));
-      ConfigResearch.recipes.put("BathSalts", ThaumcraftApi.addCrucibleRecipe("BATHSALTS", new ItemStack(ConfigItems.itemBathSalts), new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("BathSalts", CrucibleRecipe.addCrucibleRecipe("BATHSALTS", new ItemStack(ConfigItems.itemBathSalts), new ItemStack(ThaumcraftItems.SALIS_MUNDUS, 1), (new AspectList<>()).addAll(
               Aspects.MIND, 6).addAll(Aspects.AURA, 6).addAll(
               Aspects.ORDER, 6).addAll(Aspects.HEAL, 6)));
-      ConfigResearch.recipes.put("SaneSoap", ThaumcraftApi.addCrucibleRecipe("SANESOAP", new ItemStack(ConfigItems.itemSanitySoap), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("SaneSoap", CrucibleRecipe.addCrucibleRecipe("SANESOAP", new ItemStack(ConfigItems.itemSanitySoap), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), (new AspectList<>()).addAll(
               Aspects.MIND, 16).addAll(
               Aspects.ELDRITCH, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.HEAL, 16)));
    }

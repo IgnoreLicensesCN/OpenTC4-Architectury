@@ -24,8 +24,8 @@ public interface IAspectCalculableRecipe {
     List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining();
 
     @NotNull
-    AspectList<Aspect> getAspectCalculationAspectsList();
+    AspectList<Aspect> getAspectCalculationAspectsList();//of course only for input(no aspects output for now)
     @NotNull
-    CentiVisList<Aspect> getAspectCalculationCentiVisList();
+    CentiVisList<Aspect> getAspectCalculationCentiVisList();//of course only for input(no aspects output for now)
 
 }

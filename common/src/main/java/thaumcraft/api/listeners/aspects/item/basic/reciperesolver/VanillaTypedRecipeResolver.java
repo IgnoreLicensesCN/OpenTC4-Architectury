@@ -12,16 +12,15 @@ import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.SameValueList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.VANILLA_RETURN_ITEMS;
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.VANILLA_RETURN_ITEMS_LIST_LIST;
 
 public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends Container> extends AbstractRecipeResolver {
@@ -121,7 +120,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                 ingredientRemainingItemsGetter,
                 resolvedItemAdder,
                 resolvedAspectAdder,
-                aspList -> aspList
+                (recipe,aspList) -> aspList
         );
     }
 
@@ -139,7 +138,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                     List<List<Function<ItemStack,ItemStack>>>> ingredientRemainingItemsGetter,
             Consumer<Item> resolvedItemAdder,
             BiConsumer<Item,UnmodifiableAspectList<Aspect>> resolvedAspectAdder,
-            Function<AspectList<Aspect>, AspectList<Aspect>> resolvedAspectsModifier
+            BiFunction<Recipe,AspectList<Aspect>, AspectList<Aspect>> resolvedAspectsModifier
     ) {
         toSolve.forEach(
                 item -> {
@@ -215,7 +214,8 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                         remainingItemAspects.forEach(allAdded::reduceAndRemoveIfNotPositive);
                         resolvedItemAdder.accept(item);
                         allAdded = allAdded.divideAndCeil(resultStack.getCount());
-                        allAdded = resolvedAspectsModifier.apply(allAdded);
+                        allAdded = resolvedAspectsModifier.apply(recipe,allAdded);
+                        allAdded.removeIfNotPositive();
                         resolvedAspectAdder.accept(item,new UnmodifiableAspectList<>(allAdded));
                         resolvedRecipes.add(recipe);
                         recipesToRemove.add(recipe);

@@ -20,3 +20,5 @@
 * inkwell can work with unbreaking enchantment(if there is enchantment for some reason)
 * IRepairable renamed to IRepairEnchantable which can be enchanted Repair,and any item with Repair enchantment can be repaired
 * IRepairableExtended renamed to IRepairable which can be called doRepair to repair(even without enchantment).However,if want to repair as component,you should impl IInventoryTickableComponent and call doRepair.
+* removed aspect limit(64 for each aspect) during aspect calculation
+* removed crafting aspect multiplier(0.75 for final aspect but apply to each component) during aspect calculation

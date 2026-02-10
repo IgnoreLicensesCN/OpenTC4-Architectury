@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -72,7 +71,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       int[] hashes = nbttagcompound.getIntArray("recipes");
       if (hashes != null) {
          for(int hash : hashes) {
-            CrucibleRecipe recipe = ThaumcraftApi.getCrucibleRecipeFromHash(hash);
+            CrucibleRecipe recipe = CrucibleRecipe.getCrucibleRecipeFromHash(hash);
             if (recipe != null) {
                this.recipeEssentia.add(recipe.aspects.copy());
                this.recipePlayer.add("");
@@ -153,7 +152,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    public ItemStack getCurrentOutputRecipe() {
       ItemStack out = null;
       if (this.currentCraft >= 0 && this.recipeHash != null && !this.recipeHash.isEmpty()) {
-         CrucibleRecipe recipe = ThaumcraftApi.getCrucibleRecipeFromHash(this.recipeHash.get(this.currentCraft));
+         CrucibleRecipe recipe = CrucibleRecipe.getCrucibleRecipeFromHash(this.recipeHash.get(this.currentCraft));
          if (recipe != null) {
             out = recipe.getRecipeOutput().copy();
          }
@@ -178,7 +177,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
             if (this.currentCraft < 0 || this.currentCraft >= this.recipeHash.size() || this.currentRecipe == null || !this.currentRecipe.catalystMatches(this.inputStack)) {
                for(int a = 0; a < this.recipeHash.size(); ++a) {
-                  CrucibleRecipe recipe = ThaumcraftApi.getCrucibleRecipeFromHash(this.recipeHash.get(a));
+                  CrucibleRecipe recipe = CrucibleRecipe.getCrucibleRecipeFromHash(this.recipeHash.get(a));
                   if (recipe.catalystMatches(this.inputStack)) {
                      this.currentCraft = a;
                      this.currentRecipe = recipe;

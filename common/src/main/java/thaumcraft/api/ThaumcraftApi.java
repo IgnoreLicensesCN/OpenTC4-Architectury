@@ -9,9 +9,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
-import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
@@ -25,7 +22,6 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
@@ -461,9 +457,7 @@ public class ThaumcraftApi {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
     }
 
-    private static final List<CrucibleRecipe> crucibleRecipes = new CopyOnWriteArrayList<>();
-
-//	@Deprecated(forRemoval = true)
+    //	@Deprecated(forRemoval = true)
 //	private static HashMap<Object,ItemStack> smeltingBonus = new HashMap<>();
 
 
@@ -472,54 +466,6 @@ public class ThaumcraftApi {
 //		return Collections.unmodifiableList(craftingRecipes);
 //	}
 
-    private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
-
-    @UnmodifiableView
-    public static List<CrucibleRecipe> getCrucibleRecipes() {
-        return unmodifiableCrucibleRecipes;
-    }
-
-
-    public static CrucibleRecipe addCrucibleRecipe(CrucibleRecipe rc) {
-        crucibleRecipes.add(rc);
-        return rc;
-    }
-
-
-    /**
-     * @param stack the recipe result
-     * @return the recipe
-     */
-    @Nullable
-    public static CrucibleRecipe getCrucibleRecipe(ItemStack stack) {
-        for (CrucibleRecipe crucibleRecipe : getCrucibleRecipes()) {
-            if (crucibleRecipe.matchViaOutput(stack)) {
-                return crucibleRecipe;
-            }
-        }
-//		for (Object r:getCraftingRecipes()) {
-//			if (r instanceof CrucibleRecipe) {
-//				if (((CrucibleRecipe)r).getRecipeOutput().isItemEqual(stack))
-//					return (CrucibleRecipe)r;
-//			}
-//		}
-        return null;
-    }
-
-    /**
-     * @param hash the unique recipe code
-     * @return the recipe
-     */
-    public static CrucibleRecipe getCrucibleRecipeFromHash(int hash) {
-        return FindCrucibleRecipe.getCrucibleRecipeFromHash(hash);
-//		for (Object r:getCraftingRecipes()) {
-//			if (r instanceof CrucibleRecipe) {
-//				if (((CrucibleRecipe)r).hash==hash)
-//					return (CrucibleRecipe)r;
-//			}
-//		}
-//		return null;
-    }
 
     /**
      * Used by the thaumonomicon drilldown feature.

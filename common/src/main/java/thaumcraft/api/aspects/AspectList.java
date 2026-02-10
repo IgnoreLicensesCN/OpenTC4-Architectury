@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
@@ -141,7 +143,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 	
 	/**
-	 * @return an array ofAspectVisList all the aspects in this collection
+	 * @return an array of all the primal aspects in this collection
 	 */
 	public AspectList<PrimalAspect> getPrimalAspects() {
 		AspectList<PrimalAspect> result = new AspectList<>();
@@ -208,6 +210,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @param amount to remove
 	 * @return slef
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key, int amount) {
 		int am = getAmount(key) - amount;
 		if (am<=0) {
@@ -225,8 +228,19 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 //	 * @param amount
 	 * @return self
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> remove(Asp key) {
 		aspects.remove(key); 
+		return this;
+	}
+	@SuppressWarnings("UnusedReturnValue")
+	public AspectList<Asp> removeIf(Predicate<Map.Entry<Asp,Integer>> filter) {
+		aspects.entrySet().removeIf(filter);
+		return this;
+	}
+	@SuppressWarnings("UnusedReturnValue")
+	public AspectList<Asp> removeIfNotPositive() {
+		removeIf(aspectIntegerEntry -> aspectIntegerEntry.getValue() <= 0);
 		return this;
 	}
 	
@@ -237,6 +251,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @param amount to add
 	 * @return self
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> addAll(Asp aspect, int amount) {
 		if (aspect == null){
 			throw new NullPointerException("aspect is null");
@@ -248,6 +263,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspects.put( aspect, amount );
 		return this;
 	}
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> set(Asp aspect, int amount) {
 		if (aspect == null){
 			throw new NullPointerException("aspect is null");
@@ -255,6 +271,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspects.put( aspect, amount );
 		return this;
 	}
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> divideAndCeil(int divideBy){
 		if (divideBy==0){
 			throw new IllegalArgumentException("division by zero");
@@ -267,6 +284,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		}
 		return this;
 	}
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> multiply(int multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
 			int value = entry.getValue();
@@ -274,6 +292,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		}
 		return this;
 	}
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> multiplyAndCeil(float multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
 			int value = entry.getValue();
@@ -290,6 +309,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @param amount to merge
 	 * @return self
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> mergeWithHighest(Asp aspect, int amount) {
 		if (this.aspects.containsKey(aspect)) {
 			int oldamount = this.aspects.get(aspect);
@@ -299,16 +319,19 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspects.put( aspect, amount );
 		return this;
 	}
+	@SuppressWarnings("UnusedReturnValue")
 	public int merge(Asp aspect, int amount,BiFunction<Integer,Integer,Integer> chooser) {
 		return this.aspects.merge(aspect, amount, chooser);
 	}
-	
+
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> addAll(AspectList<Asp> in) {
 		for (var a:in.getAspectTypes())
 			this.addAll(a, in.getAmount(a));
 		return this;
 	}
-	
+
+	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> mergeWithHighest(AspectList<Asp> in) {
 		for (var a:in.getAspectTypes())
 			this.mergeWithHighest(a, in.getAmount(a));

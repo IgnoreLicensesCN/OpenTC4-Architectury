@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.tiles.TileThaumatorium;
@@ -55,7 +54,7 @@ public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
       float ticks = (float)Minecraft.getMinecraft().renderViewEntity.ticksExisted + par8;
       if (tile != null && tile.getLevel() != null && tile.recipeHash != null && !tile.recipeHash.isEmpty()) {
          int stack = Minecraft.getMinecraft().renderViewEntity.ticksExisted / 40 % tile.recipeHash.size();
-         CrucibleRecipe recipe = ThaumcraftApi.getCrucibleRecipeFromHash(tile.recipeHash.get(stack));
+         CrucibleRecipe recipe = CrucibleRecipe.getCrucibleRecipeFromHash(tile.recipeHash.get(stack));
          if (recipe != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float)par2 + 0.5F + (float)tile.facing.offsetX / 1.99F, (float)par4 + 1.325F, (float)par6 + 0.5F + (float)tile.facing.offsetZ / 1.99F);

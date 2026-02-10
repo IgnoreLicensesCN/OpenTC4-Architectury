@@ -48,7 +48,6 @@ public class ItemBasicAspectCalculator {
         STONE_CUTTER_RESOLVERS.registerListener(RecipeAspectResolvers.VANILLA_STONE_CUTTER.resolver);
         VANILLA_SMITHING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_SMITHING.resolver);
         VANILLA_CRAFTING_RESOLVER.registerListener(RecipeAspectResolvers.VANILLA_CRAFTING.resolver);
-        //TODO:TC4's own
         for (var vanillaResolver:RecipeAspectResolvers.values()) {
             ALL_RESOLVERS.registerListener(vanillaResolver.resolver);
         }
