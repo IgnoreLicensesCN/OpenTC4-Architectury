@@ -6,10 +6,8 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 
 import java.util.Map;

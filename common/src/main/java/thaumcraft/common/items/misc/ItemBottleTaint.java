@@ -12,7 +12,9 @@ import thaumcraft.api.IScribeTools;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityBottleTaint;
 
-public class ItemBottleTaint extends Item implements IScribeTools {
+public class ItemBottleTaint extends Item
+        implements IScribeTools//wait what????
+{
    @SideOnly(Side.CLIENT)
    public IIcon icon;
 

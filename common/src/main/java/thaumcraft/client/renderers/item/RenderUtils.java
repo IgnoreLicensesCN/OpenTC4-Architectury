@@ -1,6 +1,8 @@
 package thaumcraft.client.renderers.item;
 
-import net.minecraft.client.Minecraft;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
@@ -12,7 +14,7 @@ import static thaumcraft.common.items.ThaumcraftItems.THAUMOMETER;
 
 public class RenderUtils {
 
-    public static final Map<Item,ThaumcraftItemRenderer> ITEM_RENDERERS = new ConcurrentHashMap<>();
+    public static final ListMultimap<Item, IThaumcraftItemRenderer> ITEM_RENDERERS = MultimapBuilder.hashKeys().linkedListValues().build();
 
     private static boolean inited = false;
 

@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ThaumometerItemRenderer implements ThaumcraftItemRenderer {
+public class ThaumometerItemRenderer implements IThaumcraftItemRenderer {
 
     public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer();
 
@@ -30,16 +30,10 @@ public class ThaumometerItemRenderer implements ThaumcraftItemRenderer {
 
     //TODO:Render aspects.
     @Override
-    public void render(ItemStack stack, ItemDisplayContext context, boolean bl, PoseStack poseStack,
+    public boolean render(ItemStack stack, ItemDisplayContext context, boolean bl, PoseStack poseStack,
                        MultiBufferSource bufferSource, int light, int overlay, BakedModel bakedModel) {
-        // 只渲染手持或 GUI
-//        if (context != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND &&
-//                context != ItemDisplayContext.THIRD_PERSON_RIGHT_HAND &&
-//                context != ItemDisplayContext.GUI) {
-//            return;
-//        }
         if (Platform.getEnv() != EnvType.CLIENT) {
-            return;
+            return false;
         }
         var player = OpenTC4CommonProxy.INSTANCE.getLocalPlayer();
         switch (context){
@@ -52,7 +46,7 @@ public class ThaumometerItemRenderer implements ThaumcraftItemRenderer {
                         if ((usingItem == offStack && stack == mainStack)
                                 || (usingItem == mainStack && stack == offStack)
                         ) {
-                            return;
+                            return false;
                         }
                     }
                 }
@@ -119,6 +113,7 @@ public class ThaumometerItemRenderer implements ThaumcraftItemRenderer {
                 bakedModel, stack, light, overlay, poseStack, consumer
         );//dont forget to render obj part :)
         poseStack.popPose();
+        return true;
     }
     private void renderScanScreen(PoseStack poseStack, VertexConsumer consumer, int light, int overlay) {
         poseStack.pushPose();

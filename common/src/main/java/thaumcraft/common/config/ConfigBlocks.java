@@ -138,7 +138,7 @@ public class ConfigBlocks {
       blockManaPod = (new BlockManaPod()).setBlockName("blockManaPod");
       blockTube = (new BlockTube()).setBlockName("blockTube");
       blockWarded = (new BlockWarded()).setBlockName("blockWarded");
-      blockMagicBox = (new BlockMagicBox()).setBlockName("blockMagicBox");
+//      blockMagicBox = (new BlockMagicBox()).setBlockName("blockMagicBox");
       blockFluidPure = (new BlockFluidPure()).setBlockName("blockFluidPure");
       blockFluidDeath = (new BlockFluidDeath()).setBlockName("blockFluidDeath");
       blockEldritch = (new BlockEldritch()).setBlockName("blockEldritch");

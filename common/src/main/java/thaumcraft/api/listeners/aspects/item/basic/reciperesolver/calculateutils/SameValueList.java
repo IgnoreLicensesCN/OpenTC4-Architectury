@@ -9,7 +9,7 @@ public class SameValueList<E> extends AbstractList<E> {
     private final E element;
 
     public SameValueList(E element){
-        this(Integer.MAX_VALUE, element);
+        this(1, element);
     }
     public SameValueList(int size, E element) {
         this.size = size;
@@ -27,6 +27,7 @@ public class SameValueList<E> extends AbstractList<E> {
         return size;
     }
 
+    //just a cast method
     public List<E> asList() {
         return this;
     }

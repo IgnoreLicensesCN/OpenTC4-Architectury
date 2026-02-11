@@ -6,8 +6,9 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public interface ThaumcraftItemRenderer {
-    void render(
+public interface IThaumcraftItemRenderer {
+    //true if cancel further renderers and vanilla #render
+    boolean render(
             ItemStack itemStack,
             ItemDisplayContext itemDisplayContext,
             boolean bl,

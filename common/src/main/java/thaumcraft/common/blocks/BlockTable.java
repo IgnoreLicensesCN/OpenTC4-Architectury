@@ -5,6 +5,7 @@ package thaumcraft.common.blocks;
 //          "tile.blockTable.14.name": "解構工作台",
 //          "tile.blockTable.15.name": "奧術工作台",
 //          "tile.blockTable.research.name": "研究桌",//2~5
+@Deprecated(forRemoval = true)
 public class BlockTable /*extends BlockContainer implements IWandable*/ {
 //   public IIcon icon;
 //   public IIcon iconQuill;

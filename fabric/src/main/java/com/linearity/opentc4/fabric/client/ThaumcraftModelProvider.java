@@ -32,7 +32,7 @@ public class ThaumcraftModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
-
+        //TODO?
     }
     public static ItemModelGenerators itemModelGeneratorInstance;
     @Override

@@ -26,10 +26,14 @@ public class ItemRendererMixin implements ItemRendererAccessor {
     private void render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
         if (itemStack != null){
             var item = itemStack.getItem();
-            var renderer = ITEM_RENDERERS.get(item);
-            if (renderer != null){
-                renderer.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel);
-                ci.cancel();
+            var rendererList = ITEM_RENDERERS.get(item);
+            for (var renderer:rendererList){
+                if (renderer != null){
+                    if (renderer.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel)){
+                        ci.cancel();
+                        return;
+                    }
+                }
             }
         }
     }
