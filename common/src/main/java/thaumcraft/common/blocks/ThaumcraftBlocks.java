@@ -18,6 +18,7 @@ import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
+import thaumcraft.common.blocks.technique.GlimmerOfLightBlock;
 import thaumcraft.common.blocks.technique.WardingAuraBlock;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.decorations.CinderPearlBlock;
@@ -155,6 +156,7 @@ public class ThaumcraftBlocks {
     public static final DeconstructionTableBlock DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final ResearchTableLeftPartBlock RESEARCH_TABLE_LEFT_PART = Registry.SUPPLIER_RESEARCH_TABLE_LEFT_PART.get();
     public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
+    public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -162,7 +164,7 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<FluxGasBlock> SUPPLIER_FLUX_GAS = BLOCKS.register(
                 "flux_gas", FluxGasBlock::new);
         public static final RegistrySupplier<NitorBlock> SUPPLIER_NITOR_BLOCK = BLOCKS.register(
-                "nitor_block", NitorBlock::new);
+                "nitor", NitorBlock::new);
         public static final RegistrySupplier<AuraNodeBlock> SUPPLIER_AURA_NODE = BLOCKS.register(
                 "aura_node", AuraNodeBlock::new);
         public static final RegistrySupplier<RotatedPillarBlock> SUPPLIER_GREATWOOD_LOG = BLOCKS.register(
@@ -586,6 +588,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<ResearchTableRightPartBlock> SUPPLIER_RESEARCH_TABLE_RIGHT_PART = BLOCKS.register(
                 "research_table_right_part",
                 ResearchTableRightPartBlock::new
+        );
+        public static final RegistrySupplier<GlimmerOfLightBlock> SUPPLIER_GLIMMER_OF_LIGHT = BLOCKS.register(
+                "glimmer_of_light",
+                GlimmerOfLightBlock::new
         );
 
         static {

@@ -34,6 +34,9 @@ block_with_item_names = [
     ['item.thaumcraft.research_table',['research_table_left_part','research_table_right_part']],
     ['item.researchnotes.name','research_note'],
     ['item.ItemInkwell.name','ink_well'],
+    ['tile.blockAiry.1.name','nitor'],
+    ['tile.blockAiry.2.name','glimmer_of_light'],
+    ['tile.blockAiry.3.name','glimmer_of_light'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

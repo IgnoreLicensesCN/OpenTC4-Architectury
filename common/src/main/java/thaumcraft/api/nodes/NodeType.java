@@ -3,6 +3,7 @@ package thaumcraft.api.nodes;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,21 +23,27 @@ import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
+import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.*;
 
+import static com.linearity.opentc4.Consts.PURE_NODE_Y_RANGE;
+import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
+
 public class NodeType {
-    private static final Map<String, NodeType> BY_NAME = new LinkedHashMap<>();
+    private static final Map<NodeTypeResourceLocation, NodeType> BY_NAME = new LinkedHashMap<>();
     private static final List<NodeType> VALUES = new ArrayList<>();
 
-    public static final NodeType NORMAL = new NodeType("thaumcraft:normal",1.f){
+    public static final NodeType NORMAL = new NodeType(NodeTypeResourceLocation.of("thaumcraft:normal"),1.f){
 
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
@@ -47,7 +54,7 @@ public class NodeType {
             return result;
         }
     };
-    public static final NodeType UNSTABLE = new NodeType("thaumcraft:unstable",1.f){
+    public static final NodeType UNSTABLE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:unstable"),1.f){
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
@@ -76,7 +83,7 @@ public class NodeType {
             return result;
         }
     };
-    public static final NodeType DARK = new NodeType("thaumcraft:dark",1.f){
+    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft:dark"),1.f){
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
@@ -93,14 +100,22 @@ public class NodeType {
 //                    && serverLevel.dimension() != 1 
 //                    && dimbl != 0 
 //                    && dimbl != 2 
-//                    && thisNode.getNodeType() == NodeType.DARK && 
+//                    && thisNode.getVisNetNodeType() == NodeType.DARK &&
                     thisNode.getTickCount() % 50 == 0
             ) {
                 int x = pos.getX() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
                 int z = pos.getZ() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
-                BiomeGenBase bg = serverLevel.getBiomeGenForCoords(x, z);
-                if (bg.biomeID != ThaumcraftWorldGenerator.biomeEerie.biomeID) {
-                    Utils.setBiomeAt(serverLevel, x, z, ThaumcraftWorldGenerator.biomeEerie);
+                var randomPickPos = pos.offset(
+                        serverLevel.random.nextInt(23)-11,
+                        serverLevel.random.nextInt(23)-11,
+                        serverLevel.random.nextInt(23)-11
+                );
+                var biome = serverLevel.getBiome(randomPickPos);
+                if (!biome.is(ThaumcraftBiomeIDs.EERIE_ID)) {
+                    var holderEerie = serverLevel.registryAccess()
+                            .registryOrThrow(Registries.BIOME)
+                            .getHolderOrThrow(ThaumcraftBiomeIDs.EERIE_KEY);
+                    Utils.setBiomeAt(serverLevel, randomPickPos, holderEerie);
                 }
 
                 if (Config.hardNode && serverLevel.random.nextBoolean() && serverLevel.hasNearbyAlivePlayer(
@@ -141,29 +156,38 @@ public class NodeType {
             return result;
         }
     };
-    public static final NodeType TAINTED = new NodeType("thaumcraft:tainted",1.f){
+    public static final NodeType TAINTED = new NodeType(NodeTypeResourceLocation.of("thaumcraft:tainted"),1.f){
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (!(level instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
             if (thisNode.getTickCount() % 50 == 0){
-                int x ;
-                int z ;
-                int y ;
-                x = pos.getX() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-                z = pos.getZ() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-                y = pos.getY() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-                BiomeGenBase bg = serverLevel.getBiomeGenForCoords(x, z);
-                if (bg.biomeID != ThaumcraftWorldGenerator.biomeTaint.biomeID) {
-                    Utils.setBiomeAt(serverLevel, x, y, z, ThaumcraftWorldGenerator.biomeTaint);
+
+                var randomPickPos = pos.offset(
+                        serverLevel.random.nextInt(15)-7,
+                        serverLevel.random.nextInt(15)-7,
+                        serverLevel.random.nextInt(15)-7
+                );
+                var biome = serverLevel.getBiome(randomPickPos);
+                if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                    var holderTaint = serverLevel.registryAccess()
+                            .registryOrThrow(Registries.BIOME)
+                            .getHolderOrThrow(ThaumcraftBiomeIDs.TAINT_KEY);
+                    for (int i=0;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
+                        Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderTaint);
+                    }
                 }
 
                 if (Config.hardNode && serverLevel.random.nextBoolean()) {
-                    x = pos.getX() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                    z = pos.getZ() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                    y = pos.getY() + serverLevel.random.nextInt(5) - serverLevel.random.nextInt(5);
-                    if (BlockTaintFibres.spreadFibres(serverLevel, x, y, z)) {
+                    if (AbstractTaintFibreBlock.spreadFibres(
+                            serverLevel,
+                            pos.offset(
+                                    serverLevel.random.nextInt(9)-4,
+                                    serverLevel.random.nextInt(9)-4,
+                                    serverLevel.random.nextInt(9)-4
+                            )
+                    )) {
                     }
                 }
             }
@@ -171,7 +195,7 @@ public class NodeType {
             return false;
         }
     };
-    public static final NodeType HUNGRY = new NodeType("thaumcraft:hungry",1.5f){
+    public static final NodeType HUNGRY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:hungry"),1.5f){
         @Override
         public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
             return 1;
@@ -248,10 +272,10 @@ public class NodeType {
                                 if (!entity.isAlive()) {
                                     ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
                                     AspectList<Aspect>al = ScanManager.getScanAspects(scan, serverLevel);
-                                    if (al != null && al.size() > 0) {
-                                        al = ResearchManager.reduceToPrimals(al.copy());
-                                        if (al.size() > 0) {
-                                            Aspect a = al.getAspects()
+                                    if (al != null && !al.isEmpty()) {
+                                        al = (AspectList<Aspect>)(AspectList<?>)ResearchManager.reduceToPrimals(al.copy());
+                                        if (!al.isEmpty()) {
+                                            Aspect a = al
                                                     .keySet()
                                                     .toArray(new Aspect[0])[serverLevel.random.nextInt(al.size())];
                                             if (thisNode.getAspects()
@@ -326,30 +350,39 @@ public class NodeType {
             return result;
         }
     };
-    public static final NodeType PURE = new NodeType("thaumcraft:pure",1.f){
+    public static final NodeType PURE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:pure"),1.f){
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
 
             if (!(thisNode.getLevel() instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
             if (thisNode.getTickCount() % 50 == 0) {
-                int x = pos.getX() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-                int z = pos.getZ() + serverLevel.random.nextInt(8) - serverLevel.random.nextInt(8);
-                BiomeGenBase bg = serverLevel.getBiomeGenForCoords(x, z);
-                int biobl = ThaumcraftWorldGenerator.getBiomeBlacklist(bg.biomeID);
-                if (biobl != 0 && biobl != 2 && bg.biomeID != ThaumcraftWorldGenerator.biomeMagicalForest.biomeID) {
-                    if (bg.biomeID == ThaumcraftWorldGenerator.biomeTaint.biomeID) {
-                        Utils.setBiomeAt(serverLevel, x, z, ThaumcraftWorldGenerator.biomeMagicalForest);
-                    } else if (serverLevel.getBlockState(pos).getBlock() == ThaumcraftBlocks.SILVERWOOD_KNOT) {
-                        Utils.setBiomeAt(serverLevel, x, z, ThaumcraftWorldGenerator.biomeMagicalForest);
-                    }
+                var randomPickPos = pos.offset(
+                        serverLevel.random.nextInt(15)-7,
+                        serverLevel.random.nextInt(15)-7,
+                        serverLevel.random.nextInt(15)-7
+                );
+                var biome = serverLevel.getBiome(randomPickPos);
+//                int biobl = ThaumcraftWorldGenerator.getBiomeBlacklist(bg.biomeID);//TODO:Impl black list
+                if (
+//                        biobl != 0 && biobl != 2 && 
+                        !biome.is(ThaumcraftBiomeIDs./*Magical Forest*/)
+                ) {
+                    if (biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                        for (int i=-PURE_NODE_Y_RANGE;i<=PURE_NODE_Y_RANGE;i+=1){
+                            Utils.setBiomeAt(serverLevel, randomPickPos.above(i), ThaumcraftBiomeIDs./*Magical Forest*/);
+                        }
+                    } 
+//                    else if (serverLevel.getBlockState(pos).getBlock() == ThaumcraftBlocks.SILVERWOOD_KNOT) {
+//                        Utils.setBiomeAt(serverLevel, randomPickPos, ThaumcraftWorldGenerator.biomeMagicalForest);
+//                    }
                 }
             }
             
             return false;
         }
     };
-    public static final NodeType EMPTY = new NodeType("thaumcraft:empty",1.f){
+    public static final NodeType EMPTY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:empty"),1.f){
         @Override
         public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
@@ -359,7 +392,7 @@ public class NodeType {
         }
     };
 
-    private final String name;
+    private final NodeTypeResourceLocation name;
     //when doing a node attack:
     // if another node has aspectAmount more than this node's aspect capacity(for same aspect)
     // we will have a chance ofAspectVisList 1/(1 + (int) ((double) aspectCapacityAmountOfThis / attackBiggerNodeChangeModifier))
@@ -367,7 +400,7 @@ public class NodeType {
     // this value will pick Math.max(NodeModifier's[default:1],NodeType's[default:1]) for a node
     private final float attackBiggerNodeChangeModifier;
 
-    public NodeType(String name,float attackBiggerNodeChangeModifier) {
+    public NodeType(NodeTypeResourceLocation name, float attackBiggerNodeChangeModifier) {
         this.name = name;
         this.attackBiggerNodeChangeModifier = attackBiggerNodeChangeModifier;
         register(this);
@@ -396,7 +429,7 @@ public class NodeType {
     }
 
     /** 类似 enum 的 valueOf 方法 */
-    public static NodeType valueOf(String name) {
+    public static NodeType valueOf(NodeTypeResourceLocation name) {
         NodeType type = BY_NAME.get(name);
         if (type == null) {
             throw new IllegalArgumentException("No enum constant NodeType." + name);
@@ -405,13 +438,13 @@ public class NodeType {
     }
 
     /** 返回名称 */
-    public String name() {
+    public NodeTypeResourceLocation name() {
         return name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return name.toString();
     }
 
     @Override
@@ -440,8 +473,8 @@ public class NodeType {
         var level = thisNode.getLevel();
         if (!(level instanceof ServerLevel serverLevel)) return false;
         var pos = thisNode.getBlockPos();
-        BiomeGenBase bg = serverLevel.getBiomeGenForCoords(pos.getX(), pos.getZ());
-        if (bg.biomeID == ThaumcraftWorldGenerator.biomeTaint.biomeID && serverLevel.random.nextInt(500) == 0) {
+        var biome = serverLevel.getBiome(pos);
+        if (biome.is(ThaumcraftBiomeIDs.TAINT_ID) && serverLevel.random.nextInt(500) == 0) {
             thisNode.setNodeType(NodeType.TAINTED);
             thisNode.nodeChange();
             return true;

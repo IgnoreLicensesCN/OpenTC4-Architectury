@@ -56,7 +56,8 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                 if (
                         (biomeID == ThaumcraftBiomeIDs.TAINT_ID
                                 || biomeID == ThaumcraftBiomeIDs.EERIE_ID
-                                || biomeID == Config.biomeMagicalForestID)
+                                || biomeID == Config.biomeMagicalForestID
+                        )
                                 && squaredDistance <= (double)81.0F
                 ) {
 
@@ -81,7 +82,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                     if (squaredDistance <= 81.F){
                         Utils.setBiomeAt(serverLevel, pickX + atX,atY, pickZ + atZ, biomeDuringGeneration);
                         if (taintFlag) {
-                            setBiomeAboveTaint(serverLevel,currentTargetingPos);
+                            setBiomeAboveNotTaint(serverLevel,currentTargetingPos);
                         }
                     }
                 }
@@ -95,7 +96,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         ++this.growthCounter;
     }
 
-    private void setBiomeAboveTaint(ServerLevel serverLevel,BlockPos base){
+    private void setBiomeAboveNotTaint(ServerLevel serverLevel, BlockPos base){
         if (this.level == null){return;}
         for (int i=1;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
             var currentPos = base.offset(0,i,0);

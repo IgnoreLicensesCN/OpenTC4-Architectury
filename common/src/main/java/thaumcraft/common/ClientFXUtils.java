@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -31,6 +30,7 @@ import thaumcraft.common.tiles.TileCrucible;
 import java.awt.*;
 
 //all method here should check platform
+@SuppressWarnings("resource unused")
 public class ClientFXUtils {
 
     public static ClientLevel getClientWorld() {
@@ -218,14 +218,14 @@ public class ClientFXUtils {
                     0.0F,
                     3
             );
-            if (tile.aspects.size() == 0) {
+            if (tile.aspects.isEmpty()) {
                 fb.setRBGColorF(
                         1.0F,
                         1.0F,
                         1.0F
                 );
             } else {
-                var aspects = tile.aspects.getAspects().keySet().toArray(new Aspect[0]);
+                var aspects = tile.aspects.keySet().toArray(new Aspect[0]);
 
                 Color color = new Color(aspects[world.getRandom().nextInt(aspects.length)].getColor());
                 fb.setRBGColorF(
@@ -374,6 +374,20 @@ public class ClientFXUtils {
 
     }
 
+    public static void wispFX3(ClientLevel worldObj, BlockPos fromPos, BlockPos toPos, float size, int type, boolean shrink, float gravity){
+        wispFX3(worldObj,
+                fromPos.getX(),
+                fromPos.getY(),
+                fromPos.getZ(),
+                toPos.getX(),
+                toPos.getY(),
+                toPos.getZ(),
+                size,
+                type,
+                shrink,
+                gravity
+                );
+    }
     public static void wispFX3(ClientLevel worldObj, double posX, double posY, double posZ, double posX2, double posY2, double posZ2, float size, int type, boolean shrink, float gravity) {
         if (!checkPlatformClient()) {
             return;
@@ -392,7 +406,6 @@ public class ClientFXUtils {
         ef.setGravity(gravity);
         ef.shrink = shrink;
         Minecraft.getInstance().particleEngine.add(ef);
-
     }
 
     public static void wispFX4(ClientLevel worldObj, double posX, double posY, double posZ, Entity target, int type, boolean shrink, float gravity) {

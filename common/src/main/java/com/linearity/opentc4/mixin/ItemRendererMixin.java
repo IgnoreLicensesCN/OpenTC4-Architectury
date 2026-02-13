@@ -23,11 +23,11 @@ public class ItemRendererMixin implements ItemRendererAccessor {
     @Inject(method = "render",
             at = @At("HEAD"),
             cancellable = true)
-    private void render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
+    private void opentc4$render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
         if (itemStack != null){
             var item = itemStack.getItem();
             var rendererList = ITEM_RENDERERS.get(item);
-            for (var renderer:rendererList){
+            for (var renderer:rendererList.getListeners()){
                 if (renderer != null){
                     if (renderer.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel)){
                         ci.cancel();

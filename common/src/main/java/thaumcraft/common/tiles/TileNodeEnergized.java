@@ -14,15 +14,20 @@ import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
    private AspectList<Aspect>auraBase;
-   AspectList<Aspect>visBase;
-   AspectList<Aspect>vis;
+   AspectList<Aspect> visBase;
+   AspectList<Aspect> vis;
    private NodeType nodeType;
    private NodeModifier nodeModifier;
    String id;
 
    public TileNodeEnergized() {
-      this.auraBase = (new AspectList<>()).addAll(Aspects.AIR, 20).addAll(Aspects.FIRE, 20).addAll(Aspects.EARTH, 20).addAll(
-              Aspects.WATER, 20).addAll(Aspects.ORDER, 20).addAll(Aspects.ENTROPY, 20);
+      this.auraBase = (new AspectList<>())
+              .addAll(Aspects.AIR, 20)
+              .addAll(Aspects.FIRE, 20)
+              .addAll(Aspects.EARTH, 20)
+              .addAll(Aspects.WATER, 20)
+              .addAll(Aspects.ORDER, 20)
+              .addAll(Aspects.ENTROPY, 20);
       this.visBase = new AspectList<>();
       this.vis = new AspectList<>();
       this.nodeType = NodeType.NORMAL;
@@ -43,7 +48,6 @@ public class TileNodeEnergized extends TileVisNode implements IAspectContainer {
 
          this.vis = this.visBase.copy();
       }
-
    }
 
    public boolean canUpdate() {

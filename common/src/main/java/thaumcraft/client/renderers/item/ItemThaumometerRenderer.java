@@ -138,7 +138,7 @@ public class ItemThaumometerRenderer /*implements IItemRenderer*/ {
 ////                     GL11.glPushMatrix();
 ////                     GL11.glEnable(GL11.GL_BLEND);
 ////                     GL11.glBlendFunc(770, 1);
-////                     String t = StatCollector.translateToLocal("nodetype." + ((INode)tile).getNodeType() + ".name");
+////                     String t = StatCollector.translateToLocal("nodetype." + ((INode)tile).getVisNetNodeType() + ".name");
 ////                     if (((INode)tile).getNodeModifier() != null) {
 ////                        t = t + ", " + StatCollector.translateToLocal("nodemod." + ((INode)tile).getNodeModifier() + ".name");
 ////                     }

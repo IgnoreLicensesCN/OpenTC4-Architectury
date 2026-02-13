@@ -34,6 +34,7 @@ import thaumcraft.api.wands.IWandComponentsOwner;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
+import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.awt.*;
@@ -60,7 +61,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public int regenerationTickPeriod;
     int wait;
     public String id;
-    public ResourceLocation nodeLockId;
+    public NodeLockResourceLocation nodeLockId;
     boolean catchUp;
     public int drainColor;
     public Color targetColor;
@@ -205,11 +206,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         if (tickCount % 5 == 0) {
             int tap = 1;
-            if (NODE_TAKE_IT_ALL.isPlayerCompletedResearch(player.getGameProfile().getName())) {
+            //TODO:[maybe wont finished]NodeDrainAPI?
+            if (NODE_TAKE_IT_ALL.isPlayerCompletedResearch(player)) {
                 ++tap;
             }
 
-            if (MASTER_NODE_TRAPPING.isPlayerCompletedResearch(player.getGameProfile().getName())
+            if (MASTER_NODE_TRAPPING.isPlayerCompletedResearch(player)
             ) {
                 ++tap;
             }
@@ -222,7 +224,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 }
             }
             boolean preserve = !player.isCrouching()
-                    && NODE_PRESERVE.isPlayerCompletedResearch(player.getGameProfile().getName())
+                    && NODE_PRESERVE.isPlayerCompletedResearch(player)
                     && !hasNodeHarmfulComponentsFlag;
             boolean success = false;
             Aspect aspect;
@@ -621,7 +623,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public abstract void removeNode();
 
 
-    public ResourceLocation getLockId() {
+    public NodeLockResourceLocation getLockId() {
         return this.nodeLockId;
     }
 

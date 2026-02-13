@@ -16,6 +16,7 @@ import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
 public class Consts {
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
+    public static final int PURE_NODE_Y_RANGE = 8;
 
 
     public static class AspectCompoundTagAccessors {

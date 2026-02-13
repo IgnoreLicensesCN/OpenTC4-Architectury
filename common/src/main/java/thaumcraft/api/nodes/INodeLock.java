@@ -1,13 +1,13 @@
 package thaumcraft.api.nodes;
 
-import net.minecraft.resources.ResourceLocation;
+import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public interface INodeLock {
-    ResourceLocation getNodeLockId();
+    NodeLockResourceLocation getNodeLockId();
 
     //returns:should update self
     default boolean nodeLockTick(AbstractNodeBlockEntity thisNode) {
@@ -35,11 +35,11 @@ public interface INodeLock {
     boolean allowToAttackAnotherNode();
 
 
-    final Map<ResourceLocation,INodeLock> nodeLockTypes = new HashMap<ResourceLocation,INodeLock>();
-    static INodeLock getNodeLock(ResourceLocation id) {
+    Map<NodeLockResourceLocation,INodeLock> nodeLockTypes = new HashMap<>();
+    static INodeLock getNodeLock(NodeLockResourceLocation id) {
         return nodeLockTypes.get(id);
     }
-    static void registerNodeLock(ResourceLocation id,INodeLock lock) {
+    static void registerNodeLock(NodeLockResourceLocation id,INodeLock lock) {
         nodeLockTypes.put(id, lock);
     }
 }

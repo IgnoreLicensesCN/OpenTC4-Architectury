@@ -20,12 +20,16 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ThaumometerItemRenderer implements IThaumcraftItemRenderer {
+public class ThaumometerItemRenderer extends ItemRenderListener {
 
-    public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer();
+    public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer(100);
 
 //    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");//loaded
     private static final ResourceLocation SCAN_SCREEN = new ResourceLocation("thaumcraft", "textures/item/scanscreen.png");
+
+    public ThaumometerItemRenderer(int weight) {
+        super(weight);
+    }
 
 
     //TODO:Render aspects.

@@ -47,93 +47,100 @@ import java.util.Random;
 
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 
-//tile.blockAiry.0.name=灵气节点
-//tile.blockAiry.1.name=闪耀之光
-//tile.blockAiry.2.name=闪烁之光
-//tile.blockAiry.3.name=闪烁之光
-//tile.blockAiry.4.name=守护之光
+//tile.blockAiry.0.name=灵气节点--done
+//tile.blockAiry.1.name=闪耀之光--done
+//tile.blockAiry.2.name=闪烁之光--not used,can be selected
+//tile.blockAiry.3.name=闪烁之光--done(arcane bore&lamp,cannot be selected)
+//tile.blockAiry.4.name=守护之光--done(warding aura)
 //tile.blockAiry.5.name=充能灵气节点
 //tile.blockAiry.10.name=静电力场
 //tile.blockAiry.11.name=弱化力场
 //tile.blockAiry.12.name=封绝力场
 public class BlockAiry extends BlockContainer {
-   public IIcon blankIcon;
+//   public IIcon blankIcon;
+//
+//   public BlockAiry() {
+//      super(Config.airyMaterial);
+//      this.setStepSound(new Block.SoundType("cloth", 0.0F, 1.0F));
+//      this.setTickRandomly(true);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
 
-   public BlockAiry() {
-      super(Config.airyMaterial);
-      this.setStepSound(new Block.SoundType("cloth", 0.0F, 1.0F));
-      this.setTickRandomly(true);
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.blankIcon = ir.registerIcon("thaumcraft:blank");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(int side, int meta) {
+//      return this.blankIcon;
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.blankIcon = ir.registerIcon("thaumcraft:blank");
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(int side, int meta) {
-      return this.blankIcon;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
-      int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-      if ((
+//   @SideOnly(Side.CLIENT)
+//   public boolean addHitEffects(World worldObj, HitResult target, EffectRenderer effectRenderer) {
+//      int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
+//      if ((
 //              md == 0 ||
-              md == 5) && worldObj.rand.nextBoolean()) {
-         UtilsFXMigrated.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
-      }
+//              md == 5
+//      ) && worldObj.rand.nextBoolean()) {
+//         UtilsFXMigrated.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, 0);
+//      }
+//
+//      return super.addHitEffects(worldObj, target, effectRenderer);
+//   }
 
-      return super.addHitEffects(worldObj, target, effectRenderer);
-   }
-
-   public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-      if (
+//   public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+//      if (
 //              meta == 0 ||
-                      meta == 5) {
-         Thaumcraft.proxy.burst(world, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
-         world.playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:craftfail", 1.0F, 1.0F, false);
-      }
-
-      return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
-   }
+//                      meta == 5
+//      ) {
+//         Thaumcraft.proxy.burst(world, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
+//         world.playSound((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:craftfail", 1.0F, 1.0F, false);
+//      }
+//
+//      return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
+//   }
 
    public float getBlockHardness(World world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
-      if (
+//      if (
 //              md != 0 &&
-              md != 5) {
+//              md != 5
+//      ) {
          if (md != 10 && md != 11) {
-            return md == 12 ? -1.0F : super.getBlockHardness(world, x, y, z);
+            return md == 12 ? -1.0F
+                    : super.getBlockHardness(world, x, y, z);
          } else {
-            return 100.0F;
+            return 100.0F;//10 || 11
          }
-      } else {
-         return 2.0F;
-      }
+//      }
+//      else {
+//         return 2.0F;
+//      }
    }
 
    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
       int md = world.getBlockMetadata(x, y, z);
-      if (
+//      if (
 //              md != 0 &&
-              md != 5) {
+//              md != 5) {
          if (md != 10 && md != 11) {
             return md == 12 ? Float.MAX_VALUE : super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
          } else {
             return 50.0F;
          }
-      } else {
-         return 200.0F;
-      }
+//      } else {
+//         return 200.0F;
+//      }
    }
 
    public int getLightValue(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
       if (md != 1 && md != 2 && md != 3) {
          if (md != 4 && md != 12) {
-            return md != 0 && md != 5 && md != 10 && md != 11 ? super.getLightValue(world, x, y, z) : 8;
+            return
+//                    md != 0 && md != 5 &&
+                            md != 10 && md != 11 ? super.getLightValue(world, x, y, z) : 8;
          } else {
             return 0;
          }
@@ -186,7 +193,6 @@ public class BlockAiry extends BlockContainer {
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
          super.addCollisionBoxesToList(world, x, y, z, par5AxisAlignedBB, par6List, par7Entity);
       }
-
    }
 
    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z) {
@@ -271,15 +277,17 @@ public class BlockAiry extends BlockContainer {
          ef2.noClip = true;
          Minecraft.getInstance().particleEngine.add(ef2);
 
-      } else if (md == 2 && r.nextInt(500) == 0) {
-         int x1 = i + r.nextInt(3) - r.nextInt(3);
-         int y1 = j + r.nextInt(3) - r.nextInt(3);
-         int z1 = k + r.nextInt(3) - r.nextInt(3);
-         int x2 = x1 + r.nextInt(3) - r.nextInt(3);
-         int y2 = y1 + r.nextInt(3) - r.nextInt(3);
-         int z2 = z1 + r.nextInt(3) - r.nextInt(3);
-         Thaumcraft.proxy.wispFX3(w, x1, y1, z1, x2, y2, z2, 0.1F + r.nextFloat() * 0.1F, 7, false, r.nextBoolean() ? -0.033F : 0.033F);
-      } else if (md == 10 || md == 11) {
+      }
+//      else if (md == 2 && r.nextInt(500) == 0) {//but i still want to migrate to md==3
+//         int x1 = i + r.nextInt(3) - r.nextInt(3);
+//         int y1 = j + r.nextInt(3) - r.nextInt(3);
+//         int z1 = k + r.nextInt(3) - r.nextInt(3);
+//         int x2 = x1 + r.nextInt(3) - r.nextInt(3);
+//         int y2 = y1 + r.nextInt(3) - r.nextInt(3);
+//         int z2 = z1 + r.nextInt(3) - r.nextInt(3);
+//         Thaumcraft.proxy.wispFX3(w, x1, y1, z1, x2, y2, z2, 0.1F + r.nextFloat() * 0.1F, 7, false, r.nextBoolean() ? -0.033F : 0.033F);
+//      }
+      else if (md == 10 || md == 11) {
          float h = r.nextFloat() * 0.33F;
          FXSpark ef = new FXSpark(w, (float)i + w.rand.nextFloat(), (float)j + 0.1515F + h / 2.0F, (float)k + w.rand.nextFloat(), 0.33F + h);
          if (md == 10) {
@@ -295,29 +303,28 @@ public class BlockAiry extends BlockContainer {
             w.playSound(i, j, k, "thaumcraft:jacobs", 0.5F, 1.0F + (r.nextFloat() - r.nextFloat()) * 0.2F, false);
          }
       }
-
    }
 
    public TileEntity createTileEntity(World world, int metadata) {
       if (metadata == 0) {
-         return new AbstractNodeBlockEntity();
+//         return new AbstractNodeBlockEntity();
       } else if (metadata == 1) {
-         return new TileNitor();
+//         return new TileNitor();
       } else if (metadata == 4) {
-         return new TileWardingStoneFence();
+//         return new TileWardingStoneFence();
       } else {
          return metadata == 5 ? new TileNodeEnergized() : super.createTileEntity(world, metadata);
       }
    }
 
-   public TileEntity createNewTileEntity(World var1, int md) {
-      return null;
-   }
+//   public TileEntity createNewTileEntity(World var1, int md) {
+//      return null;
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(par1, 1, 0));
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(par1, 1, 0));
+//   }
 
    //TODO:new item creates node(not this node blockItem)
    public void onBlockPlacedBy(Level world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
@@ -330,7 +337,9 @@ public class BlockAiry extends BlockContainer {
 
    public boolean isAir(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);
-      return md == 2 || md == 3 || md == 10 || md == 11;
+      return
+//              md == 2 || md == 3 ||
+              md == 10 || md == 11;
    }
 
    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {

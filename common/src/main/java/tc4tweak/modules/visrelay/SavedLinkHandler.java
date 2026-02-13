@@ -6,10 +6,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.WorldCoordinates;
-import thaumcraft.api.visnet.TileVisNode;
+import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.api.visnet.VisNetHandler;
 
 import java.lang.ref.WeakReference;
@@ -17,8 +18,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.*;
+import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.TILE_VIS_NODE_LINKS_ACCESSOR;
+import static com.linearity.opentc4.Consts.VisNetNodeBlockEntityCompoundTagAccessors.*;
 
+@Deprecated(forRemoval = true)
 public class SavedLinkHandler {
     private enum Action {
         RETURN(true),
@@ -36,12 +39,12 @@ public class SavedLinkHandler {
         }
     }
 
-    private static String getNodeType(TileVisNode node) {
+    private static String getNodeType(VisNetNodeBlockEntity node) {
         return node.isSource() ? "Source" : "Relay";
     }
 
     // true -> RET, false -> resume
-    public static boolean processSavedLink(TileVisNode visNode) {
+    public static boolean processSavedLink(VisNetNodeBlockEntity visNode) {
         WorldCoordinates c = new WorldCoordinates(visNode);
         Action action;
         try {
@@ -57,7 +60,7 @@ public class SavedLinkHandler {
         return action.returnValue();
     }
 
-    private static Action processSavedLink0(TileVisNode visNode) {
+    private static Action processSavedLink0(VisNetNodeBlockEntity visNode) {
         List<BlockPos> link = visNode.getSavedLink();
         if (link == null) return Action.DISABLED;
         BlockPos c = link.get(0);
@@ -71,15 +74,15 @@ public class SavedLinkHandler {
         if (!canConnect(visNode, tile)) {
             // ThE uses a fake TE for cv p2p that is not retrievable via getBlockEntity
             // however it's accessible via VisNetHandler.sources
-            HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(w.dimension());
-            TileVisNode sourcenode = CommonUtils.deref(sourcelist.get(new WorldCoordinates(c.getX(),c.getY(),c.getZ(), w.dimension().toString())));
+            HashMap<WorldCoordinates, WeakReference<VisNetNodeBlockEntity>> sourcelist = VisNetHandler.sources.get(w.dimension());
+            VisNetNodeBlockEntity sourcenode = CommonUtils.deref(sourcelist.get(new WorldCoordinates(c.getX(),c.getY(),c.getZ(), w.dimension().toString())));
             if (sourcenode == null) {
                 visNode.clearSavedLink();
                 return Action.CLEAR_CONTINUE;
             }
             tile = sourcenode;
         }
-        TileVisNode next = (TileVisNode) tile;
+        VisNetNodeBlockEntity next = (VisNetNodeBlockEntity) tile;
         if (next.isSource()) {
             SetParentHelper.setParent(next, visNode);
             w.sendBlockUpdated(visNode.getBlockPos(),visNode.getBlockState(),visNode.getBlockState(),3);
@@ -108,35 +111,25 @@ public class SavedLinkHandler {
         return Action.CLEAR_CONTINUE;
     }
 
-    private static boolean canConnect(TileVisNode node, BlockEntity tile) {
-        if (!(tile instanceof TileVisNode next)) return false;
+    private static boolean canConnect(VisNetNodeBlockEntity node, BlockEntity tile) {
+        if (!(tile instanceof VisNetNodeBlockEntity next)) return false;
         if (VisNetHandler.canNodeBeSeen(node, next)) return true;
         return node.getAttunement() == -1 || next.getAttunement() == -1 || next.getAttunement() == node.getAttunement();
     }
 
-    public static List<BlockPos> load(TileVisNode thiz, CompoundTag tag) {
-        if (thiz.isSource()
-                || !TILE_VIS_NODE_LINKS_ACCESSOR.compoundTagHasKey(tag)
-                || !ConfigurationHandler.INSTANCE.isSavedLinkEnabled()
-        ) {
-            return null;
-        }
-        return TILE_VIS_NODE_LINKS_ACCESSOR.readFromCompoundTag(tag);
-    }
-
-    public static void saveAdditional(TileVisNode thiz, CompoundTag tag) {
+    public static void saveAdditional(VisNetNodeBlockEntity thiz, CompoundTag tag) {
         if (thiz.isSource() || !ConfigurationHandler.INSTANCE.isSavedLinkEnabled()) return;
-        TileVisNode root = CommonUtils.deref(thiz.getRootSource());
+        VisNetNodeBlockEntity root = thiz.getRootSource();
         if (root == null)
             return;
         List<BlockPos> path = new ArrayList<>();
-        TileVisNode node = CommonUtils.deref(thiz.getParent());
+        VisNetNodeBlockEntity node = thiz.getRootSource();
         // historically we store the whole path up to source node (hence the name link
         // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds ofAspectVisList weirdness
         // due to unloading order, but 2 nodes seem to stable enough
         while (node != null && (path.size() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
             path.add(node.getBlockPos());
-            node = CommonUtils.deref(node.getParent());
+            node = node.getParent();
         }
 
         TILE_VIS_NODE_LINKS_ACCESSOR.writeToCompoundTag(tag,path);

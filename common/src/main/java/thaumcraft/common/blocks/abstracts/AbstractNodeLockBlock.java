@@ -12,6 +12,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import thaumcraft.api.nodes.INodeLock;
 
 public abstract class AbstractNodeLockBlock extends Block implements INodeLock {
+    //TODO:impl
     public AbstractNodeLockBlock(Properties properties) {
         super(properties);
     }

@@ -53,8 +53,7 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
 
     public AuraNodeBlock() {
         super(BlockBehaviour.Properties.of()
-                .strength(2.f)
-                .explosionResistance(200.f)
+                .strength(2.f,200.f)
                 .lightLevel(state -> 8)
                 .sound(NODE_SOUND)
                 .randomTicks()
@@ -70,7 +69,6 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
         if (level.isClientSide() && level.random.nextBoolean()) {
             UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(),blockPos.getY(),blockPos.getZ(), 0);
         }
-//        super.spawnDestroyParticles(level, player, blockPos, blockState);
     }
 
     @Override

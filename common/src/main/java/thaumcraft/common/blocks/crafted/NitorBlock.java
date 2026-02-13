@@ -42,7 +42,7 @@ public class NitorBlock extends Block {
 
     public NitorBlock() {
         super(Properties.of()
-                .strength(0.2F)
+                .strength(0)
                 .lightLevel(s -> 15)
                 .noOcclusion()
                 .noCollission()
@@ -132,7 +132,10 @@ public class NitorBlock extends Block {
         Minecraft.getInstance().particleEngine.add(ef2);
         if (rand.nextInt(9 - ClientFXUtils.particleCount(2)) == 0) {
             ClientFXUtils.wispFX3(
-                    clientLevel, (float) pos.getX() + 0.5F, (float) pos.getY() + 0.5F, (float) pos.getZ() + 0.5F,
+                    clientLevel,
+                    (float) pos.getX() + 0.5F,
+                    (float) pos.getY() + 0.5F,
+                    (float) pos.getZ() + 0.5F,
                     (float) pos.getX() + 0.3F + rand.nextFloat() * 0.4F, (float) pos.getY() + 0.5F,
                     (float) pos.getZ() + 0.3F + rand.nextFloat() * 0.4F, 0.5F, 4, true, -0.025F
             );
