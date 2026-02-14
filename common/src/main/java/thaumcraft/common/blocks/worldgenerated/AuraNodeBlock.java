@@ -60,7 +60,6 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
                 .noOcclusion()
                 .noCollission()
                 .pushReaction(PushReaction.BLOCK)
-                .requiresCorrectToolForDrops()
         );
     }
 
@@ -87,7 +86,7 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
             // 粒子
             ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
         }
-        if (level instanceof ServerLevel serverLevel) {
+        if (level instanceof ServerLevel serverLevel && newState.isAir()) {
             //TODO:wispEssences
         }
     }

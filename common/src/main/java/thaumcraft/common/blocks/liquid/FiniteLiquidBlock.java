@@ -15,6 +15,7 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
+//TODO:i dont remember if it's reliable,verify it
 public abstract class FiniteLiquidBlock extends LiquidBlock {
 
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 8);

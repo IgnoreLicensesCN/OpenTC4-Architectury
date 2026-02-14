@@ -1,7 +1,9 @@
 package thaumcraft.common.blocks.worldgenerated.ores;
 
+import thaumcraft.api.aspects.Aspects;
+
 public class AirInfusedStoneBlock extends AbstractInfusedStoneBlock {
     public AirInfusedStoneBlock() {
-        super(0xffff7e,1);
+        super(Aspects.AIR.color,1);
     }
 }

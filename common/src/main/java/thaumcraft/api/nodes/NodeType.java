@@ -19,10 +19,9 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.BlockTaintFibres;
-import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
@@ -33,6 +32,7 @@ import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 
@@ -81,6 +81,26 @@ public class NodeType {
                 }
             }
             return result;
+        }
+
+        @Override
+        public void nodeTypeTickEnergized(EnergizedAuraNodeBlockEntity node) {
+            var level = node.getLevel();
+            if (level != null) {
+                if (level.random.nextInt(500) == 0){
+                    node.setCentiVisBase(new CentiVisList<>());
+                }
+            }
+            super.nodeTypeTickEnergized(node);
+        }
+
+        @Override
+        public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount) {
+            var level = node.getLevel();
+            if (level != null) {
+                centiVisAmount += level.random.nextInt(5) - 2;
+            }
+            return centiVisAmount;
         }
     };
     public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft:dark"),1.f){
@@ -479,5 +499,19 @@ public class NodeType {
             return true;
         }
         return false;
+    }
+
+    public void nodeTypeTickEnergized(EnergizedAuraNodeBlockEntity node){
+        var centiVisBase = node.getCentiVisBase();
+        var auraBase = node.getAuraBase();
+        if (centiVisBase.isEmpty() && !auraBase.isEmpty()) {
+            node.setupNode();
+        }
+        node.setCentiVisBase(node.getCentiVisBase());
+    }
+
+
+    public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount){
+        return centiVisAmount;
     }
 }

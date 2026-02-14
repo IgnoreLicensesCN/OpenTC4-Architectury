@@ -377,7 +377,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         var nodeType = NodeType.valueOf(NODE_TYPE_ACCESSOR.readFromCompoundTag(tag));
         this.setNodeType(nodeType);
-        String mod = NODE_MODIFIER_ACCESSOR.readFromCompoundTag(tag);
+        var mod = NODE_MODIFIER_ACCESSOR.readFromCompoundTag(tag);
         if (mod != null) {
             this.setNodeModifier(NodeModifier.valueOf(mod));
         } else {

@@ -34,6 +34,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<DeconstructionTableBlockEntity> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final BlockEntityType<ResearchTableBlockEntity> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static final BlockEntityType<VisNetRelayBlockEntity> VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+    public static final BlockEntityType<EnergizedAuraNodeBlockEntity> ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -163,6 +164,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         VisNetRelayBlockEntity::new,
                         ThaumcraftBlocks.VIS_RELAY
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EnergizedAuraNodeBlockEntity>> SUPPLIER_ENERGIZED_NODE = BLOCK_ENTITIES.register(
+                "energized_node",
+                () -> BlockEntityType.Builder.of(
+                        EnergizedAuraNodeBlockEntity::new,
+                        ThaumcraftBlocks.ENERGIZED_NODE
                 ).build(null)
         );
     }

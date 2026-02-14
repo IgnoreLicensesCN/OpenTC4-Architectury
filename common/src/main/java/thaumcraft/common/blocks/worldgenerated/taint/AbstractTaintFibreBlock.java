@@ -55,7 +55,6 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                         .noOcclusion()
                         .randomTicks()
                         .noCollission()
-                        .requiresCorrectToolForDrops()
                         .sound(TAINT_FIBRE_SOUND)
                         .strength(1,5)
                         .mapColor(MapColor.COLOR_PURPLE));

@@ -56,7 +56,7 @@ public class VisNetHandler {
 
 				if (node == null) continue;
 
-				int a = node.consumeVis(aspect, amount);
+				int a = node.consumeCentiVis(aspect, amount);
 				drainedAmount += a;
 				amount -= a;
 				if (a > 0) {

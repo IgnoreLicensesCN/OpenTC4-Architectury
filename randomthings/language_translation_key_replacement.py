@@ -37,6 +37,7 @@ block_with_item_names = [
     ['tile.blockAiry.1.name','nitor'],
     ['tile.blockAiry.2.name','glimmer_of_light'],
     ['tile.blockAiry.3.name','glimmer_of_light'],
+    ['tile.blockAiry.5.name','energized_aura_node'],
     ['tile.blockMetalDevice.14.name','vis_relay'],
 ]
 

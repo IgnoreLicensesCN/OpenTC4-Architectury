@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -23,7 +24,15 @@ import thaumcraft.common.ThaumcraftSounds;
 
 public abstract class AbstractCrystalBlock extends Block implements IInfusionStabiliser  {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-    public static final int[] CRYSTAL_COLORS = {0xffffff, 0xffff7e, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577};
+    public static final @RGBColor int[] CRYSTAL_COLORS = {
+            0xffffff,
+            0xffff7e,
+            0xff3c01,
+            0x0090ff,
+            0x00a000,
+            0xeeccff,
+            0x555577
+    };
     public static final SoundType CRYSTAL_SOUND = new SoundType(
             1.f,1.f,
             ThaumcraftSounds.CRYSTAL,

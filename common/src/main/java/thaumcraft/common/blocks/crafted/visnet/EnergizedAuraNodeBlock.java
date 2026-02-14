@@ -1,5 +1,7 @@
 package thaumcraft.common.blocks.crafted.visnet;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -8,7 +10,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -18,12 +25,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.crafted.EnergizedAuraNodeBlockEntity;
 
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 
-public class EnergizedAuraNodeBlock extends Block {
+public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
                     0.7 * 16, 0.7 * 16, 0.7 * 16);
@@ -120,8 +131,42 @@ public class EnergizedAuraNodeBlock extends Block {
             // 粒子
             ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
         }
-        if (level instanceof ServerLevel serverLevel) {
-            //TODO:wispEssences
+        if (level instanceof ServerLevel serverLevel && newState.isAir()) {
+            explode(serverLevel,pos);
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl) {
+        super.neighborChanged(blockState, level, blockPos, block, blockPos2, bl);
+        //TODO:Check above and below,if not satisfied,boom
+    }
+
+    public void explode(Level world, BlockPos atPos) {
+        if (Platform.getEnvironment() != Env.CLIENT) {
+            world.setBlockAndUpdate(atPos, Blocks.AIR.defaultBlockState());
+            var explodePos = atPos.getCenter();
+            world.explode(null,
+                    explodePos.x,
+                    explodePos.y,
+                    explodePos.z,
+                    3.0F,                      // 威力
+                    Level.ExplosionInteraction.BLOCK);
+
+            for(int a = 0; a < 50; ++a) {
+                var pickPos = atPos.offset(
+                        world.getRandom().nextInt(15)-7,
+                        world.getRandom().nextInt(15)-7,
+                        world.getRandom().nextInt(15)-7
+                );
+                if (world.getBlockState(pickPos).isAir()) {
+                    if (pickPos.getY() < atPos.getY()) {
+                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
+                    }else {
+                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
+                    }
+                }
+            }
         }
     }
     public EnergizedAuraNodeBlock(Properties properties) {
@@ -135,7 +180,26 @@ public class EnergizedAuraNodeBlock extends Block {
                 .noOcclusion()
                 .noCollission()
                 .pushReaction(PushReaction.BLOCK)
-                .requiresCorrectToolForDrops()
         );
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        if (blockState.getBlock() == this){
+            return new EnergizedAuraNodeBlockEntity(blockPos,blockState);
+        }
+        return null;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (blockEntityType == ThaumcraftBlockEntities.ENERGIZED_NODE && blockState.getBlock() == this){
+            return ((level1, blockPos, blockState1, blockEntity) -> {
+                if (blockEntity instanceof EnergizedAuraNodeBlockEntity energizedNode){
+                    energizedNode.tick();
+                }
+            });
+        }
+        return null;
     }
 }

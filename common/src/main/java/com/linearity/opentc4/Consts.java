@@ -154,7 +154,7 @@ public class Consts {
         private static final String NODE_TYPE = "nodeType";
         public static final NodeTypeResourceLocationTagAccessor NODE_TYPE_ACCESSOR = new NodeTypeResourceLocationTagAccessor(NODE_TYPE);
         private static final String NODE_MODIFIER = "nodeModifier";
-        public static final StringTagAccessor NODE_MODIFIER_ACCESSOR = new StringTagAccessor(NODE_MODIFIER);
+        public static final NodeModifierResourceLocationTagAccessor NODE_MODIFIER_ACCESSOR = new NodeModifierResourceLocationTagAccessor(NODE_MODIFIER);
         public static final String NODE_LAST_ACTIVE = "lastActive";
         public static final LongTagAccessor NODE_LAST_ACTIVE_ACCESSOR = new LongTagAccessor(NODE_LAST_ACTIVE);
         public static final String NODE_ASPECTS = "nodeAspects";
@@ -223,6 +223,13 @@ public class Consts {
         public static final IntTagAccessor TICK_COUNT_ACCESSOR = new IntTagAccessor(TICK_COUNT);
         private static final String BONUS_ASPECT = "bonus_aspect";
         public static final AspectListAccessor BONUS_ASPECT_ACCESSOR = new AspectListAccessor(BONUS_ASPECT);
+    }
+    public static class EnergizedAuraNodeBlockEntityTagAccessors {
+        public static final StringTagAccessor NODE_ID_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_ID_ACCESSOR;
+        public static final NodeTypeResourceLocationTagAccessor NODE_TYPE_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_TYPE_ACCESSOR;
+        public static final NodeModifierResourceLocationTagAccessor NODE_MODIFIER_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_MODIFIER_ACCESSOR;
+        public static final CentiVisListAccessor NODE_CENTIVIS_BASE_ACCESSOR = new CentiVisListAccessor("centivis_base");
+        public static final AspectListAccessor NODE_ASPECT_BASE_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_ASPECTS_BASE_ACCESSOR;
     }
 
 }

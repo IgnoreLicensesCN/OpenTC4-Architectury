@@ -1,20 +1,24 @@
 package thaumcraft.api.nodes;
 
+import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.NodeModifierResourceLocation;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 
 
 public class NodeModifier {
 
-    private static final Map<String, NodeModifier> BY_NAME = new LinkedHashMap<>();
+    private static final Map<NodeModifierResourceLocation, NodeModifier> BY_NAME = new LinkedHashMap<>();
     private static final List<NodeModifier> VALUES = new ArrayList<>();
 
     // 预定义常量
-    public static final NodeModifier BRIGHT = new NodeModifier("BRIGHT",400,1.5f){
+    public static final NodeModifier BRIGHT = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"bright"),400,1.5f){
         @Override
         public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
             return 1;
@@ -29,8 +33,13 @@ public class NodeModifier {
                 }
             }
         }
+
+        @Override
+        public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount) {
+            return super.onSetupEnergizedNodeAspectAmount(node, aspect, (int)(centiVisAmount*1.2));
+        }
     };
-    public static final NodeModifier PALE   = new NodeModifier("PALE",900,1.f){
+    public static final NodeModifier PALE   = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"pale"),900,1.f){
         @Override
         public void onAttackAnotherNode(AbstractNodeBlockEntity thisNode, AbstractNodeBlockEntity beingAttacked, Aspect stoleAspect) {
             var level = thisNode.getLevel();
@@ -68,14 +77,24 @@ public class NodeModifier {
                 }
             }
         }
+
+        @Override
+        public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount) {
+            return super.onSetupEnergizedNodeAspectAmount(node, aspect, (int)(centiVisAmount*0.8));
+        }
     };
-    public static final NodeModifier FADING = new NodeModifier("FADING",0,1.f){
+    public static final NodeModifier FADING = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"fading"),0,1.f){
         @Override
         public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
             return false;
         }
+
+        @Override
+        public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount) {
+            return super.onSetupEnergizedNodeAspectAmount(node, aspect, (int)(centiVisAmount*0.5));
+        }
     };
-    public static final NodeModifier EMPTY = new NodeModifier("EMPTY",600,1.f){
+    public static final NodeModifier EMPTY = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"empty"),600,1.f){
         @Override
         public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
@@ -87,7 +106,7 @@ public class NodeModifier {
         }
     };
 
-    private final String name;
+    private final NodeModifierResourceLocation name;
     private final int regenValue;
     //when doing a node attack:
     // if another node has aspectAmount more than this node's aspect capacity(for same aspect)
@@ -96,7 +115,7 @@ public class NodeModifier {
     // this value will pick Math.max(NodeModifier's[default:1],NodeType's[default:1]) for a node
     private final float attackBiggerNodeChangeModifier;
 
-    public NodeModifier(String name,int regenValue,float attackBiggerNodeChangeModifier) {
+    public NodeModifier(NodeModifierResourceLocation name,int regenValue,float attackBiggerNodeChangeModifier) {
         this.name = name;
         this.regenValue = regenValue;
         this.attackBiggerNodeChangeModifier = attackBiggerNodeChangeModifier;
@@ -123,7 +142,7 @@ public class NodeModifier {
     }
 
     /** 类似 enum 的 valueOf 方法 */
-    public static NodeModifier valueOf(String name) {
+    public static NodeModifier valueOf(NodeModifierResourceLocation name) {
         NodeModifier modifier = BY_NAME.get(name);
         if (modifier == null) {
             throw new IllegalArgumentException("No enum constant NodeModifier." + name);
@@ -132,13 +151,13 @@ public class NodeModifier {
     }
 
     /** 返回名称 */
-    public String name() {
+    public NodeModifierResourceLocation name() {
         return name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return name.toString();
     }
 
     @Override
@@ -184,5 +203,9 @@ public class NodeModifier {
     }
     public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode){
 
+    }
+
+    public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount){
+        return MathHelper.floor_double(MathHelper.sqrt_double(centiVisAmount));
     }
 }

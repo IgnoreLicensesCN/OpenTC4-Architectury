@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
@@ -22,6 +23,7 @@ import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
+import thaumcraft.common.blocks.crafted.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
@@ -167,6 +169,7 @@ public class ThaumcraftBlocks {
     public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
     public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
     public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+    public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -283,7 +286,7 @@ public class ThaumcraftBlocks {
 
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_AIR_CRYSTAL = BLOCKS.register(
                 "air_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0xffff7e}){}
+                ()-> new AbstractCrystalBlock(new int[]{Aspects.AIR.color}){}
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_FIRE_CRYSTAL = BLOCKS.register(
                 "fire_crystal_cluster",
@@ -295,7 +298,7 @@ public class ThaumcraftBlocks {
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_EARTH_CRYSTAL = BLOCKS.register(
                 "earth_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0x00a000}){}
+                ()-> new AbstractCrystalBlock(new int[]{Aspects.EARTH.color}){}
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_ORDER_CRYSTAL = BLOCKS.register(
                 "order_crystal_cluster",
@@ -307,7 +310,7 @@ public class ThaumcraftBlocks {
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_MIXED_CRYSTAL = BLOCKS.register(
                 "mixed_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0xffff7e, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577}){}
+                ()-> new AbstractCrystalBlock(new int[]{Aspects.AIR.color, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577}){}
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_STRANGE_CRYSTALS = BLOCKS.register(
                 "strange_crystals",
@@ -606,6 +609,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY =  BLOCKS.register(
                 "vis_relay",
                 VisNetRelayBlock::new
+        );
+        public static final RegistrySupplier<EnergizedAuraNodeBlock> SUPPLIER_ENERGIZED_NODE = BLOCKS.register(
+                "energized_node",
+                EnergizedAuraNodeBlock::new
         );
 
         static {

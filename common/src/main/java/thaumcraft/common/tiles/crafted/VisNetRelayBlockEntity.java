@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.simpleutils.bauble.BaubleUtils;
 import dev.architectury.platform.Platform;
@@ -21,9 +22,8 @@ import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
-
+//TODO:BER(just render model),TileMagicWorkbenchCharger(and interface to charge wand inside.)
 public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
-    //TODO
     public VisNetRelayBlockEntity(BlockEntityType<VisNetRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -48,7 +48,15 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
 
 
     //client fields
-    public static final int[] colors = new int[]{16777086, 16727041, 37119, 40960, 15650047, 5592439};
+    public static final @RGBColor int[] colors = new int[]{
+            0xFFFF7E,
+            0xFF3C01,
+            0x0090FF,
+            0x00A000,
+            0xEECCFF,
+            0x555577,
+    };
+
     protected int pulse = 0;
     public float pRed = 0.5F;
     public float pGreen = 0.5F;
@@ -92,6 +100,10 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
     }
     public void clientCheckParent(){
         var selfPos = this.getBlockPos();
+        var level = this.getLevel();
+        if (level == null){
+            return;
+        }
         if (this.needToLoadParent) {
             var parent = getParent();
             var parentPos = BlockPos.ZERO;
@@ -102,7 +114,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
                 this.removeParent();
             } else {
                 if (
-                        !CommonUtils.isChunkLoaded(this.getLevel(),parentPos)
+                        !CommonUtils.isChunkLoaded(level,parentPos)
                 ){
                     return;
                 }
@@ -158,7 +170,6 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
         if (this.pRed < 1.0F) {
             this.pRed += 0.025F;
         }
-
         if (this.pRed > 1.0F) {
             this.pRed = 1.0F;
         }

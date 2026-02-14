@@ -271,13 +271,13 @@ public class BlockAiry extends BlockContainer {
    @SideOnly(Side.CLIENT)
    public void randomDisplayTick(World w, int i, int j, int k, Random r) {
       int md = w.getBlockMetadata(i, j, k);
-      if (md == 1) {
-         FXSparkle ef2 = new FXSparkle(w, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (float)i + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)j + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)k + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, 1.0F, 6, 3);
-         ef2.setGravity(0.05F);
-         ef2.noClip = true;
-         Minecraft.getInstance().particleEngine.add(ef2);
-
-      }
+//      if (md == 1) {
+//         FXSparkle ef2 = new FXSparkle(w, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (float)i + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)j + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, (float)k + 0.5F + (r.nextFloat() - r.nextFloat()) / 3.0F, 1.0F, 6, 3);
+//         ef2.setGravity(0.05F);
+//         ef2.noClip = true;
+//         Minecraft.getInstance().particleEngine.add(ef2);
+//
+//      }
 //      else if (md == 2 && r.nextInt(500) == 0) {//but i still want to migrate to md==3
 //         int x1 = i + r.nextInt(3) - r.nextInt(3);
 //         int y1 = j + r.nextInt(3) - r.nextInt(3);

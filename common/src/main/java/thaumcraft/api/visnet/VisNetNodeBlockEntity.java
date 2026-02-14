@@ -54,10 +54,10 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
      * @param vis how much to drain
      * @return how much was actually drained
      */
-    public int consumeVis(Aspect aspect, int vis) {
+    public int consumeCentiVis(Aspect aspect, int vis) {
         var parent = getParent();
         if (parent != null) {
-            int out = parent.consumeVis(aspect, vis);
+            int out = parent.consumeCentiVis(aspect, vis);
             if (out>0) {
                 triggerConsumeEffect(aspect);
             }
