@@ -1,12 +1,11 @@
 package thaumcraft.client.fx.migrated.particles;
 
+import com.linearity.opentc4.Color;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import thaumcraft.client.fx.migrated.ThaumcraftParticle;
-
-import java.awt.*;
 
 import static thaumcraft.client.fx.migrated.Particles.PARTICLE_SPRITE;
 

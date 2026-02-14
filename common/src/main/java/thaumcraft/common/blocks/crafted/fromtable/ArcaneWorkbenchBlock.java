@@ -1,8 +1,7 @@
-package thaumcraft.common.blocks.crafted;
+package thaumcraft.common.blocks.crafted.fromtable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

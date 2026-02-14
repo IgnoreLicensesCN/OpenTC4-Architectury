@@ -90,7 +90,7 @@ public class BlockMetalDevice extends BlockContainer {
          } else if (md != 14 && md != 2) {
             return md != 0 && md != 1 && md != 5 && md != 6 ? this.icon[7] : this.icon[0];
          } else {
-            return this.icon[0];
+            return this.icon[0];//== 14 || == 2
          }
       } else {
          return this.icon[16];

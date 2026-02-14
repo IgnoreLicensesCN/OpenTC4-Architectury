@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.opentc4.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -19,8 +20,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.ThaumcraftSounds;
-
-import java.awt.*;
 
 public abstract class AbstractCrystalBlock extends Block implements IInfusionStabiliser  {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;

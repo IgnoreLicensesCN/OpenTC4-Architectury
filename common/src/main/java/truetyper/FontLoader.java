@@ -3,8 +3,8 @@ package truetyper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
-import java.awt.*;
 
+@Deprecated(forRemoval = true,since = "load font in MC's own method")
 public class FontLoader {
    public static TrueTypeFont loadSystemFont(String name, float defSize, boolean antialias) {
       return loadSystemFont(name, defSize, antialias, 0);

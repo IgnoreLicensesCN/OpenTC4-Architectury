@@ -22,6 +22,7 @@ import java.util.List;
  * a transport relay or vis receiver (like the infernal furnace).
  *
  */
+@Deprecated(forRemoval = true)
 public abstract class TileVisNode extends TileThaumcraft {
 	
 	WeakReference<TileVisNode> parent = null;

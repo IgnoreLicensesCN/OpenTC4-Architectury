@@ -1,5 +1,6 @@
 package tc4tweak;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
@@ -88,6 +89,12 @@ public class CommonUtils {
         }
         return world.blockExists(x, y, z);
     }
+    public static boolean isChunkLoaded(Level level, BlockPos pos) {
+        int chunkX = pos.getX() >> 4;
+        int chunkZ = pos.getZ() >> 4;
+        return level.hasChunk(chunkX,chunkZ);
+    }
+
 
     public static void sendSupplementaryS35(BlockEntity te) {
         if (!ConfigurationHandler.INSTANCE.isSendSupplementaryS35()) return;

@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {
 
     public static final VoxelShape STABLE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
-    public static final Map<RecipeItemMatcher, ItemStack> infernalFurnaceSmeltingBonus = new ConcurrentHashMap();
+    public static final Map<RecipeItemMatcher, ItemStack> infernalFurnaceSmeltingBonus = new ConcurrentHashMap<>();
 
     public InfernalFurnaceLavaBlock(Properties properties) {
         super(properties);
@@ -85,7 +85,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
                 }
             }
         }
-        return out;
+        return out == null?ItemStack.EMPTY:out.copy();
     }
 
     /**

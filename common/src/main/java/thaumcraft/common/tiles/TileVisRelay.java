@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
@@ -17,7 +16,6 @@ import thaumcraft.api.visnet.TileVisNode;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
 
 import java.awt.*;
 import java.lang.ref.WeakReference;
@@ -37,7 +35,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
    protected int px;
    protected int py;
    protected int pz;
-   protected boolean parentLoaded = false;
+   protected boolean needToLoadParent = false;
 
    @SideOnly(Side.CLIENT)
    public AxisAlignedBB getRenderBoundingBox() {
@@ -75,7 +73,9 @@ public class TileVisRelay extends TileVisNode implements IWandable {
          List<Player> var5 = this.level().getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(5.0F, 5.0F, 5.0F));
          if (var5 != null && !var5.isEmpty()) {
             for(Player player : var5) {
-               if (!nearbyPlayers.containsKey(player.getEntityId()) || ((WeakReference)nearbyPlayers.get(player.getEntityId())).get() == null || !(((TileVisRelay)((WeakReference)nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < this.getDistanceFrom(player.posX, player.posY, player.posZ))) {
+               if (!nearbyPlayers.containsKey(player.getEntityId())
+                       || ((WeakReference)nearbyPlayers.get(player.getEntityId())).get() == null
+                       || !(((TileVisRelay)((WeakReference)nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < this.getDistanceFrom(player.posX, player.posY, player.posZ))) {
                   nearbyPlayers.put(player.getEntityId(), new WeakReference(this));
                }
             }
@@ -86,7 +86,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
 
    protected void drawEffect() {
       if ((Platform.getEnvironment() == Env.CLIENT)) {
-         if (this.parentLoaded) {
+         if (this.needToLoadParent) {
             if (this.px == 0 && this.py == 0 && this.pz == 0) {
                this.setParent(null);
             } else {
@@ -95,7 +95,8 @@ public class TileVisRelay extends TileVisNode implements IWandable {
                     this.getLevel(),
                     this.xCoord - this.px,
                     this.yCoord - this.py,
-                    this.zCoord - this.pz)
+                    this.zCoord - this.pz
+                    )
                ){
                   return;
                }
@@ -105,7 +106,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
                }
             }
 
-            this.parentLoaded = false;
+            this.needToLoadParent = false;
             this.parentChanged();
          }
 
@@ -120,7 +121,19 @@ public class TileVisRelay extends TileVisNode implements IWandable {
 
             Direction d2 = Direction.getOrientation(this.orientation);
             if (ClientFXUtils.checkPlatformClient()){
-               this.beam1 = ClientFXUtils.beamPower(this.level(), xx - (double)d1.offsetX * 0.05, yy - (double)d1.offsetY * 0.05, zz - (double)d1.offsetZ * 0.05, (double)this.xCoord + (double)0.5F - (double)d2.offsetX * 0.05, (double)this.yCoord + (double)0.5F - (double)d2.offsetY * 0.05, (double)this.zCoord + (double)0.5F - (double)d2.offsetZ * 0.05, this.pRed, this.pGreen, this.pBlue, this.pulse > 0, this.beam1);
+               this.beam1 = ClientFXUtils.beamPower(this.level(),
+                       xx - (double)d1.offsetX * 0.05,
+                       yy - (double)d1.offsetY * 0.05,
+                       zz - (double)d1.offsetZ * 0.05,
+                       (double)this.xCoord + (double)0.5F - (double)d2.offsetX * 0.05,
+                       (double)this.yCoord + (double)0.5F - (double)d2.offsetY * 0.05,
+                       (double)this.zCoord + (double)0.5F - (double)d2.offsetZ * 0.05,
+                       this.pRed,
+                       this.pGreen,
+                       this.pBlue,
+                       this.pulse > 0,
+                       this.beam1
+               );
             }
          }
 
@@ -212,7 +225,7 @@ public class TileVisRelay extends TileVisNode implements IWandable {
       this.px = nbttagcompound.getByte("px");
       this.py = nbttagcompound.getByte("py");
       this.pz = nbttagcompound.getByte("pz");
-      this.parentLoaded = true;
+      this.needToLoadParent = true;
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {

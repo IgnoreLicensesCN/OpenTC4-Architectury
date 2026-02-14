@@ -2,8 +2,7 @@ package thaumcraft.api.visnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -74,7 +73,7 @@ public class VisNetHandler {
 		return drainedAmount;
 	}
 
-	public static HashMap<ResourceKey<Level>, HashMap<WorldCoordinates, WeakReference<VisNetNodeBlockEntity>>> sources = new HashMap<>();
+	public static Map<ResourceKey<Level>, HashMap<WorldCoordinates, WeakReference<VisNetNodeBlockEntity>>> sources = new HashMap<>();
 
 	public static void addSource(Level world, VisNetNodeBlockEntity vs) {
 		ResourceKey<Level> key = world.dimension();
@@ -115,8 +114,6 @@ public class VisNetHandler {
 		ArrayList<Object[]> nearby = new ArrayList<>();
 
 		for (WeakReference<VisNetNodeBlockEntity> root : sourcelist.values()) {
-			if (!isNodeValid(root))
-				continue;
 
 			VisNetNodeBlockEntity source = root.get();
 			if (source == null) {
@@ -201,14 +198,10 @@ public class VisNetHandler {
 		ArrayList<Object[]> nearby = new ArrayList<>();
 
 		for (WeakReference<VisNetNodeBlockEntity> root : sourcelist.values()) {
-			
-			if (!isNodeValid(root))
-				continue;
 
 			VisNetNodeBlockEntity source = root.get();
-			if (source == null){
+			if (source == null)
 				continue;
-			}
 			
 			VisNetNodeBlockEntity closest = null;
 			float range = Float.MAX_VALUE;
@@ -220,7 +213,7 @@ public class VisNetHandler {
 				closest = source;
 			}
 			
-			ArrayList<WeakReference<VisNetNodeBlockEntity>> children = new ArrayList<>();
+			List<WeakReference<VisNetNodeBlockEntity>> children = new ArrayList<>();
 			children = getAllChildren(source,children);
 			
 			for (WeakReference<VisNetNodeBlockEntity> child : children) {
@@ -245,11 +238,15 @@ public class VisNetHandler {
 		nearbyNodes.put(drainer, cn);
 	}
 	
-	private static ArrayList<WeakReference<VisNetNodeBlockEntity>> getAllChildren(VisNetNodeBlockEntity source, ArrayList<WeakReference<VisNetNodeBlockEntity>> list) {
+	private static List<WeakReference<VisNetNodeBlockEntity>> getAllChildren(VisNetNodeBlockEntity source, List<WeakReference<VisNetNodeBlockEntity>> list) {
 		for (WeakReference<VisNetNodeBlockEntity> child : source.getChildren()) {
 			VisNetNodeBlockEntity n = child.get();
 			
-			if (n != null && n.getLevel()!=null && isChunkLoaded(n.getLevel(), n.xCoord, n.zCoord)) {
+			if (n != null && n.getLevel()!=null && isChunkLoaded(
+					n.getLevel(),
+					n.getBlockPos().getX(),
+					n.getBlockPos().getZ()
+			)) {
 				list.add(child);
 				list = getAllChildren(n,list);
 			}
@@ -263,140 +260,173 @@ public class VisNetHandler {
 
 	 public static boolean canNodeBeSeen(VisNetNodeBlockEntity source,VisNetNodeBlockEntity target)
 	 {
-		 Level world = source.getLevel();
-		 Vec3 v1 = new Vec3((double) source.xCoord + 0.5D, (double) source.yCoord + 0.5D, (double) source.zCoord + 0.5D);
-		 Vec3 v2 = new Vec3((double) target.xCoord + 0.5D, (double) target.yCoord + 0.5D, (double) target.zCoord + 0.5D);
-		 if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) return true;
-		 if (Double.isNaN(v2.xCoord) || Double.isNaN(v2.yCoord) || Double.isNaN(v2.zCoord)) return true;
-		 int x2 = MathHelper.floor_double(v2.xCoord);
-		 int y2 = MathHelper.floor_double(v2.yCoord);
-		 int z2 = MathHelper.floor_double(v2.zCoord);
-		 int x1 = MathHelper.floor_double(v1.xCoord);
-		 int y1 = MathHelper.floor_double(v1.yCoord);
-		 int z1 = MathHelper.floor_double(v1.zCoord);
-		 int maxStep = source.getRange() * 5; // mathematician please help. likely not * 5...
+		 Level level = source.getLevel();
+		 if (level == null) return false;
 
-		 while (maxStep-- >= 0) {
-			 if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) {
-				 return true;
-			 }
+		 Vec3 start = Vec3.atCenterOf(source.getBlockPos());
+		 Vec3 end   = Vec3.atCenterOf(target.getBlockPos());
+		 BlockPos targetPos = target.getBlockPos();
 
-			 if (x1 != x2 || y1 != y2 || z1 != z2) {
-				 boolean xDiff = true;
-				 boolean yDIff = true;
-				 boolean zDiff = true;
-				 double x0 = 999.0D;
-				 double y0 = 999.0D;
-				 double z0 = 999.0D;
-				 if (x2 > x1) {
-					 x0 = (double) x1 + 1.0D;
-				 } else if (x2 < x1) {
-					 x0 = (double) x1 + 0.0D;
-				 } else {
-					 xDiff = false;
-				 }
+		 Boolean result = BlockGetter.traverseBlocks(
+				 start,
+				 end,
+				 false, // context = 是否被阻挡
+				 (blocked, pos) -> {
 
-				 if (y2 > y1) {
-					 y0 = (double) y1 + 1.0D;
-				 } else if (y2 < y1) {
-					 y0 = (double) y1 + 0.0D;
-				 } else {
-					 yDIff = false;
-				 }
-
-				 if (z2 > z1) {
-					 z0 = (double) z1 + 1.0D;
-				 } else if (z2 < z1) {
-					 z0 = (double) z1 + 0.0D;
-				 } else {
-					 zDiff = false;
-				 }
-
-				 double xpercent = 999.0D;
-				 double ypercent = 999.0D;
-				 double zpercent = 999.0D;
-				 double dx = v2.xCoord - v1.xCoord;
-				 double dy = v2.yCoord - v1.yCoord;
-				 double dz = v2.zCoord - v1.zCoord;
-				 if (xDiff) {
-					 xpercent = (x0 - v1.xCoord) / dx;
-				 }
-
-				 if (yDIff) {
-					 ypercent = (y0 - v1.yCoord) / dy;
-				 }
-
-				 if (zDiff) {
-					 zpercent = (z0 - v1.zCoord) / dz;
-				 }
-
-				 byte checkType;
-				 if (xpercent < ypercent && xpercent < zpercent) {
-					 // x changes next
-					 if (x2 > x1) {
-						 checkType = 4;
-					 } else {
-						 checkType = 5;
+					 // 到达目标
+					 if (pos.equals(targetPos)) {
+						 return false; // 不阻挡
 					 }
 
-					 v1.xCoord = x0;
-					 v1.yCoord += dy * xpercent;
-					 v1.zCoord += dz * xpercent;
-				 } else if (ypercent < zpercent) {
-					 // y changes next
-					 if (y2 > y1) {
-						 checkType = 0;
-					 } else {
-						 checkType = 1;
-					 }
+					 BlockState state = level.getBlockState(pos);
 
-					 v1.xCoord += dx * ypercent;
-					 v1.yCoord = y0;
-					 v1.zCoord += dz * ypercent;
-				 } else {
-					 // z changes next
-					 if (z2 > z1) {
-						 checkType = 2;
-					 } else {
-						 checkType = 3;
-					 }
+					 // 没有碰撞箱 → 不阻挡
+                     return !state.getCollisionShape(level, pos)
+                             .isEmpty();
 
-					 v1.xCoord += dx * zpercent;
-					 v1.yCoord += dy * zpercent;
-					 v1.zCoord = z0;
-				 }
+					 // 有碰撞箱 → 阻挡
+                 },
+				 blocked -> false // miss
+		 );
 
-				 x1 = MathHelper.floor_double(v1.xCoord);
-				 if (checkType == 5) {
-					 --x1;
-				 }
+		 return !result;
+		 //old method RIP
 
-				 y1 = MathHelper.floor_double(v1.yCoord);
-				 if (checkType == 1) {
-					 --y1;
-				 }
+//		 Level world = source.getLevel();
+//		 Vec3 v1 = new Vec3((double) source.xCoord + 0.5D, (double) source.yCoord + 0.5D, (double) source.zCoord + 0.5D);
+//		 Vec3 v2 = new Vec3((double) target.xCoord + 0.5D, (double) target.yCoord + 0.5D, (double) target.zCoord + 0.5D);
+//		 if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) return true;
+//		 if (Double.isNaN(v2.xCoord) || Double.isNaN(v2.yCoord) || Double.isNaN(v2.zCoord)) return true;
+//		 int x2 = MathHelper.floor_double(v2.xCoord);
+//		 int y2 = MathHelper.floor_double(v2.yCoord);
+//		 int z2 = MathHelper.floor_double(v2.zCoord);
+//		 int x1 = MathHelper.floor_double(v1.xCoord);
+//		 int y1 = MathHelper.floor_double(v1.yCoord);
+//		 int z1 = MathHelper.floor_double(v1.zCoord);
+//		 int maxStep = source.getRange() * 5; // mathematician please help. likely not * 5...
+//
+//		 while (maxStep-- >= 0) {
+//			 if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) {
+//				 return true;
+//			 }
+//
+//			 if (x1 != x2 || y1 != y2 || z1 != z2) {
+//				 boolean xDiff = true;
+//				 boolean yDIff = true;
+//				 boolean zDiff = true;
+//				 double x0 = 999.0D;
+//				 double y0 = 999.0D;
+//				 double z0 = 999.0D;
+//				 if (x2 > x1) {
+//					 x0 = (double) x1 + 1.0D;
+//				 } else if (x2 < x1) {
+//					 x0 = (double) x1 + 0.0D;
+//				 } else {
+//					 xDiff = false;
+//				 }
+//
+//				 if (y2 > y1) {
+//					 y0 = (double) y1 + 1.0D;
+//				 } else if (y2 < y1) {
+//					 y0 = (double) y1 + 0.0D;
+//				 } else {
+//					 yDIff = false;
+//				 }
+//
+//				 if (z2 > z1) {
+//					 z0 = (double) z1 + 1.0D;
+//				 } else if (z2 < z1) {
+//					 z0 = (double) z1 + 0.0D;
+//				 } else {
+//					 zDiff = false;
+//				 }
+//
+//				 double xpercent = 999.0D;
+//				 double ypercent = 999.0D;
+//				 double zpercent = 999.0D;
+//				 double dx = v2.xCoord - v1.xCoord;
+//				 double dy = v2.yCoord - v1.yCoord;
+//				 double dz = v2.zCoord - v1.zCoord;
+//				 if (xDiff) {
+//					 xpercent = (x0 - v1.xCoord) / dx;
+//				 }
+//
+//				 if (yDIff) {
+//					 ypercent = (y0 - v1.yCoord) / dy;
+//				 }
+//
+//				 if (zDiff) {
+//					 zpercent = (z0 - v1.zCoord) / dz;
+//				 }
+//
+//				 byte checkType;
+//				 if (xpercent < ypercent && xpercent < zpercent) {
+//					 // x changes next
+//					 if (x2 > x1) {
+//						 checkType = 4;
+//					 } else {
+//						 checkType = 5;
+//					 }
+//
+//					 v1.xCoord = x0;
+//					 v1.yCoord += dy * xpercent;
+//					 v1.zCoord += dz * xpercent;
+//				 } else if (ypercent < zpercent) {
+//					 // y changes next
+//					 if (y2 > y1) {
+//						 checkType = 0;
+//					 } else {
+//						 checkType = 1;
+//					 }
+//
+//					 v1.xCoord += dx * ypercent;
+//					 v1.yCoord = y0;
+//					 v1.zCoord += dz * ypercent;
+//				 } else {
+//					 // z changes next
+//					 if (z2 > z1) {
+//						 checkType = 2;
+//					 } else {
+//						 checkType = 3;
+//					 }
+//
+//					 v1.xCoord += dx * zpercent;
+//					 v1.yCoord += dy * zpercent;
+//					 v1.zCoord = z0;
+//				 }
+//
+//				 x1 = MathHelper.floor_double(v1.xCoord);
+//				 if (checkType == 5) {
+//					 --x1;
+//				 }
+//
+//				 y1 = MathHelper.floor_double(v1.yCoord);
+//				 if (checkType == 1) {
+//					 --y1;
+//				 }
+//
+//				 z1 = MathHelper.floor_double(v1.zCoord);
+//				 if (checkType == 3) {
+//					 --z1;
+//				 }
+//
+//				 if (x1 == target.xCoord && y1 == target.yCoord && z1 == target.zCoord)
+//					 return true;
+//
+//				 BlockState block = world.getBlockState(new BlockPos(x1, y1, z1));
+////				 int meta = world.getBlockMetadata(x1, y1, z1);
+//				 if (block.canCollideCheck(meta, false)) {
+//					 if (block.getCollisionBoundingBoxFromPool(world, x1, y1, z1) != null) {
+//						 HitResult HitResult1 = block.collisionRayTrace(world, x1, y1, z1, v1, v2);
+//						 if (HitResult1 != null && HitResult1.typeOfHit != HitResult.MovingObjectType.MISS) {
+//							 return false;
+//						 }
+//					 }
+//				 }
+//			 }
+//		 }
+//		 return true;
 
-				 z1 = MathHelper.floor_double(v1.zCoord);
-				 if (checkType == 3) {
-					 --z1;
-				 }
-
-				 if (x1 == target.xCoord && y1 == target.yCoord && z1 == target.zCoord)
-					 return true;
-
-				 BlockState block = world.getBlockState(new BlockPos(x1, y1, z1));
-//				 int meta = world.getBlockMetadata(x1, y1, z1);
-				 if (block.canCollideCheck(meta, false)) {
-					 if (block.getCollisionBoundingBoxFromPool(world, x1, y1, z1) != null) {
-						 HitResult HitResult1 = block.collisionRayTrace(world, x1, y1, z1, v1, v2);
-						 if (HitResult1 != null && HitResult1.typeOfHit != HitResult.MovingObjectType.MISS) {
-							 return false;
-						 }
-					 }
-				 }
-			 }
-		 }
-		 return true;
 //		 HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(source.getLevel(),
 //				 new Vec3(source.xCoord+.5, source.yCoord+.5,source.zCoord+.5),
 //				 new Vec3(target.xCoord+.5, target.yCoord+.5,target.zCoord+.5),

@@ -14,6 +14,8 @@
     "thaumcraft:greatwood_log",
     "thaumcraft:table",
     "thaumcraft:arcane_workbench",
-    "thaumcraft:deconstruction_table"
+    "thaumcraft:deconstruction_table",
+    "thaumcraft:research_table_left_part",
+    "thaumcraft:research_table_right_part"
   ]
 }

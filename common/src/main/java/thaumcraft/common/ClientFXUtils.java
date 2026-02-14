@@ -26,8 +26,11 @@ import thaumcraft.client.fx.migrated.beams.*;
 import thaumcraft.client.fx.migrated.bolt.*;
 import thaumcraft.client.fx.migrated.other.*;
 import thaumcraft.common.tiles.TileCrucible;
+import thaumcraft.common.tiles.crafted.VisNetRelayBlockEntity;
 
 import java.awt.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 //all method here should check platform
 @SuppressWarnings("resource unused")
@@ -1300,14 +1303,28 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(fb);
     }
 
-    public static FXBeamPower beamPower(ClientLevel worldObj, double px, double py, double pz, double tx, double ty, double tz, float r, float g, float b, boolean pulse, Object input) {
+    public static final Map<VisNetRelayBlockEntity,FXBeamPower> BEAM_POWER_MAP = new ConcurrentHashMap<>();
+    public static void updateBeamPower(
+            VisNetRelayBlockEntity be,
+            ClientLevel worldObj,
+            double px, double py, double pz,
+            double tx, double ty, double tz,
+            float r, float g, float b,
+            boolean pulse
+    ){
+        BEAM_POWER_MAP.put(
+                be,
+                beamPower(worldObj,px,py,pz,tx,ty,tz,r,g,b,pulse,BEAM_POWER_MAP.get(be))
+        );
+    }
+    public static void clearBeamPower(VisNetRelayBlockEntity be){
+        BEAM_POWER_MAP.remove(be);
+    }
+    public static FXBeamPower beamPower(ClientLevel worldObj, double px, double py, double pz, double tx, double ty, double tz, float r, float g, float b, boolean pulse, FXBeamPower input) {
         if (!checkPlatformClient()) {
             throw new RuntimeException("not avaliable in server");
         }
-        FXBeamPower beamcon = null;
-        if (input instanceof FXBeamPower) {
-            beamcon = (FXBeamPower) input;
-        }
+        FXBeamPower beamcon = input;
 
         if (beamcon != null && !beamcon.isDead()) {
             beamcon.updateBeam(
@@ -1324,7 +1341,8 @@ public class ClientFXUtils {
                     g,
                     b
             );
-        } else {
+        }
+        else {
             beamcon = new FXBeamPower(
                     worldObj,
                     px,

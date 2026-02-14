@@ -52,6 +52,7 @@
     "thaumcraft:paving_stone_travel",
     "thaumcraft:obsidian_tile",
     "thaumcraft:obsidian_totem_with_node",
-    "thaumcraft:obsidian_totem"
+    "thaumcraft:obsidian_totem",
+    "thaumcraft:vis_relay"
   ]
 }

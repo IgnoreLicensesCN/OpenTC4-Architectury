@@ -224,8 +224,7 @@ public class NodeType {
                     Vec3 v2 = new Vec3(
                             (double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
                     HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(
-                            clientLevel, v1, v2, true/*, false, false (always these two flags)*/
-                    ,null);
+                            clientLevel, v1, v2, true);
 
                     if (mop != null && mop.getLocation()
                             .distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < (double) 256.0F) {
@@ -326,7 +325,7 @@ public class NodeType {
                 );
                 Vec3 v2 = new Vec3(
                         (double) tx + (double) 0.5F, (double) ty + (double) 0.5F, (double) tz + (double) 0.5F);
-                HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(serverLevel, v1, v2, true,null);
+                HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(serverLevel, v1, v2, true);
                 if (mop != null) {
                     var mopPos = mop.getLocation();
                     if (mopPos.distanceToSqr(pos.getCenter()) <  256.0F * 256.0F){

@@ -1,5 +1,6 @@
 package thaumcraft.client.fx.migrated.particles;
 
+import com.linearity.opentc4.Color;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -7,7 +8,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import thaumcraft.client.fx.migrated.ThaumcraftParticle;
 
-import java.awt.*;
 
 public class FXEssentiaTrail extends ThaumcraftParticle {
     private final double targetX;

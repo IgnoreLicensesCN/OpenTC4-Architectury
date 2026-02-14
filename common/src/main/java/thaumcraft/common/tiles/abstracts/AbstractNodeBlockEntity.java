@@ -5,7 +5,6 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -37,12 +36,12 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 import thaumcraft.common.lib.utils.EntityUtils;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
 import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
+import com.linearity.opentc4.Color;
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 import static thaumcraft.common.researches.ThaumcraftResearches.*;
 

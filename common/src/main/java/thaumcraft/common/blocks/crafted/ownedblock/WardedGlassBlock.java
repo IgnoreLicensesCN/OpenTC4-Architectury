@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks.crafted;
+package thaumcraft.common.blocks.crafted.ownedblock;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;

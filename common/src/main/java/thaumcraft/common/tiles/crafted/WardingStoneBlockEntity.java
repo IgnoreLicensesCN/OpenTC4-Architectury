@@ -15,7 +15,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static thaumcraft.common.blocks.crafted.PavingStoneWardingBlock.LIT;
+import static thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock.LIT;
 
 public class WardingStoneBlockEntity extends BlockEntity {
     public final AtomicInteger tickCounter = new AtomicInteger();

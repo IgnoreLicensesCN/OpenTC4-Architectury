@@ -5,6 +5,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,11 +28,11 @@ import static thaumcraft.api.visnet.VisNetHandler.cache;
 import static thaumcraft.api.visnet.VisNetHandler.nearbyNodes;
 
 public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
-    public VisNetNodeBlockEntity(BlockEntityType<VisNetNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public VisNetNodeBlockEntity(BlockEntityType<? extends VisNetNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     @NotNull WeakReference<VisNetNodeBlockEntity> parent = new WeakReference<>(null);
-    List<WeakReference<VisNetNodeBlockEntity>> children = new ArrayList<>();
+    @NotNull List<WeakReference<VisNetNodeBlockEntity>> children = new ArrayList<>();
     @NotNull List<BlockPos> loadedLink = new ArrayList<>();
     protected int nodeCounter = 0;
     private boolean nodeRegged = false;
@@ -91,6 +92,9 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     }
     public void setParent(VisNetNodeBlockEntity parent) {
         setParent(new WeakReference<>(parent));
+    }
+    public void removeParent(){
+        setParent(new WeakReference<>(null));
     }
     public List<WeakReference<VisNetNodeBlockEntity>> getChildren() {
         return children;
@@ -270,12 +274,15 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
 
     /**
      * only affects VisNetNode connection and color(not really for aspect)
+     * like channel.but put 0 for any "channel".
+     * --IgnoreLicensesCN
      * @return the type ofAspectVisList shard this is attuned to:
-     * none -1, air 0, fire 1, water 2, earth 3, order 4, entropy 5
-     * Should return -1 for most implementations
+     * none 0, <s>air 1, fire 2, water 3, earth 4, order 5, entropy 6
+     * Should return -1 for most implementations</s>
+     * (wont make sure which aspect it shows anymore.depends on BE behavior)
      */
-    public byte getAttunement() {
-        return -1;
+    public int getAttunement() {
+        return 0;
     }
     
     protected boolean canConnect(VisNetNodeBlockEntity anotherNode) {
@@ -309,4 +316,44 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     
     public static final VisNetNodeTypeResourceLocation SOURCE = VisNetNodeTypeResourceLocation.of("thaumcraft","source");
     public static final VisNetNodeTypeResourceLocation RELAY = VisNetNodeTypeResourceLocation.of("thaumcraft","relay");
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        removeThisNode();
+    }
+
+    public void removeThisNode() {
+        for (var ref:getChildren()) {
+            var child = ref.get();
+            if (child!=null) {
+                child.removeThisNode();
+            }
+        }
+
+        this.children = new ArrayList<>();
+        var parent = this.getParent();
+        if (parent != null) {
+            parent.nodeRefresh=true;
+        }
+        this.removeParent();
+        this.parentChanged();
+        Level worldObj = getLevel();
+        if (worldObj == null) {
+            throw new NullPointerException("worldObj is null");
+        }
+        if (this.isSource()) {
+            ResourceKey<Level> key = worldObj.dimension();
+            var sourcelist = VisNetHandler.sources.get(key);
+            if (sourcelist==null) {
+                sourcelist = new HashMap<>();
+            }
+            sourcelist.remove(getLocation());
+            VisNetHandler.sources.put( key, sourcelist );
+        }
+        BlockPos pos = this.worldPosition;
+        BlockState state = worldObj.getBlockState(pos);
+        worldObj.sendBlockUpdated(pos,state,state,3);
+    }
+
 }

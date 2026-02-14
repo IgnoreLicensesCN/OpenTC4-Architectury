@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks.crafted;
+package thaumcraft.common.blocks.crafted.pavingstone;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

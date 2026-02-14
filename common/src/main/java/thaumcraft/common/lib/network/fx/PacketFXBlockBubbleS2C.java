@@ -8,7 +8,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 
-import java.awt.*;
+import com.linearity.opentc4.Color;
+
 
 public class PacketFXBlockBubbleS2C extends ThaumcraftBaseS2CMessage {
 

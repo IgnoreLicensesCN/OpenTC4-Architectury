@@ -152,7 +152,7 @@ public class Consts {
         private static final String NODE_ID = "nodeId";
         public static final StringTagAccessor NODE_ID_ACCESSOR = new StringTagAccessor(NODE_ID);
         private static final String NODE_TYPE = "nodeType";
-        public static final StringTagAccessor NODE_TYPE_ACCESSOR = new StringTagAccessor(NODE_TYPE);
+        public static final NodeTypeResourceLocationTagAccessor NODE_TYPE_ACCESSOR = new NodeTypeResourceLocationTagAccessor(NODE_TYPE);
         private static final String NODE_MODIFIER = "nodeModifier";
         public static final StringTagAccessor NODE_MODIFIER_ACCESSOR = new StringTagAccessor(NODE_MODIFIER);
         public static final String NODE_LAST_ACTIVE = "lastActive";

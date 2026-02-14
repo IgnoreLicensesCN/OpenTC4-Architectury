@@ -60,8 +60,8 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
                return false;
             }
 
-             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && ic.takeEssentia(
-                     Aspects.FIRE, 1, this.facing.getOpposite()) == 1;
+             return ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) &&
+                     ic.takeEssentia(Aspects.FIRE, 1, this.facing.getOpposite()) == 1;
          }
 
          return false;

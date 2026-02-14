@@ -36,8 +36,6 @@ import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
-import java.awt.*;
-
 //TODO:impl getOverlayBlockTexture
 public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     public static final SoundType TAINT_FIBRE_SOUND = new SoundType(

@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.fx;
 
+import com.linearity.opentc4.Color;
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -9,8 +10,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import thaumcraft.client.fx.migrated.beams.FXBeam;
 import thaumcraft.common.Thaumcraft;
-
-import java.awt.*;
 
 public class PacketFXBeamPulseS2C extends ThaumcraftBaseS2CMessage {
 

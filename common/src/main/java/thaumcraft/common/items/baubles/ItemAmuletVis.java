@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.List;
 
+//TODO:impl IVisNodeDetectableItem
 public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    public IIcon[] icon = new IIcon[2];
    DecimalFormat myFormatter = new DecimalFormat("#######.##");
@@ -86,14 +87,17 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
          }
 
          if (TileVisRelay.nearbyPlayers.containsKey(player.getEntityId())) {
-            if (((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get() != null && ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < (double)26.0F) {
+            if (((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get() != null
+                    && ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < (double)26.0F
+            ) {
                AspectList<Aspect>al = this.getAspectsWithRoom(itemstack);
 
                for(Aspect aspect : al.getAspects()) {
                   if (aspect != null) {
-                     int amt = ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).consumeVis(aspect, Math.min(5, this.getMaxVis(itemstack) - this.getVis(itemstack, aspect)));
+                     int amt = ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get())
+                             .consumeVis(aspect, Math.min(5, this.getMaxVis(itemstack) - this.getVis(itemstack, aspect)));
                      if (amt > 0) {
-                        this.addRealVis(itemstack, aspect, amt, true);
+                        this.addRealVis(itemstack, aspect, amt, true);//add CentiVis
                         ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).triggerConsumeEffect(aspect);
                      }
                   }

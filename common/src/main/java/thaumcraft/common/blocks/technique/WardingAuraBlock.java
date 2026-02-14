@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.technique;
 
-import com.linearity.opentc4.clientrenderapi.IClientRandomTickableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -13,7 +12,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.blocks.crafted.PavingStoneWardingBlock;
+import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 
 public class WardingAuraBlock extends Block{
     public WardingAuraBlock(Properties properties) {

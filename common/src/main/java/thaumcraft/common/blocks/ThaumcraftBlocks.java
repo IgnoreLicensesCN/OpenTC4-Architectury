@@ -14,6 +14,15 @@ import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
+import thaumcraft.common.blocks.crafted.fromtable.ArcaneWorkbenchBlock;
+import thaumcraft.common.blocks.crafted.fromtable.ResearchTableLeftPartBlock;
+import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
+import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
+import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
+import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
+import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
+import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
+import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -145,7 +154,7 @@ public class ThaumcraftBlocks {
     public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
     public static final CrustedTaintBlock CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
     public static final TaintedSoilBlock TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
-//    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
+    //    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
     public static final FibrousTaintBlock FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
     public static final TaintedGrassBlock TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
     public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
@@ -157,6 +166,7 @@ public class ThaumcraftBlocks {
     public static final ResearchTableLeftPartBlock RESEARCH_TABLE_LEFT_PART = Registry.SUPPLIER_RESEARCH_TABLE_LEFT_PART.get();
     public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
     public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
+    public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -537,7 +547,7 @@ public class ThaumcraftBlocks {
                 RunedStoneBlock::new
         );
 
-//        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+        //        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
 //                "block_of_flesh",
 //                FleshBlock::new
 //        );//shouldn't be this.This is crafted and cant spread taint in latest 1.7.10 TC4
@@ -592,6 +602,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<GlimmerOfLightBlock> SUPPLIER_GLIMMER_OF_LIGHT = BLOCKS.register(
                 "glimmer_of_light",
                 GlimmerOfLightBlock::new
+        );
+        public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY =  BLOCKS.register(
+                "vis_relay",
+                VisNetRelayBlock::new
         );
 
         static {

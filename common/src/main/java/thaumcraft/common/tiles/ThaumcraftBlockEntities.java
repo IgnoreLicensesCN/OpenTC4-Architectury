@@ -33,6 +33,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<ArcaneWorkbenchBlockEntity> ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
     public static final BlockEntityType<DeconstructionTableBlockEntity> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final BlockEntityType<ResearchTableBlockEntity> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
+    public static final BlockEntityType<VisNetRelayBlockEntity> VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -155,6 +156,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         ResearchTableBlockEntity::new,
                         ThaumcraftBlocks.RESEARCH_TABLE_LEFT_PART
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<VisNetRelayBlockEntity>> SUPPLIER_VIS_RELAY = BLOCK_ENTITIES.register(
+                "vis_relay",
+                () -> BlockEntityType.Builder.of(
+                        VisNetRelayBlockEntity::new,
+                        ThaumcraftBlocks.VIS_RELAY
                 ).build(null)
         );
     }

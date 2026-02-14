@@ -12,16 +12,18 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileMagicWorkbench;
-
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -40,10 +42,12 @@ public class ThaumcraftApiHelper {
         return ResearchManager.isResearchComplete(username, researchkey);
     }
 
+    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
     public static boolean hasDiscoveredAspect(String username, Aspect aspect) {
         return Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect);
     }
 
+    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
     public static AspectList<Aspect> getDiscoveredAspects(String username) {
         return Thaumcraft.playerKnowledge.getAspectsDiscovered(username);
     }
@@ -99,6 +103,7 @@ public class ThaumcraftApiHelper {
 //        }
 //        return true;
 //    }
+@Deprecated(forRemoval = true,since = "RecipeItemMatcher")
     public static boolean areItemStackTagsEqualForCrafting(ItemStack slotItem, ItemStack recipeItem) {
         if (recipeItem == null || slotItem == null) return false;
 
@@ -132,6 +137,7 @@ public class ThaumcraftApiHelper {
 //            return null;
 //    }
 
+    @Deprecated(forRemoval = true)//TODO:Migrate to IEssentiaTransport
     public static BlockEntity getConnectableTile(BlockGetter world, int x, int y, int z, Direction face) {
         BlockEntity te = world.getBlockEntity(new BlockPos(x + face.getStepX(), y + face.getStepY(), z + face.getStepZ()));
         if (te instanceof IEssentiaTransport && ((IEssentiaTransport) te).isConnectable(face.getOpposite()))
@@ -140,9 +146,12 @@ public class ThaumcraftApiHelper {
             return null;
     }
 
+    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
     private static final HashMap<Integer, AspectList<Aspect>> allAspects = new HashMap<>();
+    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
     private static final HashMap<Integer, AspectList<CompoundAspect>> allCompoundAspects = new HashMap<>();
 
+    @Deprecated(forRemoval = true)
     public static AspectList<Aspect> getAllAspectsWithAmount(int amount) {
         if (allAspects.get(amount) == null) {
             AspectList<Aspect> al = new AspectList<>();
@@ -154,6 +163,7 @@ public class ThaumcraftApiHelper {
         return allAspects.get(amount);
     }
 
+    @Deprecated(forRemoval = true)
     public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
         if (allCompoundAspects.get(amount) == null) {
             AspectList<CompoundAspect> al = new AspectList<>();
@@ -178,6 +188,7 @@ public class ThaumcraftApiHelper {
      *                 false then things like frugal and potency will apply to the costs
      * @return was the vis successfully subtracted
      */
+    @Deprecated(forRemoval = true)
     public static boolean consumeVisFromWand(ItemStack wand, Player player,
                                              CentiVisList<Aspect> cost, boolean doit, boolean crafting) {
         return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVis(wand, player, cost, doit, crafting);
@@ -194,6 +205,7 @@ public class ThaumcraftApiHelper {
      * @param doit   actually subtract the vis from the wand if true - if false just simulate the result
      * @return was the vis successfully subtracted
      */
+    @Deprecated(forRemoval = true)
     public static boolean consumeVisFromWandCrafting(ItemStack wand, Player player,
                                                      CentiVisList<Aspect> cost, boolean doit) {
         return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVisCrafting(wand, player, cost, doit);
@@ -208,7 +220,8 @@ public class ThaumcraftApiHelper {
      * @param cost   the cost ofAspectVisList the operation.
      * @return was the vis successfully subtracted
      */
-    public static boolean consumeVisFromInventory(Player player, AspectList<Aspect> cost) {
+    @Deprecated(forRemoval = true)
+    public static boolean consumeVisFromInventory(Player player, CentiVisList<Aspect> cost) {
         return WandManager.consumeCentiVisFromInventory(player, cost);
     }
 
@@ -220,6 +233,7 @@ public class ThaumcraftApiHelper {
      * @param amount    how much warp to add. Negative amounts are only valid for temporary warp
      * @param temporary add temporary warp instead ofAspectVisList permanent
      */
+    @Deprecated(forRemoval = true,since = "use Thaumcraft#addWarpToPlayer")
     public static void addWarpToPlayer(Player player, int amount, boolean temporary) {
         Thaumcraft.addWarpToPlayer(player, amount, temporary);
     }
@@ -231,18 +245,50 @@ public class ThaumcraftApiHelper {
      * @param player the player using the wand
      * @param amount how much warp to add. Can have negative amounts.
      */
+    @Deprecated(forRemoval = true,since = "use Thaumcraft#addStickyWarpToPlayer")
     public static void addStickyWarpToPlayer(Player player, int amount) {
         Thaumcraft.addStickyWarpToPlayer(player, amount);
     }
 
-    public static BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource, Entity sourceEntity) {
+    public static @Nullable BlockHitResult rayTraceIgnoringSource(Level level, Vec3 start, Vec3 end, boolean ignoreSource){
+        BlockPos startPos = BlockPos.containing(start);
+
+        return BlockGetter.traverseBlocks(
+                start,
+                end,
+                false/*ignored*/,
+                (ignored, pos) -> {
+
+                    if (ignoreSource && pos.equals(startPos)) {
+                        return null; // 忽略起点
+                    }
+
+                    BlockState state = level.getBlockState(pos);
+
+                    if (state.isAir()) return null;
+
+                    VoxelShape shape = state.getShape(level, pos);
+                    if (shape.isEmpty()) return null;
+
+                    return shape.clip(start, end, pos);
+//                    return new BlockHitResult(
+//                            Vec3.atCenterOf(pos),
+//                            Direction.UP, // FX 用不到精确方向
+//                            pos,
+//                            false
+//                    );
+                },
+                ignored -> null
+        );
+    }
+    public static BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource,@NotNull Entity sourceEntity) {
         // 构造射线上下文
         ClipContext context = new ClipContext(
                 start,
                 end,
-                ClipContext.Block.OUTLINE, // 检测方块碰撞
-                ClipContext.Fluid.NONE,    // 不检测液体
-                sourceEntity                       // 射线来源实体，可为空
+                ClipContext.Block.OUTLINE,
+                ClipContext.Fluid.NONE,
+                sourceEntity
         );
 
         BlockHitResult hit = world.clip(context);
@@ -251,7 +297,6 @@ public class ThaumcraftApiHelper {
         if (ignoreSource) {
             BlockPos startPos = new BlockPos(Mth.floor(start.x()), Mth.floor(start.y()), Mth.floor(start.z()));
             if (hit.getBlockPos().equals(startPos)) {
-                // 射线击中了起点方块，忽略
                 return null;
             }
         }

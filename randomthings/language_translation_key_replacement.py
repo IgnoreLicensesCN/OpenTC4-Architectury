@@ -37,6 +37,7 @@ block_with_item_names = [
     ['tile.blockAiry.1.name','nitor'],
     ['tile.blockAiry.2.name','glimmer_of_light'],
     ['tile.blockAiry.3.name','glimmer_of_light'],
+    ['tile.blockMetalDevice.14.name','vis_relay'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

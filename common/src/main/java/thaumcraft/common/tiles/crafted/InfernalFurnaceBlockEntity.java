@@ -190,8 +190,8 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
                                 var vanillaResult = smeltingRecipe.getResultItem(level.registryAccess());
                                 float exp = smeltingRecipe.getExperience();
                                 var thaumcraftSmeltingBonus = InfernalFurnaceLavaBlock.getSmeltingBonus(inStack);
-                                if (vanillaResult != null) {
-                                    outputStacks.add(vanillaResult);
+                                if (!vanillaResult.isEmpty()) {
+                                    outputStacks.add(vanillaResult.copy());
                                 }
                                 if (thaumcraftSmeltingBonus != null) {
                                     outputStacks.add(thaumcraftSmeltingBonus);
@@ -287,7 +287,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     }
 
     public void tryConsumeCentiVis() {
-        speedyTime = VisNetHandler.drainVis(this.level, this.getBlockPos(), Aspects.FIRE, 5);
+        speedyTime += VisNetHandler.drainVis(this.level, this.getBlockPos(), Aspects.FIRE, 5);
     }
 
     public ItemStack insertItemStack(ItemStack itemStackIn) {
