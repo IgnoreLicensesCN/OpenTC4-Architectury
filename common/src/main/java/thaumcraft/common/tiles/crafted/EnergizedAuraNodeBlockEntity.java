@@ -96,9 +96,12 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     public void tick(){
         super.tick();
         if (Platform.getEnvironment() != Env.CLIENT){
+            //TODO:[maybe wont finished]better api
             nodeType.nodeTypeTickEnergized(this);
         }
     }
+
+    //TODO:[maybe wont finished]better api
     public void setupNode(){
         this.centiVisBase = new CentiVisList<>();
         var temp = ResearchManager.reduceToPrimals(auraBase, true);

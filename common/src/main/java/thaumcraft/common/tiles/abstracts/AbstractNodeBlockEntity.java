@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
@@ -130,7 +131,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         ++thiz.tickCount;
         thiz.checkLock();
 
-        change |= INodeLock.getNodeLock(thiz.getLockId()).nodeLockTick(thiz);
+        change |= INodeLockBlock.getNodeLock(thiz.getLockId()).nodeLockTick(thiz);
         change |= thiz.handleAttackAnotherNode();
         change |= thiz.handleRecharge();
         change |= thiz.getNodeType().nodeTypeTick(thiz);
@@ -431,11 +432,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     //attack another node(zap~),take vis from there.
     private boolean handleAttackAnotherNode() {
         if (level == null) return false;
-        var nodeLock = INodeLock.getNodeLock(this.getLockId());
+        var nodeLock = this.getCurrentNodeLock();
         var pos = this.getBlockPos();
         var nodeType = this.getNodeType();
         var nodeModifier = this.getNodeModifier();
-        if (nodeLock != null && !nodeLock.allowToAttackAnotherNode()) {
+        if (nodeLock != null && !nodeLock.allowToAttackAnotherNode(level,this.getNodeLockPos())) {
             return false;
         }
         if (nodeModifier.allowToAttackAnotherNode(this)) {
@@ -464,8 +465,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 && this.level.getBlockState(pos2).getBlock() instanceof INodeBlock nodeBlock
                 && !nodeBlock.preventAttackFromAnotherNode()
         ) {
-            if (anotherNode.getLockId() != null) {
-                return false;
+            var anotherNodeLock =anotherNode.getCurrentNodeLock();
+            if (anotherNodeLock != null){
+                var probablyAnotherLockPos = anotherNode.getNodeLockPos();
+                if (anotherNodeLock.allowBeingAttackedFromAnotherNode(level,probablyAnotherLockPos)){
+                    return false;
+                }
             }
 
             int visSizeAvgOfAnotherNode = (anotherNode.getAspects().visSize() + anotherNode.getAspectsBase().visSize())
@@ -538,12 +543,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     private boolean handleRecharge() {
         if (level == null) return false;
         var modifier = this.getNodeModifier();
-        var nodeLock = INodeLock.getNodeLock(this.getLockId());
+        var nodeLock = this.getCurrentNodeLock();
         if (this.regenerationTickPeriod < 0) {
 
             this.regenerationTickPeriod = modifier.getRegenValue(this);
             if (nodeLock != null) {
-                this.regenerationTickPeriod *= nodeLock.nodeRegenerationDelayMultiplier();
+                this.regenerationTickPeriod *= nodeLock.nodeRegenerationDelayMultiplier(level,this.getNodeLockPos());
             }
         }
 
@@ -636,11 +641,9 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             var oldLock = this.nodeLockId;
             this.nodeLockId = null;
             if (this.level != null) {
-                if (!this.level.hasNeighborSignal(
-                        pos.below())) {//i have to say if it has activated it shouldn't be charged.
-                    var block = this.level.getBlockState(pos.below())
-                            .getBlock();
-                    if (block instanceof INodeLock nodeLockCurrent) {
+                if (!this.level.hasNeighborSignal(this.getNodeLockPos())) {//i have to say if it has activated it shouldn't be charged.
+                    var block = this.level.getBlockState(this.getNodeLockPos()).getBlock();
+                    if (block instanceof INodeLockBlock nodeLockCurrent) {
                         this.nodeLockId = nodeLockCurrent.getNodeLockId();
                     }
                 }
@@ -651,5 +654,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             }
         }
 
+    }
+
+    public @Nullable INodeLockBlock getCurrentNodeLock() {
+        return INodeLockBlock.getNodeLock(this.getLockId());
+    }
+    public @NotNull BlockPos getNodeLockPos() {
+        return this.getBlockPos().below();
     }
 }

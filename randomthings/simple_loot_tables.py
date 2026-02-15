@@ -56,6 +56,8 @@ drop_self_block_names = [
     'arcane_workbench',
     'deconstruction_table',
     "vis_relay",
+    'node_stabilizer',
+    'advanced_node_stabilizer'
 ]
 
 drop_b_for_a_names = [

@@ -65,7 +65,7 @@ public class NodeType {
             
             
             if (level.random.nextBoolean()) {
-                var nodeLock = INodeLock.getNodeLock(thisNode.getLockId());
+                var nodeLock = INodeLockBlock.getNodeLock(thisNode.getLockId());
                 if (nodeLock == null) {
                     Aspect aspect = null;
                     if ((aspect = thisNode.takeRandomPrimalFromSource()) != null) {

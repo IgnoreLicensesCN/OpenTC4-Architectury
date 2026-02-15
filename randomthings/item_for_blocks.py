@@ -2,13 +2,17 @@ import re
 
 
 a = """
-        public static final RegistrySupplier<ArcaneWorkbenchBlock> SUPPLIER_ARCANE_WORKBENCH = BLOCKS.register(
-                "arcane_workbench",
-                ArcaneWorkbenchBlock::new
+        public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY = BLOCKS.register(
+                "vis_relay",
+                VisNetRelayBlock::new
         );
-        public static final RegistrySupplier<DeconstructionTableBlock> SUPPLIER_DECONSTRUCTION_TABLE = BLOCKS.register(
-                "deconstruction_table",
-                DeconstructionTableBlock::new
+        public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER = BLOCKS.register(
+                "node_stabilizer",
+                NodeStabilizerBlock::new
+        );
+        public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER = BLOCKS.register(
+                "advanced_node_stabilizer",
+                AdvancedNodeStabilizerBlock::new
         );"""
 
 groups = []

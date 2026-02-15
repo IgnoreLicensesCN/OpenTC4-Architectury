@@ -207,6 +207,10 @@ public class ThaumcraftItems {
     public static final StaffCastingItem STAFF_CASTING = Registry.SUPPLIER_STAFF_CASTING.get();
     public static final SceptreCastingItem SCEPTRE_CASTING = Registry.SUPPLIER_SCEPTRE_CASTING.get();
 
+    public static final BlockItem VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+    public static final BlockItem NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
+    public static final BlockItem ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
+
     //===========================================================================================
 
     public static class Registry {
@@ -700,7 +704,18 @@ public class ThaumcraftItems {
                 "staff_casting",
                 StaffCastingItem::new
         );
-
+        public static final RegistrySupplier<BlockItem> SUPPLIER_VIS_RELAY = ITEMS.register(
+                "vis_relay",
+                () -> new BlockItem(ThaumcraftBlocks.VIS_RELAY,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_NODE_STABILIZER = ITEMS.register(
+                "node_stabilizer",
+                () -> new BlockItem(ThaumcraftBlocks.NODE_STABILIZER,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ADVANCED_NODE_STABILIZER = ITEMS.register(
+                "advanced_node_stabilizer",
+                () -> new BlockItem(ThaumcraftBlocks.ADVANCED_NODE_STABILIZER,new Item.Properties())
+        );
         static {
             Registry.ITEMS.register();
         }

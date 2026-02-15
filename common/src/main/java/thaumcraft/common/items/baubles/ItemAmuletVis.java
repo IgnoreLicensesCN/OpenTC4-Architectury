@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.List;
 
-//TODO:impl IVisNodeDetectableItem
+//TODO:impl IVisNetNodeDetectableItem
 public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    public IIcon[] icon = new IIcon[2];
    DecimalFormat myFormatter = new DecimalFormat("#######.##");

@@ -20,7 +20,7 @@ public interface IWorldlyCentiVisContainer<Asp extends Aspect> {
      * @param amount
      * @return the amount ofAspectVisList aspect left over that could not be added.
      */
-    int addToContainer(Asp tag, int amount);
+    int addToContainer(Asp tag, int amount);//unit:vis
 
     /**
      * Removes a certain amount ofAspectVisList a specific aspect from the tile entity
@@ -28,7 +28,7 @@ public interface IWorldlyCentiVisContainer<Asp extends Aspect> {
      * @param amount
      * @return true if that amount ofAspectVisList aspect was available and was removed
      */
-    boolean takeFromContainer(Asp tag, int amount);
+    boolean takeFromContainer(Asp tag, int amount);//unit:vis
 
 //    /**
 //     * removes a bunch ofAspectVisList different aspects and amounts from the tile entity.

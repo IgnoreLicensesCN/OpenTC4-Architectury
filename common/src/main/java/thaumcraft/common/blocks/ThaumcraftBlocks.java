@@ -19,6 +19,8 @@ import thaumcraft.common.blocks.crafted.fromtable.ArcaneWorkbenchBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableLeftPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
+import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
+import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
@@ -170,6 +172,8 @@ public class ThaumcraftBlocks {
     public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
     public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
     public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
+    public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
+    public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -613,6 +617,14 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<EnergizedAuraNodeBlock> SUPPLIER_ENERGIZED_NODE = BLOCKS.register(
                 "energized_node",
                 EnergizedAuraNodeBlock::new
+        );
+        public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER = BLOCKS.register(
+                "node_stabilizer",
+                NodeStabilizerBlock::new
+        );
+        public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER = BLOCKS.register(
+                "advanced_node_stabilizer",
+                AdvancedNodeStabilizerBlock::new
         );
 
         static {

@@ -38,6 +38,20 @@ import thaumcraft.common.tiles.*;
 import java.util.List;
 import java.util.Random;
 
+//  "tile.blockMetalDevice.0.name": "坩埚",
+//  "tile.blockMetalDevice.1.name": "奥术蒸馏器",
+//  "tile.blockMetalDevice.2.name": "魔力充能中继器",
+//  "tile.blockMetalDevice.3.name": "高级炼金构材",
+//  "tile.blockMetalDevice.5.name": "物品格栅",
+//  "tile.blockMetalDevice.6.name": "物品格栅(关闭)",
+//  "tile.blockMetalDevice.7.name": "奥术灯",
+//  "tile.blockMetalDevice.8.name": "催生灯",
+//  "tile.blockMetalDevice.9.name": "炼金构材",
+//  "tile.blockMetalDevice.10.name": "神秘炼金塔",
+//  "tile.blockMetalDevice.11.name": "神秘炼金塔",
+//  "tile.blockMetalDevice.12.name": "记忆矩阵",
+//  "tile.blockMetalDevice.13.name": "育种灯",
+//  "tile.blockMetalDevice.14.name": "魔力中继器",--done
 public class BlockMetalDevice extends BlockContainer {
    public IIcon[] icon = new IIcon[23];
    public IIcon iconGlow;

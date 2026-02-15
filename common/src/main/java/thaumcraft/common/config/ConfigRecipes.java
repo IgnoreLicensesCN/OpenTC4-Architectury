@@ -268,7 +268,7 @@ public class ConfigRecipes {
                  Aspects.WATER, 20).addAll(Aspects.ORDER, 10).addAll(Aspects.FIRE, 5).addAll(Aspects.EARTH, 10), " B ", "TDT", 'T', new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), 'B', new ItemStack(ConfigItems.itemZombieBrain), 'D', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
       }
 
-      ConfigResearch.recipes.put("NodeStabilizer", IArcaneRecipe.addArcaneCraftingRecipe("NODESTABILIZER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), (new AspectList<>()).addAll(
+      ConfigResearch.recipes.put("NodeStabilizerBlock", IArcaneRecipe.addArcaneCraftingRecipe("NODESTABILIZER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), (new AspectList<>()).addAll(
               Aspects.WATER, 32).addAll(Aspects.EARTH, 32).addAll(Aspects.ORDER, 32), " G ", "QPQ", "SNS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(Blocks.piston), 'Q', new ItemStack(Blocks.quartz_block), 'N', new ItemStack(ThaumcraftItems.NITOR)));
       ConfigResearch.recipes.put("NodeTransducer", IArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11), (new AspectList<>()).addAll(
               Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32), "RCR", "ISI", "RAR", 'S', new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), 'C', new ItemStack(Items.comparator), 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(Blocks.redstone_block), 'A', new ItemStack(ThaumcraftItems.NITOR)));

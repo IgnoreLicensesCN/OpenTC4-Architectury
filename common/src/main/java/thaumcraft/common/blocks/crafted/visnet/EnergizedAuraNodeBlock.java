@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.nodes.INodeLockBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -34,6 +35,7 @@ import thaumcraft.common.tiles.crafted.EnergizedAuraNodeBlockEntity;
 
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 
+//TODO:BER,create method
 public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
@@ -137,9 +139,27 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl) {
-        super.neighborChanged(blockState, level, blockPos, block, blockPos2, bl);
-        //TODO:Check above and below,if not satisfied,boom
+    public void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block neighborBlock,
+            BlockPos neighborPos,
+            boolean isMoving) {
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, isMoving);
+        if (Platform.getEnvironment() == Env.SERVER){
+            var lockPos = getLockPos(pos);
+            var hasNodeLock = level.getBlockState(lockPos).getBlock() instanceof INodeLockBlock && !level.hasNeighborSignal(lockPos);
+            if (!hasNodeLock){
+                explode(level,pos);
+                return;
+            }
+            //TODO:Check above,if not satisfied,boom
+        }
+    }
+
+    public BlockPos getLockPos(BlockPos selfPos) {
+        return selfPos.below();
     }
 
     public void explode(Level world, BlockPos atPos) {

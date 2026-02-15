@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.visnet.IVisNodeDetectableItem;
+import thaumcraft.api.visnet.IVisNetNodeDetectableItem;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
@@ -78,19 +78,19 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
             players.forEach(player -> {
                 //hands
                 for (ItemStack stack : List.of(player.getMainHandItem(), player.getOffhandItem())) {
-                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNodeDetectableItem detectable) {
+                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNetNodeDetectableItem detectable) {
                         detectable.onVisNodeNearby(this, stack);
                     }
                 }
                 //equipped(vanilla)
                 for (ItemStack stack : player.getArmorSlots()) {
-                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNodeDetectableItem detectable) {
+                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNetNodeDetectableItem detectable) {
                         detectable.onVisNodeNearby(this, stack);
                     }
                 }
                 //equipped(bauble slots)
                 BaubleUtils.forEachBauble(
-                        player, IVisNodeDetectableItem.class, (slot, stack, item) -> {
+                        player, IVisNetNodeDetectableItem.class, (slot, stack, item) -> {
                             item.onVisNodeNearby(this,stack);
                             return false;
                         }
