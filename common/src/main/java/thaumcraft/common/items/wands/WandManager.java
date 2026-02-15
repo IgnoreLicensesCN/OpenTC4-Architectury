@@ -314,12 +314,12 @@ public class WandManager implements IWandTriggerManager {
                             }
 
                             String nid = node.getId();
-                            node.setAspects(new AspectList<>());
+                            node.setAspectsWithBase(new AspectList<>());
                             world.removeTileEntity(x + xx, y - yy + 2, z + zz);
                             world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
                             tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
                             TileJarNode jar = (TileJarNode) tile;
-                            jar.setAspects(na);
+                            jar.setAspectsWithBase(na);
                             if (nm >= 0) {
                                 jar.setNodeModifier(NodeModifier.values()[nm]);
                             }

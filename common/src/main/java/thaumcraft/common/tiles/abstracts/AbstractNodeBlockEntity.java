@@ -52,8 +52,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         INodeBlockEntity
         , IWandInteractableBlock {
     long lastActiveMillis = 0L;
-    AspectList<Aspect> aspects = new AspectList<>();
-    AspectList<Aspect> aspectsBase = new AspectList<>();
+    protected AspectList<Aspect> aspects = new AspectList<>();
+    protected AspectList<Aspect> aspectsBase = new AspectList<>();
     public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
     private NodeType nodeType;
     private NodeModifier nodeModifier;
@@ -289,8 +289,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return this.aspectsBase;
     }
 
-    public void setAspects(AspectList<Aspect> aspects) {
+    public void setAspectsWithBase(AspectList<Aspect> aspects) {
         this.aspects = aspects;
+        this.aspectsBase = aspects.copy();
+    }
+    public void setAspectsBase(AspectList<Aspect> aspects) {
         this.aspectsBase = aspects.copy();
     }
 

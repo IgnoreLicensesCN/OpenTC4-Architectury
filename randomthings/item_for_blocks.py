@@ -2,17 +2,9 @@ import re
 
 
 a = """
-        public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY = BLOCKS.register(
-                "vis_relay",
-                VisNetRelayBlock::new
-        );
-        public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER = BLOCKS.register(
-                "node_stabilizer",
-                NodeStabilizerBlock::new
-        );
-        public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER = BLOCKS.register(
-                "advanced_node_stabilizer",
-                AdvancedNodeStabilizerBlock::new
+        public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER = BLOCKS.register(
+                "node_transducer",
+                NodeTransducerBlock::new
         );"""
 
 groups = []

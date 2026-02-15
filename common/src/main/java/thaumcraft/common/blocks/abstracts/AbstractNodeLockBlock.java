@@ -1,8 +1,14 @@
 package thaumcraft.common.blocks.abstracts;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import thaumcraft.api.nodes.INodeLockBlock;
 
 public abstract class AbstractNodeLockBlock extends Block implements INodeLockBlock {
@@ -15,4 +21,26 @@ public abstract class AbstractNodeLockBlock extends Block implements INodeLockBl
                 .strength(3.f,25.f)
         );
     }
+    public static final VoxelShape SHAPE = Shapes.or(
+            Block.box(0,0,0,16,4,16),
+            Block.box(4,0,4,12,16,12)
+    );
+
+    @Override
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return SHAPE;
+    }@Override
+    public VoxelShape getOcclusionShape(
+            BlockState state,
+            BlockGetter level,
+            BlockPos pos
+    ) {
+        return SHAPE;
+    }
+
 }

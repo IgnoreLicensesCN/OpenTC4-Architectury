@@ -29,7 +29,7 @@ public interface IEssentiaContainerItem {
 	}
 	
 	@Override
-	public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
+	public void setAspectsWithBase(ItemStack itemstack, AspectList<Aspect>aspects) {
 		if (!itemstack.hasTagCompound()) itemstack.setTagCompound(new CompoundTag());
 		aspects.saveAdditional(itemstack.getTagCompound());
 	}

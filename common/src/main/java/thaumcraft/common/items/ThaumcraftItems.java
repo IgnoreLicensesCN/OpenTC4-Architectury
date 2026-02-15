@@ -210,6 +210,7 @@ public class ThaumcraftItems {
     public static final BlockItem VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
     public static final BlockItem NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
     public static final BlockItem ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
+    public static final BlockItem NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
 
     //===========================================================================================
 
@@ -715,6 +716,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ADVANCED_NODE_STABILIZER = ITEMS.register(
                 "advanced_node_stabilizer",
                 () -> new BlockItem(ThaumcraftBlocks.ADVANCED_NODE_STABILIZER,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_NODE_TRANSDUCER = ITEMS.register(
+                "node_transducer",
+                () -> new BlockItem(ThaumcraftBlocks.NODE_TRANSDUCER,new Item.Properties())
         );
         static {
             Registry.ITEMS.register();

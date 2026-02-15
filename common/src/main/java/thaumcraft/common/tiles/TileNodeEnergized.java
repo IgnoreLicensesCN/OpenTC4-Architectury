@@ -170,7 +170,7 @@ public class TileNodeEnergized /*extends TileVisNode implements IAspectContainer
 //      return this.visBase;
 //   }
 //
-//   public void setAspects(AspectList<Aspect>aspects) {
+//   public void setAspectsWithBase(AspectList<Aspect>aspects) {
 //      this.auraBase = aspects;
 //   }
 //

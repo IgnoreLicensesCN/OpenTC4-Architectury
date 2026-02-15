@@ -20,7 +20,7 @@ public class CreateNodeListeners {
             if (te instanceof AbstractNodeBlockEntity nodeBlockEntity) {
                 nodeBlockEntity.setNodeType(context.nodeType);
                 nodeBlockEntity.setNodeModifier(context.nodeModifier);
-                nodeBlockEntity.setAspects(context.aspects);
+                nodeBlockEntity.setAspectsWithBase(context.aspects);
             }
             world.sendBlockUpdated(
                     context.pos,
@@ -41,7 +41,7 @@ public class CreateNodeListeners {
             if (te instanceof AbstractNodeBlockEntity nodeBlockEntity) {
                 nodeBlockEntity.setNodeType(context.nodeType);
                 nodeBlockEntity.setNodeModifier(context.nodeModifier);
-                nodeBlockEntity.setAspects(context.aspects);
+                nodeBlockEntity.setAspectsWithBase(context.aspects);
             }
             return false;
         }

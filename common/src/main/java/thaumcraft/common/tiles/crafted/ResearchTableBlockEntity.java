@@ -246,7 +246,7 @@ public class ResearchTableBlockEntity
         this(ThaumcraftBlockEntities.RESEARCH_TABLE, pos, state, ResearchTableMenu::new);
     }
 
-    public ResearchTableBlockEntity(BlockEntityType<ResearchTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState, TileThaumcraftWithMenuFactory<ResearchTableMenu, ResearchTableBlockEntity> menuFactory) {
+    public ResearchTableBlockEntity(BlockEntityType<? extends ResearchTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState, TileThaumcraftWithMenuFactory<ResearchTableMenu, ResearchTableBlockEntity> menuFactory) {
         super(blockEntityType, blockPos, blockState, menuFactory);
     }
 

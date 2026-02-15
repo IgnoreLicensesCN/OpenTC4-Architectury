@@ -19,7 +19,7 @@ import static thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlo
 
 public class WardingStoneBlockEntity extends BlockEntity {
     public final AtomicInteger tickCounter = new AtomicInteger();
-    public WardingStoneBlockEntity(BlockEntityType<WardingStoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState){
+    public WardingStoneBlockEntity(BlockEntityType<? extends WardingStoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState){
         super(blockEntityType, blockPos, blockState);
     }
     public WardingStoneBlockEntity(BlockPos blockPos, BlockState blockState){

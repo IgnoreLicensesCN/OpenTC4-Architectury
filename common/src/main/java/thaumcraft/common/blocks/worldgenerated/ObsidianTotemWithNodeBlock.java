@@ -116,4 +116,9 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
             }
         };
     }
+
+    @Override
+    public boolean preventAttackFromAnotherNode() {
+        return true;
+    }
 }

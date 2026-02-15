@@ -27,6 +27,4 @@ public class AdvancedNodeStabilizerBlock extends AbstractNodeLockBlock {
     public int nodeRegenerationDelayMultiplier(Level atLevel, BlockPos lockAtPos) {
         return 20;
     }
-
-
 }

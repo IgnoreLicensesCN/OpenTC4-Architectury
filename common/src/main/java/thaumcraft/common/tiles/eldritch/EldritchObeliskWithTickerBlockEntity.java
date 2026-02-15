@@ -16,7 +16,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.List;
 //TODO:Render
 public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
-    public EldritchObeliskWithTickerBlockEntity(BlockEntityType<EldritchObeliskWithTickerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public EldritchObeliskWithTickerBlockEntity(BlockEntityType<? extends EldritchObeliskWithTickerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchObeliskWithTickerBlockEntity(BlockPos blockPos, BlockState blockState) {

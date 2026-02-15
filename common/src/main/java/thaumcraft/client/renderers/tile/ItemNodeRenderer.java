@@ -44,7 +44,7 @@ public class ItemNodeRenderer implements IItemRenderer {
       }
 
       AbstractNodeBlockEntity tjf = new AbstractNodeBlockEntity();
-      tjf.setAspects(this.aspects);
+      tjf.setAspectsWithBase(this.aspects);
       tjf.setNodeType(NodeType.NORMAL);
       tjf.blockType = ConfigBlocks.blockAiry;
       tjf.blockMetadata = 0;

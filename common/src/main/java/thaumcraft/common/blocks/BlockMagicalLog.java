@@ -89,7 +89,7 @@ public class BlockMagicalLog /*extends BlockRotatedPillar*/ {
 //                  if (((INode)te).getAspects().getAmount(aspect) >= 5) {
 //                     ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
 //                     new AspectList<>();
-//                     ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(aspect, 2));
+//                     ((ItemWispEssence)ess.getItem()).setAspectsWithBase(ess, (new AspectList<>()).addAll(aspect, 2));
 //                     this.dropBlockAsItem(par1World, par2, par3, par4, ess);
 //                  }
 //               }

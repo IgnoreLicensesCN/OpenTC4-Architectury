@@ -1,6 +1,7 @@
 package thaumcraft.api.listeners.worldgen.node;
 
 import net.minecraft.core.BlockPos;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;

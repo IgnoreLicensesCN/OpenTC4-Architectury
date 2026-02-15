@@ -407,7 +407,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         if (te instanceof AbstractNodeBlockEntity) {
             ((AbstractNodeBlockEntity) te).setNodeType(nt);
             ((AbstractNodeBlockEntity) te).setNodeModifier(nm);
-            ((AbstractNodeBlockEntity) te).setAspects(al);
+            ((AbstractNodeBlockEntity) te).setAspectsWithBase(al);
         }
 
         world.markBlockForUpdate(x, y, z);

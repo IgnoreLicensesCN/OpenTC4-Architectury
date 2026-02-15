@@ -59,7 +59,7 @@ public class TileNodeConverter extends TileThaumcraft {
             if (tilenew instanceof AbstractNodeBlockEntity) {
                ((AbstractNodeBlockEntity)tilenew).setNodeModifier(mod);
                ((AbstractNodeBlockEntity)tilenew).setNodeType(type);
-               ((AbstractNodeBlockEntity)tilenew).setAspects(base.copy());
+               ((AbstractNodeBlockEntity)tilenew).setAspectsWithBase(base.copy());
 
                for(Aspect a : ((AbstractNodeBlockEntity)tilenew).getAspects().getAspects()) {
                   ((AbstractNodeBlockEntity)tilenew).takeFromContainer(a, ((AbstractNodeBlockEntity)tilenew).getAspects().getAmount(a));

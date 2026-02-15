@@ -4,7 +4,8 @@ public interface IWorldlyCentiVisContainer<Asp extends Aspect> {
     AspectList<Asp> getAspects();
 
 
-    void setAspects(AspectList<Asp> aspects);
+    void setAspectsWithBase(AspectList<Asp> aspects);
+    void setAspectsBase(AspectList<Asp> aspects);
 
 
 //    /**

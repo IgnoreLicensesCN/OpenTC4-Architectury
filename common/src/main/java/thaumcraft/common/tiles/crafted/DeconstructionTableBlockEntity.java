@@ -36,7 +36,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
     public static final int[] SLOTS = {0};
     public static final int THE_ONLY_SLOT = 0;
 
-    public DeconstructionTableBlockEntity(BlockEntityType<DeconstructionTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public DeconstructionTableBlockEntity(BlockEntityType<? extends DeconstructionTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState,DeconstructionTableMenu::new);
     }
     public DeconstructionTableBlockEntity(BlockPos blockPos, BlockState blockState) {

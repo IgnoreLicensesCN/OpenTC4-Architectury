@@ -127,4 +127,9 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
             }
         };
     }
+
+    @Override
+    public boolean preventAttackFromAnotherNode() {
+        return true;
+    }
 }

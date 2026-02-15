@@ -21,6 +21,7 @@ import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
+import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
@@ -174,6 +175,7 @@ public class ThaumcraftBlocks {
     public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
     public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
+    public static final NodeTransducerBlock NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -625,6 +627,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER = BLOCKS.register(
                 "advanced_node_stabilizer",
                 AdvancedNodeStabilizerBlock::new
+        );
+        public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER = BLOCKS.register(
+                "node_transducer",
+                NodeTransducerBlock::new
         );
 
         static {

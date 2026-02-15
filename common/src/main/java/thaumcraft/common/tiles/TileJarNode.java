@@ -96,7 +96,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       return this.aspectsBase;
    }
 
-   public void setAspects(AspectList<Aspect>aspects) {
+   public void setAspectsWithBase(AspectList<Aspect>aspects) {
       this.aspects = aspects.copy();
       this.aspectsBase = aspects.copy();
    }
@@ -209,7 +209,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
          world.setBlock(x, y, z, ConfigBlocks.blockAiry, 0, 3);
          AbstractNodeBlockEntity tn = (AbstractNodeBlockEntity)world.getTileEntity(x, y, z);
          if (tn != null) {
-            tn.setAspects(this.getAspects());
+            tn.setAspectsWithBase(this.getAspects());
             tn.setNodeModifier(this.getNodeModifier());
             tn.setNodeType(this.getNodeType());
             tn.id = this.getId();

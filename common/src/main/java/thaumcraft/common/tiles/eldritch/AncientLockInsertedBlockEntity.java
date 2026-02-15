@@ -30,7 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 public class AncientLockInsertedBlockEntity extends BlockEntity {
     public int tickCount = 0;
 
-    public AncientLockInsertedBlockEntity(BlockEntityType<AncientLockInsertedBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public AncientLockInsertedBlockEntity(BlockEntityType<? extends AncientLockInsertedBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public AncientLockInsertedBlockEntity(BlockPos blockPos, BlockState blockState) {

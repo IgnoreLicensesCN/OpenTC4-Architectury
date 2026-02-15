@@ -198,6 +198,11 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
 
     @Override
     public boolean preventAttackFromAnotherNode() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeConvertedToEnergizedNode(Level atLevel, BlockPos pos) {
         return true;
     }
 }

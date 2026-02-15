@@ -8,7 +8,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 //TODO:[maybe wont finish]Render still but without blockEntity.
 public class EldritchObeliskBlockEntity extends BlockEntity {
-    public EldritchObeliskBlockEntity(BlockEntityType<EldritchObeliskBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public EldritchObeliskBlockEntity(BlockEntityType<? extends EldritchObeliskBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchObeliskBlockEntity(BlockPos blockPos, BlockState blockState) {

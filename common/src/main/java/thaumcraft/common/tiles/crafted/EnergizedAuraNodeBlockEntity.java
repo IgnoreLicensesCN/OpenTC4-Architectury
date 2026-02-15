@@ -57,7 +57,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
         this.currentOwningCentiVis = currentOwningCentiVis;
     }
 
-    public EnergizedAuraNodeBlockEntity(BlockEntityType<EnergizedAuraNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public EnergizedAuraNodeBlockEntity(BlockEntityType<? extends EnergizedAuraNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EnergizedAuraNodeBlockEntity(BlockPos blockPos, BlockState blockState) {

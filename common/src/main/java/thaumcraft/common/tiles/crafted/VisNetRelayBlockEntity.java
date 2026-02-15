@@ -24,7 +24,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.List;
 //TODO:BER(just render model),TileMagicWorkbenchCharger(and interface to charge wand inside.)
 public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
-    public VisNetRelayBlockEntity(BlockEntityType<VisNetRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public VisNetRelayBlockEntity(BlockEntityType<? extends VisNetRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public VisNetRelayBlockEntity(BlockPos blockPos, BlockState blockState) {

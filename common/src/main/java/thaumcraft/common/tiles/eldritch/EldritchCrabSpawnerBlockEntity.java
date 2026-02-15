@@ -21,7 +21,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.List;
 // todo
 public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
-    public EldritchCrabSpawnerBlockEntity(BlockEntityType<EldritchCrabSpawnerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public EldritchCrabSpawnerBlockEntity(BlockEntityType<? extends EldritchCrabSpawnerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchCrabSpawnerBlockEntity(BlockPos blockPos, BlockState blockState) {

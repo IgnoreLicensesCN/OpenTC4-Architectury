@@ -13,7 +13,7 @@ public class SilverWoodKnotNodeBlockEntity extends AbstractNodeBlockEntity {
         this(ThaumcraftBlockEntities.SILVERWOOD_KNOT_NODE, blockPos, blockState);
     }
 
-    public SilverWoodKnotNodeBlockEntity(BlockEntityType<SilverWoodKnotNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public SilverWoodKnotNodeBlockEntity(BlockEntityType<? extends SilverWoodKnotNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 

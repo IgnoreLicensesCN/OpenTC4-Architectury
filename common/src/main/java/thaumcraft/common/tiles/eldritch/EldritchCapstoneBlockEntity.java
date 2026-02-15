@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class EldritchCapstoneBlockEntity extends BlockEntity {
-    public EldritchCapstoneBlockEntity(BlockEntityType<EldritchCapstoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public EldritchCapstoneBlockEntity(BlockEntityType<? extends EldritchCapstoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchCapstoneBlockEntity(BlockPos blockPos, BlockState blockState) {

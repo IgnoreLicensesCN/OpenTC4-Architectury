@@ -231,5 +231,9 @@ public class Consts {
         public static final CentiVisListAccessor NODE_CENTIVIS_BASE_ACCESSOR = new CentiVisListAccessor("centivis_base");
         public static final AspectListAccessor NODE_ASPECT_BASE_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_ASPECTS_BASE_ACCESSOR;
     }
+    public static class NodeTransducerBlockEntityTagAccessors {
+        public static final IntTagAccessor TRANSDUCER_TICK_COUNT = new IntTagAccessor("tick_count");
+        public static final IntTagAccessor TRANSDUCER_STATUS_CODE = new IntTagAccessor("status_code");
+    }
 
 }

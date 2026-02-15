@@ -11,7 +11,7 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class RunedStoneBlockEntity extends BlockEntity {
-    public RunedStoneBlockEntity(BlockEntityType<RunedStoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public RunedStoneBlockEntity(BlockEntityType<? extends RunedStoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public RunedStoneBlockEntity(BlockPos blockPos, BlockState blockState) {

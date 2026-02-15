@@ -37,7 +37,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public static final int[] WAND_SLOT_ARR = {WAND_SLOT};
     protected final NonNullList<ItemStack> inventory = NonNullList.withSize(INPUT_SIZE, ItemStack.EMPTY);
     protected final List<ItemStack> inputSlotsView = inventory.subList(0,INPUT_SLOTS.length);
-    public ArcaneWorkbenchBlockEntity(BlockEntityType<ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    public ArcaneWorkbenchBlockEntity(BlockEntityType<? extends ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState,ArcaneWorkbenchMenu::new);
     }
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
