@@ -32,7 +32,7 @@ import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 

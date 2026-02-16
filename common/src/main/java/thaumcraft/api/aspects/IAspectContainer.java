@@ -8,7 +8,7 @@ package thaumcraft.api.aspects;
  * Used by blocks like the crucible and alembic to hold their aspects. 
  * Tiles extending this interface will have their aspects show up when viewed by goggles ofAspectVisList revealing
  *
- *
+ *<p>frok IgnoreLicensesCN:</p>
  * Node will no longer use this.they will go to {@link IWorldlyCentiVisContainer}.
  * Vis and aspect(for infusion) should be different!
  */

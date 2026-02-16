@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.NodeTransducerBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
 
 //TODO:BER
 public class NodeTransducerBlock extends Block implements EntityBlock {

@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted.nodeandvisnet;
+package thaumcraft.common.tiles.crafted.visnet;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -6,10 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.ICentiVisContainer;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{

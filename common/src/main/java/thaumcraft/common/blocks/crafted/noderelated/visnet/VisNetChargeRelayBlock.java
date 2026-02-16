@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetChargeRelayBlockEntity;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;

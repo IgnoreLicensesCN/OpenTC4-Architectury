@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted.nodeandvisnet;
+package thaumcraft.common.tiles.crafted.visnet;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;

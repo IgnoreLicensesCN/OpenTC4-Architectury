@@ -5,22 +5,23 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ThaumcraftSounds {
     public static class ResourceLocations {
-        public static final ResourceLocation RES_RUNIC_SHIELD_CHARGE = new ResourceLocation("thaumcraft:runic_shield_charge");
-        public static final ResourceLocation RES_CRYSTAL = new ResourceLocation("thaumcraft:crystal");
-        public static final ResourceLocation RES_GORE = new ResourceLocation("thaumcraft:gore");
-        public static final ResourceLocation RES_LEARN = new ResourceLocation("thaumcraft:learn");
-        public static final ResourceLocation RES_CAMERA_TICKS = new ResourceLocation("thaumcraft:cameraticks");
-        public static final ResourceLocation RES_RUMBLE = new ResourceLocation("thaumcraft:rumble");
-        public static final ResourceLocation RES_FLY = new ResourceLocation("thaumcraft:fly");
-        public static final ResourceLocation RES_SPILL = new ResourceLocation("thaumcraft:spill");
-        public static final ResourceLocation RES_HEARTBEAT = new ResourceLocation("thaumcraft:heartbeat");
-        public static final ResourceLocation RES_ZAP = new ResourceLocation("thaumcraft:zap");
-        public static final ResourceLocation RES_TOOL = new ResourceLocation("thaumcraft:tool");
-        public static final ResourceLocation RES_CRAFT_FAIL = new ResourceLocation("thaumcraft:craftfail");
-        public static final ResourceLocation RES_ROOTS = new ResourceLocation("thaumcraft:roots");
-        public static final ResourceLocation RES_DOOR_FAIL = new ResourceLocation("thaumcraft:doorfail");
-        public static final ResourceLocation RES_PUMP = new ResourceLocation("thaumcraft:pump");
-        public static final ResourceLocation RES_ICE = new ResourceLocation("thaumcraft:ice");
+        public static final ResourceLocation RES_RUNIC_SHIELD_CHARGE = new ResourceLocation(Thaumcraft.MOD_ID,"runic_shield_charge");
+        public static final ResourceLocation RES_CRYSTAL = new ResourceLocation(Thaumcraft.MOD_ID,"crystal");
+        public static final ResourceLocation RES_GORE = new ResourceLocation(Thaumcraft.MOD_ID,"gore");
+        public static final ResourceLocation RES_LEARN = new ResourceLocation(Thaumcraft.MOD_ID,"learn");
+        public static final ResourceLocation RES_CAMERA_TICKS = new ResourceLocation(Thaumcraft.MOD_ID,"cameraticks");
+        public static final ResourceLocation RES_RUMBLE = new ResourceLocation(Thaumcraft.MOD_ID,"rumble");
+        public static final ResourceLocation RES_FLY = new ResourceLocation(Thaumcraft.MOD_ID,"fly");
+        public static final ResourceLocation RES_SPILL = new ResourceLocation(Thaumcraft.MOD_ID,"spill");
+        public static final ResourceLocation RES_HEARTBEAT = new ResourceLocation(Thaumcraft.MOD_ID,"heartbeat");
+        public static final ResourceLocation RES_ZAP = new ResourceLocation(Thaumcraft.MOD_ID,"zap");
+        public static final ResourceLocation RES_TOOL = new ResourceLocation(Thaumcraft.MOD_ID,"tool");
+        public static final ResourceLocation RES_CRAFT_FAIL = new ResourceLocation(Thaumcraft.MOD_ID,"craftfail");
+        public static final ResourceLocation RES_ROOTS = new ResourceLocation(Thaumcraft.MOD_ID,"roots");
+        public static final ResourceLocation RES_DOOR_FAIL = new ResourceLocation(Thaumcraft.MOD_ID,"doorfail");
+        public static final ResourceLocation RES_PUMP = new ResourceLocation(Thaumcraft.MOD_ID,"pump");
+        public static final ResourceLocation RES_ICE = new ResourceLocation(Thaumcraft.MOD_ID,"ice");
+        public static final ResourceLocation RES_JACOBS = new ResourceLocation(Thaumcraft.MOD_ID,"jacobs");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -39,4 +40,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent DOOR_FAIL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_DOOR_FAIL);
     public static final SoundEvent PUMP = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PUMP);
     public static final SoundEvent ICE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ICE);
+    public static final SoundEvent JACOBS = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_JACOBS);
 }

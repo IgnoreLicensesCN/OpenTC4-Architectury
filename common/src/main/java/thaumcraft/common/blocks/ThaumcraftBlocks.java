@@ -34,8 +34,7 @@ import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
-import thaumcraft.common.blocks.technique.GlimmerOfLightBlock;
-import thaumcraft.common.blocks.technique.WardingAuraBlock;
+import thaumcraft.common.blocks.technique.*;
 import thaumcraft.common.blocks.worldgenerated.*;
 import thaumcraft.common.blocks.worldgenerated.decorations.CinderPearlBlock;
 import thaumcraft.common.blocks.worldgenerated.decorations.ManaShroomBlock;
@@ -46,7 +45,6 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetChargeRelayBlockEntity;
 import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
@@ -180,6 +178,9 @@ public class ThaumcraftBlocks {
     public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
     public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
     public static final NodeTransducerBlock NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
+    public static final ImpassableBlock IMPASSABLE = Registry.SUPPLIER_IMPASSABLE_BLOCK.get();
+    public static final SappingFieldBlock SAPPING_FIELD = Registry.SUPPLIER_SAPPING_FIELD.get();
+    public static final StaticFieldBlock STATIC_FIELD = Registry.SUPPLIER_STATIC_FIELD.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -647,6 +648,18 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER = BLOCKS.register(
                 "node_transducer",
                 NodeTransducerBlock::new
+        );
+        public static final RegistrySupplier<ImpassableBlock> SUPPLIER_IMPASSABLE_BLOCK = BLOCKS.register(
+                "impassable",
+                ImpassableBlock::new
+        );
+        public static final RegistrySupplier<SappingFieldBlock> SUPPLIER_SAPPING_FIELD = BLOCKS.register(
+                "sapping_field",
+                SappingFieldBlock::new
+        );
+        public static final RegistrySupplier<StaticFieldBlock> SUPPLIER_STATIC_FIELD = BLOCKS.register(
+                "static_field",
+                StaticFieldBlock::new
         );
 
         static {

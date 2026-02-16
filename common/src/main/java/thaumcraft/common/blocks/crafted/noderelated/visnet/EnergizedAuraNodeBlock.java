@@ -32,7 +32,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 

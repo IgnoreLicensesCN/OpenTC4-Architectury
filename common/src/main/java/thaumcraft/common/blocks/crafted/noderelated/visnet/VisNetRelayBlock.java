@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
 public class VisNetRelayBlock extends Block implements IWandInteractableBlock, EntityBlock {

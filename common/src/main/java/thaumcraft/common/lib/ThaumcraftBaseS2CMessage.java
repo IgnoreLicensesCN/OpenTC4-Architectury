@@ -7,8 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.logging.Level;
-
 public abstract class ThaumcraftBaseS2CMessage extends BaseS2CMessage {
 
     public void sendToAllAround(ServerLevel levelAt, BlockPos posAt, double rangeSq){

@@ -6,6 +6,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.level.Level;
@@ -34,9 +37,9 @@ public class EntityShockOrb extends EntityThrowable {
    public static boolean canEarthShockHurt(Entity entity) {
       switch (ConfigurationHandler.INSTANCE.getEarthShockHarmMode()) {
          case OnlyLiving:
-            return entity instanceof EntityLivingBase;
+            return entity instanceof LivingEntity;
          case ExceptItemXp:
-            return !(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb);
+            return !(entity instanceof ItemEntity) && !(entity instanceof ExperienceOrb);
          case AllEntity:
          default:
             return true;
