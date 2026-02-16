@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks.crafted.visnet;
+package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
 public class VisNetRelayBlock extends Block implements IWandInteractableBlock, EntityBlock {
@@ -115,11 +115,7 @@ public class VisNetRelayBlock extends Block implements IWandInteractableBlock, E
             8, 5, 5,
             16, 11, 11
     );
-    @Override
-    public @NotNull VoxelShape getShape(BlockState state,
-                                        BlockGetter level,
-                                        BlockPos pos,
-                                        CollisionContext context) {
+    private @NotNull VoxelShape getShapeFromState(BlockState state){
         return switch (state.getValue(FACING)) {
             case UP -> SHAPE_UP;
             case DOWN -> SHAPE_DOWN;
@@ -128,12 +124,33 @@ public class VisNetRelayBlock extends Block implements IWandInteractableBlock, E
             case EAST -> SHAPE_EAST;
             case WEST -> SHAPE_WEST;
         };
-    }@Override
+    }
+    @Override
+    public @NotNull VoxelShape getShape(BlockState state,
+                                        BlockGetter level,
+                                        BlockPos pos,
+                                        CollisionContext context) {
+        return getShapeFromState(state);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return getShapeFromState(state);
+    }
+    @Override
+    public VoxelShape getOcclusionShape(
+            BlockState state,
+            BlockGetter level,
+            BlockPos pos
+    ) {
+        return getShapeFromState(state);
+    }
+
+    @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        Direction dir = state.getValue(FACING);
-        BlockPos supportPos = pos.relative(dir.getOpposite());
-        return level.getBlockState(supportPos)
-                .isFaceSturdy(level, supportPos, dir);
+        Direction attachDir = state.getValue(FACING);
+        BlockPos supportPos = pos.relative(attachDir);
+        return Block.canSupportCenter(level, supportPos, attachDir.getOpposite());
     }
 
     @Override

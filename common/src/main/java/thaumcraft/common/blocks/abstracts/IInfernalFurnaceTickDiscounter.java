@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+//arcane bellow
 public interface IInfernalFurnaceTickDiscounter {
     int getInfernalFurnaceTickDiscount(Level level, BlockState state, BlockPos pos, Direction furnaceBlockExposedDirection);
 }

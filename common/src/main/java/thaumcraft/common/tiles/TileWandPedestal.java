@@ -188,7 +188,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                min = 0;
             }
 
-            AspectList<Aspect>as = wand.getAspectsWithRoom(this.getStackInSlot(0));
+            AspectList<Aspect>as = wand.getAspectsWithRoomRemaining(this.getStackInSlot(0));
             this.draining = false;
             if (as != null && as.size() > 0) {
                label152:

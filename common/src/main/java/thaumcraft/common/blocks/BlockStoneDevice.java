@@ -42,7 +42,7 @@ import java.util.Random;
 //    "tile.blockStoneDevice.8.name": "复合充能核心",
 //    "tile.blockStoneDevice.9.name": "节点稳定器",--done
 //    "tile.blockStoneDevice.10.name": "高级节点稳定器",--done
-//    "tile.blockStoneDevice.11.name": "节点换能器",
+//    "tile.blockStoneDevice.11.name": "节点换能器",--done
 //    "tile.blockStoneDevice.12.name": "奥术浴场",
 //    "tile.blockStoneDevice.13.name": "核心镶饰台",
 //    "tile.blockStoneDevice.14.name": "咒波洗涤器",

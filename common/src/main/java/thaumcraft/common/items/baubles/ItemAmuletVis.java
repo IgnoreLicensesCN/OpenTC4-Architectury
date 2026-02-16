@@ -74,7 +74,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
       if (Platform.getEnvironment() != Env.CLIENT && player.ticksExisted % 5 == 0) {
          if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem)player.getHeldItem().getItem();
-            AspectList<Aspect>al = wand.getAspectsWithRoom(player.getHeldItem());
+            AspectList<Aspect>al = wand.getAspectsWithRoomRemaining(player.getHeldItem());
 
             for(Aspect aspect : al.getAspects()) {
                if (aspect != null && this.getVis(itemstack, aspect) > 0) {

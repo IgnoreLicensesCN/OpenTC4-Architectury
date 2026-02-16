@@ -39,6 +39,7 @@ block_with_item_names = [
     ['tile.blockAiry.3.name','glimmer_of_light'],
     ['tile.blockAiry.5.name','energized_aura_node'],
     ['tile.blockMetalDevice.14.name','vis_relay'],
+    ['tile.blockMetalDevice.2.name','vis_charge_relay'],
     ['tile.blockStoneDevice.9.name','node_stabilizer'],
     ['tile.blockStoneDevice.10.name','advanced_node_stabilizer'],
     ['tile.blockStoneDevice.11.name','node_transducer'],

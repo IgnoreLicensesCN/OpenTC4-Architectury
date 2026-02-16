@@ -159,7 +159,7 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //        return out;
 //    }
 
-//    public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
+//    public AspectList<Aspect>getAspectsWithRoomRemaining(ItemStack wandstack) {
 //        AspectList<Aspect>out = new AspectList<>();
 //        AspectList<Aspect>cur = this.getAllVis(wandstack);
 //

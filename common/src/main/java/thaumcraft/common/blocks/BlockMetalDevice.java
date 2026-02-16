@@ -42,6 +42,7 @@ import java.util.Random;
 //  "tile.blockMetalDevice.1.name": "奥术蒸馏器",
 //  "tile.blockMetalDevice.2.name": "魔力充能中继器",
 //  "tile.blockMetalDevice.3.name": "高级炼金构材",
+// 4?anazor forgot that.
 //  "tile.blockMetalDevice.5.name": "物品格栅",
 //  "tile.blockMetalDevice.6.name": "物品格栅(关闭)",
 //  "tile.blockMetalDevice.7.name": "奥术灯",
@@ -264,13 +265,17 @@ public class BlockMetalDevice extends BlockContainer {
          if (metadata != 7 && metadata != 8 && metadata != 13) {
             if (metadata == 10) {
                this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
-            } else if (metadata == 11) {
+            }
+            else if (metadata == 11) {
                this.setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            } else if (metadata == 12) {
+            }
+            else if (metadata == 12) {
                this.setBlockBounds(BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W13, BlockRenderer.W13, BlockRenderer.W13);
-            } else if (metadata == 2) {
+            }
+            else if (metadata == 2) {
                this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
-            } else if (metadata == 14) {
+            }
+            else if (metadata == 14) {
                TileEntity te = world.getTileEntity(i, j, k);
                if (te instanceof TileVisRelay) {
                   switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
@@ -293,14 +298,16 @@ public class BlockMetalDevice extends BlockContainer {
                         this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.0F, BlockRenderer.W11, BlockRenderer.W11, 0.5F);
                   }
                }
-            } else {
-               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            }
+            else {
+               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);//== 1,== 3,== 4,== 9
             }
          } else {
             this.setBlockBounds(BlockRenderer.W4, BlockRenderer.W2, BlockRenderer.W4, BlockRenderer.W12, BlockRenderer.W14, BlockRenderer.W12);
+            //== 7,== 8, == 13
          }
       } else {
-         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);
+         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);// == 5,== 6
       }
 
       super.setBlockBoundsBasedOnState(world, i, j, k);

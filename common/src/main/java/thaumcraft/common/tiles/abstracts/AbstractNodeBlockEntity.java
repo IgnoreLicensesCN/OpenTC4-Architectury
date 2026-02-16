@@ -229,7 +229,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             boolean success = false;
             Aspect aspect;
             if ((aspect = this.chooseRandomFilteredFromSource(
-                    visContainer.getAspectsWithRoom(usingWand), preserve)) != null) {
+                    visContainer.getAspectsWithRoomRemaining(usingWand), preserve)) != null) {
                 int amt = this.getAspects()
                         .getAmount(aspect);
                 if (tap > amt) {

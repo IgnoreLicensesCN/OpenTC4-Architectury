@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.crafted.nodeandvisnet;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;

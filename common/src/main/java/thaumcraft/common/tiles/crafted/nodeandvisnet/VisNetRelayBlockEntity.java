@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.crafted.nodeandvisnet;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
@@ -18,7 +18,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.IVisNetNodeDetectableItem;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;

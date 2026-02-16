@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.ICentiVisContainer;
 import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
@@ -28,7 +29,10 @@ import java.util.List;
 
 public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity>
         implements
-        WorldlyContainer, ExtendedMenuProvider, IArcaneWorkbenchContainer {
+        WorldlyContainer,
+        ExtendedMenuProvider,
+        IArcaneWorkbenchContainer,
+        IVisNetChargeRelayChargeableContainer {
     public static final int SIZE = 11;
     public static final int INPUT_SIZE = 11;
     public static final int WAND_SLOT = 9;
@@ -170,6 +174,12 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     @NotNull("null->empty")
     public ItemStack getStackInWandSlot(){
         return inventory.get(WAND_SLOT);
+    }
+
+    @Override
+    @NotNull("null->empty")
+    public ItemStack getStackToCharge() {
+        return getStackInWandSlot();
     }
 
     @Override

@@ -7,6 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.NodeTransducerBlockEntity;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetChargeRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetRelayBlockEntity;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
@@ -34,6 +38,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<DeconstructionTableBlockEntity> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final BlockEntityType<ResearchTableBlockEntity> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static final BlockEntityType<VisNetRelayBlockEntity> VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+    public static final BlockEntityType<VisNetChargeRelayBlockEntity> VIS_CHARGE_RELAY = Registry.SUPPLIER_VIS_CHARGE_RELAY.get();
     public static final BlockEntityType<EnergizedAuraNodeBlockEntity> ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static final BlockEntityType<NodeTransducerBlockEntity> NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
     public static class Registry{
@@ -165,6 +170,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         VisNetRelayBlockEntity::new,
                         ThaumcraftBlocks.VIS_RELAY
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<VisNetChargeRelayBlockEntity>> SUPPLIER_VIS_CHARGE_RELAY = BLOCK_ENTITIES.register(
+                "vis_charge_relay",
+                () -> BlockEntityType.Builder.of(
+                        VisNetChargeRelayBlockEntity::new,
+                        ThaumcraftBlocks.VIS_CHARGE_RELAY
                 ).build(null)
         );
         public static final RegistrySupplier<BlockEntityType<EnergizedAuraNodeBlockEntity>> SUPPLIER_ENERGIZED_NODE = BLOCK_ENTITIES.register(

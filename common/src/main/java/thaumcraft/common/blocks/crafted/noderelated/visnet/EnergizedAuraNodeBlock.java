@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks.crafted.visnet;
+package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -32,7 +32,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.EnergizedAuraNodeBlockEntity;
 
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 

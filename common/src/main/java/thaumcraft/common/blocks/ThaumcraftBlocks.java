@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Direction;
@@ -22,12 +23,13 @@ import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetChargeRelayBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
-import thaumcraft.common.blocks.crafted.visnet.EnergizedAuraNodeBlock;
-import thaumcraft.common.blocks.crafted.visnet.VisNetRelayBlock;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -44,6 +46,7 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.crafted.nodeandvisnet.VisNetChargeRelayBlockEntity;
 import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
@@ -172,6 +175,7 @@ public class ThaumcraftBlocks {
     public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
     public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
     public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+    public static final VisNetChargeRelayBlock VIS_CHARGE_RELAY = Registry.SUPPLIER_VIS_CHARGE_RELAY.get();
     public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
     public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
@@ -314,9 +318,17 @@ public class ThaumcraftBlocks {
                 "entropy_crystal_cluster",
                 ()-> new AbstractCrystalBlock(new int[]{0x555577}){}
         );
+        private static final @RGBColor int[] MIXED_PARTICLE_COLORS = new @RGBColor int[]{
+                0xffff7e,
+                0xff3c01,
+                0x0090ff,
+                0x00a000,
+                0xeeccff,
+                0x555577
+        };
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_MIXED_CRYSTAL = BLOCKS.register(
                 "mixed_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{Aspects.AIR.color, 0xff3c01, 0x90ff, 0xa000, 0xeeccff, 0x555577}){}
+                ()-> new AbstractCrystalBlock(MIXED_PARTICLE_COLORS){}
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_STRANGE_CRYSTALS = BLOCKS.register(
                 "strange_crystals",
@@ -615,6 +627,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY =  BLOCKS.register(
                 "vis_relay",
                 VisNetRelayBlock::new
+        );
+        public static final RegistrySupplier<VisNetChargeRelayBlock> SUPPLIER_VIS_CHARGE_RELAY =  BLOCKS.register(
+                "vis_charge_relay",
+                VisNetChargeRelayBlock::new
         );
         public static final RegistrySupplier<EnergizedAuraNodeBlock> SUPPLIER_ENERGIZED_NODE = BLOCKS.register(
                 "energized_node",

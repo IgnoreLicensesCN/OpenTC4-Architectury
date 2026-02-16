@@ -36,18 +36,16 @@ public interface ICentiVisContainer<Asp extends Aspect> {
         centiVisList.put(aspect,vis);
         storeCentiVisOwning(itemStack,centiVisList);
     }
-    //not multiplied by getVisCapacityMultiplier()
     @UnmodifiableView
     CentiVisList<Asp> getAllCentiVisCapacity(ItemStack stack);
-    //not multiplied by getVisCapacityMultiplier()
-    default int getVisCapacity(ItemStack stack,Asp aspect){
+    default int getCentiVisCapacity(ItemStack stack, Asp aspect){
         return this.getAllCentiVisCapacity(stack).getOrDefault(aspect,0);
     }
 
     //amount 1 -> showing 0.01
     //return overflow amount
 
-    default int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by 100*/){
+    default int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by CENTIVIS_MULTIPLIER*/){
         return addCentiVis(stack, aspect, centiVisAmount, true);
     }
     /**
@@ -57,7 +55,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
      * @param centiVisAmount to add (centiVisAmount 1 -> showing 0.01)
      * @return overflow centiVisAmount
      */
-    default int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by 100*/, boolean doIt) {
+    default int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by CENTIVIS_MULTIPLIER*/, boolean doIt) {
         int capacity = getAllCentiVisCapacity(stack).getOrDefault(aspect,0);
         if (capacity == 0){
             return centiVisAmount;
@@ -103,7 +101,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
         storeCentiVisOwning(stack, visOwning);
         return remainingVis;
     }
-    default CentiVisList<Asp> getAspectsWithRoom(ItemStack wandstack) {
+    default CentiVisList<Asp> getAspectsWithRoomRemaining(ItemStack wandstack) {
         var allVis = getAllCentiVisOwning(wandstack);
         var capacity = getAllCentiVisCapacity(wandstack);
 

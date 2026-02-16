@@ -2,9 +2,9 @@ import re
 
 
 a = """
-        public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER = BLOCKS.register(
-                "node_transducer",
-                NodeTransducerBlock::new
+        public static final RegistrySupplier<VisNetChargeRelayBlock> SUPPLIER_VIS_CHARGE_RELAY = BLOCKS.register(
+                "vis_charge_relay",
+                VisNetChargeRelayBlock::new
         );"""
 
 groups = []

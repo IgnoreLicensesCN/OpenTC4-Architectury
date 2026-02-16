@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.crafted.nodeandvisnet;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -14,7 +14,7 @@ import thaumcraft.api.nodes.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.crafted.visnet.EnergizedAuraNodeBlock;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 

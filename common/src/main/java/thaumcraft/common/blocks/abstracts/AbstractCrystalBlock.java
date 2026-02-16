@@ -42,12 +42,12 @@ public abstract class AbstractCrystalBlock extends Block implements IInfusionSta
             ThaumcraftSounds.CRYSTAL
     );//TODO:[sound]are we done?
     public final int[] particleColors;
-    public AbstractCrystalBlock(Properties properties,int[] particleColors) {
+    public AbstractCrystalBlock(Properties properties,@RGBColor int[] particleColors) {
         super(properties);
         assert particleColors.length > 0;
         this.particleColors = particleColors;
     }
-    public AbstractCrystalBlock(int[] particleColors) {
+    public AbstractCrystalBlock(@RGBColor int[] particleColors) {
         super(
                 BlockBehaviour.Properties.copy(Blocks.GLASS)
                         .lightLevel(s -> 1)//cant set .5f

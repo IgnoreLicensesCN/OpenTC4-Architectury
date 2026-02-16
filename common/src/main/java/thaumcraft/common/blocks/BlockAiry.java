@@ -52,7 +52,7 @@ import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.creat
 //tile.blockAiry.2.name=闪烁之光--not used,can be selected
 //tile.blockAiry.3.name=闪烁之光--done(arcane bore&lamp,cannot be selected)
 //tile.blockAiry.4.name=守护之光--done(warding aura)
-//tile.blockAiry.5.name=充能灵气节点
+//tile.blockAiry.5.name=充能灵气节点--done
 //tile.blockAiry.10.name=静电力场
 //tile.blockAiry.11.name=弱化力场
 //tile.blockAiry.12.name=封绝力场

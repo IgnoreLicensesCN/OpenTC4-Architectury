@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +31,7 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
                         .setValue(WAX, 0)
         );
     }
-    public TallowCandleBlock(int color) {
+    public TallowCandleBlock(@RGBColor int color) {
         super(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)
                 .strength(0.1F,0.f)
                 .lightLevel(s -> 1)
