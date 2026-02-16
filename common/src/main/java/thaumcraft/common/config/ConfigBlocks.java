@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.common.blocks.*;
+import thaumcraft.common.blocks.junkbox.*;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;

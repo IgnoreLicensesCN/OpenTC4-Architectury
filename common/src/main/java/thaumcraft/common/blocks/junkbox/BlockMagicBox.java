@@ -1,0 +1,57 @@
+package thaumcraft.common.blocks.junkbox;
+
+@Deprecated(forRemoval = true,since = "i dont even know we have this")
+public class BlockMagicBox /*extends BlockContainer*/ {
+//   private Random random = new Random();
+//   public IIcon icon;
+//
+//   public BlockMagicBox() {
+//      super(Material.wood);
+//      this.setHardness(2.5F);
+//      this.setStepSound(soundTypeWood);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.icon = ir.registerIcon("thaumcraft:woodplain");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(int side, int meta) {
+//      return this.icon;
+//   }
+//
+//   public boolean isOpaqueCube() {
+//      return false;
+//   }
+//
+//   public boolean renderAsNormalBlock() {
+//       return super.renderAsNormalBlock();
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//   }
+//
+//   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
+//      InventoryUtils.dropItems(par1World, par2, par3, par4);
+//      super.breakBlock(par1World, par2, par3, par4, par5, par6);
+//   }
+//
+//   public boolean onBlockActivated(Level par1World, int par2, int par3, int par4, Player par5Player, int par6, float par7, float par8, float par9) {
+//      Object var10 = par1World.getTileEntity(par2, par3, par4);
+//      if (var10 == null) {
+//         return true;
+//      } else if ((Platform.getEnvironment() == Env.CLIENT)) {
+//         return true;
+//      } else {
+//         par5Player.openGui(Thaumcraft.instance, 18, par1World, par2, par3, par4);
+//         return true;
+//      }
+//   }
+//
+//   public TileEntity createNewTileEntity(Level par1World, int m) {
+//      return new TileMagicBox();
+//   }
+}

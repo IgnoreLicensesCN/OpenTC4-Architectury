@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.core.Direction;
-import thaumcraft.common.blocks.BlockTaintFibres;
+import thaumcraft.common.blocks.junkbox.BlockTaintFibres;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class BlockTaintRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {

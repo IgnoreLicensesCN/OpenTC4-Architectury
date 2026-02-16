@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockCustomOreItem;
+import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 import thaumcraft.common.blocks.BlockLifter;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileLifter;

@@ -10,7 +10,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.blocks.BlockCustomOreItem;
+import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
 
 import java.awt.*;

@@ -40,7 +40,7 @@ import java.util.Random;
 
 //  "tile.blockMetalDevice.0.name": "坩埚",
 //  "tile.blockMetalDevice.1.name": "奥术蒸馏器",
-//  "tile.blockMetalDevice.2.name": "魔力充能中继器",
+//  "tile.blockMetalDevice.2.name": "魔力充能中继器",--done
 //  "tile.blockMetalDevice.3.name": "高级炼金构材",
 // 4?anazor forgot that.
 //  "tile.blockMetalDevice.5.name": "物品格栅",

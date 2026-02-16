@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.BlockCustomPlant;
+import thaumcraft.common.blocks.junkbox.BlockCustomPlant;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 

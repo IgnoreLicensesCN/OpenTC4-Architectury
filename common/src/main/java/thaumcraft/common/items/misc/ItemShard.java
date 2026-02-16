@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.BlockCustomOreItem;
+import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 
 import java.util.List;
 

@@ -29,6 +29,7 @@ import tc4tweak.network.NetworkedConfiguration;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.blocks.junkbox.CustomStepSound;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.tiles.TileJarBrain;

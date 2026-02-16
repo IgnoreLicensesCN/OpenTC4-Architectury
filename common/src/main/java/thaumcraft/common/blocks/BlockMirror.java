@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.blocks.junkbox.CustomStepSound;
 import thaumcraft.common.tiles.TileMirror;
 import thaumcraft.common.tiles.TileMirrorEssentia;
 

@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockCandle;
+import thaumcraft.common.blocks.junkbox.BlockCandle;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 

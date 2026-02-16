@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockCustomOre;
-import thaumcraft.common.blocks.BlockCustomOreItem;
+import thaumcraft.common.blocks.junkbox.BlockCustomOre;
+import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.awt.*;

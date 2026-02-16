@@ -7,9 +7,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.blocks.BlockCustomOreItem;
+import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 
 import java.util.Random;
 

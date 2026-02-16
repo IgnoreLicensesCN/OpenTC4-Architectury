@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
-import thaumcraft.common.blocks.BlockCustomPlant;
+import thaumcraft.common.blocks.junkbox.BlockCustomPlant;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileEtherealBloom;
 

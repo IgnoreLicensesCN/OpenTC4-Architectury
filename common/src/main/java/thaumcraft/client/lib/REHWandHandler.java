@@ -24,7 +24,7 @@ import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.common.blocks.BlockCosmeticOpaque;
+import thaumcraft.common.blocks.junkbox.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemFocusPouch;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;

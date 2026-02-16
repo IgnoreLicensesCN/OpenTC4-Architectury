@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.BlockTaint;
+import thaumcraft.common.blocks.junkbox.BlockTaint;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawnData {

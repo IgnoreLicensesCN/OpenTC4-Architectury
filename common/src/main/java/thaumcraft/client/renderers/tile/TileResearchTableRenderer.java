@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelResearchTable;
-import thaumcraft.common.blocks.BlockTable;
+import thaumcraft.common.blocks.junkbox.BlockTable;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.research.ResearchManager;
