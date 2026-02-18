@@ -1,6 +1,7 @@
 {
   "block.thaumcraft.air_crystal_cluster": "Cacho de Cristais do Ar",
   "block.thaumcraft.air_infused_stone": "Pedra Infundida em Ar",
+  "block.thaumcraft.alchemical_furnace": "Fornalha Alquímica",
   "block.thaumcraft.amber_block": "Bloco de Âmbar",
   "block.thaumcraft.amber_brick": "Tijolos de Âmbar",
   "block.thaumcraft.amber_ore": "Âmbar Preso em Pedra",
@@ -263,6 +264,7 @@
   "item.thaumcraft.air_crystal_cluster": "Cacho de Cristais do Ar",
   "item.thaumcraft.air_infused_stone": "Pedra Infundida em Ar",
   "item.thaumcraft.air_shard": "Estilhaço de Ar",
+  "item.thaumcraft.alchemical_furnace": "Fornalha Alquímica",
   "item.thaumcraft.alumentum": "Alumentum",
   "item.thaumcraft.amber_block": "Bloco de Âmbar",
   "item.thaumcraft.amber_brick": "Tijolos de Âmbar",
@@ -951,7 +953,6 @@
   "tile.blockMetalDevice.8.name": "Lâmpada do Crescimento",
   "tile.blockMirror.name": "Espelho Mágico",
   "tile.blockSecure.name": "Bloco de Pedra Guardiã",
-  "tile.blockStoneDevice.0.name": "Fornalha Alquímica",
   "tile.blockStoneDevice.1.name": "Pedestal Arcano",
   "tile.blockStoneDevice.2.name": "Matriz Rúnica",
   "tile.blockStoneDevice.3.name": "Pilar de Infusão",

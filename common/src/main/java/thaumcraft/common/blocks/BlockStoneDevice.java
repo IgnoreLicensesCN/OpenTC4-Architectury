@@ -31,7 +31,7 @@ import thaumcraft.common.tiles.*;
 import java.util.List;
 import java.util.Random;
 
-//"tile.blockStoneDevice.0.name": "炼金炉",
+//"tile.blockStoneDevice.0.name": "炼金炉",--done
 //    "tile.blockStoneDevice.1.name": "奥术基座",
 //    "tile.blockStoneDevice.2.name": "符文矩阵",
 //    "tile.blockStoneDevice.3.name": "注魔桩",

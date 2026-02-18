@@ -1,6 +1,7 @@
 {
   "block.thaumcraft.air_crystal_cluster": "Air Crystal Cluster",
   "block.thaumcraft.air_infused_stone": "Õhua Immutatud Kivi",
+  "block.thaumcraft.alchemical_furnace": "Alchemical Furnace",
   "block.thaumcraft.amber_block": "Amber Block",
   "block.thaumcraft.amber_brick": "Amber Bricks",
   "block.thaumcraft.amber_ore": "Amber Bearing Stone",
@@ -295,6 +296,7 @@
   "item.thaumcraft.air_crystal_cluster": "Air Crystal Cluster",
   "item.thaumcraft.air_infused_stone": "Õhua Immutatud Kivi",
   "item.thaumcraft.air_shard": "Õhu Kild",
+  "item.thaumcraft.alchemical_furnace": "Alchemical Furnace",
   "item.thaumcraft.alumentum": "Alumentum",
   "item.thaumcraft.amber_block": "Amber Block",
   "item.thaumcraft.amber_brick": "Amber Bricks",
@@ -1126,7 +1128,6 @@
   "tile.blockMirror.6.name": "Essentia Peegel",
   "tile.blockMirror.name": "Maagiline Peegel",
   "tile.blockSecure.name": "Warded Stone Block",
-  "tile.blockStoneDevice.0.name": "Alchemical Furnace",
   "tile.blockStoneDevice.1.name": "Arcane Pedestal",
   "tile.blockStoneDevice.2.name": "Runic Matrix",
   "tile.blockStoneDevice.3.name": "Infusion Pillar",

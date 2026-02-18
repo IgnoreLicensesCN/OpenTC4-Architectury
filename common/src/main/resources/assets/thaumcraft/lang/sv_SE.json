@@ -1,6 +1,7 @@
 {
   "block.thaumcraft.air_crystal_cluster": "Luftkristallkluster",
   "block.thaumcraft.air_infused_stone": "Luftingjuten sten",
+  "block.thaumcraft.alchemical_furnace": "Alkemisk smältugn",
   "block.thaumcraft.amber_block": "Bärnstensblock",
   "block.thaumcraft.amber_brick": "Bärnstenstegel",
   "block.thaumcraft.amber_ore": "Bärnstensbärande sten",
@@ -295,6 +296,7 @@
   "item.thaumcraft.air_crystal_cluster": "Luftkristallkluster",
   "item.thaumcraft.air_infused_stone": "Luftingjuten sten",
   "item.thaumcraft.air_shard": "Air Shard",
+  "item.thaumcraft.alchemical_furnace": "Alkemisk smältugn",
   "item.thaumcraft.alumentum": "Alumentum",
   "item.thaumcraft.amber_block": "Bärnstensblock",
   "item.thaumcraft.amber_brick": "Bärnstenstegel",
@@ -1126,7 +1128,6 @@
   "tile.blockMirror.6.name": "Essensspegel",
   "tile.blockMirror.name": "Magisk spegel",
   "tile.blockSecure.name": "Skyddat stenblock",
-  "tile.blockStoneDevice.0.name": "Alkemisk smältugn",
   "tile.blockStoneDevice.1.name": "Mystisk piedestal",
   "tile.blockStoneDevice.2.name": "Runomatris",
   "tile.blockStoneDevice.3.name": "Ingjutningspelare",

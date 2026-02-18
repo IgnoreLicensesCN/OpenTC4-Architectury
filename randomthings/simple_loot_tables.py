@@ -59,7 +59,8 @@ drop_self_block_names = [
     'vis_charge_relay',
     'node_stabilizer',
     'advanced_node_stabilizer',
-    'node_transducer'
+    'node_transducer',
+    'alchemical_furnace'
 ]
 
 drop_b_for_a_names = [

@@ -1,6 +1,7 @@
 {
   "block.thaumcraft.air_crystal_cluster": "Ilmakristallirykelmä",
   "block.thaumcraft.air_infused_stone": "Ilmalla infusoitu kivi",
+  "block.thaumcraft.alchemical_furnace": "Alkeminen uuni",
   "block.thaumcraft.amber_block": "Meripihkakuutio",
   "block.thaumcraft.amber_brick": "Meripihkatiiliä",
   "block.thaumcraft.amber_ore": "Meripihkainen kivi",
@@ -295,6 +296,7 @@
   "item.thaumcraft.air_crystal_cluster": "Ilmakristallirykelmä",
   "item.thaumcraft.air_infused_stone": "Ilmalla infusoitu kivi",
   "item.thaumcraft.air_shard": "Ilmasirpale",
+  "item.thaumcraft.alchemical_furnace": "Alkeminen uuni",
   "item.thaumcraft.alumentum": "Alumentumi",
   "item.thaumcraft.amber_block": "Meripihkakuutio",
   "item.thaumcraft.amber_brick": "Meripihkatiiliä",
@@ -1112,7 +1114,6 @@
   "tile.blockMirror.6.name": "Essentia Peili",
   "tile.blockMirror.name": "Taikapeili",
   "tile.blockSecure.name": "Karkoittava kivipalikka",
-  "tile.blockStoneDevice.0.name": "Alkeminen uuni",
   "tile.blockStoneDevice.1.name": "Mystinen jalusta",
   "tile.blockStoneDevice.2.name": "Riimumatriisi",
   "tile.blockStoneDevice.3.name": "Infuusiopilari",

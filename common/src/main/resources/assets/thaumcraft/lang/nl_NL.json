@@ -1,6 +1,7 @@
 {
   "block.thaumcraft.air_crystal_cluster": "Luchtkristalcluster",
   "block.thaumcraft.air_infused_stone": "Lucht-geïnfuseerde Steen",
+  "block.thaumcraft.alchemical_furnace": "Alchemisch Fornuis",
   "block.thaumcraft.amber_block": "Amberblok",
   "block.thaumcraft.amber_brick": "Gemetseld Amberblok",
   "block.thaumcraft.amber_ore": "Amber dragende steen",
@@ -305,6 +306,7 @@
   "item.thaumcraft.air_crystal_cluster": "Luchtkristalcluster",
   "item.thaumcraft.air_infused_stone": "Lucht-geïnfuseerde Steen",
   "item.thaumcraft.air_shard": "Luchtsplinter",
+  "item.thaumcraft.alchemical_furnace": "Alchemisch Fornuis",
   "item.thaumcraft.alumentum": "Alumentum",
   "item.thaumcraft.amber_block": "Amberblok",
   "item.thaumcraft.amber_brick": "Gemetseld Amberblok",
@@ -1162,7 +1164,6 @@
   "tile.blockMirror.6.name": "Essentiespiegel",
   "tile.blockMirror.name": "Magische Spiegel",
   "tile.blockSecure.name": "Beschermde Steen",
-  "tile.blockStoneDevice.0.name": "Alchemisch Fornuis",
   "tile.blockStoneDevice.1.name": "Occult Voetstuk",
   "tile.blockStoneDevice.2.name": "Runenmatrix",
   "tile.blockStoneDevice.3.name": "Infusiepilaar",
