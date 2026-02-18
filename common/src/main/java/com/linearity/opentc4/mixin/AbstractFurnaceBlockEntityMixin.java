@@ -109,7 +109,7 @@ public abstract class AbstractFurnaceBlockEntityMixin implements AbstractFurnace
                 BlockPos expectedAttachmentPos = blockPos.relative(direction);
                 BlockState expectedAttachmentState = level.getBlockState(expectedAttachmentPos);
                 if (expectedAttachmentState.getBlock() instanceof IFurnaceAttachmentBlock attachmentBlock) {
-                    attachmentBlock.onFurnaceBurning(level,abstractFurnaceBlockEntity,blockState,blockPos,expectedAttachmentState,expectedAttachmentPos,ci);
+                    attachmentBlock.onVanillaFurnaceBurning(level,abstractFurnaceBlockEntity,blockState,blockPos,expectedAttachmentState,expectedAttachmentPos,ci);
                 }
             }
         }

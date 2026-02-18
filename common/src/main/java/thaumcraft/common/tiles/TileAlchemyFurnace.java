@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventory {
@@ -26,13 +27,13 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    public AspectList<Aspect>aspects = new AspectList<>();
    public int vis;
    private int maxVis = 50;
-   public int smeltTime = 100;
    int bellows = -1;
    boolean speedBoost = false;
    private ItemStack[] furnaceItemStacks = new ItemStack[2];
-   public int furnaceBurnTime;
-   public int currentItemBurnTime;
+   public int furnaceFuelRemainingBurnTime;
    public int furnaceCookTime;
+   public int furnaceFuelBurnTotalTime;
+   public int smeltTime = 100;
    private String customName;
    int count = 0;
 
@@ -94,12 +95,12 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    }
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
-      this.furnaceBurnTime = nbttagcompound.getShort("BurnTime");
+      this.furnaceFuelRemainingBurnTime = nbttagcompound.getShort("BurnTime");
       this.vis = nbttagcompound.getShort("Vis");
    }
 
    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
-      nbttagcompound.setShort("BurnTime", (short)this.furnaceBurnTime);
+      nbttagcompound.setShort("BurnTime", (short)this.furnaceFuelRemainingBurnTime);
       nbttagcompound.setShort("Vis", (short)this.vis);
    }
 
@@ -118,7 +119,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
       this.speedBoost = nbtCompound.getBoolean("speedBoost");
       this.furnaceCookTime = nbtCompound.getShort("CookTime");
-      this.currentItemBurnTime = TileEntityFurnace.getItemBurnTime(this.furnaceItemStacks[1]);
+      this.furnaceFuelBurnTotalTime = TileEntityFurnace.getItemBurnTime(this.furnaceItemStacks[1]);
       if (nbtCompound.hasKey("CustomName")) {
          this.customName = nbtCompound.getString("CustomName");
       }
@@ -170,15 +171,15 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
 
    @SideOnly(Side.CLIENT)
    public int getBurnTimeRemainingScaled(int par1) {
-      if (this.currentItemBurnTime == 0) {
-         this.currentItemBurnTime = 200;
+      if (this.furnaceFuelBurnTotalTime == 0) {
+         this.furnaceFuelBurnTotalTime = 200;
       }
 
-      return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
+      return this.furnaceFuelRemainingBurnTime * par1 / this.furnaceFuelBurnTotalTime;
    }
 
    public boolean isBurning() {
-      return this.furnaceBurnTime > 0;
+      return this.furnaceFuelRemainingBurnTime > 0;
    }
 
    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
@@ -194,11 +195,11 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
    }
 
    public void updateEntity() {
-      boolean flag = this.furnaceBurnTime > 0;
+      boolean flag = this.furnaceFuelRemainingBurnTime > 0;
       boolean flag1 = false;
       ++this.count;
-      if (this.furnaceBurnTime > 0) {
-         --this.furnaceBurnTime;
+      if (this.furnaceFuelRemainingBurnTime > 0) {
+         --this.furnaceFuelRemainingBurnTime;
       }
 
       if (Platform.getEnvironment() != Env.CLIENT) {
@@ -256,9 +257,9 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
             }
          }
 
-         if (this.furnaceBurnTime == 0 && this.canSmelt()) {
-            this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(this.furnaceItemStacks[1]);
-            if (this.furnaceBurnTime > 0) {
+         if (this.furnaceFuelRemainingBurnTime == 0 && this.canSmelt()) {
+            this.furnaceFuelBurnTotalTime = this.furnaceFuelRemainingBurnTime = TileEntityFurnace.getItemBurnTime(this.furnaceItemStacks[1]);
+            if (this.furnaceFuelRemainingBurnTime > 0) {
                flag1 = true;
                this.speedBoost = false;
                if (this.furnaceItemStacks[1] != null) {
@@ -285,7 +286,7 @@ public class TileAlchemyFurnace extends TileThaumcraft implements ISidedInventor
             this.furnaceCookTime = 0;
          }
 
-         if (flag != this.furnaceBurnTime > 0) {
+         if (flag != this.furnaceFuelRemainingBurnTime > 0) {
             flag1 = true;
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }

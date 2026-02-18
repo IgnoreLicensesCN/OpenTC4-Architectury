@@ -182,11 +182,11 @@ public class TileNodeEnergized /*extends TileVisNode implements IAspectContainer
 //      return 0;
 //   }
 //
-//   public boolean takeFromContainer(Aspect tag, int amount) {
+//   public boolean takeAspectFromContainer(Aspect tag, int amount) {
 //      return false;
 //   }
 //
-//   public boolean takeFromContainer(AspectList<Aspect>ot) {
+//   public boolean takeAspectFromContainer(AspectList<Aspect>ot) {
 //      return false;
 //   }
 //

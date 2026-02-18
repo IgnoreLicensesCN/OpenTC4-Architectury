@@ -149,7 +149,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.thaumcraft.deconstruction_table");
+        return Component.translatable("block.thaumcraft.deconstruction_table");//TODO:Separate a new name
     }
 
 

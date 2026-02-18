@@ -212,6 +212,7 @@ public class ThaumcraftItems {
     public static final BlockItem NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
     public static final BlockItem ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
     public static final BlockItem NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
+    public static final BlockItem SUPPLIER_ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
 
     //===========================================================================================
 
@@ -725,6 +726,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_NODE_TRANSDUCER = ITEMS.register(
                 "node_transducer",
                 () -> new BlockItem(ThaumcraftBlocks.NODE_TRANSDUCER,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ALCHEMICAL_FURNACE = ITEMS.register(
+                "alchemical_furnace",
+                () -> new BlockItem(ThaumcraftBlocks.ALCHEMICAL_FURNACE,new Item.Properties())
         );
 
         static {

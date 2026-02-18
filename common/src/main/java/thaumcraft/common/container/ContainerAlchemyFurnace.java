@@ -40,8 +40,8 @@ public class ContainerAlchemyFurnace extends Container {
    public void addCraftingToCrafters(ICrafting par1ICrafting) {
       super.addCraftingToCrafters(par1ICrafting);
       par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
-      par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
-      par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
+      par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceFuelRemainingBurnTime);
+      par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.furnaceFuelBurnTotalTime);
       par1ICrafting.sendProgressBarUpdate(this, 3, this.furnace.vis);
       par1ICrafting.sendProgressBarUpdate(this, 4, this.furnace.smeltTime);
    }
@@ -55,12 +55,12 @@ public class ContainerAlchemyFurnace extends Container {
                icrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
            }
 
-           if (this.lastBurnTime != this.furnace.furnaceBurnTime) {
-               icrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
+           if (this.lastBurnTime != this.furnace.furnaceFuelRemainingBurnTime) {
+               icrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceFuelRemainingBurnTime);
            }
 
-           if (this.lastItemBurnTime != this.furnace.currentItemBurnTime) {
-               icrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
+           if (this.lastItemBurnTime != this.furnace.furnaceFuelBurnTotalTime) {
+               icrafting.sendProgressBarUpdate(this, 2, this.furnace.furnaceFuelBurnTotalTime);
            }
 
            if (this.lastVis != this.furnace.vis) {
@@ -73,8 +73,8 @@ public class ContainerAlchemyFurnace extends Container {
        }
 
       this.lastCookTime = this.furnace.furnaceCookTime;
-      this.lastBurnTime = this.furnace.furnaceBurnTime;
-      this.lastItemBurnTime = this.furnace.currentItemBurnTime;
+      this.lastBurnTime = this.furnace.furnaceFuelRemainingBurnTime;
+      this.lastItemBurnTime = this.furnace.furnaceFuelBurnTotalTime;
       this.lastVis = this.furnace.vis;
       this.lastSmelt = this.furnace.smeltTime;
    }
@@ -86,11 +86,11 @@ public class ContainerAlchemyFurnace extends Container {
       }
 
       if (par1 == 1) {
-         this.furnace.furnaceBurnTime = par2;
+         this.furnace.furnaceFuelRemainingBurnTime = par2;
       }
 
       if (par1 == 2) {
-         this.furnace.currentItemBurnTime = par2;
+         this.furnace.furnaceFuelBurnTotalTime = par2;
       }
 
       if (par1 == 3) {

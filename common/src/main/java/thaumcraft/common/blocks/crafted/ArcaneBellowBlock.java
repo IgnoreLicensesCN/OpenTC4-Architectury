@@ -84,7 +84,7 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
     }
 
     @Override
-    public void onFurnaceBurning(Level level, AbstractFurnaceBlockEntity furnaceBlockEntity, BlockState furnaceState, BlockPos furnacePos, BlockState attachmentState, BlockPos attachmentPos, CallbackInfo ci) {
+    public void onVanillaFurnaceBurning(Level level, AbstractFurnaceBlockEntity furnaceBlockEntity, BlockState furnaceState, BlockPos furnacePos, BlockState attachmentState, BlockPos attachmentPos, CallbackInfo ci) {
         if (level.hasNeighborSignal(attachmentPos)){
             return;
         }

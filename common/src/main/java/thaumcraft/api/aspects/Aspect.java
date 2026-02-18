@@ -83,11 +83,11 @@ public abstract class Aspect {
 	}
 
 
-	//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(AIR, EARTH));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(FIRE, EARTH));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(FIRE, WATER));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(ORDER, WATER));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new AspectComponent(EARTH, ENTROPY));
+	//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(AIR, EARTH));
+//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(FIRE, EARTH));
+//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(FIRE, WATER));
+//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(ORDER, WATER));
+//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(EARTH, ENTROPY));
 
 
 	@Override

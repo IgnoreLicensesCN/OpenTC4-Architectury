@@ -39,7 +39,7 @@ public interface IWorldlyCentiVisContainer<Asp extends Aspect> {
 //     * Going away in the next major patch
 //     */
 //    @Deprecated
-//    boolean takeFromContainer(AspectList<Asp> ot);
+//    boolean takeAspectFromContainer(AspectList<Asp> ot);
 
 //    /**
 //     * Checks if the tile entity contains the listed amount (or more) ofAspectVisList the aspect

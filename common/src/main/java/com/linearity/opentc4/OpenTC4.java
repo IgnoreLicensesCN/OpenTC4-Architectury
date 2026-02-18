@@ -26,6 +26,9 @@ import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatur
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public final class OpenTC4 {
     public static boolean DEBUG_FLAG = false;;
     public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;;
@@ -43,10 +46,10 @@ public final class OpenTC4 {
 
     }
     public static void onInitialize() {
+        Aspects.init();//not related to any item/block/entity or anything else.it's suitable
         ThaumcraftEnchantments.init();
         ThaumcraftBlocks.init();
         ThaumcraftItems.init();
-        Aspects.init();
         ThaumcraftBlockEntities.init();
         ThaumcraftEntities.init();
         ThaumcraftDispenseBehaviors.init();

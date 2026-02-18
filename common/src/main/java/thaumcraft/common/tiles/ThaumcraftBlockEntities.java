@@ -41,6 +41,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<VisNetChargeRelayBlockEntity> VIS_CHARGE_RELAY = Registry.SUPPLIER_VIS_CHARGE_RELAY.get();
     public static final BlockEntityType<EnergizedAuraNodeBlockEntity> ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static final BlockEntityType<NodeTransducerBlockEntity> NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
+    public static final BlockEntityType<AlchemicalFurnaceBlockEntity> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -191,6 +192,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         NodeTransducerBlockEntity::new,
                         ThaumcraftBlocks.NODE_TRANSDUCER
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<AlchemicalFurnaceBlockEntity>> SUPPLIER_ALCHEMICAL_FURNACE = BLOCK_ENTITIES.register(
+                "alchemical_furnace",
+                () -> BlockEntityType.Builder.of(
+                        AlchemicalFurnaceBlockEntity::new,
+                        ThaumcraftBlocks.ALCHEMICAL_FURNACE
                 ).build(null)
         );
     }

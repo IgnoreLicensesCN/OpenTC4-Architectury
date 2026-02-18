@@ -29,7 +29,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_ESSENTIA_CONTAINER(new BonusTagForItemListener(10) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof IEssentiaContainerItem essentiaContainer) {
                 AspectList<Aspect> aspectsFromContainer = essentiaContainer.getAspects(itemstack);
                 if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
@@ -47,7 +47,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_ARMOR(new BonusTagForItemListener(20) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof ArmorItem armorItem) {
                 currentAspects.mergeWithHighest(
                         Aspects.ARMOR, armorItem.getMaterial()
@@ -59,7 +59,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_SWORD(new BonusTagForItemListener(30) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof SwordItem swordItem) {
                 float damage = swordItem.getTier()
                         .getAttackDamageBonus() + swordItem.getDamage();
@@ -72,7 +72,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_BOW(new BonusTagForItemListener(40) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof BowItem) {
                 currentAspects.mergeWithHighest(Aspects.WEAPON, 3)
                         .mergeWithHighest(Aspects.FLIGHT, 1);
@@ -82,7 +82,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_PICKAXE(new BonusTagForItemListener(50) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof PickaxeItem pickaxe) {
                 Tier tier = pickaxe.getTier();
                 currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
@@ -91,7 +91,7 @@ public enum BonusTagForItemListeners {
     }),
     DEFAULT_ON_TOOL(new BonusTagForItemListener(60) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof TieredItem tiered) {
                 Tier tier = tiered.getTier();
                 currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
@@ -101,7 +101,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_SHEARS(new BonusTagForItemListener(70) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof ShearsItem shears) {
                 int maxDamage = shears.getMaxDamage();
                 currentAspects.mergeWithHighest(
@@ -113,7 +113,7 @@ public enum BonusTagForItemListeners {
     }),
     DEFAULT_ON_HOE(new BonusTagForItemListener(70) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof HoeItem hoe) {
                 int maxDamage = hoe.getMaxDamage();
                 currentAspects.mergeWithHighest(
@@ -129,7 +129,7 @@ public enum BonusTagForItemListeners {
     DEFAULT_ENCHANTMENTS(new BonusTagForItemListener(80) {
 
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect>sourceTags, @NotNull AspectList<Aspect>currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect>basicAspects, @NotNull AspectList<Aspect>currentAspects) {
             if (!itemstack.isEmpty()) {
 
                 //what i will replace the default read nbt ways with
@@ -161,7 +161,7 @@ public enum BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item,
                            @NotNull ItemStack itemstack,
-                           @NotNull UnmodifiableAspectList<Aspect> sourceTags,
+                           @NotNull UnmodifiableAspectList<Aspect> basicAspects,
                            @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof IWandComponentsOwner componentsOwner){
                 double totalCraftingCostCentiVisDividedByType = 0;
@@ -187,7 +187,7 @@ public enum BonusTagForItemListeners {
     }),
     MIGRATED_POTION( new BonusTagForItemListener(100) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> sourceTags, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             currentAspects.mergeWithHighest(Aspects.WATER, 1);
             List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
             if (!effects.isEmpty()) {

@@ -22,7 +22,7 @@ public class ResearchTableMenu extends AbstractThaumcraftMenu<ResearchTableBlock
     }
 
     public ResearchTableMenu(
-            MenuType<ResearchTableMenu> menuType,
+            MenuType<? extends ResearchTableMenu> menuType,
             int containerID,
             Inventory inventory,
             @NotNull ResearchTableBlockEntity table) {

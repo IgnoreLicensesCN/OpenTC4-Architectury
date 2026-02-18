@@ -2,7 +2,7 @@ package thaumcraft.api.aspects;
 
 import java.util.Objects;
 
-public record AspectComponent(Aspect aspectA, Aspect aspectB) {
+public record CompoundAspectComponent(Aspect aspectA, Aspect aspectB) {
 
     public boolean isCombinedFrom(Aspect a, Aspect b) {
         return (Objects.equals(aspectA, a) && Objects.equals(aspectB, b))
@@ -11,7 +11,7 @@ public record AspectComponent(Aspect aspectA, Aspect aspectB) {
 
     @Override
     public String toString() {
-        return "AspectComponent{" +
+        return "CompoundAspectComponent{" +
                 "aspectA=" + aspectA +
                 ", aspectB=" + aspectB +
                 '}';
@@ -19,7 +19,7 @@ public record AspectComponent(Aspect aspectA, Aspect aspectB) {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof AspectComponent that)) return false;
+        if (!(o instanceof CompoundAspectComponent that)) return false;
         return Objects.equals(aspectA, that.aspectA) && Objects.equals(aspectB, that.aspectB);
     }
 

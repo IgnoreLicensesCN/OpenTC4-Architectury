@@ -235,5 +235,12 @@ public class Consts {
         public static final IntTagAccessor TRANSDUCER_TICK_COUNT = new IntTagAccessor("tick_count");
         public static final IntTagAccessor TRANSDUCER_STATUS_CODE = new IntTagAccessor("status_code");
     }
+    public static class AlchemicalFurnaceBlockEntityTagAccessors {
+        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final IntTagAccessor COOKED_TIME = new IntTagAccessor("cooked_time");
+        public static final IntTagAccessor REQUIRED_COOK_TIME = new IntTagAccessor("required_cook_time");
+        public static final IntTagAccessor FUEL_REMAINING_TIME = new IntTagAccessor("fuel_remaining_time");
+        public static final IntTagAccessor FUEL_TOTAL_TIME = new IntTagAccessor("fuel_total_time");
+    }
 
 }

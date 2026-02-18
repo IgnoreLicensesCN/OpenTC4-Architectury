@@ -15,7 +15,7 @@ public abstract class BonusTagForItemListener implements Comparable<BonusTagForI
         this.priority = priority;
     }
 
-    public abstract void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull  UnmodifiableAspectList<Aspect> sourceTags, @NotNull  AspectList<Aspect> currentAspects);
+    public abstract void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull  UnmodifiableAspectList<Aspect> basicAspects, @NotNull  AspectList<Aspect> currentAspects);
 
     @Override
     public int compareTo(@NotNull BonusTagForItemListener o) {

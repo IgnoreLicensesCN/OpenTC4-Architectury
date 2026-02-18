@@ -25,24 +25,24 @@ public class ItemBonusAspectCalculator {
      * -> onEnchantment
      * -> onItemStack
      * @param itemstack stack to get (aspect) bonus tags
-     * @param sourceTags will be added to result(it won't be modified)
+     * @param basicAspects will be added to result(it won't be modified)
      * @return tags added with bonus
      */
-    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, AspectList<Aspect> sourceTags) {
+    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, AspectList<Aspect> basicAspects) {
         AspectList<Aspect> aspects = new AspectList<>();
         Item item = itemstack.getItem();
-        UnmodifiableAspectList<Aspect> sourceTagsView = new UnmodifiableAspectList<>(sourceTags);
+        UnmodifiableAspectList<Aspect> basicAspectsView = new UnmodifiableAspectList<>(basicAspects);
 
-        if (sourceTags != null) {
-            for (Aspect tag : sourceTags.getAspectTypes()) {
+        if (basicAspects != null) {
+            for (Aspect tag : basicAspects.getAspectTypes()) {
                 if (tag != null) {
-                    aspects.addAll(tag, sourceTags.getAmount(tag));
+                    aspects.addAll(tag, basicAspects.getAmount(tag));
                 }
             }
         }
 
         for (BonusTagForItemListener listener : bonusTagForItemListenerManager.getListeners()) {
-            listener.onItem(item,itemstack,sourceTagsView,aspects);
+            listener.onItem(item,itemstack,basicAspectsView,aspects);
         }
 
         return cullTags(aspects);

@@ -51,7 +51,7 @@ public class TileNodeConverter /*extends TileThaumcraft*/ {
 //               ((AbstractNodeBlockEntity)tilenew).setAspectsWithBase(base.copy());
 //
 //               for(Aspect a : ((AbstractNodeBlockEntity)tilenew).getAspects().getAspects()) {
-//                  ((AbstractNodeBlockEntity)tilenew).takeFromContainer(a, ((AbstractNodeBlockEntity)tilenew).getAspects().getAmount(a));
+//                  ((AbstractNodeBlockEntity)tilenew).takeAspectFromContainer(a, ((AbstractNodeBlockEntity)tilenew).getAspects().getAmount(a));
 //               }
 //            }
 //
@@ -71,7 +71,7 @@ public class TileNodeConverter /*extends TileThaumcraft*/ {
 //                  AbstractNodeBlockEntity nd = (AbstractNodeBlockEntity)tilenew;
 //                  AspectList<Aspect>al = nd.getAspects();
 //                  if (al.getAspects().length > 0) {
-//                     nd.takeFromContainer(al.getAspects()[this.level().rand.nextInt(al.getAspects().length)], 1);
+//                     nd.takeAspectFromContainer(al.getAspects()[this.level().rand.nextInt(al.getAspects().length)], 1);
 //                     if (this.count % 5 == 0 || nd.getAspects().visSize() == 0) {
 //                        this.level().markBlockForUpdate(this.xCoord, this.yCoord - 1, this.zCoord);
 //                     }

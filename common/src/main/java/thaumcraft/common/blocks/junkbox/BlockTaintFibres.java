@@ -176,7 +176,6 @@ public class BlockTaintFibres /*extends Block*/ {
 //            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 160, 0, false));
 //         }
 //      }
-//
 //   }
 
 //   @SideOnly(Side.CLIENT)

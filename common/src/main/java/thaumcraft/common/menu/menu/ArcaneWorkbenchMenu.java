@@ -39,7 +39,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
     }
 
     public ArcaneWorkbenchMenu(
-            MenuType<ArcaneWorkbenchMenu> menuType,
+            MenuType<? extends ArcaneWorkbenchMenu> menuType,
             int containerID,
             Inventory inventory,
             @NotNull ArcaneWorkbenchBlockEntity workbench) {

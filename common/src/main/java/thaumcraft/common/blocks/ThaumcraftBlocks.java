@@ -181,6 +181,7 @@ public class ThaumcraftBlocks {
     public static final ImpassableBlock IMPASSABLE = Registry.SUPPLIER_IMPASSABLE_BLOCK.get();
     public static final SappingFieldBlock SAPPING_FIELD = Registry.SUPPLIER_SAPPING_FIELD.get();
     public static final StaticFieldBlock STATIC_FIELD = Registry.SUPPLIER_STATIC_FIELD.get();
+    public static final AlchemicalFurnaceBlock ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -660,6 +661,10 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<StaticFieldBlock> SUPPLIER_STATIC_FIELD = BLOCKS.register(
                 "static_field",
                 StaticFieldBlock::new
+        );
+        public static final RegistrySupplier<AlchemicalFurnaceBlock> SUPPLIER_ALCHEMICAL_FURNACE = BLOCKS.register(
+                "alchemical_furnace",
+                AlchemicalFurnaceBlock::new
         );
 
         static {

@@ -12,8 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.projectile.EntityAlumentum;
+import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeeder;
 
-public class AlumentumItem extends Item {
+public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeeder {
     public AlumentumItem() {
         super(new Properties());
     }

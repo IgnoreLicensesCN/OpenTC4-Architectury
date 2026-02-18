@@ -12,34 +12,38 @@ import java.util.concurrent.ConcurrentHashMap;
 import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
 
 public class CompoundAspect extends Aspect {
-    public static final Map<AspectComponent,CompoundAspect> COMPOUND_ASPECT_RECIPES = new ConcurrentHashMap<>();
+    public static final Map<CompoundAspectComponent,CompoundAspect> COMPOUND_ASPECT_RECIPES = new ConcurrentHashMap<>();
 
-    public final @NotNull AspectComponent components;
-    private void verifyDuplicate(){
+    public final @NotNull CompoundAspectComponent components;
+    private void verifyDuplicate(CompoundAspect registeringAspect){
         var duplicatedIfNotNull = COMPOUND_ASPECT_RECIPES.getOrDefault(components,null);
         if (duplicatedIfNotNull != null) {
-            throw new RuntimeException("Duplicate aspect recipe:" + components + "|" + duplicatedIfNotNull);
+            //i have to say
+            // if you have two aspects with same recipe
+            // you wont be happy to handle this recipe collision.
+            // (that would be weird in game.)
+            throw new RuntimeException("Duplicate compound aspect recipe:" + components + "|" + duplicatedIfNotNull + " and " + registeringAspect);
         }
         COMPOUND_ASPECT_RECIPES.put(components,this);
     }
-    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, @NotNull AspectComponent components, ResourceLocation image, int blend) {
+    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, @NotNull CompoundAspectComponent components, ResourceLocation image, int blend) {
         super(tag,color,image,blend);
         this.components = components;
         COMPOUND_ASPECTS.put(tag,this);
-        verifyDuplicate();
+        verifyDuplicate(this);
     }
 
     /**
      * Shortcut constructor I use for the default aspects - you shouldn't be using this.
      */
-    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, AspectComponent components) {
+    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, CompoundAspectComponent components) {
         this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
     }
 
     /**
      * Shortcut constructor I use for the default aspects - you shouldn't be using this.
      */
-    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, AspectComponent components, int blend) {
+    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, CompoundAspectComponent components, int blend) {
         this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
     }
 
@@ -50,8 +54,8 @@ public class CompoundAspect extends Aspect {
     @Override
     public String toString() {
         return "CompoundAspect{" +
-                "components=" + components +
-                ", aspectKey=" + aspectKey +
+                "aspectKey=" + aspectKey +
+                ", components=" + components +
                 ", color=" + color +
                 ", image=" + image +
                 ", blend=" + blend +
