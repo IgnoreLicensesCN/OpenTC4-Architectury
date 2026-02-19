@@ -6,7 +6,7 @@ import net.minecraft.nbt.Tag;
 public class CompoundTagAccessorImpl extends CompoundTagAccessor<CompoundTag> {
 
     public CompoundTagAccessorImpl(String tagKey) {
-        super(tagKey, CompoundTag.class);
+        super(tagKey);
     }
 
     @Override

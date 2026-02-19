@@ -10,7 +10,7 @@ public class HexCoordAccessor extends CompoundTagAccessor<HexCoord> {
     protected final IntTagAccessor rAccessorInternal;
 
     protected HexCoordAccessor(String tagKey) {
-        super(tagKey, HexCoord.class);
+        super(tagKey);
         this.qAccessorInternal = new IntTagAccessor(tagKey + "_q");
         this.rAccessorInternal = new IntTagAccessor(tagKey + "_r");
     }

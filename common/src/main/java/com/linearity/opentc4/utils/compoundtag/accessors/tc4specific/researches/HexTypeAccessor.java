@@ -9,7 +9,7 @@ public class HexTypeAccessor extends CompoundTagAccessor<HexType> {
     protected final IntTagAccessor intTypeAccessorInternal;
 
     public HexTypeAccessor(String tagKey) {
-        super(tagKey, HexType.class);
+        super(tagKey);
         this.intTypeAccessorInternal = new IntTagAccessor(tagKey + "_type_int");
     }
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<ResearchItem, FocusUpgradeTypeResourceLocation> {
+    public static final FocusUpgradeTypeResourceLocation EMPTY = new FocusUpgradeTypeResourceLocation("","");
     public static final VariedResourceLocationBuilder<ResearchItem, FocusUpgradeTypeResourceLocation> BUILDER = FocusUpgradeTypeResourceLocation::of;
     public static final VariedResourceLocationParser<ResearchItem, FocusUpgradeTypeResourceLocation> PARSER = FocusUpgradeTypeResourceLocation::of;
 
@@ -29,6 +30,9 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Res
 
     public static final Map<ResourceLocation, FocusUpgradeTypeResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, FocusUpgradeTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    static {
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+    }
     public static FocusUpgradeTypeResourceLocation of(ResourceLocation resourceLocation) {
         return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, FocusUpgradeTypeResourceLocation::new);
     }
@@ -38,6 +42,9 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Res
                 .computeIfAbsent(path, p -> new FocusUpgradeTypeResourceLocation(namespace,path));
     }
     public static FocusUpgradeTypeResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
+        }
         var split = namespaceAndPath.split(":");
         if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);

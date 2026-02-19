@@ -9,7 +9,7 @@ import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 public class ClueResourceLocationTagAccessor extends CompoundTagAccessor<ClueResourceLocation> {
 
     public ClueResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, ClueResourceLocation.class);
+        super(tagKey);
     }
 
     @Override

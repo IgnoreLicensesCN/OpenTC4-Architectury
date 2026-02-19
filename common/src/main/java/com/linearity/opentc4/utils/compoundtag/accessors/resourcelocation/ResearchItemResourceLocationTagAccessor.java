@@ -9,7 +9,7 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 public class ResearchItemResourceLocationTagAccessor extends CompoundTagAccessor<ResearchItemResourceLocation> {
 
     public ResearchItemResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, ResearchItemResourceLocation.class);
+        super(tagKey);
     }
 
     @Override

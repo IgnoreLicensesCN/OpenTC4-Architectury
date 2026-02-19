@@ -11,7 +11,7 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
     protected final IntTagAccessor zAccessor;
 
     public BlockPosAccessor(String tagKey) {
-        super(tagKey, BlockPos.class);
+        super(tagKey);
         this.xAccessor = new IntTagAccessor(tagKey + "_x");
         this.yAccessor = new IntTagAccessor(tagKey + "_y");
         this.zAccessor = new IntTagAccessor(tagKey + "_z");

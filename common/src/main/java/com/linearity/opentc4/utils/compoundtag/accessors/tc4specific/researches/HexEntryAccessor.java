@@ -11,7 +11,7 @@ public class HexEntryAccessor extends CompoundTagAccessor<HexEntry> {
     protected final HexTypeAccessor hexTypeAccessorInternal;
 
     public HexEntryAccessor(String tagKey) {
-        super(tagKey, HexEntry.class);
+        super(tagKey);
         this.aspectResLocAccessorInternal = new AspectResourceLocationTagAccessor(tagKey + "_aspect_res");
         this.hexTypeAccessorInternal = new HexTypeAccessor(tagKey + "_hex_type");
     }

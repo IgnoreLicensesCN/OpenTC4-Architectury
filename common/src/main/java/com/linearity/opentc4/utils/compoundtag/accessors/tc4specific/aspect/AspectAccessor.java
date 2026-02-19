@@ -8,12 +8,13 @@ import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 public class AspectAccessor extends CompoundTagAccessor<Aspect> {
     protected final ResourceLocationTagAccessor resourceLocationAccessor;
 
     public AspectAccessor(String tagKey) {
-        super(tagKey, Aspect.class);
+        super(tagKey);
         resourceLocationAccessor = new ResourceLocationTagAccessor(tagKey);
     }
 
@@ -21,11 +22,10 @@ public class AspectAccessor extends CompoundTagAccessor<Aspect> {
     @NotNull
     public Aspect readFromCompoundTag(CompoundTag tag) {
         var resLoc = resourceLocationAccessor.readFromCompoundTag(tag);
-        if (resLoc.getPath()
-                .isEmpty()) {
+        if (resLoc.getPath().isEmpty() || resLoc.getNamespace().isEmpty()) {
             return Aspects.EMPTY;
         }
-        var result = Aspects.ALL_ASPECTS.get(resLoc);
+        var result = Aspects.ALL_ASPECTS.get(AspectResourceLocation.of(resLoc));
         if (result == null) {
             OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", resLoc, tag, new Exception());
             return Aspects.EMPTY;

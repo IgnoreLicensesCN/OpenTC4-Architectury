@@ -8,7 +8,7 @@ public class SimplePairAccessor<A,B> extends CompoundTagAccessor<SimplePair<A,B>
     protected final CompoundTagAccessor<A> aAccessor;
     protected final CompoundTagAccessor<B> bAccessor;
     public SimplePairAccessor(String tagKey, CompoundTagAccessor<A> accessorA, CompoundTagAccessor<B> accessorB) {
-        super(tagKey, (Class<SimplePair<A, B>>)(Class<?>)SimplePair.class);
+        super(tagKey);
         this.aAccessor = accessorA;
         this.bAccessor = accessorB;
     }

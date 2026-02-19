@@ -6,7 +6,7 @@ import net.minecraft.nbt.Tag;
 public class ByteTagAccessor extends CompoundTagAccessor<Byte> {
 
     public ByteTagAccessor(String tagKey) {
-        super(tagKey, Byte.class);
+        super(tagKey);
     }
 
     @Override

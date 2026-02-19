@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ResearchItemResourceLocation extends VariedResourceLocation<ResearchItem,ResearchItemResourceLocation> {
+    public static final ResearchItemResourceLocation EMPTY = new ResearchItemResourceLocation("","");
     public static final VariedResourceLocationBuilder<ResearchItem,ResearchItemResourceLocation> BUILDER = ResearchItemResourceLocation::of;
     public static final VariedResourceLocationParser<ResearchItem,ResearchItemResourceLocation> PARSER = ResearchItemResourceLocation::of;
 
@@ -29,6 +30,9 @@ public class ResearchItemResourceLocation extends VariedResourceLocation<Researc
 
     public static final Map<ResourceLocation,ResearchItemResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String,ResearchItemResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    static {
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+    }
     public static ResearchItemResourceLocation of(ResourceLocation resourceLocation) {
         return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, ResearchItemResourceLocation::new);
     }
@@ -38,6 +42,9 @@ public class ResearchItemResourceLocation extends VariedResourceLocation<Researc
                 .computeIfAbsent(path, p -> new ResearchItemResourceLocation(namespace,path));
     }
     public static ResearchItemResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
+        }
         var split = namespaceAndPath.split(":");
         if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);

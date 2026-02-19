@@ -11,7 +11,7 @@ public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
     protected final ListTagAccessor listAccessor;
     protected final CompoundTagAccessor<T> listItemAccessor;
     public ModifiableListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
-        super(tagKey, (Class<List<T>>) (Class<?>) List.class);
+        super(tagKey);
         this.listItemAccessor = listItemAccessor;
         this.listAccessor = new ListTagAccessor(tagKey + "_list");
     }

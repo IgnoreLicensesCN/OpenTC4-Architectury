@@ -13,7 +13,7 @@ public class JsonObjectTagAccessor extends CompoundTagAccessor<JsonObject> {
     private static final Gson GSON = new Gson();
 
     public JsonObjectTagAccessor(String tagKey) {
-        super(tagKey, JsonObject.class);
+        super(tagKey);
     }
 
     @Override

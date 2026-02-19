@@ -11,7 +11,7 @@ public class ModifiableSetTagAccessor<T> extends CompoundTagAccessor<Set<T>> {
     protected final ModifiableListAccessor<T> accessorInternal;
 
     public ModifiableSetTagAccessor(String tagKey, CompoundTagAccessor<T> accessor) {
-        super(tagKey, (Class<Set<T>>)(Class<?>) Set.class);
+        super(tagKey);
         this.accessorInternal = new ModifiableListAccessor<>(tagKey+"_set",accessor);
     }
 

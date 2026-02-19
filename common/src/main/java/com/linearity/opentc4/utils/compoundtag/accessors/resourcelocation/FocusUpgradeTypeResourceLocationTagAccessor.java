@@ -9,7 +9,7 @@ import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 public class FocusUpgradeTypeResourceLocationTagAccessor extends CompoundTagAccessor<FocusUpgradeTypeResourceLocation> {
 
     public FocusUpgradeTypeResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, FocusUpgradeTypeResourceLocation.class);
+        super(tagKey);
     }
 
     @Override

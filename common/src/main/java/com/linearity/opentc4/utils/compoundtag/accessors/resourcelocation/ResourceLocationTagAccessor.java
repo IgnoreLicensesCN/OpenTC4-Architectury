@@ -7,13 +7,17 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class ResourceLocationTagAccessor extends CompoundTagAccessor<ResourceLocation> {
+    private static final ResourceLocation EMPTY = new ResourceLocation("","");
 
     public ResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, ResourceLocation.class);
+        super(tagKey);
     }
 
     @Override
     public ResourceLocation readFromCompoundTag(CompoundTag tag) {
+        if (!compoundTagHasKey(tag)){
+            return EMPTY;
+        }
         return new ResourceLocation(tag.getString(tagKey));
     }
 

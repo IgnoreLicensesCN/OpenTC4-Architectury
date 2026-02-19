@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, ClueResourceLocation> {
+    public static final ClueResourceLocation EMPTY = new ClueResourceLocation("","");
     public static final VariedResourceLocationBuilder<ResearchItem, ClueResourceLocation> BUILDER = ClueResourceLocation::of;
     public static final VariedResourceLocationParser<ResearchItem, ClueResourceLocation> PARSER = ClueResourceLocation::of;
 
@@ -29,6 +30,9 @@ public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, C
 
     public static final Map<ResourceLocation, ClueResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, ClueResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    static {
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+    }
     public static ClueResourceLocation of(ResourceLocation resourceLocation) {
         return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, ClueResourceLocation::new);
     }
@@ -38,6 +42,9 @@ public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, C
                 .computeIfAbsent(path, p -> ClueResourceLocation.of(namespace,path));
     }
     public static ClueResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
+        }
         var split = namespaceAndPath.split(":");
         if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);

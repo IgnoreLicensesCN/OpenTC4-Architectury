@@ -15,7 +15,7 @@ public class LinkedHashMapAccessor<K,V> extends CompoundTagAccessor<LinkedHashMa
     protected final CompoundTagAccessor<V> valueAccessor;
 
     public LinkedHashMapAccessor(String tagKey, CompoundTagAccessor<K> keyAccessor, CompoundTagAccessor<V> valueAccessor) {
-        super(tagKey, (Class<LinkedHashMap<K, V>>)(Class<?>)LinkedHashMap.class);
+        super(tagKey);
         this.keyAccessor = keyAccessor;
         this.valueAccessor = valueAccessor;
         this.listTagAccessorInternal = new ListTagAccessor(tagKey);

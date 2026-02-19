@@ -4,11 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 
 public abstract class CompoundTagAccessor<T> {
     public final String tagKey;
-    public final Class<T> tagClass;
 
-    protected CompoundTagAccessor(String tagKey, Class<T> tagClass) {
+    protected CompoundTagAccessor(String tagKey) {
         this.tagKey = tagKey;
-        this.tagClass = tagClass;
     }
 
     public abstract T readFromCompoundTag(CompoundTag tag);

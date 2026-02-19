@@ -6,7 +6,7 @@ import net.minecraft.nbt.Tag;
 public class IntTagAccessor extends CompoundTagAccessor<Integer> {
 
     public IntTagAccessor(String tagKey) {
-        super(tagKey, Integer.class);
+        super(tagKey);
     }
 
     @Override

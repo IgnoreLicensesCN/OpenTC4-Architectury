@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AspectResourceLocation extends VariedResourceLocation<ResearchItem, AspectResourceLocation> {
+    public static final AspectResourceLocation EMPTY = new AspectResourceLocation("","");
     public static final VariedResourceLocationBuilder<ResearchItem, AspectResourceLocation> BUILDER = AspectResourceLocation::of;
     public static final VariedResourceLocationParser<ResearchItem, AspectResourceLocation> PARSER = AspectResourceLocation::of;
 
@@ -29,6 +30,9 @@ public class AspectResourceLocation extends VariedResourceLocation<ResearchItem,
 
     public static final Map<ResourceLocation, AspectResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, AspectResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    static {
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+    }
     public static AspectResourceLocation of(ResourceLocation resourceLocation) {
         return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, AspectResourceLocation::new);
     }
@@ -38,6 +42,9 @@ public class AspectResourceLocation extends VariedResourceLocation<ResearchItem,
                 .computeIfAbsent(path, p -> AspectResourceLocation.of(namespace,path));
     }
     public static AspectResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return AspectResourceLocation.of("","");
+        }
         var split = namespaceAndPath.split(":");
         if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);

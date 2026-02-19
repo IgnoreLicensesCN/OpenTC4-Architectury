@@ -9,7 +9,7 @@ import thaumcraft.common.lib.resourcelocations.NodeModifierResourceLocation;
 public class NodeModifierResourceLocationTagAccessor extends CompoundTagAccessor<NodeModifierResourceLocation> {
 
     public NodeModifierResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, NodeModifierResourceLocation.class);
+        super(tagKey);
     }
 
     @Override

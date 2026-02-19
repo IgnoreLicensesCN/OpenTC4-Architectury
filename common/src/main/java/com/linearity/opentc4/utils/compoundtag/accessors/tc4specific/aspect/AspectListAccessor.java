@@ -11,7 +11,7 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
     protected final LinkedHashMapAccessor<Aspect,Integer> aspectAndAmountsAccessor;
 //    protected final ModifiableListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
     public AspectListAccessor(String tagKey) {
-        super(tagKey, (Class<AspectList<Aspect>>) (Class<?>)AspectList.class);
+        super(tagKey);
         this.aspectAndAmountsAccessor = new LinkedHashMapAccessor<>(
                 tagKey,
                 new AspectAccessor(tagKey + "_aspect"),

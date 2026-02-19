@@ -6,7 +6,7 @@ import net.minecraft.nbt.Tag;
 public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
 
     public BooleanTagAccessor(String tagKey) {
-        super(tagKey, Boolean.class);
+        super(tagKey);
     }
 
     @Override

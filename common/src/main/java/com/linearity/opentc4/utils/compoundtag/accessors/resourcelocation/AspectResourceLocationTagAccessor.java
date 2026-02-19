@@ -8,7 +8,7 @@ import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 public class AspectResourceLocationTagAccessor extends CompoundTagAccessor<AspectResourceLocation> {
     public AspectResourceLocationTagAccessor(String tagKey) {
-        super(tagKey, AspectResourceLocation.class);
+        super(tagKey);
     }
 
     @Override

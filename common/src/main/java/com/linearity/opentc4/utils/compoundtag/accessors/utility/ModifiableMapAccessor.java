@@ -15,7 +15,7 @@ public class ModifiableMapAccessor<K,V> extends CompoundTagAccessor<Map<K,V>> {
     protected final CompoundTagAccessor<V> valueAccessor;
 
     public ModifiableMapAccessor(String tagKey, CompoundTagAccessor<K> keyAccessor, CompoundTagAccessor<V> valueAccessor) {
-        super(tagKey, (Class<Map<K, V>>)(Class<?>)Map.class);
+        super(tagKey);
         this.keyAccessor = keyAccessor;
         this.valueAccessor = valueAccessor;
         this.listTagAccessorInternal = new ListTagAccessor(tagKey);

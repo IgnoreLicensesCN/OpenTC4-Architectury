@@ -7,12 +7,14 @@ import net.minecraft.world.item.ItemStack;
 public class ItemStackTagAccessor extends CompoundTagAccessor<ItemStack> {
 
     public ItemStackTagAccessor(String tagKey) {
-        super(tagKey, ItemStack.class);
+        super(tagKey);
     }
 
     @Override
     public ItemStack readFromCompoundTag(CompoundTag tag) {
-        if (!tag.contains(tagKey)) return ItemStack.EMPTY; // 没有该tag返回空
+        if (!compoundTagHasKey(tag)) {
+            return ItemStack.EMPTY;
+        }
         return ItemStack.of(tag.getCompound(tagKey));
     }
 

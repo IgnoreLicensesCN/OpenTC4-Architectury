@@ -11,7 +11,7 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
     protected final LinkedHashMapAccessor<Aspect,Integer> aspectAndAmountsAccessor;
 //    protected final ModifiableListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
     public CentiVisListAccessor(String tagKey) {
-        super(tagKey, (Class<CentiVisList<Aspect>>) (Class<?>)CentiVisList.class);
+        super(tagKey);
         this.aspectAndAmountsAccessor = new LinkedHashMapAccessor<>(
                 tagKey,
                 new AspectAccessor(tagKey + "_aspect"),
