@@ -2,13 +2,14 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
 
-public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
+public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity {
    Direction facing;
    public TileAlchemyFurnaceAdvanced furnace;
 
@@ -37,14 +38,14 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
 
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.furnace != null ? this.furnace.aspects : null;
    }
 
    public void setAspects(AspectList<Aspect>aspects) {
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
       return am;
    }
 
@@ -105,7 +106,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 

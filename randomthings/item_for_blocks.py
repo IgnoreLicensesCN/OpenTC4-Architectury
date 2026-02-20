@@ -2,9 +2,13 @@ import re
 
 
 a = """
-        public static final RegistrySupplier<VisNetChargeRelayBlock> SUPPLIER_VIS_CHARGE_RELAY = BLOCKS.register(
-                "vis_charge_relay",
-                VisNetChargeRelayBlock::new
+        public static final RegistrySupplier<Block> SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+                "advanced_alchemical_construct",
+                xxx::new
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+                "alchemical_construct",
+                xxx::new
         );"""
 
 groups = []

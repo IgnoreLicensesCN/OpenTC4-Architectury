@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
@@ -55,9 +55,9 @@ public class GuiGolem extends GuiContainer {
       GL11.glPushMatrix();
       GL11.glScaled(0.5F, 0.5F, 0.5F);
       if (this.threat >= 0) {
-         this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("golemthreat." + this.threat + ".text"), 80, 22, 110, 14540253);
+         this.fontRendererObj.drawSplitString(Component.translatable("golemthreat." + this.threat + ".text"), 80, 22, 110, 14540253);
       } else {
-         this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("golemblurb." + this.golem.getCore() + ".text"), 80, 22, 110, 14540253);
+         this.fontRendererObj.drawSplitString(Component.translatable("golemblurb." + this.golem.getCore() + ".text"), 80, 22, 110, 14540253);
       }
 
       if (((ContainerGolem)this.inventorySlots).maxScroll > 0) {

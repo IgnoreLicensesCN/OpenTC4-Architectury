@@ -21,8 +21,9 @@ import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class EldritchAltarBlock extends Block implements EntityBlock {
+public class EldritchAltarBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final int EYES_LIMIT = 4;
     public static final int AS_SPAWNER_REQUIRES_EYE = 2;
 

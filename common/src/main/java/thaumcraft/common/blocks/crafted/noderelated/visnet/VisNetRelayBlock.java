@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -28,11 +26,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
-public class VisNetRelayBlock extends Block implements IWandInteractableBlock, EntityBlock {
+public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlock, EntityBlock {
     public VisNetRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -134,11 +133,11 @@ public class VisNetRelayBlock extends Block implements IWandInteractableBlock, E
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return getShapeFromState(state);
     }
     @Override
-    public VoxelShape getOcclusionShape(
+    public @NotNull VoxelShape getOcclusionShape(
             BlockState state,
             BlockGetter level,
             BlockPos pos
@@ -178,14 +177,13 @@ public class VisNetRelayBlock extends Block implements IWandInteractableBlock, E
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         if (blockEntityType == ThaumcraftBlockEntities.VIS_RELAY && blockState.getBlock() == this){
-            if (Platform.getEnvironment() == Env.SERVER){
+            if (!level.isClientSide){
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof VisNetRelayBlockEntity relay) {
                         relay.tick();
                     }
                 });
-            }
-            if (Platform.getEnvironment() ==  Env.CLIENT){
+            }else {
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof VisNetRelayBlockEntity relay) {
                         relay.clientTick();

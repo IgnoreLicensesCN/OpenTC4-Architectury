@@ -5,9 +5,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -15,7 +16,7 @@ import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
-public class TileJarNode extends TileJar implements IAspectContainer, INodeBlockEntity, IWandable {
+public class TileJarNode extends TileJar implements IAspectContainerBlockEntity, INodeBlockEntity, IWandable {
    private AspectList<Aspect>aspects = new AspectList<>();
    private AspectList<Aspect>aspectsBase = new AspectList<>();
    private NodeType nodeType;
@@ -88,7 +89,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       nbttagcompound.setByte("modifier", this.getNodeModifier() == null ? -1 : (byte)this.getNodeModifier().ordinal());
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
@@ -101,7 +102,7 @@ public class TileJarNode extends TileJar implements IAspectContainer, INodeBlock
       this.aspectsBase = aspects.copy();
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
       int out = 0;
       if (this.aspects.getAmount(tt) + am > this.aspectsBase.getAmount(tt)) {
          out = this.aspects.getAmount(tt) + am - this.aspectsBase.getAmount(tt);

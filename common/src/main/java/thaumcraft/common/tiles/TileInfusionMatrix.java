@@ -25,10 +25,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
 import thaumcraft.api.crafting.ThaumcraftInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
@@ -50,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAspectContainer {
+public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAspectContainerBlockEntity {
     private ArrayList<ChunkCoordinates> pedestals = new ArrayList<>();
     private int dangerCount = 0;
     public boolean active = false;
@@ -837,14 +838,14 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
 
     }
 
-    public AspectList<Aspect>getAspects() {
+    public @NotNull AspectList<Aspect>getAspects() {
         return this.recipeEssentia;
     }
 
     public void setAspects(AspectList<Aspect>aspects) {
     }
 
-    public int addToContainer(Aspect tag, int amount) {
+    public int addIntoContainer(Aspect tag, int amount) {
         return 0;
     }
 

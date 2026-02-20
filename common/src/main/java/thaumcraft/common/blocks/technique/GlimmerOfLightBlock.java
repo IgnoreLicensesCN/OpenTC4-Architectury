@@ -6,7 +6,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -14,14 +13,15 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
 
 import static thaumcraft.common.blocks.crafted.NitorBlock.NITOR_SOUND;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //blockAiry.3
 //arcane bore&lamp
-public class GlimmerOfLightBlock extends Block {
+public class GlimmerOfLightBlock extends SuppressedWarningBlock {
     public GlimmerOfLightBlock(Properties properties) {
         super(properties);
     }
@@ -38,7 +38,7 @@ public class GlimmerOfLightBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 

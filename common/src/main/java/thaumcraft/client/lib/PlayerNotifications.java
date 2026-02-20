@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class PlayerNotifications {
    public static ArrayList<Notification> notificationList = new ArrayList<>();
    public static ArrayList<AspectNotification> aspectList = new ArrayList<>();
-
+   //TODO:Text -> component
    public static void addNotification(String text) {
       addNotification(text, null, 16777215);
    }

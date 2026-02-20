@@ -18,10 +18,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.IShapeConnectNearBlock;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class GlowingClustedStoneBlock extends Block implements IShapeConnectNearBlock {
+public class GlowingClustedStoneBlock extends SuppressedWarningBlock implements IShapeConnectNearBlock {
     public GlowingClustedStoneBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(setDefaultStateDefinition(this.stateDefinition.any()));
@@ -38,32 +40,32 @@ public class GlowingClustedStoneBlock extends Block implements IShapeConnectNear
 
     //template
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
     @Override
-    public VoxelShape getBlockSupportShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getBlockSupportShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
     @Override
-    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return getShapeConnectNear(blockState, blockGetter, blockPos);
     }
 
@@ -95,7 +97,7 @@ public class GlowingClustedStoneBlock extends Block implements IShapeConnectNear
     }
 
     @Override
-    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor blockGetter, BlockPos blockPos, BlockPos blockPos2) {
+    public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor blockGetter, BlockPos blockPos, BlockPos blockPos2) {
         return getState(blockState,blockGetter,blockPos);
     }
 }

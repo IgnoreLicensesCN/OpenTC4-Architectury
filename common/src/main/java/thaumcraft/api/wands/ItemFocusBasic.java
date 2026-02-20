@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.HitResult;
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -45,7 +45,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //	public void addInformation(ItemStack stack,Player player, List list, boolean par4) {
 //		AspectList<Aspect>al = this.getCentiVisCost(stack);
 //		if (al!=null && al.size()>0) {
-//			list.add(StatCollector.translateToLocal(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
+//			list.add(Component.translatable(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
 //			for (Aspect aspect:al.getAspectsSorted()) {
 //				DecimalFormat myFormatter = new DecimalFormat("#####.##");
 //				String amount = myFormatter.format(al.getAmount(aspect)/100f);
@@ -68,7 +68,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //		}
 //		for (String id:map.keySet()) {
 //			list.add(ChatFormatting.DARK_PURPLE +FocusUpgradeType.getType(id).getLocalizedName()+
-//					(map.get(id)>1?" "+StatCollector.translateToLocal("enchantment.level." + map.get(id)):""));
+//					(map.get(id)>1?" "+Component.translatable("enchantment.level." + map.get(id)):""));
 //		}
 //	}
 //

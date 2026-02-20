@@ -4,8 +4,6 @@ import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -134,7 +132,6 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
-//            serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState(), 3);
             serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
             Blaze blaze = new Blaze(EntityType.BLAZE,serverLevel);
             blaze.setYRot(0);
@@ -194,7 +191,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         var itemStack = entityAsItemStack(entity);
         if (itemStack != null) {
-            if (entity.onGround() && Platform.getEnvironment() == Env.SERVER){
+            if (entity.onGround() && !level.isClientSide){
 
                 var bEntity = level.getBlockEntity(blockPos);
                 if (bEntity instanceof InfernalFurnaceBlockEntity infernalFurnace){
@@ -225,16 +222,12 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        return super.getVisualShape(blockState, blockGetter, blockPos, collisionContext);
-    }
-    @Override
-    public RenderShape getRenderShape(BlockState blockState) {
+    public @NotNull RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return Shapes.empty();
     }
 

@@ -14,10 +14,10 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.CropUtils;
@@ -25,7 +25,7 @@ import thaumcraft.common.lib.utils.CropUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTransport {
+public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTransportBlockEntity {
    public Direction facing = Direction.getOrientation(0);
    private boolean reserve = false;
    public int charges = -1;
@@ -153,7 +153,7 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       } else {
          TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
          if (te != null) {
-            IEssentiaTransport ic = (IEssentiaTransport)te;
+            IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
             if (!ic.canOutputTo(this.facing.getOpposite())) {
                return false;
             }
@@ -185,7 +185,7 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 

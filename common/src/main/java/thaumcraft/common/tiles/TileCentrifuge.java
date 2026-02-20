@@ -6,14 +6,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 
-public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
+public class TileCentrifuge extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity {
    public Aspect aspectOut = null;
    public Aspect aspectIn = null;
    public Direction facing;
@@ -52,7 +53,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       nbttagcompound.setInteger("facing", this.facing.ordinal());
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       AspectList<Aspect>al = new AspectList<>();
       if (this.aspectOut != null) {
          al.addAll(this.aspectOut, 1);
@@ -61,7 +62,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       return al;
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
       if (am > 0 && this.aspectOut == null) {
          this.aspectOut = tt;
          this.markDirty();
@@ -128,7 +129,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -209,13 +210,13 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainer, 
    void drawEssentia() {
       TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.DOWN);
       if (te != null) {
-         IEssentiaTransport ic = (IEssentiaTransport)te;
+         IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
          if (!ic.canOutputTo(Direction.UP)) {
             return;
          }
 
          Aspect ta = null;
-         if (ic.getEssentiaAmount(Direction.UP) > 0 && ic.getSuctionAmount(Direction.UP) < this.getSuctionAmount(Direction.DOWN) && this.getSuctionAmount(Direction.DOWN) >= ic.getMinimumSuction()) {
+         if (ic.getEssentiaAmount(Direction.UP) > 0 && ic.getSuctionAmount(Direction.UP) < this.getSuctionAmount(Direction.DOWN) && this.getSuctionAmount(Direction.DOWN) >= ic.getMinimumSuctionToDrainOut()) {
             ta = ic.getEssentiaType(Direction.UP);
          }
 

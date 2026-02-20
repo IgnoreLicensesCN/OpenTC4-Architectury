@@ -10,7 +10,7 @@ import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import com.linearity.opentc4.utils.StatCollector;
+
 
 public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_discovery";
@@ -44,7 +44,7 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
 
       Thaumcraft.playerKnowledge.addDiscoveredAspect(mc.player.getGameProfile().getName(), aspect);
 
-      String text = StatCollector.translateToLocal("tc.addaspectdiscovery").replace("%n", aspect.getName());
+      String text = Component.translatable("tc.addaspectdiscovery").replace("%n", aspect.getName());
       PlayerNotifications.addNotification("§6" + text, aspect);
 
       mc.player.playSound(

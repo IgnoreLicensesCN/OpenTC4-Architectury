@@ -23,12 +23,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSparkle;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 
 import java.util.List;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class NitorBlock extends Block {
+public class NitorBlock extends SuppressedWarningBlock {
 
     public static final SoundType NITOR_SOUND = new SoundType(
             1.0F, // volume
@@ -57,7 +57,7 @@ public class NitorBlock extends Block {
     );
 
     @Override
-    public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return Shapes.empty();
     }
 
@@ -66,7 +66,7 @@ public class NitorBlock extends Block {
         return SHAPE;
     }
     @Override
-    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return SHAPE;
     }
     @Override
@@ -151,7 +151,7 @@ public class NitorBlock extends Block {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
+    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         return List.of(ThaumcraftItems.NITOR.getDefaultInstance());
     }
 }

@@ -31,9 +31,7 @@ public class TileThaumcraft extends BlockEntity {
         readCustomNBT(compoundTag);
     }
 
-    public void readCustomNBT(CompoundTag compoundTag) {
-        //TODO
-    }
+    public void readCustomNBT(CompoundTag compoundTag) {}
 
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
@@ -41,9 +39,7 @@ public class TileThaumcraft extends BlockEntity {
         writeCustomNBT(compoundTag);
     }
 
-    public void writeCustomNBT(CompoundTag compoundTag) {
-        //TODO
-    }
+    public void writeCustomNBT(CompoundTag compoundTag) {}
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -74,8 +70,7 @@ public class TileThaumcraft extends BlockEntity {
     public void markDirtyAndUpdateSelf(){
         this.setChanged();
         if (this.level != null) {
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(),
-                    this.getBlockState(), Block.UPDATE_ALL);
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
         }
     }
 

@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
@@ -39,7 +39,7 @@ public class ItemGoggles extends ItemArmor implements IRepairEnchantable, IVisDi
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       super.addInformation(stack, player, list, par4);
-      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
    }
 
    @SideOnly(Side.CLIENT)

@@ -186,7 +186,7 @@ public class ThaumcraftCraftingManager {
                 var aspectCount = 0;
                 if (componentItem.getItem() instanceof ICraftingCostAspectOwner<? extends Aspect> costAspectOwner) {
                     var aspectList = costAspectOwner.getCraftingCostCentiVis();
-                    for (var centiVisValue : aspectList.aspectView.values()) {
+                    for (var centiVisValue : aspectList.getAspectView().values()) {
                         craftCostTotalCentiVis += centiVisValue;
                         aspectCount += 1;
                     }
@@ -295,7 +295,7 @@ public class ThaumcraftCraftingManager {
         return ItemBonusAspectCalculator.getBonusAspects(itemstack, sourcetags);
     }
 
-    @Deprecated(forRemoval = true,since = "ItemBasicAspectGetter.getBasicAspects")
+    @Deprecated(forRemoval = true,since = "ItemBasicAspectGetter.getBasicAspectsServer")
     public static AspectList<Aspect> generateBaseAspects(Item item) {
         return generateBaseAspects(item, new ArrayList<>());
     }

@@ -7,13 +7,13 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class PavingStoneTravelBlock extends Block {
+public class PavingStoneTravelBlock extends SuppressedWarningBlock {
     public PavingStoneTravelBlock(Properties properties) {
         super(properties);
     }

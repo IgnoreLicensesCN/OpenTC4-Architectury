@@ -10,7 +10,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
 import thaumcraft.common.tiles.TileAlembic;
@@ -103,7 +103,7 @@ public class TileAlembicRenderer extends TileEntitySpecialRenderer {
          for(Direction dir : Direction.VALID_DIRECTIONS) {
             if (tile.canOutputTo(dir)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(tile.getLevel(), tile.xCoord, tile.yCoord, tile.zCoord, dir);
-               if (te instanceof IEssentiaTransport && !(te instanceof TileTube)) {
+               if (te instanceof IEssentiaTransportBlockEntity && !(te instanceof TileTube)) {
                   GL11.glPushMatrix();
                   GL11.glTranslatef((float)par2 + 0.5F, (float)par4, (float)par6 + 0.5F);
                   switch (dir.ordinal()) {

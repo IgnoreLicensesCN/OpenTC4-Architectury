@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,8 +22,9 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class DeconstructionTableBlock extends Block implements EntityBlock {
+public class DeconstructionTableBlock extends SuppressedWarningBlock implements EntityBlock {
     //TODO:BER
     public DeconstructionTableBlock(Properties properties) {
         super(properties);

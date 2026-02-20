@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.entity.player.Player;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
@@ -113,7 +113,7 @@ public class GuiResearchTable extends GuiContainer {
             RenderHelper.enableGUIStandardItemLighting();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             ResearchItem rr = ResearchItem.getResearch(this.note.key);
-            String ss = StatCollector.translateToLocal("tc.research.copy");
+            String ss = Component.translatable("tc.research.copy");
             GL11.glEnable(GL11.GL_BLEND);
             UtilsFX.bindTexture("textures/gui/guiresearchtable2.png");
             this.drawTexturedModalRect(gx + 100, gy + 21, 184, 224, 48, 16);
@@ -203,8 +203,8 @@ public class GuiResearchTable extends GuiContainer {
 
       this.drawAspectText(var5 + 10, var6 + 40, mx, my);
       if (this.note != null && (this.tileEntity.getStackInSlot(0) == null || this.tileEntity.getStackInSlot(0).getItemDamage() == this.tileEntity.getStackInSlot(0).getMaxDamage())) {
-         int sx = Math.max(this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.researchtable.noink.0")), this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.researchtable.noink.1"))) / 2;
-         UtilsFX.drawCustomTooltip(this, itemRender, this.fontRendererObj, Arrays.asList(StatCollector.translateToLocal("tile.researchtable.noink.0"), StatCollector.translateToLocal("tile.researchtable.noink.1")), gx + 157 - sx, gy + 84, 11);
+         int sx = Math.max(this.fontRendererObj.getStringWidth(Component.translatable("tile.researchtable.noink.0")), this.fontRendererObj.getStringWidth(Component.translatable("tile.researchtable.noink.1"))) / 2;
+         UtilsFX.drawCustomTooltip(this, itemRender, this.fontRendererObj, Arrays.asList(Component.translatable("tile.researchtable.noink.0"), Component.translatable("tile.researchtable.noink.1")), gx + 157 - sx, gy + 84, 11);
       }
 
    }

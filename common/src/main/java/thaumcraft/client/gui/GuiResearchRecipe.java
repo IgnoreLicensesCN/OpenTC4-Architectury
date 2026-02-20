@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.ShapedRecipes;
 import net.minecraft.world.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTBase;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.lwjgl.opengl.GL11;
@@ -188,7 +188,7 @@ public class GuiResearchRecipe extends GuiScreen {
             int mx = par1 - (sw + 118);
             int my = par2 - (sh + 189);
             if (mx >= 0 && my >= 0 && mx < 20 && my < 12) {
-                this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("recipe.return"), par1, par2, 16777215);
+                this.fontRendererObj.drawStringWithShadow(Component.translatable("recipe.return"), par1, par2, 16777215);
             }
         }
 
@@ -317,7 +317,7 @@ public class GuiResearchRecipe extends GuiScreen {
             List<ItemStack> items = (List) r.get(4);
             GL11.glPushMatrix();
             int start = side * 152;
-            String text = StatCollector.translateToLocal("recipe.type.construct");
+            String text = Component.translatable("recipe.type.construct");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             int mposx = mx;
@@ -411,7 +411,7 @@ public class GuiResearchRecipe extends GuiScreen {
                             List addtext = InventoryUtils.cycleItemStack(items.get(count)).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                             Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(items.get(count)));
                             if (ref != null && !ref[0].equals(this.research.key)) {
-                                addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                                addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                                 this.reference.add(
                                         Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1])
                                 );
@@ -476,7 +476,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         this.fontRendererObj.drawString("=", x + start + 7 + 32, y + 12 + count * 50, 10066329);
                         this.fontRendererObj.drawString("+", x + start + 4 + 79, y + 12 + count * 50, 10066329);
                     } else {
-                        this.fr.drawString(StatCollector.translateToLocal("tc.aspect.primal"), x + start + 48, y + 12 + count * 50, 4473924);
+                        this.fr.drawString(Component.translatable("tc.aspect.primal"), x + start + 48, y + 12 + count * 50, 4473924);
                     }
                 }
 
@@ -599,7 +599,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 this.drawCustomTooltip(this, itemRenderer, this.fontRendererObj, InventoryUtils.cycleItemStack(recipe.getRecipeOutput()).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips), mx, my, 11);
             }
 
-            String text = StatCollector.translateToLocal("recipe.type.arcane");
+            String text = Component.translatable("recipe.type.arcane");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             if (recipe != null && recipe instanceof ShapedArcaneRecipe) {
@@ -630,7 +630,7 @@ public class GuiResearchRecipe extends GuiScreen {
                             List addtext = InventoryUtils.cycleItemStack(items[i + j * rw]).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                             Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(items[i + j * rw]));
                             if (ref != null && !ref[0].equals(this.research.key)) {
-                                addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                                addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                                 this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                             }
 
@@ -663,7 +663,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         List addtext = InventoryUtils.cycleItemStack(items.get(i)).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                         Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(items.get(i)));
                         if (ref != null && !ref[0].equals(this.research.key)) {
-                            addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                            addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                             this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                         }
 
@@ -729,7 +729,7 @@ public class GuiResearchRecipe extends GuiScreen {
             }
 
             if (recipe != null && (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe)) {
-                String text = StatCollector.translateToLocal("recipe.type.workbench");
+                String text = Component.translatable("recipe.type.workbench");
                 int offset = this.fontRendererObj.getStringWidth(text);
                 this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
                 int rw = 0;
@@ -768,7 +768,7 @@ public class GuiResearchRecipe extends GuiScreen {
                             List addtext = InventoryUtils.cycleItemStack(items[i + j * rw]).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                             Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(items[i + j * rw]));
                             if (ref != null && !ref[0].equals(this.research.key)) {
-                                addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                                addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                                 this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                             }
 
@@ -779,7 +779,7 @@ public class GuiResearchRecipe extends GuiScreen {
             }
 
             if (recipe != null && (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe)) {
-                String text = StatCollector.translateToLocal("recipe.type.workbenchshapeless");
+                String text = Component.translatable("recipe.type.workbenchshapeless");
                 int offset = this.fontRendererObj.getStringWidth(text);
                 this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
                 List<Object> items = null;
@@ -810,7 +810,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         List addtext = InventoryUtils.cycleItemStack(((List) var27).get(i)).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                         Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(((List) var27).get(i)));
                         if (ref != null && !ref[0].equals(this.research.key)) {
-                            addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                            addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                             this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                         }
 
@@ -844,7 +844,7 @@ public class GuiResearchRecipe extends GuiScreen {
         if (rc != null) {
             GL11.glPushMatrix();
             int start = side * 152;
-            String text = StatCollector.translateToLocal("recipe.type.crucible");
+            String text = Component.translatable("recipe.type.crucible");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             UtilsFX.bindTexture(this.tex2);
@@ -909,7 +909,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         ;
                 Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(rc.catalyst));
                 if (ref != null && !ref[0].equals(this.research.key)) {
-                    addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                    addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                     this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                 }
 
@@ -948,7 +948,7 @@ public class GuiResearchRecipe extends GuiScreen {
         if (in != null && out != null) {
             GL11.glPushMatrix();
             int start = side * 152;
-            String text = StatCollector.translateToLocal("recipe.type.smelting");
+            String text = Component.translatable("recipe.type.smelting");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             UtilsFX.bindTexture(this.tex2);
@@ -983,7 +983,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 List addtext = in.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                 Object[] ref = this.findRecipeReference(in);
                 if (ref != null && !ref[0].equals(this.research.key)) {
-                    addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                    addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                     this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                 }
 
@@ -1016,11 +1016,11 @@ public class GuiResearchRecipe extends GuiScreen {
         if (ri != null) {
             GL11.glPushMatrix();
             int start = side * 152;
-            String text = StatCollector.translateToLocal("recipe.type.infusion");
+            String text = Component.translatable("recipe.type.infusion");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             int inst = Math.min(5, ri.getInstability() / 2);
-            text = StatCollector.translateToLocal("tc.inst") + " " + StatCollector.translateToLocal("tc.inst." + inst);
+            text = Component.translatable("tc.inst") + " " + Component.translatable("tc.inst." + inst);
             offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y + 194, 5263440);
             UtilsFX.bindTexture(this.tex2);
@@ -1125,7 +1125,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 List addtext = InventoryUtils.cycleItemStack(ri.getRecipeInput()).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                 Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(ri.getRecipeInput()));
                 if (ref != null && !ref[0].equals(this.research.key)) {
-                    addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                    addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                     this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                 }
 
@@ -1143,7 +1143,7 @@ public class GuiResearchRecipe extends GuiScreen {
                     List addtext = InventoryUtils.cycleItemStack(ingredient).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                     Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(ingredient));
                     if (ref != null && !ref[0].equals(this.research.key)) {
-                        addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                        addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                         this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                     }
 
@@ -1186,11 +1186,11 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glPushMatrix();
             int start = side * 152;
             int level = (int) (1L + System.currentTimeMillis() / 1000L % (long) ri.enchantment.getMaxLevel());
-            String text = StatCollector.translateToLocal("recipe.type.infusionenchantment");
+            String text = Component.translatable("recipe.type.infusionenchantment");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
             int inst = Math.min(5, ri.instability / 2);
-            text = StatCollector.translateToLocal("tc.inst") + " " + StatCollector.translateToLocal("tc.inst." + inst);
+            text = Component.translatable("tc.inst") + " " + Component.translatable("tc.inst." + inst);
             offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y + 194, 5263440);
             text = ri.enchantment.getTranslatedName(level);
@@ -1274,7 +1274,7 @@ public class GuiResearchRecipe extends GuiScreen {
                     List addtext = InventoryUtils.cycleItemStack(ingredient).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                     Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(ingredient));
                     if (ref != null && !ref[0].equals(this.research.key)) {
-                        addtext.add("§8§o" + StatCollector.translateToLocal("recipe.clickthrough"));
+                        addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                         this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
                     }
 

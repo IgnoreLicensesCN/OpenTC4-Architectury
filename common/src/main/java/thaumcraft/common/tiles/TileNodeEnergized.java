@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles;
 
 @Deprecated(forRemoval = true)
-public class TileNodeEnergized /*extends TileVisNode implements IAspectContainer*/ {
+public class TileNodeEnergized /*extends TileVisNode implements IAspectContainerBlockEntity*/ {
 //   private AspectList<Aspect>auraBase;
 //   AspectList<Aspect> visBase;
 //   AspectList<Aspect> vis;
@@ -178,7 +178,7 @@ public class TileNodeEnergized /*extends TileVisNode implements IAspectContainer
 //      return false;
 //   }
 //
-//   public int addToContainer(Aspect tag, int amount) {
+//   public int addIntoContainer(Aspect tag, int amount) {
 //      return 0;
 //   }
 //

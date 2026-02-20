@@ -1,11 +1,12 @@
 package thaumcraft.common.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 
-public class TileTubeFilter extends TileTube implements IAspectContainer {
+public class TileTubeFilter extends TileTube implements IAspectContainerBlockEntity {
    public Aspect aspectFilter = null;
 
    public void readCustomNBT(NBTTagCompound nbttagcompound) {
@@ -25,7 +26,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
       super.calculateSuction(this.aspectFilter, restrict, dir);
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.aspectFilter != null ? (new AspectList<>()).addAll(this.aspectFilter, -1) : null;
    }
 
@@ -36,7 +37,7 @@ public class TileTubeFilter extends TileTube implements IAspectContainer {
       return false;
    }
 
-   public int addToContainer(Aspect tag, int amount) {
+   public int addIntoContainer(Aspect tag, int amount) {
       return 0;
    }
 

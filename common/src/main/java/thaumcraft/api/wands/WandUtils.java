@@ -113,12 +113,12 @@ public class WandUtils {
 //                    if (focus != null) {
 //                        int amt = ((ItemFocusBasic) focus.getItem()).getCentiVisCost(focus).getAmount(aspect);
 //                        if (amt > 0) {
-//                            text = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
+//                            text = "§r, " + decimalFormat.format((float) amt * mod / 100.0F) + " " + Component.translatable(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1");
 //                        }
 //                    }
 //
 //                    if (Thaumcraft.proxy.isShiftKeyDown()) {
-//                        list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount + ", §o(" + consumption + "% " + StatCollector.translateToLocal("tc.vis.cost") + ")" + text);
+//                        list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount + ", §o(" + consumption + "% " + Component.translatable("tc.vis.cost") + ")" + text);
 //                    } else {
 //                        if (tt.length() > 0) {
 //                            tt.append(" | ");
@@ -132,11 +132,11 @@ public class WandUtils {
 //            if (!Thaumcraft.proxy.isShiftKeyDown() && num > 0) {
 //                list.add(tt.toString());
 //                tot /= num;
-//                tt2 = " (" + tot + "% " + StatCollector.translateToLocal("tc.vis.costavg") + ")";
+//                tt2 = " (" + tot + "% " + Component.translatable("tc.vis.costavg") + ")";
 //            }
         }
 
-//        list.add(pos, ChatFormatting.GOLD + StatCollector.translateToLocal("wandItem.capacity.text") + " " + this.getMaxVis(wandStack) / 100 + "§r" + tt2);
+//        list.add(pos, ChatFormatting.GOLD + Component.translatable("wandItem.capacity.text") + " " + this.getMaxVis(wandStack) / 100 + "§r" + tt2);
 
         if (wandItem instanceof IWandFocusEngine engine && engine.canApplyFocus()) {
             var focus = engine.getFocusItemStack(wandStack);

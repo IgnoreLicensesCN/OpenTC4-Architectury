@@ -13,8 +13,9 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.eldritch.EldritchObeliskBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class EldritchObeliskBlock extends Block implements EntityBlock {
+public class EldritchObeliskBlock extends SuppressedWarningBlock implements EntityBlock {
     public EldritchObeliskBlock(Properties properties) {
         super(properties);
     }

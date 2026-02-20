@@ -18,9 +18,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class TallowCandleBlock extends Block implements IInfusionStabiliser {
+public class TallowCandleBlock extends SuppressedWarningBlock implements IInfusionStabiliser {
     public static final IntegerProperty WAX = IntegerProperty.create("wax", 1, 5);
     public final int color;
     public TallowCandleBlock(Properties properties,int color) {
@@ -50,7 +52,7 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
     }//torch
 
     @Override
-    public BlockState updateShape(
+    public @NotNull BlockState updateShape(
             BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2
     ) {
         return direction == Direction.DOWN && !this.canSurvive(blockState, levelAccessor, blockPos)
@@ -60,7 +62,7 @@ public class TallowCandleBlock extends Block implements IInfusionStabiliser {
 
     public static final VoxelShape SHAPE = Block.box(6.0f, 0.0F, 6.0f, 10.0f, 8, 10.0f);
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }//torch
 

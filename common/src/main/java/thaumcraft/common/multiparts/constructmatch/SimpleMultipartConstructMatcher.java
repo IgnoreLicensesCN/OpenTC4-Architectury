@@ -77,7 +77,7 @@ public record SimpleMultipartConstructMatcher(
             for (VecTransformations.Mirror3D mirror : allowedMirrors) {
 
                 if (matchWithTransform(level, transformBasePosInWorld, transformBasePosInMultipart, rotation, mirror)) {
-                    return new MultipartMatchInfo(rotation, mirror);
+                    return MultipartMatchInfo.of(rotation, mirror);
                 }
 
             }

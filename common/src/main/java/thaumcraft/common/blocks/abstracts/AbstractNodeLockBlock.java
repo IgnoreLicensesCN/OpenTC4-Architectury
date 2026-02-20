@@ -9,9 +9,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.nodes.INodeLockBlock;
 
-public abstract class AbstractNodeLockBlock extends Block implements INodeLockBlock {
+public abstract class AbstractNodeLockBlock extends SuppressedWarningBlock implements INodeLockBlock {
     public AbstractNodeLockBlock(Properties properties) {
         super(properties);
     }
@@ -27,15 +28,17 @@ public abstract class AbstractNodeLockBlock extends Block implements INodeLockBl
     );
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
-    }@Override
-    public VoxelShape getOcclusionShape(
+    }
+
+    @Override
+    public @NotNull VoxelShape getOcclusionShape(
             BlockState state,
             BlockGetter level,
             BlockPos pos

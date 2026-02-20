@@ -1,7 +1,5 @@
 package thaumcraft.common.tiles.eldritch;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -56,7 +54,7 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        if (Platform.getEnvironment() != Env.CLIENT) {return;}
+        if (!level.isClientSide) {return;}
         if (!(level instanceof ClientLevel clientLevel)) {
             return;
         }
@@ -86,7 +84,7 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
         if (blockEntityType != ThaumcraftBlockEntities.RUNED_STONE){
             return null;
         }
-        if (Platform.getEnvironment() == Env.CLIENT) {
+        if (level0.isClientSide) {
             return null;
         }
         return (level, blockPos, blockState, blockEntity) ->

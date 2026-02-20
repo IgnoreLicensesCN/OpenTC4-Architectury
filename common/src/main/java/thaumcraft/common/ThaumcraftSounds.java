@@ -22,6 +22,8 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_PUMP = new ResourceLocation(Thaumcraft.MOD_ID,"pump");
         public static final ResourceLocation RES_ICE = new ResourceLocation(Thaumcraft.MOD_ID,"ice");
         public static final ResourceLocation RES_JACOBS = new ResourceLocation(Thaumcraft.MOD_ID,"jacobs");
+        public static final ResourceLocation RES_ALEMBIC_KNOCK = new ResourceLocation(Thaumcraft.MOD_ID,"alembicknock");
+        public static final ResourceLocation RES_PAGE = new ResourceLocation(Thaumcraft.MOD_ID,"page");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -41,4 +43,6 @@ public class ThaumcraftSounds {
     public static final SoundEvent PUMP = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PUMP);
     public static final SoundEvent ICE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ICE);
     public static final SoundEvent JACOBS = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_JACOBS);
+    public static final SoundEvent ALEMBIC_KNOCK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_ALEMBIC_KNOCK);
+    public static final SoundEvent PAGE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PAGE);
 }

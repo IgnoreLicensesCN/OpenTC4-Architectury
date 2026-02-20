@@ -6,13 +6,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 
-public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEssentiaTransport {
+public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEssentiaTransportBlockEntity {
    public Direction orientation = Direction.getOrientation(2);
 
    public boolean canUpdate() {
@@ -49,7 +49,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       for(Direction facing : Direction.VALID_DIRECTIONS) {
          TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, facing);
          if (te != null) {
-            IEssentiaTransport ic = (IEssentiaTransport)te;
+            IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
             if (!ic.canOutputTo(facing.getOpposite())) {
                return false;
             }
@@ -102,7 +102,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return 0;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 

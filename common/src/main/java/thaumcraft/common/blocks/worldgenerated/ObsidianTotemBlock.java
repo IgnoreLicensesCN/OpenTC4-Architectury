@@ -13,8 +13,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class ObsidianTotemBlock extends Block {
+public class ObsidianTotemBlock extends SuppressedWarningBlock {
     public static final IntegerProperty RENDER_STATE = IntegerProperty.create("render_state", 0, 5);
     public static final int RENDER_STATE_PROPERTY_VALUE_UP_HAS_TOTEM = 0;
     public static final int RENDER_STATE_PROPERTY_VALUE_SINGLE_TOTEM = 1;

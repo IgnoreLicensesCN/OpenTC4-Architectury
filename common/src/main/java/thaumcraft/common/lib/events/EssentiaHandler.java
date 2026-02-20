@@ -6,7 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectSource;
+import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSourceS2C;
 import thaumcraft.common.tiles.TileMirrorEssentia;
@@ -35,12 +35,12 @@ public class EssentiaHandler {
       } else {
          for(WorldCoordinates source : sources.get(tileLoc)) {
             BlockEntity sourceTile = tile.getLevel().getBlockEntity(new BlockPos(source.x, source.y, source.z));
-            if (!(sourceTile instanceof IAspectSource)) {
+            if (!(sourceTile instanceof IRemoteDrainableAspectSourceBlockEntity)) {
                break;
             }
 
             if (!ignoreMirror || !(sourceTile instanceof TileMirrorEssentia)) {
-               IAspectSource as = (IAspectSource)sourceTile;
+               IRemoteDrainableAspectSourceBlockEntity as = (IRemoteDrainableAspectSourceBlockEntity)sourceTile;
                if (as.takeFromContainer(aspect, 1)) {
                   SimpleNetworkWrapper var10000 = PacketHandler.INSTANCE;
                   PacketFXEssentiaSourceS2C var10001 = new PacketFXEssentiaSourceS2C(
@@ -79,11 +79,11 @@ public class EssentiaHandler {
       } else {
          for(WorldCoordinates source : sources.get(tileLoc)) {
             BlockEntity sourceTile = world.getBlockEntity(new BlockPos(source.x, source.y, source.z));
-            if (!(sourceTile instanceof IAspectSource)) {
+            if (!(sourceTile instanceof IRemoteDrainableAspectSourceBlockEntity)) {
                break;
             }
 
-            IAspectSource as = (IAspectSource)sourceTile;
+            IRemoteDrainableAspectSourceBlockEntity as = (IRemoteDrainableAspectSourceBlockEntity)sourceTile;
             if (as.doesContainerContainAmount(aspect, 1)) {
                return true;
             }
@@ -145,7 +145,7 @@ public class EssentiaHandler {
                   BlockEntity te = world.getBlockEntity(new BlockPos(xx, yy, zz));
                   String worldId = world.dimension().location().toString();
 
-                  if (te instanceof IAspectSource && (
+                  if (te instanceof IRemoteDrainableAspectSourceBlockEntity && (
                           !(sourceTile instanceof TileMirrorEssentia)
                           || !(te instanceof TileMirrorEssentia)
                                   || sourcePos.getX() != ((TileMirrorEssentia) te).linkX

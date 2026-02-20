@@ -23,8 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.WardingStoneBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class PavingStoneWardingBlock extends Block implements EntityBlock {
+public class PavingStoneWardingBlock extends SuppressedWarningBlock implements EntityBlock {
     public PavingStoneWardingBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(

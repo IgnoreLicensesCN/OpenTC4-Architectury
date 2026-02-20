@@ -7,10 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
@@ -281,8 +280,8 @@ public class GolemHelper {
             if (res.getSuctionAmount(res.facing) > 0 && (res.getSuctionType(res.facing) == null || res.getSuctionType(res.facing) == golem.essentia) && te.getDistanceFrom(golem.getHomePosition().posX, golem.getHomePosition().posY, golem.getHomePosition().posZ) <= (double)dmod) {
                others.add(te);
             }
-         } else if (marker.dim == world.dimension() && te instanceof IEssentiaTransport) {
-            IEssentiaTransport trans = (IEssentiaTransport)te;
+         } else if (marker.dim == world.dimension() && te instanceof IEssentiaTransportBlockEntity) {
+            IEssentiaTransportBlockEntity trans = (IEssentiaTransportBlockEntity)te;
             if (golem.essentia != null && golem.essentiaAmount > 0 && trans.canInputFrom(Direction.getOrientation(marker.side)) && trans.getSuctionAmount(Direction.getOrientation(marker.side)) > 0 && (trans.getSuctionType(Direction.getOrientation(marker.side)) == null || trans.getSuctionType(Direction.getOrientation(marker.side)) == golem.essentia) && te.getDistanceFrom(golem.getHomePosition().posX, golem.getHomePosition().posY, golem.getHomePosition().posZ) <= (double)dmod) {
                others.add(te);
             }

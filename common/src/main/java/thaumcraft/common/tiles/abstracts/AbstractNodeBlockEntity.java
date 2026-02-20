@@ -241,7 +241,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 }
 
                 if (tap > 0) {
-                    var serverFlag = Platform.getEnvironment() == Env.SERVER;
+                    var serverFlag = !this.level.isClientSide;
                     int remainingCentiVis = visContainer.addCentiVis(
                             usingWand, aspect, tap * CENTIVIS_MULTIPLIER, serverFlag);
                     if (remainingCentiVis < tap) {
@@ -270,7 +270,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             }
         }
 
-        if ((Platform.getEnvironment() == Env.CLIENT)) {
+        if ((this.level.isClientSide)) {
             int r = this.targetColor.getRed();
             int g = this.targetColor.getGreen();
             int b = this.targetColor.getBlue();

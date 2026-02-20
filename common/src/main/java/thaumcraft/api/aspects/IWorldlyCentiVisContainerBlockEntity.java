@@ -1,6 +1,6 @@
 package thaumcraft.api.aspects;
 
-public interface IWorldlyCentiVisContainer<Asp extends Aspect> {
+public interface IWorldlyCentiVisContainerBlockEntity<Asp extends Aspect> {
     AspectList<Asp> getAspects();
 
 

@@ -21,7 +21,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     public AspectList<Aspect> data;
 
     public PacketSyncAspectsS2C(Player player) {
-        this.data = Thaumcraft.playerKnowledge.getAspectsDiscovered(player.getGameProfile().getName());
+        this.data = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
     }
 
     /**
@@ -36,7 +36,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeMap(
-                data.aspectView,
+                data.getAspectView(),
                 (aspBuf,asp) -> aspBuf.writeResourceLocation(asp.aspectKey),
                 FriendlyByteBuf::writeInt
         );
@@ -57,7 +57,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         data.forEach(
                 (asp,amount) ->Thaumcraft.researchManager.completeAspect(
-                        context.getPlayer().getGameProfile().getName(), asp, amount)
+                        context.getPlayer(), asp, amount)
         );
     }
 

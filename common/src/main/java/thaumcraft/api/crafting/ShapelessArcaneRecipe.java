@@ -48,7 +48,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     {
         this.resultGenerator = resultGenerator;
         this.research = research;
-        this.aspects = new UnmodifiableCentiVisList<>(aspects.aspectView);
+        this.aspects = new UnmodifiableCentiVisList<>(aspects.getAspectView());
         this.input = recipe;
         this.inputSampleArr = new ItemStack[input.length];
         this.outMatcher = outMatcher;

@@ -14,16 +14,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.common.blocks.abstracts.IFurnaceAttachmentBlock;
 import thaumcraft.common.blocks.abstracts.IInfernalFurnaceTickDiscounter;
+import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 
 import java.util.Objects;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //TODO:Render(BlockEntity may required)
-public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDiscounter, IFurnaceAttachmentBlock {
+public class ArcaneBellowBlock extends SuppressedWarningBlock implements IInfernalFurnaceTickDiscounter, IFurnaceAttachmentBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneBellowBlock(Properties properties) {
         super(properties);
@@ -47,11 +49,11 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
 
     public static final VoxelShape SHAPE = Block.box(16*0.1, 0, 16*0.1, 16*0.9, 16, 16*0.9);
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
@@ -83,16 +85,23 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
         return 20;
     }
 
-    @Override
-    public void onVanillaFurnaceBurning(Level level, AbstractFurnaceBlockEntity furnaceBlockEntity, BlockState furnaceState, BlockPos furnacePos, BlockState attachmentState, BlockPos attachmentPos, CallbackInfo ci) {
+    protected boolean attachedToBlock(Level level,BlockPos attachmentPos,BlockState attachmentState,BlockPos toAttachPos){
         if (level.hasNeighborSignal(attachmentPos)){
-            return;
+            return false;
         }
-        if (!(attachmentState.getBlock() instanceof ArcaneBellowBlock)) {
-            return;
+        if (!(attachmentState.getBlock() == this)) {
+            return false;
         }
         var facingDir = attachmentState.getValue(FACING);
-        if (!Objects.equals(attachmentPos.relative(facingDir),furnacePos)){
+        if (!Objects.equals(attachmentPos.relative(facingDir),toAttachPos)){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onVanillaFurnaceBurning(Level level, AbstractFurnaceBlockEntity furnaceBlockEntity, BlockState furnaceState, BlockPos furnacePos, BlockState attachmentState, BlockPos attachmentPos, CallbackInfo ci) {
+        if (!attachedToBlock(level, attachmentPos, attachmentState, furnacePos)) {
             return;
         }
         AbstractFurnaceBlockEntityAccessor accessor = (AbstractFurnaceBlockEntityAccessor) furnaceBlockEntity;
@@ -103,5 +112,13 @@ public class ArcaneBellowBlock extends Block implements IInfernalFurnaceTickDisc
             accessor.opentc4$setCookingProgress(Math.min(currentMaxProgress-1, currentProgress + 1));
 //            AbstractFurnaceBlockEntity.serverTick(level,furnacePos,furnaceState,furnaceBlockEntity);
         }
+    }
+
+    @Override
+    public void attachmentOnCalculatingRequiredCookTime(Level level, IThaumcraftFurnace be, BlockState furnaceState, BlockPos furnacePos, BlockState attachmentState, BlockPos attachmentPos, int defaultFurnaceRequiredCookTime) {
+        if (!attachedToBlock(level, attachmentPos, attachmentState, furnacePos)) {
+            return;
+        }
+        be.setRequiredCookTime((int)(be.getRequiredCookTime() - defaultFurnaceRequiredCookTime*0.125));
     }
 }

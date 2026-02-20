@@ -67,7 +67,7 @@ public class GetObjectTags {
         if (tmp == null) {
             return null;
         }
-        for (Integer size : tmp.aspectView.values()) {
+        for (Integer size : tmp.getAspectView().values()) {
             if (size > 64) {
                 return truncateAspectList(tmp);
             }

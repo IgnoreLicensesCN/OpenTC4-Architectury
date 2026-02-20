@@ -12,10 +12,11 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
@@ -24,7 +25,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 
-public class TileWandPedestal extends TileThaumcraft implements ISidedInventory, IAspectContainer {
+public class TileWandPedestal extends TileThaumcraft implements ISidedInventory, IAspectContainerBlockEntity {
    private static final int[] slots = new int[]{0};
    private ItemStack[] inventory = new ItemStack[1];
    private String customName;
@@ -350,7 +351,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
       return true;
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof WandCastingItem) {
          WandCastingItem wand = (WandCastingItem)this.getStackInSlot(0).getItem();
          AspectList<Aspect>al = wand.getAllVis(this.getStackInSlot(0));
@@ -379,7 +380,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
    public void setAspects(AspectList<Aspect>aspects) {
    }
 
-   public int addToContainer(Aspect tag, int amount) {
+   public int addIntoContainer(Aspect tag, int amount) {
       return 0;
    }
 

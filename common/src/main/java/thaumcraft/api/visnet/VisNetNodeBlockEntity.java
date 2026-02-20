@@ -1,8 +1,6 @@
 package thaumcraft.api.visnet;
 
 import com.linearity.opentc4.OpenTC4;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -105,7 +103,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public void tick() {
         if (processSavedLink()){return;}
         if (level == null) {return;}
-        if (Platform.getEnvironment() != Env.CLIENT && ((nodeCounter++) % 40==0 || nodeRefresh)) {
+        if (!level.isClientSide && ((nodeCounter++) % 40==0 || nodeRefresh)) {
             var level = getLevel();
             if (level == null) {return;}
             //check for changes

@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class ItemGolemDecoration extends Item {
    }
 
    public String getItemStackDisplayName(ItemStack stack) {
-      return StatCollector.translateToLocal("item.ItemGolemDecoration.name") + ": " + super.getItemStackDisplayName(stack);
+      return Component.translatable("item.ItemGolemDecoration.name") + ": " + super.getItemStackDisplayName(stack);
    }
 
    public String getUnlocalizedName(ItemStack par1ItemStack) {

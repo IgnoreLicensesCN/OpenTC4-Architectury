@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import tc4tweak.ClientUtils;
@@ -563,8 +563,8 @@ public class GuiResearchBrowser extends GuiScreen {
 
             if (!this.canUnlockResearch(this.currentHighlight)) {
                 GL11.glPushMatrix();
-                int var42 = (int) Math.max((float) fr.getStringWidth(var34), (float) fr.getStringWidth(StatCollector.translateToLocal("tc.researchmissing")) / 1.5F);
-                String var39 = StatCollector.translateToLocal("tc.researchmissing");
+                int var42 = (int) Math.max((float) fr.getStringWidth(var34), (float) fr.getStringWidth(Component.translatable("tc.researchmissing")) / 1.5F);
+                String var39 = Component.translatable("tc.researchmissing");
                 int var30 = fr.splitStringWidth(var39, var42 * 2);
                 this.drawGradientRect(var26 - 3, var27 - 3, var26 + var42 + 3, var27 + var30 + 10, -1073741824, -1073741824);
                 GL11.glTranslatef((float) var26, (float) (var27 + 12), 0.0F);
@@ -578,12 +578,12 @@ public class GuiResearchBrowser extends GuiScreen {
                 int var41 = fr.splitStringWidth(var34, var42) + 5;
                 if (primary) {
                     var99 += 9;
-                    var42 = (int) Math.max((float) var42, (float) fr.getStringWidth(StatCollector.translateToLocal("tc.research.shortprim")) / 1.9F);
+                    var42 = (int) Math.max((float) var42, (float) fr.getStringWidth(Component.translatable("tc.research.shortprim")) / 1.9F);
                 }
 
                 if (secondary) {
                     var99 += 29;
-                    var42 = (int) Math.max((float) var42, (float) fr.getStringWidth(StatCollector.translateToLocal("tc.research.short")) / 1.9F);
+                    var42 = (int) Math.max((float) var42, (float) fr.getStringWidth(Component.translatable("tc.research.short")) / 1.9F);
                 }
 
                 int warp = ThaumcraftApi.getWarp(this.currentHighlight.key);
@@ -591,8 +591,8 @@ public class GuiResearchBrowser extends GuiScreen {
                     warp = 5;
                 }
 
-                String ws = StatCollector.translateToLocal("tc.forbidden");
-                String wr = StatCollector.translateToLocal("tc.forbidden.level." + warp);
+                String ws = Component.translatable("tc.forbidden");
+                String wr = Component.translatable("tc.forbidden.level." + warp);
                 String wte = ws.replaceAll("%n", wr);
                 if (ThaumcraftApi.getWarp(this.currentHighlight.key) > 0) {
                     var99 += 9;
@@ -620,11 +620,11 @@ public class GuiResearchBrowser extends GuiScreen {
                     GL11.glTranslatef((float) var26, (float) (var27 + var41 + 8), 0.0F);
                     GL11.glScalef(0.5F, 0.5F, 0.5F);
                     if (ResearchManager.getAlreadyExistsResearchSlot(this.mc.thePlayer, this.currentHighlight.key) >= 0) {
-                        this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.hasnote"), 0, 0, 16753920);
+                        this.fontRendererObj.drawStringWithShadow(Component.translatable("tc.research.hasnote"), 0, 0, 16753920);
                     } else if (this.hasScribestuff) {
-                        this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.getprim"), 0, 0, 8900331);
+                        this.fontRendererObj.drawStringWithShadow(Component.translatable("tc.research.getprim"), 0, 0, 8900331);
                     } else {
-                        this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.shortprim"), 0, 0, 14423100);
+                        this.fontRendererObj.drawStringWithShadow(Component.translatable("tc.research.shortprim"), 0, 0, 14423100);
                     }
 
                     GL11.glPopMatrix();
@@ -662,9 +662,9 @@ public class GuiResearchBrowser extends GuiScreen {
                     GL11.glTranslatef((float) var26, (float) (var27 + var41 + 27), 0.0F);
                     GL11.glScalef(0.5F, 0.5F, 0.5F);
                     if (enough) {
-                        this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.purchase"), 0, 0, 8900331);
+                        this.fontRendererObj.drawStringWithShadow(Component.translatable("tc.research.purchase"), 0, 0, 8900331);
                     } else {
-                        this.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("tc.research.short"), 0, 0, 14423100);
+                        this.fontRendererObj.drawStringWithShadow(Component.translatable("tc.research.short"), 0, 0, 14423100);
                     }
 
                     GL11.glPopMatrix();
@@ -702,7 +702,7 @@ public class GuiResearchBrowser extends GuiScreen {
             } else if (this.hasScribestuff && ResearchManager.getAlreadyExistsResearchSlot(this.mc.thePlayer, this.currentHighlight.key) == -1) {
                 PacketHandler.INSTANCE.sendToServer(new PacketPlayerCompleteToServer(this.currentHighlight.key, this.mc.thePlayer.getCommandSenderName(), this.mc.thePlayer.level().dimension(), (byte) 1));
                 this.popuptime = System.currentTimeMillis() + 3000L;
-                this.popupmessage = (new ChatComponentTranslation(StatCollector.translateToLocal("tc.research.popup"), this.currentHighlight.getName())).getUnformattedText();
+                this.popupmessage = (new ChatComponentTranslation(Component.translatable("tc.research.popup"), this.currentHighlight.getName())).getUnformattedText();
             }
         } else if (this.currentHighlight != null && completedResearch.get(this.player).contains(this.currentHighlight.key)) {
             this.mc.displayGuiScreen(new GuiResearchRecipe(this.currentHighlight, 0, this.guiMapX, this.guiMapY));

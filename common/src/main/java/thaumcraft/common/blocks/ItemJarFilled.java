@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -57,7 +57,7 @@ public class ItemJarFilled extends Item implements IEssentiaContainerItem {
          if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
             list.add("§5" + tag.getName());
          } else {
-            list.add("§5" + StatCollector.translateToLocal("tc.aspect.unknown"));
+            list.add("§5" + Component.translatable("tc.aspect.unknown"));
          }
       }
 

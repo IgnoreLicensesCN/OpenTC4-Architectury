@@ -15,8 +15,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.eldritch.EldritchVoidBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class EldritchVoidBlock extends Block implements EntityBlock {
+public class EldritchVoidBlock extends SuppressedWarningBlock implements EntityBlock {
     public EldritchVoidBlock(Properties properties) {
         super(properties);
     }

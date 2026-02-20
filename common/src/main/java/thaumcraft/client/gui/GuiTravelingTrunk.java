@@ -3,7 +3,7 @@ package thaumcraft.client.gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.entities.golems.ContainerTravelingTrunk;
@@ -25,7 +25,7 @@ public class GuiTravelingTrunk extends GuiContainer {
    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
       GL11.glPushMatrix();
       GL11.glScaled(0.5F, 0.5F, 0.5F);
-      this.fontRendererObj.drawString(this.themob.func_152113_b() + StatCollector.translateToLocal("entity.trunk.guiname"), 8, 4, 12624112);
+      this.fontRendererObj.drawString(this.themob.func_152113_b() + Component.translatable("entity.trunk.guiname"), 8, 4, 12624112);
       GL11.glPopMatrix();
    }
 

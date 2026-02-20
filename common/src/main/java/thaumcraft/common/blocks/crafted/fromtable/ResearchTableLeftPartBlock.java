@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted.fromtable;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -14,15 +12,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.*;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
@@ -37,7 +34,7 @@ import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 //        ↓S
 //LeftPart(facing:E→,with BE  and real #use) RightPart(facing:←W)
 //
-public class ResearchTableLeftPartBlock extends Block implements EntityBlock {
+public class ResearchTableLeftPartBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     @Override
@@ -67,7 +64,7 @@ public class ResearchTableLeftPartBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
             if (level.getBlockEntity(blockPos) instanceof ResearchTableBlockEntity researchTableBlockEntity) {
                 openExtendedMenu(serverPlayer,researchTableBlockEntity);
@@ -79,7 +76,7 @@ public class ResearchTableLeftPartBlock extends Block implements EntityBlock {
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        if (Platform.getEnvironment() != Env.SERVER) return;
+        if (!(level != null && !level.isClientSide)) return;
         if (!blockState.is(blockState2.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof Container container) {
@@ -112,4 +109,5 @@ public class ResearchTableLeftPartBlock extends Block implements EntityBlock {
         super.neighborChanged(blockState, level, blockPos, block, blockPos2, bl);
         level.scheduleTick(blockPos, this, 1);
     }
+
 }

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -80,7 +80,7 @@ public class GuiFocalManipulator extends GuiContainer {
          mposy = par2 - (baseY + 48);
          if (mposx >= 0 && mposy >= 0 && mposx < 36 && mposy < 36) {
             List list = new ArrayList<>();
-            list.add(StatCollector.translateToLocal("wandtable.text1"));
+            list.add(Component.translatable("wandtable.text1"));
             this.drawHoveringText(list, par1, par2, this.fontRendererObj);
          }
 
@@ -88,7 +88,7 @@ public class GuiFocalManipulator extends GuiContainer {
          mposy = par2 - (baseY + 58);
          if (mposx >= 0 && mposy >= 0 && mposx < 36 && mposy < 16) {
             List list = new ArrayList<>();
-            list.add(StatCollector.translateToLocal("wandtable.text2"));
+            list.add(Component.translatable("wandtable.text2"));
             this.drawHoveringText(list, par1, par2, this.fontRendererObj);
          }
 
@@ -97,7 +97,7 @@ public class GuiFocalManipulator extends GuiContainer {
             mposy = par2 - (baseY + 88);
             if (mposx >= 0 && mposy >= 0 && mposx < 96 && mposy < 8) {
                List list = new ArrayList<>();
-               list.add(StatCollector.translateToLocal("wandtable.text3"));
+               list.add(Component.translatable("wandtable.text3"));
                this.drawHoveringText(list, par1, par2, this.fontRendererObj);
             }
          }

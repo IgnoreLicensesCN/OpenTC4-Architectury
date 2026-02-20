@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
@@ -50,9 +50,9 @@ public class ItemJarNode extends Item implements IEssentiaContainerItem {
    @Override
    @SideOnly(Side.CLIENT)
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      String desc = "§9" + StatCollector.translateToLocal("nodetype." + this.getNodeType(stack) + ".name");
+      String desc = "§9" + Component.translatable("nodetype." + this.getNodeType(stack) + ".name");
       if (this.getNodeModifier(stack) != null) {
-         desc = desc + ", " + StatCollector.translateToLocal("nodemod." + this.getNodeModifier(stack) + ".name");
+         desc = desc + ", " + Component.translatable("nodemod." + this.getNodeModifier(stack) + ".name");
       }
 
       list.add(desc);

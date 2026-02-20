@@ -1,7 +1,5 @@
 package thaumcraft.api.wands;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -14,12 +12,12 @@ import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalcul
 
 public interface ICentiVisContainer<Asp extends Aspect> {
     int CENTIVIS_MULTIPLIER = 100;
+    boolean tryCastAspectClass(Class<? extends Aspect> aspClass);
     /**
      *
      * @param stack which owns vis
      * @return a map showing owing vis but may not thread-safe
      */
-    boolean tryCastAspectClass(Class<? extends Aspect> aspClass);
     CentiVisList<Asp> getAllCentiVisOwning(ItemStack stack);
     default int getCentiVisOwning(ItemStack stack, Asp aspect) {
         return this.getAllCentiVisOwning(stack).getOrDefault(aspect,0);
@@ -137,7 +135,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
         }
     }
 
-    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Asp> aspects, boolean doit) {
+    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Asp> aspects, boolean doit,boolean serverLevel) {
         if (!aspects.isEmpty()) {
             CentiVisList<Asp> nl = new CentiVisList<>();
 
@@ -157,7 +155,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
                 return false;
             }
 
-            if (doit && Platform.getEnvironment() != Env.CLIENT) {
+            if (doit && serverLevel) {
                 nl
                         .forEach((aspect, amount) ->
                                 storeCentiVisOwning(
@@ -172,11 +170,11 @@ public interface ICentiVisContainer<Asp extends Aspect> {
         }
     }
 
-    default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList<Asp> aspects, boolean doit) {
-        return this.consumeAllCentiVis(is, user, aspects, doit, true);
+    default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList<Asp> aspects, boolean doit,boolean serverSide) {
+        return this.consumeAllCentiVis(is, user, aspects, doit, true,serverSide);
     }
 
-    default boolean consumeAllCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull CentiVisList<Asp> aspects, boolean doit, boolean crafting) {
+    default boolean consumeAllCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull CentiVisList<Asp> aspects, boolean doit, boolean crafting,boolean serverSide) {
         if (!aspects.isEmpty()) {
             CentiVisList<Asp> nl = new CentiVisList<>();
 
@@ -195,7 +193,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
                 }
             }
 
-            if (doit && Platform.getEnvironment() != Env.CLIENT) {
+            if (doit && serverSide) {
 
                 nl
                         .forEach((aspect, amount) ->

@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -94,7 +94,7 @@ public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear,
    public String getItemStackDisplayName(ItemStack stack) {
       if (stack.getItemDamage() >= 3 && stack.getItemDamage() <= 8) {
          Aspect aspect = Aspects.getPrimalAspects().get(stack.getItemDamage() - 3);
-         return StatCollector.translateToLocal("item.ItemBaubleBlanks.3.name").replace("%TYPE", aspect.getName());
+         return Component.translatable("item.ItemBaubleBlanks.3.name").replace("%TYPE", aspect.getName());
       } else {
          return super.getItemStackDisplayName(stack);
       }
@@ -103,7 +103,7 @@ public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear,
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.getItemDamage() >= 3 && stack.getItemDamage() <= 8) {
          Aspect aspect = Aspects.getPrimalAspects().get(stack.getItemDamage() - 3);
-         list.add(EnumChatFormatting.DARK_PURPLE + aspect.getName() + " " + StatCollector.translateToLocal("tc.discount") + ": 1%");
+         list.add(EnumChatFormatting.DARK_PURPLE + aspect.getName() + " " + Component.translatable("tc.discount") + ": 1%");
       }
 
    }

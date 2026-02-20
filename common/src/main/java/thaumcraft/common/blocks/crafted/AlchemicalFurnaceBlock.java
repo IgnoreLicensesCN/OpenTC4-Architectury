@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,8 +25,9 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.AlchemicalFurnaceBlockEntity;
 
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AlchemicalFurnaceBlock extends Block implements EntityBlock {
+public class AlchemicalFurnaceBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final DirectionProperty FACING = AbstractFurnaceBlock.FACING;
     public static final BooleanProperty LIT = AbstractFurnaceBlock.LIT;
     public static final BooleanProperty HAS_ASPECT = BooleanProperty.create("has_aspect");
@@ -50,17 +49,17 @@ public class AlchemicalFurnaceBlock extends Block implements EntityBlock {
 
 
     @Override
-    public RenderShape getRenderShape(BlockState arg) {
+    public @NotNull RenderShape getRenderShape(BlockState arg) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public BlockState rotate(BlockState arg, Rotation arg2) {
+    public @NotNull BlockState rotate(BlockState arg, Rotation arg2) {
         return arg.setValue(FACING, arg2.rotate(arg.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(BlockState arg, Mirror arg2) {
+    public @NotNull BlockState mirror(BlockState arg, Mirror arg2) {
         return arg.rotate(arg2.getRotation(arg.getValue(FACING)));
     }
 
@@ -91,7 +90,7 @@ public class AlchemicalFurnaceBlock extends Block implements EntityBlock {
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         if (
-                Platform.getEnvironment() == Env.SERVER
+                (level != null && !level.isClientSide)
                         && blockState.getBlock() == this
                         && blockEntityType == ThaumcraftBlockEntities.ALCHEMICAL_FURNACE
         ) {

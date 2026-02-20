@@ -3,7 +3,6 @@ package thaumcraft.common.blocks.liquid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityThaumicSlime;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 

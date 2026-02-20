@@ -201,7 +201,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
             if (ench != enchantment)
                 mod += lvl * .1f;
         }
-		LinkedHashMap<Aspect,Integer> aspsResult = new LinkedHashMap<>(basicCostAspects.aspectView);
+		LinkedHashMap<Aspect,Integer> aspsResult = new LinkedHashMap<>(basicCostAspects.getAspectView());
 		float finalMod = mod;
 		aspsResult.forEach((asp, amount)-> aspsResult.put(asp, (int) (amount * finalMod)));
 		return new UnmodifiableAspectList<>(aspsResult);

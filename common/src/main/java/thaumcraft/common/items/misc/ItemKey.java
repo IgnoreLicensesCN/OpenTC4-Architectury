@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.junkbox.BlockArcaneDoor;
 import thaumcraft.common.config.ConfigBlocks;
@@ -100,10 +100,10 @@ public class ItemKey extends Item {
                   if (Platform.getEnvironment() != Env.CLIENT) {
                      switch (type) {
                         case 0:
-                           player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key1")));
+                           player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key1")));
                            break;
                         case 1:
-                           player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key2")));
+                           player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key2")));
                      }
 
                      world.playSoundEffect(x, y, z, "thaumcraft:key", 1.0F, 0.9F);
@@ -126,10 +126,10 @@ public class ItemKey extends Item {
                if (Platform.getEnvironment() != Env.CLIENT) {
                   switch (type) {
                      case 0:
-                        player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key3") + (itemstack.getItemDamage() == 0 ? "" : StatCollector.translateToLocal("tc.key4"))));
+                        player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key3") + (itemstack.getItemDamage() == 0 ? "" : Component.translatable("tc.key4"))));
                         break;
                      case 1:
-                        player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key5") + (itemstack.getItemDamage() == 0 ? "" : StatCollector.translateToLocal("tc.key6"))));
+                        player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key5") + (itemstack.getItemDamage() == 0 ? "" : Component.translatable("tc.key6"))));
                   }
 
                   world.playSoundEffect(x, y, z, "thaumcraft:key", 1.0F, 1.1F);
@@ -142,9 +142,9 @@ public class ItemKey extends Item {
                player.swingItem();
             } else if (Platform.getEnvironment() != Env.CLIENT) {
                if (!loc.equals(itemstack.stackTagCompound.getString("location"))) {
-                  player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key7")));
+                  player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key7")));
                } else {
-                  player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.key8")));
+                  player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.key8")));
                }
             }
          }
@@ -166,8 +166,8 @@ public class ItemKey extends Item {
          }
 
          byte type = stack.stackTagCompound.getByte("type");
-         list.add("§5§o" + StatCollector.translateToLocal("tc.key9"));
-         list.add("§5§o" + (type == 0 ? StatCollector.translateToLocal("tc.key10") : StatCollector.translateToLocal("tc.key11")));
+         list.add("§5§o" + Component.translatable("tc.key9"));
+         list.add("§5§o" + (type == 0 ? Component.translatable("tc.key10") : Component.translatable("tc.key11")));
          list.add("§5§o" + location);
       }
 

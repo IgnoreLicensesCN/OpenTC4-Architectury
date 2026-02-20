@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,11 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
-public class ArcaneWorkbenchBlock extends Block implements EntityBlock {
+public class ArcaneWorkbenchBlock extends SuppressedWarningBlock implements EntityBlock {
     //TODO:BER
     public ArcaneWorkbenchBlock(Properties properties) {
         super(properties);

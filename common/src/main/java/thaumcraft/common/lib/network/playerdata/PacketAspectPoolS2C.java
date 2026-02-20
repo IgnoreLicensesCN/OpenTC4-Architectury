@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
-import com.linearity.opentc4.utils.StatCollector;
+
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
@@ -66,7 +66,7 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
          );
 
          if (success && this.amountChanged > 0) {
-            String text = StatCollector.translateToLocal("tc.addaspectpool")
+            String text = Component.translatable("tc.addaspectpool")
                     .replace("%s", String.valueOf(this.amountChanged))
                     .replace("%n", aspect.getName());
 

@@ -1,6 +1,6 @@
 package thaumcraft.api.research;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
@@ -177,7 +177,7 @@ public abstract class ResearchPage {
 	public String getTranslatedText() {
 		String ret="";
 		if (text != null) {
-			ret = StatCollector.translateToLocal(text);
+			ret = Component.translatable(text);
 			if (ret.isEmpty()) ret = text;
 		}
 		return ret;

@@ -2,13 +2,12 @@ package thaumcraft.common.lib.research;
 
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.BlockPosWithDim;
-import com.linearity.opentc4.utils.StatCollector;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +26,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.api.research.scan.ScanResult;
@@ -34,7 +34,6 @@ import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.network.playerdata.PacketAspectDiscoveryS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.utils.Utils;
@@ -44,6 +43,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
+import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
 import static thaumcraft.api.nodes.NodeType.*;
 
 public class ScanManager implements IScanEventHandler {
@@ -55,8 +57,7 @@ public class ScanManager implements IScanEventHandler {
         String hash;
 
         if (entity instanceof Player player) {
-            hash = "player_" + player.getName()
-                    .getString();
+            hash = "player_" + player;
         }else{
             hash = entity.getType().toString();
         }
@@ -412,8 +413,7 @@ public class ScanManager implements IScanEventHandler {
 //            }
 
                 List<String> list = Thaumcraft.getScannedObjects()
-                        .get(player.getName()
-                                .getString());
+                        .get(player);
                 return list == null || !list.contains(prefix + generateItemHash(item));
             } else if (scan.type == 2) {
                 if (scan.entity instanceof ItemEntity item) {
@@ -425,19 +425,16 @@ public class ScanManager implements IScanEventHandler {
 //               }
 
                     List<String> list = Thaumcraft.getScannedObjects()
-                            .get(player.getName()
-                                    .getString());
+                            .get(player);
                     return list == null || !list.contains(prefix + generateItemHash(t.getItem()));
                 } else {
                     List<String> list = Thaumcraft.getScannedEntities()
-                            .get(player.getName()
-                                    .getString());
+                            .get(player);
                     return list == null || !list.contains(prefix + generateEntityHash(scan.entity));
                 }
             } else if (scan.type == 3) {
                 List<String> list = Thaumcraft.getScannedPhenomena()
-                        .get(player.getName()
-                                .getString());
+                        .get(player);
                 return list == null || !list.contains(prefix + scan.phenomena);
             }
 
@@ -453,8 +450,7 @@ public class ScanManager implements IScanEventHandler {
             var itemResLoc = new ResourceLocation(scan.item);
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
             List<String> list = Thaumcraft.getScannedObjects()
-                    .get(player.getName()
-                            .getString());
+                    .get(player);
             var hash = generateItemHash(item);
             return list != null && (list.contains("@" + hash) || list.contains("#" + hash));
         } else if (scan.type == 2) {
@@ -467,21 +463,18 @@ public class ScanManager implements IScanEventHandler {
 //            }
 
                 List<String> list = Thaumcraft.getScannedObjects()
-                        .get(player.getName()
-                                .getString());
+                        .get(player);
                 return list != null && (list.contains("@" + generateItemHash(t.getItem())) || list.contains(
                         "#" + generateItemHash(t.getItem())));
             } else {
                 List<String> list = Thaumcraft.getScannedEntities()
-                        .get(player.getName()
-                                .getString());
+                        .get(player);
                 return list != null && (list.contains("@" + generateEntityHash(scan.entity)) || list.contains(
                         "#" + generateEntityHash(scan.entity)));
             }
         } else if (scan.type == 3) {
             List<String> list = Thaumcraft.getScannedPhenomena()
-                    .get(player.getName()
-                            .getString());
+                    .get(player);
             return list != null && (list.contains("@" + scan.phenomena) || list.contains("#" + scan.phenomena));
         }
 
@@ -489,6 +482,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static boolean completeScan(Player player, ScanResult scan, String prefix) {
+        boolean serverFlag = player instanceof ServerPlayer serverPlayer;
         AspectList<Aspect> aspects = null;
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
@@ -504,34 +498,26 @@ public class ScanManager implements IScanEventHandler {
             var itemResLoc = new ResourceLocation(scan.item);
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
 
-            aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-            aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
-            if (aspects.size() == 0 && scan.item != null && !scan.item.isEmpty()) {
-                aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-                aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
-            }
+            aspects = getBonusAspects(new ItemStack(item),serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item));
 
             if (validScan(aspects, player)) {
                 clueStack = new ItemStack(item);
                 Thaumcraft.researchManager.completeScannedObject(
-                        player.getName()
-                                .getString(), prefix + generateItemHash(item)
+                        player, prefix + generateItemHash(item)
                 );
                 ret = true;
             }
         } else if (scan.type == 2) {
-            if (scan.entity instanceof ItemEntity item) {
-                ItemStack t = item.getItem()
+            if (scan.entity instanceof ItemEntity itemEntity) {
+                ItemStack t = itemEntity.getItem()
                         .copy();
                 t.setCount(1);
 
-                aspects = ThaumcraftCraftingManager.getObjectTags(t);
-                aspects = ThaumcraftCraftingManager.getBonusAspects(t, aspects);
+                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
                 if (validScan(aspects, player)) {
-                    clueStack = item.getItem();
+                    clueStack = itemEntity.getItem();
                     Thaumcraft.researchManager.completeScannedObject(
-                            player.getName()
-                                    .getString(), prefix + generateItemHash(t.getItem())
+                            player, prefix + generateItemHash(t.getItem())
                     );
                     ret = true;
                 }
@@ -543,8 +529,7 @@ public class ScanManager implements IScanEventHandler {
                             .unwrapKey()
                             .get();
                     Thaumcraft.researchManager.completeScannedEntity(
-                            player.getName()
-                                    .getString(), prefix + generateEntityHash(scan.entity)
+                            player, prefix + generateEntityHash(scan.entity)
                     );
                     ret = true;
                 }
@@ -553,20 +538,18 @@ public class ScanManager implements IScanEventHandler {
             aspects = generateNodeAspects(player.level(), scan.phenomena.replace("NODE", ""));
             if (validScan(aspects, player)) {
                 Thaumcraft.researchManager.completeScannedPhenomena(
-                        player.getName()
-                                .getString(), prefix + scan.phenomena
+                        player, prefix + scan.phenomena
                 );
                 ret = true;
             }
         }
 
-        if (Platform.getEnvironment() != Env.CLIENT && ret && aspects != null) {
+        if (player instanceof ServerPlayer && ret && aspects != null) {
             AspectList<Aspect>aspectsFinal = new AspectList<>();
 
             for (Aspect aspect : aspects.getAspectTypes()) {
                 if (rp.hasDiscoveredParentAspects(
-                        player.getName()
-                                .getString(), aspect
+                        player, aspect
                 )) {
                     int amt = aspects.getAmount(aspect);
                     if (scannedByThaumometer) {
@@ -599,36 +582,29 @@ public class ScanManager implements IScanEventHandler {
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         int save = 0;
-        if (!rp.hasDiscoveredAspect(
-                player.getName()
-                        .getString(), aspect
-        )) {
-            new PacketAspectDiscoveryS2C(aspect.getAspectKey()).sendTo((ServerPlayer) player);
+        if (!rp.hasDiscoveredAspect(player, aspect) && player instanceof ServerPlayer serverPlayer) {
+            new PacketAspectDiscoveryS2C(aspect.getAspectKey()).sendTo(serverPlayer);
             amount += 2;
             save = amount;
         }
 
         if (rp.getAspectPoolFor(
-                player.getName()
-                        .getString(), aspect
+                player, aspect
         ) >= Config.aspectTotalCap) {
             amount = (int) Math.sqrt(amount);
         }
 
         if (amount > 1 && (float) rp.getAspectPoolFor(
-                player.getName()
-                        .getString(), aspect
+                player, aspect
         ) >= (float) Config.aspectTotalCap * 1.25F) {
             amount = 1;
         }
 
         if (rp.addAspectPool(
-                player.getName()
-                        .getString(), aspect, (short) amount
+                player, aspect, (short) amount
         )) {
             new PacketAspectPoolS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
-                    player.getName()
-                            .getString(), aspect
+                    player, aspect
             )
             ).sendTo((ServerPlayer) player);
             save = amount;
@@ -636,10 +612,8 @@ public class ScanManager implements IScanEventHandler {
 
         if (save > 0) {
             Thaumcraft.researchManager.completeAspect(
-                    player.getName()
-                            .getString(), aspect, rp.getAspectPoolFor(
-                            player.getName()
-                                    .getString(), aspect
+                    player, aspect, rp.getAspectPoolFor(
+                            player, aspect
                     )
             );
         }
@@ -650,22 +624,21 @@ public class ScanManager implements IScanEventHandler {
     public static boolean validScan(AspectList<Aspect>aspects, Player player) {
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
-        if (aspects != null && aspects.size() > 0) {
+        if (aspects != null && !aspects.isEmpty()) {
             for (Aspect aspect : aspects.getAspectTypes()) {
-                if (aspect != null && !aspect.isPrimal() && !rp.hasDiscoveredParentAspects(
-                        player.getName()
-                                .getString(), aspect
+                if (aspect instanceof CompoundAspect compoundAspect && !rp.hasDiscoveredParentAspects(
+                        player, aspect
                 )) {
                     if (player.level()
                             .isClientSide()) {
-                        for (Aspect parent : aspect.getComponents()) {
+                        for (Aspect parent : compoundAspect.components) {
                             if (!rp.hasDiscoveredAspect(
-                                    player.getName()
-                                            .getString(), parent
+                                    player, parent
                             )) {
-                                PlayerNotifications.addNotification((StatCollector.translateToLocal(
-                                        "tc.discoveryerror") + StatCollector.translateToLocal(
-                                        "tc.aspect.help." + parent.getAspectKey())));
+                                PlayerNotifications.addNotification((
+                                        Component.translatable("tc.discoveryerror").getString()
+                                        + Component.translatable("tc.aspect.help." + parent.getAspectKey()).getString()
+                                ));
                                 break;
                             }
                         }
@@ -679,7 +652,7 @@ public class ScanManager implements IScanEventHandler {
         } else {
             if (player.level()
                     .isClientSide()) {
-                PlayerNotifications.addNotification(StatCollector.translateToLocal("tc.unknownobject"));
+                PlayerNotifications.addNotification(Component.translatable("tc.unknownobject"));
             }
 
             return false;
@@ -688,6 +661,7 @@ public class ScanManager implements IScanEventHandler {
 
     public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
         AspectList<Aspect> aspects = new AspectList<>();
+        var serverFlag = !world.isClientSide();
         boolean ret = false;
         if (scan.type == 1) {
 //         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
@@ -696,12 +670,7 @@ public class ScanManager implements IScanEventHandler {
 
             var itemResLoc = new ResourceLocation(scan.item);
             var item = BuiltInRegistries.ITEM.get(itemResLoc);
-            aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-            aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
-            if (aspects.isEmpty() && scan.item != null) {
-                aspects = ThaumcraftCraftingManager.getObjectTags(new ItemStack(item));
-                aspects = ThaumcraftCraftingManager.getBonusAspects(new ItemStack(item), aspects);
-            }
+            aspects = getBonusAspects(new ItemStack(item), serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item) );
         } else if (scan.type == 2) {
             if (scan.entity instanceof ItemEntity item
             ) {
@@ -712,8 +681,7 @@ public class ScanManager implements IScanEventHandler {
 //               t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
 //            }
 
-                aspects = ThaumcraftCraftingManager.getObjectTags(t);
-                aspects = ThaumcraftCraftingManager.getBonusAspects(t, aspects);
+                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
             } else {
                 aspects = generateEntityAspects(scan.entity);
             }

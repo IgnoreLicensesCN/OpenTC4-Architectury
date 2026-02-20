@@ -1,8 +1,6 @@
 package thaumcraft.api.nodes;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.NodeModifierResourceLocation;
@@ -46,7 +44,7 @@ public class NodeModifier {
             if (level == null){
                 level = beingAttacked.getLevel();
             }
-            if (level != null && Platform.getEnvironment() == Env.SERVER) {
+            if (level != null && !level.isClientSide) {
                 if (level.random.nextInt(100) == 0){
                     thisNode.setNodeModifier(null);
                     thisNode.regenerationTickPeriod = -1;//feature:attack another node to remove "pale"(chance:1/100)

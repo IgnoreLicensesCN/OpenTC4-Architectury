@@ -82,7 +82,9 @@ public record SimpleFormedMultipartMatcher(
     @Override
     public void destroyMultipart(
             Level level,
-            BlockPos selfWorldPos, BlockPos selfBasePosRelatedInMultipart, BlockPos transformBasePosInWorld,
+            BlockPos selfWorldPos,
+            BlockPos selfBasePosRelatedInMultipart,
+            BlockPos transformBasePosInWorld,
             BlockPos transformBasePosInMultipart,
             MultipartMatchInfo info
     ) {
@@ -107,7 +109,8 @@ public record SimpleFormedMultipartMatcher(
                                     rot3D,
                                     mirror3D
                             )
-                            .offset(transformBasePosInWorld.offset(transformBasePosInMultipart.multiply(-1)));
+                            .subtract(transformBasePosInMultipart)
+                            .offset(transformBasePosInWorld);
 
                     var bState = level.getBlockState(worldPos);
                     if (
@@ -120,7 +123,7 @@ public record SimpleFormedMultipartMatcher(
                                     info
                             )
                                     && bState.getBlock() instanceof IMultipartComponentBlock componentBlock
-                                    && componentBlock.findTransformBasePosRelatedToSelf(level, bState, worldPos)
+                                    && componentBlock.findTransformBasePosInWorld(level, bState, worldPos)
                                     .equals(transformBasePosInWorld)
                     ) {
                         componentBlock.onMultipartDestroyed(level, bState, worldPos);
@@ -130,7 +133,7 @@ public record SimpleFormedMultipartMatcher(
         }
     }
 
-    protected boolean matchWithTransform(
+    private boolean matchWithTransform(
             Level level,
             BlockPos selfPosInWorld,
             BlockPos transformBasePosRelatedInMultipart,

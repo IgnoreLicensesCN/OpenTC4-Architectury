@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.research;
 
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -22,95 +23,95 @@ public class PlayerKnowledge {
    public final Map<String,Integer> warpSticky = new ConcurrentHashMap<>();
    public final Map<String,Integer> warpTemp = new ConcurrentHashMap<>();
 
-   public void wipePlayerKnowledge(String player) {
-      this.researchCompleted.remove(player);
-      this.clueCompleted.remove(player);
-      this.aspectsDiscovered.remove(player);
-      this.objectsScanned.remove(player);
-      this.entitiesScanned.remove(player);
-      this.phenomenaScanned.remove(player);
-      this.warp.remove(player);
-      this.warpTemp.remove(player);
-      this.warpSticky.remove(player);
+   public void wipePlayerKnowledge(Player player) {
+      this.researchCompleted.remove(player.getGameProfile().getName());
+      this.clueCompleted.remove(player.getGameProfile().getName());
+      this.aspectsDiscovered.remove(player.getGameProfile().getName());
+      this.objectsScanned.remove(player.getGameProfile().getName());
+      this.entitiesScanned.remove(player.getGameProfile().getName());
+      this.phenomenaScanned.remove(player.getGameProfile().getName());
+      this.warp.remove(player.getGameProfile().getName());
+      this.warpTemp.remove(player.getGameProfile().getName());
+      this.warpSticky.remove(player.getGameProfile().getName());
    }
 
-   public AspectList<Aspect> getAspectsDiscovered(String player) {
-      AspectList<Aspect> known = this.aspectsDiscovered.get(player);
+   public AspectList<Aspect> getAspectsDiscovered(Player player) {
+      AspectList<Aspect> known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       if (known == null || known.size() <= 6) {
          this.addDiscoveredPrimalAspects(player);
-         known = this.aspectsDiscovered.get(player);
+         known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       }
 
       return known;
    }
 
-   public boolean hasDiscoveredAspect(String player, Aspect aspect) {
-      return this.getAspectsDiscovered(player).getAspects().containsKey(aspect);
+   public boolean hasDiscoveredAspect(Player player, Aspect aspect) {
+      return this.getAspectsDiscovered(player).getAspectView().containsKey(aspect);
    }
 
-   public boolean hasDiscoveredParentAspects(String player, Aspect aspect) {
+   public boolean hasDiscoveredParentAspects(Player player, Aspect aspect) {
       if (!(aspect instanceof CompoundAspect compoundAspect)) {
          return false;
       }
       var components = compoundAspect.components;
-      var discovered = this.getAspectsDiscovered(player).getAspects();
+      var discovered = this.getAspectsDiscovered(player).getAspectView();
       return discovered.containsKey(components.aspectA()) && discovered.containsKey(components.aspectB());
    }
 
-   public void addDiscoveredPrimalAspects(String player) {
+   public void addDiscoveredPrimalAspects(Player player) {
       AspectList<Aspect> known = this.aspectsDiscovered.get(player);
       if (known == null) {
          known = new AspectList<>();
       }
 
-      if (!known.getAspects().containsKey(Aspects.AIR)) {
+      if (!known.getAspectView().containsKey(Aspects.AIR)) {
          known.addAll(Aspects.AIR, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspects.FIRE)) {
+      if (!known.getAspectView().containsKey(Aspects.FIRE)) {
          known.addAll(Aspects.FIRE, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspects.EARTH)) {
+      if (!known.getAspectView().containsKey(Aspects.EARTH)) {
          known.addAll(Aspects.EARTH, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspects.WATER)) {
+      if (!known.getAspectView().containsKey(Aspects.WATER)) {
          known.addAll(Aspects.WATER, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspects.ORDER)) {
+      if (!known.getAspectView().containsKey(Aspects.ORDER)) {
          known.addAll(Aspects.ORDER, 0);
       }
 
-      if (!known.getAspects().containsKey(Aspects.ENTROPY)) {
+      if (!known.getAspectView().containsKey(Aspects.ENTROPY)) {
          known.addAll(Aspects.ENTROPY, 0);
       }
 
-      this.aspectsDiscovered.put(player, known);
+      this.aspectsDiscovered.put(player.getGameProfile().getName(), known);
    }
 
    /**
     * @return true if succeed added aspect,false if already exists
     */
-   public boolean addDiscoveredAspect(String player, Aspect aspect) {
+   public boolean addDiscoveredAspect(Player player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
-      if (!known.getAspects().containsKey(aspect)) {
+      if (!known.getAspectView().containsKey(aspect)) {
          known.addAll(aspect, 0);
-         this.aspectsDiscovered.put(player, known);
+         this.aspectsDiscovered.put(player.getGameProfile().getName(), known);
          return true;
       } else {
          return false;
       }
    }
 
-   public short getAspectPoolFor(String username, Aspect aspect) {
-      AspectList<Aspect> known = this.getAspectsDiscovered(username);
+   public short getAspectPoolFor(Player player, Aspect aspect) {
+      AspectList<Aspect> known = this.getAspectsDiscovered(player);
       return known != null ? (short)known.getAmount(aspect) : 0;
    }
 
-   public boolean addAspectPool(String username, Aspect aspect, int amount) {
-      AspectList<Aspect> al = this.getAspectsDiscovered(username);
+   public boolean addAspectPool(Player player, Aspect aspect, int amount) {
+      AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
          al = new AspectList<>();
       }
@@ -126,7 +127,7 @@ public class PlayerKnowledge {
          }
 
          if (ret) {
-            this.aspectsDiscovered.put(username, al);
+            this.aspectsDiscovered.put(player.getGameProfile().getName(), al);
          }
 
          return ret;
@@ -135,97 +136,101 @@ public class PlayerKnowledge {
       }
    }
 
-   public boolean setAspectPool(String username, Aspect aspect, int amount) {
-      AspectList<Aspect> al = this.getAspectsDiscovered(username);
+   public boolean setAspectPool(Player player, Aspect aspect, int amount) {
+      AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
          al = new AspectList<>();
       }
 
       if (aspect != null) {
          al.set(aspect,  amount);
-         this.aspectsDiscovered.put(username, al);
+         this.aspectsDiscovered.put(player.getGameProfile().getName(), al);
          return true;
       } else {
          return false;
       }
    }
 
-   public int getWarpCounter(String player) {
+   public int getWarpCounter(Player player) {
       int known = 0;
-      if (!this.warpCount.containsKey(player)) {
-         this.warpCount.put(player, 0);
+      var playerName = player.getGameProfile().getName();
+      if (!this.warpCount.containsKey(playerName)) {
+         this.warpCount.put(playerName, 0);
       } else {
-         known = this.warpCount.get(player);
+         known = this.warpCount.get(playerName);
       }
 
       return known;
    }
 
-   public void setWarpCounter(String player, int amount) {
-      this.warpCount.put(player, amount);
+   public void setWarpCounter(Player player, int amount) {
+      this.warpCount.put(player.getGameProfile().getName(), amount);
    }
 
-   public int getWarpTotal(String player) {
+   public int getWarpTotal(Player player) {
       return this.getWarpPerm(player) + this.getWarpTemp(player) + this.getWarpSticky(player);
    }
 
-   public int getWarpPerm(String player) {
+   public int getWarpPerm(Player player) {
       int known = 0;
-      if (!this.warp.containsKey(player)) {
-         this.warp.put(player, 0);
+      var playerName = player.getGameProfile().getName();
+      if (!this.warp.containsKey(playerName)) {
+         this.warp.put(playerName, 0);
       } else {
-         known = this.warp.get(player);
+         known = this.warp.get(playerName);
       }
 
       return known;
    }
 
-   public int getWarpTemp(String player) {
+   public int getWarpTemp(Player player) {
       int known = 0;
-      if (!this.warpTemp.containsKey(player)) {
-         this.warpTemp.put(player, 0);
+      var playerName = player.getGameProfile().getName();
+      if (!this.warpTemp.containsKey(playerName)) {
+         this.warpTemp.put(playerName, 0);
       } else {
-         known = this.warpTemp.get(player);
+         known = this.warpTemp.get(playerName);
       }
 
       return known;
    }
 
-   public int getWarpSticky(String player) {
+   public int getWarpSticky(Player player) {
       int known = 0;
-      if (!this.warpSticky.containsKey(player)) {
-         this.warpSticky.put(player, 0);
+      var playerName = player.getGameProfile().getName();
+      if (!this.warpSticky.containsKey(playerName)) {
+         this.warpSticky.put(playerName, 0);
       } else {
-         known = this.warpSticky.get(player);
+         known = this.warpSticky.get(playerName);
       }
 
       return known;
    }
 
-   public void addWarpTemp(String player, int amount) {
+   public void addWarpTemp(Player player, int amount) {
       int er = this.getWarpTemp(player) + amount;
-      this.warpTemp.put(player, Math.max(0, er));
+      this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
-   public void addWarpPerm(String player, int amount) {
+   public void addWarpPerm(Player player, int amount) {
       int er = this.getWarpPerm(player) + amount;
-      this.warp.put(player, Math.max(0, er));
+      this.warp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
-   public void addWarpSticky(String player, int amount) {
+   public void addWarpSticky(Player player, int amount) {
       int er = this.getWarpSticky(player) + amount;
-      this.warpSticky.put(player, Math.max(0, er));
+      this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
-   public void setWarpSticky(String player, int amount) {
-      this.warpSticky.put(player, Math.max(0, amount));
+   public void setWarpSticky(Player player, int amount) {
+      this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
-   public void setWarpPerm(String player, int amount) {
-      this.warp.put(player, Math.max(0, amount));
+   public void setWarpPerm(Player player, int amount) {
+      this.warp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
-   public void setWarpTemp(String player, int amount) {
-      this.warpTemp.put(player, Math.max(0, amount));
+   public void setWarpTemp(Player player, int amount) {
+      this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 }

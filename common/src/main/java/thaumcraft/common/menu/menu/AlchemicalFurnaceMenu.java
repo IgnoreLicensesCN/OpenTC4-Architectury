@@ -35,7 +35,7 @@ public class AlchemicalFurnaceMenu extends AbstractThaumcraftMenu<AlchemicalFurn
                 new Slot(alchemicalFurnace,AlchemicalFurnaceBlockEntity.ASPECT_GIVEN_ITEM_SLOT, 84, 25){
                     @Override
                     public boolean mayPlace(ItemStack itemStack) {
-                        return AlchemicalFurnaceBlockEntity.canBurnIntoAspect(itemStack);
+                        return alchemicalFurnace.canBurnIntoAspect(itemStack);
                     }
                 }
         );

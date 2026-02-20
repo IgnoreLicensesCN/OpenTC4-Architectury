@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.util.Vec3;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
@@ -48,7 +48,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
    public void generateName() {
       int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
-         this.setCustomNameTag(String.format(StatCollector.translateToLocal("entity.Thaumcraft.EldritchGolem.name"),
+         this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.EldritchGolem.name"),
                  ChampionModifier.mods[t].getModNameLocalized()));
       }
 

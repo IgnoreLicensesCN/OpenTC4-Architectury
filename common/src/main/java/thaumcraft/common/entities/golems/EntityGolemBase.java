@@ -27,7 +27,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.aspects.Aspect;
@@ -1282,6 +1282,6 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
    }
 
    public String getCommandSenderName() {
-      return this.hasCustomNameTag() ? this.getCustomNameTag() : StatCollector.translateToLocal("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
+      return this.hasCustomNameTag() ? this.getCustomNameTag() : Component.translatable("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
    }
 }

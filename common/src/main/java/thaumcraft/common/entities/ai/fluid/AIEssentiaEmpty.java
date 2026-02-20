@@ -3,9 +3,8 @@ package thaumcraft.common.entities.ai.fluid;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
@@ -76,9 +75,9 @@ public class AIEssentiaEmpty extends EntityAIBase {
                this.theWorld.markBlockForUpdate(this.jarX, this.jarY, this.jarZ);
             }
          }
-      } else if (tile instanceof IEssentiaTransport) {
+      } else if (tile instanceof IEssentiaTransportBlockEntity) {
          for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, (byte)-1)) {
-            IEssentiaTransport trans = (IEssentiaTransport)tile;
+            IEssentiaTransportBlockEntity trans = (IEssentiaTransportBlockEntity)tile;
             if (trans.canInputFrom(Direction.getOrientation(side)) && trans.getSuctionAmount(Direction.getOrientation(side)) > 0 && (trans.getSuctionType(Direction.getOrientation(side)) == null || trans.getSuctionType(Direction.getOrientation(side)) == this.theGolem.essentia)) {
                int added = trans.addEssentia(this.theGolem.essentia, this.theGolem.essentiaAmount, Direction.getOrientation(side));
                if (added > 0) {

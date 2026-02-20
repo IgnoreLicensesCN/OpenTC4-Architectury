@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -118,10 +118,10 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.getItemDamage() == 0) {
-         list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.ItemAmuletVis.text"));
+         list.add(EnumChatFormatting.AQUA + Component.translatable("item.ItemAmuletVis.text"));
       }
 
-      list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
+      list.add(EnumChatFormatting.GOLD + Component.translatable("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
       if (stack.hasTagCompound()) {
          for(Aspect aspect : Aspects.getPrimalAspects()) {
             if (stack.stackTagCompound.hasKey(aspect.getAspectKey())) {

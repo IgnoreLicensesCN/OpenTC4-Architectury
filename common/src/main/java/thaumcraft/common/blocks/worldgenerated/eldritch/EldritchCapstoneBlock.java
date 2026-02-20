@@ -9,8 +9,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.eldritch.EldritchCapstoneBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class EldritchCapstoneBlock extends Block implements EntityBlock {
+public class EldritchCapstoneBlock extends SuppressedWarningBlock implements EntityBlock {
     public EldritchCapstoneBlock(Properties properties) {
         super(properties);
     }

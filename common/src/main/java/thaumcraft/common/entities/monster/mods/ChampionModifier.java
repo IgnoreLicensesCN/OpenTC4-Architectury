@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.monster.mods;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.util.StatCollector;
+
 
 import java.util.UUID;
 
@@ -23,6 +23,6 @@ public class ChampionModifier {
    }
 
    public String getModNameLocalized() {
-      return StatCollector.translateToLocal("champion.mod." + this.name);
+      return Component.translatable("champion.mod." + this.name);
    }
 }

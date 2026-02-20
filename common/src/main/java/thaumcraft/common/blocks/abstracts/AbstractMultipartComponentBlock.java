@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractMultipartComponentBlock extends Block implements IMultipartComponentBlock {
+public abstract class AbstractMultipartComponentBlock extends SuppressedWarningBlock implements IMultipartComponentBlock {
     public static final IntegerProperty ROTATION_X_AXIS = IntegerProperty.create("rotation_x_axis", 0, 3);
     public static final IntegerProperty ROTATION_Y_AXIS = IntegerProperty.create("rotation_y_axis", 0, 3);
     public static final IntegerProperty ROTATION_Z_AXIS = IntegerProperty.create("rotation_z_axis", 0, 3);

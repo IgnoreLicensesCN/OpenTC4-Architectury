@@ -13,8 +13,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AncientLockEmptyBlock extends Block{
+public class AncientLockEmptyBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
     public AncientLockEmptyBlock(Properties properties) {
         super(properties);

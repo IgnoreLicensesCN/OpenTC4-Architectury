@@ -1,8 +1,6 @@
 package thaumcraft.common.tiles.eldritch;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
@@ -38,19 +36,23 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
     }
     
     public void tick() {
+        if (this.level == null) return;
         tickCount += 1;
         if (this.tickCount % 5 == 0) {
             this.level.playSound(null,getBlockPos(), ThaumcraftSounds.PUMP, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
-        if (tickCount >= 100 && Platform.getEnvironment() != Env.CLIENT){
+        if (tickCount >= 100 && (!this.level.isClientSide)) {
             doBossSpawn();
         }
     }
     
     //TODO:below
     private void doBossSpawn() {
+        if (this.level == null) {
+            throw new RuntimeException("called doBossSpawn but level is null");
+        }
         this.level.playSound(null,getBlockPos(), ThaumcraftSounds.ICE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        if (Platform.getEnvironment() != Env.CLIENT) {
+        if (!this.level.isClientSide) {
             final var pos = this.getBlockPos();
             final var posX = pos.getX();
             final var posY = pos.getY();
@@ -89,7 +91,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
             }
 
             mbd.markDirty();
-            //TODO:API (maybe i have mental illness for api)
+            //TODO:new API (maybe i have mental illness for newer api)
             switch (mbd.bossCount % 4) {
                 case 0:
                     this.spawnGolemBossRoom(centerx, centerz, exit);
@@ -128,7 +130,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
         for(int i = 0; i < this.level.playerEntities.size(); ++i) {
             Player ep = (Player)this.level.playerEntities.get(i);
             if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tc.boss.warden")));
+                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.warden")));
             }
         }
 
@@ -216,7 +218,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
         for(int i = 0; i < this.level.playerEntities.size(); ++i) {
             Player ep = (Player)this.level.playerEntities.get(i);
             if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tc.boss.golem")));
+                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.golem")));
             }
         }
 
@@ -290,7 +292,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
         for(int i = 0; i < this.level.playerEntities.size(); ++i) {
             Player ep = (Player)this.level.playerEntities.get(i);
             if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tc.boss.crimson")));
+                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.crimson")));
             }
         }
 
@@ -332,7 +334,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
         for(int i = 0; i < this.level.playerEntities.size(); ++i) {
             Player ep = (Player)this.level.playerEntities.get(i);
             if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tc.boss.taint")));
+                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.taint")));
             }
         }
 

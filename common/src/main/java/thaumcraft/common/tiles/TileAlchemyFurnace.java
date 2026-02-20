@@ -202,7 +202,7 @@ public class TileAlchemyFurnace /*extends TileThaumcraft implements ISidedInvent
 //               TileAlembic alembic = (TileAlembic)var9;
 //               if (alembic.aspect != null && alembic.amount < alembic.maxAmount && this.aspects.getAmount(alembic.aspect) > 0) {
 //                  this.takeFromContainer(alembic.aspect, 1);
-//                  alembic.addToContainer(alembic.aspect, 1);
+//                  alembic.addIntoContainer(alembic.aspect, 1);
 //                  exlude.mergeWithHighest(alembic.aspect, 1);
 //                  this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 //                  this.level().markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
@@ -228,7 +228,7 @@ public class TileAlchemyFurnace /*extends TileThaumcraft implements ISidedInvent
 //                  }
 //
 //                  if (as != null) {
-//                     alembic.addToContainer(as, 1);
+//                     alembic.addIntoContainer(as, 1);
 //                     this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 //                     this.level().markBlockForUpdate(this.xCoord, this.yCoord + deep, this.zCoord);
 //                     break;

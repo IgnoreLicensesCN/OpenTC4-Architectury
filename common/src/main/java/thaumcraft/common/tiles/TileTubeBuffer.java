@@ -7,12 +7,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.codechicken.lib.raytracer.IndexedCuboid6;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
@@ -20,7 +21,7 @@ import thaumcraft.codechicken.lib.vec.Cuboid6;
 
 import java.util.List;
 
-public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, IWandable {
+public class TileTubeBuffer extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, IWandable {
    public AspectList<Aspect>aspects = new AspectList<>();
    public final int MAXAMOUNT = 8;
    public boolean[] openSides = new boolean[]{true, true, true, true, true, true};
@@ -60,14 +61,14 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       nbttagcompound.setByteArray("choke", this.chokedSides);
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
    public void setAspects(AspectList<Aspect>aspects) {
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
       if (am != 1) {
          return am;
       } else if (this.aspects.visSize() < 8) {
@@ -130,7 +131,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -155,11 +156,11 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
          return 0;
       } else {
          TileEntity te = null;
-         IEssentiaTransport ic = null;
+         IEssentiaTransportBlockEntity ic = null;
          int suction = 0;
          te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, face);
          if (te != null) {
-            ic = (IEssentiaTransport)te;
+            ic = (IEssentiaTransportBlockEntity)te;
             suction = ic.getSuctionAmount(face.getOpposite());
          }
 
@@ -167,7 +168,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
             if (this.canOutputTo(dir) && dir != face) {
                te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
                if (te != null) {
-                  ic = (IEssentiaTransport)te;
+                  ic = (IEssentiaTransportBlockEntity)te;
                   int sa = ic.getSuctionAmount(dir.getOpposite());
                   Aspect su = ic.getSuctionType(dir.getOpposite());
                   if ((su == aspect || su == null) && suction < sa && this.getSuctionAmount(dir) < sa) {
@@ -186,7 +187,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    }
 
    public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
+      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
    public void updateEntity() {
@@ -207,15 +208,15 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
 
    void fillBuffer() {
       TileEntity te = null;
-      IEssentiaTransport ic = null;
+      IEssentiaTransportBlockEntity ic = null;
 
       for(Direction dir : Direction.VALID_DIRECTIONS) {
          te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
          if (te != null) {
-            ic = (IEssentiaTransport)te;
-            if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(dir) && this.getSuctionAmount(dir) >= ic.getMinimumSuction()) {
+            ic = (IEssentiaTransportBlockEntity)te;
+            if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(dir) && this.getSuctionAmount(dir) >= ic.getMinimumSuctionToDrainOut()) {
                Aspect ta = ic.getEssentiaType(dir.getOpposite());
-               this.addToContainer(ta, ic.takeEssentia(ta, 1, dir.getOpposite()));
+               this.addIntoContainer(ta, ic.takeEssentia(ta, 1, dir.getOpposite()));
                return;
             }
          }
@@ -286,7 +287,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainer, 
    private boolean canConnectSide(int side) {
       Direction dir = Direction.getOrientation(side);
       TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-      return tile instanceof IEssentiaTransport;
+      return tile instanceof IEssentiaTransportBlockEntity;
    }
 
    public void addTraceableCuboids(List cuboids) {

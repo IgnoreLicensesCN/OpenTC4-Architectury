@@ -44,7 +44,7 @@ public class ClientFXUtils {
     }
 
     public static boolean checkPlatformClient() {
-        return Platform.getEnvironment() == Env.CLIENT;
+        return Platform.getEnvironment() != Env.SERVER;
     }
     public static void arcLightning(ClientLevel world, double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
         if (!checkPlatformClient()){return;}

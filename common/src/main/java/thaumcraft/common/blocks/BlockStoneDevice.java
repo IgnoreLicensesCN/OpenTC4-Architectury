@@ -427,7 +427,7 @@ public class BlockStoneDevice extends BlockContainer {
                if (ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "FOCALMANIPULATION")) {
                   player.openGui(Thaumcraft.instance, 20, world, x, y, z);
                } else if (Platform.getEnvironment() != Env.CLIENT) {
-                  player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + StatCollector.translateToLocal("tc.researchmissing")));
+                  player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + Component.translatable("tc.researchmissing")));
                }
 
                return true;

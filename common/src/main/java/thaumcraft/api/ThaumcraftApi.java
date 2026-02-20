@@ -543,54 +543,54 @@ public class ThaumcraftApi {
         return ThaumcraftApi.objectTags.contains(item);
     }
 
-    /**
-     * Used to assign apsects to the given ore dictionary item.
-     *
-     * @param tagString the ore dictionary name
-     * @param aspects   A ObjectTags object ofAspectVisList the associated aspects
-     */
-    @Deprecated(forRemoval = true,since = "prepare for new api")
-    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
-        if (aspects == null) aspects = new AspectList<>();
-        List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
-        if (!ores.isEmpty()) {
-            for (ItemStack ore : ores) {
-                try {
-                    objectTags.put(ore.getItem(), aspects);
-                } catch (Exception ignored) {
-                }
-            }
-        }
-    }
+//    /**
+//     * Used to assign apsects to the given ore dictionary item.
+//     *
+//     * @param tagString the ore dictionary name
+//     * @param aspects   A ObjectTags object ofAspectVisList the associated aspects
+//     */
+//    @Deprecated(forRemoval = true,since = "prepare for new api")
+//    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
+//        if (aspects == null) aspects = new AspectList<>();
+//        List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
+//        if (!ores.isEmpty()) {
+//            for (ItemStack ore : ores) {
+//                try {
+//                    objectTags.put(ore.getItem(), aspects);
+//                } catch (Exception ignored) {
+//                }
+//            }
+//        }
+//    }
 
-    /**
-     * Used to assign aspects to the given item/block.
-     * Attempts to automatically generate aspect tags by checking registered recipes.
-     * Here is an example ofAspectVisList the declaration for pistons:<p>
-     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
-     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
-     *
-     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values ofAspectVisList this item/block should have the same aspects
-     * @param aspects A ObjectTags object ofAspectVisList the associated aspects
-     */
-    @Deprecated(forRemoval = true,since = "prepare for new api")
-    public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
-        if (!exists(item.getItem())) {
-            AspectList<Aspect> tmp = ThaumcraftApiHelper.generateBaseAspects(item.getItem());
-            if (tmp != null && !tmp.isEmpty()) {
-                for (Aspect tag : tmp.getAspectTypes()) {
-                    aspects.addAll(tag, tmp.getAmount(tag));
-                }
-            }
-            ItemBasicAspectRegistration.registerItemBasicAspects(item, aspects);
-        } else {
-            AspectList<Aspect> tmp = ThaumcraftApiHelper.getObjectAspects(item);
-            for (Aspect tag : aspects.getAspectTypes()) {
-                tmp.mergeWithHighest(tag, tmp.getAmount(tag));
-            }
-            ItemBasicAspectRegistration.registerItemBasicAspects(item, tmp);
-        }
-    }
+//    /**
+//     * Used to assign aspects to the given item/block.
+//     * Attempts to automatically generate aspect tags by checking registered recipes.
+//     * Here is an example ofAspectVisList the declaration for pistons:<p>
+//     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
+//     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
+//     *
+//     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values ofAspectVisList this item/block should have the same aspects
+//     * @param aspects A ObjectTags object ofAspectVisList the associated aspects
+//     */
+//    @Deprecated(forRemoval = true,since = "prepare for new api")
+//    public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
+//        if (!exists(item.getItem())) {
+//            AspectList<Aspect> tmp = ThaumcraftApiHelper.generateBaseAspects(item.getItem());
+//            if (tmp != null && !tmp.isEmpty()) {
+//                for (Aspect tag : tmp.getAspectTypes()) {
+//                    aspects.addAll(tag, tmp.getAmount(tag));
+//                }
+//            }
+//            ItemBasicAspectRegistration.registerItemBasicAspects(item, aspects);
+//        } else {
+//            AspectList<Aspect> tmp = ThaumcraftApiHelper.getObjectAspects(item);
+//            for (Aspect tag : aspects.getAspectTypes()) {
+//                tmp.mergeWithHighest(tag, tmp.getAmount(tag));
+//            }
+//            ItemBasicAspectRegistration.registerItemBasicAspects(item, tmp);
+//        }
+//    }
 
     //WARP ///////////////////////////////////////////////////////////////////////////////////////
     private static final Map<Item, Integer> itemWarpMap = new ConcurrentHashMap<>();

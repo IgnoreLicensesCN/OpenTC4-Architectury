@@ -28,11 +28,12 @@ import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_AXIS;
 
-public class TableBlock extends Block implements IWandInteractableBlock {
+public class TableBlock extends SuppressedWarningBlock implements IWandInteractableBlock {
     //TODO:texture png(from table.png)
     public static final VoxelShape X_AXIS_SHAPE = Shapes.or(
             Block.box(0, 12, 0, 16, 16, 16),
@@ -69,6 +70,7 @@ public class TableBlock extends Block implements IWandInteractableBlock {
     }
 
     @Override
+    @NotNull
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         var usingStack = player.getItemInHand(interactionHand);
         if (!usingStack.isEmpty()) {

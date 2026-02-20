@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
@@ -76,7 +76,7 @@ public class ItemResearchNotes extends Item {
                --stack.stackSize;
                world.playSoundAtEntity(player, "thaumcraft:learn", 0.75F, 1.0F);
             } else {
-               player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("tc.researcherror")));
+               player.addChatMessage(new ChatComponentTranslation(Component.translatable("tc.researcherror")));
             }
          } else if (stack.getItemDamage() == 42 || stack.getItemDamage() == 24) {
             String key = ResearchManager.findHiddenResearch(player);
@@ -121,14 +121,14 @@ public class ItemResearchNotes extends Item {
    }
 
    public String getItemStackDisplayName(ItemStack itemstack) {
-      String name = itemstack.getItemDamage() < 64 ? StatCollector.translateToLocal("item.researchnotes.name") : StatCollector.translateToLocal("item.discovery.name");
+      String name = itemstack.getItemDamage() < 64 ? Component.translatable("item.researchnotes.name") : Component.translatable("item.discovery.name");
       return name;
    }
 
    public void addInformation(ItemStack stack, Player par2Player, List list, boolean par4) {
       if (stack.getItemDamage() == 24 || stack.getItemDamage() == 42) {
-         list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.researchnotes.unknown.1"));
-         list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.researchnotes.unknown.2"));
+         list.add(EnumChatFormatting.GOLD + Component.translatable("item.researchnotes.unknown.1"));
+         list.add(EnumChatFormatting.BLUE + Component.translatable("item.researchnotes.unknown.2"));
       }
 
       ResearchNoteData rd = ResearchManager.getData(stack);
@@ -141,8 +141,8 @@ public class ItemResearchNotes extends Item {
                warp = 5;
             }
 
-            String ws = StatCollector.translateToLocal("tc.forbidden");
-            String wr = StatCollector.translateToLocal("tc.forbidden.level." + warp);
+            String ws = Component.translatable("tc.forbidden");
+            String wr = Component.translatable("tc.forbidden.level." + warp);
             String wte = ws.replaceAll("%n", wr);
             list.add(EnumChatFormatting.DARK_PURPLE + wte);
          }

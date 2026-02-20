@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.common.ISpecialArmor;
 import thaumcraft.api.*;
 import thaumcraft.api.aspects.Aspect;
@@ -62,7 +62,7 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairEnchantable, 
    }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
       super.addInformation(stack, player, list, par4);
    }
 

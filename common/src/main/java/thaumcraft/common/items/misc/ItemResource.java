@@ -1,6 +1,6 @@
 package thaumcraft.common.items.misc;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dev.architectury.platform.Platform;
@@ -125,7 +125,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
               && !((EntityLivingBase)entity).isPotionActive(ThaumcraftEffects.FLUX_TAINT) && world.getRandom().nextInt(4321) <= stack.stackSize) {
          ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 120, 0, false));
          if (entity instanceof Player) {
-            String s = StatCollector.translateToLocal("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
+            String s = Component.translatable("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
             ((Player)entity).addChatMessage(new ChatComponentTranslation(s));
             InventoryUtils.consumeInventoryItem((Player)entity, stack.getItem(), stack.getItemDamage());
          }
@@ -158,7 +158,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
                  && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "@FOCUSPRIMAL")
          ) {
             player.sendSystemMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("tc.primalcharm.trigger")));
+                    Component.literal("§5§o" + Component.translatable("tc.primalcharm.trigger")));
             new PacketResearchCompleteS2C("@FOCUSPRIMAL").sendTo(player);
             Thaumcraft.researchManager.completeResearch(player, "@FOCUSPRIMAL");
          }
@@ -267,7 +267,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 //         Random rand = new Random(stack.hashCode() + player.ticksExisted / 120);
 //         int r = rand.nextInt(200);
 //         if (r < 25) {
-//            list.add("§6" + StatCollector.translateToLocal("tc.primalcharm." + rand.nextInt(5)));
+//            list.add("§6" + Component.translatable("tc.primalcharm." + rand.nextInt(5)));
 //         }
 //      }
 

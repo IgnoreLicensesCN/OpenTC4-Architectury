@@ -9,7 +9,7 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class ItemGolemUpgrade extends Item {
    }
 
    public void addInformation(ItemStack stack, Player par2Player, List list, boolean par4) {
-      list.add(StatCollector.translateToLocal("item.ItemGolemUpgrade." + stack.getItemDamage() + ".desc"));
+      list.add(Component.translatable("item.ItemGolemUpgrade." + stack.getItemDamage() + ".desc"));
    }
 
    public EnumRarity getRarity(ItemStack itemstack) {

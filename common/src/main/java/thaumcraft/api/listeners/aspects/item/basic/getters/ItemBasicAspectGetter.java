@@ -1,8 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.basic.getters;
 
 import com.linearity.opentc4.simpleutils.ListenerManager;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +15,7 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ItemBasicAspectGetter {
     public static final ListenerManager<ItemBasicAspectGetListener> basicListeners = new ListenerManager<>();
@@ -31,15 +30,17 @@ public class ItemBasicAspectGetter {
     }
     private static final Map<Item,UnmodifiableAspectList<Aspect>> CACHE = new HashMap<>();
     public static final Map<Item,UnmodifiableAspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
+    public static final AtomicBoolean REQUESTED_ASPECT_LIST = new AtomicBoolean(false);
     //expose to outer to get basic aspects
-    public static UnmodifiableAspectList<Aspect> getBasicAspects(@NotNull Item i) {
-        if (Platform.getEnvironment() != Env.SERVER) {
-            if (CLIENT_CACHE.isEmpty()){
-                new PacketSyncItemAspectsC2S().sendToServer();
-            }
-            return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);
-        }
+    public static UnmodifiableAspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
 
+        if (CLIENT_CACHE.isEmpty() && !REQUESTED_ASPECT_LIST.get()){
+            REQUESTED_ASPECT_LIST.set(true);
+            new PacketSyncItemAspectsC2S().sendToServer();
+        }
+        return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);
+    }
+    public static UnmodifiableAspectList<Aspect> getBasicAspectsServer(@NotNull Item i) {
         return CACHE.computeIfAbsent(i,item -> {
             var getContext = new ItemBasicAspectGetContext(item);
             for (var listener: basicListeners.getListeners()) {
@@ -64,7 +65,7 @@ public class ItemBasicAspectGetter {
     }
     public static void onDatapackReload(){
         CACHE.clear();
-        BuiltInRegistries.ITEM.forEach(ItemBasicAspectGetter::getBasicAspects);
+        BuiltInRegistries.ITEM.forEach(ItemBasicAspectGetter::getBasicAspectsServer);
     }
 
 }

@@ -39,15 +39,15 @@ import java.util.List;
 import java.util.Random;
 
 //  "tile.blockMetalDevice.0.name": "坩埚",
-//  "tile.blockMetalDevice.1.name": "奥术蒸馏器",
+//  "tile.blockMetalDevice.1.name": "奥术蒸馏器",--done
 //  "tile.blockMetalDevice.2.name": "魔力充能中继器",--done
-//  "tile.blockMetalDevice.3.name": "高级炼金构材",
+//  "tile.blockMetalDevice.3.name": "高级炼金构材",--done
 // 4?anazor forgot that.
 //  "tile.blockMetalDevice.5.name": "物品格栅",
 //  "tile.blockMetalDevice.6.name": "物品格栅(关闭)",
 //  "tile.blockMetalDevice.7.name": "奥术灯",
 //  "tile.blockMetalDevice.8.name": "催生灯",
-//  "tile.blockMetalDevice.9.name": "炼金构材",
+//  "tile.blockMetalDevice.9.name": "炼金构材",--done
 //  "tile.blockMetalDevice.10.name": "神秘炼金塔",
 //  "tile.blockMetalDevice.11.name": "神秘炼金塔",
 //  "tile.blockMetalDevice.12.name": "记忆矩阵",
@@ -568,133 +568,144 @@ public class BlockMetalDevice extends BlockContainer {
          }
       }
 
-      if (metadata == 1 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() == null) {
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileAlembic) {
-            TileAlembic tile = (TileAlembic) te;
-            String msg = "";
-            if (tile.aspect != null && tile.amount != 0) {
-               if ((double) tile.amount < (double) tile.maxAmount * 0.4) {
-                  msg = StatCollector.translateToLocal("tile.alembic.msg.2");
-               } else if ((double) tile.amount < (double) tile.maxAmount * 0.8) {
-                  msg = StatCollector.translateToLocal("tile.alembic.msg.3");
-               } else if (tile.amount < tile.maxAmount) {
-                  msg = StatCollector.translateToLocal("tile.alembic.msg.4");
-               } else if (tile.amount == tile.maxAmount) {
-                  msg = StatCollector.translateToLocal("tile.alembic.msg.5");
-               }
-            } else {
-               msg = StatCollector.translateToLocal("tile.alembic.msg.1");
-            }
+//      if (metadata == 1 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() == null) {
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileAlembic) {
+//            TileAlembic tile = (TileAlembic) te;
+//            String msg = "";
+//            if (tile.aspect != null && tile.amount != 0) {
+//               if ((double) tile.amount < (double) tile.maxAmount * 0.4) {
+//                  msg = Component.translatable("tile.alembic.msg.2");
+//               } else if ((double) tile.amount < (double) tile.maxAmount * 0.8) {
+//                  msg = Component.translatable("tile.alembic.msg.3");
+//               } else if (tile.amount < tile.maxAmount) {
+//                  msg = Component.translatable("tile.alembic.msg.4");
+//               } else if (tile.amount == tile.maxAmount) {
+//                  msg = Component.translatable("tile.alembic.msg.5");
+//               }
+//            } else {
+//               msg = Component.translatable("tile.alembic.msg.1");
+//            }
+//
+//            player.addChatMessage(new ChatComponentTranslation("§3" + msg));
+//            world.playSoundEffect(x, y, z, "thaumcraft:alembicknock", 0.2F, 1.0F);
+//         }
+//      }
 
-            player.addChatMessage(new ChatComponentTranslation("§3" + msg));
-            world.playSoundEffect(x, y, z, "thaumcraft:alembicknock", 0.2F, 1.0F);
-         }
-      }
+//      if (metadata == 1) {
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileAlembic) {
+//            if (player.isSneaking() && ((TileAlembic) te).aspectFilter != null) {
+//               ((TileAlembic) te).aspectFilter = null;
+//               world.markBlockForUpdate(x, y, z);
+//               te.markDirty();
+//               if ((Platform.getEnvironment() == Env.CLIENT)) {
+//                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 1.1F, false);
+//               } else {
+//                  Direction fd = Direction.getOrientation(side);
+//                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
+//               }
+//
+//               return true;
+//            }
 
-      if (metadata == 1) {
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileAlembic) {
-            if (player.isSneaking() && ((TileAlembic) te).aspectFilter != null) {
-               ((TileAlembic) te).aspectFilter = null;
-               world.markBlockForUpdate(x, y, z);
-               te.markDirty();
-               if ((Platform.getEnvironment() == Env.CLIENT)) {
-                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 1.1F, false);
-               } else {
-                  Direction fd = Direction.getOrientation(side);
-                  world.spawnEntityInWorld(new EntityItem(world, (float) x + 0.5F + (float) fd.offsetX / 3.0F, (float) y + 0.5F, (float) z + 0.5F + (float) fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
-               }
+//            if (player.isSneaking() && player.getHeldItem() == null) {
+//               ((TileAlembic) te).amount = 0;
+//               ((TileAlembic) te).aspect = null;
+//               if ((Platform.getEnvironment() == Env.CLIENT)) {
+//                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:alembicknock", 0.2F, 1.0F, false);
+//                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
+//               }
+//            } else
+//            {
+//               if (player.getHeldItem() != null && ((TileAlembic) te).aspectFilter == null && player.getHeldItem().getItem() == ConfigItems.itemResource && player.getHeldItem().getItemDamage() == 13) {
+//                  if (((TileAlembic) te).amount == 0 && ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) == null) {
+//                     return true;
+//                  }
 
-               return true;
-            }
+//                  if (((TileAlembic) te).amount == 0 && ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) != null) {
+//                     ((TileAlembic) te).aspect = ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()).getAspects()[0];
+//                  }
 
-            if (player.isSneaking() && player.getHeldItem() == null) {
-               ((TileAlembic) te).amount = 0;
-               ((TileAlembic) te).aspect = null;
-               if ((Platform.getEnvironment() == Env.CLIENT)) {
-                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:alembicknock", 0.2F, 1.0F, false);
-                  world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
-               }
-            } else {
-               if (player.getHeldItem() != null && ((TileAlembic) te).aspectFilter == null && player.getHeldItem().getItem() == ConfigItems.itemResource && player.getHeldItem().getItemDamage() == 13) {
-                  if (((TileAlembic) te).amount == 0 && ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) == null) {
-                     return true;
-                  }
+//                  --player.getHeldItem().stackSize;
+//                  ((TileAlembic) te).aspectFilter = ((TileAlembic) te).aspect;
+//                  world.markBlockForUpdate(x, y, z);
+//                  te.markDirty();
+//                  if ((Platform.getEnvironment() == Env.CLIENT)) {
+//                     world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 0.9F, false);
+//                  }
 
-                  if (((TileAlembic) te).amount == 0 && ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) != null) {
-                     ((TileAlembic) te).aspect = ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()).getAspects()[0];
-                  }
+//                  return true;
+//               }
 
-                  --player.getHeldItem().stackSize;
-                  ((TileAlembic) te).aspectFilter = ((TileAlembic) te).aspect;
-                  world.markBlockForUpdate(x, y, z);
-                  te.markDirty();
-                  if ((Platform.getEnvironment() == Env.CLIENT)) {
-                     world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "thaumcraft:page", 1.0F, 0.9F, false);
-                  }
-
-                  return true;
-               }
-
-               if (player.getHeldItem() != null && ((TileAlembic) te).amount > 0 && (player.getHeldItem().getItem() == ConfigItems.itemJarFilled || player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 0)) || player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 3)))) {
-                  boolean doit = false;
-                  ItemStack drop = null;
-                  if (!player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 0)) && !player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 3))) {
-                     drop = player.getHeldItem();
-                     if ((((ItemJarFilled) drop.getItem()).getAspects(drop) == null || ((ItemJarFilled) drop.getItem()).getAspects(drop).visSize() == 0 || ((ItemJarFilled) drop.getItem()).getAspects(drop).getAmount(((TileAlembic) te).aspect) > 0) && (((ItemJarFilled) drop.getItem()).getFilter(drop) == null || ((ItemJarFilled) drop.getItem()).getFilter(drop) == ((TileAlembic) te).aspect)) {
-                        int amount = Math.min(((ItemJarFilled) drop.getItem()).getAspects(drop) == null ? 64 : 64 - ((ItemJarFilled) drop.getItem()).getAspects(drop).visSize(), ((TileAlembic) te).amount);
-                        if (drop.getItemDamage() == 3) {
-                           amount = ((TileAlembic) te).amount;
-                        }
-
-                        if (amount > 0) {
-                           ((TileAlembic) te).amount -= amount;
-                           AspectList<Aspect>as = ((ItemJarFilled) drop.getItem()).getAspects(drop);
-                           if (as == null) {
-                              as = new AspectList<>();
-                           }
-
-                           as.addAll(((TileAlembic) te).aspect, amount);
-                           if (as.getAmount(((TileAlembic) te).aspect) > 64) {
-                              int q = as.getAmount(((TileAlembic) te).aspect) - 64;
-                              as.tryReduce(((TileAlembic) te).aspect, q);
-                           }
-
-                           ((ItemJarFilled) drop.getItem()).setAspects(drop, as);
-                           if (((TileAlembic) te).amount <= 0) {
-                              ((TileAlembic) te).aspect = null;
-                           }
-
-                           doit = true;
-                           player.setCurrentItemOrArmor(0, drop);
-                        }
-                     }
-                  } else {
-                     drop = new ItemStack(ConfigItems.itemJarFilled, 1, player.getHeldItem().getItemDamage());
-                     doit = true;
-                     ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList<>()).addAll(((TileAlembic) te).aspect, ((TileAlembic) te).amount));
-                     ((TileAlembic) te).amount = 0;
-                     ((TileAlembic) te).aspect = null;
-                     --player.getHeldItem().stackSize;
-                     if (!addToPlayerInventoryBiased(player.inventory, drop) && Platform.getEnvironment() != Env.CLIENT) {
-                        world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, drop));
-                     }
-                  }
-
-                  if (doit) {
-                     te.markDirty();
-                     world.markBlockForUpdate(x, y, z);
-                     if ((Platform.getEnvironment() == Env.CLIENT)) {
-                        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
-                     }
-                  }
-
-                  return true;
-               }
-            }
-         }
-      }
+//               migrate all of these part to
+//               IAspectContainerItemFillerBlock#fillAspectContainerItem
+//               and
+//               IAspectContainerItem#storeAspect
+//               if (player.getHeldItem() != null
+//                       && ((TileAlembic) te).amount > 0 && (player.getHeldItem().getItem() == ConfigItems.itemJarFilled
+//                       || player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 0))
+//                       || player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 3)))
+//               ) {
+//                  boolean doit = false;
+//                  ItemStack drop = null;
+//                  if (!player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 0))
+//                          && !player.getHeldItem().isItemEqual(new ItemStack(ConfigBlocks.blockJar, 1, 3))
+//                  ) {
+//                     drop = player.getHeldItem();
+//                     if ((((ItemJarFilled) drop.getItem()).getAspects(drop) == null || ((ItemJarFilled) drop.getItem()).getAspects(drop).visSize() == 0 || ((ItemJarFilled) drop.getItem()).getAspects(drop).getAmount(((TileAlembic) te).aspect) > 0) && (((ItemJarFilled) drop.getItem()).getFilter(drop) == null || ((ItemJarFilled) drop.getItem()).getFilter(drop) == ((TileAlembic) te).aspect)) {
+//                        int amount = Math.min(((ItemJarFilled) drop.getItem()).getAspects(drop) == null ? 64 : 64 - ((ItemJarFilled) drop.getItem()).getAspects(drop).visSize(), ((TileAlembic) te).amount);
+//                        if (drop.getItemDamage() == 3) {
+//                           amount = ((TileAlembic) te).amount;
+//                        }
+//
+//                        if (amount > 0) {
+//                           ((TileAlembic) te).amount -= amount;
+//                           AspectList<Aspect>as = ((ItemJarFilled) drop.getItem()).getAspects(drop);
+//                           if (as == null) {
+//                              as = new AspectList<>();
+//                           }
+//
+//                           as.addAll(((TileAlembic) te).aspect, amount);
+//                           if (as.getAmount(((TileAlembic) te).aspect) > 64) {
+//                              int q = as.getAmount(((TileAlembic) te).aspect) - 64;
+//                              as.tryReduce(((TileAlembic) te).aspect, q);
+//                           }
+//
+//                           ((ItemJarFilled) drop.getItem()).setAspects(drop, as);
+//                           if (((TileAlembic) te).amount <= 0) {
+//                              ((TileAlembic) te).aspect = null;
+//                           }
+//
+//                           doit = true;
+//                           player.setCurrentItemOrArmor(0, drop);
+//                        }
+//                     }
+//                  } else {
+//                     drop = new ItemStack(ConfigItems.itemJarFilled, 1, player.getHeldItem().getItemDamage());
+//                     doit = true;
+//                     ((ItemJarFilled) drop.getItem()).setAspects(drop, (new AspectList<>()).addAll(((TileAlembic) te).aspect, ((TileAlembic) te).amount));
+//                     ((TileAlembic) te).amount = 0;
+//                     ((TileAlembic) te).aspect = null;
+//                     --player.getHeldItem().stackSize;
+//                     if (!addToPlayerInventoryBiased(player.inventory, drop) && Platform.getEnvironment() != Env.CLIENT) {
+//                        world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, drop));
+//                     }
+//                  }
+//
+//                  if (doit) {
+//                     te.markDirty();
+//                     world.markBlockForUpdate(x, y, z);
+//                     if ((Platform.getEnvironment() == Env.CLIENT)) {
+//                        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "game.neutral.swim", 0.5F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F, false);
+//                     }
+//                  }
+//
+//                  return true;
+//               }
+//            }
+//         }
+//      }
 
       if (metadata == 5) {
          world.setBlockMetadataWithNotify(x, y, z, 6, 2);

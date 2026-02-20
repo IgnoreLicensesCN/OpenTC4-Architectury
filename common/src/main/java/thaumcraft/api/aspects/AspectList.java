@@ -22,22 +22,25 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public LinkedHashMap<Asp,Integer> getAspectsInternal(){
 		return aspects;
 	}
-	public final Map<Asp,Integer> aspectView;
-	
-	/**
-	 * this creates a new aspect list with preloaded values based off the aspects ofAspectVisList the given item.
-	 * @param stack the itemstack ofAspectVisList the given item
-	 */
-	public static AspectList<Aspect> of(ItemStack stack) {
-		var result = new AspectList<>();
-		AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
-		if (temp!=null) {
-			for (Aspect tag : temp.getAspectTypes()) {
-				result.addAll(tag, temp.getAmount(tag));
-			}
-		}
-		return result;
+	private final Map<Asp,Integer> aspectView;
+	public Map<Asp,Integer> getAspectView(){
+		return aspectView;
 	}
+	
+//	/**
+//	 * this creates a new aspect list with preloaded values based off the aspects ofAspectVisList the given item.
+//	 * @param stack the itemstack ofAspectVisList the given item
+//	 */
+//	public static AspectList<Aspect> of(ItemStack stack) {
+//		var result = new AspectList<>();
+//		AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
+//		if (temp!=null) {
+//			for (Aspect tag : temp.getAspectTypes()) {
+//				result.addAll(tag, temp.getAmount(tag));
+//			}
+//		}
+//		return result;
+//	}
 	
 	public AspectList() {
 		this.aspects = new LinkedHashMap<>();
@@ -72,7 +75,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
     public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, Player player, List<Component> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(var aspect : aspects.getAspectsSorted()) {
-             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player.getGameProfile().getName(), aspect)) {
+             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, aspect)) {
                 aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
              } else {
                 aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));

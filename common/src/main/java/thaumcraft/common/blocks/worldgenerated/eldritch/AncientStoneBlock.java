@@ -12,8 +12,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AncientStoneBlock extends Block {
+public class AncientStoneBlock extends SuppressedWarningBlock {
 
     public AncientStoneBlock(Properties properties) {
         super(properties);

@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +28,7 @@ import thaumcraft.api.nodes.INodeLockBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
@@ -37,18 +36,22 @@ import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 
 //TODO:BER,create method
-public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
+public class EnergizedAuraNodeBlock extends SuppressedWarningBlock implements EntityBlock {
     private static final VoxelShape SELECT_SHAPE =
-            Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
-                    0.7 * 16, 0.7 * 16, 0.7 * 16);
+            Block.box(
+                    0.3 * 16, 0.3 * 16, 0.3 * 16,
+                    0.7 * 16, 0.7 * 16, 0.7 * 16
+            );
 
     private static final VoxelShape COLLISION_SHAPE = Shapes.empty();
+
     @Override
-    public RenderShape getRenderShape(BlockState blockState) {
+    public @NotNull RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.INVISIBLE;
     }
+
     @Override
-    public VoxelShape getVisualShape(
+    public @NotNull VoxelShape getVisualShape(
             BlockState state,
             BlockGetter level,
             BlockPos pos,
@@ -59,9 +62,10 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
 
 
     @Override
-    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return SELECT_SHAPE;
     }
+
     @Override
     public @NotNull VoxelShape getShape(
             BlockState state,
@@ -115,9 +119,10 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
     @Override
     protected void spawnDestroyParticles(Level level, Player player, BlockPos blockPos, BlockState blockState) {
         if (level.isClientSide() && level.random.nextBoolean()) {
-            UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(),blockPos.getY(),blockPos.getZ(), 0);
+            UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0);
         }
     }
+
     @Override
     public void onRemove(
             BlockState state,
@@ -127,18 +132,21 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
             boolean isMoving
     ) {
         super.onRemove(state, level, pos, newState, isMoving);
-        if (Platform.getEnvironment() == Env.CLIENT) {
+        var isClientSide = level.isClientSide();
+        if (isClientSide) {
             if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
                 var x = pos.getX();
                 var y = pos.getY();
                 var z = pos.getZ();
                 // 粒子
-                ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
+                ClientFXUtils.burst(
+                        clientLevel, (double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F,
+                        1.0F
+                );
             }
-        }
-        if (Platform.getEnvironment() == Env.SERVER) {
+        } else {
             if (level instanceof ServerLevel serverLevel && newState.isAir()) {
-                explode(serverLevel,pos);
+                explode(serverLevel, pos);
             }
         }
     }
@@ -150,20 +158,22 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
             BlockPos pos,
             Block neighborBlock,
             BlockPos neighborPos,
-            boolean isMoving) {
+            boolean isMoving
+    ) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, isMoving);
-        if (Platform.getEnvironment() == Env.SERVER){
-            if (level instanceof ServerLevel serverLevel){
+        if (!level.isClientSide) {
+            if (level instanceof ServerLevel serverLevel) {
                 var lockPos = getLockPos(pos);
-                var hasNodeLock = level.getBlockState(lockPos).getBlock() instanceof INodeLockBlock && !level.hasNeighborSignal(lockPos);
-                if (!hasNodeLock){
-                    explode(serverLevel,pos);
+                var hasNodeLock = level.getBlockState(lockPos)
+                        .getBlock() instanceof INodeLockBlock && !level.hasNeighborSignal(lockPos);
+                if (!hasNodeLock) {
+                    explode(serverLevel, pos);
                     return;
                 }
-                var hasTransducer = level.getBlockState(getTransducerPos(pos)).getBlock() instanceof NodeTransducerBlock;
-                if (!hasTransducer){
-                    explode(serverLevel,pos);
-                    return;
+                var hasTransducer = level.getBlockState(getTransducerPos(pos))
+                        .getBlock() instanceof NodeTransducerBlock;
+                if (!hasTransducer) {
+                    explode(serverLevel, pos);
                 }
             }
         }
@@ -172,43 +182,51 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
     public BlockPos getLockPos(BlockPos selfPos) {
         return selfPos.below();
     }
+
     public BlockPos getTransducerPos(BlockPos selfPos) {
         return selfPos.above();
     }
 
     public static void explode(ServerLevel world, BlockPos atPos) {
-        if (Platform.getEnvironment() != Env.CLIENT) {
-            world.setBlockAndUpdate(atPos, Blocks.AIR.defaultBlockState());
-            var explodePos = atPos.getCenter();
-            world.explode(null,
-                    explodePos.x,
-                    explodePos.y,
-                    explodePos.z,
-                    3.0F,                      // 威力
-                    Level.ExplosionInteraction.BLOCK);
+        world.setBlockAndUpdate(atPos, Blocks.AIR.defaultBlockState());
+        var explodePos = atPos.getCenter();
+        world.explode(
+                null,
+                explodePos.x,
+                explodePos.y,
+                explodePos.z,
+                3.0F,                      // 威力
+                Level.ExplosionInteraction.BLOCK
+        );
 
-            for(int a = 0; a < 50; ++a) {
-                var pickPos = atPos.offset(
-                        world.getRandom().nextInt(15)-7,
-                        world.getRandom().nextInt(15)-7,
-                        world.getRandom().nextInt(15)-7
-                );
-                if (world.getBlockState(pickPos).isAir()) {
-                    if (pickPos.getY() < atPos.getY()) {
-                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
-                    }else {
-                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
-                    }
+        for (int a = 0; a < 50; ++a) {
+            var pickPos = atPos.offset(
+                    world.getRandom()
+                            .nextInt(15) - 7,
+                    world.getRandom()
+                            .nextInt(15) - 7,
+                    world.getRandom()
+                            .nextInt(15) - 7
+            );
+            if (world.getBlockState(pickPos)
+                    .isAir()) {
+                if (pickPos.getY() < atPos.getY()) {
+                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
+                } else {
+                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
                 }
             }
         }
+
     }
+
     public EnergizedAuraNodeBlock(Properties properties) {
         super(properties);
     }
+
     public EnergizedAuraNodeBlock() {
         super(BlockBehaviour.Properties.of()
-                .strength(2.f,200.f)
+                .strength(2.f, 200.f)
                 .lightLevel(state -> 8)
                 .sound(NODE_SOUND)
                 .noOcclusion()
@@ -219,17 +237,17 @@ public class EnergizedAuraNodeBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() == this){
-            return new EnergizedAuraNodeBlockEntity(blockPos,blockState);
+        if (blockState.getBlock() == this) {
+            return new EnergizedAuraNodeBlockEntity(blockPos, blockState);
         }
         return null;
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ENERGIZED_NODE && blockState.getBlock() == this){
+        if (blockEntityType == ThaumcraftBlockEntities.ENERGIZED_NODE && blockState.getBlock() == this) {
             return ((level1, blockPos, blockState1, blockEntity) -> {
-                if (blockEntity instanceof EnergizedAuraNodeBlockEntity energizedNode){
+                if (blockEntity instanceof EnergizedAuraNodeBlockEntity energizedNode) {
                     energizedNode.tick();
                 }
             });

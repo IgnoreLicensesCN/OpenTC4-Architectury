@@ -10,16 +10,16 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransport;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class TileArcaneLampFertility extends TileThaumcraft implements IEssentiaTransport {
+public class TileArcaneLampFertility extends TileThaumcraft implements IEssentiaTransportBlockEntity {
    public Direction facing = Direction.getOrientation(0);
    public int charges = 0;
    int count = 0;
@@ -105,7 +105,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       } else {
          TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
          if (te != null) {
-            IEssentiaTransport ic = (IEssentiaTransport)te;
+            IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
             if (!ic.canOutputTo(this.facing.getOpposite())) {
                return false;
             }
@@ -137,7 +137,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 

@@ -1,20 +1,14 @@
 package thaumcraft.common.blocks.multipartcomponent.infernalfurnace;
 
 import com.linearity.opentc4.VecTransformations;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -66,7 +60,7 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
             int id,
             int param
     ) {
-        if (Platform.getEnvironment() != Env.CLIENT) {
+        if (!level.isClientSide) {
             return super.triggerEvent(state, level, pos, id, param);
         }
         if (id == 1) {
@@ -155,7 +149,7 @@ public class InfernalFurnaceBarBlock extends AbstractInfernalFurnaceComponent {
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return Shapes.empty();
     }
 

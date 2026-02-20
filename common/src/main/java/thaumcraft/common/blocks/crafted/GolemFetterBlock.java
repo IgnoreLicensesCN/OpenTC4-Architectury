@@ -13,9 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //used for golem ai not here.
-public class GolemFetterBlock extends Block {
+public class GolemFetterBlock extends SuppressedWarningBlock {
 
     public GolemFetterBlock(Properties properties) {
         super(properties);

@@ -53,6 +53,10 @@
     "thaumcraft:obsidian_tile",
     "thaumcraft:obsidian_totem_with_node",
     "thaumcraft:obsidian_totem",
-    "thaumcraft:vis_relay"
+    "thaumcraft:vis_relay",
+    "thaumcraft:alchemical_furnace",
+    "thaumcraft:advanced_alchemical_construct",
+    "thaumcraft:alchemical_construct",
+    "thaumcraft:arcane_alembic"
   ]
 }

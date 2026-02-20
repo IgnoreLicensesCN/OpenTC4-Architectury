@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
@@ -51,14 +51,14 @@ public class ItemTrunkSpawner extends Item {
             byte ba = stack.stackTagCompound.getByte("upgrade");
             String text = "§9";
             if (ba > -1) {
-               text = text + StatCollector.translateToLocal("item.ItemGolemUpgrade." + ba + ".name") + " ";
+               text = text + Component.translatable("item.ItemGolemUpgrade." + ba + ".name") + " ";
             }
 
             list.add(text);
          }
 
          if (stack.stackTagCompound.hasKey("inventory")) {
-            list.add(StatCollector.translateToLocal("item.TrunkSpawner.text.1"));
+            list.add(Component.translatable("item.TrunkSpawner.text.1"));
          }
       }
 

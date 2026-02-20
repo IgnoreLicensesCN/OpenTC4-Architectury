@@ -36,6 +36,7 @@ public class MultipartBlockMatcherPresents {
                     {InfernalFurnaceMatcherImpls.CORNER_MATCHER,InfernalFurnaceMatcherImpls.Z_AXIS_MATCHER,InfernalFurnaceMatcherImpls.CORNER_MATCHER},
             },
     };
+    public static final IFormedBlockMatcher[][][] ADVANCED_ALCHEMICAL_FURNACE_FORMED_MATCHER = ;//TODO
 
 
     public static IFormedBlockMatcher generateSimpleMatcher(IMultipartComponentBlock componentBlock) {

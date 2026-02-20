@@ -15,7 +15,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import thaumcraft.api.entities.IEldritchMob;
@@ -60,7 +60,7 @@ public class EntityEldritchWarden extends EntityThaumcraftBoss implements IRange
    public void generateName() {
       int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
-         this.setCustomNameTag(String.format(StatCollector.translateToLocal("entity.Thaumcraft.EldritchWarden.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
+         this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.EldritchWarden.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
       }
 
    }

@@ -15,7 +15,7 @@ import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.REQUESTED_ASPECT_LIST;
 
 public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     public static MessageType messageType;
@@ -31,7 +31,7 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     public PacketSyncItemAspectsS2C() {
         Map<Item, UnmodifiableAspectList<Aspect>> result = new HashMap<>();
         BuiltInRegistries.ITEM.forEach(
-                i -> result.put(i,ItemBasicAspectGetter.getBasicAspects(i))
+                i -> result.put(i,ItemBasicAspectGetter.getBasicAspectsServer(i))
         );
         syncResult = result;
     }
@@ -48,7 +48,7 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
                 (friendlyByteBuf, item) -> bufOuter.writeId(BuiltInRegistries.ITEM, item),
                 (bufForAspList, aspectUnmodifiableAspectList) ->
                         bufForAspList.writeMap(
-                                aspectUnmodifiableAspectList.aspectView,
+                                aspectUnmodifiableAspectList.getAspectView(),
                                 (bufForAsp, aspect) -> bufForAsp.writeResourceLocation(
                                         bufForAsp.readResourceLocation()),
                                 FriendlyByteBuf::writeInt
@@ -57,6 +57,7 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     }
 
     public static PacketSyncItemAspectsS2C decode(FriendlyByteBuf bufOuter) {
+        REQUESTED_ASPECT_LIST.set(true);
         return new PacketSyncItemAspectsS2C(
                 bufOuter.readMap(
                         bufForItem -> bufForItem.readById(BuiltInRegistries.ITEM),
@@ -74,5 +75,6 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         ItemBasicAspectGetter.CLIENT_CACHE.clear();
         ItemBasicAspectGetter.CLIENT_CACHE.putAll(syncResult);
+        REQUESTED_ASPECT_LIST.set(false);
     }
 }

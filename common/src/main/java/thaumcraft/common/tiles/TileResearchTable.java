@@ -304,7 +304,7 @@ public class TileResearchTable /*extends TileThaumcraft implements IInventory*/ 
 //   }
 //
 //   public String getInventoryName() {
-//      return StatCollector.translateToLocal("tile.blockTable.research.name");
+//      return Component.translatable("tile.blockTable.research.name");
 //   }
 //
 //   public int getInventoryStackLimit() {

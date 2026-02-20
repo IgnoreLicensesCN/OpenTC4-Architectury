@@ -33,8 +33,9 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
+public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock, INodeBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
                     0.7 * 16, 0.7 * 16, 0.7 * 16);
@@ -93,12 +94,12 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
 
 
     @Override
-    public RenderShape getRenderShape(BlockState blockState) {
+    public @NotNull RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    public VoxelShape getVisualShape(
+    public @NotNull VoxelShape getVisualShape(
             BlockState state,
             BlockGetter level,
             BlockPos pos,
@@ -109,7 +110,7 @@ public class AuraNodeBlock extends Block implements EntityBlock, INodeBlock {
 
 
     @Override
-    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    public @NotNull VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return SELECT_SHAPE;
     }
 

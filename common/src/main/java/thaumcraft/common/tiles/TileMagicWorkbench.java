@@ -126,7 +126,7 @@ public class TileMagicWorkbench /* extends TileThaumcraft implements IInventory,
 //   }
 //
 //   public String getInventoryName() {
-//      return StatCollector.translateToLocal("tile.blockTable.15.name");
+//      return Component.translatable("tile.blockTable.15.name");
 //   }
 //
 //   public void openInventory() {

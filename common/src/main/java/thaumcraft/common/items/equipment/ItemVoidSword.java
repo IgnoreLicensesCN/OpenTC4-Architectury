@@ -15,7 +15,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
@@ -72,7 +72,7 @@ public class ItemVoidSword extends ItemSword implements IRepairEnchantable, IWar
    }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("enchantment.special.sapless"));
+      list.add(EnumChatFormatting.GOLD + Component.translatable("enchantment.special.sapless"));
       super.addInformation(stack, player, list, par4);
    }
 }

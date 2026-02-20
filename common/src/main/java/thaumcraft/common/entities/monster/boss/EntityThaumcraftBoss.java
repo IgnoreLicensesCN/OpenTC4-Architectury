@@ -15,7 +15,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.config.ConfigItems;
@@ -239,7 +239,7 @@ public class EntityThaumcraftBoss extends Monster implements IBossDisplayData {
                }
 
                if (source.getEntity() != null && source.getEntity() instanceof Player) {
-                  ((Player)source.getEntity()).addChatMessage(new ChatComponentText(this.getCommandSenderName() + " " + StatCollector.translateToLocal("tc.boss.enrage")));
+                  ((Player)source.getEntity()).addChatMessage(new ChatComponentText(this.getCommandSenderName() + " " + Component.translatable("tc.boss.enrage")));
                }
             }
 

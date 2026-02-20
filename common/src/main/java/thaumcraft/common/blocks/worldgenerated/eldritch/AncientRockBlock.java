@@ -1,7 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -12,8 +11,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AncientRockBlock extends Block {
+public class AncientRockBlock extends SuppressedWarningBlock {
 
     public AncientRockBlock(Properties properties) {
         super(properties);

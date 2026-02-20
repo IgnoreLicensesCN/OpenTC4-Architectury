@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import cpw.mods.fml.common.network.NetworkRegistry;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -865,7 +865,7 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
     }
 
     public String getInventoryName() {
-        return StatCollector.translateToLocal("tile.blockWoodenDevice.5.name");
+        return Component.translatable("tile.blockWoodenDevice.5.name");
     }
 
     public int getInventoryStackLimit() {

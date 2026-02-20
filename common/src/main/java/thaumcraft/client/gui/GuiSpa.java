@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
@@ -52,9 +52,9 @@ public class GuiSpa extends GuiContainer {
       if (mposx >= 0 && mposy >= 0 && mposx < 10 && mposy < 10) {
          List list = new ArrayList<>();
          if (this.spa.getMix()) {
-            list.add(StatCollector.translateToLocal("text.spa.mix.true"));
+            list.add(Component.translatable("text.spa.mix.true"));
          } else {
-            list.add(StatCollector.translateToLocal("text.spa.mix.false"));
+            list.add(Component.translatable("text.spa.mix.false"));
          }
 
          this.drawHoveringText(list, par1, par2, this.fontRendererObj);

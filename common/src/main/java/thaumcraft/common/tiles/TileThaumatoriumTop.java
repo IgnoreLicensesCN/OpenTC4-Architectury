@@ -5,13 +5,14 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
 
-public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, ISidedInventory {
+public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, ISidedInventory {
    public TileThaumatorium thaumatorium = null;
 
    public boolean canUpdate() {
@@ -33,8 +34,8 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
 
    }
 
-   public int addToContainer(Aspect tt, int am) {
-      return this.thaumatorium == null ? am : this.thaumatorium.addToContainer(tt, am);
+   public int addIntoContainer(Aspect tt, int am) {
+      return this.thaumatorium == null ? am : this.thaumatorium.addIntoContainer(tt, am);
    }
 
    public boolean takeFromContainer(Aspect tt, int am) {
@@ -103,7 +104,7 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, face);
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -111,7 +112,7 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return false;
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.thaumatorium == null ? null : this.thaumatorium.essentia;
    }
 

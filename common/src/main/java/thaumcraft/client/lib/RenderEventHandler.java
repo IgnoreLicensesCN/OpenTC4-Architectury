@@ -32,7 +32,7 @@ import thaumcraft.api.IArchitect;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
@@ -180,7 +180,7 @@ public class RenderEventHandler {
                note = ((TileEntityNote)te).note;
             } else if (te instanceof TileSensor) {
                note = ((TileSensor)te).note;
-            } else if (te instanceof IAspectContainer && ((IAspectContainer)te).getAspects() != null && ((IAspectContainer)te).getAspects().size() > 0) {
+            } else if (te instanceof IAspectContainerBlockEntity && ((IAspectContainerBlockEntity)te).getAspects() != null && ((IAspectContainerBlockEntity)te).getAspects().size() > 0) {
                float shift = 0.0F;
                if (te instanceof TileWandPedestal) {
                   shift = 0.6F;
@@ -190,7 +190,7 @@ public class RenderEventHandler {
                   tagscale += 0.031F - tagscale / 10.0F;
                }
 
-               this.drawTagsOnContainer(target.blockX, (float)target.blockY + (spaceAbove ? 0.4F : 0.0F) + shift, target.blockZ, ((IAspectContainer)te).getAspects(), 220, spaceAbove ? Direction.UP : Direction.getOrientation(event.target.sideHit), event.partialTicks);
+               this.drawTagsOnContainer(target.blockX, (float)target.blockY + (spaceAbove ? 0.4F : 0.0F) + shift, target.blockZ, ((IAspectContainerBlockEntity)te).getAspects(), 220, spaceAbove ? Direction.UP : Direction.getOrientation(event.target.sideHit), event.partialTicks);
             }
 
             if (note >= 0) {

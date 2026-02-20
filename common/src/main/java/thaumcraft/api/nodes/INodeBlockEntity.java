@@ -2,10 +2,9 @@ package thaumcraft.api.nodes;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IWorldlyCentiVisContainer;
+import thaumcraft.api.aspects.IWorldlyCentiVisContainerBlockEntity;
 
-public interface INodeBlockEntity extends IWorldlyCentiVisContainer<Aspect> {
+public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect> {
 
 	/**
 	 * Unique identifier to distinguish nodes. Normal node id's are based on world id and coordinates

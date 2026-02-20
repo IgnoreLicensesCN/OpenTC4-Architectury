@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.blocks.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
@@ -108,10 +108,10 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
          float AZ_maxz = W9;
          boolean notConduit = false;
          Direction fd = null;
-         IEssentiaTransport tube = null;
+         IEssentiaTransportBlockEntity tube = null;
          TileEntity tt = world.getTileEntity(x, y, z);
-         if (tt instanceof IEssentiaTransport) {
-            tube = (IEssentiaTransport)tt;
+         if (tt instanceof IEssentiaTransportBlockEntity) {
+            tube = (IEssentiaTransportBlockEntity)tt;
          }
 
          for(int side = 0; side < 6; ++side) {
@@ -127,42 +127,42 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
                      case 0:
                         AY_miny = 0.0F;
                         drawY = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AY_miny = -W6;
                         }
                         break;
                      case 1:
                         AY_maxy = 1.0F;
                         drawY = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AY_maxy = 1.0F + W6;
                         }
                         break;
                      case 2:
                         AZ_minz = 0.0F;
                         drawZ = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AZ_minz = -W6;
                         }
                         break;
                      case 3:
                         AZ_maxz = 1.0F;
                         drawZ = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AZ_maxz = 1.0F + W6;
                         }
                         break;
                      case 4:
                         AX_minx = 0.0F;
                         drawX = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AX_minx = -W6;
                         }
                         break;
                      case 5:
                         AX_maxx = 1.0F;
                         drawX = true;
-                        if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).renderExtendedTube()) {
+                        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).renderExtendedTube()) {
                            AX_maxx = 1.0F + W6;
                         }
                   }
@@ -250,7 +250,7 @@ public class BlockTubeRenderer extends BlockRenderer implements ISimpleBlockRend
 
    public TileEntity getConnectableTile(IBlockAccess world, int x, int y, int z, Direction face) {
       TileEntity te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
-      if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).isConnectable(face.getOpposite())) {
+      if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity)te).isConnectable(face.getOpposite())) {
          return te;
       } else {
          return te instanceof TileBellows && ((TileBellows)te).orientation == face.getOpposite().ordinal() ? te : null;

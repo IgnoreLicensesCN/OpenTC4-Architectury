@@ -15,7 +15,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.client.lib.UtilsFX;
@@ -132,11 +132,11 @@ public class ItemGolemBell extends Item {
                markers.add(new Marker(par4, par5, par6, world.dimension(), (byte)side, (byte)color));
                ++count;
                if ((Platform.getEnvironment() == Env.CLIENT)) {
-                  String text = StatCollector.translateToLocal("tc.markerchange");
+                  String text = Component.translatable("tc.markerchange");
                   if (color > -1) {
                      text = text.replaceAll("%n", UtilsFX.colorNames[color]);
                   } else {
-                     text = StatCollector.translateToLocal("tc.markerchangeany");
+                     text = Component.translatable("tc.markerchangeany");
                   }
 
                   PlayerNotifications.addNotification(text);

@@ -35,7 +35,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.util.EnumChatFormatting;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -1010,10 +1010,10 @@ public class ClientProxy extends CommonProxy {
    public void onTooltip(ItemTooltipEvent e) {
       if (ConfigurationHandler.INSTANCE.isAddTooltip() && e.itemStack != null) {
          if (e.itemStack.getItem() == ConfigItems.itemResearchNotes)
-            e.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("tc4tweaks.enabled_scrolling"));
+            e.toolTip.add(EnumChatFormatting.GOLD + Component.translatable("tc4tweaks.enabled_scrolling"));
          else if (e.itemStack.getItem() == ConfigItems.WandCastingItem) {
             if (!ConfigurationHandler.INSTANCE.isCheckWorkbenchRecipes() || !NetworkedConfiguration.isCheckWorkbenchRecipes()) {
-               e.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tc4tweaks.disable_vanilla"));
+               e.toolTip.add(EnumChatFormatting.RED + Component.translatable("tc4tweaks.disable_vanilla"));
             }
          }
       }

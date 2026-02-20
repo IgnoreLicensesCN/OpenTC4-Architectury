@@ -12,10 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.common.Thaumcraft;
@@ -26,7 +27,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 import java.awt.*;
 
-public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWandable, IAspectContainer {
+public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWandable, IAspectContainerBlockEntity {
    public short heat;
    public AspectList<Aspect>aspects = new AspectList<>();
    public final int maxTags = 100;
@@ -444,14 +445,14 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
       return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.aspects;
    }
 
    public void setAspects(AspectList<Aspect>aspects) {
    }
 
-   public int addToContainer(Aspect tag, int amount) {
+   public int addIntoContainer(Aspect tag, int amount) {
       return 0;
    }
 

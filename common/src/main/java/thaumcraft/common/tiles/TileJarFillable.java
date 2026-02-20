@@ -8,10 +8,10 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectSource;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
 
-public class TileJarFillable extends TileJar implements IAspectSource, IEssentiaTransport {
+public class TileJarFillable extends TileJar implements IRemoteDrainableAspectSourceBlockEntity, IEssentiaTransportBlockEntity {
    public Aspect aspect = null;
    public Aspect aspectFilter = null;
    public int amount = 0;
@@ -133,7 +133,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
       return true;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return this.aspectFilter != null ? 64 : 32;
    }
 
@@ -176,7 +176,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
    void fillJar() {
       TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, Direction.UP);
       if (te != null) {
-         IEssentiaTransport ic = (IEssentiaTransport)te;
+         IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
          if (!ic.canOutputTo(Direction.DOWN)) {
             return;
          }
@@ -186,7 +186,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
             ta = this.aspectFilter;
          } else if (this.aspect != null && this.amount > 0) {
             ta = this.aspect;
-         } else if (ic.getEssentiaAmount(Direction.DOWN) > 0 && ic.getSuctionAmount(Direction.DOWN) < this.getSuctionAmount(Direction.UP) && this.getSuctionAmount(Direction.UP) >= ic.getMinimumSuction()) {
+         } else if (ic.getEssentiaAmount(Direction.DOWN) > 0 && ic.getSuctionAmount(Direction.DOWN) < this.getSuctionAmount(Direction.UP) && this.getSuctionAmount(Direction.UP) >= ic.getMinimumSuctionToDrainOut()) {
             ta = ic.getEssentiaType(Direction.DOWN);
          }
 

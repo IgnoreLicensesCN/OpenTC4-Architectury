@@ -1,7 +1,7 @@
 package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.mixinstackhelper.MilkContext;
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -106,10 +106,10 @@ public abstract class LivingEntityMixin {
                 }
 
                 if (living instanceof ServerPlayer serverPlayer){
-                    serverPlayer.sendSystemMessage(Component.literal("§2§o" + StatCollector.translateToLocal("warp.text.hunger.2")));
+                    serverPlayer.sendSystemMessage(Component.literal("§2§o" + Component.translatable("warp.text.hunger.2")));
                 }
             }else if (item.getFoodProperties() != null && living instanceof ServerPlayer serverPlayer) {
-                serverPlayer.sendSystemMessage(Component.literal("§4§o" + StatCollector.translateToLocal("warp.text.hunger.1")));
+                serverPlayer.sendSystemMessage(Component.literal("§4§o" + Component.translatable("warp.text.hunger.1")));
             }
         }
 

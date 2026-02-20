@@ -3,16 +3,17 @@ package thaumcraft.common.tiles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 
-public class TileManaPod extends TileThaumcraft implements IAspectContainer {
+public class TileManaPod extends TileThaumcraft implements IAspectContainerBlockEntity {
    public Aspect aspect = null;
 
    public boolean canUpdate() {
@@ -99,7 +100,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
 
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.aspect != null && this.getBlockMetadata() == 7 ? (new AspectList<>()).addAll(this.aspect, 1) : null;
    }
 
@@ -110,7 +111,7 @@ public class TileManaPod extends TileThaumcraft implements IAspectContainer {
       return false;
    }
 
-   public int addToContainer(Aspect tag, int amount) {
+   public int addIntoContainer(Aspect tag, int amount) {
       return 0;
    }
 

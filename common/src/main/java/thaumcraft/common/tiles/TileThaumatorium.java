@@ -17,12 +17,13 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -31,7 +32,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
 
-public class TileThaumatorium extends TileThaumcraft implements IAspectContainer, IEssentiaTransport, ISidedInventory {
+public class TileThaumatorium extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, ISidedInventory {
    public ItemStack inputStack = null;
    public AspectList<Aspect>essentia = new AspectList<>();
    public ArrayList<Integer> recipeHash = new ArrayList<>();
@@ -263,18 +264,18 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    void fill() {
       TileEntity te = null;
-      IEssentiaTransport ic = null;
+      IEssentiaTransportBlockEntity ic = null;
 
       for(int y = 0; y <= 1; ++y) {
          for(Direction dir : Direction.VALID_DIRECTIONS) {
             if (dir != this.facing && dir != Direction.DOWN && (y != 0 || dir != Direction.UP)) {
                te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord + y, this.zCoord, dir);
                if (te != null) {
-                  ic = (IEssentiaTransport)te;
-                  if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(null) && this.getSuctionAmount(null) >= ic.getMinimumSuction()) {
+                  ic = (IEssentiaTransportBlockEntity)te;
+                  if (ic.getEssentiaAmount(dir.getOpposite()) > 0 && ic.getSuctionAmount(dir.getOpposite()) < this.getSuctionAmount(null) && this.getSuctionAmount(null) >= ic.getMinimumSuctionToDrainOut()) {
                      int ess = ic.takeEssentia(this.currentSuction, 1, dir.getOpposite());
                      if (ess > 0) {
-                        this.addToContainer(this.currentSuction, ess);
+                        this.addIntoContainer(this.currentSuction, ess);
                         return;
                      }
                   }
@@ -285,7 +286,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
 
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
       int ce = this.currentRecipe.aspects.getAmount(tt) - this.essentia.getAmount(tt);
       if (this.currentRecipe != null && ce > 0) {
          int add = Math.min(ce, am);
@@ -378,10 +379,10 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
    }
 
    public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
+      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -389,7 +390,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       return false;
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       return this.essentia;
    }
 

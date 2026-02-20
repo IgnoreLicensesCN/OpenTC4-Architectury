@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.common.ISpecialArmor;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IRepairEnchantable;
@@ -103,11 +103,11 @@ public class ItemFortressArmor extends ItemArmor implements IRepairEnchantable, 
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("goggles")) {
-         list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("item.ItemGoggles.name"));
+         list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("item.ItemGoggles.name"));
       }
 
       if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mask")) {
-         list.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.HelmetFortress.mask." + stack.stackTagCompound.getInteger("mask")));
+         list.add(EnumChatFormatting.GOLD + Component.translatable("item.HelmetFortress.mask." + stack.stackTagCompound.getInteger("mask")));
       }
 
       super.addInformation(stack, player, list, par4);

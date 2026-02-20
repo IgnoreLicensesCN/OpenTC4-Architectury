@@ -17,7 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraft.core.Direction;
@@ -78,7 +78,7 @@ public class ItemHandMirror extends Item {
                itemstack.setTagInfo("linkDim", new NBTTagInt(world.dimension()));
                itemstack.setTagInfo("dimname", new NBTTagString(DimensionManager.getProvider(world.dimension()).getDimensionName()));
                world.playSoundEffect(x, y, z, "thaumcraft:jar", 1.0F, 2.0F);
-               player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorlinked")));
+               player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.handmirrorlinked")));
                player.inventoryContainer.detectAndSendChanges();
             }
 
@@ -104,7 +104,7 @@ public class ItemHandMirror extends Item {
          if (!(te instanceof TileMirror)) {
             par1ItemStack.setTagCompound(null);
             par2World.playSoundAtEntity(par3Player, "thaumcraft:zap", 1.0F, 0.8F);
-            par3Player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorerror")));
+            par3Player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.handmirrorerror")));
             return super.onItemRightClick(par1ItemStack, par2World, par3Player);
          }
 
@@ -122,7 +122,7 @@ public class ItemHandMirror extends Item {
          int lz = item.stackTagCompound.getInteger("linkZ");
          int ldim = item.stackTagCompound.getInteger("linkDim");
          String dimname = item.stackTagCompound.getString("dimname");
-         list.add(StatCollector.translateToLocal("tc.handmirrorlinkedto") + " " + lx + "," + ly + "," + lz + " in " + dimname);
+         list.add(Component.translatable("tc.handmirrorlinkedto") + " " + lx + "," + ly + "," + lz + " in " + dimname);
       }
 
    }
@@ -154,7 +154,7 @@ public class ItemHandMirror extends Item {
             } else {
                mirror.setTagCompound(null);
                worldObj.playSoundAtEntity(player, "thaumcraft:zap", 1.0F, 0.8F);
-               player.addChatMessage(new ChatComponentText("§5§o" + StatCollector.translateToLocal("tc.handmirrorerror")));
+               player.addChatMessage(new ChatComponentText("§5§o" + Component.translatable("tc.handmirrorerror")));
                return false;
             }
          }

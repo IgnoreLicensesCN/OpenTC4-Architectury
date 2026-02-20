@@ -35,10 +35,10 @@ public class ItemSpawnerEgg extends Item {
    }
 
    public String getItemStackDisplayName(ItemStack par1ItemStack) {
-      String s = (StatCollector.translateToLocal("item.monsterPlacer.name")).trim();
+      String s = (Component.translatable("item.monsterPlacer.name")).trim();
       String s1 = ((EntityEggStuff)spawnList.get(par1ItemStack.getItemDamage())).name;
       if (s1 != null) {
-         s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
+         s = s + " " + Component.translatable("entity." + s1 + ".name");
       }
 
       return s;

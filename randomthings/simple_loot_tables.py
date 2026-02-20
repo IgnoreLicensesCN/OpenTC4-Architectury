@@ -60,7 +60,10 @@ drop_self_block_names = [
     'node_stabilizer',
     'advanced_node_stabilizer',
     'node_transducer',
-    'alchemical_furnace'
+    'alchemical_furnace',
+    'advanced_alchemical_construct',
+    'alchemical_construct',
+    'arcane_alembic'
 ]
 
 drop_b_for_a_names = [

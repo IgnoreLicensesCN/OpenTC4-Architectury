@@ -80,15 +80,15 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //    }
 
 //    public String getItemStackDisplayName(ItemStack is) {
-//        String name = StatCollector.translateToLocal("item.Wand.name");
-//        name = name.replace("%CAP", StatCollector.translateToLocal("item.Wand." + this.getCap(is).getTag() + ".cap"));
+//        String name = Component.translatable("item.Wand.name");
+//        name = name.replace("%CAP", Component.translatable("item.Wand." + this.getCap(is).getTag() + ".cap"));
 //        String rod = this.getRod(is).getTag();
 //        if (rod.contains("_staff")) {
 //            rod = rod.substring(0, this.getRod(is).getTag().indexOf("_staff"));
 //        }
 //
-//        name = name.replace("%ROD", StatCollector.translateToLocal("item.Wand." + rod + ".rod"));
-//        name = name.replace("%OBJ", this.isStaff(is) ? StatCollector.translateToLocal("item.Wand.staff.obj") : (this.isSceptre(is) ? StatCollector.translateToLocal("item.Wand.sceptre.obj") : StatCollector.translateToLocal("item.Wand.wand.obj")));
+//        name = name.replace("%ROD", Component.translatable("item.Wand." + rod + ".rod"));
+//        name = name.replace("%OBJ", this.isStaff(is) ? Component.translatable("item.Wand.staff.obj") : (this.isSceptre(is) ? Component.translatable("item.Wand.sceptre.obj") : Component.translatable("item.Wand.wand.obj")));
 //        return name;
 //    }
 
@@ -112,12 +112,12 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //                    if (focus != null) {
 //                        int amt = ((ItemFocusBasic) focus.getItem()).getCentiVisCost(focus).getAmount(aspect);
 //                        if (amt > 0) {
-//                            text = "§r, " + this.myFormatter.format((float) amt * mod / 100.0F) + " " + StatCollector.translateToLocal(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "item.Focus.cost2" : "item.Focus.cost1");
+//                            text = "§r, " + this.myFormatter.format((float) amt * mod / 100.0F) + " " + Component.translatable(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "item.Focus.cost2" : "item.Focus.cost1");
 //                        }
 //                    }
 //
 //                    if (Thaumcraft.proxy.isShiftKeyDown()) {
-//                        list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount + ", §o(" + consumption + "% " + StatCollector.translateToLocal("tc.vis.cost") + ")" + text);
+//                        list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount + ", §o(" + consumption + "% " + Component.translatable("tc.vis.cost") + ")" + text);
 //                    } else {
 //                        if (tt.length() > 0) {
 //                            tt.append(" | ");
@@ -131,11 +131,11 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 //            if (!Thaumcraft.proxy.isShiftKeyDown() && num > 0) {
 //                list.add(tt.toString());
 //                tot /= num;
-//                tt2 = " (" + tot + "% " + StatCollector.translateToLocal("tc.vis.costavg") + ")";
+//                tt2 = " (" + tot + "% " + Component.translatable("tc.vis.costavg") + ")";
 //            }
 //        }
 //
-//        list.add(pos, EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.capacity.text") + " " + this.getMaxVis(stack) / 100 + "§r" + tt2);
+//        list.add(pos, EnumChatFormatting.GOLD + Component.translatable("item.capacity.text") + " " + this.getMaxVis(stack) / 100 + "§r" + tt2);
 //        if (this.getFocus(stack) != null) {
 //            list.add(EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + EnumChatFormatting.GREEN + this.getFocus(stack).getItemStackDisplayName(this.getFocusItem(stack)));
 //            if (Thaumcraft.proxy.isShiftKeyDown()) {

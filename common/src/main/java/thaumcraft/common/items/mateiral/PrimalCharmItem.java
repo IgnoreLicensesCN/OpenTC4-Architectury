@@ -1,6 +1,6 @@
 package thaumcraft.common.items.mateiral;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;

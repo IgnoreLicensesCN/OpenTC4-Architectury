@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
@@ -19,11 +17,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-import thaumcraft.common.lib.research.ResearchManager;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -37,41 +31,41 @@ public class ThaumcraftApiHelper {
 //            return s1.getItem() == s2.getItem() && s1.getDamageValue() == s2.getDamageValue();
 //    }
 
-    @Deprecated(forRemoval = true,since = "use researchItem's method")
-    public static boolean isResearchComplete(String username, String researchkey) {
-        return ResearchManager.isResearchComplete(username, researchkey);
-    }
+//    @Deprecated(forRemoval = true,since = "use researchItem's method")
+//    public static boolean isResearchComplete(String username, String researchkey) {
+//        return ResearchManager.isResearchComplete(username, researchkey);
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
+//    public static boolean hasDiscoveredAspect(String username, Aspect aspect) {
+//        return Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect);
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
+//    public static AspectList<Aspect> getDiscoveredAspects(String username) {
+//        return Thaumcraft.playerKnowledge.getAspectsDiscovered(username);
+//    }
 
-    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
-    public static boolean hasDiscoveredAspect(String username, Aspect aspect) {
-        return Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect);
-    }
+//    @Deprecated(forRemoval = true,since = "use object method instead")
+//    public static ItemStack getStackInRowAndColumn(TileMagicWorkbench instance, int row, int column) {
+////        return instance.getStackInRowAndColumn(row, column);
+//        throw new RuntimeException("use object method instead");
+//    }
 
-    @Deprecated(forRemoval = true,since = "use Thaumcraft's method")
-    public static AspectList<Aspect> getDiscoveredAspects(String username) {
-        return Thaumcraft.playerKnowledge.getAspectsDiscovered(username);
-    }
-
-    @Deprecated(forRemoval = true,since = "use object method instead")
-    public static ItemStack getStackInRowAndColumn(TileMagicWorkbench instance, int row, int column) {
-//        return instance.getStackInRowAndColumn(row, column);
-        throw new RuntimeException("use object method instead");
-    }
-
-    @Deprecated(forRemoval = true,since = "newer api")
-    public static AspectList<Aspect> getObjectAspects(ItemStack is) {
-        return ThaumcraftCraftingManager.getObjectTags(is);
-    }
-
-    @Deprecated(forRemoval = true,since = "newer api")
-    public static AspectList<Aspect> getBonusObjectTags(ItemStack is, AspectList<Aspect> ot) {
-        return ThaumcraftCraftingManager.getBonusAspects(is, ot);
-    }
-
-    @Deprecated(forRemoval = true,since = "newer api")
-    public static AspectList<Aspect> generateBaseAspects(Item item) {
-        return ThaumcraftCraftingManager.generateBaseAspects(item);
-    }
+//    @Deprecated(forRemoval = true,since = "newer api")
+//    public static AspectList<Aspect> getObjectAspects(ItemStack is) {
+//        return ThaumcraftCraftingManager.getObjectTags(is);
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "newer api")
+//    public static AspectList<Aspect> getBonusObjectTags(ItemStack is, AspectList<Aspect> ot) {
+//        return ThaumcraftCraftingManager.getBonusAspects(is, ot);
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "newer api")
+//    public static AspectList<Aspect> generateBaseAspects(Item item) {
+//        return ThaumcraftCraftingManager.generateBaseAspects(item);
+//    }
 
 //    public static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets) {
 //        for (ItemStack input : inputs) {
@@ -131,16 +125,16 @@ public class ThaumcraftApiHelper {
 
 //    public static BlockEntity getConnectableTile(Level world, int x, int y, int z, Direction face) {
 //        BlockEntity te = world.getBlockEntity(new BlockPos(x + face.getStepX(), y + face.getStepY(), z + face.getStepZ()));
-//        if (te instanceof IEssentiaTransport && ((IEssentiaTransport) te).isConnectable(face.getOpposite()))
+//        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity) te).isConnectable(face.getOpposite()))
 //            return te;
 //        else
 //            return null;
 //    }
 
-    @Deprecated(forRemoval = true)//TODO:Migrate to IEssentiaTransport
+    @Deprecated(forRemoval = true)//TODO:Migrate to IEssentiaTransportBlockEntity
     public static BlockEntity getConnectableTile(BlockGetter world, int x, int y, int z, Direction face) {
         BlockEntity te = world.getBlockEntity(new BlockPos(x + face.getStepX(), y + face.getStepY(), z + face.getStepZ()));
-        if (te instanceof IEssentiaTransport && ((IEssentiaTransport) te).isConnectable(face.getOpposite()))
+        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity) te).isConnectable(face.getOpposite()))
             return te;
         else
             return null;
@@ -176,79 +170,79 @@ public class ThaumcraftApiHelper {
     }
 
 
-    /**
-     * Use to subtract vis from a wand for most operations
-     * Wands store vis differently so "real" vis costs need to be multiplied by 100 before calling this method
-     *
-     * @param wand     the wand itemstack
-     * @param player   the player using the wand
-     * @param cost     the cost ofAspectVisList the operation.
-     * @param doit     actually subtract the vis from the wand if true - if false just simulate the result
-     * @param crafting is this a crafting operation or not - if
-     *                 false then things like frugal and potency will apply to the costs
-     * @return was the vis successfully subtracted
-     */
-    @Deprecated(forRemoval = true)
-    public static boolean consumeVisFromWand(ItemStack wand, Player player,
-                                             CentiVisList<Aspect> cost, boolean doit, boolean crafting) {
-        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVis(wand, player, cost, doit, crafting);
-    }
+//    /**
+//     * Use to subtract vis from a wand for most operations
+//     * Wands store vis differently so "real" vis costs need to be multiplied by 100 before calling this method
+//     *
+//     * @param wand     the wand itemstack
+//     * @param player   the player using the wand
+//     * @param cost     the cost ofAspectVisList the operation.
+//     * @param doit     actually subtract the vis from the wand if true - if false just simulate the result
+//     * @param crafting is this a crafting operation or not - if
+//     *                 false then things like frugal and potency will apply to the costs
+//     * @return was the vis successfully subtracted
+//     */
+//    @Deprecated(forRemoval = true)
+//    public static boolean consumeVisFromWand(ItemStack wand, Player player,
+//                                             CentiVisList<Aspect> cost, boolean doit, boolean crafting) {
+//        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVis(wand, player, cost, doit, crafting);
+//    }
 
-    /**
-     * Subtract vis for use by a crafting mechanic. Costs are calculated slightly
-     * differently and things like the frugal enchant is ignored
-     * Must NOT be multiplied by 100 - send the actual vis cost
-     *
-     * @param wand   the wand itemstack
-     * @param player the player using the wand
-     * @param cost   the cost ofAspectVisList the operation.
-     * @param doit   actually subtract the vis from the wand if true - if false just simulate the result
-     * @return was the vis successfully subtracted
-     */
-    @Deprecated(forRemoval = true)
-    public static boolean consumeVisFromWandCrafting(ItemStack wand, Player player,
-                                                     CentiVisList<Aspect> cost, boolean doit) {
-        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVisCrafting(wand, player, cost, doit);
-    }
+//    /**
+//     * Subtract vis for use by a crafting mechanic. Costs are calculated slightly
+//     * differently and things like the frugal enchant is ignored
+//     * Must NOT be multiplied by 100 - send the actual vis cost
+//     *
+//     * @param wand   the wand itemstack
+//     * @param player the player using the wand
+//     * @param cost   the cost ofAspectVisList the operation.
+//     * @param doit   actually subtract the vis from the wand if true - if false just simulate the result
+//     * @return was the vis successfully subtracted
+//     */
+//    @Deprecated(forRemoval = true)
+//    public static boolean consumeVisFromWandCrafting(ItemStack wand, Player player,
+//                                                     CentiVisList<Aspect> cost, boolean doit) {
+//        return wand.getItem() instanceof WandCastingItem && ((WandCastingItem) wand.getItem()).consumeAllCentiVisCrafting(wand, player, cost, doit);
+//    }
 
-    /**
-     * Subtract vis from a wand the player is carrying. Works like consumeVisFromWand in that actual vis
-     * costs should be multiplied by 100. The costs are handled like crafting however and things like
-     * frugal don't effect them
-     *
-     * @param player the player using the wand
-     * @param cost   the cost ofAspectVisList the operation.
-     * @return was the vis successfully subtracted
-     */
-    @Deprecated(forRemoval = true)
-    public static boolean consumeVisFromInventory(Player player, CentiVisList<Aspect> cost) {
-        return WandManager.consumeCentiVisFromInventory(player, cost);
-    }
-
-
-    /**
-     * This adds permanents or temporary warp to a player. It will automatically be synced clientside
-     *
-     * @param player    the player using the wand
-     * @param amount    how much warp to add. Negative amounts are only valid for temporary warp
-     * @param temporary add temporary warp instead ofAspectVisList permanent
-     */
-    @Deprecated(forRemoval = true,since = "use Thaumcraft#addWarpToPlayer")
-    public static void addWarpToPlayer(Player player, int amount, boolean temporary) {
-        Thaumcraft.addWarpToPlayer(player, amount, temporary);
-    }
-
-    /**
-     * This "sticky" warp to a player. Sticky warp is permanent warp that can be removed.
-     * It will automatically be synced clientside
-     *
-     * @param player the player using the wand
-     * @param amount how much warp to add. Can have negative amounts.
-     */
-    @Deprecated(forRemoval = true,since = "use Thaumcraft#addStickyWarpToPlayer")
-    public static void addStickyWarpToPlayer(Player player, int amount) {
-        Thaumcraft.addStickyWarpToPlayer(player, amount);
-    }
+//    /**
+//     * Subtract vis from a wand the player is carrying. Works like consumeVisFromWand in that actual vis
+//     * costs should be multiplied by 100. The costs are handled like crafting however and things like
+//     * frugal don't effect them
+//     *
+//     * @param player the player using the wand
+//     * @param cost   the cost ofAspectVisList the operation.
+//     * @return was the vis successfully subtracted
+//     */
+//    @Deprecated(forRemoval = true)
+//    public static boolean consumeVisFromInventory(Player player, CentiVisList<Aspect> cost) {
+//        return WandManager.consumeCentiVisFromInventory(player, cost);
+//    }
+//
+//
+//    /**
+//     * This adds permanents or temporary warp to a player. It will automatically be synced clientside
+//     *
+//     * @param player    the player using the wand
+//     * @param amount    how much warp to add. Negative amounts are only valid for temporary warp
+//     * @param temporary add temporary warp instead ofAspectVisList permanent
+//     */
+//    @Deprecated(forRemoval = true,since = "use Thaumcraft#addWarpToPlayer")
+//    public static void addWarpToPlayer(Player player, int amount, boolean temporary) {
+//        Thaumcraft.addWarpToPlayer(player, amount, temporary);
+//    }
+//
+//    /**
+//     * This "sticky" warp to a player. Sticky warp is permanent warp that can be removed.
+//     * It will automatically be synced clientside
+//     *
+//     * @param player the player using the wand
+//     * @param amount how much warp to add. Can have negative amounts.
+//     */
+//    @Deprecated(forRemoval = true,since = "use Thaumcraft#addStickyWarpToPlayer")
+//    public static void addStickyWarpToPlayer(Player player, int amount) {
+//        Thaumcraft.addStickyWarpToPlayer(player, amount);
+//    }
 
     public static @Nullable BlockHitResult rayTraceIgnoringSource(Level level, Vec3 start, Vec3 end, boolean ignoreSource){
         BlockPos startPos = BlockPos.containing(start);

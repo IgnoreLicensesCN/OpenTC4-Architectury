@@ -182,6 +182,10 @@ public class ThaumcraftBlocks {
     public static final SappingFieldBlock SAPPING_FIELD = Registry.SUPPLIER_SAPPING_FIELD.get();
     public static final StaticFieldBlock STATIC_FIELD = Registry.SUPPLIER_STATIC_FIELD.get();
     public static final AlchemicalFurnaceBlock ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
+    public static final Block ADVANCED_ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT.get();
+    public static final Block ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ALCHEMICAL_CONSTRUCT.get();
+    public static final ArcaneAlembicBlock ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -665,6 +669,23 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<AlchemicalFurnaceBlock> SUPPLIER_ALCHEMICAL_FURNACE = BLOCKS.register(
                 "alchemical_furnace",
                 AlchemicalFurnaceBlock::new
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+                "advanced_alchemical_construct",
+                () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                        .lightLevel(s -> 11)
+                        .strength(3,17)
+                )
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+                "alchemical_construct",
+                () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                        .strength(3,17)
+                )
+        );
+        public static final RegistrySupplier<ArcaneAlembicBlock> SUPPLIER_ARCANE_ALEMBIC = BLOCKS.register(
+                "arcane_alembic",
+                ArcaneAlembicBlock::new
         );
 
         static {

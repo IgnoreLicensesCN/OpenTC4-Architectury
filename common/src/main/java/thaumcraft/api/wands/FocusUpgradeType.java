@@ -2,7 +2,7 @@ package thaumcraft.api.wands;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import com.linearity.opentc4.utils.StatCollector;
+
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;

@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import com.linearity.opentc4.utils.StatCollector;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
@@ -48,11 +48,11 @@ public class WarpEvents {
 //         if (eff > 0) {
 //            if (eff <= 4) {
 //               grantResearch(player, 1);
-//               player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.3")));
+//               player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.3")));
 //            }
 //            else if (eff > 8) {
 //               if (eff <= 12) {
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.11")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.11")));
 //               }
 //               else if (eff <= 16) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionVisExhaustID, 5000, Math.min(3, warp / 15), true);
@@ -64,7 +64,7 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.1")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.1")));
 //               }
 //               else if (eff <= 20) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionThaumarhiaID, Math.min(32000, 10 * warp), 0, true);
@@ -76,7 +76,7 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.15")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.15")));
 //               }
 //               else if (eff <= 24) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionUnHungerID, 5000, Math.min(3, warp / 15), true);
@@ -90,10 +90,10 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.2")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.2")));
 //               }
 //               else if (eff <= 28) {
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.12")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.12")));
 //               }
 //               else if (eff <= 32) {
 //                  spawnMist(player, warp, 1);
@@ -115,7 +115,7 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.5")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.5")));
 //               }
 //               else if (eff <= 44) {
 //                  try {
@@ -124,7 +124,7 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.9")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.9")));
 //               }
 //               else if (eff <= 48) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionInfVisExhaustID, 6000, Math.min(3, warp / 15), false);
@@ -136,11 +136,11 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.1")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.1")));
 //               }
 //               else if (eff <= 52) {
 //                  player.addEffect(new MobEffectInstance(Potion.nightVision.id, Math.min(40 * warp, 6000), 0, true));
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.10")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.10")));
 //               }
 //               else if (eff <= 56) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionDeathGazeID, 6000, Math.min(3, warp / 15), true);
@@ -152,13 +152,13 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.4")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.4")));
 //               }
 //               else if (eff <= 60) {
 //                  suddenlySpiders(player, warp, false);
 //               }
 //               else if (eff <= 64) {
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.13")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.13")));
 //               }
 //               else if (eff <= 68) {
 //                  spawnMist(player, warp, warp / 30);
@@ -177,7 +177,7 @@ public class WarpEvents {
 //                     PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)1, -1), (ServerPlayer)player);
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.14")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.14")));
 //               }
 //               else if (eff <= 80) {
 //                  MobEffectInstance pe = new MobEffectInstance(Config.potionUnHungerID, 6000, Math.min(3, warp / 15), true);
@@ -191,11 +191,11 @@ public class WarpEvents {
 //                     e.printStackTrace();
 //                  }
 //
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.2")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.2")));
 //               }
 //               else if (eff <= 84) {
 //                  grantResearch(player, warp / 10);
-//                  player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.3")));
+//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.3")));
 //               }
 //               else if (eff > 88) {
 //                  if (eff <= 92) {
@@ -208,7 +208,7 @@ public class WarpEvents {
 //         }
 //
 //         if (actualwarp > 10 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "BATHSALTS") && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "@BATHSALTS")) {
-//            player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.8")));
+//            player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.8")));
 //            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("@BATHSALTS"), (ServerPlayer)player);
 //            Thaumcraft.researchManager.completeResearch(player, "@BATHSALTS");
 //         }
@@ -240,7 +240,7 @@ public class WarpEvents {
          }
       }
 
-      player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.6")),true);
+      player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.6")),true);
    }
 
    public static void grantResearch(Player player, int times) {
@@ -317,7 +317,7 @@ public class WarpEvents {
          }
       }
 
-      player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.7")));
+      player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.7")));
    }
 
 //   public static void checkDeathGaze(Player player) {

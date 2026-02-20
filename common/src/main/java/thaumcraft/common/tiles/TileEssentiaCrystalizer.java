@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.*;
@@ -20,7 +21,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.awt.*;
 
-public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
+public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity {
    public Aspect aspect = null;
    public Direction facing;
    int count;
@@ -74,7 +75,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       nbttagcompound.setByte("face", (byte)this.facing.ordinal());
    }
 
-   public AspectList<Aspect>getAspects() {
+   public @NotNull AspectList<Aspect>getAspects() {
       AspectList<Aspect>al = new AspectList<>();
       if (this.aspect != null) {
          al.addAll(this.aspect, 1);
@@ -86,7 +87,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    public void setAspects(AspectList<Aspect>aspects) {
    }
 
-   public int addToContainer(Aspect tt, int am) {
+   public int addIntoContainer(Aspect tt, int am) {
        if (am != 0) {
            if (this.aspect == null) {
                --am;
@@ -155,7 +156,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -180,7 +181,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    }
 
    public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
+      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
    public void updateEntity() {
@@ -307,18 +308,18 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
    void fillReservoir() {
       TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
       if (te != null) {
-         IEssentiaTransport ic = (IEssentiaTransport)te;
+         IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
          if (!ic.canOutputTo(this.facing.getOpposite())) {
             return;
          }
 
          Aspect ta = null;
-         if (ic.getEssentiaAmount(this.facing.getOpposite()) > 0 && ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && this.getSuctionAmount(this.facing) >= ic.getMinimumSuction()) {
+         if (ic.getEssentiaAmount(this.facing.getOpposite()) > 0 && ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && this.getSuctionAmount(this.facing) >= ic.getMinimumSuctionToDrainOut()) {
             ta = ic.getEssentiaType(this.facing.getOpposite());
          }
 
          if (ta != null && ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing)) {
-            this.addToContainer(ta, ic.takeEssentia(ta, 1, this.facing.getOpposite()));
+            this.addIntoContainer(ta, ic.takeEssentia(ta, 1, this.facing.getOpposite()));
          }
       }
 

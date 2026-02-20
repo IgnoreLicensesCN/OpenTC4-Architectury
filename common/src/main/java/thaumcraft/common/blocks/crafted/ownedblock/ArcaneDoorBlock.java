@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted.ownedblock;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -50,7 +48,7 @@ public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
         super.setPlacedBy(level, pos, blockState, livingEntity, itemStack);
-        if (Platform.getEnvironment() == Env.SERVER) {
+        if (!level.isClientSide()) {
             var player = (livingEntity instanceof Player player0) ? player0:null;
             if (player != null) {
                 var ownedBlockEntity = level.getBlockEntity(pos);
@@ -106,7 +104,7 @@ public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock
                 this.playSound(player, level, pos, arg.getValue(OPEN));
                 level.gameEvent(player, this.isOpen(arg) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
                 return InteractionResult.sidedSuccess(level.isClientSide);
-            }else if (Platform.getEnvironment() == Env.SERVER){
+            }else if (!level.isClientSide){
                 player.sendSystemMessage(Component.translatable("thaumcraft.open_arcane_door_failed"));
                 level.playSound(player,pos, ThaumcraftSounds.DOOR_FAIL, SoundSource.BLOCKS, 0.66F, 1.0F);
             }

@@ -16,8 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ import java.util.Objects;
 //        ↓S
 //LeftPart(facing:E→,with BE and real #use) RightPart(facing:←W)
 //
-public class ResearchTableRightPartBlock extends Block {
+public class ResearchTableRightPartBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     @Override
@@ -52,7 +54,7 @@ public class ResearchTableRightPartBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         var facing = blockState.getValue(FACING);
         var leftPartPos = getLeftPartPos(facing, blockPos);
         var leftState = level.getBlockState(leftPartPos);

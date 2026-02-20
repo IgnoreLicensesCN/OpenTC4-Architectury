@@ -1,6 +1,5 @@
 package thaumcraft.api.listeners.warp.consts;
 
-import com.linearity.opentc4.utils.StatCollector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,14 +23,14 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             grantResearch(player, 1);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.3")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.3")), true);
         }
     }),
     NOISE_AND_FOLLOWING(new WarpEvent(4, 8) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.11")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.11")), true);
         }
     }),
 
@@ -42,7 +41,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.VIS_EXHAUST, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.1")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.1")), true);
         }
     }),
     THAUMARHIA(new WarpEvent(4, 20) {
@@ -53,7 +52,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.THAUMARHIA, Math.min(32000, 10 * warpContext.warp), 0, true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.15")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.15")), true);
         }
     }),
     STRANGE_HUNGER(new WarpEvent(4, 24) {
@@ -63,14 +62,14 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.UNNATURAL_HUNGER, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.2")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.2")), true);
         }
     }),
     FOLLOWING(new WarpEvent(4, 28) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.12")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.12")), true);
         }
     }),
     SPAWN_A_GUARD(new WarpEvent(4, 32) {
@@ -97,7 +96,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.SUN_SCORNED, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.5")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.5")), true);
         }
     }),
     SLOW_DIGGING(new WarpEvent(4, 44) {
@@ -109,7 +108,7 @@ public enum WarpEventsEnum {
                             true
                     ));
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.9")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.9")), true);
         }
     }),
     INF_VIS_EXHAUST(new WarpEvent(4, 48) {
@@ -120,7 +119,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.INFECTIOUS_VIS_EXHAUST, 6000, Math.min(3, warpContext.warp / 15), true, false);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.1")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.1")), true);
         }
     }),
     NIGHT_VISION(new WarpEvent(4, 52) {
@@ -132,7 +131,7 @@ public enum WarpEventsEnum {
                             true
                     ));
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.10")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.10")), true);
         }
     }),
     DEATH_GAZE(new WarpEvent(4, 56) {
@@ -143,7 +142,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.DEATH_GAZE, 6000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.4")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.4")), true);
         }
     }),
     FAKE_SPIDERS(new WarpEvent(4, 60) {
@@ -156,7 +155,7 @@ public enum WarpEventsEnum {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.13")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.13")), true);
         }
     }),
     SPAWN_SOME_GUARDS(new WarpEvent(4, 68) {
@@ -176,11 +175,9 @@ public enum WarpEventsEnum {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
-            if (Thaumcraft.playerKnowledge.getWarpSticky(player.getName()
-                    .getString()) > 0) {
+            if (Thaumcraft.playerKnowledge.getWarpSticky(player) > 0) {
                 Thaumcraft.playerKnowledge.addWarpSticky(
-                        player.getName()
-                                .getString(), -1
+                        player, -1
                 );
                 if (player instanceof ServerPlayer serverPlayer) {
                     new PacketSyncWarpS2C(player, (byte) 1).sendTo(serverPlayer);
@@ -189,7 +186,7 @@ public enum WarpEventsEnum {
             }
 
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.14")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.14")), true);
         }
     }),
     STRANGE_HUNGER_2(new WarpEvent(4, 80) {
@@ -200,7 +197,7 @@ public enum WarpEventsEnum {
                     ThaumcraftEffects.UNNATURAL_HUNGER, 6000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.2")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.2")), true);
         }
     }),
     GRANT_RESEARCH_HIGH(new WarpEvent(4, 84) {
@@ -208,7 +205,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             grantResearch(player, warpContext.warp / 10);
             player.displayClientMessage(
-                    Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.3")), true);
+                    Component.literal("§5§o" + Component.translatable("warp.text.3")), true);
         }
     }),
     REAL_SPIDERS(new WarpEvent(4, 92) {

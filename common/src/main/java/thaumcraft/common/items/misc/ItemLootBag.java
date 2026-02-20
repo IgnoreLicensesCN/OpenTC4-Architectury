@@ -10,7 +10,7 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.utils.Utils;
@@ -63,7 +63,7 @@ public class ItemLootBag extends Item {
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
       super.addInformation(stack, player, list, par4);
-      list.add(StatCollector.translateToLocal("tc.lootbag"));
+      list.add(Component.translatable("tc.lootbag"));
    }
 
    public ItemStack onItemRightClick(ItemStack stack, World world, Player player) {

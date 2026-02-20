@@ -43,19 +43,19 @@ public abstract class AbstractInfernalFurnaceComponent extends AbstractMultipart
         return super.getStateForPlacement(blockPlaceContext).setValue(ROTATION_Y_AXIS,ROTATION_DEGREE_0);
     }
 
-    public static final MultipartMatchInfo MATCH_INFO_Y_0 = new MultipartMatchInfo(
+    public static final MultipartMatchInfo MATCH_INFO_Y_0 = MultipartMatchInfo.of(
             VecTransformations.Rotation3D.NONE,
             VecTransformations.Mirror3D.NONE
     );
-    public static final MultipartMatchInfo MATCH_INFO_Y_90 = new MultipartMatchInfo(
+    public static final MultipartMatchInfo MATCH_INFO_Y_90 = MultipartMatchInfo.of(
             VecTransformations.Rotation3D.Y_90,
             VecTransformations.Mirror3D.NONE
     );
-    public static final MultipartMatchInfo MATCH_INFO_Y_180 = new MultipartMatchInfo(
+    public static final MultipartMatchInfo MATCH_INFO_Y_180 = MultipartMatchInfo.of(
             VecTransformations.Rotation3D.Y_180,
             VecTransformations.Mirror3D.NONE
     );
-    public static final MultipartMatchInfo MATCH_INFO_Y_270 = new MultipartMatchInfo(
+    public static final MultipartMatchInfo MATCH_INFO_Y_270 = MultipartMatchInfo.of(
             VecTransformations.Rotation3D.Y_270,
             VecTransformations.Mirror3D.NONE
     );

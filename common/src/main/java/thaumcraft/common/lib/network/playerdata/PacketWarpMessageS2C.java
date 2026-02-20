@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.network.playerdata;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -80,22 +80,22 @@ public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
 
             if (message.type == 0) { // NORMAL WARP
                 text = change < 0 ?
-                        StatCollector.translateToLocal("tc.removewarp") :
-                        StatCollector.translateToLocal("tc.addwarp");
+                        Component.translatable("tc.removewarp") :
+                        Component.translatable("tc.addwarp");
 
                 if (change > 0)
                     playWhisper();
             } else if (message.type == 1) { // STICKY WARP
                 text = change < 0 ?
-                        StatCollector.translateToLocal("tc.removewarpsticky") :
-                        StatCollector.translateToLocal("tc.addwarpsticky");
+                        Component.translatable("tc.removewarpsticky") :
+                        Component.translatable("tc.addwarpsticky");
 
                 if (change > 0)
                     playWhisper();
             } else { // TEMP WARP
                 text = change < 0 ?
-                        StatCollector.translateToLocal("tc.removewarptemp") :
-                        StatCollector.translateToLocal("tc.addwarptemp");
+                        Component.translatable("tc.removewarptemp") :
+                        Component.translatable("tc.addwarptemp");
             }
 
             PlayerNotifications.addNotification(text);
@@ -120,7 +120,7 @@ public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
 //import io.netty.buffer.ByteBuf;
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.world.entity.player.Player;
-//import com.linearity.opentc4.utils.StatCollector;
+//
 //import thaumcraft.client.lib.PlayerNotifications;
 //
 //public class PacketWarpMessageS2C implements IMessage, IMessageHandler<PacketWarpMessageS2C,IMessage> {
@@ -149,27 +149,27 @@ public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
 //   public IMessage onMessage(PacketWarpMessageS2C message, MessageContext ctx) {
 //      if (message.data != 0) {
 //         if (message.type == 0 && message.data > 0) {
-//            String text = StatCollector.translateToLocal("tc.addwarp");
+//            String text = Component.translatable("tc.addwarp");
 //            if (message.data < 0) {
-//               text = StatCollector.translateToLocal("tc.removewarp");
+//               text = Component.translatable("tc.removewarp");
 //            } else {
 //               Minecraft.getMinecraft().thePlayer.playSound("thaumcraft:whispers", 0.5F, 1.0F);
 //            }
 //
 //            PlayerNotifications.addNotification(text);
 //         } else if (message.type == 1) {
-//            String text = StatCollector.translateToLocal("tc.addwarpsticky");
+//            String text = Component.translatable("tc.addwarpsticky");
 //            if (message.data < 0) {
-//               text = StatCollector.translateToLocal("tc.removewarpsticky");
+//               text = Component.translatable("tc.removewarpsticky");
 //            } else {
 //               Minecraft.getMinecraft().thePlayer.playSound("thaumcraft:whispers", 0.5F, 1.0F);
 //            }
 //
 //            PlayerNotifications.addNotification(text);
 //         } else if (message.data > 0) {
-//            String text = StatCollector.translateToLocal("tc.addwarptemp");
+//            String text = Component.translatable("tc.addwarptemp");
 //            if (message.data < 0) {
-//               text = StatCollector.translateToLocal("tc.removewarptemp");
+//               text = Component.translatable("tc.removewarptemp");
 //            }
 //
 //            PlayerNotifications.addNotification(text);

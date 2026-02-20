@@ -5,10 +5,10 @@ import net.minecraft.world.level.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -17,7 +17,7 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTransport {
+public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTransportBlockEntity {
    public int essentia = 0;
    public int charges = 0;
    public int power = 0;
@@ -147,7 +147,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 

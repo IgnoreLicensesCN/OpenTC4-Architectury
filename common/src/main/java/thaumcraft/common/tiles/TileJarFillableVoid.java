@@ -27,7 +27,7 @@ public class TileJarFillableVoid extends TileJarFillable {
        return am;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return this.aspectFilter != null ? 48 : 32;
    }
 

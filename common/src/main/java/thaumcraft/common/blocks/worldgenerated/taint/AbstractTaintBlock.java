@@ -31,7 +31,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
-public abstract class AbstractTaintBlock extends Block implements ITaintMaterial{
+public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial{
     public static final SoundType TAINT_BLOCK_SOUND = new SoundType(
             1.0F, 1.0F,
             SoundEvents.GRAVEL_BREAK,

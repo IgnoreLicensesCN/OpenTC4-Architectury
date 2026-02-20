@@ -42,6 +42,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EnergizedAuraNodeBlockEntity> ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
     public static final BlockEntityType<NodeTransducerBlockEntity> NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
     public static final BlockEntityType<AlchemicalFurnaceBlockEntity> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
+    public static final BlockEntityType<ArcaneAlembicBlockEntity> ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -199,6 +200,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         AlchemicalFurnaceBlockEntity::new,
                         ThaumcraftBlocks.ALCHEMICAL_FURNACE
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<ArcaneAlembicBlockEntity>> SUPPLIER_ARCANE_ALEMBIC = BLOCK_ENTITIES.register(
+                "arcane_alembic",
+                () -> BlockEntityType.Builder.of(
+                        ArcaneAlembicBlockEntity::new,
+                        ThaumcraftBlocks.ARCANE_ALEMBIC
                 ).build(null)
         );
     }

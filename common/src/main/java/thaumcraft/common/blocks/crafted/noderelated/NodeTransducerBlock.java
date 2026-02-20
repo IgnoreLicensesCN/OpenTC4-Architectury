@@ -1,7 +1,5 @@
 package thaumcraft.common.blocks.crafted.noderelated;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -18,14 +16,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //TODO:BER
-public class NodeTransducerBlock extends Block implements EntityBlock {
+public class NodeTransducerBlock extends SuppressedWarningBlock implements EntityBlock {
     public NodeTransducerBlock(Properties properties) {
         super(properties);
     }
@@ -41,15 +41,15 @@ public class NodeTransducerBlock extends Block implements EntityBlock {
     );
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }@Override
-    public VoxelShape getOcclusionShape(
+    public @NotNull VoxelShape getOcclusionShape(
             BlockState state,
             BlockGetter level,
             BlockPos pos
@@ -79,7 +79,7 @@ public class NodeTransducerBlock extends Block implements EntityBlock {
 
     @Override
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
-        if (i == 10 && j == 10 && Platform.getEnvironment() == Env.CLIENT) {
+        if (i == 10 && j == 10 && level.isClientSide) {
             if (level instanceof ClientLevel clientLevel){
                 var nodePos = blockPos.below();
                 var nodeCenter = blockPos.below().getCenter();

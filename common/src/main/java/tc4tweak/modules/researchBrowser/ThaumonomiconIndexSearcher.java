@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.EnumChatFormatting;
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -207,7 +207,7 @@ public class ThaumonomiconIndexSearcher {
             event.gui.drawTexturedModalRect(thaumSearchField.xPosition + thaumSearchField.width + 6, thaumSearchField.yPosition - 4, 244, 136, 2, thaumSearchField.height + 2);
 
             if ((searchResults == null || searchResults.isEmpty()) && !thaumSearchField.isFocused())
-                event.gui.drawString(event.gui.mc.fontRenderer, StatCollector.translateToLocal("tc4tweaks.gui.search"), thaumSearchField.xPosition, thaumSearchField.yPosition, 0x777777);
+                event.gui.drawString(event.gui.mc.fontRenderer, Component.translatable("tc4tweaks.gui.search"), thaumSearchField.xPosition, thaumSearchField.yPosition, 0x777777);
             else
                 for (int i = 0; i < 20; i++)
                     if (i + listDisplayOffset < searchResults.size()) {

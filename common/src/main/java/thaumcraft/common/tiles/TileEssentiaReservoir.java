@@ -6,16 +6,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectSource;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 
 import java.awt.*;
 
-public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSource, IWandable, IEssentiaTransport {
+public class TileEssentiaReservoir extends TileThaumcraft implements IRemoteDrainableAspectSourceBlockEntity, IWandable, IEssentiaTransportBlockEntity {
    public AspectList<Aspect>essentia = new AspectList<>();
    public int maxAmount = 256;
    public Direction facing;
@@ -148,7 +148,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
       return false;
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 24;
    }
 
@@ -217,13 +217,13 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IAspectSour
    void fillReservoir() {
       TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, this.facing);
       if (te != null) {
-         IEssentiaTransport ic = (IEssentiaTransport)te;
+         IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
          if (!ic.canOutputTo(this.facing.getOpposite())) {
             return;
          }
 
          Aspect ta = null;
-         if (ic.getEssentiaAmount(this.facing.getOpposite()) > 0 && ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && this.getSuctionAmount(this.facing) >= ic.getMinimumSuction()) {
+         if (ic.getEssentiaAmount(this.facing.getOpposite()) > 0 && ic.getSuctionAmount(this.facing.getOpposite()) < this.getSuctionAmount(this.facing) && this.getSuctionAmount(this.facing) >= ic.getMinimumSuctionToDrainOut()) {
             ta = ic.getEssentiaType(this.facing.getOpposite());
          }
 

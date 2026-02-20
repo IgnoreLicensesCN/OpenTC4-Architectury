@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,9 +11,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 
-public class WardingAuraBlock extends Block{
+public class WardingAuraBlock extends SuppressedWarningBlock {
     public WardingAuraBlock(Properties properties) {
         super(properties);
     }
@@ -47,7 +47,7 @@ public class WardingAuraBlock extends Block{
             if (bState.getBlock() instanceof PavingStoneWardingBlock pavingStoneWardingBlock) {
                 if (pavingStoneWardingBlock.isCharged(blockState)){
                     serverLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(),3);
-                };
+                }
             }
         }
     }

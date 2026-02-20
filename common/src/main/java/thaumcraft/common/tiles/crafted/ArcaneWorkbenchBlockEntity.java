@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -201,9 +202,10 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             return false;
         }
         var wandItem = wandStack.getItem();
-        if (!(wandItem instanceof ICentiVisContainer visContainer)){
+        if (!(wandItem instanceof ICentiVisContainer<? extends Aspect> visContainerNotCasted)){
             return false;
         }
+        var visContainer = (ICentiVisContainer<Aspect>) visContainerNotCasted;
         var visOwning = visContainer.getAllCentiVisOwning(wandStack);
         for (var centiVisAndAmount:centiVisList.entrySet()){
             var aspect = centiVisAndAmount.getKey();
@@ -228,7 +230,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             return false;
         }
         var wandItem = wandStack.getItem();
-        if (!(wandItem instanceof ICentiVisContainer centiVisContainer)){
+        if (!(wandItem instanceof ICentiVisContainer<? extends Aspect> centiVisContainerNotCasted)){
             OpenTC4.LOGGER.warn("wand not found but centiVis cost required:" + centiVisList
                     + " player:" + player.getStringUUID()
                     + "(" + player.getGameProfile().getName() + ")"
@@ -236,7 +238,8 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             );
             return false;
         }
-        if (!centiVisContainer.consumeAllCentiVisWithoutModifier(wandStack,centiVisList,true)){
+        var centiVisContainer = (ICentiVisContainer<Aspect>) centiVisContainerNotCasted;
+        if (!centiVisContainer.consumeAllCentiVisWithoutModifier(wandStack,centiVisList,true,player instanceof ServerPlayer)){
             OpenTC4.LOGGER.warn("wand vis not enough but centiVis cost required:" + centiVisList
                     + " required" + centiVisList
                     + " player:" + player.getStringUUID()

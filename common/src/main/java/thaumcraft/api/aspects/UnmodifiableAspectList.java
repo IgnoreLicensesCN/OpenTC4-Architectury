@@ -10,7 +10,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
     public UnmodifiableAspectList(AspectList<A> viewingList) {
         if (viewingList != null) {
-            this.aspects.putAll(viewingList.aspectView);
+            this.aspects.putAll(viewingList.getAspectView());
         }
     }
     public UnmodifiableAspectList(LinkedHashMap<A, Integer> aspects) {
@@ -93,14 +93,14 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     public UnmodifiableAspectList<A> addAllAsNew(AspectList<A> aspects) {
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.aspectView);
-        aspects.aspectView.forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
+        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView());
+        aspects.getAspectView().forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<A>(resultMap);
     }
 
     public UnmodifiableAspectList<A> multiplyAsNew(int multiplier) {
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.aspectView.size(),1);
-        this.aspectView.forEach((aspect, amount) -> {
+        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView().size(),1);
+        this.getAspectView().forEach((aspect, amount) -> {
             resultMap.put(aspect, amount*multiplier);
         });
         return new UnmodifiableAspectList<>(resultMap);
@@ -109,8 +109,8 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (divisor == 0){
             throw new IllegalArgumentException("divided by zero!");
         }
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.aspectView.size(),1);
-        this.aspectView.forEach((aspect, amount) -> {
+        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView().size(),1);
+        this.getAspectView().forEach((aspect, amount) -> {
             resultMap.put(aspect, (amount + divisor - 1)/divisor);
         });
         return new UnmodifiableAspectList<>(resultMap);
@@ -123,8 +123,8 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (aspectsB == null) {
             return new UnmodifiableAspectList<>(aspectsA);
         }
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(aspectsA.aspectView);
-        aspectsB.aspectView.forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
+        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(aspectsA.getAspectView());
+        aspectsB.getAspectView().forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<>(resultMap);
     }
 

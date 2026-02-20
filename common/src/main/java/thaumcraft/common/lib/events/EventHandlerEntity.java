@@ -84,16 +84,18 @@ public class EventHandlerEntity {
    }
    public static final Map<ItemEntity,Player> itemDropByPlayer = new MapMaker().weakKeys().weakValues().concurrencyLevel(2).makeMap();
    public static void init() {
-      if (Platform.getEnvironment() == Env.SERVER) {
+      {
          //wdym we have architectury
          PlayerEvent.DROP_ITEM.register(((player, entity) -> {
-            itemDropByPlayer.put(entity,player);
+            if (player instanceof ServerPlayer) {
+               itemDropByPlayer.put(entity,player);
+            }
             return EventResult.pass();
          }));
          PlayerEvent.PLAYER_JOIN.register(serverPlayer -> {
             new PacketSyncItemAspectsS2C().sendTo(serverPlayer);
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-             Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer.getGameProfile().getName());
+             Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer);
             File playerThaumFile = getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName());
             boolean legacy = false;
             if (!playerThaumFile.exists()) {
@@ -105,7 +107,8 @@ public class EventHandlerEntity {
                }
             }
 
-            ResearchManager.loadPlayerData(serverPlayer.getGameProfile().getName(), playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()), legacy);
+            ResearchManager.loadPlayerData(serverPlayer, playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir,
+                    serverPlayer.getGameProfile().getName()), legacy);
 
             //since research unlock check migrated to ResearchItem,this is not needed
 //            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
@@ -118,7 +121,7 @@ public class EventHandlerEntity {
          });
          PlayerEvent.PLAYER_QUIT.register(serverPlayer -> {
             File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-            ResearchManager.savePlayerData(serverPlayer.getGameProfile().getName(),
+            ResearchManager.savePlayerData(serverPlayer,
                     getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()),
                     getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()));
          });
@@ -607,7 +610,7 @@ public class EventHandlerEntity {
 //                 && !event.item.isItemEqual(new ItemStack(ConfigItems.itemZombieBrain))
 //         ) {
 //            if (event.item.getItem() instanceof ItemFood) {
-//               event.Player.displayClientMessage(Component.literal("§4§o" + StatCollector.translateToLocal("warp.text.hunger.1")));
+//               event.Player.displayClientMessage(Component.literal("§4§o" + Component.translatable("warp.text.hunger.1")));
 //            }
 //         } else {
 //            MobEffectInstance pe = event.Player.getActiveMobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER);
@@ -621,7 +624,7 @@ public class EventHandlerEntity {
 //               event.Player.addEffect(pe);
 //            }
 //
-//            event.Player.displayClientMessage(Component.literal("§2§o" + StatCollector.translateToLocal("warp.text.hunger.2")));
+//            event.Player.displayClientMessage(Component.literal("§2§o" + Component.translatable("warp.text.hunger.2")));
 //         }
 //      }
 //

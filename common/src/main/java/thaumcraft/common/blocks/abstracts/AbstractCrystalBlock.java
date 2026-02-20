@@ -22,7 +22,7 @@ import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.ThaumcraftSounds;
 
-public abstract class AbstractCrystalBlock extends Block implements IInfusionStabiliser  {
+public abstract class AbstractCrystalBlock extends SuppressedWarningBlock implements IInfusionStabiliser  {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final @RGBColor int[] CRYSTAL_COLORS = {
             0xffffff,

@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 
@@ -79,11 +79,11 @@ public class ItemGolemPlacer extends Item {
    public void addInformation(ItemStack stack, Player par2Player, List list, boolean par4) {
       if (stack.hasTagCompound()) {
          if (stack.stackTagCompound.hasKey("core")) {
-            list.add(StatCollector.translateToLocal("item.ItemGolemCore.name") + ": §6" + StatCollector.translateToLocal("item.ItemGolemCore." + stack.stackTagCompound.getByte("core") + ".name"));
+            list.add(Component.translatable("item.ItemGolemCore.name") + ": §6" + Component.translatable("item.ItemGolemCore." + stack.stackTagCompound.getByte("core") + ".name"));
          }
 
          if (stack.stackTagCompound.hasKey("advanced")) {
-            list.add(StatCollector.translateToLocal("tc.adv"));
+            list.add(Component.translatable("tc.adv"));
          }
 
          if (stack.stackTagCompound.hasKey("upgrades")) {
@@ -92,7 +92,7 @@ public class ItemGolemPlacer extends Item {
 
             for(byte b : ba) {
                if (b > -1) {
-                  text.append(StatCollector.translateToLocal("item.ItemGolemUpgrade." + b + ".name")).append(" ");
+                  text.append(Component.translatable("item.ItemGolemUpgrade." + b + ".name")).append(" ");
                }
             }
 
@@ -101,38 +101,38 @@ public class ItemGolemPlacer extends Item {
 
          if (stack.stackTagCompound.hasKey("markers")) {
             NBTTagList tl = stack.stackTagCompound.getTagList("markers", 10);
-            list.add("§5" + tl.tagCount() + " " + StatCollector.translateToLocal("tc.markedloc"));
+            list.add("§5" + tl.tagCount() + " " + Component.translatable("tc.markedloc"));
          }
 
          if (stack.stackTagCompound.hasKey("deco")) {
             String decoDesc = "§2";
             String deco = stack.stackTagCompound.getString("deco");
             if (deco.contains("H")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.0.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.0.name") + " ";
             }
 
             if (deco.contains("G")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.1.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.1.name") + " ";
             }
 
             if (deco.contains("B")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.2.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.2.name") + " ";
             }
 
             if (deco.contains("F")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.3.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.3.name") + " ";
             }
 
             if (deco.contains("R")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.4.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.4.name") + " ";
             }
 
             if (deco.contains("V")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.5.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.5.name") + " ";
             }
 
             if (deco.contains("P")) {
-               decoDesc = decoDesc + StatCollector.translateToLocal("item.ItemGolemDecoration.6.name") + " ";
+               decoDesc = decoDesc + Component.translatable("item.ItemGolemDecoration.6.name") + " ";
             }
 
             list.add(decoDesc);

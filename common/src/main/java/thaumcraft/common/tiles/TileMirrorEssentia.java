@@ -5,14 +5,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraft.core.Direction;
+import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IAspectSource;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.utils.Utils;
 
-public class TileMirrorEssentia extends TileThaumcraft implements IAspectSource {
+public class TileMirrorEssentia extends TileThaumcraft implements IRemoteDrainableAspectSourceBlockEntity {
    public boolean linked = false;
    public int linkX;
    public int linkY;

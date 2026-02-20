@@ -21,7 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -70,11 +70,11 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       } else {
          switch (this.getPechType()) {
              case 1:
-               return StatCollector.translateToLocal("entity.Thaumcraft.Pech.1.name");
+               return Component.translatable("entity.Thaumcraft.Pech.1.name");
             case 2:
-               return StatCollector.translateToLocal("entity.Thaumcraft.Pech.2.name");
+               return Component.translatable("entity.Thaumcraft.Pech.2.name");
             default:
-               return StatCollector.translateToLocal("entity.Thaumcraft.Pech.name");
+               return Component.translatable("entity.Thaumcraft.Pech.name");
          }
       }
    }

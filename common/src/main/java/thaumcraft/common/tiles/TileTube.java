@@ -11,9 +11,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.core.Direction;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.api.wands.IWandable;
 import thaumcraft.codechicken.lib.raytracer.IndexedCuboid6;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
@@ -25,7 +25,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.List;
 import java.util.Random;
 
-public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWandable {
+public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockEntity, IWandable {
    public Direction facing;
    public boolean[] openSides;
    Aspect essentiaType;
@@ -143,7 +143,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
             if ((!directional || this.facing == loc.getOpposite()) && this.isConnectable(loc)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
-                  IEssentiaTransport ic = (IEssentiaTransport)te;
+                  IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
                   if ((filter == null || ic.getSuctionType(loc.getOpposite()) == null || ic.getSuctionType(loc.getOpposite()) == filter) && (filter != null || this.getEssentiaAmount(loc) <= 0 || ic.getSuctionType(loc.getOpposite()) == null || this.getEssentiaType(loc) == ic.getSuctionType(loc.getOpposite())) && (filter == null || this.getEssentiaAmount(loc) <= 0 || this.getEssentiaType(loc) == null || ic.getSuctionType(loc.getOpposite()) == null || this.getEssentiaType(loc) == ic.getSuctionType(loc.getOpposite()))) {
                      int suck = ic.getSuctionAmount(loc.getOpposite());
                      if (suck > 0 && suck > this.suction + 1) {
@@ -172,7 +172,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
             if (this.isConnectable(loc)) {
                TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                if (te != null) {
-                  IEssentiaTransport ic = (IEssentiaTransport)te;
+                  IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
                   int suck = ic.getSuctionAmount(loc.getOpposite());
                   if (this.suction > 0 && (suck == this.suction || suck == this.suction - 1) && this.suctionType != ic.getSuctionType(loc.getOpposite())) {
                      int c = -1;
@@ -200,8 +200,8 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
                if ((!directional || this.facing != loc.getOpposite()) && this.isConnectable(loc)) {
                   TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, loc);
                   if (te != null) {
-                     IEssentiaTransport ic = (IEssentiaTransport)te;
-                     if (ic.canOutputTo(loc.getOpposite()) && (this.getSuctionType(null) == null || this.getSuctionType(null) == ic.getEssentiaType(loc.getOpposite()) || ic.getEssentiaType(loc.getOpposite()) == null) && this.getSuctionAmount(null) > ic.getSuctionAmount(loc.getOpposite()) && this.getSuctionAmount(null) >= ic.getMinimumSuction()) {
+                     IEssentiaTransportBlockEntity ic = (IEssentiaTransportBlockEntity)te;
+                     if (ic.canOutputTo(loc.getOpposite()) && (this.getSuctionType(null) == null || this.getSuctionType(null) == ic.getEssentiaType(loc.getOpposite()) || ic.getEssentiaType(loc.getOpposite()) == null) && this.getSuctionAmount(null) > ic.getSuctionAmount(loc.getOpposite()) && this.getSuctionAmount(null) >= ic.getMinimumSuctionToDrainOut()) {
                         Aspect a = this.getSuctionType(null);
                         if (a == null) {
                            a = ic.getEssentiaType(loc.getOpposite());
@@ -286,7 +286,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
       }
    }
 
-   public int getMinimumSuction() {
+   public int getMinimumSuctionToDrainOut() {
       return 0;
    }
 
@@ -381,7 +381,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransport, IWan
    protected boolean canConnectSide(int side) {
       Direction dir = Direction.getOrientation(side);
       TileEntity tile = this.level().getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-      return tile instanceof IEssentiaTransport;
+      return tile instanceof IEssentiaTransportBlockEntity;
    }
 
    public void addTraceableCuboids(List cuboids) {

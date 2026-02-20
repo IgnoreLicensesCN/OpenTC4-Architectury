@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -260,12 +260,12 @@ public class EventHandlerRunic {
    public void tooltipEvent(ItemTooltipEvent event) {
       int charge = getFinalCharge(event.itemStack);
       if (charge > 0) {
-         event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("item.runic.charge") + " +" + charge);
+         event.toolTip.add(EnumChatFormatting.GOLD + Component.translatable("item.runic.charge") + " +" + charge);
       }
 
       int warp = getFinalWarp(event.itemStack, event.Player);
       if (warp > 0) {
-         event.toolTip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("item.warping") + " " + warp);
+         event.toolTip.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("item.warping") + " " + warp);
       }
 
    }

@@ -3,10 +3,9 @@ package thaumcraft.common.entities.ai.fluid;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.tiles.TileAlembic;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
@@ -40,8 +39,8 @@ public class AIEssentiaGather extends EntityAIBase {
             this.start = 0;
             TileEntity te = this.theWorld.getTileEntity(cX, cY, cZ);
             if (te != null) {
-               if (te instanceof IEssentiaTransport) {
-                  IEssentiaTransport etrans = (IEssentiaTransport)te;
+               if (te instanceof IEssentiaTransportBlockEntity) {
+                  IEssentiaTransportBlockEntity etrans = (IEssentiaTransportBlockEntity)te;
                   if ((te instanceof TileJarFillable || te instanceof TileEssentiaReservoir || etrans.canOutputTo(facing)) && etrans.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(etrans.getEssentiaType(facing)) || this.theGolem.essentia.equals(etrans.getEssentiaType(Direction.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
                      this.delay = System.currentTimeMillis() + 1000L;
                      this.start = 0;
@@ -81,7 +80,7 @@ public class AIEssentiaGather extends EntityAIBase {
       int cY = home.posY - facing.offsetY;
       int cZ = home.posZ - facing.offsetZ;
       TileEntity te = this.theWorld.getTileEntity(cX, cY + this.start, cZ);
-      if (te instanceof IEssentiaTransport) {
+      if (te instanceof IEssentiaTransportBlockEntity) {
          if (te instanceof TileAlembic || te instanceof TileJarFillable) {
             facing = Direction.UP;
          }
@@ -90,7 +89,7 @@ public class AIEssentiaGather extends EntityAIBase {
             facing = ((TileEssentiaReservoir)te).facing;
          }
 
-         IEssentiaTransport ta = (IEssentiaTransport)te;
+         IEssentiaTransportBlockEntity ta = (IEssentiaTransportBlockEntity)te;
          if (ta.getEssentiaAmount(facing) == 0) {
             return;
          }

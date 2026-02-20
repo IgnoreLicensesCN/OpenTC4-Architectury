@@ -43,7 +43,10 @@ block_with_item_names = [
     ['tile.blockStoneDevice.9.name','node_stabilizer'],
     ['tile.blockStoneDevice.10.name','advanced_node_stabilizer'],
     ['tile.blockStoneDevice.11.name','node_transducer'],
-    ['tile.blockStoneDevice.0.name','alchemical_furnace']
+    ['tile.blockStoneDevice.0.name','alchemical_furnace'],
+    ['tile.blockMetalDevice.3.name','advanced_alchemical_construct'],
+    ['tile.blockMetalDevice.9.name','alchemical_construct'],
+    ['tile.blockMetalDevice.1.name', 'arcane_alembic']
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

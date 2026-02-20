@@ -12,12 +12,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.level.Level;
+
 import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.aspects.IEssentiaTransport;
+import thaumcraft.api.aspects.IAspectContainerBlockEntity;
+import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileTubeBuffer;
@@ -58,12 +57,12 @@ public class ItemResonator extends Item {
 
    public boolean onItemUseFirst(ItemStack itemstack, Player player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
       TileEntity tile = world.getTileEntity(x, y, z);
-      if (tile instanceof IEssentiaTransport) {
+      if (tile instanceof IEssentiaTransportBlockEntity) {
          if ((Platform.getEnvironment() == Env.CLIENT)) {
             player.swingItem();
             return super.onItemUseFirst(itemstack, player, world, x, y, z, side, par8, par9, par10);
          } else {
-            IEssentiaTransport et = (IEssentiaTransport)tile;
+            IEssentiaTransportBlockEntity et = (IEssentiaTransportBlockEntity)tile;
             Direction face = Direction.getOrientation(side);
             HitResult hit = RayTracer.retraceBlock(world, player, x, y, z);
             if (hit != null && hit.subHit >= 0 && hit.subHit < 6) {
@@ -72,13 +71,13 @@ public class ItemResonator extends Item {
 
             if (!(tile instanceof TileTubeBuffer) && et.getEssentiaType(face) != null) {
                player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + et.getEssentiaAmount(face), et.getEssentiaType(face).getName()));
-            } else if (tile instanceof TileTubeBuffer && ((IAspectContainer)tile).getAspects().size() > 0) {
-               for(Aspect aspect : ((IAspectContainer)tile).getAspects().getAspectsSorted()) {
-                  player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + ((IAspectContainer)tile).getAspects().getAmount(aspect), aspect.getName()));
+            } else if (tile instanceof TileTubeBuffer && ((IAspectContainerBlockEntity)tile).getAspects().size() > 0) {
+               for(Aspect aspect : ((IAspectContainerBlockEntity)tile).getAspects().getAspectsSorted()) {
+                  player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + ((IAspectContainerBlockEntity)tile).getAspects().getAmount(aspect), aspect.getName()));
                }
             }
 
-            String s = StatCollector.translateToLocal("tc.resonator3");
+            String s = Component.translatable("tc.resonator3");
             if (et.getSuctionType(face) != null) {
                s = et.getSuctionType(face).getName();
             }

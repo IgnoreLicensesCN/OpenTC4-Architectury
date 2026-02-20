@@ -1,8 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import dev.architectury.platform.Platform;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -22,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.abstracts.IFurnaceAttachmentBlock;
@@ -34,6 +31,8 @@ import thaumcraft.common.tiles.abstracts.IAlembic;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 
 import static com.linearity.opentc4.Consts.AlchemicalFurnaceBlockEntityTagAccessors.*;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
 
 public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<AlchemicalFurnaceMenu,AlchemicalFurnaceBlockEntity>
         implements ExtendedMenuProvider,
@@ -97,7 +96,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             --this.furnaceFuelRemainingBurnTime;
         }
 
-        if (Platform.getEnvironment() == Env.SERVER) {
+        if (!level.isClientSide) {
 
             if (this.count % (this.speedBoost ? speedBoostAspectExtractTime : defaultAspectExtractTime) == 0
                     && !this.aspects.isEmpty()) {
@@ -115,7 +114,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                             && this.aspects.getAmount(alembicAspect) > 0) {
 
                         this.takeAspectFromContainer(alembicAspect, 1);
-                        alembic.addToContainer(alembicAspect, 1);
+                        alembic.addIntoContainer(alembicAspect, 1);
                         exlude.mergeWithHighest(alembicAspect, 1);
 
                         this.markDirtyAndUpdateSelf();
@@ -140,7 +139,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                         }
 
                         if (aspectToInsert != null) {
-                            alembic.addToContainer(aspectToInsert, 1);
+                            alembic.addIntoContainer(aspectToInsert, 1);
 
                             this.markDirtyAndUpdateSelf();
                             level.sendBlockUpdated(probablyAlembicPos,alembicState,alembicState,3);
@@ -270,11 +269,12 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
     public static int getItemBurnTime(ItemStack stack){
         return FurnaceBlockEntity.getFuel().getOrDefault(stack.getItem(), 0);
     }
-    public static AspectList<Aspect> getBurnAspectResult(ItemStack stack){
-        return ItemBonusAspectCalculator.getBonusAspects(stack,ItemBasicAspectGetter.getBasicAspects(stack.getItem()));
+    public AspectList<Aspect> getBurnAspectResult(ItemStack stack){
+        var serverFlag = this.level != null && !this.level.isClientSide();
+        return ItemBonusAspectCalculator.getBonusAspects(stack,serverFlag?getBasicAspectsServer(stack.getItem()):getBasicAspectsClient(stack.getItem()));
 
     }
-    public static boolean canBurnIntoAspect(ItemStack stack){
+    public boolean canBurnIntoAspect(ItemStack stack){
         return !getBurnAspectResult(stack).isEmpty();
     }
     private boolean canSmelt() {
@@ -289,7 +289,6 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         if (visSize > MAX_VIS_SIZE - this.aspects.visSize()) {
             return false;
         }
-        //TODO:
         var defaultRequiredCookTime = visSize * 10;
         this.furnaceRequiredCookTime = defaultRequiredCookTime;
         attachmentOnCalculatingRequiredCookTime(defaultRequiredCookTime);

@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.item.Tier;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
@@ -110,7 +110,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, I
          }
       }
 
-      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + ": " + this.getVisDiscount(is, player, null) + "%");
-      list.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount") + " (Aer): " + this.getVisDiscount(is, player, Aspects.AIR) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisDiscount(is, player, null) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + " (Aer): " + this.getVisDiscount(is, player, Aspects.AIR) + "%");
    }
 }

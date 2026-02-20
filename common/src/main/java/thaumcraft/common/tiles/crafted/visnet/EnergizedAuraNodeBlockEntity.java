@@ -106,7 +106,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
         this.centiVisBase = new CentiVisList<>();
         var temp = ResearchManager.reduceToPrimals(auraBase, true);
 
-        for(var aspectEntry : temp.aspectView.entrySet()) {
+        for(var aspectEntry : temp.getAspectView().entrySet()) {
             var aspect = aspectEntry.getKey();
             int amt = nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,aspectEntry.getValue());
             amt = nodeType.onSetupEnergizedNodeAspectAmount(this,aspect,amt);

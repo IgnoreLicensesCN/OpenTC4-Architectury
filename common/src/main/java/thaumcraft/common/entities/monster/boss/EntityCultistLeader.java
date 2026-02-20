@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.StatCollector;
+
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
@@ -56,7 +56,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
    public void generateName() {
       int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
-         this.setCustomNameTag(String.format(StatCollector.translateToLocal("entity.Thaumcraft.CultistLeader.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
+         this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.CultistLeader.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
       }
 
    }

@@ -11,8 +11,10 @@ import net.minecraft.world.item.ItemStack;
  * automatically picks up the aspects they contain
  *
  */
+@Deprecated(forRemoval = true,since = "getting confused with NodeJar aspects(which shouldn't been change by Alembic) and fillable-jar aspects,use IAspectContainerItem instead")
 public interface IEssentiaContainerItem {
 	AspectList<Aspect> getAspects(ItemStack itemstack);
+
 	void setAspects(ItemStack itemstack, AspectList<Aspect> aspects);
 }
 

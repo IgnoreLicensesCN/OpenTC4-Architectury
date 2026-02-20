@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.warp.consts;
 
-import com.linearity.opentc4.utils.StatCollector;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public class AfterWarpEventListeners {
             if (warpContext.actualWarp > 10
                     && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "BATHSALTS")
                     && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "@BATHSALTS")) {
-                player.displayClientMessage(Component.literal("§5§o" + StatCollector.translateToLocal("warp.text.8")),false);
+                player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.8")),false);
                 if (player instanceof ServerPlayer serverPlayer) {
                     new PacketResearchCompleteS2C("@BATHSALTS").sendTo(serverPlayer);
                 }
