@@ -6,12 +6,17 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent {
+public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent implements EntityBlock {
     public static final IntegerProperty SIDE_TYPE = IntegerProperty.create("side", 0, 3);
     public static final int SIDE_TYPE_1_1_0 = 0;
     public static final int SIDE_TYPE_1_1_2 = 1;
@@ -69,5 +74,15 @@ public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(SIDE_TYPE);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return ;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        return ;
     }
 }

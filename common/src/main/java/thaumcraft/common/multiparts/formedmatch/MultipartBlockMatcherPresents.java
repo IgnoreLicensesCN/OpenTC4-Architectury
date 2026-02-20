@@ -15,8 +15,8 @@ public class MultipartBlockMatcherPresents {
         public static final IFormedBlockMatcher X_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_X_AXIS);
         public static final IFormedBlockMatcher Y_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_Y_AXIS);
         public static final IFormedBlockMatcher Z_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_Z_AXIS);
-
     }
+
     public static final IFormedBlockMatcher[][][] INFERNAL_FURNACE_FORMED_MATCHER = {
             //yxz
             {
@@ -36,7 +36,25 @@ public class MultipartBlockMatcherPresents {
                     {InfernalFurnaceMatcherImpls.CORNER_MATCHER,InfernalFurnaceMatcherImpls.Z_AXIS_MATCHER,InfernalFurnaceMatcherImpls.CORNER_MATCHER},
             },
     };
-    public static final IFormedBlockMatcher[][][] ADVANCED_ALCHEMICAL_FURNACE_FORMED_MATCHER = ;//TODO
+    public static class AdvancedAlchemicalFurnaceMatcherImpls {
+        public static final IFormedBlockMatcher BOTTOM_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_BOTTOM);
+        public static final IFormedBlockMatcher CORNER_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER);
+        public static final IFormedBlockMatcher ALEMBIC_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC);
+        public static final IFormedBlockMatcher NOZZLE_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE);
+        public static final IFormedBlockMatcher FENCE_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE);
+    }
+    public static final IFormedBlockMatcher[][][] ADVANCED_ALCHEMICAL_FURNACE_FORMED_MATCHER = {
+            {
+                    {AdvancedAlchemicalFurnaceMatcherImpls.CORNER_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.NOZZLE_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.CORNER_MATCHER},
+                    {AdvancedAlchemicalFurnaceMatcherImpls.NOZZLE_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.BOTTOM_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.NOZZLE_MATCHER},
+                    {AdvancedAlchemicalFurnaceMatcherImpls.CORNER_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.NOZZLE_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.CORNER_MATCHER},
+            },
+            {
+                    {AdvancedAlchemicalFurnaceMatcherImpls.ALEMBIC_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.FENCE_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.ALEMBIC_MATCHER},
+                    {AdvancedAlchemicalFurnaceMatcherImpls.FENCE_MATCHER,null,AdvancedAlchemicalFurnaceMatcherImpls.FENCE_MATCHER},
+                    {AdvancedAlchemicalFurnaceMatcherImpls.ALEMBIC_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.FENCE_MATCHER,AdvancedAlchemicalFurnaceMatcherImpls.ALEMBIC_MATCHER},
+            },
+    };
 
 
     public static IFormedBlockMatcher generateSimpleMatcher(IMultipartComponentBlock componentBlock) {

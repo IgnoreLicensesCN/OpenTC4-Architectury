@@ -1,10 +1,15 @@
 package thaumcraft.common.multiparts.placers;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceAlembicBlock;
+import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBaseCornerBlock;
+import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlock;
+import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceUpperFenceBlock;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.AbstractInfernalFurnaceComponent;
 
 import static thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceCornerBlock.*;
@@ -95,7 +100,61 @@ public class MultipartPlacerImpls {
             },
         };
     }
+    public static class AdvancedAlchemicalPlacerImpls {
+        public static IBlockPlacer getCornerPlacer(int cornerType) {
+            return ((level, pos, multipartMatchInfo) -> {
+                BlockState state = ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER.defaultBlockState().setValue(
+                        AdvancedAlchemicalFurnaceBaseCornerBlock.AT_CORNER, cornerType);
+                level.setBlockAndUpdate(pos, state);
+            });
+        }
+        public static IBlockPlacer getAlembicPlacer(int cornerType) {
+            return ((level, pos, multipartMatchInfo) -> {
+                BlockState state = ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC.defaultBlockState().setValue(
+                        AdvancedAlchemicalFurnaceAlembicBlock.AT_CORNER, cornerType);
+                level.setBlockAndUpdate(pos, state);
+            });
+        }
+        public static IBlockPlacer getFencePlacer(Direction direction) {
+            return ((level, pos, multipartMatchInfo) -> {
+                BlockState state = ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE.defaultBlockState().setValue(
+                        AdvancedAlchemicalFurnaceUpperFenceBlock.FACING, direction);
+                level.setBlockAndUpdate(pos, state);
+            });
+        }
+        public static IBlockPlacer getNozzlePlacer(Direction direction) {
+            return ((level, pos, multipartMatchInfo) -> {
+                BlockState state = ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.defaultBlockState().setValue(
+                        AdvancedAlchemicalFurnaceNozzleBlock.FACING, direction);
+                level.setBlockAndUpdate(pos, state);
+            });
+        }
+        public static final IBlockPlacer BASE_PLACER = (level, pos, multipartMatchInfo) -> {
+            BlockState state = ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_BASE.defaultBlockState();
+            state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
+            level.setBlockAndUpdate(pos, state);
+        };
+        //↑x-(W)
+        //←z-(N)→z+(S)
+        //↓x+E
+        public static final IBlockPlacer[][][] PLACER = new IBlockPlacer[][][]{
+                {
+                        {getCornerPlacer(AdvancedAlchemicalFurnaceBaseCornerBlock.CORNER_NORTH_WEST),getNozzlePlacer(Direction.WEST),getCornerPlacer(AdvancedAlchemicalFurnaceBaseCornerBlock.CORNER_SOUTH_WEST)},
+                        {getNozzlePlacer(Direction.NORTH),BASE_PLACER,getNozzlePlacer(Direction.SOUTH)},
+                        {getCornerPlacer(AdvancedAlchemicalFurnaceBaseCornerBlock.CORNER_NORTH_EAST),getNozzlePlacer(Direction.EAST),getCornerPlacer(AdvancedAlchemicalFurnaceBaseCornerBlock.CORNER_SOUTH_EAST)},
+                },
+                {
+                        {getAlembicPlacer(AdvancedAlchemicalFurnaceAlembicBlock.CORNER_NORTH_WEST),getFencePlacer(Direction.WEST),getAlembicPlacer(AdvancedAlchemicalFurnaceAlembicBlock.CORNER_SOUTH_WEST)},
+                        {getFencePlacer(Direction.NORTH),null,getNozzlePlacer(Direction.SOUTH)},
+                        {getAlembicPlacer(AdvancedAlchemicalFurnaceAlembicBlock.CORNER_NORTH_EAST),getNozzlePlacer(Direction.EAST),getFencePlacer(Direction.SOUTH),getAlembicPlacer(AdvancedAlchemicalFurnaceAlembicBlock.CORNER_SOUTH_EAST)},
+                }
+        };
+    }
     public static final IMultipartPlacer INFERNAL_FURNACE_PLACER = new SimpleMultipartPlacer(
             InfernalFurnaceBlockPlacerImpls.PLACER
             ,new BlockPos(2,1,1));
+    public static final IMultipartPlacer ADVANCED_ALCHEMICAL_FURNACE_PLACER = new SimpleMultipartPlacer(
+            AdvancedAlchemicalPlacerImpls.PLACER,
+            new BlockPos(1,0,1)
+    );
 }

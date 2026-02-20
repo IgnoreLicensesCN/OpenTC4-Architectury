@@ -40,6 +40,6 @@ public abstract class AbstractAdvancedAlchemicalFurnaceComponent extends Abstrac
 
     @Override
     public @NotNull MultipartMatchInfo getMatchInfo(Level level, BlockState state, BlockPos pos) {
-        return null;
+        return MultipartMatchInfo.of(VecTransformations.Rotation3D.NONE, VecTransformations.Mirror3D.NONE);
     }
 }

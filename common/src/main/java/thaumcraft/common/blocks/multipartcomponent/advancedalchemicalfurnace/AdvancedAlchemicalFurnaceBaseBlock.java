@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.multiparts.MultipartMatchInfo;
+import thaumcraft.common.tiles.crafted.AdvancedAlchemicalFurnaceBlockEntity;
 
 public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemicalFurnaceComponent
         implements EntityBlock {
@@ -31,7 +32,10 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return ;
+        if (blockState.getBlock() == this) {
+            return new AdvancedAlchemicalFurnaceBlockEntity(blockPos,blockState);
+        }
+        return null;
     }
 
     @Override

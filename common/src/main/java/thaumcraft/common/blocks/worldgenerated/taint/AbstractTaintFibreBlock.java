@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.worldgenerated.taint;
 
-import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;

@@ -29,4 +29,25 @@ public class MultipartMatcherImpls {
                     false,true,false,
                     false,false,false
             );
+    public static final IMultipartConstructMatcher ADVANCED_ALCHEMICAL_FURNACE_MATCHER =
+            SimpleMultipartConstructMatcher.of(
+                    new IBlockMatcher[][][]{
+                            {
+                                    {ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER,ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER,ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER},
+                                    {ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER,ALCHEMICAL_FURNACE_MATCHER,ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER},
+                                    {ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER,ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER,ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER},
+                            },
+                            {
+                                    {ARCANE_ALEMBIC_MATCHER,ALCHEMICAL_CONSTRUCT_MATCHER,ARCANE_ALEMBIC_MATCHER},
+                                    {ALCHEMICAL_CONSTRUCT_MATCHER,null,ALCHEMICAL_CONSTRUCT_MATCHER},
+                                    {ARCANE_ALEMBIC_MATCHER,ALCHEMICAL_CONSTRUCT_MATCHER,ARCANE_ALEMBIC_MATCHER},
+                            }
+                    },new BlockPos(1,0,1),
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+            );
 }

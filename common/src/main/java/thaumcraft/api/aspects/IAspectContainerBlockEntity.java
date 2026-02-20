@@ -11,13 +11,13 @@ import org.jetbrains.annotations.UnmodifiableView;
  * Used by blocks like the crucible and alembic to hold their aspects. 
  * Tiles extending this interface will have their aspects show up when viewed by goggles of aspect revealing
  *
- *<p>frok IgnoreLicensesCN:</p>
- * Node will no longer use this.they will go to {@link IWorldlyCentiVisContainerBlockEntity}.
- * Vis and aspect(for infusion) should be different!
+ * <p>change:Node will no longer use this.they will go to {@link IWorldlyCentiVisContainerBlockEntity}.</p>
+ * <p>Vis and aspect(for infusion) should be different!</p>
+ * <p>Separated into {@link IAspectOutBlockEntity} and {@link IAspectInBlockEntity}</p>
+ * <p>--IgnoreLicensesCN</p>
  */
 public interface IAspectContainerBlockEntity<Asp extends Aspect>
-		extends IAspectOutBlockEntity<Asp>,
-		IAspectInBlockEntity<Asp>
+		extends /*IAspectOutBlockEntity<Asp>, */IAspectInBlockEntity<Asp>
 {
 
 	@UnmodifiableView

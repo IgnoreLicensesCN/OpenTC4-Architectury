@@ -33,6 +33,7 @@ import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.*;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.*;
 import thaumcraft.common.blocks.worldgenerated.*;
@@ -185,6 +186,18 @@ public class ThaumcraftBlocks {
     public static final Block ADVANCED_ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT.get();
     public static final Block ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ALCHEMICAL_CONSTRUCT.get();
     public static final ArcaneAlembicBlock ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
+    public static final AdvancedAlchemicalFurnaceUpperFenceBlock ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE.get();
+    public static final AdvancedAlchemicalFurnaceBaseCornerBlock ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER.get();
+    public static final AdvancedAlchemicalFurnaceNozzleBlock ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
+    public static final AdvancedAlchemicalFurnaceAlembicBlock ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC.get();
+    public static final AdvancedAlchemicalFurnaceBaseBlock ADVANCED_ALCHEMICAL_FURNACE_BASE
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE.get();
+
+
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -687,6 +700,31 @@ public class ThaumcraftBlocks {
                 "arcane_alembic",
                 ArcaneAlembicBlock::new
         );
+        public static final RegistrySupplier<AdvancedAlchemicalFurnaceAlembicBlock> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC =
+                BLOCKS.register(
+                        "advanced_alchemical_furnace_alembic",
+                        AdvancedAlchemicalFurnaceAlembicBlock::new
+                );
+        public static final RegistrySupplier<AdvancedAlchemicalFurnaceUpperFenceBlock> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE =
+                BLOCKS.register(
+                        "advanced_alchemical_furnace_upper_fence",
+                        AdvancedAlchemicalFurnaceUpperFenceBlock::new
+                );
+        public static final RegistrySupplier<AdvancedAlchemicalFurnaceNozzleBlock> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE =
+                BLOCKS.register(
+                        "advanced_alchemical_furnace_nozzle",
+                        AdvancedAlchemicalFurnaceNozzleBlock::new
+                );
+        public static final RegistrySupplier<AdvancedAlchemicalFurnaceBaseCornerBlock> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER =
+                BLOCKS.register(
+                        "advanced_alchemical_furnace_base_corner",
+                        AdvancedAlchemicalFurnaceBaseCornerBlock::new
+                );
+        public static final RegistrySupplier<AdvancedAlchemicalFurnaceBaseBlock> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE =
+                BLOCKS.register(
+                        "advanced_alchemical_furnace_base",
+                        AdvancedAlchemicalFurnaceBaseBlock::new
+                );
 
         static {
             BLOCKS.register();

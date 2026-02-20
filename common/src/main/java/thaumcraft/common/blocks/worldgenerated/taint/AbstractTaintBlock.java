@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.entities.EntityFallingTaint;
 import thaumcraft.common.entities.ThaumcraftEntities;
