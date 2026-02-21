@@ -366,7 +366,7 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       return this.currentSuction != null ? 128 : 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return null;
    }
 

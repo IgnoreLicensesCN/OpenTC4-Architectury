@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -149,7 +150,7 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       return face == this.facing ? 128 - this.charges * 10 : 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return null;
    }
 

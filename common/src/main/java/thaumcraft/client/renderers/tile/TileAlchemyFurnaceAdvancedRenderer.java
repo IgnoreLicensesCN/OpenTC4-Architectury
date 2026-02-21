@@ -45,7 +45,7 @@ public class TileAlchemyFurnaceAdvancedRenderer extends TileEntitySpecialRendere
       }
 
       model.renderPart("Base");
-      if (tile.vis <= 0) {
+      if (tile.visSize <= 0) {
          UtilsFX.bindTexture("textures/models/alch_furnace_tank.png");
       } else {
          UtilsFX.bindTexture("textures/models/alch_furnace_tank_on.png");
@@ -58,14 +58,14 @@ public class TileAlchemyFurnaceAdvancedRenderer extends TileEntitySpecialRendere
          GL11.glPopMatrix();
       }
 
-      if (tile.vis > 0) {
+      if (tile.visSize > 0) {
          GL11.glPushMatrix();
          GL11.glTranslatef(0.5F, -0.5F, 1.1F);
          GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
          this.renderQuadCenteredFromIcon(ConfigBlocks.FLUXGOO.getIcon(), 190, 0.0F);
          GL11.glPopMatrix();
          GL11.glPushMatrix();
-         float f = 1.0F - (float)tile.vis / (float)tile.maxVis;
+         float f = 1.0F - (float)tile.visSize / (float)tile.maxVis;
 
          for(int a = 0; a < 4; ++a) {
             GL11.glPushMatrix();

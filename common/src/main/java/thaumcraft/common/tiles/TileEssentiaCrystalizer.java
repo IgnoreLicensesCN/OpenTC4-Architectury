@@ -168,7 +168,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return this.gettingPower() ? 0 : (loc == this.facing && this.aspect == null ? 128 : 64);
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return this.aspect;
    }
 

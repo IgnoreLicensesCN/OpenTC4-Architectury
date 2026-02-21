@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
+import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
@@ -43,6 +45,10 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<NodeTransducerBlockEntity> NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
     public static final BlockEntityType<AlchemicalFurnaceBlockEntity> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
     public static final BlockEntityType<ArcaneAlembicBlockEntity> ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
+    public static final BlockEntityType<AdvancedAlchemicalFurnaceBlockEntity> ADVANCED_ALCHEMICAL_FURNACE
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE.get();
+    public static final BlockEntityType<AdvancedAlchemicalFurnaceNozzleBlockEntity> ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
+            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -207,6 +213,20 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         ArcaneAlembicBlockEntity::new,
                         ThaumcraftBlocks.ARCANE_ALEMBIC
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<AdvancedAlchemicalFurnaceBlockEntity>> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE = BLOCK_ENTITIES.register(
+                "advanced_alchemical_furnace",
+                () -> BlockEntityType.Builder.of(
+                        AdvancedAlchemicalFurnaceBlockEntity::new,
+                        ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_BASE
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<AdvancedAlchemicalFurnaceNozzleBlockEntity>> SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE = BLOCK_ENTITIES.register(
+                "advanced_alchemical_furnace_nozzle",
+                () -> BlockEntityType.Builder.of(
+                        AdvancedAlchemicalFurnaceNozzleBlockEntity::new,
+                        ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
                 ).build(null)
         );
     }

@@ -2,6 +2,7 @@ package thaumcraft.common.tiles;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -106,7 +107,7 @@ public class TileArcaneFurnaceNozzle extends TileThaumcraft implements IEssentia
       return 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return null;
    }
 

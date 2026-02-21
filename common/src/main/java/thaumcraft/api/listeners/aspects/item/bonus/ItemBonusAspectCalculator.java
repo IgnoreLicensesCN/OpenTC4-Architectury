@@ -7,6 +7,8 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
 
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
 import static thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners.*;
 
 public class ItemBonusAspectCalculator {
@@ -20,6 +22,10 @@ public class ItemBonusAspectCalculator {
         }
     }
 
+    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack,boolean serverFlag){
+        var item = itemstack.getItem();
+        return getBonusAspects(itemstack,serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item));
+    }
     /**
      * onItem
      * -> onEnchantment

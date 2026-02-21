@@ -143,7 +143,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainerBl
       return this.chokedSides[loc.ordinal()] == 2 ? 0 : (this.bellows > 0 && this.chokedSides[loc.ordinal()] != 1 ? this.bellows * 32 : 1);
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return this.aspects.size() > 0 ? this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)] : null;
    }
 

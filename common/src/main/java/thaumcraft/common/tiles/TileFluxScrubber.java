@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.world.level.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -159,7 +160,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return Aspects.MAGIC;
    }
 

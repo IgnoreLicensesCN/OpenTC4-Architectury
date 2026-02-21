@@ -80,6 +80,11 @@ drop_b_for_a_names = [
     ('crusted_taint','minecraft:dirt'),
     ('research_table_left_part','thaumcraft:table'),
     ('research_table_right_part','thaumcraft:table'),
+    ('advanced_alchemical_furnace_alembic','thaumcraft:arcane_alembic'),
+    ('advanced_alchemical_furnace_upper_fence','thaumcraft:alchemical_construct'),
+    ('advanced_alchemical_furnace_nozzle','thaumcraft:advanced_alchemical_construct'),
+    ('advanced_alchemical_furnace_base_corner','thaumcraft:advanced_alchemical_construct'),
+    ('advanced_alchemical_furnace_base','thaumcraft:alchemical_furnace'),
 ]
 
 slab_names = [

@@ -247,5 +247,11 @@ public class Consts {
         public static final AspectAccessor ASPECT_CURRENT = new AspectAccessor("aspect_current");
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
     }
+    public static class AdvancedAlchemicalFurnaceBlockEntityTagAccessors {
+        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final IntTagAccessor FUEL_AMOUNT_FIRE = new IntTagAccessor("fuel_amount_fire");
+        public static final IntTagAccessor FUEL_AMOUNT_ENTROPY = new IntTagAccessor("fuel_amount_entropy");
+        public static final IntTagAccessor FUEL_AMOUNT_WATER = new IntTagAccessor("fuel_amount_water");
+    }
 
 }

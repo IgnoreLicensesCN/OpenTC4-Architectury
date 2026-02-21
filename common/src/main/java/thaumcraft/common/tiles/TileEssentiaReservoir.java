@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
@@ -160,7 +161,7 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IRemoteDrai
       return this.essentia.visSize() < this.maxAmount ? 24 : 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return this.essentia.visSize() > 0 && loc == Direction.UNKNOWN ? this.essentia.getAspects()[0] : null;
    }
 

@@ -5,13 +5,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -22,11 +25,18 @@ import static thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurn
 
 public class AdvancedAlchemicalFurnaceUpperFenceBlock extends AbstractAdvancedAlchemicalFurnaceComponent {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final IntegerProperty LIGHT_LEVEL = IntegerProperty.create("light", 0, 15);
 
     public AdvancedAlchemicalFurnaceUpperFenceBlock(){
-        super();
+        super(Properties
+                .copy(Blocks.IRON_BLOCK)
+                .strength(3,17)
+                .lightLevel(state -> state.getValue(LIGHT_LEVEL))
+        );
         this.registerDefaultState(
-                this.stateDefinition.any().setValue(FACING, Direction.NORTH)
+                this.stateDefinition.any()
+                        .setValue(LIGHT_LEVEL, 0)
+                        .setValue(FACING, Direction.NORTH)
         );
     }
 

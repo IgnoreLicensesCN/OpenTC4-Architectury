@@ -156,5 +156,5 @@ public class MultipartPlacerImpls {
     public static final IMultipartPlacer ADVANCED_ALCHEMICAL_FURNACE_PLACER = new SimpleMultipartPlacer(
             AdvancedAlchemicalPlacerImpls.PLACER,
             new BlockPos(1,0,1)
-    );
+    );//TODO:Use in somewhere
 }

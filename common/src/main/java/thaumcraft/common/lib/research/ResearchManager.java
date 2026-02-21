@@ -281,7 +281,7 @@ public class ResearchManager {
                 File dir = getThaumcraftPlayersDirectory(server);
                 File file1 = new File(dir, id + ".thaum");
                 File file2 = new File(dir, id + ".thaumbak");
-                loadPlayerData(playerName, file1, file2, false);
+                loadPlayerData(player, file1, file2, false);
                 out = Thaumcraft.getCompletedClue().get(playerName);
             }
         } catch (Exception e) {
@@ -306,7 +306,7 @@ public class ResearchManager {
                 File dir = getThaumcraftPlayersDirectory(server);
                 File file1 = new File(dir, id + ".thaum");
                 File file2 = new File(dir, id + ".thaumbak");
-                loadPlayerData(playerName, file1, file2, false);
+                loadPlayerData(player, file1, file2, false);
 
                 out = Thaumcraft.getCompletedResearch().get(playerName);
             }
@@ -358,13 +358,12 @@ public class ResearchManager {
                     AspectList<PrimalAspect> send = new AspectList<>();
                     send.addAll(
                             reduceToPrimals(
-                                    AspectList.of(
-                                            Map.of(compoundAspect.components.aspectA(), aspAmount))
+                                    new AspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
                                     ,merge)
                     );
                     send.addAll(
                             reduceToPrimals(
-                                    AspectList.of(
+                                    new AspectList<>(
                                             Map.of(compoundAspect.components.aspectB(), aspAmount))
                                     ,merge)
                     );

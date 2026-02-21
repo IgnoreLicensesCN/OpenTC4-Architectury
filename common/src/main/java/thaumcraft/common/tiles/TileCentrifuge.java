@@ -141,7 +141,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainerBl
       return face == Direction.DOWN ? (this.gettingPower() ? 0 : (this.aspectIn == null ? 128 : 64)) : 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return this.aspectOut;
    }
 

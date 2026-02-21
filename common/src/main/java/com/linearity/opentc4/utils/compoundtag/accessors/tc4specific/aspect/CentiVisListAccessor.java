@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 
+import java.util.LinkedHashMap;
+
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
     protected final LinkedHashMapAccessor<Aspect,Integer> aspectAndAmountsAccessor;
 //    protected final ModifiableListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
@@ -26,7 +28,7 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, CentiVisList<Aspect> toWrite) {
-        this.aspectAndAmountsAccessor.writeToCompoundTag(tag, toWrite.getAspectsInternal());
+        this.aspectAndAmountsAccessor.writeToCompoundTag(tag, new LinkedHashMap<>(toWrite.getAspectView()));
     }
 
     @Override

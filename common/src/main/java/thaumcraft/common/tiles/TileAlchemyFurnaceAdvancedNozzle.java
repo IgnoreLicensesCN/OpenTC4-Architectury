@@ -55,7 +55,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       } else if (this.furnace.aspects.getAmount(tt) >= am) {
          this.furnace.aspects.reduceAndRemoveIfNotPositive(tt, am);
          this.furnace.markDirty();
-         this.furnace.vis = this.furnace.aspects.visSize();
+         this.furnace.visSize = this.furnace.aspects.visSize();
          this.level().markBlockForUpdate(this.furnace.xCoord, this.furnace.yCoord, this.furnace.zCoord);
          return true;
       } else {
@@ -118,7 +118,7 @@ public class TileAlchemyFurnaceAdvancedNozzle extends TileThaumcraft implements 
       return 0;
    }
 
-   public Aspect getEssentiaType(Direction loc) {
+   public @NotNull Aspect getEssentiaType(Direction loc) {
       return this.furnace != null ? this.furnace.aspects.getAspects()[0] : null;
    }
 

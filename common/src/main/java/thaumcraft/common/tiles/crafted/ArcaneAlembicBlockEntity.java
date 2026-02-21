@@ -217,7 +217,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public Aspect getEssentiaType(Direction face) {
+    public @NotNull Aspect getEssentiaType(Direction face) {
         if (!isConnectable(face)) {
             return Aspects.EMPTY;
         }

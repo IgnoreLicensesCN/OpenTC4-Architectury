@@ -7,13 +7,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.IEssentiaComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
 
 import static thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBaseBlock.SELF_POS_1_0_1;
 
@@ -51,12 +51,20 @@ public class AdvancedAlchemicalFurnaceNozzleBlock extends AbstractAdvancedAlchem
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return ;
+    public boolean hasAnalogOutputSignal(BlockState arg) {
+        return true;
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return ;
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return !(level.getBlockEntity(pos) instanceof IEssentiaComparatorSignalProviderBlockEntity signalProvider) ? 0 : signalProvider.getRedstoneSignalCalculationVis();
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        if (blockState.getBlock() == this){
+            return new AdvancedAlchemicalFurnaceNozzleBlockEntity(blockPos, blockState);
+        }
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects;
 
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 
 public interface IEssentiaTransportOutBlockEntity {
     /**
@@ -29,6 +30,7 @@ public interface IEssentiaTransportOutBlockEntity {
      * @param face
      * @return essentia contains
      */
+    @NotNull("null -> empty")
     Aspect getEssentiaType(Direction face);
     /**
      * @param face

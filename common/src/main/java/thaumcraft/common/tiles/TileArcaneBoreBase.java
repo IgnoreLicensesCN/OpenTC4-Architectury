@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -94,7 +95,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return 0;
    }
 
-   public Aspect getEssentiaType(Direction face) {
+   public @NotNull Aspect getEssentiaType(Direction face) {
       return null;
    }
 

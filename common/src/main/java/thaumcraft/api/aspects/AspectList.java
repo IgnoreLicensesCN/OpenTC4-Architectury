@@ -3,72 +3,59 @@ package thaumcraft.api.aspects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.ThaumcraftApiHelper;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.common.Thaumcraft;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public class AspectList<Asp extends Aspect> implements Serializable {
-	
+
+	private int visSize;//
 	protected final LinkedHashMap<Asp,Integer> aspects;//aspects associated with this object
-	public LinkedHashMap<Asp,Integer> getAspectsInternal(){
-		return aspects;
-	}
 	private final Map<Asp,Integer> aspectView;
 	public Map<Asp,Integer> getAspectView(){
 		return aspectView;
 	}
 	
-//	/**
-//	 * this creates a new aspect list with preloaded values based off the aspects ofAspectVisList the given item.
-//	 * @param stack the itemstack ofAspectVisList the given item
-//	 */
-//	public static AspectList<Aspect> of(ItemStack stack) {
-//		var result = new AspectList<>();
-//		AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
-//		if (temp!=null) {
-//			for (Aspect tag : temp.getAspectTypes()) {
-//				result.addAll(tag, temp.getAmount(tag));
-//			}
-//		}
-//		return result;
-//	}
-	
 	public AspectList() {
 		this.aspects = new LinkedHashMap<>();
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 	public AspectList(Asp aspect, int value) {
 		this.aspects = new LinkedHashMap<>();
 		this.aspects.put(aspect,value);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 	protected AspectList(LinkedHashMap<Asp,Integer> aspects) {
 		this.aspects = aspects;
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 	public AspectList(Map<Asp,Integer> aspects) {
 		this.aspects = new LinkedHashMap<>(aspects);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 
 	public AspectList(int size,float loadFactor) {
 		this.aspects = new LinkedHashMap<>(size,loadFactor);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 
 	public AspectList(AspectList<Asp> another) {
 		this.aspects = new LinkedHashMap<>();
 		this.aspects.putAll(another.aspects);
 		this.aspectView = Collections.unmodifiableMap(this.aspects);
+		recalculateVisSize();
 	}
 
 
@@ -97,25 +84,18 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		return out;
 	}
 
+	@UnmodifiableView
 	public Set<Map.Entry<Asp,Integer>> entrySet(){
-		return aspects.entrySet();
+		return aspectView.entrySet();
 	}
+
+	@UnmodifiableView
 	public Set<Asp> keySet() {
-		return aspects.keySet();
+		return aspectView.keySet();
 	}
 
 	public Integer get(Asp aspect) {
 		return aspects.get(aspect);
-	}
-
-	public static <A extends Aspect> AspectList<A> of(Map<A,Integer> aspects) {
-		AspectList<A> out = new AspectList<>();
-		for (var entry:aspects.entrySet()) {
-			var key = entry.getKey();
-			var value = entry.getValue();
-			out.addAll(key, value);
-		}
-		return out;
 	}
 	
 	/**
@@ -129,13 +109,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @return the amount ofAspectVisList total vis in this collection
 	 */
 	public int visSize() {
-		int q = 0;
-		
-		for (var as:aspects.keySet()) {
-			q+=this.getAmount(as);
-		}
-		
-		return q;
+		return visSize;
 	}
 	
 	/**
@@ -165,7 +139,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * --from Hodgepodge
 	 */
 	public List<Asp> getAspectsSorted() {
-		return this.keySet().stream()
+		return aspectView.keySet().stream()
 				.sorted(Comparator.comparing(
 						Aspect::getNameString,
 						String.CASE_INSENSITIVE_ORDER
@@ -177,7 +151,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @return an array(a list now because Asp[] is not so fine) ofAspectVisList all the aspects in this collection sorted by amount
 	 */
 	public List<Asp> getAspectsSortedAmount() {
-		return aspects.keySet().stream()
+		return aspectView.keySet().stream()
 				.filter(a -> getAmount(a) > 0)
 				.sorted(Comparator.comparingInt(this::getAmount).reversed())
 				.toList();//anazor knows little about java's own sorting?
@@ -198,9 +172,12 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @return succeed(false if will lead to negative)
 	 */
 	public boolean tryReduce(Asp key, int amount) {
-		if (getAmount(key)>=amount) {
+		var currentAmount = getAmount(key);
+		if (currentAmount>=amount) {
 			int am = getAmount(key)-amount;
 			aspects.put(key, am);
+			visSize -= currentAmount;
+			visSize += amount;;
 			return true;
 		}
 		return false;
@@ -215,12 +192,15 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key, int amount) {
-		int am = getAmount(key) - amount;
-		if (am<=0) {
+		var currentAmount = getAmount(key);
+		int reducedResult = getAmount(key) - amount;
+		if (reducedResult<=0) {
 			aspects.remove(key);
+			this.visSize -= currentAmount;
 		}
 		else {
-			this.aspects.put(key, am);
+			this.aspects.put(key, reducedResult);
+			this.visSize -= amount;
 		}
 		return this;
 	}
@@ -233,12 +213,21 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> remove(Asp key) {
-		aspects.remove(key); 
+		var removed = aspects.remove(key);
+		if (removed != null) {
+			this.visSize -= removed;
+		}
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> removeIf(Predicate<Map.Entry<Asp,Integer>> filter) {
-		aspects.entrySet().removeIf(filter);
+		aspects.entrySet().removeIf(entry -> {
+			if (filter.test(entry)) {
+				this.visSize -= entry.getValue();
+				return true;
+			}
+			return false;
+		});
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
@@ -256,14 +245,11 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> addAll(Asp aspect, int amount) {
-		if (aspect == null){
-			throw new NullPointerException("aspect is null");
+		if (aspect == null || aspect.isEmpty()){
+			throw new NullPointerException("aspect is null or empty");
 		}
-		if (this.aspects.containsKey(aspect)) {
-			int oldamount = this.aspects.get(aspect);
-			amount += oldamount;
-		}
-		this.aspects.put( aspect, amount );
+		this.aspects.merge(aspect, amount, Integer::sum);
+		this.visSize += amount;
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
@@ -271,7 +257,9 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		if (aspect == null){
 			throw new NullPointerException("aspect is null");
 		}
+		var oldValue = this.aspects.getOrDefault(aspect, 0);
 		this.aspects.put( aspect, amount );
+		this.visSize += amount - oldValue;
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
@@ -280,26 +268,31 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 			throw new IllegalArgumentException("division by zero");
 		}
 		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
-			int value = entry.getValue();
+			int oldValue = entry.getValue();
 			// 除以 divideBy 向上取整
-			int divided = (value + divideBy - 1) / divideBy; // ceil 整数除法
+			int divided = (oldValue + divideBy - 1) / divideBy; // ceil 整数除法
 			entry.setValue(divided);
+			this.visSize += divided - oldValue;
 		}
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> multiply(int multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
-			int value = entry.getValue();
-			entry.setValue(value*multiplier);
+			int oldValue = entry.getValue();
+			int newValue = oldValue * multiplier;
+			entry.setValue(newValue);
+			this.visSize += newValue - oldValue;
 		}
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> multiplyAndCeil(float multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.entrySet()) {
-			int value = entry.getValue();
-			entry.setValue((int)Math.ceil(value*multiplier));
+			int oldValue = entry.getValue();
+			int newValue = (int)Math.ceil(oldValue*multiplier);
+			entry.setValue(newValue);
+			this.visSize += newValue - oldValue;
 		}
 		return this;
 	}
@@ -315,40 +308,48 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> mergeWithHighest(Asp aspect, int amount) {
 		if (amount < 0){return this;}
-		if (this.aspects.containsKey(aspect)) {
-			int oldamount = this.aspects.get(aspect);
-			if (amount<oldamount) amount=oldamount;
-			
+		int oldValue = this.aspects.getOrDefault(aspect, 0);
+		if (amount < oldValue) {
+			amount = oldValue;
 		}
 		this.aspects.put( aspect, amount );
+		this.visSize += amount - oldValue;
 		return this;
 	}
 	@SuppressWarnings("UnusedReturnValue")
 	public int merge(Asp aspect, int amount,BiFunction<Integer,Integer,Integer> chooser) {
-		return this.aspects.merge(aspect, amount, chooser);
+		var oldValue = this.aspects.getOrDefault(aspect, 0);
+		int result = this.aspects.merge(aspect, amount, chooser);
+		var newValue = this.aspects.getOrDefault(aspect, 0);
+		this.visSize += newValue - oldValue;
+		return result;
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> addAll(AspectList<Asp> in) {
-		for (var a:in.getAspectTypes())
+		for (var a:in.getAspectTypes()) {
 			this.addAll(a, in.getAmount(a));
+		}
 		return this;
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
 	public AspectList<Asp> mergeWithHighest(AspectList<Asp> in) {
-		for (var a:in.getAspectTypes())
+		for (var a:in.getAspectTypes()) {
 			this.mergeWithHighest(a, in.getAmount(a));
+		}
+		recalculateVisSize();//TODO:[maybe wont finished]Make faster
 		return this;
 	}
 
 
 	public void forEach(BiConsumer<Asp,Integer> action) {
-		aspects.forEach(action);
+		aspectView.forEach(action);
 	}
 
 	public void putAllAspects(AspectList<Asp> aspects) {
 		this.aspects.putAll(aspects.aspects);
+		recalculateVisSize();//TODO:[maybe wont finished]Make faster
 	}
 
 
@@ -388,5 +389,10 @@ public class AspectList<Asp extends Aspect> implements Serializable {
                 .map(entry -> entry.getKey() + ":" + entry.getValue())
                 .toArray()) +
 				'}';
+	}
+
+	private void recalculateVisSize(){
+		this.visSize = 0;
+		this.aspectView.values().forEach(i -> this.visSize += i);
 	}
 }
