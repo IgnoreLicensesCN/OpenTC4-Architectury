@@ -43,7 +43,10 @@ import java.util.Random;
 
 import static tc4tweak.modules.blockJar.EntityCollisionBox.SMALLER_PARAMETERS;
 import static tc4tweak.modules.blockJar.EntityCollisionBox.VANILLA_PARAMETERS;
-
+//"tile.blockJar.0.name": "源质罐子",
+//  "tile.blockJar.1.name": "缸中之脑",
+//  "tile.blockJar.2.name": "缸中节点",
+//  "tile.blockJar.3.name": "虚空罐子",
 public class BlockJar extends BlockContainer {
    public IIcon iconLiquid;
    public IIcon iconJarBottom;

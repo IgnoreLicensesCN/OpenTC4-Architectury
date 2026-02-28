@@ -70,7 +70,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         }
 
         context.noteData.hexGrid.put(context.coordToRemove,HexEntry.EMPTY);
-        if (context.noteData.checkResearchNoteCompletion(context.player.getGameProfile().getName())){
+        if (context.noteData.checkResearchNoteCompletion(context.player)){
             context.noteData.completed = true;
         }
         updateResearchNoteData(context.noteStack,context.noteData);
@@ -123,7 +123,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         var aspectsToCopy = copyable.getCopyResearchBaseAspects();
         var copiedCount = researchData.copiedCount;
         var playerName = player.getGameProfile().getName();
-        var playerOwnedAspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(playerName);
+        var playerOwnedAspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
 
         //checkToConsume
         var playerInventory = player.getInventory();
@@ -158,9 +158,9 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         for (var entry:aspectsToCopy.entrySet()){
             var aspect = entry.getKey();
             var count = entry.getValue() + copiedCount;
-            Thaumcraft.playerKnowledge.addAspectPool(playerName,aspect,-count);
-            ResearchManager.scheduleSave(playerName);
-            new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspect)).sendTo(player);
+            Thaumcraft.playerKnowledge.addAspectPool(player,aspect,-count);
+            ResearchManager.scheduleSave(player);
+            new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)).sendTo(player);
         }
         playerInventory.items.get(paperIndex).shrink(1);
         if (playerInventory.items.get(paperIndex).isEmpty()){

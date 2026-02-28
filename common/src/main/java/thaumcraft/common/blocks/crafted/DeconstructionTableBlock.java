@@ -75,8 +75,7 @@ public class DeconstructionTableBlock extends SuppressedWarningBlock implements 
                 Containers.dropContents(level, blockPos, container);
                 level.updateNeighbourForOutputSignal(blockPos, this);
             }
-
-            super.onRemove(blockState, level, blockPos, blockState2, bl);
         }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 }

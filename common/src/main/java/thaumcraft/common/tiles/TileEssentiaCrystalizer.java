@@ -176,12 +176,12 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return this.aspect == null ? 0 : 1;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      return this.canInputFrom(fromDirection) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
    public void updateEntity() {

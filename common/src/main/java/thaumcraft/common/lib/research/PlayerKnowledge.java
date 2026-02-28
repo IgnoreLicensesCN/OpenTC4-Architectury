@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.research;
 
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.ApiStatus;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -45,6 +46,8 @@ public class PlayerKnowledge {
       return known;
    }
 
+   //use Aspect#hasDiscoveredAspect
+   @ApiStatus.Internal
    public boolean hasDiscoveredAspect(Player player, Aspect aspect) {
       return this.getAspectsDiscovered(player).getAspectView().containsKey(aspect);
    }
@@ -59,7 +62,7 @@ public class PlayerKnowledge {
    }
 
    public void addDiscoveredPrimalAspects(Player player) {
-      AspectList<Aspect> known = this.aspectsDiscovered.get(player);
+      AspectList<Aspect> known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       if (known == null) {
          known = new AspectList<>();
       }

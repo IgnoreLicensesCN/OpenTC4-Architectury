@@ -1,31 +1,6 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockContainer;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.client.Minecraft;
-import thaumcraft.client.fx.particles.FXSlimyBubble;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileAlchemyFurnaceAdvanced;
-import thaumcraft.common.tiles.TileAlchemyFurnaceAdvancedNozzle;
-
-import java.util.List;
-import java.util.Random;
-
+@Deprecated(forRemoval = true)
 public class BlockAlchemyFurnace /*extends BlockContainer*/ {
 //    public IIcon icon;
 //
@@ -147,34 +122,34 @@ public class BlockAlchemyFurnace /*extends BlockContainer*/ {
 //        }
 //    }
 
-    @Override
-    public TileEntity createTileEntity(World world, int metadata) {
-        if (metadata == 0) {
-            return new TileAlchemyFurnaceAdvanced();
-        } else {
-            return metadata == 1 ? new TileAlchemyFurnaceAdvancedNozzle() : super.createTileEntity(world, metadata);
-        }
-    }
-
-    @Override
-    public boolean hasComparatorInputOverride() {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileAlchemyFurnaceAdvancedNozzle) {
-            if (((TileAlchemyFurnaceAdvancedNozzle) te).furnace != null) {
-                float r = (float) ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.visSize / (float) ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.maxVis;
-                return MathHelper.floor_float(r * 14.0F) + ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.visSize > 0 ? 1 : 0;
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
-        }
-    }
+//    @Override
+//    public TileEntity createTileEntity(World world, int metadata) {
+//        if (metadata == 0) {
+//            return new TileAlchemyFurnaceAdvanced();
+//        } else {
+//            return metadata == 1 ? new TileAlchemyFurnaceAdvancedNozzle() : super.createTileEntity(world, metadata);
+//        }
+//    }
+//
+//    @Override
+//    public boolean hasComparatorInputOverride() {
+//        return true;
+//    }
+//
+//    @Override
+//    public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
+//        TileEntity te = world.getTileEntity(x, y, z);
+//        if (te instanceof TileAlchemyFurnaceAdvancedNozzle) {
+//            if (((TileAlchemyFurnaceAdvancedNozzle) te).furnace != null) {
+//                float r = (float) ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.visSize / (float) ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.maxVis;
+//                return MathHelper.floor_float(r * 14.0F) + ((TileAlchemyFurnaceAdvancedNozzle) te).furnace.visSize > 0 ? 1 : 0;
+//            } else {
+//                return 0;
+//            }
+//        } else {
+//            return 0;
+//        }
+//    }
 
 //    @Override
 //    public TileEntity createNewTileEntity(World var1, int md) {

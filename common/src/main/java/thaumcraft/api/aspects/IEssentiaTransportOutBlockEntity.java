@@ -19,7 +19,7 @@ public interface IEssentiaTransportOutBlockEntity {
      * remove the specified amount of essentia from this transport tile
      * @return how much was actually taken
      */
-    int takeEssentia(Aspect aspect, int amount, Direction face);
+    int takeEssentia(Aspect aspect, int amount, Direction outputToDirection);
     /**
      * Essentia will not be drawn from this container unless the suction exceeds this amount.
      * @return the amount

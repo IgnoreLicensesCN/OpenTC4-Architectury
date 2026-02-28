@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -52,7 +53,7 @@ public class PrimalAspect extends Aspect {
     }
 
     @Override
-    public boolean hasPlayerDiscovered(String playerName) {
+    public boolean hasPlayerDiscovered(Player player) {
         return true;
     }
 }

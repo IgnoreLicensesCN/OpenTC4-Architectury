@@ -895,17 +895,24 @@ public class TileArcaneBore extends TileThaumcraft implements Container, IWandIn
 
     @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        var player = useOnContext.getPlayer();
+
+        var level = useOnContext.getLevel();
         var pos = this.getPos();
         this.setOrientation(useOnContext.getClickedFace(), false);
-        player.level().playSound( player,
-                pos,
-                ThaumcraftSounds.TOOL,
-                SoundSource.BLOCKS,
-                0.5F,
-                0.9F + player.level().random.nextFloat() * 0.2F);
-        player.swing(player.getUsedItemHand());
+        level.playSound(
+                        null,
+                        pos,
+                        ThaumcraftSounds.TOOL,
+                        SoundSource.BLOCKS,
+                        0.5F,
+                        0.9F + level.random.nextFloat() * 0.2F
+                );
+        var player = useOnContext.getPlayer();
+        if (player != null){
+            player.swing(player.getUsedItemHand());
+        }
         this.setChanged();
+
         return InteractionResult.PASS;
     }
 }

@@ -131,7 +131,6 @@ public class EnergizedAuraNodeBlock extends SuppressedWarningBlock implements En
             BlockState newState,
             boolean isMoving
     ) {
-        super.onRemove(state, level, pos, newState, isMoving);
         var isClientSide = level.isClientSide();
         if (isClientSide) {
             if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
@@ -149,6 +148,7 @@ public class EnergizedAuraNodeBlock extends SuppressedWarningBlock implements En
                 explode(serverLevel, pos);
             }
         }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

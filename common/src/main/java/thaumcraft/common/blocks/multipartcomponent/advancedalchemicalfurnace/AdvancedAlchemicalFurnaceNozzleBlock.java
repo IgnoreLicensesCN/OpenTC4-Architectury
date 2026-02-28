@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.IEssentiaComparatorSignalProviderBlockEntity;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
 
@@ -57,7 +57,8 @@ public class AdvancedAlchemicalFurnaceNozzleBlock extends AbstractAdvancedAlchem
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IEssentiaComparatorSignalProviderBlockEntity signalProvider) ? 0 : signalProvider.getRedstoneSignalCalculationVis();
+        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+                ? 0 : signalProvider.getComparatorSignal();
     }
 
     @Override

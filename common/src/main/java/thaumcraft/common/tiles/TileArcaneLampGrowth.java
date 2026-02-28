@@ -206,11 +206,11 @@ public class TileArcaneLampGrowth extends TileThaumcraft implements IEssentiaTra
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction loc) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction loc) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
       return 0;
    }
 }

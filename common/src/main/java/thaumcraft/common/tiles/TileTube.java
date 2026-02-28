@@ -262,8 +262,8 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockE
       return this.essentiaAmount;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      if (this.canOutputTo(face) && this.essentiaType == aspect && this.essentiaAmount > 0 && amount > 0) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      if (this.canOutputTo(outputToDirection) && this.essentiaType == aspect && this.essentiaAmount > 0 && amount > 0) {
          --this.essentiaAmount;
          if (this.essentiaAmount <= 0) {
             this.essentiaType = null;
@@ -276,8 +276,8 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockE
       }
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      if (this.canInputFrom(face) && this.essentiaAmount == 0 && amount > 0) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      if (this.canInputFrom(fromDirection) && this.essentiaAmount == 0 && amount > 0) {
          this.essentiaType = aspect;
          ++this.essentiaAmount;
          this.markDirty();

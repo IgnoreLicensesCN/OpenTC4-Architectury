@@ -35,9 +35,10 @@ public interface IAlembic extends IAspectOutBlockEntity<Aspect> {
     boolean canFillAspectContainerItem(ItemStack stackToFill,
                                        IAspectContainerItem<Aspect> itemToFill,
                                        Aspect aspect);
-    void fillAspectContainerItem(
+    boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill
+            IAspectContainerItem<Aspect> itemToFill,
+            int minAmount
     );
 
 }

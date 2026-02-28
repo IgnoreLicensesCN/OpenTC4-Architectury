@@ -43,6 +43,7 @@ public abstract class AbstractMultipartComponentBlock extends SuppressedWarningB
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState blockState2, boolean bl) {
         level.scheduleTick(pos, level.getBlockState(pos).getBlock(), 1);
+        super.onRemove(blockState, level, pos, blockState2, bl);
     }
 
     @Override

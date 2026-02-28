@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlock;
@@ -16,7 +17,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     implements
         IAspectOutBlockEntity<Aspect>,
         IEssentiaTransportOutBlockEntity,
-        IEssentiaComparatorSignalProviderBlockEntity {
+        IValueContainerBasedComparatorSignalProviderBlockEntity {
 
     public AdvancedAlchemicalFurnaceNozzleBlockEntity(BlockEntityType<? extends AdvancedAlchemicalFurnaceNozzleBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -77,7 +78,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int getRedstoneSignalCalculationVisOwning() {
+    public int currentComparatorSignalValue() {
         var base = getBaseBE();
         if (base == null) {
             return 0;
@@ -86,7 +87,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int getRedstoneSignalCalculationVisCapacity() {
+    public int comparatorSignalCapacity() {
         var base = getBaseBE();
         if (base == null) {
             return 0;
@@ -105,8 +106,8 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int takeEssentia(Aspect aspect, int amount, Direction facing) {
-        return this.canOutputTo(facing) && this.takeFromContainer(aspect, amount) ? amount : 0;
+    public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+        return this.canOutputTo(outputToDirection) && this.takeFromContainer(aspect, amount) ? amount : 0;
     }
 
     @Override

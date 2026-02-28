@@ -49,6 +49,7 @@ public class ThaumcraftBlockEntities {
             = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE.get();
     public static final BlockEntityType<AdvancedAlchemicalFurnaceNozzleBlockEntity> ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
             = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
+    public static final BlockEntityType<EssentiaJarBlockEntity> ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -227,6 +228,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         AdvancedAlchemicalFurnaceNozzleBlockEntity::new,
                         ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<EssentiaJarBlockEntity>> SUPPLIER_ESSENTIA_JAR = BLOCK_ENTITIES.register(
+                "essentia_jar",
+                () -> BlockEntityType.Builder.of(
+                        EssentiaJarBlockEntity::new,
+                        ThaumcraftBlocks.ESSENTIA_JAR
                 ).build(null)
         );
     }

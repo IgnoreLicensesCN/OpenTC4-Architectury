@@ -87,11 +87,11 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return face != this.orientation ? 128 : 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
       return 0;
    }
 

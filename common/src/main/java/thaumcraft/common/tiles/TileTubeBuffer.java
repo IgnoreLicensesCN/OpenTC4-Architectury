@@ -151,21 +151,23 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainerBl
       return this.aspects.visSize();
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      if (!this.canOutputTo(face)) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      if (!this.canOutputTo(outputToDirection)) {
          return 0;
       } else {
          TileEntity te = null;
          IEssentiaTransportBlockEntity ic = null;
          int suction = 0;
-         te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, face);
+         te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord,
+                 outputToDirection
+         );
          if (te != null) {
             ic = (IEssentiaTransportBlockEntity)te;
-            suction = ic.getSuctionAmount(face.getOpposite());
+            suction = ic.getSuctionAmount(outputToDirection.getOpposite());
          }
 
          for(Direction dir : Direction.VALID_DIRECTIONS) {
-            if (this.canOutputTo(dir) && dir != face) {
+            if (this.canOutputTo(dir) && dir != outputToDirection) {
                te = ThaumcraftApiHelper.getConnectableTile(this.level(), this.xCoord, this.yCoord, this.zCoord, dir);
                if (te != null) {
                   ic = (IEssentiaTransportBlockEntity)te;
@@ -186,8 +188,8 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainerBl
       }
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      return this.canInputFrom(fromDirection) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
    public void updateEntity() {

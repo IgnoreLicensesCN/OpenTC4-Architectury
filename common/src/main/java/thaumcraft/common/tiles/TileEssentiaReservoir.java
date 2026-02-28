@@ -169,12 +169,12 @@ public class TileEssentiaReservoir extends TileThaumcraft implements IRemoteDrai
       return this.essentia.visSize();
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      return this.canOutputTo(outputToDirection) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addToContainer(aspect, amount) : 0;
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      return this.canInputFrom(fromDirection) ? amount - this.addToContainer(aspect, amount) : 0;
    }
 
    public void updateEntity() {

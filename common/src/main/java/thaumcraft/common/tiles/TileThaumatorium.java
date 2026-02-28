@@ -374,12 +374,12 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      return this.canOutputTo(outputToDirection) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canInputFrom(face) ? amount - this.addIntoContainer(aspect, amount) : 0;
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      return this.canInputFrom(fromDirection) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 
    public int getMinimumSuctionToDrainOut() {

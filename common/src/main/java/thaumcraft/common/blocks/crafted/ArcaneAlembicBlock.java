@@ -26,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectContainerItem;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.ThaumcraftSounds;
@@ -125,26 +124,6 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     }
 
     @Override
-    public boolean attemptAttachAspectLabel(Level level, BlockPos pos, BlockState state, Aspect labelAspect) {
-        if (level.getBlockEntity(pos) instanceof ArcaneAlembicBlockEntity alembic) {
-            alembic.setAspectFilter(labelAspect);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean attemptRemoveAspectLabel(Level level, BlockPos pos, BlockState state) {
-        if (level.getBlockEntity(pos) instanceof ArcaneAlembicBlockEntity alembic && !alembic.getAspectFilter().isEmpty()) {
-            alembic.setAspectFilter(Aspects.EMPTY);
-            level.playSound(null,pos,ThaumcraftSounds.PAGE,SoundSource.BLOCKS, 1.0F, 1.1F);
-            //TODO:Drop label stack
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean canFillAspectContainerItem(
             Level level,
             BlockPos blockPos,
@@ -159,18 +138,17 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     }
 
     @Override
-    public void fillAspectContainerItem(
+    public boolean fillAspectContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill
+            IAspectContainerItem<Aspect> itemToFill,
+            int minAmount
     ) {
-        if (level.isClientSide()) {
-            return;
-        }
         if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
-            alembic.fillAspectContainerItem(stackToFill, itemToFill);
+            return alembic.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
         }
+        return false;
     }
 }

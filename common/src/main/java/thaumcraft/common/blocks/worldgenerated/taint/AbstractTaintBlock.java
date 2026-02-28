@@ -35,11 +35,11 @@ import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBl
 public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial{
     public static final SoundType TAINT_BLOCK_SOUND = new SoundType(
             1.0F, 1.0F,
-            SoundEvents.GRAVEL_BREAK,
+            ThaumcraftSounds.GORE,//SoundEvents.GRAVEL_BREAK,
             ThaumcraftSounds.GORE,
-            SoundEvents.GRAVEL_PLACE,
-            SoundEvents.GRAVEL_HIT,
-            SoundEvents.GRAVEL_FALL
+            ThaumcraftSounds.GORE,//SoundEvents.GRAVEL_PLACE,
+            ThaumcraftSounds.GORE,//SoundEvents.GRAVEL_HIT,
+            ThaumcraftSounds.GORE//SoundEvents.GRAVEL_FALL
     );
     public AbstractTaintBlock(BlockBehaviour.Properties properties) {
         super(properties.randomTicks());

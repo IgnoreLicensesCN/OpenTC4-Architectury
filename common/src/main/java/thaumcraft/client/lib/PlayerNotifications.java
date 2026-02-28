@@ -1,18 +1,27 @@
 package thaumcraft.client.lib;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.Config;
 
 import java.util.ArrayList;
+import java.util.List;
 
+//TODO:Rewrite almost all
 public class PlayerNotifications {
-   public static ArrayList<Notification> notificationList = new ArrayList<>();
-   public static ArrayList<AspectNotification> aspectList = new ArrayList<>();
-   //TODO:Text -> component
+   public static List<Notification> notificationList = new ArrayList<>();
+   public static List<AspectNotification> aspectList = new ArrayList<>();
+   @Deprecated(forRemoval = true)
    public static void addNotification(String text) {
       addNotification(text, null, 16777215);
+   }
+   public static void addNotification(Component component) {
+      //TODO:Text -> component
+   }
+   public static void addNotification(Component component, Aspect aspect) {
+      addNotification(component, aspect.getImage(), aspect.getColor());
    }
 
    public static void addAspectNotification(Aspect aspect) {
@@ -36,7 +45,7 @@ public class PlayerNotifications {
       notificationList.add(new Notification(text, image, time + (long)Config.notificationDelay + timeBonus, time + (long)(Config.notificationDelay / 4), color));
    }
 
-   public static ArrayList getListAndUpdate(long time) {
+   public static List<Notification> getListAndUpdate(long time) {
       ArrayList<Notification> temp = new ArrayList<>();
       boolean first = true;
 
@@ -56,8 +65,8 @@ public class PlayerNotifications {
       return temp;
    }
 
-   public static ArrayList getAspectListAndUpdate(long time) {
-      ArrayList<AspectNotification> temp = new ArrayList<>();
+   public static List<AspectNotification> getAspectListAndUpdate(long time) {
+      List<AspectNotification> temp = new ArrayList<>();
 
       for(AspectNotification li : aspectList) {
          if (li.expire >= time) {

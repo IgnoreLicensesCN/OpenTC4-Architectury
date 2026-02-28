@@ -96,12 +96,12 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, face);
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, outputToDirection);
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, face);
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+      return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, fromDirection);
    }
 
    public int getMinimumSuctionToDrainOut() {

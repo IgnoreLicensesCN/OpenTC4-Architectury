@@ -56,8 +56,7 @@ public class ArcaneWorkbenchBlock extends SuppressedWarningBlock implements Enti
                 Containers.dropContents(level, blockPos, container);
                 level.updateNeighbourForOutputSignal(blockPos, this);
             }
-
-            super.onRemove(blockState, level, blockPos, blockState2, bl);
         }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 }

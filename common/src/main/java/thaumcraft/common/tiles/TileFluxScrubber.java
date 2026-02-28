@@ -168,14 +168,14 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return this.essentia;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction loc) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
       int re = Math.min(this.essentia, amount);
       this.essentia -= re;
       this.markDirty();
       return re;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction loc) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
       return 0;
    }
 }

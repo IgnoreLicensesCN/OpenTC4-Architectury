@@ -83,8 +83,8 @@ public class ResearchTableLeftPartBlock extends SuppressedWarningBlock implement
                 Containers.dropContents(level, blockPos, container);
                 level.updateNeighbourForOutputSignal(blockPos, this);
             }
-            super.onRemove(blockState, level, blockPos, blockState2, bl);
         }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 
     public BlockPos getRightPartPos(Direction thisFacing,BlockPos thisPos) {

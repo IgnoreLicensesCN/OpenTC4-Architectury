@@ -2,6 +2,8 @@ package thaumcraft.common.lib.network.playerdata;
 
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.network.chat.Component;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -75,7 +77,7 @@ public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
         public static void handle(PacketWarpMessageS2C message) {
             if (message.data == 0) return;
 
-            String text;
+            Component text;
             int change = message.data;
 
             if (message.type == 0) { // NORMAL WARP
@@ -103,10 +105,12 @@ public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
 
         private static void playWhisper() {
             var mc = net.minecraft.client.Minecraft.getInstance();
-            mc.player.playSound(
-                    net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE,
-                    0.5F, 1.0F
-            );
+            if (mc.player != null) {
+                mc.player.playSound(
+                        ThaumcraftSounds.WHISPERS,
+                        0.5F, 1.0F
+                );
+            }
         }
     }
 }

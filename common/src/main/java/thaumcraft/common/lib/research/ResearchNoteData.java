@@ -2,6 +2,7 @@ package thaumcraft.common.lib.research;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
@@ -10,7 +11,6 @@ import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.utils.HexCoord;
@@ -56,7 +56,7 @@ public class ResearchNoteData {
         int placedAspectCount = 0;
 
         for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().get(placedAspectCount), HexType.GIVEN));
+            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().stream().toList().get(placedAspectCount), HexType.GIVEN));
             ++placedAspectCount;
         }
 
@@ -252,7 +252,7 @@ public class ResearchNoteData {
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, this.hexGrid);
     }
 
-    public boolean checkResearchNoteCompletion(String username) {
+    public boolean checkResearchNoteCompletion(Player player) {
         List<HexCoord> checked = new ArrayList<>();
         List<HexCoord> main = new ArrayList<>();
         List<HexCoord> remains = new ArrayList<>();
@@ -270,7 +270,7 @@ public class ResearchNoteData {
             var entry = hexPair.getValue();
             if (entry.type() == HexType.GIVEN) {
                 main.remove(coord);
-                checkConnections(this, coord, checked, main, remains, username);
+                checkConnections(this, coord, checked, main, remains, player);
                 break;
             }
         }
@@ -321,7 +321,7 @@ public class ResearchNoteData {
             List<HexCoord> checked,
             List<HexCoord> main,
             List<HexCoord> remains,
-            String username
+            Player player
     ) {
         checked.add(hex);
 
@@ -337,15 +337,15 @@ public class ResearchNoteData {
                         .aspect();
                 Aspect aspect2 = note.hexGrid.get(target)
                         .aspect();
-                if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect1)
-                        && Thaumcraft.playerKnowledge.hasDiscoveredAspect(username, aspect2)
+                if (aspect1.hasPlayerDiscovered(player)
+                        && aspect2.hasPlayerDiscovered(player)
                         && canAspectConnectToEachOther(aspect1, aspect2)) {
                     remains.add(target);
                     if (note.hexGrid.get(target)
                             .type() == HexType.GIVEN) {
                         main.remove(target);
                     }
-                    checkConnections(note, target, checked, main, remains, username);
+                    checkConnections(note, target, checked, main, remains, player);
                 }
             }
         }

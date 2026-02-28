@@ -149,11 +149,11 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainerBl
       return this.aspectOut != null ? 1 : 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction face) {
-      return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+      return this.canOutputTo(outputToDirection) && this.takeFromContainer(aspect, amount) ? amount : 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction face) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
       if (this.aspectIn == null && !aspect.isPrimal()) {
          this.aspectIn = aspect;
          this.process = 39;

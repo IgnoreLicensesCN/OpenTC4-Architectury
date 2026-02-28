@@ -318,7 +318,6 @@ public class CommonProxy implements IGuiHandler {
 
    public void serverStarted(FMLServerStartedEvent e) {
       FlushableCache.enableAll(true);
-      NetworkedConfiguration.resetServer();
    }
 
    public void init(FMLInitializationEvent e) {

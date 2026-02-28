@@ -19,7 +19,11 @@ import thaumcraft.common.tiles.abstracts.IAlembic;
 import static com.linearity.opentc4.Consts.ArcaneAlembicBlockEntityTagAccessors.*;
 
 public class ArcaneAlembicBlockEntity extends TileThaumcraft
-        implements IAlembic,IEssentiaTransportOutBlockEntity{
+        implements IAlembic,
+        IEssentiaTransportOutBlockEntity,
+        IAspectFilterAccessible,
+        IAspectDisplayBlockEntity<Aspect>
+{
     public ArcaneAlembicBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -58,9 +62,6 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         return aspectCurrent;
     }
 
-    public @NotNull Aspect getAspectFilter() {
-        return aspectFilter;
-    }
 
     @Override
     public int getAmount() {
@@ -72,9 +73,19 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         return ASPECT_CAPACITY;
     }
 
-    public void setAspectFilter(@NotNull Aspect aspectFilter) {
+    public @NotNull Aspect getAspectFilter() {
+        return aspectFilter;
+    }
+    public boolean setAspectFilter(@NotNull Aspect aspectFilter) {
+        if (aspectFilter != Aspects.EMPTY && this.aspectFilter != Aspects.EMPTY){
+            return false;
+        }
+        if (aspectFilter != aspectCurrent && aspectCurrent != Aspects.EMPTY && aspectAmountCurrent != 0) {
+            return false;
+        }
         this.aspectFilter = aspectFilter;
         this.markDirtyAndUpdateSelf();
+        return true;
     }
 
     @Override
@@ -147,41 +158,47 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         this.aspectCurrent = Aspects.EMPTY;
     }
 
-    @Override
     public boolean canFillAspectContainerItem(
             ItemStack stackToFill,
             IAspectContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
-        return aspect == this.aspectCurrent && !aspect.isEmpty() && this.aspectAmountCurrent != 0;
+        return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
     }
 
     @Override
-    public void fillAspectContainerItem(
+    public boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill
+            IAspectContainerItem<Aspect> itemToFill,
+            int minAmount
     ) {
+        if (level == null){
+            return false;
+        }
 
+        if (aspectCurrent.isEmpty() || aspectAmountCurrent < minAmount) {
+            return false;
+        }
         var amountBefore = aspectAmountCurrent;
-        if (!aspectCurrent.isEmpty() && aspectAmountCurrent != 0) {
-            aspectAmountCurrent = itemToFill.storeAspect(stackToFill, aspectCurrent, amountBefore);
-            if (aspectAmountCurrent == 0) {
-                aspectCurrent = Aspects.EMPTY;
-            }
-            if (aspectAmountCurrent != amountBefore) {
-                markDirtyAndUpdateSelf();
-                if (level != null) {
-                    level.playSound(
-                            null,
-                            getBlockPos(),
-                            SoundEvents.PLAYER_SWIM,
-                            SoundSource.BLOCKS,
-                            .5F,
-                            1.F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.3F
-                    );
-                }
+        aspectAmountCurrent = itemToFill.storeAspect(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
+        if (aspectAmountCurrent == 0) {
+            aspectCurrent = Aspects.EMPTY;
+        }
+        if (aspectAmountCurrent != amountBefore) {
+            markDirtyAndUpdateSelf();
+            if (level != null) {
+                level.playSound(
+                        null,
+                        getBlockPos(),
+                        SoundEvents.PLAYER_SWIM,
+                        SoundSource.BLOCKS,
+                        .5F,
+                        1.F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.3F
+                );
             }
         }
+
+        return true;
     }
 
 
@@ -196,8 +213,8 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int takeEssentia(Aspect aspect, int amount, Direction face) {
-        if (!isConnectable(face)) {
+    public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+        if (!isConnectable(outputToDirection)) {
             return 0;
         }
         return takeFromContainer(aspect,amount)?amount:0;
@@ -222,5 +239,10 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
             return Aspects.EMPTY;
         }
         return this.aspectCurrent;
+    }
+
+    @Override
+    public AspectList<Aspect> getAspectsToDisplay() {
+        return aspOwningCurrent;
     }
 }

@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
@@ -31,6 +32,7 @@ public abstract class Aspect {
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(aspectKey, this);
 	}
+	@SuppressWarnings("unused")
 	protected Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
 		this.aspectKey = aspectKey;
 		this.color = color;
@@ -83,13 +85,6 @@ public abstract class Aspect {
 	}
 
 
-	//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(AIR, EARTH));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(FIRE, EARTH));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(FIRE, WATER));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(ORDER, WATER));
-//		public static final CompoundAspect ?? = new CompoundAspect("??",0xcdccf4, new CompoundAspectComponent(EARTH, ENTROPY));
-
-
 	@Override
 	public String toString() {
 		return "Aspect{" +
@@ -112,7 +107,7 @@ public abstract class Aspect {
 		return Objects.hash(aspectKey, color, image, blend);
 	}
 
-	public boolean hasPlayerDiscovered(String playerName) {
-		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(playerName, this);
+	public boolean hasPlayerDiscovered(Player player) {
+		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, this);
 	}
 }

@@ -68,7 +68,6 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
             BlockState newState,
             boolean isMoving
     ) {
-        super.onRemove(state, level, pos, newState, isMoving);
         if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
             var x = pos.getX();
             var y = pos.getY();
@@ -79,6 +78,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
         if (level instanceof ServerLevel serverLevel && newState.isAir()) {
             //TODO:wispEssences
         }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

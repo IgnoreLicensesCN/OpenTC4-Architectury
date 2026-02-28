@@ -62,7 +62,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
     public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, Player player, List<Component> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(var aspect : aspects.getAspectsSorted()) {
-             if (Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, aspect)) {
+             if (aspect.hasPlayerDiscovered(player)) {
                 aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
              } else {
                 aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));

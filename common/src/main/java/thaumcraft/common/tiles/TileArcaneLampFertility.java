@@ -158,11 +158,11 @@ public class TileArcaneLampFertility extends TileThaumcraft implements IEssentia
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction facing) {
+   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction facing) {
+   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
       return 0;
    }
 }

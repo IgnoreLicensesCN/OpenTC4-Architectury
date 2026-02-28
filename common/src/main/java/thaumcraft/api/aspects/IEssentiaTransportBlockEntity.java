@@ -11,12 +11,12 @@ package thaumcraft.api.aspects;
 public interface IEssentiaTransportBlockEntity extends IEssentiaTransportOutBlockEntity, IEssentiaTransportInBlockEntity {
 
 
-	/**
-	 * Used by jars and alembics that have smaller than normal hitboxes
-	 * @return true if you want the conduit to extend a little further into the block.
-	 */
-	@Deprecated(forRemoval = true)
-	boolean renderExtendedTube();
+//	/**
+//	 * Used by jars and alembics that have smaller than normal hitboxes
+//	 * @return true if you want the conduit to extend a little further into the block.
+//	 */
+//	@Deprecated(forRemoval = true)
+//	boolean renderExtendedTube();
 
 
 

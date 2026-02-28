@@ -38,7 +38,7 @@ public interface IEssentiaTransportInBlockEntity {
      * add the specified amount ofAspectVisList essentia to this transport tile
      * @return how much was actually added
      */
-    int addEssentia(Aspect aspect, int amount, Direction face);
+    int addEssentia(Aspect aspect, int amount, Direction fromDirection);
     /**
      * What type ofAspectVisList essentia this contains
      * @param face

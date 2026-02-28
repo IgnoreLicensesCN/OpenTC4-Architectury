@@ -1041,7 +1041,6 @@ public class ClientProxy extends CommonProxy {
    @SubscribeEvent
    public void onServerConnected(FMLNetworkEvent.ClientConnectedToServerEvent e) {
       if (!e.isLocal) {
-         NetworkedConfiguration.resetClient();
       }
    }
 

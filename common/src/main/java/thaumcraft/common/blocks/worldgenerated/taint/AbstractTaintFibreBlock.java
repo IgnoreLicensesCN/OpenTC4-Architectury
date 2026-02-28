@@ -40,11 +40,11 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     public static final SoundType TAINT_FIBRE_SOUND = new SoundType(
             1.0F,
             1.0F,
-            SoundEvents.GRASS_BREAK,
+            ThaumcraftSounds.GORE,//SoundEvents.GRASS_BREAK,
             ThaumcraftSounds.GORE,
-            SoundEvents.GRASS_PLACE,
-            SoundEvents.GRASS_HIT,
-            SoundEvents.GRASS_FALL
+            ThaumcraftSounds.GORE,//SoundEvents.GRASS_PLACE,
+            ThaumcraftSounds.GORE,//SoundEvents.GRASS_HIT,
+            ThaumcraftSounds.GORE//SoundEvents.GRASS_FALL
     );
     public AbstractTaintFibreBlock(Properties properties) {
         super(properties);
