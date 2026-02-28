@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,8 +29,11 @@ import thaumcraft.api.aspects.IAspectContainerItem;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.EssentiaJarBlockEntity;
+
+import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.*;
 
 public class EssentiaJarBlock extends JarBlock
         implements EntityBlock,
@@ -77,6 +81,23 @@ public class EssentiaJarBlock extends JarBlock
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity jar) {
+            var aspectCurrent = jar.getAspectCurrent();
+            var amountCurrent = jar.getAspectAmountCurrent();
+            var aspectFilter = jar.getAspectFilter();
+            var stackToDrop = new ItemStack(ThaumcraftItems.ESSENTIA_JAR);
+            if (!(amountCurrent<=0 && aspectCurrent.isEmpty() && aspectFilter.isEmpty())) {
+                if (amountCurrent>0 && !aspectCurrent.isEmpty()){
+                    ASPECT.writeToCompoundTag(stackToDrop.getOrCreateTag(), aspectCurrent);
+                    AMOUNT.writeToCompoundTag(stackToDrop.getOrCreateTag(), amountCurrent);
+                }
+                if (!aspectFilter.isEmpty()){
+                    ASPECT_FILTER.writeToCompoundTag(stackToDrop.getOrCreateTag(), aspectFilter);
+                }
+            }
+            var posCenter = blockPos.getCenter();
+            level.addFreshEntity(new ItemEntity(level,posCenter.x,posCenter.y,posCenter.z,stackToDrop));
+        }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 

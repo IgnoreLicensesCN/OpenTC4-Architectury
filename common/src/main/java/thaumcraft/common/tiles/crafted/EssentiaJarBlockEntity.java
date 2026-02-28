@@ -41,9 +41,17 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         return ASPECT_CAPACITY;
     }
 
+    public @NotNull Aspect getAspectCurrent() {
+        return aspectCurrent;
+    }
+
+    public int getAspectAmountCurrent() {
+        return aspectAmountCurrent;
+    }
+
     private @NotNull Aspect aspectCurrent = Aspects.EMPTY;
-    private @NotNull Aspect aspectFilter = Aspects.EMPTY;
     private int aspectAmountCurrent = 0;
+    private @NotNull Aspect aspectFilter = Aspects.EMPTY;
     private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent = new UnmodifiableSingleAspectListFromSupplier<>(
             () -> this.aspectCurrent,() -> this.aspectAmountCurrent
     );

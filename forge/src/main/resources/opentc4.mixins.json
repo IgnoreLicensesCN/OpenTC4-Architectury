@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.linearity.opentc4.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "EssentiaJarBlockItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

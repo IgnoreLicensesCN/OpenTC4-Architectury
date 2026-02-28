@@ -24,3 +24,4 @@
 * removed crafting aspect multiplier(0.75 for final aspect but apply to each component) during aspect calculation
 * essentia jar(Warded Jar) can fill jar with right-click now(being right-click:being taken)
 * logics(except wand change focus,now) uses player pose(not shift key)to judge action(like dumping essentia jar)
+* fabric-side change:empty essentia jar(warded jar)stack size is also 1 not 64
