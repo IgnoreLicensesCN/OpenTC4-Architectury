@@ -387,6 +387,7 @@ public class InventoryUtils {
       return -1; // 未携带
    }
 
+   @Deprecated(forRemoval = true,since = "we have mojang's ItemStack#hurt")
    public static ItemStack damageItem(int damageAmount, ItemStack stack, Level world) {
       if (!stack.isDamageableItem()) return stack;
 

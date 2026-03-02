@@ -20,7 +20,8 @@ import thaumcraft.common.blocks.crafted.fromtable.ArcaneWorkbenchBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableLeftPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
-import thaumcraft.common.blocks.crafted.jars.EssentiaJarBlock;
+import thaumcraft.common.blocks.crafted.jars.essentia.EssentiaJarBlock;
+import thaumcraft.common.blocks.crafted.jars.essentia.VoidJarBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
@@ -198,6 +199,7 @@ public class ThaumcraftBlocks {
     public static final AdvancedAlchemicalFurnaceBaseBlock ADVANCED_ALCHEMICAL_FURNACE_BASE
             = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE.get();
     public static final EssentiaJarBlock ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
+    public static final VoidJarBlock VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -728,6 +730,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_jar",
                         EssentiaJarBlock::new
+                );
+        public static final RegistrySupplier<VoidJarBlock> SUPPLIER_VOID_JAR =
+                BLOCKS.register(
+                        "void_jar",
+                        VoidJarBlock::new
                 );
 
         static {

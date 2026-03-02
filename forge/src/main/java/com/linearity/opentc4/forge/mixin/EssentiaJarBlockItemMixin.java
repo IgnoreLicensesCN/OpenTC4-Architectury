@@ -3,7 +3,7 @@ package com.linearity.opentc4.forge.mixin;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import thaumcraft.common.items.misc.EssentiaJarBlockItem;
+import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
 
 import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.AMOUNT;
 import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.ASPECT;

@@ -53,7 +53,7 @@ public class PrimalAspect extends Aspect {
     }
 
     @Override
-    public boolean hasPlayerDiscovered(Player player) {
+    public boolean hasPlayerDiscovered(@NotNull Player player) {
         return true;
     }
 }

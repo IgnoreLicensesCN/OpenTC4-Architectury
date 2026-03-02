@@ -3,8 +3,8 @@ package thaumcraft.api.aspects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.common.Thaumcraft;
 
 import java.io.Serializable;
 import java.util.*;
@@ -59,13 +59,13 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	}
 
 
-    public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, Player player, List<Component> aspectDescriptions) {
+    public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, @Nullable Player player, List<Component> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(var aspect : aspects.getAspectsSorted()) {
-             if (aspect.hasPlayerDiscovered(player)) {
-                aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
+             if (player != null && !aspect.hasPlayerDiscovered(player)) {
+				 aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
              } else {
-                aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
+				 aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
              }
           }
        }

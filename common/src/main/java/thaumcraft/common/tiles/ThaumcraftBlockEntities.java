@@ -9,6 +9,8 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
 import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
+import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
+import thaumcraft.common.tiles.crafted.jars.VoidJarBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
@@ -50,6 +52,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<AdvancedAlchemicalFurnaceNozzleBlockEntity> ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
             = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
     public static final BlockEntityType<EssentiaJarBlockEntity> ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
+    public static final BlockEntityType<VoidJarBlockEntity> VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -235,6 +238,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         EssentiaJarBlockEntity::new,
                         ThaumcraftBlocks.ESSENTIA_JAR
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<VoidJarBlockEntity>> SUPPLIER_VOID_JAR = BLOCK_ENTITIES.register(
+                "void_jar",
+                () -> BlockEntityType.Builder.of(
+                        VoidJarBlockEntity::new,
+                        ThaumcraftBlocks.VOID_JAR
                 ).build(null)
         );
     }

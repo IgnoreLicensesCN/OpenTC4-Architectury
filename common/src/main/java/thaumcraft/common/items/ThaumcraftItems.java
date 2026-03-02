@@ -21,6 +21,8 @@ import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.misc.ThaumometerItem;
+import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
+import thaumcraft.common.items.misc.jars.VoidJarBlockItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -217,6 +219,7 @@ public class ThaumcraftItems {
     public static final BlockItem ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ALCHEMICAL_CONSTRUCT.get();
     public static final BlockItem ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
     public static final EssentiaJarBlockItem ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
+    public static final VoidJarBlockItem VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
 
     //===========================================================================================
 
@@ -249,7 +252,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register(
                 "taint_tendril", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<JarLabelItem> SUPPLIER_JAR_LABEL = ITEMS.register(
-                "jar_label", () -> new JarLabelItem());
+                "jar_label", JarLabelItem::new);
         public static final RegistrySupplier<Item> SUPPLIER_SALIS_MUNDUS = ITEMS.register(
                 "salis_mundus", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<PrimalCharmItem> SUPPLIER_PRIMAL_CHARM = ITEMS.register(
@@ -750,6 +753,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<EssentiaJarBlockItem> SUPPLIER_ESSENTIA_JAR = ITEMS.register(
                 "essentia_jar",
                 EssentiaJarBlockItem::new
+        );
+        public static final RegistrySupplier<VoidJarBlockItem> SUPPLIER_VOID_JAR = ITEMS.register(
+                "void_jar",
+                VoidJarBlockItem::new
         );
 
         static {

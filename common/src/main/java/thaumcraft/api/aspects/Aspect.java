@@ -107,7 +107,7 @@ public abstract class Aspect {
 		return Objects.hash(aspectKey, color, image, blend);
 	}
 
-	public boolean hasPlayerDiscovered(Player player) {
+	public boolean hasPlayerDiscovered(@NotNull Player player) {
 		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, this);
 	}
 }

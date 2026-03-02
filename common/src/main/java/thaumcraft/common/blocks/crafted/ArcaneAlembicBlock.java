@@ -130,7 +130,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
             BlockState blockState,
             ItemStack stackToFill,
             IAspectContainerItem<Aspect> itemToFill,
-            Aspect aspect) {
+            @NotNull Aspect aspect) {
         if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }

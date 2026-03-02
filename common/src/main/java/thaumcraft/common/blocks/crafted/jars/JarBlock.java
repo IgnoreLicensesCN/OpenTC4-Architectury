@@ -2,10 +2,10 @@ package thaumcraft.common.blocks.crafted.jars;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -30,7 +30,13 @@ public abstract class JarBlock extends SuppressedWarningBlock {
     );
     public static final Properties JAR_PROPERTIES = Properties.copy(Blocks.GLASS)
             .sound(JAR_SOUND)
-            .lightLevel(s -> 1);
+            .instrument(NoteBlockInstrument.HAT)
+            .lightLevel(s -> 1)
+            .noOcclusion()
+            .isValidSpawn(((blockState, blockGetter, blockPos, object) -> false))
+            .isRedstoneConductor(((blockState, blockGetter, blockPos) -> false))
+            .isSuffocating(((blockState, blockGetter, blockPos) -> false))
+            .isViewBlocking((blockState, blockGetter, blockPos) -> false);
 
     public static final VoxelShape JAR_SHAPE = Shapes.box(
             0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F

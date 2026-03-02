@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.IWandComponentsOwner;
@@ -19,19 +19,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.*;
 
 
 public enum BonusTagForItemListeners {
 
-    DEFAULT_ON_ESSENTIA_CONTAINER(new BonusTagForItemListener(10) {
+    DEFAULT_ON_BONUS_OWNER(new BonusTagForItemListener(10) {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
-            if (item instanceof IEssentiaContainerItem essentiaContainer) {
-                AspectList<Aspect> aspectsFromContainer = essentiaContainer.getAspects(itemstack);
+            if (item instanceof IBonusAspectOwnerItem<? extends Aspect> owner) {
+                AspectList<Aspect> aspectsFromContainer = (AspectList<Aspect>) owner.getOwningBonusAspects(itemstack);
                 if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
                     for (Aspect tag : aspectsFromContainer.copy()
                             .getAspectTypes()) {
@@ -44,6 +42,24 @@ public enum BonusTagForItemListeners {
             }
         }
     }),
+//
+//    DEFAULT_ON_ESSENTIA_CONTAINER(new BonusTagForItemListener(10) {
+//        @Override
+//        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+//            if (item instanceof IEssentiaContainerItem essentiaContainer) {
+//                AspectList<Aspect> aspectsFromContainer = essentiaContainer.getAspects(itemstack);
+//                if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
+//                    for (Aspect tag : aspectsFromContainer.copy()
+//                            .getAspectTypes()) {
+//                        int amountInContainer = currentAspects.getAmount(tag);
+//                        if (amountInContainer > 0) {
+//                            currentAspects.addAll(tag, amountInContainer);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }),
 
     DEFAULT_ON_ARMOR(new BonusTagForItemListener(20) {
         @Override

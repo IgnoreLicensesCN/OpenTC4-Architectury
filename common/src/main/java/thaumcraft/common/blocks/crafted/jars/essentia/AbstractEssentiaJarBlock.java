@@ -1,11 +1,14 @@
-package thaumcraft.common.blocks.crafted.jars;
+package thaumcraft.common.blocks.crafted.jars.essentia;
 
+import com.linearity.opentc4.utils.LogicalSide;
+import com.linearity.opentc4.utils.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,24 +32,20 @@ import thaumcraft.api.aspects.IAspectContainerItem;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
+import thaumcraft.common.blocks.crafted.jars.JarBlock;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.EssentiaJarBlockEntity;
+import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
+import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
 
-import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.*;
-
-public class EssentiaJarBlock extends JarBlock
+public abstract class AbstractEssentiaJarBlock extends JarBlock
         implements EntityBlock,
         IAspectLabelAttachableBlock,
         IAspectContainerItemFillerBlock<Aspect>
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public EssentiaJarBlock(Properties properties) {
+    public AbstractEssentiaJarBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));//will affect tag dir
-    }
-    public EssentiaJarBlock() {
-        this(JAR_PROPERTIES);
     }
 
     @Override
@@ -59,25 +58,8 @@ public class EssentiaJarBlock extends JarBlock
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         return this.defaultBlockState().setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
     }
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() == this) {
-            return new EssentiaJarBlockEntity(blockPos, blockState);
-        }
-        return null;
-    }
 
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level != null && !level.isClientSide && blockEntityType == ThaumcraftBlockEntities.ESSENTIA_JAR) {
-            return (level1, blockPos, blockState1, blockEntity) -> {
-                if (blockEntity instanceof EssentiaJarBlockEntity jar) {
-                    jar.serverTick();
-                }
-            };
-        }
-        return null;
-    }
+    public abstract EssentiaJarBlockItem getEssentiaJarItem();
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
@@ -85,14 +67,14 @@ public class EssentiaJarBlock extends JarBlock
             var aspectCurrent = jar.getAspectCurrent();
             var amountCurrent = jar.getAspectAmountCurrent();
             var aspectFilter = jar.getAspectFilter();
-            var stackToDrop = new ItemStack(ThaumcraftItems.ESSENTIA_JAR);
+            var jarItem = getEssentiaJarItem();
+            var stackToDrop = new ItemStack(jarItem);
             if (!(amountCurrent<=0 && aspectCurrent.isEmpty() && aspectFilter.isEmpty())) {
                 if (amountCurrent>0 && !aspectCurrent.isEmpty()){
-                    ASPECT.writeToCompoundTag(stackToDrop.getOrCreateTag(), aspectCurrent);
-                    AMOUNT.writeToCompoundTag(stackToDrop.getOrCreateTag(), amountCurrent);
+                    jarItem.setAspectAndAmount(stackToDrop, aspectCurrent,amountCurrent);
                 }
                 if (!aspectFilter.isEmpty()){
-                    ASPECT_FILTER.writeToCompoundTag(stackToDrop.getOrCreateTag(), aspectFilter);
+                    jarItem.setFilter(stackToDrop, aspectFilter);
                 }
             }
             var posCenter = blockPos.getCenter();
@@ -108,7 +90,7 @@ public class EssentiaJarBlock extends JarBlock
             BlockState blockState,
             ItemStack stackToFill,
             IAspectContainerItem<Aspect> itemToFill,
-            Aspect aspect) {
+            @NotNull("empty -> any") Aspect aspect) {
         if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
             return essentiaJar.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }
@@ -119,6 +101,7 @@ public class EssentiaJarBlock extends JarBlock
     }
 
     @Override
+    @RecommendedLogicalSide(LogicalSide.SERVER)
     public boolean fillAspectContainerItem(
             Level level,
             BlockPos blockPos,
@@ -127,6 +110,7 @@ public class EssentiaJarBlock extends JarBlock
             IAspectContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
+        if (level.isClientSide()) {return false;}
         if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
             return essentiaJar.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
         }
@@ -163,6 +147,38 @@ public class EssentiaJarBlock extends JarBlock
     }
 
     @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
+        super.setPlacedBy(level, pos, blockState, livingEntity, itemStack);
+        if (level.isClientSide) return;
+
+        if (level.getBlockEntity(pos) instanceof EssentiaJarBlockEntity jar && itemStack.getItem() instanceof EssentiaJarBlockItem jarItem) {
+
+            var tag = itemStack.getTag();
+            if (tag == null) return;
+            boolean changed = false;
+
+            // 读取 aspect
+            var jarInfo = jarItem.getJarInfo(itemStack);
+            var aspect = jarInfo.aspect();
+            var amount = jarInfo.amount();
+            var filter = jarInfo.filter();
+
+            if (!aspect.isEmpty() && amount > 0) {
+                jar.setAspectAndAmount(aspect, amount);
+                changed = true;
+            }
+
+            if (!filter.isEmpty()) {
+                jar.setAspectFilter(filter);
+                changed = true;
+            }
+            if (changed){
+                jar.markDirtyAndUpdateSelf();
+            }
+        }
+    }
+
+    @Override
     public boolean hasAnalogOutputSignal(BlockState arg) {
         return true;
     }
@@ -172,4 +188,5 @@ public class EssentiaJarBlock extends JarBlock
         return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
+
 }
