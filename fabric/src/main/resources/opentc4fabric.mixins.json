@@ -6,7 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "AttributeSupplierMixin"
+    "AttributeSupplierMixin",
+    "EnchantmentMenuFabricMixin"
   ],
   "injectors": {
     "defaultRequire": 1

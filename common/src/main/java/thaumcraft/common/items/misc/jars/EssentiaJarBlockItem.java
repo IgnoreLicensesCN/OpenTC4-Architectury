@@ -1,5 +1,6 @@
 package thaumcraft.common.items.misc.jars;
 
+import com.linearity.opentc4.SoftImplement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -199,7 +200,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
                 ASPECT_FILTER.readFromCompoundTag(tag)
                 );
     }
-    public record JarInfo(Aspect aspect,int amount, Aspect filter){
+    public record JarInfo(Aspect aspect,int amount, Aspect filter){//TODO:[maybe wont finished]if put into a single class,which package?
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof JarInfo jarInfo)) return false;
@@ -233,5 +234,22 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
                 ASPECT.readFromCompoundTag(tag),
                 AMOUNT.readFromCompoundTag(tag)
         );
+    }
+
+    //it may cause performance issue to make impl on fabric so i won't impl for now.
+    //If anyone really wants,please tell me(Issue/PR is best).
+    @SoftImplement("IForgeItem")
+    public int getMaxStackSize(ItemStack stack) {
+        var tag = stack.getTag();
+        if (tag == null) {
+            return 64;
+        }
+        if (!ASPECT.compoundTagHasKey(tag) || !AMOUNT.compoundTagHasKey(tag)) {
+            return 64;
+        }
+        if (ASPECT.readFromCompoundTag(tag).isEmpty() || AMOUNT.readFromCompoundTag(tag) == 0) {
+            return 64;
+        }
+        return 1;
     }
 }
