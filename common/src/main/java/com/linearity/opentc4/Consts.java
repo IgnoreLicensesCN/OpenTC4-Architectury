@@ -6,6 +6,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.Aspe
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeInfoAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
@@ -149,18 +150,9 @@ public class Consts {
                 new ModifiableListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
     }
     public static class NodeBlockEntityCompoundTagAccessors {
-        private static final String NODE_ID = "nodeId";
-        public static final StringTagAccessor NODE_ID_ACCESSOR = new StringTagAccessor(NODE_ID);
-        private static final String NODE_TYPE = "nodeType";
-        public static final NodeTypeResourceLocationTagAccessor NODE_TYPE_ACCESSOR = new NodeTypeResourceLocationTagAccessor(NODE_TYPE);
-        private static final String NODE_MODIFIER = "nodeModifier";
-        public static final NodeModifierResourceLocationTagAccessor NODE_MODIFIER_ACCESSOR = new NodeModifierResourceLocationTagAccessor(NODE_MODIFIER);
+        public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("node_info");
         public static final String NODE_LAST_ACTIVE = "lastActive";
         public static final LongTagAccessor NODE_LAST_ACTIVE_ACCESSOR = new LongTagAccessor(NODE_LAST_ACTIVE);
-        public static final String NODE_ASPECTS = "nodeAspects";
-        public static final AspectListAccessor NODE_ASPECTS_ACCESSOR = new AspectListAccessor(NODE_ASPECTS);
-        public static final String NODE_ASPECTS_BASE = "nodeAspectsBase";
-        public static final AspectListAccessor NODE_ASPECTS_BASE_ACCESSOR = new AspectListAccessor(NODE_ASPECTS_BASE);
     }
 
 
@@ -225,11 +217,8 @@ public class Consts {
         public static final AspectListAccessor BONUS_ASPECT_ACCESSOR = new AspectListAccessor(BONUS_ASPECT);
     }
     public static class EnergizedAuraNodeBlockEntityTagAccessors {
-        public static final StringTagAccessor NODE_ID_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_ID_ACCESSOR;
-        public static final NodeTypeResourceLocationTagAccessor NODE_TYPE_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_TYPE_ACCESSOR;
-        public static final NodeModifierResourceLocationTagAccessor NODE_MODIFIER_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_MODIFIER_ACCESSOR;
+        public static final NodeInfoAccessor NODE_INFO = NodeBlockEntityCompoundTagAccessors.NODE_INFO;
         public static final CentiVisListAccessor NODE_CENTIVIS_BASE_ACCESSOR = new CentiVisListAccessor("centivis_base");
-        public static final AspectListAccessor NODE_ASPECT_BASE_ACCESSOR = NodeBlockEntityCompoundTagAccessors.NODE_ASPECTS_BASE_ACCESSOR;
     }
     public static class NodeTransducerBlockEntityTagAccessors {
         public static final IntTagAccessor TRANSDUCER_TICK_COUNT = new IntTagAccessor("tick_count");
@@ -265,6 +254,12 @@ public class Consts {
         public static final AspectAccessor ASPECT = new AspectAccessor("aspect");
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
         public static final IntTagAccessor AMOUNT = new IntTagAccessor("amount");
+    }
+    public static class BrainJarTagAccessors {
+        public static final IntTagAccessor EXP = new IntTagAccessor("exp");
+    }
+    public static class NodeJarTagAccessors {
+        public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("jar_node_info");
     }
 
 }

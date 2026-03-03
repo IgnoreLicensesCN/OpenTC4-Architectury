@@ -1,19 +1,15 @@
 package thaumcraft.common.tiles.crafted.visnet;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
+import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -77,21 +73,19 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.id = NODE_ID_ACCESSOR.readFromCompoundTag(compoundTag);
-        this.nodeType = NodeType.valueOf(NODE_TYPE_ACCESSOR.readFromCompoundTag(compoundTag));
-        this.nodeModifier = NodeModifier.valueOf(NODE_MODIFIER_ACCESSOR.readFromCompoundTag(compoundTag));
+        var nodeInfo = NODE_INFO.readFromCompoundTag(compoundTag);
+        this.id = nodeInfo.nodeId;
+        this.nodeType = nodeInfo.nodeType;
+        this.nodeModifier = nodeInfo.nodeModifier;
         this.centiVisBase = NODE_CENTIVIS_BASE_ACCESSOR.readFromCompoundTag(compoundTag);
-        this.auraBase = NODE_ASPECT_BASE_ACCESSOR.readFromCompoundTag(compoundTag);
+        this.auraBase = nodeInfo.nodeAspectsBase;
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        NODE_ID_ACCESSOR.writeToCompoundTag(compoundTag, id);
-        NODE_TYPE_ACCESSOR.writeToCompoundTag(compoundTag,nodeType.name());
-        NODE_MODIFIER_ACCESSOR.writeToCompoundTag(compoundTag,nodeModifier.name());
+        NODE_INFO.writeToCompoundTag(compoundTag,new NodeInfo(id,nodeType,nodeModifier, UnmodifiableAspectList.EMPTY,auraBase));
         NODE_CENTIVIS_BASE_ACCESSOR.writeToCompoundTag(compoundTag,centiVisBase);
-        NODE_ASPECT_BASE_ACCESSOR.writeToCompoundTag(compoundTag,auraBase);
     }
     public void tick(){
         super.tick();

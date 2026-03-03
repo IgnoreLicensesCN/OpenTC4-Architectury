@@ -128,6 +128,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         return new UnmodifiableAspectList<>(resultMap);
     }
 
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(){
+        return (UnmodifiableAspectList<Asp>) UnmodifiableAspectList.EMPTY;
+    }
 
     @SafeVarargs
     public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp... aspects){

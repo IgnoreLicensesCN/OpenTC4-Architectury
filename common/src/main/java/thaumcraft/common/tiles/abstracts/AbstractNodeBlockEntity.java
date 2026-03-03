@@ -1,8 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
 import com.linearity.opentc4.utils.BlockPosWithDim;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -33,6 +31,7 @@ import thaumcraft.api.wands.ICentiVisContainer;
 import thaumcraft.api.wands.IWandComponentsOwner;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.items.misc.ItemCompassStone;
+import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -55,8 +54,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     protected AspectList<Aspect> aspects = new AspectList<>();
     protected AspectList<Aspect> aspectsBase = new AspectList<>();
     public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
-    private NodeType nodeType;
-    private NodeModifier nodeModifier;
+    private @NotNull NodeType nodeType;
+    private @NotNull NodeModifier nodeModifier;
     int tickCount;
     public int regenerationTickPeriod;
     int wait;
@@ -77,7 +76,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public AbstractNodeBlockEntity(BlockEntityType blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.nodeType = NodeType.NORMAL;
-        this.nodeModifier = null;
+        this.nodeModifier = NodeModifier.EMPTY;
         this.tickCount = 0;
         this.regenerationTickPeriod = -1;
         this.wait = 0;
@@ -340,22 +339,22 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
     @Override
     public @NotNull NodeType getNodeType() {
-        return this.nodeType != null?this.nodeType:NodeType.EMPTY;
+        return this.nodeType;
     }
 
     @Override
-    public void setNodeType(NodeType nodeType) {
+    public void setNodeType(@NotNull NodeType nodeType) {
         this.nodeType = nodeType;
     }
 
     @Override
-    public void setNodeModifier(NodeModifier nodeModifier) {
+    public void setNodeModifier(@NotNull NodeModifier nodeModifier) {
         this.nodeModifier = nodeModifier;
     }
 
     @Override
     public @NotNull NodeModifier getNodeModifier() {
-        return this.nodeModifier != null?this.nodeModifier:NodeModifier.EMPTY;
+        return this.nodeModifier;
     }
 
     @Override
@@ -373,24 +372,21 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
     }
 
+    public void readNodeInfo(NodeInfo nodeInfo) {
+
+        this.id = nodeInfo.nodeId;
+        this.nodeType = nodeInfo.nodeType;
+        this.nodeModifier = nodeInfo.nodeModifier;
+        this.aspects = nodeInfo.nodeAspects;
+        this.aspectsBase = nodeInfo.nodeAspectsBase;
+    }
+
     @Override
     public void readCustomNBT(CompoundTag tag) {
-
-        this.id = NODE_ID_ACCESSOR.readFromCompoundTag(tag);
+        var nodeInfo = NODE_INFO.readFromCompoundTag(tag);
+        readNodeInfo(nodeInfo);
         addNodeToCache();
-
-        var nodeType = NodeType.valueOf(NODE_TYPE_ACCESSOR.readFromCompoundTag(tag));
-        this.setNodeType(nodeType);
-        var mod = NODE_MODIFIER_ACCESSOR.readFromCompoundTag(tag);
-        if (mod != null) {
-            this.setNodeModifier(NodeModifier.valueOf(mod));
-        } else {
-            this.setNodeModifier(null);
-        }
-
-        this.aspects = NODE_ASPECTS_ACCESSOR.readFromCompoundTag(tag);
         this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readFromCompoundTag(tag);
-        this.aspectsBase = NODE_ASPECTS_BASE_ACCESSOR.readFromCompoundTag(tag);
 
         var modifier = this.getNodeModifier();
         int regen = modifier.getRegenValue(this);
@@ -416,20 +412,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
     @Override
     public void writeCustomNBT(CompoundTag tag) {
-        NODE_LAST_ACTIVE_ACCESSOR.writeToCompoundTag(tag, this.lastActiveMillis);
-        NODE_ASPECTS_BASE_ACCESSOR.writeToCompoundTag(tag, this.aspectsBase);
-
-
         if (this.id == null) {
             this.id = this.generateId();
         }
-
+        NODE_INFO.writeToCompoundTag(tag,new NodeInfo(this.id,this.nodeType,this.nodeModifier,this.aspects,this.aspectsBase));
+        NODE_LAST_ACTIVE_ACCESSOR.writeToCompoundTag(tag, this.lastActiveMillis);
         addNodeToCache();
-
-        NODE_ID_ACCESSOR.writeToCompoundTag(tag, this.id);
-        NODE_TYPE_ACCESSOR.writeToCompoundTag(tag, this.getNodeType().name());
-        NODE_MODIFIER_ACCESSOR.writeToCompoundTag(tag, this.getNodeModifier().name());
-        NODE_ASPECTS_ACCESSOR.writeToCompoundTag(tag, this.aspects);
     }
 
     //attack another node(zap~),take vis from there.

@@ -12,6 +12,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.crafted.jars.other.NodeJarBlock;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
@@ -22,6 +23,7 @@ import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.misc.ThaumometerItem;
 import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
+import thaumcraft.common.items.misc.jars.NodeJarBlockItem;
 import thaumcraft.common.items.misc.jars.VoidJarBlockItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
@@ -221,6 +223,7 @@ public class ThaumcraftItems {
     public static final EssentiaJarBlockItem ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
     public static final VoidJarBlockItem VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
     public static final BlockItem BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
+    public static final NodeJarBlockItem NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
 
     //===========================================================================================
 
@@ -762,6 +765,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_BRAIN_JAR = ITEMS.register(
                 "brain_jar",
                 () -> new BlockItem(ThaumcraftBlocks.BRAIN_JAR,new Item.Properties())
+        );
+        public static final RegistrySupplier<NodeJarBlockItem> SUPPLIER_NODE_JAR = ITEMS.register(
+                "node_jar",
+                NodeJarBlockItem::new
         );
 
         static {

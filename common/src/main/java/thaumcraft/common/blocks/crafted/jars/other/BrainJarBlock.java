@@ -71,22 +71,36 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
             brainJar.eatDelay = 40;
 
 
-            int var6 = level.random.nextInt(Math.min(brainJar.xp + 1, 64));
-            if (var6 > 0) {
-                brainJar.xp -= var6;
-                int xp = var6;
+            int xpsToDrop = level.random.nextInt(Math.min(brainJar.xp + 1, 64));
+            if (xpsToDrop > 0) {
+                brainJar.xp -= xpsToDrop;
 
-                while (xp > 0) {
-                    int var2 = ExperienceOrb.getExperienceValue(xp);
-                    xp -= var2;
-                    var addToPos = blockPos.getCenter();
-                    level.addFreshEntity(new ExperienceOrb(level, addToPos.x,addToPos.y,addToPos.z, var2));
-                }
+                dropXPsToOrbs(level, xpsToDrop,blockPos);
                 brainJar.markDirtyAndUpdateSelf();
             }
             return InteractionResult.CONSUME;
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+    }
+
+    protected void dropXPsToOrbs(Level level,int xp, BlockPos blockPos) {
+        var addToPos = blockPos.getCenter();
+        while (xp > 0) {
+            int var2 = ExperienceOrb.getExperienceValue(xp);
+            xp -= var2;
+            level.addFreshEntity(new ExperienceOrb(level, addToPos.x,addToPos.y,addToPos.z, var2));
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        var be = level.getBlockEntity(blockPos);
+        if (be instanceof BrainJarBlockEntity brainJar) {
+            if (!level.isClientSide()) {
+                dropXPsToOrbs(level,brainJar.xp,blockPos);
+            }
+        }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 
     @Override

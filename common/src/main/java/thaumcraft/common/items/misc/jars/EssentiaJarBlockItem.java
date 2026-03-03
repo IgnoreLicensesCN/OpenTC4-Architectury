@@ -190,20 +190,20 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     }
 
 
-    public JarInfo getJarInfo(ItemStack stack){
-        if (stack.isEmpty()) return JarInfo.EMPTY;
+    public EssentiaJarInfo getJarInfo(ItemStack stack){
+        if (stack.isEmpty()) return EssentiaJarInfo.EMPTY;
         var tag = stack.getTag();
-        if (tag == null) return JarInfo.EMPTY;
-        return new JarInfo(
+        if (tag == null) return EssentiaJarInfo.EMPTY;
+        return new EssentiaJarInfo(
                 ASPECT.readFromCompoundTag(tag),
                 AMOUNT.readFromCompoundTag(tag),
                 ASPECT_FILTER.readFromCompoundTag(tag)
                 );
     }
-    public record JarInfo(Aspect aspect,int amount, Aspect filter){//TODO:[maybe wont finished]if put into a single class,which package?
+    public record EssentiaJarInfo(Aspect aspect, int amount, Aspect filter){//TODO:[maybe wont finished]if put into a single class,which package?
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof JarInfo jarInfo)) return false;
+            if (!(o instanceof EssentiaJarInfo jarInfo)) return false;
             return amount == jarInfo.amount && Objects.equals(aspect, jarInfo.aspect) && Objects.equals(
                     filter, jarInfo.filter);
         }
@@ -215,13 +215,13 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
 
         @Override
         public String toString() {
-            return "JarInfo{" +
+            return "EssentiaJarInfo{" +
                     "aspect=" + aspect +
                     ", amount=" + amount +
                     ", filter=" + filter +
                     '}';
         }
-        public static final JarInfo EMPTY = new JarInfo(Aspects.EMPTY,0,Aspects.EMPTY);
+        public static final EssentiaJarInfo EMPTY = new EssentiaJarInfo(Aspects.EMPTY,0,Aspects.EMPTY);
     }
 
     @Override

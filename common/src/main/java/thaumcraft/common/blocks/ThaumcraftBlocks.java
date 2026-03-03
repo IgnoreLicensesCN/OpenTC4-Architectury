@@ -23,6 +23,7 @@ import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
 import thaumcraft.common.blocks.crafted.jars.essentia.EssentiaJarBlock;
 import thaumcraft.common.blocks.crafted.jars.essentia.VoidJarBlock;
 import thaumcraft.common.blocks.crafted.jars.other.BrainJarBlock;
+import thaumcraft.common.blocks.crafted.jars.other.NodeJarBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
@@ -202,6 +203,7 @@ public class ThaumcraftBlocks {
     public static final EssentiaJarBlock ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
     public static final VoidJarBlock VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
     public static final BrainJarBlock BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
+    public static final NodeJarBlock NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -742,6 +744,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "brain_jar",
                         BrainJarBlock::new
+                );
+        public static final RegistrySupplier<NodeJarBlock> SUPPLIER_NODE_JAR =
+                BLOCKS.register(
+                        "node_jar",
+                        NodeJarBlock::new
                 );
 
         static {

@@ -46,7 +46,7 @@ public class NodeModifier {
             }
             if (level != null && !level.isClientSide) {
                 if (level.random.nextInt(100) == 0){
-                    thisNode.setNodeModifier(null);
+                    thisNode.setNodeModifier(NodeModifier.EMPTY);
                     thisNode.regenerationTickPeriod = -1;//feature:attack another node to remove "pale"(chance:1/100)
                 }
             }
@@ -146,6 +146,9 @@ public class NodeModifier {
             throw new IllegalArgumentException("No enum constant NodeModifier." + name);
         }
         return modifier;
+    }
+    public static NodeModifier valueOrEmpty(NodeModifierResourceLocation name) {
+        return BY_NAME.getOrDefault(name,NodeModifier.EMPTY);
     }
 
     /** 返回名称 */

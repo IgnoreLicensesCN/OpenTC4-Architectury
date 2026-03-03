@@ -455,6 +455,9 @@ public class NodeType {
         }
         return type;
     }
+    public static NodeType valueOrEmpty(NodeTypeResourceLocation name) {
+        return BY_NAME.getOrDefault(name,NodeType.EMPTY);
+    }
 
     /** 返回名称 */
     public NodeTypeResourceLocation name() {

@@ -2,7 +2,7 @@ package thaumcraft.common.tiles.crafted.jars;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.linearity.opentc4.Consts.BrainJarTagAccessors.EXP;
+
 public class BrainJarBlockEntity extends TileThaumcraft implements IValueContainerBasedComparatorSignalProviderBlockEntity {
     public int xp = 0;
     public static final int EXP_CAPACITY = 2000;
@@ -35,6 +37,20 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
     public BrainJarBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.BRAIN_JAR, blockPos, blockState);
     }
+
+    @Override
+    public void readCustomNBT(CompoundTag compoundTag) {
+        super.readCustomNBT(compoundTag);
+        this.xp = EXP.readFromCompoundTag(compoundTag);
+    }
+
+    @Override
+    public void writeCustomNBT(CompoundTag compoundTag) {
+        super.writeCustomNBT(compoundTag);
+        EXP.writeToCompoundTag(compoundTag, this.xp);
+
+    }
+
     public static final double PLAYER_AND_EXP_DETECT_RANGE = 6.;
     public static final double EXP_CONSUME_RANGE = 6.;
     public double getPlayerAndExpDetectRange(){

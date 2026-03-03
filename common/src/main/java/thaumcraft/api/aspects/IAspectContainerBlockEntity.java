@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 /**
  * 
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.UnmodifiableView;
  * <p>change:Node will no longer use this.they will go to {@link IWorldlyCentiVisContainerBlockEntity}.</p>
  * <p>Vis and aspect(for infusion) should be different!</p>
  * <p>Separated into {@link IAspectOutBlockEntity} and {@link IAspectInBlockEntity}</p>
+ * <p>for items contains bonus aspects use {@link IBonusAspectOwnerItem}</p>
+ * <p>for BEs needs to show aspect use {@link IAspectDisplayBlockEntity}</p>
  * <p>--IgnoreLicensesCN</p>
  */
 public interface IAspectContainerBlockEntity<Asp extends Aspect>

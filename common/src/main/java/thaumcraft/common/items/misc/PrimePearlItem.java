@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -77,9 +78,9 @@ public class PrimePearlItem extends Item {
                 itemstack.shrink(1);
                 boolean research = ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "PRIMNODE");
 
-                for(Aspect a : node.getAspects().getAspects().keySet()) {
+                for(Aspect a : node.getAspects().keySet()) {
                     int m = node.getNodeVisBase(a);
-                    if (!a.isPrimal()) {
+                    if (!(a instanceof CompoundAspect)) {
                         if (world.getRandom().nextBoolean()) {
                             node.setNodeVisBase(a, (short)(m - 1));
                         }
@@ -101,8 +102,8 @@ public class PrimePearlItem extends Item {
                 if (node.getNodeModifier() == NodeModifier.FADING && world.getRandom().nextBoolean()) {
                     node.setNodeModifier(NodeModifier.PALE);
                 } else if (node.getNodeModifier() == NodeModifier.PALE && world.getRandom().nextBoolean()) {
-                    node.setNodeModifier(null);
-                } else if (node.getNodeModifier() == null && world.getRandom().nextInt(5) == 0) {
+                    node.setNodeModifier(NodeModifier.EMPTY);
+                } else if (node.getNodeModifier() == NodeModifier.EMPTY && world.getRandom().nextInt(5) == 0) {
                     node.setNodeModifier(NodeModifier.BRIGHT);
                 }
 
