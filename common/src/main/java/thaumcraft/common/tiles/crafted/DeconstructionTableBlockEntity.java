@@ -25,8 +25,8 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.BREAK_TIME_ACCESSOR;
 import static com.linearity.opentc4.Consts.DeconstructionTableBlockEntityTagAccessors.STORING_ASPECT_ACCESSOR;
-import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getBonusAspects;
-import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
+import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.*;
+import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
 
 public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<DeconstructionTableMenu,DeconstructionTableBlockEntity> implements WorldlyContainer {
     public @NotNull Aspect storingAspect = Aspects.EMPTY;
@@ -75,7 +75,9 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
 
     @Override
     public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
-        return getObjectTags(itemStack) != null;
+        if (this.level == null){return false;}
+        if (this.level.isClientSide()) {return getBasicAspectsClient(itemStack.getItem()) != null;}
+        return getBasicAspectsServer(itemStack.getItem()) != null;
     }
 
     @Override
@@ -152,8 +154,9 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
         return Component.translatable("block.thaumcraft.deconstruction_table");//TODO:Separate a new name
     }
 
-
+    @SuppressWarnings("SequencedCollectionMethodCanBeUsed")//will cause lack of design(we're using psf int now)
     public void tick(){
+        if (this.level == null){return;}
         if (!storingAspect.isEmpty()) {
             breakTimeRemaining = 0;
             return;
@@ -163,7 +166,7 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
             breakTimeRemaining = 0;
             return;
         }
-        var itemAspects = getObjectTags(deconstructingStack);
+        var itemAspects = getBasicAspects(deconstructingStack.getItem(),this.level.isClientSide);
         var additionalAspects = getBonusAspects(deconstructingStack, itemAspects);
         if (additionalAspects.isEmpty()) {
             breakTimeRemaining = 0;

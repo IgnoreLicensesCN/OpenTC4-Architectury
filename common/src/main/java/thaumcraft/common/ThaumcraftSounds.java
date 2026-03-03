@@ -27,6 +27,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_BUBBLE = new ResourceLocation(Thaumcraft.MOD_ID,"bubble");
         public static final ResourceLocation RES_JAR = new ResourceLocation(Thaumcraft.MOD_ID,"jar");
         public static final ResourceLocation RES_WHISPERS = new ResourceLocation(Thaumcraft.MOD_ID,"whispers");
+        public static final ResourceLocation RES_BRAIN = new ResourceLocation(Thaumcraft.MOD_ID,"brain");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -51,4 +52,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent BUBBLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_BUBBLE);
     public static final SoundEvent JAR = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_JAR);
     public static final SoundEvent WHISPERS = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WHISPERS);
+    public static final SoundEvent BRAIN = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_BRAIN);
 }

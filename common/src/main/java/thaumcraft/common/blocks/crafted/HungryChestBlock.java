@@ -55,29 +55,12 @@ public class HungryChestBlock extends ChestBlock implements EntityBlock {
         if (blockEntityType != ThaumcraftBlockEntities.HUNGRY_CHEST){
             return null;
         }
+        if (level.isClientSide){
+            return null;
+        }
         return (level1, blockPos, blockState1, blockEntity) -> {
-            if (level1 == null || level1.isClientSide()) return;
-            if (!(blockEntity instanceof HungryChestBlockEntity hungryChest)){return;}
-            if (!hungryChest.eatingCooldown()){return;}
-
-            BlockPos above = blockPos.above();
-
-            List<ItemEntity> items = level1.getEntitiesOfClass(ItemEntity.class,
-                    new AABB(above));
-
-            for (ItemEntity itemEntity : items) {
-                ItemStack stack = itemEntity.getItem();
-                hungryChest.eating.set(true);
-                hungryChest.startOpen(null);
-                ItemStack leftover = hungryChest.addItem(stack.copy());
-                if (leftover.isEmpty()) {
-                    itemEntity.remove(Entity.RemovalReason.DISCARDED);
-                } else {
-                    itemEntity.setItem(leftover);
-                }
-                hungryChest.stopOpen(null);
-                hungryChest.addEatingCooldownForEating();
-                break;
+            if (blockEntity instanceof HungryChestBlockEntity chest){
+                chest.serverTick();
             }
         };
     }

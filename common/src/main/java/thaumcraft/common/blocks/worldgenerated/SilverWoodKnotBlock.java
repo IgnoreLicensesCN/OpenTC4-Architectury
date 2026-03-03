@@ -121,6 +121,9 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
         if (blockEntityType != ThaumcraftBlockEntities.SILVERWOOD_KNOT_NODE) {
             return null;
         }
+        if (level.isClientSide){
+            return null;
+        }
         return (level1, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);

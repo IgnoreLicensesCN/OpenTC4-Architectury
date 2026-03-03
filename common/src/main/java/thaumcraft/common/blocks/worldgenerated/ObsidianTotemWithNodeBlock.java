@@ -110,6 +110,9 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
         if (blockEntityType != ThaumcraftBlockEntities.OBSIDIAN_TOTEM_NODE){
             return null;
         }
+        if (level.isClientSide){
+            return null;
+        }
         return (level1, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AbstractNodeBlockEntity abstractNodeBlockEntity) {
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);

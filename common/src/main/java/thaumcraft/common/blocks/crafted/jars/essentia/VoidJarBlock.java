@@ -13,7 +13,7 @@ import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.jars.VoidJarBlockEntity;
 
-public class VoidJarBlock extends EssentiaJarBlock {
+public class VoidJarBlock extends AbstractEssentiaJarBlock {
 
     public VoidJarBlock(Properties properties) {
         super(properties);

@@ -49,7 +49,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
         this(ThaumcraftBlockEntities.INFERNAL_FURNACE, blockPos, blockState);
     }
 
-    public void blockEntityTick() {
+    public void serverTick() {
         if (!(this.level instanceof ServerLevel serverLevel)) {
             return;
         }

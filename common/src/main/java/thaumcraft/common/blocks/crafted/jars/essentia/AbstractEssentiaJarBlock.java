@@ -16,9 +16,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,11 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.crafted.jars.JarBlock;
-import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
 
@@ -95,9 +90,6 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
             return essentiaJar.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }
         return false;
-    }
-    public static void playJarSound(Level level,BlockPos pos, float p_72980_8_) {
-        level.playSound(null,pos, ThaumcraftSounds.JAR,SoundSource.BLOCKS, p_72980_8_, 1.0F);
     }
 
     @Override

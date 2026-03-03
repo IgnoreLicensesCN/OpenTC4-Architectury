@@ -11,6 +11,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -29,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HungryChestBlockEntity extends ChestBlockEntity {
@@ -176,7 +180,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
     }
 
     protected int eatingCooldownCounter = 0;
-    public boolean eatingCooldown(){
+    public boolean countEatingCooldown(){
         if (eatingCooldownCounter > 0){
             eatingCooldownCounter -= 1;
         }
@@ -291,6 +295,33 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
         }
     }
 
+    public void serverTick() {
+        if (this.level == null) return;
+        if (!this.countEatingCooldown()){return;}
+        var blockPos = this.getBlockPos();
+        BlockPos above = blockPos.above();
 
+        List<ItemEntity> list = new ArrayList<>(1);
+        this.level.getEntities(
+                EntityTypeTest.forClass(ItemEntity.class),
+                new AABB(above),
+                e -> true,
+                list,
+                1
+        );//found from mc source for my mental illness(better performance)
 
+        for (ItemEntity itemEntity : list) {
+            ItemStack stack = itemEntity.getItem();
+            this.eating.set(true);
+            this.startOpen(null);
+            ItemStack leftover = this.addItem(stack.copy());
+            if (leftover.isEmpty()) {
+                itemEntity.remove(Entity.RemovalReason.DISCARDED);
+            } else {
+                itemEntity.setItem(leftover);
+            }
+            this.stopOpen(null);
+            this.addEatingCooldownForEating();
+        }
+    }
 }

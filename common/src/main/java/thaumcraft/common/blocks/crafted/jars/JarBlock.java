@@ -1,7 +1,9 @@
 package thaumcraft.common.blocks.crafted.jars;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,6 +43,10 @@ public abstract class JarBlock extends SuppressedWarningBlock {
     public static final VoxelShape JAR_SHAPE = Shapes.box(
             0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F
     );
+
+    public static void playJarSound(Level level, BlockPos pos, float p_72980_8_) {
+        level.playSound(null,pos, ThaumcraftSounds.JAR, SoundSource.BLOCKS, p_72980_8_, 1.0F);
+    }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {

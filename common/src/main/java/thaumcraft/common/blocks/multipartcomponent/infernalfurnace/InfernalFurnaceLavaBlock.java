@@ -174,12 +174,15 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
+        if (level0.isClientSide()) {
+            return null;
+        }
         if (blockEntityType != ThaumcraftBlockEntities.INFERNAL_FURNACE) {
             return null;
         }
         return ((level, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof InfernalFurnaceBlockEntity infernalFurnaceBlockEntity){
-                infernalFurnaceBlockEntity.blockEntityTick();
+                infernalFurnaceBlockEntity.serverTick();
             }
         }
         );

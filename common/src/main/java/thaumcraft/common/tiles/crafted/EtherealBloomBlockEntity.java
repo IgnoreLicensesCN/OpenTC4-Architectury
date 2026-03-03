@@ -36,7 +36,9 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
 
 
     public void blockEntityTick() {
-        
+        if (this.level == null) {
+            return;
+        }
         if (this.counter == 0) {
             this.counter = this.level.random.nextInt(100);
         }
@@ -87,9 +89,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                     }
                 }
             }
-        }
-
-        if ((Platform.getEnvironment() == Env.CLIENT) && this.growthCounter == 0) {
+        }else if ((level.isClientSide) && this.growthCounter == 0) {
             this.level.playSound(null,this.getBlockPos(), ThaumcraftSounds.ROOTS, SoundSource.BLOCKS);
         }
 

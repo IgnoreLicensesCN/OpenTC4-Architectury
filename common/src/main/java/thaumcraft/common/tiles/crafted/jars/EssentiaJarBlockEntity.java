@@ -17,6 +17,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
 
+//maybe i should make an AbstractEssentiaJarBlockEntity
 public class EssentiaJarBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportBlockEntity,
@@ -162,10 +163,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         if (amount <= 0) {
             return false;
         }
-        if (!isConnectable(fromDirection)){
-            return false;
-        }
-        return true;
+        return isConnectable(fromDirection);
     }
 
     protected boolean capacityFullForAddEssentia(){

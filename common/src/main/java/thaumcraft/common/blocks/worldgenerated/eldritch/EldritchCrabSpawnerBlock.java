@@ -79,7 +79,7 @@ public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements Ent
         if (blockState0.getBlock() != this){
             return null;
         }
-        if (Platform.getEnvironment() != Env.SERVER){
+        if (level0.isClientSide){
             return (level, blockPos, blockState, blockEntity) -> {
                 if (blockEntity instanceof EldritchCrabSpawnerBlockEntity crabSpawner){
                     crabSpawner.clientTick();

@@ -95,7 +95,10 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     }
     public void tick(){
         super.tick();
-        if (Platform.getEnvironment() != Env.CLIENT){
+        if (this.level == null) {
+            return;
+        }
+        if (!this.level.isClientSide){
             //TODO:[maybe wont finished]better api
             nodeType.nodeTypeTickEnergized(this);
         }

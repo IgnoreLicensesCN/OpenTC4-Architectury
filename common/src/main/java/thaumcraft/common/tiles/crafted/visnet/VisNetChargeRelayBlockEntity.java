@@ -1,7 +1,5 @@
 package thaumcraft.common.tiles.crafted.visnet;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +29,7 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
     public void tick() {
         super.tick();
         if (this.level == null) {return;}
-        if (Platform.getEnvironment() == Env.SERVER) {
+        if (!this.level.isClientSide) {
             var be = level.getBlockEntity(getPosBeingCharged());
             if (be instanceof IVisNetChargeRelayChargeableContainer chargeableContainer) {
                 var stackToCharge = chargeableContainer.getStackToCharge();

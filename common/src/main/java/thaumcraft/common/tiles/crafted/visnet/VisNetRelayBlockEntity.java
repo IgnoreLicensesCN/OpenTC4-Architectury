@@ -60,6 +60,22 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
 
     //then server-side wont create these 4 fields
     public static class ClientTickContext {
+        public int getPulse() {
+            return pulse;
+        }
+
+        public float getRed() {
+            return pRed;
+        }
+
+        public float getGreen() {
+            return pGreen;
+        }
+
+        public float getBlue() {
+            return pBlue;
+        }
+
         private int pulse = 0;
         private float pRed = 0.5F;
         private float pGreen = 0.5F;

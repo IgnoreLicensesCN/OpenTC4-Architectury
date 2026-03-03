@@ -1,7 +1,5 @@
 package thaumcraft.common.tiles.crafted.visnet;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +53,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
         }
 
         if (this.statusCode == STATUS_CODE_SETTING_UP 
-                && Platform.getEnvironment() != Env.CLIENT 
+                && !this.level.isClientSide 
                 && this.tickCount >= 1000) {
             var probablyNodeBE = level.getBlockEntity(getNodePos());
             if (probablyNodeBE instanceof INodeBlockEntity auraNode) {
@@ -79,7 +77,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
         }
 
         if (this.statusCode == STATUS_CODE_ON
-                && Platform.getEnvironment() != Env.CLIENT 
+                && !this.level.isClientSide
                 && this.tickCount <= 50) {
             var be = this.level.getBlockEntity(getNodePos());
             if (be instanceof EnergizedAuraNodeBlockEntity energizedNode) {
@@ -103,7 +101,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                 && this.level.hasNeighborSignal(getBlockPos())) {
             if (this.tickCount < 1000) {
                 ++this.tickCount;
-                if (Platform.getEnvironment() != Env.CLIENT) {
+                if (!this.level.isClientSide) {
                     var nodePos = getNodePos();
                     var probablyNodeBE = level.getBlockEntity(nodePos);
                     if (probablyNodeBE instanceof INodeBlockEntity auraNode) {
@@ -118,7 +116,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                     }
                 }
 
-                if (this.tickCount > 50 && (Platform.getEnvironment() == Env.CLIENT)) {
+                if (this.tickCount > 50 && (this.level.isClientSide)) {
                     var xCoord = getBlockPos().getX();
                     var yCoord = getBlockPos().getY();
                     var zCoord = getBlockPos().getZ();
@@ -149,7 +147,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
             }
         } else if (this.tickCount > 0) {
             --this.tickCount;
-            if (this.tickCount > 50 && (Platform.getEnvironment() == Env.CLIENT)) {
+            if (this.tickCount > 50 && (this.level.isClientSide)) {
                 var xCoord = getBlockPos().getX();
                 var yCoord = getBlockPos().getY();
                 var zCoord = getBlockPos().getZ();
