@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
 @Deprecated(forRemoval = true)
 public class ItemJarFilled /*extends Item implements IEssentiaContainerItem*/ {

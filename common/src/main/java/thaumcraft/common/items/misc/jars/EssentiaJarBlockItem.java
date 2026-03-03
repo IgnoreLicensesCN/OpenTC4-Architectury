@@ -30,9 +30,11 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     public EssentiaJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
+
     public EssentiaJarBlockItem() {
         this(ThaumcraftBlocks.ESSENTIA_JAR, new Properties().stacksTo(1));
     }
+
     public void setAspectAndAmount(ItemStack stack, Aspect aspect, int amount) {
         var tag = stack.getOrCreateTag();
         ASPECT.writeToCompoundTag(tag, aspect);
@@ -45,16 +47,16 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         var pos = useOnContext.getClickedPos();
         var state = level.getBlockState(pos);
         var stack = useOnContext.getItemInHand();
-        if (state.getBlock() instanceof IAspectContainerItemFillerBlock<? extends Aspect> fillerNotCasted){
+        if (state.getBlock() instanceof IAspectContainerItemFillerBlock<? extends Aspect> fillerNotCasted) {
             var filler = (IAspectContainerItemFillerBlock<Aspect>) fillerNotCasted;
             if (filler.canFillAspectContainerItem(
-                    level,pos,state,stack,this,ASPECT_FILTER.readFromCompoundTag(stack.getOrCreateTag())
-            )){
+                    level, pos, state, stack, this, ASPECT_FILTER.readFromCompoundTag(stack.getOrCreateTag())
+            )) {
                 if (level.isClientSide()) {
                     return InteractionResult.SUCCESS;
                 }
                 boolean fillResult = filler.fillAspectContainerItem(
-                        level,pos,state,stack,this,1
+                        level, pos, state, stack, this, 1
                 );
                 if (fillResult) {
                     return InteractionResult.SUCCESS;
@@ -83,12 +85,11 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             throw new IllegalArgumentException("More than one aspect to set");
         }
         var tag = itemstack.getOrCreateTag();
-        for (var entry:aspects.entrySet()) {
+        for (var entry : aspects.entrySet()) {
             ASPECT.writeToCompoundTag(tag, entry.getKey());
             AMOUNT.writeToCompoundTag(tag, entry.getValue());
         }
     }
-
 
 
     @Override
@@ -123,18 +124,23 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, list, tooltipFlag);
         var tag = itemStack.getTag();
-        if (tag == null){return;}
+        if (tag == null) {
+            return;
+        }
         var aspCurrent = ASPECT.readFromCompoundTag(tag);
         var asmAmountCurrent = AMOUNT.readFromCompoundTag(tag);
         var filterAspect = ASPECT_FILTER.readFromCompoundTag(tag);
         var player = Minecraft.getInstance().player;
-        addAspectDescriptionToList(UnmodifiableAspectList.of(aspCurrent,asmAmountCurrent),player,list);
+        addAspectDescriptionToList(UnmodifiableAspectList.of(aspCurrent, asmAmountCurrent), player, list);
         if (!filterAspect.isEmpty()) {
             Component filterComponent;
             if (player != null && !filterAspect.hasPlayerDiscovered(player)) {
-                filterComponent = Component.translatable("tc.aspect.unknown").withStyle(ChatFormatting.DARK_PURPLE);
-            }else {
-                filterComponent = filterAspect.getName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+                filterComponent = Component.translatable("tc.aspect.unknown")
+                        .withStyle(ChatFormatting.DARK_PURPLE);
+            } else {
+                filterComponent = filterAspect.getName()
+                        .copy()
+                        .withStyle(ChatFormatting.DARK_PURPLE);
 
             }
             list.add(filterComponent);
@@ -142,55 +148,61 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
 
     }
 
-    public Aspect getFilter(ItemStack stack){
+    //maybe we would have a golem core "assemble" to stick filter on.or with blocks or something?
+    //or even fill directly into item?
+    // but in many situations we need more than filter information,idk if it's suitable to remove this method.
+    public Aspect getFilter(ItemStack stack) {
         if (stack.isEmpty()) return Aspects.EMPTY;
         var tag = stack.getTag();
         if (tag == null) return Aspects.EMPTY;
         return ASPECT_FILTER.readFromCompoundTag(tag);
     }
-    public void setFilter(ItemStack stack,Aspect aspect){
-        if (!stack.isEmpty()){
+
+    public void setFilter(ItemStack stack, Aspect aspect) {
+        if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
-            ASPECT_FILTER.writeToCompoundTag(tag,aspect);
+            ASPECT_FILTER.writeToCompoundTag(tag, aspect);
         }
     }
 
-    public Aspect getAspect(ItemStack stack){
+    public Aspect getAspect(ItemStack stack) {
         if (stack.isEmpty()) return Aspects.EMPTY;
         var tag = stack.getTag();
         if (tag == null) return Aspects.EMPTY;
         return ASPECT.readFromCompoundTag(tag);
     }
-    public void setAspect(ItemStack stack,Aspect aspect){
-        if (!stack.isEmpty()){
+
+    public void setAspect(ItemStack stack, Aspect aspect) {
+        if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
-            ASPECT.writeToCompoundTag(tag,aspect);
+            ASPECT.writeToCompoundTag(tag, aspect);
         }
     }
 
-    public int getAspectAmount(ItemStack stack){
+    public int getAspectAmount(ItemStack stack) {
         if (stack.isEmpty()) return 0;
         var tag = stack.getTag();
         if (tag == null) return 0;
         return AMOUNT.readFromCompoundTag(tag);
     }
-    public void setAspectAmount(ItemStack stack,int amount){
-        if (!stack.isEmpty()){
+
+    public void setAspectAmount(ItemStack stack, int amount) {
+        if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
-            AMOUNT.writeToCompoundTag(tag,amount);
+            AMOUNT.writeToCompoundTag(tag, amount);
         }
     }
 
-    public void setAspectAmdAmount(ItemStack stack,Aspect aspect,int amount){
-        if (!stack.isEmpty()){
+    public void setAspectAmdAmount(ItemStack stack, Aspect aspect, int amount) {
+        if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
-            ASPECT.writeToCompoundTag(tag,aspect);
-            AMOUNT.writeToCompoundTag(tag,amount);
+            ASPECT.writeToCompoundTag(tag, aspect);
+            AMOUNT.writeToCompoundTag(tag, amount);
         }
     }
 
 
-    public EssentiaJarInfo getJarInfo(ItemStack stack){
+    public EssentiaJarInfo getJarInfo(ItemStack stack) {
         if (stack.isEmpty()) return EssentiaJarInfo.EMPTY;
         var tag = stack.getTag();
         if (tag == null) return EssentiaJarInfo.EMPTY;
@@ -198,14 +210,17 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
                 ASPECT.readFromCompoundTag(tag),
                 AMOUNT.readFromCompoundTag(tag),
                 ASPECT_FILTER.readFromCompoundTag(tag)
-                );
+        );
     }
-    public record EssentiaJarInfo(Aspect aspect, int amount, Aspect filter){//TODO:[maybe wont finished]if put into a single class,which package?
+
+    public record EssentiaJarInfo(Aspect aspect, int amount,
+                                  Aspect filter) {//TODO:[maybe wont finished]if put into a single class,which package?
+
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof EssentiaJarInfo jarInfo)) return false;
-            return amount == jarInfo.amount && Objects.equals(aspect, jarInfo.aspect) && Objects.equals(
-                    filter, jarInfo.filter);
+            if (!(o instanceof EssentiaJarInfo(Aspect aspect1, int amount1, Aspect filter1))) return false;
+            return amount == amount1 && Objects.equals(aspect, aspect1) && Objects.equals(
+                    filter, filter1);
         }
 
         @Override
@@ -221,13 +236,14 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
                     ", filter=" + filter +
                     '}';
         }
-        public static final EssentiaJarInfo EMPTY = new EssentiaJarInfo(Aspects.EMPTY,0,Aspects.EMPTY);
+
+        public static final EssentiaJarInfo EMPTY = new EssentiaJarInfo(Aspects.EMPTY, 0, Aspects.EMPTY);
     }
 
     @Override
     public AspectList<Aspect> getAspects(ItemStack itemstack) {
         var tag = itemstack.getTag();
-        if (tag == null){
+        if (tag == null) {
             return UnmodifiableAspectList.EMPTY;
         }
         return UnmodifiableAspectList.of(
@@ -247,7 +263,8 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (!ASPECT.compoundTagHasKey(tag) || !AMOUNT.compoundTagHasKey(tag)) {
             return 64;
         }
-        if (ASPECT.readFromCompoundTag(tag).isEmpty() || AMOUNT.readFromCompoundTag(tag) == 0) {
+        if (ASPECT.readFromCompoundTag(tag)
+                .isEmpty() || AMOUNT.readFromCompoundTag(tag) == 0) {
             return 64;
         }
         return 1;

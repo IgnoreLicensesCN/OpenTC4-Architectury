@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.block.BlockRenderer;
-import thaumcraft.common.blocks.BlockJar;
+import thaumcraft.common.blocks.junkbox.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 

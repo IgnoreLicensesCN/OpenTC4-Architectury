@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockJar;
+import thaumcraft.common.blocks.junkbox.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileJarBrain;
 

@@ -17,7 +17,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
-import thaumcraft.common.blocks.ItemJarNode;
+import thaumcraft.common.blocks.junkbox.ItemJarNode;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;

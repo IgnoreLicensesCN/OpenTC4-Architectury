@@ -6,6 +6,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigBlocks;
 
+@Deprecated(forRemoval = true,since = "i should call it mental illness again")
 public class EntityItemGrate extends EntityItem {
    public EntityItemGrate(Level par1World) {
       super(par1World);

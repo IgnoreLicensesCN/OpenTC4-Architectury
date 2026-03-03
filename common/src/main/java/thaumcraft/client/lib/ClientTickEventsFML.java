@@ -35,7 +35,7 @@ import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.ItemJarFilled;
+import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.relics.ItemSanityChecker;

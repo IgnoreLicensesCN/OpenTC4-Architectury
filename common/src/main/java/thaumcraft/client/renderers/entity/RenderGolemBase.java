@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -29,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.entities.ModelGolem;
 import thaumcraft.client.renderers.models.entities.ModelGolemAccessories;
-import thaumcraft.common.blocks.ItemJarFilled;
+import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 

@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.blocks.ItemJarFilled;
+import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 
 public class InventoryHoverHarness implements IInventory {
    private ItemStack[] stackList = new ItemStack[1];

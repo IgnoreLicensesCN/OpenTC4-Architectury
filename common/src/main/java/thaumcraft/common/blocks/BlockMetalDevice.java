@@ -53,6 +53,9 @@ import java.util.Random;
 //  "tile.blockMetalDevice.12.name": "记忆矩阵",
 //  "tile.blockMetalDevice.13.name": "育种灯",
 //  "tile.blockMetalDevice.14.name": "魔力中继器",--done
+//although there could be history reasons such as limited item IDs,
+//i still want to say there could be mental illness with anazor to design like this.
+//--IgnoreLicensesCN
 public class BlockMetalDevice extends BlockContainer {
    public IIcon[] icon = new IIcon[23];
    public IIcon iconGlow;

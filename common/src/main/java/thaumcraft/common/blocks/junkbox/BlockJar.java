@@ -1,9 +1,10 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
 //"tile.blockJar.0.name": "源质罐子",
 //  "tile.blockJar.1.name": "缸中之脑",
 //  "tile.blockJar.2.name": "缸中节点",
 //  "tile.blockJar.3.name": "虚空罐子",
+@Deprecated(forRemoval = true)
 public class BlockJar /*extends BlockContainer*/ {
 //   public IIcon iconLiquid;
 //   public IIcon iconJarBottom;

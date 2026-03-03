@@ -7,6 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.core.Direction;
 import thaumcraft.common.entities.EntityItemGrate;
 
+//if me i would remove this be and make this block a trapdoor with collision box(like AdvancedAlchemicalFurnace core block but EMPTY this time)
+//maybe anazor forgot this plan.
 public class TileGrate extends TileEntity implements ISidedInventory {
    public int getSizeInventory() {
       return 1;

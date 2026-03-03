@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBrain;
 import thaumcraft.client.renderers.models.ModelJar;
-import thaumcraft.common.blocks.BlockJar;
+import thaumcraft.common.blocks.junkbox.BlockJar;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileJar;

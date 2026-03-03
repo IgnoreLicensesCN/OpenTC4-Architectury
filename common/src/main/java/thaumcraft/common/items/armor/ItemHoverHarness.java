@@ -26,7 +26,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.renderers.models.gear.ModelHoverHarness;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.ItemJarFilled;
+import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 
 import java.util.List;
 

@@ -1,6 +1,4 @@
-package thaumcraft.common.blocks;
-
-import net.minecraft.world.level.block.Block;
+package thaumcraft.common.blocks.junkbox;
 
 @Deprecated(forRemoval = true)
 public class JarStepSound /*extends Block.SoundType*/ {

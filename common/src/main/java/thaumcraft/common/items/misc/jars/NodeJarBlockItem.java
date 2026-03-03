@@ -42,9 +42,7 @@ public class NodeJarBlockItem extends BlockItem {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, list, tooltipFlag);
         var player = Minecraft.getInstance().player;
-        if (player != null) {
-            var nodeInfo = getNodeInfo(itemStack);
-            addAspectDescriptionToList(nodeInfo.nodeAspects, player, list);
-        }
+        var nodeInfo = getNodeInfo(itemStack);
+        addAspectDescriptionToList(nodeInfo.nodeAspects, player, list);
     }
 }
