@@ -50,6 +50,7 @@ block_with_item_names = [
     ["tile.blockAlchemyFurnace.name",['advanced_alchemical_furnace_alembic','advanced_alchemical_furnace_upper_fence','advanced_alchemical_furnace_nozzle','advanced_alchemical_furnace_base_corner','advanced_alchemical_furnace_base']],
     ['tile.blockJar.0.name','essentia_jar'],
     ['tile.blockJar.1.name','brain_jar'],
+    ['tile.blockJar.2.name','node_jar'],
     ['tile.blockJar.3.name','void_jar'],
 ]
 
