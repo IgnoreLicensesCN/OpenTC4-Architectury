@@ -129,7 +129,7 @@ public class ItemCrateBlock extends SuppressedWarningBlock implements SimpleWate
             if (flag != arg.getValue(POWERED)) {
                 if (arg.getValue(OPEN) != flag) {
                     arg = arg.setValue(OPEN, flag);
-                    this.playSound((Player)null, arg2, arg3, flag);
+                    this.playSound(null, arg2, arg3, flag);
                 }
 
                 arg2.setBlock(arg3, arg.setValue(POWERED, flag), 2);

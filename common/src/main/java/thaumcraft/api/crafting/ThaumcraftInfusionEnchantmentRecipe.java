@@ -19,6 +19,7 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
 
 import java.util.*;
 import java.util.function.Function;
@@ -42,6 +43,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
 	private final ItemStack[] inputSampleArr;
 	
 	public ThaumcraftInfusionEnchantmentRecipe(
+			InfusionRecipeResourceLocation id,
 			ResearchItem research,
 			Enchantment toApply,
 			AspectList<Aspect> basicCostAspects,
@@ -49,6 +51,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
 			RecipeItemMatcher[] recipe
 	) {
         super(
+				id,
 				research, itemStacks -> {
                     var inCenter = itemStacks[itemStacks.length - 1];
                     if (inCenter == null || inCenter.isEmpty()) {

@@ -2,15 +2,16 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.research.ResearchItem;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NodeModifierResourceLocation extends VariedResourceLocation<ResearchItem, NodeModifierResourceLocation> {
+public class NodeModifierResourceLocation extends VariedResourceLocation<NodeModifier, NodeModifierResourceLocation> {
     public static final NodeModifierResourceLocation EMPTY = new NodeModifierResourceLocation("","");
-    public static final VariedResourceLocationBuilder<ResearchItem, NodeModifierResourceLocation> BUILDER = NodeModifierResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, NodeModifierResourceLocation> PARSER = NodeModifierResourceLocation::of;
+    public static final VariedResourceLocationBuilder<NodeModifier, NodeModifierResourceLocation> BUILDER = NodeModifierResourceLocation::of;
+    public static final VariedResourceLocationParser<NodeModifier, NodeModifierResourceLocation> PARSER = NodeModifierResourceLocation::of;
 
 
     protected NodeModifierResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -28,13 +29,13 @@ public class NodeModifierResourceLocation extends VariedResourceLocation<Researc
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, NodeModifierResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, NodeModifierResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, NodeModifierResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
         mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
     public static NodeModifierResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, NodeModifierResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, NodeModifierResourceLocation::new);
     }
     public static NodeModifierResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

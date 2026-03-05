@@ -8,6 +8,7 @@ import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.Aspect;
@@ -15,15 +16,21 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.CrucibleRecipeResourceLocation;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.RETURN_EMPTY_ITEM_LIST_LIST;
 
-public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe {
+public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
+		CrucibleRecipe, CrucibleRecipeResourceLocation
+		>
+		implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe {
 
 	private static final List<CrucibleRecipe> crucibleRecipes = new CopyOnWriteArrayList<>();
 	private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
@@ -43,15 +50,17 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
     private final @NotNull ItemStack outputForAspectCalculation;
 
 	public CrucibleRecipe(
+			CrucibleRecipeResourceLocation id,
             ResearchItem researchKey,
             Function<ItemStack,ItemStack> resultGetter,
             RecipeItemMatcher cat,
             AspectList<Aspect> tags,
             RecipeItemMatcher outputMatcher
     ) {
-		this(researchKey,resultGetter,cat,tags,outputMatcher,null,null,null);
+		this(id,researchKey,resultGetter,cat,tags,outputMatcher,null,null,null);
 	}
     public CrucibleRecipe(
+			CrucibleRecipeResourceLocation id,
             ResearchItem researchKey,
             Function<ItemStack,ItemStack> resultGetter,
             RecipeItemMatcher cat,
@@ -61,7 +70,7 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
             List<List<ItemStack>> inputForAspectCalculation,
             List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation
     ){
-
+		super(id);
         this.recipeOutputGetter = resultGetter;
         this.aspects = tags;
         this.research = researchKey;
@@ -240,5 +249,17 @@ public class CrucibleRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 			throw new RuntimeException("check supportsAspectCalculation() first!");
 		}
 		return UnmodifiableCentiVisList.EMPTY;
+	}
+
+	private static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES = new ConcurrentHashMap<>();
+	@Unmodifiable
+	public static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES_VIEW = Collections.unmodifiableMap(CRUCIBLE_RECIPES);
+	@Override
+	protected void registerRecipe(CrucibleRecipeResourceLocation recipeID) {
+		var got = CRUCIBLE_RECIPES.get(recipeID);
+		if (got != null) {
+			throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+		}
+		CRUCIBLE_RECIPES.put(recipeID, this);
 	}
 }

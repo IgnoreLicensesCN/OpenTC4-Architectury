@@ -11,16 +11,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
@@ -39,7 +43,7 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
  *     --IgnoreLicensesCN
  * </p>
  * **/
-public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe
+public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<InfusionRecipe, InfusionRecipeResourceLocation> implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe
 {
 	//RECIPES/////////////////////////////////////////
 //	private static final List<RecipeInAndOutSampler> craftingRecipes = new CopyOnWriteArrayList<>();
@@ -64,6 +68,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 	private final @NotNull ItemStack outputForAspectCalculation;
 	private final @NotNull List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation;
 	public InfusionRecipe(
+			InfusionRecipeResourceLocation id,
 			ResearchItem research,
 			Function<ItemStack[],ItemStack> recipeOutputGenerator,
 			int inst,
@@ -72,9 +77,10 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 			RecipeItemMatcher[] recipe,
 			RecipeItemMatcher outputMatcher
 	){
-		this(research,recipeOutputGenerator,inst,aspects,input,recipe,outputMatcher,null,null,null);
+		this(id,research,recipeOutputGenerator,inst,aspects,input,recipe,outputMatcher,null,null,null);
 	}
 	public InfusionRecipe(
+			InfusionRecipeResourceLocation id,
 			ResearchItem research,
 			Function<ItemStack[],ItemStack> recipeOutputGenerator,
 			int inst,
@@ -86,6 +92,7 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 			List<List<ItemStack>> inputForAspectCalculation,
 			List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation
 	) {
+		super(id);
 		this.research = research;
 //		this.recipeOutput = output;
 		this.recipeOutputGenerator = recipeOutputGenerator;
@@ -346,4 +353,16 @@ public class InfusionRecipe implements RecipeInAndOutSampler, CanMatchViaOutputS
 
 	public void onInfusionStart(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
 	public void onInfusionEnd(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
+
+	private static final Map<InfusionRecipeResourceLocation,InfusionRecipe> INFUSION_RECIPES = new ConcurrentHashMap<>();
+	@Unmodifiable
+	public static final Map<InfusionRecipeResourceLocation,InfusionRecipe> INFUSION_RECIPES_VIEW = Collections.unmodifiableMap(INFUSION_RECIPES);
+	@Override
+	protected void registerRecipe(InfusionRecipeResourceLocation recipeID) {
+		var got = INFUSION_RECIPES.get(recipeID);
+		if (got != null) {
+			throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+		}
+		INFUSION_RECIPES.put(recipeID, this);
+	}
 }

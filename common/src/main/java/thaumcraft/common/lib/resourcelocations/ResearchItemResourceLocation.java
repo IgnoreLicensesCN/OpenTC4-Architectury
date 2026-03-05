@@ -28,13 +28,13 @@ public class ResearchItemResourceLocation extends VariedResourceLocation<Researc
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation,ResearchItemResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation,ResearchItemResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String,ResearchItemResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
         mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
     public static ResearchItemResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, ResearchItemResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, ResearchItemResourceLocation::new);
     }
     public static ResearchItemResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

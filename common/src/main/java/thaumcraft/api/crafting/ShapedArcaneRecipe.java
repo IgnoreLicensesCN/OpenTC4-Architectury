@@ -6,19 +6,24 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-public class ShapedArcaneRecipe implements IArcaneRecipe {
+public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
     //Added in for future ease ofAspectVisList change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
@@ -42,6 +47,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     private final @NotNull CentiVisList<Aspect> centiVisListForCalculation;
     //since the original is too messy,i should do some cleaning for this.
     public ShapedArcaneRecipe(
+            ShapedArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             AspectList<Aspect> aspects,
@@ -50,10 +56,11 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             int height,
             RecipeItemMatcher outMatcher
     ) {
-        this(research, resultGenerator, arr -> CentiVisList.ofAspectVisList(aspects), input, width, height, outMatcher);
+        this(id,research, resultGenerator, arr -> CentiVisList.ofAspectVisList(aspects), input, width, height, outMatcher);
     }
 
     public ShapedArcaneRecipe(
+            ShapedArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             CentiVisList<Aspect> aspects,
@@ -63,6 +70,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             RecipeItemMatcher outMatcher
     ) {
         this(
+                id,
                 research,
                 resultGenerator,
                 arr -> aspects,
@@ -74,6 +82,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
     }
 
     public ShapedArcaneRecipe(
+            ShapedArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
@@ -82,9 +91,10 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             int height,
             RecipeItemMatcher outMatcher
     ){
-        this(research,resultGenerator,aspectsGenerator,input,width,height,outMatcher,null,null,null,null);
+        this(id,research,resultGenerator,aspectsGenerator,input,width,height,outMatcher,null,null,null,null);
     }
     public ShapedArcaneRecipe(
+            ShapedArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
@@ -97,6 +107,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation,
             CentiVisList<Aspect> centiVisListForCalculation
     ) {
+        super(id);
         if (input.length != width * height) {
             throw new IllegalArgumentException("Invalid recipe shape!");
         }//yeah that's quite easy
@@ -433,5 +444,17 @@ public class ShapedArcaneRecipe implements IArcaneRecipe {
             throw new RuntimeException("check supportsAspectCalculation() first!");
         }
         return centiVisListForCalculation;
+    }
+
+    private static final Map<ShapedArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES = new ConcurrentHashMap<>();
+    @Unmodifiable
+    public static final Map<ShapedArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPED_ARCANE_RECIPES);
+    @Override
+    protected void registerRecipe(ShapedArcaneRecipeResourceLocation recipeID) {
+        var got = SHAPED_ARCANE_RECIPES.get(recipeID);
+        if (got != null) {
+            throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+        }
+        SHAPED_ARCANE_RECIPES.put(recipeID, this);
     }
 }

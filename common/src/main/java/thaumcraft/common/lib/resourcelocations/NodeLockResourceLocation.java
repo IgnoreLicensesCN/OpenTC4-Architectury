@@ -2,14 +2,14 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.nodes.INodeLockBlock;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NodeLockResourceLocation extends VariedResourceLocation<ResearchItem, NodeLockResourceLocation> {
-    public static final VariedResourceLocationBuilder<ResearchItem, NodeLockResourceLocation> BUILDER = NodeLockResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, NodeLockResourceLocation> PARSER = NodeLockResourceLocation::of;
+public class NodeLockResourceLocation extends VariedResourceLocation<INodeLockBlock, NodeLockResourceLocation> {
+    public static final VariedResourceLocationBuilder<INodeLockBlock, NodeLockResourceLocation> BUILDER = NodeLockResourceLocation::of;
+    public static final VariedResourceLocationParser<INodeLockBlock, NodeLockResourceLocation> PARSER = NodeLockResourceLocation::of;
 
 
     protected NodeLockResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -27,10 +27,10 @@ public class NodeLockResourceLocation extends VariedResourceLocation<ResearchIte
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, NodeLockResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, NodeLockResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, NodeLockResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     public static NodeLockResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, NodeLockResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, NodeLockResourceLocation::new);
     }
     public static NodeLockResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

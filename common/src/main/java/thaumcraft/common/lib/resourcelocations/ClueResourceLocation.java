@@ -28,13 +28,13 @@ public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, C
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, ClueResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, ClueResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, ClueResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
         mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
     public static ClueResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, ClueResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, ClueResourceLocation::new);
     }
     public static ClueResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

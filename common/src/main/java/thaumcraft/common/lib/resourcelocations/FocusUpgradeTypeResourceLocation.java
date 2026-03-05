@@ -2,15 +2,15 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.wands.FocusUpgradeType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<ResearchItem, FocusUpgradeTypeResourceLocation> {
+public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<FocusUpgradeType, FocusUpgradeTypeResourceLocation> {
     public static final FocusUpgradeTypeResourceLocation EMPTY = new FocusUpgradeTypeResourceLocation("","");
-    public static final VariedResourceLocationBuilder<ResearchItem, FocusUpgradeTypeResourceLocation> BUILDER = FocusUpgradeTypeResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, FocusUpgradeTypeResourceLocation> PARSER = FocusUpgradeTypeResourceLocation::of;
+    public static final VariedResourceLocationBuilder<FocusUpgradeType, FocusUpgradeTypeResourceLocation> BUILDER = FocusUpgradeTypeResourceLocation::of;
+    public static final VariedResourceLocationParser<FocusUpgradeType, FocusUpgradeTypeResourceLocation> PARSER = FocusUpgradeTypeResourceLocation::of;
 
 
     protected FocusUpgradeTypeResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -28,13 +28,13 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Res
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, FocusUpgradeTypeResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, FocusUpgradeTypeResourceLocation> mapToFocusUpgradeTypeResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, FocusUpgradeTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
         mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
     public static FocusUpgradeTypeResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, FocusUpgradeTypeResourceLocation::new);
+        return mapToFocusUpgradeTypeResourceLocation.computeIfAbsent(resourceLocation, FocusUpgradeTypeResourceLocation::new);
     }
     public static FocusUpgradeTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

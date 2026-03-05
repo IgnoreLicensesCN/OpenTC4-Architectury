@@ -2,15 +2,16 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.research.ResearchItem;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NodeTypeResourceLocation extends VariedResourceLocation<ResearchItem, NodeTypeResourceLocation> {
+public class NodeTypeResourceLocation extends VariedResourceLocation<NodeType, NodeTypeResourceLocation> {
     public static final NodeTypeResourceLocation EMPTY = new NodeTypeResourceLocation("","");
-    public static final VariedResourceLocationBuilder<ResearchItem, NodeTypeResourceLocation> BUILDER = NodeTypeResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, NodeTypeResourceLocation> PARSER = NodeTypeResourceLocation::of;
+    public static final VariedResourceLocationBuilder<NodeType, NodeTypeResourceLocation> BUILDER = NodeTypeResourceLocation::of;
+    public static final VariedResourceLocationParser<NodeType, NodeTypeResourceLocation> PARSER = NodeTypeResourceLocation::of;
 
 
     protected NodeTypeResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -28,13 +29,13 @@ public class NodeTypeResourceLocation extends VariedResourceLocation<ResearchIte
         super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, NodeTypeResourceLocation> mapToResearchItemResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, NodeTypeResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
     public static final Map<String,Map<String, NodeTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
         mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
     public static NodeTypeResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToResearchItemResourceLocation.computeIfAbsent(resourceLocation, NodeTypeResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, NodeTypeResourceLocation::new);
     }
     public static NodeTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation

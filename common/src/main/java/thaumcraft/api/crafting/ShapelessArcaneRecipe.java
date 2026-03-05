@@ -6,18 +6,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.lib.resourcelocations.ShapelessArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-public class ShapelessArcaneRecipe implements IArcaneRecipe
+public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapelessArcaneRecipe, ShapelessArcaneRecipeResourceLocation> implements IArcaneRecipe
 {
     private final Function<ItemStack[],ItemStack> resultGenerator;
     private final RecipeItemMatcher[] input;
@@ -35,6 +40,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
 
     //do not set ItemStack.EMPTY matcher here.
     public ShapelessArcaneRecipe(
+            ShapelessArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<ItemStack[],ItemStack> resultGenerator,
             CentiVisList<Aspect>aspects,
@@ -46,6 +52,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
             CentiVisList<Aspect> centiVisListForCalculation
     )
     {
+        super(id);
         this.resultGenerator = resultGenerator;
         this.research = research;
         this.aspects = new UnmodifiableCentiVisList<>(aspects.getAspectView());
@@ -77,6 +84,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     }
 
     public ShapelessArcaneRecipe(
+            ShapelessArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<ItemStack[],ItemStack> resultGenerator,
             CentiVisList<Aspect>aspects,
@@ -84,7 +92,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
             RecipeItemMatcher outMatcher
     )
     {
-        this(research,resultGenerator,aspects,recipe,outMatcher,null,null,null,null);
+        this(id,research,resultGenerator,aspects,recipe,outMatcher,null,null,null,null);
     }
 
     @Override
@@ -285,5 +293,18 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
             throw new RuntimeException("check supportsAspectCalculation() first!");
         }
         return centiVisListForCalculation;
+    }
+
+
+    private static final Map<ShapelessArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES = new ConcurrentHashMap<>();
+    @Unmodifiable
+    public static final Map<ShapelessArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPELESS_ARCANE_RECIPES);
+    @Override
+    protected void registerRecipe(ShapelessArcaneRecipeResourceLocation recipeID) {
+        var got = SHAPELESS_ARCANE_RECIPES.get(recipeID);
+        if (got != null) {
+            throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+        }
+        SHAPELESS_ARCANE_RECIPES.put(recipeID, this);
     }
 }

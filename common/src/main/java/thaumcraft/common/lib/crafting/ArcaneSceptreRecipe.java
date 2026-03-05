@@ -7,15 +7,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
 
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
 //TODO:Impl with current API
 public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 
    public static final ShapedArcaneRecipe INSTANCE = new ShapedArcaneRecipe(
-           "SCEPTRE",
+           ShapedArcaneRecipeResourceLocation.of(Thaumcraft.MOD_ID,"sceptre"),
+           ,//"SCEPTRE",
            arr -> {
-              ItemStack centerStack = arr[4];
+              ItemStack centerStack = arr.get(4);
               int capCount = 0;
               //TODO:Finish
 
