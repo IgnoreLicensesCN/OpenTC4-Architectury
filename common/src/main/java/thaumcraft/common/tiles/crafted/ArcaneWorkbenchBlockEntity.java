@@ -28,6 +28,7 @@ import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.List;
 
+//TODO:Cache recipes to make this faster?
 public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity>
         implements
         WorldlyContainer,

@@ -24,7 +24,7 @@ import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MAT
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
-    //Added in for future ease ofAspectVisList change, but hard coded for now.
+    //Added in for future ease of change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
 
