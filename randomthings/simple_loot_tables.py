@@ -64,7 +64,8 @@ drop_self_block_names = [
     'advanced_alchemical_construct',
     'alchemical_construct',
     'arcane_alembic',
-    'brain_jar'
+    'brain_jar',
+    'item_crate'
 ]
 
 drop_b_for_a_names = [
