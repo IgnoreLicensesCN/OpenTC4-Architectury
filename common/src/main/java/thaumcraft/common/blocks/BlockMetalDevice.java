@@ -70,173 +70,152 @@ public class BlockMetalDevice extends BlockContainer {
       this.setCreativeTab(Thaumcraft.tabTC);
    }
 
-   public static boolean addToPlayerInventoryBiased(InventoryPlayer inv, ItemStack s) {
-      if (s == null || s.stackSize == 0 || s.getItem() == null) return false;
-      // logic: first try to stack, then try to place in original slot, last fallback to vanilla logic
-      for (ItemStack stack : inv.mainInventory) {
-         if (stack != null && stack.isStackable() && stack.getItem() == s.getItem() &&
-                 stack.stackSize < Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit())
-                 && (!stack.getHasSubtypes() || stack.getItemDamage() == s.getItemDamage()) &&
-                 ItemStack.areItemStackTagsEqual(stack, s)) {
-            int toAdd = Math.min(s.stackSize, Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit()) - stack.stackSize);
-            s.stackSize -= toAdd;
-            stack.stackSize += toAdd;
-            stack.animationsToGo = 5;
-            if (s.stackSize == 0) return true;
-         }
-      }
-      if (inv.currentItem >= 0 && inv.currentItem < InventoryPlayer.getHotbarSize() && inv.getCurrentItem() == null) {
-         inv.setInventorySlotContents(inv.currentItem, s);
-         return true;
-      } else {
-         return inv.addItemStackToInventory(s);
-      }
-   }
 
-   public IIcon getIcon(int i, int md) {
-      if (md == 3) {
-         return this.icon[22];
-      } else if (md == 7) {
-         return this.icon[10];
-      } else if (md == 8) {
-         return this.icon[12];
-      } else if (md != 10 && md != 9 && md != 11) {
-         if (md == 12) {
-            return this.icon[17];
-         } else if (md == 13) {
-            return this.icon[18];
-         } else if (md != 14 && md != 2) {
-            return md != 0 && md != 1 && md != 5 && md != 6 ? this.icon[7] : this.icon[0];
-         } else {
-            return this.icon[0];//== 14 || == 2
-         }
-      } else {
-         return this.icon[16];
-      }
-   }
 
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.icon[0] = ir.registerIcon("thaumcraft:metalbase");
+//   public IIcon getIcon(int i, int md) {
+//      if (md == 3) {
+//         return this.icon[22];
+//      } else if (md == 7) {
+//         return this.icon[10];
+//      } else if (md == 8) {
+//         return this.icon[12];
+//      } else if (md != 10 && md != 9 && md != 11) {
+//         if (md == 12) {
+//            return this.icon[17];
+//         } else if (md == 13) {
+//            return this.icon[18];
+//         } else if (md != 14 && md != 2) {
+//            return md != 0 && md != 1 && md != 5 && md != 6 ? this.icon[7] : this.icon[0];
+//         } else {
+//            return this.icon[0];//== 14 || == 2
+//         }
+//      } else {
+//         return this.icon[16];
+//      }
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.icon[0] = ir.registerIcon("thaumcraft:metalbase");
+//
+//      for (int a = 1; a <= 6; ++a) {
+//         this.icon[a] = ir.registerIcon("thaumcraft:crucible" + a);
+//      }
+//
+//      this.icon[7] = ir.registerIcon("thaumcraft:goldbase");
+//      this.icon[8] = ir.registerIcon("thaumcraft:grate");
+//      this.icon[9] = ir.registerIcon("thaumcraft:grate_hatch");
+//      this.icon[10] = ir.registerIcon("thaumcraft:lamp_side");
+//      this.icon[11] = ir.registerIcon("thaumcraft:lamp_top");
+//      this.icon[12] = ir.registerIcon("thaumcraft:lamp_grow_side");
+//      this.icon[13] = ir.registerIcon("thaumcraft:lamp_grow_top");
+//      this.icon[14] = ir.registerIcon("thaumcraft:lamp_grow_side_off");
+//      this.icon[15] = ir.registerIcon("thaumcraft:lamp_grow_top_off");
+//      this.icon[16] = ir.registerIcon("thaumcraft:alchemyblock");
+//      this.icon[17] = ir.registerIcon("thaumcraft:brainbox");
+//      this.icon[18] = ir.registerIcon("thaumcraft:lamp_fert_side");
+//      this.icon[19] = ir.registerIcon("thaumcraft:lamp_fert_top");
+//      this.icon[20] = ir.registerIcon("thaumcraft:lamp_fert_side_off");
+//      this.icon[21] = ir.registerIcon("thaumcraft:lamp_fert_top_off");
+//      this.icon[22] = ir.registerIcon("thaumcraft:alchemyblockadv");
+//      this.iconGlow = ir.registerIcon("thaumcraft:animatedglow");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(par1, 1, 0));
+//      par3List.add(new ItemStack(par1, 1, 1));
+//      par3List.add(new ItemStack(par1, 1, 2));
+//      par3List.add(new ItemStack(par1, 1, 3));
+//
+//      par3List.add(new ItemStack(par1, 1, 5));
+//      par3List.add(new ItemStack(par1, 1, 7));
+//      par3List.add(new ItemStack(par1, 1, 8));
+//      par3List.add(new ItemStack(par1, 1, 9));
+//
+//      par3List.add(new ItemStack(par1, 1, 12));
+//      par3List.add(new ItemStack(par1, 1, 13));
+//      par3List.add(new ItemStack(par1, 1, 14));
+//   }
+//
+//   public int getRenderType() {
+//      return ConfigBlocks.blockMetalDeviceRI;
+//   }
+//
+//   public boolean isOpaqueCube() {
+//      return false;
+//   }
+//
+//   public boolean renderAsNormalBlock() {
+//      return false;
+//   }
 
-      for (int a = 1; a <= 6; ++a) {
-         this.icon[a] = ir.registerIcon("thaumcraft:crucible" + a);
-      }
-
-      this.icon[7] = ir.registerIcon("thaumcraft:goldbase");
-      this.icon[8] = ir.registerIcon("thaumcraft:grate");
-      this.icon[9] = ir.registerIcon("thaumcraft:grate_hatch");
-      this.icon[10] = ir.registerIcon("thaumcraft:lamp_side");
-      this.icon[11] = ir.registerIcon("thaumcraft:lamp_top");
-      this.icon[12] = ir.registerIcon("thaumcraft:lamp_grow_side");
-      this.icon[13] = ir.registerIcon("thaumcraft:lamp_grow_top");
-      this.icon[14] = ir.registerIcon("thaumcraft:lamp_grow_side_off");
-      this.icon[15] = ir.registerIcon("thaumcraft:lamp_grow_top_off");
-      this.icon[16] = ir.registerIcon("thaumcraft:alchemyblock");
-      this.icon[17] = ir.registerIcon("thaumcraft:brainbox");
-      this.icon[18] = ir.registerIcon("thaumcraft:lamp_fert_side");
-      this.icon[19] = ir.registerIcon("thaumcraft:lamp_fert_top");
-      this.icon[20] = ir.registerIcon("thaumcraft:lamp_fert_side_off");
-      this.icon[21] = ir.registerIcon("thaumcraft:lamp_fert_top_off");
-      this.icon[22] = ir.registerIcon("thaumcraft:alchemyblockadv");
-      this.iconGlow = ir.registerIcon("thaumcraft:animatedglow");
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(par1, 1, 0));
-      par3List.add(new ItemStack(par1, 1, 1));
-      par3List.add(new ItemStack(par1, 1, 2));
-      par3List.add(new ItemStack(par1, 1, 3));
-
-      par3List.add(new ItemStack(par1, 1, 5));
-      par3List.add(new ItemStack(par1, 1, 7));
-      par3List.add(new ItemStack(par1, 1, 8));
-      par3List.add(new ItemStack(par1, 1, 9));
-
-      par3List.add(new ItemStack(par1, 1, 12));
-      par3List.add(new ItemStack(par1, 1, 13));
-      par3List.add(new ItemStack(par1, 1, 14));
-   }
-
-   public int getRenderType() {
-      return ConfigBlocks.blockMetalDeviceRI;
-   }
-
-   public boolean isOpaqueCube() {
-      return false;
-   }
-
-   public boolean renderAsNormalBlock() {
-      return false;
-   }
-
-   public IIcon getIcon(IBlockAccess iblockaccess, int i, int j, int k, int side) {
-      int metadata = iblockaccess.getBlockMetadata(i, j, k);
-      if (metadata != 5 && metadata != 6) {
-         if (metadata == 7) {
-            return side <= 1 ? this.icon[11] : this.icon[10];
-         } else {
-            if (metadata == 8) {
-               TileEntity te = iblockaccess.getTileEntity(i, j, k);
-               if (te instanceof TileArcaneLampGrowth) {
-                  if (((TileArcaneLampGrowth) te).charges > 0) {
-                     if (side <= 1) {
-                        return this.icon[13];
-                     }
-
-                     return this.icon[12];
-                  }
-
-                  if (side <= 1) {
-                     return this.icon[15];
-                  }
-
-                  return this.icon[14];
-               }
-            } else if (metadata == 13) {
-               TileEntity te = iblockaccess.getTileEntity(i, j, k);
-               if (te instanceof TileArcaneLampFertility) {
-                  if (((TileArcaneLampFertility) te).charges > 0) {
-                     if (side <= 1) {
-                        return this.icon[19];
-                     }
-
-                     return this.icon[18];
-                  }
-
-                  if (side <= 1) {
-                     return this.icon[21];
-                  }
-
-                  return this.icon[20];
-               }
-            } else {
-               if (metadata == 10 || metadata == 9 || metadata == 11) {
-                  return this.icon[16];
-               }
-
-               if (metadata == 12) {
-                  return this.icon[17];
-               }
-
-               if (metadata == 3) {
-                  return this.icon[22];
-               }
-            }
-
-            if (side == 1) {
-               return this.icon[1];
-            } else if (side == 0) {
-               return this.icon[2];
-            } else {
-               return this.icon[3];
-            }
-         }
-      } else {
-         return this.icon[8];
-      }
-   }
+//   public IIcon getIcon(IBlockAccess iblockaccess, int i, int j, int k, int side) {
+//      int metadata = iblockaccess.getBlockMetadata(i, j, k);
+//      if (metadata != 5 && metadata != 6) {
+//         if (metadata == 7) {
+//            return side <= 1 ? this.icon[11] : this.icon[10];
+//         } else {
+//            if (metadata == 8) {
+//               TileEntity te = iblockaccess.getTileEntity(i, j, k);
+//               if (te instanceof TileArcaneLampGrowth) {
+//                  if (((TileArcaneLampGrowth) te).charges > 0) {
+//                     if (side <= 1) {
+//                        return this.icon[13];
+//                     }
+//
+//                     return this.icon[12];
+//                  }
+//
+//                  if (side <= 1) {
+//                     return this.icon[15];
+//                  }
+//
+//                  return this.icon[14];
+//               }
+//            } else if (metadata == 13) {
+//               TileEntity te = iblockaccess.getTileEntity(i, j, k);
+//               if (te instanceof TileArcaneLampFertility) {
+//                  if (((TileArcaneLampFertility) te).charges > 0) {
+//                     if (side <= 1) {
+//                        return this.icon[19];
+//                     }
+//
+//                     return this.icon[18];
+//                  }
+//
+//                  if (side <= 1) {
+//                     return this.icon[21];
+//                  }
+//
+//                  return this.icon[20];
+//               }
+//            } else {
+//               if (metadata == 10 || metadata == 9 || metadata == 11) {
+//                  return this.icon[16];
+//               }
+//
+//               if (metadata == 12) {
+//                  return this.icon[17];
+//               }
+//
+//               if (metadata == 3) {
+//                  return this.icon[22];
+//               }
+//            }
+//
+//            if (side == 1) {
+//               return this.icon[1];
+//            } else if (side == 0) {
+//               return this.icon[2];
+//            } else {
+//               return this.icon[3];
+//            }
+//         }
+//      } else {
+//         return this.icon[8];
+//      }
+//   }
 
    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
       if (Platform.getEnvironment() != Env.CLIENT) {
@@ -320,20 +299,22 @@ public class BlockMetalDevice extends BlockContainer {
    public void randomDisplayTick(World w, int i, int j, int k, Random r) {
       if (r.nextInt(10) == 0) {
          TileEntity te = w.getTileEntity(i, j, k);
-         if (te instanceof TileCrucible && ((TileCrucible) te).tank.getFluidAmount() > 0 && ((TileCrucible) te).heat > 150) {
+         if (te instanceof TileCrucible
+                 && ((TileCrucible) te).tank.getFluidAmount() > 0
+                 && ((TileCrucible) te).heat > 150) {
             w.playSound(i, j, k, "liquid.lavapop", 0.1F + r.nextFloat() * 0.1F, 1.2F + r.nextFloat() * 0.2F, false);
          }
       }
 
    }
 
-   public int damageDropped(int metadata) {
-      if (metadata == 6) {
-         return 5;
-      } else {
-         return metadata != 10 && metadata != 11 ? metadata : 9;
-      }
-   }
+//   public int damageDropped(int metadata) {
+//      if (metadata == 6) {
+//         return 5;
+//      } else {
+//         return metadata != 10 && metadata != 11 ? metadata : 9;
+//      }
+//   }
 
    public TileEntity createTileEntity(World world, int metadata) {
       if (metadata == 0) {
@@ -535,6 +516,28 @@ public class BlockMetalDevice extends BlockContainer {
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
+   public static boolean addToPlayerInventoryBiased(InventoryPlayer inv, ItemStack s) {
+      if (s == null || s.stackSize == 0 || s.getItem() == null) return false;
+      // logic: first try to stack, then try to place in original slot, last fallback to vanilla logic
+      for (ItemStack stack : inv.mainInventory) {
+         if (stack != null && stack.isStackable() && stack.getItem() == s.getItem() &&
+                 stack.stackSize < Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit())
+                 && (!stack.getHasSubtypes() || stack.getItemDamage() == s.getItemDamage()) &&
+                 ItemStack.areItemStackTagsEqual(stack, s)) {
+            int toAdd = Math.min(s.stackSize, Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit()) - stack.stackSize);
+            s.stackSize -= toAdd;
+            stack.stackSize += toAdd;
+            stack.animationsToGo = 5;
+            if (s.stackSize == 0) return true;
+         }
+      }
+      if (inv.currentItem >= 0 && inv.currentItem < InventoryPlayer.getHotbarSize() && inv.getCurrentItem() == null) {
+         inv.setInventorySlotContents(inv.currentItem, s);
+         return true;
+      } else {
+         return inv.addItemStackToInventory(s);
+      }
+   }
    public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);
       if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT) {
@@ -709,16 +712,16 @@ public class BlockMetalDevice extends BlockContainer {
 //            }
 //         }
 //      }
-
-      if (metadata == 5) {
-         world.setBlockMetadataWithNotify(x, y, z, 6, 2);
-         world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
-         return true;
-      } else if (metadata == 6) {
-         world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-         world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
-         return true;
-      } else if ((Platform.getEnvironment() == Env.CLIENT)) {
+//      if (metadata == 5) {
+//         world.setBlockMetadataWithNotify(x, y, z, 6, 2);
+//         world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
+//         return true;
+//      } else if (metadata == 6) {
+//         world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+//         world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
+//         return true;
+//      } else
+      if ((world.isClientSide)) {
          return true;
       } else {
          if (metadata == 10) {

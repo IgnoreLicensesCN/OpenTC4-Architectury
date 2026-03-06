@@ -3,6 +3,9 @@ package thaumcraft.common.blocks.liquid;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 
@@ -21,5 +24,10 @@ public class ThaumcraftFluids {
         }
     }
     public static void init(){
+    }
+
+    public static class Tags{
+        public static final TagKey<Fluid> CRUCIBLE_HEATER = TagKey.create(
+                Registries.FLUID, new ResourceLocation("thaumcraft:crucuble_heater"));
     }
 }

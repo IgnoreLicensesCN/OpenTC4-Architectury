@@ -205,6 +205,8 @@ public class ThaumcraftBlocks {
     public static final BrainJarBlock BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
     public static final NodeJarBlock NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static final ItemCrateBlock ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
+    public static final CrucibleBlock CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -756,6 +758,8 @@ public class ThaumcraftBlocks {
                         "item_crate",
                         ItemCrateBlock::new
                 );
+        public static final RegistrySupplier<CrucibleBlock> SUPPLIER_CRUCIBLE =
+                BLOCKS.register("crucible", CrucibleBlock::new);
 
         static {
             BLOCKS.register();

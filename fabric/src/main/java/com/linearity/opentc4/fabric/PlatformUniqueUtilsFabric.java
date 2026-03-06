@@ -10,6 +10,7 @@ import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
+import dev.architectury.fluid.FluidStack;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.felnull.specialmodelloader.api.data.SpecialModelDataGenHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -18,6 +19,14 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.*;
@@ -40,7 +49,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -358,5 +370,90 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
             }
             return false;
         });
+    }
+
+    @Override
+    @SuppressWarnings({"removal", "UnstableApiUsage"})
+    public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack) {
+        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
+        if (result == null) return null;
+        var content = StorageUtil.findExtractableContent(result, null);
+        if (content == null) return null;
+        return FluidStack.create(content.resource().getFluid(), content.amount());
+    }
+
+    //return inserted
+    @Override
+    @SuppressWarnings({"removal", "UnstableApiUsage"})
+    public long increaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack) {
+        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
+        if (result == null) return 0;
+
+        return result.insert(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
+    }
+
+    //return decreased
+    @Override
+    @SuppressWarnings({"removal", "UnstableApiUsage"})
+    public long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack) {
+        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
+        if (result == null) return 0;
+
+        return result.extract(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
+    }
+
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
+    public void init(){
+        FluidStorage.SIDED.registerForBlocks(
+                (world, pos, state, be, context) -> new SingleSlotStorage<>() {
+                    @Override
+                    public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+                        if (be instanceof CrucibleBlockEntity crucible) {
+                            return crucible.insertFluid(resource.getFluid(), maxAmount);
+                        }
+                        return 0;
+                    }
+
+                    @Override
+                    public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+                        if (be instanceof CrucibleBlockEntity crucible) {
+                            return crucible.extractFluid(resource.getFluid(), maxAmount);
+                        }
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isResourceBlank() {
+                        return false;
+                    }
+
+                    @Override
+                    public FluidVariant getResource() {
+                        if (be instanceof CrucibleBlockEntity crucible) {
+                            return FluidVariant.of(crucible.getFluidStack()
+                                    .getFluid());
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public long getAmount() {
+                        if (be instanceof CrucibleBlockEntity crucible) {
+                            return crucible.getFluidAmount();
+                        }
+                        return 0;
+                    }
+
+                    @Override
+                    public long getCapacity() {
+                        if (be instanceof CrucibleBlockEntity crucible) {
+                            return crucible.getLiquidCapacity();
+                        }
+                        return 0;
+                    }
+                },
+                ThaumcraftBlocks.CRUCIBLE
+        );
     }
 }

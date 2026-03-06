@@ -127,7 +127,8 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
             this.markDirty();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          }
-      } else if (this.tank.getFluidAmount() > 0) {
+      }
+      else if (this.tank.getFluidAmount() > 0) {
          this.drawEffects();
       }
 

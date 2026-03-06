@@ -7,6 +7,7 @@ import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -27,16 +28,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.tags.ITag;
 import net.minecraftforge.registries.tags.ITagManager;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -310,6 +314,67 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         return slotTypes.toArray(new String[0]);
 
     }
+
+    @Override
+    public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack stack) {
+        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+        var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null); // 如果没有流体或不支持，返回空
+        if (handlerItem == null) {return null;}
+        handlerItem = handlerItem.copy();
+        return FluidStack.create(handlerItem.getFluid(), handlerItem.getAmount());
+    }
+
+    @Override
+    public long decreaseFluidStackToItemStack(ItemStack stack, FluidStack fluidStack) {
+        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+        var owningFluidStack = cap.map(handler -> handler.getFluidInTank(0)).orElse(null); // 如果没有流体或不支持，返回空
+        if (owningFluidStack == null) {return 0;}
+        if (owningFluidStack.getFluid() != fluidStack.getFluid()) {
+            return 0;
+        }
+        var owningAmount = owningFluidStack.getAmount();
+        var decreased = Math.min(owningAmount, fluidStack.getAmount());
+        var afterDecreased = owningAmount-decreased;
+        if (afterDecreased > Integer.MAX_VALUE){
+            afterDecreased = Integer.MAX_VALUE;
+        }
+        if (afterDecreased < 0) {
+            afterDecreased = 0;
+        }
+        owningFluidStack.setAmount((int)afterDecreased);
+        return decreased;
+    }
+
+    private record TankInfo(net.minecraftforge.fluids.FluidStack stack,int capacity){}
+    @Override
+    public long increaseFluidStackToItemStack(ItemStack stack, FluidStack fluidStack) {
+        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+        var tankInfo = cap.map(handler -> new TankInfo(handler.getFluidInTank(0),handler.getTankCapacity(0))).orElse(null); // 如果没有流体或不支持，返回空
+
+        if (tankInfo == null) {return 0;}
+        var owningFluidStack = tankInfo.stack(); // 如果没有流体或不支持，返回空
+        if (owningFluidStack.getFluid() != fluidStack.getFluid() && !owningFluidStack.isEmpty()) {
+            return 0;
+        }
+        var owningAmount = owningFluidStack.getAmount();
+        var remainingSpace = tankInfo.capacity() - owningAmount;
+        var increased = Math.min(remainingSpace, fluidStack.getAmount());
+        var afterIncreased = owningAmount+increased;
+        if (afterIncreased > Integer.MAX_VALUE){
+            afterIncreased = Integer.MAX_VALUE;
+        }
+        if (afterIncreased < 0) {
+            afterIncreased = 0;
+        }
+        owningFluidStack.setAmount((int)afterIncreased);
+        return increased;
+    }
+
+    @Override
+    public void init() {
+
+    }
+
     @Override
     public Optional<ItemStack> getEquippedItem(Player player, EquippedBaubleSlot key) {
         if (!"curios".equals(key.namespace())) return Optional.empty();

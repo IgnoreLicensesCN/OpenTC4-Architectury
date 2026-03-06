@@ -57,6 +57,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<VoidJarBlockEntity> VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
     public static final BlockEntityType<BrainJarBlockEntity> BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
     public static final BlockEntityType<NodeJarBlockEntity> NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
+    public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -263,6 +264,13 @@ public class ThaumcraftBlockEntities {
                 () -> BlockEntityType.Builder.of(
                         NodeJarBlockEntity::new,
                         ThaumcraftBlocks.NODE_JAR
+                ).build(null)
+        );
+        public static final RegistrySupplier<BlockEntityType<CrucibleBlockEntity>> SUPPLIER_CRUCIBLE = BLOCK_ENTITIES.register(
+                "crucible",
+                () -> BlockEntityType.Builder.of(
+                        CrucibleBlockEntity::new,
+                        ThaumcraftBlocks.CRUCIBLE
                 ).build(null)
         );
     }

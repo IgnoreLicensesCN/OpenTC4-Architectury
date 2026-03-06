@@ -123,18 +123,18 @@ public class ItemCrateBlock extends SuppressedWarningBlock implements SimpleWate
         arg2.gameEvent(arg, bl ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, arg3);
     }
     @Override
-    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, BlockPos arg5, boolean bl) {
-        if (!arg2.isClientSide) {
-            boolean flag = arg2.hasNeighborSignal(arg3);
-            if (flag != arg.getValue(POWERED)) {
-                if (arg.getValue(OPEN) != flag) {
-                    arg = arg.setValue(OPEN, flag);
-                    this.playSound(null, arg2, arg3, flag);
+    public void neighborChanged(BlockState selfState, Level level, BlockPos arg3, Block arg4, BlockPos arg5, boolean bl) {
+        if (!level.isClientSide) {
+            boolean receivedSignal = level.hasNeighborSignal(arg3);
+            if (receivedSignal != selfState.getValue(POWERED)) {
+                if (selfState.getValue(OPEN) != receivedSignal) {
+                    selfState = selfState.setValue(OPEN, receivedSignal);
+                    this.playSound(null, level, arg3, receivedSignal);
                 }
 
-                arg2.setBlock(arg3, arg.setValue(POWERED, flag), 2);
-                if (arg.getValue(WATERLOGGED)) {
-                    arg2.scheduleTick(arg3, Fluids.WATER, Fluids.WATER.getTickDelay(arg2));
+                level.setBlock(arg3, selfState.setValue(POWERED, receivedSignal), 2);
+                if (selfState.getValue(WATERLOGGED)) {
+                    level.scheduleTick(arg3, Fluids.WATER, Fluids.WATER.getTickDelay(level));
                 }
             }
         }

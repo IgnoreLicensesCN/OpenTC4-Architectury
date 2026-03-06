@@ -65,6 +65,8 @@ public final class OpenTC4 {
         EventListeners.init();
         ThaumcraftItemAspects.init();
 
+        platformUtils.init();
+
     }
     public static void onInitializeClient() {
         onInitialize();

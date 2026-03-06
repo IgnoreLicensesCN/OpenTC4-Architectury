@@ -3,6 +3,7 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
 import com.mojang.brigadier.CommandDispatcher;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.commands.CommandBuildContext;
@@ -12,13 +13,16 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,4 +83,9 @@ public abstract class PlatformUniqueUtils {
 
     public abstract String[] listBaubleTypes(LivingEntity livingEntity);
 
+    public abstract @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack);
+    public abstract long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);
+    public abstract long increaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);
+
+    public abstract void init();
 }
