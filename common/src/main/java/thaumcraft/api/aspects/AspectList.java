@@ -395,4 +395,9 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.visSize = 0;
 		this.aspectView.values().forEach(i -> this.visSize += i);
 	}
+
+    public void clear() {
+		this.visSize = 0;
+		this.aspects.clear();
+    }
 }

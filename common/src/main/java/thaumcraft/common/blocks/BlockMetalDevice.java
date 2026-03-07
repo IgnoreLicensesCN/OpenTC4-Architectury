@@ -217,29 +217,28 @@ public class BlockMetalDevice extends BlockContainer {
 //      }
 //   }
 
-   public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         int metadata = world.getBlockMetadata(i, j, k);
-         if (metadata == 0) {
-            TileCrucible tile = (TileCrucible) world.getTileEntity(i, j, k);
-            if (tile != null && entity instanceof EntityItem && !(entity instanceof EntitySpecialItem) && tile.heat > 150 && tile.tank.getFluidAmount() > 0) {
-               tile.attemptSmelt((EntityItem) entity);
-            } else {
-               ++this.delay;
-               if (this.delay < 10) {
-                  return;
-               }
-
-               this.delay = 0;
-               if (entity instanceof EntityLivingBase && tile != null && tile.heat > 150 && tile.tank.getFluidAmount() > 0) {
-                  entity.attackEntityFrom(DamageSource.inFire, 1.0F);
-                  world.playSoundEffect(i, j, k, "random.fizz", 0.4F, 2.0F + world.getRandom().nextFloat() * 0.4F);
-               }
-            }
-         }
-      }
-
-   }
+//   public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         int metadata = world.getBlockMetadata(i, j, k);
+//         if (metadata == 0) {
+//            TileCrucible tile = (TileCrucible) world.getTileEntity(i, j, k);
+//            if (tile != null && entity instanceof EntityItem && !(entity instanceof EntitySpecialItem) && tile.heat > 150 && tile.tank.getFluidAmount() > 0) {
+//               tile.attemptSmelt((EntityItem) entity);
+//            } else {
+//               ++this.delay;
+//               if (this.delay < 10) {
+//                  return;
+//               }
+//
+//               this.delay = 0;
+//               if (entity instanceof EntityLivingBase && tile != null && tile.heat > 150 && tile.tank.getFluidAmount() > 0) {
+//                  entity.attackEntityFrom(DamageSource.inFire, 1.0F);
+//                  world.playSoundEffect(i, j, k, "random.fizz", 0.4F, 2.0F + world.getRandom().nextFloat() * 0.4F);
+//               }
+//            }
+//         }
+//      }
+//   }
 
    public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
       int metadata = world.getBlockMetadata(i, j, k);
@@ -295,18 +294,18 @@ public class BlockMetalDevice extends BlockContainer {
       super.setBlockBoundsBasedOnState(world, i, j, k);
    }
 
-   @SideOnly(Side.CLIENT)
-   public void randomDisplayTick(World w, int i, int j, int k, Random r) {
-      if (r.nextInt(10) == 0) {
-         TileEntity te = w.getTileEntity(i, j, k);
-         if (te instanceof TileCrucible
-                 && ((TileCrucible) te).tank.getFluidAmount() > 0
-                 && ((TileCrucible) te).heat > 150) {
-            w.playSound(i, j, k, "liquid.lavapop", 0.1F + r.nextFloat() * 0.1F, 1.2F + r.nextFloat() * 0.2F, false);
-         }
-      }
-
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void randomDisplayTick(World w, int i, int j, int k, Random r) {
+//      if (r.nextInt(10) == 0) {
+//         TileEntity te = w.getTileEntity(i, j, k);
+//         if (te instanceof TileCrucible
+//                 && ((TileCrucible) te).tank.getFluidAmount() > 0
+//                 && ((TileCrucible) te).heat > 150) {
+//            w.playSound(i, j, k, "liquid.lavapop", 0.1F + r.nextFloat() * 0.1F, 1.2F + r.nextFloat() * 0.2F, false);
+//         }
+//      }
+//
+//   }
 
 //   public int damageDropped(int metadata) {
 //      if (metadata == 6) {
@@ -516,63 +515,63 @@ public class BlockMetalDevice extends BlockContainer {
       super.breakBlock(par1World, par2, par3, par4, par5, par6);
    }
 
-   public static boolean addToPlayerInventoryBiased(InventoryPlayer inv, ItemStack s) {
-      if (s == null || s.stackSize == 0 || s.getItem() == null) return false;
-      // logic: first try to stack, then try to place in original slot, last fallback to vanilla logic
-      for (ItemStack stack : inv.mainInventory) {
-         if (stack != null && stack.isStackable() && stack.getItem() == s.getItem() &&
-                 stack.stackSize < Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit())
-                 && (!stack.getHasSubtypes() || stack.getItemDamage() == s.getItemDamage()) &&
-                 ItemStack.areItemStackTagsEqual(stack, s)) {
-            int toAdd = Math.min(s.stackSize, Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit()) - stack.stackSize);
-            s.stackSize -= toAdd;
-            stack.stackSize += toAdd;
-            stack.animationsToGo = 5;
-            if (s.stackSize == 0) return true;
-         }
-      }
-      if (inv.currentItem >= 0 && inv.currentItem < InventoryPlayer.getHotbarSize() && inv.getCurrentItem() == null) {
-         inv.setInventorySlotContents(inv.currentItem, s);
-         return true;
-      } else {
-         return inv.addItemStackToInventory(s);
-      }
-   }
+//   public static boolean addToPlayerInventoryBiased(InventoryPlayer inv, ItemStack s) {
+//      if (s == null || s.stackSize == 0 || s.getItem() == null) return false;
+//      // logic: first try to stack, then try to place in original slot, last fallback to vanilla logic
+//      for (ItemStack stack : inv.mainInventory) {
+//         if (stack != null && stack.isStackable() && stack.getItem() == s.getItem() &&
+//                 stack.stackSize < Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit())
+//                 && (!stack.getHasSubtypes() || stack.getItemDamage() == s.getItemDamage()) &&
+//                 ItemStack.areItemStackTagsEqual(stack, s)) {
+//            int toAdd = Math.min(s.stackSize, Math.min(stack.getMaxStackSize(), inv.getInventoryStackLimit()) - stack.stackSize);
+//            s.stackSize -= toAdd;
+//            stack.stackSize += toAdd;
+//            stack.animationsToGo = 5;
+//            if (s.stackSize == 0) return true;
+//         }
+//      }
+//      if (inv.currentItem >= 0 && inv.currentItem < InventoryPlayer.getHotbarSize() && inv.getCurrentItem() == null) {
+//         inv.setInventorySlotContents(inv.currentItem, s);
+//         return true;
+//      } else {
+//         return inv.addItemStackToInventory(s);
+//      }
+//   }
    public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);
-      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT) {
-         FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem());
-         if (fs != null && fs.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
-            int volume = fs.amount;
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileCrucible) {
-               TileCrucible tile = (TileCrucible) te;
-               if (tile.tank.getFluidAmount() >= tile.tank.getCapacity()) {
-                  return true;
-               }
-
-               tile.fill(Direction.UNKNOWN, FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem()), true);
-               ItemStack emptyContainer = null;
-               FluidContainerRegistry.FluidContainerData[] fcs = FluidContainerRegistry.getRegisteredFluidContainerData();
-
-               for (FluidContainerRegistry.FluidContainerData fcd : fcs) {
-                  if (fcd.filledContainer.isItemEqual(player.inventory.getCurrentItem())) {
-                     emptyContainer = fcd.emptyContainer.copy();
-                  }
-               }
-
-               player.inventory.decrStackSize(player.inventory.currentItem, 1);
-               if (emptyContainer != null && !addToPlayerInventoryBiased(player.inventory, emptyContainer)) {
-                  player.dropPlayerItemWithRandomChoice(emptyContainer, false);
-               }
-
-               player.inventoryContainer.detectAndSendChanges();
-               te.markDirty();
-               world.markBlockForUpdate(x, y, z);
-               world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F);
-            }
-         }
-      }
+//      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT) {
+//         FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem());
+//         if (fs != null && fs.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
+//            int volume = fs.amount;
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileCrucible) {
+//               TileCrucible tile = (TileCrucible) te;
+//               if (tile.tank.getFluidAmount() >= tile.tank.getCapacity()) {
+//                  return true;
+//               }
+//
+//               tile.fill(Direction.UNKNOWN, FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem()), true);
+//               ItemStack emptyContainer = null;
+//               FluidContainerRegistry.FluidContainerData[] fcs = FluidContainerRegistry.getRegisteredFluidContainerData();
+//
+//               for (FluidContainerRegistry.FluidContainerData fcd : fcs) {
+//                  if (fcd.filledContainer.isItemEqual(player.inventory.getCurrentItem())) {
+//                     emptyContainer = fcd.emptyContainer.copy();
+//                  }
+//               }
+//
+//               player.inventory.decrStackSize(player.inventory.currentItem, 1);
+//               if (emptyContainer != null && !addToPlayerInventoryBiased(player.inventory, emptyContainer)) {
+//                  player.dropPlayerItemWithRandomChoice(emptyContainer, false);
+//               }
+//
+//               player.inventoryContainer.detectAndSendChanges();
+//               te.markDirty();
+//               world.markBlockForUpdate(x, y, z);
+//               world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "game.neutral.swim", 0.33F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.3F);
+//            }
+//         }
+//      }
 
 //      if (metadata == 1 && Platform.getEnvironment() != Env.CLIENT && !player.isSneaking() && player.getHeldItem() == null) {
 //         TileEntity te = world.getTileEntity(x, y, z);
@@ -765,42 +764,42 @@ public class BlockMetalDevice extends BlockContainer {
       }
    }
 
-   public void onPoweredBlockChange(Level par1World, int par2, int par3, int par4, boolean flag) {
-      int l = par1World.getBlockMetadata(par2, par3, par4);
-      if (l == 5 && flag) {
-         par1World.setBlockMetadataWithNotify(par2, par3, par4, 6, 2);
-         par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);
-      } else if (l == 6 && !flag) {
-         par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-         par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);
-      }
+//   public void onPoweredBlockChange(Level par1World, int par2, int par3, int par4, boolean flag) {
+//      int l = par1World.getBlockMetadata(par2, par3, par4);
+//      if (l == 5 && flag) {
+//         par1World.setBlockMetadataWithNotify(par2, par3, par4, 6, 2);
+//         par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);
+//      } else if (l == 6 && !flag) {
+//         par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+//         par1World.playAuxSFXAtEntity(null, 1003, par2, par3, par4, 0);
+//      }
+//
+//   }
 
-   }
-
-   public void onBlockPlacedBy(World world, int par2, int par3, int par4, EntityLivingBase ent, ItemStack stack) {
-      int l = MathHelper.floor_double((double) (ent.rotationYaw * 4.0F / 360.0F) + (double) 0.5F) & 3;
-      if (stack.getItemDamage() == 1) {
-         TileEntity tile = world.getTileEntity(par2, par3, par4);
-         if (tile instanceof TileAlembic) {
-            if (l == 0) {
-               ((TileAlembic) tile).facing = 2;
-            }
-
-            if (l == 1) {
-               ((TileAlembic) tile).facing = 5;
-            }
-
-            if (l == 2) {
-               ((TileAlembic) tile).facing = 3;
-            }
-
-            if (l == 3) {
-               ((TileAlembic) tile).facing = 4;
-            }
-         }
-      }
-
-   }
+//   public void onBlockPlacedBy(World world, int par2, int par3, int par4, EntityLivingBase ent, ItemStack stack) {
+//      int l = MathHelper.floor_double((double) (ent.rotationYaw * 4.0F / 360.0F) + (double) 0.5F) & 3;
+//      if (stack.getItemDamage() == 1) {
+//         TileEntity tile = world.getTileEntity(par2, par3, par4);
+//         if (tile instanceof TileAlembic) {
+//            if (l == 0) {
+//               ((TileAlembic) tile).facing = 2;
+//            }
+//
+//            if (l == 1) {
+//               ((TileAlembic) tile).facing = 5;
+//            }
+//
+//            if (l == 2) {
+//               ((TileAlembic) tile).facing = 3;
+//            }
+//
+//            if (l == 3) {
+//               ((TileAlembic) tile).facing = 4;
+//            }
+//         }
+//      }
+//
+//   }
 
    public int getLightValue(IBlockAccess world, int x, int y, int z) {
       int md = world.getBlockMetadata(x, y, z);

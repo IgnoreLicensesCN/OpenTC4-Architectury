@@ -17,15 +17,21 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import thaumcraft.common.blocks.abstracts.IFurnaceAttachmentBlock;
-import thaumcraft.common.blocks.abstracts.IInfernalFurnaceTickDiscounter;
+import thaumcraft.common.blocks.abstracts.*;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
+import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.Objects;
-import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //TODO:Render(BlockEntity may required)
-public class ArcaneBellowBlock extends SuppressedWarningBlock implements IInfernalFurnaceTickDiscounter, IFurnaceAttachmentBlock {
+public class ArcaneBellowBlock
+        extends SuppressedWarningBlock
+        implements
+        IInfernalFurnaceTickDiscounter,
+        IVanillaFurnaceAttachmentBlock,
+        IThaumcraftFurnaceAttachmentBlock,
+        ICrucibleAttachmentBlock
+{
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneBellowBlock(Properties properties) {
         super(properties);
@@ -85,6 +91,7 @@ public class ArcaneBellowBlock extends SuppressedWarningBlock implements IInfern
         return 20;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean attachedToBlock(Level level,BlockPos attachmentPos,BlockState attachmentState,BlockPos toAttachPos){
         if (level.hasNeighborSignal(attachmentPos)){
             return false;
@@ -93,10 +100,7 @@ public class ArcaneBellowBlock extends SuppressedWarningBlock implements IInfern
             return false;
         }
         var facingDir = attachmentState.getValue(FACING);
-        if (!Objects.equals(attachmentPos.relative(facingDir),toAttachPos)){
-            return false;
-        }
-        return true;
+        return Objects.equals(attachmentPos.relative(facingDir), toAttachPos);
     }
 
     @Override
@@ -119,6 +123,18 @@ public class ArcaneBellowBlock extends SuppressedWarningBlock implements IInfern
         if (!attachedToBlock(level, attachmentPos, attachmentState, furnacePos)) {
             return;
         }
-        be.setRequiredCookTime((int)(be.getRequiredCookTime() - defaultFurnaceRequiredCookTime*0.125));
+        IThaumcraftFurnaceAttachmentBlock.super.attachmentOnCalculatingRequiredCookTime(
+                level, be, furnaceState, furnacePos, attachmentState, attachmentPos, defaultFurnaceRequiredCookTime
+        );
+    }
+
+    @Override
+    public void onCrucibleHeating(Level level, BlockPos attachmentPos, BlockState attachmentState, CrucibleBlockEntity crucibleBlockEntity) {
+        if (!attachedToBlock(level, attachmentPos, attachmentState, crucibleBlockEntity.getBlockPos())) {
+            return;
+        }
+        ICrucibleAttachmentBlock.super.onCrucibleHeating(
+                level, attachmentPos, attachmentState, crucibleBlockEntity
+        );
     }
 }

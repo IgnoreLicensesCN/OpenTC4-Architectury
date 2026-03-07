@@ -170,7 +170,7 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 		return catalyst.matches(cat);
 	}
 
-	public AspectList<Aspect> removeMatching(AspectList<Aspect> itags) {
+	public AspectList<Aspect> removeMatchingReturnNew(AspectList<Aspect> itags) {
 		AspectList<Aspect> temptags = new AspectList<>(itags);
 
 //		temptags.aspects.putAll(itags.aspects);
@@ -181,6 +181,11 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 
 		itags = temptags;
 		return itags;
+	}
+	public void removeMatching(AspectList<Aspect> itags) {
+		for (var tag:aspects.getAspectTypes()) {
+			itags.reduceAndRemoveIfNotPositive(tag, aspects.getAmount(tag));
+		}
 	}
 
 	public ItemStack getRecipeOutput() {

@@ -1,6 +1,10 @@
 package thaumcraft.common.blocks.crafted;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +26,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
@@ -87,7 +93,7 @@ public class CrucibleBlock
         });
     }
     @Override
-    public InteractionResult use(
+    public @NotNull InteractionResult use(
             BlockState state,
             Level level,
             BlockPos pos,
@@ -123,6 +129,99 @@ public class CrucibleBlock
 
     @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        return ;//TODO:Clear
+        var player = useOnContext.getPlayer();
+        if (player == null) {
+            return InteractionResult.PASS;
+        }
+        var sneaking = player.isCrouching();
+        if (!sneaking) {
+            return InteractionResult.PASS;
+        }
+        var level = useOnContext.getLevel();
+        var pos = useOnContext.getClickedPos();
+        if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible) {
+            crucible.spillRemnants();
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+        if (randomSource.nextInt(10) == 0) {
+            if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible
+                    && crucible.getFluidAmount() > 0
+                    && crucible.boiled()) {
+                level.playSound(
+                        null,
+                        blockPos,
+                        SoundEvents.LAVA_POP,
+                        SoundSource.BLOCKS,
+                        0.1F + randomSource.nextFloat() * 0.1F,
+                        1.2F + randomSource.nextFloat() * 0.2F);
+            }
+        }
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState blockState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+        if (level.getBlockEntity(blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
+            return provider.getComparatorSignal();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
+        if (level.isClientSide){
+            if (level instanceof ClientLevel clientLevel) {
+                if (i == 1){
+                    ClientFXUtils.blockSparkle(
+                            clientLevel,
+                            blockPos.getX(),
+                            blockPos.getY(),
+                            blockPos.getZ(),
+                            -9999,
+                            5
+                    );
+                    return true;
+                } else if(i == 2){
+                    ClientFXUtils.crucibleBoilSound(
+                            clientLevel,
+                            blockPos.getX(),
+                            blockPos.getY(),
+                            blockPos.getZ()
+                    );
+
+                    if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible) {
+                        for(int q = 0; q < 10; ++q) {
+                            ClientFXUtils.crucibleBoil(clientLevel,
+                                    blockPos.getX(),
+                                    blockPos.getY(),
+                                    blockPos.getZ(),
+                                    crucible,
+                                    j);
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+
+        return super.triggerEvent(blockState, level, blockPos, i, j);
+    }
+
+    @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+        if (!level.isClientSide) {
+            if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible) {
+                crucible.spillRemnants();
+            }
+        }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 }

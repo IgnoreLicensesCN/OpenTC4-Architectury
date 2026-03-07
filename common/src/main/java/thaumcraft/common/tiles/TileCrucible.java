@@ -217,7 +217,6 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
    }
 
    public void ejectItem(ItemStack items) {
-      int stacks = 1;
       boolean first = true;
 
       do {
@@ -254,7 +253,7 @@ public class TileCrucible extends TileThaumcraft implements IFluidHandler, IWand
                FMLCommonHandler.instance().firePlayerCraftingEvent(p, out, new InventoryFake(new ItemStack[]{item}));
             }
 
-            this.aspects = rc.removeMatching(this.aspects);
+            this.aspects = rc.removeMatchingReturnNew(this.aspects);
             this.tank.drain(50, true);
             this.ejectItem(out);
             event = true;

@@ -17,8 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 //TODO:i dont remember if it's reliable,verify it
 public abstract class FiniteLiquidBlock extends LiquidBlock {
-
-    public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 8);
+    public static final int MIN_LEVEL = 1;
+    public static final int MAX_LEVEL = 8;
+    public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, MAX_LEVEL);
     private final Direction gravity;
 
     public FiniteLiquidBlock(FlowingFluid fluid, Properties props, Direction gravity) {

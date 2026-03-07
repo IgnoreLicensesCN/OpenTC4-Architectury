@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import thaumcraft.common.blocks.abstracts.IFurnaceAttachmentBlock;
+import thaumcraft.common.blocks.abstracts.IVanillaFurnaceAttachmentBlock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -108,7 +108,7 @@ public abstract class AbstractFurnaceBlockEntityMixin implements AbstractFurnace
             for (Direction direction : Direction.values()) {
                 BlockPos expectedAttachmentPos = blockPos.relative(direction);
                 BlockState expectedAttachmentState = level.getBlockState(expectedAttachmentPos);
-                if (expectedAttachmentState.getBlock() instanceof IFurnaceAttachmentBlock attachmentBlock) {
+                if (expectedAttachmentState.getBlock() instanceof IVanillaFurnaceAttachmentBlock attachmentBlock) {
                     attachmentBlock.onVanillaFurnaceBurning(level,abstractFurnaceBlockEntity,blockState,blockPos,expectedAttachmentState,expectedAttachmentPos,ci);
                 }
             }

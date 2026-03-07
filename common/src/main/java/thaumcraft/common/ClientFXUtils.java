@@ -20,12 +20,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.migrated.particles.*;
 import thaumcraft.client.fx.migrated.beams.*;
 import thaumcraft.client.fx.migrated.bolt.*;
 import thaumcraft.client.fx.migrated.other.*;
-import thaumcraft.common.tiles.TileCrucible;
+import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 import java.awt.*;
@@ -33,7 +32,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 //all method here should check platform
-@SuppressWarnings("resource unused")
+@SuppressWarnings({"resource","unused"})
 public class ClientFXUtils {
 
     public static ClientLevel getClientWorld() {
@@ -205,8 +204,7 @@ public class ClientFXUtils {
         );
     }
 
-    public static void crucibleBoil(ClientLevel world, int xCoord, int yCoord, int zCoord, TileCrucible tile, int j) {
-
+    public static void crucibleBoil(ClientLevel world, int xCoord, int yCoord, int zCoord, CrucibleBlockEntity tile, int j) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -214,23 +212,21 @@ public class ClientFXUtils {
             FXBubble fb = new FXBubble(
                     world,
                     (float) xCoord + 0.2F + world.getRandom().nextFloat() * 0.6F,
-                    (float) yCoord + 0.1F + tile.getFluidHeight(),
+                    (float) yCoord + 0.1F + CrucibleBlockEntity.ClientTickContext.getFluidHeight(tile),
                     (float) zCoord + 0.2F + world.getRandom().nextFloat() * 0.6F,
                     0.0F,
                     0.0F,
                     0.0F,
                     3
             );
-            if (tile.aspects.isEmpty()) {
+            if (tile.owningAspects.isEmpty()) {
                 fb.setRBGColorF(
                         1.0F,
                         1.0F,
                         1.0F
                 );
             } else {
-                var aspects = tile.aspects.keySet().toArray(new Aspect[0]);
-
-                Color color = new Color(aspects[world.getRandom().nextInt(aspects.length)].getColor());
+                Color color = new Color(tile.owningAspects.randomAspect(world.random).getColor());
                 fb.setRBGColorF(
                         (float) color.getRed() / 255.0F,
                         (float) color.getGreen() / 255.0F,
@@ -720,9 +716,9 @@ public class ClientFXUtils {
             if (world.getRandom().nextInt(10) == 0) {
                 FXSparkleTrail st = new FXSparkleTrail(
                         world,
-                        source.getX() - (double) (entityWidth / 2.0F) + (double) (world.getRandom().nextFloat() * entityWidth),
-                        source.getY() + (double) (world.getRandom().nextFloat() * entityHeight),
-                        source.getZ() - (double) (entityWidth / 2.0F) + (double) (world.getRandom().nextFloat() * entityWidth),
+                        source.getX() - (entityWidth / 2.0F) + (world.getRandom().nextFloat() * entityWidth),
+                        source.getY() + (world.getRandom().nextFloat() * entityHeight),
+                        source.getZ() - (entityWidth / 2.0F) + (world.getRandom().nextFloat() * entityWidth),
                         target,
                         r,
                         g,
@@ -734,9 +730,9 @@ public class ClientFXUtils {
             } else {
                 FXSmokeTrail st = new FXSmokeTrail(
                         world,
-                        source.getX() - (double) (entityWidth / 2.0F) + (double) (world.getRandom().nextFloat() * entityWidth),
-                        source.getY() + (double) (world.getRandom().nextFloat() * entityHeight),
-                        source.getZ() - (double) (entityWidth / 2.0F) + (double) (world.getRandom().nextFloat() * entityWidth),
+                        source.getX() - (entityWidth / 2.0F) + (world.getRandom().nextFloat() * entityWidth),
+                        source.getY() + (world.getRandom().nextFloat() * entityHeight),
+                        source.getZ() - (entityWidth / 2.0F) + (world.getRandom().nextFloat() * entityWidth),
                         target,
                         r,
                         g,
@@ -871,9 +867,9 @@ public class ClientFXUtils {
         var entityHeight = boundingBox.maxY - boundingBox.minY;
         FXBreaking fx = new FXBreaking(
                 (ClientLevel) e.level(),
-                e.getX() + (double) f2,
-                e.getY() + (double) (e.level().getRandom().nextFloat() * entityHeight),
-                e.getZ() + (double) f3,
+                e.getX() + f2,
+                e.getY() + (e.level().getRandom().nextFloat() * entityHeight),
+                e.getZ() + f3,
                 Items.SLIME_BALL
         );
         if (e.level().getRandom().nextBoolean()) {
@@ -940,7 +936,7 @@ public class ClientFXUtils {
         FXBreaking fx = new FXBreaking(
                 (ClientLevel) e.level(),
                 e.getX(),
-                e.getY() + (double) (e.level().getRandom().nextFloat() * entityHeight),
+                e.getY() + (e.level().getRandom().nextFloat() * entityHeight),
                 e.getZ(),
                 Items.SLIME_BALL
         );
@@ -983,7 +979,7 @@ public class ClientFXUtils {
         var boundingBox = e.getBoundingBox();
         var entityHeight = (float) (boundingBox.maxY - boundingBox.minY);
         for (int j = 0; (float) j < 2.0F * entityHeight; ++j) {
-            float f = (float) (e.level().getRandom().nextFloat() * (float) Math.PI * entityHeight);
+            float f = (e.level().getRandom().nextFloat() * (float) Math.PI * entityHeight);
             float f1 = e.level().getRandom().nextFloat() * 0.5F + 0.5F;
             float f2 = MathHelper.sin(f) * entityHeight * 0.25F * f1;
             float f3 = MathHelper.cos(f) * entityHeight * 0.25F * f1;

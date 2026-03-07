@@ -22,7 +22,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
-import thaumcraft.common.blocks.abstracts.IFurnaceAttachmentBlock;
+import thaumcraft.common.blocks.abstracts.IThaumcraftFurnaceAttachmentBlock;
 import thaumcraft.common.blocks.crafted.AlchemicalFurnaceBlock;
 import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeeder;
 import thaumcraft.common.menu.menu.AlchemicalFurnaceMenu;
@@ -204,7 +204,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             var selfPos = getBlockPos();
             var pos = selfPos.relative(dir);
             var dirState = this.level.getBlockState(pos);
-            if (dirState.getBlock() instanceof IFurnaceAttachmentBlock attachment){
+            if (dirState.getBlock() instanceof IThaumcraftFurnaceAttachmentBlock attachment){
                 attachment.onThaumcraftFurnaceBurning(
                         level,
                         this,
@@ -222,7 +222,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             var selfPos = getBlockPos();
             var pos = selfPos.relative(dir);
             var dirState = this.level.getBlockState(pos);
-            if (dirState.getBlock() instanceof IFurnaceAttachmentBlock attachment){
+            if (dirState.getBlock() instanceof IThaumcraftFurnaceAttachmentBlock attachment){
                 attachment.attachmentOnCalculatingRequiredCookTime(
                         level,
                         this,
@@ -241,7 +241,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             var selfPos = getBlockPos();
             var pos = selfPos.relative(dir);
             var dirState = this.level.getBlockState(pos);
-            if (dirState.getBlock() instanceof IFurnaceAttachmentBlock attachment){
+            if (dirState.getBlock() instanceof IThaumcraftFurnaceAttachmentBlock attachment){
                 attachment.onThaumcraftFurnaceStartBurningFuel(
                         level,
                         this,

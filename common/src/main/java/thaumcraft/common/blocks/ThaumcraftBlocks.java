@@ -786,6 +786,13 @@ public class ThaumcraftBlocks {
 
     public static class Tags{
         public static final TagKey<Block> JAR_BLOCK = TagKey.create(
-                Registries.BLOCK, new ResourceLocation("thaumcraft:jar_block"));//TODO:Jars put in
+                Registries.BLOCK, new ResourceLocation("thaumcraft:jar_block")
+        );//TODO:Jars put in
+        public static final TagKey<Block> CRUCIBLE_HEATER = TagKey.create(
+                Registries.BLOCK, new ResourceLocation("thaumcraft:crucible_heater")
+        );
+        public static final TagKey<Block> REDSTONE_CONTROLLABLE_CRUCIBLE_HEATER = TagKey.create(
+                Registries.BLOCK, new ResourceLocation("thaumcraft:redstone_controllable_crucible_heater")
+        );
     }
 }

@@ -1,5 +1,6 @@
 package com.linearity.opentc4;
 
+import com.linearity.opentc4.utils.compoundtag.accessors.architectury.FluidStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
@@ -260,6 +261,11 @@ public class Consts {
     }
     public static class NodeJarTagAccessors {
         public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("jar_node_info");
+    }
+    public static class CrucibleTagAccessors {
+        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+        public static final IntTagAccessor HEAT = new IntTagAccessor("heat");
+        public static final FluidStackTagAccessor FLUID = new FluidStackTagAccessor("fluid");
     }
 
 }
