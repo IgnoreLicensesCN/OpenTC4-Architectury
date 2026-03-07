@@ -12,6 +12,12 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (viewingList != null) {
             this.aspects.putAll(viewingList.getAspectView());
         }
+        int hashTemp = 0;
+        for (var aspEntry:this.aspects.entrySet()){
+            hashTemp *= 31;
+            hashTemp += aspEntry.getKey().hashCode() * aspEntry.getValue();
+        }
+
     }
     public UnmodifiableAspectList(LinkedHashMap<A, Integer> aspects) {
         super(aspects);
@@ -23,6 +29,17 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         super();
     }
 
+
+    private final int hash;
+    //init hash
+    {
+        int hashTemp = 0;
+        for (var aspEntry:this.aspects.entrySet()){
+            hashTemp *= 31;
+            hashTemp += aspEntry.getKey().hashCode() * aspEntry.getValue();
+        }
+        this.hash = hashTemp;
+    }
     @Override
     public Integer put(A aspect, int amount) {
         throw new RuntimeException("Unmodifiable!");
@@ -172,5 +189,10 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         out.aspects.put(aspect4,value4);
 
         return out;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }

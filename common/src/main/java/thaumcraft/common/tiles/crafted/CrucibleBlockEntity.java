@@ -22,6 +22,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -139,6 +140,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
+        this.addedAspect = true;
         this.owningAspects.addAll(OWNING_ASPECTS.readFromCompoundTag(compoundTag));
         this.heat = HEAT.readFromCompoundTag(compoundTag);
         this.fluidStack = FLUID.readFromCompoundTag(compoundTag);
@@ -268,7 +270,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
         }
 
         if (this.owningAspects.visSize() > getAspectCapacity() && this.counter % 5L == 0L) {
-            AspectList<Aspect> tt = this.takeRandomFromSource(random);
+            this.takeRandomFromSource(random);
             this.spill();
         }
 
@@ -284,8 +286,10 @@ public class CrucibleBlockEntity extends TileThaumcraft
                 this.owningAspects.reduceAndRemoveIfNotPositive(a, 1);
                 if (a instanceof CompoundAspect compoundAspect) {
                     if (random.nextBoolean()) {
+                        this.addedAspect = true;
                         this.owningAspects.addAll(compoundAspect.components.aspectA(), 1);
                     } else {
+                        this.addedAspect = true;
                         this.owningAspects.addAll(compoundAspect.components.aspectB(), 1);
                     }
                 } else {
@@ -396,7 +400,13 @@ public class CrucibleBlockEntity extends TileThaumcraft
         }
     }
 
-    //TODO:Cache Recipe?
+    public void onPlayerFinishedCrucibleRecipe(Player player,ItemEntity catalyst,CrucibleRecipe usedRecipe) {
+
+    }
+
+    private @Nullable CrucibleRecipe cachedRecipe = null;
+    private boolean addedAspect = false;
+
     public void attemptSmelt(ItemEntity itemEntity) {
         if (level == null){
             return;
@@ -411,30 +421,28 @@ public class CrucibleBlockEntity extends TileThaumcraft
             boolean burnIntoAspect = true;
             if (thrower instanceof Player player){
 
-                int highestRecipeVisSize = Integer.MIN_VALUE;
-                CrucibleRecipe recipeChosen = null;
-
-                for (var recipe:CrucibleRecipe.getCrucibleRecipes()){
-                    if (recipe.research.isPlayerCompletedResearch(player) && recipe.matches(owningAspects,stack)){
-                        if (recipe.aspects.visSize() >= highestRecipeVisSize) {
-                            highestRecipeVisSize = recipe.aspects.visSize();
-                            recipeChosen = recipe;
-                        }
-                    }
+                if (this.addedAspect) {
+                    this.cachedRecipe = null;
+                    this.addedAspect = false;
                 }
+                CrucibleRecipe recipeChosen = cachedRecipe;
+                if (recipeChosen == null){
+                    recipeChosen = CrucibleRecipe.findRecipeCanUse(player,stack,owningAspects);
+                }
+
                 if (recipeChosen != null && this.getFluidAmount() > 0) {
                     burnIntoAspect = false;
                     recipeChosen.removeMatching(this.owningAspects);
                     this.decreaseFluid(50);
+                    ItemStack out = recipeChosen.getRecipeOutput().copy();
+                    this.ejectItem(out);
+                    this.onPlayerFinishedCrucibleRecipe(player,itemEntity,recipeChosen);
                     event = true;
                     stacksize -= 1;
                     stack.shrink(1);
                     this.counter = -250L;
 
-//                TODO:Crucible crafting API
-//                if (p != null) {
-//                    FMLCommonHandler.instance().firePlayerCraftingEvent(p, out, new InventoryFake(new ItemStack[]{stack}));
-//                }
+//                TODO:better crucible crafting API
                 }
             }
             if (burnIntoAspect){
@@ -454,6 +462,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
                             1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.4F);
                     return;
                 }
+                this.addedAspect = true;
                 this.owningAspects.addAll(burntInto);
                 bubble = true;
                 --stacksize;

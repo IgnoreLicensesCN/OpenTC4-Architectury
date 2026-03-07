@@ -39,8 +39,8 @@ import java.util.Random;
 //    "tile.blockWoodenDevice.2.name": "奥术压力盘",
 //    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",
 //    "tile.blockWoodenDevice.5.name": "奥术钻探机",
-//    "tile.blockWoodenDevice.6.name": "宏伟之树木板",
-//    "tile.blockWoodenDevice.7.name": "银树木板",
+//    "tile.blockWoodenDevice.6.name": "宏伟之树木板",--done
+//    "tile.blockWoodenDevice.7.name": "银树木板",--done
 //    "tile.blockWoodenDevice.8.name": "血腥教徒旗帜",
 //    "tile.blockWoodenDevice.8.0.name": "白色旗帜",
 //    "tile.blockWoodenDevice.8.1.name": "橙色旗帜",

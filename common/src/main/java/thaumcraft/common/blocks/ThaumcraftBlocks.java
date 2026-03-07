@@ -759,7 +759,10 @@ public class ThaumcraftBlocks {
                         ItemCrateBlock::new
                 );
         public static final RegistrySupplier<CrucibleBlock> SUPPLIER_CRUCIBLE =
-                BLOCKS.register("crucible", CrucibleBlock::new);
+                BLOCKS.register(
+                        "crucible",
+                        CrucibleBlock::new
+                );
 
         static {
             BLOCKS.register();

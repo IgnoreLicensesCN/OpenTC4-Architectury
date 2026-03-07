@@ -5,16 +5,15 @@ import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
+import com.linearity.opentc4.utils.FastCrucibleRecipeMatcher;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.aspects.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.CrucibleRecipeResourceLocation;
 
@@ -34,10 +33,16 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 
 	private static final List<CrucibleRecipe> crucibleRecipes = new CopyOnWriteArrayList<>();
 	private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
+	private static final FastCrucibleRecipeMatcher fastCrucibleRecipeMatcher = new FastCrucibleRecipeMatcher();
+
 	private final Function<ItemStack,ItemStack> recipeOutputGetter;
 
 	public final RecipeItemMatcher catalyst;
-	public final AspectList<Aspect> aspects;
+	//if dynamic,plz set this
+	// to least aspects and vis size of this recipe
+	// and override #matches to match dynamic condition.
+	// to ensure fastCrucibleRecipeMatcher works
+	public final UnmodifiableAspectList<Aspect> aspects;
 	public final ResearchItem research;
 
 	public final int hash;
@@ -49,12 +54,13 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
     private final @NotNull List<List<ItemStack>> inputForAspectCalculation;
     private final @NotNull ItemStack outputForAspectCalculation;
 
+	//will auto register
 	public CrucibleRecipe(
 			CrucibleRecipeResourceLocation id,
             ResearchItem researchKey,
             Function<ItemStack,ItemStack> resultGetter,
             RecipeItemMatcher cat,
-            AspectList<Aspect> tags,
+			UnmodifiableAspectList<Aspect> tags,
             RecipeItemMatcher outputMatcher
     ) {
 		this(id,researchKey,resultGetter,cat,tags,outputMatcher,null,null,null);
@@ -64,7 +70,7 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
             ResearchItem researchKey,
             Function<ItemStack,ItemStack> resultGetter,
             RecipeItemMatcher cat,
-            AspectList<Aspect> tags,
+			UnmodifiableAspectList<Aspect> tags,
             RecipeItemMatcher outputMatcher,
             ItemStack outputForAspectCalculation,
             List<List<ItemStack>> inputForAspectCalculation,
@@ -106,11 +112,6 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	@UnmodifiableView
 	public static List<CrucibleRecipe> getCrucibleRecipes() {
 		return unmodifiableCrucibleRecipes;
-	}
-
-	public static CrucibleRecipe addCrucibleRecipe(CrucibleRecipe rc) {
-		crucibleRecipes.add(rc);
-		return rc;
 	}
 
 	/**
@@ -259,12 +260,21 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	private static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES = new ConcurrentHashMap<>();
 	@Unmodifiable
 	public static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES_VIEW = Collections.unmodifiableMap(CRUCIBLE_RECIPES);
-	@Override
+
+	//if you want a fake recipe plz override this and do not register.
+	 @Override
 	protected void registerRecipe(CrucibleRecipeResourceLocation recipeID) {
 		var got = CRUCIBLE_RECIPES.get(recipeID);
 		if (got != null) {
 			throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
 		}
 		CRUCIBLE_RECIPES.put(recipeID, this);
+		crucibleRecipes.add(this);
+		fastCrucibleRecipeMatcher.registerRecipe(this);
+	}
+
+	@Nullable
+	public static CrucibleRecipe findRecipeCanUse(Player player, ItemStack stack, AspectList<Aspect> aspectListCanUse){
+		 return fastCrucibleRecipeMatcher.findRecipeCanUse(player, stack, aspectListCanUse);
 	}
 }

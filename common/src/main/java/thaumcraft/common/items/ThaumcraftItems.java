@@ -224,6 +224,7 @@ public class ThaumcraftItems {
     public static final BlockItem BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
     public static final NodeJarBlockItem NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static final BlockItem ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
+    public static final BlockItem CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
 
     //===========================================================================================
 
@@ -773,6 +774,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ITEM_CRATE = ITEMS.register(
                 "item_crate",
                 () -> new BlockItem(ThaumcraftBlocks.ITEM_CRATE,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_CRUCIBLE = ITEMS.register(
+                "crucible",
+                () -> new BlockItem(ThaumcraftBlocks.CRUCIBLE,new Item.Properties())
         );
 
         static {

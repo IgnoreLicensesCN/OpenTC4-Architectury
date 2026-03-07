@@ -48,6 +48,7 @@ block_with_item_names = [
     ['tile.blockMetalDevice.9.name','alchemical_construct'],
     ['tile.blockMetalDevice.1.name', 'arcane_alembic'],
     ['tile.blockMetalDevice.5.name', 'item_crate'],
+    ['tile.blockMetalDevice.5.name', 'crucible'],
     ["tile.blockAlchemyFurnace.name",['advanced_alchemical_furnace_alembic','advanced_alchemical_furnace_upper_fence','advanced_alchemical_furnace_nozzle','advanced_alchemical_furnace_base_corner','advanced_alchemical_furnace_base']],
     ['tile.blockJar.0.name','essentia_jar'],
     ['tile.blockJar.1.name','brain_jar'],
