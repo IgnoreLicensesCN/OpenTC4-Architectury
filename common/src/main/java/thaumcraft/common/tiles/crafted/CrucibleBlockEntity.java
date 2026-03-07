@@ -436,13 +436,13 @@ public class CrucibleBlockEntity extends TileThaumcraft
                     this.decreaseFluid(50);
                     ItemStack out = recipeChosen.getRecipeOutput().copy();
                     this.ejectItem(out);
+//                TODO:better crucible crafting API
                     this.onPlayerFinishedCrucibleRecipe(player,itemEntity,recipeChosen);
                     event = true;
                     stacksize -= 1;
                     stack.shrink(1);
                     this.counter = -250L;
 
-//                TODO:better crucible crafting API
                 }
             }
             if (burnIntoAspect){
