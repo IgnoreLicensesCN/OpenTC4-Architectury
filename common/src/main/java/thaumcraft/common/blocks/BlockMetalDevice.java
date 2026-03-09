@@ -501,19 +501,19 @@ public class BlockMetalDevice extends BlockContainer {
       super.onNeighborBlockChange(world, x, y, z, nbid);
    }
 
-   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
-      InventoryUtils.dropItems(par1World, par2, par3, par4);
-      TileEntity te = par1World.getTileEntity(par2, par3, par4);
-      if (te instanceof TileCrucible) {
-         ((TileCrucible) te).spillRemnants();
-      } else if (te instanceof TileAlembic && ((TileAlembic) te).aspectFilter != null) {
-         par1World.spawnEntityInWorld(new EntityItem(par1World, (float) par2 + 0.5F, (float) par3 + 0.5F, (float) par4 + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
-      } else if (te instanceof TileArcaneLamp) {
-         ((TileArcaneLamp) te).removeLights();
-      }
-
-      super.breakBlock(par1World, par2, par3, par4, par5, par6);
-   }
+//   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
+//      InventoryUtils.dropItems(par1World, par2, par3, par4);
+//      TileEntity te = par1World.getTileEntity(par2, par3, par4);
+//      if (te instanceof TileCrucible) {
+//         ((TileCrucible) te).spillRemnants();
+//      } else if (te instanceof TileAlembic && ((TileAlembic) te).aspectFilter != null) {
+//         par1World.spawnEntityInWorld(new EntityItem(par1World, (float) par2 + 0.5F, (float) par3 + 0.5F, (float) par4 + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
+//      } else if (te instanceof TileArcaneLamp) {
+//         ((TileArcaneLamp) te).removeLights();
+//      }
+//
+//      super.breakBlock(par1World, par2, par3, par4, par5, par6);
+//   }
 
 //   public static boolean addToPlayerInventoryBiased(InventoryPlayer inv, ItemStack s) {
 //      if (s == null || s.stackSize == 0 || s.getItem() == null) return false;

@@ -24,6 +24,7 @@ import thaumcraft.common.blocks.crafted.jars.essentia.EssentiaJarBlock;
 import thaumcraft.common.blocks.crafted.jars.essentia.VoidJarBlock;
 import thaumcraft.common.blocks.crafted.jars.other.BrainJarBlock;
 import thaumcraft.common.blocks.crafted.jars.other.NodeJarBlock;
+import thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
@@ -206,6 +207,7 @@ public class ThaumcraftBlocks {
     public static final NodeJarBlock NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static final ItemCrateBlock ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
     public static final CrucibleBlock CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
+    public static final ArcaneLampBlock ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -762,6 +764,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "crucible",
                         CrucibleBlock::new
+                );
+        public static final RegistrySupplier<ArcaneLampBlock> SUPPLIER_ARCANE_LAMP =
+                BLOCKS.register(
+                        "arcane_lamp",
+                        ArcaneLampBlock::new
                 );
 
         static {

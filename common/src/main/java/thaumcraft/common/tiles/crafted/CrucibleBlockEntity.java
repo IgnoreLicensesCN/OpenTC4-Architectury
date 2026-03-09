@@ -2,11 +2,11 @@ package thaumcraft.common.tiles.crafted;
 
 import com.google.common.collect.MapMaker;
 import dev.architectury.fluid.FluidStack;
+import io.netty.util.internal.UnstableApi;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -37,7 +37,6 @@ import thaumcraft.common.blocks.abstracts.ICrucibleAttachmentBlock;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.entities.EntitySpecialItem;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.awt.*;
@@ -361,12 +360,14 @@ public class CrucibleBlockEntity extends TileThaumcraft
             }
 
             this.owningAspects.clear();
-            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.CRUCIBLE, 2, 5);
+            if (this.level != null) {
+                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.CRUCIBLE, 2, 5);
+            }
         }
 
     }
 
-
+    @SuppressWarnings("UnusedReturnValue")
     public AspectList<Aspect> takeRandomFromSource(RandomSource random) {
         AspectList<Aspect>output = new AspectList<>();
         if (!this.owningAspects.isEmpty()) {
@@ -400,6 +401,10 @@ public class CrucibleBlockEntity extends TileThaumcraft
         }
     }
 
+    //lazy to set API and you may have to mixin this now
+    //if it still here when i successfully compile this mod,
+    // it should be removed after newer api released and some(2 or 3 or more?) versions passed
+    @UnstableApi
     public void onPlayerFinishedCrucibleRecipe(Player player,ItemEntity catalyst,CrucibleRecipe usedRecipe) {
 
     }
@@ -415,9 +420,9 @@ public class CrucibleBlockEntity extends TileThaumcraft
         boolean event = false;
         ItemStack stack = itemEntity.getItem();
         var thrower = itemEntity.getOwner();
-        int stacksize = stack.getCount();
+        int loopCount = stack.getCount();
 
-        for(int a = 0; a < stacksize; ++a) {
+        for(int _ignored = 0; _ignored < loopCount; ++_ignored) {
             boolean burnIntoAspect = true;
             if (thrower instanceof Player player){
 
@@ -425,9 +430,17 @@ public class CrucibleBlockEntity extends TileThaumcraft
                     this.cachedRecipe = null;
                     this.addedAspect = false;
                 }
+                if (this.cachedRecipe != null){
+                    if (!cachedRecipe.matches(
+                            this.owningAspects,
+                            stack
+                            )){
+                        this.cachedRecipe = null;
+                    }
+                }
                 CrucibleRecipe recipeChosen = cachedRecipe;
                 if (recipeChosen == null){
-                    recipeChosen = CrucibleRecipe.findRecipeCanUse(player,stack,owningAspects);
+                    recipeChosen = CrucibleRecipe.findRecipeCanUse(player,stack,this.owningAspects);
                 }
 
                 if (recipeChosen != null && this.getFluidAmount() > 0) {
@@ -436,10 +449,12 @@ public class CrucibleBlockEntity extends TileThaumcraft
                     this.decreaseFluid(50);
                     ItemStack out = recipeChosen.getRecipeOutput().copy();
                     this.ejectItem(out);
+
 //                TODO:better crucible crafting API
                     this.onPlayerFinishedCrucibleRecipe(player,itemEntity,recipeChosen);
+
                     event = true;
-                    stacksize -= 1;
+//                    stacksize -= 1;
                     stack.shrink(1);
                     this.counter = -250L;
 
@@ -465,7 +480,8 @@ public class CrucibleBlockEntity extends TileThaumcraft
                 this.addedAspect = true;
                 this.owningAspects.addAll(burntInto);
                 bubble = true;
-                --stacksize;
+                stack.shrink(1);
+//                --stacksize;
                 this.counter = -150L;
             }
         }
@@ -482,9 +498,9 @@ public class CrucibleBlockEntity extends TileThaumcraft
         }
 
         if (stack.isEmpty()) {
+            itemEntity.setItem(ItemStack.EMPTY);
             itemEntity.discard();
         } else {
-            stack.setCount(stacksize);
             itemEntity.setItem(stack);
         }
         this.setChanged();

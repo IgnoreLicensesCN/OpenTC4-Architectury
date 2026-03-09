@@ -22,6 +22,8 @@
 * IRepairableExtended renamed to IRepairable which can be called doRepair to repair(even without enchantment).However,if want to repair as component,you should impl IInventoryTickableComponent and call doRepair.
 * removed aspect limit(64 for each aspect) during aspect calculation
 * removed crafting aspect multiplier(0.75 for final aspect but apply to each component) during aspect calculation
-* essentia jar(Warded Jar) can fill jar with right-click now(being right-click:being taken)
+* essentia jar(Warded Jar) can fill jar with right-click now(being right-clicked:being taken)
 * logics(except wand change focus,now) uses player pose(not shift key)to judge action(like dumping essentia jar)
 * fabric-side change:empty essentia jar(warded jar)stack size is also 1 not 64
+* ItemCrate changed to a trapdoor that only for items(cant drop items sent in with hopper/pipe now.You may need AE^2's ME formation plane (or redstone clock with Dropper but much slower) for that)
+* Arcane Lamp uses randomTicks instead of TileEntity#updateEntity now

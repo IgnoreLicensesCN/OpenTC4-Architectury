@@ -33,12 +33,11 @@ public class FastCrucibleRecipeMatcher {
         final int currentSize = aspectList.size();
         final int currentVisSize = aspectList.visSize();
 
-        var eligibleSizeMaps = recipeMap.tailMap(currentSize);
+        var sizeBasedMaps = recipeMap.tailMap(currentSize);
 
-        for (var sizeEntry : eligibleSizeMaps.int2ObjectEntrySet()) {
-            Int2ObjectSortedMap<List<CrucibleRecipe>> visMap = sizeEntry.getValue();
+        for (var visSizeBasedMap : sizeBasedMaps.values()) {
 
-            Int2ObjectSortedMap<List<CrucibleRecipe>> eligibleVisRecipes = visMap.tailMap(currentVisSize);
+            Int2ObjectSortedMap<List<CrucibleRecipe>> eligibleVisRecipes = visSizeBasedMap.tailMap(currentVisSize);
 
             for (var visEntry : eligibleVisRecipes.int2ObjectEntrySet()) {
                 List<CrucibleRecipe> recipes = visEntry.getValue();

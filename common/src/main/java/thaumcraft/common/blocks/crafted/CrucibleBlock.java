@@ -106,7 +106,7 @@ public class CrucibleBlock
         if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity be) {
             ItemStack stack = player.getItemInHand(hand);
             var fluidStack = platformUtils.copyFluidStackFromItemStack(stack);
-            if (fluidStack != null) {
+            if (fluidStack != null && !fluidStack.isEmpty()) {
                 var inserted = be.insertFluid(fluidStack.getFluid(),fluidStack.getAmount());
                 if (inserted != 0){
                     fluidStack.setAmount(fluidStack.getAmount()-inserted);
@@ -189,7 +189,7 @@ public class CrucibleBlock
                             5
                     );
                     return true;
-                } else if(i == 2){
+                } else if (i == 2) {
                     ClientFXUtils.crucibleBoilSound(
                             clientLevel,
                             blockPos.getX(),

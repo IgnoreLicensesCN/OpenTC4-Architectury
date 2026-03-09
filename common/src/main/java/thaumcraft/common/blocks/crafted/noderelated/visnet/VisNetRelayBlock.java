@@ -43,7 +43,7 @@ public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInt
     public VisNetRelayBlock() {
         this(
                 Properties.of()
-                        .lightLevel(state -> 10)//i'm lazy to check if it's valid
+                        .lightLevel(state -> 10)//i'm lazy to check if it's valid.
                         .sound(SoundType.METAL)
                         .strength(3,17)
         );
