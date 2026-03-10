@@ -226,6 +226,7 @@ public class ThaumcraftItems {
     public static final BlockItem ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
     public static final BlockItem CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
     public static final BlockItem ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
+    public static final BlockItem GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
 
     //===========================================================================================
 
@@ -783,6 +784,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_LAMP = ITEMS.register(
                 "arcane_lamp",
                 () -> new BlockItem(ThaumcraftBlocks.ARCANE_LAMP,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_GROWTH_ARCANE_LAMP = ITEMS.register(
+                "growth_arcane_lamp",
+                () -> new BlockItem(ThaumcraftBlocks.GROWTH_ARCANE_LAMP,new Item.Properties())
         );
 
         static {

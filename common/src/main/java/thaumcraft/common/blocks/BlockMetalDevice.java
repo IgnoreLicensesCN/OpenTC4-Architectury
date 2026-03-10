@@ -45,8 +45,8 @@ import java.util.Random;
 // 4?anazor forgot that.
 //  "tile.blockMetalDevice.5.name": "物品格栅",--done
 //  "tile.blockMetalDevice.6.name": "物品格栅(关闭)",--done
-//  "tile.blockMetalDevice.7.name": "奥术灯",
-//  "tile.blockMetalDevice.8.name": "催生灯",
+//  "tile.blockMetalDevice.7.name": "奥术灯",--done
+//  "tile.blockMetalDevice.8.name": "催生灯",--done
 //  "tile.blockMetalDevice.9.name": "炼金构材",--done
 //  "tile.blockMetalDevice.10.name": "神秘炼金塔",
 //  "tile.blockMetalDevice.11.name": "神秘炼金塔",

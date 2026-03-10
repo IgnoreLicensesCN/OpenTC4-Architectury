@@ -27,3 +27,6 @@
 * fabric-side change:empty essentia jar(warded jar)stack size is also 1 not 64
 * ItemCrate changed to a trapdoor that only for items(cant drop items sent in with hopper/pipe now.You may need AE^2's ME formation plane (or redstone clock with Dropper but much slower) for that)
 * Arcane Lamp uses randomTicks instead of TileEntity#updateEntity now
+* all kinds of arcane lamp has vanilla ArcaneLamp's behavior
+* growth lamp changed to apply randomly not in a random collection turn.
+* removed growth lamp drain vis delay

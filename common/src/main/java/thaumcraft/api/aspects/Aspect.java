@@ -33,12 +33,24 @@ public abstract class Aspect {
 		Aspects.ALL_ASPECTS.put(aspectKey, this);
 	}
 	@SuppressWarnings("unused")
-	protected Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
+	private Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
 		this.aspectKey = aspectKey;
 		this.color = color;
 		this.image = image;
 		this.blend = blend;
 	}
+
+	public static final Aspect EMPTY = new Aspect(
+			AspectResourceLocation.of(Thaumcraft.MOD_ID,""),
+			0x000000,
+			new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
+			1,
+			true) {
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+	};
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.

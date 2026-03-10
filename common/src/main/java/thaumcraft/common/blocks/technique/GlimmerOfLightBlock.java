@@ -34,6 +34,7 @@ public class GlimmerOfLightBlock extends SuppressedWarningBlock {
                 .replaceable()
                 .noCollission()
                 .sound(NITOR_SOUND)
+                .air()//hope you can just replace it
         );
     }
 
@@ -75,4 +76,5 @@ public class GlimmerOfLightBlock extends SuppressedWarningBlock {
             );
         }
     }
+
 }

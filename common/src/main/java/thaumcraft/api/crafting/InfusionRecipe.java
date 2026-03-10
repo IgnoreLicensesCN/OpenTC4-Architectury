@@ -206,7 +206,7 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
 //		if (recipeSpec == null) return false;
 //		if (!ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec)) return false;
 //		if (fuzzy) {
-//			if (ConfigurationHandler.INSTANCE.getInfusionOreDictMode().test(playerInput, recipeSpec)) {
+//			if (ConfigurationHandler.INSTANCE.getInfusionOreDictMode().apply(playerInput, recipeSpec)) {
 //				return true;
 //			}
 //		}

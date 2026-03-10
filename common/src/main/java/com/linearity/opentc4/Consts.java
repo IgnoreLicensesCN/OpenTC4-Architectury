@@ -267,5 +267,8 @@ public class Consts {
         public static final IntTagAccessor HEAT = new IntTagAccessor("heat");
         public static final FluidStackTagAccessor FLUID = new FluidStackTagAccessor("fluid");
     }
+    public static class GrowthArcaneLampTagAccessors {
+        public static final IntTagAccessor CHARGE = new IntTagAccessor("charge");
+    }
 
 }

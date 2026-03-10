@@ -14,7 +14,7 @@ public class DrawResearchBrowserBorders {
     static int guiX, guiY;
 
     public static void drawResearchBrowserBorders(GuiResearchBrowser gui, int x, int y, int u, int v, int width, int height) {
-        // enable depth test to write into depth buffer to update depth value
+        // enable depth apply to write into depth buffer to update depth value
         int oldDepthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_ALWAYS);

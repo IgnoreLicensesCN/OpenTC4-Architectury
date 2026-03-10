@@ -67,7 +67,8 @@ drop_self_block_names = [
     'brain_jar',
     'item_crate',
     'crucible',
-    'arcane_lamp'
+    'arcane_lamp',
+    'growth_arcane_lamp'
 ]
 
 drop_b_for_a_names = [

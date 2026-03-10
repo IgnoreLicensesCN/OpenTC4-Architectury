@@ -13,6 +13,7 @@ import thaumcraft.common.tiles.crafted.jars.BrainJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.VoidJarBlockEntity;
+import thaumcraft.common.tiles.crafted.lamp.GrowthArcaneLampBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
@@ -58,6 +59,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<BrainJarBlockEntity> BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
     public static final BlockEntityType<NodeJarBlockEntity> NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
+    public static final BlockEntityType<GrowthArcaneLampBlockEntity> GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -273,6 +275,15 @@ public class ThaumcraftBlockEntities {
                         ThaumcraftBlocks.CRUCIBLE
                 ).build(null)
         );
+
+        public static final RegistrySupplier<BlockEntityType<GrowthArcaneLampBlockEntity>> SUPPLIER_GROWTH_ARCANE_LAMP =
+                BLOCK_ENTITIES.register(
+                        "growth_arcane_lamp",
+                        () -> BlockEntityType.Builder.of(
+                                GrowthArcaneLampBlockEntity::new,
+                                ThaumcraftBlocks.GROWTH_ARCANE_LAMP
+                        ).build(null)
+                );
     }
 
     public static void init(){

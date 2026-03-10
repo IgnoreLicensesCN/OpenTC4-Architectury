@@ -40,10 +40,11 @@ public interface IEssentiaTransportInBlockEntity {
      */
     int addEssentia(Aspect aspect, int amount, Direction fromDirection);
     /**
-     * What type ofAspectVisList essentia this contains
+     * What type of essentia this contains
      * @param face
      * @return essentia contains
      */
+    @NotNull
     Aspect getEssentiaType(Direction face);
 
 

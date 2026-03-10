@@ -31,6 +31,7 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
 
     public ArcaneLampBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.DOWN));
     }
 
     public ArcaneLampBlock() {
@@ -47,7 +48,6 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
         builder.add(FACING);
     }
 
-    // 4. 设置放置时的方向（看向哪面就挂在哪面）
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -58,11 +58,9 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
     // 5. 核心逻辑：检测邻居变化，如果没有支撑则掉落
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        // 如果被移除的方向正是我们“依附”的方向，且该位置无法支撑方块
-        Direction attachedFace = state.getValue(FACING)
-                .getOpposite();
-        if (direction == attachedFace && !state.canSurvive(level, currentPos)) {
-            return Blocks.AIR.defaultBlockState(); // 变成空气（触发掉落逻辑在 canSurvive 配合下完成）
+        Direction attachedFace = state.getValue(FACING);
+        if (direction == attachedFace && !this.canSurvive(state,level, currentPos)) {
+            return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
     }
@@ -70,8 +68,8 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction direction = state.getValue(FACING);
-        BlockPos supportPos = pos.relative(direction.getOpposite());
-        return canSupportCenter(level, supportPos, direction);
+        BlockPos supportPos = pos.relative(direction);
+        return canSupportCenter(level, supportPos, direction.getOpposite());
     }
 
     @Override
@@ -122,17 +120,21 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         if (!level.isClientSide) {
-            for (int xOffset = -LIGHT_RADIUS; xOffset <= LIGHT_RADIUS; xOffset++) {
-                for (int zOffset = -LIGHT_RADIUS; zOffset <= LIGHT_RADIUS; zOffset++) {
-                    for (int yOffset = -LIGHT_RADIUS; yOffset <= LIGHT_RADIUS; yOffset++) {
-                        var pickPos = blockPos.offset(xOffset, yOffset, zOffset);
-                        if (level.getBlockState(pickPos).is(ThaumcraftBlocks.GLIMMER_OF_LIGHT)) {
-                            level.setBlockAndUpdate(pickPos, Blocks.AIR.defaultBlockState());
-                        }
+            removeLight(level,blockPos,LIGHT_RADIUS);
+        }
+        super.onRemove(blockState, level, blockPos, blockState2, bl);
+    }
+
+    protected void removeLight(Level level, BlockPos blockPos,int lightRadius) {
+        for (int xOffset = -lightRadius; xOffset <= lightRadius; xOffset++) {
+            for (int zOffset = -lightRadius; zOffset <= lightRadius; zOffset++) {
+                for (int yOffset = -lightRadius; yOffset <= lightRadius; yOffset++) {
+                    var pickPos = blockPos.offset(xOffset, yOffset, zOffset);
+                    if (level.getBlockState(pickPos).is(ThaumcraftBlocks.GLIMMER_OF_LIGHT)) {
+                        level.setBlockAndUpdate(pickPos, Blocks.AIR.defaultBlockState());
                     }
                 }
             }
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 }
