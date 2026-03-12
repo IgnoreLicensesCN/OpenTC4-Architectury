@@ -32,6 +32,8 @@ public class ThaumcraftEntities {
 
     public static class EntityTags {
         public static final TagKey<EntityType<?>> UNDEAD = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation("minecraft","undead"));
+        public static final TagKey<EntityType<?>> FERTILITY_LAMP_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation("thaumcraft","fertility_lamp_affective"));
+        public static final TagKey<EntityType<?>> FERTILITY_LAMP_NOT_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation("thaumcraft","fertility_lamp_not_affective"));
     }
 
     public static void init(){

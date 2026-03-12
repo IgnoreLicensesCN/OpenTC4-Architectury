@@ -13,6 +13,7 @@ import thaumcraft.common.tiles.crafted.jars.BrainJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.VoidJarBlockEntity;
+import thaumcraft.common.tiles.crafted.lamp.FertilityArcaneLampBlockEntity;
 import thaumcraft.common.tiles.crafted.lamp.GrowthArcaneLampBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
@@ -60,6 +61,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<NodeJarBlockEntity> NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
     public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
     public static final BlockEntityType<GrowthArcaneLampBlockEntity> GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
+    public static final BlockEntityType<FertilityArcaneLampBlockEntity> FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -282,6 +284,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 GrowthArcaneLampBlockEntity::new,
                                 ThaumcraftBlocks.GROWTH_ARCANE_LAMP
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<FertilityArcaneLampBlockEntity>> SUPPLIER_FERTILITY_ARCANE_LAMP =
+                BLOCK_ENTITIES.register(
+                        "fertility_arcane_lamp",
+                        () -> BlockEntityType.Builder.of(
+                                FertilityArcaneLampBlockEntity::new,
+                                ThaumcraftBlocks.FERTILITY_ARCANE_LAMP
                         ).build(null)
                 );
     }

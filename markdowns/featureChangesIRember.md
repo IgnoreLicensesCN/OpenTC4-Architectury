@@ -29,4 +29,4 @@
 * Arcane Lamp uses randomTicks instead of TileEntity#updateEntity now
 * all kinds of arcane lamp has vanilla ArcaneLamp's behavior
 * growth lamp changed to apply randomly not in a random collection turn.
-* removed growth lamp drain vis delay
+* removed growth/fertility lamp drain vis delay

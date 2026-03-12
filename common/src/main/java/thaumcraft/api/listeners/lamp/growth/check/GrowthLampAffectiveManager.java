@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.listeners.lamp.growth.GrowthArcaneLampAffectiveBlock;
+import thaumcraft.api.listeners.lamp.growth.IGrowthArcaneLampAffectiveBlock;
 
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTIVE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_NOT_AFFECTIVE;
@@ -44,7 +44,7 @@ public class GrowthLampAffectiveManager {
         affectiveConditions.registerListener(new GrowthLampAffectiveChecker(300) {
             @Override
             public void test(GrowthLampAffectiveContext context) {
-                if (context.state instanceof GrowthArcaneLampAffectiveBlock){
+                if (context.state instanceof IGrowthArcaneLampAffectiveBlock){
                     context.recommendAffective = true;
                     context.endCheck = true;
                 }

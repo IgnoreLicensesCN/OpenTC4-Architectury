@@ -8,7 +8,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
+@Deprecated(forRemoval = true,since = "render mechanism changed.use BER or some  obj model loading ways or whatever.")
 public class BlockRenderer {
+   //it should be mistake to not set these fields final
    public static float W1 = 0.0625F;
    public static float W2 = 0.125F;
    public static float W3 = 0.1875F;

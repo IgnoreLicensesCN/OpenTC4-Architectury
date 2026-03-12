@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.listeners.lamp.growth.GrowthArcaneLampAffectiveBlock;
+import thaumcraft.api.listeners.lamp.growth.IGrowthArcaneLampAffectiveBlock;
 
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTIVE_RANDOM_TICK;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTIVE_TICK;
@@ -20,9 +20,9 @@ public class GrowthLampAffectManager {
         affectActions.registerListener(new GrowthAffectApplier(-100) {
             @Override
             public void apply(GrowthLampAffectContext context) {
-                if (context.state.getBlock() instanceof GrowthArcaneLampAffectiveBlock affectBlock) {
+                if (context.state.getBlock() instanceof IGrowthArcaneLampAffectiveBlock affectBlock) {
                     context.endAffect = true;
-                    affectBlock.growthLampAffect(context.level, context.pos, context.state);
+                    affectBlock.growthLampAffect(context);
                 }
             }
         });

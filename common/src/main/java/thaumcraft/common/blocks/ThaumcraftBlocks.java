@@ -25,6 +25,7 @@ import thaumcraft.common.blocks.crafted.jars.essentia.VoidJarBlock;
 import thaumcraft.common.blocks.crafted.jars.other.BrainJarBlock;
 import thaumcraft.common.blocks.crafted.jars.other.NodeJarBlock;
 import thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock;
+import thaumcraft.common.blocks.crafted.lamps.FertilityArcaneLampBlock;
 import thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock;
 import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
@@ -210,6 +211,7 @@ public class ThaumcraftBlocks {
     public static final CrucibleBlock CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
     public static final ArcaneLampBlock ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
     public static final GrowthArcaneLampBlock GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
+    public static final FertilityArcaneLampBlock FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -776,6 +778,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "growth_arcane_lamp",
                         GrowthArcaneLampBlock::new
+                );
+        public static final RegistrySupplier<FertilityArcaneLampBlock> SUPPLIER_FERTILITY_ARCANE_LAMP =
+                BLOCKS.register(
+                        "fertility_arcane_lamp",
+                        FertilityArcaneLampBlock::new
                 );
 
         static {

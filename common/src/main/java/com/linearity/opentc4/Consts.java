@@ -270,5 +270,8 @@ public class Consts {
     public static class GrowthArcaneLampTagAccessors {
         public static final IntTagAccessor CHARGE = new IntTagAccessor("charge");
     }
+    public static class FertilityArcaneLampTagAccessors {
+        public static final IntTagAccessor CHARGE = new IntTagAccessor("charge");
+    }
 
 }
