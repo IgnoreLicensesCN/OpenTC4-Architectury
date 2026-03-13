@@ -1,26 +1,12 @@
 package thaumcraft.api.listeners.lamp.fertility.apply;
 
-import com.google.common.collect.Multimap;
 import com.linearity.opentc4.simpleutils.ListenerManager;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.listeners.lamp.fertility.IFertilityAffectiveEntity;
-import thaumcraft.api.listeners.lamp.growth.IGrowthArcaneLampAffectiveBlock;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTIVE_RANDOM_TICK;
-import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTIVE_TICK;
 
 public class FertilityLampAffectManager {
 

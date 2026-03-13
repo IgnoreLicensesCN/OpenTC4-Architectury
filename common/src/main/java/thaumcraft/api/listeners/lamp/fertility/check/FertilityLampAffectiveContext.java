@@ -1,7 +1,6 @@
 package thaumcraft.api.listeners.lamp.fertility.check;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 public class FertilityLampAffectiveContext {
     public final Entity entity;

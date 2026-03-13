@@ -51,7 +51,7 @@ import java.util.Random;
 //  "tile.blockMetalDevice.10.name": "神秘炼金塔",
 //  "tile.blockMetalDevice.11.name": "神秘炼金塔",
 //  "tile.blockMetalDevice.12.name": "记忆矩阵",
-//  "tile.blockMetalDevice.13.name": "育种灯",
+//  "tile.blockMetalDevice.13.name": "育种灯",--done
 //  "tile.blockMetalDevice.14.name": "魔力中继器",--done
 //although there could be history reasons such as limited item IDs,
 //i still want to say there could be mental illness with anazor to design like this.
@@ -537,8 +537,8 @@ public class BlockMetalDevice extends BlockContainer {
 //         return inv.addItemStackToInventory(s);
 //      }
 //   }
-   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
-      int metadata = world.getBlockMetadata(x, y, z);
+//   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
+//      int metadata = world.getBlockMetadata(x, y, z);
 //      if (metadata == 0 && Platform.getEnvironment() != Env.CLIENT) {
 //         FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(player.inventory.getCurrentItem());
 //         if (fs != null && fs.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1000))) {
@@ -720,49 +720,49 @@ public class BlockMetalDevice extends BlockContainer {
 //         world.playAuxSFXAtEntity(player, 1003, x, y, z, 0);
 //         return true;
 //      } else
-      if ((world.isClientSide)) {
-         return true;
-      } else {
-         if (metadata == 10) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileThaumatorium && !player.isSneaking()) {
-               player.openGui(Thaumcraft.instance, 3, world, x, y, z);
-               return true;
-            }
-         }
-
-         if (metadata == 11) {
-            TileEntity te = world.getTileEntity(x, y - 1, z);
-            if (te instanceof TileThaumatorium && !player.isSneaking()) {
-               player.openGui(Thaumcraft.instance, 3, world, x, y - 1, z);
-               return true;
-            }
-         }
-
-         if ((metadata == 14 || metadata == 2)
-                 && !player.isSneaking()
-                 && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemShard) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileVisRelay) {
-               TileVisRelay tile = (TileVisRelay) te;
-               byte c = (byte) player.getHeldItem().getItemDamage();
-               if (c != tile.color && c != 6) {
-                  tile.color = c;
-               } else {
-                  tile.color = -1;
-               }
-
-               tile.removeThisNode();
-               tile.nodeRefresh = true;
-               tile.markDirty();
-               world.markBlockForUpdate(x, y, z);
-               world.playSoundEffect(x, y, z, "thaumcraft:crystal", 0.2F, 1.0F);
-            }
-         }
-
-         return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
-      }
-   }
+//      if ((world.isClientSide)) {
+//         return true;
+//      } else {
+//         if (metadata == 10) {
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileThaumatorium && !player.isSneaking()) {
+//               player.openGui(Thaumcraft.instance, 3, world, x, y, z);
+//               return true;
+//            }
+//         }
+//
+//         if (metadata == 11) {
+//            TileEntity te = world.getTileEntity(x, y - 1, z);
+//            if (te instanceof TileThaumatorium && !player.isSneaking()) {
+//               player.openGui(Thaumcraft.instance, 3, world, x, y - 1, z);
+//               return true;
+//            }
+//         }
+//
+//         if ((metadata == 14 || metadata == 2)
+//                 && !player.isSneaking()
+//                 && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemShard) {
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileVisRelay) {
+//               TileVisRelay tile = (TileVisRelay) te;
+//               byte c = (byte) player.getHeldItem().getItemDamage();
+//               if (c != tile.color && c != 6) {
+//                  tile.color = c;
+//               } else {
+//                  tile.color = -1;
+//               }
+//
+//               tile.removeThisNode();
+//               tile.nodeRefresh = true;
+//               tile.markDirty();
+//               world.markBlockForUpdate(x, y, z);
+//               world.playSoundEffect(x, y, z, "thaumcraft:crystal", 0.2F, 1.0F);
+//            }
+//         }
+//
+//         return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+//      }
+//   }
 
 //   public void onPoweredBlockChange(Level par1World, int par2, int par3, int par4, boolean flag) {
 //      int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -801,43 +801,43 @@ public class BlockMetalDevice extends BlockContainer {
 //
 //   }
 
-   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-      int md = world.getBlockMetadata(x, y, z);
-      if (md == 3) {
-         return 11;
-      } else if (md == 7) {
-         return 15;
-      } else {
-         if (md == 8) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileArcaneLampGrowth) {
-               if (((TileArcaneLampGrowth) te).charges > 0) {
-                  return 15;
-               }
-
-               return 8;
-            }
-         } else if (md == 13) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileArcaneLampFertility) {
-               if (((TileArcaneLampFertility) te).charges > 0) {
-                  return 15;
-               }
-
-               return 8;
-            }
-         } else if (md == 14) {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof TileVisRelay) {
-               if (VisNetHandler.isNodeValid(((TileVisRelay) te).getParent())) {
-                  return 10;
-               }
-
-               return 2;
-            }
-         }
-
-         return super.getLightValue(world, x, y, z);
-      }
-   }
+//   public int getLightValue(IBlockAccess world, int x, int y, int z) {
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (md == 3) {
+//         return 11;
+//      } else if (md == 7) {
+//         return 15;
+//      } else {
+//         if (md == 8) {
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileArcaneLampGrowth) {
+//               if (((TileArcaneLampGrowth) te).charges > 0) {
+//                  return 15;
+//               }
+//
+//               return 8;
+//            }
+//         } else if (md == 13) {
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileArcaneLampFertility) {
+//               if (((TileArcaneLampFertility) te).charges > 0) {
+//                  return 15;
+//               }
+//
+//               return 8;
+//            }
+//         } else if (md == 14) {
+//            TileEntity te = world.getTileEntity(x, y, z);
+//            if (te instanceof TileVisRelay) {
+//               if (VisNetHandler.isNodeValid(((TileVisRelay) te).getParent())) {
+//                  return 10;
+//               }
+//
+//               return 2;
+//            }
+//         }
+//
+//         return super.getLightValue(world, x, y, z);
+//      }
+//   }
 }

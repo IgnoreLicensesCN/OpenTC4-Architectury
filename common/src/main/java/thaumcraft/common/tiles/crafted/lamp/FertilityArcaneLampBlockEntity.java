@@ -1,13 +1,13 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +19,7 @@ import thaumcraft.api.listeners.lamp.fertility.check.FertilityLampAffectiveManag
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
@@ -180,8 +179,13 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
     }
 
     public static final int RECOMMENDED_ENTITY_LIMIT = 7;
-    public int getRecommendedEntityLimit(){
+    public int getRecommendedEntityLimitForClass(){
         return RECOMMENDED_ENTITY_LIMIT;
+    }
+
+    public static final int ENTITY_LIMIT_TOTAL = 50;
+    public int getEntityLimitTotal(){
+        return ENTITY_LIMIT_TOTAL;
     }
 
     public static final int CHARGE_COST_EACH_TIME = 2;
@@ -189,6 +193,13 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         return CHARGE_COST_EACH_TIME;
     }
 
+    private boolean isAffectiveEntity(Entity entity,HashMultimap<Class<? extends Entity>,Entity> entityMap){
+        if (FertilityLampAffectiveManager.isAffectiveEntity(entity)) {
+            entityMap.put(entity.getClass(), entity);
+            return true;
+        }
+        return false;
+    }
     private void updateAnimals() {
         if (this.cooldown > 0){
             this.cooldown--;
@@ -196,21 +207,22 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         }
         if (this.level == null){return;}
 //        Object2IntMap<Class<? extends Entity>> entityTypeCounter = new Object2IntOpenHashMap<>();
-        var canGrowAnimalsNearby = this.level.getEntitiesOfClass(
-                Entity.class,
-                AABB.of(new BoundingBox(getBlockPos())).inflate(getAffectRadius()),
-                FertilityLampAffectiveManager::isAffectiveEntity
-        );
         HashMultimap<Class<? extends Entity>,Entity> entityMap = HashMultimap.create();
-        canGrowAnimalsNearby.forEach(entity -> entityMap.put(entity.getClass(),entity));
-//        canGrowAnimalsNearby.forEach(e -> entityTypeCounter.mergeInt(e.getClass(), 1, Integer::sum));
+        final var entityLimitTotal = getEntityLimitTotal();
+        this.level.getEntities(
+                EntityTypeTest.forClass(Entity.class),
+                AABB.of(new BoundingBox(getBlockPos())).inflate(getAffectRadius()),
+                e -> this.isAffectiveEntity(e, entityMap),
+                new ArrayList<>(entityLimitTotal),
+                entityLimitTotal
+        );
 
         int affectedCounter = 0;
         for (Class<? extends Entity> clazz : entityMap.keySet()) {
             Set<Entity> group = entityMap.get(clazz);
 
             // 调用方法
-            if (affectEntity((Class<Entity>)clazz, group, getRecommendedEntityLimit())) {
+            if (affectEntity((Class<Entity>)clazz, group, getRecommendedEntityLimitForClass())) {
                 affectedCounter++;
                 this.charge -= getChargeCostEachTime();
             }
