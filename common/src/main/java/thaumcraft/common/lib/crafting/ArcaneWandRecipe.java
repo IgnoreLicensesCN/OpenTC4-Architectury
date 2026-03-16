@@ -163,7 +163,7 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
 //      }
 //   }
 //
-//   public int getRecipeSize() {
+//   public int getRecipeSizeLimit() {
 //      return 9;
 //   }
 //

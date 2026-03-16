@@ -68,10 +68,8 @@ public class ArcaneBellowBlock
         builder.add(FACING);
     }
 
-    // 设置放置时的朝向
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        // 让方块朝向玩家背后
         Direction dir = context.getHorizontalDirection().getOpposite();
         return this.defaultBlockState().setValue(FACING, dir);
     }

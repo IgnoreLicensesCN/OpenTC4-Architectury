@@ -176,7 +176,11 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
                return;
             }
 
-            if (this.currentCraft < 0 || this.currentCraft >= this.recipeHash.size() || this.currentRecipe == null || !this.currentRecipe.catalystMatches(this.inputStack)) {
+            if (this.currentCraft < 0
+                    || this.currentCraft >= this.recipeHash.size()
+                    || this.currentRecipe == null
+                    || !this.currentRecipe.catalystMatches(this.inputStack)
+            ) {
                for(int a = 0; a < this.recipeHash.size(); ++a) {
                   CrucibleRecipe recipe = CrucibleRecipe.getCrucibleRecipeFromHash(this.recipeHash.get(a));
                   if (recipe.catalystMatches(this.inputStack)) {
@@ -283,7 +287,6 @@ public class TileThaumatorium extends TileThaumcraft implements IAspectContainer
             }
          }
       }
-
    }
 
    public int addIntoContainer(Aspect tt, int am) {

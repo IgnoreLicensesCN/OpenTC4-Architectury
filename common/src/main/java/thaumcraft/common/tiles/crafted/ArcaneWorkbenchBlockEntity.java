@@ -35,12 +35,12 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         ExtendedMenuProvider,
         IArcaneWorkbenchContainer,
         IVisNetChargeRelayChargeableContainer {
-    public static final int SIZE = 11;
-    public static final int INPUT_SIZE = 11;
     public static final int WAND_SLOT = 9;
     public static final int[] INPUT_SLOTS = {0,1,2,3,4,5,6,7,8};
-    public static final int[] INPUT_AND_WAND_SLOTS = {WAND_SLOT,0,1,2,3,4,5,6,7,8};
+    public static final int[] INPUT_AND_WAND_SLOTS = {0,1,2,3,4,5,6,7,8,WAND_SLOT};
     public static final int[] WAND_SLOT_ARR = {WAND_SLOT};
+    public static final int SIZE = INPUT_AND_WAND_SLOTS.length;
+    public static final int INPUT_SIZE = INPUT_AND_WAND_SLOTS.length;
     protected final NonNullList<ItemStack> inventory = NonNullList.withSize(INPUT_SIZE, ItemStack.EMPTY);
     protected final List<ItemStack> inputSlotsView = inventory.subList(0,INPUT_SLOTS.length);
     public ArcaneWorkbenchBlockEntity(BlockEntityType<? extends ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -53,10 +53,13 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public int getContainerSize() {
         return SIZE;
     }
+
     @Override
     public boolean isEmpty() {
-        for (int i:INPUT_AND_WAND_SLOTS) {
-            if (!inventory.get(i).isEmpty()) return false;
+        for (var stackInInventory:inventory) {
+            if (!stackInInventory.isEmpty()) {
+                return false;
+            }
         }
         return true;
     }
@@ -106,11 +109,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     @Override
     public void setItem(int i, ItemStack itemStack) {
         inventory.set(i, itemStack);
-        setChanged();
-
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+        markDirtyAndUpdateSelf();
     }
 
     @Override

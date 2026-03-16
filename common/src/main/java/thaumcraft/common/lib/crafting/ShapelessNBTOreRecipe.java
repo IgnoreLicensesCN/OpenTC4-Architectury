@@ -53,7 +53,7 @@ public class ShapelessNBTOreRecipe /*extends ShapelessOreRecipe*/ {
 //
 //   }
 //
-//   public int getRecipeSize() {
+//   public int getRecipeSizeLimit() {
 //      return this.input.size();
 //   }
 //

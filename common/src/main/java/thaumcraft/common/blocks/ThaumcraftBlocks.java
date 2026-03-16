@@ -212,6 +212,8 @@ public class ThaumcraftBlocks {
     public static final ArcaneLampBlock ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
     public static final GrowthArcaneLampBlock GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
     public static final FertilityArcaneLampBlock FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
+    public static final ThaumatoriumBottomBlock THAUMATORIUM_BOTTOM = Registry.SUPPLIER_THAUMATORIUM_BOTTOM.get();
+    public static final ThaumatoriumTopBlock THAUMATORIUM_TOP = Registry.SUPPLIER_THAUMATORIUM_TOP.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -784,6 +786,17 @@ public class ThaumcraftBlocks {
                         "fertility_arcane_lamp",
                         FertilityArcaneLampBlock::new
                 );
+        public static final RegistrySupplier<ThaumatoriumBottomBlock> SUPPLIER_THAUMATORIUM_BOTTOM =
+                BLOCKS.register(
+                        "thaumatorium_bottom",
+                        ThaumatoriumBottomBlock::new
+                );
+        public static final RegistrySupplier<ThaumatoriumTopBlock> SUPPLIER_THAUMATORIUM_TOP =
+                BLOCKS.register(
+                        "thaumatorium_top",
+                        ThaumatoriumTopBlock::new
+                );
+
 
         static {
             BLOCKS.register();

@@ -91,6 +91,8 @@ drop_b_for_a_names = [
     ('advanced_alchemical_furnace_nozzle','thaumcraft:advanced_alchemical_construct'),
     ('advanced_alchemical_furnace_base_corner','thaumcraft:advanced_alchemical_construct'),
     ('advanced_alchemical_furnace_base','thaumcraft:alchemical_furnace'),
+    ('thaumatorium_bottom','thaumcraft:alchemical_construct'),
+    ('thaumatorium_top','thaumcraft:alchemical_construct'),
 ]
 
 slab_names = [

@@ -48,8 +48,8 @@ import java.util.Random;
 //  "tile.blockMetalDevice.7.name": "奥术灯",--done
 //  "tile.blockMetalDevice.8.name": "催生灯",--done
 //  "tile.blockMetalDevice.9.name": "炼金构材",--done
-//  "tile.blockMetalDevice.10.name": "神秘炼金塔",
-//  "tile.blockMetalDevice.11.name": "神秘炼金塔",
+//  "tile.blockMetalDevice.10.name": "神秘炼金塔",--done
+//  "tile.blockMetalDevice.11.name": "神秘炼金塔",--done
 //  "tile.blockMetalDevice.12.name": "记忆矩阵",
 //  "tile.blockMetalDevice.13.name": "育种灯",--done
 //  "tile.blockMetalDevice.14.name": "魔力中继器",--done

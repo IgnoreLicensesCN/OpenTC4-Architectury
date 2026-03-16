@@ -70,8 +70,9 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
 
             @Override
             public boolean isEmpty() {
-                return false;
+                return workbench.isEmpty();
             }
+
 
             @Override
             public @NotNull ItemStack getItem(int i) {

@@ -159,7 +159,6 @@ public class CrucibleBlockEntity extends TileThaumcraft
         }
         var blockPosBelow = getBlockPos().below();
         var blockStateBelow = level.getBlockState(blockPosBelow);
-//        var blockBelow = blockStateBelow.getBlock();
         if (blockStateBelow.is(ThaumcraftBlocks.Tags.CRUCIBLE_HEATER) 
             || (
                     blockStateBelow.is(ThaumcraftBlocks.Tags.REDSTONE_CONTROLLABLE_CRUCIBLE_HEATER) 

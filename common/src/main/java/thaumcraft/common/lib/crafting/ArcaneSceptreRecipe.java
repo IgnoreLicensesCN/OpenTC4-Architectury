@@ -176,7 +176,7 @@ public class ArcaneSceptreRecipe /*implements IArcaneRecipe*/ {
 //      }
 //   }
 //
-//   public int getRecipeSize() {
+//   public int getRecipeSizeLimit() {
 //      return 9;
 //   }
 //

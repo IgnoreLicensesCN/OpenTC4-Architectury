@@ -422,9 +422,15 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         return inventory.size();
     }
 
+
     @Override
     public boolean isEmpty() {
-        return inventory.getFirst().isEmpty() && inventory.getLast().isEmpty();
+        for (var stackInInventory:inventory) {
+            if (!stackInInventory.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

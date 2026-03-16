@@ -162,7 +162,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	 * @return the amount associated with the given aspect in this collection
 	 */
 	public int getAmount(Asp key) {
-		return  aspects.get(key)==null?0:aspects.get(key);
+		return aspects.get(key)==null?0:aspects.get(key);
 	}
 	
 	/**

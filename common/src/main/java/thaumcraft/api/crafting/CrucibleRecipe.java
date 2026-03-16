@@ -150,8 +150,8 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	}
 
 
-	public boolean matches(AspectList<Aspect> itags, ItemStack cat) {
-		if (!catalyst.matches(cat)) return false;
+	public boolean matches(@NotNull AspectList<Aspect> aspectsForRecipe, ItemStack cat) {
+		if (!catalystMatches(cat)) return false;
 //		if (catalyst instanceof ItemStack &&
 //				!ThaumcraftApiHelper.itemMatches((ItemStack) catalyst,cat,false)) {
 //			return false;
@@ -160,11 +160,18 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 //			ItemStack[] ores = ((ArrayList<ItemStack>)catalyst).toArray(new ItemStack[]{});
 //			if (!ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{cat},ores)) return false;
 //		}
-		if (itags==null) return false;
-		for (var tag:aspects.getAspectTypes()) {
-			if (itags.getAmount(tag)<aspects.getAmount(tag)) return false;
+		return aspectRequirementMatches(aspectsForRecipe, cat);
+	}
+
+	public boolean aspectRequirementMatches(@NotNull AspectList<Aspect> aspectsForRecipe, ItemStack cat) {
+		for (var tag: getAspectRequirement(cat).getAspectTypes()) {
+			if (aspectsForRecipe.getAmount(tag)<aspects.getAmount(tag)) return false;
 		}
 		return true;
+	}
+	//this is for dynamic aspect requirement recipe
+	public AspectList<Aspect> getAspectRequirement(ItemStack cat) {
+		return aspects;
 	}
 
 	public boolean catalystMatches(ItemStack cat) {

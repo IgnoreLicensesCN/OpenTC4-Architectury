@@ -277,10 +277,11 @@ public class ResearchTableBlockEntity
         return SLOTS.length;
     }
 
+
     @Override
     public boolean isEmpty() {
-        for (var stack : inventory) {
-            if (!stack.isEmpty()) {
+        for (var stackInInventory:inventory) {
+            if (!stackInInventory.isEmpty()) {
                 return false;
             }
         }

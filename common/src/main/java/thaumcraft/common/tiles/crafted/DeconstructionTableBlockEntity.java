@@ -90,9 +90,15 @@ public class DeconstructionTableBlockEntity extends TileThaumcraftWithMenu<Decon
         return inventory.size();
     }
 
+
     @Override
     public boolean isEmpty() {
-        return inventory.isEmpty();
+        for (var stackInInventory:inventory) {
+            if (!stackInInventory.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
