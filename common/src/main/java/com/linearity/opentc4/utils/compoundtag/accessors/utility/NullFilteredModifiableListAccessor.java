@@ -1,0 +1,53 @@
+package com.linearity.opentc4.utils.compoundtag.accessors.utility;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NullFilteredModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
+    protected final ListTagAccessor listAccessor;
+    protected final CompoundTagAccessor<T> listItemAccessor;
+    public NullFilteredModifiableListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
+        super(tagKey);
+        this.listItemAccessor = listItemAccessor;
+        this.listAccessor = new ListTagAccessor(tagKey + "_list");
+    }
+
+    @Override
+    public List<T> readFromCompoundTag(CompoundTag tag) {
+        var listTag = listAccessor.readFromCompoundTag(tag);
+        var len = listTag.size();
+        List<T> list = new ArrayList<>(len);
+        for (int i = 0; i < len; i++) {
+            var compound = listTag.getCompound(i);
+            var gotItem = listItemAccessor.readFromCompoundTag(compound);
+            if (gotItem == null){
+                continue;
+            }
+            list.add(gotItem);
+        }
+        return list;
+    }
+
+    @Override
+    public void writeToCompoundTag(CompoundTag tag, List<T> value) {
+        var listTag = new ListTag();
+        for (T t : value) {
+            if (t == null) {
+                continue;
+            }
+            var compound = new CompoundTag();
+            listItemAccessor.writeToCompoundTag(compound,t);
+            listTag.add(compound);
+        }
+        listAccessor.writeToCompoundTag(tag,listTag);
+    }
+
+    @Override
+    public boolean compoundTagHasKey(CompoundTag tag) {
+        return listAccessor.compoundTagHasKey(tag);
+    }
+}

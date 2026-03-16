@@ -3,6 +3,7 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.utils.compoundtag.accessors.architectury.FluidStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
@@ -13,7 +14,9 @@ import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.NullFilteredModifiableListAccessor;
 import net.minecraft.core.BlockPos;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
 public class Consts {
@@ -272,6 +275,11 @@ public class Consts {
     }
     public static class FertilityArcaneLampTagAccessors {
         public static final IntTagAccessor CHARGE = new IntTagAccessor("charge");
+    }
+
+    public static class ThaumatoriumBlockEntityTagAccessors {
+        public static final NullFilteredModifiableListAccessor<CrucibleRecipe> RECIPES = new NullFilteredModifiableListAccessor<>("recipes",new NullableCrucibleRecipeAccessor("recipe"));
+        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
     }
 
 }

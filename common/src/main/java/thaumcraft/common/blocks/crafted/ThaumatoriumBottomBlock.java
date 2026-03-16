@@ -3,7 +3,9 @@ package thaumcraft.common.blocks.crafted;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +28,8 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.ThaumatoriumBlockEntity;
+
+import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
 public class ThaumatoriumBottomBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -80,14 +84,23 @@ public class ThaumatoriumBottomBlock extends SuppressedWarningBlock implements E
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        //TODO:Drop BE content
+        if (level.getBlockEntity(blockPos) instanceof ThaumatoriumBlockEntity thaumatorium) {
+            Containers.dropContents(level, blockPos, thaumatorium);
+        }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
-        //TODO:Open GUI
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            BlockEntity be = level.getBlockEntity(blockPos);
+            if (be instanceof ThaumatoriumBlockEntity thaumatorium && player instanceof ServerPlayer serverPlayer) {
+                openExtendedMenu(serverPlayer,thaumatorium);
+            }
+            return InteractionResult.CONSUME;
+        }
     }
 
     @Override

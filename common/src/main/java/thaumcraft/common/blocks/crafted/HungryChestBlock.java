@@ -2,9 +2,6 @@ package thaumcraft.common.blocks.crafted;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -18,12 +15,10 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.HungryChestBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class HungryChestBlock extends ChestBlock implements EntityBlock {

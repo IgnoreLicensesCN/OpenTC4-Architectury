@@ -5,10 +5,12 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,37 +20,58 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachment;
 import thaumcraft.common.lib.utils.InventoryUtils;
+import thaumcraft.common.menu.menu.ThaumatoriumMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.OWNING_ASPECTS;
+import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.RECIPES;
 import static thaumcraft.common.blocks.crafted.ThaumatoriumBottomBlock.FACING;
 
-//notFinished
-public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu</*menutype*/,ThaumatoriumBlockEntity> implements 
+public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<ThaumatoriumMenu,ThaumatoriumBlockEntity> implements
         WorldlyContainer,
         IEssentiaTransportInBlockEntity,
-        IAspectDisplayBlockEntity<Aspect> 
+        IAspectDisplayBlockEntity<Aspect>,
+        IValueContainerBasedComparatorSignalProviderBlockEntity
 {
     public static final int DEFAULT_RECIPE_SIZE = 1;
     public ThaumatoriumBlockEntity(BlockEntityType<? extends ThaumatoriumBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState,/*menufactory*/);
+        super(blockEntityType, blockPos, blockState,ThaumatoriumMenu::new);
     }
     public ThaumatoriumBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.THAUMATORIUM, blockPos, blockState);
     }
     public static final int INPUT_SLOT = 0;
     public static final int[] SLOTS = new int[]{INPUT_SLOT};//output ItemEntity
-    public @NotNull NonNullList<ItemStack> inventory = NonNullList.withSize(2,ItemStack.EMPTY);
+    public @NotNull NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length,ItemStack.EMPTY);
     public final @Modifiable @NotNull List<CrucibleRecipe> rememberedRecipes = new ArrayList<>();
     public final AspectList<Aspect> aspectsOwning = new AspectList<>();
+
+    @Override
+    public void readCustomNBT(CompoundTag compoundTag) {
+        ContainerHelper.loadAllItems(compoundTag, inventory);
+        rememberedRecipes.clear();
+        rememberedRecipes.addAll(RECIPES.readFromCompoundTag(compoundTag));
+        aspectsOwning.clear();
+        aspectsOwning.addAll(OWNING_ASPECTS.readFromCompoundTag(compoundTag));
+    }
+
+    @Override
+    public void writeCustomNBT(CompoundTag compoundTag) {
+        ContainerHelper.saveAllItems(compoundTag, inventory);
+        RECIPES.writeToCompoundTag(compoundTag, rememberedRecipes);
+        OWNING_ASPECTS.writeToCompoundTag(compoundTag, aspectsOwning);
+    }
+
     public int currentCraftingIndexCache = Integer.MIN_VALUE;
     protected AspectList<Aspect> aspectRequiredCache = new AspectList<>();
 
@@ -471,5 +494,16 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu</*menutype*/
                 }
             }
         }
+    }
+
+    @Override
+    public int currentComparatorSignalValue() {
+        var stack = getCatalyst();
+        return stack.isEmpty()?0:stack.getCount();
+    }
+
+    @Override
+    public int comparatorSignalCapacity() {
+        return getCatalyst().getMaxStackSize();
     }
 }

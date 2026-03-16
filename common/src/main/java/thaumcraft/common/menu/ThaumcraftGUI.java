@@ -9,14 +9,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.menu.menu.AlchemicalFurnaceMenu;
-import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
-import thaumcraft.common.menu.menu.DeconstructionTableMenu;
-import thaumcraft.common.menu.menu.ResearchTableMenu;
-import thaumcraft.common.tiles.crafted.AlchemicalFurnaceBlockEntity;
-import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
-import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
-import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
+import thaumcraft.common.menu.menu.*;
+import thaumcraft.common.tiles.crafted.*;
 
 import java.util.function.Supplier;
 
@@ -25,6 +19,7 @@ public class ThaumcraftGUI {
     public static final MenuType<DeconstructionTableMenu> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
     public static final MenuType<ResearchTableMenu> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static final MenuType<AlchemicalFurnaceMenu> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
+    public static final MenuType<ThaumatoriumMenu> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
     public static class Registry{
         public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MENU);
 
@@ -43,6 +38,10 @@ public class ThaumcraftGUI {
         public static final RegistrySupplier<MenuType<AlchemicalFurnaceMenu>> SUPPLIER_ALCHEMICAL_FURNACE = MENUS.register(
                 "alchemical_furnace",
                 simpleMenuTypeSupplier(AlchemicalFurnaceMenu::new, AlchemicalFurnaceBlockEntity.class)
+        );
+        public static final RegistrySupplier<MenuType<ThaumatoriumMenu>> SUPPLIER_THAUMATORIUM = MENUS.register(
+                "thaumatorium",
+                simpleMenuTypeSupplier(ThaumatoriumMenu::new, ThaumatoriumBlockEntity.class)
         );
     }
 
