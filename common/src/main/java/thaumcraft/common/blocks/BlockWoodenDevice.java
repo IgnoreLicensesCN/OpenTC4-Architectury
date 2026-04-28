@@ -41,6 +41,7 @@ import java.util.Random;
 //    "tile.blockWoodenDevice.5.name": "奥术钻探机",
 //    "tile.blockWoodenDevice.6.name": "宏伟之树木板",--done
 //    "tile.blockWoodenDevice.7.name": "银树木板",--done
+//things below should be called mental illness if i migrate them into a version already has flags.
 //    "tile.blockWoodenDevice.8.name": "血腥教徒旗帜",
 //    "tile.blockWoodenDevice.8.0.name": "白色旗帜",
 //    "tile.blockWoodenDevice.8.1.name": "橙色旗帜",
@@ -58,6 +59,7 @@ import java.util.Random;
 //    "tile.blockWoodenDevice.8.13.name": "绿色旗帜",
 //    "tile.blockWoodenDevice.8.14.name": "红色旗帜",
 //    "tile.blockWoodenDevice.8.15.name": "黑色旗帜",
+//TODO:Migrate Aspect icon.
 public class BlockWoodenDevice extends BlockContainer {
    private Random random = new Random();
    public IIcon iconDefault;

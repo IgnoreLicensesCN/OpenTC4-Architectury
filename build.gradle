@@ -38,6 +38,7 @@ subprojects {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
         implementation 'net.sf.trove4j:trove4j:3.0.3' // Trove4j
+        implementation 'org.jsoup:jsoup:1.17.2'
     }
 
     java {
@@ -60,7 +61,8 @@ subprojects {
         configurations = [project.configurations.implementation]
 
         // relocate trove 避免冲突
-        relocate 'gnu.trove', 'yourmod.libs.gnu.trove'
+        relocate 'gnu.trove', 'opentc4.libs.gnu.trove'//yeah i used AI for this part without checking sorry
+        relocate 'org.jsoup', 'opentc4.libs.org.jsoup'//for research page parsing
     }
 
     // 确保 remapJar 使用 shadowJar 的输出

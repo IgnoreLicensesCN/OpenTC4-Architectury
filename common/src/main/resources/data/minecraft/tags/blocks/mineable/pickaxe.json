@@ -61,6 +61,9 @@
     "thaumcraft:item_crate",
     "thaumcraft:crucible",
     "thaumcraft:arcane_lamp",
-    "thaumcraft:growth_arcane_lamp"
+    "thaumcraft:growth_arcane_lamp",
+    "thaumcraft:thaumatorium_bottom",
+    "thaumcraft:thaumatorium_top",
+    "thaumcraft:mnemonic_matrix"
   ]
 }

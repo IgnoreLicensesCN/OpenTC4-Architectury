@@ -17,6 +17,7 @@ import thaumcraft.common.tiles.TileArcaneBoreBase;
 import thaumcraft.common.tiles.TileBanner;
 import thaumcraft.common.tiles.TileBellows;
 
+
 public class BlockWoodenDeviceItem extends ItemBlock {
    public BlockWoodenDeviceItem(Block par1) {
       super(par1);

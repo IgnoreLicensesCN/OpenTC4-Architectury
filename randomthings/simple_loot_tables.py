@@ -70,7 +70,8 @@ drop_self_block_names = [
     'arcane_lamp',
     'growth_arcane_lamp',
     'fertility_arcane_lamp',
-    'mnemonic_matrix'
+    'mnemonic_matrix',
+    'arcane_levitator'
 ]
 
 drop_b_for_a_names = [

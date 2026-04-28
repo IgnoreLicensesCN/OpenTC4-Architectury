@@ -229,6 +229,7 @@ public class ThaumcraftItems {
     public static final BlockItem GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
     public static final BlockItem FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static final BlockItem MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
+    public static final BlockItem ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
 
     //===========================================================================================
 
@@ -799,6 +800,11 @@ public class ThaumcraftItems {
                 "mnemonic_matrix",
                 () -> new BlockItem(ThaumcraftBlocks.MNEMONIC_MATRIX,  new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_LEVITATOR = ITEMS.register(
+                "arcane_levitator",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_LEVITATOR,  new Item.Properties())
+        );
+
 
         static {
             Registry.ITEMS.register();
@@ -806,7 +812,7 @@ public class ThaumcraftItems {
     }
 
     public static class ItemTags {
-        //TODO:Tag for forge and fabric,im lazy to write tag json :(
+        //TODO:Tag for forge and fabric,im lazy to write tag json :( maybe i need even several issue/PR to realize where(recipe or st.) i didn't notice this part.
         public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("thaumcraft:tag_void_ingot"));
         public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(
@@ -837,7 +843,7 @@ public class ThaumcraftItems {
     }
 
     public static class BannerPatternTags{
-        //TODO:(maybe)all aspect banner patterns,maybe we will need a map to store.
+        //TODO:(maybe)all aspect banner patterns,maybe we will need a map to store.Wont finished even first-time compile?
         public static final TagKey<BannerPattern> CULTIST_TAG = TagKey.create(Registries.BANNER_PATTERN, new ResourceLocation(Thaumcraft.MOD_ID+":cultist"));
     }
 

@@ -218,6 +218,8 @@ public class ThaumcraftBlocks {
     public static final ThaumatoriumBottomBlock THAUMATORIUM_BOTTOM = Registry.SUPPLIER_THAUMATORIUM_BOTTOM.get();
     public static final ThaumatoriumTopBlock THAUMATORIUM_TOP = Registry.SUPPLIER_THAUMATORIUM_TOP.get();
     public static final MnemonicMatrixBlock MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
+    public static final ArcaneLevitatorBubbleBlock ARCANE_LEVITATOR_BUBBLE = Registry.SUPPLIER_ARCANE_LEVITATOR_BUBBLE.get();
+    public static final ArcaneLevitatorBlock ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -804,6 +806,16 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "mnemonic_matrix",
                         MnemonicMatrixBlock::new
+                );
+        public static final RegistrySupplier<ArcaneLevitatorBubbleBlock> SUPPLIER_ARCANE_LEVITATOR_BUBBLE =
+                BLOCKS.register(
+                        "arcane_levitator_bubble",
+                        ArcaneLevitatorBubbleBlock::new
+                );
+        public static final RegistrySupplier<ArcaneLevitatorBlock> SUPPLIER_ARCANE_LEVITATOR =
+                BLOCKS.register(
+                        "arcane_levitator",
+                        ArcaneLevitatorBlock::new
                 );
 
 
