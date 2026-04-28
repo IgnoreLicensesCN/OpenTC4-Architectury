@@ -52,6 +52,7 @@ block_with_item_names = [
     ['tile.blockMetalDevice.7.name', 'arcane_lamp'],
     ['tile.blockMetalDevice.8.name', 'growth_arcane_lamp'],
     ['tile.blockMetalDevice.11.name', ['thaumatorium_bottom','thaumatorium_top','thaumatorium']],
+    ['tile.blockMetalDevice.12.name', 'mnemonic_matrix'],
     ['tile.blockMetalDevice.13.name', 'fertility_arcane_lamp'],
     ["tile.blockAlchemyFurnace.name",['advanced_alchemical_furnace_alembic','advanced_alchemical_furnace_upper_fence','advanced_alchemical_furnace_nozzle','advanced_alchemical_furnace_base_corner','advanced_alchemical_furnace_base']],
     ['tile.blockJar.0.name','essentia_jar'],

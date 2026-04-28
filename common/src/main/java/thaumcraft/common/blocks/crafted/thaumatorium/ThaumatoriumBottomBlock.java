@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks.crafted;
+package thaumcraft.common.blocks.crafted.thaumatorium;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

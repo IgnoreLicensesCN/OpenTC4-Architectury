@@ -25,7 +25,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachment;
+import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachmentBlock;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.menu.menu.ThaumatoriumMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -35,7 +35,7 @@ import java.util.List;
 
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.OWNING_ASPECTS;
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.RECIPES;
-import static thaumcraft.common.blocks.crafted.ThaumatoriumBottomBlock.FACING;
+import static thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock.FACING;
 
 public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<ThaumatoriumMenu,ThaumatoriumBlockEntity> implements
         WorldlyContainer,
@@ -123,7 +123,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
                 var probablyAttachment = this.level.getBlockState(probablyAttachmentPos);
                 var probablyAttachmentPos2 = abovePos.relative(dir);
                 var probablyAttachment2 = this.level.getBlockState(probablyAttachmentPos2);
-                if (probablyAttachment.getBlock() instanceof IThaumatoriumAttachment attachment) {
+                if (probablyAttachment.getBlock() instanceof IThaumatoriumAttachmentBlock attachment) {
                     additionalSize += attachment.getAdditionalRecipeSize(
                             this.level,
                             probablyAttachmentPos,
@@ -131,7 +131,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
                             selfPos
                     );
                 }
-                if (probablyAttachment2.getBlock() instanceof IThaumatoriumAttachment attachment) {
+                if (probablyAttachment2.getBlock() instanceof IThaumatoriumAttachmentBlock attachment) {
                     additionalSize += attachment.getAdditionalRecipeSize(
                             this.level,
                             probablyAttachmentPos2,

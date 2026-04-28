@@ -228,6 +228,7 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
     public static final BlockItem GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
     public static final BlockItem FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
+    public static final BlockItem MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
 
     //===========================================================================================
 
@@ -250,8 +251,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<Item> SUPPLIER_ENCHANTED_FABRIC = ITEMS.register(
                 "enchanted_fabric", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_VIS_FILTER = ITEMS.register(
-                "" +
-                        "", () -> new Item(new Item.Properties()));
+                "vis_filter", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<KnowledgeFragmentItem> SUPPLIER_KNOWLEDGE_FRAGMENT = ITEMS.register(
                 "knowledge_fragment", KnowledgeFragmentItem::new);
         public static final RegistrySupplier<Item> SUPPLIER_MIRRORED_GLASS = ITEMS.register(
@@ -794,6 +794,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_FERTILITY_ARCANE_LAMP = ITEMS.register(
                 "fertility_arcane_lamp",
                 () -> new BlockItem(ThaumcraftBlocks.FERTILITY_ARCANE_LAMP,new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MNEMONIC_MATRIX = ITEMS.register(
+                "mnemonic_matrix",
+                () -> new BlockItem(ThaumcraftBlocks.MNEMONIC_MATRIX,  new Item.Properties())
         );
 
         static {

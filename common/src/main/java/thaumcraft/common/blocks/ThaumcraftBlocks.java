@@ -37,6 +37,9 @@ import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
+import thaumcraft.common.blocks.crafted.thaumatorium.MnemonicMatrixBlock;
+import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock;
+import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumTopBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -214,6 +217,7 @@ public class ThaumcraftBlocks {
     public static final FertilityArcaneLampBlock FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static final ThaumatoriumBottomBlock THAUMATORIUM_BOTTOM = Registry.SUPPLIER_THAUMATORIUM_BOTTOM.get();
     public static final ThaumatoriumTopBlock THAUMATORIUM_TOP = Registry.SUPPLIER_THAUMATORIUM_TOP.get();
+    public static final MnemonicMatrixBlock MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -795,6 +799,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "thaumatorium_top",
                         ThaumatoriumTopBlock::new
+                );
+        public static final RegistrySupplier<MnemonicMatrixBlock> SUPPLIER_MNEMONIC_MATRIX =
+                BLOCKS.register(
+                        "mnemonic_matrix",
+                        MnemonicMatrixBlock::new
                 );
 
 

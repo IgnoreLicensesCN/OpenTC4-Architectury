@@ -1,43 +1,5 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockContainer;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
-import net.minecraft.core.Direction;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
-import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.client.renderers.block.BlockRenderer;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.EntitySpecialItem;
-import thaumcraft.common.items.misc.ItemShard;
-import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.tiles.*;
-
-import java.util.List;
-import java.util.Random;
-
 //  "tile.blockMetalDevice.0.name": "坩埚",--done
 //  "tile.blockMetalDevice.1.name": "奥术蒸馏器",--done
 //  "tile.blockMetalDevice.2.name": "魔力充能中继器",--done
@@ -50,25 +12,25 @@ import java.util.Random;
 //  "tile.blockMetalDevice.9.name": "炼金构材",--done
 //  "tile.blockMetalDevice.10.name": "神秘炼金塔",--done
 //  "tile.blockMetalDevice.11.name": "神秘炼金塔",--done
-//  "tile.blockMetalDevice.12.name": "记忆矩阵",
+//  "tile.blockMetalDevice.12.name": "记忆矩阵",--done
 //  "tile.blockMetalDevice.13.name": "育种灯",--done
 //  "tile.blockMetalDevice.14.name": "魔力中继器",--done
 //although there could be history reasons such as limited item IDs,
 //i still want to say there could be mental illness with anazor to design like this.
 //--IgnoreLicensesCN
-public class BlockMetalDevice extends BlockContainer {
-   public IIcon[] icon = new IIcon[23];
-   public IIcon iconGlow;
-   private int delay = 0;
-
-   public BlockMetalDevice() {
-      super(Material.iron);
-      this.setHardness(3.0F);
-      this.setResistance(17.0F);
-      this.setStepSound(Block.soundTypeMetal);
-      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
+public class BlockMetalDevice /*extends BlockContainer*/ {
+//   public IIcon[] icon = new IIcon[23];
+//   public IIcon iconGlow;
+//   private int delay = 0;
+//
+//   public BlockMetalDevice() {
+//      super(Material.iron);
+//      this.setHardness(3.0F);
+//      this.setResistance(17.0F);
+//      this.setStepSound(Block.soundTypeMetal);
+//      this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
 
 
 
@@ -240,59 +202,59 @@ public class BlockMetalDevice extends BlockContainer {
 //      }
 //   }
 
-   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-      int metadata = world.getBlockMetadata(i, j, k);
-      if (metadata != 5 && metadata != 6) {
-         if (metadata != 7 && metadata != 8 && metadata != 13) {
-            if (metadata == 10) {
-               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
-            }
-            else if (metadata == 11) {
-               this.setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            }
-            else if (metadata == 12) {
-               this.setBlockBounds(BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W13, BlockRenderer.W13, BlockRenderer.W13);
-            }
-            else if (metadata == 2) {
-               this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
-            }
-            else if (metadata == 14) {
-               TileEntity te = world.getTileEntity(i, j, k);
-               if (te instanceof TileVisRelay) {
-                  switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
-                     case UP:
-                        this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
-                        break;
-                     case DOWN:
-                        this.setBlockBounds(BlockRenderer.W5, 0.0F, BlockRenderer.W5, BlockRenderer.W11, 0.5F, BlockRenderer.W11);
-                        break;
-                     case EAST:
-                        this.setBlockBounds(0.5F, BlockRenderer.W5, BlockRenderer.W5, 1.0F, BlockRenderer.W11, BlockRenderer.W11);
-                        break;
-                     case WEST:
-                        this.setBlockBounds(0.0F, BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11);
-                        break;
-                     case SOUTH:
-                        this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11, 1.0F);
-                        break;
-                     case NORTH:
-                        this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.0F, BlockRenderer.W11, BlockRenderer.W11, 0.5F);
-                  }
-               }
-            }
-            else {
-               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);//== 1,== 3,== 4,== 9
-            }
-         } else {
-            this.setBlockBounds(BlockRenderer.W4, BlockRenderer.W2, BlockRenderer.W4, BlockRenderer.W12, BlockRenderer.W14, BlockRenderer.W12);
-            //== 7,== 8, == 13
-         }
-      } else {
-         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);// == 5,== 6
-      }
-
-      super.setBlockBoundsBasedOnState(world, i, j, k);
-   }
+//   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
+//      int metadata = world.getBlockMetadata(i, j, k);
+//      if (metadata != 5 && metadata != 6) {
+//         if (metadata != 7 && metadata != 8 && metadata != 13) {
+//            if (metadata == 10) {
+//               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+//            }
+//            else if (metadata == 11) {
+//               this.setBlockBounds(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            }
+//            else if (metadata == 12) {
+//               this.setBlockBounds(BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W13, BlockRenderer.W13, BlockRenderer.W13);
+//            }
+//            else if (metadata == 2) {
+//               this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
+//            }
+//            else if (metadata == 14) {
+//               TileEntity te = world.getTileEntity(i, j, k);
+//               if (te instanceof TileVisRelay) {
+//                  switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
+//                     case UP:
+//                        this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
+//                        break;
+//                     case DOWN:
+//                        this.setBlockBounds(BlockRenderer.W5, 0.0F, BlockRenderer.W5, BlockRenderer.W11, 0.5F, BlockRenderer.W11);
+//                        break;
+//                     case EAST:
+//                        this.setBlockBounds(0.5F, BlockRenderer.W5, BlockRenderer.W5, 1.0F, BlockRenderer.W11, BlockRenderer.W11);
+//                        break;
+//                     case WEST:
+//                        this.setBlockBounds(0.0F, BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11);
+//                        break;
+//                     case SOUTH:
+//                        this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11, 1.0F);
+//                        break;
+//                     case NORTH:
+//                        this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.0F, BlockRenderer.W11, BlockRenderer.W11, 0.5F);
+//                  }
+//               }
+//            }
+//            else {
+//               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);//== 1,== 3,== 4,== 9
+//            }
+//         } else {
+//            this.setBlockBounds(BlockRenderer.W4, BlockRenderer.W2, BlockRenderer.W4, BlockRenderer.W12, BlockRenderer.W14, BlockRenderer.W12);
+//            //== 7,== 8, == 13
+//         }
+//      } else {
+//         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);// == 5,== 6
+//      }
+//
+//      super.setBlockBoundsBasedOnState(world, i, j, k);
+//   }
 
 //   @SideOnly(Side.CLIENT)
 //   public void randomDisplayTick(World w, int i, int j, int k, Random r) {
@@ -315,191 +277,191 @@ public class BlockMetalDevice extends BlockContainer {
 //      }
 //   }
 
-   public TileEntity createTileEntity(World world, int metadata) {
-      if (metadata == 0) {
-         return new TileCrucible();
-      } else if (metadata == 5) {
-         return new TileGrate();
-      } else if (metadata == 6) {
-         return new TileGrate();
-      } else if (metadata == 1) {
-         return new TileAlembic();
-      } else if (metadata == 7) {
-         return new TileArcaneLamp();
-      } else if (metadata == 8) {
-         return new TileArcaneLampGrowth();
-      } else if (metadata == 10) {
-         return new TileThaumatorium();
-      } else if (metadata == 11) {
-         return new TileThaumatoriumTop();
-      } else if (metadata == 12) {
-         return new TileBrainbox();
-      } else if (metadata == 13) {
-         return new TileArcaneLampFertility();
-      } else if (metadata == 14) {
-         return new TileVisRelay();
-      } else {
-         return metadata == 2 ? new TileMagicWorkbenchCharger() : super.createTileEntity(world, metadata);
-      }
-   }
-
-   public boolean hasComparatorInputOverride() {
-      return true;
-   }
-
-   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
-      int metadata = world.getBlockMetadata(i, j, k);
-      if (metadata == 0) {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         float f = 0.125F;
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 0.85F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.85F, f);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 0.85F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 0.85F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      } else if (metadata == 2) {
-         this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      } else if (metadata == 5) {
-         if (par7Entity != null && !(par7Entity instanceof EntityItem)) {
-            this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);
-            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         }
-      } else if (metadata == 6) {
-         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      } else if (metadata != 7 && metadata != 8 && metadata != 13) {
-         if (metadata == 12) {
-            this.setBlockBounds(BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W13, BlockRenderer.W13, BlockRenderer.W13);
-            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         } else if (metadata == 14) {
-            TileEntity te = world.getTileEntity(i, j, k);
-            if (te instanceof TileVisRelay) {
-               switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
-                  case UP:
-                     this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
-                     break;
-                  case DOWN:
-                     this.setBlockBounds(BlockRenderer.W5, 0.0F, BlockRenderer.W5, BlockRenderer.W11, 0.5F, BlockRenderer.W11);
-                     break;
-                  case EAST:
-                     this.setBlockBounds(0.5F, BlockRenderer.W5, BlockRenderer.W5, 1.0F, BlockRenderer.W11, BlockRenderer.W11);
-                     break;
-                  case WEST:
-                     this.setBlockBounds(0.0F, BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11);
-                     break;
-                  case SOUTH:
-                     this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11, 1.0F);
-                     break;
-                  case NORTH:
-                     this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.0F, BlockRenderer.W11, BlockRenderer.W11, 0.5F);
-               }
-
-               super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-            }
-         } else {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-         }
-      } else {
-         this.setBlockBounds(BlockRenderer.W4, BlockRenderer.W2, BlockRenderer.W4, BlockRenderer.W12, BlockRenderer.W14, BlockRenderer.W12);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      }
-
-   }
-
-   public TileEntity createNewTileEntity(World var1, int md) {
-      return null;
-   }
-
-   public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileThaumatorium) {
-         return Container.calcRedstoneFromInventory((IInventory) te);
-      } else if (te instanceof TileAlembic) {
-         float r = (float) ((TileAlembic) te).amount / (float) ((TileAlembic) te).maxAmount;
-         return MathHelper.floor_float(r * 14.0F) + (((TileAlembic) te).amount > 0 ? 1 : 0);
-      } else if (te instanceof TileCrucible) {
-         float var10000 = (float) ((TileCrucible) te).aspects.visSize();
-         ((TileCrucible) te).getClass();
-         float r = var10000 / 100.0F;
-         return MathHelper.floor_float(r * 14.0F) + (((TileCrucible) te).aspects.visSize() > 0 ? 1 : 0);
-      } else {
-         return 0;
-      }
-   }
-
-   public void onNeighborBlockChange(World world, int x, int y, int z, Block nbid) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      int md = world.getBlockMetadata(x, y, z);
-      if (te instanceof TileCrucible) {
-         ((TileCrucible) te).getBellows();
-      }
-
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         if (te instanceof TileAlembic) {
-            world.markBlockForUpdate(x, y, z);
-         } else if (te instanceof TileArcaneLamp) {
-            TileArcaneLamp telb = (TileArcaneLamp) te;
-            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
-               this.dropBlockAsItem(world, x, y, z, 7, 0);
-               world.setBlockToAir(x, y, z);
-            }
-         } else if (te instanceof TileArcaneLampGrowth) {
-            TileArcaneLampGrowth telb = (TileArcaneLampGrowth) te;
-            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
-               this.dropBlockAsItem(world, x, y, z, 8, 0);
-               world.setBlockToAir(x, y, z);
-            }
-         } else if (te instanceof TileBrainbox) {
-            TileBrainbox telb = (TileBrainbox) te;
-            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
-               this.dropBlockAsItem(world, x, y, z, 12, 0);
-               world.setBlockToAir(x, y, z);
-            }
-         } else if (te instanceof TileVisRelay && md == 14) {
-            TileVisRelay telb = (TileVisRelay) te;
-            if (world.isAirBlock(x + Direction.getOrientation(telb.orientation).getOpposite().offsetX, y + Direction.getOrientation(telb.orientation).getOpposite().offsetY, z + Direction.getOrientation(telb.orientation).getOpposite().offsetZ)) {
-               this.dropBlockAsItem(world, x, y, z, 14, 0);
-               world.setBlockToAir(x, y, z);
-            }
-         } else if (md == 10) {
-            if (world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y + 1, z) != 11 || world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 0) {
-               InventoryUtils.dropItems(world, x, y, z);
-               world.setBlockToAir(x, y, z);
-               world.setBlock(x, y, z, this, 9, 3);
-               return;
-            }
-
-            TileEntity tile = world.getTileEntity(x, y, z);
-            if (tile instanceof TileThaumatorium) {
-               ((TileThaumatorium) tile).getUpgrades();
-            }
-         } else if (md == 11) {
-            if (world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 10) {
-               world.setBlockToAir(x, y, z);
-               world.setBlock(x, y, z, this, 9, 3);
-               return;
-            }
-
-            TileEntity tile = world.getTileEntity(x, y - 1, z);
-            if (tile instanceof TileThaumatorium) {
-               ((TileThaumatorium) tile).getUpgrades();
-            }
-         }
-
-         boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
-         if (flag || nbid.canProvidePower()) {
-            this.onPoweredBlockChange(world, x, y, z, flag);
-         }
-      }
-
-      super.onNeighborBlockChange(world, x, y, z, nbid);
-   }
+//   public TileEntity createTileEntity(World world, int metadata) {
+//      if (metadata == 0) {
+//         return new TileCrucible();
+//      } else if (metadata == 5) {
+//         return new TileGrate();
+//      } else if (metadata == 6) {
+//         return new TileGrate();
+//      } else if (metadata == 1) {
+//         return new TileAlembic();
+//      } else if (metadata == 7) {
+//         return new TileArcaneLamp();
+//      } else if (metadata == 8) {
+//         return new TileArcaneLampGrowth();
+//      } else if (metadata == 10) {
+//         return new TileThaumatorium();
+//      } else if (metadata == 11) {
+//         return new TileThaumatoriumTop();
+//      } else if (metadata == 12) {
+//         return new TileBrainbox();
+//      } else if (metadata == 13) {
+//         return new TileArcaneLampFertility();
+//      } else if (metadata == 14) {
+//         return new TileVisRelay();
+//      } else {
+//         return metadata == 2 ? new TileMagicWorkbenchCharger() : super.createTileEntity(world, metadata);
+//      }
+//   }
+//
+//   public boolean hasComparatorInputOverride() {
+//      return true;
+//   }
+//
+//   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
+//      int metadata = world.getBlockMetadata(i, j, k);
+//      if (metadata == 0) {
+//         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         float f = 0.125F;
+//         this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 0.85F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.85F, f);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 0.85F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 0.85F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      } else if (metadata == 2) {
+//         this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      } else if (metadata == 5) {
+//         if (par7Entity != null && !(par7Entity instanceof EntityItem)) {
+//            this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         }
+//      } else if (metadata == 6) {
+//         this.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      } else if (metadata != 7 && metadata != 8 && metadata != 13) {
+//         if (metadata == 12) {
+//            this.setBlockBounds(BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W3, BlockRenderer.W13, BlockRenderer.W13, BlockRenderer.W13);
+//            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         } else if (metadata == 14) {
+//            TileEntity te = world.getTileEntity(i, j, k);
+//            if (te instanceof TileVisRelay) {
+//               switch (Direction.getOrientation(((TileVisRelay) te).orientation).getOpposite()) {
+//                  case UP:
+//                     this.setBlockBounds(BlockRenderer.W5, 0.5F, BlockRenderer.W5, BlockRenderer.W11, 1.0F, BlockRenderer.W11);
+//                     break;
+//                  case DOWN:
+//                     this.setBlockBounds(BlockRenderer.W5, 0.0F, BlockRenderer.W5, BlockRenderer.W11, 0.5F, BlockRenderer.W11);
+//                     break;
+//                  case EAST:
+//                     this.setBlockBounds(0.5F, BlockRenderer.W5, BlockRenderer.W5, 1.0F, BlockRenderer.W11, BlockRenderer.W11);
+//                     break;
+//                  case WEST:
+//                     this.setBlockBounds(0.0F, BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11);
+//                     break;
+//                  case SOUTH:
+//                     this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.5F, BlockRenderer.W11, BlockRenderer.W11, 1.0F);
+//                     break;
+//                  case NORTH:
+//                     this.setBlockBounds(BlockRenderer.W5, BlockRenderer.W5, 0.0F, BlockRenderer.W11, BlockRenderer.W11, 0.5F);
+//               }
+//
+//               super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//            }
+//         } else {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//         }
+//      } else {
+//         this.setBlockBounds(BlockRenderer.W4, BlockRenderer.W2, BlockRenderer.W4, BlockRenderer.W12, BlockRenderer.W14, BlockRenderer.W12);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      }
+//
+//   }
+//
+//   public TileEntity createNewTileEntity(World var1, int md) {
+//      return null;
+//   }
+//
+//   public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
+//      TileEntity te = world.getTileEntity(x, y, z);
+//      if (te instanceof TileThaumatorium) {
+//         return Container.calcRedstoneFromInventory((IInventory) te);
+//      } else if (te instanceof TileAlembic) {
+//         float r = (float) ((TileAlembic) te).amount / (float) ((TileAlembic) te).maxAmount;
+//         return MathHelper.floor_float(r * 14.0F) + (((TileAlembic) te).amount > 0 ? 1 : 0);
+//      } else if (te instanceof TileCrucible) {
+//         float var10000 = (float) ((TileCrucible) te).aspects.visSize();
+//         ((TileCrucible) te).getClass();
+//         float r = var10000 / 100.0F;
+//         return MathHelper.floor_float(r * 14.0F) + (((TileCrucible) te).aspects.visSize() > 0 ? 1 : 0);
+//      } else {
+//         return 0;
+//      }
+//   }
+//
+//   public void onNeighborBlockChange(World world, int x, int y, int z, Block nbid) {
+//      TileEntity te = world.getTileEntity(x, y, z);
+//      int md = world.getBlockMetadata(x, y, z);
+//      if (te instanceof TileCrucible) {
+//         ((TileCrucible) te).getBellows();
+//      }
+//
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         if (te instanceof TileAlembic) {
+//            world.markBlockForUpdate(x, y, z);
+//         } else if (te instanceof TileArcaneLamp) {
+//            TileArcaneLamp telb = (TileArcaneLamp) te;
+//            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
+//               this.dropBlockAsItem(world, x, y, z, 7, 0);
+//               world.setBlockToAir(x, y, z);
+//            }
+//         } else if (te instanceof TileArcaneLampGrowth) {
+//            TileArcaneLampGrowth telb = (TileArcaneLampGrowth) te;
+//            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
+//               this.dropBlockAsItem(world, x, y, z, 8, 0);
+//               world.setBlockToAir(x, y, z);
+//            }
+//         } else if (te instanceof TileBrainbox) {
+//            TileBrainbox telb = (TileBrainbox) te;
+//            if (world.isAirBlock(x + telb.facing.offsetX, y + telb.facing.offsetY, z + telb.facing.offsetZ)) {
+//               this.dropBlockAsItem(world, x, y, z, 12, 0);
+//               world.setBlockToAir(x, y, z);
+//            }
+//         } else if (te instanceof TileVisRelay && md == 14) {
+//            TileVisRelay telb = (TileVisRelay) te;
+//            if (world.isAirBlock(x + Direction.getOrientation(telb.orientation).getOpposite().offsetX, y + Direction.getOrientation(telb.orientation).getOpposite().offsetY, z + Direction.getOrientation(telb.orientation).getOpposite().offsetZ)) {
+//               this.dropBlockAsItem(world, x, y, z, 14, 0);
+//               world.setBlockToAir(x, y, z);
+//            }
+//         } else if (md == 10) {
+//            if (world.getBlock(x, y + 1, z) != this || world.getBlockMetadata(x, y + 1, z) != 11 || world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 0) {
+//               InventoryUtils.dropItems(world, x, y, z);
+//               world.setBlockToAir(x, y, z);
+//               world.setBlock(x, y, z, this, 9, 3);
+//               return;
+//            }
+//
+//            TileEntity tile = world.getTileEntity(x, y, z);
+//            if (tile instanceof TileThaumatorium) {
+//               ((TileThaumatorium) tile).getUpgrades();
+//            }
+//         } else if (md == 11) {
+//            if (world.getBlock(x, y - 1, z) != this || world.getBlockMetadata(x, y - 1, z) != 10) {
+//               world.setBlockToAir(x, y, z);
+//               world.setBlock(x, y, z, this, 9, 3);
+//               return;
+//            }
+//
+//            TileEntity tile = world.getTileEntity(x, y - 1, z);
+//            if (tile instanceof TileThaumatorium) {
+//               ((TileThaumatorium) tile).getUpgrades();
+//            }
+//         }
+//
+//         boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+//         if (flag || nbid.canProvidePower()) {
+//            this.onPoweredBlockChange(world, x, y, z, flag);
+//         }
+//      }
+//
+//      super.onNeighborBlockChange(world, x, y, z, nbid);
+//   }
 
 //   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
 //      InventoryUtils.dropItems(par1World, par2, par3, par4);
