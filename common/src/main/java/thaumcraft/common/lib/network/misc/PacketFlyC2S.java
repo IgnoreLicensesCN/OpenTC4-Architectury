@@ -2,7 +2,6 @@ package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import thaumcraft.common.Thaumcraft;
@@ -12,8 +11,6 @@ public class PacketFlyC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":set_fly";
     public static MessageType messageType;
     private boolean hover;
-
-    public PacketFlyC2S() {}
 
     public PacketFlyC2S(boolean hover) {
         this.hover = hover;

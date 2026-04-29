@@ -562,7 +562,7 @@
   "recipe.type.smelting": "Fornace",
   "recipe.type.workbench": "Banco da lavoro",
   "recipe.type.workbenchshapeless": "Banco (senzaforma)",
-  "tc.addaspectdiscovery": "Hai scoperto %n!",
+  "tc.addaspectdiscovery": "Hai scoperto %s!",
   "tc.addaspectpool": "Guadagnato(i) %s punto(i) ricerca per %n",
   "tc.addclue": "Hai scoperto un indizio per una nuova ricerca!",
   "tc.addcluefail": "Hai trovato un indizio, ma l'hai perso perché non puoi trascriverlo!",

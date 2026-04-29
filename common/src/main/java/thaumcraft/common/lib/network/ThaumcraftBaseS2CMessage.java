@@ -1,4 +1,4 @@
-package thaumcraft.common.lib;
+package thaumcraft.common.lib.network;
 
 import dev.architectury.networking.simple.BaseS2CMessage;
 import net.minecraft.core.BlockPos;

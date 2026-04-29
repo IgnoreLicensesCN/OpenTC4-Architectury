@@ -1,5 +1,6 @@
 package thaumcraft.api.research.implexample;
 
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.interfaces.IAspectUnlockable;
@@ -26,8 +27,8 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
     }
 
     @Override
-    public boolean canPlayerCompleteResearchWithAspect(String playerName) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
+    public boolean canPlayerCompleteResearchWithAspect(Player player) {
+        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
         return researched.containsAll(getParents());
     }
 
@@ -37,8 +38,8 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
     }
 
     @Override
-    public boolean canPlayerResearch(String playerName) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(playerName));
+    public boolean canPlayerResearch(Player player) {
+        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
         return researched.containsAll(getParents());
     }
 }

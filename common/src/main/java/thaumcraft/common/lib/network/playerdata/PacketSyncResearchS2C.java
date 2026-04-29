@@ -2,7 +2,7 @@ package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

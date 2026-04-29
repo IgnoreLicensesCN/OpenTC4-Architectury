@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//"0": "奥术风箱",
+//"0": "奥术风箱",--done
 //    "tile.blockWoodenDevice.1.name": "奥术之耳",
 //    "tile.blockWoodenDevice.2.name": "奥术压力盘",
 //    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",

@@ -24,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
+import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GLIMMER_OF_LIGHT_WONT_OVERRIDE;
+
 public class ArcaneLampBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final int LIGHT_RADIUS = 15;
@@ -111,8 +113,9 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
                 ),
                 pickZ
         );
-        if (serverLevel.getBlockState(pickBlockPos)
-                .isAir()) {
+        var pickBlockState = serverLevel.getBlockState(pickBlockPos);
+        if (pickBlockState.isAir() && !(pickBlockState.is(GLIMMER_OF_LIGHT_WONT_OVERRIDE))
+        ) {
             serverLevel.setBlockAndUpdate(pickBlockPos, ThaumcraftBlocks.GLIMMER_OF_LIGHT.defaultBlockState());
         }
     }

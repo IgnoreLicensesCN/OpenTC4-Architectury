@@ -1,4 +1,5 @@
 {
+  "_comment": "if considered affective,growth lamp will call #tick() (not random tick) for these blocks",
   "replace": false,
   "values": [
   ]

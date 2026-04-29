@@ -1,4 +1,5 @@
 {
+  "_comment": "growth lamp wont affect these blocks(will make \"lamp_affective\" tag not work)",
   "replace": false,
   "values": [
   ]

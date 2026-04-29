@@ -697,7 +697,7 @@
   "recipe.type.smelting": "Tavení",
   "recipe.type.workbench": "Pracovní stolek",
   "recipe.type.workbenchshapeless": "Pracovní stolek (Shapeless)",
-  "tc.addaspectdiscovery": "Objevil si %n!",
+  "tc.addaspectdiscovery": "Objevil si %s!",
   "tc.addaspectpool": "Získány %s výzkumné body (s) pro %n",
   "tc.addclue": "Objevil si stopu k novému výzkumu!",
   "tc.addcluefail": "Objevil jsi stopu, ale je ztracená od té doby co ji nemůžeš zaznamenat!",

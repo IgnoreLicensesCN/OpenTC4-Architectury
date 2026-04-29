@@ -14,12 +14,11 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
     public static MessageType messageType;
     public static final String ID = Thaumcraft.MOD_ID + ":complete_research_with_aspect";
-    private ResearchItemResourceLocation researchToCompleteWithAspect;
+    private final ResearchItemResourceLocation researchToCompleteWithAspect;
     @Override
     public MessageType getType() {
         return messageType;
     }
-    public PacketPlayerCompleteResearchWithAspectC2S(){}
     public PacketPlayerCompleteResearchWithAspectC2S(ResearchItemResourceLocation researchToCompleteWithAspect) {
         this.researchToCompleteWithAspect = researchToCompleteWithAspect;
     }
@@ -39,16 +38,15 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         var p = context.getPlayer();
         if (!(p instanceof ServerPlayer player)){return;}
-        var playerName = player.getGameProfile().getName();
         var research = ResearchItem.getResearch(researchToCompleteWithAspect);
         if (research == null){return;}
-        if (research.isPlayerCompletedResearch(playerName)){
+        if (research.isPlayerCompletedResearch(player)){
             return;
         }
         if (!(research instanceof IAspectUnlockable aspectUnlockable)){return;}
-        if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(playerName)){return;}
+        if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(player)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
-        var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(playerName);
+        var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
         for (var aspectCostPair:aspectsCost.entrySet()){
             var aspectTypeRequired = aspectCostPair.getKey();
             var aspectCost = aspectCostPair.getValue();
@@ -60,12 +58,12 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
             var aspectTypeRequired = aspectCostPair.getKey();
             var aspectCost = aspectCostPair.getValue();
 
-            Thaumcraft.playerKnowledge.addAspectPool(playerName, aspectTypeRequired, (short) (-aspectCost));
-            ResearchManager.scheduleSave(playerName);
+            Thaumcraft.playerKnowledge.addAspectPool(player, aspectTypeRequired, (short) (-aspectCost));
+            ResearchManager.scheduleSave(player);
             new PacketAspectPoolS2C(
                     aspectTypeRequired.aspectKey,
                     (short) (-aspectCost),
-                    Thaumcraft.playerKnowledge.getAspectPoolFor(playerName, aspectTypeRequired))
+                    Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspectTypeRequired))
                     .sendTo(player);
         }
         new PacketResearchCompleteS2C(research.key).sendTo(player);

@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,12 +17,6 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
 
     public List<String> data;
 
-    // ------------------ 构造 ------------------
-
-    public PacketSyncScannedEntitiesS2C(){}
-    /**
-     * 服务端发送用构造
-     */
     public PacketSyncScannedEntitiesS2C(Player player) {
         List<String> list = Thaumcraft.getScannedEntities().get(player.getGameProfile().getName());
         this.data = list != null ? list : new ArrayList<>();
@@ -34,8 +28,6 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
     public PacketSyncScannedEntitiesS2C(List<String> data) {
         this.data = data;
     }
-
-    // ------------------ Architectury 必要方法 ------------------
 
     @Override
     public void write(FriendlyByteBuf buf) {
@@ -58,7 +50,9 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
         if (player != null && player.level().isClientSide) {
-            ClientHandler.handle(this);
+            for (String key : data) {
+                Thaumcraft.researchManager.completeScannedEntity(player, key);
+            }
         }
     }
 
@@ -67,16 +61,4 @@ public class PacketSyncScannedEntitiesS2C extends ThaumcraftBaseS2CMessage {
         return messageType;
     }
 
-    // ------------------ 客户端逻辑 ------------------
-
-    public static class ClientHandler {
-        public static void handle(PacketSyncScannedEntitiesS2C msg) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            for (String key : msg.data) {
-                Thaumcraft.researchManager.completeScannedEntity(player.getGameProfile().getName(), key);
-            }
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package thaumcraft.api.research.implexample;
 
 import com.linearity.opentc4.OpenTC4;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
@@ -24,8 +25,8 @@ public abstract class ResearchNoteUnlockedResearchWithParents
     }
 
     @Override
-    public boolean canPlayerCreateResearchNote(String playerName) {
-        return researchedAllParents(playerName);
+    public boolean canPlayerCreateResearchNote(Player player) {
+        return researchedAllParents(player);
     }
 
     @Override
@@ -35,18 +36,18 @@ public abstract class ResearchNoteUnlockedResearchWithParents
 
 
     @Override
-    public boolean canPlayerResearch(String playerName) {
-        return researchedAllParents(playerName);
+    public boolean canPlayerResearch(Player player) {
+        return researchedAllParents(player);
     }
 
-    protected boolean researchedAllParents(String playerName) {
+    protected boolean researchedAllParents(Player player) {
         for (ResearchItemResourceLocation researchKey : getParents()) {
             var researchParent = ResearchItem.getResearch(researchKey);
             if (researchParent == null) {
                 OpenTC4.LOGGER.error("Research not found: {}",researchKey);
                 return false;
             }
-            if (!researchParent.isPlayerCompletedResearch(playerName)) {
+            if (!researchParent.isPlayerCompletedResearch(player)) {
                 return false;
             }
         }

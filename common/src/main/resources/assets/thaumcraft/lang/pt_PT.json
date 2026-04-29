@@ -625,7 +625,7 @@
   "recipe.type.smelting": "Fundição",
   "recipe.type.workbench": "Mesa de Trabalho",
   "recipe.type.workbenchshapeless": "Mesa de Trabalho (Disforme)",
-  "tc.addaspectdiscovery": "Descobriste %n!",
+  "tc.addaspectdiscovery": "Descobriste %s!",
   "tc.addaspectpool": "Ganhaste %s pontos de pesquisa para %n",
   "tc.addclue": "Descobriste uma pista para uma nova pesquisa!",
   "tc.addcluefail": "Descobriste uma pista, mas foi perdida porque não a podes anotar!",

@@ -486,7 +486,7 @@
   "recipe.type.infusionenchantment": "Encantamient Infusió",
   "recipe.type.workbench": "Mesa de Munufactura",
   "recipe.type.workbenchshapeless": "Mesa de Munufactura (Sense forma)",
-  "tc.addaspectdiscovery": "¡Has descobert %n!",
+  "tc.addaspectdiscovery": "¡Has descobert %s!",
   "tc.addaspectpool": "Adquireixes %s punts d'investigació(ns) per %n",
   "tc.addclue": "¡Has descobert una pista d'una nova investigació!",
   "tc.addcluefail": "¡Has descobert una pista, perà s'ha pegut per que no la has pogut anotar!",

@@ -697,7 +697,7 @@
   "recipe.type.smelting": "熔煉",
   "recipe.type.workbench": "工作台",
   "recipe.type.workbenchshapeless": "工作台(無序)",
-  "tc.addaspectdiscovery": "您已發現%n！",
+  "tc.addaspectdiscovery": "您已發現%s！",
   "tc.addaspectpool": "取得%s研究點：%n",
   "tc.addclue": "您已發現新研究的線索！",
   "tc.addcluefail": "您已發現新研究的線索，但由於缺乏紙墨而無法進行記錄！",

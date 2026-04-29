@@ -10,22 +10,22 @@ import net.minecraft.sounds.SoundEvents;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
     public static MessageType messageType;
 
-    private AspectResourceLocation key;
-    private int amountChanged;
-    private int total;
+    private final AspectResourceLocation key;
+    private final int amountChanged;
+    private final int total;
     private static long lastSound = 0L;
     public static final long SOUND_DELAY = 100L;
 
-    public PacketAspectPoolS2C() {
+    public PacketAspectPoolS2C(Aspect key, int amountChanged, int total){
+        this(key.getAspectKey(), amountChanged, total);
     }
-
     public PacketAspectPoolS2C(AspectResourceLocation key, int amountChanged, int total) {
         this.key = key;
         this.amountChanged = amountChanged;

@@ -11,7 +11,7 @@ import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 
 import java.util.ArrayList;
@@ -21,9 +21,8 @@ public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     public static MessageType messageType;
 
-    private ClueResourceLocation key;
+    private final ClueResourceLocation key;
 
-    public PacketClueCompleteS2C(){}
     public PacketClueCompleteS2C(ClueResourceLocation key) {
         this.key = key;
     }

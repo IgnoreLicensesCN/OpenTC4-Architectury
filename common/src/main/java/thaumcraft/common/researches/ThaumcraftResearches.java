@@ -7,6 +7,7 @@ import thaumcraft.common.researches.impl.ResearchMastery;
 
 
 public class ThaumcraftResearches {
+    public static final ResearchItem ASPECTS = ;
     public static final ResearchItem RESEARCH = new Research();
     public static final ResearchItem RESEARCH_EXPERTISE = new ResearchExpertise();
     public static final ResearchItem RESEARCH_MASTERY = new ResearchMastery();

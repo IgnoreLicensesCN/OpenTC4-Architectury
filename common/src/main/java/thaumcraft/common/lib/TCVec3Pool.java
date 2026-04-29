@@ -3,6 +3,7 @@ package thaumcraft.common.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated(forRemoval = true)
 public class TCVec3Pool {
    private final int truncateArrayResetThreshold;
    private final int minimumSize;

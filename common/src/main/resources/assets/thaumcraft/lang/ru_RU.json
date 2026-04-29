@@ -696,7 +696,7 @@
   "recipe.type.smelting": "Переплавка",
   "recipe.type.workbench": "Верстак",
   "recipe.type.workbenchshapeless": "Верстак (Беспорядочно)",
-  "tc.addaspectdiscovery": "Вы открыли %n!",
+  "tc.addaspectdiscovery": "Вы открыли %s!",
   "tc.addaspectpool": "Получено %s очка(ов) исследования для %n",
   "tc.addclue": "Вы нашли подсказку!",
   "tc.addcluefail": "Вы нашли подсказку, но она потерялась, так как Вы не смогли её записать!",

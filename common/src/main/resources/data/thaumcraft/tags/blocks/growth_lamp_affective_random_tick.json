@@ -1,4 +1,5 @@
 {
+  "_comment": "if considered affective,growth lamp will call random tick for these blocks",
   "replace": false,
   "values": [
     "minecraft:pumpkin_stem",

@@ -2,17 +2,12 @@ package thaumcraft.common.lib.network.misc;
 
 import com.linearity.opentc4.OpenTC4;
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import tc4tweak.ConfigurationHandler;
-import tc4tweak.network.NetworkedConfiguration;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.tiles.TileArcaneBore;
 
 public class PacketConfigS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":config";
@@ -85,8 +80,8 @@ public class PacketConfigS2C extends ThaumcraftBaseS2CMessage {
         Config.wuss = this.wuss;
         Config.researchDifficulty = this.researchDifficulty;
         Config.aspectTotalCap = this.aspectTotalCap;
-        NetworkedConfiguration.checkWorkbenchRecipes = this.checkWorkbenchRecipes;
-        NetworkedConfiguration.smallerJar = this.smallerJars;
+        ConfigurationHandler.INSTANCE.setCheckWorkbenchRecipes(this.checkWorkbenchRecipes);
+        ConfigurationHandler.INSTANCE.setSmallerJars(this.smallerJars);
         OpenTC4.LOGGER.info(
                 "Client received server config settings.CHEAT_SHEET[{}], WARDED_STONE[{}], MIRRORS[{}], HARD_NODES[{}], WUSS_MODE[{}], RESEARCH_DIFFICULTY[{}], ASPECT_TOTAL_CAP[{}], CHECK_WORKBENCH_RECIPES[{}], SMALLER_JARS[{}]",
                 Config.allowCheatSheet,
@@ -96,8 +91,8 @@ public class PacketConfigS2C extends ThaumcraftBaseS2CMessage {
                 Config.wuss,
                 Config.researchDifficulty,
                 Config.aspectTotalCap,
-                NetworkedConfiguration.checkWorkbenchRecipes,
-                NetworkedConfiguration.smallerJar
+                ConfigurationHandler.INSTANCE.isCheckWorkbenchRecipes(),
+                ConfigurationHandler.INSTANCE.isSmallerJars()
         );
     }
 }

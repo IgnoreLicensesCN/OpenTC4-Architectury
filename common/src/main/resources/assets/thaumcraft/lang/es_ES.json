@@ -696,7 +696,7 @@
   "recipe.type.smelting": "Fundición",
   "recipe.type.workbench": "Mesa de trabajo",
   "recipe.type.workbenchshapeless": "Mesa de trabajo(Sin forma)",
-  "tc.addaspectdiscovery": "¡Has descubierto %n!",
+  "tc.addaspectdiscovery": "¡Has descubierto %s!",
   "tc.addaspectpool": "Adquieres %s puntos de investigación(s) por %n",
   "tc.addclue": "¡Has descubierto una pista de una nueva investigación!",
   "tc.addcluefail": "¡Has descubierto una pista, pero se ha perdido porque no la has podido anotar!",

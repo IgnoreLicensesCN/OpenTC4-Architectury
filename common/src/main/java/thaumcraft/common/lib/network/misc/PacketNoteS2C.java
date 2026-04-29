@@ -1,12 +1,10 @@
 package thaumcraft.common.lib.network.misc;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,27 +16,22 @@ public class PacketNoteS2C extends ThaumcraftBaseS2CMessage {
 
     public static MessageType messageType;
 
-    private BlockPos pos;
-    private ResourceKey<Level> dim;
-    private byte note;
+    private final BlockPos pos;
+    private final byte note;
 
-    public PacketNoteS2C() {}
-    public PacketNoteS2C(BlockPos pos, ResourceKey<Level> dim, byte note) {
+    public PacketNoteS2C(BlockPos pos, byte note) {
         this.pos = pos;
-        this.dim = dim;
         this.note = note;
     }
 
     public static PacketNoteS2C decode(FriendlyByteBuf buf) {
         BlockPos pos = buf.readBlockPos();
-        ResourceKey<Level> dim = buf.readResourceKey(Registries.DIMENSION);
         byte note = buf.readByte();
-        return new PacketNoteS2C(pos, dim, note);
+        return new PacketNoteS2C(pos, note);
     }
 
     public static void encode(PacketNoteS2C msg, FriendlyByteBuf buf) {
         buf.writeBlockPos(msg.pos);
-        buf.writeResourceKey(msg.dim);
         buf.writeByte(msg.note);
     }
 
@@ -55,11 +48,9 @@ public class PacketNoteS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext ctx) {
         Level world = ctx.getPlayer().level();
-        if (!world.dimension().equals(dim)) return;
 
         BlockPos pos = this.pos;
 
-        // ★ 客户端设置 NoteBlock 的 NOTE 属性
         if (world.getBlockState(pos).getBlock() instanceof NoteBlock) {
             world.setBlock(
                     pos,
@@ -69,7 +60,6 @@ public class PacketNoteS2C extends ThaumcraftBaseS2CMessage {
             return;
         }
 
-        // ★ 客户端同步 TileSensor
         BlockEntity tile = world.getBlockEntity(pos);
         if (tile instanceof TileSensor sensor) {
             sensor.note = note;

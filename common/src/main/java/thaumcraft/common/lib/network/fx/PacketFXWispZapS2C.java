@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.client.Minecraft;
@@ -15,10 +15,8 @@ public class PacketFXWispZapS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":fx_wisp_zap";
    public static MessageType messageType;
 
-   private int sourceId;
-   private int targetId;
-
-   public PacketFXWispZapS2C() {} // 无参构造必须有
+   private final int sourceId;
+   private final int targetId;
 
    public PacketFXWispZapS2C(int sourceId, int targetId) {
       this.sourceId = sourceId;

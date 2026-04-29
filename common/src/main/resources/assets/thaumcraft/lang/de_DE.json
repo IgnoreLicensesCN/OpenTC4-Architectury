@@ -697,7 +697,7 @@
   "recipe.type.smelting": "Schmelzen",
   "recipe.type.workbench": "Werkbank",
   "recipe.type.workbenchshapeless": "Werkbank (Formlos)",
-  "tc.addaspectdiscovery": "Du hast %n entdeckt!",
+  "tc.addaspectdiscovery": "Du hast %s entdeckt!",
   "tc.addaspectpool": "%s Forschungspunkt(e) für %n erhalten",
   "tc.addclue": "Du hast einen Hinweis auf neue Forschung entdeckt!",
   "tc.addcluefail": "Du hast einen Hinweis entdeckt. Jedoch ist er verloren, da du ihn nicht dokumentieren konntest!",

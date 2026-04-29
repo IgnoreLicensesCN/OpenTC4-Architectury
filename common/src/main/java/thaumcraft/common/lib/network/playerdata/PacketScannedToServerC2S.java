@@ -75,7 +75,11 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
-        Level world = player.getServer().getLevel(dim); // 通过 ResourceKey 获取世界
+        var server = player.getServer();
+        if (server == null) {
+            return;
+        }
+        Level world = server.getLevel(dim); // 通过 ResourceKey 获取世界
         if (world != null) {
             Entity e = entityId == 0 ? null : world.getEntity(entityId);
             ScanManager.completeScan(player, new ScanResult(type, id, e, phenomena), prefix);

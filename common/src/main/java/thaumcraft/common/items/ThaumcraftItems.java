@@ -812,7 +812,8 @@ public class ThaumcraftItems {
     }
 
     public static class ItemTags {
-        //TODO:Tag for forge and fabric,im lazy to write tag json :( maybe i need even several issue/PR to realize where(recipe or st.) i didn't notice this part.
+        //TODO:Tag for forge and fabric,im lazy to write tag json :(
+        // maybe i need even several issue/PR to realize where(recipe or st.) i didn't notice this part.
         public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("thaumcraft:tag_void_ingot"));
         public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(

@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,7 +42,7 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
      */
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeShort(data.size());
+        buf.writeInt(data.size());
         for (String s : data) {
             buf.writeUtf(s);
         }
@@ -52,8 +52,8 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
      * 解码方法（注册时使用）
      */
     public static PacketSyncScannedPhenomenaS2C decode(FriendlyByteBuf buf) {
-        short size = buf.readShort();
-        List<String> list = new ArrayList<>();
+        var size = buf.readInt();
+        List<String> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             list.add(buf.readUtf());
         }
@@ -67,7 +67,9 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
         if (player != null && player.level().isClientSide) {
-            ClientHandler.handle(this);
+            for (String key : data) {
+                Thaumcraft.researchManager.completeScannedPhenomena(player, key);
+            }
         }
     }
 
@@ -76,16 +78,4 @@ public class PacketSyncScannedPhenomenaS2C extends ThaumcraftBaseS2CMessage {
         return messageType;
     }
 
-    // ------------------ 客户端逻辑 ------------------
-
-    public static class ClientHandler {
-        public static void handle(PacketSyncScannedPhenomenaS2C msg) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            for (String key : msg.data) {
-                Thaumcraft.researchManager.completeScannedPhenomena(player.getGameProfile().getName(), key);
-            }
-        }
-    }
 }

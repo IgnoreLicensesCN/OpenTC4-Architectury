@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
+@Deprecated(forRemoval = true)
 public class TCVec3 {
    public static final TCVec3Pool vec3dPool = new TCVec3Pool(-1, -1);
    public final TCVec3Pool myVec3LocalPool;

@@ -66,8 +66,8 @@ public class GuiResearchBrowser extends GuiScreen {
     private final LinkedList<ResearchItem> research = new LinkedList<>();
     public static Map<String, List<ResearchItemResourceLocation>> completedResearch = new HashMap<>();
     public static Map<String, List<ClueResourceLocation>> completedClue = new HashMap<>();
-    public static ArrayList<ResearchItemResourceLocation> highlightedResearch = new ArrayList<>();
-    public static ArrayList<ResearchCategoryResourceLocation> highlightedCategory = new ArrayList<>();
+    public static List<ResearchItemResourceLocation> highlightedResearch = new ArrayList<>();
+    public static List<ResearchCategoryResourceLocation> highlightedCategory = new ArrayList<>();
     public static ResearchCategoryResourceLocation selectedCategory = null;
     private final FontRenderer galFontRenderer;
     private ResearchItem currentHighlight = null;

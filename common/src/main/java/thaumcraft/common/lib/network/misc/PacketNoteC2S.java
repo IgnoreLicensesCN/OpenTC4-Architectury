@@ -20,30 +20,22 @@ public class PacketNoteC2S extends BaseC2SMessage {
 
     public static MessageType messageType;
 
-    private BlockPos pos;
-    private ResourceKey<Level> dim;
-    private byte note; // -1 = 请求服务器返回
-    public PacketNoteC2S(){}
-    public PacketNoteC2S(BlockPos pos, ResourceKey<Level> dim) {
-        this(pos, dim, (byte) -1);
-    }
+    private final BlockPos pos;
+    private final byte note; // -1 = 请求服务器返回
 
-    public PacketNoteC2S(BlockPos pos, ResourceKey<Level> dim, byte note) {
+    public PacketNoteC2S(BlockPos pos, byte note) {
         this.pos = pos;
-        this.dim = dim;
         this.note = note;
     }
 
     public static PacketNoteC2S decode(FriendlyByteBuf buf) {
         BlockPos pos = buf.readBlockPos();
-        ResourceKey<Level> dim = buf.readResourceKey(Registries.DIMENSION);
         byte note = buf.readByte();
-        return new PacketNoteC2S(pos, dim, note);
+        return new PacketNoteC2S(pos, note);
     }
 
     public static void encode(PacketNoteC2S msg, FriendlyByteBuf buf) {
         buf.writeBlockPos(msg.pos);
-        buf.writeResourceKey(msg.dim);
         buf.writeByte(msg.note);
     }
 
@@ -64,8 +56,7 @@ public class PacketNoteC2S extends BaseC2SMessage {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
         var server = serverPlayer.getServer();
         if (server == null) return;
-        Level world = server.getLevel(dim);
-        if (world == null) return;
+        Level world = serverPlayer.level();
 
         BlockPos pos = this.pos;
 
@@ -83,8 +74,7 @@ public class PacketNoteC2S extends BaseC2SMessage {
         }
 
         if (noteOut >= 0) {
-            // 发回客户端
-            new PacketNoteS2C(pos, dim, (byte) noteOut).sendTo(serverPlayer);
+            new PacketNoteS2C(pos, (byte) noteOut).sendTo(serverPlayer);
         }
     }
 }

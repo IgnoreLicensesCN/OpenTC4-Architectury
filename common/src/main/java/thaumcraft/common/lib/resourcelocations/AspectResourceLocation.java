@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.resourcelocations;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
@@ -50,5 +51,15 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
         return of(split[0],split[1]);
+    }
+
+
+    @Nullable
+    public static AspectResourceLocation tryParse(String string) {
+        try {
+            return new AspectResourceLocation(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
     }
 }

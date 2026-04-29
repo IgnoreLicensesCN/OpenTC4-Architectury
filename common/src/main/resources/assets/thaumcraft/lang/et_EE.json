@@ -468,7 +468,7 @@
   "recipe.type.infusionenchantment": "Infusion Enchantment",
   "recipe.type.workbench": "Tööpink",
   "recipe.type.workbenchshapeless": "Tööpink (Vormitu)",
-  "tc.addaspectdiscovery": "You have discovered %n!",
+  "tc.addaspectdiscovery": "You have discovered %s!",
   "tc.addaspectpool": "Gained %s research point(s) for %n",
   "tc.addclue": "You have discovered a clue to new research!",
   "tc.addcluefail": "You discovered a clue, but it is lost since you can't record it!",

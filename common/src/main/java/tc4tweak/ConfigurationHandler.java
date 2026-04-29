@@ -98,6 +98,12 @@ public enum ConfigurationHandler {
         }
     }
 
+    public void setCheckWorkbenchRecipes(boolean checkWorkbenchRecipes) {
+        this.checkWorkbenchRecipes = checkWorkbenchRecipes;
+    }
+    public void setSmallerJars(boolean smallerJars) {
+        this.smallerJars = smallerJars;
+    }
     private void loadConfig(boolean send) {
         checkWorkbenchRecipes = config.getBoolean("checkWorkbenchRecipes", "general", true, "When false, Arcane Workbench will not perform vanilla crafting bench recipes. Arcane Workbench GUI will behave slightly awkwardly if the client has it false but not on server, but nothing would be broken.");
         arcaneCraftingHistorySize = config.getInt("arcaneCraftingHistorySize", "general", 16, 0, 256, "The maximum size ofAspectVisList arcane crafting cache. 0 will effectively turn off the cache. It is suggested to keep a size ofAspectVisList at least 1 to ensure shift crafting does not lag the server.");

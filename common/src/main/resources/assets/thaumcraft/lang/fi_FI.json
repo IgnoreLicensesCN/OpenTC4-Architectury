@@ -468,7 +468,7 @@
   "recipe.type.infusionenchantment": "Infuusio Lumous",
   "recipe.type.workbench": "Työpöytä",
   "recipe.type.workbenchshapeless": "Työpöytä (Muodoton)",
-  "tc.addaspectdiscovery": "Sinä löysit aspektin %n!",
+  "tc.addaspectdiscovery": "Sinä löysit aspektin %s!",
   "tc.addaspectpool": "Sait %s tutkimuspistettä aspektiin %n",
   "tc.addclue": "Olet löytänyt vihjeen seuraavaan tutkimukseen!",
   "tc.addcluefail": "Sinä löydät vihjeen, mutta unohdat sen koska et voi merkitä sitä ylös!",

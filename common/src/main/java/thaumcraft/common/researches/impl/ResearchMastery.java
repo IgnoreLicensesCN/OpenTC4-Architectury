@@ -77,8 +77,8 @@ public class ResearchMastery
     }
 
     @Override
-    public boolean canPlayerCopyResearch(String playerName) {
-        return canPlayerResearch(playerName);
+    public boolean canPlayerCopyResearch(Player player) {
+        return canPlayerResearch(player);
     }
 
     @Override

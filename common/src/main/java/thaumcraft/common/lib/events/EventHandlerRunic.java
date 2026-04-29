@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.events;
 
+import com.google.common.collect.MapMaker;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,11 +33,11 @@ import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble
 
 //TODO
 public class EventHandlerRunic {
-   public static Map<String,Integer> runicCharge = new ConcurrentHashMap<>();
-   public static Map<String,Long> nextCycle = new ConcurrentHashMap<>();
-   public static Map<String,Integer> lastCharge = new ConcurrentHashMap<>();
-   public static Map<String,Integer[]> runicInfo = new ConcurrentHashMap<>();
-   public static Map<String,Long> upgradeCooldown = new ConcurrentHashMap<>();
+   public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
+   public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
+   public static Map<Player,Integer> lastCharge = new MapMaker().weakKeys().makeMap();
+   public static Map<Player,Integer[]> runicInfo = new MapMaker().weakKeys().makeMap();
+   public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
    public static boolean isDirty = true;
    public static int rechargeDelay = 0;
 

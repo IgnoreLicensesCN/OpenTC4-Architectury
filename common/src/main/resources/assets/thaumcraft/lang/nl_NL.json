@@ -482,7 +482,7 @@
   "recipe.type.workbenchshapeless": "Werkbank (Vormeloos)",
   "tc.Stafkernchange": "Zet Stafkern kleur als %n",
   "tc.Stafkernchangeany": "Zet als welke kleur dan ook",
-  "tc.addaspectdiscovery": "Je hebt %n ontdekt!",
+  "tc.addaspectdiscovery": "Je hebt %s ontdekt!",
   "tc.addaspectpool": "%s onderzoekpunt(en) voor %n ontvangen",
   "tc.addclue": "Je hebt een hint ontdekt voor nieuw onderzoek!",
   "tc.addcluefail": "Je hebt een hint ontdekt, maar je vergat het omdat je het niet op kon schrijven!",

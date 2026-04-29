@@ -711,7 +711,7 @@
   "recipe.type.workbench": "Workbench",
   "recipe.type.workbenchshapeless": "Workbench (Shapeless)",
   "resourcepack.thaumcraft.continuity.default.description": "if you got a mod called Continuity( https://modrinth.com/mod/continuity ),you can use this resource pack to get support for Warded Glass",
-  "tc.addaspectdiscovery": "You have discovered %n!",
+  "tc.addaspectdiscovery": "You have discovered %s!",
   "tc.addaspectpool": "Gained %s research point(s) for %n",
   "tc.addclue": "You have discovered a clue to new research!",
   "tc.addcluefail": "You discovered a clue, but it is lost since you can't record it!",

@@ -46,10 +46,10 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
         var player = context.getPlayer();
         if (player instanceof ServerPlayer serverPlayer
                 && research instanceof IResearchNoteCreatable researchNoteCreatable) {
-            if (!researchNoteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
+            if (!researchNoteCreatable.canPlayerCreateResearchNote(player)){
                 return;
             }
-            if (researchNoteCreatable.canPlayerResearch(player.getGameProfile().getName())){
+            if (researchNoteCreatable.canPlayerResearch(player)){
                 var inv = player.getInventory();
                 if (inv.getContainerSize() <= inventorySlotWithInkWell){
                     return;

@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,15 +15,12 @@ public class PacketFXBlockZapS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = "thaumcraft:fx_block_zap";
    public static MessageType messageType;
 
-   private float x;
-   private float y;
-   private float z;
-   private float dx;
-   private float dy;
-   private float dz;
-
-   public PacketFXBlockZapS2C() {}
-
+   private final float x;
+   private final float y;
+   private final float z;
+   private final float dx;
+   private final float dy;
+   private final float dz;
    public PacketFXBlockZapS2C(float x, float y, float z, float dx, float dy, float dz) {
       this.x = x;
       this.y = y;

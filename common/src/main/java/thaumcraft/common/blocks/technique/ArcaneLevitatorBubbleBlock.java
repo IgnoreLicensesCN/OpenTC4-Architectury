@@ -79,7 +79,8 @@ public class ArcaneLevitatorBubbleBlock extends SuppressedWarningBlock {
             return false;
         }
         if ((blockStateBelow.getBlock() instanceof ILevitatorBlock levitator
-                && blockPosBelow.getY() + levitator.getLevitatorUpliftRange(level,blockPosBelow,blockStateBelow) >= blockPos.getY())){
+                && blockPosBelow.getY() + levitator.getLevitatorUpliftRange(level,blockPosBelow,blockStateBelow) >= blockPos.getY())//range in bound
+        ){
             return false;
         }
         return true;

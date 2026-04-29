@@ -696,7 +696,7 @@
   "recipe.type.smelting": "Cuire",
   "recipe.type.workbench": "Atelier",
   "recipe.type.workbenchshapeless": "Atelier (Sans ordre)",
-  "tc.addaspectdiscovery": "Vous avez découvert : %n !",
+  "tc.addaspectdiscovery": "Vous avez découvert : %s !",
   "tc.addaspectpool": "Gagné %s point(s) de recherche pour %n",
   "tc.addclue": "Vous avez découvert un indice d'une nouvelle recherche !",
   "tc.addcluefail": "Votre découverte de l'indice est perdue car vous ne pouvez pas l'enregistrer !",

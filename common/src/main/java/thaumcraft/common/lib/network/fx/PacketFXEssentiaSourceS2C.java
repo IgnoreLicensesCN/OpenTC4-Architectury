@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,15 +12,13 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = "thaumcraft:fx_essentia_source";
    public static MessageType messageType;
 
-   private int x;
-   private int y;
-   private int z;
-   private byte dx;
-   private byte dy;
-   private byte dz;
-   private int color;
-
-   public PacketFXEssentiaSourceS2C() {}
+   private final int x;
+   private final int y;
+   private final int z;
+   private final byte dx;
+   private final byte dy;
+   private final byte dz;
+   private final int color;
 
    public PacketFXEssentiaSourceS2C(int x, int y, int z, byte dx, byte dy, byte dz, int color) {
       this.x = x;

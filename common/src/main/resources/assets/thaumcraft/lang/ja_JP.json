@@ -688,7 +688,7 @@
   "recipe.type.smelting": "製錬",
   "recipe.type.workbench": "作業台",
   "recipe.type.workbenchshapeless": "作業台 (不定形レシピ)",
-  "tc.addaspectdiscovery": "%nを発見しました！",
+  "tc.addaspectdiscovery": "%sを発見しました！",
   "tc.addaspectpool": "%nについて、%sの研究ポイントを獲得しました",
   "tc.addclue": "新たな研究の手がかりを見つけました！",
   "tc.addcluefail": "新たな研究の手がかりを見つけましたが、記録手段が無かったために失ってしまいました！",

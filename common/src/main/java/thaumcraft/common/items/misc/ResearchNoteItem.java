@@ -94,7 +94,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
         var researchItem = ResearchItem.getResearch(data.key);
         if (researchItem == null){return false;}
         if (!(researchItem instanceof IResearchNoteCopyable copyable)){return false;}
-        if (!copyable.canPlayerCopyResearch(player.getGameProfile().getName())){return false;}
+        if (!copyable.canPlayerCopyResearch(player)){return false;}
 
         boolean foundDyeBlack = false;
         boolean foundPaper = false;

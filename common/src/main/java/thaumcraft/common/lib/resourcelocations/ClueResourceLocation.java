@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.resourcelocations;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.research.ResearchItem;
@@ -53,5 +54,14 @@ public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, C
     }
     public ResearchItemResourceLocation convertToResearchItemResLoc(){
         return ResearchItemResourceLocation.of(this.getNamespace(),this.getPath());
+    }
+
+    @Nullable
+    public static ClueResourceLocation tryParse(String string) {
+        try {
+            return new ClueResourceLocation(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
     }
 }

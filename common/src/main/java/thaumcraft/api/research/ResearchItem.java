@@ -210,7 +210,7 @@ public abstract class ResearchItem
         return ResearchManager.getResearchForPlayer(player).contains(this.key);
     }
 
-    public void completeResearch(String playerName){
-        Thaumcraft.researchManager.completeResearch(playerName, key);
+    public void completeResearch(Player player){
+        Thaumcraft.researchManager.completeResearch(player, key);
     }
 }

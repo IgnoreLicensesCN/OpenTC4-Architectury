@@ -35,6 +35,8 @@ import thaumcraft.common.menu.menu.ResearchTableMenu;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IResearchAspectPlaceableBlockEntity;
+import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
 import java.util.Set;
 
@@ -44,7 +46,10 @@ import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 
 public class ResearchTableBlockEntity
         extends TileThaumcraftWithMenu<ResearchTableMenu, ResearchTableBlockEntity>
-        implements WorldlyContainer {
+        implements
+        WorldlyContainer,
+        IResearchAspectProviderBlockEntity,
+        IResearchAspectPlaceableBlockEntity {
     public static final Set<Block> CONSIDERED_REDSTONE_COMPONENTS = Set.of(
             Blocks.REDSTONE_WIRE,
             Blocks.REDSTONE_TORCH,
@@ -482,4 +487,17 @@ public class ResearchTableBlockEntity
         }
     }
 
+    @Override
+    public int getAspectOwning(Aspect aspect) {
+        return bonusAspects.getOrDefault(aspect,0);
+    }
+
+    @Override
+    public void costAspect(Aspect aspect, int cost) {
+        bonusAspects.reduceAndRemoveIfNotPositive(aspect,cost);
+        if (this.level != null){
+            this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
+        this.setChanged();
+    }
 }

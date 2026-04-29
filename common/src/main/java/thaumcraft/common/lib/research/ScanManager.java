@@ -583,7 +583,7 @@ public class ScanManager implements IScanEventHandler {
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         int save = 0;
         if (!rp.hasDiscoveredAspect(player, aspect) && player instanceof ServerPlayer serverPlayer) {
-            new PacketAspectDiscoveryS2C(aspect.getAspectKey()).sendTo(serverPlayer);
+            new PacketAspectDiscoveryS2C(aspect).sendTo(serverPlayer);
             amount += 2;
             save = amount;
         }
@@ -636,8 +636,10 @@ public class ScanManager implements IScanEventHandler {
                                     player, parent
                             )) {
                                 PlayerNotifications.addNotification((
-                                        Component.translatable("tc.discoveryerror").getString()
-                                        + Component.translatable("tc.aspect.help." + parent.getAspectKey()).getString()
+                                        Component.translatable("tc.discoveryerror")
+                                                .append(Component.translatable("tc.aspect.help."
+                                                        + parent.getAspectKey()))
+
                                 ));
                                 break;
                             }

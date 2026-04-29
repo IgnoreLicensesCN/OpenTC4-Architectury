@@ -1,5 +1,6 @@
 package thaumcraft.api.research.implexample;
 
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
@@ -21,7 +22,7 @@ public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspec
     }
 
     @Override
-    public boolean canPlayerCompleteResearchWithAspect(String playerName) {
+    public boolean canPlayerCompleteResearchWithAspect(Player player) {
         return true;
     }
 
@@ -31,7 +32,7 @@ public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspec
     }
 
     @Override
-    public boolean canPlayerResearch(String playerName) {
+    public boolean canPlayerResearch(Player player) {
         return true;
     }
 }

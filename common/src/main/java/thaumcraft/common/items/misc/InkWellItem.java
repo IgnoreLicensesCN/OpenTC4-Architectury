@@ -27,7 +27,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
         super(properties);
     }
     public InkWellItem() {
-        super(new Properties().durability(INK_WELL_MAX_DURABILITY));
+        this(new Properties().durability(INK_WELL_MAX_DURABILITY));
     }
 
     public boolean durabilityEnough(ItemStack stack) {
@@ -73,10 +73,10 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
         if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
             return SUSPICIOUS_CALL;
         }
-        if (!noteCreatable.canPlayerCreateResearchNote(player.getGameProfile().getName())){
+        if (!noteCreatable.canPlayerCreateResearchNote(player)){
             return NO_PREREQUISITES;
         }
-        if (researchItem.isPlayerCompletedResearch(player.getGameProfile().getName())){
+        if (researchItem.isPlayerCompletedResearch(player)){
             return SUSPICIOUS_CALL;
         }
         if (!durabilityEnough(writeToolStack) || !player.getInventory().hasAnyOf(Set.of(Items.PAPER))){

@@ -1,7 +1,8 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.events.EventHandlerRunic;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -12,29 +13,23 @@ public class PacketRunicChargeS2C extends ThaumcraftBaseS2CMessage {
 
     public static MessageType messageType;
 
-    public String playerName;
-    public short amount;
-    public short max;
-
-    public PacketRunicChargeS2C(){}
+    public final short amount;
+    public final short max;
     // 构造
-    public PacketRunicChargeS2C(String playerName, short amount, short max) {
-        this.playerName = playerName;
+    public PacketRunicChargeS2C(short amount, short max) {
         this.amount = amount;
         this.max = max;
     }
 
     // 解码
     public static PacketRunicChargeS2C decode(FriendlyByteBuf buf) {
-        String name = buf.readUtf();
         short amount = buf.readShort();
         short max = buf.readShort();
-        return new PacketRunicChargeS2C(name, amount, max);
+        return new PacketRunicChargeS2C(amount, max);
     }
 
     // 编码
     public static void encode(PacketRunicChargeS2C msg, FriendlyByteBuf buf) {
-        buf.writeUtf(msg.playerName);
         buf.writeShort(msg.amount);
         buf.writeShort(msg.max);
     }
@@ -51,8 +46,8 @@ public class PacketRunicChargeS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer(); // 客户端玩家
-        Thaumcraft.instance.runicEventHandler.runicCharge.put(playerName, (int) amount);
-        Thaumcraft.instance.runicEventHandler.runicInfo.put(playerName, new Integer[]{(int) max, 0, 0, 0, 0});
+        Player player = context.getPlayer();
+        EventHandlerRunic.runicCharge.put(player, (int) amount);
+        EventHandlerRunic.runicInfo.put(player, new Integer[]{(int) max, 0, 0, 0, 0});
     }
 }

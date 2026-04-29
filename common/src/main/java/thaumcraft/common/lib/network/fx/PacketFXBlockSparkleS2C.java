@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,13 +13,10 @@ public class PacketFXBlockSparkleS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":block_sparkle";
    public static MessageType messageType;
 
-   private int x;
-   private int y;
-   private int z;
-   private int color;
-
-   public PacketFXBlockSparkleS2C() {}
-
+   private final int x;
+   private final int y;
+   private final int z;
+   private final int color;
    public PacketFXBlockSparkleS2C(int x, int y, int z, int color) {
       this.x = x;
       this.y = y;

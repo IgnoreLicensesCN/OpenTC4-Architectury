@@ -412,7 +412,7 @@
   "recipe.type.infusionenchantment": "Infusão de Encantamento",
   "recipe.type.workbench": "Bancada de Trabalho",
   "recipe.type.workbenchshapeless": "Bancada de Trabalho (Disforme)",
-  "tc.addaspectdiscovery": "Você descobriu %n!",
+  "tc.addaspectdiscovery": "Você descobriu %s!",
   "tc.addaspectpool": "Ganhou %s ponto(s) de pesquisa em %n",
   "tc.addclue": "Você descobriu uma pista para uma nova pesquisa!",
   "tc.addcluefail": "Você descobriu uma pista, porém ela se perdeu já que não consegue recorda-la!",

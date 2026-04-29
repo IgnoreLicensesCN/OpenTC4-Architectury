@@ -1,18 +1,14 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_aspects";
@@ -24,14 +20,9 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
         this.data = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
     }
 
-    /**
-     * 解码用构造
-     */
     public PacketSyncAspectsS2C(AspectList<Aspect> data) {
         this.data = data;
     }
-
-    // ---------------- Architectury 必要方法 ----------------
 
     @Override
     public void write(FriendlyByteBuf buf) {

@@ -864,5 +864,8 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE_TICK = TagKey.create(
                 Registries.BLOCK,new ResourceLocation("thaumcraft:growth_lamp_affective_tick")
         );
+        public static final TagKey<Block> GLIMMER_OF_LIGHT_WONT_OVERRIDE = TagKey.create(
+                Registries.BLOCK, new ResourceLocation("thaumcraft:glimmer_of_light_wont_override")
+        );
     }
 }

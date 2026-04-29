@@ -1,12 +1,11 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.level.Level;
 import thaumcraft.client.fx.migrated.particles.FXVisSparkle;
 import thaumcraft.common.Thaumcraft;
 
@@ -18,11 +17,9 @@ public class PacketFXVisDrainS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":fx_vis_drain";
    public static MessageType messageType;
 
-   private int x, y, z;
-   private int dx, dy, dz;
-   private int color;
-
-   public PacketFXVisDrainS2C() {}
+   private final int x, y, z;
+   private final int dx, dy, dz;
+   private final int color;
 
    public PacketFXVisDrainS2C(int x, int y, int z, int xd, int yd, int zd, int color) {
       this.x = x;

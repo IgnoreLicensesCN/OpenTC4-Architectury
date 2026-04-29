@@ -1,5 +1,6 @@
 package thaumcraft.api.research.implexample;
 
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
@@ -20,7 +21,7 @@ public abstract class ResearchNoteUnlockedResearch extends ResearchItem implemen
     }
 
     @Override
-    public boolean canPlayerCreateResearchNote(String playerName) {
+    public boolean canPlayerCreateResearchNote(Player player) {
         return true;
     }
 

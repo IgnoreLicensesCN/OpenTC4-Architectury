@@ -694,7 +694,7 @@
   "recipe.type.workbench": "工作台",
   "recipe.type.workbenchshapeless": "工作台(无序合成)",
   "resourcepack.thaumcraft.continuity.default.description": "在安装了Continuity( https://modrinth.com/mod/continuity )之后，使用此资源包以获得其对守卫者玻璃的材质支持。",
-  "tc.addaspectdiscovery": "您已发现%n!",
+  "tc.addaspectdiscovery": "您已发现%s!",
   "tc.addaspectpool": "取得%s研究点:%n",
   "tc.addclue": "您已发现新研究的线索!",
   "tc.addcluefail": "您已发现新研究的线索,但由于缺乏记录的纸墨,最终遗忘了它!",

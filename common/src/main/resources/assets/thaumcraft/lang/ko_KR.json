@@ -557,7 +557,7 @@
   "recipe.type.smelting": "화로",
   "recipe.type.workbench": "작업대",
   "recipe.type.workbenchshapeless": "작업대",
-  "tc.addaspectdiscovery": "%n을(를) 발견했습니다!",
+  "tc.addaspectdiscovery": "%s을(를) 발견했습니다!",
   "tc.addaspectpool": "%n을(를) %s포인트 획득하였습니다.",
   "tc.addclue": "새로운 연구에 대한 단서를 발견했습니다!",
   "tc.addcluefail": "발견한 단서를 기록할 곳이 없습니다...",

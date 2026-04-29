@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,10 +14,8 @@ public class PacketFXShieldS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":fx_shield";
    public static MessageType messageType;
 
-   private int source;
-   private int target;
-
-   public PacketFXShieldS2C() {}
+   private final int source;
+   private final int target;
 
    public PacketFXShieldS2C(int source, int target) {
       this.source = source;

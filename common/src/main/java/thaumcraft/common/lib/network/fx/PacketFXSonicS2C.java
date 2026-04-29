@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,9 +14,7 @@ public class PacketFXSonicS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":fx_sonic";
    public static MessageType messageType;
 
-   private int source;
-
-   public PacketFXSonicS2C() {}
+   private final int source;
 
    public PacketFXSonicS2C(int source) {
       this.source = source;

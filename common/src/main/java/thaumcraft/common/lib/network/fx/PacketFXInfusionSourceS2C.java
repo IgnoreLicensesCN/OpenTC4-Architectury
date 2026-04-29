@@ -1,13 +1,12 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.common.lib.ThaumcraftBaseS2CMessage;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.ChunkPos;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 import thaumcraft.common.tiles.TilePedestal;
@@ -17,11 +16,9 @@ public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":fx_infusion_source";
    public static MessageType messageType;
 
-   private int x, y, z;
-   private byte dx, dy, dz;
-   private int color;
-
-   public PacketFXInfusionSourceS2C() {}
+   private final int x, y, z;
+   private final byte dx, dy, dz;
+   private final int color;
 
    public PacketFXInfusionSourceS2C(int x, int y, int z, byte dx, byte dy, byte dz, int color) {
       this.x = x;
