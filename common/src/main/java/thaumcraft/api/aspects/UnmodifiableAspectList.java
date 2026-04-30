@@ -1,8 +1,9 @@
 package thaumcraft.api.aspects;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+
+import java.util.function.IntBinaryOperator;
 
 public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
@@ -12,17 +13,8 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (viewingList != null) {
             this.aspects.putAll(viewingList.getAspectView());
         }
-        int hashTemp = 0;
-        for (var aspEntry:this.aspects.entrySet()){
-            hashTemp *= 31;
-            hashTemp += aspEntry.getKey().hashCode() * aspEntry.getValue();
-        }
-
     }
-    public UnmodifiableAspectList(LinkedHashMap<A, Integer> aspects) {
-        super(aspects);
-    }
-    public UnmodifiableAspectList(Map<A, Integer> aspects) {
+    public UnmodifiableAspectList(Object2IntMap<A> aspects) {
         super(aspects);
     }
     public UnmodifiableAspectList(){
@@ -34,9 +26,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     //init hash
     {
         int hashTemp = 0;
-        for (var aspEntry:this.aspects.entrySet()){
+        for (var aspEntry:this.aspects.object2IntEntrySet()) {
             hashTemp *= 31;
-            hashTemp += aspEntry.getKey().hashCode() * aspEntry.getValue();
+            hashTemp += aspEntry.getKey().hashCode() * aspEntry.getIntValue();
         }
         this.hash = hashTemp;
     }
@@ -61,7 +53,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public int merge(A aspect, int amount, BiFunction<Integer, Integer, Integer> chooser) {
+    public int merge(A aspect, int amount, IntBinaryOperator chooser) {
         throw new RuntimeException("Unmodifiable!");
     }
 
@@ -95,7 +87,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public void replaceAll(BiFunction<A, Integer, Integer> biFunction) {
+    public void replaceAll(AspIntIntBiFunction<A> aIntIntBiFunction) {
         throw new RuntimeException("Unmodifiable!");
     }
 
@@ -110,26 +102,22 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     public UnmodifiableAspectList<A> addAllAsNew(AspectList<A> aspects) {
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView());
-        aspects.getAspectView().forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
-        return new UnmodifiableAspectList<A>(resultMap);
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView());
+        aspects.getAspectView().forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        return new UnmodifiableAspectList<>(resultMap);
     }
 
     public UnmodifiableAspectList<A> multiplyAsNew(int multiplier) {
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView().size(),1);
-        this.getAspectView().forEach((aspect, amount) -> {
-            resultMap.put(aspect, amount*multiplier);
-        });
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView().size(),1);
+        this.getAspectView().forEach((aspect, amount) -> resultMap.put(aspect, amount*multiplier));
         return new UnmodifiableAspectList<>(resultMap);
     }
     public UnmodifiableAspectList<A> divideAndCeilAsNew(int divisor) {
         if (divisor == 0){
             throw new IllegalArgumentException("divided by zero!");
         }
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(this.getAspectView().size(),1);
-        this.getAspectView().forEach((aspect, amount) -> {
-            resultMap.put(aspect, (amount + divisor - 1)/divisor);
-        });
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView().size(),1);
+        this.getAspectView().forEach((aspect, amount) -> resultMap.put(aspect, (amount + divisor - 1)/divisor));
         return new UnmodifiableAspectList<>(resultMap);
     }
 
@@ -140,8 +128,8 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (aspectsB == null) {
             return new UnmodifiableAspectList<>(aspectsA);
         }
-        LinkedHashMap<A, Integer> resultMap = new LinkedHashMap<>(aspectsA.getAspectView());
-        aspectsB.getAspectView().forEach((aspect, amount) -> resultMap.merge(aspect, amount,Integer::sum));
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(aspectsA.getAspectView());
+        aspectsB.getAspectView().forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<>(resultMap);
     }
 

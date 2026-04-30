@@ -59,7 +59,8 @@ block_with_item_names = [
     ['tile.blockJar.1.name','brain_jar'],
     ['tile.blockJar.2.name','node_jar'],
     ['tile.blockJar.3.name','void_jar'],
-    ['tile.blockLifter.name','arcane_levitator']
+    ['tile.blockLifter.name','arcane_levitator'],
+    ['tile.blockEssentiaReservoir.name','essentia_reservoir'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

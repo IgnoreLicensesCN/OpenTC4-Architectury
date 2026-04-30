@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks;
 
-
+@Deprecated(forRemoval = true)
 public class BlockLifter /*extends BlockContainer*/ {
 //   private Random random = new Random();
 //   public IIcon iconTop;

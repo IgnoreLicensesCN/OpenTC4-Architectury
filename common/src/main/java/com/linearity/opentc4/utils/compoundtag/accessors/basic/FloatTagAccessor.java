@@ -10,7 +10,11 @@ public class FloatTagAccessor extends CompoundTagAccessor<Float> {
     }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public Float readFromCompoundTag(CompoundTag tag) {
+        return tag.getFloat(tagKey);
+    }
+    public float readFloatFromCompoundTag(CompoundTag tag) {
         return tag.getFloat(tagKey);
     }
 

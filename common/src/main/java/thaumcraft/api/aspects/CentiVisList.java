@@ -60,7 +60,7 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
                         .map(
                                 entry -> Map.entry(
                                         entry.getKey(),
-                                        entry.getValue()*CENTIVIS_MULTIPLIER)
+                                        entry.getIntValue()*CENTIVIS_MULTIPLIER)
                         ).collect(
                                 Collectors.toMap(
                                         Map.Entry::getKey,

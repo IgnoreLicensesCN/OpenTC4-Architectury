@@ -105,7 +105,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         super.readCustomNBT(compoundTag);
         this.aspectCurrent = ASPECT_CURRENT.readFromCompoundTag(compoundTag);
         this.aspectFilter = ASPECT_FILTER.readFromCompoundTag(compoundTag);
-        this.aspectAmountCurrent = ASPECT_AMOUNT.readFromCompoundTag(compoundTag);
+        this.aspectAmountCurrent = ASPECT_AMOUNT.readIntFromCompoundTag(compoundTag);
     }
 
     public Direction getFacing(){

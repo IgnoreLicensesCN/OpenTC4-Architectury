@@ -107,7 +107,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
 
         for (var entry : allVis.entrySet()) {
             var aspect = entry.getKey();
-            var vis = entry.getValue();
+            var vis = entry.getIntValue();
             var remainingRoom = capacity.getOrDefault(aspect,0) - vis;
             if (remainingRoom > 0){
                 res.put(aspect,remainingRoom);
@@ -141,7 +141,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
 
             for (var entry : aspects.entrySet()) {
                 var aspect = entry.getKey();
-                int cost = entry.getValue();
+                int cost = entry.getIntValue();
                 cost = (int) ((float) cost);
                 nl.addAll(aspect, cost);
             }
@@ -150,7 +150,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
                     aspectIntegerEntry ->
                             getCentiVisOwning(
                                     is, aspectIntegerEntry.getKey())
-                                    < aspectIntegerEntry.getValue()
+                                    < aspectIntegerEntry.getIntValue()
             )){
                 return false;
             }
@@ -180,14 +180,14 @@ public interface ICentiVisContainer<Asp extends Aspect> {
 
             for (var entry : aspects.entrySet()) {
                 var aspect = entry.getKey();
-                int cost = entry.getValue();
+                int cost = entry.getIntValue();
                 cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
                 nl.addAll(aspect, cost);
             }
 
             for (var entry : nl.entrySet()) {
                 var aspect = entry.getKey();
-                var amount = entry.getValue();
+                var amount = entry.getIntValue();
                 if (getCentiVisOwning(is, aspect) < amount) {
                     return false;
                 }

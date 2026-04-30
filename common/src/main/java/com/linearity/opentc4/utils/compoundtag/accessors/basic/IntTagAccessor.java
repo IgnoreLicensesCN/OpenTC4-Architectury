@@ -10,7 +10,11 @@ public class IntTagAccessor extends CompoundTagAccessor<Integer> {
     }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public Integer readFromCompoundTag(CompoundTag tag) {
+        return tag.getInt(tagKey);
+    }
+    public int readIntFromCompoundTag(CompoundTag tag) {
         return tag.getInt(tagKey);
     }
 

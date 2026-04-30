@@ -10,7 +10,12 @@ public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
     }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public Boolean readFromCompoundTag(CompoundTag tag) {
+        return tag.getBoolean(tagKey);
+    }
+
+    public boolean readIntFromCompoundTag(CompoundTag tag) {
         return tag.getBoolean(tagKey);
     }
 

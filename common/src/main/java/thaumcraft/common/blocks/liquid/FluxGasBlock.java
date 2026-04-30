@@ -6,16 +6,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.common.config.Config;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GAS_FLOWING;
@@ -85,4 +82,9 @@ public class FluxGasBlock extends FiniteLiquidBlock {
 //   public void tick(@NotNull BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 //      super.tick(state, level, pos, rand);
 //   }
+
+
+   public static BlockState fullOfGas(){
+      return ThaumcraftBlocks.FLUX_GOO.defaultBlockState().setValue(FiniteLiquidBlock.LEVEL,8);
+   };
 }

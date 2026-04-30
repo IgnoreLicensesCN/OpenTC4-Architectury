@@ -10,7 +10,12 @@ public class LongTagAccessor extends CompoundTagAccessor<Long> {
     }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public Long readFromCompoundTag(CompoundTag tag) {
+        return tag.getLong(tagKey);
+    }
+
+    public long readLongFromCompoundTag(CompoundTag tag) {
         return tag.getLong(tagKey);
     }
 

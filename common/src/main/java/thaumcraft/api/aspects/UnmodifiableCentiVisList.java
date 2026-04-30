@@ -1,20 +1,20 @@
 package thaumcraft.api.aspects;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.function.IntBinaryOperator;
 
 @UnmodifiableView
 public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<Asp>{
-    public static final UnmodifiableCentiVisList<Aspect> EMPTY = new UnmodifiableCentiVisList<Aspect>();
+    public static final UnmodifiableCentiVisList<Aspect> EMPTY = new UnmodifiableCentiVisList<>();
     public UnmodifiableCentiVisList() {
         super();
     }
     public UnmodifiableCentiVisList(AspectList<Asp> aspects) {
         super(aspects);
     }
-    public UnmodifiableCentiVisList(Map<Asp, Integer> aspects) {
+    public UnmodifiableCentiVisList(Object2IntMap<Asp> aspects) {
         super(aspects);
     }
     @Override
@@ -53,7 +53,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     }
 
     @Override
-    public int merge(Asp aspect, int amount, BiFunction<Integer, Integer, Integer> chooser) {
+    public int merge(Asp aspect, int amount, IntBinaryOperator chooser) {
         throw new RuntimeException("Unmodifiable!");
     }
 
@@ -73,7 +73,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     }
 
     @Override
-    public void replaceAll(BiFunction<Asp, Integer, Integer> biFunction) {
+    public void replaceAll(AspIntIntBiFunction<Asp> biFunction) {
         throw new RuntimeException("Unmodifiable!");
     }
 }

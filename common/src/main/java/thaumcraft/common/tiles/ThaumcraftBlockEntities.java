@@ -63,6 +63,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<GrowthArcaneLampBlockEntity> GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
     public static final BlockEntityType<FertilityArcaneLampBlockEntity> FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static final BlockEntityType<ThaumatoriumBlockEntity> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
+    public static final BlockEntityType<EssentiaReservoirBlockEntity> ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -304,6 +305,16 @@ public class ThaumcraftBlockEntities {
                                 ThaumcraftBlocks.THAUMATORIUM_BOTTOM
                         ).build(null)
                 );
+        public static final RegistrySupplier<BlockEntityType<EssentiaReservoirBlockEntity>> SUPPLIER_ESSENTIA_RESERVOIR =
+                BLOCK_ENTITIES.register(
+                        "essentia_reservoir",
+
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaReservoirBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_RESERVOIR
+                        ).build(null)
+                );
+
     }
 
     public static void init(){

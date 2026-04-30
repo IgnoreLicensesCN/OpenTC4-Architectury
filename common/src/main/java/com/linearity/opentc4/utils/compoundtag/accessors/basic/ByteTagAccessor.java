@@ -10,7 +10,12 @@ public class ByteTagAccessor extends CompoundTagAccessor<Byte> {
     }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public Byte readFromCompoundTag(CompoundTag tag) {
+        return tag.getByte(tagKey);
+    }
+
+    public byte readByteFromCompoundTag(CompoundTag tag) {
         return tag.getByte(tagKey);
     }
 

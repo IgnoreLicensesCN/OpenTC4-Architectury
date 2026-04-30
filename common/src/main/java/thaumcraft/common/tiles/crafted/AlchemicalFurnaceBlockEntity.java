@@ -24,7 +24,7 @@ import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.abstracts.IThaumcraftFurnaceAttachmentBlock;
 import thaumcraft.common.blocks.crafted.AlchemicalFurnaceBlock;
-import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeeder;
+import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;
 import thaumcraft.common.menu.menu.AlchemicalFurnaceMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IAlembic;
@@ -158,7 +158,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                     updateSelfFlag = true;
                     this.speedBoost = false;
                     if (!fuelStack.isEmpty()) {
-                        if (fuelStack.getItem() instanceof IAlchemicalFurnaceSpeeder speeder) {
+                        if (fuelStack.getItem() instanceof IAlchemicalFurnaceSpeederFuel speeder) {
                             this.speedBoost = speeder.canSpeedUpAlchemicalFurnace(fuelStack);
                         }
                         fuelStack.shrink(1);
