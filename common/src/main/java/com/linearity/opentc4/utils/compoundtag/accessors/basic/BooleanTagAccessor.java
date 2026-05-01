@@ -15,12 +15,16 @@ public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
         return tag.getBoolean(tagKey);
     }
 
-    public boolean readIntFromCompoundTag(CompoundTag tag) {
-        return tag.getBoolean(tagKey);
-    }
 
     @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Boolean value) {
+        tag.putBoolean(tagKey, value);
+    }
+    public boolean readByteFromCompoundTag(CompoundTag tag) {
+        return tag.getBoolean(tagKey);
+    }
+    public void writeBooleanToCompoundTag(CompoundTag tag, boolean value) {
         tag.putBoolean(tagKey, value);
     }
 

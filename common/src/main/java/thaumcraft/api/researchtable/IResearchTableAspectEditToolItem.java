@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.research.ResearchItem;
 
-public interface IResearchTableAspectEditTool extends IResearchTableEditAspectListener {
+public interface IResearchTableAspectEditToolItem extends IResearchTableEditAspectListenerItem {
     default boolean canPlaceIntoResearchTable(
             Level atLevel,
             BlockPos tablePos,

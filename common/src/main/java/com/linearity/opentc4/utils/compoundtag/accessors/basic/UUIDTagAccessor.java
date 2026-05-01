@@ -16,7 +16,7 @@ public class UUIDTagAccessor extends CompoundTagAccessor<UUID> {
 
     @Override
     public UUID readFromCompoundTag(CompoundTag tag) {
-        return new UUID(mostPart.readFromCompoundTag(tag), leastPart.readFromCompoundTag(tag));
+        return new UUID(mostPart.readLongFromCompoundTag(tag), leastPart.readLongFromCompoundTag(tag));
     }
 
     @Override

@@ -3,7 +3,7 @@ package thaumcraft.api.research.implexample;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.research.interfaces.IAspectUnlockable;
+import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedResearch implements IAspectUnlockable, IResearchParentsOwner {
+public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedResearch implements IAspectUnlockableResearch, IResearchParentsOwner {
 
     private final List<ResearchItemResourceLocation> parents;
     public AspectUnlockableResearchWithParents(

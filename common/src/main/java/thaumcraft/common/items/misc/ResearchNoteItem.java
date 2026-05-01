@@ -15,7 +15,7 @@ import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
-import thaumcraft.api.researchtable.IResearchNoteDataOwner;
+import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
@@ -28,7 +28,7 @@ import thaumcraft.common.lib.utils.HexCoord;
 
 import java.util.function.Predicate;
 
-public class ResearchNoteItem extends Item implements IResearchNoteDataOwner {
+public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem {
     public ResearchNoteItem(Properties props) {
         super(props);
     }

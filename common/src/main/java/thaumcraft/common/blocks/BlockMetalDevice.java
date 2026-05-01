@@ -18,6 +18,7 @@ package thaumcraft.common.blocks;
 //although there could be history reasons such as limited item IDs,
 //i still want to say there could be mental illness with anazor to design like this.
 //--IgnoreLicensesCN
+@Deprecated(forRemoval = true)
 public class BlockMetalDevice /*extends BlockContainer*/ {
 //   public IIcon[] icon = new IIcon[23];
 //   public IIcon iconGlow;

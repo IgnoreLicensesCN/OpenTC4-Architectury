@@ -1,7 +1,6 @@
 package thaumcraft.common.items.consumable;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,6 +49,5 @@ public class ZombieBrainItem extends Item {
 
         return super.finishUsingItem(stack, level, entity);
     }
-}
 
 }

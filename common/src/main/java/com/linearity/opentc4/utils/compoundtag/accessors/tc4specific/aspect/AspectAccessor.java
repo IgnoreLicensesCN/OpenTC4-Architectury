@@ -2,7 +2,7 @@ package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect;
 
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.AspectResourceLocationTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
@@ -10,12 +10,14 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
+import java.util.NoSuchElementException;
+
 public class AspectAccessor extends CompoundTagAccessor<Aspect> {
-    protected final ResourceLocationTagAccessor resourceLocationAccessor;
+    protected final AspectResourceLocationTagAccessor resourceLocationAccessor;
 
     public AspectAccessor(String tagKey) {
         super(tagKey);
-        resourceLocationAccessor = new ResourceLocationTagAccessor(tagKey);
+        resourceLocationAccessor = new AspectResourceLocationTagAccessor(tagKey);
     }
 
     @Override
@@ -25,9 +27,9 @@ public class AspectAccessor extends CompoundTagAccessor<Aspect> {
         if (resLoc.getPath().isEmpty() || resLoc.getNamespace().isEmpty()) {
             return Aspects.EMPTY;
         }
-        var result = Aspects.ALL_ASPECTS.get(AspectResourceLocation.of(resLoc));
+        var result = Aspects.ALL_ASPECTS.get(resLoc);
         if (result == null) {
-            OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", resLoc, tag, new Exception());
+            OpenTC4.LOGGER.error("Couldn't find aspect {} in tag {}", resLoc, tag, new NoSuchElementException());
             return Aspects.EMPTY;
         }
         return result;

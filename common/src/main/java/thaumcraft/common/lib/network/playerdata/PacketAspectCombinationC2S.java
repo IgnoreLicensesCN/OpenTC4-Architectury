@@ -78,7 +78,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       costAspect(aspectProviderBE,serverPlayer,aspect2, canUseProviderAspect2);
 
       // 完成组合，添加新的 aspect 知识
-      if (combinationResult != null) {
+      if (!combinationResult.isEmpty()) {
          ScanManager.checkAndSyncAspectKnowledge(serverPlayer, combinationResult, 1);
       }
 

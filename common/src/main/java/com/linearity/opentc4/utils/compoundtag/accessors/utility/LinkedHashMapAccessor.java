@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//'d better not used if k or v is basic type
 public class LinkedHashMapAccessor<K,V> extends CompoundTagAccessor<LinkedHashMap<K,V>> {
     protected final ListTagAccessor listTagAccessorInternal;
     protected final CompoundTagAccessor<K> keyAccessor;

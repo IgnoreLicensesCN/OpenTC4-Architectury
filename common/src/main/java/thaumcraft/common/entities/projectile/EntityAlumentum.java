@@ -1,20 +1,16 @@
 package thaumcraft.common.entities.projectile;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItems;
 

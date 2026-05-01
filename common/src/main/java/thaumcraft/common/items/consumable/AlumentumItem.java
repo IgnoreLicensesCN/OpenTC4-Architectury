@@ -26,7 +26,14 @@ public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel
             stack.shrink(1);
         }
 
-        world.playSound(player,player, SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.3F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
+        world.playSound(
+                player,
+                player,
+                SoundEvents.ARROW_SHOOT,
+                SoundSource.PLAYERS,
+                0.3F,
+                0.4F / (world.random.nextFloat() * 0.4F + 0.8F)
+        );
         if (Platform.getEnvironment() != Env.CLIENT) {
             world.addFreshEntity(new EntityAlumentum(player, world));
         }

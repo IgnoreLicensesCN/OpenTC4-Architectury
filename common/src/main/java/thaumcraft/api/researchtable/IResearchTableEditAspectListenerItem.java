@@ -9,7 +9,7 @@ import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.common.lib.utils.HexCoord;
 
-public interface IResearchTableEditAspectListener {
+public interface IResearchTableEditAspectListenerItem {
 
     boolean canWriteAspect(
             Level atLevel,
@@ -21,7 +21,12 @@ public interface IResearchTableEditAspectListener {
             HexCoord placedAt
     );
     void beforeWriteAspect(WriteAspectContext context);
+    //you can give random primal aspect after writing
+    // instead of give them all at a time
+    // after it has no duration and right-clicked?
     void afterWriteAspect(WriteAspectContext context);
     void beforeRemoveAspect(RemoveAspectContext context);
+    //also,higher chance to turn aspect back or whatever.
+    // maybe you can add warp here?(wtf)
     void afterRemoveAspect(RemoveAspectContext context);
 }

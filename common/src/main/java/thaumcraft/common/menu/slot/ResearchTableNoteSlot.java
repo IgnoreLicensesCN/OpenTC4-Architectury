@@ -5,7 +5,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.researchtable.IResearchNoteDataOwner;
+import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
 
 public class ResearchTableNoteSlot extends Slot {
     protected final Level atLevel;
@@ -18,7 +18,7 @@ public class ResearchTableNoteSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack itemStack) {
-        return itemStack.getItem() instanceof IResearchNoteDataOwner dataOwner
+        return itemStack.getItem() instanceof IResearchNoteDataOwnerItem dataOwner
                 && dataOwner.canPlaceIntoResearchTable(atLevel, pos, itemStack);
     }
 }

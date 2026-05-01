@@ -5,11 +5,11 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IAspectUnlockable;
+import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspectUnlockable {
+public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspectUnlockableResearch {
     private final AspectList<Aspect> aspects;
 
     public SimpleAspectUnlockedResearch(

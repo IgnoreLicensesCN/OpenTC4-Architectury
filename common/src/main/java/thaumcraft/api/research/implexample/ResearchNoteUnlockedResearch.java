@@ -3,11 +3,11 @@ package thaumcraft.api.research.implexample;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-public abstract class ResearchNoteUnlockedResearch extends ResearchItem implements IResearchNoteCreatable {
+public abstract class ResearchNoteUnlockedResearch extends ResearchItem implements IResearchNoteCreatableResearch {
 
     private final @Range(from = 1, to = 3) int complexity;
 

@@ -20,9 +20,9 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
     @Override
     public BlockPos readFromCompoundTag(CompoundTag tag) {
         return new BlockPos(
-                xAccessor.readFromCompoundTag(tag),
-                yAccessor.readFromCompoundTag(tag),
-                zAccessor.readFromCompoundTag(tag)
+                xAccessor.readIntFromCompoundTag(tag),
+                yAccessor.readIntFromCompoundTag(tag),
+                zAccessor.readIntFromCompoundTag(tag)
         );
     }
 

@@ -11,8 +11,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
-import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
+import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
 import thaumcraft.api.researchtable.ResearchCreateReason;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 import static thaumcraft.api.researchtable.ResearchCreateReasons.*;
 
-public class InkWellItem extends Item implements IResearchTableAspectEditTool {
+public class InkWellItem extends Item implements IResearchTableAspectEditToolItem {
     public static final int INK_WELL_MAX_DURABILITY = 100;
     public InkWellItem(Properties properties) {
         super(properties);
@@ -70,7 +70,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
             Player player,
             ItemStack writeToolStack,
             ResearchItem researchItem) {
-        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+        if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             return SUSPICIOUS_CALL;
         }
         if (!noteCreatable.canPlayerCreateResearchNote(player)){
@@ -92,7 +92,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditTool {
             ItemStack writeToolStack,
             ResearchItem researchItem
     ) {
-        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+        if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             return;
         }
         var inv = player.getInventory();

@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
+import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
 import thaumcraft.api.wands.IArcaneCraftingWand;
 import thaumcraft.api.wands.IWandInteractableBlock;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -74,7 +74,7 @@ public class TableBlock extends SuppressedWarningBlock implements IWandInteracta
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         var usingStack = player.getItemInHand(interactionHand);
         if (!usingStack.isEmpty()) {
-            if (usingStack.getItem() instanceof IResearchTableAspectEditTool writeTool
+            if (usingStack.getItem() instanceof IResearchTableAspectEditToolItem writeTool
                     && writeTool.canCreateResearchTable(level,blockPos,usingStack)) {
                 var thisAxis = blockState.getValue(AXIS);
                 var probablyLeftPartDirections = getDirectionsForAxis(thisAxis);

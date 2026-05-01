@@ -16,6 +16,7 @@ public class ThaumcraftBiomeIDs {
         public static final RegistrySupplier<Biome> SUPPLIER_EERIE = BIOMES.register("eerie", BiomeGenEerie::createEerie);
         public static final RegistrySupplier<Biome> SUPPLIER_ELDRITCH = BIOMES.register("eldritch", BiomeGenEldritch::createEldritch);
         public static final RegistrySupplier<Biome> SUPPLIER_TAINT = BIOMES.register("taint", BiomeGenTaint::createTaint);
+        public static final RegistrySupplier<Biome> SUPPLIER_MAGICAL_FOREST = BIOMES.register("magical_forest", BiomeGenMagicalForest::createMagicalForest);
         static{
             Registry.BIOMES.register();
         }
@@ -23,10 +24,12 @@ public class ThaumcraftBiomeIDs {
     public static final ResourceLocation EERIE_ID = Registry.SUPPLIER_EERIE.getId();
     public static final ResourceLocation ELDRITCH_ID = Registry.SUPPLIER_ELDRITCH.getId();
     public static final ResourceLocation TAINT_ID = Registry.SUPPLIER_TAINT.getId();
+    public static final ResourceLocation MAGICAL_FOREST_ID = Registry.SUPPLIER_MAGICAL_FOREST.getId();
 
     public static final ResourceKey<Biome> EERIE_KEY = Registry.SUPPLIER_EERIE.getKey();
     public static final ResourceKey<Biome> ELDRITCH_KEY = Registry.SUPPLIER_ELDRITCH.getKey();
     public static final ResourceKey<Biome> TAINT_KEY = Registry.SUPPLIER_TAINT.getKey();
+    public static final ResourceKey<Biome> MAGICAL_FOREST_KEY = Registry.SUPPLIER_MAGICAL_FOREST.getKey();
 
     public static void init() {
 

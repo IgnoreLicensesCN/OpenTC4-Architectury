@@ -2,19 +2,16 @@ package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.LinkedHashMapAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.Object2IntLinkedOpenHashMapAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 
-import java.util.LinkedHashMap;
-
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
-    protected final LinkedHashMapAccessor<Aspect,Integer> aspectAndAmountsAccessor;
-//    protected final ModifiableListAccessor<SimplePair<Aspect,Integer>> aspectAndAmountsAccessor;
+    protected final Object2IntLinkedOpenHashMapAccessor<Aspect> aspectAndAmountsAccessor;
     public CentiVisListAccessor(String tagKey) {
         super(tagKey);
-        this.aspectAndAmountsAccessor = new LinkedHashMapAccessor<>(
+        this.aspectAndAmountsAccessor = new Object2IntLinkedOpenHashMapAccessor<>(
                 tagKey,
                 new AspectAccessor(tagKey + "_aspect"),
                 new IntTagAccessor(tagKey + "_amount")
@@ -28,7 +25,7 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, CentiVisList<Aspect> toWrite) {
-        this.aspectAndAmountsAccessor.writeToCompoundTag(tag, new LinkedHashMap<>(toWrite.getAspectView()));
+        this.aspectAndAmountsAccessor.writeToCompoundTag(tag, toWrite.getAspectView());
     }
 
     @Override

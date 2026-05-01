@@ -8,14 +8,12 @@ import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.displayhelper.AspectItem;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Aspects {
     public static final LinkedHashMap<AspectResourceLocation,Aspect> ALL_ASPECTS = new LinkedHashMap<>();
     public static final LinkedHashMap<AspectResourceLocation,PrimalAspect> PRIMAL_ASPECTS = new LinkedHashMap<>();
+    public static final List<PrimalAspect> PRIMAL_ASPECT_LIST = new ArrayList<>(6);
     public static final LinkedHashMap<AspectResourceLocation,CompoundAspect> COMPOUND_ASPECTS = new LinkedHashMap<>();
 
     //PRIMAL

@@ -26,9 +26,9 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectManager;
-import thaumcraft.api.researchtable.IResearchNoteDataOwner;
-import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
-import thaumcraft.api.researchtable.IResearchTableEditAspectListener;
+import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
+import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
+import thaumcraft.api.researchtable.IResearchTableEditAspectListenerItem;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.menu.menu.ResearchTableMenu;
@@ -353,19 +353,19 @@ public class ResearchTableBlockEntity
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         var item = itemStack.getItem();
-        if (item instanceof IResearchTableAspectEditTool && slot == INK_SLOT) {
+        if (item instanceof IResearchTableAspectEditToolItem && slot == INK_SLOT) {
             return true;
         }
-        return item instanceof IResearchNoteDataOwner && slot == RESEARCH_NOTE_SLOT;
+        return item instanceof IResearchNoteDataOwnerItem && slot == RESEARCH_NOTE_SLOT;
     }
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack itemStack) {
         var item = itemStack.getItem();
-        if (item instanceof IResearchTableAspectEditTool && slot == INK_SLOT) {
+        if (item instanceof IResearchTableAspectEditToolItem && slot == INK_SLOT) {
             return true;
         }
-        return item instanceof IResearchNoteDataOwner && slot == RESEARCH_NOTE_SLOT;
+        return item instanceof IResearchNoteDataOwnerItem && slot == RESEARCH_NOTE_SLOT;
     }
 
     @Override
@@ -381,7 +381,7 @@ public class ResearchTableBlockEntity
 
     public @Nullable ResearchNoteData getResearchNoteData() {
         var probablyNoteStack = inventory.get(RESEARCH_NOTE_SLOT);
-        if (probablyNoteStack.getItem() instanceof IResearchNoteDataOwner noteDataOwner) {
+        if (probablyNoteStack.getItem() instanceof IResearchNoteDataOwnerItem noteDataOwner) {
             return noteDataOwner.getResearchNoteData(probablyNoteStack);
         }
         return null;
@@ -391,7 +391,7 @@ public class ResearchTableBlockEntity
         var probablyInkStack = inventory.get(INK_SLOT);
         var probablyNoteStack = inventory.get(RESEARCH_NOTE_SLOT);
         for (var stack : inventory) {
-            if (stack.getItem() instanceof IResearchTableEditAspectListener writeListener) {
+            if (stack.getItem() instanceof IResearchTableEditAspectListenerItem writeListener) {
                 if (writeListener.canWriteAspect(
                         this.getLevel(),
                         this.getBlockPos(),
@@ -416,7 +416,7 @@ public class ResearchTableBlockEntity
         if (canWriteResult) {
             var writeToolStack = inventory.get(INK_SLOT);
             var dataOwnerStack = inventory.get(RESEARCH_NOTE_SLOT);
-            if (!(dataOwnerStack.getItem() instanceof IResearchNoteDataOwner dataOwner)) {
+            if (!(dataOwnerStack.getItem() instanceof IResearchNoteDataOwnerItem dataOwner)) {
                 return;
             }
             var data = dataOwner.getResearchNoteData(dataOwnerStack);
@@ -434,14 +434,14 @@ public class ResearchTableBlockEntity
                     );
                     WriteAspectManager.beforeWriteAspect(writeContext);
                     for (var stack : inventory) {
-                        if (stack.getItem() instanceof IResearchTableEditAspectListener writeListener) {
+                        if (stack.getItem() instanceof IResearchTableEditAspectListenerItem writeListener) {
                             writeListener.beforeWriteAspect(writeContext);
                         }
                     }
                     if (dataOwner.onWriteAspect(writeContext)) {
                         WriteAspectManager.afterWriteAspect(writeContext);
                         for (var stack : inventory) {
-                            if (stack.getItem() instanceof IResearchTableEditAspectListener writeListener) {
+                            if (stack.getItem() instanceof IResearchTableEditAspectListenerItem writeListener) {
                                 writeListener.afterWriteAspect(writeContext);
                             }
                         }
@@ -459,14 +459,14 @@ public class ResearchTableBlockEntity
                     );
                     WriteAspectManager.beforeRemoveAspect(removeContext);
                     for (var stack : inventory) {
-                        if (stack.getItem() instanceof IResearchTableEditAspectListener writeListener) {
+                        if (stack.getItem() instanceof IResearchTableEditAspectListenerItem writeListener) {
                             writeListener.beforeRemoveAspect(removeContext);
                         }
                     }
                     if (dataOwner.onRemoveAspect(removeContext)) {
                         WriteAspectManager.afterRemoveAspect(removeContext);
                         for (var stack : inventory) {
-                            if (stack.getItem() instanceof IResearchTableEditAspectListener writeListener) {
+                            if (stack.getItem() instanceof IResearchTableEditAspectListenerItem writeListener) {
                                 writeListener.afterRemoveAspect(removeContext);
                             }
                         }
@@ -480,7 +480,7 @@ public class ResearchTableBlockEntity
     public void copyResearch(ServerPlayer player){
         var researchStack = inventory.get(RESEARCH_NOTE_SLOT);
         if (researchStack.isEmpty()){return;}
-        if (researchStack.getItem() instanceof IResearchNoteDataOwner dataOwner) {
+        if (researchStack.getItem() instanceof IResearchNoteDataOwnerItem dataOwner) {
             if (dataOwner.canCopyResearchNote(researchStack, player)){
                 dataOwner.copyResearchNote(researchStack, player);
             }

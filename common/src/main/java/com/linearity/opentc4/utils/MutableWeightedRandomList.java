@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
 import oshi.annotation.concurrent.ThreadSafe;
 
+//TODO:[maybe wont finished]Replace with better-performance one
 @ThreadSafe
 public class MutableWeightedRandomList<E extends WeightedEntry> {
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();

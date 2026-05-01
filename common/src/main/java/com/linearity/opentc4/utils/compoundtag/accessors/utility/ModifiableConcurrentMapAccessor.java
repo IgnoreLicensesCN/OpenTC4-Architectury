@@ -4,10 +4,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccess
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import thaumcraft.common.lib.research.HexEntry;
-import thaumcraft.common.lib.utils.HexCoord;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

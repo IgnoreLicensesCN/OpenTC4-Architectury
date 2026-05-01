@@ -77,4 +77,10 @@ public class TileThaumcraft extends BlockEntity {
     public void serverRandomTickByBlockHandle(){}
     public void clientAnimateTickByBlockHandle(){}
 
+    public void setBlockStateAndUpdate(BlockState blockState) {
+        setBlockState(blockState);
+        if (this.level != null) {
+            this.level.sendBlockUpdated(getBlockPos(), blockState, blockState, 3);
+        }
+    }
 }

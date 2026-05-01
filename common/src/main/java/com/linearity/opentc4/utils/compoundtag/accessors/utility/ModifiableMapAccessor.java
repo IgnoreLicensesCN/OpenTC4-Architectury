@@ -7,7 +7,6 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ModifiableMapAccessor<K,V> extends CompoundTagAccessor<Map<K,V>> {
     protected final ListTagAccessor listTagAccessorInternal;

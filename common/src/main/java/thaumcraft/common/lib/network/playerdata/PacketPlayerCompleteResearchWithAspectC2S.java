@@ -6,7 +6,7 @@ import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IAspectUnlockable;
+import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -43,7 +43,7 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (research.isPlayerCompletedResearch(player)){
             return;
         }
-        if (!(research instanceof IAspectUnlockable aspectUnlockable)){return;}
+        if (!(research instanceof IAspectUnlockableResearch aspectUnlockable)){return;}
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(player)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
         var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);

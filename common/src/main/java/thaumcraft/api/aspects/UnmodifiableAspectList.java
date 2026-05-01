@@ -3,6 +3,8 @@ package thaumcraft.api.aspects;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntBinaryOperator;
 
 public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
@@ -148,6 +150,16 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         return new UnmodifiableAspectList<>(out);
     }
 
+    private static final Map<Aspect,UnmodifiableAspectList<Aspect>> aspectMap = new ConcurrentHashMap<>();
+    @SuppressWarnings("unchecked")
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> ofSingle(Asp aspect){
+
+        return (UnmodifiableAspectList<Asp>) aspectMap.computeIfAbsent(aspect, asp -> {
+            UnmodifiableAspectList<Aspect> out = new UnmodifiableAspectList<>();
+            out.aspects.put(asp,1);
+            return out;
+        });
+    }
     public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value){
         UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
         out.aspects.put(aspect,value);

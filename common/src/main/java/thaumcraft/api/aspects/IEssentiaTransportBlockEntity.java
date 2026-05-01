@@ -17,8 +17,5 @@ public interface IEssentiaTransportBlockEntity extends IEssentiaTransportOutBloc
 //	 */
 //	@Deprecated(forRemoval = true)
 //	boolean renderExtendedTube();
-
-
-
 }
 

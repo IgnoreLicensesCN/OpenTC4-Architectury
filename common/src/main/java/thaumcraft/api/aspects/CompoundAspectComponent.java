@@ -1,7 +1,5 @@
 package thaumcraft.api.aspects;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +29,7 @@ public record CompoundAspectComponent(Aspect aspectA, Aspect aspectB)
 
     @Override
     public int hashCode() {
-        return Objects.hash(aspectA, aspectB);
+        return Objects.hash(aspectA) + Objects.hash(aspectB);
     }
     @Override
     public Iterator<Aspect> iterator() {

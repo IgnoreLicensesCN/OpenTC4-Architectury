@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc.dispensebehavior;
+package thaumcraft.common.items.dispensebehavior;
 
 import net.minecraft.world.level.block.DispenserBlock;
 import thaumcraft.common.items.ThaumcraftItems;

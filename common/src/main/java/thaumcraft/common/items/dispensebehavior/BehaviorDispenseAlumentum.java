@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc.dispensebehavior;
+package thaumcraft.common.items.dispensebehavior;
 
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;

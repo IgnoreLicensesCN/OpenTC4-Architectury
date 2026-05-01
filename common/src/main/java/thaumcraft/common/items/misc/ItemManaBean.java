@@ -37,23 +37,23 @@ import java.util.Random;
 import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
 public class ItemManaBean extends ItemFood implements IEssentiaContainerItem {
-   public final int itemUseDuration = 10;
-   public IIcon icon;
-   Random rand = new Random();
-   static Aspect[] displayAspects;
+//   public final int itemUseDuration = 10;
+//   public IIcon icon;
+//   Random rand = new Random();
+//   static Aspect[] displayAspects;
+//
+//   public ItemManaBean() {
+//      super(1, 0.5F, true);
+//      this.setMaxStackSize(64);
+//      this.setHasSubtypes(true);
+//      this.setMaxDamage(0);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//      this.setAlwaysEdible();
+//   }
 
-   public ItemManaBean() {
-      super(1, 0.5F, true);
-      this.setMaxStackSize(64);
-      this.setHasSubtypes(true);
-      this.setMaxDamage(0);
-      this.setCreativeTab(Thaumcraft.tabTC);
-      this.setAlwaysEdible();
-   }
-
-   public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-      return this.itemUseDuration;
-   }
+//   public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+//      return this.itemUseDuration;
+//   }
 
    protected void onFoodEaten(ItemStack stack, World world, Player player) {
       if (Platform.getEnvironment() != Env.CLIENT) {

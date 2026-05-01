@@ -4,9 +4,11 @@ import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccess
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
+//Obviously designed for AspectList
 public class Object2IntLinkedOpenHashMapAccessor<K> extends CompoundTagAccessor<Object2IntLinkedOpenHashMap<K>> {
     protected final ListTagAccessor listTagAccessorInternal;
     protected final CompoundTagAccessor<K> keyAccessor;
@@ -34,6 +36,19 @@ public class Object2IntLinkedOpenHashMapAccessor<K> extends CompoundTagAccessor<
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, Object2IntLinkedOpenHashMap<K> value) {
+        var listTag = new ListTag();
+        for (var entry : value.object2IntEntrySet()) {
+            var key = entry.getKey();
+            var intValue = entry.getIntValue();
+            var compound = new CompoundTag();
+            keyAccessor.writeToCompoundTag(compound, key);
+            valueAccessor.writeToCompoundTag(compound, intValue);
+            listTag.add(compound);
+        }
+        listTagAccessorInternal.writeToCompoundTag(tag, listTag);
+    }
+    //copied but different cast for object2IntEntrySet return value
+    public void writeToCompoundTag(CompoundTag tag, Object2IntMap<K> value) {
         var listTag = new ListTag();
         for (var entry : value.object2IntEntrySet()) {
             var key = entry.getKey();

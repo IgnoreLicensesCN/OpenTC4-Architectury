@@ -390,13 +390,29 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		return out;
 	}
 
-	public Asp randomAspect(RandomSource randomSource){
+	public @Nullable("if empty") Asp randomAspect(RandomSource randomSource){
 		if (this.size() == 0){
 			return null;
 		}
 		var list = this.aspects.keySet().stream().toList();
 		return list.get(randomSource.nextInt(list.size()));
 	}
+	public @Nullable("if empty") Asp randomWeightedAspect(RandomSource randomSource){
+		if (visSize <= 0 || aspects.isEmpty()) {
+			return null; // 或者返回你的 Aspect.EMPTY
+		}
+		int target = randomSource.nextInt(visSize);
+		int currentSum = 0;
+		for (var entry : aspects.object2IntEntrySet()) {
+			currentSum += entry.getIntValue();
+			if (target < currentSum) {
+				return entry.getKey();
+			}
+		}
+
+		return aspects.firstKey();
+	}
+
 
 	public boolean isEmpty(){
 		return this.aspects.isEmpty();

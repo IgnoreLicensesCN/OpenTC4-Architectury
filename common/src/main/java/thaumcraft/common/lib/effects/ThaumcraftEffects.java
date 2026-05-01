@@ -3,6 +3,8 @@ package thaumcraft.common.lib.effects;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import thaumcraft.common.Thaumcraft;
 
@@ -32,6 +34,11 @@ public class ThaumcraftEffects {
         public static final RegistrySupplier<ThaumarhiaEffect> SUPPLIER_THAUMARHIA = EFFECTS.register("thaumarhia",ThaumarhiaEffect::new);
         public static final RegistrySupplier<WarpWardEffect> SUPPLIER_WARP_WARD = EFFECTS.register("warp_ward",WarpWardEffect::new);
         public static final RegistrySupplier<UnnaturalHungerEffect> SUPPLIER_UNNATURAL_HUNGER = EFFECTS.register("unnatural_hunger",UnnaturalHungerEffect::new);
+    }
+    public static class Tags{
+        //not supported yet for MC
+//        public static final TagKey<MobEffect> BLACKLISTED_MANA_BEAN_EFFECTS =
+//                TagKey.create(Registries.MOB_EFFECT, new ResourceLocation(Thaumcraft.MOD_ID, "blacklisted_mana_bean_effects"));
     }
 
 

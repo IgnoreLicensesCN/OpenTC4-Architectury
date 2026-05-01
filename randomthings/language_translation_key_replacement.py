@@ -61,6 +61,7 @@ block_with_item_names = [
     ['tile.blockJar.3.name','void_jar'],
     ['tile.blockLifter.name','arcane_levitator'],
     ['tile.blockEssentiaReservoir.name','essentia_reservoir'],
+    ["item.ItemManaBean.name", 'mana_bean'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
@@ -81,10 +82,12 @@ for fileName in os.listdir(language_file_folder):
             value = language_dict[key]
             remappedKey = block_with_item_name_pair[1]
             if isinstance(remappedKey,str):
+                # if key is not None:
                 language_dict.pop(key)
                 language_dict[f'block.thaumcraft.{remappedKey}'] = value
                 language_dict[f'item.thaumcraft.{remappedKey}'] = value
             elif isinstance(remappedKey,list):
+                # if key is not None:
                 language_dict.pop(key)
                 for remappedKeyItem in remappedKey:
                     language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value

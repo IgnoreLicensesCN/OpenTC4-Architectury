@@ -6,9 +6,8 @@ import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
-import thaumcraft.api.research.interfaces.IResearchable;
-import thaumcraft.api.researchtable.IResearchTableAspectEditTool;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
+import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -45,7 +44,7 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
         var research = ResearchItem.getResearch(researchToCreateNote);
         var player = context.getPlayer();
         if (player instanceof ServerPlayer serverPlayer
-                && research instanceof IResearchNoteCreatable researchNoteCreatable) {
+                && research instanceof IResearchNoteCreatableResearch researchNoteCreatable) {
             if (!researchNoteCreatable.canPlayerCreateResearchNote(player)){
                 return;
             }
@@ -56,7 +55,7 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
                 }
                 var usingStack = inv.getItem(inventorySlotWithInkWell);
                 if (!usingStack.isEmpty()){
-                    if (usingStack.getItem() instanceof IResearchTableAspectEditTool editTool){
+                    if (usingStack.getItem() instanceof IResearchTableAspectEditToolItem editTool){
                         var level = context.getPlayer().level();
                         if (editTool.canCreateResearchNote(
                                         level,

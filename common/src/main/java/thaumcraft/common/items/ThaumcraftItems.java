@@ -14,6 +14,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
+import thaumcraft.common.items.consumable.ManaBeanItem;
 import thaumcraft.common.items.consumable.ZombieBrainItem;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
@@ -230,6 +231,8 @@ public class ThaumcraftItems {
     public static final BlockItem FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static final BlockItem MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
     public static final BlockItem ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
+    public static final BlockItem ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
+    public static final ManaBeanItem MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
 
     //===========================================================================================
 
@@ -803,6 +806,14 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_LEVITATOR = ITEMS.register(
                 "arcane_levitator",
                 () -> new BlockItem(ThaumcraftBlocks.ARCANE_LEVITATOR,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_RESERVOIR = ITEMS.register(
+                "essentia_reservoir",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_RESERVOIR,  new Item.Properties())
+        );
+        public static final RegistrySupplier<ManaBeanItem> SUPPLIER_MANA_BEAN = ITEMS.register(
+                "mana_bean",
+                ManaBeanItem::new
         );
 
 

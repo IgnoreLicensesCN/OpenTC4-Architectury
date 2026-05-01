@@ -97,6 +97,7 @@ public class PlayerKnowledge {
    /**
     * @return true if succeed added aspect,false if already exists
     */
+   @SuppressWarnings("UnusedReturnValue")
    public boolean addDiscoveredAspect(Player player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
       if (!known.getAspectView().containsKey(aspect)) {

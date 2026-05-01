@@ -9,7 +9,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchNoteCreatable;
+import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -33,7 +33,7 @@ public class ResearchNoteData {
             RandomSource randomSource,
             ResearchItem researchItem
     ){
-        if (!(researchItem instanceof IResearchNoteCreatable noteCreatable)) {
+        if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
         }
         var stack = ThaumcraftItems.RESEARCH_NOTE.getDefaultInstance();
@@ -77,7 +77,7 @@ public class ResearchNoteData {
             ResearchItem rr,
             Map<HexCoord, HexEntry> hexGird
     ) {
-        if (!(rr instanceof IResearchNoteCreatable noteCreatable)){
+        if (!(rr instanceof IResearchNoteCreatableResearch noteCreatable)){
             throw new IllegalArgumentException("research cannot create ResearchNote:"+rr);
         }
         int blanks = noteCreatable.getComplexity() * 2;

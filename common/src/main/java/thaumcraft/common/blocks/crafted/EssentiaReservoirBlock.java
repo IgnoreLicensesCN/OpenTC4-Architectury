@@ -101,11 +101,9 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
                 var oldState = level.getBlockState(clickedPos);
                 BlockState newState = oldState.setValue(FACING, player.isShiftKeyDown()?clickedFace:clickedFace.getOpposite());
                 var be = level.getBlockEntity(clickedPos);
-                if (be != null){
-                    be.setBlockState(newState);
+                if (be instanceof EssentiaReservoirBlockEntity reservoir){
+                    reservoir.setBlockStateAndUpdate(newState);
                 }
-                level.sendBlockUpdated(clickedPos, newState, newState, 3);
-
                 player.swing(useOnContext.getHand());
             }
         }
@@ -173,4 +171,5 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
             }
         }
     }
+
 }

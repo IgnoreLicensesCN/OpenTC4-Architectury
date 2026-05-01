@@ -19,15 +19,16 @@ import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
  * <p>for BEs needs to show aspect use {@link IAspectDisplayBlockEntity}</p>
  * <p>--IgnoreLicensesCN</p>
  */
+@Deprecated(forRemoval = true)
 public interface IAspectContainerBlockEntity<Asp extends Aspect>
-		extends /*IAspectOutBlockEntity<Asp>, */IAspectInBlockEntity<Asp>
+//		extends /*IAspectOutBlockEntity<Asp>, */IAspectInBlockEntity<Asp>
 {
 
 	@UnmodifiableView
 	@NotNull
 	AspectList<Asp> getAspects();
-	int getAspectTypeSize();//1 for jar and Integer.MAX_VALUE for ESSENTIA_RESERVOIR
-	int getAspectMaxSize();//64 for jar and 256 for ESSENTIA_RESERVOIR
+	int getAspectTypeSize();
+	int getAspectMaxSize();
 	void setAspects(AspectList<Asp> aspects);
 //	/**
 //	 * removes a bunch of aspect different aspects and amounts from the tile entity.

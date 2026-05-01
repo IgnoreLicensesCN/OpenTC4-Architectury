@@ -7,22 +7,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
-import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
-import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
-import thaumcraft.common.tiles.crafted.jars.BrainJarBlockEntity;
-import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
-import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
-import thaumcraft.common.tiles.crafted.jars.VoidJarBlockEntity;
-import thaumcraft.common.tiles.crafted.lamp.FertilityArcaneLampBlockEntity;
-import thaumcraft.common.tiles.crafted.lamp.GrowthArcaneLampBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.*;
+import thaumcraft.common.tiles.crafted.jars.*;
+import thaumcraft.common.tiles.crafted.lamp.*;
+import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
-import thaumcraft.common.tiles.node.NodeBlockEntity;
-import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
-import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
+import thaumcraft.common.tiles.generated.*;
+import thaumcraft.common.tiles.node.*;
 
 public class ThaumcraftBlockEntities {
 
@@ -64,6 +55,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<FertilityArcaneLampBlockEntity> FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
     public static final BlockEntityType<ThaumatoriumBlockEntity> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
     public static final BlockEntityType<EssentiaReservoirBlockEntity> ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
+    public static final BlockEntityType<ManaBeanBlockEntity> MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -312,6 +304,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EssentiaReservoirBlockEntity::new,
                                 ThaumcraftBlocks.ESSENTIA_RESERVOIR
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<ManaBeanBlockEntity>> SUPPLIER_MANA_BEAN =
+                BLOCK_ENTITIES.register(
+                        "mana_bean",
+                        () -> BlockEntityType.Builder.of(
+                                ManaBeanBlockEntity::new,
+                                ThaumcraftBlocks.MANA_BEAN
                         ).build(null)
                 );
 

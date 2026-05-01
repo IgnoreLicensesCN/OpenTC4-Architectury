@@ -112,7 +112,7 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player != null){
-            if (player.isCrouching()){
+            if (player.isShiftKeyDown()){
                 if (attemptRemoveAspectLabel(level, blockPos, blockState)){
                     playJarSound(level, blockPos, 1.0F);
                 } else {
@@ -143,7 +143,8 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
         super.setPlacedBy(level, pos, blockState, livingEntity, itemStack);
         if (level.isClientSide) return;
 
-        if (level.getBlockEntity(pos) instanceof EssentiaJarBlockEntity jar && itemStack.getItem() instanceof EssentiaJarBlockItem jarItem) {
+        if (level.getBlockEntity(pos) instanceof EssentiaJarBlockEntity jar
+                && itemStack.getItem() instanceof EssentiaJarBlockItem jarItem) {
 
             var tag = itemStack.getTag();
             if (tag == null) return;

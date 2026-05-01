@@ -1,3 +1,6 @@
+
+* about license part i didn't read them carefully(seriously) and i completely ignored anazor's demand(no migrate to higher MC version) but if it is important please tell me how to change.Apache's and Fastutil and whatever
+
 * server-side recipe deliver to client side not supported yet and i want someone do this part in another mod now.
 
 * same to server-side research page tweak i also dont want to do this part,but i still want these two serialize-friendly,consider some HTML-like language?.

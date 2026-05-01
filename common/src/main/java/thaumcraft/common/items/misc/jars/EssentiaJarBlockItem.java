@@ -38,7 +38,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     public void setAspectAndAmount(ItemStack stack, Aspect aspect, int amount) {
         var tag = stack.getOrCreateTag();
         ASPECT.writeToCompoundTag(tag, aspect);
-        AMOUNT.writeToCompoundTag(tag, amount);
+        AMOUNT.writeIntToCompoundTag(tag, amount);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         var tag = itemstack.getOrCreateTag();
         for (var entry : aspects.entrySet()) {
             ASPECT.writeToCompoundTag(tag, entry.getKey());
-            AMOUNT.writeToCompoundTag(tag, entry.getValue());
+            AMOUNT.writeIntToCompoundTag(tag, entry.getIntValue());
         }
     }
 
@@ -128,7 +128,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             return;
         }
         var aspCurrent = ASPECT.readFromCompoundTag(tag);
-        var asmAmountCurrent = AMOUNT.readFromCompoundTag(tag);
+        int asmAmountCurrent = AMOUNT.readIntFromCompoundTag(tag);
         var filterAspect = ASPECT_FILTER.readFromCompoundTag(tag);
         var player = Minecraft.getInstance().player;
         addAspectDescriptionToList(UnmodifiableAspectList.of(aspCurrent, asmAmountCurrent), player, list);
@@ -183,13 +183,13 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (stack.isEmpty()) return 0;
         var tag = stack.getTag();
         if (tag == null) return 0;
-        return AMOUNT.readFromCompoundTag(tag);
+        return AMOUNT.readIntFromCompoundTag(tag);
     }
 
     public void setAspectAmount(ItemStack stack, int amount) {
         if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
-            AMOUNT.writeToCompoundTag(tag, amount);
+            AMOUNT.writeIntToCompoundTag(tag, amount);
         }
     }
 
@@ -197,7 +197,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
             ASPECT.writeToCompoundTag(tag, aspect);
-            AMOUNT.writeToCompoundTag(tag, amount);
+            AMOUNT.writeIntToCompoundTag(tag, amount);
         }
     }
 
@@ -208,7 +208,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (tag == null) return EssentiaJarInfo.EMPTY;
         return new EssentiaJarInfo(
                 ASPECT.readFromCompoundTag(tag),
-                AMOUNT.readFromCompoundTag(tag),
+                AMOUNT.readIntFromCompoundTag(tag),
                 ASPECT_FILTER.readFromCompoundTag(tag)
         );
     }
@@ -248,7 +248,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         }
         return UnmodifiableAspectList.of(
                 ASPECT.readFromCompoundTag(tag),
-                AMOUNT.readFromCompoundTag(tag)
+                AMOUNT.readIntFromCompoundTag(tag)
         );
     }
 
@@ -264,7 +264,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             return 64;
         }
         if (ASPECT.readFromCompoundTag(tag)
-                .isEmpty() || AMOUNT.readFromCompoundTag(tag) == 0) {
+                .isEmpty() || AMOUNT.readIntFromCompoundTag(tag) == 0) {
             return 64;
         }
         return 1;

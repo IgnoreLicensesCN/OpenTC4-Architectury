@@ -14,12 +14,16 @@ public class FloatTagAccessor extends CompoundTagAccessor<Float> {
     public Float readFromCompoundTag(CompoundTag tag) {
         return tag.getFloat(tagKey);
     }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void writeToCompoundTag(CompoundTag tag, Float value) {
+        tag.putFloat(tagKey, value);
+    }
     public float readFloatFromCompoundTag(CompoundTag tag) {
         return tag.getFloat(tagKey);
     }
-
-    @Override
-    public void writeToCompoundTag(CompoundTag tag, Float value) {
+    public void writeFloatToCompoundTag(CompoundTag tag, float value) {
         tag.putFloat(tagKey, value);
     }
 

@@ -221,6 +221,7 @@ public class ThaumcraftBlocks {
     public static final ArcaneLevitatorBubbleBlock ARCANE_LEVITATOR_BUBBLE = Registry.SUPPLIER_ARCANE_LEVITATOR_BUBBLE.get();
     public static final ArcaneLevitatorBlock ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
     public static final EssentiaReservoirBlock ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
+    public static final ManaBeanBlock MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -823,6 +824,11 @@ public class ThaumcraftBlocks {
                         "essentia_reservoir",
                         EssentiaReservoirBlock::new
                 );
+        public static final RegistrySupplier<ManaBeanBlock> SUPPLIER_MANA_BEAN =
+                BLOCKS.register(
+                        "mana_bean",
+                        ManaBeanBlock::new
+                );
 
 
         static {
@@ -850,28 +856,31 @@ public class ThaumcraftBlocks {
 
     public static class Tags{
         public static final TagKey<Block> JAR_BLOCK = TagKey.create(
-                Registries.BLOCK, new ResourceLocation("thaumcraft:jar_block")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"jar_block")
         );//TODO:Jars put in
         public static final TagKey<Block> CRUCIBLE_HEATER = TagKey.create(
-                Registries.BLOCK, new ResourceLocation("thaumcraft:crucible_heater")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"crucible_heater")
         );
         public static final TagKey<Block> REDSTONE_CONTROLLABLE_CRUCIBLE_HEATER = TagKey.create(
-                Registries.BLOCK, new ResourceLocation("thaumcraft:redstone_controllable_crucible_heater")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"redstone_controllable_crucible_heater")
         );
         public static final TagKey<Block> GROWTH_LAMP_NOT_AFFECTIVE = TagKey.create(
-                Registries.BLOCK,new ResourceLocation("thaumcraft:growth_lamp_not_affective")
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_not_affective")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE = TagKey.create(
-                Registries.BLOCK,new ResourceLocation("thaumcraft:growth_lamp_affective")
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE_RANDOM_TICK = TagKey.create(
-                Registries.BLOCK,new ResourceLocation("thaumcraft:growth_lamp_affective_random_tick")
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective_random_tick")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE_TICK = TagKey.create(
-                Registries.BLOCK,new ResourceLocation("thaumcraft:growth_lamp_affective_tick")
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective_tick")
         );
         public static final TagKey<Block> GLIMMER_OF_LIGHT_WONT_OVERRIDE = TagKey.create(
-                Registries.BLOCK, new ResourceLocation("thaumcraft:glimmer_of_light_wont_override")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"glimmer_of_light_wont_override")
+        );
+        public static final TagKey<Block> MANA_BEAN_SURVIVES = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"mana_bean_survives")
         );
     }
 }

@@ -10,7 +10,7 @@ import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.common.lib.research.ResearchNoteData;
 
 //for research note and maybe you can do something else?
-public interface IResearchNoteDataOwner extends IResearchTableEditAspectListener {
+public interface IResearchNoteDataOwnerItem extends IResearchTableEditAspectListenerItem {
     default boolean canPlaceIntoResearchTable(
             Level atLevel,
             BlockPos tablePos,

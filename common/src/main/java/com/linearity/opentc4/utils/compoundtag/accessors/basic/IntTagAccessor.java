@@ -14,12 +14,16 @@ public class IntTagAccessor extends CompoundTagAccessor<Integer> {
     public Integer readFromCompoundTag(CompoundTag tag) {
         return tag.getInt(tagKey);
     }
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void writeToCompoundTag(CompoundTag tag, Integer value) {
+        tag.putInt(tagKey, value);
+    }
+
     public int readIntFromCompoundTag(CompoundTag tag) {
         return tag.getInt(tagKey);
     }
-
-    @Override
-    public void writeToCompoundTag(CompoundTag tag, Integer value) {
+    public void writeIntToCompoundTag(CompoundTag tag, int value) {
         tag.putInt(tagKey, value);
     }
 

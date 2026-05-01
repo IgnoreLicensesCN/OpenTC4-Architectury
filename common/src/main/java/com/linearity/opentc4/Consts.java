@@ -17,20 +17,29 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStrin
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.NullFilteredModifiableListAccessor;
 import net.minecraft.core.BlockPos;
 import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class Consts {
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;
 
 
-    public static class AspectCompoundTagAccessors {
-        private static final String ASPECT_KEY = "key";//String
-        public static final ResourceLocationTagAccessor ASPECT_KEY_ACCESSOR = new ResourceLocationTagAccessor(ASPECT_KEY);
-        private static final String ASPECT_AMOUNT = "amount";//int
-        public static final IntTagAccessor ASPECT_AMOUNT_ACCESSOR = new IntTagAccessor(ASPECT_AMOUNT);
-        private static final String ASPECT_ASPECTS = "Aspects";//List<CompoundTag>
-        public static final ListTagAccessor ASPECT_ASPECTS_ACCESSOR = new ListTagAccessor(ASPECT_ASPECTS);
+    public static class PlayerDataAccessors {
+        public static final AspectListAccessor PLAYER_RESEARCH_ASPECTS = new AspectListAccessor("player_research_aspects");
+        private static final String CLUE = "THAUMCRAFT.CLUE";
+        public static final ModifiableListAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
+                new ModifiableListAccessor<>(
+                        CLUE,new ClueResourceLocationTagAccessor(
+                        CLUE+"_item")
+                );
+        private static final String RESEARCH = "THAUMCRAFT.RESEARCH";
+        public static final ModifiableListAccessor<ResearchItemResourceLocation> THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR =
+                new ModifiableListAccessor<>(
+                        RESEARCH,
+                        new ResearchItemResourceLocationTagAccessor(RESEARCH + "_key")
+                );
     }
 
     public static class ThaumcraftPlayerCompoundTagAccessors {
@@ -53,25 +62,8 @@ public class Consts {
         private static final String SHIELDING = "Thaumcraft.shielding";
         public static final IntTagAccessor THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR =
                 new IntTagAccessor(SHIELDING);
-        private static final String RESEARCH = "THAUMCRAFT.RESEARCH";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR =
-                new ListTagAccessor(RESEARCH);
         public static final ResearchItemResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
                 new ResearchItemResourceLocationTagAccessor("research");
-
-        private static final String CLUE = "THAUMCRAFT.CLUE";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
-                new ListTagAccessor(CLUE);
-        public static final ClueResourceLocationTagAccessor LIST_TAG_CLUE_ACCESSOR =
-                new ClueResourceLocationTagAccessor("clue");
-
-        private static final String ASPECTS = "THAUMCRAFT.ASPECTS";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR =
-                new ListTagAccessor(ASPECTS);
-        public static final AspectResourceLocationTagAccessor LIST_TAG_ASPECT_ACCESSOR =
-                new AspectResourceLocationTagAccessor("aspect");
-        public static final IntTagAccessor LIST_TAG_ASPECT_INT_ACCESSOR =
-                new IntTagAccessor("aspect_amount");
 
         private static final String SCAN_OBJECTS = "THAUMCRAFT.SCAN.OBJECTS";
         public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR =
@@ -283,6 +275,10 @@ public class Consts {
     public static class ThaumatoriumBlockEntityTagAccessors {
         public static final NullFilteredModifiableListAccessor<CrucibleRecipe> RECIPES = new NullFilteredModifiableListAccessor<>("recipes",new NullableCrucibleRecipeAccessor("recipe"));
         public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+    }
+
+    public static class ManaBeanBlockEntityOrItemStackTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
 
 }

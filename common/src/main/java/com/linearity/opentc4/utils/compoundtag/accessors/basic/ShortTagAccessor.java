@@ -15,12 +15,16 @@ public class ShortTagAccessor extends CompoundTagAccessor<Short> {
         return tag.getShort(tagKey);
     }
 
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void writeToCompoundTag(CompoundTag tag, Short value) {
+        tag.putLong(tagKey, value);
+    }
     public short readShortFromCompoundTag(CompoundTag tag) {
         return tag.getShort(tagKey);
     }
-
-    @Override
-    public void writeToCompoundTag(CompoundTag tag, Short value) {
+    public void writeShortToCompoundTag(CompoundTag tag, short value) {
         tag.putLong(tagKey, value);
     }
 
