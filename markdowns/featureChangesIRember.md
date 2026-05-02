@@ -30,4 +30,5 @@
 * all kinds of arcane lamp has vanilla ArcaneLamp's behavior
 * growth lamp changed to apply randomly not in a random collection turn.
 * removed growth/fertility lamp drain vis delay
-* manapod break time wont relate to growth(cocoa bean break time now),but now you can use axe and fortune works to multiply the result( (1 (or 2 if growth stage is 7 and 2/3 chance))*(1(+\[0,fortuneLevel\] only when growth 7)))
+* mana bean break time wont relate to growth(cocoa bean break time now),but now you can use axe and fortune works to multiply the result( (1 (or 2 if growth stage is 7 and 2/3 chance))*(1(+\[0,fortuneLevel\] only when growth 7)))
+* mana bean can be affected with growth lamp

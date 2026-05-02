@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "minecraft:pumpkin_stem",
-    "minecraft:melon_stem"
+    "minecraft:melon_stem",
+    "thaumcraft:mana_bean"
   ]
 }

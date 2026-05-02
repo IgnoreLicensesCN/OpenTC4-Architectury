@@ -11,7 +11,7 @@ public class MultipartBlockMatcherPresents {
         public static final IFormedBlockMatcher SIDE_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_SIDE);
         public static final IFormedBlockMatcher BAR_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_BAR);
         public static final IFormedBlockMatcher LAVA_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_LAVA);
-        public static final IFormedBlockMatcher BOTTOM_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_BOTTOM);
+        public static final IFormedBlockMatcher BOTTOM_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_SIDE);
         public static final IFormedBlockMatcher X_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_X_AXIS);
         public static final IFormedBlockMatcher Y_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_Y_AXIS);
         public static final IFormedBlockMatcher Z_AXIS_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_Z_AXIS);
@@ -37,7 +37,7 @@ public class MultipartBlockMatcherPresents {
             },
     };
     public static class AdvancedAlchemicalFurnaceMatcherImpls {
-        public static final IFormedBlockMatcher BOTTOM_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_BOTTOM);
+        public static final IFormedBlockMatcher BOTTOM_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.INFERNAL_FURNACE_SIDE);
         public static final IFormedBlockMatcher CORNER_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER);
         public static final IFormedBlockMatcher ALEMBIC_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC);
         public static final IFormedBlockMatcher NOZZLE_MATCHER = generateSimpleMatcher(ThaumcraftBlocks.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE);

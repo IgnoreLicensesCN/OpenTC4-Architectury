@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.crafted.jars.other;
 
-import com.linearity.opentc4.SoftImplement;
+import com.linearity.opentc4.annotations.SoftImplement;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
@@ -43,7 +44,7 @@ public class NodeJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return nodeInfo.nodeAspects;
     }
 

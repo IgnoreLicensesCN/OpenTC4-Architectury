@@ -35,7 +35,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         this.hash = hashTemp;
     }
     @Override
-    public Integer put(A aspect, int amount) {
+    public int put(A aspect, int amount) {
         throw new RuntimeException("Unmodifiable!");
     }
 

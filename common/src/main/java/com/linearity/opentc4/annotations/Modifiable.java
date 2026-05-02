@@ -1,4 +1,4 @@
-package com.linearity.opentc4;
+package com.linearity.opentc4.annotations;
 
 import java.lang.annotation.*;
 

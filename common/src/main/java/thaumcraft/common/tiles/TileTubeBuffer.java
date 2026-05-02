@@ -135,7 +135,7 @@ public class TileTubeBuffer extends TileThaumcraft implements IAspectContainerBl
       return 0;
    }
 
-   public Aspect getSuctionType(Direction loc) {
+   public @NotNull Aspect getSuctionType(Direction loc) {
       return null;
    }
 

@@ -27,7 +27,7 @@ public class GlimmerOfLightBlock extends SuppressedWarningBlock {
     }
     public static final VoxelShape SHAPE = Shapes.empty();
     public GlimmerOfLightBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
                 .strength(0,0)
                 .lightLevel(s -> 15)
                 .pushReaction(PushReaction.DESTROY)

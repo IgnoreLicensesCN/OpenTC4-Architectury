@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.utils.LogicalSide;
-import com.linearity.opentc4.utils.RecommendedLogicalSide;
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -13,7 +13,6 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectFilterAccessible;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.crafted.ArcaneAlembicBlockEntity;
 
 public interface IAspectLabelAttachableBlock {
     //then maybe someone would make a jar-label bag with lots of labels

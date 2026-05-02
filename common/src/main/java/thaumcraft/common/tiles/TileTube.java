@@ -26,11 +26,12 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.List;
 import java.util.Random;
 
+//O-M-G R U alright?
 public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockEntity, IWandable {
-   public Direction facing;
-   public boolean[] openSides;
+   public Direction facing;//goto blockState in some cases and disappear in my eyes.
+   public boolean[] openSides;//turn into bitmask use byte(8 digits)
    Aspect essentiaType;
-   int essentiaAmount;
+   int essentiaAmount;//disappear now,you will have your day in other classes
    Aspect suctionType;
    int suction;
    int venting;
@@ -246,7 +247,7 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockE
       this.suction = amount;
    }
 
-   public Aspect getSuctionType(Direction loc) {
+   public @NotNull Aspect getSuctionType(Direction loc) {
       return this.suctionType;
    }
 
@@ -385,39 +386,39 @@ public class TileTube extends TileThaumcraft implements IEssentiaTransportBlockE
       return tile instanceof IEssentiaTransportBlockEntity;
    }
 
-   public void addTraceableCuboids(List cuboids) {
-      float min = 0.42F;
-      float max = 0.58F;
-      if (this.canConnectSide(0)) {
-         cuboids.add(new IndexedCuboid6(0, new Cuboid6((float)this.xCoord + min, this.yCoord, (float)this.zCoord + min, (float)this.xCoord + max, (double)this.yCoord + (double)0.5F, (float)this.zCoord + max)));
-      }
+//   public void addTraceableCuboids(List cuboids) {
+//      float min = 0.42F;
+//      float max = 0.58F;
+//      if (this.canConnectSide(0)) {
+//         cuboids.add(new IndexedCuboid6(0, new Cuboid6((float)this.xCoord + min, this.yCoord, (float)this.zCoord + min, (float)this.xCoord + max, (double)this.yCoord + (double)0.5F, (float)this.zCoord + max)));
+//      }
+//
+//      if (this.canConnectSide(1)) {
+//         cuboids.add(new IndexedCuboid6(1, new Cuboid6((float)this.xCoord + min, (double)this.yCoord + (double)0.5F, (float)this.zCoord + min, (float)this.xCoord + max, this.yCoord + 1, (float)this.zCoord + max)));
+//      }
+//
+//      if (this.canConnectSide(2)) {
+//         cuboids.add(new IndexedCuboid6(2, new Cuboid6((float)this.xCoord + min, (float)this.yCoord + min, this.zCoord, (float)this.xCoord + max, (float)this.yCoord + max, (double)this.zCoord + (double)0.5F)));
+//      }
+//
+//      if (this.canConnectSide(3)) {
+//         cuboids.add(new IndexedCuboid6(3, new Cuboid6((float)this.xCoord + min, (float)this.yCoord + min, (double)this.zCoord + (double)0.5F, (float)this.xCoord + max, (float)this.yCoord + max, this.zCoord + 1)));
+//      }
+//
+//      if (this.canConnectSide(4)) {
+//         cuboids.add(new IndexedCuboid6(4, new Cuboid6(this.xCoord, (float)this.yCoord + min, (float)this.zCoord + min, (double)this.xCoord + (double)0.5F, (float)this.yCoord + max, (float)this.zCoord + max)));
+//      }
+//
+//      if (this.canConnectSide(5)) {
+//         cuboids.add(new IndexedCuboid6(5, new Cuboid6((double)this.xCoord + (double)0.5F, (float)this.yCoord + min, (float)this.zCoord + min, this.xCoord + 1, (float)this.yCoord + max, (float)this.zCoord + max)));
+//      }
+//
+//      cuboids.add(new IndexedCuboid6(6, new Cuboid6((double)this.xCoord + (double)0.34375F, (double)this.yCoord + (double)0.34375F, (double)this.zCoord + (double)0.34375F, (double)this.xCoord + (double)0.65625F, (double)this.yCoord + (double)0.65625F, (double)this.zCoord + (double)0.65625F)));
+//   }
 
-      if (this.canConnectSide(1)) {
-         cuboids.add(new IndexedCuboid6(1, new Cuboid6((float)this.xCoord + min, (double)this.yCoord + (double)0.5F, (float)this.zCoord + min, (float)this.xCoord + max, this.yCoord + 1, (float)this.zCoord + max)));
-      }
-
-      if (this.canConnectSide(2)) {
-         cuboids.add(new IndexedCuboid6(2, new Cuboid6((float)this.xCoord + min, (float)this.yCoord + min, this.zCoord, (float)this.xCoord + max, (float)this.yCoord + max, (double)this.zCoord + (double)0.5F)));
-      }
-
-      if (this.canConnectSide(3)) {
-         cuboids.add(new IndexedCuboid6(3, new Cuboid6((float)this.xCoord + min, (float)this.yCoord + min, (double)this.zCoord + (double)0.5F, (float)this.xCoord + max, (float)this.yCoord + max, this.zCoord + 1)));
-      }
-
-      if (this.canConnectSide(4)) {
-         cuboids.add(new IndexedCuboid6(4, new Cuboid6(this.xCoord, (float)this.yCoord + min, (float)this.zCoord + min, (double)this.xCoord + (double)0.5F, (float)this.yCoord + max, (float)this.zCoord + max)));
-      }
-
-      if (this.canConnectSide(5)) {
-         cuboids.add(new IndexedCuboid6(5, new Cuboid6((double)this.xCoord + (double)0.5F, (float)this.yCoord + min, (float)this.zCoord + min, this.xCoord + 1, (float)this.yCoord + max, (float)this.zCoord + max)));
-      }
-
-      cuboids.add(new IndexedCuboid6(6, new Cuboid6((double)this.xCoord + (double)0.34375F, (double)this.yCoord + (double)0.34375F, (double)this.zCoord + (double)0.34375F, (double)this.xCoord + (double)0.65625F, (double)this.yCoord + (double)0.65625F, (double)this.zCoord + (double)0.65625F)));
-   }
-
-   @Override
-   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-      super.onDataPacket(net, pkt);
-      this.level().func_147479_m(this.xCoord, this.yCoord, this.zCoord);
-   }
+//   @Override
+//   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+//      super.onDataPacket(net, pkt);
+//      this.level().func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+//   }
 }

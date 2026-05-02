@@ -23,7 +23,10 @@ public class CommonUtils {
     private static final LinkedHashSet<String> originalTabOrders = new LinkedHashSet<>();
 
     public static String toString(AspectList<Aspect> al) {
-        return al.entrySet().stream().filter(e -> e.getKey() != null && e.getValue() != null).map(e -> String.format("%dx%s", e.getValue(), e.getKey().getName())).collect(Collectors.joining(";"));
+        return al.entrySet()
+                .stream()
+                .filter(e -> e.getKey() != null)
+                .map(e -> String.format("%dx%s", e.getIntValue(), e.getKey().getName())).collect(Collectors.joining(";"));
     }
 
     public static String toString(CrucibleRecipe r) {

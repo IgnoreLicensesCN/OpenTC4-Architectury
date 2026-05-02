@@ -156,6 +156,31 @@ public class VecTransformations {
         return mirror(rotate(relative, rotation), mirror).add(transformBasePosRelated);
     }
 
+
+    @Contract(pure = true)
+    public static Direction transformRelatedDirection(
+            Direction selfDirectionInMultipart,
+            BlockPos transformBasePosRelated,
+            Rotation3D rotation,
+            Mirror3D mirror
+    ) {
+        var relative = selfDirectionInMultipart.getNormal().offset(transformBasePosRelated.multiply(-1));
+        var resultDirVec = mirror(rotate(relative, rotation), mirror).offset(transformBasePosRelated);
+        for (Direction dir : Direction.values()) {
+            if (dir.getNormal().equals(resultDirVec)) {
+                return dir;
+            }
+        }
+        throw new AssertionError(
+                "unexpected direction: "
+                        + selfDirectionInMultipart
+                        + " " + transformBasePosRelated
+                        + " " + rotation
+                        + " " + mirror
+                        + " result:" + resultDirVec
+        );
+    }
+
     public enum Rotation3D {
         NONE,
         X_90, X_180, X_270,

@@ -1,11 +1,12 @@
 package thaumcraft.common.tiles.generated;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.listeners.manabean.ManaBeanGrowContext;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -49,7 +50,7 @@ public class ManaBeanBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return aspectListViewOfSingle;
     }
 
@@ -67,8 +68,7 @@ public class ManaBeanBlockEntity extends TileThaumcraft
                             stage + 1,
                             ManaBeanBlock.STAGE_MIN,
                             ManaBeanBlock.STAGE_MAX,
-                            blockState.getValue(ManaBeanBlock.ATTACHED_FACING
-                            )
+                            Direction.UP
                     )
             );
         }

@@ -1,5 +1,6 @@
+* 64-bit PC and java 21 is recommended since it's 2026 now.memory...8G?idk but it's expensive to get RAM now you may have to wait for months or even years to get cheaper one.<p>i may not handle performance issues with 32-bit platform and 4G RAM</p>
 
-* about license part i didn't read them carefully(seriously) and i completely ignored anazor's demand(no migrate to higher MC version) but if it is important please tell me how to change.Apache's and Fastutil and whatever
+* about license part i didn't read them carefully(seriously) and i completely ignored anazor's demand(no migrate to higher MC version) but if it is important please tell me how to change.Apache's and FastUtil and whatever
 
 * server-side recipe deliver to client side not supported yet and i want someone do this part in another mod now.
 
@@ -12,3 +13,5 @@ if i finished this please tell me delete this line.
 * IDK if i have to do extra things to fit JEI in order to avoid Index OOB Exception.If crushed for this plz remind me about that.
 
 * also please tell me how to make thaumcraft JEI or tell me to do this part myself.After i can run this mod.
+
+* maybe i need to put RunedTablet on a pedestal instead of ItemEntity.<p>In some server we use kill @e to clear drops but as we can see it's harmful.</p><p>Oh i need another display entity instead,copy from ItemEntity but no extends can avoid hopper(flower)s.</p>

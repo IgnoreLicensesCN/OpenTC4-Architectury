@@ -1,6 +1,6 @@
 package thaumcraft.common.items.misc.jars;
 
-import com.linearity.opentc4.SoftImplement;
+import com.linearity.opentc4.annotations.SoftImplement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -85,10 +85,10 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             throw new IllegalArgumentException("More than one aspect to set");
         }
         var tag = itemstack.getOrCreateTag();
-        for (var entry : aspects.entrySet()) {
-            ASPECT.writeToCompoundTag(tag, entry.getKey());
-            AMOUNT.writeIntToCompoundTag(tag, entry.getIntValue());
-        }
+        aspects.forEach((aspect, aspectValue) -> {
+            ASPECT.writeToCompoundTag(tag, aspect);
+            AMOUNT.writeIntToCompoundTag(tag, aspectValue);
+        });
     }
 
 

@@ -8,6 +8,7 @@ package thaumcraft.api.aspects;
  * <p>change:Separated into {@link IEssentiaTransportOutBlockEntity} and {@link IEssentiaTransportInBlockEntity}</p>
  * <p>--IgnoreLicensesCN</p>
  */
+//TODO:[maybe wont finished] IEssentiaTransportBlock
 public interface IEssentiaTransportBlockEntity extends IEssentiaTransportOutBlockEntity, IEssentiaTransportInBlockEntity {
 
 

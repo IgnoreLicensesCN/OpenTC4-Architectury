@@ -233,6 +233,7 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
     public static final BlockItem ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
     public static final ManaBeanItem MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
+    public static final BlockItem ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
 
     //===========================================================================================
 
@@ -814,6 +815,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ManaBeanItem> SUPPLIER_MANA_BEAN = ITEMS.register(
                 "mana_bean",
                 ManaBeanItem::new
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_TUBE = ITEMS.register(
+                "essentia_tube",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_TUBE,  new Item.Properties())
         );
 
 

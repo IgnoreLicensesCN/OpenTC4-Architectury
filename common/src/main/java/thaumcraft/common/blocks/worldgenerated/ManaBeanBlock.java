@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
@@ -19,8 +18,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -49,7 +46,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
     public static final int STAGE_MIN = 0;
     public static final int STAGE_MAX = 7;
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", STAGE_MIN,STAGE_MAX);
-    public static final DirectionProperty ATTACHED_FACING = BlockStateProperties.HORIZONTAL_FACING;
+//    public static final DirectionProperty ATTACHED_FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape[] SHAPES = {
             Block.box(4,12,4,12,16,12),
             Block.box(4,10,4,12,16,12),
@@ -65,7 +62,6 @@ public class ManaBeanBlock extends SuppressedWarningBlock
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(STAGE, 0)
-                        .setValue(ATTACHED_FACING, Direction.NORTH)
         );
     }
 
@@ -76,16 +72,11 @@ public class ManaBeanBlock extends SuppressedWarningBlock
         );
     }
 
-    @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
-        return defaultBlockState().setValue(ATTACHED_FACING, blockPlaceContext.getHorizontalDirection());
-    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(STAGE);
-        builder.add(ATTACHED_FACING);
     }
 
     @Override
@@ -100,7 +91,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
     public @NotNull BlockState updateShape(
             BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2
     ) {
-        return direction == blockState.getValue(ATTACHED_FACING) && !blockState.canSurvive(levelAccessor, blockPos)
+        return direction == Direction.UP && !blockState.canSurvive(levelAccessor, blockPos)
                 ? Blocks.AIR.defaultBlockState()
                 : super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
     }
@@ -146,7 +137,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
 
     @Override
     public boolean canSurvive(BlockState blockState, LevelReader levelReader, BlockPos blockPos) {
-        return canManaBeanSurvive(blockState.getValue(ATTACHED_FACING), levelReader, blockPos);
+        return canManaBeanSurvive(Direction.UP, levelReader, blockPos);
     }
 
     public boolean canManaBeanSurvive(Direction attachedFacing,LevelReader levelReader, BlockPos blockPos) {

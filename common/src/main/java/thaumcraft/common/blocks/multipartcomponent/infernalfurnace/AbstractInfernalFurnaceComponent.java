@@ -21,7 +21,7 @@ public abstract class AbstractInfernalFurnaceComponent extends AbstractMultipart
         super(properties);
     }
     public AbstractInfernalFurnaceComponent() {
-        super(Properties
+        this(Properties
                 .copy(Blocks.OBSIDIAN)
                 .strength(10.0f,500.f)
                 .lightLevel(s -> 1)

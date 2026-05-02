@@ -19,7 +19,7 @@ public class WardingAuraBlock extends SuppressedWarningBlock {
         super(properties);
     }
     public WardingAuraBlock() {
-        super(Properties.of().randomTicks().sound(SoundType.WOOL).replaceable().noCollission());
+        this(Properties.of().randomTicks().sound(SoundType.WOOL).replaceable().noCollission());
     }
 
     @Override

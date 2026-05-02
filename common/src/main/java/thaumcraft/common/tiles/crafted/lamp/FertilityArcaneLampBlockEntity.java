@@ -45,13 +45,13 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.charge = CHARGE.readFromCompoundTag(compoundTag);
+        this.charge = CHARGE.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        CHARGE.writeToCompoundTag(compoundTag,this.charge);
+        CHARGE.writeIntToCompoundTag(compoundTag,this.charge);
     }
 
     public int getCharge() {

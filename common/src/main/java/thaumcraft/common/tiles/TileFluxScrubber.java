@@ -152,7 +152,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return 0;
    }
 
-   public Aspect getSuctionType(Direction face) {
+   public @NotNull Aspect getSuctionType(Direction face) {
       return null;
    }
 

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.blocks.abstracts.ILevitatorBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-//i want something like bubble in water(but for air this time.) when you place soul sand.
+//I want something like bubble in water(but for air this time.) when you place soul sand.
 public class ArcaneLevitatorBubbleBlock extends SuppressedWarningBlock {
     public ArcaneLevitatorBubbleBlock(Properties properties) {
         super(properties);
@@ -79,7 +79,8 @@ public class ArcaneLevitatorBubbleBlock extends SuppressedWarningBlock {
             return false;
         }
         if ((blockStateBelow.getBlock() instanceof ILevitatorBlock levitator
-                && blockPosBelow.getY() + levitator.getLevitatorUpliftRange(level,blockPosBelow,blockStateBelow) >= blockPos.getY())//range in bound
+                && blockPosBelow.getY() + levitator.getLevitatorUpliftRange(level,blockPosBelow,blockStateBelow) >= blockPos.getY()//range in bound
+        )
         ){
             return false;
         }

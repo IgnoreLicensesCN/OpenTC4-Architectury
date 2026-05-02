@@ -129,7 +129,7 @@ public class UnmodifiableAspectView<A extends Aspect> extends AspectList<A> {
     }
 
     @Override
-    public Integer put(A aspect, int amount) {
+    public int put(A aspect, int amount) {
         throw new RuntimeException("Unmodifiable!");
     }
 

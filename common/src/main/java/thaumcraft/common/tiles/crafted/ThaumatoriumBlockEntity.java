@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.Modifiable;
+import com.linearity.opentc4.annotations.Modifiable;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.crafting.CrucibleRecipe;
@@ -373,7 +374,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return aspectsOwning;
     }
     
@@ -473,18 +474,17 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
             for(Direction dir : Direction.values()) {
                 if (dir != getFacing() && dir != Direction.DOWN && (y != 0 || dir != Direction.UP)) {
                     var te = level.getBlockState(getBlockPos().above(y).relative(dir));
-                    if (te instanceof IEssentiaTransportOutBlockEntity outBE && outBE.canOutputTo(dir.getOpposite())) {
-                        if (outBE instanceof IEssentiaTransportInBlockEntity inBE
-                                && inBE.getSuctionAmount(dir.getOpposite()) > this.getSuctionAmount(dir)) {
-                            continue;
-                        }
-                        if (outBE.getEssentiaAmount(dir.getOpposite()) > 0
-                                && this.getSuctionAmount(null) >= outBE.getMinimumSuctionToDrainOut()
-                        ) {
-                            var iterator = aspectRequiredCache.getAspectTypes().iterator();
-                            var requirement = iterator.hasNext() ? iterator.next() : Aspects.EMPTY;
-
-                            int ess = outBE.takeEssentia(requirement, 1, dir.getOpposite());
+                    if (te instanceof IEssentiaTransportOutBlockEntity outBE
+                    ) {
+                        var iterator = aspectRequiredCache.getAspectTypes().iterator();
+                        var requirement = iterator.hasNext() ? iterator.next() : Aspects.EMPTY;
+                        if (!requirement.isEmpty()) {
+                            int ess = outBE.takeEssentiaWithSuction(
+                                    this.getSuctionAmount(dir),
+                                    requirement,
+                                    1,
+                                    dir.getOpposite()
+                            );
                             if (ess > 0) {
                                 this.addIntoContainer(requirement, ess);
                                 return;

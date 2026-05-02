@@ -37,6 +37,7 @@ import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
+import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.MnemonicMatrixBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumTopBlock;
@@ -147,7 +148,6 @@ public class ThaumcraftBlocks {
 
     public static final InfernalFurnaceBarBlock INFERNAL_FURNACE_BAR = Registry.SUPPLIER_INFERNAL_FURNACE_BAR.get();
     public static final InfernalFurnaceSideBlock INFERNAL_FURNACE_SIDE = Registry.SUPPLIER_INFERNAL_FURNACE_SIDE.get();
-    public static final InfernalFurnaceBottomBlock INFERNAL_FURNACE_BOTTOM = Registry.SUPPLIER_INFERNAL_FURNACE_BOTTOM.get();
     public static final InfernalFurnaceCornerBlock INFERNAL_FURNACE_CORNER = Registry.SUPPLIER_INFERNAL_FURNACE_CORNER.get();
     public static final InfernalFurnaceEdgeXAxisBlock INFERNAL_FURNACE_X_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_X_AXIS.get();
     public static final InfernalFurnaceEdgeYAxisBlock INFERNAL_FURNACE_Y_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Y_AXIS.get();
@@ -222,6 +222,7 @@ public class ThaumcraftBlocks {
     public static final ArcaneLevitatorBlock ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
     public static final EssentiaReservoirBlock ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
     public static final ManaBeanBlock MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
+    public static final EssentiaTubeBlock ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -530,10 +531,6 @@ public class ThaumcraftBlocks {
                 "infernal_furnace_side",
                 InfernalFurnaceSideBlock::new
         );
-        public static final RegistrySupplier<InfernalFurnaceBottomBlock> SUPPLIER_INFERNAL_FURNACE_BOTTOM = BLOCKS.register(
-                "infernal_furnace_bottom",
-                InfernalFurnaceBottomBlock::new
-        );
         public static final RegistrySupplier<InfernalFurnaceCornerBlock> SUPPLIER_INFERNAL_FURNACE_CORNER = BLOCKS.register(
                 "infernal_furnace_corner",
                 InfernalFurnaceCornerBlock::new
@@ -828,6 +825,12 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "mana_bean",
                         ManaBeanBlock::new
+                );
+
+        public static final RegistrySupplier<EssentiaTubeBlock> SUPPLIER_ESSENTIA_TUBE =
+                BLOCKS.register(
+                        "essentia_tube",
+                        EssentiaTubeBlock::new
                 );
 
 

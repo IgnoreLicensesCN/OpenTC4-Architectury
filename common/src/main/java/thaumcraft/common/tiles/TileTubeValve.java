@@ -109,7 +109,6 @@ public class TileTubeValve extends TileTube {
       if (this.allowFlow) {
          super.setSuction(aspect, amount);
       }
-
    }
 
    public boolean gettingPower() {

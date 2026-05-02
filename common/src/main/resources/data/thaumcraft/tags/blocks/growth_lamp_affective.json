@@ -2,5 +2,6 @@
   "_comment": "growth lamp will try to affect blocks with this tag(if there's a interface/randomTickTag/tickTag or ways whatever)",
   "replace": false,
   "values": [
+    "thaumcraft:mana_bean"
   ]
 }

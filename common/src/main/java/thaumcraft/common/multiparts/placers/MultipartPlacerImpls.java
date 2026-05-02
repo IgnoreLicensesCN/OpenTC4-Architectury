@@ -57,7 +57,7 @@ public class MultipartPlacerImpls {
             });
         }
         @Contract(pure = true)
-        public static @NotNull IBlockPlacer getSidePlacerWithState(int stateValue) {
+        public static @NotNull IBlockPlacer  getSidePlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
                 BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.defaultBlockState().setValue(
                         SIDE_TYPE, stateValue);
@@ -65,11 +65,11 @@ public class MultipartPlacerImpls {
                 level.setBlockAndUpdate(pos, state);
             });
         }
-        public static final IBlockPlacer BOTTOM_PLACER = ((level, pos, multipartMatchInfo) -> {
-            BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_BOTTOM.defaultBlockState();
-            state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
-            level.setBlockAndUpdate(pos, state);
-        });
+//        public static final IBlockPlacer BOTTOM_PLACER = ((level, pos, multipartMatchInfo) -> {
+//            BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_BOTTOM.defaultBlockState();
+//            state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
+//            level.setBlockAndUpdate(pos, state);
+//        });
         public static final IBlockPlacer LAVA_PLACER = ((level, pos, multipartMatchInfo) -> {
             BlockState state = ThaumcraftBlocks.INFERNAL_FURNACE_LAVA.defaultBlockState();
             state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
@@ -85,7 +85,7 @@ public class MultipartPlacerImpls {
         public static final IBlockPlacer[][][] PLACER = new IBlockPlacer[][][]{
             {
                 {getCornerPlacerWithState(CORNER_0_0_0), getZAxisPlacerWithState(EDGE_TYPE_0_0_1), getCornerPlacerWithState(CORNER_0_0_2)},
-                {getXAxisPlacerWithState(EDGE_TYPE_1_0_0), BOTTOM_PLACER, getXAxisPlacerWithState(EDGE_TYPE_1_0_2),},
+                {getXAxisPlacerWithState(EDGE_TYPE_1_0_0), getSidePlacerWithState(SIDE_TYPE_1_0_1), getXAxisPlacerWithState(EDGE_TYPE_1_0_2),},
                 {getCornerPlacerWithState(CORNER_2_0_0), getZAxisPlacerWithState(EDGE_TYPE_2_0_1), getCornerPlacerWithState(CORNER_2_0_2)},
             },
             {

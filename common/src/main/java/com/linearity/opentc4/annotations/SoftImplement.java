@@ -1,4 +1,4 @@
-package com.linearity.opentc4;//package vazkii.botania.common.annotations;//yes i stole code
+package com.linearity.opentc4.annotations;//package vazkii.botania.common.annotations;//yes i stole code
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

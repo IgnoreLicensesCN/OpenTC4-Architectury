@@ -270,7 +270,6 @@ public enum ConfigurationHandler {
         return smallerJars;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isMoreRandomizedLoot() {
         return moreRandomizedLoot;
     }

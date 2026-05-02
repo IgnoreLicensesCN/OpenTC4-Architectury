@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks.crafted.jars.essentia;
 
 import com.linearity.opentc4.utils.LogicalSide;
-import com.linearity.opentc4.utils.RecommendedLogicalSide;
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;

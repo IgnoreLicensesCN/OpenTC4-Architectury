@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -96,7 +97,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         ASPECT_CURRENT.writeToCompoundTag(compoundTag, aspectCurrent);
-        ASPECT_AMOUNT.writeToCompoundTag(compoundTag, aspectAmountCurrent);
+        ASPECT_AMOUNT.writeIntToCompoundTag(compoundTag, aspectAmountCurrent);
         ASPECT_FILTER.writeToCompoundTag(compoundTag, aspectFilter);
     }
 
@@ -113,8 +114,8 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     protected boolean aspectMatchesFilter(Aspect aspect) {
-        if (aspect == Aspects.EMPTY) return false;
-        if (aspectFilter == Aspects.EMPTY) return true;
+        if (aspect.isEmpty()) return false;
+        if (aspectFilter.isEmpty()) return true;
         return aspect == aspectFilter;
     }
 
@@ -207,7 +208,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return aspOwningCurrent;
     }
 

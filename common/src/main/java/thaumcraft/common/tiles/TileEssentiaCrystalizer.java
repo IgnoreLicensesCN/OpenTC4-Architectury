@@ -160,7 +160,7 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return 0;
    }
 
-   public Aspect getSuctionType(Direction loc) {
+   public @NotNull Aspect getSuctionType(Direction loc) {
       return null;
    }
 

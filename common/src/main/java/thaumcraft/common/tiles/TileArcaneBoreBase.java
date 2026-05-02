@@ -79,7 +79,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
    public void setSuction(Aspect aspect, int amount) {
    }
 
-   public Aspect getSuctionType(Direction face) {
+   public @NotNull Aspect getSuctionType(Direction face) {
       return Aspects.ENTROPY;
    }
 

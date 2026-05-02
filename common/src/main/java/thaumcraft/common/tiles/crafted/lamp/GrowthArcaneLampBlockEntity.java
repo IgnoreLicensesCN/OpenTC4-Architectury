@@ -34,13 +34,13 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.charge = CHARGE.readFromCompoundTag(compoundTag);
+        this.charge = CHARGE.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        CHARGE.writeToCompoundTag(compoundTag,this.charge);
+        CHARGE.writeIntToCompoundTag(compoundTag,this.charge);
     }
 
     public int getCharge() {
@@ -92,11 +92,12 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
         var facing = getFacing();
         var facingOpposite = facing.getOpposite();
         if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
-            if (!outBE.canOutputTo(facingOpposite)) {return 0;}
-            if (outBE.getMinimumSuctionToDrainOut() > this.getSuctionAmount(facing)){
-                return 0;
-            }
-            return outBE.takeEssentia(Aspects.PLANT, getEssentiaDrawRate(), facingOpposite);
+            return outBE.takeEssentiaWithSuction(
+                    getSuctionAmount(facingOpposite),
+                    Aspects.PLANT,
+                    getEssentiaDrawRate(),
+                    facingOpposite
+            );
         }
         return 0;
 //        }

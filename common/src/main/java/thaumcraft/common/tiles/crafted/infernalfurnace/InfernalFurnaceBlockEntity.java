@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.crafted.infernalfurnace;
 
 import com.linearity.opentc4.VecTransformations;
 import net.minecraft.core.BlockPos;
@@ -297,14 +297,14 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         this.items.saveAllItems(compoundTag);
-        PROCESSED_TICKS_ACCESSOR.writeToCompoundTag(compoundTag, processedTick);
+        PROCESSED_TICKS_ACCESSOR.writeIntToCompoundTag(compoundTag, processedTick);
         PROCESSING_ITEM_STACK_ACCESSOR.writeToCompoundTag(compoundTag, processingStack);
     }
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         this.items.loadAllItems(compoundTag);
-        processedTick = PROCESSED_TICKS_ACCESSOR.readFromCompoundTag(compoundTag);
+        processedTick = PROCESSED_TICKS_ACCESSOR.readIntFromCompoundTag(compoundTag);
         processingStack = PROCESSING_ITEM_STACK_ACCESSOR.readFromCompoundTag(compoundTag);
     }
 

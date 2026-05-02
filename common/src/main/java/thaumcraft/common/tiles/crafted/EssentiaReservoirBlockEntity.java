@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -162,7 +163,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return aspOwningView;
     }
 
@@ -184,29 +185,21 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         if (level == null){return;}
         tickCount+=1;
         if (tickCount % 5 == 0 && !capacityFullForAddEssentia()) {
-            var facing = getFacing();
+            var facing = getConnectableDirection();
             var drainFromPos = getBlockPos().relative(facing);
             var drainFromBE = level.getBlockEntity(drainFromPos);
             if (drainFromBE instanceof IEssentiaTransportOutBlockEntity outBE){
-                var beOutToDir = getConnectableDirection();
-
-                int consideredInBESuction = Integer.MIN_VALUE;
-                boolean essentiaInBECondition = true;
-                if (outBE instanceof IEssentiaTransportInBlockEntity inBE){
-                    consideredInBESuction = inBE.getSuctionAmount(beOutToDir);
-                }
-                if (consideredInBESuction >= this.getSuctionAmount(beOutToDir)){
-                    essentiaInBECondition = false;
-                }
-
-                if (outBE.getEssentiaAmount(beOutToDir) > 0
-                        && essentiaInBECondition
-                        && this.getSuctionAmount(facing) >= outBE.getMinimumSuctionToDrainOut()
-                ) {
-                    var outAspect = outBE.getEssentiaType(beOutToDir);
-                    if (!outAspect.isEmpty()) {
-                        addEssentia(outAspect,outBE.takeEssentia(outAspect,1,beOutToDir),facing);
-                    }
+                var beOutToDir = facing.getOpposite();
+                var outAspect = outBE.getEssentiaType(beOutToDir);
+                if (!outAspect.isEmpty()) {
+                    addEssentia(
+                            outAspect,outBE.takeEssentiaWithSuction(
+                                    this.getSuctionAmount(facing),
+                                    outAspect,
+                                    1,
+                                    beOutToDir),
+                            facing
+                    );
                 }
             }
         }
@@ -227,31 +220,30 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         if (this.level == null){
             return false;
         }
+        return owningAspects.forEachWithBreak(
+                (aspect,amountBefore) -> {
+                    if (amountBefore >= minAmount) {
+                        int remaining = itemToFill.storeAspect(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
+                        setAspectAmount(aspect,remaining);
 
-        for (var entry : owningAspects.entrySet()) {
-            var aspect = entry.getKey();
-            int amountBefore = entry.getIntValue();
-            if (amountBefore >= minAmount) {
-                int remaining = itemToFill.storeAspect(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
-                setAspectAmount(aspect,remaining);
-
-                if (remaining != amountBefore) {
-                    markDirtyAndUpdateSelf();
-                    level.playSound(
-                            null,
-                            getBlockPos(),
-                            SoundEvents.PLAYER_SWIM,
-                            SoundSource.BLOCKS,
-                            .5F,
-                            1.F + (level.getRandom()
-                                    .nextFloat() - level.getRandom()
-                                    .nextFloat()) * 0.3F
-                    );
+                        if (remaining != amountBefore) {
+                            markDirtyAndUpdateSelf();
+                            level.playSound(
+                                    null,
+                                    getBlockPos(),
+                                    SoundEvents.PLAYER_SWIM,
+                                    SoundSource.BLOCKS,
+                                    .5F,
+                                    1.F + (level.getRandom()
+                                            .nextFloat() - level.getRandom()
+                                            .nextFloat()) * 0.3F
+                            );
+                        }
+                        return true;
+                    }
+                    return false;
                 }
-            }
-            return true;
-        }
-        return false;
+        );
     }
 
     @Override
@@ -346,22 +338,18 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
             var level = be.level;
             if (level == null) return;
 
-            // 假设 owningAspects 已经换成了 Object2IntLinkedOpenHashMap
             var aspectsMap = be.owningAspects;
             int totalSize = aspectsMap.size();
             if (totalSize == 0) return;
 
-            // 位运算计时器
             int tickCount = (int) (level.getGameTime() & Integer.MAX_VALUE);
             int intervalCount = tickCount >> 4; // 每 16 tick 换一次
             int remainingTicks = tickCount & 15; // 0-15 的周期
 
-            // 更新当前颜色 (渐变逻辑)
             if (ctx.displayAspect.isEmpty()) {
                 ctx.targetR = ctx.targetG = ctx.targetB = 1.0F;
                 ctx.stepR = ctx.stepG = ctx.stepB = 0.0F;
             } else {
-                // 每 tick 减去步长，向目标靠拢
                 ctx.currentR -= ctx.stepR;
                 ctx.currentG -= ctx.stepG;
                 ctx.currentB -= ctx.stepB;
@@ -371,29 +359,23 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
             if (remainingTicks == 0) {
                 int pickIndex = intervalCount % totalSize;
 
-                // 既然是 LinkedHashMap，我们可以利用 FastUtil 的遍历优化
-                var it = aspectsMap.entrySet().fastIterator();
-                int i = 0;
-                while (it.hasNext()) {
-                    var entry = it.next();
-                    if (i == pickIndex) {
-                        ctx.displayAspect = entry.getKey();
-                        int colorInt = ctx.displayAspect.color;
+                aspectsMap.acceptForIndex(pickIndex,
+                        (aspect,_ignoredAmount) -> {
+                            ctx.displayAspect = aspect;
+                            int colorInt = ctx.displayAspect.color;
 
-                        // 解码颜色
-                        ctx.targetR = ((colorInt >> 16) & 0xFF) / 255F;
-                        ctx.targetG = ((colorInt >> 8) & 0xFF) / 255F;
-                        ctx.targetB = (colorInt & 0xFF) / 255F;
+                            // 解码颜色
+                            ctx.targetR = ((colorInt >> 16) & 0xFF) / 255F;
+                            ctx.targetG = ((colorInt >> 8) & 0xFF) / 255F;
+                            ctx.targetB = (colorInt & 0xFF) / 255F;
 
-                        // 计算步长：(当前值 - 目标值) / 周期长度
-                        // 假设你想在 20 tick 内完成过渡
-                        ctx.stepR = (ctx.currentR - ctx.targetR) / 16F;
-                        ctx.stepG = (ctx.currentG - ctx.targetG) / 16F;
-                        ctx.stepB = (ctx.currentB - ctx.targetB) / 16F;
-                        break;
-                    }
-                    i++;
-                }
+                            // 计算步长：(当前值 - 目标值) / 周期长度
+                            // 假设你想在 20 tick 内完成过渡
+                            ctx.stepR = (ctx.currentR - ctx.targetR) / 16F;
+                            ctx.stepG = (ctx.currentG - ctx.targetG) / 16F;
+                            ctx.stepB = (ctx.currentB - ctx.targetB) / 16F;
+                        }
+                );
             }
         }
     }

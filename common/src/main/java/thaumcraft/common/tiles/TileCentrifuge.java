@@ -133,7 +133,7 @@ public class TileCentrifuge extends TileThaumcraft implements IAspectContainerBl
       return 0;
    }
 
-   public Aspect getSuctionType(Direction face) {
+   public @NotNull Aspect getSuctionType(Direction face) {
       return null;
    }
 

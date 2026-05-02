@@ -18,7 +18,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
         super(aspects);
     }
     @Override
-    public Integer put(Asp aspect, int amount) {
+    public int put(Asp aspect, int amount) {
         throw new RuntimeException("Unmodifiable!");
     }
 

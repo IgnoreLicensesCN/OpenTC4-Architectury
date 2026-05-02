@@ -281,4 +281,11 @@ public class Consts {
         public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
 
+    public static class EssentiaTubeBlockEntityTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+        public static final ByteTagAccessor OPEN_SIDES = new ByteTagAccessor("open_sides");
+        public static final AspectAccessor SUCTION_TYPE = new AspectAccessor("suction_type");
+        public static final IntTagAccessor SUCTION_AMOUNT = new IntTagAccessor("suction_amount");
+    }
+
 }

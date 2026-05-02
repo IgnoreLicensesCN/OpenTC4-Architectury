@@ -89,7 +89,6 @@ public class ArcaneBellowBlock
         return 20;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean attachedToBlock(Level level,BlockPos attachmentPos,BlockState attachmentState,BlockPos toAttachPos){
         if (level.hasNeighborSignal(attachmentPos)){
             return false;

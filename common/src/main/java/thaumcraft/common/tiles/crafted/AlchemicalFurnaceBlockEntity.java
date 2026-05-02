@@ -70,10 +70,10 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         super.writeCustomNBT(compoundTag);
         ContainerHelper.saveAllItems(compoundTag, inventory);
         ASPECTS_OWNING.writeToCompoundTag(compoundTag,aspects);
-        COOKED_TIME.writeToCompoundTag(compoundTag,furnaceCookTime);
-        REQUIRED_COOK_TIME.writeToCompoundTag(compoundTag,furnaceRequiredCookTime);
-        FUEL_REMAINING_TIME.writeToCompoundTag(compoundTag,furnaceFuelRemainingBurnTime);
-        FUEL_TOTAL_TIME.writeToCompoundTag(compoundTag,furnaceFuelBurnTotalTime);
+        COOKED_TIME.writeIntToCompoundTag(compoundTag,furnaceCookTime);
+        REQUIRED_COOK_TIME.writeIntToCompoundTag(compoundTag,furnaceRequiredCookTime);
+        FUEL_REMAINING_TIME.writeIntToCompoundTag(compoundTag,furnaceFuelRemainingBurnTime);
+        FUEL_TOTAL_TIME.writeIntToCompoundTag(compoundTag,furnaceFuelBurnTotalTime);
     }
 
     @Override
@@ -81,10 +81,10 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         super.readCustomNBT(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, inventory);
         aspects = ASPECTS_OWNING.readFromCompoundTag(compoundTag);
-        furnaceCookTime = COOKED_TIME.readFromCompoundTag(compoundTag);
-        furnaceRequiredCookTime = REQUIRED_COOK_TIME.readFromCompoundTag(compoundTag);
-        furnaceFuelRemainingBurnTime = FUEL_REMAINING_TIME.readFromCompoundTag(compoundTag);
-        furnaceFuelBurnTotalTime = FUEL_TOTAL_TIME.readFromCompoundTag(compoundTag);
+        furnaceCookTime = COOKED_TIME.readIntFromCompoundTag(compoundTag);
+        furnaceRequiredCookTime = REQUIRED_COOK_TIME.readIntFromCompoundTag(compoundTag);
+        furnaceFuelRemainingBurnTime = FUEL_REMAINING_TIME.readIntFromCompoundTag(compoundTag);
+        furnaceFuelBurnTotalTime = FUEL_TOTAL_TIME.readIntFromCompoundTag(compoundTag);
     }
 
     public void serverTick() {

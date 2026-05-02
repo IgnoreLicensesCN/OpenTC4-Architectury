@@ -1,5 +1,6 @@
 package thaumcraft.api.aspects;
 
+import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
@@ -11,15 +12,19 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.IntBinaryOperator;
+import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
 //TODO: Check for Object2IntMap change
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
+//TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public class AspectList<Asp extends Aspect> implements Serializable {
 
 	private int visSize;//
 	protected final Object2IntLinkedOpenHashMap<Asp> aspects;//aspects associated with this object
+
 	private final Object2IntMap<Asp> aspectView;
+	@Deprecated(forRemoval = true)
 	public Object2IntMap<Asp> getAspectView(){
 		return aspectView;
 	}
@@ -79,7 +84,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public int getOrDefault(Asp aspect, int defaultValue) {
 		return aspects.getOrDefault(aspect,defaultValue);
 	}
-	public Integer put(Asp aspect, int amount) {
+	public int put(Asp aspect, int amount) {
 		return aspects.put(aspect,amount);
 	}
     public AspectList<Asp> copy() {
@@ -89,6 +94,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		return out;
 	}
 
+	@Deprecated(forRemoval = true,since = "itself may change into Iterable")
 	public Object2IntSortedMap.FastSortedEntrySet<Asp> entrySet(){
 		return aspects.object2IntEntrySet();
 	}
@@ -342,13 +348,44 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		return this;
 	}
 
-	public void forEach(java.util.function.ObjIntConsumer<Asp> action) {
+	public void forEach(ObjIntConsumer<Asp> action) {
 		var iterator = aspects.object2IntEntrySet().fastIterator();
 		while (iterator.hasNext()) {
 			var entry = iterator.next();
 			action.accept(entry.getKey(), entry.getIntValue());
 		}
 	}
+	//true if action returns true(and will break loop)
+	public boolean forEachWithBreak(ObjInt2BooleanFunction<Asp> action) {
+		var iterator = aspects.object2IntEntrySet().fastIterator();
+		while (iterator.hasNext()) {
+			var entry = iterator.next();
+			if (action.accept(entry.getKey(), entry.getIntValue())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void acceptForIndex(int index,ObjIntConsumer<Asp> action){
+		if (aspects.size()<=index){
+			throw new IndexOutOfBoundsException(
+					"Index out of bound!Expected smaller than " + aspects.size() + ", got " + index
+			);
+		}
+		var iterator = aspects.object2IntEntrySet().fastIterator();
+		int indexCurrent = 0;
+		while (iterator.hasNext()) {
+			var entry = iterator.next();
+			if (indexCurrent==index){
+				action.accept(entry.getKey(), entry.getIntValue());
+				return;
+			}
+			indexCurrent += 1;
+		}
+
+	}
+
 
 	public void putAllAspects(AspectList<Asp> aspects) {
 		int visSizeChange = 0;
@@ -443,6 +480,5 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		if (aspects.isEmpty()) return (Asp) Aspects.EMPTY;
 		return aspects.firstKey();
 	}
-
 
 }

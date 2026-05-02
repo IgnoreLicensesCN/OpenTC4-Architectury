@@ -37,16 +37,18 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     private @NotNull Aspect aspectCurrent = Aspects.EMPTY;
     private @NotNull Aspect aspectFilter = Aspects.EMPTY;
     private int aspectAmountCurrent = 0;
-    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectCurrent,() -> this.aspectAmountCurrent
-    );
+    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent =
+            new UnmodifiableSingleAspectListFromSupplier<>(
+                    () -> this.aspectCurrent,
+                    () -> this.aspectAmountCurrent
+            );
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         ASPECT_CURRENT.writeToCompoundTag(compoundTag, aspectCurrent);
         ASPECT_FILTER.writeToCompoundTag(compoundTag, aspectFilter);
-        ASPECT_AMOUNT.writeToCompoundTag(compoundTag, aspectAmountCurrent);
+        ASPECT_AMOUNT.writeIntToCompoundTag(compoundTag, aspectAmountCurrent);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         super.readCustomNBT(compoundTag);
         this.aspectCurrent = ASPECT_CURRENT.readFromCompoundTag(compoundTag);
         this.aspectFilter = ASPECT_FILTER.readFromCompoundTag(compoundTag);
-        this.aspectAmountCurrent = ASPECT_AMOUNT.readFromCompoundTag(compoundTag);
+        this.aspectAmountCurrent = ASPECT_AMOUNT.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
@@ -242,7 +244,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getAspectsToDisplay() {
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
         return aspOwningCurrent;
     }
 }

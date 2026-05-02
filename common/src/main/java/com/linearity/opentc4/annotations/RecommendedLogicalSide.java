@@ -1,4 +1,6 @@
-package com.linearity.opentc4.utils;
+package com.linearity.opentc4.annotations;
+
+import com.linearity.opentc4.utils.LogicalSide;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -8,8 +8,11 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.*;
+import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
+import thaumcraft.common.tiles.crafted.pipes.EssentiaTubeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
@@ -56,6 +59,8 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<ThaumatoriumBlockEntity> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
     public static final BlockEntityType<EssentiaReservoirBlockEntity> ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
     public static final BlockEntityType<ManaBeanBlockEntity> MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
+    public static final BlockEntityType<InfernalFurnaceNozzleBlockEntity> INFERNAL_FURNACE_NOZZLE = Registry.SUPPLIER_INFERNAL_FURNACE_NOZZLE.get();
+    public static final BlockEntityType<EssentiaTubeBlockEntity> ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -312,6 +317,22 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 ManaBeanBlockEntity::new,
                                 ThaumcraftBlocks.MANA_BEAN
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<InfernalFurnaceNozzleBlockEntity>> SUPPLIER_INFERNAL_FURNACE_NOZZLE =
+                BLOCK_ENTITIES.register(
+                        "infernal_furnace_nozzle",
+                        () -> BlockEntityType.Builder.of(
+                                InfernalFurnaceNozzleBlockEntity::new,
+                                ThaumcraftBlocks.INFERNAL_FURNACE_SIDE
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaTubeBlockEntity>> SUPPLIER_ESSENTIA_TUBE =
+                BLOCK_ENTITIES.register(
+                        "essentia_tube",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaTubeBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_TUBE
                         ).build(null)
                 );
 
