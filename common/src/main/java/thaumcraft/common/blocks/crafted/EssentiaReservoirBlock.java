@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
@@ -31,7 +31,7 @@ import thaumcraft.common.tiles.crafted.EssentiaReservoirBlockEntity;
 //TODO:Smaller bound
 public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
         IAspectContainerItemFillerBlock<Aspect>,
-        IWandInteractableBlock,
+        IWandInteractableBlockOrBlockEntity,
         EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public EssentiaReservoirBlock(Properties properties) {

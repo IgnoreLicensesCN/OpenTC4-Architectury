@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
@@ -38,7 +38,7 @@ public class CrucibleBlock
         extends SuppressedWarningBlock
         implements
         EntityBlock,
-        IWandInteractableBlock
+        IWandInteractableBlockOrBlockEntity
 {
     public CrucibleBlock(Properties properties) {
         super(properties);

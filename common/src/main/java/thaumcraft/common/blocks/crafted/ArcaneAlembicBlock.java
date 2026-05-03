@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
@@ -36,7 +36,7 @@ import thaumcraft.common.tiles.crafted.ArcaneAlembicBlockEntity;
 
 public class ArcaneAlembicBlock extends SuppressedWarningBlock
         implements EntityBlock,
-        IWandInteractableBlock,
+        IWandInteractableBlockOrBlockEntity,
         IAspectLabelAttachableBlock,
         IAspectContainerItemFillerBlock<Aspect>
 {

@@ -23,13 +23,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 
-public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlock, EntityBlock {
+public class WardedGlassBlock extends GlassBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
     public WardedGlassBlock(Properties properties) {
         super(properties);
     }

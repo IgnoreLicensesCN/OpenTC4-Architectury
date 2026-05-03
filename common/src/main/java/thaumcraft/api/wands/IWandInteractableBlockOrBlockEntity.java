@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 //put on a Block or BlockEntity.
-public interface IWandInteractableBlock {
+public interface IWandInteractableBlockOrBlockEntity {
 
     //if InteractionResult.CONSUME,hold right click will lead to loooooong use(call #interact below every tick).
     @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext);

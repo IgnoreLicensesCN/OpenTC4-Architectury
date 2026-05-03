@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -28,7 +28,7 @@ import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
 
-public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlock, EntityBlock {
+public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
     public VisNetChargeRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(

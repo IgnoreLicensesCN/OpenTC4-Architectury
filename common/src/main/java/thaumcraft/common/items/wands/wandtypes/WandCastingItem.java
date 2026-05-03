@@ -259,14 +259,14 @@ public class WandCastingItem extends Item
             var onBlockState = player.level()
                     .getBlockState(useOnContext.getClickedPos());
             InteractionResult result = InteractionResult.PASS;
-            if (onBlockState.getBlock() instanceof IWandInteractableBlock interactableBlock) {
+            if (onBlockState.getBlock() instanceof IWandInteractableBlockOrBlockEntity interactableBlock) {
                 if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
             }
             if (player.level()
-                    .getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlock interactableBlock) {
+                    .getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlockOrBlockEntity interactableBlock) {
                 if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
@@ -284,11 +284,11 @@ public class WandCastingItem extends Item
             var blockState = level.getBlockState(usingBlockPos);
             var blockEntity = level.getBlockEntity(usingBlockPos);
             var interacting = false;
-            if (blockState.getBlock() instanceof IWandInteractableBlock wandInteractableBlock) {
+            if (blockState.getBlock() instanceof IWandInteractableBlockOrBlockEntity wandInteractableBlock) {
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
                 interacting = true;
             }
-            if (blockEntity instanceof IWandInteractableBlock wandInteractableBlock) {
+            if (blockEntity instanceof IWandInteractableBlockOrBlockEntity wandInteractableBlock) {
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
                 interacting = true;
             }

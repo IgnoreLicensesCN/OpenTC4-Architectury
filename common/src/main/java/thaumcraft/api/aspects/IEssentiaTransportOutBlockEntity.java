@@ -44,7 +44,7 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      * @return essentia contains
      */
     @NotNull("null -> empty")
-    Aspect getEssentiaType(Direction face);
+    Aspect getEssentiaType(@NotNull Direction face);
     /**
      * @param face self face
      * @return How much essentia this block contains

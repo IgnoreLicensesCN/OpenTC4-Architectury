@@ -185,7 +185,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public @NotNull Aspect getEssentiaType(Direction face) {
+    public @NotNull Aspect getEssentiaType(@NotNull Direction face) {
         if (!isConnectable(face)){
             return Aspects.EMPTY;
         }

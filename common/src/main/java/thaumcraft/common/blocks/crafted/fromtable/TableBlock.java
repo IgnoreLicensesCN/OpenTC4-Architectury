@@ -26,14 +26,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
 import thaumcraft.api.wands.IArcaneCraftingWand;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_AXIS;
 
-public class TableBlock extends SuppressedWarningBlock implements IWandInteractableBlock {
+public class TableBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity {
     //TODO:texture png(from table.png)
     public static final VoxelShape X_AXIS_SHAPE = Shapes.or(
             Block.box(0, 12, 0, 16, 16, 16),
@@ -123,7 +123,7 @@ public class TableBlock extends SuppressedWarningBlock implements IWandInteracta
 
     @Override
     public void interactOnWandInteractable(Level level, LivingEntity livingEntity, ItemStack usingWand, int useRemainingCount) {
-        IWandInteractableBlock.super.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
+        IWandInteractableBlockOrBlockEntity.super.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);
     }
 
     @Override

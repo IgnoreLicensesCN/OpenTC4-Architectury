@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.crafted.jars.JarBlock;
 import thaumcraft.common.items.ThaumcraftItems;
@@ -22,7 +22,7 @@ import thaumcraft.common.tiles.node.NodeBlockEntity;
 
 public class NodeJarBlock extends JarBlock implements
         EntityBlock,
-        IWandInteractableBlock {
+        IWandInteractableBlockOrBlockEntity {
     public NodeJarBlock(Properties properties) {
         super(properties);
     }

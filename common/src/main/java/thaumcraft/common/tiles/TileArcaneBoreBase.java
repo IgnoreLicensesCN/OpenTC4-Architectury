@@ -95,7 +95,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return 0;
    }
 
-   public @NotNull Aspect getEssentiaType(Direction face) {
+   public @NotNull Aspect getEssentiaType(@NotNull Direction face) {
       return null;
    }
 

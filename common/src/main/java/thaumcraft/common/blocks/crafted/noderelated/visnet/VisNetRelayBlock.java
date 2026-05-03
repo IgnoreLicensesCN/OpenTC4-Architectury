@@ -24,14 +24,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
-public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlock, EntityBlock {
+public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
     public VisNetRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(

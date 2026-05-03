@@ -29,7 +29,7 @@ import thaumcraft.api.nodes.*;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.api.wands.ICentiVisContainer;
 import thaumcraft.api.wands.IWandComponentsOwner;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
@@ -49,7 +49,7 @@ import static thaumcraft.common.researches.ThaumcraftResearches.*;
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
         INodeBlockEntity
-        , IWandInteractableBlock {
+        , IWandInteractableBlockOrBlockEntity {
     long lastActiveMillis = 0L;
     protected AspectList<Aspect> aspects = new AspectList<>();
     protected AspectList<Aspect> aspectsBase = new AspectList<>();

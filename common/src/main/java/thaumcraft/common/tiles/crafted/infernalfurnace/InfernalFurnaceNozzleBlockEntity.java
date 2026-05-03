@@ -29,7 +29,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     public void serverTick(){
         if (this.level == null) return;
         drawDelay += 1;
-        if ((drawDelay & 4) == 4){
+        if ((drawDelay & 3) == 0){
             var core = getCore();
             if (core != null){
                 if (core.speedyTime < 60){

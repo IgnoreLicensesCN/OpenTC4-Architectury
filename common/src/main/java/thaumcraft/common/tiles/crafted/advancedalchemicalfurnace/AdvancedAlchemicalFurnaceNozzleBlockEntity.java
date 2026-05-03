@@ -116,7 +116,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public @NotNull("null -> empty") Aspect getEssentiaType(Direction face) {
+    public @NotNull("null -> empty") Aspect getEssentiaType(@NotNull Direction face) {
         if (canOutputTo(face)) {
             var base = getBaseBE();
             if (base != null) {

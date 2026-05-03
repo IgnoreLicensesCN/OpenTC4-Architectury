@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.pipes;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -43,4 +44,14 @@ public class EssentiaTubeBlock extends AbstractEssentiaTubeBlock
         });
     }
 
+    @Override
+    public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i,@RGBColor int color) {
+        if (level.isClientSide()){
+            if (level.getBlockEntity(blockPos) instanceof EssentiaTubeBlockEntity tube){
+                EssentiaTubeBlockEntity.ClientTickContext.tubeVenting(tube,color);
+
+            }
+        }
+        return super.triggerEvent(blockState, level, blockPos, i, color);
+    }
 }

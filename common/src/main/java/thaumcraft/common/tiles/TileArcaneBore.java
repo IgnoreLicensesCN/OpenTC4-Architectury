@@ -37,7 +37,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.ConfigBlocks;
@@ -62,7 +62,7 @@ import java.util.Map;
 
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
-public class TileArcaneBore extends TileThaumcraft implements Container, IWandInteractableBlock, TickingBlockEntity {
+public class TileArcaneBore extends TileThaumcraft implements Container, IWandInteractableBlockOrBlockEntity, TickingBlockEntity {
     public int spiral = 0;
     public float currentRadius = 0.0F;
     public int maxRadius = 2;

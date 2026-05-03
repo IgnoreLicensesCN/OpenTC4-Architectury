@@ -25,11 +25,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlock;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
-public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlock,EntityBlock {
+public class ArcaneDoorBlock extends DoorBlock implements IWandInteractableBlockOrBlockEntity,EntityBlock {
     public ArcaneDoorBlock(Properties properties, BlockSetType blockSetType) {
         super(properties, blockSetType);
     }
