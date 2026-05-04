@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
@@ -29,7 +30,8 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportInBlockEntity,
         IEssentiaTransportOutBlockEntity,
-        IWandInteractableBlockOrBlockEntity {
+        IWandInteractableBlockOrBlockEntity,
+        IValueContainerBasedComparatorSignalProviderBlockEntity {
     private @NotNull("is and should be empty if there's no aspect") Aspect owningAspect = Aspect.EMPTY;
     private byte openSidesMask = ((1<<6) - 1);
     private @NotNull Aspect suctionType = Aspect.EMPTY;
@@ -163,9 +165,34 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    @Override
+    public int currentComparatorSignalValue() {
+        return owningAspect.isEmpty()?0:1;
+    }
+
+    @Override
+    public int comparatorSignalCapacity() {
+        return 1;
+    }
+
+    @Override
+    public int getComparatorSignal() {
+        return owningAspect.isEmpty()?0:15;
+    }
+
     public static class ClientTickContext{
         private int ventingTicks = 0;
         private @RGBColor int ventColor = Aspects.ORDER.color;
+        private final double fx;
+        private final double fy;
+        private final double fz;
+        {
+            int hash = System.identityHashCode(this);
+
+            fx = ((hash & 0x3F) - 32)*(0.0078125);
+            fy = (((hash >> 6) & 0x3F) - 32)*(0.0078125);
+            fz = (((hash >> 12) & 0x3F) - 32)*(0.0078125);//i just want faster if there's full of venting pipe
+        }
         private static final Map<EssentiaTubeBlockEntity,ClientTickContext> contexts = new MapMaker().weakKeys().makeMap();
         public static void tubeVenting(EssentiaTubeBlockEntity be,@RGBColor int color){
             var ctx = contexts.computeIfAbsent(be,(_ignored) -> new ClientTickContext());
@@ -188,7 +215,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
             if (ctx.ventingTicks > 0){
                 ctx.ventingTicks -= 1;
                 var pos = be.getBlockPos();
-//                i call this part "random rotation".but since we got here why not generate a random coordinate?
+//                i call this part "random rotation".but since we got here(whatever this part is random) why not generate a random coordinate?
 //                Random r = new Random(this.hashCode() * 4L);
 //                float rp = r.nextFloat() * 360.0F;
 //                float ry = r.nextFloat() * 360.0F;
@@ -197,19 +224,14 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
 //                double fz = MathHelper.cos(ry / 180.0F * (float)Math.PI)
 //                        * MathHelper.cos(rp / 180.0F * (float)Math.PI) / 5.0;
 //                double fy = -MathHelper.sin(rp / 180.0F * (float)Math.PI) / 5.0;
-                int hash = (pos.hashCode() ^ (int)level.getGameTime());
-
-                double fx = ((hash & 0x3F) - 32)/128.;
-                double fy = (((hash >> 6) & 0x3F) - 32)/128.;
-                double fz = (((hash >> 12) & 0x3F) - 32)/128.;//i just want faster if there's full of venting pipe
                 ClientFXUtils.drawVentParticles(
                         level,
                         pos.getX() + 0.5,
                         pos.getY() + 0.5,
                         pos.getZ() + 0.5,
-                        fx,
-                        fy,
-                        fz,
+                        ctx.fx,
+                        ctx.fy,
+                        ctx.fz,
                         ctx.ventColor
                 );
             }
@@ -249,7 +271,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
             @Nullable("null -> any") Direction limitedFacingToAnotherBE
     ) {
         if (this.level == null){return;}
-        this.suction = 0;
+        this.suction = 0;//force suction 0,#setSuction may be cancelled since we have EssentiaTubeValve
         this.suctionType = Aspects.EMPTY;
 //        Direction loc = null;
         if (limitedFacingToAnotherBE == null) {

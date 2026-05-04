@@ -97,7 +97,7 @@ public class FXVent extends ThaumcraftParticle {
                 )
                 .color(this.rCol,this.gCol,this.bCol, alpha)
                 .uv(var9, var11)
-                .uv2(LightTexture.FULL_BRIGHT)//TODO:Bright
+                .uv2(LightTexture.FULL_BRIGHT)//TODO:[maybe wont finished]Bright
                 .endVertex();
         consumer.vertex(
                         var13 - f1 * var12 + f4 * var12,

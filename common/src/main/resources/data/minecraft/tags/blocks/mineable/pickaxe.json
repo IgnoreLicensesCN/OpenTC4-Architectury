@@ -65,6 +65,8 @@
     "thaumcraft:thaumatorium_bottom",
     "thaumcraft:thaumatorium_top",
     "thaumcraft:mnemonic_matrix",
-    "thaumcraft:essentia_reservoir"
+    "thaumcraft:essentia_reservoir",
+    "thaumcraft:essentia_tube",
+    "thaumcraft:essentia_tube_valve"
   ]
 }

@@ -2,7 +2,6 @@ package thaumcraft.common.blocks.crafted.pipes;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;

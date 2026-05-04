@@ -38,6 +38,7 @@ import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeBlock;
+import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeValveBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.MnemonicMatrixBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumTopBlock;
@@ -223,6 +224,7 @@ public class ThaumcraftBlocks {
     public static final EssentiaReservoirBlock ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
     public static final ManaBeanBlock MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
     public static final EssentiaTubeBlock ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
+    public static final EssentiaTubeValveBlock ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -831,6 +833,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_tube",
                         EssentiaTubeBlock::new
+                );
+        public static final RegistrySupplier<EssentiaTubeValveBlock> SUPPLIER_ESSENTIA_TUBE_VALVE =
+                BLOCKS.register(
+                        "essentia_tube_valve",
+                        EssentiaTubeValveBlock::new
                 );
 
 

@@ -73,7 +73,8 @@ drop_self_block_names = [
     'mnemonic_matrix',
     'arcane_levitator',
     'essentia_reservoir',
-    'essentia_tube'
+    'essentia_tube',
+    'essentia_tube_valve'
 ]
 
 drop_b_for_a_names = [

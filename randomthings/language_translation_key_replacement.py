@@ -63,6 +63,7 @@ block_with_item_names = [
     ['tile.blockEssentiaReservoir.name','essentia_reservoir'],
     ["item.ItemManaBean.name", 'mana_bean'],
     ['tile.blockTube.0.name','essentia_tube'],
+    ['tile.blockTube.1.name','essentia_tube_valve'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
