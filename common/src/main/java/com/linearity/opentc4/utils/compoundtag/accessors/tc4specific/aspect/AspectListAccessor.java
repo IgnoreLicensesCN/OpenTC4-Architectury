@@ -30,7 +30,7 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
             var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
-        return new AspectList<>(result);
+        return AspectList.viewOf(result);
     }
 
     @Override

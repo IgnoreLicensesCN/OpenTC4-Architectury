@@ -40,8 +40,10 @@ public class EssentiaTubeValveBlockEntity extends EssentiaTubeBlockEntity {
     public Direction getFacing() {
         return getBlockState().getValue(EssentiaTubeValveBlock.FACING);
     }
-    public boolean isPowered() {
-        return getBlockState().getValue(EssentiaTubeValveBlock.POWERED);
+    public boolean shouldCutFlow() {
+        var state = getBlockState();
+        return state.getValue(EssentiaTubeValveBlock.POWERED)
+                || state.getValue(EssentiaTubeValveBlock.FORCE_CUT_FLOW);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class EssentiaTubeValveBlockEntity extends EssentiaTubeBlockEntity {
 
     @Override
     public void setSuction(Aspect aspect, int amount) {
-        if (this.level != null && isPowered()) {
+        if (this.level != null && shouldCutFlow()) {
             return;
         }
         super.setSuction(aspect, amount);

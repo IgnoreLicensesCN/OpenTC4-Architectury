@@ -3,6 +3,9 @@ package thaumcraft.common.blocks.crafted.pipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +16,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.crafted.pipes.EssentiaTubeValveBlockEntity;
@@ -33,6 +38,7 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(POWERED,false)
+                        .setValue(FORCE_CUT_FLOW,false)
                         .setValue(FACING, Direction.NORTH)
                         .setValue(AXIS,NEXT_AXIS_TABLE[Direction.NORTH.getAxis().ordinal()])
         );
@@ -41,7 +47,7 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING, AXIS, POWERED);
+        builder.add(FACING, AXIS, POWERED, FORCE_CUT_FLOW);
     }
 
     @Override
@@ -64,6 +70,7 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final BooleanProperty FORCE_CUT_FLOW = BooleanProperty.create("cut_flow");
 
     public static final Direction.Axis[][] AXIS_TRANSITION_TABLE = new Direction.Axis[Direction.Axis.values().length][Direction.values().length];
     public static final Direction.Axis[] NEXT_AXIS_TABLE = {Direction.Axis.Y, Direction.Axis.Z,Direction.Axis.X,};
@@ -105,5 +112,15 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
                 }
             }
         }
+    }
+
+    @Override
+    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide){
+            if (level.getBlockEntity(pos) instanceof EssentiaTubeValveBlockEntity valve){
+                valve.setBlockStateAndUpdate(state.setValue(FORCE_CUT_FLOW,!state.getValue(FORCE_CUT_FLOW)));
+            }
+        }
+        return super.use(state, level, pos, player, interactionHand, blockHitResult);
     }
 }
