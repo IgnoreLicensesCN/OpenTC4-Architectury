@@ -21,7 +21,7 @@ import static com.linearity.opentc4.Consts.ArcaneAlembicBlockEntityTagAccessors.
 public class ArcaneAlembicBlockEntity extends TileThaumcraft
         implements IAlembic,
         IEssentiaTransportOutBlockEntity,
-        IAspectFilterAccessible,
+        IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect>
 {
     public ArcaneAlembicBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {

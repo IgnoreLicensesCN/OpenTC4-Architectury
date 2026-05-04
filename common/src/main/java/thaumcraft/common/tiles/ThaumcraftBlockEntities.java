@@ -12,9 +12,7 @@ import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceBlockEntit
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
-import thaumcraft.common.tiles.crafted.pipes.EssentiaTubeBlockEntity;
-import thaumcraft.common.tiles.crafted.pipes.EssentiaTubeFilterBlockEntity;
-import thaumcraft.common.tiles.crafted.pipes.EssentiaTubeValveBlockEntity;
+import thaumcraft.common.tiles.crafted.pipes.*;
 import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
@@ -65,6 +63,8 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EssentiaTubeBlockEntity> ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
     public static final BlockEntityType<EssentiaTubeValveBlockEntity> ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
     public static final BlockEntityType<EssentiaTubeFilterBlockEntity> ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
+    public static final BlockEntityType<EssentiaTubeRestrictBlockEntity> ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
+    public static final BlockEntityType<EssentiaTubeOnewayBlockEntity> ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -353,6 +353,22 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EssentiaTubeFilterBlockEntity::new,
                                 ThaumcraftBlocks.ESSENTIA_TUBE_FILTER
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaTubeRestrictBlockEntity>> SUPPLIER_ESSENTIA_TUBE_RESTRICT =
+                BLOCK_ENTITIES.register(
+                        "essentia_tube_restrict",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaTubeRestrictBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_TUBE_RESTRICT
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaTubeOnewayBlockEntity>> SUPPLIER_ESSENTIA_TUBE_ONEWAY =
+                BLOCK_ENTITIES.register(
+                        "essentia_tube_oneway",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaTubeOnewayBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_TUBE_ONEWAY
                         ).build(null)
                 );
 

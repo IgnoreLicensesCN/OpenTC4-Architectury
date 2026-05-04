@@ -40,9 +40,9 @@ import java.util.List;
 //"tile.blockTube.0.name": "源质管道", --done
 //"tile.blockTube.1.name": "源质阀门", --done
 //"tile.blockTube.2.name": "奥法离心机", //wtf its tube?
-//"tile.blockTube.3.name": "过滤源质管道",
+//"tile.blockTube.3.name": "过滤源质管道", --done
 //"tile.blockTube.4.name": "源质缓存器",
-//"tile.blockTube.5.name": "限定源质管道",
+//"tile.blockTube.5.name": "限定源质管道", --done
 //"tile.blockTube.6.name": "定向源质管道",
 //"tile.blockTube.7.name": "源质结晶器",
 public class BlockTube /*extends BlockContainer*/ {
@@ -167,55 +167,55 @@ public class BlockTube /*extends BlockContainer*/ {
 
    }
 
-   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
-      int metadata = world.getBlockMetadata(i, j, k);
-      if (metadata != 0 && metadata != 1 && metadata != 3 && metadata != 4 && metadata != 5 && metadata != 6) {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      } else {
-         float minx = BlockRenderer.W6;
-         float maxx = BlockRenderer.W10;
-         float miny = BlockRenderer.W6;
-         float maxy = BlockRenderer.W10;
-         float minz = BlockRenderer.W6;
-         float maxz = BlockRenderer.W10;
-         Direction fd = null;
+//   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
+//      int metadata = world.getBlockMetadata(i, j, k);
+//      if (metadata != 0 && metadata != 1 && metadata != 3 && metadata != 4 && metadata != 5 && metadata != 6) {
+//         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      } else {
+//         float minx = BlockRenderer.W6;
+//         float maxx = BlockRenderer.W10;
+//         float miny = BlockRenderer.W6;
+//         float maxy = BlockRenderer.W10;
+//         float minz = BlockRenderer.W6;
+//         float maxz = BlockRenderer.W10;
+//         Direction fd = null;
+//
+//         for(int side = 0; side < 6; ++side) {
+//            fd = Direction.getOrientation(side);
+//            TileEntity te = ThaumcraftApiHelper.getConnectableTile(world, i, j, k, fd);
+//            if (te != null) {
+//               switch (side) {
+//                  case 0:
+//                     miny = 0.0F;
+//                     break;
+//                  case 1:
+//                     maxy = 1.0F;
+//                     break;
+//                  case 2:
+//                     minz = 0.0F;
+//                     break;
+//                  case 3:
+//                     maxz = 1.0F;
+//                     break;
+//                  case 4:
+//                     minx = 0.0F;
+//                     break;
+//                  case 5:
+//                     maxx = 1.0F;
+//               }
+//            }
+//         }
+//
+//         this.setBlockBounds(minx, miny, minz, maxx, maxy, maxz);
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      }
+//
+//   }
 
-         for(int side = 0; side < 6; ++side) {
-            fd = Direction.getOrientation(side);
-            TileEntity te = ThaumcraftApiHelper.getConnectableTile(world, i, j, k, fd);
-            if (te != null) {
-               switch (side) {
-                  case 0:
-                     miny = 0.0F;
-                     break;
-                  case 1:
-                     maxy = 1.0F;
-                     break;
-                  case 2:
-                     minz = 0.0F;
-                     break;
-                  case 3:
-                     maxz = 1.0F;
-                     break;
-                  case 4:
-                     minx = 0.0F;
-                     break;
-                  case 5:
-                     maxx = 1.0F;
-               }
-            }
-         }
-
-         this.setBlockBounds(minx, miny, minz, maxx, maxy, maxz);
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      }
-
-   }
-
-   public int damageDropped(int metadata) {
-      return metadata;
-   }
+//   public int damageDropped(int metadata) {
+//      return metadata;
+//   }
 
    public TileEntity createTileEntity(World world, int metadata) {
       if (metadata == 0) {
@@ -266,56 +266,56 @@ public class BlockTube /*extends BlockContainer*/ {
 //      super.breakBlock(world, x, y, z, par5, par6);
 //   }
 
-   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
-      int metadata = world.getBlockMetadata(x, y, z);
-      if (metadata == 1) {
-         if (player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof WandCastingItem || player.getHeldItem().getItem() instanceof ItemResonator || player.getHeldItem().getItem() == Item.getItemFromBlock(this))) {
-            return false;
-         }
+//   public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
+//      int metadata = world.getBlockMetadata(x, y, z);
+//      if (metadata == 1) {
+//         if (player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof WandCastingItem || player.getHeldItem().getItem() instanceof ItemResonator || player.getHeldItem().getItem() == Item.getItemFromBlock(this))) {
+//            return false;
+//         }
+//
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileTubeValve) {
+//            ((TileTubeValve)te).allowFlow = !((TileTubeValve)te).allowFlow;
+//            world.markBlockForUpdate(x, y, z);
+//            if (Platform.getEnvironment() != Env.CLIENT) {
+//               world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:squeek", 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+//            }
+//
+//            return true;
+//         }
+//      }
+//
+//      if (metadata == 3) {
+//         TileEntity te = world.getTileEntity(x, y, z);
+//         if (te instanceof TileTubeFilter && player.isSneaking() && ((TileTubeFilter) te).aspectFilter != null) {
+//            ((TileTubeFilter)te).aspectFilter = null;
+//            world.markBlockForUpdate(x, y, z);
+//            if ((Platform.getEnvironment() == Env.CLIENT)) {
+//               world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
+//            } else {
+//               Direction fd = Direction.getOrientation(side);
+//               world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F + (float)fd.offsetX / 3.0F, (float)y + 0.5F, (float)z + 0.5F + (float)fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
+//            }
+//
+//            return true;
+//         }
 
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileTubeValve) {
-            ((TileTubeValve)te).allowFlow = !((TileTubeValve)te).allowFlow;
-            world.markBlockForUpdate(x, y, z);
-            if (Platform.getEnvironment() != Env.CLIENT) {
-               world.playSoundEffect((double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, "thaumcraft:squeek", 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
-            }
+//         if (te instanceof TileTubeFilter && player.getHeldItem() != null && ((TileTubeFilter) te).aspectFilter == null && player.getHeldItem().getItem() == ConfigItems.itemResource && player.getHeldItem().getItemDamage() == 13) {
+//            if (((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) != null) {
+//               ((TileTubeFilter)te).aspectFilter = ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()).getAspects()[0];
+//               --player.getHeldItem().stackSize;
+//               world.markBlockForUpdate(x, y, z);
+//               if ((Platform.getEnvironment() == Env.CLIENT)) {
+//                  world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
+//               }
+//            }
+//
+//            return true;
+//         }
+//      }
 
-            return true;
-         }
-      }
-
-      if (metadata == 3) {
-         TileEntity te = world.getTileEntity(x, y, z);
-         if (te instanceof TileTubeFilter && player.isSneaking() && ((TileTubeFilter) te).aspectFilter != null) {
-            ((TileTubeFilter)te).aspectFilter = null;
-            world.markBlockForUpdate(x, y, z);
-            if ((Platform.getEnvironment() == Env.CLIENT)) {
-               world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
-            } else {
-               Direction fd = Direction.getOrientation(side);
-               world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F + (float)fd.offsetX / 3.0F, (float)y + 0.5F, (float)z + 0.5F + (float)fd.offsetZ / 3.0F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
-            }
-
-            return true;
-         }
-
-         if (te instanceof TileTubeFilter && player.getHeldItem() != null && ((TileTubeFilter) te).aspectFilter == null && player.getHeldItem().getItem() == ConfigItems.itemResource && player.getHeldItem().getItemDamage() == 13) {
-            if (((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()) != null) {
-               ((TileTubeFilter)te).aspectFilter = ((IEssentiaContainerItem) player.getHeldItem().getItem()).getAspects(player.getHeldItem()).getAspects()[0];
-               --player.getHeldItem().stackSize;
-               world.markBlockForUpdate(x, y, z);
-               if ((Platform.getEnvironment() == Env.CLIENT)) {
-                  world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "thaumcraft:page", 1.0F, 1.0F, false);
-               }
-            }
-
-            return true;
-         }
-      }
-
-      return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
-   }
+//      return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+//   }
 //   //you also go fk off
 //   @SideOnly(Side.CLIENT)
 //   @SubscribeEvent

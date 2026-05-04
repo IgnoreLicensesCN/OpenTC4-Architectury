@@ -37,9 +37,7 @@ import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
-import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeBlock;
-import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeFilterBlock;
-import thaumcraft.common.blocks.crafted.pipes.EssentiaTubeValveBlock;
+import thaumcraft.common.blocks.crafted.pipes.*;
 import thaumcraft.common.blocks.crafted.thaumatorium.MnemonicMatrixBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock;
 import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumTopBlock;
@@ -227,6 +225,8 @@ public class ThaumcraftBlocks {
     public static final EssentiaTubeBlock ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
     public static final EssentiaTubeValveBlock ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
     public static final EssentiaTubeFilterBlock ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
+    public static final EssentiaTubeRestrictBlock ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
+    public static final EssentiaTubeOnewayBlock ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -845,6 +845,16 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_tube_filter",
                         EssentiaTubeFilterBlock::new
+                );
+        public static final RegistrySupplier<EssentiaTubeRestrictBlock> SUPPLIER_ESSENTIA_TUBE_RESTRICT =
+                BLOCKS.register(
+                        "essentia_tube_restrict",
+                        EssentiaTubeRestrictBlock::new
+                );
+        public static final RegistrySupplier<EssentiaTubeOnewayBlock> SUPPLIER_ESSENTIA_TUBE_ONEWAY =
+                BLOCKS.register(
+                        "essentia_tube_oneway",
+                        EssentiaTubeOnewayBlock::new
                 );
 
 

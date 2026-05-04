@@ -68,6 +68,8 @@
     "thaumcraft:essentia_reservoir",
     "thaumcraft:essentia_tube",
     "thaumcraft:essentia_tube_valve",
-    "thaumcraft:essentia_tube_filter"
+    "thaumcraft:essentia_tube_filter",
+    "thaumcraft:essentia_tube_restrict",
+    "thaumcraft:essentia_tube_oneway"
   ]
 }

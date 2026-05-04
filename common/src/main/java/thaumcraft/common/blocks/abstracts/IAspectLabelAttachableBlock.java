@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IAspectFilterAccessible;
+import thaumcraft.api.aspects.IAspectFilterAccessibleBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 
@@ -21,7 +21,7 @@ public interface IAspectLabelAttachableBlock {
     //@return boolean--should consume label(just recommend to consume you can also not to do so)
     @RecommendedLogicalSide(LogicalSide.SERVER)
     default boolean attemptAttachAspectLabel(Level level, BlockPos pos, BlockState state, Aspect labelAspect){
-        if (level.getBlockEntity(pos) instanceof IAspectFilterAccessible aspectFilterAccessible) {
+        if (level.getBlockEntity(pos) instanceof IAspectFilterAccessibleBlockEntity aspectFilterAccessible) {
             return aspectFilterAccessible.setAspectFilter(labelAspect);
         }
         return false;
@@ -29,7 +29,7 @@ public interface IAspectLabelAttachableBlock {
     //@return removed existing label
     @RecommendedLogicalSide(LogicalSide.SERVER)
     default boolean attemptRemoveAspectLabel(Level level, BlockPos pos, BlockState state){
-        if (level.getBlockEntity(pos) instanceof IAspectFilterAccessible accessible && !accessible.getAspectFilter().isEmpty()) {
+        if (level.getBlockEntity(pos) instanceof IAspectFilterAccessibleBlockEntity accessible && !accessible.getAspectFilter().isEmpty()) {
             if (accessible.setAspectFilter(Aspects.EMPTY)) {
                 level.playSound(null, pos, ThaumcraftSounds.PAGE, SoundSource.BLOCKS, 1.0F, 1.1F);
                 var spawnEntityPos = pos.getCenter();

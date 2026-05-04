@@ -23,7 +23,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity,
-        IAspectFilterAccessible,
+        IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
         IRemoteDrainableAspectSourceBlockEntity<Aspect>{
     public EssentiaJarBlockEntity(BlockEntityType<? extends EssentiaJarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {

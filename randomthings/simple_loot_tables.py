@@ -75,7 +75,9 @@ drop_self_block_names = [
     'essentia_reservoir',
     'essentia_tube',
     'essentia_tube_valve',
-    'essentia_tube_filter'
+    'essentia_tube_filter',
+    'essentia_tube_restrict',
+    'essentia_tube_oneway'
 ]
 
 drop_b_for_a_names = [

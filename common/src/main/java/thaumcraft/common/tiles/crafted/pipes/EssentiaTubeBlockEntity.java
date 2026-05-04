@@ -74,13 +74,13 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         tickCount+=1;
         if (ventingTicksServerSide <= 0) {
             if ((tickCount & 1) == 0) {
-                this.calculateSuction(Aspects.EMPTY, false, null);
+                this.calculateSuction(getAspectFilter(), getOrderedFacing());
                 this.checkVenting();
             }
 
             if ((tickCount & 7) == 0 //slower now
                     && this.suction > 0) {
-                this.equalizeWithNeighbours(null);
+                this.equalizeWithNeighbours(getOrderedFacing());
                 //if anyone wants more frequently suction update for a factory based on dynamic suction
                 //i will tell them to get a mod called Thaumic Energistics for this version of TC4
             }
@@ -267,7 +267,6 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
 
     protected void calculateSuction(
             @NotNull("empty -> any") Aspect filter,
-            boolean restrict,
             @Nullable("null -> any") Direction limitedFacingToAnotherBE
     ) {
         if (this.level == null){return;}
@@ -276,16 +275,15 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
 //        Direction loc = null;
         if (limitedFacingToAnotherBE == null) {
             for (var direction : Direction.values()) {
-                calculateSuctionForFacing(filter,restrict,direction);
+                calculateSuctionForFacing(filter,direction);
             }
         }
         else if (this.isConnectable(limitedFacingToAnotherBE)) {
-            calculateSuctionForFacing(filter,restrict,limitedFacingToAnotherBE);
+            calculateSuctionForFacing(filter,limitedFacingToAnotherBE);
         }
     }
     protected void calculateSuctionForFacing(
             @NotNull("empty -> any") Aspect filter,
-            boolean restrict,
             Direction toAnotherBEDirection){
         if (this.level == null){return;}
         var facingFromAnotherToSelf = toAnotherBEDirection.getOpposite();
@@ -323,10 +321,13 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
                 if (st.isEmpty()) {
                     st = filter;
                 }
-
-                this.setSuction(st, restrict ? suck / 2 : suck - 1);
+                this.setSuctionForCalculating(st,suck);
             }
         }
+    }
+
+    public void setSuctionForCalculating(Aspect aspect,int suction){
+        this.setSuction(aspect,suction-1);
     }
 
     @Override
@@ -377,5 +378,13 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
     @Override
     public int getSuctionAmount(Direction face) {
         return suction;
+    }
+
+    public Aspect getAspectFilter() {
+        return Aspect.EMPTY;
+    }
+
+    public @Nullable Direction getOrderedFacing(){
+        return null;
     }
 }

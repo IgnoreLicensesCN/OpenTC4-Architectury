@@ -2,7 +2,7 @@ package thaumcraft.api.aspects;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface IAspectFilterAccessible {
+public interface IAspectFilterAccessibleBlockEntity {
 
     @NotNull Aspect getAspectFilter();
     //return if applied filter

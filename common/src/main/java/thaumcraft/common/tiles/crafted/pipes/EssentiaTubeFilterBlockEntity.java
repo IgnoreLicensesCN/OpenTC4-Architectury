@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -15,7 +14,7 @@ import static com.linearity.opentc4.Consts.EssentiaTubeFilterBlockEntityTagAcces
 
 public class EssentiaTubeFilterBlockEntity
         extends EssentiaTubeBlockEntity
-        implements IAspectFilterAccessible,
+        implements IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect> {
     private @NotNull("null -> empty") Aspect filter = Aspects.EMPTY;
     public EssentiaTubeFilterBlockEntity(BlockEntityType<? extends EssentiaTubeFilterBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -24,11 +23,6 @@ public class EssentiaTubeFilterBlockEntity
 
     public EssentiaTubeFilterBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ESSENTIA_TUBE_FILTER,blockPos, blockState);
-    }
-
-    @Override
-    protected void calculateSuction(@NotNull("empty -> any") Aspect filter, boolean restrict, @Nullable("null -> any") Direction limitedFacingToAnotherBE) {
-        super.calculateSuction(filter.isEmpty()?this.filter:filter, restrict, limitedFacingToAnotherBE);
     }
 
     @Override
