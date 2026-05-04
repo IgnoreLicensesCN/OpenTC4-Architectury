@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
 
+@Deprecated(forRemoval = true)
 public class ThaumcraftCraftingManager {
 
     @Deprecated(forRemoval = true)
@@ -157,13 +158,13 @@ public class ThaumcraftCraftingManager {
         return var13;
     }
 
-    //TODO:null -> empty
+    @Deprecated(forRemoval = true,since = "ItemBasicAspectGetter.getBasicAspectsServer")
     @Nullable
     public static AspectList<Aspect> getObjectTags(ItemStack itemstack) {
         return GetObjectTags.getObjectTags(itemstack);
     }
 
-    //TODO:Create API to get aspect
+    @Deprecated(forRemoval = true,since = "ItemBasicAspectGetter.getBasicAspectsServer")
     public static AspectList<Aspect> getObjectTagsOriginal(ItemStack itemstack) {
         Item item;
 //      int meta;

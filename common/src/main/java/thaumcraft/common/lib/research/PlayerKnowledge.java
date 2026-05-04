@@ -2,10 +2,7 @@ package thaumcraft.common.lib.research;
 
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CompoundAspect;
+import thaumcraft.api.aspects.*;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -49,7 +46,7 @@ public class PlayerKnowledge {
    //use Aspect#hasDiscoveredAspect
    @ApiStatus.Internal
    public boolean hasDiscoveredAspect(Player player, Aspect aspect) {
-      return this.getAspectsDiscovered(player).getAspectView().containsKey(aspect);
+      return this.getAspectsDiscovered(player).containsKey(aspect);
    }
 
    public boolean hasDiscoveredParentAspects(Player player, Aspect aspect) {
@@ -57,7 +54,7 @@ public class PlayerKnowledge {
          return false;
       }
       var components = compoundAspect.components;
-      var discovered = this.getAspectsDiscovered(player).getAspectView();
+      var discovered = this.getAspectsDiscovered(player);
       return discovered.containsKey(components.aspectA()) && discovered.containsKey(components.aspectB());
    }
 
@@ -66,29 +63,11 @@ public class PlayerKnowledge {
       if (known == null) {
          known = new AspectList<>();
       }
+      for (var asp: Aspects.getPrimalAspects()){
 
-      if (!known.getAspectView().containsKey(Aspects.AIR)) {
-         known.addAll(Aspects.AIR, 0);
-      }
-
-      if (!known.getAspectView().containsKey(Aspects.FIRE)) {
-         known.addAll(Aspects.FIRE, 0);
-      }
-
-      if (!known.getAspectView().containsKey(Aspects.EARTH)) {
-         known.addAll(Aspects.EARTH, 0);
-      }
-
-      if (!known.getAspectView().containsKey(Aspects.WATER)) {
-         known.addAll(Aspects.WATER, 0);
-      }
-
-      if (!known.getAspectView().containsKey(Aspects.ORDER)) {
-         known.addAll(Aspects.ORDER, 0);
-      }
-
-      if (!known.getAspectView().containsKey(Aspects.ENTROPY)) {
-         known.addAll(Aspects.ENTROPY, 0);
+         if (!known.containsKey(asp)) {
+            known.addAll(asp, 0);
+         }
       }
 
       this.aspectsDiscovered.put(player.getGameProfile().getName(), known);
@@ -100,7 +79,7 @@ public class PlayerKnowledge {
    @SuppressWarnings("UnusedReturnValue")
    public boolean addDiscoveredAspect(Player player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
-      if (!known.getAspectView().containsKey(aspect)) {
+      if (!known.containsKey(aspect)) {
          known.addAll(aspect, 0);
          this.aspectsDiscovered.put(player.getGameProfile().getName(), known);
          return true;

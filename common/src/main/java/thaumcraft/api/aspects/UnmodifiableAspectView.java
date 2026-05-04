@@ -1,5 +1,6 @@
 package thaumcraft.api.aspects;
 
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
 import net.minecraft.util.RandomSource;
@@ -16,6 +17,9 @@ public class UnmodifiableAspectView<A extends Aspect> extends AspectList<A> {
     private final AspectList<A> viewingList;
     public UnmodifiableAspectView(AspectList<A> viewingList) {
         this.viewingList = viewingList;
+    }
+    public UnmodifiableAspectView(Object2IntLinkedOpenHashMap<A> viewingMap) {
+        this.viewingList = new AspectList<>(viewingMap);
     }
 
     @Override
@@ -123,10 +127,6 @@ public class UnmodifiableAspectView<A extends Aspect> extends AspectList<A> {
         return this.viewingList.getOrDefault(aspect, defaultValue);
     }
 
-    @Override
-    public Object2IntMap<A> getAspectView() {
-        return this.viewingList.getAspectView();
-    }
 
     @Override
     public int put(A aspect, int amount) {

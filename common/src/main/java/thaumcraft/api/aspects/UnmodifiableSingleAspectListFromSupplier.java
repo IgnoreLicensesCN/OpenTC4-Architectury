@@ -11,9 +11,5 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect> extend
         this.view = new SingleSupplierPairMap<>(aspect,amount);
     }
 
-    @Override
-    public Map<Asp,Integer> getAspectView(){
-        return view;
-    }
 
 }

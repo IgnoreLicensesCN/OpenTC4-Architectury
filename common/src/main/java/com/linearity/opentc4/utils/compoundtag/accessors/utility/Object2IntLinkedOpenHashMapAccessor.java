@@ -42,7 +42,7 @@ public class Object2IntLinkedOpenHashMapAccessor<K> extends CompoundTagAccessor<
             var intValue = entry.getIntValue();
             var compound = new CompoundTag();
             keyAccessor.writeToCompoundTag(compound, key);
-            valueAccessor.writeToCompoundTag(compound, intValue);
+            valueAccessor.writeIntToCompoundTag(compound, intValue);
             listTag.add(compound);
         }
         listTagAccessorInternal.writeToCompoundTag(tag, listTag);
@@ -55,7 +55,7 @@ public class Object2IntLinkedOpenHashMapAccessor<K> extends CompoundTagAccessor<
             var intValue = entry.getIntValue();
             var compound = new CompoundTag();
             keyAccessor.writeToCompoundTag(compound, key);
-            valueAccessor.writeToCompoundTag(compound, intValue);
+            valueAccessor.writeIntToCompoundTag(compound, intValue);
             listTag.add(compound);
         }
         listTagAccessorInternal.writeToCompoundTag(tag, listTag);

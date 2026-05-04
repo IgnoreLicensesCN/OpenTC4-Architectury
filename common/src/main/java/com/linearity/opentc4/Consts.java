@@ -288,4 +288,8 @@ public class Consts {
         public static final IntTagAccessor SUCTION_AMOUNT = new IntTagAccessor("suction_amount");
     }
 
+    public static class EssentiaTubeFilterBlockEntityTagAccessors {
+        public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
+    }
+
 }

@@ -30,12 +30,15 @@ public interface IAspectLabelAttachableBlock {
     @RecommendedLogicalSide(LogicalSide.SERVER)
     default boolean attemptRemoveAspectLabel(Level level, BlockPos pos, BlockState state){
         if (level.getBlockEntity(pos) instanceof IAspectFilterAccessible accessible && !accessible.getAspectFilter().isEmpty()) {
-            accessible.setAspectFilter(Aspects.EMPTY);
-            level.playSound(null,pos, ThaumcraftSounds.PAGE, SoundSource.BLOCKS, 1.0F, 1.1F);
-            var spawnEntityPos = pos.getCenter();
-            level.addFreshEntity(new ItemEntity(level,spawnEntityPos.x,spawnEntityPos.y,spawnEntityPos.z,new ItemStack(
-                    ThaumcraftItems.JAR_LABEL)));
-            return true;
+            if (accessible.setAspectFilter(Aspects.EMPTY)) {
+                level.playSound(null, pos, ThaumcraftSounds.PAGE, SoundSource.BLOCKS, 1.0F, 1.1F);
+                var spawnEntityPos = pos.getCenter();
+                level.addFreshEntity(new ItemEntity(
+                        level, spawnEntityPos.x, spawnEntityPos.y, spawnEntityPos.z, new ItemStack(
+                        ThaumcraftItems.JAR_LABEL)
+                ));
+                return true;
+            }
         }
         return false;
     };

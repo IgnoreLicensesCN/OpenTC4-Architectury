@@ -99,13 +99,13 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
                     }
                 }else {
                     if (attemptRemoveAspectLabel(level, blockPos, blockState)){
-                        return InteractionResult.CONSUME;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     if (stackInHand.isEmpty()) {
                         alembic.clear();
                         level.playSound(player, blockPos, ThaumcraftSounds.ALEMBIC_KNOCK, SoundSource.BLOCKS, .2F, 1.F);
                         level.playSound(player, blockPos, SoundEvents.PLAYER_SWIM, SoundSource.BLOCKS, .5F, 1.F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.3F);
-                        return InteractionResult.CONSUME;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }

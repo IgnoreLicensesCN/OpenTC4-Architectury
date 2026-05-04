@@ -5,6 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectGetListeners;
 import thaumcraft.api.listeners.aspects.item.basic.additional.AddAdditionalBasicAspectContext;
@@ -28,14 +29,14 @@ public class ItemBasicAspectGetter {
             additionalListeners.registerListener(addListeners.listener);
         }
     }
-    private static final Map<Item,UnmodifiableAspectList<Aspect>> CACHE = new HashMap<>();
-    public static final Map<Item,UnmodifiableAspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
+    private static final Map<Item,AspectList<Aspect>> CACHE = new HashMap<>();
+    public static final Map<Item, AspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
     public static final AtomicBoolean REQUESTED_ASPECT_LIST = new AtomicBoolean(false);
     //expose to outer to get basic aspects
-    public static UnmodifiableAspectList<Aspect> getBasicAspects(@NotNull Item i,boolean isClientSide){
+    public static AspectList<Aspect> getBasicAspects(@NotNull Item i,boolean isClientSide){
         return isClientSide ? getBasicAspectsClient(i) : getBasicAspectsServer(i);
     }
-    public static UnmodifiableAspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
+    public static AspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
 
         if (CLIENT_CACHE.isEmpty() && !REQUESTED_ASPECT_LIST.get()){
             REQUESTED_ASPECT_LIST.set(true);
@@ -43,7 +44,7 @@ public class ItemBasicAspectGetter {
         }
         return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);
     }
-    public static UnmodifiableAspectList<Aspect> getBasicAspectsServer(@NotNull Item i) {
+    public static AspectList<Aspect> getBasicAspectsServer(@NotNull Item i) {
         return CACHE.computeIfAbsent(i,item -> {
             var getContext = new ItemBasicAspectGetContext(item);
             for (var listener: basicListeners.getListeners()) {

@@ -55,7 +55,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
         super(id);
         this.resultGenerator = resultGenerator;
         this.research = research;
-        this.aspects = new UnmodifiableCentiVisList<>(aspects.getAspectView());
+        this.aspects = new UnmodifiableCentiVisList<>(aspects);
         this.input = recipe;
         this.inputSampleArr = new ItemStack[input.length];
         this.outMatcher = outMatcher;

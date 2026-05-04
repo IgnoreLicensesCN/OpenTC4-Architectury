@@ -235,6 +235,7 @@ public class ThaumcraftItems {
     public static final ManaBeanItem MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
     public static final BlockItem ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
     public static final BlockItem ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
+    public static final BlockItem ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
 
     //===========================================================================================
 
@@ -824,6 +825,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_TUBE_VALVE = ITEMS.register(
                 "essentia_tube_valve",
                 () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_TUBE_VALVE,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_TUBE_FILTER = ITEMS.register(
+                "essentia_tube_filter",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_TUBE_FILTER,  new Item.Properties())
         );
 
 

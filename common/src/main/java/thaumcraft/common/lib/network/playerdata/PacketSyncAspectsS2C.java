@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -26,22 +27,25 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeMap(
-                data.getAspectView(),
-                (aspBuf,asp) -> aspBuf.writeResourceLocation(asp.aspectKey),
-                FriendlyByteBuf::writeInt
-        );
+        buf.writeInt(data.size());
+        data.forEach((aspect,amount) -> {
+            buf.writeResourceLocation(aspect.aspectKey);
+            buf.writeInt(amount);
+        });
     }
 
     public static PacketSyncAspectsS2C decode(FriendlyByteBuf buf) {
-        return new PacketSyncAspectsS2C(
-                new AspectList<>(
-                        buf.readMap(
-                                aspBuf -> Aspect.getAspect(AspectResourceLocation.of(aspBuf.readResourceLocation())),
-                                FriendlyByteBuf::readInt
-                        )
-                )
-        );
+        int mapSize = buf.readInt();
+        Object2IntLinkedOpenHashMap<Aspect> dataMap = new Object2IntLinkedOpenHashMap<>(mapSize);
+        for (int i = 0; i < mapSize; i++) {
+            var aspLoc = buf.readResourceLocation();
+            var aspect = Aspect.getAspect(AspectResourceLocation.of(aspLoc));
+            if (aspect == null) {
+                throw new IllegalArgumentException("Invalid aspect resource location: " + aspLoc);
+            }
+            dataMap.put(aspect, buf.readInt());
+        }
+        return new PacketSyncAspectsS2C(AspectList.viewOf(dataMap));
     }
 
     @Override

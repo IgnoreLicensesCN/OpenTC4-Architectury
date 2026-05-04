@@ -3,11 +3,13 @@ package thaumcraft.common.lib.network.gamedata;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.Item;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.UnmodifiableAspectView;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
@@ -26,17 +28,17 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
         return messageType;
     }
 
-    private final Map<Item, UnmodifiableAspectList<Aspect>> syncResult;
+    private final Map<Item, AspectList<Aspect>> syncResult;
 
     public PacketSyncItemAspectsS2C() {
-        Map<Item, UnmodifiableAspectList<Aspect>> result = new HashMap<>();
+        Map<Item, AspectList<Aspect>> result = new HashMap<>();
         BuiltInRegistries.ITEM.forEach(
                 i -> result.put(i,ItemBasicAspectGetter.getBasicAspectsServer(i))
         );
         syncResult = result;
     }
     public PacketSyncItemAspectsS2C(
-            Map<Item, UnmodifiableAspectList<Aspect>> syncResult
+            Map<Item, AspectList<Aspect>> syncResult
     ) {
         this.syncResult = syncResult;
     }
@@ -46,13 +48,15 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
         bufOuter.writeMap(
                 syncResult,
                 (friendlyByteBuf, item) -> bufOuter.writeId(BuiltInRegistries.ITEM, item),
-                (bufForAspList, aspectUnmodifiableAspectList) ->
-                        bufForAspList.writeMap(
-                                aspectUnmodifiableAspectList.getAspectView(),
-                                (bufForAsp, aspect) -> bufForAsp.writeResourceLocation(
-                                        bufForAsp.readResourceLocation()),
-                                FriendlyByteBuf::writeInt
-                        )
+                (bufForAspList, aspectUnmodifiableAspectList) -> {
+                    bufForAspList.writeInt(aspectUnmodifiableAspectList.size());
+                    aspectUnmodifiableAspectList.forEach(
+                            (aspect,amount) -> {
+                                bufForAspList.writeResourceLocation(aspect.aspectKey);
+                                bufForAspList.writeInt(amount);
+                            }
+                    );
+                }
         );
     }
 
@@ -61,14 +65,22 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
         return new PacketSyncItemAspectsS2C(
                 bufOuter.readMap(
                         bufForItem -> bufForItem.readById(BuiltInRegistries.ITEM),
-                        bufForAspList -> new UnmodifiableAspectList<>(
-                                bufForAspList.readMap(
-                                        bufForAspect -> Aspect.getAspect(AspectResourceLocation.of(bufForAspect.readResourceLocation())),
-                                        FriendlyByteBuf::readInt
-                                        )
-                        )
-                )
+                        bufForAspList -> {
+                            int mapSize = bufForAspList.readInt();
+                            Object2IntLinkedOpenHashMap<Aspect> aspForItem = new Object2IntLinkedOpenHashMap<>(mapSize,1);
+                            for (int i = 0; i < mapSize; i++) {
+                                var aspectResLoc = bufForAspList.readResourceLocation();
+                                var aspect = Aspect.getAspect(AspectResourceLocation.of(aspectResLoc));
+                                if (aspect == null) {
+                                    throw new IllegalArgumentException("Invalid aspect resource location: " + aspectResLoc);
+                                }
+                                aspForItem.put(aspect, bufForAspList.readInt());
+                            }
+                            return new UnmodifiableAspectView<>(aspForItem);
+                        }
+                    )
         );
+
     }
 
     @Override

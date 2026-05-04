@@ -37,8 +37,8 @@ import thaumcraft.common.tiles.*;
 import java.util.LinkedList;
 import java.util.List;
 
-//"tile.blockTube.0.name": "源质管道",
-//"tile.blockTube.1.name": "源质阀门",
+//"tile.blockTube.0.name": "源质管道", --done
+//"tile.blockTube.1.name": "源质阀门", --done
 //"tile.blockTube.2.name": "奥法离心机", //wtf its tube?
 //"tile.blockTube.3.name": "过滤源质管道",
 //"tile.blockTube.4.name": "源质缓存器",
@@ -59,7 +59,7 @@ public class BlockTube /*extends BlockContainer*/ {
 //      this.setCreativeTab(Thaumcraft.tabTC);
 //   }
 //
-//   @SideOnly(Side.CLIENT)
+//   @SideOnly(Side.CLIENT)[[
 //   public void registerBlockIcons(IIconRegister ir) {
 //      this.icon[0] = ir.registerIcon("thaumcraft:pipe_1");
 //      this.icon[1] = ir.registerIcon("thaumcraft:pipe_2");
@@ -237,34 +237,34 @@ public class BlockTube /*extends BlockContainer*/ {
       }
    }
 
-   public TileEntity createNewTileEntity(World var1, int md) {
-      return null;
-   }
+//   public TileEntity createNewTileEntity(World var1, int md) {
+//      return null;
+//   }
+//
+//   public boolean hasComparatorInputOverride() {
+//      return true;
+//   }
+//
+//   public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
+//      TileEntity te = world.getTileEntity(x, y, z);
+//      if (te instanceof TileTubeBuffer) {
+//         float var10000 = (float)((TileTubeBuffer)te).aspects.visSize();
+//         ((TileTubeBuffer)te).getClass();
+//         float r = var10000 / 8.0F;
+//         return MathHelper.floor_float(r * 14.0F) + (((TileTubeBuffer)te).aspects.visSize() > 0 ? 1 : 0);
+//      } else {
+//         return 0;
+//      }
+//   }
 
-   public boolean hasComparatorInputOverride() {
-      return true;
-   }
-
-   public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileTubeBuffer) {
-         float var10000 = (float)((TileTubeBuffer)te).aspects.visSize();
-         ((TileTubeBuffer)te).getClass();
-         float r = var10000 / 8.0F;
-         return MathHelper.floor_float(r * 14.0F) + (((TileTubeBuffer)te).aspects.visSize() > 0 ? 1 : 0);
-      } else {
-         return 0;
-      }
-   }
-
-   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileTubeFilter && ((TileTubeFilter) te).aspectFilter != null && Platform.getEnvironment() != Env.CLIENT) {
-         world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
-      }
-
-      super.breakBlock(world, x, y, z, par5, par6);
-   }
+//   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
+//      TileEntity te = world.getTileEntity(x, y, z);
+//      if (te instanceof TileTubeFilter && ((TileTubeFilter) te).aspectFilter != null && Platform.getEnvironment() != Env.CLIENT) {
+//         world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, new ItemStack(ThaumcraftItems.JAR_LABEL, 1)));
+//      }
+//
+//      super.breakBlock(world, x, y, z, par5, par6);
+//   }
 
    public boolean onBlockActivated(World world, int x, int y, int z, Player player, int side, float par7, float par8, float par9) {
       int metadata = world.getBlockMetadata(x, y, z);

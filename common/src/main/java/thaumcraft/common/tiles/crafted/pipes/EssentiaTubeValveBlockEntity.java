@@ -24,8 +24,9 @@ public class EssentiaTubeValveBlockEntity extends EssentiaTubeBlockEntity {
 
     @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        if (useOnContext.getPlayer() instanceof ServerPlayer serverPlayer
-        && serverPlayer.isShiftKeyDown()) {
+        if (
+                useOnContext.getPlayer() instanceof ServerPlayer serverPlayer
+                        && serverPlayer.isShiftKeyDown()) {
             setBlockStateAndUpdate(
                     ThaumcraftBlocks.ESSENTIA_TUBE_VALVE.changeStateForDirection(
                             getBlockState(),

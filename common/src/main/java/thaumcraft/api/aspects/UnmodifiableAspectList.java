@@ -2,6 +2,7 @@ package thaumcraft.api.aspects;
 
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,12 +12,10 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
     public static final UnmodifiableAspectList<Aspect> EMPTY = new UnmodifiableAspectList<>(new AspectList<>());
 
-    public UnmodifiableAspectList(AspectList<A> viewingList) {
-        if (viewingList != null) {
-            this.aspects.putAll(viewingList.getAspectView());
-        }
+    public UnmodifiableAspectList(@NotNull AspectList<A> viewingList) {
+        super(viewingList);
     }
-    public UnmodifiableAspectList(Object2IntMap<A> aspects) {
+    public UnmodifiableAspectList(@NotNull Object2IntMap<A> aspects) {
         super(aspects);
     }
     public UnmodifiableAspectList(){
@@ -104,22 +103,23 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
     }
 
     public UnmodifiableAspectList<A> addAllAsNew(AspectList<A> aspects) {
-        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView());
-        aspects.getAspectView().forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(aspects.size() + this.size(),1);
+        aspects.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        this.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<>(resultMap);
     }
 
     public UnmodifiableAspectList<A> multiplyAsNew(int multiplier) {
-        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView().size(),1);
-        this.getAspectView().forEach((aspect, amount) -> resultMap.put(aspect, amount*multiplier));
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.size(),1);
+        this.forEach((aspect, amount) -> resultMap.put(aspect, amount*multiplier));
         return new UnmodifiableAspectList<>(resultMap);
     }
     public UnmodifiableAspectList<A> divideAndCeilAsNew(int divisor) {
         if (divisor == 0){
             throw new IllegalArgumentException("divided by zero!");
         }
-        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.getAspectView().size(),1);
-        this.getAspectView().forEach((aspect, amount) -> resultMap.put(aspect, (amount + divisor - 1)/divisor));
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(this.size(),1);
+        this.forEach((aspect, amount) -> resultMap.put(aspect, (amount + divisor - 1)/divisor));
         return new UnmodifiableAspectList<>(resultMap);
     }
 
@@ -130,8 +130,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         if (aspectsB == null) {
             return new UnmodifiableAspectList<>(aspectsA);
         }
-        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(aspectsA.getAspectView());
-        aspectsB.getAspectView().forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(aspectsA.size() + aspectsB.size(),1);
+        aspectsA.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        aspectsB.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
         return new UnmodifiableAspectList<>(resultMap);
     }
 

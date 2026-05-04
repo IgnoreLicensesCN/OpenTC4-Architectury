@@ -18,16 +18,12 @@ import java.util.function.Predicate;
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
-public class AspectList<Asp extends Aspect> implements Serializable {
+public class AspectList<Asp extends Aspect> /*implements Serializable */{
 
 	private int visSize;//
 	protected final Object2IntLinkedOpenHashMap<Asp> aspects;//aspects associated with this object
 
 	private final Object2IntMap<Asp> aspectView;
-	@Deprecated(forRemoval = true)
-	public Object2IntMap<Asp> getAspectView(){
-		return aspectView;
-	}
 	
 	public AspectList() {
 		this.aspects = new Object2IntLinkedOpenHashMap<>();
@@ -40,17 +36,17 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	protected AspectList(Object2IntLinkedOpenHashMap<Asp> aspects) {
+	protected AspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
 		this.aspects = aspects;
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	public AspectList(Map<Asp,Integer> aspects) {
+	public AspectList(@NotNull Map<Asp,Integer> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
 	}
-	public AspectList(Object2IntMap<Asp> aspects) {
+	public AspectList(@NotNull Object2IntMap<Asp> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
@@ -62,7 +58,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		recalculateVisSize();
 	}
 
-	public AspectList(AspectList<Asp> another) {
+	public AspectList(@NotNull AspectList<Asp> another) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(another.aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
@@ -245,7 +241,7 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	
 	/**
 	 * Adds this aspect and amount to the collection. 
-	 * If the aspect exists then its value will be increased by the given amount.
+	 * <s>If the aspect exists then its value will be increased by the given amount.</s>
 	 * @param aspect to add
 	 * @param amount to add
 	 * @return self
@@ -427,6 +423,10 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 		return out;
 	}
 
+	public static <Asp extends Aspect> AspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects){
+		return new AspectList<>(aspects);
+	}
+
 	public @Nullable("if empty") Asp randomAspect(RandomSource randomSource){
 		if (this.size() == 0){
 			return null;
@@ -479,6 +479,10 @@ public class AspectList<Asp extends Aspect> implements Serializable {
 	public @NotNull("empty -> empty(aspect)") Asp getFirstAspect() {
 		if (aspects.isEmpty()) return (Asp) Aspects.EMPTY;
 		return aspects.firstKey();
+	}
+
+	public boolean containsKey(Asp aspect) {
+		return this.aspects.containsKey(aspect);
 	}
 
 }

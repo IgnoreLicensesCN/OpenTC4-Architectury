@@ -102,16 +102,14 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     public void setupNode(){
         this.centiVisBase = new CentiVisList<>();
         var temp = ResearchManager.reduceToPrimals(auraBase, true);
-
-        for(var aspectEntry : temp.getAspectView().entrySet()) {
-            var aspect = aspectEntry.getKey();
-            int amt = nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,aspectEntry.getValue());
-            amt = nodeType.onSetupEnergizedNodeAspectAmount(this,aspect,amt);
+        temp.forEach((aspect,amount) -> {
+            int amt = EnergizedAuraNodeBlockEntity.this.nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,amount);
+            amt = EnergizedAuraNodeBlockEntity.this.nodeType.onSetupEnergizedNodeAspectAmount(this,aspect,amt);
 
             if (amt >= 1) {
-                this.centiVisBase.mergeWithHighest(aspect, amt);
+                EnergizedAuraNodeBlockEntity.this.centiVisBase.mergeWithHighest(aspect, amt);
             }
-        }
+        });
 
         this.markDirtyAndUpdateSelf();
     }

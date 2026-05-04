@@ -32,7 +32,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         IEssentiaTransportOutBlockEntity,
         IWandInteractableBlockOrBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity {
-    private @NotNull("is and should be empty if there's no aspect") Aspect owningAspect = Aspect.EMPTY;
+    protected @NotNull("is and should be empty if there's no aspect") Aspect owningAspect = Aspect.EMPTY;
     private byte openSidesMask = ((1<<6) - 1);
     private @NotNull Aspect suctionType = Aspect.EMPTY;
     private int suction = 0;
