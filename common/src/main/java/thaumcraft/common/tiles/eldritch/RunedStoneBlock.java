@@ -19,12 +19,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-
-import java.util.Random;
 
 public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock {
     public static final IntProvider RUNED_STONE_EXP_DROP = UniformInt.of(1,4);
@@ -101,26 +100,15 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
         builder.add(FACE_STATE);
     }
 
-    @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
-        var pos = blockPlaceContext.getClickedPos();
-        var level = blockPlaceContext.getLevel();
-        var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
-        var random = new Random(hasher.hashCode());
-
-        return defaultBlockState().setValue(FACE_STATE, random.nextInt(64));
-    }
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos,
-                        BlockState oldState, boolean isMoving) {
-        super.onPlace(state, level, pos, oldState, isMoving);
-        if (oldState.getBlock() != this){
-            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
-            var random = new Random(hasher.hashCode());
-
-            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
-        }
+    public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        var coord = blockPlaceContext.getClickedPos();
+        var seed = coord.asLong();
+        seed = (seed ^ (seed >>> 33)) * 0xff51afd7ed558ccdL;
+        seed = (seed ^ (seed >>> 33)) * 0xc4ceb9fe1a85ec53L;
+        seed = seed ^ (seed >>> 33);
+        return defaultBlockState().setValue(FACE_STATE, (int)(seed&63));
     }
 
 }

@@ -1,8 +1,6 @@
 package thaumcraft.common.blocks.crafted;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -13,8 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneStairBlock;
 
-import java.util.Random;
-
+//TODO Remove FACE_STATE if there's a way to map texture
 public class AncientStoneSlabBlock extends SlabBlock {
     public AncientStoneSlabBlock(Properties properties) {
         super(properties);
@@ -34,21 +31,11 @@ public class AncientStoneSlabBlock extends SlabBlock {
     @Override
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         var coord = blockPlaceContext.getClickedPos();
-        var hasher = ""+coord.getX() + coord.getY() + coord.getZ() + blockPlaceContext.getLevel().dimension().location();
-        var random = new Random(hasher.hashCode());
-
-        return super.getStateForPlacement(blockPlaceContext).setValue(FACE_STATE, random.nextInt(64));
+        var seed = coord.asLong();
+        seed = (seed ^ (seed >>> 33)) * 0xff51afd7ed558ccdL;
+        seed = (seed ^ (seed >>> 33)) * 0xc4ceb9fe1a85ec53L;
+        seed = seed ^ (seed >>> 33);
+        return defaultBlockState().setValue(FACE_STATE, (int)(seed&63));
     }
 
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos,
-                        BlockState oldState, boolean isMoving) {
-        super.onPlace(state, level, pos, oldState, isMoving);
-        if (oldState.getBlock() != this){
-            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
-            var random = new Random(hasher.hashCode());
-
-            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
-        }
-    }
 }

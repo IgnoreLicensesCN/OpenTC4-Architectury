@@ -61,7 +61,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
     }
 
     @Override
-    public int currentComparatorSignalValue() {
+    public int currentValueForComparatorSignal() {
         return xp;
     }
 

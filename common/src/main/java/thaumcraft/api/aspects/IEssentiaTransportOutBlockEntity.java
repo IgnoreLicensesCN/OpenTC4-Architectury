@@ -8,21 +8,23 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      * @param face to output to
      * @return true if this side is used to output essentia
      */
-    boolean canOutputTo(Direction face);
+    boolean canOutputTo(@NotNull Direction face);
 
     /**
      * remove the specified amount of essentia from this transport tile
      * @return how much was actually taken
      */
     //directly take
-    int takeEssentia(Aspect aspect, int amount, Direction outputToDirection);
+    int takeEssentia(Aspect aspect, int amount,@NotNull Direction outputToDirection);
     /**
      * remove the specified amount of essentia from this transport tile
      * @return how much was actually taken
      */
     //considered suction
-    default int takeEssentiaWithSuction(int drainerSuction,Aspect aspect, int amount, Direction outputToDirection){
-        if (!this.canOutputTo(outputToDirection)) return 0;
+    default int takeEssentiaWithSuction(int drainerSuction,Aspect aspect, int amount,@NotNull Direction outputToDirection){
+        if (!this.canOutputTo(outputToDirection)) {
+            return 0;
+        }
         if (drainerSuction < this.getMinimumSuctionToDrainOut()){
             return 0;
         }
@@ -49,6 +51,6 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      * @param face self face
      * @return How much essentia this block contains
      */
-    int getEssentiaAmount(Direction face);
+    int getEssentiaAmount(@NotNull Direction face);
 
 }

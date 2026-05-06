@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
 
 import static thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBaseBlock.SELF_POS_1_0_1;
 

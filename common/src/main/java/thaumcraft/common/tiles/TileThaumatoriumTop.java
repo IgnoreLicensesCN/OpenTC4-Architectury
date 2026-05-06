@@ -62,29 +62,29 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return true;
    }
 
-   public boolean isConnectable(Direction face) {
+   public boolean isConnectable(@NotNull Direction face) {
       return this.thaumatorium != null && this.thaumatorium.isConnectable(face);
    }
 
-   public boolean canInputFrom(Direction face) {
+   public boolean canInputFrom(@NotNull Direction face) {
       return this.thaumatorium != null && this.thaumatorium.canInputFrom(face);
    }
 
-   public boolean canOutputTo(Direction face) {
+   public boolean canOutputTo(@NotNull Direction face) {
       return false;
    }
 
-   public void setSuction(Aspect aspect, int amount) {
+   public void setSuction(@NotNull Aspect aspect, int amount) {
       if (this.thaumatorium != null) {
          this.thaumatorium.setSuction(aspect, amount);
       }
    }
 
-   public @NotNull Aspect getSuctionType(Direction loc) {
+   public @NotNull Aspect getSuctionType(@NotNull Direction loc) {
       return this.thaumatorium == null ? null : this.thaumatorium.getSuctionType(loc);
    }
 
-   public int getSuctionAmount(Direction loc) {
+   public int getSuctionAmount(@NotNull Direction loc) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.getSuctionAmount(loc);
    }
 
@@ -92,15 +92,15 @@ public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContai
       return null;
    }
 
-   public int getEssentiaAmount(Direction loc) {
+   public int getEssentiaAmount(@NotNull Direction loc) {
       return 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, outputToDirection);
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
       return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, fromDirection);
    }
 

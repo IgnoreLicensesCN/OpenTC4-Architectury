@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
-import thaumcraft.common.tiles.crafted.AlchemicalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
 
 public class AlchemicalFurnaceMenu extends AbstractThaumcraftMenu<AlchemicalFurnaceBlockEntity> {
 

@@ -16,14 +16,16 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
+import thaumcraft.common.blocks.crafted.essentia.*;
+import thaumcraft.common.blocks.crafted.essentia.pipes.*;
 import thaumcraft.common.blocks.crafted.fromtable.ArcaneWorkbenchBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableLeftPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
 import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
-import thaumcraft.common.blocks.crafted.jars.essentia.EssentiaJarBlock;
-import thaumcraft.common.blocks.crafted.jars.essentia.VoidJarBlock;
-import thaumcraft.common.blocks.crafted.jars.other.BrainJarBlock;
-import thaumcraft.common.blocks.crafted.jars.other.NodeJarBlock;
+import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
+import thaumcraft.common.blocks.crafted.essentia.jars.VoidJarBlock;
+import thaumcraft.common.blocks.crafted.jars.BrainJarBlock;
+import thaumcraft.common.blocks.crafted.jars.NodeJarBlock;
 import thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock;
 import thaumcraft.common.blocks.crafted.lamps.FertilityArcaneLampBlock;
 import thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock;
@@ -37,10 +39,9 @@ import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
-import thaumcraft.common.blocks.crafted.pipes.*;
-import thaumcraft.common.blocks.crafted.thaumatorium.MnemonicMatrixBlock;
-import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumBottomBlock;
-import thaumcraft.common.blocks.crafted.thaumatorium.ThaumatoriumTopBlock;
+import thaumcraft.common.blocks.crafted.essentia.thaumatorium.MnemonicMatrixBlock;
+import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock;
+import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumTopBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -227,6 +228,8 @@ public class ThaumcraftBlocks {
     public static final EssentiaTubeFilterBlock ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
     public static final EssentiaTubeRestrictBlock ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
     public static final EssentiaTubeOnewayBlock ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
+    public static final EssentiaBufferBlock ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
+    public static final EssentiaCentrifugeBlock ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -855,6 +858,16 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_tube_oneway",
                         EssentiaTubeOnewayBlock::new
+                );
+        public static final RegistrySupplier<EssentiaBufferBlock> SUPPLIER_ESSENTIA_BUFFER =
+                BLOCKS.register(
+                        "essentia_buffer",
+                        EssentiaBufferBlock::new
+                );
+        public static final RegistrySupplier<EssentiaCentrifugeBlock> SUPPLIER_ESSENTIA_CENTRIFUGE =
+                BLOCKS.register(
+                        "essentia_centrifuge",
+                        EssentiaCentrifugeBlock::new
                 );
 
 

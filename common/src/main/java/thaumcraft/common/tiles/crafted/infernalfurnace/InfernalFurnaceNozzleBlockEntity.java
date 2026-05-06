@@ -62,17 +62,17 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     }
 
     @Override
-    public boolean canInputFrom(Direction face) {
+    public boolean canInputFrom(@NotNull Direction face) {
         return isConnectable(face);
     }
 
     @Override
-    public void setSuction(Aspect aspect, int amount) {
+    public void setSuction(@NotNull Aspect aspect, int amount) {
 
     }
 
     @Override
-    public int getSuctionAmount(Direction face) {
+    public int getSuctionAmount(@NotNull Direction face) {
         var furnaceCore = getCore();
         if (furnaceCore != null) {
             return furnaceCore.speedyTime < 40?128:0;
@@ -93,27 +93,27 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     }
 
     @Override
-    public @NotNull Aspect getSuctionType(Direction face) {
+    public @NotNull Aspect getSuctionType(@NotNull Direction face) {
         return Aspects.FIRE;
     }
 
     @Override
-    public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+    public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
         return 0;
     }
 
     @Override
-    public @NotNull Aspect getEssentiaType(Direction face) {
+    public @NotNull Aspect getEssentiaType(@NotNull Direction face) {
         return Aspects.FIRE;
     }
 
     @Override
-    public int getEssentiaAmount(Direction face) {
+    public int getEssentiaAmount(@NotNull Direction face) {
         return 0;
     }
 
     @Override
-    public boolean isConnectable(Direction face) {
+    public boolean isConnectable(@NotNull Direction face) {
         if (this.level == null) return false;
         return face == ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),getBlockPos());
     }

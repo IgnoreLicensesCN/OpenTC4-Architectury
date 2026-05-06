@@ -17,6 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import thaumcraft.api.aspects.IEssentiaTransportInBlockEntity;
 import thaumcraft.common.blocks.abstracts.*;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
@@ -30,7 +31,8 @@ public class ArcaneBellowBlock
         IInfernalFurnaceTickDiscounter,
         IVanillaFurnaceAttachmentBlock,
         IThaumcraftFurnaceAttachmentBlock,
-        ICrucibleAttachmentBlock
+        ICrucibleAttachmentBlock,
+        IAdditionalSuctionProviderBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneBellowBlock(Properties properties) {
@@ -123,6 +125,11 @@ public class ArcaneBellowBlock
         IThaumcraftFurnaceAttachmentBlock.super.attachmentOnCalculatingRequiredCookTime(
                 level, be, furnaceState, furnacePos, attachmentState, attachmentPos, defaultFurnaceRequiredCookTime
         );
+    }
+
+    @Override
+    public int getAdditionalProvidedSuction(Level level, IEssentiaTransportInBlockEntity be, BlockState beState, BlockPos bePos, BlockState attachmentState, BlockPos attachmentPos) {
+        return attachedToBlock(level, attachmentPos, attachmentState, bePos)?32:0;
     }
 
     @Override

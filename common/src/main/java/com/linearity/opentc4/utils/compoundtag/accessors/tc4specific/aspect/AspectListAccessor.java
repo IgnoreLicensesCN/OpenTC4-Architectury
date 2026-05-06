@@ -33,6 +33,16 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
         return AspectList.viewOf(result);
     }
 
+    public void readFromCompoundTagInto(CompoundTag tag,AspectList<Aspect> readInto) {
+        var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
+        for (int i = 0; i < listTag.size(); i++) {
+            var compoundTag = listTag.getCompound(i);
+            var hexCoord = keyAccessor.readFromCompoundTag(compoundTag);
+            var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
+            readInto.put(hexCoord, hexType);
+        }
+    }
+
     @Override
     public void writeToCompoundTag(CompoundTag tag, AspectList<Aspect> toWrite) {
         var listTag = new ListTag();

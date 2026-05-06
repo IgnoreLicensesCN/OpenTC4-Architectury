@@ -1,0 +1,250 @@
+package thaumcraft.common.tiles.crafted.essentiabe;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.*;
+import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.blocks.crafted.essentia.ArcaneAlembicBlock;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IAlembic;
+
+import static com.linearity.opentc4.Consts.ArcaneAlembicBlockEntityTagAccessors.*;
+
+public class ArcaneAlembicBlockEntity extends TileThaumcraft
+        implements IAlembic,
+        IEssentiaTransportOutBlockEntity,
+        IAspectFilterAccessibleBlockEntity,
+        IAspectDisplayBlockEntity<Aspect>
+{
+    public ArcaneAlembicBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
+    }
+
+    public ArcaneAlembicBlockEntity(BlockPos blockPos, BlockState blockState) {
+        this(ThaumcraftBlockEntities.ARCANE_ALEMBIC, blockPos, blockState);
+    }
+
+    public static final int ASPECT_CAPACITY = 32;
+
+    private @NotNull Aspect aspectCurrent = Aspects.EMPTY;
+    private @NotNull Aspect aspectFilter = Aspects.EMPTY;
+    private int aspectAmountCurrent = 0;
+    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent =
+            new UnmodifiableSingleAspectListFromSupplier<>(
+                    () -> this.aspectCurrent,
+                    () -> this.aspectAmountCurrent
+            );
+
+    @Override
+    public void writeCustomNBT(CompoundTag compoundTag) {
+        super.writeCustomNBT(compoundTag);
+        ASPECT_CURRENT.writeToCompoundTag(compoundTag, aspectCurrent);
+        ASPECT_FILTER.writeToCompoundTag(compoundTag, aspectFilter);
+        ASPECT_AMOUNT.writeIntToCompoundTag(compoundTag, aspectAmountCurrent);
+    }
+
+    @Override
+    public void readCustomNBT(CompoundTag compoundTag) {
+        super.readCustomNBT(compoundTag);
+        this.aspectCurrent = ASPECT_CURRENT.readFromCompoundTag(compoundTag);
+        this.aspectFilter = ASPECT_FILTER.readFromCompoundTag(compoundTag);
+        this.aspectAmountCurrent = ASPECT_AMOUNT.readIntFromCompoundTag(compoundTag);
+    }
+
+    @Override
+    public @NotNull("null -> empty") Aspect getAspect() {
+        return aspectCurrent;
+    }
+
+
+    @Override
+    public int getAmount() {
+        return aspectAmountCurrent;
+    }
+
+    @Override
+    public int getMaxAmount() {
+        return ASPECT_CAPACITY;
+    }
+
+    public @NotNull Aspect getAspectFilter() {
+        return aspectFilter;
+    }
+    public boolean setAspectFilter(@NotNull Aspect aspectFilter) {
+        if (aspectFilter != Aspects.EMPTY && this.aspectFilter != Aspects.EMPTY){
+            return false;
+        }
+        if (aspectFilter != aspectCurrent && aspectCurrent != Aspects.EMPTY && aspectAmountCurrent != 0) {
+            return false;
+        }
+        this.aspectFilter = aspectFilter;
+        this.markDirtyAndUpdateSelf();
+        return true;
+    }
+
+    @Override
+    @UnmodifiableView
+    public @NotNull AspectList<Aspect> getAspects() {
+        return aspOwningCurrent;
+    }
+
+    @Override
+    public boolean takeFromContainer(Aspect aspect, int amount) {
+        if (aspect != aspectCurrent
+                || aspectCurrent.isEmpty()
+                || aspect.isEmpty()
+                || aspectAmountCurrent < amount
+        ) {
+            return false;
+        }
+        if (this.aspectAmountCurrent == amount) {
+            this.aspectCurrent = Aspects.EMPTY;
+            this.aspectAmountCurrent = 0;
+        }
+        else {
+            this.aspectAmountCurrent -= amount;
+        }
+        markDirtyAndUpdateSelf();
+        return true;
+    }
+
+    @Override
+    public boolean doesContainerContainAmount(Aspect aspect, int amount) {
+        return aspect == aspectCurrent
+                && !aspectCurrent.isEmpty()
+                && !aspect.isEmpty()
+                && aspectAmountCurrent >= amount;
+    }
+
+    @Override
+    public int containerContains(Aspect aspect) {
+        if (aspect != aspectCurrent || aspect.isEmpty() || aspectCurrent.isEmpty()) {
+            return 0;
+        }
+        return aspectAmountCurrent;
+    }
+
+    @Override
+    public int addIntoContainer(Aspect aspect, int amount) {
+        if (!doesContainerAccept(aspect)) {
+            return amount;
+        }
+        var added = amount + aspectAmountCurrent;
+        aspectAmountCurrent = Math.min(getMaxAmount(), added);
+        markDirtyAndUpdateSelf();
+        return added - aspectAmountCurrent;
+    }
+
+    @Override
+    public boolean doesContainerAccept(Aspect aspect) {
+        if (aspect.isEmpty()){
+            return false;
+        }
+        if (!aspectFilter.isEmpty() && aspectFilter != aspect) {
+            return false;
+        }
+        return aspectCurrent.isEmpty() || aspectCurrent == aspect;
+    }
+
+    @Override
+    public void clear() {
+        this.aspectAmountCurrent = 0;
+        this.aspectCurrent = Aspects.EMPTY;
+    }
+
+    public boolean canFillAspectContainerItem(
+            ItemStack stackToFill,
+            IAspectContainerItem<Aspect> itemToFill,
+            Aspect aspect
+    ) {
+        return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
+    }
+
+    @Override
+    public boolean fillAspectContainerItem(
+            ItemStack stackToFill,
+            IAspectContainerItem<Aspect> itemToFill,
+            int minAmount
+    ) {
+        if (level == null){
+            return false;
+        }
+
+        if (aspectCurrent.isEmpty() || aspectAmountCurrent < minAmount) {
+            return false;
+        }
+        var amountBefore = aspectAmountCurrent;
+        aspectAmountCurrent = itemToFill.storeAspect(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
+        if (aspectAmountCurrent == 0) {
+            aspectCurrent = Aspects.EMPTY;
+        }
+        if (aspectAmountCurrent != amountBefore) {
+            markDirtyAndUpdateSelf();
+            if (level != null) {
+                level.playSound(
+                        null,
+                        getBlockPos(),
+                        SoundEvents.PLAYER_SWIM,
+                        SoundSource.BLOCKS,
+                        .5F,
+                        1.F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.3F
+                );
+            }
+        }
+
+        return true;
+    }
+
+
+    @Override
+    public boolean isConnectable(@NotNull Direction face) {
+        return face.getAxis() != Direction.Axis.Y && face != getBlockState().getValue(ArcaneAlembicBlock.FACING);
+    }
+
+    @Override
+    public boolean canOutputTo(@NotNull Direction face) {
+        return isConnectable(face);
+    }
+
+    @Override
+    public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
+        if (!isConnectable(outputToDirection)) {
+            return 0;
+        }
+        return takeFromContainer(aspect,amount)?amount:0;
+    }
+
+    @Override
+    public int getMinimumSuctionToDrainOut() {
+        return 0;
+    }
+
+    @Override
+    public int getEssentiaAmount(@NotNull Direction face) {
+        if (!isConnectable(face)) {
+            return 0;
+        }
+        return this.aspectAmountCurrent;
+    }
+
+    @Override
+    public @NotNull Aspect getEssentiaType(@NotNull Direction face) {
+        if (!isConnectable(face)) {
+            return Aspects.EMPTY;
+        }
+        return this.aspectCurrent;
+    }
+
+    @Override
+    public @UnmodifiableView @NotNull AspectList<Aspect> getAspectsToDisplay() {
+        return aspOwningCurrent;
+    }
+}

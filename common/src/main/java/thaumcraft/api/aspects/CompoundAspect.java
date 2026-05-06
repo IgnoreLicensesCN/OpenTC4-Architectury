@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.Map;
@@ -13,8 +14,22 @@ import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
 
 public class CompoundAspect extends Aspect {
     public static final Map<CompoundAspectComponent,CompoundAspect> COMPOUND_ASPECT_RECIPES = new ConcurrentHashMap<>();
-
-    public final @NotNull CompoundAspectComponent components;
+    public static final CompoundAspect EMPTY = new CompoundAspect(
+            AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_compound"),
+            0x000000,
+            new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
+            1,
+            true) {
+        @Override
+        public boolean isEmpty() {
+            return true;
+        }
+    };
+    private CompoundAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
+        super(aspectKey,color,image,blend);
+        this.components = null;
+    }
+    public final @NotNull("unless it's empty") CompoundAspectComponent components;
     private void verifyDuplicate(CompoundAspect registeringAspect){
         var duplicatedIfNotNull = COMPOUND_ASPECT_RECIPES.getOrDefault(components,null);
         if (duplicatedIfNotNull != null) {

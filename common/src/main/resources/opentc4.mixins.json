@@ -8,13 +8,19 @@
     "ClientChunkCacheStorageMixin",
     "ItemRendererMixin",
     "LivingEntityClientMixin",
-    "SheetsMixin"
+    "SheetsMixin",
+    "clientbe.BrainJarBlockEntityClientMixin",
+    "clientbe.CrucibleBlockEntityClientMixin",
+    "clientbe.EssentiaCentrifugeBlockEntityClientMixin",
+    "clientbe.EssentiaReservoirBlockEntityClientMixin",
+    "clientbe.VisNetRelayBlockEntityClientMixin"
   ],
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
     "BiomeMixin",
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
+    "DefaultAttributesAccessor",
     "DropExperienceBlockMixin",
     "EntityMixin",
     "EntityTypeMixin",

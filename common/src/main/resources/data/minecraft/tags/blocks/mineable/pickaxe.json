@@ -70,6 +70,8 @@
     "thaumcraft:essentia_tube_valve",
     "thaumcraft:essentia_tube_filter",
     "thaumcraft:essentia_tube_restrict",
-    "thaumcraft:essentia_tube_oneway"
+    "thaumcraft:essentia_tube_oneway",
+    "thaumcraft:essentia_buffer",
+    "thaumcraft:essentia_centrifuge"
   ]
 }

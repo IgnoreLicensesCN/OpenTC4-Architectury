@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted.visnet;
 import com.google.common.collect.MapMaker;
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
+import com.linearity.opentc4.mixinaccessors.VisNetRelayBlockEntityClientAccessor;
 import com.linearity.opentc4.simpleutils.bauble.BaubleUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -117,7 +118,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
             if (level == null) {
                 return;
             }
-            var context = contexts.computeIfAbsent(visNetRelayBlockEntity,be -> new ClientTickContext());
+            var context = ((VisNetRelayBlockEntityClientAccessor)visNetRelayBlockEntity).opentc4$getClientTickContext();
             var selfPos = visNetRelayBlockEntity.getBlockPos();
             clientCheckParent(visNetRelayBlockEntity);
             var parent = visNetRelayBlockEntity.getParent();

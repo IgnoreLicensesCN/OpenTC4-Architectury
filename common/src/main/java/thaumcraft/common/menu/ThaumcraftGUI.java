@@ -11,6 +11,8 @@ import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.menu.menu.*;
 import thaumcraft.common.tiles.crafted.*;
+import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
 
 import java.util.function.Supplier;
 

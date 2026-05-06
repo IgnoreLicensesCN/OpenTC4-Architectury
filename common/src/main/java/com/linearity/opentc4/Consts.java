@@ -1,6 +1,7 @@
 package com.linearity.opentc4;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.architectury.FluidStackTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.array.ByteArrayTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
@@ -8,6 +9,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.Aspe
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CompoundAspectAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeInfoAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
@@ -16,6 +18,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAc
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.NullFilteredModifiableListAccessor;
 import net.minecraft.core.BlockPos;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
@@ -290,6 +293,17 @@ public class Consts {
 
     public static class EssentiaTubeFilterBlockEntityTagAccessors {
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
+    }
+
+    public static class EssentiaBufferBlockEntityTagAccessors {
+        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("owning_aspects");
+        public static final ByteTagAccessor OPEN_SIDES = new ByteTagAccessor("open_sides");
+        public static final ByteArrayTagAccessor SUCTION_LIMITS = new ByteArrayTagAccessor("suction_limits");
+
+    }
+    public static class EssentiaCentrifugeBlockEntityTagAccessors {
+        public static final CompoundAspectAccessor ASPECT_IN = new CompoundAspectAccessor("aspect_in");
+        public static final AspectAccessor ASPECT_OUT = new AspectAccessor("aspect_out");
     }
 
 }

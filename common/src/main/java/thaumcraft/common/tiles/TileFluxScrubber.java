@@ -129,19 +129,19 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       nbttagcompound.setInteger("essentia", this.essentia);
    }
 
-   public boolean isConnectable(Direction face) {
+   public boolean isConnectable(@NotNull Direction face) {
       return face == this.facing;
    }
 
-   public boolean canOutputTo(Direction face) {
+   public boolean canOutputTo(@NotNull Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(Direction face) {
+   public boolean canInputFrom(@NotNull Direction face) {
       return false;
    }
 
-   public void setSuction(Aspect aspect, int amount) {
+   public void setSuction(@NotNull Aspect aspect, int amount) {
    }
 
    public boolean renderExtendedTube() {
@@ -152,11 +152,11 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return 0;
    }
 
-   public @NotNull Aspect getSuctionType(Direction face) {
+   public @NotNull Aspect getSuctionType(@NotNull Direction face) {
       return null;
    }
 
-   public int getSuctionAmount(Direction face) {
+   public int getSuctionAmount(@NotNull Direction face) {
       return 0;
    }
 
@@ -164,18 +164,18 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
       return Aspects.MAGIC;
    }
 
-   public int getEssentiaAmount(Direction loc) {
+   public int getEssentiaAmount(@NotNull Direction loc) {
       return this.essentia;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
       int re = Math.min(this.essentia, amount);
       this.essentia -= re;
       this.markDirty();
       return re;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
       return 0;
    }
 }

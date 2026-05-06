@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
+//usually use IEssentiaTransportInBlockEntity
 public interface IAspectInBlockEntity<Asp extends Aspect> {
     /**
      * This method is used to add a certain amount of aspect an aspect to the tile entity.

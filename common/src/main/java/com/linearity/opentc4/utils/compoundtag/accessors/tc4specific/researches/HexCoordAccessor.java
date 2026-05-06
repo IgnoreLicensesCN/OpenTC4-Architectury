@@ -17,15 +17,15 @@ public class HexCoordAccessor extends CompoundTagAccessor<HexCoord> {
 
     @Override
     public HexCoord readFromCompoundTag(CompoundTag tag) {
-        var q = qAccessorInternal.readFromCompoundTag(tag);
-        var r = rAccessorInternal.readFromCompoundTag(tag);
+        var q = qAccessorInternal.readIntFromCompoundTag(tag);
+        var r = rAccessorInternal.readIntFromCompoundTag(tag);
         return new HexCoord(q, r);
     }
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, HexCoord value) {
-        qAccessorInternal.writeToCompoundTag(tag, value.q());
-        rAccessorInternal.writeToCompoundTag(tag, value.r());
+        qAccessorInternal.writeIntToCompoundTag(tag, value.q());
+        rAccessorInternal.writeIntToCompoundTag(tag, value.r());
     }
 
     @Override

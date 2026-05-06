@@ -7,12 +7,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
-import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.*;
+import thaumcraft.common.tiles.crafted.essentiabe.*;
+import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.jars.VoidJarBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.pipes.*;
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceBlockEntity;
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
-import thaumcraft.common.tiles.crafted.pipes.*;
 import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
@@ -65,6 +69,8 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EssentiaTubeFilterBlockEntity> ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
     public static final BlockEntityType<EssentiaTubeRestrictBlockEntity> ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
     public static final BlockEntityType<EssentiaTubeOnewayBlockEntity> ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
+    public static final BlockEntityType<EssentiaBufferBlockEntity> ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
+    public static final BlockEntityType<EssentiaCentrifugeBlockEntity> ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -369,6 +375,22 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EssentiaTubeOnewayBlockEntity::new,
                                 ThaumcraftBlocks.ESSENTIA_TUBE_ONEWAY
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaBufferBlockEntity>> SUPPLIER_ESSENTIA_BUFFER =
+                BLOCK_ENTITIES.register(
+                        "essentia_buffer",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaBufferBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_BUFFER
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaCentrifugeBlockEntity>> SUPPLIER_ESSENTIA_CENTRIFUGE =
+                BLOCK_ENTITIES.register(
+                        "essentia_centrifuge",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaCentrifugeBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_CENTRIFUGE
                         ).build(null)
                 );
 

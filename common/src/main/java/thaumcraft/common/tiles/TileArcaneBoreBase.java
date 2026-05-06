@@ -64,34 +64,34 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return false;
    }
 
-   public boolean isConnectable(Direction face) {
+   public boolean isConnectable(@NotNull Direction face) {
       return true;
    }
 
-   public boolean canInputFrom(Direction face) {
+   public boolean canInputFrom(@NotNull Direction face) {
       return true;
    }
 
-   public boolean canOutputTo(Direction face) {
+   public boolean canOutputTo(@NotNull Direction face) {
       return false;
    }
 
-   public void setSuction(Aspect aspect, int amount) {
+   public void setSuction(@NotNull Aspect aspect, int amount) {
    }
 
-   public @NotNull Aspect getSuctionType(Direction face) {
+   public @NotNull Aspect getSuctionType(@NotNull Direction face) {
       return Aspects.ENTROPY;
    }
 
-   public int getSuctionAmount(Direction face) {
+   public int getSuctionAmount(@NotNull Direction face) {
       return face != this.orientation ? 128 : 0;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
       return 0;
    }
 
@@ -99,7 +99,7 @@ public class TileArcaneBoreBase extends TileThaumcraft implements IWandable, IEs
       return null;
    }
 
-   public int getEssentiaAmount(Direction face) {
+   public int getEssentiaAmount(@NotNull Direction face) {
       return 0;
    }
 

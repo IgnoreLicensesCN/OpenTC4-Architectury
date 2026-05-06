@@ -5,7 +5,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
-import thaumcraft.common.tiles.crafted.ThaumatoriumBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
 
 //TODO:set recipe
 public class ThaumatoriumMenu extends AbstractThaumcraftMenu<ThaumatoriumBlockEntity> {

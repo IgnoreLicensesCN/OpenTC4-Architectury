@@ -9,17 +9,17 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
      * @param face to input from
      * @return true if this side is used to input essentia
      */
-    boolean canInputFrom(Direction face);
+    boolean canInputFrom(@NotNull Direction face);
 
     /**
      * Sets the amount ofAspectVisList suction this block will apply
      */
-    void setSuction(Aspect aspect, int amount);
+    void setSuction(@NotNull Aspect aspect, int amount);
     /**
      * @param face the location from where the suction is being checked
      * @return the strength ofAspectVisList suction this block is applying.
      */
-    int getSuctionAmount(Direction face);
+    int getSuctionAmount(@NotNull Direction face);
     /**
      * Returns the type of aspect suction this block is applying.
      * @param face
@@ -27,25 +27,25 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
      * @return
      * 		a return type of aspect, <s>null</s> empty indicates the suction is untyped and the first thing available will be drawn
      */
-    @NotNull Aspect getSuctionType(Direction face);
+    @NotNull Aspect getSuctionType(@NotNull Direction face);
 
     /**
      * add the specified amount ofAspectVisList essentia to this transport tile
      * @return how much was actually added
      */
-    int addEssentia(Aspect aspect, int amount, Direction fromDirection);
+    int addEssentia(@NotNull Aspect aspect, int amount,@NotNull Direction fromDirection);
     /**
      * What type of essentia this contains
      * @param face
      * @return essentia contains
      */
     @NotNull
-    Aspect getEssentiaType(Direction face);
+    Aspect getEssentiaType(@NotNull Direction face);
 
 
     /**
      * @param face
      * @return How much essentia this block contains
      */
-    int getEssentiaAmount(Direction face);//TODO:Check if we need this
+    int getEssentiaAmount(@NotNull Direction face);//TODO:Check if we need this
 }

@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.mixinaccessors.CrucibleBlockEntityClientAccessor;
 import dev.architectury.fluid.FluidStack;
 import io.netty.util.internal.UnstableApi;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -40,7 +40,6 @@ import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.awt.*;
-import java.util.Map;
 
 import static com.linearity.opentc4.Consts.CrucibleTagAccessors.*;
 import static dev.architectury.fluid.FluidStack.create;
@@ -141,7 +140,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
         super.readCustomNBT(compoundTag);
         this.addedAspect = true;
         this.owningAspects.addAll(OWNING_ASPECTS.readFromCompoundTag(compoundTag));
-        this.heat = HEAT.readFromCompoundTag(compoundTag);
+        this.heat = HEAT.readIntFromCompoundTag(compoundTag);
         this.fluidStack = FLUID.readFromCompoundTag(compoundTag);
     }
 
@@ -149,7 +148,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         OWNING_ASPECTS.writeToCompoundTag(compoundTag, owningAspects);
-        HEAT.writeToCompoundTag(compoundTag, heat);
+        HEAT.writeIntToCompoundTag(compoundTag, heat);
         FLUID.writeToCompoundTag(compoundTag, fluidStack);
     }
 
@@ -530,7 +529,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int currentComparatorSignalValue() {
+    public int currentValueForComparatorSignal() {
         return Math.min(owningAspects.visSize(),getAspectCapacity());
     }
 
@@ -543,11 +542,9 @@ public class CrucibleBlockEntity extends TileThaumcraft
 //        int prevcolor;
         int prevx;
         int prevy;
-        private static final Map<CrucibleBlockEntity, ClientTickContext> contexts =
-                new MapMaker().weakKeys().makeMap();
         public static void tick(CrucibleBlockEntity be){
             if (!(be.level instanceof ClientLevel level)){return;}
-            var ctx = contexts.computeIfAbsent(be,c->new ClientTickContext());
+            var ctx = ((CrucibleBlockEntityClientAccessor)be).opentc4$getClientTickContext();
             var pos = be.getBlockPos();
             var xCoord = pos.getX();
             var yCoord = pos.getY();

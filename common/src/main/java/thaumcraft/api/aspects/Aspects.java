@@ -75,6 +75,8 @@ public class Aspects {
     public static final CompoundAspect MECHANISM = new CompoundAspect(AspectResourceLocation.of(Thaumcraft.MOD_ID, "machina"),0x8080a0, new CompoundAspectComponent(MOTION, TOOL));
     public static final CompoundAspect TRAP = new CompoundAspect(AspectResourceLocation.of(Thaumcraft.MOD_ID, "vinculum"),0x9a8080, new CompoundAspectComponent(MOTION, ENTROPY));
     public static final Aspect EMPTY = Aspect.EMPTY;
+    public static final CompoundAspect EMPTY_COMPOUND = CompoundAspect.EMPTY;
+    public static final PrimalAspect EMPTY_PRIMAL = PrimalAspect.EMPTY;
 
     public static final Map<ResourceLocation, AspectItem> ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP = new HashMap<>();
     public static final Map<ResourceLocation, RegistrySupplier<AspectItem>> ASPECT_RESOURCE_LOCATION_TO_ITEM_SUPPLIER_MAP = new HashMap<>();

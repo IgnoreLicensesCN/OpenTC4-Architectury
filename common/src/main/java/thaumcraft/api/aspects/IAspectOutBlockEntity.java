@@ -3,6 +3,7 @@ package thaumcraft.api.aspects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
+//usually use IEssentiaTransportOutBlockEntity
 public interface IAspectOutBlockEntity<Asp extends Aspect> {
     @UnmodifiableView
     @NotNull

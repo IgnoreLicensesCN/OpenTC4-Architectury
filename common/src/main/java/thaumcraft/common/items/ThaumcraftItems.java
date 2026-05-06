@@ -238,6 +238,8 @@ public class ThaumcraftItems {
     public static final BlockItem ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
     public static final BlockItem ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
     public static final BlockItem ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
+    public static final BlockItem ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
+    public static final BlockItem ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
 
     //===========================================================================================
 
@@ -840,6 +842,16 @@ public class ThaumcraftItems {
                 "essentia_tube_oneway",
                 () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_TUBE_ONEWAY,  new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_BUFFER = ITEMS.register(
+                "essentia_buffer",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_BUFFER,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_CENTRIFUGE = ITEMS.register(
+                "essentia_centrifuge",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_CENTRIFUGE,  new Item.Properties())
+        );
+
+
 
 
         static {

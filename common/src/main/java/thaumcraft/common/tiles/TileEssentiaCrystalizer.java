@@ -137,19 +137,19 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return true;
    }
 
-   public boolean isConnectable(Direction face) {
+   public boolean isConnectable(@NotNull Direction face) {
       return face == this.facing;
    }
 
-   public boolean canInputFrom(Direction face) {
+   public boolean canInputFrom(@NotNull Direction face) {
       return face == this.facing;
    }
 
-   public boolean canOutputTo(Direction face) {
+   public boolean canOutputTo(@NotNull Direction face) {
       return false;
    }
 
-   public void setSuction(Aspect aspect, int amount) {
+   public void setSuction(@NotNull Aspect aspect, int amount) {
    }
 
    public boolean renderExtendedTube() {
@@ -160,11 +160,11 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return 0;
    }
 
-   public @NotNull Aspect getSuctionType(Direction loc) {
+   public @NotNull Aspect getSuctionType(@NotNull Direction loc) {
       return null;
    }
 
-   public int getSuctionAmount(Direction loc) {
+   public int getSuctionAmount(@NotNull Direction loc) {
       return this.gettingPower() ? 0 : (loc == this.facing && this.aspect == null ? 128 : 64);
    }
 
@@ -172,15 +172,15 @@ public class TileEssentiaCrystalizer extends TileThaumcraft implements IAspectCo
       return this.aspect;
    }
 
-   public int getEssentiaAmount(Direction loc) {
+   public int getEssentiaAmount(@NotNull Direction loc) {
       return this.aspect == null ? 0 : 1;
    }
 
-   public int takeEssentia(Aspect aspect, int amount, Direction outputToDirection) {
+   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
       return 0;
    }
 
-   public int addEssentia(Aspect aspect, int amount, Direction fromDirection) {
+   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
       return this.canInputFrom(fromDirection) ? amount - this.addIntoContainer(aspect, amount) : 0;
    }
 

@@ -15,12 +15,12 @@ public class HexTypeAccessor extends CompoundTagAccessor<HexType> {
 
     @Override
     public HexType readFromCompoundTag(CompoundTag tag) {
-        return HexType.values()[intTypeAccessorInternal.readFromCompoundTag(tag)];
+        return HexType.values()[intTypeAccessorInternal.readIntFromCompoundTag(tag)];
     }
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, HexType value) {
-        intTypeAccessorInternal.writeToCompoundTag(tag, value.ordinal());
+        intTypeAccessorInternal.writeIntToCompoundTag(tag, value.ordinal());
     }
 
     @Override

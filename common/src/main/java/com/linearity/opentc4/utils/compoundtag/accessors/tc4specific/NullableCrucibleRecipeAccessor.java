@@ -18,8 +18,11 @@ public class NullableCrucibleRecipeAccessor extends CompoundTagAccessor<Crucible
     @Override
     @Nullable
     public CrucibleRecipe readFromCompoundTag(CompoundTag tag) {
-        var result = internalAccessor.readFromCompoundTag(tag);
-        return CRUCIBLE_RECIPES_VIEW.get(result);
+        var recipeID = internalAccessor.readFromCompoundTag(tag);
+        if (recipeID == null) {
+            return null;
+        }
+        return CRUCIBLE_RECIPES_VIEW.get(recipeID);
     }
 
     @Override

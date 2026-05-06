@@ -9,8 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntBinaryOperator;
 import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
@@ -90,7 +91,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return out;
 	}
 
-	@Deprecated(forRemoval = true,since = "itself may change into Iterable")
+	@Deprecated(forRemoval = true,since = "itself may change into Iterable,or i want to make another impl with LongArrayList")
 	public Object2IntSortedMap.FastSortedEntrySet<Asp> entrySet(){
 		return aspects.object2IntEntrySet();
 	}
@@ -457,16 +458,15 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 
 	@Override
 	public String toString() {
-		return this.getClass() + "{" +
-				"aspects=" + aspects +
-				", aspectView=" + Arrays.toString(aspects.object2IntEntrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ":" + entry.getIntValue())
-                .toArray()) +
-				'}';
+		StringJoiner joiner = new StringJoiner(", ", "{", "}");
+		aspects.object2IntEntrySet().forEach(entry ->
+				joiner.add(entry.getKey() + ":" + entry.getIntValue())
+		);
+		return this.getClass().getSimpleName() + "{aspects=" + joiner + "}";
 	}
 
-	private void recalculateVisSize(){
+	//do better not calc as possible
+	protected void recalculateVisSize(){
 		this.visSize = 0;
 		this.aspectView.values().forEach(i -> this.visSize += i);
 	}
@@ -479,6 +479,22 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	public @NotNull("empty -> empty(aspect)") Asp getFirstAspect() {
 		if (aspects.isEmpty()) return (Asp) Aspects.EMPTY;
 		return aspects.firstKey();
+	}
+
+	public @NotNull("empty -> empty(aspect)") Asp getAspectAtIndexEnsureInBound(int index){
+		return getAspectAtIndex((index&Integer.MAX_VALUE)%size());
+	}
+	public @NotNull("empty -> empty(aspect)") Asp getAspectAtIndex(int index) {
+		AtomicInteger i = new AtomicInteger(index);
+		AtomicReference<Asp> currentAsp = new AtomicReference<>((Asp)Aspects.EMPTY);
+		forEachWithBreak((asp,value) -> {
+			currentAsp.set(asp);
+			if (i.getAndDecrement() == 0){
+				return true;
+			}
+			return false;
+		});
+		return currentAsp.get();
 	}
 
 	public boolean containsKey(Asp aspect) {

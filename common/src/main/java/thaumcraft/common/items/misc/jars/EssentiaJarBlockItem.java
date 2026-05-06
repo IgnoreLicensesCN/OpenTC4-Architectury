@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
-import thaumcraft.common.tiles.crafted.jars.EssentiaJarBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
 import java.util.List;
 import java.util.Objects;

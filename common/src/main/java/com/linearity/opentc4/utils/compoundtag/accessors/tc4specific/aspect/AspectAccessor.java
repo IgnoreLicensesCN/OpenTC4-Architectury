@@ -8,7 +8,6 @@ import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.NoSuchElementException;
 

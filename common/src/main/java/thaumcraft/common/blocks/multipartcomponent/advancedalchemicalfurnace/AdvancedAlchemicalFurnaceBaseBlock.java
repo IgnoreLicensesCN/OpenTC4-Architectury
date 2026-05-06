@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.client.fx.migrated.particles.FXSlimyBubble;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
 
 public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemicalFurnaceComponent
         implements EntityBlock {

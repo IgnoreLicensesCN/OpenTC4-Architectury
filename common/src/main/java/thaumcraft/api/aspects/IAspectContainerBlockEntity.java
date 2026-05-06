@@ -12,6 +12,7 @@ import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
  * Used by blocks like the crucible and alembic to hold their aspects. 
  * Tiles extending this interface will have their aspects show up when viewed by goggles of aspect revealing
  *
+ * <p>renamed from IAspectContainer</p>
  * <p>change:Node will no longer use this.they will go to {@link IWorldlyCentiVisContainerBlockEntity}.</p>
  * <p>Vis and aspect(for infusion) should be different!</p>
  * <p>Separated into {@link IAspectOutBlockEntity} and {@link IAspectInBlockEntity}</p>

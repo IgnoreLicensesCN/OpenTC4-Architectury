@@ -1,8 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -11,8 +9,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-
-import java.util.Random;
 
 public class AncientStoneStairBlock extends StairBlock {
     public AncientStoneStairBlock(BlockState blockState, Properties properties) {
@@ -32,21 +28,10 @@ public class AncientStoneStairBlock extends StairBlock {
     @Override
     public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         var coord = blockPlaceContext.getClickedPos();
-        var hasher = ""+coord.getX() + coord.getY() + coord.getZ() + blockPlaceContext.getLevel().dimension().location();
-        var random = new Random(hasher.hashCode());
-        return super.getStateForPlacement(blockPlaceContext).setValue(FACE_STATE, random.nextInt(64));
-    }
-
-
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos,
-                        BlockState oldState, boolean isMoving) {
-        super.onPlace(state, level, pos, oldState, isMoving);
-        if (oldState.getBlock() != this){
-            var hasher = ""+pos.getX() + pos.getY() + pos.getZ() + level.dimension().location();
-            var random = new Random(hasher.hashCode());
-
-            level.setBlock(pos,state.setValue(FACE_STATE, random.nextInt(64)),3);
-        }
+        var seed = coord.asLong();
+        seed = (seed ^ (seed >>> 33)) * 0xff51afd7ed558ccdL;
+        seed = (seed ^ (seed >>> 33)) * 0xc4ceb9fe1a85ec53L;
+        seed = seed ^ (seed >>> 33);
+        return defaultBlockState().setValue(FACE_STATE, (int)(seed&63));
     }
 }
