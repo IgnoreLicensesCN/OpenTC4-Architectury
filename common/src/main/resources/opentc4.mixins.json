@@ -12,6 +12,7 @@
     "clientbe.BrainJarBlockEntityClientMixin",
     "clientbe.CrucibleBlockEntityClientMixin",
     "clientbe.EssentiaCentrifugeBlockEntityClientMixin",
+    "clientbe.EssentiaCrystallizerBlockEntityClientMixin",
     "clientbe.EssentiaReservoirBlockEntityClientMixin",
     "clientbe.VisNetRelayBlockEntityClientMixin"
   ],

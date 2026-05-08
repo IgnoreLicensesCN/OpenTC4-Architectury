@@ -240,6 +240,8 @@ public class ThaumcraftItems {
     public static final BlockItem ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
     public static final BlockItem ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
     public static final BlockItem ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
+    public static final BlockItem ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
+    public static final CrystalEssenceItem CRYSTAL_ESSENCE = Registry.SUPPLIER_CRYSTAL_ESSENCE.get();
 
     //===========================================================================================
 
@@ -849,6 +851,13 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_CENTRIFUGE = ITEMS.register(
                 "essentia_centrifuge",
                 () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_CENTRIFUGE,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ESSENTIA_CRYSTALLIZER = ITEMS.register(
+                "essentia_crystallizer",
+                () -> new BlockItem(ThaumcraftBlocks.ESSENTIA_CRYSTALLIZER,  new Item.Properties())
+        );
+        public static final RegistrySupplier<CrystalEssenceItem> SUPPLIER_CRYSTAL_ESSENCE = ITEMS.register(
+                "crystal_essentia", CrystalEssenceItem::new
         );
 
 

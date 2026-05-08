@@ -1,8 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
-    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.11.458' apply false
+    id 'architectury-plugin' version '3.4.162'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
@@ -50,12 +50,12 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 17
+        it.options.release = 21
     }
     tasks.named('shadowJar', ShadowJar) {
         archiveClassifier.set('') // 覆盖默认 jar

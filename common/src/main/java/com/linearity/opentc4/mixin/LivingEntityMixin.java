@@ -29,7 +29,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Mixin(LivingEntity.class)
+@Mixin(value=LivingEntity.class,priority = 214748364)
 public abstract class LivingEntityMixin {
     @Inject(method = "tick",at=@At("HEAD"))
     public void opentc4$livingTickBefore(CallbackInfo ci) {
@@ -62,7 +62,7 @@ public abstract class LivingEntityMixin {
     @Unique private boolean opentc4$checkedNoEffect = false;
 
     @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
-    @Unique private final Map<MobEffect, MobEffectInstance> storedEffectsToPreventRemove = new ConcurrentHashMap<>();
+    @Unique private final Map<MobEffect, MobEffectInstance> opentc4$storedEffectsToPreventRemove = new ConcurrentHashMap<>();
     @Inject(method = "removeAllEffects",at=@At("HEAD"))
     public void opentc4$preventMilkRemoveEffect(CallbackInfoReturnable<Boolean> cir) {
         if (!MilkContext.FROM_MILK.get()) {return;}//a bit trick from chatGPT
@@ -71,18 +71,18 @@ public abstract class LivingEntityMixin {
             var effectInstance = entry.getValue();
             if (effect instanceof PreventMilkRemoveEffect preventMilkRemoveEffect){
                 if (preventMilkRemoveEffect.preventMilkRemove(effectInstance,(LivingEntity)(Object)this)){
-                    storedEffectsToPreventRemove.put(effect, effectInstance);
+                    opentc4$storedEffectsToPreventRemove.put(effect, effectInstance);
                 }
             }
         }
-        for (var effect:storedEffectsToPreventRemove.keySet()){
+        for (var effect: opentc4$storedEffectsToPreventRemove.keySet()){
             activeEffects.remove(effect);
         }
     }
     @Inject(method = "removeAllEffects",at=@At("TAIL"))
     public void opentc4$preventMilkRemoveEffect_restore(CallbackInfoReturnable<Boolean> cir) {
-        activeEffects.putAll(storedEffectsToPreventRemove);
-        storedEffectsToPreventRemove.clear();
+        activeEffects.putAll(opentc4$storedEffectsToPreventRemove);
+        opentc4$storedEffectsToPreventRemove.clear();
     }
 
     @Inject(
@@ -112,7 +112,6 @@ public abstract class LivingEntityMixin {
                 serverPlayer.sendSystemMessage(Component.literal("§4§o" + Component.translatable("warp.text.hunger.1")));
             }
         }
-
     }
 }
 

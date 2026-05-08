@@ -8,8 +8,8 @@ import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 //(dont impl for empty jar)
 public interface IAspectContainerItem<Asp extends Aspect> extends IBonusAspectOwnerItem<Asp> {
-    AspectList<Asp> getAspects(ItemStack itemstack);
-    default AspectList<Asp> getOwningBonusAspects(ItemStack stack){
+    @NotNull AspectList<Asp> getAspects(ItemStack itemstack);
+    default @NotNull AspectList<Asp> getOwningBonusAspects(ItemStack stack){
         return getAspects(stack);
     }
     int getAspectTypeSize(ItemStack itemstack);//for example 1 for jar and Integer.MAX_VALUE for ESSENTIA_RESERVOIR

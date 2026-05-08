@@ -305,5 +305,11 @@ public class Consts {
         public static final CompoundAspectAccessor ASPECT_IN = new CompoundAspectAccessor("aspect_in");
         public static final AspectAccessor ASPECT_OUT = new AspectAccessor("aspect_out");
     }
+    public static class EssentiaCrystallizerBlockEntityTagAccessors {
+        public static final AspectAccessor ASPECT_CRYSTALLIZING = new AspectAccessor("aspect_crystallizing");
+    }
+    public static class CrystalEssenceItemTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+    }
 
 }

@@ -1,15 +1,16 @@
 package thaumcraft.api.aspects;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnmodifiableView;
+import org.jetbrains.annotations.ApiStatus;
 
 //usually use IEssentiaTransportInBlockEntity
+//impl this means BE accepts force-add(without considering suction limits) aspect
+@ApiStatus.Experimental
 public interface IAspectInBlockEntity<Asp extends Aspect> {
     /**
      * This method is used to add a certain amount of aspect an aspect to the tile entity.
      * @param aspect to add
      * @param amount to add
-     * @return the amount of aspect left over that could not be added.
+     * @return the amount of aspect left over that could not be added.(remaining to add)
      */
     int addIntoContainer(Asp aspect, int amount);
     /**
@@ -19,4 +20,10 @@ public interface IAspectInBlockEntity<Asp extends Aspect> {
      */
     boolean doesContainerAccept(Asp aspect);
 
+    default int addIntoContainerIfAccept(Asp aspect, int amount){
+        if (!doesContainerAccept(aspect)) {
+            return amount;
+        }
+        return addIntoContainer(aspect, amount);
+    }
 }

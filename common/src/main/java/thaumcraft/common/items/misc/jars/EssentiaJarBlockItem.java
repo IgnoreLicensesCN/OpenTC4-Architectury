@@ -42,6 +42,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var level = useOnContext.getLevel();
         var pos = useOnContext.getClickedPos();
@@ -123,6 +124,9 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, list, tooltipFlag);
+        if (level == null || !level.isClientSide){
+            return;
+        }
         var tag = itemStack.getTag();
         if (tag == null) {
             return;
@@ -215,33 +219,11 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
 
     public record EssentiaJarInfo(Aspect aspect, int amount,
                                   Aspect filter) {//TODO:[maybe wont finished]if put into a single class,which package?
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof EssentiaJarInfo(Aspect aspect1, int amount1, Aspect filter1))) return false;
-            return amount == amount1 && Objects.equals(aspect, aspect1) && Objects.equals(
-                    filter, filter1);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(aspect, amount, filter);
-        }
-
-        @Override
-        public String toString() {
-            return "EssentiaJarInfo{" +
-                    "aspect=" + aspect +
-                    ", amount=" + amount +
-                    ", filter=" + filter +
-                    '}';
-        }
-
         public static final EssentiaJarInfo EMPTY = new EssentiaJarInfo(Aspects.EMPTY, 0, Aspects.EMPTY);
     }
 
     @Override
-    public AspectList<Aspect> getAspects(ItemStack itemstack) {
+    public @NotNull AspectList<Aspect> getAspects(ItemStack itemstack) {
         var tag = itemstack.getTag();
         if (tag == null) {
             return UnmodifiableAspectList.EMPTY;

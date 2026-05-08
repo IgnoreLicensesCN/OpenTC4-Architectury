@@ -8,8 +8,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.essentiabe.*;
-import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
-import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
+import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.*;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.VoidJarBlockEntity;
 import thaumcraft.common.tiles.crafted.essentiabe.pipes.*;
@@ -71,6 +70,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EssentiaTubeOnewayBlockEntity> ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
     public static final BlockEntityType<EssentiaBufferBlockEntity> ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
     public static final BlockEntityType<EssentiaCentrifugeBlockEntity> ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
+    public static final BlockEntityType<EssentiaCrystallizerBlockEntity> ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -391,6 +391,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EssentiaCentrifugeBlockEntity::new,
                                 ThaumcraftBlocks.ESSENTIA_CENTRIFUGE
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<EssentiaCrystallizerBlockEntity>> SUPPLIER_ESSENTIA_CRYSTALLIZER =
+                BLOCK_ENTITIES.register(
+                        "essentia_crystallizer",
+                        () -> BlockEntityType.Builder.of(
+                                EssentiaCrystallizerBlockEntity::new,
+                                ThaumcraftBlocks.ESSENTIA_CRYSTALLIZER
                         ).build(null)
                 );
 

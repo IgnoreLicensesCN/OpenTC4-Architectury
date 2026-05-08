@@ -1,42 +1,5 @@
 package thaumcraft.common.blocks;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockContainer;
-import net.minecraft.world.level.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraft.core.Direction;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
-import thaumcraft.client.renderers.block.BlockRenderer;
-import thaumcraft.codechicken.lib.raytracer.IndexedCuboid6;
-import thaumcraft.codechicken.lib.raytracer.RayTracer;
-import thaumcraft.codechicken.lib.vec.BlockCoord;
-import thaumcraft.codechicken.lib.vec.Vector3;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.relics.ItemResonator;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.tiles.*;
-
-import java.util.LinkedList;
-import java.util.List;
-
 //"tile.blockTube.0.name": "源质管道", --done
 //"tile.blockTube.1.name": "源质阀门", --done
 //"tile.blockTube.2.name": "奥法离心机", //wtf its tube?
@@ -45,6 +8,7 @@ import java.util.List;
 //"tile.blockTube.5.name": "限定源质管道", --done
 //"tile.blockTube.6.name": "定向源质管道", --done
 //"tile.blockTube.7.name": "源质结晶器",
+@Deprecated(forRemoval = true)
 public class BlockTube /*extends BlockContainer*/ {
 //   public IIcon[] icon = new IIcon[8];
 //   public IIcon iconValve;
@@ -157,15 +121,15 @@ public class BlockTube /*extends BlockContainer*/ {
 //      return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 //   }
 
-   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-      int metadata = world.getBlockMetadata(i, j, k);
-      if (metadata == 2) {
-         this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-      } else if (metadata == 7) {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-      }
-
-   }
+//   public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
+//      int metadata = world.getBlockMetadata(i, j, k);
+//      if (metadata == 2) {
+//         this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+//      } else if (metadata == 7) {
+//         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//      }
+//
+//   }
 
 //   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
 //      int metadata = world.getBlockMetadata(i, j, k);
@@ -217,25 +181,25 @@ public class BlockTube /*extends BlockContainer*/ {
 //      return metadata;
 //   }
 
-   public TileEntity createTileEntity(World world, int metadata) {
-      if (metadata == 0) {
-         return new TileTube();
-      } else if (metadata == 1) {
-         return new TileTubeValve();
-      } else if (metadata == 2) {
-         return new TileCentrifuge();
-      } else if (metadata == 3) {
-         return new TileTubeFilter();
-      } else if (metadata == 4) {
-         return new TileTubeBuffer();
-      } else if (metadata == 5) {
-         return new TileTubeRestrict();
-      } else if (metadata == 6) {
-         return new TileTubeOneway();
-      } else {
-         return metadata == 7 ? new TileEssentiaCrystalizer() : super.createTileEntity(world, metadata);
-      }
-   }
+//   public TileEntity createTileEntity(World world, int metadata) {
+//      if (metadata == 0) {
+//         return new TileTube();
+//      } else if (metadata == 1) {
+//         return new TileTubeValve();
+//      } else if (metadata == 2) {
+//         return new TileCentrifuge();
+//      } else if (metadata == 3) {
+//         return new TileTubeFilter();
+//      } else if (metadata == 4) {
+//         return new TileTubeBuffer();
+//      } else if (metadata == 5) {
+//         return new TileTubeRestrict();
+//      } else if (metadata == 6) {
+//         return new TileTubeOneway();
+//      } else {
+//         return metadata == 7 ? new TileEssentiaCrystalizer() : super.createTileEntity(world, metadata);
+//      }
+//   }
 
 //   public TileEntity createNewTileEntity(World var1, int md) {
 //      return null;

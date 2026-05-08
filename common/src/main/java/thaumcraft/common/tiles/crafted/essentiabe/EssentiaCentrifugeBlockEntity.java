@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
@@ -22,7 +23,8 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
         implements 
         IEssentiaTransportInBlockEntity,
         IEssentiaTransportOutBlockEntity,
-        IAspectDisplayBlockEntity<Aspect>
+        IAspectDisplayBlockEntity<Aspect>,
+        IValueContainerBasedComparatorSignalProviderBlockEntity
 {
     public EssentiaCentrifugeBlockEntity(BlockEntityType<? extends EssentiaCentrifugeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -128,7 +130,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
 
     }
 
-
+    //TODO:Use blockstate
     private boolean hasNeighbourSignal(){
         if (this.level == null){
             return false;
@@ -201,6 +203,16 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay() {
         return aspToDisplay;
+    }
+
+    @Override
+    public int currentValueForComparatorSignal() {
+        return (aspectOut.isEmpty() ? 0 : 1) + (aspectIn.isEmpty()?0:1);
+    }
+
+    @Override
+    public int comparatorSignalCapacity() {
+        return 2;
     }
 
     public static class ClientTickContext {

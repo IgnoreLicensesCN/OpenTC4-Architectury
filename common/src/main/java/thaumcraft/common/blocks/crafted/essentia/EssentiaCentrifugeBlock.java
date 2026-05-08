@@ -18,6 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.EssentiaCentrifugeBlockEntity;
 
@@ -73,5 +74,17 @@ public class EssentiaCentrifugeBlock
                 centrifuge.serverTick();
             }
         };
+    }
+
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState blockState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+                ? 0 : signalProvider.getComparatorSignal();
     }
 }

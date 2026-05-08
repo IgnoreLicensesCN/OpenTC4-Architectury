@@ -81,7 +81,7 @@ public class ManaBeanItem extends BlockItem implements IBonusAspectOwnerItem<Asp
     }
 
     @Override
-    public AspectList<Aspect> getOwningBonusAspects(ItemStack stack) {
+    public @NotNull AspectList<Aspect> getOwningBonusAspects(ItemStack stack) {
         var aspect = getContainingAspectFromStack(stack);
         if (aspect.isEmpty()){
             return UnmodifiableAspectList.of();

@@ -69,6 +69,7 @@ block_with_item_names = [
     ['tile.blockTube.5.name','essentia_tube_restrict'],
     ['tile.blockTube.6.name','essentia_tube_oneway'],
     ['tile.blockTube.2.name','essentia_centrifuge'],
+    ['tile.blockTube.7.name','essentia_crystallizer'],
 ]
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')

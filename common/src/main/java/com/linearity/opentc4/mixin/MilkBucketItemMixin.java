@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MilkBucketItem.class)
+@Mixin(value = MilkBucketItem.class,priority = 214748364)
 public class MilkBucketItemMixin {
     @Inject(
             method = "finishUsingItem",

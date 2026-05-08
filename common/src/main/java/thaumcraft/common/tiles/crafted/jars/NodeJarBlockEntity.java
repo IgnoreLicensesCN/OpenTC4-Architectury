@@ -49,7 +49,7 @@ public class NodeJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public AspectList<Aspect> getOwningBonusAspects(ItemStack stack) {
+    public @NotNull AspectList<Aspect> getOwningBonusAspects(ItemStack stack) {
         return nodeInfo.nodeAspects;
     }
 }

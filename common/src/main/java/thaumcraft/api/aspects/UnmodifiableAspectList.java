@@ -142,6 +142,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
     @SafeVarargs
     public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp... aspects){
+        if (aspects.length == 1){
+            return ofSingle(aspects[0]);
+        }
         AspectList<Asp> out = new AspectList<>();
         for (var aspect : aspects){
             if (aspect != null){

@@ -94,7 +94,6 @@ public class AbstractEssentiaTubeBlock
                 && connectable.isConnectable(dir);
     }
 
-
     @Override
     public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return this.getShape(blockState, blockGetter, blockPos, collisionContext);

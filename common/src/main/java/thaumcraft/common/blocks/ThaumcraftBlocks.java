@@ -230,6 +230,7 @@ public class ThaumcraftBlocks {
     public static final EssentiaTubeOnewayBlock ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
     public static final EssentiaBufferBlock ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
     public static final EssentiaCentrifugeBlock ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
+    public static final EssentiaCrystallizerBlock ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -868,6 +869,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_centrifuge",
                         EssentiaCentrifugeBlock::new
+                );
+        public static final RegistrySupplier<EssentiaCrystallizerBlock> SUPPLIER_ESSENTIA_CRYSTALLIZER =
+                BLOCKS.register(
+                        "essentia_crystallizer",
+                        EssentiaCrystallizerBlock::new
                 );
 
 
