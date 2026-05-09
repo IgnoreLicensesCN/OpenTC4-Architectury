@@ -8,7 +8,7 @@ import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
 public class BlazeWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwner<Aspect> {

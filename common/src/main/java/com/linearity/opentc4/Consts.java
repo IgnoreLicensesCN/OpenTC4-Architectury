@@ -18,7 +18,6 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAc
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.NullFilteredModifiableListAccessor;
 import net.minecraft.core.BlockPos;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;

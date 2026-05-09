@@ -414,7 +414,7 @@ public class NodeType {
     private final NodeTypeResourceLocation name;
     //when doing a node attack:
     // if another node has aspectAmount more than this node's aspect capacity(for same aspect)
-    // we will have a chance ofAspectVisList 1/(1 + (int) ((double) aspectCapacityAmountOfThis / attackBiggerNodeChangeModifier))
+    // we will have a chance fromAspectVisList 1/(1 + (int) ((double) aspectCapacityAmountOfThis / attackBiggerNodeChangeModifier))
     // to attack that 'bigger' node
     // this value will pick Math.max(NodeModifier's[default:1],NodeType's[default:1]) for a node
     private final float attackBiggerNodeChangeModifier;

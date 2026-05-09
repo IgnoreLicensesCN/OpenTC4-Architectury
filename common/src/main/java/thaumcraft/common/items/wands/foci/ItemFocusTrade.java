@@ -19,7 +19,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -35,7 +35,7 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemFocusTrade extends ItemFocusBasic implements IArchitect {
+public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayItem {
    public IIcon iconOrnament;
    private static final AspectList<Aspect>cost;
    private static AspectList<Aspect>cost2;

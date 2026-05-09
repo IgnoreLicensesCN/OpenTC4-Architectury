@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 
 
-public interface IWandComponentNameOwner {
+public interface IWandComponentNameOwnerItem {
 
     default Component getComponentName() {
         if (this instanceof Item item){

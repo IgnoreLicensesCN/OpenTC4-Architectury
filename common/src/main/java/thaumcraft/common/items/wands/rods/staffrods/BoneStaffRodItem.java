@@ -8,7 +8,7 @@ import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WorkAsStaffRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
 public class BoneStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect> {

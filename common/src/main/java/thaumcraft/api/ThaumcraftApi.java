@@ -399,7 +399,7 @@ public class ThaumcraftApi {
     //Miscellaneous
     /**
      * Portable Hole Block-id Blacklist.
-     * Simply add the block-id's ofAspectVisList blocks you don't want the portable hole to go through.
+     * Simply add the block-id's fromAspectVisList blocks you don't want the portable hole to go through.
      */
     public static ArrayList<Block> portableHoleBlackList = new ArrayList<>();
 
@@ -547,7 +547,7 @@ public class ThaumcraftApi {
 //     * Used to assign apsects to the given ore dictionary item.
 //     *
 //     * @param tagString the ore dictionary name
-//     * @param aspects   A ObjectTags object ofAspectVisList the associated aspects
+//     * @param aspects   A ObjectTags object fromAspectVisList the associated aspects
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
@@ -566,12 +566,12 @@ public class ThaumcraftApi {
 //    /**
 //     * Used to assign aspects to the given item/block.
 //     * Attempts to automatically generate aspect tags by checking registered recipes.
-//     * Here is an example ofAspectVisList the declaration for pistons:<p>
+//     * Here is an example fromAspectVisList the declaration for pistons:<p>
 //     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
 //     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
 //     *
-//     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values ofAspectVisList this item/block should have the same aspects
-//     * @param aspects A ObjectTags object ofAspectVisList the associated aspects
+//     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values fromAspectVisList this item/block should have the same aspects
+//     * @param aspects A ObjectTags object fromAspectVisList the associated aspects
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
@@ -636,14 +636,14 @@ public class ThaumcraftApi {
     //LOOT BAGS //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Used to add possible loot to treasure bags. As a reference, the weight ofAspectVisList gold coins are 2000
+     * Used to add possible loot to treasure bags. As a reference, the weight fromAspectVisList gold coins are 2000
      * and a diamond is 50.
      * The weights are the same for all loot bag types - the only difference is how many items the bag
      * contains.
      *
      * @param item
      * @param weight
-     * @param bagTypes array ofAspectVisList which type ofAspectVisList bag to add this loot to. Multiple types can be specified
+     * @param bagTypes array fromAspectVisList which type fromAspectVisList bag to add this loot to. Multiple types can be specified
      *                 0 = common, 1 = uncommon, 2 = rare
      */
     //TODO:More LootBag
@@ -671,26 +671,26 @@ public class ThaumcraftApi {
 
     /**
      * To define mod crops you need to use FMLInterModComms in your @Mod.Init method.
-     * There are two 'types' ofAspectVisList crops you can add. Standard crops and clickable crops.
+     * There are two 'types' fromAspectVisList crops you can add. Standard crops and clickable crops.
      *
      * Standard crops work like normal vanilla crops - they grow until a certain metadata
      * value is reached and you harvest them by destroying the block and collecting the blocks.
      * You need to create and ItemStack that tells the golem what block id and metadata represents
-     * the crop when fully grown. Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get
+     * the crop when fully grown. Sending a metadata fromAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get
      * checked.
      * Example for vanilla wheat:
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestStandardCrop", new ItemStack(Block.crops,1,7));
      *
-     * Clickable crops are crops that you right click to gather their bounty instead ofAspectVisList destroying them.
+     * Clickable crops are crops that you right click to gather their bounty instead fromAspectVisList destroying them.
      * As for standard crops, you need to create and ItemStack that tells the golem what block id
      * and metadata represents the crop when fully grown. The golem will trigger the blocks onBlockActivated method.
-     * Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
+     * Sending a metadata fromAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
      * Example (this will technically do nothing since clicking wheat does nothing, but you get the idea):
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestClickableCrop", new ItemStack(Block.crops,1,7));
      *
      * Stacked crops (like reeds) are crops that you wish the bottom block should remain after harvesting.
      * As for standard crops, you need to create and ItemStack that tells the golem what block id
-     * and metadata represents the crop when fully grown. Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the actualy md won't get
+     * and metadata represents the crop when fully grown. Sending a metadata fromAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the actualy md won't get
      * checked. If it has the order upgrade it will only harvest if the crop is more than one block high.
      * Example:
      * FMLInterModComms.sendMessage("Thaumcraft", "harvestStackedCrop", new ItemStack(Block.reed,1,7));
@@ -704,17 +704,17 @@ public class ThaumcraftApi {
      * The format should be:
      * "[ore item/block id],[ore item/block metadata],[cluster item/block id],[cluster item/block metadata],[chance modifier float]"
      *
-     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe ofAspectVisList the core)
+     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe fromAspectVisList the core)
      *
-     * Example for vanilla iron ore to produce one ofAspectVisList my own native iron clusters (assuming default id's) at double the default chance:
+     * Example for vanilla iron ore to produce one fromAspectVisList my own native iron clusters (assuming default id's) at double the default chance:
      * FMLInterModComms.sendMessage("Thaumcraft", "nativeCluster","15,0,25016,16,2.0");
      */
 
     //LAMP OF GROWTH BLACKLIST ///////////////////////////////////////////////////////////////////////////
     /**
-     * You can blacklist crops that should not be effected by the Lamp ofAspectVisList Growth via FMLInterModComms
+     * You can blacklist crops that should not be effected by the Lamp fromAspectVisList Growth via FMLInterModComms
      * in your @Mod.Init method using the "lampBlacklist" itemstack message.
-     * Sending a metadata ofAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
+     * Sending a metadata fromAspectVisList [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
      * Example for vanilla wheat:
      * FMLInterModComms.sendMessage("Thaumcraft", "lampBlacklist", new ItemStack(Block.crops,1,OreDictionary.WILDCARD_VALUE));
      */
@@ -752,7 +752,7 @@ public class ThaumcraftApi {
      * The entity must extend EntityMob.
      * [Entity] is in a similar format to what is used for mob spawners and such (see EntityList.class for vanilla examples).
      * The [level] value indicate how rare the champion version will be - the higher the number the more common.
-     * The number roughly equals the [n] in 100 chance ofAspectVisList a mob being a champion version.
+     * The number roughly equals the [n] in 100 chance fromAspectVisList a mob being a champion version.
      * You can give 0 or negative numbers to allow champions to spawn with a very low chance only in particularly dangerous places.
      * However anything less than about -2 will probably result in no spawns at all.
      * Example:

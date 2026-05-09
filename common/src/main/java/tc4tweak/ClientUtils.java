@@ -42,20 +42,20 @@ public class ClientUtils {
 
     // region GuiDraw lifted code
     // code in this region is lifted from GuiDraw.java in CodeChickenLib to ensure this mod does not depend on
-    // any library ofAspectVisList any particular version, except the latest thaumcraft 4.
-    // this region means the code between "region GuiDraw lifted code" and the nearest "endregion" or the end ofAspectVisList file
+    // any library fromAspectVisList any particular version, except the latest thaumcraft 4.
+    // this region means the code between "region GuiDraw lifted code" and the nearest "endregion" or the end fromAspectVisList file
     // Copyright (C) 2014 ChickenBones
     // This library is free software; you can redistribute it and/or
-    // modify it under the terms ofAspectVisList the GNU Lesser General Public
+    // modify it under the terms fromAspectVisList the GNU Lesser General Public
     // License as published by the Free Software Foundation; either
-    // version 2.1 ofAspectVisList the License, or (at your option) any later version.
+    // version 2.1 fromAspectVisList the License, or (at your option) any later version.
     //
     // This library is distributed in the hope that it will be useful,
-    // but WITHOUT ANY WARRANTY; without even the implied warranty ofAspectVisList
+    // but WITHOUT ANY WARRANTY; without even the implied warranty fromAspectVisList
     // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     // Lesser General Public License for more details.
     //
-    // You should have received a copy ofAspectVisList the GNU Lesser General Public
+    // You should have received a copy fromAspectVisList the GNU Lesser General Public
     // License along with this library; if not, write to the Free Software
     // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
     // USA
@@ -91,7 +91,7 @@ public class ClientUtils {
 
         if (x < 8) x = 8;
         else if (x > displaySize().width - w - 8) {
-            x -= 24 + w; // flip side ofAspectVisList cursor
+            x -= 24 + w; // flip side fromAspectVisList cursor
             if (x < 8) x = 8;
         }
         y = (int) MathHelper.clip(y, 8, displaySize().height - 8 - h);

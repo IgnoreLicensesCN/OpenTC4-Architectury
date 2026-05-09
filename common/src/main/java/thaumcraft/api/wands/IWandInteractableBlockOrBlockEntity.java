@@ -8,6 +8,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 //put on a Block or BlockEntity.
+//if a block impl this and it's be impl this both will trigger
+//a wand should check and activate this part
 public interface IWandInteractableBlockOrBlockEntity {
 
     //if InteractionResult.CONSUME,hold right click will lead to loooooong use(call #interact below every tick).

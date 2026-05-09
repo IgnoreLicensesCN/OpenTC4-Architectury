@@ -41,7 +41,7 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      */
     int getMinimumSuctionToDrainOut();
     /**
-     * What type ofAspectVisList essentia this contains
+     * What type fromAspectVisList essentia this contains
      * @param face self face
      * @return essentia contains
      */

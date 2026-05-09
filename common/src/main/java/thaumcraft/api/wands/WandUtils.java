@@ -43,9 +43,9 @@ public class WandUtils {
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
-        if (wandItem instanceof ICentiVisContainer<?> centiVisContainerNotCasted) {
+        if (wandItem instanceof ICentiVisContainerItem<?> centiVisContainerNotCasted) {
             var tt = Component.empty();
-            var centiVisContainer = (ICentiVisContainer<Aspect>) centiVisContainerNotCasted;
+            var centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerNotCasted;
             var visOwning = centiVisContainer.getAllCentiVisOwning(wandStack);
             var visCapacity = centiVisContainer.getAllCentiVisCapacity(wandStack);
 

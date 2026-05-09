@@ -2,8 +2,6 @@ package thaumcraft.common.tiles.abstracts;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.ICentiVisContainer;
 
 import java.util.List;
 

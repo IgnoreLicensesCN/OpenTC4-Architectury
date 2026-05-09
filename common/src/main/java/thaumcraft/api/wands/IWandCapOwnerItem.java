@@ -1,10 +1,9 @@
 package thaumcraft.api.wands;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface IWandCapOwner {
+public interface IWandCapOwnerItem {
     default IWandCapPropertiesOwner getWandCapItem(ItemStack stack){
         return getWandCapAsItemStack(stack).getItem() instanceof IWandCapPropertiesOwner owner ? owner : null;
     };

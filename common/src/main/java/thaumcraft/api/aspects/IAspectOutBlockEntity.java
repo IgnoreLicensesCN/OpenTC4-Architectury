@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
 //usually use IEssentiaTransportOutBlockEntity
+//impl this means BE accepts force-out(without considering suction limits) aspect
 public interface IAspectOutBlockEntity<Asp extends Aspect> {
     @UnmodifiableView
     @NotNull

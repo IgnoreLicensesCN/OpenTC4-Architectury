@@ -34,6 +34,7 @@ import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetChargeRelayBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
+import thaumcraft.common.blocks.crafted.ownedblock.ArcanePressurePlateBlock;
 import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
 import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
@@ -231,7 +232,7 @@ public class ThaumcraftBlocks {
     public static final EssentiaBufferBlock ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
     public static final EssentiaCentrifugeBlock ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
     public static final EssentiaCrystallizerBlock ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
-
+    public static final ArcanePressurePlateBlock ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -684,42 +685,51 @@ public class ThaumcraftBlocks {
                 "energized_node",
                 EnergizedAuraNodeBlock::new
         );
-        public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER = BLOCKS.register(
+        public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER =
+                BLOCKS.register(
                 "node_stabilizer",
                 NodeStabilizerBlock::new
         );
-        public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER = BLOCKS.register(
+        public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER =
+                BLOCKS.register(
                 "advanced_node_stabilizer",
                 AdvancedNodeStabilizerBlock::new
         );
-        public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER = BLOCKS.register(
+        public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER =
+                BLOCKS.register(
                 "node_transducer",
                 NodeTransducerBlock::new
         );
-        public static final RegistrySupplier<ImpassableBlock> SUPPLIER_IMPASSABLE_BLOCK = BLOCKS.register(
+        public static final RegistrySupplier<ImpassableBlock> SUPPLIER_IMPASSABLE_BLOCK =
+                BLOCKS.register(
                 "impassable",
                 ImpassableBlock::new
         );
-        public static final RegistrySupplier<SappingFieldBlock> SUPPLIER_SAPPING_FIELD = BLOCKS.register(
+        public static final RegistrySupplier<SappingFieldBlock> SUPPLIER_SAPPING_FIELD =
+                BLOCKS.register(
                 "sapping_field",
                 SappingFieldBlock::new
         );
-        public static final RegistrySupplier<StaticFieldBlock> SUPPLIER_STATIC_FIELD = BLOCKS.register(
+        public static final RegistrySupplier<StaticFieldBlock> SUPPLIER_STATIC_FIELD =
+                BLOCKS.register(
                 "static_field",
                 StaticFieldBlock::new
         );
-        public static final RegistrySupplier<AlchemicalFurnaceBlock> SUPPLIER_ALCHEMICAL_FURNACE = BLOCKS.register(
+        public static final RegistrySupplier<AlchemicalFurnaceBlock> SUPPLIER_ALCHEMICAL_FURNACE =
+                BLOCKS.register(
                 "alchemical_furnace",
                 AlchemicalFurnaceBlock::new
         );
-        public static final RegistrySupplier<Block> SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+        public static final RegistrySupplier<Block> SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT =
+                BLOCKS.register(
                 "advanced_alchemical_construct",
                 () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                         .lightLevel(s -> 11)
                         .strength(3,17)
                 )
         );
-        public static final RegistrySupplier<Block> SUPPLIER_ALCHEMICAL_CONSTRUCT = BLOCKS.register(
+        public static final RegistrySupplier<Block> SUPPLIER_ALCHEMICAL_CONSTRUCT =
+                BLOCKS.register(
                 "alchemical_construct",
                 () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                         .strength(3,17)
@@ -875,8 +885,11 @@ public class ThaumcraftBlocks {
                         "essentia_crystallizer",
                         EssentiaCrystallizerBlock::new
                 );
-
-
+        public static final RegistrySupplier<ArcanePressurePlateBlock> SUPPLIER_ARCANE_PRESSURE_PLATE =
+                BLOCKS.register(
+                        "arcane_pressure_plate",
+                        ArcanePressurePlateBlock::new
+                );
         static {
             BLOCKS.register();
         }

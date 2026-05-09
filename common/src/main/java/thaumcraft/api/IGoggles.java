@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
  * @author Azanor
  * 
  * Equipped head slot items that extend this class will be able to perform most functions that 
- * goggles ofAspectVisList revealing can apart from view nodes which is handled by IRevealer.
+ * goggles fromAspectVisList revealing can apart from view nodes which is handled by IRevealer.
  *
  */
 

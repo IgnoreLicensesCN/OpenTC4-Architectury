@@ -197,46 +197,6 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
 		}
 		return ii.isEmpty();
     }
-	
-//	public static boolean areItemStacksEqual(ItemStack playerInput, ItemStack recipeSpec, boolean fuzzy)
-//    {
-//		if (playerInput == null) {
-//			return recipeSpec == null;
-//		}
-//		if (recipeSpec == null) return false;
-//		if (!ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec)) return false;
-//		if (fuzzy) {
-//			if (ConfigurationHandler.INSTANCE.getInfusionOreDictMode().apply(playerInput, recipeSpec)) {
-//				return true;
-//			}
-//		}
-//
-//		return playerInput.getItem() == recipeSpec.getItem() &&
-//				(playerInput.getDamageValue() == recipeSpec.getDamageValue() || recipeSpec.getDamageValue() == 32767) &&
-//				playerInput.getCount() <= playerInput.getMaxStackSize();
-////		if (playerInput==null && recipeSpec!=null) return false;
-////		if (playerInput!=null && recipeSpec==null) return false;
-////		if (playerInput==null && recipeSpec==null) return true;
-////
-////		//nbt
-////		boolean t1=ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(playerInput, recipeSpec);
-////		if (!t1) return false;
-////
-////		if (fuzzy) {
-////			int od = OreDictionary.getOreID(playerInput);
-////			if (od!=-1) {
-////				ItemStack[] ores = OreDictionary.getOres(od).toArray(new ItemStack[]{});
-////				if (ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{recipeSpec}, ores))
-////					return true;
-////			}
-////		}
-////
-////		//damage
-////		boolean damage = playerInput.getDamageValue() == recipeSpec.getDamageValue() ||
-////				recipeSpec.getDamageValue() == OreDictionary.WILDCARD_VALUE;
-////
-////        return playerInput.getItem() == recipeSpec.getItem() && (damage && playerInput.stackSize <= playerInput.getMaxStackSize());
-//    }
 	   
     public ItemStack getRecipeOutput() {
 		return getRecipeOutput(this.getRecipeInput());

@@ -1,6 +1,6 @@
 package com.linearity.opentc4.forge;
 
-import com.linearity.opentc4.AttackBlockListener;
+import com.linearity.opentc4.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
@@ -122,7 +122,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     }
 
     @Override
-    public void registerOnLeftClickBlockForItem(AttackBlockListener listener, Item forItem) {
+    public void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem) {
         MinecraftForge.EVENT_BUS.addListener(
                 (PlayerInteractEvent.LeftClickBlock event)
                         -> {

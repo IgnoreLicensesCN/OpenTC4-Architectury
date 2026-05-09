@@ -4,13 +4,10 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.ICraftingCostAspectOwner;
-import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsStaffRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 
-import java.util.Collections;
-
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
 
 public class SilverWoodStaffRodItem extends ThaumcraftWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect> {

@@ -22,7 +22,7 @@ public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {
         @Override
         public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if ((casting instanceof IWandComponentsOwner componentsOwner)) {
+            if ((casting instanceof IWandComponentsOwnerItem componentsOwner)) {
                 var cap = componentsOwner.getWandComponents(wandStack);
                 if (cap instanceof IVisCostModifierOwner visCostModifierOwner) {
                     currentConsumption -= (1-visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier()));

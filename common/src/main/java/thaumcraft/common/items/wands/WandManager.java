@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
@@ -653,9 +653,9 @@ public class WandManager implements IWandTriggerManager {
     public static void toggleMisc(ItemStack itemstack, Level world, Player player) {
         if (itemstack.getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitect && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
+            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitectDisplayItem && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
                 int dim = getAreaDim(itemstack);
-                IArchitect fa = (IArchitect) wand.getFocus(itemstack);
+                IArchitectDisplayItem fa = (IArchitectDisplayItem) wand.getFocus(itemstack);
                 if (player.isSneaking()) {
                     ++dim;
                     if (dim > (wand.getFocusItem(itemstack).getItem() instanceof ItemFocusTrade ? 2 : 3)) {

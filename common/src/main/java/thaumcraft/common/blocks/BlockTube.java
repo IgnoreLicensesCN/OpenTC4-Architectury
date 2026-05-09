@@ -2,12 +2,12 @@ package thaumcraft.common.blocks;
 
 //"tile.blockTube.0.name": "源质管道", --done
 //"tile.blockTube.1.name": "源质阀门", --done
-//"tile.blockTube.2.name": "奥法离心机", //wtf its tube?
+//"tile.blockTube.2.name": "奥法离心机", --done//wtf its tube?
 //"tile.blockTube.3.name": "过滤源质管道", --done
 //"tile.blockTube.4.name": "源质缓存器", --done
 //"tile.blockTube.5.name": "限定源质管道", --done
 //"tile.blockTube.6.name": "定向源质管道", --done
-//"tile.blockTube.7.name": "源质结晶器",
+//"tile.blockTube.7.name": "源质结晶器",--done
 @Deprecated(forRemoval = true)
 public class BlockTube /*extends BlockContainer*/ {
 //   public IIcon[] icon = new IIcon[8];

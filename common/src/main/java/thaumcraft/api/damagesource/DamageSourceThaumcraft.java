@@ -78,15 +78,15 @@ public class DamageSourceThaumcraft
 //		super(par1Str);
 //	}
 //    
-//	/** This kind ofAspectVisList damage can be blocked or not. */
+//	/** This kind fromAspectVisList damage can be blocked or not. */
 //    private boolean isUnblockable = false;
 //    private boolean isDamageAllowedInCreativeMode = false;
 //    private float hungerDamage = 0.3F;
 //
-//    /** This kind ofAspectVisList damage is based on fire or not. */
+//    /** This kind fromAspectVisList damage is based on fire or not. */
 //    private boolean fireDamage;
 //
-//    /** This kind ofAspectVisList damage is based on a projectile or not. */
+//    /** This kind fromAspectVisList damage is based on a projectile or not. */
 //    private boolean projectile;
 //
 //    /**

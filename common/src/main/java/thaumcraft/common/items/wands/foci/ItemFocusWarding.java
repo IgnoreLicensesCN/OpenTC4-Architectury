@@ -14,7 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemFocusWarding extends ItemFocusBasic implements IArchitect {
+public class ItemFocusWarding extends ItemFocusBasic implements IArchitectDisplayItem {
    public IIcon iconOrnament;
    IIcon depthIcon = null;
    private static final AspectList<Aspect>cost;

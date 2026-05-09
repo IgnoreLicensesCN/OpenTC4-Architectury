@@ -11,7 +11,7 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodI
 
 import java.util.List;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getAspectsCentiVisListWithValue;
 
 public class BlazeStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect> {

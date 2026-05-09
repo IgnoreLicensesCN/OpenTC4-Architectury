@@ -40,7 +40,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
-import thaumcraft.api.wands.ICentiVisContainer;
+import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandFocusEngine;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
@@ -52,7 +52,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FocusExcavationItem extends FocusBasicItem {
     public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15);
-    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.ofAspectVisList(
+    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.fromAspectVisList(
             new AspectList<>()
                     .addAll(Aspects.AIR, 1)
                     .addAll(Aspects.FIRE, 1)
@@ -162,12 +162,12 @@ public class FocusExcavationItem extends FocusBasicItem {
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
         var wandItem = usingWand.getItem();
         var focusItem = focusStack.getItem();
-        if (!((wandItem instanceof ICentiVisContainer<? extends Aspect> containerNotCasted) && (focusItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem))
+        if (!((wandItem instanceof ICentiVisContainerItem<? extends Aspect> containerNotCasted) && (focusItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem))
         ){
             user.stopUsingItem();
             return;
         }
-        var container = (ICentiVisContainer<Aspect>) containerNotCasted;
+        var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
         if (!(container.consumeAllCentiVis(usingWand,user, getCentiVisCost(focusStack,usingWand),false,false))
         ){
             user.stopUsingItem();
@@ -290,7 +290,7 @@ public class FocusExcavationItem extends FocusBasicItem {
         }
         var wandItem = usingWand.getItem();
         if (!(
-                (wandItem instanceof ICentiVisContainer<? extends Aspect> centiVisContainer)
+                (wandItem instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainer)
                 && (wandItem instanceof IWandFocusEngine focusEngine)
         )){
             return false;

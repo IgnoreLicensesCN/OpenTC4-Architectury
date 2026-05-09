@@ -242,6 +242,7 @@ public class ThaumcraftItems {
     public static final BlockItem ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
     public static final BlockItem ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
     public static final CrystalEssenceItem CRYSTAL_ESSENCE = Registry.SUPPLIER_CRYSTAL_ESSENCE.get();
+    public static final BlockItem ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
 
     //===========================================================================================
 
@@ -858,6 +859,10 @@ public class ThaumcraftItems {
         );
         public static final RegistrySupplier<CrystalEssenceItem> SUPPLIER_CRYSTAL_ESSENCE = ITEMS.register(
                 "crystal_essentia", CrystalEssenceItem::new
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_PRESSURE_PLATE = ITEMS.register(
+                "arcane_pressure_plate",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_PRESSURE_PLATE,  new Item.Properties())
         );
 
 

@@ -5,13 +5,10 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
-import thaumcraft.api.wands.IWandComponentNameOwner;
+import thaumcraft.api.wands.IWandComponentNameOwnerItem;
 import thaumcraft.api.wands.IWandRodPropertiesOwner;
 
-import java.util.Collections;
-import java.util.Map;
-
-public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwner<Aspect>, IWandComponentNameOwner {
+public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwner<Aspect>, IWandComponentNameOwnerItem {
     public ThaumcraftWandRodItem(Properties properties) {
         super(properties);
     }

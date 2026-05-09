@@ -20,8 +20,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
-import thaumcraft.api.wands.IArcaneCraftingWand;
-import thaumcraft.api.wands.ICentiVisContainer;
+import thaumcraft.api.wands.IArcaneCraftingWandItem;
+import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
@@ -146,7 +146,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         if (direction == Direction.UP || slot == WAND_SLOT) {
             var item = itemStack.getItem();
-            if (item instanceof IArcaneCraftingWand craftingWand
+            if (item instanceof IArcaneCraftingWandItem craftingWand
             && craftingWand.canInsertIntoArcaneCraftingTable(itemStack)) {
                 return true;
             }
@@ -168,7 +168,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             int var3 = row + column * 3;
             return this.getItem(var3);
         } else {
-            throw new IndexOutOfBoundsException("row: " + row + ", column: " + column + "out ofAspectVisList bound");
+            throw new IndexOutOfBoundsException("row: " + row + ", column: " + column + "out fromAspectVisList bound");
         }
     }
     @Override
@@ -202,10 +202,10 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             return false;
         }
         var wandItem = wandStack.getItem();
-        if (!(wandItem instanceof ICentiVisContainer<? extends Aspect> visContainerNotCasted)){
+        if (!(wandItem instanceof ICentiVisContainerItem<? extends Aspect> visContainerNotCasted)){
             return false;
         }
-        var visContainer = (ICentiVisContainer<Aspect>) visContainerNotCasted;
+        var visContainer = (ICentiVisContainerItem<Aspect>) visContainerNotCasted;
         var visOwning = visContainer.getAllCentiVisOwning(wandStack);
         for (var centiVisAndAmount:centiVisList.entrySet()){
             var aspect = centiVisAndAmount.getKey();
@@ -230,7 +230,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             return false;
         }
         var wandItem = wandStack.getItem();
-        if (!(wandItem instanceof ICentiVisContainer<? extends Aspect> centiVisContainerNotCasted)){
+        if (!(wandItem instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainerNotCasted)){
             OpenTC4.LOGGER.warn("wand not found but centiVis cost required:" + centiVisList
                     + " player:" + player.getStringUUID()
                     + "(" + player.getGameProfile().getName() + ")"
@@ -238,7 +238,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             );
             return false;
         }
-        var centiVisContainer = (ICentiVisContainer<Aspect>) centiVisContainerNotCasted;
+        var centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerNotCasted;
         if (!centiVisContainer.consumeAllCentiVisWithoutModifier(wandStack,centiVisList,true,player instanceof ServerPlayer)){
             OpenTC4.LOGGER.warn("wand vis not enough but centiVis cost required:" + centiVisList
                     + " required" + centiVisList

@@ -96,7 +96,7 @@ public class BlockMirror extends BlockContainer {
       if (md < 6) {
          TileMirror tm = (TileMirror)world.getTileEntity(x, y, z);
          ItemStack drop = new ItemStack(this, 1, 0);
-         if (tm instanceof TileMirror) {
+         if (tm instanceof TileMirror) {//use "!= null" better?
             if (tm.linked) {
                drop.setTagInfo("linkX", new NBTTagInt(tm.linkX));
                drop.setTagInfo("linkY", new NBTTagInt(tm.linkY));

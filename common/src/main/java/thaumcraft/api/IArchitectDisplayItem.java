@@ -6,13 +6,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public interface IArchitect {
+//maybe should be removed?
+public interface IArchitectDisplayItem {
 
 	/**
-	 * Returns a list ofAspectVisList blocks that should be highlighted in world.
+	 * Returns a list of blocks that should be highlighted in world.
 	 */
 //    List<BlockPos> getArchitectBlocks(ItemStack stack, Level world,
 //									  int x, int y, int z, Direction side, Player player);

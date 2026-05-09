@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
 
 public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect>, IWandUpgradeModifier {
@@ -46,8 +46,8 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
         var wandItem = usingWand.getItem();
-        if (wandItem instanceof ICentiVisContainer<?> containerNotCasted){
-            var container = (ICentiVisContainer<Aspect>)containerNotCasted;
+        if (wandItem instanceof ICentiVisContainerItem<?> containerNotCasted){
+            var container = (ICentiVisContainerItem<Aspect>)containerNotCasted;
             if (owner.tickCount % 50 == 0) {
                 var owningVis = container.getAllCentiVisOwning(usingWand);
                 List<Aspect> candidates = new ArrayList<>();

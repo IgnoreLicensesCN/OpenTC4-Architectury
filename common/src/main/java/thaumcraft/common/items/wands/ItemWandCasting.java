@@ -2,18 +2,14 @@ package thaumcraft.common.items.wands;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.*;
-import thaumcraft.api.IArchitect;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.tiles.TileOwned;
 
-import java.util.ArrayList;
-
 @Deprecated(forRemoval = true)
-public class ItemWandCasting /*extends Item implements IArchitect*/ {
+public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {
 //    private IIcon icon;
 //    DecimalFormat myFormatter = new DecimalFormat("#######.##");
 //    public ItemFocusBasic.WandFocusAnimation animation = null;
@@ -610,11 +606,11 @@ public class ItemWandCasting /*extends Item implements IArchitect*/ {
 
 //    public ArrayList getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
 //        ItemFocusBasic focus = this.getFocus(stack);
-//        return focus instanceof IArchitect && focus.isUpgradedWith(this.getFocusItem(stack), FocusUpgradeType.architect) ? ((IArchitect) focus).getArchitectBlocks(stack, world, x, y, z, side, player) : null;
+//        return focus instanceof IArchitectDisplayItem && focus.isUpgradedWith(this.getFocusItem(stack), FocusUpgradeType.architect) ? ((IArchitectDisplayItem) focus).getArchitectBlocks(stack, world, x, y, z, side, player) : null;
 //    }
 //
 //    public boolean showAxis(ItemStack stack, World world, Player player, int side, EnumAxis axis) {
 //        ItemFocusBasic focus = this.getFocus(stack);
-//        return focus instanceof IArchitect && focus.isUpgradedWith(this.getFocusItem(stack), FocusUpgradeType.architect) && ((IArchitect) focus).showAxis(stack, world, player, side, axis);
+//        return focus instanceof IArchitectDisplayItem && focus.isUpgradedWith(this.getFocusItem(stack), FocusUpgradeType.architect) && ((IArchitectDisplayItem) focus).showAxis(stack, world, player, side, axis);
 //    }
 }

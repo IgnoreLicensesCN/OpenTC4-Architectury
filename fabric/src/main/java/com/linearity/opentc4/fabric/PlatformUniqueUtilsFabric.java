@@ -1,6 +1,6 @@
 package com.linearity.opentc4.fabric;
 
-import com.linearity.opentc4.AttackBlockListener;
+import com.linearity.opentc4.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.fabric.client.ThaumcraftModelProvider;
@@ -22,9 +22,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.client.KeyMapping;
@@ -152,7 +150,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
     };
 
     @Override
-    public void registerOnLeftClickBlockForItem(AttackBlockListener listener, Item forItem){
+    public void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem){
         AttackBlockCallback.EVENT.register((player, level, interactionHand, blockPos, direction) -> {
             var usingItem = interactionHand == InteractionHand.MAIN_HAND ? player.getMainHandItem():player.getOffhandItem();
             if (usingItem.getItem() == forItem){

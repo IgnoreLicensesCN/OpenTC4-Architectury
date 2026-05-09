@@ -36,7 +36,7 @@ import java.util.Random;
 
 //"0": "奥术风箱",--done
 //    "tile.blockWoodenDevice.1.name": "奥术之耳",
-//    "tile.blockWoodenDevice.2.name": "奥术压力盘",
+//    "tile.blockWoodenDevice.2.name": "奥术压力盘",--done
 //    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",
 //    "tile.blockWoodenDevice.5.name": "奥术钻探机",
 //    "tile.blockWoodenDevice.6.name": "宏伟之树木板",--done
@@ -78,46 +78,46 @@ public class BlockWoodenDevice extends BlockContainer {
       this.setCreativeTab(Thaumcraft.tabTC);
    }
 
-   @SideOnly(Side.CLIENT)
-   public void registerBlockIcons(IIconRegister ir) {
-      this.iconDefault = ir.registerIcon("thaumcraft:woodplain");
-      this.iconSilverwood = ir.registerIcon("thaumcraft:planks_silverwood");
-      this.iconGreatwood = ir.registerIcon("thaumcraft:planks_greatwood");
-      this.iconAPPlate[0] = ir.registerIcon("thaumcraft:applate1");
-      this.iconAPPlate[1] = ir.registerIcon("thaumcraft:applate2");
-      this.iconAPPlate[2] = ir.registerIcon("thaumcraft:applate3");
-      this.iconAEar[0] = ir.registerIcon("thaumcraft:arcaneearsideon");
-      this.iconAEar[1] = ir.registerIcon("thaumcraft:arcaneearsideoff");
-      this.iconAEar[2] = ir.registerIcon("thaumcraft:arcaneearbottom");
-      this.iconAEar[3] = ir.registerIcon("thaumcraft:arcaneeartopon");
-      this.iconAEar[4] = ir.registerIcon("thaumcraft:arcaneeartopoff");
-      this.iconAEar[5] = ir.registerIcon("thaumcraft:arcaneearbellside");
-      this.iconAEar[6] = ir.registerIcon("thaumcraft:arcaneearbelltop");
-   }
-
-   public int tickRate() {
-      return 20;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(par1, 1, 0));
-      par3List.add(new ItemStack(par1, 1, 1));
-      par3List.add(new ItemStack(par1, 1, 2));
-      par3List.add(new ItemStack(par1, 1, 4));
-      par3List.add(new ItemStack(par1, 1, 5));
-      par3List.add(new ItemStack(par1, 1, 6));
-      par3List.add(new ItemStack(par1, 1, 7));
-      par3List.add(new ItemStack(par1, 1, 8));
-
-      for(int a = 0; a < 16; ++a) {
-         ItemStack banner = new ItemStack(par1, 1, 8);
-         banner.setTagCompound(new NBTTagCompound());
-         banner.stackTagCompound.setByte("color", (byte)a);
-         par3List.add(banner);
-      }
-
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void registerBlockIcons(IIconRegister ir) {
+//      this.iconDefault = ir.registerIcon("thaumcraft:woodplain");
+//      this.iconSilverwood = ir.registerIcon("thaumcraft:planks_silverwood");
+//      this.iconGreatwood = ir.registerIcon("thaumcraft:planks_greatwood");
+//      this.iconAPPlate[0] = ir.registerIcon("thaumcraft:applate1");
+//      this.iconAPPlate[1] = ir.registerIcon("thaumcraft:applate2");
+//      this.iconAPPlate[2] = ir.registerIcon("thaumcraft:applate3");
+//      this.iconAEar[0] = ir.registerIcon("thaumcraft:arcaneearsideon");
+//      this.iconAEar[1] = ir.registerIcon("thaumcraft:arcaneearsideoff");
+//      this.iconAEar[2] = ir.registerIcon("thaumcraft:arcaneearbottom");
+//      this.iconAEar[3] = ir.registerIcon("thaumcraft:arcaneeartopon");
+//      this.iconAEar[4] = ir.registerIcon("thaumcraft:arcaneeartopoff");
+//      this.iconAEar[5] = ir.registerIcon("thaumcraft:arcaneearbellside");
+//      this.iconAEar[6] = ir.registerIcon("thaumcraft:arcaneearbelltop");
+//   }
+//
+//   public int tickRate() {
+//      return 20;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(par1, 1, 0));
+//      par3List.add(new ItemStack(par1, 1, 1));
+//      par3List.add(new ItemStack(par1, 1, 2));
+//      par3List.add(new ItemStack(par1, 1, 4));
+//      par3List.add(new ItemStack(par1, 1, 5));
+//      par3List.add(new ItemStack(par1, 1, 6));
+//      par3List.add(new ItemStack(par1, 1, 7));
+//      par3List.add(new ItemStack(par1, 1, 8));
+//
+//      for(int a = 0; a < 16; ++a) {
+//         ItemStack banner = new ItemStack(par1, 1, 8);
+//         banner.setTagCompound(new NBTTagCompound());
+//         banner.stackTagCompound.setByte("color", (byte)a);
+//         par3List.add(banner);
+//      }
+//
+//   }
 
    public IIcon getIcon(int par1, int par2) {
       if (par2 == 0) {

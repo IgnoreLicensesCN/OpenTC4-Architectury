@@ -1,7 +1,7 @@
 package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.AttackBlockListener;
+import com.linearity.opentc4.IAttackBlockListenerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.*;
@@ -35,29 +35,37 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
-//i will use interface instead ofAspectVisList (item instanceof WandCastingItem wandCasting)
+//i will use interface instead fromAspectVisList (item instanceof WandCastingItem wandCasting)
 public class WandCastingItem extends Item
         implements
-        IWandSpellEventListenable,
-        IWandCapOwner,
-        IWandRodOwner,
-        IEnchantmentRepairVisProvider,
-        IArcaneCraftingVisMultiplierProvider,
-        IArcaneCraftingWand,
-        IWandFocusEngine,
-        ICentiVisContainer<Aspect>,
-        IWandComponentsOwner,
-        IWandComponentNameOwner,
-        AttackBlockListener,
-        IArchitect,
-        IInventoryTickableComponent {
+        //oh it's too looooooong. but it's reasonable i have to say
+        IWandSpellEventListenableItem,//TODO:Call it in every focus
+        IWandCapOwnerItem,//usually there should be for a wand
+        IWandRodOwnerItem,//usually there should be for a wand
+        IEnchantmentRepairVisProviderItem,//if someone wants
+        IArcaneCraftingVisMultiplierProviderItem,//Staff should make this not work
+        IArcaneCraftingWandItem,//Staff should make this not work
+        IWandFocusEngine,//SceptreCastingItem should make this not work
+        ICentiVisContainerItem<Aspect>,//i think this should be impl for every wand
+        IWandComponentsOwnerItem,//anyone wants more than cap&rod?
+        IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
+        IAttackBlockListenerItem,//maybe some focus would use in some cases
+        IArchitectDisplayItem,//anazor's old thing for some display
+        IInventoryTickableComponentItem//ticking in inventory.add warp randomly or more?
+{
 
-    public WandCastingItem() {
-        super(new Properties().stacksTo(1)
-                .rarity(Rarity.UNCOMMON));
-        platformUtils.registerOnLeftClickBlockForItem(this, this);
+    public WandCastingItem(
+            Properties properties
+    ){
+        super(properties);
     }
-
+    public WandCastingItem() {
+        this(
+                new Properties().stacksTo(1)
+                        .rarity(Rarity.UNCOMMON)
+        );
+        platformUtils.registerOnLeftClickBlockListenerForItem(this, this);
+    }
     @Override
     @NotNull("null -> empty")
     public ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
@@ -94,14 +102,15 @@ public class WandCastingItem extends Item
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
         var components = getWandComponents(usingWand);
         for (var component : components) {
-            if (component.getItem() instanceof IWandSpellEventListenable listener) {
+            if (component.getItem() instanceof IWandSpellEventListenableItem listener) {
                 listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
             }
         }
     }
 
 
-    //a wand wont be component for something in vanilla tc4 but i want it tick in a bag.(can be a big one from thaumicTinker?)
+    //a wand wont be component for something in vanilla tc4 
+    // but i want it tick in a bag.(can be a big one from thaumicTinker?)
     @Override
     public void tickAsComponent(
             @NotNull ItemStack finalParentStack,
@@ -114,7 +123,7 @@ public class WandCastingItem extends Item
     ) {
         var components = getWandComponents(selfStack);
         for (var component : components) {
-            if (component.getItem() instanceof IInventoryTickableComponent listener) {
+            if (component.getItem() instanceof IInventoryTickableComponentItem listener) {
                 listener.tickAsComponent(
                         finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
             }
@@ -131,7 +140,7 @@ public class WandCastingItem extends Item
         float result = 1.0F;
         var components = getWandComponents(usingWand);
         for (var component : components) {
-            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProvider provider) {
+            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderItem provider) {
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -140,16 +149,16 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public ItemStack getFocusItemStack(ItemStack wand) {
+    public @NotNull ItemStack getFocusItemStack(ItemStack wand) {
         if (!wand.hasTag()) {
-            return null;
+            return ItemStack.EMPTY;
         }
         var tag = wand.getTag();
         if (tag == null) {
-            return null;
+            return ItemStack.EMPTY;
         }
         if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)) {
-            return null;
+            return ItemStack.EMPTY;
         }
         return WAND_FOCUS_ACCESSOR.readFromCompoundTag(tag);
     }
@@ -212,7 +221,11 @@ public class WandCastingItem extends Item
 
     @Override
     public List<ItemStack> getWandComponents(ItemStack stack) {
-        List<ItemStack> items = new ArrayList<>(2);
+        int initCapacity = 2;
+        if (this.canApplyFocus()){
+            initCapacity += 1;
+        }
+        List<ItemStack> items = new ArrayList<>(initCapacity);
         var cap = getWandCapAsItemStack(stack);
         if (!cap.isEmpty()) {
             items.add(cap);
@@ -220,6 +233,12 @@ public class WandCastingItem extends Item
         var rod = getWandRodAsItemStack(stack);
         if (!rod.isEmpty()) {
             items.add(rod);
+        }
+        if (this.canApplyFocus()){
+            var focus = getFocusItemStack(stack);
+            if (!focus.isEmpty()) {
+                items.add(focus);
+            }
         }
         return Collections.unmodifiableList(items);
     }
@@ -229,7 +248,7 @@ public class WandCastingItem extends Item
         var wandComponentNames = Component.empty();
         var components = getWandComponents(itemStack);
         for (var component : components) {
-            if (component.getItem() instanceof IWandComponentNameOwner owner) {
+            if (component.getItem() instanceof IWandComponentNameOwnerItem owner) {
                 wandComponentNames = wandComponentNames.append(owner.getComponentName()
                         .getString());
             }
@@ -265,8 +284,8 @@ public class WandCastingItem extends Item
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
             }
-            if (player.level()
-                    .getBlockEntity(useOnContext.getClickedPos()) instanceof IWandInteractableBlockOrBlockEntity interactableBlock) {
+            if (player.level().getBlockEntity(useOnContext.getClickedPos())
+                    instanceof IWandInteractableBlockOrBlockEntity interactableBlock) {
                 if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
@@ -299,7 +318,7 @@ public class WandCastingItem extends Item
 
         if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(
                         livingEntity)) {
@@ -315,7 +334,7 @@ public class WandCastingItem extends Item
         if (canApplyFocus()) {
             var usingWand = interactionHand == InteractionHand.MAIN_HAND ? player.getMainHandItem() : player.getOffhandItem();
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(player)) {
                     return focus.onFocusRightClick(usingWand, focusStack, level, player, interactionHand);
@@ -341,7 +360,7 @@ public class WandCastingItem extends Item
         entityUsingBlockMapping.remove(user);
         if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
                     focus.onPlayerStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
@@ -355,7 +374,7 @@ public class WandCastingItem extends Item
         if (canApplyFocus()) {
             var usingWand = interactionHand == InteractionHand.MAIN_HAND ? user.getMainHandItem() : user.getOffhandItem();
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
                     focus.onLeftClickBlock(usingWand, focusStack, user, interactionHand);
@@ -368,11 +387,11 @@ public class WandCastingItem extends Item
     public List<BlockPos> getArchitectBlocks(ItemStack usingWand, Level world, BlockPos pos, Direction side, Player player) {
         if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
-                        && focus instanceof IArchitect architect
+                        && focus instanceof IArchitectDisplayItem architect
                 ) {
                     return architect.getArchitectBlocks(usingWand, world, pos, side, player);
                 }
@@ -384,11 +403,11 @@ public class WandCastingItem extends Item
     public boolean showAxis(ItemStack usingWand, Level world, Player player, Direction side, EnumAxis axis) {
         if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
-            if (focusStack != null) {
+            if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
                         && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
-                        && focus instanceof IArchitect architect
+                        && focus instanceof IArchitectDisplayItem architect
                 ) {
                     return architect.showAxis(usingWand, world, player, side, axis);
                 }

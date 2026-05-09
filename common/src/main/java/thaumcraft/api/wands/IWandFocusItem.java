@@ -22,7 +22,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
         if (wandStack == null) {
             return appliedUpgrades;
         }
-        if (wandStack.getItem() instanceof IWandComponentsOwner componentsOwner) {
+        if (wandStack.getItem() instanceof IWandComponentsOwnerItem componentsOwner) {
             for (ItemStack component: componentsOwner.getWandComponents(wandStack)) {
                 if (component.getItem() instanceof IWandUpgradeModifier modifier) {
                     appliedUpgrades = modifier.modifyWandUpgrades(appliedUpgrades);

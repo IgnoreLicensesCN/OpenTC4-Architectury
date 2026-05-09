@@ -56,7 +56,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
             int height,
             RecipeItemMatcher outMatcher
     ) {
-        this(id,research, resultGenerator, arr -> CentiVisList.ofAspectVisList(aspects), input, width, height, outMatcher);
+        this(id,research, resultGenerator, arr -> CentiVisList.fromAspectVisList(aspects), input, width, height, outMatcher);
     }
 
     public ShapedArcaneRecipe(

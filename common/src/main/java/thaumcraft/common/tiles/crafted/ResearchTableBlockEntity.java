@@ -138,7 +138,7 @@ public class ResearchTableBlockEntity
         var pos = getBlockPos();
         var posAbove = pos.above();
         var heightMax = level.getMaxBuildHeight();
-        var heightMin = level.getMinBuildHeight();//when heightMax==heightMin,i should be out ofAspectVisList world
+        var heightMin = level.getMinBuildHeight();//when heightMax==heightMin,i should be out fromAspectVisList world
         double heightAtPercent = ((double) (pos.getY() - heightMin)) / (heightMax - heightMin);
 
         if (!level.isDay()

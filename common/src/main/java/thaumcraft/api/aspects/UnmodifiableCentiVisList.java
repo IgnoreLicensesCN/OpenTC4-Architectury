@@ -1,5 +1,6 @@
 package thaumcraft.api.aspects;
 
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jetbrains.annotations.UnmodifiableView;
 
@@ -15,6 +16,9 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
         super(aspects);
     }
     public UnmodifiableCentiVisList(Object2IntMap<Asp> aspects) {
+        super(aspects);
+    }
+    protected UnmodifiableCentiVisList(Object2IntLinkedOpenHashMap<Asp> aspects) {
         super(aspects);
     }
     @Override
@@ -75,5 +79,10 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
     @Override
     public void replaceAll(AspIntIntBiFunction<Asp> biFunction) {
         throw new RuntimeException("Unmodifiable!");
+    }
+
+
+    public static <Asp extends Aspect> UnmodifiableCentiVisList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects) {
+        return new UnmodifiableCentiVisList<>(aspects);
     }
 }

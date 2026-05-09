@@ -28,7 +28,7 @@ import net.minecraft.core.Direction;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -207,7 +207,7 @@ public class RenderEventHandler {
          this.wandHandler = new REHWandHandler();
       }
 
-      if (target.typeOfHit == MovingObjectType.BLOCK && event.player.getHeldItem() != null && event.player.getHeldItem().getItem() instanceof IArchitect && !(event.player.getHeldItem().getItem() instanceof ItemFocusBasic) && this.wandHandler.handleArchitectOverlay(event.player.getHeldItem(), event, ticks, target)) {
+      if (target.typeOfHit == MovingObjectType.BLOCK && event.player.getHeldItem() != null && event.player.getHeldItem().getItem() instanceof IArchitectDisplayItem && !(event.player.getHeldItem().getItem() instanceof ItemFocusBasic) && this.wandHandler.handleArchitectOverlay(event.player.getHeldItem(), event, ticks, target)) {
          event.setCanceled(true);
       }
 

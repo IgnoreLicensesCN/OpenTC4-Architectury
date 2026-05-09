@@ -25,7 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
-import thaumcraft.api.wands.IArcaneCraftingWand;
+import thaumcraft.api.wands.IArcaneCraftingWandItem;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
@@ -105,7 +105,7 @@ public class TableBlock extends SuppressedWarningBlock implements IWandInteracta
     @Override
     public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
         var usingWand = useOnContext.getItemInHand();
-        if (usingWand.getItem() instanceof IArcaneCraftingWand craftingWand && craftingWand.canInsertIntoArcaneCraftingTable(usingWand)) {
+        if (usingWand.getItem() instanceof IArcaneCraftingWandItem craftingWand && craftingWand.canInsertIntoArcaneCraftingTable(usingWand)) {
             var level = useOnContext.getLevel();
             level.setBlockAndUpdate(useOnContext.getClickedPos(), ThaumcraftBlocks.ARCANE_WORKBENCH.defaultBlockState());
             level.playSound(

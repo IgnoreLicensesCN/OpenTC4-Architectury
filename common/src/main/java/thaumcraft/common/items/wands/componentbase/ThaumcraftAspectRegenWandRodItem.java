@@ -7,15 +7,15 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.IInventoryTickableComponent;
-import thaumcraft.api.wands.ICentiVisContainer;
+import thaumcraft.api.wands.IInventoryTickableComponentItem;
+import thaumcraft.api.wands.ICentiVisContainerItem;
 
 import java.util.List;
 import java.util.Map;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
-public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements IInventoryTickableComponent {
+public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements IInventoryTickableComponentItem {
     public ThaumcraftAspectRegenWandRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {
         super(properties);
         this.canRegenCentiVisAndValue = canRegenCentiVisAndValue;
@@ -27,8 +27,8 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
         var wandStackItem = usingWand.getItem();
-        if (wandStackItem instanceof ICentiVisContainer<?> containerNotCasted && containerNotCasted.tryCastAspectClass(Aspect.class)) {
-            var container = (ICentiVisContainer<Aspect>) containerNotCasted;
+        if (wandStackItem instanceof ICentiVisContainerItem<?> containerNotCasted && containerNotCasted.tryCastAspectClass(Aspect.class)) {
+            var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
             if (owner.tickCount % 200 == 0){
                 var owningVis = container.getAllCentiVisOwning(usingWand);
                 for (Map.Entry<Aspect,Integer> entry: canRegenCentiVisAndValue.entrySet()) {

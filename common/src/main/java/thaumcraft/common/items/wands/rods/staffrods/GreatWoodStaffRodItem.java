@@ -7,7 +7,7 @@ import thaumcraft.api.wands.ICraftingCostAspectOwner;
 import thaumcraft.api.wands.WorkAsStaffRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
 
 public class GreatWoodStaffRodItem extends ThaumcraftWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect> {

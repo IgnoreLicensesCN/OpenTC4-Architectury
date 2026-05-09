@@ -27,8 +27,8 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.nodes.*;
 import thaumcraft.api.wands.INodeHarmfulComponent;
-import thaumcraft.api.wands.ICentiVisContainer;
-import thaumcraft.api.wands.IWandComponentsOwner;
+import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.api.wands.IWandComponentsOwnerItem;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.NodeInfo;
@@ -42,7 +42,7 @@ import java.util.List;
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
 import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
 import com.linearity.opentc4.Color;
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.common.researches.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.
@@ -164,7 +164,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         var usingStack = useOnContext.getItemInHand();
         var usingItem = usingStack.getItem();
         var player = useOnContext.getPlayer();
-        if (usingItem instanceof ICentiVisContainer<? extends Aspect> && player != null) {
+        if (usingItem instanceof ICentiVisContainerItem<? extends Aspect> && player != null) {
             player.startUsingItem(useOnContext.getHand());
             return InteractionResult.CONSUME;
         }
@@ -181,10 +181,10 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             player.stopUsingItem();
             return;
         }
-        if (!(usingWand.getItem() instanceof ICentiVisContainer<? extends Aspect> visContainerNotCasted) || !(usingWand.getItem() instanceof IWandComponentsOwner componentsOwner)) {
+        if (!(usingWand.getItem() instanceof ICentiVisContainerItem<? extends Aspect> visContainerNotCasted) || !(usingWand.getItem() instanceof IWandComponentsOwnerItem componentsOwner)) {
             return;
         }
-        var visContainer = (ICentiVisContainer<Aspect>)visContainerNotCasted;
+        var visContainer = (ICentiVisContainerItem<Aspect>)visContainerNotCasted;
         HitResult hitResult = EntityUtils.getHitResultFromPlayer(this.level, player, true);
         if (hitResult.getType() != Type.BLOCK) {
             player.stopUsingItem();

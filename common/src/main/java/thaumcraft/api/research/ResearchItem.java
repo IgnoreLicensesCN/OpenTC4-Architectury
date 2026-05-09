@@ -82,17 +82,17 @@ public abstract class ResearchItem
 //    private boolean isAutoUnlock;
 //
 //    /**
-//     * Scanning these items will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
+//     * Scanning these items will have a chance fromAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private ItemStack[] itemTriggers;
 //
 //    /**
-//     * Scanning these entities will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
+//     * Scanning these entities will have a chance fromAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private ResourceKey<EntityType<?>>[] entityTriggers;
 //
 //    /**
-//     * Scanning things with these aspects will have a chance ofAspectVisList revealing hidden knowledge in the thaumonomicon
+//     * Scanning things with these aspects will have a chance fromAspectVisList revealing hidden knowledge in the thaumonomicon
 //     */
 //    private Aspect[] aspectTriggers;
 

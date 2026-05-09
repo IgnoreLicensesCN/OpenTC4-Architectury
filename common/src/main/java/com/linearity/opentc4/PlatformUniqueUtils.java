@@ -13,14 +13,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,7 +47,7 @@ public abstract class PlatformUniqueUtils {
     public abstract void registerCommand(TriConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext, Commands.CommandSelection> commandDispatcherConsumer);
     public abstract void registerEntityDefaultAttribute(EntityType<? extends LivingEntity> entityType, Attribute attribute);
     public abstract void registerModelForItem(Item item, ResourceLocation modelLocation);
-    public abstract void registerOnLeftClickBlockForItem(AttackBlockListener listener, Item forItem);
+    public abstract void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem);
     public abstract BakedModel getModel(ResourceLocation modelLocation);
     public void registerModel(ResourceLocation modelLocation){};
     public abstract Optional<ItemStack> getEquippedItem(

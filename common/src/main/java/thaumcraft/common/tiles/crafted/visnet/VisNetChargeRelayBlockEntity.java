@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
-import thaumcraft.api.wands.ICentiVisContainer;
+import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
@@ -34,8 +34,8 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
             if (be instanceof IVisNetChargeRelayChargeableContainer chargeableContainer) {
                 var stackToCharge = chargeableContainer.getStackToCharge();
                 if (!stackToCharge.isEmpty()) {
-                    if (stackToCharge.getItem() instanceof ICentiVisContainer<? extends Aspect> centiVisContainerNotCasted) {
-                        var centiVisContainer = (ICentiVisContainer<Aspect>)centiVisContainerNotCasted;
+                    if (stackToCharge.getItem() instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainerNotCasted) {
+                        var centiVisContainer = (ICentiVisContainerItem<Aspect>)centiVisContainerNotCasted;
                         var aspRoomRemaining = centiVisContainer.getAspectsWithRoomRemaining(stackToCharge);
                         if (!aspRoomRemaining.isEmpty()) {
                             for(var entry : aspRoomRemaining.entrySet()) {

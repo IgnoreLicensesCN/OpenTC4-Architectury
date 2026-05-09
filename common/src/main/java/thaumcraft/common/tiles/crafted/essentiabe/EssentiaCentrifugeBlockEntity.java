@@ -35,7 +35,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(
             () -> this.aspectOut,() -> this.aspectOut.isEmpty()?0:1
     );
-    private @NotNull("null -> empty") CompoundAspect aspectIn= Aspects.EMPTY_COMPOUND;
+    private @NotNull("null -> empty") CompoundAspect aspectIn = Aspects.EMPTY_COMPOUND;
     private @NotNull("null -> empty") Aspect aspectOut = Aspects.EMPTY;
     private int tickCount = System.identityHashCode(this) & 3;
     private int processingTicks = 0;

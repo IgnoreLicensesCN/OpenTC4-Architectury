@@ -3,7 +3,7 @@ package thaumcraft.common.menu.slot;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.wands.IArcaneCraftingWand;
+import thaumcraft.api.wands.IArcaneCraftingWandItem;
 
 public class ArcaneWorkbenchWandSlot extends Slot {
     public ArcaneWorkbenchWandSlot(Container container, int i, int j, int k) {
@@ -15,7 +15,7 @@ public class ArcaneWorkbenchWandSlot extends Slot {
         if (itemStack.isEmpty()) {
             return false;
         }
-        if (!(itemStack.getItem() instanceof IArcaneCraftingWand craftingWand)) {
+        if (!(itemStack.getItem() instanceof IArcaneCraftingWandItem craftingWand)) {
             return false;
         }
         return craftingWand.canInsertIntoArcaneCraftingTable(itemStack);

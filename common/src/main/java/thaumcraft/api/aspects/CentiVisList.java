@@ -1,13 +1,16 @@
 package thaumcraft.api.aspects;
 
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 //you can see that i didn't make Asp PrimalAspect,maybe someone wants special cases.Remember TODO:Render as many aspects as possible in some rules in workbench
 public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just mark we are using centiVis
-//    public static CentiVisList<Aspect> ofAspectVisList(ItemStack stack) {
+//    public static CentiVisList<Aspect> fromAspectVisList(ItemStack stack) {
 //        var result = new CentiVisList<>();
 //        AspectList<Aspect> temp = ThaumcraftApiHelper.getObjectAspects(stack);
 //        if (temp!=null) {
@@ -24,6 +27,12 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
         super(aspects);
     }
     public CentiVisList(Map<Asp, Integer> aspects) {
+        super(aspects);
+    }
+    public CentiVisList(Object2IntMap<Asp> aspects) {
+        super(aspects);
+    }
+    protected CentiVisList(Object2IntLinkedOpenHashMap<Asp> aspects) {
         super(aspects);
     }
     public CentiVisList(int capacity, float loadFactor) {
@@ -50,23 +59,13 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
         return out;
     }
 
-    public static <Asp extends Aspect> CentiVisList<Asp> ofAspectVisList(AspectList<Asp> aspects) {
+    public static <Asp extends Aspect> CentiVisList<Asp> fromAspectVisList(AspectList<Asp> aspects) {
         if (aspects instanceof CentiVisList<Asp> centiVisList){
             return centiVisList;
         }
-        return CentiVisList.of(
-                aspects.entrySet()
-                        .stream()
-                        .map(
-                                entry -> Map.entry(
-                                        entry.getKey(),
-                                        entry.getIntValue()*CENTIVIS_MULTIPLIER)
-                        ).collect(
-                                Collectors.toMap(
-                                        Map.Entry::getKey,
-                                        Map.Entry::getValue)
-                        )
-        );
+        Object2IntLinkedOpenHashMap<Asp> centiVisCapacity = new Object2IntLinkedOpenHashMap<>(aspects.size(),1);
+        aspects.forEach((key, value) -> centiVisCapacity.put(key,value*CENTIVIS_MULTIPLIER));
+        return new CentiVisList<>(centiVisCapacity);
     }
 
     @SafeVarargs
@@ -78,6 +77,10 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
             }
         }
         return out;
+    }
+
+    public static <Asp extends Aspect> CentiVisList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects) {
+        return new CentiVisList<>(aspects);
     }
 
 }

@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 @Deprecated(forRemoval = true)
 public class ThaumcraftCraftingManager {
@@ -478,7 +478,7 @@ public class ThaumcraftCraftingManager {
                     manager.getAllRecipesFor(RecipeType.CRAFTING)
                             .forEach(recipe -> {
                                 var resultStack = recipe.getResultItem(level.registryAccess());
-                                if (!resultStack.is(item)) {return;}//ofAspectVisList course recipe need to match item we expect for.
+                                if (!resultStack.is(item)) {return;}//fromAspectVisList course recipe need to match item we expect for.
                                 List<ItemStack> ingredients = new ArrayList<>();
                                 NonNullList<Ingredient> ingredientsInternal = recipe.getIngredients();
                                 for (var ingredientInner : ingredientsInternal) {

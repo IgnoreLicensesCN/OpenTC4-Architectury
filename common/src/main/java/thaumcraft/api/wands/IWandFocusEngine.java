@@ -1,6 +1,7 @@
 package thaumcraft.api.wands;
 
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 //which can use wand focus
 public interface IWandFocusEngine {
@@ -8,6 +9,7 @@ public interface IWandFocusEngine {
         return true;
     };
 
+    @NotNull("null -> empty")
     ItemStack getFocusItemStack(ItemStack wand);
     ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus);
 }

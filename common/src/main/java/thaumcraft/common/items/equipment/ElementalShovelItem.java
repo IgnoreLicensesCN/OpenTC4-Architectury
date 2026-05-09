@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.ClientFXUtils;
 
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.ThaumcraftApi.TOOL_THAUMIUM_ELEMENTAL;
 
-public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairEnchantable, IArchitect {
+public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairEnchantable, IArchitectDisplayItem {
     public static final Set<Block> effectiveBlockForElementalShovel = ConcurrentHashMap.newKeySet();
     public static final Set<TagKey<Block>> effectiveTagForElementalShovel = ConcurrentHashMap.newKeySet();
 
@@ -70,7 +70,7 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
 
 //    @Override
 //    public Set<ToolType> getToolTypes(ItemStack stack) {
-//        return ImmutableSet.ofAspectVisList(ToolType.SHOVEL);
+//        return ImmutableSet.fromAspectVisList(ToolType.SHOVEL);
 //    }
 
 //    @Override

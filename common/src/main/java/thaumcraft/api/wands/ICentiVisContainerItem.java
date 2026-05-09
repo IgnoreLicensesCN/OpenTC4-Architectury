@@ -10,7 +10,7 @@ import thaumcraft.api.aspects.CentiVisList;
 
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
-public interface ICentiVisContainer<Asp extends Aspect> {
+public interface ICentiVisContainerItem<Asp extends Aspect> {
     int CENTIVIS_MULTIPLIER = 100;
     boolean tryCastAspectClass(Class<? extends Aspect> aspClass);
     /**
@@ -75,7 +75,7 @@ public interface ICentiVisContainer<Asp extends Aspect> {
     }
 
     /**
-     * like {@link ICentiVisContainer#addCentiVis(ItemStack, Aspect, int)} but we do this with a map.Map in WILL be modified.
+     * like {@link ICentiVisContainerItem#addCentiVis(ItemStack, Aspect, int)} but we do this with a map.Map in WILL be modified.
      * @param stack which will be set in vis.
      * @param addInto a map to add many aspects into.
      * @return remaining centiVis

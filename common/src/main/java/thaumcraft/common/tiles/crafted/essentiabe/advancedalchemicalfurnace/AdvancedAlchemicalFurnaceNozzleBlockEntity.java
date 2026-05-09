@@ -29,15 +29,22 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         return this.getBlockState().getValue(AdvancedAlchemicalFurnaceNozzleBlock.FACING);
     }
 
+    private @Nullable AdvancedAlchemicalFurnaceBlockEntity baseBECurrentTick = null;
+    private long checkedBaseBEAtGameTime = Long.MIN_VALUE;
     public @Nullable AdvancedAlchemicalFurnaceBlockEntity getBaseBE(){
         if (this.level == null) {
             return null;
         }
-        if (!(this.level.getBlockEntity(getBlockPos().relative(getFacing().getOpposite())) 
-                instanceof AdvancedAlchemicalFurnaceBlockEntity furnace)) {
-            return null;
+        var currentGT = this.level.getGameTime();
+        if (checkedBaseBEAtGameTime != currentGT) {
+            checkedBaseBEAtGameTime = currentGT;
+            baseBECurrentTick = null;
+            if ((this.level.getBlockEntity(getBlockPos().relative(getFacing().getOpposite()))
+                    instanceof AdvancedAlchemicalFurnaceBlockEntity furnace)){
+                baseBECurrentTick = furnace;
+            }
         }
-        return furnace;
+        return baseBECurrentTick;
     }
 
     @Override
@@ -121,7 +128,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
             var base = getBaseBE();
             if (base != null) {
                 if (!base.aspectsView.isEmpty()){
-                    return base.aspectsView.keySet().iterator().next();
+                    return base.aspectsView.getFirstAspect();
                 }
             }
         }
@@ -130,14 +137,14 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
 
     @Override
     public int getEssentiaAmount(@NotNull Direction face) {
-        if (canOutputTo(face)) {
-            var base = getBaseBE();
-            if (base != null) {
-                if (!base.aspectsView.isEmpty()){
-                    return base.aspectsView.entrySet().iterator().next().getValue();
-                }
-            }
+        var base = getBaseBE();
+        if (base == null) {
+            return 0;
         }
-        return 0;
+        var type = getEssentiaType(face);
+        if (type.isEmpty()) {
+            return 0;
+        }
+        return base.aspectsView.getAmount(getEssentiaType(face));
     }
 }

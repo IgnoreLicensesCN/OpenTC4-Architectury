@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static thaumcraft.api.wands.ICentiVisContainer.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 public class TileArcaneBore extends TileThaumcraft implements Container, IWandInteractableBlockOrBlockEntity, TickingBlockEntity {
     public int spiral = 0;

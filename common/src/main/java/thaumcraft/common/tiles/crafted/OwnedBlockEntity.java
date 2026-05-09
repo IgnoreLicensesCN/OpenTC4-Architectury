@@ -1,7 +1,9 @@
 package thaumcraft.common.tiles.crafted;
 
+import com.linearity.opentc4.OpenTC4;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -19,7 +21,7 @@ public class OwnedBlockEntity extends TileThaumcraft {
     public OwnedBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.OWNED, blockPos, blockState);
     }
-    public Set<String> owners = ConcurrentHashMap.newKeySet();
+    private final Set<String> owners = ConcurrentHashMap.newKeySet();
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
@@ -31,4 +33,22 @@ public class OwnedBlockEntity extends TileThaumcraft {
         OWNERS_ACCESSOR.writeToCompoundTag(compoundTag, owners);
     }
 
+    public boolean playerOwnThis(Player player){
+        if (player == null) {
+            return false;
+        }
+        if (owners.isEmpty()){
+            OpenTC4.LOGGER.warn(
+                    "OwnedBE owner is empty:"
+                            + getBlockPos() + " "
+                            + (level == null ? "level:null" : level.dimension().registry().toString())
+            );
+            return true;
+        }
+        return owners.contains(player.getUUID().toString());
+    }
+
+    public void addOwner(Player player){
+        owners.add(player.getUUID().toString());
+    }
 }

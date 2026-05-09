@@ -22,7 +22,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
 import thaumcraft.api.BlockCoordinates;
-import thaumcraft.api.IArchitect;
+import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.blocks.junkbox.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
@@ -287,7 +287,7 @@ public class REHWandHandler {
    @SideOnly(Side.CLIENT)
    public boolean handleArchitectOverlay(ItemStack stack, DrawBlockHighlightEvent event, int playerticks, HitResult target) {
       Minecraft mc = Minecraft.getMinecraft();
-      IArchitect af = (IArchitect)stack.getItem();
+      IArchitectDisplayItem af = (IArchitectDisplayItem)stack.getItem();
       String h = target.blockX + "" + target.blockY + target.blockZ + target.sideHit + playerticks / 5;
       int hc = h.hashCode();
       if (hc != this.lastArcHash) {
@@ -296,7 +296,7 @@ public class REHWandHandler {
       }
 
       if (this.architectBlocks != null && !this.architectBlocks.isEmpty()) {
-         this.drawArchitectAxis(target.blockX, target.blockY, target.blockZ, event.partialTicks, af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitect.EnumAxis.X), af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitect.EnumAxis.Y), af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitect.EnumAxis.Z));
+         this.drawArchitectAxis(target.blockX, target.blockY, target.blockZ, event.partialTicks, af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitectDisplayItem.EnumAxis.X), af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitectDisplayItem.EnumAxis.Y), af.showAxis(stack, mc.theWorld, event.player, target.sideHit, IArchitectDisplayItem.EnumAxis.Z));
 
          for(BlockCoordinates cc : this.architectBlocks) {
             this.drawOverlayBlock(cc.x, cc.y, cc.z, playerticks, mc, event.partialTicks);

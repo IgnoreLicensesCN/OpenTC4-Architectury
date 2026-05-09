@@ -37,12 +37,12 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public boolean nodeRefresh = false;
 
     /**
-     * @return the number ofAspectVisList blocks away this node will check for parent nodes to connect to.
+     * @return the number fromAspectVisList blocks away this node will check for parent nodes to connect to.
      */
     public abstract int getRange();
 
     /**
-     * @return true if this is the source or root node ofAspectVisList the vis network.
+     * @return true if this is the source or root node fromAspectVisList the vis network.
      */
     public abstract boolean isSource();
 
@@ -174,7 +174,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
         List<BlockPos> path = new ArrayList<>();
         VisNetNodeBlockEntity node = this.getRootSource();
         // historically we store the whole path up to source node (hence the name link
-        // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds ofAspectVisList weirdness
+        // but it turns out we only use 2 nodes. more ancient ancestors are prone to all kinds fromAspectVisList weirdness
         // due to unloading order, but 2 nodes seem to stable enough
         while (node != null && (path.size() <= 1 || ConfigurationHandler.INSTANCE.isSavedLinkSaveWholeLink())) {
             path.add(node.getBlockPos());
@@ -274,7 +274,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
      * only affects VisNetNode connection and color(not really for aspect)
      * like channel.but put 0 for any "channel".
      * --IgnoreLicensesCN
-     * @return the type ofAspectVisList shard this is attuned to:
+     * @return the type fromAspectVisList shard this is attuned to:
      * none 0, <s>air 1, fire 2, water 3, earth 4, order 5, entropy 6
      * Should return -1 for most implementations</s>
      * (wont make sure which aspect it shows anymore.depends on BE behavior)
@@ -300,7 +300,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
         this.loadedLink = new ArrayList<>();
     }
     protected void setParentAndClear(VisNetNodeBlockEntity parent) {
-        OpenTC4.LOGGER.trace("Force set parent ofAspectVisList {} ({}) to {} ({})", this.getClass().getSimpleName(), this.getBlockPos(), parent.getClass().getSimpleName(), parent.getBlockPos());
+        OpenTC4.LOGGER.trace("Force set parent fromAspectVisList {} ({}) to {} ({})", this.getClass().getSimpleName(), this.getBlockPos(), parent.getClass().getSimpleName(), parent.getBlockPos());
         WeakReference<VisNetNodeBlockEntity> ref = new WeakReference<>(this);
         this.setParent(new WeakReference<>(parent));
         parent.getChildren().add(ref);

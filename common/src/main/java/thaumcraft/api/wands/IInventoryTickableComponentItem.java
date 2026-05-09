@@ -6,7 +6,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 //i want
-public interface IInventoryTickableComponent {
+public interface IInventoryTickableComponentItem {
 
     void tickAsComponent(
             @NotNull("null->self") ItemStack finalParentStack,

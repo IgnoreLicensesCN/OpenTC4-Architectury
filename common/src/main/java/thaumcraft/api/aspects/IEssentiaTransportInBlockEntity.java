@@ -12,12 +12,12 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
     boolean canInputFrom(@NotNull Direction face);
 
     /**
-     * Sets the amount ofAspectVisList suction this block will apply
+     * Sets the amount fromAspectVisList suction this block will apply
      */
     void setSuction(@NotNull Aspect aspect, int amount);
     /**
      * @param face the location from where the suction is being checked
-     * @return the strength ofAspectVisList suction this block is applying.
+     * @return the strength fromAspectVisList suction this block is applying.
      */
     int getSuctionAmount(@NotNull Direction face);
     /**
@@ -30,7 +30,7 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
     @NotNull Aspect getSuctionType(@NotNull Direction face);
 
     /**
-     * add the specified amount ofAspectVisList essentia to this transport tile
+     * add the specified amount fromAspectVisList essentia to this transport tile
      * @return how much was actually added
      */
     int addEssentia(@NotNull Aspect aspect, int amount,@NotNull Direction fromDirection);

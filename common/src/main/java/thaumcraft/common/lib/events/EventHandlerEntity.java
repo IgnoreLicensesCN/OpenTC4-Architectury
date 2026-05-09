@@ -29,7 +29,7 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.api.wands.IEnchantmentRepairVisProvider;
+import thaumcraft.api.wands.IEnchantmentRepairVisProviderItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
@@ -271,7 +271,7 @@ public class EventHandlerEntity {
       }
    }
 
-   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProvider provider) && provider.canProvideVisForRepair(itemStack);
+   public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProviderItem provider) && provider.canProvideVisForRepair(itemStack);
    public static void doRepair(ItemStack is, ServerPlayer player) {
 
       int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
@@ -374,7 +374,7 @@ public class EventHandlerEntity {
                      BlockEntity tile = event.world.getBlockEntity(x + xx, y + yy, z + zz);
                      if (tile instanceof TileOwned) {
                         if (((EntityEnderPearl)event.entity).getThrower() instanceof Player) {
-                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic ofAspectVisList a nearby warded object destroys the ender pearl."));
+                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic fromAspectVisList a nearby warded object destroys the ender pearl."));
                         }
 
                         event.entity.setDead();

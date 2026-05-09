@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -11,10 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwner;
-
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwner {
 
@@ -37,18 +36,23 @@ public class SceptreCastingItem extends WandCastingItem implements IArcaneCrafti
 
     @Override
     public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        if (equipmentSlot.equals(EquipmentSlot.OFFHAND)) {
+            return ImmutableMultimap.of();
+        }
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 6.0, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -3, AttributeModifier.Operation.ADDITION));
         return builder.build();
     }
 
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        return new CentiVisList<>(super.getAllCentiVisCapacity(usingWand)
-                .entrySet()
-                .stream()
-                .map(entry -> Map.entry(entry.getKey(),(int)(entry.getValue()*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
-        );
+        var originalResult = super.getAllCentiVisCapacity(usingWand);
+        Object2IntLinkedOpenHashMap<Aspect> centiVisCapacity = new Object2IntLinkedOpenHashMap<>(originalResult.size(),1);
+        originalResult.forEach((key, value) -> centiVisCapacity.put(
+                key,
+                (int) (value*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)
+        ));
+        return UnmodifiableCentiVisList.viewOf(centiVisCapacity);
     }
 }
