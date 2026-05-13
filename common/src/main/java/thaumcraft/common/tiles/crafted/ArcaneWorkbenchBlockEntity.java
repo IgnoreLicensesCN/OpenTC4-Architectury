@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,13 +24,14 @@ import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
+import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 
 import java.util.List;
 
 //TODO:Cache recipes to make this faster?
 public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity>
         implements
-        WorldlyContainer,
+        IDefaultWorldlyContainer,
         ExtendedMenuProvider,
         IArcaneWorkbenchContainer,
         IVisNetChargeRelayChargeableContainer {
@@ -49,79 +49,6 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ARCANE_WORKBENCH, blockPos, blockState);
     }
-    @Override
-    public int getContainerSize() {
-        return SIZE;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (var stackInInventory:inventory) {
-            if (!stackInInventory.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isInventoryIndexOutOfBound(int slot) {
-        return slot < 0 || slot >= INPUT_AND_WAND_SLOTS.length;
-    }
-    public void ensureInventoryIndexInBound(int slot) {
-        if (isInventoryIndexOutOfBound(slot)) {
-            throw new IndexOutOfBoundsException("Index: " + slot);
-        }
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int slot) {
-        ensureInventoryIndexInBound(slot);
-        return inventory.get(slot);
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItem(int slot, int amount) {
-        ensureInventoryIndexInBound(slot);
-        ItemStack stack = getItem(slot);
-        if (stack.getCount() <= amount) {
-            setItem(slot, ItemStack.EMPTY);
-            setChanged();
-            return stack;
-        }
-        else {
-            stack.shrink(amount);
-            stack = stack.copy();
-            stack.setCount(amount);
-            setChanged();
-            return stack;
-        }
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItemNoUpdate(int i) {
-        var stack = getItem(i);
-        setItem(i, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setItem(int i, ItemStack itemStack) {
-        inventory.set(i, itemStack);
-        markDirtyAndUpdateSelf();
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        inventory.clear();
-    }
-
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
@@ -154,10 +81,9 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         }
         return true;
     }
-
     @Override
-    public boolean canTakeItemThroughFace(int slot, ItemStack itemStack, Direction direction) {
-        return true;
+    public @NotNull ItemStack getItem(int i) {
+        return IDefaultWorldlyContainer.super.getItem(i);
     }
 
 
@@ -207,14 +133,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         }
         var visContainer = (ICentiVisContainerItem<Aspect>) visContainerNotCasted;
         var visOwning = visContainer.getAllCentiVisOwning(wandStack);
-        for (var centiVisAndAmount:centiVisList.entrySet()){
-            var aspect = centiVisAndAmount.getKey();
-            var amount = centiVisAndAmount.getValue();
-            if (visOwning.getOrDefault(aspect,0) < amount){
-                return false;
-            }
-        }
-        return true;
+        return !centiVisList.forEachWithBreak((asp, amount) -> visOwning.get(asp) < amount);
     }
     public boolean consumeCentiVisNoThrow(Player player, CentiVisList<Aspect> centiVisList) {
         if (centiVisList.isEmpty()){
@@ -255,6 +174,16 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     @Override
     public @NotNull Component getDisplayName() {
         return Component.translatable("block.thaumcraft.arcane_workbench");//TODO:Separate a new name
+    }
+
+    @Override
+    public int[] getSlots() {
+        return INPUT_AND_WAND_SLOTS;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getInventory() {
+        return inventory;
     }
 
 }

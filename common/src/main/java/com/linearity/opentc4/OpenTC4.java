@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.listeners.EventListeners;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
@@ -14,6 +15,8 @@ import thaumcraft.common.aspects.ThaumcraftItemAspects;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
+import thaumcraft.common.lib.world.HolderCache;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.items.ThaumcraftItems;
@@ -26,6 +29,8 @@ import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
 import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import static thaumcraft.api.IRepairable.repairCostCache;
 
 public final class OpenTC4 {
     public static boolean DEBUG_FLAG = false;;
@@ -87,5 +92,7 @@ public final class OpenTC4 {
     public static void onDatapackReload(){
         ItemBasicAspectCalculator.onDatapackReload();
         ItemBasicAspectGetter.onDatapackReload();
+        HolderCache.onDatapackReload();
+        repairCostCache.clear();
     }
 }

@@ -1,6 +1,6 @@
-package thaumcraft.common.lib;
+package thaumcraft.common.lib.fakeplayer;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
@@ -9,34 +9,29 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 public class FakeThaumcraftPlayer extends ServerPlayer {
 
    public static class FakeThaumcraftPlayerFactory {
-      private static final GameProfile MINECRAFT = new GameProfile(UUID.fromString("41C82C87-7AfB-4024-BA57-13D2C99CAE77"), "[Minecraft]");
+//      private static final GameProfile MINECRAFT = new GameProfile(UUID.fromString("41C82C87-7AfB-4024-BA57-13D2C99CAE77"), "[Minecraft]");
       // Map fromAspectVisList all active fake player usernames to their entities
-      private static final Map<GameProfile, FakeThaumcraftPlayer> fakeThaumcraftPlayers = new ConcurrentHashMap<>();
-      private static FakeThaumcraftPlayer MINECRAFT_PLAYER = null;
-
-      public static FakeThaumcraftPlayer getMinecraft(ServerLevel world)
-      {
-         if (MINECRAFT_PLAYER == null)
-         {
-            MINECRAFT_PLAYER = FakeThaumcraftPlayerFactory.get(world,  MINECRAFT);
-         }
-         return MINECRAFT_PLAYER;
-      }
+      private static final Map<GameProfile, FakeThaumcraftPlayer> fakeThaumcraftPlayers = new MapMaker().weakValues().makeMap();
+//      private static FakeThaumcraftPlayer MINECRAFT_PLAYER = null;
+//
+//      public static FakeThaumcraftPlayer getMinecraft(ServerLevel world)
+//      {
+//         if (MINECRAFT_PLAYER == null)
+//         {
+//            MINECRAFT_PLAYER = FakeThaumcraftPlayerFactory.get(world,  MINECRAFT);
+//         }
+//         return MINECRAFT_PLAYER;
+//      }
 
       /**
        * Get a fake player with a given username,
@@ -44,13 +39,7 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
        * WorldEvent.Unload and kill all references to prevent worlds staying in memory.
        */
       public static FakeThaumcraftPlayer get(ServerLevel world, GameProfile profile){
-         if (!fakeThaumcraftPlayers.containsKey(profile))
-         {
-            FakeThaumcraftPlayer FakeThaumcraftPlayer = new FakeThaumcraftPlayer(world, profile);
-            fakeThaumcraftPlayers.put(profile, FakeThaumcraftPlayer);
-         }
-
-         return fakeThaumcraftPlayers.get(profile);
+          return fakeThaumcraftPlayers.computeIfAbsent(profile, prof -> new FakeThaumcraftPlayer(world, prof));
       }
 
       /**
@@ -63,10 +52,12 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
          return get(world,new FakeGameProfile(username));
       }
 
+      //TODO:Use this
       public static void unloadWorld(ServerLevel world)
       {
           fakeThaumcraftPlayers.entrySet()
-                  .removeIf(entry -> entry.getValue()
+                  .removeIf(
+                          entry -> entry.getValue()
                           .level() == world);
       }
    }
@@ -105,4 +96,8 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
    public void sendSystemMessage(Component component, boolean bl) {}
    @Override
    public void openItemGui(ItemStack itemStack, InteractionHand interactionHand) {}
+
+    @Override
+    public void sendTexturePack(String string, String string2, boolean bl, @Nullable Component component) {
+    }
 }

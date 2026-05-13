@@ -9,6 +9,8 @@ import java.util.function.IntBinaryOperator;
 @UnmodifiableView
 public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<Asp>{
     public static final UnmodifiableCentiVisList<Aspect> EMPTY = new UnmodifiableCentiVisList<>();
+    public static final UnmodifiableCentiVisList<PrimalAspect> EMPTY_PRIMAL = new UnmodifiableCentiVisList<>();
+    public static final UnmodifiableCentiVisList<CompoundAspect> EMPTY_COMPOUND = new UnmodifiableCentiVisList<>();
     public UnmodifiableCentiVisList() {
         super();
     }
@@ -84,5 +86,8 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends CentiVisList<A
 
     public static <Asp extends Aspect> UnmodifiableCentiVisList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects) {
         return new UnmodifiableCentiVisList<>(aspects);
+    }
+    public static <Asp extends Aspect> UnmodifiableCentiVisList<Asp> viewOf(CentiVisList<Asp> aspects) {
+        return new UnmodifiableCentiVisList<>(aspects.aspects);
     }
 }

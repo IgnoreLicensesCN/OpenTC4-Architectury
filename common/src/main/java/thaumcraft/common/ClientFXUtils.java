@@ -1,5 +1,6 @@
 package thaumcraft.common;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -20,6 +21,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.fx.migrated.particles.*;
 import thaumcraft.client.fx.migrated.beams.*;
 import thaumcraft.client.fx.migrated.bolt.*;
@@ -226,7 +229,11 @@ public class ClientFXUtils {
                         1.0F
                 );
             } else {
-                Color color = new Color(tile.owningAspects.randomAspect(world.random).getColor());
+                var randomAspect = tile.owningAspects.randomAspect(world.random);
+                if (randomAspect == null) {
+                    randomAspect = Aspects.EMPTY;
+                }
+                Color color = new Color(randomAspect.getColor());
                 fb.setRBGColorF(
                         (float) color.getRed() / 255.0F,
                         (float) color.getGreen() / 255.0F,
@@ -605,16 +612,22 @@ public class ClientFXUtils {
         return beamcon;
     }
 
-    public static FXBeamBore beamBore(ClientLevel worldObj, double px, double py, double pz, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
+    public static FXBeamBore beamBore(
+            ClientLevel worldObj,
+            double px, double py, double pz,
+            double tx, double ty, double tz,
+            int type,
+            @RGBColor int color,
+            boolean reverse,
+            float endmod,
+            @Nullable FXBeamBore beamcon,
+            int impact
+    ) {
 
         if (!checkPlatformClient()) {
             throw new RuntimeException("not avaliable in server");
         }
-        FXBeamBore beamcon = null;
         Color c = new Color(color);
-        if (input instanceof FXBeamBore) {
-            beamcon = (FXBeamBore) input;
-        }
 
         if (beamcon != null && !beamcon.isDead()) {
             beamcon.updateBeam(
@@ -647,7 +660,7 @@ public class ClientFXUtils {
         return beamcon;
     }
 
-    public static void boreDigFx(ClientLevel worldObj, int x, int y, int z, int x2, int y2, int z2, Block bi) {
+    public static void boreDigFx(ClientLevel worldObj, int x, int y, int z, int x2, int y2, int z2, Block block) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -673,7 +686,7 @@ public class ClientFXUtils {
                     (double) x2 + (double) 0.5F,
                     (double) y2 + (double) 0.5F,
                     (double) z2 + (double) 0.5F,
-                    bi,
+                    block,
                     randomDir
             )).applyColourMultiplier(
                     x,

@@ -31,6 +31,7 @@ import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
 
@@ -132,9 +133,7 @@ public class NodeType {
                 );
                 var biome = serverLevel.getBiome(randomPickPos);
                 if (!biome.is(ThaumcraftBiomeIDs.EERIE_ID)) {
-                    var holderEerie = serverLevel.registryAccess()
-                            .registryOrThrow(Registries.BIOME)
-                            .getHolderOrThrow(ThaumcraftBiomeIDs.EERIE_KEY);
+                    var holderEerie = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.EERIE_KEY);
                     Utils.setBiomeAt(serverLevel, randomPickPos, holderEerie);
                 }
 
@@ -191,9 +190,7 @@ public class NodeType {
                 );
                 var biome = serverLevel.getBiome(randomPickPos);
                 if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                    var holderTaint = serverLevel.registryAccess()
-                            .registryOrThrow(Registries.BIOME)
-                            .getHolderOrThrow(ThaumcraftBiomeIDs.TAINT_KEY);
+                    var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
                     for (int i=0;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
                         Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderTaint);
                     }
@@ -385,11 +382,12 @@ public class NodeType {
 //                int biobl = ThaumcraftWorldGenerator.getBiomeBlacklist(bg.biomeID);//TODO:Impl black list
                 if (
 //                        biobl != 0 && biobl != 2 && 
-                        !biome.is(ThaumcraftBiomeIDs./*Magical Forest*/)
+                        !biome.is(ThaumcraftBiomeIDs.MAGICAL_FOREST_KEY)
                 ) {
                     if (biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                        var holderMagicalForest = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.MAGICAL_FOREST_KEY);
                         for (int i=-PURE_NODE_Y_RANGE;i<=PURE_NODE_Y_RANGE;i+=1){
-                            Utils.setBiomeAt(serverLevel, randomPickPos.above(i), ThaumcraftBiomeIDs./*Magical Forest*/);
+                            Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderMagicalForest);
                         }
                     } 
 //                    else if (serverLevel.getBlockState(pos).getBlock() == ThaumcraftBlocks.SILVERWOOD_KNOT) {

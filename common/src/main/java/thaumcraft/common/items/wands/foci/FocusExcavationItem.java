@@ -2,8 +2,6 @@ package thaumcraft.common.items.wands.foci;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,21 +32,21 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandFocusEngine;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 
 public class FocusExcavationItem extends FocusBasicItem {
     public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15);
@@ -62,8 +60,13 @@ public class FocusExcavationItem extends FocusBasicItem {
                     .addAll(Aspects.ENTROPY, 1)
                     .addAll(wandCost)
     );
-    public static final FocusUpgradeType dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList<>()).addAll(
-            Aspects.MINE, 1));
+    public static final FocusUpgradeType dowsing = new FocusUpgradeType(
+            FocusUpgradeTypeResourceLocation.of(Thaumcraft.MOD_ID,"dowsing"),
+            new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"),
+            "focus.upgrade.dowsing.name",
+            "focus.upgrade.dowsing.text",
+            UnmodifiableAspectList.of(Aspects.MINE, 1)
+    );
 
     public FocusExcavationItem() {
         super(new Properties().stacksTo(1));
@@ -159,6 +162,7 @@ public class FocusExcavationItem extends FocusBasicItem {
     private static final BlockPos MAX = new BlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
         var wandItem = usingWand.getItem();
         var focusItem = focusStack.getItem();
@@ -168,14 +172,17 @@ public class FocusExcavationItem extends FocusBasicItem {
             return;
         }
         var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
-        if (!(container.consumeAllCentiVis(usingWand,user, getCentiVisCost(focusStack,usingWand),false,false))
+        var level = user.level();
+        var serverSideFlag = !level.isClientSide();
+        if (!(container.consumeAllCentiVis(
+                usingWand
+                ,user, getCentiVisCost(focusStack,usingWand),false,false,serverSideFlag))
         ){
             user.stopUsingItem();
             return;
         }
         {
 
-            var level = user.level();
             soundDelay.putIfAbsent(user, 0L);
             breakCount.putIfAbsent(user, 0.0F);
             lastUsingAtCoords.putIfAbsent(user, ZERO);
@@ -203,7 +210,7 @@ public class FocusExcavationItem extends FocusBasicItem {
             tz = mopVec.z();
             var mopBlockPos = new BlockPos((int)mopVec.x(),(int) mopVec.y(),(int)mopVec.z());
             impact = 5;
-            if (Platform.getEnvironment() != Env.CLIENT && soundDelay.get(user) < System.currentTimeMillis()) {
+            if (serverSideFlag && soundDelay.get(user) < System.currentTimeMillis()) {
                 level.playSound(user,mopBlockPos, ThaumcraftSounds.RUMBLE, SoundSource.BLOCKS,.3F,1.F);
                 soundDelay.put(user, System.currentTimeMillis() + 1200L);
             }
@@ -236,23 +243,23 @@ public class FocusExcavationItem extends FocusBasicItem {
                     if (Objects.equals(mopBlockPos,lastUsingAtCoords.getOrDefault(user,MAX))
                     ) {
                         float bc = breakCount.get(user);
-                        if (Platform.getEnvironment() == Env.CLIENT && bc > 0.0F && !blockState.isAir()) {
+                        if (!serverSideFlag && bc > 0.0F && !blockState.isAir()) {
                             int progress = (int)(bc / hardness * 9.0F);
                             ClientFXUtils.excavateFX(mopBlockPos, user, blockState.getBlock().arch$registryName(), progress);
                         }
 
-                        if (Platform.getEnvironment() == Env.CLIENT) {
+                        if (!serverSideFlag) {
                             if (bc >= hardness) {
                                 breakCount.put(user, 0.0F);
                             } else {
                                 breakCount.put(user, bc + speed);
                             }
-                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false)) {
+                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
-                                    if (container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), false, false)
+                                    if (container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), false, false,serverSideFlag)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false);
+                                        container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag);
                                     }
                                 }
                             }
@@ -276,10 +283,9 @@ public class FocusExcavationItem extends FocusBasicItem {
 
 
 
-    private boolean excavate(Level world, ItemStack usingWand, LivingEntity user, BlockState state,BlockPos pos) {
+    private boolean excavate(Level level, ItemStack usingWand, LivingEntity user, BlockState state,BlockPos pos) {
         if (!(user instanceof Player player)) {return false;}
         GameType gt = GameType.SURVIVAL;
-        var level = player.level();
 
         if (player instanceof ServerPlayer sp) {
             gt = sp.gameMode.getGameModeForPlayer();
@@ -299,7 +305,7 @@ public class FocusExcavationItem extends FocusBasicItem {
             return false;
         }
         var focusStack = focusEngine.getFocusItemStack(usingWand);
-        if (focusStack == null) {
+        if (focusStack.isEmpty()) {
             return false;
         }
         var fItem = focusStack.getItem();
@@ -314,50 +320,76 @@ public class FocusExcavationItem extends FocusBasicItem {
                     !state.requiresCorrectToolForDrops()
                             || player.hasCorrectToolForDrops(state);
             boolean canSilk = silk && canHarvest &&
-                    !state.getBlock().asItem().canBeDepleted() && // 基本等价检查
+                    !state.getBlock().asItem().canBeDepleted() &&
                     !state.requiresCorrectToolForDrops();
-            if (silk && canSilk
-            ) {
-                if (Platform.getEnvironment() == Env.SERVER) {
-                    Block.popResource(world,pos,state.getBlock().asItem().getDefaultInstance());
-                }
-//                //TODO:Multi-platform
-//                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
+            getResourceFromBlock(level, state, pos, silk, canSilk, fortune,stack -> Block.popResource(level, pos, stack));
 
-            } else {
-                //x,y,z -> pos(BlockPos)
-                //md:metadata(removed,dont care)
-                //fortune:fortune level
-                //calculate mine block drop (including drop exp) with fortune
-                if (level instanceof ServerLevel serverLevel) {
-                    var block = state.getBlock();
-                    LootTable lootTable = serverLevel.getServer().getLootData()
-                            .getLootTable(state.getBlock().getLootTable());
-                    LootParams.Builder builder = new LootParams.Builder(serverLevel)
-                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                            .withOptionalParameter(LootContextParams.BLOCK_STATE, state)
-                            .withLuck(fortune);
-                    var lootParams = builder.create(LootContextParamSets.BLOCK);
-
-                    lootTable.getRandomItems(lootParams,stack -> Block.popResource(level, pos, stack));
-                    if (block instanceof DropExperienceBlockAccessor accessor) {
-                        if (serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
-                            ExperienceOrb.award(serverLevel, Vec3.atCenterOf(pos), (accessor).opentc4$getRandomXp(state,level,level.getRandom(),pos,fortune,0));
-                        }
-                    }
-                }
-            }
-
-            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
             SoundEvent soundEvent = state.getBlock().getSoundType(state).getBreakSound();
             level.playSound(null, pos, soundEvent, SoundSource.BLOCKS, 1.0F, 1.0F);
             return true;
         }
     }
+    public static void getResourceFromBlockCanHarvest(
+            Level level,
+            BlockState state,
+            BlockPos pos,
+            boolean silk,
+            int fortune,
+            Consumer<ItemStack> resourceConsumer
+    ){
+        boolean canSilk = silk &&
+                !state.getBlock().asItem().canBeDepleted() &&
+                !state.requiresCorrectToolForDrops();
+        getResourceFromBlock(level, state, pos, silk, canSilk, fortune,resourceConsumer);
+    }
+    public static void getResourceFromBlock(
+            Level level,
+            BlockState state,
+            BlockPos pos,
+            boolean silk,
+            boolean canSilk,
+            int fortune,
+            Consumer<ItemStack> resourceConsumer
+    ) {
+        if (silk && canSilk
+        ) {
+            if (!level.isClientSide) {
+                Block.popResource(
+                        level, pos, state.getBlock().asItem().getDefaultInstance());
+            }
+//                //TODO:Multi-platform
+//                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
 
-    boolean breakNeighbour(LivingEntity p, BlockPos pos, BlockState state, ItemStack usingWand) {
+        } else {
+            //x,y,z -> pos(BlockPos)
+            //md:metadata(removed,dont care)
+            //fortune:fortune level
+            //calculate mine block drop (including drop exp) with fortune
+            if (level instanceof ServerLevel serverLevel) {
+                var block = state.getBlock();
+                LootTable lootTable = serverLevel.getServer().getLootData()
+                        .getLootTable(state.getBlock().getLootTable());
+                LootParams.Builder builder = new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                        .withOptionalParameter(LootContextParams.BLOCK_STATE, state)
+                        .withLuck(fortune);
+                var lootParams = builder.create(LootContextParamSets.BLOCK);
+
+                lootTable.getRandomItems(lootParams,resourceConsumer);
+                if (block instanceof DropExperienceBlockAccessor accessor) {
+                    if (serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+                        ExperienceOrb.award(serverLevel, Vec3.atCenterOf(pos), (accessor).opentc4$getRandomXp(
+                                state, level, level.getRandom(), pos, fortune,0));
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean breakNeighbour(LivingEntity p, BlockPos pos, BlockState state, ItemStack usingWand) {
         List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
         Collections.shuffle(directions, ThreadLocalRandom.current());
 

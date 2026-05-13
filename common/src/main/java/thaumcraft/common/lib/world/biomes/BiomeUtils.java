@@ -25,10 +25,9 @@ public class BiomeUtils {
        if (Config.taintSpreadRate > 0) {
           var pos = basePos.offset(rand.nextInt(3) - 1,0,rand.nextInt(3) - 1);
           if (!world.getBiome(pos).is(ThaumcraftBiomeIDs.TAINT_ID)&& rand.nextInt(Config.taintSpreadRate * 5) == 0 && getAdjacentTaint(world, basePos) >= 2) {
+              var biomeToSet = ThaumcraftBiomeLookups.biomeHolderForLevel(world,ThaumcraftBiomeIDs.TAINT_KEY);
              for (int yOffset = 0; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
                 var afffectPos = pos.above(yOffset);
-                var biomeToSet = world.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(
-                        ResourceKey.create(Registries.BIOME,ThaumcraftBiomeIDs.TAINT_ID));
                 Utils.setBiomeAt(world, pos.above(yOffset), biomeToSet);
                 world.blockEvent(afffectPos,world.getBlockState(afffectPos).getBlock(),1,0);
              }

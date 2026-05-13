@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.lib.world.HolderCache;
 
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DamageSourceThaumcraft
 {
+    private static final HolderCache<DamageType> holderCache = HolderCache.of(Registries.DAMAGE_TYPE);
 
     public static final ResourceKey<DamageType> TAINT =
             ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse("thaumcraft:taint")));
@@ -30,18 +32,8 @@ public class DamageSourceThaumcraft
 
     public static final ResourceKey<DamageType> DISSOLVE =
             ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse("thaumcraft:dissolve")));
-
-
-    private static final Map<ResourceKey<DamageType>, WeakHashMap<Level, Holder<DamageType>>> CACHE = new ConcurrentHashMap<>();
-
-    private static Holder<DamageType> getHolder(Level level, ResourceKey<DamageType> key) {
-        // 先获取 ResourceKey 对应的 WeakHashMap，如果没有就创建
-        WeakHashMap<Level, Holder<DamageType>> map = CACHE.computeIfAbsent(key, k -> new WeakHashMap<>());
-
-        // 再获取 Level 对应的 Holder，如果没有就从 Registry 里取
-        return map.computeIfAbsent(level, l ->
-                l.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key)
-        );
+    public static Holder<DamageType> getHolder(Level level, ResourceKey<DamageType> key) {
+        return holderCache.getHolder(level, key);
     }
 
     public static DamageSource getDamageSource(Level level, ResourceKey<DamageType> key) {
@@ -105,5 +97,4 @@ public class DamageSourceThaumcraft
 //    {
 //        return new EntityDamageSource("tentacle", par0EntityLiving);
 //    }
-    
 }

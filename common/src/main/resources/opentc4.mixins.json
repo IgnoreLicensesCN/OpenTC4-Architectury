@@ -9,6 +9,7 @@
     "ItemRendererMixin",
     "LivingEntityClientMixin",
     "SheetsMixin",
+    "clientbe.ArcaneBoreBlockEntityClientMixin",
     "clientbe.BrainJarBlockEntityClientMixin",
     "clientbe.CrucibleBlockEntityClientMixin",
     "clientbe.EssentiaCentrifugeBlockEntityClientMixin",
@@ -31,6 +32,7 @@
     "MilkBucketItemMixin",
     "MobMixin",
     "MonsterMixin",
+    "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerMixin"
   ],

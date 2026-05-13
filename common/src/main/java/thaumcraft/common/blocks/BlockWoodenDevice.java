@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//"0": "奥术风箱",--done
+//    "0": "奥术风箱",--done
 //    "tile.blockWoodenDevice.1.name": "奥术之耳",
 //    "tile.blockWoodenDevice.2.name": "奥术压力盘",--done
 //    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",
@@ -119,196 +119,205 @@ public class BlockWoodenDevice extends BlockContainer {
 //
 //   }
 
-   public IIcon getIcon(int par1, int par2) {
-      if (par2 == 0) {
-         return this.iconDefault;
-      } else if (par2 == 6) {
-         return this.iconGreatwood;
-      } else if (par2 == 7) {
-         return this.iconSilverwood;
-      } else if (par2 != 2 && par2 != 3) {
-         if (this.renderState == 0) {
-            switch (par1) {
-               case 0:
-                  return this.iconAEar[2];
-               case 1:
-                  return this.iconAEar[4];
-            }
-         } else {
-            if (this.renderState != 1) {
-               if (par1 <= 1) {
-                  return this.iconAEar[6];
-               }
+//   public IIcon getIcon(int par1, int par2) {
+//      if (par2 == 0) {
+//         return this.iconDefault;
+//      } else if (par2 == 6) {
+//         return this.iconGreatwood;
+//      } else if (par2 == 7) {
+//         return this.iconSilverwood;
+//      } else if (par2 != 2 && par2 != 3) {
+//         if (this.renderState == 0) {
+//            switch (par1) {
+//               case 0:
+//                  return this.iconAEar[2];
+//               case 1:
+//                  return this.iconAEar[4];
+//            }
+//         } else {
+//            if (this.renderState != 1) {
+//               if (par1 <= 1) {
+//                  return this.iconAEar[6];
+//               }
+//
+//               return this.iconAEar[5];
+//            }
+//
+//            switch (par1) {
+//               case 0:
+//                  return this.iconAEar[2];
+//               case 1:
+//                  return this.iconAEar[3];
+//            }
+//         }
+//
+//         return this.iconAEar[0];
+//      } else {
+//         return this.iconAPPlate[0];
+//      }
+//   }
 
-               return this.iconAEar[5];
-            }
+//   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      if (meta == 2 || meta == 3) {
+//         TileEntity tile = world.getTileEntity(x, y, z);
+//         if (tile instanceof TileArcanePressurePlate) {
+//            return this.iconAPPlate[((TileArcanePressurePlate)tile).setting];
+//         }
+//      }
+//
+//      return super.getIcon(world, x, y, z, side);
+//   }
 
-            switch (par1) {
-               case 0:
-                  return this.iconAEar[2];
-               case 1:
-                  return this.iconAEar[3];
-            }
-         }
+//   public int damageDropped(int par1) {
+//      return par1 == 3 ? 2 : par1;
+//   }
 
-         return this.iconAEar[0];
-      } else {
-         return this.iconAPPlate[0];
-      }
-   }
+//   public Item getItemDropped(int par1, Random par2Random, int par3) {
+//      if (!Config.wardedStone || par1 != 2 && par1 != 3) {
+//         return par1 == 8 ? Item.getItemById(0) : super.getItemDropped(par1, par2Random, par3);
+//      } else {
+//         return Item.getItemById(0);
+//      }
+//   }
 
-   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-      int meta = world.getBlockMetadata(x, y, z);
-      if (meta == 2 || meta == 3) {
-         TileEntity tile = world.getTileEntity(x, y, z);
-         if (tile instanceof TileArcanePressurePlate) {
-            return this.iconAPPlate[((TileArcanePressurePlate)tile).setting];
-         }
-      }
+//   public float getBlockHardness(World world, int x, int y, int z) {
+//      if (world.getBlock(x, y, z) != this) {
+//         return super.getBlockHardness(world, x, y, z);
+//      } else {
+//         int md = world.getBlockMetadata(x, y, z);
+//         if (md != 2 && md != 3) {
+//            return super.getBlockHardness(world, x, y, z);
+//         } else {
+//            return Config.wardedStone ? -1.0F : 2.0F;
+//         }
+//      }
+//   }
 
-      return super.getIcon(world, x, y, z, side);
-   }
+//   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+//      if (world.getBlock(x, y, z) != this) {
+//         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+//      } else {
+//         int md = world.getBlockMetadata(x, y, z);
+//         return md != 2 && md != 3 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ) : 999.0F;
+//      }
+//   }
+//
+//   public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+//      if (world.getBlock(x, y, z) == this) {
+//         int md = world.getBlockMetadata(x, y, z);
+//         if (md != 2 && md != 3) {
+//            super.onBlockExploded(world, x, y, z, explosion);
+//         }
+//      } else {
+//         super.onBlockExploded(world, x, y, z, explosion);
+//      }
+//
+//   }
 
-   public int damageDropped(int par1) {
-      return par1 == 3 ? 2 : par1;
-   }
+//   public boolean isOpaqueCube() {
+//      return false;
+//   }
+//
+//   public boolean renderAsNormalBlock() {
+//      return false;
+//   }
+//
+//   public int getRenderType() {
+//      return ConfigBlocks.blockWoodenDeviceRI;
+//   }
 
-   public Item getItemDropped(int par1, Random par2Random, int par3) {
-      if (!Config.wardedStone || par1 != 2 && par1 != 3) {
-         return par1 == 8 ? Item.getItemById(0) : super.getItemDropped(par1, par2Random, par3);
-      } else {
-         return Item.getItemById(0);
-      }
-   }
+//   public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_) {
+//      return p_149633_1_.getBlock(p_149633_2_, p_149633_3_, p_149633_4_) != this ? AxisAlignedBB.getBoundingBox(p_149633_2_, p_149633_3_, p_149633_4_, (double)p_149633_2_ + (double)1.0F, (double)p_149633_3_ + (double)1.0F, (double)p_149633_4_ + (double)1.0F) : super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
+//   }
 
-   public float getBlockHardness(World world, int x, int y, int z) {
-      if (world.getBlock(x, y, z) != this) {
-         return super.getBlockHardness(world, x, y, z);
-      } else {
-         int md = world.getBlockMetadata(x, y, z);
-         if (md != 2 && md != 3) {
-            return super.getBlockHardness(world, x, y, z);
-         } else {
-            return Config.wardedStone ? -1.0F : 2.0F;
-         }
-      }
-   }
+//   public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
+//      if (par1iBlockAccess.getBlock(par2, par3, par4) != this) {
+//         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
+//      } else {
+//         int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
+//         if (meta == 0) {
+//            this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 1.0F, 0.9F);
+//         } else if (meta == 2) {
+//            float var6 = 0.0625F;
+//            this.setBlockBounds(var6, 0.0F, var6, 1.0F - var6, 0.0625F, 1.0F - var6);
+//         } else if (meta == 3) {
+//            float var6 = 0.0625F;
+//            this.setBlockBounds(var6, 0.0F, var6, 1.0F - var6, 0.03125F, 1.0F - var6);
+//         } else if (meta == 5) {
+//            Direction dir = Direction.UNKNOWN;
+//            TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
+//            if (tile instanceof TileArcaneBore) {
+//               dir = ((TileArcaneBore)tile).orientation;
+//            }
+//
+//            this.setBlockBounds((
+//                    float)((dir.offsetX < 0 ? -1 : 0)),
+//                    (float)((dir.offsetY < 0 ? -1 : 0)),
+//                    (float)((dir.offsetZ < 0 ? -1 : 0)),
+//                    (float)(1 + (dir.offsetX > 0 ? 1 : 0)),
+//                    (float)(1 + (dir.offsetY > 0 ? 1 : 0)),
+//                    (float)(1 + (dir.offsetZ > 0 ? 1 : 0))
+//            );
+//         }
+//         else if (meta == 8) {
+//            TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
+//            if (tile instanceof TileBanner) {
+//               if (((TileBanner)tile).getWall()) {
+//                  switch (((TileBanner)tile).getFacing()) {
+//                     case 0:
+//                        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 0.25F);
+//                        break;
+//                     case 4:
+//                        this.setBlockBounds(0.75F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+//                        break;
+//                     case 8:
+//                        this.setBlockBounds(0.0F, 0.0F, 0.75F, 1.0F, 2.0F, 1.0F);
+//                        break;
+//                     case 12:
+//                        this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.25F, 2.0F, 1.0F);
+//                  }
+//               } else {
+//                  this.setBlockBounds(0.33F, 0.0F, 0.33F, 0.66F, 2.0F, 0.66F);
+//               }
+//            } else {
+//               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            }
+//         }
+//         else {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//         }
+//
+//         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
+//      }
+//   }
 
-   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-      if (world.getBlock(x, y, z) != this) {
-         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
-      } else {
-         int md = world.getBlockMetadata(x, y, z);
-         return md != 2 && md != 3 ? super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ) : 999.0F;
-      }
-   }
-
-   public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-      if (world.getBlock(x, y, z) == this) {
-         int md = world.getBlockMetadata(x, y, z);
-         if (md != 2 && md != 3) {
-            super.onBlockExploded(world, x, y, z, explosion);
-         }
-      } else {
-         super.onBlockExploded(world, x, y, z, explosion);
-      }
-
-   }
-
-   public boolean isOpaqueCube() {
-      return false;
-   }
-
-   public boolean renderAsNormalBlock() {
-      return false;
-   }
-
-   public int getRenderType() {
-      return ConfigBlocks.blockWoodenDeviceRI;
-   }
-
-   public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_) {
-      return p_149633_1_.getBlock(p_149633_2_, p_149633_3_, p_149633_4_) != this ? AxisAlignedBB.getBoundingBox(p_149633_2_, p_149633_3_, p_149633_4_, (double)p_149633_2_ + (double)1.0F, (double)p_149633_3_ + (double)1.0F, (double)p_149633_4_ + (double)1.0F) : super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
-   }
-
-   public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
-      if (par1iBlockAccess.getBlock(par2, par3, par4) != this) {
-         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
-      } else {
-         int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
-         if (meta == 0) {
-            this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 1.0F, 0.9F);
-         } else if (meta == 2) {
-            float var6 = 0.0625F;
-            this.setBlockBounds(var6, 0.0F, var6, 1.0F - var6, 0.0625F, 1.0F - var6);
-         } else if (meta == 3) {
-            float var6 = 0.0625F;
-            this.setBlockBounds(var6, 0.0F, var6, 1.0F - var6, 0.03125F, 1.0F - var6);
-         } else if (meta == 5) {
-            Direction dir = Direction.UNKNOWN;
-            TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
-            if (tile instanceof TileArcaneBore) {
-               dir = ((TileArcaneBore)tile).orientation;
-            }
-
-            this.setBlockBounds((float)((dir.offsetX < 0 ? -1 : 0)), (float)((dir.offsetY < 0 ? -1 : 0)), (float)((dir.offsetZ < 0 ? -1 : 0)), (float)(1 + (dir.offsetX > 0 ? 1 : 0)), (float)(1 + (dir.offsetY > 0 ? 1 : 0)), (float)(1 + (dir.offsetZ > 0 ? 1 : 0)));
-         } else if (meta == 8) {
-            TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
-            if (tile instanceof TileBanner) {
-               if (((TileBanner)tile).getWall()) {
-                  switch (((TileBanner)tile).getFacing()) {
-                     case 0:
-                        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 0.25F);
-                        break;
-                     case 4:
-                        this.setBlockBounds(0.75F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
-                        break;
-                     case 8:
-                        this.setBlockBounds(0.0F, 0.0F, 0.75F, 1.0F, 2.0F, 1.0F);
-                        break;
-                     case 12:
-                        this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.25F, 2.0F, 1.0F);
-                  }
-               } else {
-                  this.setBlockBounds(0.33F, 0.0F, 0.33F, 0.66F, 2.0F, 0.66F);
-               }
-            } else {
-               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            }
-         } else {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-         }
-
-         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
-      }
-   }
-
-   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
-      if (world.getBlock(i, j, k) != this) {
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      } else {
-         int meta = world.getBlockMetadata(i, j, k);
-         if (meta == 0) {
-            this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 1.0F, 0.9F);
-         } else if (meta != 2 && meta != 3 && meta != 8) {
-            if (meta == 5) {
-               Direction dir = Direction.UNKNOWN;
-               TileEntity tile = world.getTileEntity(i, j, k);
-               if (tile instanceof TileArcaneBore) {
-                  dir = ((TileArcaneBore)tile).orientation;
-               }
-
-               this.setBlockBounds((float)((dir.offsetX < 0 ? -1 : 0)), (float)((dir.offsetY < 0 ? -1 : 0)), (float)((dir.offsetZ < 0 ? -1 : 0)), (float)(1 + (dir.offsetX > 0 ? 1 : 0)), (float)(1 + (dir.offsetY > 0 ? 1 : 0)), (float)(1 + (dir.offsetZ > 0 ? 1 : 0)));
-            } else {
-               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            }
-         } else {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-         }
-
-         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
-      }
-   }
+//   public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
+//      if (world.getBlock(i, j, k) != this) {
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      } else {
+//         int meta = world.getBlockMetadata(i, j, k);
+//         if (meta == 0) {
+//            this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 1.0F, 0.9F);
+//         } else if (meta != 2 && meta != 3 && meta != 8) {
+//            if (meta == 5) {
+//               Direction dir = Direction.UNKNOWN;
+//               TileEntity tile = world.getTileEntity(i, j, k);
+//               if (tile instanceof TileArcaneBore) {
+//                  dir = ((TileArcaneBore)tile).orientation;
+//               }
+//
+//               this.setBlockBounds((float)((dir.offsetX < 0 ? -1 : 0)), (float)((dir.offsetY < 0 ? -1 : 0)), (float)((dir.offsetZ < 0 ? -1 : 0)), (float)(1 + (dir.offsetX > 0 ? 1 : 0)), (float)(1 + (dir.offsetY > 0 ? 1 : 0)), (float)(1 + (dir.offsetZ > 0 ? 1 : 0)));
+//            } else {
+//               this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            }
+//         } else {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+//         }
+//
+//         super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+//      }
+//   }
 
    public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
       int meta = world.getBlockMetadata(x, y, z);
@@ -439,15 +448,15 @@ public class BlockWoodenDevice extends BlockContainer {
       }
    }
 
-   public void onBlockPlacedBy(World w, int x, int y, int z, EntityLivingBase p, ItemStack s) {
-      TileEntity tile = w.getTileEntity(x, y, z);
-      if (tile instanceof TileOwned && p instanceof Player) {
-         ((TileOwned)tile).owner = p.getCommandSenderName();
-         tile.markDirty();
-      }
-
-      super.onBlockPlacedBy(w, x, y, z, p, s);
-   }
+//   public void onBlockPlacedBy(World w, int x, int y, int z, EntityLivingBase p, ItemStack s) {
+//      TileEntity tile = w.getTileEntity(x, y, z);
+//      if (tile instanceof TileOwned && p instanceof Player) {
+//         ((TileOwned)tile).owner = p.getCommandSenderName();
+//         tile.markDirty();
+//      }
+//
+//      super.onBlockPlacedBy(w, x, y, z, p, s);
+//   }
 
    public void onBlockAdded(World world, int x, int y, int z) {
       super.onBlockAdded(world, x, y, z);
@@ -526,92 +535,92 @@ public class BlockWoodenDevice extends BlockContainer {
       }
    }
 
-   public void updateTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
-      if (par1World.getBlock(par2, par3, par4) == this) {
-         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 3) {
-            this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
-         }
+//   public void updateTick(Level par1World, int par2, int par3, int par4, Random par5Random) {
+//      if (par1World.getBlock(par2, par3, par4) == this) {
+//         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 3) {
+//            this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
+//         }
+//
+//      }
+//   }
+//
+//   public void onEntityCollidedWithBlock(Level par1World, int par2, int par3, int par4, Entity par5Entity) {
+//      if (par1World.getBlock(par2, par3, par4) == this) {
+//         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 2) {
+//            this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
+//         }
+//
+//      }
+//   }
 
-      }
-   }
-
-   public void onEntityCollidedWithBlock(Level par1World, int par2, int par3, int par4, Entity par5Entity) {
-      if (par1World.getBlock(par2, par3, par4) == this) {
-         if (!(Platform.getEnvironment() == Env.CLIENT) && par1World.getBlockMetadata(par2, par3, par4) == 2) {
-            this.setStateIfMobInteractsWithPlate(par1World, par2, par3, par4);
-         }
-
-      }
-   }
-
-   private void setStateIfMobInteractsWithPlate(World world, int x, int y, int z) {
-      boolean var5 = world.getBlockMetadata(x, y, z) == 3;
-      boolean var6 = false;
-      float var7 = 0.125F;
-      List<Entity> var8 = null;
-      String username = "";
-      byte setting = 0;
-      ArrayList<String> accessList = new ArrayList<>();
-      TileEntity tile = world.getTileEntity(x, y, z);
-      if (tile instanceof TileArcanePressurePlate) {
-         setting = ((TileArcanePressurePlate)tile).setting;
-         username = ((TileArcanePressurePlate)tile).owner;
-         accessList = ((TileArcanePressurePlate)tile).accessList;
-      }
-
-      if (setting == 0) {
-         var8 = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
-      }
-
-      if (setting == 1) {
-         var8 = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
-      }
-
-      if (setting == 2) {
-         var8 = world.getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
-      }
-
-      if (!var8.isEmpty()) {
-         for(Entity var10 : var8) {
-            if (!var10.doesEntityNotTriggerPressurePlate() && (setting != 1 || !(var10 instanceof Player) || !var10.getCommandSenderName().equals(username) && !accessList.contains("0" + var10.getCommandSenderName()) && !accessList.contains("1" + var10.getCommandSenderName())) && (setting != 2 || !(var10 instanceof Player) || var10.getCommandSenderName().equals(username) || accessList.contains("0" + var10.getCommandSenderName()) || accessList.contains("1" + var10.getCommandSenderName()))) {
-               var6 = true;
-               break;
-            }
-         }
-      }
-
-      if (var6 && !var5) {
-         world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-         world.notifyBlocksOfNeighborChange(x, y, z, this);
-         world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
-         world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.2F, 0.6F);
-      }
-
-      if (!var6 && var5) {
-         world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-         world.notifyBlocksOfNeighborChange(x, y, z, this);
-         world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
-         world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.2F, 0.5F);
-      }
-
-      if (var6) {
-         world.scheduleBlockUpdate(x, y, z, this, this.tickRate());
-      }
-
-   }
-
-   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
-      if (par6 == 3) {
-         par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
-         par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
-      } else if (par6 == 5) {
-         InventoryUtils.dropItems(par1World, par2, par3, par4);
-      }
-
-      super.breakBlock(par1World, par2, par3, par4, par5, par6);
-   }
+//   private void setStateIfMobInteractsWithPlate(World world, int x, int y, int z) {
+//      boolean var5 = world.getBlockMetadata(x, y, z) == 3;
+//      boolean var6 = false;
+//      float var7 = 0.125F;
+//      List<Entity> var8 = null;
+//      String username = "";
+//      byte setting = 0;
+//      ArrayList<String> accessList = new ArrayList<>();
+//      TileEntity tile = world.getTileEntity(x, y, z);
+//      if (tile instanceof TileArcanePressurePlate) {
+//         setting = ((TileArcanePressurePlate)tile).setting;
+//         username = ((TileArcanePressurePlate)tile).owner;
+//         accessList = ((TileArcanePressurePlate)tile).accessList;
+//      }
+//
+//      if (setting == 0) {
+//         var8 = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
+//      }
+//
+//      if (setting == 1) {
+//         var8 = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
+//      }
+//
+//      if (setting == 2) {
+//         var8 = world.getEntitiesWithinAABB(Player.class, AxisAlignedBB.getBoundingBox((float)x + var7, y, (float)z + var7, (float)(x + 1) - var7, (double)y + (double)0.25F, (float)(z + 1) - var7));
+//      }
+//
+//      if (!var8.isEmpty()) {
+//         for(Entity var10 : var8) {
+//            if (!var10.doesEntityNotTriggerPressurePlate() && (setting != 1 || !(var10 instanceof Player) || !var10.getCommandSenderName().equals(username) && !accessList.contains("0" + var10.getCommandSenderName()) && !accessList.contains("1" + var10.getCommandSenderName())) && (setting != 2 || !(var10 instanceof Player) || var10.getCommandSenderName().equals(username) || accessList.contains("0" + var10.getCommandSenderName()) || accessList.contains("1" + var10.getCommandSenderName()))) {
+//               var6 = true;
+//               break;
+//            }
+//         }
+//      }
+//
+//      if (var6 && !var5) {
+//         world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+//         world.notifyBlocksOfNeighborChange(x, y, z, this);
+//         world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+//         world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+//         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.2F, 0.6F);
+//      }
+//
+//      if (!var6 && var5) {
+//         world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+//         world.notifyBlocksOfNeighborChange(x, y, z, this);
+//         world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+//         world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+//         world.playSoundEffect((double)x + (double)0.5F, (double)y + 0.1, (double)z + (double)0.5F, "random.click", 0.2F, 0.5F);
+//      }
+//
+//      if (var6) {
+//         world.scheduleBlockUpdate(x, y, z, this, this.tickRate());
+//      }
+//
+//   }
+//
+//   public void breakBlock(Level par1World, int par2, int par3, int par4, Block par5, int par6) {
+//      if (par6 == 3) {
+//         par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
+//         par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
+//      } else if (par6 == 5) {
+//         InventoryUtils.dropItems(par1World, par2, par3, par4);
+//      }
+//
+//      super.breakBlock(par1World, par2, par3, par4, par5, par6);
+//   }
 
    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
       int meta = world.getBlockMetadata(x, y, z);
@@ -641,31 +650,31 @@ public class BlockWoodenDevice extends BlockContainer {
       return super.isProvidingStrongPower(world, x, y, z, side);
    }
 
-   public boolean canProvidePower() {
-      return true;
-   }
-
-   public int getMobilityFlag() {
-      return 1;
-   }
-
-   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-      int meta = world.getBlockMetadata(x, y, z);
-      return meta != 6 && meta != 7 ? super.getLightOpacity(world, x, y, z) : 255;
-   }
-
-   public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-      int meta = world.getBlockMetadata(x, y, z);
-      return meta != 2 && meta != 3 && super.canEntityDestroy(world, x, y, z, entity);
-   }
-
-   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
-      int meta = world.getBlockMetadata(x, y, z);
-      return meta != 6 && meta != 7 ? 0 : 20;
-   }
-
-   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
-      int meta = world.getBlockMetadata(x, y, z);
-      return meta != 6 && meta != 7 ? 0 : 5;
-   }
+//   public boolean canProvidePower() {
+//      return true;
+//   }
+//
+//   public int getMobilityFlag() {
+//      return 1;
+//   }
+//
+//   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      return meta != 6 && meta != 7 ? super.getLightOpacity(world, x, y, z) : 255;
+//   }
+//
+//   public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      return meta != 2 && meta != 3 && super.canEntityDestroy(world, x, y, z, entity);
+//   }
+//
+//   public int getFlammability(IBlockAccess world, int x, int y, int z, Direction face) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      return meta != 6 && meta != 7 ? 0 : 20;
+//   }
+//
+//   public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, Direction face) {
+//      int meta = world.getBlockMetadata(x, y, z);
+//      return meta != 6 && meta != 7 ? 0 : 5;
+//   }
 }

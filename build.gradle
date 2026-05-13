@@ -37,7 +37,6 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
-        // Trove4j //replaced to fastutil
         implementation 'it.unimi.dsi:fastutil:8.5.18'
         implementation 'org.jsoup:jsoup:1.17.2'
         implementation 'org.apache.commons:commons-rng-sampling:1.5'

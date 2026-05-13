@@ -57,8 +57,8 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
     public abstract EssentiaJarBlockItem getEssentiaJarItem();
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity jar) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.getBlockEntity(pos) instanceof EssentiaJarBlockEntity jar) {
             var aspectCurrent = jar.getAspectCurrent();
             var amountCurrent = jar.getAspectAmountCurrent();
             var aspectFilter = jar.getAspectFilter();
@@ -72,10 +72,10 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
                     jarItem.setFilter(stackToDrop, aspectFilter);
                 }
             }
-            var posCenter = blockPos.getCenter();
+            var posCenter = pos.getCenter();
             level.addFreshEntity(new ItemEntity(level,posCenter.x,posCenter.y,posCenter.z,stackToDrop));
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

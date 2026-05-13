@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -33,7 +34,7 @@ import static com.linearity.opentc4.utils.IndexPicker.indexByTime;
 import static com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils.ignoresDamage;
 
 public class InventoryUtils {
-   public static ItemStack placeItemStackIntoInventory(ItemStack stack, Container inventory, Direction side, boolean doit) {
+   public static @NotNull("null -> empty") ItemStack placeItemStackIntoInventory(ItemStack stack, Container inventory, Direction side, boolean doit) {
       ItemStack itemstack = stack.copy();
       ItemStack itemstack1 = insertStack(inventory, itemstack, side, doit);
       if (itemstack1 != null && itemstack1.getCount() != 0) {

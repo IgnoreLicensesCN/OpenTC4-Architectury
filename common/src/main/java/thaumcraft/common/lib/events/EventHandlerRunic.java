@@ -36,7 +36,7 @@ public class EventHandlerRunic {
    public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Integer> lastCharge = new MapMaker().weakKeys().makeMap();
-   public static Map<Player,Integer[]> runicInfo = new MapMaker().weakKeys().makeMap();
+   public static Map<Player,int[]> runicInfo = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
    public static boolean isDirty = true;
    public static int rechargeDelay = 0;

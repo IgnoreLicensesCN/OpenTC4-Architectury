@@ -73,6 +73,8 @@ block_with_item_names = [
     ['tile.blockTube.2.name', 'essentia_centrifuge'],
     ['tile.blockTube.7.name', 'essentia_crystallizer'],
     ['tile.blockWoodenDevice.2.name', 'arcane_pressure_plate'],
+    ['tile.blockWoodenDevice.4.name', 'arcane_bore_base'],
+    ['tile.blockWoodenDevice.5.name', ['arcane_bore_drill','arcane_bore']],
 ]
 
 force_add_keys = {

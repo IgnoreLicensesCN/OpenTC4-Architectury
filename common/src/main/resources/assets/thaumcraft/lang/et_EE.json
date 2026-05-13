@@ -8,6 +8,9 @@
   "block.thaumcraft.amber_ore": "Amber Bearing Stone",
   "block.thaumcraft.arcane_alembic": "Arcane Alembic",
   "block.thaumcraft.arcane_bellow": "Arcane Bellows",
+  "block.thaumcraft.arcane_bore": "Arcane Bore",
+  "block.thaumcraft.arcane_bore_base": "Arcane Bore Base",
+  "block.thaumcraft.arcane_bore_drill": "Arcane Bore",
   "block.thaumcraft.arcane_door": "Müstiline Uks",
   "block.thaumcraft.arcane_lamp": "Arcane Lamp",
   "block.thaumcraft.arcane_levitator": "Müstiline Leviteerija",
@@ -329,6 +332,9 @@
   "item.thaumcraft.amber_ore": "Amber Bearing Stone",
   "item.thaumcraft.arcane_alembic": "Arcane Alembic",
   "item.thaumcraft.arcane_bellow": "Arcane Bellows",
+  "item.thaumcraft.arcane_bore": "Arcane Bore",
+  "item.thaumcraft.arcane_bore_base": "Arcane Bore Base",
+  "item.thaumcraft.arcane_bore_drill": "Arcane Bore",
   "item.thaumcraft.arcane_door": "Müstiline Uks",
   "item.thaumcraft.arcane_lamp": "Arcane Lamp",
   "item.thaumcraft.arcane_levitator": "Müstiline Leviteerija",
@@ -1176,8 +1182,6 @@
   "tile.blockStoneDevice.8.name": "Compound Recharge Focus",
   "tile.blockWooden.name": "Arcane Wood Block",
   "tile.blockWoodenDevice.1.name": "Arcane Ear",
-  "tile.blockWoodenDevice.4.name": "Arcane Bore Base",
-  "tile.blockWoodenDevice.5.name": "Arcane Bore",
   "tile.researchtable.noink.0": "Teil on tint otsa saanud!",
   "tile.researchtable.noink.1": "Täida uuesti oma kirjutamis vahendid."
 }

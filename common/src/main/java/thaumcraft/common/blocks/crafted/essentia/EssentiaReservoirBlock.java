@@ -139,14 +139,14 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
-        var be = level.getBlockEntity(blockPos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, level, pos, newState, isMoving);
+        var be = level.getBlockEntity(pos);
         if (be instanceof EssentiaReservoirBlockEntity reservoir) {
             var gooAndGasAmount = Math.min(reservoir.getGooAndGasAmountOnRemove(),50);
             if (gooAndGasAmount > 0){
                 level.explode(
-                        null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, 1F,
+                        null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1F,
                         Level.ExplosionInteraction.NONE
                 );
             }
@@ -154,7 +154,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
                  _gooAndGasIndex < gooAndGasAmount;
                  _gooAndGasIndex++){
                 int yOffset = level.random.nextInt(9)-4;
-                var pickPos = blockPos.offset(
+                var pickPos = pos.offset(
                         level.random.nextInt(9)-4,
                         yOffset,
                         level.random.nextInt(9)-4
@@ -163,9 +163,9 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
                 var blockStateBeforeSet = level.getBlockState(pickPos);
                 if (blockStateBeforeSet.isAir()){
                     if (yOffset < 0){
-                        level.setBlockAndUpdate(blockPos, FluxGooBlock.fullOfGoo());
+                        level.setBlockAndUpdate(pos, FluxGooBlock.fullOfGoo());
                     }else {
-                        level.setBlockAndUpdate(blockPos, FluxGasBlock.fullOfGas());
+                        level.setBlockAndUpdate(pos, FluxGasBlock.fullOfGas());
                     }
                 }
             }

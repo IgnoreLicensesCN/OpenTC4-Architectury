@@ -275,7 +275,7 @@ public class ThaumcraftApiHelper {
                 ignored -> null
         );
     }
-    public static BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource,@NotNull Entity sourceEntity) {
+    public static @Nullable BlockHitResult rayTraceIgnoringSource(Level world, Vec3 start, Vec3 end, boolean ignoreSource,@NotNull Entity sourceEntity) {
         // 构造射线上下文
         ClipContext context = new ClipContext(
                 start,

@@ -71,6 +71,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EssentiaBufferBlockEntity> ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
     public static final BlockEntityType<EssentiaCentrifugeBlockEntity> ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
     public static final BlockEntityType<EssentiaCrystallizerBlockEntity> ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
+    public static final BlockEntityType<ArcaneBoreBlockEntity> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -400,6 +401,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EssentiaCrystallizerBlockEntity::new,
                                 ThaumcraftBlocks.ESSENTIA_CRYSTALLIZER
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<ArcaneBoreBlockEntity>> SUPPLIER_ARCANE_BORE =
+                BLOCK_ENTITIES.register(
+                        "arcane_bore",
+                        () -> BlockEntityType.Builder.of(
+                                ArcaneBoreBlockEntity::new,
+                                ThaumcraftBlocks.ARCANE_BORE_BASE
                         ).build(null)
                 );
 

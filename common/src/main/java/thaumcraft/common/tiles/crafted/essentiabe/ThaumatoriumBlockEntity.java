@@ -11,7 +11,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +29,7 @@ import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachmentBlock;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.menu.menu.ThaumatoriumMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.R
 import static thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock.FACING;
 
 public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<ThaumatoriumMenu,ThaumatoriumBlockEntity> implements
-        WorldlyContainer,
+        IDefaultWorldlyContainer,
         IEssentiaTransportInBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
         IValueContainerBasedComparatorSignalProviderBlockEntity
@@ -193,11 +193,6 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
 
     @Override
-    public int @NotNull [] getSlotsForFace(Direction direction) {
-        return SLOTS;
-    }
-
-    @Override
     public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
         if (direction == null){
             return true;
@@ -210,83 +205,6 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         return false;
     }
 
-    @Override
-    public boolean canTakeItemThroughFace(int i, ItemStack itemStack, Direction direction) {
-        return true;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return inventory.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (var stackInInventory:inventory) {
-            if (!stackInInventory.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isInventoryIndexOutOfBound(int slot) {
-        return slot < 0 || slot >= inventory.size();
-    }
-    public void ensureInventoryIndexInBound(int slot) {
-        if (isInventoryIndexOutOfBound(slot)) {
-            throw new IndexOutOfBoundsException("Index: " + slot);
-        }
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int slot) {
-        ensureInventoryIndexInBound(slot);
-        return inventory.get(slot);
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItem(int slot, int amount) {
-        ensureInventoryIndexInBound(slot);
-        ItemStack stack = getItem(slot);
-        if (stack.getCount() <= amount) {
-            setItem(slot, ItemStack.EMPTY);
-            setChanged();
-            return stack;
-        }
-        else {
-            stack.shrink(amount);
-            stack = stack.copy();
-            stack.setCount(amount);
-            setChanged();
-            return stack;
-        }
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItemNoUpdate(int i) {
-        var stack = getItem(i);
-        setItem(i, ItemStack.EMPTY);
-        return stack;
-    }
-    @Override
-    public void setItem(int i, ItemStack itemStack) {
-        inventory.set(i, itemStack);
-        markDirtyAndUpdateSelf();
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        inventory.clear();
-    }
-    
     public ItemStack getCatalyst(){
         return getItem(INPUT_SLOT);
     }
@@ -506,5 +424,15 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     @Override
     public int comparatorSignalCapacity() {
         return getCatalyst().getMaxStackSize();
+    }
+
+    @Override
+    public @NotNull NonNullList<ItemStack> getInventory() {
+        return inventory;
+    }
+
+    @Override
+    public int[] getSlots() {
+        return SLOTS;
     }
 }

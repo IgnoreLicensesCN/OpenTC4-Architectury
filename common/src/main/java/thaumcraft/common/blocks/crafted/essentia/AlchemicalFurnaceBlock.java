@@ -3,11 +3,7 @@ package thaumcraft.common.blocks.crafted.essentia;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -18,16 +14,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
 
-import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
-import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
-
-public class AlchemicalFurnaceBlock extends SuppressedWarningBlock implements EntityBlock {
+public class AlchemicalFurnaceBlock extends AbstractExtendedMenuProviderContainerBlock {
     public static final DirectionProperty FACING = AbstractFurnaceBlock.FACING;
     public static final BooleanProperty LIT = AbstractFurnaceBlock.LIT;
     public static final BooleanProperty HAS_ASPECT = BooleanProperty.create("has_aspect");
@@ -62,27 +55,11 @@ public class AlchemicalFurnaceBlock extends SuppressedWarningBlock implements En
     public @NotNull BlockState mirror(BlockState arg, Mirror arg2) {
         return arg.rotate(arg2.getRotation(arg.getValue(FACING)));
     }
-
-
-    @Override
-    public @NotNull InteractionResult use(
-            BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult
-    ) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            BlockEntity be = level.getBlockEntity(blockPos);
-            if (be instanceof AlchemicalFurnaceBlockEntity alchemicalFurnace && player instanceof ServerPlayer serverPlayer) {
-                openExtendedMenu(serverPlayer,alchemicalFurnace);
-            }
-            return InteractionResult.CONSUME;
-        }
-    }
     
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         if (blockState.getBlock() == this){
-            new AlchemicalFurnaceBlockEntity(blockPos,blockState);
+            return new AlchemicalFurnaceBlockEntity(blockPos,blockState);
         }
         return null;
     }
@@ -90,15 +67,23 @@ public class AlchemicalFurnaceBlock extends SuppressedWarningBlock implements En
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         if (
-                (level != null && !level.isClientSide)
-                        && blockState.getBlock() == this
+                level != null
+                && blockState.getBlock() == this
                         && blockEntityType == ThaumcraftBlockEntities.ALCHEMICAL_FURNACE
         ) {
-            return (level1, blockPos, blockState2, blockEntity) ->{
-                if (blockEntity instanceof AlchemicalFurnaceBlockEntity alchemicalFurnace) {
-                    alchemicalFurnace.serverTick();
-                }
-            };
+            if ((!level.isClientSide)){
+                return (level1, blockPos, blockState2, blockEntity) ->{
+                    if (blockEntity instanceof AlchemicalFurnaceBlockEntity alchemicalFurnace) {
+                        alchemicalFurnace.serverTick();
+                    }
+                };
+            }else {
+                return (level1, blockPos, blockState2, blockEntity) ->{
+                    if (blockEntity instanceof AlchemicalFurnaceBlockEntity alchemicalFurnace) {
+                        alchemicalFurnace.clientTick();
+                    }
+                };
+            }
 
         }
         return null;

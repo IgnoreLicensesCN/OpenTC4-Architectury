@@ -8,9 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
@@ -35,6 +33,7 @@ import thaumcraft.common.menu.menu.ResearchTableMenu;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 import thaumcraft.common.tiles.abstracts.IResearchAspectPlaceableBlockEntity;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
@@ -47,7 +46,7 @@ import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 public class ResearchTableBlockEntity
         extends TileThaumcraftWithMenu<ResearchTableMenu, ResearchTableBlockEntity>
         implements
-        WorldlyContainer,
+        IDefaultWorldlyContainer,
         IResearchAspectProviderBlockEntity,
         IResearchAspectPlaceableBlockEntity {
     public static final Set<Block> CONSIDERED_REDSTONE_COMPONENTS = Set.of(
@@ -118,15 +117,20 @@ public class ResearchTableBlockEntity
     public static final int[] SLOTS = new int[]{0, 1};
     public static final int INK_SLOT = 0;
     public static final int RESEARCH_NOTE_SLOT = 1;
-    public final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+    public final NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length, ItemStack.EMPTY);
     public final AspectList<Aspect> bonusAspects = new AspectList<>();
     public int tickCounter = 0;
     public static final int BONUS_ASPECT_REGEN_PERIOD = 600;
 
+    public int getBonusAspectRegenPeriod() {
+        return BONUS_ASPECT_REGEN_PERIOD;
+    }
+
     public void serverTick() {
         tickCounter++;
-        if (tickCounter >= BONUS_ASPECT_REGEN_PERIOD) {
-            tickCounter -= BONUS_ASPECT_REGEN_PERIOD;
+        int period = getBonusAspectRegenPeriod();
+        if (tickCounter >= period) {
+            tickCounter -= period;
             gainBonusAspect();
         }
     }
@@ -237,16 +241,6 @@ public class ResearchTableBlockEntity
 
     }
 
-    public boolean isInventoryIndexOutOfBound(int slot) {
-        return slot < 0 || slot >= SLOTS.length;
-    }
-
-    public void ensureInventoryIndexInBound(int slot) {
-        if (isInventoryIndexOutOfBound(slot)) {
-            throw new IndexOutOfBoundsException("Index: " + slot);
-        }
-    }
-
     public ResearchTableBlockEntity(BlockPos pos, BlockState state) {
         this(ThaumcraftBlockEntities.RESEARCH_TABLE, pos, state, ResearchTableMenu::new);
     }
@@ -265,7 +259,7 @@ public class ResearchTableBlockEntity
         super.readCustomNBT(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, inventory);
         this.bonusAspects.addAll(BONUS_ASPECT_ACCESSOR.readFromCompoundTag(compoundTag));
-        this.tickCounter = TICK_COUNT_ACCESSOR.readFromCompoundTag(compoundTag);
+        this.tickCounter = TICK_COUNT_ACCESSOR.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
@@ -273,81 +267,7 @@ public class ResearchTableBlockEntity
         super.writeCustomNBT(compoundTag);
         ContainerHelper.saveAllItems(compoundTag, inventory);
         BONUS_ASPECT_ACCESSOR.writeToCompoundTag(compoundTag, bonusAspects);
-        TICK_COUNT_ACCESSOR.writeToCompoundTag(compoundTag, tickCounter);
-    }
-
-
-    @Override
-    public int getContainerSize() {
-        return SLOTS.length;
-    }
-
-
-    @Override
-    public boolean isEmpty() {
-        for (var stackInInventory:inventory) {
-            if (!stackInInventory.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int slot) {
-        ensureInventoryIndexInBound(slot);
-        return inventory.get(slot);
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItem(int slot, int amount) {
-        ensureInventoryIndexInBound(slot);
-        ItemStack stack = getItem(slot);
-        if (stack.getCount() <= amount) {
-            setItem(slot, ItemStack.EMPTY);
-            setChanged();
-            return stack;
-        } else {
-            stack.shrink(amount);
-            stack = stack.copy();
-            stack.setCount(amount);
-            setChanged();
-            return stack;
-        }
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItemNoUpdate(int i) {
-        var stack = getItem(i);
-        setItem(i, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setItem(int i, ItemStack itemStack) {
-        inventory.set(i, itemStack);
-        setChanged();
-
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        inventory.clear();
-    }
-
-    @Override
-    public int @NotNull [] getSlotsForFace(Direction direction) {
-        return SLOTS;
+        TICK_COUNT_ACCESSOR.writeIntToCompoundTag(compoundTag, tickCounter);
     }
 
     @Override
@@ -366,11 +286,6 @@ public class ResearchTableBlockEntity
             return true;
         }
         return item instanceof IResearchNoteDataOwnerItem && slot == RESEARCH_NOTE_SLOT;
-    }
-
-    @Override
-    public boolean canTakeItem(Container container, int i, ItemStack itemStack) {
-        return true;
     }
 
     @Override
@@ -499,5 +414,15 @@ public class ResearchTableBlockEntity
             this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
         }
         this.setChanged();
+    }
+
+    @Override
+    public int[] getSlots() {
+        return SLOTS;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getInventory() {
+        return inventory;
     }
 }

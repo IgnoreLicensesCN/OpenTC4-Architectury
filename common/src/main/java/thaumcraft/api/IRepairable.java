@@ -1,13 +1,20 @@
 package thaumcraft.api;
 
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.opentc4.utils.LogicalSide;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.*;
+import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.research.ResearchManager;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeForRepair;
 
@@ -22,27 +29,59 @@ import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeF
  */
 public interface IRepairable {
 	
-	default boolean doRepair(ItemStack is, Player player, int enchantlevel){
+	default boolean doRepair(ItemStack is, @Nullable Player player, int enchantlevel){
 		int level = enchantlevel + 1;
 		if (level > 0) {
-			AspectList<Aspect> cost = ThaumcraftCraftingManager.getObjectTags(is);
-			if (cost != null && !cost.isEmpty()) {
-				cost = ResearchManager.reduceToPrimalsAndCast(cost);
-				CentiVisList<Aspect> finalCost = new CentiVisList<>();
-
-				for(Aspect a : cost.getAspectTypes()) {
-					if (a != null) {
-						finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
-					}
-				}
+			var cost = getRepairCost(is,enchantlevel);
+			if (!cost.isEmpty()) {
 				boolean doRepair = WandManager.consumeCentiVisFromInventory(
-                        player, finalCost, checkIfCanConsumeForRepair);
+                        player, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair
+				);
                 if (doRepair) {
-					is.hurtAndBreak(-level,player,(p) -> {});
+					if (player != null) {
+						is.hurtAndBreak(-level,player,(p) -> {});
+					} else {
+						is.setDamageValue(is.getDamageValue() - level);
+					}
 				}
 			}
 		}
         return true;
 	};
+	Map<Item,CentiVisList<PrimalAspect>> repairCostCache = new ConcurrentHashMap<>();
+	@RecommendedLogicalSide(LogicalSide.SERVER)
+	@UnmodifiableView
+	@NotNull
+	default CentiVisList<PrimalAspect> getRepairCost(ItemStack is,int repairLevel){
+		return getRepairCostDefault(is,repairLevel);
+	}
+	@RecommendedLogicalSide(LogicalSide.SERVER)
+	@UnmodifiableView
+	@NotNull
+	static CentiVisList<PrimalAspect> getRepairCostDefault(ItemStack is,int repairLevel){
+		return repairCostCache.computeIfAbsent(is.getItem(),item -> {
+			var basic = ItemBasicAspectGetter.getBasicAspectsServer(is.getItem());
+			if (basic.isEmpty()) {
+				return UnmodifiableCentiVisList.EMPTY_PRIMAL;
+			}
+			var reduced = ResearchManager.reduceToPrimals(basic);
+			CentiVisList<PrimalAspect> cost = new CentiVisList<>();
+			reduced.forEach(
+					(aspect, amount) -> cost.mergeWithHighest(
+							aspect,
+							repairCentiVisAmountForPrimalAspectDefault(is,aspect,amount,repairLevel)
+					)
+			);
+
+			return UnmodifiableCentiVisList.viewOf(cost);
+		});
+	}
+
+	default int repairCentiVisAmountForPrimalAspect(ItemStack is, PrimalAspect aspect,int amount,int repairLevel) {
+		return repairCentiVisAmountForPrimalAspectDefault(is,aspect,amount,repairLevel);
+	}
+	static int repairCentiVisAmountForPrimalAspectDefault(ItemStack is, PrimalAspect aspect,int amount,int repairLevel) {
+		return (int)Math.sqrt(amount * 2) * repairLevel;
+	}
 
 }

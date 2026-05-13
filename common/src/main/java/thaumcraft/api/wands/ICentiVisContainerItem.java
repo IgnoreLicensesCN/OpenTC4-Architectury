@@ -84,18 +84,18 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         var capacity = getAllCentiVisCapacity(stack);
         var visOwning = getAllCentiVisOwning(stack);
         CentiVisList<Asp> remainingVis = new CentiVisList<>();
-        for (var entry : addInto.entrySet()) {
-            int currentCapacity = capacity.getOrDefault(entry.getKey(),0);
+        addInto.forEach((aspect,amount) -> {
+            int currentCapacity = capacity.getOrDefault(aspect,0);
             if (currentCapacity == 0){
-                continue;
+                return;
             }
-            int currentVis = visOwning.getOrDefault(entry.getKey(),0);
-            currentVis += addInto.get(entry.getKey());
+            int currentVis = visOwning.getOrDefault(aspect,0);
+            currentVis += addInto.get(aspect);
             int remaining = Math.max(0,currentVis - currentCapacity);
             currentVis = Math.min(currentVis,currentCapacity);
-            remainingVis.put(entry.getKey(),remaining);
-            visOwning.put(entry.getKey(),currentVis);
-        }
+            remainingVis.put(aspect,remaining);
+            visOwning.put(aspect,currentVis);
+        });
         storeCentiVisOwning(stack, visOwning);
         return remainingVis;
     }
@@ -105,14 +105,12 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
 
         CentiVisList<Asp> res = new CentiVisList<>(allVis.size(),1.F);
 
-        for (var entry : allVis.entrySet()) {
-            var aspect = entry.getKey();
-            var vis = entry.getIntValue();
+        allVis.forEach((aspect,vis)->{
             var remainingRoom = capacity.getOrDefault(aspect,0) - vis;
             if (remainingRoom > 0){
                 res.put(aspect,remainingRoom);
             }
-        }
+        });
 
         return res;
     }
@@ -135,29 +133,17 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         }
     }
 
-    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Asp> aspects, boolean doit,boolean serverLevel) {
-        if (!aspects.isEmpty()) {
-            CentiVisList<Asp> nl = new CentiVisList<>();
-
-            for (var entry : aspects.entrySet()) {
-                var aspect = entry.getKey();
-                int cost = entry.getIntValue();
-                cost = (int) ((float) cost);
-                nl.addAll(aspect, cost);
-            }
-
-            if (nl.entrySet().stream().anyMatch(
-                    aspectIntegerEntry ->
-                            getCentiVisOwning(
-                                    is, aspectIntegerEntry.getKey())
-                                    < aspectIntegerEntry.getIntValue()
-            )){
+    default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Asp> aspectsToConsume, boolean doit,boolean serverLevel) {
+        if (!aspectsToConsume.isEmpty()) {
+            if (aspectsToConsume.forEachWithBreak(
+                    (aspect,amountRequired) ->
+                    getCentiVisOwning(is, aspect) < amountRequired)
+            ){
                 return false;
             }
 
             if (doit && serverLevel) {
-                nl
-                        .forEach((aspect, amount) ->
+                aspectsToConsume.forEach((aspect, amount) ->
                                 storeCentiVisOwning(
                                         is,
                                         aspect,
@@ -174,25 +160,22 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         return this.consumeAllCentiVis(is, user, aspects, doit, true,serverSide);
     }
 
-    default boolean consumeAllCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull CentiVisList<Asp> aspects, boolean doit, boolean crafting,boolean serverSide) {
+    default boolean consumeAllCentiVis(
+            @NotNull ItemStack is,
+            @Nullable LivingEntity user,
+            @NotNull CentiVisList<Asp> aspects,
+            boolean doit, boolean crafting,boolean serverSide) {
         if (!aspects.isEmpty()) {
             CentiVisList<Asp> nl = new CentiVisList<>();
 
-            for (var entry : aspects.entrySet()) {
-                var aspect = entry.getKey();
-                int cost = entry.getIntValue();
+            aspects.forEach((aspect,cost) -> {
+
                 cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
                 nl.addAll(aspect, cost);
+            });
+            if (nl.forEachWithBreak((aspect,amountRequired) -> getCentiVisOwning(is, aspect) < amountRequired)){
+                return false;
             }
-
-            for (var entry : nl.entrySet()) {
-                var aspect = entry.getKey();
-                var amount = entry.getIntValue();
-                if (getCentiVisOwning(is, aspect) < amount) {
-                    return false;
-                }
-            }
-
             if (doit && serverSide) {
 
                 nl

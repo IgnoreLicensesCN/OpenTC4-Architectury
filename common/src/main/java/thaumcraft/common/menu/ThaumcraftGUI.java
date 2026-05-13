@@ -22,6 +22,7 @@ public class ThaumcraftGUI {
     public static final MenuType<ResearchTableMenu> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
     public static final MenuType<AlchemicalFurnaceMenu> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
     public static final MenuType<ThaumatoriumMenu> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
+    public static final MenuType<ArcaneBoreMenu> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
     public static class Registry{
         public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MENU);
 
@@ -44,6 +45,10 @@ public class ThaumcraftGUI {
         public static final RegistrySupplier<MenuType<ThaumatoriumMenu>> SUPPLIER_THAUMATORIUM = MENUS.register(
                 "thaumatorium",
                 simpleMenuTypeSupplier(ThaumatoriumMenu::new, ThaumatoriumBlockEntity.class)
+        );
+        public static final RegistrySupplier<MenuType<ArcaneBoreMenu>> SUPPLIER_ARCANE_BORE = MENUS.register(
+                "arcane_bore",
+                simpleMenuTypeSupplier(ArcaneBoreMenu::new, ArcaneBoreBlockEntity.class)
         );
     }
 

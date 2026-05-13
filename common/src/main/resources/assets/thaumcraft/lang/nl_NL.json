@@ -8,6 +8,9 @@
   "block.thaumcraft.amber_ore": "Amber dragende steen",
   "block.thaumcraft.arcane_alembic": "Occulte Distilleerkolf",
   "block.thaumcraft.arcane_bellow": "Occulte Blaasbalg",
+  "block.thaumcraft.arcane_bore": "Occulte Boor",
+  "block.thaumcraft.arcane_bore_base": "Occulte Boorbasis",
+  "block.thaumcraft.arcane_bore_drill": "Occulte Boor",
   "block.thaumcraft.arcane_door": "Occulte Deur",
   "block.thaumcraft.arcane_lamp": "Occulte Lamp",
   "block.thaumcraft.arcane_levitator": "Occulte Levitator",
@@ -339,6 +342,9 @@
   "item.thaumcraft.amber_ore": "Amber dragende steen",
   "item.thaumcraft.arcane_alembic": "Occulte Distilleerkolf",
   "item.thaumcraft.arcane_bellow": "Occulte Blaasbalg",
+  "item.thaumcraft.arcane_bore": "Occulte Boor",
+  "item.thaumcraft.arcane_bore_base": "Occulte Boorbasis",
+  "item.thaumcraft.arcane_bore_drill": "Occulte Boor",
   "item.thaumcraft.arcane_door": "Occulte Deur",
   "item.thaumcraft.arcane_lamp": "Occulte Lamp",
   "item.thaumcraft.arcane_levitator": "Occulte Levitator",
@@ -1212,8 +1218,6 @@
   "tile.blockStoneDevice.8.name": "Gecompliceerde Herlaadfocus",
   "tile.blockWooden.name": "Occult Houtblok",
   "tile.blockWoodenDevice.1.name": "Occult Oor",
-  "tile.blockWoodenDevice.4.name": "Occulte Boorbasis",
-  "tile.blockWoodenDevice.5.name": "Occulte Boor",
   "tile.researchtable.noink.0": "Je hebt geen inkt meer!",
   "tile.researchtable.noink.1": "Refill your scribing tools."
 }

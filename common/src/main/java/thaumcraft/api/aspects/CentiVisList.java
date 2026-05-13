@@ -83,4 +83,16 @@ public class CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just ma
         return new CentiVisList<>(aspects);
     }
 
+
+    public static <Asp extends Aspect> CentiVisList<Asp> of(Asp aspect,int amount){
+        CentiVisList<Asp> out = new CentiVisList<>();
+        out.addAll(aspect,amount);
+        return out;
+    }
+    public static <Asp extends Aspect> CentiVisList<Asp> of(Asp aspect,int amount,Asp aspect2,int amount2){
+        CentiVisList<Asp> out = new CentiVisList<>();
+        out.addAll(aspect,amount);
+        out.addAll(aspect2,amount2);
+        return out;
+    }
 }

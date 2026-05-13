@@ -19,6 +19,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
@@ -75,9 +76,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                     var taintFlag = false;
 
                     if (biomeID == ThaumcraftBiomeIDs.TAINT_ID || biomeDuringGeneration.is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                        biomeDuringGeneration = serverLevel.registryAccess()
-                                .registryOrThrow(Registries.BIOME)
-                                .getHolderOrThrow(Biomes.PLAINS);
+                        biomeDuringGeneration = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,Biomes.PLAINS);
                         taintFlag = true;
                     }
 
@@ -113,9 +112,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                         serverLevel.getChunkSource().randomState().sampler()
                 );
                 if (biomeDuringGeneration.is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                    biomeDuringGeneration = serverLevel.registryAccess()
-                            .registryOrThrow(Registries.BIOME)
-                            .getHolderOrThrow(Biomes.PLAINS);
+                    biomeDuringGeneration =  ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,Biomes.PLAINS);
                 }
 
                 Utils.setBiomeAt(serverLevel, currentPos, biomeDuringGeneration);

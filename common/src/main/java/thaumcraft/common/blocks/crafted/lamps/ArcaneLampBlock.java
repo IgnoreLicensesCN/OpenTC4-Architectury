@@ -121,11 +121,11 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!level.isClientSide) {
-            removeLight(level,blockPos,LIGHT_RADIUS);
+            removeLight(level, pos,LIGHT_RADIUS);
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     protected void removeLight(Level level, BlockPos blockPos,int lightRadius) {

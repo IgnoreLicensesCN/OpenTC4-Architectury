@@ -3,16 +3,10 @@ package thaumcraft.common.blocks.crafted.essentia.thaumatorium;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -21,17 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
 
-import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
-
-public class ThaumatoriumBottomBlock extends SuppressedWarningBlock implements EntityBlock {
+public class ThaumatoriumBottomBlock extends AbstractExtendedMenuProviderContainerBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ThaumatoriumBottomBlock(Properties properties) {
         super(properties);
@@ -79,27 +69,6 @@ public class ThaumatoriumBottomBlock extends SuppressedWarningBlock implements E
         super.neighborChanged(selfState, level, selfPos, neighborBlock, neighborPos, movedByPiston);
         if (!level.isClientSide()) {
             level.scheduleTick(selfPos, this, 1);
-        }
-    }
-
-    @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        if (level.getBlockEntity(blockPos) instanceof ThaumatoriumBlockEntity thaumatorium) {
-            Containers.dropContents(level, blockPos, thaumatorium);
-        }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
-    }
-
-    @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            BlockEntity be = level.getBlockEntity(blockPos);
-            if (be instanceof ThaumatoriumBlockEntity thaumatorium && player instanceof ServerPlayer serverPlayer) {
-                openExtendedMenu(serverPlayer,thaumatorium);
-            }
-            return InteractionResult.CONSUME;
         }
     }
 

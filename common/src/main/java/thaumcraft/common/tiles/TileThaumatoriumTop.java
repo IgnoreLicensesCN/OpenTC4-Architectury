@@ -1,184 +1,173 @@
 package thaumcraft.common.tiles;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.core.Direction;
-import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.IAspectContainerBlockEntity;
-import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
-import thaumcraft.api.tile.TileThaumcraft;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-
-public class TileThaumatoriumTop extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, ISidedInventory {
-   public TileThaumatorium thaumatorium = null;
-
-   public boolean canUpdate() {
-       return super.canUpdate();
-   }
-
-   public void updateEntity() {
-      if (this.thaumatorium == null) {
-         TileEntity tile = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
-         if (tile instanceof TileThaumatorium) {
-            this.thaumatorium = (TileThaumatorium)tile;
-            this.level().notifyBlockChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
-         } else {
-            this.level().setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 9, 3);
-         }
-      }
-
-   }
-
-   public int addIntoContainer(Aspect tt, int am) {
-      return this.thaumatorium == null ? am : this.thaumatorium.addIntoContainer(tt, am);
-   }
-
-   public boolean takeFromContainer(Aspect tt, int am) {
-      return this.thaumatorium != null && this.thaumatorium.takeFromContainer(tt, am);
-   }
-
-   public boolean takeFromContainer(AspectList<Aspect>ot) {
-      return false;
-   }
-
-   public boolean doesContainerContain(AspectList<Aspect>ot) {
-      return false;
-   }
-
-   public boolean doesContainerContainAmount(Aspect tt, int am) {
-      return this.thaumatorium != null && this.thaumatorium.doesContainerContainAmount(tt, am);
-   }
-
-   public int containerContains(Aspect tt) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.containerContains(tt);
-   }
-
-   public boolean doesContainerAccept(Aspect tag) {
-      return true;
-   }
-
-   public boolean isConnectable(@NotNull Direction face) {
-      return this.thaumatorium != null && this.thaumatorium.isConnectable(face);
-   }
-
-   public boolean canInputFrom(@NotNull Direction face) {
-      return this.thaumatorium != null && this.thaumatorium.canInputFrom(face);
-   }
-
-   public boolean canOutputTo(@NotNull Direction face) {
-      return false;
-   }
-
-   public void setSuction(@NotNull Aspect aspect, int amount) {
-      if (this.thaumatorium != null) {
-         this.thaumatorium.setSuction(aspect, amount);
-      }
-   }
-
-   public @NotNull Aspect getSuctionType(@NotNull Direction loc) {
-      return this.thaumatorium == null ? null : this.thaumatorium.getSuctionType(loc);
-   }
-
-   public int getSuctionAmount(@NotNull Direction loc) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.getSuctionAmount(loc);
-   }
-
-   public @NotNull Aspect getEssentiaType(@NotNull Direction loc) {
-      return null;
-   }
-
-   public int getEssentiaAmount(@NotNull Direction loc) {
-      return 0;
-   }
-
-   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, outputToDirection);
-   }
-
-   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
-      return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, fromDirection);
-   }
-
-   public int getMinimumSuctionToDrainOut() {
-      return 0;
-   }
-
-   public boolean renderExtendedTube() {
-      return false;
-   }
-
-   public @NotNull AspectList<Aspect>getAspects() {
-      return this.thaumatorium == null ? null : this.thaumatorium.essentia;
-   }
-
-   public void setAspects(AspectList<Aspect>aspects) {
-      if (this.thaumatorium != null) {
-         this.thaumatorium.setAspects(aspects);
-      }
-   }
-
-   public int getSizeInventory() {
-      return 1;
-   }
-
-   public ItemStack getStackInSlot(int par1) {
-      return this.thaumatorium == null ? null : this.thaumatorium.getStackInSlot(par1);
-   }
-
-   public ItemStack decrStackSize(int par1, int par2) {
-      return this.thaumatorium == null ? null : this.thaumatorium.decrStackSize(par1, par2);
-   }
-
-   public ItemStack getStackInSlotOnClosing(int par1) {
-      return this.thaumatorium == null ? null : this.thaumatorium.getStackInSlotOnClosing(par1);
-   }
-
-   public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-      if (this.thaumatorium != null) {
-         this.thaumatorium.setInventorySlotContents(par1, par2ItemStack);
-      }
-   }
-
-   public String getInventoryName() {
-      return "container.alchemyfurnace";
-   }
-
-   public boolean hasCustomInventoryName() {
-      return false;
-   }
-
-   public int getInventoryStackLimit() {
-      return 64;
-   }
-
-   public boolean isUseableByPlayer(Player par1Player) {
-      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
-   }
-
-   public void openInventory() {
-   }
-
-   public void closeInventory() {
-   }
-
-   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-      return true;
-   }
-
-   public int[] getAccessibleSlotsFromSide(int par1) {
-      return new int[]{0};
-   }
-
-   public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-      return true;
-   }
-
-   public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
-      return true;
-   }
+@Deprecated(forRemoval = true)
+public class TileThaumatoriumTop /*extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, ISidedInventory*/ {
+//   public TileThaumatorium thaumatorium = null;
+//
+//   public boolean canUpdate() {
+//       return super.canUpdate();
+//   }
+//
+//   public void updateEntity() {
+//      if (this.thaumatorium == null) {
+//         TileEntity tile = this.level().getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+//         if (tile instanceof TileThaumatorium) {
+//            this.thaumatorium = (TileThaumatorium)tile;
+//            this.level().notifyBlockChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+//            this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+//            this.markDirty();
+//         } else {
+//            this.level().setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 9, 3);
+//         }
+//      }
+//
+//   }
+//
+//   public int addIntoContainer(Aspect tt, int am) {
+//      return this.thaumatorium == null ? am : this.thaumatorium.addIntoContainer(tt, am);
+//   }
+//
+//   public boolean takeFromContainer(Aspect tt, int am) {
+//      return this.thaumatorium != null && this.thaumatorium.takeFromContainer(tt, am);
+//   }
+//
+//   public boolean takeFromContainer(AspectList<Aspect>ot) {
+//      return false;
+//   }
+//
+//   public boolean doesContainerContain(AspectList<Aspect>ot) {
+//      return false;
+//   }
+//
+//   public boolean doesContainerContainAmount(Aspect tt, int am) {
+//      return this.thaumatorium != null && this.thaumatorium.doesContainerContainAmount(tt, am);
+//   }
+//
+//   public int containerContains(Aspect tt) {
+//      return this.thaumatorium == null ? 0 : this.thaumatorium.containerContains(tt);
+//   }
+//
+//   public boolean doesContainerAccept(Aspect tag) {
+//      return true;
+//   }
+//
+//   public boolean isConnectable(@NotNull Direction face) {
+//      return this.thaumatorium != null && this.thaumatorium.isConnectable(face);
+//   }
+//
+//   public boolean canInputFrom(@NotNull Direction face) {
+//      return this.thaumatorium != null && this.thaumatorium.canInputFrom(face);
+//   }
+//
+//   public boolean canOutputTo(@NotNull Direction face) {
+//      return false;
+//   }
+//
+//   public void setSuction(@NotNull Aspect aspect, int amount) {
+//      if (this.thaumatorium != null) {
+//         this.thaumatorium.setSuction(aspect, amount);
+//      }
+//   }
+//
+//   public @NotNull Aspect getSuctionType(@NotNull Direction loc) {
+//      return this.thaumatorium == null ? null : this.thaumatorium.getSuctionType(loc);
+//   }
+//
+//   public int getSuctionAmount(@NotNull Direction loc) {
+//      return this.thaumatorium == null ? 0 : this.thaumatorium.getSuctionAmount(loc);
+//   }
+//
+//   public @NotNull Aspect getEssentiaType(@NotNull Direction loc) {
+//      return null;
+//   }
+//
+//   public int getEssentiaAmount(@NotNull Direction loc) {
+//      return 0;
+//   }
+//
+//   public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
+//      return this.thaumatorium == null ? 0 : this.thaumatorium.takeEssentia(aspect, amount, outputToDirection);
+//   }
+//
+//   public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
+//      return this.thaumatorium == null ? 0 : this.thaumatorium.addEssentia(aspect, amount, fromDirection);
+//   }
+//
+//   public int getMinimumSuctionToDrainOut() {
+//      return 0;
+//   }
+//
+//   public boolean renderExtendedTube() {
+//      return false;
+//   }
+//
+//   public @NotNull AspectList<Aspect>getAspects() {
+//      return this.thaumatorium == null ? null : this.thaumatorium.essentia;
+//   }
+//
+//   public void setAspects(AspectList<Aspect>aspects) {
+//      if (this.thaumatorium != null) {
+//         this.thaumatorium.setAspects(aspects);
+//      }
+//   }
+//
+//   public int getSizeInventory() {
+//      return 1;
+//   }
+//
+//   public ItemStack getStackInSlot(int par1) {
+//      return this.thaumatorium == null ? null : this.thaumatorium.getStackInSlot(par1);
+//   }
+//
+//   public ItemStack decrStackSize(int par1, int par2) {
+//      return this.thaumatorium == null ? null : this.thaumatorium.decrStackSize(par1, par2);
+//   }
+//
+//   public ItemStack getStackInSlotOnClosing(int par1) {
+//      return this.thaumatorium == null ? null : this.thaumatorium.getStackInSlotOnClosing(par1);
+//   }
+//
+//   public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+//      if (this.thaumatorium != null) {
+//         this.thaumatorium.setInventorySlotContents(par1, par2ItemStack);
+//      }
+//   }
+//
+//   public String getInventoryName() {
+//      return "container.alchemyfurnace";
+//   }
+//
+//   public boolean hasCustomInventoryName() {
+//      return false;
+//   }
+//
+//   public int getInventoryStackLimit() {
+//      return 64;
+//   }
+//
+//   public boolean isUseableByPlayer(Player par1Player) {
+//      return this.level().getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1Player.getDistanceSq((double) this.xCoord + (double) 0.5F, (double) this.yCoord + (double) 0.5F, (double) this.zCoord + (double) 0.5F) <= (double) 64.0F;
+//   }
+//
+//   public void openInventory() {
+//   }
+//
+//   public void closeInventory() {
+//   }
+//
+//   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+//      return true;
+//   }
+//
+//   public int[] getAccessibleSlotsFromSide(int par1) {
+//      return new int[]{0};
+//   }
+//
+//   public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
+//      return true;
+//   }
+//
+//   public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+//      return true;
+//   }
 }

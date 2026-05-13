@@ -92,14 +92,14 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        var be = level.getBlockEntity(blockPos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        var be = level.getBlockEntity(pos);
         if (be instanceof BrainJarBlockEntity brainJar) {
             if (!level.isClientSide()) {
-                dropXPsToOrbs(level,brainJar.xp,blockPos);
+                dropXPsToOrbs(level,brainJar.xp, pos);
             }
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

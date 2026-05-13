@@ -8,10 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
-import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,6 +26,7 @@ import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;
 import thaumcraft.common.menu.menu.AlchemicalFurnaceMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IAlembic;
+import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 
 import static com.linearity.opentc4.Consts.AlchemicalFurnaceBlockEntityTagAccessors.*;
@@ -37,7 +36,7 @@ import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspec
 public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<AlchemicalFurnaceMenu,AlchemicalFurnaceBlockEntity>
         implements ExtendedMenuProvider,
         IThaumcraftFurnace,
-        WorldlyContainer
+        IDefaultWorldlyContainer
 {
     public AlchemicalFurnaceBlockEntity(BlockEntityType<? extends AlchemicalFurnaceBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState,AlchemicalFurnaceMenu::new);
@@ -87,6 +86,13 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         furnaceFuelBurnTotalTime = FUEL_TOTAL_TIME.readIntFromCompoundTag(compoundTag);
     }
 
+    public void clientTick() {
+        if (this.level == null){return;}
+        ++this.count;
+        if (this.furnaceFuelRemainingBurnTime > 0) {
+            --this.furnaceFuelRemainingBurnTime;
+        }
+    }
     public void serverTick() {
         if (this.level == null){return;}
         boolean fuelBurningStateWhenStartTick = this.furnaceFuelRemainingBurnTime > 0;
@@ -96,7 +102,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             --this.furnaceFuelRemainingBurnTime;
         }
 
-        if (!level.isClientSide) {
+        {
 
             if (this.count % (this.speedBoost ? speedBoostAspectExtractTime : defaultAspectExtractTime) == 0
                     && !this.aspects.isEmpty()) {
@@ -118,7 +124,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                         exlude.mergeWithHighest(alembicAspect, 1);
 
                         this.markDirtyAndUpdateSelf();
-                        level.sendBlockUpdated(probablyAlembicPos,alembicState,alembicState,3);
+                        setBlockStateAndUpdate(alembicState);
                     }
                 }
                 for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
@@ -142,7 +148,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                             alembic.addIntoContainer(aspectToInsert, 1);
 
                             this.markDirtyAndUpdateSelf();
-                            level.sendBlockUpdated(probablyAlembicPos,alembicState,alembicState,3);
+                            setBlockStateAndUpdate(alembicState);
 
                             break;
                         }
@@ -382,14 +388,16 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         };
     }
 
-    public boolean isInventoryIndexOutOfBound(int slot) {
-        return slot < 0 || slot >= SLOTS.length;
+    @Override
+    public int[] getSlots() {
+        return SLOTS;
     }
-    public void ensureInventoryIndexInBound(int slot) {
-        if (isInventoryIndexOutOfBound(slot)) {
-            throw new IndexOutOfBoundsException("Index: " + slot);
-        }
+
+    @Override
+    public NonNullList<ItemStack> getInventory() {
+        return inventory;
     }
+
     @Override
     public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
         if (direction != Direction.DOWN && i != ASPECT_GIVEN_ITEM_SLOT) {
@@ -402,11 +410,6 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int i, ItemStack itemStack, Direction direction) {
-        return true;
-    }
-
-    @Override
     public boolean canPlaceItem(int i, ItemStack itemStack) {
         if (i == FUEL_SLOT) {
             return canBurnAsFuel(itemStack);
@@ -416,78 +419,6 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         }
         return false;
     }
-
-    @Override
-    public int getContainerSize() {
-        return inventory.size();
-    }
-
-
-    @Override
-    public boolean isEmpty() {
-        for (var stackInInventory:inventory) {
-            if (!stackInInventory.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int i) {
-        ensureInventoryIndexInBound(i);
-        return inventory.get(i);
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItem(int slot, int amount) {
-        ensureInventoryIndexInBound(slot);
-        ItemStack stack = getItem(slot);
-        if (stack.getCount() <= amount) {
-            setItem(slot, ItemStack.EMPTY);
-            setChanged();
-            return stack;
-        }
-        else {
-            stack.shrink(amount);
-            stack = stack.copy();
-            stack.setCount(amount);
-            setChanged();
-            return stack;
-        }
-    }
-
-    @Override
-    @NotNull
-    public ItemStack removeItemNoUpdate(int i) {
-        var stack = getItem(i);
-        setItem(i, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setItem(int i, ItemStack itemStack) {
-        inventory.set(i, itemStack);
-        setChanged();
-
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        inventory.clear();
-        setChanged();
-    }
-
-
 
     public Aspect takeRandomAspect(AspectList<Aspect> exlude) {
         if (!this.aspects.isEmpty()) {
@@ -527,14 +458,6 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                             .setValue(AlchemicalFurnaceBlock.HAS_ASPECT,!this.aspects.isEmpty())
                             .setValue(AlchemicalFurnaceBlock.LIT,this.furnaceFuelRemainingBurnTime > 0)
             );
-        }
-    }
-
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-        if (level != null && !level.isClientSide ) {
-            Containers.dropContents(level, worldPosition, inventory);
         }
     }
 }

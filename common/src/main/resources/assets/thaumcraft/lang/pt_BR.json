@@ -7,6 +7,9 @@
   "block.thaumcraft.amber_ore": "Âmbar Preso em Pedra",
   "block.thaumcraft.arcane_alembic": "Alambique Arcano",
   "block.thaumcraft.arcane_bellow": "Fole Arcano",
+  "block.thaumcraft.arcane_bore": "Escavador Arcano",
+  "block.thaumcraft.arcane_bore_base": "Base Para Escavador Arcano",
+  "block.thaumcraft.arcane_bore_drill": "Escavador Arcano",
   "block.thaumcraft.arcane_door": "Porta Arcana",
   "block.thaumcraft.arcane_lamp": "Lâmpada Arcana",
   "block.thaumcraft.arcane_levitator": "Levitador Arcano",
@@ -287,6 +290,9 @@
   "item.thaumcraft.amber_ore": "Âmbar Preso em Pedra",
   "item.thaumcraft.arcane_alembic": "Alambique Arcano",
   "item.thaumcraft.arcane_bellow": "Fole Arcano",
+  "item.thaumcraft.arcane_bore": "Escavador Arcano",
+  "item.thaumcraft.arcane_bore_base": "Base Para Escavador Arcano",
+  "item.thaumcraft.arcane_bore_drill": "Escavador Arcano",
   "item.thaumcraft.arcane_door": "Porta Arcana",
   "item.thaumcraft.arcane_lamp": "Lâmpada Arcana",
   "item.thaumcraft.arcane_levitator": "Levitador Arcano",
@@ -987,8 +993,6 @@
   "tile.blockStoneDevice.8.name": "Composto de Recarga de Focus",
   "tile.blockWooden.name": "Bloco de Madeira Arcana",
   "tile.blockWoodenDevice.1.name": "Jukebox Arcana",
-  "tile.blockWoodenDevice.4.name": "Base Para Escavador Arcano",
-  "tile.blockWoodenDevice.5.name": "Escavador Arcano",
   "tile.researchtable.noink.0": "Acabou a sua tinta!",
   "tile.researchtable.nomove": "Runas ativas não podem ser movidas!"
 }

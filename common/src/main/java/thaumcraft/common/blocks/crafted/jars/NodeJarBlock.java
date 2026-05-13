@@ -72,15 +72,15 @@ public class NodeJarBlock extends JarBlock implements
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        if (level.getBlockEntity(blockPos) instanceof NodeJarBlockEntity jar) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.getBlockEntity(pos) instanceof NodeJarBlockEntity jar) {
             var nodeInfo = jar.nodeInfo;
             var jarItem = getNodeJarItem();
             var stackToDrop = new ItemStack(jarItem);
             jarItem.setNodeInfo(stackToDrop,nodeInfo);
-            var posCenter = blockPos.getCenter();
+            var posCenter = pos.getCenter();
             level.addFreshEntity(new ItemEntity(level,posCenter.x,posCenter.y,posCenter.z,stackToDrop));
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 }

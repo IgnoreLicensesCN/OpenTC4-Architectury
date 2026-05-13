@@ -216,12 +216,12 @@ public class CrucibleBlock
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!level.isClientSide) {
-            if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible) {
+            if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible) {
                 crucible.spillRemnants();
             }
         }
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 }

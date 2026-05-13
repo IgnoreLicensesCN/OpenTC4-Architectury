@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableOwnedBlock;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
@@ -100,10 +101,10 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()){
             if (level.getBlockEntity(blockPos) instanceof OwnedBlockEntity ownedBlockEntity){
-                var setting = blockState.getValue(SETTING);
+                int setting = blockState.getValue(SETTING);
                 setting = (setting+1)%3;
                 if (player != null){
                     if (setting == TRIGGER_BY_EVERYTHING) {
