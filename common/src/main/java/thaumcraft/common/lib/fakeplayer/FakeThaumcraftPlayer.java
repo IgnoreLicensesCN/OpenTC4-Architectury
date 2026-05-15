@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@Deprecated(forRemoval = true,since = "until it's really needed and i have better way to impl this(completely fake(including packet) server player?)")
 public class FakeThaumcraftPlayer extends ServerPlayer {
 
    public static class FakeThaumcraftPlayerFactory {
@@ -52,7 +53,6 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
          return get(world,new FakeGameProfile(username));
       }
 
-      //TODO:Use this
       public static void unloadWorld(ServerLevel world)
       {
           fakeThaumcraftPlayers.entrySet()

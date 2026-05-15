@@ -220,16 +220,6 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
         return tags;
     }
-
-    //TODO:Replacecment?
-    @Override
-    public List<Item> getItemVariants(Item item) {
-        // Fabric 1.20 没有 getSubItems/CreativeTab，我们只能返回默认实例
-        List<Item> list = new ArrayList<>();
-        list.add(item);
-        return list;
-    }
-
 //    @Override
 //    public boolean isItemStackMatchTag(ItemStack stack, String tagStr) {
 //        if (stack == null || tagStr == null || server == null) return false;

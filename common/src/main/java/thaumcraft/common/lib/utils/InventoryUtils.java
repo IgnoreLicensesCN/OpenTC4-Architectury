@@ -459,6 +459,8 @@ public class InventoryUtils {
       }
       return null;
    }
+
+   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
    public static ItemStack cycleItemStack(ItemStack stack) {
       ItemStack it = stack.copy();
       if (ignoresDamage(it)) {
@@ -478,10 +480,12 @@ public class InventoryUtils {
 
       return it;
    }
+   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
    public static ItemStack cycleItemStack(Item item) {
       return cycleItemStack(new ItemStack(item));
    }
 
+   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
    public static ItemStack cycleItemStack(List<?> list) {
       if (list.isEmpty()) return ItemStack.EMPTY;
       int idx = indexByTime(list.size());
@@ -500,6 +504,7 @@ public class InventoryUtils {
       }
       throw new UnsupportedOperationException("not supported obj with class:" + o + " " + o.getClass());
    }
+   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
    public static ItemStack cycleItemStack(String key) {
       // 输入是列表
       List<Item> items = OpenTC4.platformUtils.getItemsFromTag(key);

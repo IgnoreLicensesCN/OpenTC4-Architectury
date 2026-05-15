@@ -32,6 +32,7 @@
     "MilkBucketItemMixin",
     "MobMixin",
     "MonsterMixin",
+    "NoteBlockMixin",
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerMixin"

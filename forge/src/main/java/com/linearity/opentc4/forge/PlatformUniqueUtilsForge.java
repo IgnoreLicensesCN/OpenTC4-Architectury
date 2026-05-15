@@ -180,15 +180,6 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         return tags;
     }
 
-
-    //TODO:Replacecment?
-    @Override
-    public List<Item> getItemVariants(Item item) {
-        // Forge 也没有 getSubItems，返回默认实例即可
-        List<Item> list = new ArrayList<>();
-        list.add(item);
-        return list;
-    }
 //    @Override
 //    public boolean isItemStackMatchTag(ItemStack stack, String tagStr) {
 //        if (stack == null || tagStr == null) return false;

@@ -16,26 +16,18 @@ public class PacketBoreDigS2C extends ThaumcraftBaseS2CMessage {
 
    private final BlockPos selfPos;
    private final BlockPos digPos;
-//   private final int x;
-//   private final int y;
-//   private final int z;
-//   private final int digloc;
 
-
-   // 构造
    public PacketBoreDigS2C(BlockPos selfPos, BlockPos digPos) {
       this.selfPos = selfPos;
       this.digPos = digPos;
    }
 
-   // 解码
    public static PacketBoreDigS2C decode(FriendlyByteBuf buf) {
       var selfPos = buf.readBlockPos();
       var digPos = buf.readBlockPos();
       return new PacketBoreDigS2C(selfPos,digPos);
    }
 
-   // 编码
    public static void encode(PacketBoreDigS2C msg, FriendlyByteBuf buf) {
       buf.writeBlockPos(msg.selfPos);
       buf.writeBlockPos(msg.digPos);

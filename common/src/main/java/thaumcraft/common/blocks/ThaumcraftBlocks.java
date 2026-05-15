@@ -237,6 +237,7 @@ public class ThaumcraftBlocks {
     public static final ArcanePressurePlateBlock ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
     public static final ArcaneBoreBaseBlock ARCANE_BORE_BASE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
     public static final ArcaneBoreDrillBlock ARCANE_BORE_DRILL = Registry.SUPPLIER_ARCANE_BORE_DRILL.get();
+    public static final ArcaneEarBlock ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -903,6 +904,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "arcane_bore_drill",
                         ArcaneBoreDrillBlock::new
+                );
+        public static final RegistrySupplier<ArcaneEarBlock> SUPPLIER_ARCANE_EAR =
+                BLOCKS.register(
+                        "arcane_ear",
+                        ArcaneEarBlock::new
                 );
         static {
             BLOCKS.register();

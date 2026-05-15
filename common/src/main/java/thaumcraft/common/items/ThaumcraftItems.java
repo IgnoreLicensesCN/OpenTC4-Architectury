@@ -244,6 +244,7 @@ public class ThaumcraftItems {
     public static final CrystalEssenceItem CRYSTAL_ESSENCE = Registry.SUPPLIER_CRYSTAL_ESSENCE.get();
     public static final BlockItem ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
     public static final BlockItem ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
+    public static final BlockItem ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
 
     //===========================================================================================
 
@@ -868,6 +869,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_BORE_BASE = ITEMS.register(
                 "arcane_bore",
                 () -> new BlockItem(ThaumcraftBlocks.ARCANE_BORE_BASE,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_EAR = ITEMS.register(
+                "arcane_ear",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_EAR,  new Item.Properties())
         );
 
 

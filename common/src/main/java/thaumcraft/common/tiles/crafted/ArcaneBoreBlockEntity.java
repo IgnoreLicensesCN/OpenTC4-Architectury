@@ -763,8 +763,81 @@ public class ArcaneBoreBlockEntity
         }
         private final RotationManager rotationManagerX = new RotationManager();
         private final RotationManager rotationManagerZ = new RotationManager();
+
+        public FXBeamBore getBeam1() {
+            return beam1;
+        }
+
+        public FXBeamBore getBeam2() {
+            return beam2;
+        }
+
+        public float getvRadX() {
+            return vRadX;
+        }
+
+        public float getvRadZ() {
+            return vRadZ;
+        }
+
+        public float gettRadX() {
+            return tRadX;
+        }
+
+        public float gettRadZ() {
+            return tRadZ;
+        }
+
+        public float getmRadX() {
+            return mRadX;
+        }
+
+        public float getmRadZ() {
+            return mRadZ;
+        }
+
+        public boolean isToDig() {
+            return toDig;
+        }
+
+        public int getPaused() {
+            return paused;
+        }
+
+        public int getTopRotation() {
+            return topRotation;
+        }
+
+        public int getMaxPause() {
+            return maxPause;
+        }
+
+        public long getSoundDelay() {
+            return soundDelay;
+        }
+
+        public int getBeamLength() {
+            return beamLength;
+        }
+
+        public WeakReference<ArcaneBoreBlockEntity> getBEWeakRef() {
+            return beWeakRef;
+        }
+
+        public BlockPos getBlockPos() {
+            return blockPos;
+        }
+
+        public int getRotX(){
+            return rotationManagerX.rotation;
+        }
+
+        public int getRotZ(){
+            return rotationManagerZ.rotation;
+        }
+
         public static void tickBE(ArcaneBoreBlockEntity be){
-            ((ArcaneBoreBlockEntityClientAccessor)be).opentc4$getClientTickContext();
+            ((ArcaneBoreBlockEntityClientAccessor)be).opentc4$getClientTickContext().tick();
         }
         private void tick() {
             rotationManagerX.moveRotation();
@@ -997,6 +1070,7 @@ public class ArcaneBoreBlockEntity
                 }
             }
         }
+
     }
 
     @Override

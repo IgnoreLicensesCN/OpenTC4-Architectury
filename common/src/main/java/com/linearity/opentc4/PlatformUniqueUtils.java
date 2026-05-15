@@ -31,7 +31,6 @@ public abstract class PlatformUniqueUtils {
     public abstract List<Item> getItemsFromTag(String key);
     public abstract List<Item> getItemsFromTag(TagKey<Item> key);
     public abstract List<String> getTagsFromItem(ItemStack stack);
-    public abstract List<Item> getItemVariants(Item item);
     public boolean isItemStackMatchTag(ItemStack stack, String tag){
         return stack.is(
                 TagKey.create(Registries.ITEM, new ResourceLocation(tag))

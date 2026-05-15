@@ -162,17 +162,17 @@ public class EventHandlerWorld implements IFuelHandler {
       }
    }
 
-   @SubscribeEvent
-   public void noteEvent(NoteBlockEvent.Play event) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         if (!TileSensor.noteBlockEvents.containsKey(event.world)) {
-            TileSensor.noteBlockEvents.put(event.world, new ArrayList());
-         }
-
-         ArrayList<Integer[]> list = (ArrayList)TileSensor.noteBlockEvents.get(event.world);
-         list.add(new Integer[]{event.x, event.y, event.z, event.instrument.ordinal(), event.getVanillaNoteId()});
-         TileSensor.noteBlockEvents.put(event.world, list);
-      }
+//   @SubscribeEvent
+//   public void noteEvent(NoteBlockEvent.Play event) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         if (!TileSensor.noteBlockEvents.containsKey(event.world)) {
+//            TileSensor.noteBlockEvents.put(event.world, new ArrayList());
+//         }
+//
+//         ArrayList<Integer[]> list = (ArrayList)TileSensor.noteBlockEvents.get(event.world);
+//         list.add(new Integer[]{event.x, event.y, event.z, event.instrument.ordinal(), event.getVanillaNoteId()});
+//         TileSensor.noteBlockEvents.put(event.world, list);
+//      }
    }
 
    @SubscribeEvent

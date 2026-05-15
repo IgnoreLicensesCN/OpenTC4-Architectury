@@ -37,8 +37,8 @@ import java.util.Random;
 //    "0": "奥术风箱",--done
 //    "tile.blockWoodenDevice.1.name": "奥术之耳",
 //    "tile.blockWoodenDevice.2.name": "奥术压力盘",--done
-//    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",
-//    "tile.blockWoodenDevice.5.name": "奥术钻探机",
+//    "tile.blockWoodenDevice.4.name": "奥术钻探机基座",--done
+//    "tile.blockWoodenDevice.5.name": "奥术钻探机",--done
 //    "tile.blockWoodenDevice.6.name": "宏伟之树木板",--done
 //    "tile.blockWoodenDevice.7.name": "银树木板",--done
 //things below should be called mental illness if i migrate them into a version already has flags.
