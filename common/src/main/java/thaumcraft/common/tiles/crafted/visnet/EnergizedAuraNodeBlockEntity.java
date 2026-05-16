@@ -11,6 +11,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.EnergizedAuraNodeBlockEntityTagAccessors.*;
@@ -59,12 +60,6 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     public EnergizedAuraNodeBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ENERGIZED_NODE,blockPos,blockState);
     }
-
-    @Override
-    public int getRange() {
-        return 8;
-    }
-
     @Override
     public boolean isSource() {
         return true;
@@ -87,8 +82,9 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
         NODE_INFO.writeToCompoundTag(compoundTag,new NodeInfo(id,nodeType,nodeModifier, UnmodifiableAspectList.EMPTY,auraBase));
         NODE_CENTIVIS_BASE_ACCESSOR.writeToCompoundTag(compoundTag,centiVisBase);
     }
+
     public void tick(){
-        super.tick();
+//        super.tick();//do not set parent
         if (this.level == null) {
             return;
         }
@@ -113,6 +109,12 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
 
         this.markDirtyAndUpdateSelf();
     }
+
+    @Override
+    public VisNetNodeTypeResourceLocation getVisNetNodeType() {
+        return SOURCE;
+    }
+
     public int consumeCentiVis(Aspect aspect, int amount) {
         int drain = Math.min(this.currentOwningCentiVis.getAmount(aspect), amount);
         if (drain > 0) {

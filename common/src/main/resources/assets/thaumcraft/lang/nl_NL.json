@@ -12,6 +12,7 @@
   "block.thaumcraft.arcane_bore_base": "Occulte Boorbasis",
   "block.thaumcraft.arcane_bore_drill": "Occulte Boor",
   "block.thaumcraft.arcane_door": "Occulte Deur",
+  "block.thaumcraft.arcane_ear": "Occult Oor",
   "block.thaumcraft.arcane_lamp": "Occulte Lamp",
   "block.thaumcraft.arcane_levitator": "Occulte Levitator",
   "block.thaumcraft.arcane_pressure_plate": "Occulte Drukplaat",
@@ -346,6 +347,7 @@
   "item.thaumcraft.arcane_bore_base": "Occulte Boorbasis",
   "item.thaumcraft.arcane_bore_drill": "Occulte Boor",
   "item.thaumcraft.arcane_door": "Occulte Deur",
+  "item.thaumcraft.arcane_ear": "Occult Oor",
   "item.thaumcraft.arcane_lamp": "Occulte Lamp",
   "item.thaumcraft.arcane_levitator": "Occulte Levitator",
   "item.thaumcraft.arcane_pressure_plate": "Occulte Drukplaat",
@@ -1217,7 +1219,6 @@
   "tile.blockStoneDevice.7.name": "Infusiepilaar",
   "tile.blockStoneDevice.8.name": "Gecompliceerde Herlaadfocus",
   "tile.blockWooden.name": "Occult Houtblok",
-  "tile.blockWoodenDevice.1.name": "Occult Oor",
   "tile.researchtable.noink.0": "Je hebt geen inkt meer!",
   "tile.researchtable.noink.1": "Refill your scribing tools."
 }

@@ -1,15 +1,16 @@
 package thaumcraft.common.lib.utils;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.MapMaker;
+import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.mixin.ClientPacketListenerAccessor;
 import com.linearity.opentc4.mixin.ServerGamePacketListenerImplAccessor;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -28,7 +29,6 @@ import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.internal.WeightedRandomLootCollection;
@@ -37,22 +37,19 @@ import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.lib.network.fx.PacketFXVisDrainS2C;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
-
-import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 public class Utils {
     public static HashMap<Item, ItemStack> specialMiningResult = new HashMap<>();
     public static HashMap<Item, Float> specialMiningChance = new HashMap<>();
     public static final String[] colorNames = new String[]{"White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
     public static final int[] colors = new int[]{15790320, 15435844, 12801229, 6719955, 14602026, 4312372, 14188952, 4408131, 10526880, 2651799, 8073150, 2437522, 5320730, 3887386, 11743532, 1973019};
-    public static HashMap<WorldCoordinates, Long> effectBuffer = new HashMap<>();
+//    public static HashMap<WorldCoordinates, Long> effectBuffer = new HashMap<>();
+    public static Map<Level,Cache<BlockPos,Boolean>> effectBuffer = new MapMaker().weakKeys().makeMap();
 
     public static boolean isChunkLoaded(Level world, int x, int z) {
         int chunkX = x >> 4;
@@ -62,11 +59,7 @@ public class Utils {
 
     public static boolean useBonemealAtLoc(Level world, Player player, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-
-        // 一个假的骨粉堆，不会真正消耗
         ItemStack fake = new ItemStack(Items.BONE_MEAL);
-
-        // 直接调用原版 growCrop（只处理 BonemealableBlock）
         if (BoneMealItem.growCrop(fake, world, pos)) {
             if (!world.isClientSide) {
                 world.levelEvent(1505, pos, 0);
@@ -319,29 +312,26 @@ public class Utils {
         return null;
     }
 
-    public static void generateVisEffect(ResourceKey<Level> dim, int x, int y, int z, int x2, int y2, int z2, int color) {
-        WorldCoordinates wc = new WorldCoordinates(x, y, z, dim.toString());
-        Long time = System.currentTimeMillis();
-        Random rand = new Random(time);
-        if (effectBuffer.containsKey(wc)) {
-            if (effectBuffer.get(wc) < time) {
-                effectBuffer.remove(wc);
-            }
-        } else {
-            effectBuffer.put(wc, time + 500L + (long) rand.nextInt(100));
-
-            if (Platform.getEnvironment() == Env.SERVER) {
-                platformUtils.getServer()
-                        .getAllLevels()
-                        .forEach(level -> {
-                            if (level.dimension() == dim) {
-                                new PacketFXVisDrainS2C(x, y, z, x2, y2, z2, color).sendToAllAround(
-                                        level, new Vec3(x, y, z), 64.0F);
-                            }
-                        });
+    public static void generateVisEffect(Level level, BlockPos posFrom, BlockPos posTo,@RGBColor int color){
+        if (level instanceof ServerLevel serverLevel) {
+            try {
+                effectBuffer.computeIfAbsent(level,_ignored -> CacheBuilder.newBuilder()
+                        .expireAfterWrite(500, TimeUnit.MILLISECONDS)
+                        .build()).get(posFrom,() -> {
+                    new PacketFXVisDrainS2C(
+                            posFrom.getX(),posFrom.getY(),posFrom.getZ(),
+                            posTo.getX(),posTo.getY(),posTo.getZ(),
+                            color).sendToAllAround(
+                            serverLevel,
+                            posFrom.getCenter(),
+                            64.0F
+                    );
+                    return Boolean.TRUE;
+                });
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
-
     }
 
     @Deprecated(forRemoval = true, since = "y dont u use mixin in 2025?")

@@ -59,7 +59,7 @@ public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IW
         level.setBlockAndUpdate(useOnContext.getClickedPos(), state);
         if (level.getBlockEntity(useOnContext.getClickedPos()) instanceof VisNetRelayBlockEntity relay) {
             relay.removeThisNode();
-            relay.nodeRefresh=true;
+            relay.shouldRefreshVisNetNode =true;
             relay.markDirtyAndUpdateSelf();
             level.playSound(null,relay.getBlockPos(), ThaumcraftSounds.CRYSTAL, SoundSource.BLOCKS, 0.2F, 1.0F);
         }

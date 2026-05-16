@@ -1,6 +1,5 @@
 package thaumcraft.common.tiles.crafted.visnet;
 
-import com.google.common.collect.MapMaker;
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.mixinaccessors.VisNetRelayBlockEntityClientAccessor;
@@ -19,10 +18,10 @@ import thaumcraft.api.visnet.IVisNetNodeDetectableItem;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
+import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
-import java.util.Map;
 
 //TODO:BER(just render model),TileMagicWorkbenchCharger(and interface to charge wand inside.)
 public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
@@ -33,9 +32,11 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
         this(ThaumcraftBlockEntities.VIS_RELAY, blockPos, blockState);
     }
 
-    public int getRange() {
-        return 8;
+    @Override
+    public VisNetNodeTypeResourceLocation getVisNetNodeType() {
+        return RELAY;
     }
+
     public boolean isSource() {
         return false;
     }
@@ -47,7 +48,6 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
             ClientFXUtils.clearBeamPower(this);
         }
     }
-
 
     //client fields
     public static final @RGBColor int[] colors = new int[]{
@@ -81,8 +81,6 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
         private float pRed = 0.5F;
         private float pGreen = 0.5F;
         private float pBlue = 0.5F;
-        private static final Map<VisNetRelayBlockEntity,ClientTickContext> contexts =
-                new MapMaker().weakKeys().makeMap();
 
         public static void clientCheckParent(VisNetRelayBlockEntity visNetRelayBlockEntity){
             var selfPos = visNetRelayBlockEntity.getBlockPos();
@@ -176,9 +174,12 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
                 --context.pulse;
             }
         }
+        private static ClientTickContext fromBE(VisNetRelayBlockEntity visNetRelayBlockEntity) {
+            return ((VisNetRelayBlockEntityClientAccessor)visNetRelayBlockEntity).opentc4$getClientTickContext();
+        }
 
         public static void addPulse(VisNetRelayBlockEntity visNetRelayBlockEntity) {
-            var context = contexts.computeIfAbsent(visNetRelayBlockEntity,be -> new ClientTickContext());
+            var context = fromBE(visNetRelayBlockEntity);
             context.pulse = 5;
             var colorIndex = visNetRelayBlockEntity.getBlockState().getValue(VisNetRelayBlock.COLOR)-1;
             if (colorIndex >= 0){
@@ -190,7 +191,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
 
                 var current = visNetRelayBlockEntity.getParent();
                 while (current instanceof VisNetRelayBlockEntity relay) {
-                    var ctxCurrent = contexts.computeIfAbsent(relay, be -> new ClientTickContext());
+                    var ctxCurrent = fromBE(relay);
                     if (ctxCurrent.pulse != 0) break;
                     ctxCurrent.pRed = context.pRed;
                     ctxCurrent.pGreen = context.pGreen;
@@ -205,9 +206,9 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
     protected boolean needToLoadParent = false;
     public void tick(){
         super.tick();
-        if (nodeCounter% 20 == 0){
+        if (nodeCounter % 20 == 0){
             if (level == null){return;}
-            AABB box = new AABB(worldPosition)
+            AABB box = new AABB(getBlockPos())
                     .inflate(5.0D);
 
             List<Player> players = level.getEntitiesOfClass(
@@ -230,7 +231,10 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
                 }
                 //equipped(bauble slots)
                 BaubleUtils.forEachBauble(
-                        player, IVisNetNodeDetectableItem.class, (slot, stack, item) -> {
+                        player,
+                        IVisNetNodeDetectableItem.class,
+                        (slot, stack, item)
+                                -> {
                             item.onVisNodeNearby(this,stack);
                             return false;
                         }
@@ -239,9 +243,6 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
         }
     }
     public void clientTick() {
-        if (!(this.level != null && this.level.isClientSide())) {
-            return;
-        }
         ClientTickContext.clientTick(this);
     }
 

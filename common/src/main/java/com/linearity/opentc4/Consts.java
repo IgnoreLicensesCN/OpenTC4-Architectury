@@ -143,9 +143,10 @@ public class Consts {
     }
 
     public static class TileVisNodeCompoundTagAccessors {
-        private static final String TILE_VIS_NODE_LINKS = "Link";
-        public static final ModifiableListAccessor<BlockPos> TILE_VIS_NODE_LINKS_ACCESSOR =
-                new ModifiableListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
+        public static final BlockPosAccessor PARENT_POS_ACCESSOR = new BlockPosAccessor("parent");
+//        private static final String TILE_VIS_NODE_LINKS = "Link";
+//        public static final ModifiableListAccessor<BlockPos> TILE_VIS_NODE_LINKS_ACCESSOR =
+//                new ModifiableListAccessor<>(TILE_VIS_NODE_LINKS,new BlockPosAccessor(TILE_VIS_NODE_LINKS + "_block_pos"));
     }
     public static class NodeBlockEntityCompoundTagAccessors {
         public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("node_info");

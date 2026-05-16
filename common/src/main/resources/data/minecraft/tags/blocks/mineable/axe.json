@@ -18,6 +18,9 @@
     "thaumcraft:research_table_left_part",
     "thaumcraft:research_table_right_part",
     "thaumcraft:arcane_levitator",
-    "thaumcraft:mana_bean"
+    "thaumcraft:mana_bean",
+    "thaumcraft:arcane_pressure_plate",
+    "thaumcraft:arcane_bore",
+    "thaumcraft:arcane_ear"
   ]
 }

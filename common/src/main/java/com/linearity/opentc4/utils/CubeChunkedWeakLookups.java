@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanFunction;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,6 +133,231 @@ public class CubeChunkedWeakLookups<StoreItem> {
         if (items != null){items.forEach(action);}
         items = get(x + this.chunkSize,y + this.chunkSize,z + this.chunkSize);
         if (items != null){items.forEach(action);}
+    }
+    //true if broken(function returned true,you can consider this as calling break in for loop)
+    public boolean forItemsNearPosWithBreak(Vec3i pos, Object2BooleanFunction<StoreItem> action) {
+        var x = pos.getX();
+        var y = pos.getY();
+        var z = pos.getZ();
+        Collection<StoreItem> items;
+        //powered by JetBrains PyCharm
+        items = get(x - this.chunkSize,y - this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y - this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y - this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y + this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y + this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x - this.chunkSize,y + this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y - this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y - this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y - this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y + this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y + this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x,y + this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y - this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y - this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y - this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y + this.chunkSize,z - this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y + this.chunkSize,z);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        items = get(x + this.chunkSize,y + this.chunkSize,z + this.chunkSize);
+        if (items != null){
+            for (var item:items){
+                if(action.apply(item)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     private @Nullable("empty -> null") Collection<StoreItem> get(int x, int y, int z){
         var xzKey = packInt(

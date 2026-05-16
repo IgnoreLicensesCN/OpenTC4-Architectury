@@ -12,6 +12,7 @@
   "block.thaumcraft.arcane_bore_base": "Mystiskt borrfundament",
   "block.thaumcraft.arcane_bore_drill": "Mystisk borr",
   "block.thaumcraft.arcane_door": "Mystisk dörr",
+  "block.thaumcraft.arcane_ear": "Mystiskt öra",
   "block.thaumcraft.arcane_lamp": "Mystisk lampa",
   "block.thaumcraft.arcane_levitator": "Mystiskt svävanordning",
   "block.thaumcraft.arcane_pressure_plate": "Mystisk tryckplatta",
@@ -336,6 +337,7 @@
   "item.thaumcraft.arcane_bore_base": "Mystiskt borrfundament",
   "item.thaumcraft.arcane_bore_drill": "Mystisk borr",
   "item.thaumcraft.arcane_door": "Mystisk dörr",
+  "item.thaumcraft.arcane_ear": "Mystiskt öra",
   "item.thaumcraft.arcane_lamp": "Mystisk lampa",
   "item.thaumcraft.arcane_levitator": "Mystiskt svävanordning",
   "item.thaumcraft.arcane_pressure_plate": "Mystisk tryckplatta",
@@ -1181,7 +1183,6 @@
   "tile.blockStoneDevice.7.name": "Ingjutningspelare",
   "tile.blockStoneDevice.8.name": "Sammanslaget laddningsfokus",
   "tile.blockWooden.name": "Mystiskt träblock",
-  "tile.blockWoodenDevice.1.name": "Mystiskt öra",
   "tile.researchtable.noink.0": "Du har fått slut på bläck!",
   "tile.researchtable.noink.1": "Fyll på dina skrivdon."
 }

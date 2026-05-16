@@ -41,9 +41,9 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         ASPECTS_OWNING.writeToCompoundTag(compoundTag,aspects);
-        FUEL_AMOUNT_FIRE.writeToCompoundTag(compoundTag, fuelVisAmouontFire);
-        FUEL_AMOUNT_ENTROPY.writeToCompoundTag(compoundTag,fuelVisAmountEntropy);
-        FUEL_AMOUNT_WATER.writeToCompoundTag(compoundTag,fuelVisAmountWater);
+        FUEL_AMOUNT_FIRE.writeIntToCompoundTag(compoundTag, fuelVisAmouontFire);
+        FUEL_AMOUNT_ENTROPY.writeIntToCompoundTag(compoundTag,fuelVisAmountEntropy);
+        FUEL_AMOUNT_WATER.writeIntToCompoundTag(compoundTag,fuelVisAmountWater);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         super.readCustomNBT(compoundTag);
         aspects = ASPECTS_OWNING.readFromCompoundTag(compoundTag);
         aspectsView = new UnmodifiableAspectList<>(aspects);
-        fuelVisAmouontFire = FUEL_AMOUNT_FIRE.readFromCompoundTag(compoundTag);
-        fuelVisAmountEntropy = FUEL_AMOUNT_ENTROPY.readFromCompoundTag(compoundTag);
-        fuelVisAmountWater = FUEL_AMOUNT_WATER.readFromCompoundTag(compoundTag);
+        fuelVisAmouontFire = FUEL_AMOUNT_FIRE.readIntFromCompoundTag(compoundTag);
+        fuelVisAmountEntropy = FUEL_AMOUNT_ENTROPY.readIntFromCompoundTag(compoundTag);
+        fuelVisAmountWater = FUEL_AMOUNT_WATER.readIntFromCompoundTag(compoundTag);
     }
 
     public int getVisCapacity() {
@@ -93,15 +93,15 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         var pos = getBlockPos();
         int pt = this.fuelVisAmouontFire--;
         if (this.fuelVisAmouontFire <= getFuelVisCapacity()) {
-            this.fuelVisAmouontFire += VisNetHandler.drainVis(this.level, pos.getX(),pos.getY(),pos.getZ(), Aspects.FIRE, 50);
+            this.fuelVisAmouontFire += VisNetHandler.drainVis(this.level, pos, Aspects.FIRE, 50);
         }
 
         if (this.fuelVisAmountEntropy <= getFuelVisCapacity()) {
-            this.fuelVisAmountEntropy += VisNetHandler.drainVis(this.level, pos.getX(),pos.getY(),pos.getZ(), Aspects.ENTROPY, 50);
+            this.fuelVisAmountEntropy += VisNetHandler.drainVis(this.level, pos, Aspects.ENTROPY, 50);
         }
 
         if (this.fuelVisAmountWater <= getFuelVisCapacity()) {
-            this.fuelVisAmountWater += VisNetHandler.drainVis(this.level, pos.getX(),pos.getY(),pos.getZ(), Aspects.WATER, 50);
+            this.fuelVisAmountWater += VisNetHandler.drainVis(this.level, pos, Aspects.WATER, 50);
         }
 
         if (pt / 50 != this.fuelVisAmouontFire / 50) {

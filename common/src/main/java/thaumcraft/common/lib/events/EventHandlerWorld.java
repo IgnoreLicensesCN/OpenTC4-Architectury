@@ -60,54 +60,60 @@ public class EventHandlerWorld implements IFuelHandler {
 
    }
 
-   @SubscribeEvent
-   public void worldUnload(WorldEvent.Unload event) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         VisNetHandler.sources.remove(event.world.dimension());
+//   @SubscribeEvent
+//   public void worldUnload(WorldEvent.Unload event) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         VisNetHandler.sources.remove(event.world.dimension());
+//
+//         try {
+//            TileSensor.noteBlockEvents.remove(event.world);
+//         } catch (Exception e) {
+//            FMLCommonHandler.instance().getFMLLogger().log(Level.WARN, "[Thaumcraft] Error unloading noteblock even handlers.", e);
+//         }
+//
+//      }
+//   }
+//
+//   @SubscribeEvent
+//   public void chunkSave(ChunkDataEvent.Save event) {
+//      CompoundTag var4 = new CompoundTag();
+//      event.getData().setTag("Thaumcraft", var4);
+//      var4.setBoolean(Config.regenKey, true);
+//   }
+//
+//   @SubscribeEvent
+//   public void chunkLoad(ChunkDataEvent.Load event) {
+//      int dim = event.world.dimension();
+//      ChunkCoordIntPair loc = event.getChunk().getChunkCoordIntPair();
+//      if (!event.getData().getCompoundTag("Thaumcraft").hasKey(Config.regenKey)
+//              && (Config.regenAmber
+//              || Config.regenAura
+//              || Config.regenCinnibar
+//              || Config.regenInfusedStone
+//              || Config.regenStructure
+//              || Config.regenTrees)) {
+//         FMLCommonHandler.instance().getFMLLogger().log(Level.WARN, "[Thaumcraft] World gen was never run for chunk at {}. Adding to queue for regeneration.",event.getChunk().getChunkCoordIntPair());
+//         ArrayList<ChunkLoc> chunks = (ArrayList)ServerTickEventsFML.chunksToGenerate.get(dim);
+//         if (chunks == null) {
+//            ServerTickEventsFML.chunksToGenerate.put(dim, new ArrayList());
+//            chunks = (ArrayList)ServerTickEventsFML.chunksToGenerate.get(dim);
+//         }
+//
+//         if (chunks != null) {
+//            chunks.add(new ChunkLoc(loc.chunkXPos, loc.chunkZPos));
+//            ServerTickEventsFML.chunksToGenerate.put(dim, chunks);
+//         }
+//      }
+//
+//   }
 
-         try {
-            TileSensor.noteBlockEvents.remove(event.world);
-         } catch (Exception e) {
-            FMLCommonHandler.instance().getFMLLogger().log(Level.WARN, "[Thaumcraft] Error unloading noteblock even handlers.", e);
-         }
-
-      }
-   }
-
-   @SubscribeEvent
-   public void chunkSave(ChunkDataEvent.Save event) {
-      CompoundTag var4 = new CompoundTag();
-      event.getData().setTag("Thaumcraft", var4);
-      var4.setBoolean(Config.regenKey, true);
-   }
-
-   @SubscribeEvent
-   public void chunkLoad(ChunkDataEvent.Load event) {
-      int dim = event.world.dimension();
-      ChunkCoordIntPair loc = event.getChunk().getChunkCoordIntPair();
-      if (!event.getData().getCompoundTag("Thaumcraft").hasKey(Config.regenKey) && (Config.regenAmber || Config.regenAura || Config.regenCinnibar || Config.regenInfusedStone || Config.regenStructure || Config.regenTrees)) {
-         FMLCommonHandler.instance().getFMLLogger().log(Level.WARN, "[Thaumcraft] World gen was never run for chunk at {}. Adding to queue for regeneration.",event.getChunk().getChunkCoordIntPair());
-         ArrayList<ChunkLoc> chunks = (ArrayList)ServerTickEventsFML.chunksToGenerate.get(dim);
-         if (chunks == null) {
-            ServerTickEventsFML.chunksToGenerate.put(dim, new ArrayList());
-            chunks = (ArrayList)ServerTickEventsFML.chunksToGenerate.get(dim);
-         }
-
-         if (chunks != null) {
-            chunks.add(new ChunkLoc(loc.chunkXPos, loc.chunkZPos));
-            ServerTickEventsFML.chunksToGenerate.put(dim, chunks);
-         }
-      }
-
-   }
-
-   public int getBurnTime(ItemStack fuel) {
-      if (fuel.isItemEqual(new ItemStack(ThaumcraftItems.ALUMENTUM))) {
-         return 6400;
-      } else {
-         return fuel.isItemEqual(new ItemStack(ConfigBlocks.blockMagicalLog)) ? 400 : 0;
-      }
-   }
+//   public int getBurnTime(ItemStack fuel) {
+//      if (fuel.isItemEqual(new ItemStack(ThaumcraftItems.ALUMENTUM))) {
+//         return 6400;
+//      } else {
+//         return fuel.isItemEqual(new ItemStack(ConfigBlocks.blockMagicalLog)) ? 400 : 0;
+//      }
+//   }
 
    @SubscribeEvent
    public void onCrafting(PlayerEvent.ItemCraftedEvent event) {
@@ -139,7 +145,15 @@ public class EventHandlerWorld implements IFuelHandler {
       Player player = event.harvester;
       if (event.drops != null && !event.drops.isEmpty() && player != null) {
          ItemStack held = player.inventory.getCurrentItem();
-         if (held != null && (held.getItem() instanceof ItemElementalPickaxe || held.getItem() instanceof ItemPrimalCrusher || held.getItem() instanceof WandCastingItem && ((WandCastingItem)held.getItem()).getFocus(held) != null && ((WandCastingItem)held.getItem()).getFocus(held).isUpgradedWith(((WandCastingItem)held.getItem()).getFocusItem(held), ItemFocusExcavation.dowsing))) {
+         if (held != null
+                 && (held.getItem() instanceof ItemElementalPickaxe
+                 || held.getItem() instanceof ItemPrimalCrusher
+                 ||
+                 held.getItem() instanceof WandCastingItem
+                         && ((WandCastingItem)held.getItem()).getFocus(held) != null
+                         && ((WandCastingItem)held.getItem()).getFocus(held)
+                         .isUpgradedWith(((WandCastingItem)held.getItem()).getFocusItem(held),
+                         ItemFocusExcavation.dowsing))) {
             int fortune = EnchantmentHelper.getFortuneModifier(player);
             if (held.getItem() instanceof WandCastingItem) {
                fortune = ((WandCastingItem)held.getItem()).getFocus(held).getUpgradeLevel(((WandCastingItem)held.getItem()).getFocusItem(held), FocusUpgradeType.treasure);
@@ -158,7 +172,6 @@ public class EventHandlerWorld implements IFuelHandler {
                }
             }
          }
-
       }
    }
 
@@ -195,33 +208,33 @@ public class EventHandlerWorld implements IFuelHandler {
 
    }
 
-   @SubscribeEvent
-   public void placeBlockEvent(BlockEvent.PlaceEvent event) {
-      if (this.isNearActiveBoss(event.world, event.player, event.x, event.y, event.z)) {
-         event.setCanceled(true);
-      }
+//   @SubscribeEvent
+//   public void placeBlockEvent(BlockEvent.PlaceEvent event) {
+//      if (this.isNearActiveBoss(event.world, event.player, event.x, event.y, event.z)) {
+//         event.setCanceled(true);
+//      }
+//
+//   }
+//
+//   @SubscribeEvent
+//   public void placeBlockEvent(BlockEvent.MultiPlaceEvent event) {
+//      if (this.isNearActiveBoss(event.world, event.player, event.x, event.y, event.z)) {
+//         event.setCanceled(true);
+//      }
+//
+//   }
 
-   }
-
-   @SubscribeEvent
-   public void placeBlockEvent(BlockEvent.MultiPlaceEvent event) {
-      if (this.isNearActiveBoss(event.world, event.player, event.x, event.y, event.z)) {
-         event.setCanceled(true);
-      }
-
-   }
-
-   private boolean isNearActiveBoss(Level world, Player player, int x, int y, int z) {
-      if (world.dimension() == Config.dimensionOuterId && player != null && !player.capabilities.isCreativeMode) {
-         int xx = x >> 4;
-         int zz = z >> 4;
-         Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
-         if (c != null && c.feature >= 2 && c.feature <= 5) {
-            ArrayList<Entity> list = EntityUtils.getEntitiesInRange(world, x, y, z, null, EntityThaumcraftBoss.class, 32.0F);
-             return list != null && !list.isEmpty();
-         }
-      }
-
-      return false;
-   }
+//   private boolean isNearActiveBoss(Level world, Player player, int x, int y, int z) {
+//      if (world.dimension() == Config.dimensionOuterId && player != null && !player.capabilities.isCreativeMode) {
+//         int xx = x >> 4;
+//         int zz = z >> 4;
+//         Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
+//         if (c != null && c.feature >= 2 && c.feature <= 5) {
+//            ArrayList<Entity> list = EntityUtils.getEntitiesInRange(world, x, y, z, null, EntityThaumcraftBoss.class, 32.0F);
+//             return list != null && !list.isEmpty();
+//         }
+//      }
+//
+//      return false;
+//   }
 }

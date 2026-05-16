@@ -16,7 +16,10 @@ import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;
 
 public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel {
     public AlumentumItem() {
-        super(new Properties());
+        this(new Properties());
+    }
+    public AlumentumItem(Properties properties) {
+        super(properties);
     }
 
     @Override

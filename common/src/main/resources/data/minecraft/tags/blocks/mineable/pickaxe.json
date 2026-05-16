@@ -73,6 +73,9 @@
     "thaumcraft:essentia_tube_oneway",
     "thaumcraft:essentia_buffer",
     "thaumcraft:essentia_centrifuge",
-    "thaumcraft:essentia_crystallizer"
+    "thaumcraft:essentia_crystallizer",
+    "thaumcraft:arcane_pressure_plate",
+    "thaumcraft:arcane_bore",
+    "thaumcraft:arcane_ear"
   ]
 }

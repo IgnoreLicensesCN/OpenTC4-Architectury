@@ -12,6 +12,7 @@
   "block.thaumcraft.arcane_bore_base": "Arcane Bore Base",
   "block.thaumcraft.arcane_bore_drill": "Arcane Bore",
   "block.thaumcraft.arcane_door": "Müstiline Uks",
+  "block.thaumcraft.arcane_ear": "Arcane Ear",
   "block.thaumcraft.arcane_lamp": "Arcane Lamp",
   "block.thaumcraft.arcane_levitator": "Müstiline Leviteerija",
   "block.thaumcraft.arcane_pressure_plate": "Arcane Pressure Plate",
@@ -336,6 +337,7 @@
   "item.thaumcraft.arcane_bore_base": "Arcane Bore Base",
   "item.thaumcraft.arcane_bore_drill": "Arcane Bore",
   "item.thaumcraft.arcane_door": "Müstiline Uks",
+  "item.thaumcraft.arcane_ear": "Arcane Ear",
   "item.thaumcraft.arcane_lamp": "Arcane Lamp",
   "item.thaumcraft.arcane_levitator": "Müstiline Leviteerija",
   "item.thaumcraft.arcane_pressure_plate": "Arcane Pressure Plate",
@@ -1181,7 +1183,6 @@
   "tile.blockStoneDevice.7.name": "Infusion Pillar",
   "tile.blockStoneDevice.8.name": "Compound Recharge Focus",
   "tile.blockWooden.name": "Arcane Wood Block",
-  "tile.blockWoodenDevice.1.name": "Arcane Ear",
   "tile.researchtable.noink.0": "Teil on tint otsa saanud!",
   "tile.researchtable.noink.1": "Täida uuesti oma kirjutamis vahendid."
 }

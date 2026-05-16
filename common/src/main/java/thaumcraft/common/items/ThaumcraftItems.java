@@ -1,5 +1,6 @@
 package thaumcraft.common.items;
 
+import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -933,5 +934,8 @@ public class ThaumcraftItems {
 
     public static void init() {
 
+        FuelRegistry.register(6400,ALUMENTUM);
+        FuelRegistry.register(400,GREATWOOD_LOG,SILVERWOOD_LOG);//anazor's idea
+        FuelRegistry.register(300,GREATWOOD_PLANKS,SILVERWOOD_PLANKS);
     }
 }

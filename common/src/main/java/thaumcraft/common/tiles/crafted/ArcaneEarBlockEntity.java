@@ -26,15 +26,22 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
     public ArcaneEarBlockEntity(BlockEntityType<? extends ArcaneEarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
-    protected void storeToWeakTrigger(Level level){
-        if (level == null && this.level != null) {
-            var lookup = earsForTriggerEvent.get(this.level);
-            if (lookup != null) {
-                lookup.remove(getBlockPos(),ArcaneEarBlockEntity.this);
+    protected void storeToLookup(Level level){
+        if (level != this.level){
+            var pos = getBlockPos();
+            if (this.level != null) {
+                var lookup = earsForTriggerEvent.get(this.level);
+                if (lookup != null) {
+                    lookup.remove(pos,this);
+                }
             }
-            return;
+            if (level != null){
+                earsForTriggerEvent.computeIfAbsent(
+                        level,
+                        _ignored -> new CubeChunkedWeakLookups<>((byte)6)
+                ).store(pos,this);
+            }
         }
-        earsForTriggerEvent.computeIfAbsent(level,_ignored -> new CubeChunkedWeakLookups<>((byte)6 /*2^6 == 64*/)).store(this.getBlockPos(),this);
     }
     public ArcaneEarBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ARCANE_EAR, blockPos, blockState);
@@ -42,7 +49,7 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
 
     @Override
     public void setLevel(Level level) {
-        storeToWeakTrigger(level);
+        storeToLookup(level);
         super.setLevel(level);
     }
 

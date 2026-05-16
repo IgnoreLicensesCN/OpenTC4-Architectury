@@ -13,6 +13,7 @@
   "block.thaumcraft.arcane_bore_base": "Plataforma de Trepant Arcà",
   "block.thaumcraft.arcane_bore_drill": "Trepant Arcà",
   "block.thaumcraft.arcane_door": "Porta Arcana",
+  "block.thaumcraft.arcane_ear": "Oïda Arcana",
   "block.thaumcraft.arcane_lamp": "Llàntia Arcana",
   "block.thaumcraft.arcane_levitator": "Levitador Arcà",
   "block.thaumcraft.arcane_pressure_plate": "Placa de Presió Arcana",
@@ -351,6 +352,7 @@
   "item.thaumcraft.arcane_bore_base": "Plataforma de Trepant Arcà",
   "item.thaumcraft.arcane_bore_drill": "Trepant Arcà",
   "item.thaumcraft.arcane_door": "Porta Arcana",
+  "item.thaumcraft.arcane_ear": "Oïda Arcana",
   "item.thaumcraft.arcane_lamp": "Llàntia Arcana",
   "item.thaumcraft.arcane_levitator": "Levitador Arcà",
   "item.thaumcraft.arcane_pressure_plate": "Placa de Presió Arcana",
@@ -1301,7 +1303,6 @@
   "tile.blockStoneDevice.7.name": "Pilar d'Infusió",
   "tile.blockStoneDevice.8.name": "Centre de Recàrrega Combinada",
   "tile.blockWooden.name": "Bloc de Fusta Arcana",
-  "tile.blockWoodenDevice.1.name": "Oïda Arcana",
   "tile.researchtable.noink.0": "T'has quedat sense tinta!",
   "tile.researchtable.noink.1": "Omple les teves eines d'escritura.",
   "tile.researchtable.nomove": "Les Runes Actives no es poden moure!"
