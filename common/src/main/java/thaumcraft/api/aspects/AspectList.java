@@ -65,7 +65,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		recalculateVisSize();
 	}
 
-
+	@Deprecated(forRemoval = true,since = "implements IAspectDisplayItem")
     public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, @Nullable Player player, List<Component> aspectDescriptions) {
        if (aspects != null && !aspects.aspects.isEmpty()) {
           for(var aspect : aspects.getAspectsSorted()) {
@@ -491,11 +491,8 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		AtomicReference<Asp> currentAsp = new AtomicReference<>((Asp)Aspects.EMPTY);
 		forEachWithBreak((asp,value) -> {
 			currentAsp.set(asp);
-			if (i.getAndDecrement() == 0){
-				return true;
-			}
-			return false;
-		});
+            return i.getAndDecrement() == 0;
+        });
 		return currentAsp.get();
 	}
 

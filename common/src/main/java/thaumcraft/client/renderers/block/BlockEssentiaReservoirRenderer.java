@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockEssentiaReservoir;
+import thaumcraft.common.blocks.junkbox.BlockEssentiaReservoir;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 

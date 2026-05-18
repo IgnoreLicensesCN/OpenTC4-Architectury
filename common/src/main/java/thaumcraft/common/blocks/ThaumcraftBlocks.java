@@ -45,6 +45,7 @@ import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.MnemonicMatrixBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumTopBlock;
+import thaumcraft.common.blocks.liquid.DeathFluidBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -238,6 +239,7 @@ public class ThaumcraftBlocks {
     public static final ArcaneBoreBaseBlock ARCANE_BORE_BASE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
     public static final ArcaneBoreDrillBlock ARCANE_BORE_DRILL = Registry.SUPPLIER_ARCANE_BORE_DRILL.get();
     public static final ArcaneEarBlock ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
+    public static final DeathFluidBlock DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -909,6 +911,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "arcane_ear",
                         ArcaneEarBlock::new
+                );
+        public static final RegistrySupplier<DeathFluidBlock> SUPPLIER_DEATH_FLUID =
+                BLOCKS.register(
+                        "death_fluid",
+                        DeathFluidBlock::new
                 );
         static {
             BLOCKS.register();

@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
 //"tile.blockTube.0.name": "源质管道", --done
 //"tile.blockTube.1.name": "源质阀门", --done

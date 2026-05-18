@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
 //  "tile.blockMetalDevice.0.name": "坩埚",--done
 //  "tile.blockMetalDevice.1.name": "奥术蒸馏器",--done

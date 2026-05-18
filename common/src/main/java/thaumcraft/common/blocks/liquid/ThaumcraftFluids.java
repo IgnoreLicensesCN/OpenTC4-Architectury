@@ -13,10 +13,12 @@ public class ThaumcraftFluids {
 
     public static final FluxGooFluid FLUX_GOO_FLOWING = Registry.SUPPLIER_FLUX_GOO_FLOWING.get();
     public static final FluxGasFluid FLUX_GAS_FLOWING = Registry.SUPPLIER_FLUX_GAS_FLOWING.get();
+    public static final DeathFluid DEATH_FLUID_FLOWING = Registry.SUPPLIER_DEATH_FLUID_FLOWING.get();
     public static class Registry {
         public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create("thhaumcraft", Registries.FLUID);
         public static final RegistrySupplier<FluxGooFluid> SUPPLIER_FLUX_GOO_FLOWING = FLUIDS.register("flux_goo_flowing",FluxGooFluid::new);
         public static final RegistrySupplier<FluxGasFluid> SUPPLIER_FLUX_GAS_FLOWING = FLUIDS.register("flux_gas_flowing",FluxGasFluid::new);
+        public static final RegistrySupplier<DeathFluid> SUPPLIER_DEATH_FLUID_FLOWING = FLUIDS.register("death_fluid_flowing",DeathFluid::new);
 
 
         static {

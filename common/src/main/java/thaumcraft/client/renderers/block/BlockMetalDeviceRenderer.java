@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockMetalDevice;
+import thaumcraft.common.blocks.junkbox.BlockMetalDevice;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
 

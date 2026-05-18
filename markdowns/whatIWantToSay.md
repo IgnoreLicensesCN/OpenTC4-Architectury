@@ -15,3 +15,6 @@ if i finished this please tell me delete this line.
 * also please tell me how to make thaumcraft JEI or tell me to do this part myself.After i can run this mod.
 
 * maybe i need to put RunedTablet on a pedestal instead of ItemEntity.<p>In some server we use kill @e to clear drops but as we can see it's harmful.</p><p>Oh i need another display entity instead,copy from ItemEntity but no extends can avoid hopper(flower)s.</p>
+
+* i've replaced "of" to "ofAspectVisList" but i forgot to limit range and replaced "ofAspectVisList" to "fromAspectVisList" so there might be some strange "fromAspectVisList"
+* using annotations like @UnmodifiableView just meaning "Oh you should not modify it" not it's really not modifiable.

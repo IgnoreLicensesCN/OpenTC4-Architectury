@@ -18,6 +18,7 @@ import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
  * <p>Separated into {@link IAspectOutBlockEntity} and {@link IAspectInBlockEntity}</p>
  * <p>for items contains bonus aspects use {@link IBonusAspectOwnerItem}</p>
  * <p>for BEs needs to show aspect use {@link IAspectDisplayBlockEntity}</p>
+ * <p>for itemss needs to show aspect use {@link IAspectDisplayItem}</p>
  * <p>--IgnoreLicensesCN</p>
  */
 @Deprecated(forRemoval = true)

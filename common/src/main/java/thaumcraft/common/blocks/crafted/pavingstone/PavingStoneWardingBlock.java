@@ -35,12 +35,8 @@ public class PavingStoneWardingBlock extends SuppressedWarningBlock implements E
     }
 
     public PavingStoneWardingBlock() {
-        super(Properties.copy(Blocks.STONE)
+        this(Properties.copy(Blocks.STONE)
                 .strength(2.f, 10.f)
-        );
-        this.registerDefaultState(
-                this.stateDefinition.any()
-                        .setValue(LIT, false)
         );
     }
 
@@ -77,7 +73,9 @@ public class PavingStoneWardingBlock extends SuppressedWarningBlock implements E
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-
+        if (!level.isClientSide()) {
+            return;
+        }
         if (!(level instanceof ClientLevel clientLevel)){return;}
 
         var x = blockPos.getX();

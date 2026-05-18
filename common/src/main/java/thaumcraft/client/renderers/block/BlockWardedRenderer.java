@@ -4,7 +4,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import thaumcraft.common.blocks.BlockWarded;
+import thaumcraft.common.blocks.junkbox.BlockWarded;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class BlockWardedRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {

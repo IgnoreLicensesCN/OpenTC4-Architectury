@@ -76,6 +76,7 @@ block_with_item_names = [
     ['tile.blockWoodenDevice.4.name', 'arcane_bore_base'],
     ['tile.blockWoodenDevice.5.name', ['arcane_bore_drill','arcane_bore']],
     ['tile.blockWoodenDevice.1.name', 'arcane_ear'],
+    ['tile.blockFluidDeath.name', 'death_fluid'],
 ]
 
 force_add_keys = {

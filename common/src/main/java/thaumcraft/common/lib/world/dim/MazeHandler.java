@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.MazeHandlerCompoundTagAccessors.*;
 
+@Deprecated(forRemoval = true,since = "store as single level not here")
 public class MazeHandler {
    public static ConcurrentHashMap<CellLoc,Short> labyrinth = new ConcurrentHashMap<>();
 
@@ -48,9 +49,9 @@ public class MazeHandler {
 
       for(int a = 0; a < tagList.size(); ++a) {
          CompoundTag cell = tagList.getCompound(a);
-         int x = MAZE_HANDLER_CELL_LOC_X_ACCESSOR.readFromCompoundTag(cell);
-         int z = MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.readFromCompoundTag(cell);
-         short v = MAZE_HANDLER_CELL_INFO_ACCESSOR.readFromCompoundTag(cell);
+         int x = MAZE_HANDLER_CELL_LOC_X_ACCESSOR.readIntFromCompoundTag(cell);
+         int z = MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.readIntFromCompoundTag(cell);
+         short v = MAZE_HANDLER_CELL_INFO_ACCESSOR.readShortFromCompoundTag(cell);
          putToHashMapRaw(new CellLoc(x, z), v);
       }
 
@@ -70,9 +71,9 @@ public class MazeHandler {
          }
          CellLoc loc = entry.getKey();
          CompoundTag cell = new CompoundTag();
-         MAZE_HANDLER_CELL_LOC_X_ACCESSOR.writeToCompoundTag(cell,loc.x);
-         MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.writeToCompoundTag(cell,loc.z);
-         MAZE_HANDLER_CELL_INFO_ACCESSOR.writeToCompoundTag(cell,v);
+         MAZE_HANDLER_CELL_LOC_X_ACCESSOR.writeIntToCompoundTag(cell,loc.x);
+         MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.writeIntToCompoundTag(cell,loc.z);
+         MAZE_HANDLER_CELL_INFO_ACCESSOR.writeShortToCompoundTag(cell,v);
          tagList.add(cell);
       }
 

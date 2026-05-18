@@ -135,6 +135,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
         if (items != null){items.forEach(action);}
     }
     //true if broken(function returned true,you can consider this as calling break in for loop)
+    @SuppressWarnings("UnusedReturnValue")
     public boolean forItemsNearPosWithBreak(Vec3i pos, Object2BooleanFunction<StoreItem> action) {
         var x = pos.getX();
         var y = pos.getY();

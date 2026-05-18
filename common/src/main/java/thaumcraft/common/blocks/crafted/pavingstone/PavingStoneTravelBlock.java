@@ -18,7 +18,7 @@ public class PavingStoneTravelBlock extends SuppressedWarningBlock {
         super(properties);
     }
     public PavingStoneTravelBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.STONE)
+        this(BlockBehaviour.Properties.copy(Blocks.STONE)
                 .lightLevel(s->9)
                 .strength(2.f,10.f)
         );

@@ -27,7 +27,7 @@ import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.damagesource.DamageSourceThaumcraft;
+import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.wands.IEnchantmentRepairVisProviderItem;
 import thaumcraft.common.Thaumcraft;
@@ -457,7 +457,7 @@ public class EventHandlerEntity {
          event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, new ItemStack(ThaumcraftItems.GOLD_COIN)));
       }
 
-      if (event.source == DamageSourceThaumcraft.dissolve) {
+      if (event.source == ThaumcraftDamageSources.dissolve) {
          AspectList<Aspect>aspects = ScanManager.generateEntityAspects(event.entityLiving);
          if (aspects != null && aspects.size() > 0) {
             for(Aspect aspect : aspects.getAspectTypes()) {

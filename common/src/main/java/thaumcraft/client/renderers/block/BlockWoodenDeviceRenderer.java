@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.blocks.BlockWoodenDevice;
+import thaumcraft.common.blocks.junkbox.BlockWoodenDevice;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
 

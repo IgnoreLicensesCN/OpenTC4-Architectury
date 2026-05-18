@@ -19,7 +19,7 @@ public class WardingAuraBlock extends SuppressedWarningBlock {
         super(properties);
     }
     public WardingAuraBlock() {
-        this(Properties.of().randomTicks().sound(SoundType.WOOL).replaceable().noCollission());
+        this(Properties.of().strength(-1,999).randomTicks().sound(SoundType.WOOL).replaceable().noOcclusion());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class WardingAuraBlock extends SuppressedWarningBlock {
         for(int a = 1; a < 3; ++a) {
             var bState = blockGetter.getBlockState(blockPos.below(a));
             if (bState.getBlock() instanceof PavingStoneWardingBlock pavingStoneWardingBlock) {
-                return pavingStoneWardingBlock.isCharged(blockState) ? Shapes.block():Shapes.empty();
+                return !pavingStoneWardingBlock.isCharged(blockState) ? Shapes.block():Shapes.empty();
             }
         }
 
@@ -38,6 +38,11 @@ public class WardingAuraBlock extends SuppressedWarningBlock {
     @Override
     public boolean isCollisionShapeFullBlock(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return !getCollisionShape(blockState, blockGetter, blockPos, null).isEmpty();
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return Shapes.empty();
     }
 
     @Override

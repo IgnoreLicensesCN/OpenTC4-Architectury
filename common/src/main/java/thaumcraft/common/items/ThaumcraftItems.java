@@ -6,13 +6,11 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BannerPatternItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.consumable.AlumentumItem;
 import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
 import thaumcraft.common.items.consumable.ManaBeanItem;
@@ -246,6 +244,7 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
     public static final BlockItem ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
     public static final BlockItem ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
+    public static final BucketItem DEATH_FLUID_BUCKET = Registry.SUPPLIER_DEATH_FLUID_BUCKET.get();
 
     //===========================================================================================
 
@@ -874,6 +873,12 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_EAR = ITEMS.register(
                 "arcane_ear",
                 () -> new BlockItem(ThaumcraftBlocks.ARCANE_EAR,  new Item.Properties())
+        );
+        public static final RegistrySupplier<BucketItem> SUPPLIER_DEATH_FLUID_BUCKET = ITEMS.register(
+                "death_fluid_bucket",
+                () -> new BucketItem(
+                        ThaumcraftFluids.DEATH_FLUID_FLOWING, new Item.Properties().craftRemainder(
+                        Items.BUCKET).stacksTo(1))
         );
 
 

@@ -314,10 +314,12 @@ public class CrucibleBlockEntity extends TileThaumcraft
                 }
             } else {
                 if (blockAbove == ThaumcraftBlocks.FLUX_GAS || blockAbove == ThaumcraftBlocks.FLUX_GOO) {
-                    //stacking flux
-                    int fluidLevel = stateAbove.getValue(FiniteLiquidBlock.LEVEL);
-                    if (fluidLevel < FiniteLiquidBlock.MAX_LEVEL){
-                        this.level.setBlockAndUpdate(posAbove, stateAbove.setValue(FiniteLiquidBlock.LEVEL, fluidLevel + 1));
+                    if (blockAbove instanceof FiniteLiquidBlock finiteLiquidBlock){
+                        //stacking flux
+                        int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
+                        if (fluidLevel < finiteLiquidBlock.finiteFluid.maxLevel){
+                            this.level.setBlockAndUpdate(posAbove, stateAbove.setValue(finiteLiquidBlock.finiteFluid.liquidLevel, fluidLevel + 1));
+                        }
                     }
                 } else {
                     int xOffset = -1 + this.level.random.nextInt(3);
@@ -337,9 +339,11 @@ public class CrucibleBlockEntity extends TileThaumcraft
                     //i added this part.just think it's obviously reasonable
                     else if (pickBlock == ThaumcraftBlocks.FLUX_GAS || pickBlock == ThaumcraftBlocks.FLUX_GOO) {
                         //also stacking flux
-                        int fluidLevel = stateAbove.getValue(FiniteLiquidBlock.LEVEL);
-                        if (fluidLevel < FiniteLiquidBlock.MAX_LEVEL){
-                            this.level.setBlockAndUpdate(posAbove, stateAbove.setValue(FiniteLiquidBlock.LEVEL, fluidLevel + 1));
+                        if (pickBlock instanceof FiniteLiquidBlock finiteLiquidBlock){
+                            int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
+                            if (fluidLevel < finiteLiquidBlock.finiteFluid.maxLevel){
+                                this.level.setBlockAndUpdate(posAbove, stateAbove.setValue(finiteLiquidBlock.finiteFluid.liquidLevel, fluidLevel + 1));
+                            }
                         }
                     }
 

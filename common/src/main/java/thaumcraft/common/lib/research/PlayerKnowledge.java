@@ -16,6 +16,7 @@ public class PlayerKnowledge {
    public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> phenomenaScanned = new ConcurrentHashMap<>();
+   //TODO:toInt concurrent map
    public final Map<String,Integer> warpCount = new ConcurrentHashMap<>();
    public final Map<String,Integer> warp = new ConcurrentHashMap<>();
    public final Map<String,Integer> warpSticky = new ConcurrentHashMap<>();

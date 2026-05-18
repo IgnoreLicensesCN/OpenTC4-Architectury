@@ -1,4 +1,4 @@
-package thaumcraft.common.blocks;
+package thaumcraft.common.blocks.junkbox;
 
 
 //    "0": "奥术风箱",--done
@@ -27,6 +27,7 @@ package thaumcraft.common.blocks;
 //    "tile.blockWoodenDevice.8.14.name": "红色旗帜",
 //    "tile.blockWoodenDevice.8.15.name": "黑色旗帜",
 //TODO:Migrate Aspect icon.
+@Deprecated(forRemoval = true)
 public class BlockWoodenDevice /*extends BlockContainer*/ {
 //   private Random random = new Random();
 //   public IIcon iconDefault;

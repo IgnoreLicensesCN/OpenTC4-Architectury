@@ -9,15 +9,11 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.world.HolderCache;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class DamageSourceThaumcraft
+public class ThaumcraftDamageSources
 {
     private static final HolderCache<DamageType> holderCache = HolderCache.of(Registries.DAMAGE_TYPE);
 
@@ -66,7 +62,7 @@ public class DamageSourceThaumcraft
 
 
 
-//    protected DamageSourceThaumcraft(String par1Str) {
+//    protected ThaumcraftDamageSources(String par1Str) {
 //		super(par1Str);
 //	}
 //    

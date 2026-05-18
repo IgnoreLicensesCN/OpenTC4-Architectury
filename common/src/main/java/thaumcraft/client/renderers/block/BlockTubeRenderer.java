@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
-import thaumcraft.common.blocks.BlockTube;
+import thaumcraft.common.blocks.junkbox.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
 

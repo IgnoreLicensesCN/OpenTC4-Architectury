@@ -1,6 +1,5 @@
 package thaumcraft.api.visnet;
 
-import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

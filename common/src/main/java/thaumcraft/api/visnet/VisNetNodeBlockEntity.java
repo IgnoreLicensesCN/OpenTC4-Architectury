@@ -12,7 +12,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 
-import java.lang.ref.Reference;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;

@@ -1,26 +1,16 @@
 package thaumcraft.common.items.misc;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
-import java.util.List;
-
 import static com.linearity.opentc4.Consts.CrystalEssenceItemTagAccessors.OWNING_ASPECT;
-import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
-public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<Aspect> {
+public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<Aspect>, IAspectDisplayItem<Aspect> {
     public CrystalEssenceItem(Properties properties) {
         super(properties);
     }
@@ -70,10 +60,7 @@ public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<As
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, level, list, tooltipFlag);
-        if (level != null && level.isClientSide){
-            addAspectDescriptionToList(getOwningBonusAspects(itemStack), Minecraft.getInstance().player, list);
-        }
+    public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack stack) {
+        return UnmodifiableAspectList.of(getOwningAspect(stack));
     }
 }

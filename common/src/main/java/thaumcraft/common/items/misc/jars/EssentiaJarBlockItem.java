@@ -15,18 +15,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.*;
-import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
-public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerItem<Aspect> {
+public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerItem<Aspect>,IAspectDisplayItem<Aspect> {
     public EssentiaJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
@@ -131,11 +130,8 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (tag == null) {
             return;
         }
-        var aspCurrent = ASPECT.readFromCompoundTag(tag);
-        int asmAmountCurrent = AMOUNT.readIntFromCompoundTag(tag);
         var filterAspect = ASPECT_FILTER.readFromCompoundTag(tag);
         var player = Minecraft.getInstance().player;
-        addAspectDescriptionToList(UnmodifiableAspectList.of(aspCurrent, asmAmountCurrent), player, list);
         if (!filterAspect.isEmpty()) {
             Component filterComponent;
             if (player != null && !filterAspect.hasPlayerDiscovered(player)) {
@@ -150,6 +146,17 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             list.add(filterComponent);
         }
 
+    }
+
+    @Override
+    public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack stack) {
+        var tag = stack.getTag();
+        if (tag == null) {
+            return UnmodifiableAspectList.EMPTY;
+        }
+        var aspCurrent = ASPECT.readFromCompoundTag(tag);
+        int asmAmountCurrent = AMOUNT.readIntFromCompoundTag(tag);
+        return UnmodifiableAspectList.of(aspCurrent, asmAmountCurrent);
     }
 
     //maybe we would have a golem core "assemble" to stick filter on.or with blocks or something?

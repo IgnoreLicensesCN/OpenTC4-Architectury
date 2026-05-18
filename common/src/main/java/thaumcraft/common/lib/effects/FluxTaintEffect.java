@@ -1,19 +1,14 @@
 package thaumcraft.common.lib.effects;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.damagesource.DamageSourceThaumcraft;
+import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.effects.PreventMilkRemoveEffect;
 import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.common.Thaumcraft;
 
 import java.util.Objects;
 
@@ -33,7 +28,7 @@ public class FluxTaintEffect extends MobEffect implements PreventMilkRemoveEffec
 			return;
 		}
 		if (undeadFlag){return;}
-		entity.hurt(DamageSourceThaumcraft.getDamageSource(entity.level(),DamageSourceThaumcraft.TAINT), 1.0F);
+		entity.hurt(ThaumcraftDamageSources.getDamageSource(entity.level(), ThaumcraftDamageSources.TAINT), 1.0F);
 	}
 
 	@Override

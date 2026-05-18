@@ -11,12 +11,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.damagesource.DamageSourceThaumcraft;
+import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
@@ -161,7 +160,7 @@ public class EntityTaintacle extends EntityMob implements ITaintedMob {
          j += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
       }
 
-      boolean flag = par1Entity.attackEntityFrom(DamageSourceThaumcraft.causeTentacleDamage(this), i);
+      boolean flag = par1Entity.attackEntityFrom(ThaumcraftDamageSources.causeTentacleDamage(this), i);
       if (flag) {
          if (j > 0) {
             par1Entity.addVelocity(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F, 0.1, MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F);

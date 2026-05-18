@@ -44,21 +44,21 @@ import java.util.ArrayList;
 
 //TODO
 public class EventHandlerWorld implements IFuelHandler {
-   @SubscribeEvent
-   public void worldLoad(WorldEvent.Load event) {
-      if (Platform.getEnvironment() != Env.CLIENT && event.world.dimension() == 0) {
-         MazeHandler.loadMaze(event.world);
-      }
-
-   }
-
-   @SubscribeEvent
-   public void worldSave(WorldEvent.Save event) {
-      if (Platform.getEnvironment() != Env.CLIENT && event.world.dimension() == 0) {
-         MazeHandler.saveMaze(event.world);
-      }
-
-   }
+//   @SubscribeEvent
+//   public void worldLoad(WorldEvent.Load event) {
+//      if (Platform.getEnvironment() != Env.CLIENT && event.world.dimension() == 0) {
+//         MazeHandler.loadMaze(event.world);
+//      }
+//
+//   }
+//
+//   @SubscribeEvent
+//   public void worldSave(WorldEvent.Save event) {
+//      if (Platform.getEnvironment() != Env.CLIENT && event.world.dimension() == 0) {
+//         MazeHandler.saveMaze(event.world);
+//      }
+//
+//   }
 
 //   @SubscribeEvent
 //   public void worldUnload(WorldEvent.Unload event) {
@@ -120,9 +120,11 @@ public class EventHandlerWorld implements IFuelHandler {
       int warp = ThaumcraftApi.getWarp(event.crafting);
       if (!Config.wuss && warp > 0 && Platform.getEnvironment() != Env.CLIENT) {
          Thaumcraft.addStickyWarpToPlayer(event.player, warp);
-      }
+      }//crafting for warp
 
-      if (event.crafting.getItem() == ConfigItems.itemResource && event.crafting.getDamageValue() == 13 && event.crafting.hasTagCompound()) {
+      if (event.crafting.getItem() == ConfigItems.itemResource
+              && event.crafting.getDamageValue() == 13
+              && event.crafting.hasTagCompound()) {
          for(int var2 = 0; var2 < 9; ++var2) {
             ItemStack var3 = event.craftMatrix.getStackInSlot(var2);
             if (var3 != null && var3.getItem() instanceof ItemEssence) {
@@ -130,18 +132,19 @@ public class EventHandlerWorld implements IFuelHandler {
                event.craftMatrix.setInventorySlotContents(var2, var3);
             }
          }
-      }
+      }//label keeping aspect provider
 
       if (event.crafting.getItem() == Item.getItemFromBlock(ConfigBlocks.blockMetalDevice) && event.crafting.getDamageValue() == 3) {
          ItemStack var3 = event.craftMatrix.getStackInSlot(4);
          ++var3.stackSize;
          event.craftMatrix.setInventorySlotContents(4, var3);
-      }
+      }//keeping pearl
 
    }
 
    @SubscribeEvent
    public void harvestEvent(BlockEvent.HarvestDropsEvent event) {
+      //applying dowsing if no skilltouch
       Player player = event.harvester;
       if (event.drops != null && !event.drops.isEmpty() && player != null) {
          ItemStack held = player.inventory.getCurrentItem();
@@ -190,6 +193,7 @@ public class EventHandlerWorld implements IFuelHandler {
 
    @SubscribeEvent
    public void fillBucket(FillBucketEvent event) {
+   //restore bucket pure and death
       if (event.target.typeOfHit == MovingObjectType.BLOCK) {
          if (event.world.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == ConfigBlocks.blockFluidPure && event.world.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) == 0) {
             event.world.setBlockToAir(event.target.blockX, event.target.blockY, event.target.blockZ);

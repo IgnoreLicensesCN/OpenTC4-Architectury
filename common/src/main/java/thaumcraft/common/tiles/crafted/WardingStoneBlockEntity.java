@@ -5,11 +5,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock.LIT;
 
-public class WardingStoneBlockEntity extends BlockEntity {
+public class WardingStoneBlockEntity extends TileThaumcraft {
     public final AtomicInteger tickCounter = new AtomicInteger();
     public WardingStoneBlockEntity(BlockEntityType<? extends WardingStoneBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState){
         super(blockEntityType, blockPos, blockState);
@@ -60,17 +60,14 @@ public class WardingStoneBlockEntity extends BlockEntity {
             var poses = new BlockPos[]{blockPos.above(), blockPos.above().above()};
             for (var pos:poses){
                 var bState = serverLevel.getBlockState(pos);
-                if (bState.canBeReplaced() && bState.getBlock() != ThaumcraftBlocks.WARDING_AURA){
+                if (bState.isAir() && bState.getBlock() != ThaumcraftBlocks.WARDING_AURA){
                     serverLevel.setBlock(pos,ThaumcraftBlocks.WARDING_AURA.defaultBlockState(),3);
                 }
             }
         }
 
-        if (blockState.getValue(LIT) && !charged) {
-            serverLevel.setBlock(blockPos, blockState.setValue(LIT, false), 3);
-        }
-        else if (!blockState.getValue(LIT) && charged) {
-            serverLevel.setBlock(blockPos, blockState.setValue(LIT, true), 3);
+        if (blockState.getValue(LIT) != charged) {
+            setBlockStateAndUpdate(blockState.setValue(LIT, charged));
         }
     }
 }

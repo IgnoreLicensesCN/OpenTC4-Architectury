@@ -2,49 +2,22 @@ package thaumcraft.common.blocks.liquid;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.entities.monster.EntityThaumicSlime;
 
+import static thaumcraft.common.ThaumcraftSounds.GORE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.FLUX_GOO;
 
-public class FluxGooFluid extends FlowingFluid {
-
-    public static final ResourceLocation STILL_TEXTURE = new ResourceLocation("modid", "block/flux_goo_still");
-    public static final ResourceLocation FLOWING_TEXTURE = new ResourceLocation("modid", "block/flux_goo_flow");
-
-    @Override
-    public @NotNull Fluid getSource() {
-        return this; // 静态注册的 SourceFluid
+public class FluxGooFluid extends FiniteFlowingFluid {
+    public FluxGooFluid(int maxLevel, Direction gravityDirection) {
+        super(maxLevel, gravityDirection);
     }
-
-    @Override
-    protected boolean canConvertToSource(Level level) {
-        return false;
-    }
-
-    @Override
-    public Fluid getFlowing() {
-        return this;
-    }
-
-    @Override
-    public Item getBucket() {
-        return ItemStack.EMPTY.getItem();
-    }
-
-    @Override
-    protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter blockGetter, BlockPos blockPos, Fluid fluid, Direction direction) {
-        return false;
+    public FluxGooFluid() {
+        this(8, Direction.DOWN);
     }
 
     @Override
@@ -53,42 +26,48 @@ public class FluxGooFluid extends FlowingFluid {
     }
 
     @Override
-    protected float getExplosionResistance() {
-        return 100000.0f;
-    }
-
-    @Override
     protected @NotNull BlockState createLegacyBlock(FluidState fluidState) {
-        return FLUX_GOO.defaultBlockState().setValue(FluxGooBlock.LEVEL, getAmount(fluidState));
+        return FLUX_GOO.defaultBlockState().setValue(liquidLevel, getAmount(fluidState));
     }
 
     @Override
-    public boolean isSource(FluidState state) {
-        return false;
+    public void tick(Level level, BlockPos pos, FluidState state) {
+        super.tick(level, pos, state);
+        if (level.isClientSide()) {
+            return;
+        }
+        var rand = level.random;
+        int lvl = getAmount(state);
+
+        if (lvl >= 2 && lvl < 6 && level.isEmptyBlock(pos.above())) {
+            if (rand.nextInt(25) == 0) {
+                spawnSlime(level, pos, 1);
+                level.removeBlock(pos, false);
+                return;
+            }
+        }
+        if (lvl >= 6 && level.isEmptyBlock(pos.above())) {
+            if (rand.nextInt(25) == 0) {
+                spawnSlime(level, pos, 2);
+                level.removeBlock(pos, false);
+                return;
+            }
+        }
+
+        // 流体蒸发 / 减少
+        if (rand.nextInt(30) == 0) {
+            decreaseOrRemove(level,pos,state);
+        }
     }
 
-    @Override
-    public int getAmount(FluidState state) {
-        return state.getValue(FluxGooFluid.LEVEL);
+
+    protected void spawnSlime(Level level, BlockPos pos, int size) {
+        EntityThaumicSlime slime = new EntityThaumicSlime(level);
+        slime.setSlimeSize(size);
+        slime.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        level.addFreshEntity(slime);
+        level.playSound(null, pos, GORE,
+                net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
-    @Override
-    protected void beforeDestroyingBlock(LevelAccessor world, BlockPos pos, BlockState state) {
-//        Block.dropResources(state, world instanceof Level lvl ? lvl : null, pos);
-    }
-
-    @Override
-    protected int getSlopeFindDistance(LevelReader levelReader) {
-        return 0;
-    }
-
-    @Override
-    protected int getDropOff(LevelReader levelReader) {
-        return 0;
-    }
-
-    @Override
-    public boolean isSame(Fluid fluid) {
-        return fluid instanceof FluxGooFluid;
-    }
 }

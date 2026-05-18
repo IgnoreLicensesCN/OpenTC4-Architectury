@@ -12,7 +12,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.wands.StaffRod;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
-import thaumcraft.common.blocks.ItemArcaneDoor;
+import thaumcraft.common.blocks.junkbox.ItemArcaneDoor;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.blocks.junkbox.ItemJarNode;
 import thaumcraft.common.entities.ItemSpawnerEgg;

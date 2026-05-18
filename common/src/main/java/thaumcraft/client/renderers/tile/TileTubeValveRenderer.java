@@ -9,7 +9,7 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelTubeValve;
-import thaumcraft.common.blocks.BlockTube;
+import thaumcraft.common.blocks.junkbox.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileTubeValve;
 

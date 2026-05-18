@@ -1,13 +1,18 @@
 package thaumcraft.api.aspects;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jetbrains.annotations.NotNull;
+import oshi.annotation.concurrent.NotThreadSafe;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntBinaryOperator;
 
+//usually it's not considered as a view so it shouldn't been changed
 public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
 
     public static final UnmodifiableAspectList<Aspect> EMPTY = new UnmodifiableAspectList<>(new AspectList<>());
@@ -16,6 +21,9 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         super(viewingList);
     }
     public UnmodifiableAspectList(@NotNull Object2IntMap<A> aspects) {
+        super(aspects);
+    }
+    protected UnmodifiableAspectList(@NotNull Object2IntLinkedOpenHashMap<A> aspects) {
         super(aspects);
     }
     public UnmodifiableAspectList(){
@@ -136,6 +144,7 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         return new UnmodifiableAspectList<>(resultMap);
     }
 
+    @SuppressWarnings("unchecked")
     public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(){
         return (UnmodifiableAspectList<Asp>) UnmodifiableAspectList.EMPTY;
     }
@@ -154,49 +163,75 @@ public class UnmodifiableAspectList<A extends Aspect> extends AspectList<A> {
         return new UnmodifiableAspectList<>(out);
     }
 
-    private static final Map<Aspect,UnmodifiableAspectList<Aspect>> aspectMap = new ConcurrentHashMap<>();
-    @SuppressWarnings("unchecked")
-    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> ofSingle(Asp aspect){
-
-        return (UnmodifiableAspectList<Asp>) aspectMap.computeIfAbsent(aspect, asp -> {
-            UnmodifiableAspectList<Aspect> out = new UnmodifiableAspectList<>();
-            out.aspects.put(asp,1);
-            return out;
+    private static final Map<Aspect,UnmodifiableAspectList<Aspect>> aspectMapOfSingleAspect = new HashMap<>();
+    //reducing CME in case someone wants multi-threading
+    static {
+        Aspects.ALL_ASPECTS.forEach((aspectKey, aspect) -> {
+            var map = new Object2IntLinkedOpenHashMap<Aspect>();
+            map.put(aspect,1);
+            var listToPut = new UnmodifiableAspectList<>(map);
+            aspectMapOfSingleAspect.put(aspect,listToPut);
         });
     }
-    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value){
-        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
-        out.aspects.put(aspect,value);
-
-        return out;
+    @NotThreadSafe//at least for writing unless you've already created those instances in someway like during loading?
+    @SuppressWarnings("unchecked")
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> ofSingle(Asp aspect){
+        return (UnmodifiableAspectList<Asp>) aspectMapOfSingleAspect.computeIfAbsent(aspect, asp -> {
+            var map = new Object2IntLinkedOpenHashMap<Aspect>();
+            map.put(asp,1);
+            return new UnmodifiableAspectList<>(map);
+        });
     }
-    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2){
-        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
-        out.aspects.put(aspect,value);
-        out.aspects.put(aspect2,value2);
+    private static final Map<Aspect, Int2ObjectMap<UnmodifiableAspectList<Aspect>>> aspectMapOfSingleAspectMultiValue = new ConcurrentHashMap<>();
 
-        return out;
+    @NotThreadSafe//unless you've already created those instances via this.
+    @SuppressWarnings("unchecked")
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value){
+        if (value == 1){
+            return ofSingle(aspect);
+        }
+        return (UnmodifiableAspectList<Asp>) aspectMapOfSingleAspectMultiValue
+                .computeIfAbsent(aspect,_ignored -> new Int2ObjectOpenHashMap<>())
+                .computeIfAbsent(value,aspectAmount -> {
+                    var map = new Object2IntLinkedOpenHashMap<Aspect>();
+                    map.put(aspect,aspectAmount);
+                    return new UnmodifiableAspectList<>(map);
+                });
+    }
+
+    //you should cache it yourself now.
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2){
+
+        var map = new Object2IntLinkedOpenHashMap<Asp>();
+        map.put(aspect,value);
+        map.put(aspect2,value2);
+        return new UnmodifiableAspectList<>(map);
     }
     public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2,Asp aspect3,int value3){
-        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
-        out.aspects.put(aspect,value);
-        out.aspects.put(aspect2,value2);
-        out.aspects.put(aspect3,value3);
 
-        return out;
+        var map = new Object2IntLinkedOpenHashMap<Asp>();
+        map.put(aspect,value);
+        map.put(aspect2,value2);
+        map.put(aspect3,value3);
+        return new UnmodifiableAspectList<>(map);
     }
-    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(Asp aspect,int value,Asp aspect2,int value2,Asp aspect3,int value3,Asp aspect4,int value4){
-        UnmodifiableAspectList<Asp> out = new UnmodifiableAspectList<>();
-        out.aspects.put(aspect,value);
-        out.aspects.put(aspect2,value2);
-        out.aspects.put(aspect3,value3);
-        out.aspects.put(aspect4,value4);
-
-        return out;
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(
+            Asp aspect,int value,
+            Asp aspect2,int value2,
+            Asp aspect3,int value3,
+            Asp aspect4,int value4
+    ){
+        var map = new Object2IntLinkedOpenHashMap<Asp>();
+        map.put(aspect,value);
+        map.put(aspect2,value2);
+        map.put(aspect3,value3);
+        map.put(aspect4,value4);
+        return new UnmodifiableAspectList<>(map);
     }
 
     @Override
     public int hashCode() {
         return hash;
     }
+
 }

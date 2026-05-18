@@ -1,29 +1,34 @@
 package thaumcraft.common.items.misc.jars;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.opentc4.utils.LogicalSide;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IAspectDisplayItem;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.NodeInfo;
 
-import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import static com.linearity.opentc4.Consts.NodeJarTagAccessors.NODE_INFO;
-import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
 
-public class NodeJarBlockItem extends BlockItem {
+public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<Aspect> {
     public NodeJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
     public NodeJarBlockItem() {
         this(ThaumcraftBlocks.NODE_JAR, new Properties().stacksTo(1));
     }
-
+    @RecommendedLogicalSide(LogicalSide.CLIENT)
+    public static final Map<ItemStack,NodeInfo> stackToNodeInfoForDisplay = new WeakHashMap<>();
     public NodeInfo getNodeInfo(ItemStack stack) {
         if (stack.isEmpty()) {
             return NodeInfo.EMPTY;
@@ -32,17 +37,25 @@ public class NodeJarBlockItem extends BlockItem {
         if (tag == null) {
             return NodeInfo.EMPTY;
         }
-        return NODE_INFO.readFromCompoundTag(tag);
+        var gotInfo = NODE_INFO.readFromCompoundTag(tag);
+        if (Platform.getEnvironment() != Env.SERVER){
+            stackToNodeInfoForDisplay.put(stack, gotInfo);
+        }
+        return gotInfo;
     }
     public void setNodeInfo(ItemStack stack,NodeInfo info) {
+        if (Platform.getEnvironment() != Env.SERVER){
+            stackToNodeInfoForDisplay.put(stack, info);
+        }
         NODE_INFO.writeToCompoundTag(stack.getOrCreateTag(),info);
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, level, list, tooltipFlag);
-        var player = Minecraft.getInstance().player;
-        var nodeInfo = getNodeInfo(itemStack);
-        addAspectDescriptionToList(nodeInfo.nodeAspects, player, list);
+    public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack stack) {
+        var toDisplay = stackToNodeInfoForDisplay.get(stack);
+        if (toDisplay == null){
+            return getNodeInfo(stack).nodeAspects;
+        }
+        return toDisplay.nodeAspects;
     }
 }
