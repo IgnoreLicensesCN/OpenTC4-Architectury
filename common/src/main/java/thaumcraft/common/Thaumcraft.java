@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.fakeplayer.FakeThaumcraftPlayer;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
@@ -17,6 +16,7 @@ import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Thaumcraft {
     public static final String MOD_ID = "thaumcraft";
@@ -38,7 +38,7 @@ public class Thaumcraft {
     public static Map<String, List<ResearchItemResourceLocation>> getCompletedResearch(){
         return playerKnowledge.researchCompleted;
     }
-    public static Map<String, List<ClueResourceLocation>> getCompletedClue(){
+    public static Map<String, Set<ClueResourceLocation>> getCompletedClue(){
         return playerKnowledge.clueCompleted;
     }
     public static Map<String, List<String>> getScannedObjects(){

@@ -45,10 +45,7 @@ import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.MnemonicMatrixBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumTopBlock;
-import thaumcraft.common.blocks.liquid.DeathFluidBlock;
-import thaumcraft.common.blocks.liquid.FluxGasBlock;
-import thaumcraft.common.blocks.liquid.FluxGooBlock;
-import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.blocks.liquid.*;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.*;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.*;
@@ -62,6 +59,7 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.crafted.WardedBlockEntity;
 import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
@@ -240,6 +238,8 @@ public class ThaumcraftBlocks {
     public static final ArcaneBoreDrillBlock ARCANE_BORE_DRILL = Registry.SUPPLIER_ARCANE_BORE_DRILL.get();
     public static final ArcaneEarBlock ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static final DeathFluidBlock DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
+    public static final PureFluidBlock PURE_FLUID = Registry.SUPPLIER_PURE_FLUID.get();
+    public static final WardedBlock WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -916,6 +916,16 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "death_fluid",
                         DeathFluidBlock::new
+                );
+        public static final RegistrySupplier<PureFluidBlock> SUPPLIER_PURE_FLUID =
+                BLOCKS.register(
+                        "pure_fluid",
+                        PureFluidBlock::new
+                );
+        public static final RegistrySupplier<WardedBlock> SUPPLIER_WARDED_BLOCK =
+                BLOCKS.register(
+                        "warded_block",
+                        WardedBlock::new
                 );
         static {
             BLOCKS.register();

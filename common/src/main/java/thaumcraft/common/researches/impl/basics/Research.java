@@ -1,4 +1,4 @@
-package thaumcraft.common.researches.impl;
+package thaumcraft.common.researches.impl.basics;
 
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ public final class Research extends AutoUnlockedResearchItem implements IRendera
         super(
                 ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "research"),
                 ThaumcraftResearchCategories.BASICS.categoryKey);
-        ResearchCategory.getResearchCategory(shownInfo.category()).addResearchAndShownInfo(this, shownInfo);
+        ResearchCategory.getResearchCategory(shownInfo.category()).addResearchAndShownInfo(this);
     }
 
     @Override

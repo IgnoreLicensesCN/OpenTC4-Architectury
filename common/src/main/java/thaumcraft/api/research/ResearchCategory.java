@@ -3,6 +3,7 @@ package thaumcraft.api.research;
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import thaumcraft.api.research.interfaces.IRenderableResearch;
 import thaumcraft.api.research.render.ShownInfoInResearchCategory;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -98,8 +99,10 @@ public class ResearchCategory {
             }
         }
     }
-    public void addResearchAndShownInfo(ResearchItem item, ShownInfoInResearchCategory shownInfo) {
+    public void addResearchAndShownInfo(ResearchItem item) {
         addResearch(item);
-        addResearchShownInfo(item, shownInfo);
+        if (item instanceof IRenderableResearch renderableResearch){
+            addResearchShownInfo(item, renderableResearch.getShownInfo(this));
+        }
     }
 }

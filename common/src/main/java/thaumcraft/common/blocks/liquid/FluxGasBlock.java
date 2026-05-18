@@ -11,11 +11,12 @@ import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
-import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GAS_FLOWING;
+import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GAS_FLUID;
 
 public class FluxGasBlock extends FiniteLiquidBlock {
    public FluxGasBlock() {
-      super(FLUX_GAS_FLOWING,
+      super(
+              FLUX_GAS_FLUID,
               Properties.of()
               .strength(-1.0F, 3600000.0F)
                       .noOcclusion()

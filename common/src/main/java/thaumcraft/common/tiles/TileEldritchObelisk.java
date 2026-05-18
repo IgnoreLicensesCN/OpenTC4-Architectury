@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles;
 
+@Deprecated(forRemoval = true)
 public class TileEldritchObelisk /*extends TileThaumcraft*/ {
 //   private int counter = 0;
 //

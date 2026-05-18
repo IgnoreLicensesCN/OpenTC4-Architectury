@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerKnowledge {
    public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
-   public final Map<String, List<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
+   public final Map<String, Set<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
    public final Map<String, AspectList<Aspect>> aspectsDiscovered = new ConcurrentHashMap<>();
    public final Map<String,List<String>> objectsScanned = new ConcurrentHashMap<>();
    public final Map<String,List<String>> entitiesScanned = new ConcurrentHashMap<>();

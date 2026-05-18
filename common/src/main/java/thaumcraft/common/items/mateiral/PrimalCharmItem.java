@@ -15,11 +15,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
-import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
-import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.List;
 import java.util.Random;
@@ -68,8 +65,8 @@ public class PrimalCharmItem extends Item {
                 }
             } else if (r == 42
                     && entity instanceof ServerPlayer player
-                    && FOCUS_PRIMAL.isPlayerCompletedResearch(player.getGameProfile().getName())
-                    && !ResearchManager.isClueComplete(player.getGameProfile().getName(), FOCUS_PRIMAL.key.convertToClueResLoc())
+                    && !FOCUS_PRIMAL.isPlayerCompletedResearch(player)
+                    && !FOCUS_PRIMAL.playerHasClue(player)
             ) {
                 var clueLoc = FOCUS_PRIMAL.key.convertToClueResLoc();
                 player.sendSystemMessage(
@@ -77,7 +74,7 @@ public class PrimalCharmItem extends Item {
                                 .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)
                 );
                 new PacketClueCompleteS2C(clueLoc).sendTo(player);
-                Thaumcraft.researchManager.completeClue(player, clueLoc);
+                FOCUS_PRIMAL.giveClueToPlayer(player);
             }
         }
     }

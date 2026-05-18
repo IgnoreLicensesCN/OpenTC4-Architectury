@@ -73,6 +73,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<EssentiaCrystallizerBlockEntity> ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
     public static final BlockEntityType<ArcaneBoreBlockEntity> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
     public static final BlockEntityType<ArcaneEarBlockEntity> ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
+    public static final BlockEntityType<WardedBlockEntity> WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -418,6 +419,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 ArcaneEarBlockEntity::new,
                                 ThaumcraftBlocks.ARCANE_EAR
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<WardedBlockEntity>> SUPPLIER_WARDED_BLOCK =
+                BLOCK_ENTITIES.register(
+                        "warded_block",
+                        () -> BlockEntityType.Builder.of(
+                                WardedBlockEntity::new,
+                                ThaumcraftBlocks.WARDED_BLOCK
                         ).build(null)
                 );
 

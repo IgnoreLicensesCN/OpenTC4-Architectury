@@ -3,6 +3,7 @@ package com.linearity.opentc4;
 import com.linearity.opentc4.utils.compoundtag.accessors.architectury.FluidStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.array.ByteArrayTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockStateAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
@@ -13,10 +14,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.Comp
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeInfoAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableListAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.JsonObjectTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableStringSetTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.NullFilteredModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
 import net.minecraft.core.BlockPos;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -31,8 +29,8 @@ public class Consts {
     public static class PlayerDataAccessors {
         public static final AspectListAccessor PLAYER_RESEARCH_ASPECTS = new AspectListAccessor("player_research_aspects");
         private static final String CLUE = "THAUMCRAFT.CLUE";
-        public static final ModifiableListAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
-                new ModifiableListAccessor<>(
+        public static final ModifiableSetTagAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
+                new ModifiableSetTagAccessor<>(
                         CLUE,new ClueResourceLocationTagAccessor(
                         CLUE+"_item")
                 );
@@ -313,6 +311,9 @@ public class Consts {
     }
     public static class ArcaneEarTagAccessors {
         public static final IntTagAccessor SHOULD_TICK_MASKS = new IntTagAccessor("should_tick_masks");
+    }
+    public static class WardedBlockTagAccessors {
+        public static final BlockStateAccessor STORING_BLOCK_STATE = new BlockStateAccessor("strong_state");
     }
 
 }

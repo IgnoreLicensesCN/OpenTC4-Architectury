@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles;
 
+@Deprecated(forRemoval = true)
 public class TileLifter /*extends TileEntity*/ {
 //   private int counter = 0;
 //   public int rangeAbove = 0;

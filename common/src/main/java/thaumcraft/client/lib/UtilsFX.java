@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.migrated.particles.FXScorch;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 
 import javax.imageio.ImageIO;
@@ -872,7 +873,7 @@ public class UtilsFX {
    }
 
    public static ResourceLocation getParticleTexture() {
-      return new ResourceLocation("thaumcraft", "particle/particles.png");
+      return new ResourceLocation(Thaumcraft.MOD_ID, "particle/particles.png");
 //      try {
 //         if (fieldParticleTexture == null)
 //            fieldParticleTexture = ReflectionHelper.findField(

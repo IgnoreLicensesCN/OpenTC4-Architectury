@@ -132,13 +132,7 @@ public abstract class ResearchItem
         }
         researchItems.put(this.key, this);
     }
-    
-    public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category, int complex)
-    {
-    	this.key = key;
-        this.categoryInternal.add(category);
-        registerResearchItem();
-    }
+
     public ResearchItem(ResearchItemResourceLocation key)
     {
         this.key = key;
@@ -177,11 +171,8 @@ public abstract class ResearchItem
             OpenTC4.LOGGER.error("ResearchCategory {} does not exist",categoryKey);
             return this;
         }
-        if (this instanceof IRenderableResearch renderableResearch){
-            category.addResearchAndShownInfo(this,renderableResearch.getShownInfo(category));
-        }else {
-            category.researches.put(this.key,this);
-        }
+
+        category.addResearchAndShownInfo(this);
         this.categoryInternal.add(categoryKey);
         return this;
     }
@@ -212,5 +203,10 @@ public abstract class ResearchItem
 
     public void completeResearch(Player player){
         Thaumcraft.researchManager.completeResearch(player, key);
+    }
+
+    //keep for interface
+    public ResearchItemResourceLocation getKey() {
+        return key;
     }
 }

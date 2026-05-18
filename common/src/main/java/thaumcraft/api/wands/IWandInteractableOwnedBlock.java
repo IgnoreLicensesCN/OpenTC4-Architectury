@@ -23,27 +23,16 @@ public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlo
     @Override
     default @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
         var level = useOnContext.getLevel();
-        var clickedPos = useOnContext.getClickedPos();
-        var blockState = level.getBlockState(clickedPos);
-        var blockEntity = level.getBlockEntity(clickedPos);
-        if (blockEntity instanceof OwnedBlockEntity owned){
-            var player = useOnContext.getPlayer();
-            if (player == null) return InteractionResult.PASS;
-            if (owned.playerOwnThis(player)){
-                level.destroyBlock(clickedPos, true, player);
-                level.playSound(player,clickedPos, SoundType.STONE.getBreakSound(), SoundSource.BLOCKS);
-                if (level instanceof ServerLevel serverLevel){
-                    serverLevel.sendParticles(
-                            new BlockParticleOption(ParticleTypes.BLOCK, blockState),
-                            clickedPos.getX() + 0.5,
-                            clickedPos.getY() + 0.5,
-                            clickedPos.getZ() + 0.5,
-                            20,     // 数量
-                            0.3, 0.3, 0.3, // 扩散
-                            0.1     // 速度
-                    );
+        if (!level.isClientSide()) {
+            var clickedPos = useOnContext.getClickedPos();
+            var blockEntity = level.getBlockEntity(clickedPos);
+            if (blockEntity instanceof OwnedBlockEntity owned){
+                var player = useOnContext.getPlayer();
+                if (player == null) return InteractionResult.PASS;
+                if (owned.playerOwnThis(player)){
+                    onOwnerClicked(useOnContext);
+                    return InteractionResult.SUCCESS;
                 }
-                return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.PASS;
@@ -53,6 +42,26 @@ public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlo
     @Nullable
     default BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new OwnedBlockEntity(blockPos, blockState);
+    }
+
+    default void onOwnerClicked(UseOnContext useOnContext) {
+        var clickedPos = useOnContext.getClickedPos();
+        var level = useOnContext.getLevel();
+        var blockState = level.getBlockState(clickedPos);
+        var player = useOnContext.getPlayer();
+        level.destroyBlock(clickedPos, true, player);
+        level.playSound(player,clickedPos, SoundType.STONE.getBreakSound(), SoundSource.BLOCKS);
+        if (level instanceof ServerLevel serverLevel){
+            serverLevel.sendParticles(
+                    new BlockParticleOption(ParticleTypes.BLOCK, blockState),
+                    clickedPos.getX() + 0.5,
+                    clickedPos.getY() + 0.5,
+                    clickedPos.getZ() + 0.5,
+                    20,     // 数量
+                    0.3, 0.3, 0.3, // 扩散
+                    0.1     // 速度
+            );
+        }
     }
 
     default void setPlacedOwnedBlockBy(Level level, BlockPos pos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {

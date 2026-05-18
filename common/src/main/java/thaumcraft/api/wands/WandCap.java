@@ -3,6 +3,7 @@ package thaumcraft.api.wands;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.Thaumcraft;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public class WandCap {
 		this.setTag(tag);
 		this.baseCostModifier = discount;
 		this.specialCostModifierAspects = null;
-		texture = new ResourceLocation("thaumcraft","textures/models/wand_cap_"+getTag()+".png");
+		texture = new ResourceLocation(Thaumcraft.MOD_ID,"textures/models/wand_cap_"+getTag()+".png");
 		this.item=item;
 		this.setCraftCost(craftCost);
 		caps.put(tag, this);
@@ -65,7 +66,7 @@ public class WandCap {
 		this.baseCostModifier = discount;
 		this.specialCostModifierAspects = specialAspects;
 		this.specialCostModifier = discountSpecial;
-		texture = new ResourceLocation("thaumcraft","textures/models/wand_cap_"+getTag()+".png");
+		texture = new ResourceLocation(Thaumcraft.MOD_ID,"textures/models/wand_cap_"+getTag()+".png");
 		this.item=item;
 		this.setCraftCost(craftCost);
 		caps.put(tag, this);

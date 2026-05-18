@@ -12,5 +12,6 @@ import java.util.List;
 public interface IRenderableResearch {
     @Nullable
     ShownInfoInResearchCategory getShownInfo(@NotNull ResearchCategory category);
+    @Deprecated(forRemoval = true,since = "preparing for XML Rendering")
     List<ResearchPage> getPages(@NotNull ResearchCategory category, @Nullable Player player);
 }

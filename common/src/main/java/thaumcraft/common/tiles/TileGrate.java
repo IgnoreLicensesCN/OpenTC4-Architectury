@@ -9,73 +9,74 @@ import thaumcraft.common.entities.EntityItemGrate;
 
 //if me i would remove this be and make this block a trapdoor with collision box(like AdvancedAlchemicalFurnace core block but EMPTY this time)
 //maybe anazor forgot this plan.
-public class TileGrate extends TileEntity implements ISidedInventory {
-   public int getSizeInventory() {
-      return 1;
-   }
-
-   public ItemStack getStackInSlot(int par1) {
-      return null;
-   }
-
-   public ItemStack decrStackSize(int par1, int par2) {
-      return null;
-   }
-
-   public ItemStack getStackInSlotOnClosing(int par1) {
-      return null;
-   }
-
-   public void setInventorySlotContents(int par1, ItemStack stack) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         EntityItemGrate ei = new EntityItemGrate(this.level(), (double)this.xCoord + (double)0.5F, (double)this.yCoord + 0.6, (double)this.zCoord + (double)0.5F, stack.copy());
-         ei.motionY = -0.1;
-         ei.motionX = 0.0F;
-         ei.motionZ = 0.0F;
-         this.level().spawnEntityInWorld(ei);
-      }
-
-   }
-
-   public int getInventoryStackLimit() {
-      return 64;
-   }
-
-   public boolean isUseableByPlayer(Player par1Player) {
-      return false;
-   }
-
-   public void openInventory() {
-   }
-
-   public void closeInventory() {
-   }
-
-   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5;
-   }
-
-   public int[] getAccessibleSlotsFromSide(int par1) {
-      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par1 == Direction.UP.ordinal() ? new int[]{0} : new int[0];
-   }
-
-   public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par3 == Direction.UP.ordinal();
-   }
-
-   public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
-      return false;
-   }
-
-   public String getInventoryName() {
-      return "thaumcraft.grate";
-   }
-
-   public boolean hasCustomInventoryName() {
-      return false;
-   }
-
-   public boolean canUpdate() {
-      return false;
-   }
+@Deprecated(forRemoval = true)
+public class TileGrate /* extends TileEntity implements ISidedInventory*/ {
+//   public int getSizeInventory() {
+//      return 1;
+//   }
+//
+//   public ItemStack getStackInSlot(int par1) {
+//      return null;
+//   }
+//
+//   public ItemStack decrStackSize(int par1, int par2) {
+//      return null;
+//   }
+//
+//   public ItemStack getStackInSlotOnClosing(int par1) {
+//      return null;
+//   }
+//
+//   public void setInventorySlotContents(int par1, ItemStack stack) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         EntityItemGrate ei = new EntityItemGrate(this.level(), (double)this.xCoord + (double)0.5F, (double)this.yCoord + 0.6, (double)this.zCoord + (double)0.5F, stack.copy());
+//         ei.motionY = -0.1;
+//         ei.motionX = 0.0F;
+//         ei.motionZ = 0.0F;
+//         this.level().spawnEntityInWorld(ei);
+//      }
+//
+//   }
+//
+//   public int getInventoryStackLimit() {
+//      return 64;
+//   }
+//
+//   public boolean isUseableByPlayer(Player par1Player) {
+//      return false;
+//   }
+//
+//   public void openInventory() {
+//   }
+//
+//   public void closeInventory() {
+//   }
+//
+//   public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+//      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5;
+//   }
+//
+//   public int[] getAccessibleSlotsFromSide(int par1) {
+//      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par1 == Direction.UP.ordinal() ? new int[]{0} : new int[0];
+//   }
+//
+//   public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
+//      return this.level().getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 5 && par3 == Direction.UP.ordinal();
+//   }
+//
+//   public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+//      return false;
+//   }
+//
+//   public String getInventoryName() {
+//      return "thaumcraft.grate";
+//   }
+//
+//   public boolean hasCustomInventoryName() {
+//      return false;
+//   }
+//
+//   public boolean canUpdate() {
+//      return false;
+//   }
 }

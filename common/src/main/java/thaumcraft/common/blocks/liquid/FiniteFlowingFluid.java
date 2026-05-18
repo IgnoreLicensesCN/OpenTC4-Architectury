@@ -178,6 +178,9 @@ public abstract class FiniteFlowingFluid extends FlowingFluid {
     //assert we have same liquidLevel
     protected void tryMoveAround(FluidState fluidState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource){
         int selfLevel = fluidState.getValue(liquidLevel);
+        if (selfLevel == 1){
+            return;
+        }
         List<ObjectIntPair<SimplePair<Direction,FluidState>>> directionToStack = new ArrayList<>(6);
         int totalLevel = selfLevel;
         for (var dirAround: getDirectionAroundNotOpposite(gravityDirection)){

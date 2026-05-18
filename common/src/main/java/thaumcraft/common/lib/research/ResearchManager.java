@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.linearity.opentc4.Consts.PlayerDataAccessors.*;
@@ -42,6 +44,7 @@ import static thaumcraft.api.aspects.CompoundAspect.COMPOUND_ASPECT_RECIPES;
 import static thaumcraft.common.ThaumcraftSounds.LEARN;
 import static thaumcraft.common.lib.events.EventHandlerEntity.getThaumcraftPlayersDirectory;
 
+@ApiStatus.Internal
 public class ResearchManager {
     static ArrayList<ResearchItem> allHiddenResearch = null;
     static ArrayList<ResearchItem> allValidResearch = null;
@@ -258,7 +261,8 @@ public class ResearchManager {
         }
         return research.isPlayerCompletedResearch(playername);
     }
-    @Deprecated
+
+    @Deprecated(forRemoval = true,since = "IStringBasedResearchClueOwner and IResearchClueOwner")
     public static boolean isClueComplete(Player player, ClueResourceLocation key) {
         if (ResearchItem.getResearch(ResearchItemResourceLocation.of(key)) == null) {
             return false;
@@ -268,7 +272,8 @@ public class ResearchManager {
         }
     }
 
-    public static List<ClueResourceLocation> getClueForPlayer(Player player) {
+    @ApiStatus.Internal
+    public static Set<ClueResourceLocation> getClueForPlayer(Player player) {
         var playerName = player.getGameProfile().getName();
         var out = Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
 
@@ -277,7 +282,7 @@ public class ResearchManager {
             if (
                     out == null && player instanceof ServerPlayer //Thaumcraft.getClientWorld() == null && server != null
             ) {
-                Thaumcraft.getCompletedClue().put(playerName, new ArrayList<>());
+                Thaumcraft.getCompletedClue().put(playerName, ConcurrentHashMap.newKeySet());
                 UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
 
 
@@ -324,7 +329,8 @@ public class ResearchManager {
         return Thaumcraft.getCompletedResearch().get(player.getGameProfile().getName());
     }
 
-    public static List<ClueResourceLocation> getClueForPlayerSafe(Player player) {
+    @ApiStatus.Internal
+    public static Set<ClueResourceLocation> getClueForPlayerSafe(Player player) {
         return Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
     }
 
@@ -389,7 +395,7 @@ public class ResearchManager {
             return false;
         } else {
             if (completed == null) {
-                completed = new ArrayList<>();
+                completed = ConcurrentHashMap.newKeySet();
             }
 
             completed.add(key);
@@ -421,7 +427,7 @@ public class ResearchManager {
         Thaumcraft.researchManager.completeResearch(player, research);
         player.playSound(LEARN);//,.75f,1.f
     }
-
+    @ApiStatus.Internal
     public void completeClue(Player player, ClueResourceLocation key){
 
         String playerName = player.getGameProfile().getName();
@@ -431,6 +437,7 @@ public class ResearchManager {
             scheduleSave(player);
         }
     }
+    @ApiStatus.Internal
     public void completeResearch(Player player, ResearchItemResourceLocation key) {
         if (completeResearchUnsaved(player, key)) {
             int warp;

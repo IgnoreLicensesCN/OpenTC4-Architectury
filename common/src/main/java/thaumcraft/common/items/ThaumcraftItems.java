@@ -245,6 +245,7 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
     public static final BlockItem ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static final BucketItem DEATH_FLUID_BUCKET = Registry.SUPPLIER_DEATH_FLUID_BUCKET.get();
+    public static final BucketItem PURE_FLUID_BUCKET = Registry.SUPPLIER_PURE_FLUID_BUCKET.get();
 
     //===========================================================================================
 
@@ -877,7 +878,13 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BucketItem> SUPPLIER_DEATH_FLUID_BUCKET = ITEMS.register(
                 "death_fluid_bucket",
                 () -> new BucketItem(
-                        ThaumcraftFluids.DEATH_FLUID_FLOWING, new Item.Properties().craftRemainder(
+                        ThaumcraftFluids.DEATH_FLUID, new Item.Properties().craftRemainder(
+                        Items.BUCKET).stacksTo(1))
+        );
+        public static final RegistrySupplier<BucketItem> SUPPLIER_PURE_FLUID_BUCKET = ITEMS.register(
+                "pure_fluid_bucket",
+                () -> new BucketItem(
+                        ThaumcraftFluids.PURE_FLUID, new Item.Properties().craftRemainder(
                         Items.BUCKET).stacksTo(1))
         );
 

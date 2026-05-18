@@ -11,11 +11,12 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.monster.EntityThaumicSlime;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
-import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GOO_FLOWING;
+import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GOO_FLUID;
 
 public class FluxGooBlock extends FiniteLiquidBlock {
     public FluxGooBlock() {
-        super(FLUX_GOO_FLOWING,
+        super(
+                FLUX_GOO_FLUID,
                 Properties.of()
                         .mapColor(MapColor.COLOR_PURPLE)
                         .strength(-1.0F, 3600000.0F)
