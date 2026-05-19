@@ -4,7 +4,7 @@ package thaumcraft.common.blocks.junkbox;
 //  "tile.blockMetalDevice.1.name": "奥术蒸馏器",--done
 //  "tile.blockMetalDevice.2.name": "魔力充能中继器",--done
 //  "tile.blockMetalDevice.3.name": "高级炼金构材",--done
-// 4?anazor forgot that.
+// 4?azanor forgot that.
 //  "tile.blockMetalDevice.5.name": "物品格栅",--done
 //  "tile.blockMetalDevice.6.name": "物品格栅(关闭)",--done
 //  "tile.blockMetalDevice.7.name": "奥术灯",--done
@@ -16,7 +16,7 @@ package thaumcraft.common.blocks.junkbox;
 //  "tile.blockMetalDevice.13.name": "育种灯",--done
 //  "tile.blockMetalDevice.14.name": "魔力中继器",--done
 //although there could be history reasons such as limited item IDs,
-//i still want to say there could be mental illness with anazor to design like this.
+//i still want to say there could be mental illness with azanor to design like this.
 //--IgnoreLicensesCN
 @Deprecated(forRemoval = true)
 public class BlockMetalDevice /*extends BlockContainer*/ {

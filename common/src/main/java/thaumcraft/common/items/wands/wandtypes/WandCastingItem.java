@@ -50,7 +50,7 @@ public class WandCastingItem extends Item
         IWandComponentsOwnerItem,//anyone wants more than cap&rod?
         IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
         IAttackBlockListenerItem,//maybe some focus would use in some cases
-        IArchitectDisplayItem,//anazor's old thing for some display
+        IArchitectDisplayItem,//azanor's old thing for some display
         IInventoryTickableComponentItem//ticking in inventory.add warp randomly or more?
 {
 

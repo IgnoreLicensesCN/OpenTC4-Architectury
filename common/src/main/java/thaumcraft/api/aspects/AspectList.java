@@ -161,7 +161,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return aspectView.keySet().stream()
 				.filter(a -> getAmount(a) > 0)
 				.sorted(Comparator.comparingInt(this::getAmount).reversed())
-				.toList();//anazor knows little about java's own sorting?
+				.toList();//azanor knows little about java's own sorting?
 	}
 	
 	/**

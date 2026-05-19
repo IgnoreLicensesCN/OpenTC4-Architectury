@@ -271,7 +271,7 @@ public class MoundStructure extends Structure {
                 }
             }
             {
-                int value = randomSource.nextInt(200) + 400;//anazor forgot something?
+                int value = randomSource.nextInt(200) + 400;//azanor forgot something?
                 createRandomNodeAt(
                         level,
                         startPos.offset(9, 8, 9),

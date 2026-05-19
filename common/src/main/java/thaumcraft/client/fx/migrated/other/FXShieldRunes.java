@@ -54,7 +54,7 @@ public class FXShieldRunes extends ThaumcraftParticle {
             return getter.getShieldRunesFXTexture(frame);
         }
         return new ResourceLocation("thaumcraft", "textures/models/hemis" + frame + ".png");
-//        if (target instanceof Mob && !(target instanceof EntityCultist)) {//anazor may get something wrong
+//        if (target instanceof Mob && !(target instanceof EntityCultist)) {//azanor may get something wrong
 //            return new ResourceLocation(
 //                    "thaumcraft",
 //                    "textures/models/ripple" + frame + ".png"

@@ -413,7 +413,7 @@ public class ThaumcraftCraftingManager {
 //                            if (cval >= value) {
 //                                ret = ph;
 //                                value = cval;
-//                            }//anazor drunk too much?
+//                            }//azanor drunk too much?
                     } catch (Exception e) {
                         OpenTC4.LOGGER.error(e);
                     }

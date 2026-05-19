@@ -103,7 +103,7 @@ public class TileTube /*extends TileThaumcraft implements IEssentiaTransportBloc
 //         float rp = r.nextFloat() * 360.0F;
 //         float ry = r.nextFloat() * 360.0F;
 //         double fx = -MathHelper.sin(ry / 180.0F * (float)Math.PI) * MathHelper.cos(rp / 180.0F * (float)Math.PI);
-//         double fz = MathHelper.cos(ry / 180.0F * (float)Math.PI) * MathHelper.cos(rp / 180.0F * (float)Math.PI);//unused seems anazor put x into where should be z
+//         double fz = MathHelper.cos(ry / 180.0F * (float)Math.PI) * MathHelper.cos(rp / 180.0F * (float)Math.PI);//unused seems azanor put x into where should be z
 //         double fy = -MathHelper.sin(rp / 180.0F * (float)Math.PI);
 //         Thaumcraft.proxy.drawVentParticles(this.level(), (double)this.xCoord + (double)0.5F, (double)this.yCoord + (double)0.5F, (double)this.zCoord + (double)0.5F, fx / (double)5.0F, fy / (double)5.0F, fx / (double)5.0F, this.ventColor);
 //      }

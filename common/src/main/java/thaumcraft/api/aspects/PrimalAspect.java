@@ -30,7 +30,7 @@ public class PrimalAspect extends Aspect {
     /**
      * Shortcut constructor I use for the primal aspects -
      * you shouldn't use this as making your own primal aspects will break all the things.
-     * --anazor
+     * --azanor
      * .
      * no,you can do that.
      * but tc4's own aspect in wand may not add your aspects

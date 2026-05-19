@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.junkbox;
 
-@Deprecated(forRemoval = true,since = "why anazor copied logic with no modify?why not extend BlockLeaves?")
+@Deprecated(forRemoval = true,since = "why azanor copied logic with no modify?why not extend BlockLeaves?")
 public class BlockMagicalLeaves /*extends Block implements IShearable */{
 //    public static final String[] leafType = new String[]{"greatwood", "silverwood"};
 //    int[] adjacentTreeBlocks;

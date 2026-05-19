@@ -17,7 +17,7 @@ public class UtilsFXMigrated {
               case 5 -> 6;
               case 6 -> 5;
               default -> -1;
-          };//wtf why anazor want this?
+          };//wtf why azanor want this?
 
            for(int a = 0; a < ClientFXUtils.particleCount(3); ++a) {
              FXSparkle fx = new FXSparkle(clientLevel,

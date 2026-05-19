@@ -418,7 +418,7 @@ public class InventoryUtils {
    }
 
    //u know what?fortune is not used and this method is not used.
-   //fk you anazor
+   //fk you azanor
    public static void dropItemsWithChance(Level world, double x, double y, double z, float chance, int fortune, List<ItemStack> items) {
       if (world.isClientSide()) return; // 只在服务器执行
       if (!world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) return;

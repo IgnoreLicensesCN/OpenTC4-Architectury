@@ -58,7 +58,7 @@ public record FocusUpgradeType(FocusUpgradeTypeResourceLocation id, ResourceLoca
 //		// allocate space
 //		if (id>=types.length) {
 //			FocusUpgradeType[] temp = new FocusUpgradeType[id+1];
-//			System.arraycopy(types, 0, temp, 0, types.length);//anazor forgot to change it on github
+//			System.arraycopy(types, 0, temp, 0, types.length);//azanor forgot to change it on github
 //			types = temp;
 //		}
 //

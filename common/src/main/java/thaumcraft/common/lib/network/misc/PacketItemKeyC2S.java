@@ -80,6 +80,6 @@ public class PacketItemKeyC2S extends BaseC2SMessage {
 //            byte b = ElementalShovelItem.getOrientation(stack);
 //            ElementalShovelItem.setOrientation(stack, (byte) (b + 1));
 //        }
-//        anazor got something wrong
+//        azanor got something wrong
     }
 }

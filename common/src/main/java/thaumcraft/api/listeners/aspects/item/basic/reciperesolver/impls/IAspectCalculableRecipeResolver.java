@@ -65,7 +65,7 @@ public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
         }
     }
 
-    private static final float CRAFTING_ASPECTS_MULTIPLIER = 0.75F;//anazor's strange idea.
+    private static final float CRAFTING_ASPECTS_MULTIPLIER = 0.75F;//azanor's strange idea.
 
     @Override
     public void resolveItems(RecipeResolveContext context) {

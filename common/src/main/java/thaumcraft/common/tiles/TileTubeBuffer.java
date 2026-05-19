@@ -186,7 +186,7 @@ public class TileTubeBuffer /*extends TileThaumcraft*/
 //
 //      if (Platform.getEnvironment() != Env.CLIENT && this.count % 5 == 0) {
 //         int var10000 = this.aspects.visSize();
-//         this.getClass();//anazor drunk too much or decompile error?
+//         this.getClass();//azanor drunk too much or decompile error?
 //         if (var10000 < 8) {
 //            this.fillBuffer();
 //         }

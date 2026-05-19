@@ -780,7 +780,7 @@ public class ResearchManager {
     public static void scheduleSave(Player player) {
         if (!(player instanceof ServerPlayer)){return;}
         //TODO:Impl or remove
-        //anazor left this method without explaining
+        //azanor left this method without explaining
     }
 
     public static boolean savePlayerData(Player player, File file1, File file2) {

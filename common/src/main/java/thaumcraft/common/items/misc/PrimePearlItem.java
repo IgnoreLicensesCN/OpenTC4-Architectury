@@ -108,7 +108,7 @@ public class PrimePearlItem extends Item {
                 }
 
                 node.setChanged();
-                world.sendBlockUpdated(pos,node.getBlockState(),node.getBlockState(),Block.UPDATE_CLIENTS | Block.UPDATE_NEIGHBORS);
+                world.setBlockAndUpdate(pos,node.getBlockState());
 //                node.markDirty();
                 world.explode(null, (double)pos.getX() + (double)0.5F, (double)pos.getY() + (double)1.5F, (double)pos.getZ() + (double)0.5F, 3.0F + world.getRandom().nextFloat() * (float)(research ? 3 : 5), Level.ExplosionInteraction.BLOCK);
 

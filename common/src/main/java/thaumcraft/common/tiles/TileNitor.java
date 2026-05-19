@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles;
 
-//idk what's wring with anazor,this shall be removed
+//idk what's wring with azanor,this shall be removed
 @Deprecated(forRemoval = true)
 public class TileNitor /*extends TileEntity*/ {
 //   public boolean canUpdate() {

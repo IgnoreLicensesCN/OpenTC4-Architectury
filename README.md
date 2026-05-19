@@ -1,4 +1,4 @@
-<p>maybe it should be unlicensed,i didn't get allowed from anazor.</p>
+<p>maybe it should be unlicensed,i didn't get allowed from azanor.</p>
 <p>anyway,IgnoreLicenses.</p>
 <p>we will start in <a href="https://github.com/IgnoreLicensesCN/OpenTC4">decompiled TC4</a> </p> 
 

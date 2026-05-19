@@ -171,7 +171,7 @@ public enum WarpEventsEnum {
                     new MobEffectInstance(MobEffects.BLINDNESS, Math.min(32000, 5 * warpContext.warp), 0, true, true));
         }
     }),
-    DECREASE_A_STICKY_WARP(new WarpEvent(1, 76) {//anazor may get something wrong.
+    DECREASE_A_STICKY_WARP(new WarpEvent(1, 76) {//azanor may get something wrong.
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 

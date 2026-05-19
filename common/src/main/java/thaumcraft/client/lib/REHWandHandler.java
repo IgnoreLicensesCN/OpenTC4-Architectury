@@ -38,7 +38,7 @@ import java.util.TreeMap;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
-//anazor plays index trick and crashed my save when i put focusPouch into bauble slot.
+//azanor plays index trick and crashed my save when i put focusPouch into bauble slot.
 //i got to fix it
 //--ignoreLicensesCN.
 public class REHWandHandler {

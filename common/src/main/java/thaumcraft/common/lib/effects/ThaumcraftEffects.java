@@ -24,7 +24,7 @@ public class ThaumcraftEffects {
         public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MOB_EFFECT);
 
         //found unused icon(named soul_shatter.png now) and translation key called "potion.soulshatter"(renamed into "effect.thaumcraft.soul_shatter")
-        //anazor may forget something.
+        //azanor may forget something.
         public static final RegistrySupplier<DeathGazeEffect> SUPPLIER_DEATH_GAZE = EFFECTS.register("death_gaze",DeathGazeEffect::new);
         public static final RegistrySupplier<BlurredVisionEffect> SUPPLIER_BLURRED_VISION = EFFECTS.register("blurred_vision",BlurredVisionEffect::new);
         public static final RegistrySupplier<SunScornedEffect> SUPPLIER_SUN_SCORNED = EFFECTS.register("sun_scorned",SunScornedEffect::new);

@@ -38,7 +38,7 @@ public class ThaumcraftItems {
     public static final Item THAUMIUM_INGOT = Registry.SUPPLIER_THAUMIUM_INGOT.get();//itemResource:2 Thaumium Ingot
     public static final Item QUICK_SILVER = Registry.SUPPLIER_QUICK_SILVER.get();//itemResource:3
     public static final Item MAGIC_TALLOW = Registry.SUPPLIER_MAGIC_TALLOW.get();//itemResource:4
-    //seems anazor found that he has to register a special item for zombie brain.it's useless now.
+    //seems azanor found that he has to register a special item for zombie brain.it's useless now.
 //    public static final Item ZOMBIE_BRAIN_REMOVED = Registry.SUPPLIER_ZOMBIE_BRAIN.get();//itemResource:5
     public static final Item AMBER_GEM = Registry.SUPPLIER_AMBER_GEM.get();//itemResource:6
     public static final Item ENCHANTED_FABRIC = Registry.SUPPLIER_ENCHANTED_FABRIC.get();//itemResource:7
@@ -947,7 +947,7 @@ public class ThaumcraftItems {
     public static void init() {
 
         FuelRegistry.register(6400,ALUMENTUM);
-        FuelRegistry.register(400,GREATWOOD_LOG,SILVERWOOD_LOG);//anazor's idea
+        FuelRegistry.register(400,GREATWOOD_LOG,SILVERWOOD_LOG);//azanor's idea
         FuelRegistry.register(300,GREATWOOD_PLANKS,SILVERWOOD_PLANKS);
     }
 }

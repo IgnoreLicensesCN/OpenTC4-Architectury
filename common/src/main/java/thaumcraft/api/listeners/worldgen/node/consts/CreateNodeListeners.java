@@ -22,11 +22,10 @@ public class CreateNodeListeners {
                 nodeBlockEntity.setNodeModifier(context.nodeModifier);
                 nodeBlockEntity.setAspectsWithBase(context.aspects);
             }
-            world.sendBlockUpdated(
+            world.setBlockAndUpdate(
                     context.pos,
-                    te.getBlockState(),
-                    te.getBlockState(),
-                    3);//idk what to use just put 3
+                    te.getBlockState()
+            );
             return false;
         }
 
