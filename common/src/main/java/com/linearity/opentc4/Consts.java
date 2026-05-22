@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.architectury.FluidStack
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.array.ByteArrayTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockStateAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.mc.DirectionTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
@@ -313,7 +314,13 @@ public class Consts {
         public static final IntTagAccessor SHOULD_TICK_MASKS = new IntTagAccessor("should_tick_masks");
     }
     public static class WardedBlockTagAccessors {
-        public static final BlockStateAccessor STORING_BLOCK_STATE = new BlockStateAccessor("strong_state");
+        public static final BlockStateAccessor STORING_BLOCK_STATE = new BlockStateAccessor("storing_state");
+    }
+    public static class HoleBlockEntityTagAccessors {
+        public static final IntTagAccessor TICK_REMAINING = new IntTagAccessor("tick_remaining");
+        public static final BlockStateAccessor STORING_BLOCK_STATE = new BlockStateAccessor("storing_state");
+        public static final IntTagAccessor SPREAD_DISTANCE = new IntTagAccessor("spread_distance");
+        public static final DirectionTagAccessor SPREAD_DIRECTION = new DirectionTagAccessor("spread_direction");
     }
 
 }

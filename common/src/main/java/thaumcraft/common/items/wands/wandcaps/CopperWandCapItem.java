@@ -4,14 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
 import java.util.Map;
 
-import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
-
-public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwner<Aspect> {//itemWandCap:3
+public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:3
     public CopperWandCapItem() {
         super(new Properties());
     }
@@ -28,7 +26,7 @@ public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftin
         return specialCostModifierAspects;
     }
 
-    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCasted(2);
+    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(2);
     @Override
     public CentiVisList<Aspect> getCraftingCostCentiVis() {
         return cost;

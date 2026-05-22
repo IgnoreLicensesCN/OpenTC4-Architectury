@@ -12,13 +12,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
-import java.util.Map;
 
 public interface IShapeConnectNearBlock {
     BooleanProperty NORTH_CONNECTED = BooleanProperty.create("north_connected");
@@ -39,6 +37,7 @@ public interface IShapeConnectNearBlock {
         }
     };
 
+    //TODO:Cut shape (Shapes.or)
     VoxelShape DEFAULT_SHAPE = Block.box(2, 2, 2, 14, 14, 14);
     VoxelShape DOWN_SHAPE = Block.box(2, 0, 2, 14, 14, 14);
     VoxelShape UP_SHAPE = Block.box(2, 2, 2, 14, 16, 14);

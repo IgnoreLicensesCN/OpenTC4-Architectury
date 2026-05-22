@@ -16,21 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
-import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect>, IWandUpgradeModifier {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect>, IWandUpgradeModifier {
     public PrimalStaffRodItem() {
-        super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCasted(25 * CENTIVIS_MULTIPLIER));
+        super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCasted(250 * CENTIVIS_MULTIPLIER);
+    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(250 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
     public CentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 
-    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCasted(32 * CENTIVIS_MULTIPLIER);
+    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(32 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
     public CentiVisList<Aspect> getCraftingCostCentiVis() {
@@ -38,7 +37,7 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> modifyWandUpgrades(Map<FocusUpgradeType, Integer> wandUpgrades) {
+    public Map<FocusUpgradeType, Integer> modifyWandUpgrades(ItemStack componentStack,Map<FocusUpgradeType, Integer> wandUpgrades) {
         wandUpgrades.merge(FocusUpgradeType.potency,1,Integer::sum);
         return wandUpgrades;
     }
@@ -46,22 +45,19 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
         var wandItem = usingWand.getItem();
-        if (wandItem instanceof ICentiVisContainerItem<?> containerNotCasted){
+        if (wandItem instanceof ICentiVisContainerItem<? extends Aspect> containerNotCasted){
             var container = (ICentiVisContainerItem<Aspect>)containerNotCasted;
             if (owner.tickCount % 50 == 0) {
                 var owningVis = container.getAllCentiVisOwning(usingWand);
-                List<Aspect> candidates = new ArrayList<>();
-                for (var entry : canRegenCentiVisAndValue.entrySet()) {
-                    var aspect = entry.getKey();
-                    var maxValue = entry.getValue();
+                List<Aspect> candidates = new ArrayList<>(canRegenCentiVisAndValue.size());
+                canRegenCentiVisAndValue.forEach(((aspect, maxValue) -> {
                     var current = owningVis.getOrDefault(aspect, 0);
 
                     if (current < maxValue) {
                         candidates.add(aspect);
                     }
-                }
+                }));
 
-                // 如果全部都满了 → 不回复
                 if (!candidates.isEmpty()) {
                     Aspect chosen = candidates.get(level.random.nextInt(candidates.size()));
                     owningVis.merge(chosen, CENTIVIS_MULTIPLIER,
@@ -69,7 +65,7 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
                                     oldValue + newValue,
                                     canRegenCentiVisAndValue.getOrDefault(chosen, 0)
                             )
-                            );
+                    );
                     container.storeCentiVisOwning(usingWand, owningVis);
                 }
             }

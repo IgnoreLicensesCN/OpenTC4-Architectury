@@ -16,7 +16,7 @@ public class WoodWandRodItem extends ThaumcraftWandRodItem implements WorkAsWand
         super(new Properties());
     }
 
-    private final @UnmodifiableView CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCasted(25 * CENTIVIS_MULTIPLIER);
+    private final @UnmodifiableView CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER);
     @Override
     public @UnmodifiableView CentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;

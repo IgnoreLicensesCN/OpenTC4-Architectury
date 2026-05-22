@@ -6,9 +6,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.IWandComponentNameOwnerItem;
-import thaumcraft.api.wands.IWandRodPropertiesOwner;
+import thaumcraft.api.wands.IWandRodPropertiesOwnerComponent;
 
-public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwner<Aspect>, IWandComponentNameOwnerItem {
+public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwnerComponent<Aspect>, IWandComponentNameOwnerItem {
     public ThaumcraftWandRodItem(Properties properties) {
         super(properties);
     }

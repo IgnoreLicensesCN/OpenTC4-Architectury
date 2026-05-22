@@ -108,7 +108,7 @@ public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {
 //                    if (focus != null) {
 //                        int amt = ((ItemFocusBasic) focus.getItem()).getCentiVisCost(focus).getAmount(aspect);
 //                        if (amt > 0) {
-//                            text = "§r, " + this.myFormatter.format((float) amt * mod / 100.0F) + " " + Component.translatable(((ItemFocusBasic) focus.getItem()).isVisCostPerTick(focus) ? "item.Focus.cost2" : "item.Focus.cost1");
+//                            text = "§r, " + this.myFormatter.format((float) amt * mod / 100.0F) + " " + Component.translatable(((ItemFocusBasic) focus.getItem()).isCentiVisCostPerTick(focus) ? "item.Focus.cost2" : "item.Focus.cost1");
 //                        }
 //                    }
 //

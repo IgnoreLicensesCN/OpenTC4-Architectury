@@ -25,7 +25,7 @@ import thaumcraft.api.crafting.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -185,7 +185,7 @@ public class ThaumcraftCraftingManager {
             for (var componentItem : wand.getWandComponents(itemstack)) {
                 var craftCostTotalCentiVis = 0;
                 var aspectCount = 0;
-                if (componentItem.getItem() instanceof ICraftingCostAspectOwner<? extends Aspect> costAspectOwner) {
+                if (componentItem.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> costAspectOwner) {
                     var aspectList = costAspectOwner.getCraftingCostCentiVis();
                     for (var centiVisValue : aspectList.getAspectView().values()) {
                         craftCostTotalCentiVis += centiVisValue;

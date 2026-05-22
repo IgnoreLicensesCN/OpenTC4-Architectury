@@ -4,7 +4,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableOwnedBlock;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
-import thaumcraft.common.tiles.crafted.WardedBlockEntity;
+import thaumcraft.common.tiles.technique.WardedBlockEntity;
 
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 
@@ -219,4 +221,9 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
         return super.getDirectSignal(blockState, blockGetter, blockPos, direction);
     }
 
+    @Override
+    public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
+        super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
+        setPlacedOwnedBlockBy(level, blockPos, blockState, livingEntity, itemStack);
+    }
 }

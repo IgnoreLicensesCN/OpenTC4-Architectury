@@ -36,7 +36,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
-import thaumcraft.api.wands.IWandFocusEngine;
+import thaumcraft.api.wands.IWandFocusEngineItem;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
@@ -144,7 +144,7 @@ public class FocusExcavationItem extends FocusBasicItem {
     }
 
     @Override
-    public boolean isVisCostPerTick() {
+    public boolean isCentiVisCostPerTick() {
         return true;
     }
 
@@ -297,7 +297,7 @@ public class FocusExcavationItem extends FocusBasicItem {
         var wandItem = usingWand.getItem();
         if (!(
                 (wandItem instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainer)
-                && (wandItem instanceof IWandFocusEngine focusEngine)
+                && (wandItem instanceof IWandFocusEngineItem focusEngine)
         )){
             return false;
         }

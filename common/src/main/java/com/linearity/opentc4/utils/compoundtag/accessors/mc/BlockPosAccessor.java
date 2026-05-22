@@ -28,9 +28,9 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, BlockPos value) {
-        xAccessor.writeToCompoundTag(tag,value.getX());
-        yAccessor.writeToCompoundTag(tag,value.getY());
-        zAccessor.writeToCompoundTag(tag,value.getZ());
+        xAccessor.writeIntToCompoundTag(tag,value.getX());
+        yAccessor.writeIntToCompoundTag(tag,value.getY());
+        zAccessor.writeIntToCompoundTag(tag,value.getZ());
     }
 
     @Override

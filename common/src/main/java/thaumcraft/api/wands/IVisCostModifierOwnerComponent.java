@@ -5,7 +5,7 @@ import thaumcraft.api.aspects.Aspect;
 
 import java.util.Map;
 
-public interface IVisCostModifierOwner {
+public interface IVisCostModifierOwnerComponent {
     float getBaseCostModifier();
     @NotNull Map<Aspect,Float> getSpecialCostModifierAspects();
 }

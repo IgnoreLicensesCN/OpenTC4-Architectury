@@ -59,7 +59,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      return cost;
 //   }
 //
-//   public boolean isVisCostPerTick(ItemStack itemstack) {
+//   public boolean isCentiVisCostPerTick(ItemStack itemstack) {
 //      return true;
 //   }
 //

@@ -1,5 +1,6 @@
 package thaumcraft.api.wands;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
+@UtilityLikeAbstraction(reason = "it's harmful to write the same logic in every place but it's also not suitable to make it static")
 public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlockEntity, EntityBlock {
     @Override
     default @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
@@ -64,6 +66,7 @@ public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlo
         }
     }
 
+    //usually should be called when "setPlacedBy"
     default void setPlacedOwnedBlockBy(Level level, BlockPos pos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
 //        super.setPlacedBy(level, pos, blockState, livingEntity, itemStack);
         if (!level.isClientSide()) {

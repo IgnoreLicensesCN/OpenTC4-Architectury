@@ -45,7 +45,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //	public void addInformation(ItemStack stack,Player player, List list, boolean par4) {
 //		AspectList<Aspect>al = this.getCentiVisCost(stack);
 //		if (al!=null && al.size()>0) {
-//			list.add(Component.translatable(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
+//			list.add(Component.translatable(isCentiVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
 //			for (Aspect aspect:al.getAspectsSorted()) {
 //				DecimalFormat myFormatter = new DecimalFormat("#####.##");
 //				String amount = myFormatter.format(al.getAmount(aspect)/100f);
@@ -75,7 +75,7 @@ public class ItemFocusBasic /*extends Item*/ {
 //	/**
 //	 * Purely for display on the focus tooltip (see addInformation method above)
 //	 */
-//	public boolean isVisCostPerTick(ItemStack focusstack) {
+//	public boolean isCentiVisCostPerTick(ItemStack focusstack) {
 //		return false;
 //	}
 //

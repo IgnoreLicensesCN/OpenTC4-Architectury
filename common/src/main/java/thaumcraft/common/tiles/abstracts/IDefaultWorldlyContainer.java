@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.WorldlyContainer;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@UtilityLikeAbstraction(reason = "i'm lazy to copy-and-paste these methods.")
 public interface IDefaultWorldlyContainer extends WorldlyContainer {
     NonNullList<ItemStack> getInventory();
 

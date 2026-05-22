@@ -2,12 +2,10 @@ package thaumcraft.common.items.wands.wandcaps;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
-import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
-
-public class VoidWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwner<Aspect> {//itemWandCap:7
+public class VoidWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:7
     public VoidWandCapItem() {
         super(new Properties());
     }
@@ -18,7 +16,7 @@ public class VoidWandCapItem extends ThaumcraftWandCapItem implements ICraftingC
         return .8f;
     }
 
-    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCasted(9);
+    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(9);
     @Override
     public CentiVisList<Aspect> getCraftingCostCentiVis() {
         return cost;

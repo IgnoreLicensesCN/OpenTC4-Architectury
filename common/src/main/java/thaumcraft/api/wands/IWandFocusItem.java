@@ -25,7 +25,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
         if (wandStack.getItem() instanceof IWandComponentsOwnerItem componentsOwner) {
             for (ItemStack component: componentsOwner.getWandComponents(wandStack)) {
                 if (component.getItem() instanceof IWandUpgradeModifier modifier) {
-                    appliedUpgrades = modifier.modifyWandUpgrades(appliedUpgrades);
+                    appliedUpgrades = modifier.modifyWandUpgrades(component,appliedUpgrades);
                 }
             }
         }
@@ -75,33 +75,23 @@ public interface IWandFocusItem<Asp extends Aspect> {
         return out.toString();
     }
 
-    default boolean isVisCostPerTick() {
+    default boolean isCentiVisCostPerTick() {
         return false;
     }
 
     //you need to cooldown by yourself
-    default InteractionResultHolder<ItemStack> onFocusRightClick(ItemStack wandstack, ItemStack focusStack, Level world, Player player, InteractionHand interactionHand) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    default InteractionResultHolder<ItemStack> onFocusRightClick(ItemStack wandstack, ItemStack focusStack, Level world, Player player, InteractionHand interactionHand) {return InteractionResultHolder.pass(wandstack);}
 
     //you need to cooldown by yourself
-    default void onUsingFocusTick(ItemStack wandstack,ItemStack focusStack, LivingEntity user, int count) {
-		// TODO Auto-generated method stub
-	}
+    default void onUsingFocusTick(ItemStack wandstack,ItemStack focusStack, LivingEntity user, int count) {}
 
     //you need to cooldown by yourself
-    default void onPlayerStoppedUsingFocus(ItemStack wandstack,ItemStack focusStack, Level world, LivingEntity user, int count) {
-		// TODO Auto-generated method stub
-
-	}
+    default void onPlayerStoppedUsingFocus(ItemStack wandstack,ItemStack focusStack, Level world, LivingEntity user, int count) {}
 
     //you need to cooldown by yourself
 //    default boolean onFocusBlockStartBreak(ItemStack wandstack, int x, int y,int z, Player player) {
 //		// TODO Auto-generated method stub
 //		return false;
 //	}
-    default void onLeftClickBlock(ItemStack wandstack,ItemStack focusStack, Player player, InteractionHand interactionHand) {
-
-    }
+    default void onLeftClickBlock(ItemStack wandstack,ItemStack focusStack, Player player, InteractionHand interactionHand) {}
 }

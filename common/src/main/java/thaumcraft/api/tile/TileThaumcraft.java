@@ -1,5 +1,6 @@
 package thaumcraft.api.tile;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -16,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
  * the nbt data within readCustomNBT / writeCustomNBT will be sent to the client when the tile
  * updates. Apart from all the normal TE data that gets sent that is.
  */
-public class TileThaumcraft extends BlockEntity {
+@UtilityLikeAbstraction(reason = "of course it's azanor's idea")
+public abstract class TileThaumcraft extends BlockEntity {
     protected final BlockEntityType<?> type;
     public TileThaumcraft(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);

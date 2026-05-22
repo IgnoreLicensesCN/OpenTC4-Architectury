@@ -884,7 +884,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BucketItem> SUPPLIER_PURE_FLUID_BUCKET = ITEMS.register(
                 "pure_fluid_bucket",
                 () -> new BucketItem(
-                        ThaumcraftFluids.PURE_FLUID, new Item.Properties().craftRemainder(
+                        ThaumcraftFluids.PURE_FLUID_SOURCE, new Item.Properties().craftRemainder(
                         Items.BUCKET).stacksTo(1))
         );
 
@@ -900,9 +900,9 @@ public class ThaumcraftItems {
         //TODO:Tag for forge and fabric,im lazy to write tag json :(
         // maybe i need even several issue/PR to realize where(recipe or st.) i didn't notice this part.
         public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(
-                Registries.ITEM, new ResourceLocation("thaumcraft:tag_void_ingot"));
+                Registries.ITEM, new ResourceLocation("thaumcraft:void_ingot"));
         public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(
-                Registries.ITEM, new ResourceLocation("thaumcraft:tag_prime_pearl"));
+                Registries.ITEM, new ResourceLocation("thaumcraft:prime_pearl"));
 
         public static final TagKey<Item> SILVER_NUGGET_FORGE_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("forge:nuggets/silver"));
@@ -926,6 +926,8 @@ public class ThaumcraftItems {
                 Registries.ITEM, new ResourceLocation("forge:dyes/black"));
         public static final TagKey<Item> BLACK_DYE_FABRIC_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("c:black_dyes"));
+        public static final TagKey<Item> REPAIR_ENCHANTMENT_CAN_APPLY = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID,"repair_enchantment_can_apply"));
     }
 
     public static class BannerPatternTags{

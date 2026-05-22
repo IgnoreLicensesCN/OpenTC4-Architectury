@@ -20,6 +20,8 @@ import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
 import thaumcraft.common.tiles.node.*;
+import thaumcraft.common.tiles.technique.HoleBlockEntity;
+import thaumcraft.common.tiles.technique.WardedBlockEntity;
 
 public class ThaumcraftBlockEntities {
 
@@ -74,6 +76,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<ArcaneBoreBlockEntity> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
     public static final BlockEntityType<ArcaneEarBlockEntity> ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static final BlockEntityType<WardedBlockEntity> WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
+    public static final BlockEntityType<HoleBlockEntity> HOLE = Registry.SUPPLIER_HOLE.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -427,6 +430,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 WardedBlockEntity::new,
                                 ThaumcraftBlocks.WARDED_BLOCK
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<HoleBlockEntity>> SUPPLIER_HOLE =
+                BLOCK_ENTITIES.register(
+                        "hole",
+                        () -> BlockEntityType.Builder.of(
+                                HoleBlockEntity::new,
+                                ThaumcraftBlocks.HOLE
                         ).build(null)
                 );
 

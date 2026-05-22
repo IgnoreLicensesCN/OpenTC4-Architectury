@@ -21,8 +21,8 @@ public class UUIDTagAccessor extends CompoundTagAccessor<UUID> {
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, UUID value) {
-        mostPart.writeToCompoundTag(tag,value.getMostSignificantBits());
-        leastPart.writeToCompoundTag(tag,value.getLeastSignificantBits());
+        mostPart.writeLongToCompoundTag(tag,value.getMostSignificantBits());
+        leastPart.writeLongToCompoundTag(tag,value.getLeastSignificantBits());
     }
 
     @Override

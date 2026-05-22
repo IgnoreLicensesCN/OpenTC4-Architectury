@@ -43,9 +43,9 @@ public class WandCastingItem extends Item
         IWandCapOwnerItem,//usually there should be for a wand
         IWandRodOwnerItem,//usually there should be for a wand
         IEnchantmentRepairVisProviderItem,//if someone wants
-        IArcaneCraftingVisMultiplierProviderItem,//Staff should make this not work
+        IArcaneCraftingVisMultiplierProviderComponent,//Staff should make this not work
         IArcaneCraftingWandItem,//Staff should make this not work
-        IWandFocusEngine,//SceptreCastingItem should make this not work
+        IWandFocusEngineItem,//SceptreCastingItem should make this not work
         ICentiVisContainerItem<Aspect>,//i think this should be impl for every wand
         IWandComponentsOwnerItem,//anyone wants more than cap&rod?
         IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
@@ -140,7 +140,7 @@ public class WandCastingItem extends Item
         float result = 1.0F;
         var components = getWandComponents(usingWand);
         for (var component : components) {
-            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderItem provider) {
+            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponent provider) {
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
@@ -198,16 +198,28 @@ public class WandCastingItem extends Item
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
+    //costs high and maybe should be cached
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
         CentiVisList<Aspect> result = new CentiVisList<>();
         var components = getWandComponents(usingWand);
+        if (components.size() == 1){
+            var component = components.getFirst();
+            if (component.getItem() instanceof IAspectCapacityOwnerComponent<?> owner
+                    && owner.tryCastAspectClass(Aspect.class)
+            ) {
+                //less calc in many cases
+                return (CentiVisList<Aspect>) owner.getCentiVisCapacity();
+            }
+        }
         for (var component : components) {
-            if (component.getItem() instanceof IAspectCapacityOwner<?> owner && owner.tryCastAspectClass(
-                    Aspect.class)) {
+            if (component.getItem() instanceof IAspectCapacityOwnerComponent<?> owner
+                    && owner.tryCastAspectClass(Aspect.class)
+            ) {
                 owner.getCentiVisCapacity()
                         .forEach(
-                                (aspect, integer) -> result.merge(aspect, integer, Integer::sum));
+                                (aspect, integer) -> result.merge(aspect, integer, Integer::sum)
+                        );
             }
         }
         return result;

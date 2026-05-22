@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.aspects.UnmodifiableCentiVisList;
-import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwner;
+import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwnerItem;
 
-public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwner {
+public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwnerItem {
 
     public static final float SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER = 1.5f;
 

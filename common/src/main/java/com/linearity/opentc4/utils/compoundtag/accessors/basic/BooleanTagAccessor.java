@@ -30,6 +30,6 @@ public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
 
     @Override
     public boolean compoundTagHasKey(CompoundTag tag) {
-        return tag.contains(tagKey, Tag.TAG_BYTE); // boolean 实际存 byte
+        return tag.contains(tagKey, Tag.TAG_BYTE);
     }
 }

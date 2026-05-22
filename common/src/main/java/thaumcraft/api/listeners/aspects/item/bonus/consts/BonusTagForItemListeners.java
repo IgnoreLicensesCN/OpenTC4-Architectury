@@ -12,7 +12,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.IWandComponentsOwnerItem;
 
 import java.util.HashSet;
@@ -184,7 +184,7 @@ public enum BonusTagForItemListeners {
                 for (var component:componentsOwner.getWandComponents(itemstack)){
                     double craftingCostCentiVis = 0;
                     Set<Aspect> totalCraftingAspectTypes = new HashSet<>(6);
-                    if (component.getItem() instanceof ICraftingCostAspectOwner<? extends Aspect> craftingCostOwner){
+                    if (component.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> craftingCostOwner){
                         for (var entry:craftingCostOwner.getCraftingCostCentiVis().entrySet()){
                             totalCraftingAspectTypes.add(entry.getKey());
                             craftingCostCentiVis += entry.getValue();

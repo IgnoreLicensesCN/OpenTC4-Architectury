@@ -79,7 +79,7 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
     public void appendHoverText(ItemStack focusStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         AspectList<Aspect>al = this.getCentiVisCost(focusStack,null);
         if (al!=null && !al.isEmpty()) {
-            list.add(Component.translatable(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
+            list.add(Component.translatable(isCentiVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
             for (var aspect:al.getAspectsSorted()) {
                 DecimalFormat myFormatter = new DecimalFormat("#####.##");
                 String amount = myFormatter.format(al.getAmount(aspect)/100f);

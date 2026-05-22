@@ -28,7 +28,8 @@ import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeF
  * Repairs 1 point fromAspectVisList durability every 10 seconds (2 for repair II)
  */
 public interface IRepairable {
-	
+
+	//true if repaired
 	default boolean doRepair(ItemStack is, @Nullable Player player, int enchantlevel){
 		int level = enchantlevel + 1;
 		if (level > 0) {
@@ -43,10 +44,11 @@ public interface IRepairable {
 					} else {
 						is.setDamageValue(is.getDamageValue() - level);
 					}
+					return true;
 				}
 			}
 		}
-        return true;
+        return false;
 	};
 	Map<Item,CentiVisList<PrimalAspect>> repairCostCache = new ConcurrentHashMap<>();
 	@RecommendedLogicalSide(LogicalSide.SERVER)

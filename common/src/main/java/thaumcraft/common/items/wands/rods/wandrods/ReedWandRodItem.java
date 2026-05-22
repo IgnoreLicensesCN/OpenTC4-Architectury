@@ -4,26 +4,26 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
-public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwner<Aspect> {
+public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwnerComponent<Aspect> {
     public ReedWandRodItem() {
         super(new Properties(), getAspectsCentiVisListWithValue(Aspects.AIR,7 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCasted(75 * CENTIVIS_MULTIPLIER);
+    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(75 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
     public CentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 
-    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCasted(6 * CENTIVIS_MULTIPLIER);
+    private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(6 * CENTIVIS_MULTIPLIER);
     @Override
     @UnmodifiableView
     public CentiVisList<Aspect> getCraftingCostCentiVis() {

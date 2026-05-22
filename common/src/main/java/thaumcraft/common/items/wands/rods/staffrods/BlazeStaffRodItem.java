@@ -4,7 +4,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwner;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.WandUtils;
 import thaumcraft.api.wands.WorkAsStaffRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
@@ -14,7 +14,7 @@ import java.util.List;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getAspectsCentiVisListWithValue;
 
-public class BlazeStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwner<Aspect> {
+public class BlazeStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
     public BlazeStaffRodItem() {
         super(new Properties(), getAspectsCentiVisListWithValue(List.of(Aspects.FIRE),17 * CENTIVIS_MULTIPLIER));
     }

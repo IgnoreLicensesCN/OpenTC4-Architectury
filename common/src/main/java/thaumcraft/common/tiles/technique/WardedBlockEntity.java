@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.technique;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
 import static com.linearity.opentc4.Consts.WardedBlockTagAccessors.STORING_BLOCK_STATE;
 

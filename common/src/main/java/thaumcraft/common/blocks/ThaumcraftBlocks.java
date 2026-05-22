@@ -59,7 +59,6 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.WardedBlockEntity;
 import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
@@ -240,6 +239,7 @@ public class ThaumcraftBlocks {
     public static final DeathFluidBlock DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
     public static final PureFluidBlock PURE_FLUID = Registry.SUPPLIER_PURE_FLUID.get();
     public static final WardedBlock WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
+    public static final HoleBlock HOLE = Registry.SUPPLIER_HOLE_BLOCK.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -926,6 +926,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "warded_block",
                         WardedBlock::new
+                );
+        public static final RegistrySupplier<HoleBlock> SUPPLIER_HOLE_BLOCK =
+                BLOCKS.register(
+                        "hole",
+                        HoleBlock::new
                 );
         static {
             BLOCKS.register();

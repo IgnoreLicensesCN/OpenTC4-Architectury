@@ -24,7 +24,7 @@ public enum CalculateWandConsumptionListenerEnum {
         public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
             if ((casting instanceof IWandComponentsOwnerItem componentsOwner)) {
                 var cap = componentsOwner.getWandComponents(wandStack);
-                if (cap instanceof IVisCostModifierOwner visCostModifierOwner) {
+                if (cap instanceof IVisCostModifierOwnerComponent visCostModifierOwner) {
                     currentConsumption -= (1-visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier()));
                 }
             }
@@ -85,7 +85,7 @@ public enum CalculateWandConsumptionListenerEnum {
     FOCUS_DISCOUNT(new CalculateWandConsumptionListener(30) {
         @Override
         public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if (casting instanceof IWandFocusEngine focusEngine) {
+            if (casting instanceof IWandFocusEngineItem focusEngine) {
                 if (focusEngine.canApplyFocus()){
                     var focusStack = focusEngine.getFocusItemStack(wandStack);
                     if (focusStack != null && !crafting && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
@@ -99,7 +99,7 @@ public enum CalculateWandConsumptionListenerEnum {
     SCEPTRE(new CalculateWandConsumptionListener(40) {
         @Override
         public float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption) {
-            if (casting instanceof IArcaneCraftingVisDiscountOwner discountOwner) {
+            if (casting instanceof IArcaneCraftingVisDiscountOwnerItem discountOwner) {
                 currentConsumption -= discountOwner.getVisDiscount(wandStack);
             }
             return currentConsumption;
