@@ -16,7 +16,6 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeIn
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
-import net.minecraft.core.BlockPos;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;

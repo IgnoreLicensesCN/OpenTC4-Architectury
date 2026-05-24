@@ -12,10 +12,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import net.minecraft.util.Vec3;
-import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.BlockLoot;
+import thaumcraft.common.blocks.junkbox.BlockLoot;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AILongRangeAttack;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;

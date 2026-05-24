@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.crafted.essentia.jars;
 
-import com.linearity.opentc4.utils.LogicalSide;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -93,7 +92,7 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
     }
 
     @Override
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     public boolean fillAspectContainerItem(
             Level level,
             BlockPos blockPos,

@@ -80,7 +80,6 @@ public abstract class TileThaumcraft extends BlockEntity {
     public void clientAnimateTickByBlockHandle(){}
 
     public void setBlockStateAndUpdate(BlockState blockState) {
-
         if (this.level != null) {
             this.level.setBlockAndUpdate(getBlockPos(), blockState);
         }else {

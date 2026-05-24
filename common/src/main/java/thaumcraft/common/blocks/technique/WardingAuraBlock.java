@@ -37,7 +37,7 @@ public class WardingAuraBlock extends SuppressedWarningBlock {
 
     @Override
     public boolean isCollisionShapeFullBlock(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        return !getCollisionShape(blockState, blockGetter, blockPos, null).isEmpty();
+        return !getCollisionShape(blockState, blockGetter, blockPos, CollisionContext.empty()).isEmpty();
     }
 
     @Override

@@ -14,7 +14,7 @@ import thaumcraft.api.aspects.Aspect;
  * individual items really shouldn't have a discount more than 5%
  */
 public interface IVisDiscountGear {
-		
+	//add cost if positive and decrease post if negative
 	int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect);
 
 }

@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
-import com.linearity.opentc4.utils.LogicalSide;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -73,7 +72,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
     }
 
     @Override
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     public boolean fillAspectContainerItem(
             Level level,
             BlockPos blockPos,

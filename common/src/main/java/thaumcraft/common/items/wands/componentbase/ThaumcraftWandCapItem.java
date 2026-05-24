@@ -1,5 +1,7 @@
 package thaumcraft.common.items.wands.componentbase;
 
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
@@ -22,8 +24,8 @@ public abstract class ThaumcraftWandCapItem extends Item implements IWandCapProp
     }
 
     @Override
-    public @NotNull Map<Aspect,Float> getSpecialCostModifierAspects() {
-        return Collections.emptyMap();
+    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {
+        return Object2FloatMaps.emptyMap();
     }
 
 }

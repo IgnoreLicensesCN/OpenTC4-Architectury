@@ -1,6 +1,5 @@
 package com.linearity.opentc4.utils;
 
-import com.google.common.collect.MapMaker;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 //maybe not best GC but i hope it works enough in daily life
@@ -43,7 +43,8 @@ public class CubeChunkedWeakLookups<StoreItem> {
         var yKey = compressIntIntoChunk(pos.getY());
         itemsContaining.computeIfAbsent(xzKey, k -> new Int2ObjectOpenHashMap<>())
                         .computeIfAbsent(yKey, k -> Collections.newSetFromMap(
-                                new MapMaker().weakValues().makeMap())
+                                    new WeakHashMap<>()
+                                )
                         )
                                 .add(value);
     }
@@ -366,14 +367,15 @@ public class CubeChunkedWeakLookups<StoreItem> {
                 compressIntIntoChunk(z)
         );
         var yKey = compressIntIntoChunk(y);
-        var yMap = itemsContaining.get(xzKey);
+        var yMap = itemsContaining.computeIfPresent(
+                xzKey,
+                (k,map) -> map.isEmpty() ? null : map
+        );
         if (yMap == null) {
             return null;
         }
-        if (yMap.isEmpty()) {
-            itemsContaining.remove(xzKey);
-        }
-        var result = yMap.get(yKey);
+
+        var result = yMap.computeIfPresent(yKey, (k,collection) -> collection.isEmpty() ? null : collection);
         if (result != null && result.isEmpty()) {
             yMap.remove(yKey);
             if (yMap.isEmpty()) {

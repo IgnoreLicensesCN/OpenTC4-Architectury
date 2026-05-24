@@ -20,7 +20,6 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -28,19 +27,11 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.internal.WeightedRandomLootCollection;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.lib.network.fx.PacketFXVisDrainS2C;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class Utils {
@@ -409,153 +400,4 @@ public class Utils {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    public static ItemStack mutateGeneratedLoot(ItemStack stack) {
-        if (!ConfigurationHandler.INSTANCE.isMoreRandomizedLoot()) return stack;//.copy();
-        if (stack.getItem() == ConfigItems.itemAmuletVis) {
-            ItemAmuletVis ai = (ItemAmuletVis) stack.getItem();
-
-            for (Aspect a : Aspects.getPrimalAspects()) {
-                ai.storeVis(
-                        stack, a, ThreadLocalRandom.current()
-                                .nextInt(5) * 100
-                );
-            }
-        }
-        return stack;
-    }
-
-    //TODO:LootBag API
-    public static ItemStack generateLoot(int rarity, Random rand) {
-        ItemStack is = null;
-        if (rarity > 0 && rand.nextFloat() < 0.025F * (float) rarity) {
-            is = genGear(rarity, rand);
-//         if (is == null) {
-//            is = generateLoot(rarity, rand);
-//         }
-        } else {
-            AtomicReference<ItemStack> isRef = new AtomicReference<>();
-            switch (rarity) {
-                case 1 -> WeightedRandomLootCollection.lootBagUncommon.getRandom(RandomSource.create(rand.nextLong()))
-                        .ifPresent(itemStackWrapper -> isRef.set(itemStackWrapper.getData()));
-                case 2 -> WeightedRandomLootCollection.lootBagRare.getRandom(RandomSource.create(rand.nextLong()))
-                        .ifPresent(itemStackWrapper -> isRef.set(itemStackWrapper.getData()));
-                default -> WeightedRandomLootCollection.lootBagCommon.getRandom(RandomSource.create(rand.nextLong()))
-                        .ifPresent(itemStackWrapper -> isRef.set(itemStackWrapper.getData()));
-            }
-            is = isRef.get();
-        }
-        if (is == null) {
-            is = generateLoot(rarity, rand);
-        }
-
-        is = is.copy();
-        if (is.getItem() == Items.BOOK) {
-
-            EnchantmentHelper.enchantItem(
-                    RandomSource.create(rand.nextLong()),   // RandomSource 替代 Random
-                    is,
-                    (int) (5.0F + rarity * 0.75F * rand.nextInt(18)),
-                    false                    // allow treasure enchantments?
-            );
-//         EnchantmentHelper.addRandomEnchantment(rand, is, (int)(5.0F + (float)rarity * 0.75F * (float)rand.nextInt(18)));
-        }
-
-        return mutateGeneratedLoot(is);
-    }
-
-    private static ItemStack genGear(int rarity, Random rand) {
-        ItemStack is = null;
-        int quality = rand.nextInt(2);
-        if (rand.nextFloat() < 0.2F) {
-            ++quality;
-        }
-
-        if (rand.nextFloat() < 0.15F) {
-            ++quality;
-        }
-
-        if (rand.nextFloat() < 0.1F) {
-            ++quality;
-        }
-
-        if (rand.nextFloat() < 0.095F) {
-            ++quality;
-        }
-
-        if (rand.nextFloat() < 0.095F) {
-            ++quality;
-        }
-
-        Item item = getGearItemForSlot(rand.nextInt(5), quality);
-        if (item != null) {
-            is = new ItemStack(item);
-            is.setDamageValue(rand.nextInt(1 + item.getMaxDamage() / 6));
-            if (rand.nextInt(4) < rarity) {
-                EnchantmentHelper.enchantItem(
-                        RandomSource.create(rand.nextLong()),   // RandomSource 替代 Random
-                        is,
-                        (int) (5.0F + rarity * 0.75F * rand.nextInt(18)),
-                        false                    // allow treasure enchantments?
-                );
-//            EnchantmentHelper.addRandomEnchantment(rand, is, (int)(5.0F + (float)rarity * 0.75F * (float)rand.nextInt(18)));
-            }
-
-            return is.copy();
-        } else {
-            return null;
-        }
-    }
-
-    private static Item getGearItemForSlot(int slot, int quality) {
-        switch (slot) {
-            case 4: // 头盔
-                if (quality == 0) return Items.LEATHER_HELMET;
-                else if (quality == 1) return Items.GOLDEN_HELMET;
-                else if (quality == 2) return Items.CHAINMAIL_HELMET;
-                else if (quality == 3) return Items.IRON_HELMET;
-                else if (quality == 4) return ConfigItems.itemHelmetThaumium;
-                else if (quality == 5) return Items.DIAMOND_HELMET;
-                else if (quality == 6) return ConfigItems.itemHelmetVoid;
-                break;
-            case 3: // 胸甲
-                if (quality == 0) return Items.LEATHER_CHESTPLATE;
-                else if (quality == 1) return Items.GOLDEN_CHESTPLATE;
-                else if (quality == 2) return Items.CHAINMAIL_CHESTPLATE;
-                else if (quality == 3) return Items.IRON_CHESTPLATE;
-                else if (quality == 4) return ConfigItems.itemChestThaumium;
-                else if (quality == 5) return Items.DIAMOND_CHESTPLATE;
-                else if (quality == 6) return ConfigItems.itemChestVoid;
-                break;
-            case 2: // 护腿
-                if (quality == 0) return Items.LEATHER_LEGGINGS;
-                else if (quality == 1) return Items.GOLDEN_LEGGINGS;
-                else if (quality == 2) return Items.CHAINMAIL_LEGGINGS;
-                else if (quality == 3) return Items.IRON_LEGGINGS;
-                else if (quality == 4) return ConfigItems.itemLegsThaumium;
-                else if (quality == 5) return Items.DIAMOND_LEGGINGS;
-                else if (quality == 6) return ConfigItems.itemLegsVoid;
-                break;
-            case 1: // 靴子
-                if (quality == 0) return Items.LEATHER_BOOTS;
-                else if (quality == 1) return Items.GOLDEN_BOOTS;
-                else if (quality == 2) return Items.CHAINMAIL_BOOTS;
-                else if (quality == 3) return Items.IRON_BOOTS;
-                else if (quality == 4) return ConfigItems.itemBootsThaumium;
-                else if (quality == 5) return Items.DIAMOND_BOOTS;
-                else if (quality == 6) return ConfigItems.itemBootsVoid;
-                break;
-            case 0: // 武器
-                if (quality == 0) return Items.IRON_AXE;
-                else if (quality == 1) return Items.IRON_SWORD;
-                else if (quality == 2) return Items.GOLDEN_AXE;
-                else if (quality == 3) return Items.GOLDEN_SWORD;
-                else if (quality == 4) return ConfigItems.itemSwordThaumium;
-                else if (quality == 5) return Items.DIAMOND_SWORD;
-                else if (quality == 6) return ConfigItems.itemSwordVoid;
-                break;
-            default:
-                return null;
-        }
-        return null;
-    }
 }

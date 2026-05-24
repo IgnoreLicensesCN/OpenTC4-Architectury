@@ -30,6 +30,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_BRAIN = new ResourceLocation(Thaumcraft.MOD_ID,"brain");
         public static final ResourceLocation RES_CREAK = new ResourceLocation(Thaumcraft.MOD_ID,"creak");
         public static final ResourceLocation RES_SQUEEK = new ResourceLocation(Thaumcraft.MOD_ID,"squeek");
+        public static final ResourceLocation RES_URN_BREAK = new ResourceLocation(Thaumcraft.MOD_ID,"urnbreak");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -57,4 +58,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent BRAIN = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_BRAIN);
     public static final SoundEvent CREAK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CREAK);
     public static final SoundEvent SQUEEK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SQUEEK);
+    public static final SoundEvent URN_BREAK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_URN_BREAK);
 }

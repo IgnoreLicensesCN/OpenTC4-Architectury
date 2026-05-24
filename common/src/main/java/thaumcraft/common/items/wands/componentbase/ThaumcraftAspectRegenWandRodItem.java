@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.componentbase;
 
+import com.linearity.opentc4.simpleutils.ObjectIntPair;
 import com.linearity.opentc4.simpleutils.SimplePair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +11,7 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.IInventoryTickableComponentItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +21,12 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
     public ThaumcraftAspectRegenWandRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {
         super(properties);
         this.canRegenCentiVisAndValue = canRegenCentiVisAndValue;
-        this.canRegenCentiVisAndValueAsList = canRegenCentiVisAndValue.entrySet().stream().map(e -> new SimplePair<>(e.getKey(), e.getValue())).toList();
+        List<ObjectIntPair<Aspect>> canRegenList = new ArrayList<>(canRegenCentiVisAndValue.size());
+        canRegenCentiVisAndValue.forEach(((aspect, value) -> canRegenList.add(new ObjectIntPair<>(aspect, value))));
+        this.canRegenCentiVisAndValueAsList = canRegenList;
     }
     protected final CentiVisList<Aspect> canRegenCentiVisAndValue;
-    protected final List<SimplePair<Aspect, Integer>> canRegenCentiVisAndValueAsList;
+    protected final List<ObjectIntPair<Aspect>> canRegenCentiVisAndValueAsList;
 
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
@@ -31,16 +35,17 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
             var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
             if (owner.tickCount % 200 == 0){
                 var owningVis = container.getAllCentiVisOwning(usingWand);
-                for (Map.Entry<Aspect,Integer> entry: canRegenCentiVisAndValue.entrySet()) {
-                    var owningAspectValue = owningVis.getOrDefault(entry.getKey(),0);
-                    var upperBound = entry.getValue();
-                    if (owningAspectValue < upperBound) {
-                        owningVis.merge(entry.getKey(),
-                                CENTIVIS_MULTIPLIER,
-                                (oldValue, newValue) ->
-                                Math.min(oldValue + newValue, upperBound));
-                    }
-                }
+                canRegenCentiVisAndValue.forEach(
+                        ((aspect, upperBound) -> {
+                            var owningAspectValue = owningVis.getOrDefault(aspect,0);
+                            if (owningAspectValue < upperBound) {
+                                owningVis.merge(aspect,
+                                        CENTIVIS_MULTIPLIER,
+                                        (oldValue, newValue) ->
+                                                Math.min(oldValue + newValue, upperBound));
+                            }
+                        })
+                );
                 container.storeCentiVisOwning(usingWand, owningVis);
             }
         }

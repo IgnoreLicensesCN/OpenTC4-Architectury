@@ -14,7 +14,8 @@ import java.util.List;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getAspectsCentiVisListWithValue;
 
-public class BlazeStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
+public class BlazeStaffRodItem extends ThaumcraftAspectRegenWandRodItem
+        implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
     public BlazeStaffRodItem() {
         super(new Properties(), getAspectsCentiVisListWithValue(List.of(Aspects.FIRE),17 * CENTIVIS_MULTIPLIER));
     }

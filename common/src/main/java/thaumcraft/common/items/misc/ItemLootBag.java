@@ -11,9 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.utils.Utils;
+import thaumcraft.common.blocks.crafted.loot.AbstractLootBlock;
 
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class ItemLootBag extends Item {
          int q = 8 + world.getRandom().nextInt(5);
 
          for(int a = 0; a < q; ++a) {
-            ItemStack is = Utils.generateLoot(stack.getItemDamage(), world.getRandom());
+            ItemStack is = AbstractLootBlock.generateLoot(stack.getItemDamage(), world.getRandom());
             world.spawnEntityInWorld(new EntityItem(world, player.posX, player.posY, player.posZ, is.copy()));
          }
 

@@ -3,7 +3,6 @@ package thaumcraft.common.tiles.crafted;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.mixinaccessors.ArcaneBoreBlockEntityClientAccessor;
-import com.linearity.opentc4.utils.LogicalSide;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -476,7 +475,7 @@ public class ArcaneBoreBlockEntity
             }
         }
     }
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     private void doRepair(ItemStack is) {
         int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
         if (enchantmentRepairLevel > 0) {

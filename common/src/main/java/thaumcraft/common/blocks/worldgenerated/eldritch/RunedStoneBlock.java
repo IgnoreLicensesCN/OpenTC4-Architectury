@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.eldritch;
+package thaumcraft.common.blocks.worldgenerated.eldritch;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -22,8 +22,8 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.eldritch.RunedStoneBlockEntity;
 
 public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock {
     public static final IntProvider RUNED_STONE_EXP_DROP = UniformInt.of(1,4);

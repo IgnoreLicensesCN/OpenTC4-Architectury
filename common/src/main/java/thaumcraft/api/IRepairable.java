@@ -1,7 +1,6 @@
 package thaumcraft.api;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.utils.LogicalSide;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -51,13 +50,13 @@ public interface IRepairable {
         return false;
 	};
 	Map<Item,CentiVisList<PrimalAspect>> repairCostCache = new ConcurrentHashMap<>();
-	@RecommendedLogicalSide(LogicalSide.SERVER)
+	@RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
 	@UnmodifiableView
 	@NotNull
 	default CentiVisList<PrimalAspect> getRepairCost(ItemStack is,int repairLevel){
 		return getRepairCostDefault(is,repairLevel);
 	}
-	@RecommendedLogicalSide(LogicalSide.SERVER)
+	@RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
 	@UnmodifiableView
 	@NotNull
 	static CentiVisList<PrimalAspect> getRepairCostDefault(ItemStack is,int repairLevel){

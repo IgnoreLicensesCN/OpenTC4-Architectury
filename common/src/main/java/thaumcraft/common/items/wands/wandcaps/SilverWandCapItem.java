@@ -1,5 +1,7 @@
 package thaumcraft.common.items.wands.wandcaps;
 
+import com.linearity.opentc4.simpleutils.UnmodifiableAspectFloatEntry;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
@@ -8,6 +10,8 @@ import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
 import java.util.Map;
+
+import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
 public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:4
     public SilverWandCapItem() {
@@ -20,14 +24,14 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
         return 1f;
     }
 
-    private final Map<Aspect,Float> specialCostModifierAspects = Map.of(
-            Aspects.AIR,.95f,
-            Aspects.EARTH,.95f,
-            Aspects.FIRE,.95f,
-            Aspects.WATER,.95f
+    private final Object2FloatMap<Aspect> specialCostModifierAspects = Object2FloatMap.ofEntries(
+            new UnmodifiableAspectFloatEntry<>(Aspects.AIR,.95f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.EARTH,.95f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.FIRE,.95f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.95f)
     );
     @Override
-    public @NotNull Map<Aspect,Float> getSpecialCostModifierAspects() {
+    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {
         return specialCostModifierAspects;
     }
 

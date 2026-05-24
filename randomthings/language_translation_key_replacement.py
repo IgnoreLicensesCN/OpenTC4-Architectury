@@ -78,6 +78,8 @@ block_with_item_names = [
     ['tile.blockWoodenDevice.1.name', 'arcane_ear'],
     ['tile.blockFluidDeath.name', 'death_fluid'],
     ['tile.blockHole.name','hole'],
+    ['tile.blockLootUrn.name','urn_loot'],
+    ['tile.blockLootCrate.name','crate_loot']
 ]
 
 force_add_keys = {

@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.wandconsumption;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,13 +20,21 @@ public class ConsumptionModifierCalculator {
     }
 
     /**
-     * {@link CalculateWandConsumptionListener#onCalculation(Item, ItemStack, LivingEntity, Aspect, boolean, float)}
+     * {@link CalculateWandConsumptionListener#onCalculation}
      */
     public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting) {
-        float consumptionModifier = 1.0F;
+        var context = new ConsumptionModifierCalculationContext(casting,wandStack,user,aspect,crafting,null);
         for (CalculateWandConsumptionListener listener : calculateWandConsumptionListenerManager.getListeners()) {
-            consumptionModifier = listener.onCalculation(casting,wandStack,user,aspect,crafting,consumptionModifier);
+            listener.onCalculation(context);
         }
-        return consumptionModifier;
+        return context.currentConsumption;
+    }
+    //maybe ThaumicEnergistics will back and add their own modifier
+    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable BlockPos pos, Aspect aspect, boolean crafting) {
+        var context = new ConsumptionModifierCalculationContext(casting,wandStack,null,aspect,crafting,pos);
+        for (CalculateWandConsumptionListener listener : calculateWandConsumptionListenerManager.getListeners()) {
+            listener.onCalculation(context);
+        }
+        return context.currentConsumption;
     }
 }

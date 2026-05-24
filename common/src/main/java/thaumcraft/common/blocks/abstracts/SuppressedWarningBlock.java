@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -35,6 +36,7 @@ import java.util.List;
 
 //guys i really have mental illness(anxiety disorder and depression due to fucking CN(rev.) education)
 //so @SuppressWarnings("deprecation") here
+@UtilityLikeAbstraction(reason = "hate for yellow lines")
 public class SuppressedWarningBlock extends Block {
     public SuppressedWarningBlock(Properties properties) {
         super(properties);

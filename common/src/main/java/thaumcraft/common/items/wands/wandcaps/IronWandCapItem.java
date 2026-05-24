@@ -6,6 +6,8 @@ import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
+import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
+
 public class IronWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect>, INodeHarmfulComponent {//itemWandCap:0
     public IronWandCapItem() {
         super(new Properties());

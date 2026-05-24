@@ -500,6 +500,7 @@ public class Config {
     }
 
     public static void initLoot() {
+        //TODO:Migrate
         Random rand = new Random(System.currentTimeMillis());
         ItemStack amulet = new ItemStack(ConfigItems.itemAmuletVis, 1, 0);
         ItemAmuletVis ai = (ItemAmuletVis) amulet.getItem();
@@ -509,8 +510,8 @@ public class Config {
         }
 
         ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.GOLD_COIN), 2500, 0);
-        ThaumcraftApi.addLootBagItem(new ItemStack(Items.diamond), 10, 0);
-        ThaumcraftApi.addLootBagItem(new ItemStack(Items.emerald), 15, 0);
+        ThaumcraftApi.addLootBagItem(new ItemStack(Items.DIAMOND), 10, 0);
+        ThaumcraftApi.addLootBagItem(new ItemStack(Items.EMERALD), 15, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), 10, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), 10, 0);
         ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), 10, 0);
@@ -519,8 +520,8 @@ public class Config {
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.nether_star), 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.GOLD_COIN, 3), 2000, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.PRIME_PEARL), 1, 2);
-        ThaumcraftApi.addLootBagItem(new ItemStack(Items.diamond), 50, 1, 2);
-        ThaumcraftApi.addLootBagItem(new ItemStack(Items.emerald), 75, 1, 2);
+        ThaumcraftApi.addLootBagItem(new ItemStack(Items.DIAMOND), 50, 1, 2);
+        ThaumcraftApi.addLootBagItem(new ItemStack(Items.EMERALD), 75, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), 25, 0, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.gold_ingot), 100, 0, 1, 2);
         ThaumcraftApi.addLootBagItem(new ItemStack(Items.ender_pearl), 100, 0, 1, 2);

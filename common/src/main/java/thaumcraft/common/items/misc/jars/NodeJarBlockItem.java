@@ -1,7 +1,6 @@
 package thaumcraft.common.items.misc.jars;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.utils.LogicalSide;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.world.item.BlockItem;
@@ -27,7 +26,7 @@ public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<As
     public NodeJarBlockItem() {
         this(ThaumcraftBlocks.NODE_JAR, new Properties().stacksTo(1));
     }
-    @RecommendedLogicalSide(LogicalSide.CLIENT)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
     public static final Map<ItemStack,NodeInfo> stackToNodeInfoForDisplay = new WeakHashMap<>();
     public NodeInfo getNodeInfo(ItemStack stack) {
         if (stack.isEmpty()) {

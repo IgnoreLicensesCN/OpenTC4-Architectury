@@ -4,6 +4,7 @@ import com.linearity.opentc4.simpleutils.SimplePair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,8 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
-import thaumcraft.api.internal.WeightedRandomLootCollection;
-import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
+import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.api.research.*;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
@@ -22,8 +22,7 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.linearity.opentc4.OpenTC4.platformUtils;
+import java.util.function.Function;
 
 
 /**<p>
@@ -479,8 +478,8 @@ public class ThaumcraftApi {
         @Override
         public boolean equals(Object o) {
 
-            if (!(o instanceof ResearchKeyAndPage that)) return false;
-            return page == that.page && Objects.equals(research, that.research);
+            if (!(o instanceof ResearchKeyAndPage(String research1, int page1))) return false;
+            return page == page1 && Objects.equals(research, research1);
         }
 
         @Override
@@ -489,6 +488,8 @@ public class ThaumcraftApi {
         }
     }
 
+    //TODO:Use XML to define how to redirect itemStack to research page
+    @Deprecated(forRemoval = true)
     public static ResearchKeyAndPage getCraftingRecipeKey(Player player, ItemStack stack) {
         SimplePair<Item, Integer> key = new SimplePair<>(stack.getItem(), stack.getDamageValue());
         if (keyCache.containsKey(key)) {
@@ -507,7 +508,7 @@ public class ThaumcraftApi {
                         for (CrucibleRecipe cr : crs) {
                             if (cr.matchViaOutput(stack)) {
                                 keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                                if (ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), ri.key))
+                                if (ri.isPlayerCompletedResearch(player))
                                     return new ResearchKeyAndPage(ri.key, a);
                             }
                         }
@@ -516,7 +517,7 @@ public class ThaumcraftApi {
                             && Objects.equals(page.recipeOutput.getItem(), stack.getItem())
                     ) {
                         keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                        if (ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), ri.key))
+                        if (ri.isPlayerCompletedResearch(player))
                             return new ResearchKeyAndPage(ri.key, a);
                         else
                             return null;
@@ -646,21 +647,21 @@ public class ThaumcraftApi {
      * @param bagTypes array fromAspectVisList which type fromAspectVisList bag to add this loot to. Multiple types can be specified
      *                 0 = common, 1 = uncommon, 2 = rare
      */
-    //TODO:More LootBag
-    public static void addLootBagItem(ItemStack item, int weight, int... bagTypes) {
+    @Deprecated(forRemoval = true,since = "add directly to lootBagCommon/lootBagUncommon/lootBagRare")
+    public static void addLootBagItem(Function<RandomSource,ItemStack> item, int weight, int... bagTypes) {
         if (bagTypes == null || bagTypes.length == 0)
-            WeightedRandomLootCollection.lootBagCommon.add(new WeightedRandomLootCollection.WeightedRandomLoot(item, weight));
+            WeightedRandomCollection.lootBagCommon.add(item, weight);
         else {
             for (int rarity : bagTypes) {
                 switch (rarity) {
                     case 0:
-                        WeightedRandomLootCollection.lootBagCommon.add(new WeightedRandomLootCollection.WeightedRandomLoot(item, weight));
+                        WeightedRandomCollection.lootBagCommon.add(item, weight);
                         break;
                     case 1:
-                        WeightedRandomLootCollection.lootBagUncommon.add(new WeightedRandomLootCollection.WeightedRandomLoot(item, weight));
+                        WeightedRandomCollection.lootBagUncommon.add(item, weight);
                         break;
                     case 2:
-                        WeightedRandomLootCollection.lootBagRare.add(new WeightedRandomLootCollection.WeightedRandomLoot(item, weight));
+                        WeightedRandomCollection.lootBagRare.add(item, weight);
                         break;
                 }
             }

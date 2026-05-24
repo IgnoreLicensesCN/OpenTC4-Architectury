@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.abstracts;
 
-import com.linearity.opentc4.utils.LogicalSide;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +18,7 @@ public interface IAspectLabelAttachableBlock {
     //which can be switched by using sneak and mouse-scrolling.
     //so we can stick lots of label in a bag to avoid lots labels in inventory.
     //@return boolean--should consume label(just recommend to consume you can also not to do so)
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     default boolean attemptAttachAspectLabel(Level level, BlockPos pos, BlockState state, Aspect labelAspect){
         if (level.getBlockEntity(pos) instanceof IAspectFilterAccessibleBlockEntity aspectFilterAccessible) {
             return aspectFilterAccessible.setAspectFilter(labelAspect);
@@ -27,7 +26,7 @@ public interface IAspectLabelAttachableBlock {
         return false;
     };
     //@return removed existing label
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     default boolean attemptRemoveAspectLabel(Level level, BlockPos pos, BlockState state){
         if (level.getBlockEntity(pos) instanceof IAspectFilterAccessibleBlockEntity accessible && !accessible.getAspectFilter().isEmpty()) {
             if (accessible.setAspectFilter(Aspects.EMPTY)) {

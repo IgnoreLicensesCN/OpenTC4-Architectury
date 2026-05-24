@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;
 
 public abstract class CalculateWandConsumptionListener implements Comparable<CalculateWandConsumptionListener> {
     public final int priority;
@@ -13,17 +14,7 @@ public abstract class CalculateWandConsumptionListener implements Comparable<Cal
         this.priority = priority;
     }
 
-    /**
-     * after all fromAspectVisList these listeners,we have the percent fromAspectVisList cost.
-     * @param casting the casting using.may not be WandCastingItem
-     * @param wandStack itemstack fromAspectVisList the wand
-     * @param user the user using wand.
-     * @param aspect the aspect costing.each (primal aspect) will be calculated separately.
-     * @param crafting if this operation is crafting item.
-     * @param currentConsumption current consumption percent fromAspectVisList this operation.
-     * @return consumption percent after this calculation
-     */
-    public abstract float onCalculation(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting, float currentConsumption);
+    public abstract void onCalculation(ConsumptionModifierCalculationContext context);
 
     @Override
     public int compareTo(@NotNull CalculateWandConsumptionListener o) {

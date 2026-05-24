@@ -16,50 +16,31 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.blocks.crafted.*;
-import thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock;
-import thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock;
+import thaumcraft.common.blocks.crafted.arcanebore.*;
 import thaumcraft.common.blocks.crafted.essentia.*;
 import thaumcraft.common.blocks.crafted.essentia.pipes.*;
-import thaumcraft.common.blocks.crafted.fromtable.ArcaneWorkbenchBlock;
-import thaumcraft.common.blocks.crafted.fromtable.ResearchTableLeftPartBlock;
-import thaumcraft.common.blocks.crafted.fromtable.ResearchTableRightPartBlock;
-import thaumcraft.common.blocks.crafted.fromtable.TableBlock;
-import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
-import thaumcraft.common.blocks.crafted.essentia.jars.VoidJarBlock;
-import thaumcraft.common.blocks.crafted.jars.BrainJarBlock;
-import thaumcraft.common.blocks.crafted.jars.NodeJarBlock;
-import thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock;
-import thaumcraft.common.blocks.crafted.lamps.FertilityArcaneLampBlock;
-import thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock;
-import thaumcraft.common.blocks.crafted.noderelated.AdvancedNodeStabilizerBlock;
-import thaumcraft.common.blocks.crafted.noderelated.NodeStabilizerBlock;
-import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
-import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetChargeRelayBlock;
-import thaumcraft.common.blocks.crafted.ownedblock.ArcaneDoorBlock;
-import thaumcraft.common.blocks.crafted.ownedblock.ArcanePressurePlateBlock;
-import thaumcraft.common.blocks.crafted.ownedblock.WardedGlassBlock;
-import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneTravelBlock;
-import thaumcraft.common.blocks.crafted.pavingstone.PavingStoneWardingBlock;
-import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
-import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
-import thaumcraft.common.blocks.crafted.essentia.thaumatorium.MnemonicMatrixBlock;
-import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock;
-import thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumTopBlock;
+import thaumcraft.common.blocks.crafted.fromtable.*;
+import thaumcraft.common.blocks.crafted.essentia.jars.*;
+import thaumcraft.common.blocks.crafted.jars.*;
+import thaumcraft.common.blocks.crafted.lamps.*;
+import thaumcraft.common.blocks.crafted.loot.*;
+import thaumcraft.common.blocks.crafted.noderelated.*;
+import thaumcraft.common.blocks.crafted.ownedblock.*;
+import thaumcraft.common.blocks.crafted.pavingstone.*;
+import thaumcraft.common.blocks.crafted.noderelated.visnet.*;
+import thaumcraft.common.blocks.crafted.essentia.thaumatorium.*;
 import thaumcraft.common.blocks.liquid.*;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.*;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
 import thaumcraft.common.blocks.technique.*;
 import thaumcraft.common.blocks.worldgenerated.*;
-import thaumcraft.common.blocks.worldgenerated.decorations.CinderPearlBlock;
-import thaumcraft.common.blocks.worldgenerated.decorations.ManaShroomBlock;
-import thaumcraft.common.blocks.worldgenerated.decorations.ShimmerLeafBlock;
+import thaumcraft.common.blocks.worldgenerated.decorations.*;
 import thaumcraft.common.blocks.worldgenerated.eldritch.*;
 import thaumcraft.common.blocks.worldgenerated.ores.*;
 import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.eldritch.RunedStoneBlock;
 
 public class ThaumcraftBlocks {
     public static final FluxGooBlock FLUX_GOO = Registry.SUPPLIER_FLUX_GOO.get();
@@ -240,6 +221,8 @@ public class ThaumcraftBlocks {
     public static final PureFluidBlock PURE_FLUID = Registry.SUPPLIER_PURE_FLUID.get();
     public static final WardedBlock WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
     public static final HoleBlock HOLE = Registry.SUPPLIER_HOLE_BLOCK.get();
+    public static final UrnLootBlock URN_LOOT = Registry.SUPPLIER_URN_LOOT.get();
+    public static final CrateLootBlock CRATE_LOOT = Registry.SUPPLIER_CRATE_LOOT.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -931,6 +914,16 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "hole",
                         HoleBlock::new
+                );
+        public static final RegistrySupplier<UrnLootBlock> SUPPLIER_URN_LOOT =
+                BLOCKS.register(
+                        "urn_loot",
+                        UrnLootBlock::new
+                );
+        public static final RegistrySupplier<CrateLootBlock> SUPPLIER_CRATE_LOOT =
+                BLOCKS.register(
+                        "crate_loot",
+                        CrateLootBlock::new
                 );
         static {
             BLOCKS.register();

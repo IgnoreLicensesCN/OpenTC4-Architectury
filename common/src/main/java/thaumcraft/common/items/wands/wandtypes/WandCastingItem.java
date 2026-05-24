@@ -25,10 +25,7 @@ import thaumcraft.api.aspects.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.WandManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
@@ -43,10 +40,11 @@ public class WandCastingItem extends Item
         IWandCapOwnerItem,//usually there should be for a wand
         IWandRodOwnerItem,//usually there should be for a wand
         IEnchantmentRepairVisProviderItem,//if someone wants
-        IArcaneCraftingVisMultiplierProviderComponent,//Staff should make this not work
+        IArcaneCraftingVisMultiplierProvider,//Staff should make this not work
+        IVisCostModifierOwnerItem,
         IArcaneCraftingWandItem,//Staff should make this not work
         IWandFocusEngineItem,//SceptreCastingItem should make this not work
-        ICentiVisContainerItem<Aspect>,//i think this should be impl for every wand
+        ICentiVisContainerItem<Aspect>,//i think this should be impl for every wand--stores centiVis
         IWandComponentsOwnerItem,//anyone wants more than cap&rod?
         IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
         IAttackBlockListenerItem,//maybe some focus would use in some cases
@@ -144,7 +142,6 @@ public class WandCastingItem extends Item
                 result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
         }
-
         return result;
     }
 
@@ -198,29 +195,31 @@ public class WandCastingItem extends Item
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
+    private static final Map<ItemStack,CentiVisList<Aspect>> calculatedCacheForImmutable = new WeakHashMap<>();
     //costs high and maybe should be cached
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        CentiVisList<Aspect> result = new CentiVisList<>();
-        var components = getWandComponents(usingWand);
-        if (components.size() == 1){
-            var component = components.getFirst();
-            if (component.getItem() instanceof IAspectCapacityOwnerComponent<?> owner
-                    && owner.tryCastAspectClass(Aspect.class)
-            ) {
-                //less calc in many cases
-                return (CentiVisList<Aspect>) owner.getCentiVisCapacity();
-            }
+        CentiVisList<Aspect> cached = calculatedCacheForImmutable.get(usingWand);
+        if (cached != null) {
+            return cached;
         }
+        var result = new CentiVisList<>();
+        var components = getWandComponents(usingWand);
+        boolean canCache = true;
         for (var component : components) {
-            if (component.getItem() instanceof IAspectCapacityOwnerComponent<?> owner
-                    && owner.tryCastAspectClass(Aspect.class)
-            ) {
+            var componentItem = component.getItem();
+            if (componentItem instanceof IAspectCapacityOwnerComponent<? extends Aspect> owner) {
                 owner.getCentiVisCapacity()
                         .forEach(
-                                (aspect, integer) -> result.merge(aspect, integer, Integer::sum)
+                                result::addAll
                         );
             }
+            if (!(componentItem instanceof IImmutableAspectCapacityOwnerComponent<? extends Aspect>)) {
+                canCache = false;
+            }
+        }
+        if (canCache) {
+            calculatedCacheForImmutable.put(usingWand, result);
         }
         return result;
     }
@@ -433,4 +432,12 @@ public class WandCastingItem extends Item
         return UseAnim.BOW;
     }
 
+    @Override
+    public float getCostDiscountForAspect(ItemStack wandStack, Aspect aspect) {
+        var cap = getWandComponents(wandStack);
+        if (cap instanceof IVisCostModifierOwnerComponent visCostModifierOwner) {
+            return visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier());
+        }
+        return 0;
+    }
 }

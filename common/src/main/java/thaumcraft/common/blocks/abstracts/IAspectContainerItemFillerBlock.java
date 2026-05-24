@@ -1,6 +1,5 @@
 package thaumcraft.common.blocks.abstracts;
 
-import com.linearity.opentc4.utils.LogicalSide;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +20,7 @@ public interface IAspectContainerItemFillerBlock<Asp extends Aspect> {
             @NotNull("empty -> any") Asp aspect
     );
     //usually called when jar right-click block with this(maybe golem will also call this one day):
-    @RecommendedLogicalSide(LogicalSide.SERVER)
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     boolean fillAspectContainerItem(
             Level level,
             BlockPos blockPos,
