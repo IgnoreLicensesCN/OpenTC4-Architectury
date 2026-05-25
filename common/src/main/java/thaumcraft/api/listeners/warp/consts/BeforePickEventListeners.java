@@ -12,10 +12,12 @@ public class BeforePickEventListeners {
     public static final PickWarpEventListenerBefore THAUMIC_FORTRESS_MASK_DISCOUNT = new PickWarpEventListenerBefore(0) {
         @Override
         public void beforePickEvent(PickWarpEventContext e, Player player) {
-            ItemStack helm = player.getItemBySlot(EquipmentSlot.HEAD);
+            var helm = player.getItemBySlot(EquipmentSlot.HEAD);
             //TODO:ItemFortressArmor Mask interfaces. "mask" with integer makes chaos.
-            if (helm.getItem() instanceof ItemFortressArmor fortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey(
-                    "mask") && helm.stackTagCompound.getInteger("mask") == 0) {
+            if (helm.getItem() instanceof ItemFortressArmor fortressArmor
+                    && helm.hasTag()
+                    && helm.stackTagCompound.hasKey("mask")
+                    && helm.stackTagCompound.getInteger("mask") == 0) {
 
                 e.warp -=  2 + player.getRandom().nextInt(4);
             }

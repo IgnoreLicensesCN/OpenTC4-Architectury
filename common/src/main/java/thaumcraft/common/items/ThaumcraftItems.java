@@ -5,9 +5,13 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
@@ -30,6 +34,9 @@ import thaumcraft.common.items.wands.wandcaps.*;
 import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
 import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
+
+import static thaumcraft.common.items.ThaumcraftItems.ItemTags.THAUMIUM_INGOT_TAG;
+import static thaumcraft.common.items.ThaumcraftItems.ItemTags.VOID_INGOT_TAG;
 
 public class ThaumcraftItems {
 
@@ -246,6 +253,15 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static final BucketItem DEATH_FLUID_BUCKET = Registry.SUPPLIER_DEATH_FLUID_BUCKET.get();
     public static final BucketItem PURE_FLUID_BUCKET = Registry.SUPPLIER_PURE_FLUID_BUCKET.get();
+    public static final ArmorItem THAUMIUM_HELMET = Registry.SUPPLIER_THAUMIUM_HELMET.get();
+    public static final ArmorItem THAUMIUM_CHESTPLATE = Registry.SUPPLIER_THAUMIUM_CHESTPLATE.get();
+    public static final ArmorItem THAUMIUM_LEGGINGS = Registry.SUPPLIER_THAUMIUM_LEGGINGS.get();
+    public static final ArmorItem THAUMIUM_BOOTS = Registry.SUPPLIER_THAUMIUM_BOOTS.get();
+    public static final ArmorItem VOID_HELMET = Registry.SUPPLIER_VOID_HELMET.get();
+    public static final ArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
+    public static final ArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
+    public static final ArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
+
 
     //===========================================================================================
 
@@ -887,6 +903,72 @@ public class ThaumcraftItems {
                         ThaumcraftFluids.PURE_FLUID_SOURCE, new Item.Properties().craftRemainder(
                         Items.BUCKET).stacksTo(1))
         );
+        //TODO:Repair enchantable
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_HELMET = ITEMS.register(
+                "thaumium_helmet",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.THAUMIUM,
+                        ArmorItem.Type.HELMET,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_CHESTPLATE = ITEMS.register(
+                "thaumium_chestplate",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.THAUMIUM,
+                        ArmorItem.Type.CHESTPLATE,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_LEGGINGS = ITEMS.register(
+                "thaumium_leggings",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.THAUMIUM,
+                        ArmorItem.Type.LEGGINGS,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_BOOTS = ITEMS.register(
+                "thaumium_boots",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.THAUMIUM,
+                        ArmorItem.Type.BOOTS,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        //TODO:Warp
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_HELMET = ITEMS.register(
+                "void_helmet",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.VOID,
+                        ArmorItem.Type.HELMET,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_CHESTPLATE = ITEMS.register(
+                "void_chestplate",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.VOID,
+                        ArmorItem.Type.CHESTPLATE,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_LEGGINGS = ITEMS.register(
+                "void_leggings",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.VOID,
+                        ArmorItem.Type.LEGGINGS,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
+        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_BOOTS = ITEMS.register(
+                "void_boots",
+                () -> new ArmorItem(
+                        ToolAndArmorMaterial.VOID,
+                        ArmorItem.Type.BOOTS,
+                        new Item.Properties().stacksTo(1)
+                )
+        );
 
 
 
@@ -901,6 +983,8 @@ public class ThaumcraftItems {
         // maybe i need even several issue/PR to realize where(recipe or st.) i didn't notice this part.
         public static final TagKey<Item> VOID_INGOT_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("thaumcraft:void_ingot"));
+        public static final TagKey<Item> THAUMIUM_INGOT_TAG = TagKey.create(
+                Registries.ITEM, new ResourceLocation("thaumcraft:thaumium_ingot"));
         public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("thaumcraft:prime_pearl"));
 
@@ -927,7 +1011,8 @@ public class ThaumcraftItems {
         public static final TagKey<Item> BLACK_DYE_FABRIC_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("c:black_dyes"));
         public static final TagKey<Item> REPAIR_ENCHANTMENT_CAN_APPLY = TagKey.create(
-                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID,"repair_enchantment_can_apply"));
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID,"repair_enchantment_can_apply")
+        );
     }
 
     public static class BannerPatternTags{
@@ -943,6 +1028,365 @@ public class ThaumcraftItems {
         static {
             BANNER_PATTERNS.register();
         }
+    }
+
+    public static class ToolAndArmorMaterial{
+
+        public static final Tier TOOL_THAUMIUM = new Tier() {
+            @Override
+            public int getUses() {
+                return 400;
+            }
+
+            @Override
+            public float getSpeed() {
+                return 7F;
+            }
+
+            @Override
+            public float getAttackDamageBonus() {
+                return 2F;
+            }
+
+            @Override
+            public int getLevel() {
+                return 3;
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 22;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(THAUMIUM_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+        };
+        public static final Tier TOOL_VOID = new Tier() {
+            @Override
+            public int getUses() {
+                return 150;
+            }
+
+            @Override
+            public float getSpeed() {
+                return 8F;
+            }
+
+            @Override
+            public float getAttackDamageBonus() {
+                return 3F;
+            }
+
+            @Override
+            public int getLevel() {
+                return 4;
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 10;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(VOID_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+        };
+        public static final Tier TOOL_THAUMIUM_ELEMENTAL = new Tier() {
+            @Override
+            public int getUses() {
+                return 1500;
+            }
+
+            @Override
+            public float getSpeed() {
+                return 10F;
+            }
+
+            @Override
+            public float getAttackDamageBonus() {
+                return 3F;
+            }
+
+            @Override
+            public int getLevel() {
+                return 3;
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 18;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(THAUMIUM_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+        };
+        public static final ArmorMaterial THAUMIUM = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 13 * 25;
+                    case CHESTPLATE -> 15 * 25;
+                    case LEGGINGS -> 16 * 25;
+                    case BOOTS -> 11 * 25;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 2;
+                    case CHESTPLATE -> 6;
+                    case LEGGINGS -> 5;
+                    case BOOTS -> 2;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 25;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(THAUMIUM_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "thaumium";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
+        public static final ArmorMaterial SPECIAL = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 13 * 25;
+                    case CHESTPLATE -> 15 * 25;
+                    case LEGGINGS -> 16 * 25;
+                    case BOOTS -> 11 * 25;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 1;
+                    case CHESTPLATE -> 3;
+                    case LEGGINGS -> 2;
+                    case BOOTS -> 1;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 25;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.EMPTY;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "special";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
+        public static final ArmorMaterial THAUMIUM_FORTRESS = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 13 * 40;
+                    case CHESTPLATE -> 15 * 40;
+                    case LEGGINGS -> 16 * 40;
+                    case BOOTS -> 11 * 40;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 3;
+                    case CHESTPLATE -> 7;
+                    case LEGGINGS -> 6;
+                    case BOOTS -> 3;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 25;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(THAUMIUM_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "fortress";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
+        public static final ArmorMaterial VOID = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 13 * 10;
+                    case CHESTPLATE -> 15 * 10;
+                    case LEGGINGS -> 16 * 10;
+                    case BOOTS -> 11 * 10;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 3;
+                    case CHESTPLATE -> 7;
+                    case LEGGINGS -> 6;
+                    case BOOTS -> 3;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 10;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(VOID_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "void";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
+        public static final ArmorMaterial VOID_FORTRESS = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 13 * 18;
+                    case LEGGINGS -> 15 * 18;
+                    case CHESTPLATE -> 16 * 18;
+                    case BOOTS -> 11 * 18;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 4;
+                    case CHESTPLATE -> 8;
+                    case LEGGINGS -> 7;
+                    case BOOTS -> 4;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 10;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            public static final Ingredient ingredient = Ingredient.of(VOID_INGOT_TAG);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "voidfortress";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
     }
     public static final BannerPattern CULTIST_PATTERN = BannerPatternsRegistry.SUPPLIER_CULTIST_PATTERN.get();
 

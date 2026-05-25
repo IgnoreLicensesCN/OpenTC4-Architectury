@@ -45,28 +45,19 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
     }
 
     public EldritchAltarBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(50F,20000F)
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)
                 .lightLevel(s -> 8)
                 .requiresCorrectToolForDrops()
         );
-
-        this.registerDefaultState(
-                this.stateDefinition.any()
-                        .setValue(ELDRITCH_ALTAR_EYES,0)
-                        .setValue(SPAWNED_CLERICS, false)
-                        .setValue(IS_SPAWNER, false)
-                        .setValue(OPENED, false)
-                        .setValue(SPAWNER_TYPE, 0)
-        );
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(ELDRITCH_ALTAR_EYES).add(IS_SPAWNER).add(OPENED).add(SPAWNED_CLERICS);
+        builder.add(ELDRITCH_ALTAR_EYES,SPAWNED_CLERICS,IS_SPAWNER,OPENED,SPAWNER_TYPE);
     }
 
     @Override
@@ -101,7 +92,6 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
         } else {
             return true;
         }
-
     }
 
     public boolean addEye(Level level, BlockState state, BlockPos pos){

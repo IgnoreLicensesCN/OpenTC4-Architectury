@@ -77,6 +77,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<ArcaneEarBlockEntity> ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
     public static final BlockEntityType<WardedBlockEntity> WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
     public static final BlockEntityType<HoleBlockEntity> HOLE = Registry.SUPPLIER_HOLE.get();
+    public static final BlockEntityType<EldritchPortalBlockEntity> ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -440,7 +441,14 @@ public class ThaumcraftBlockEntities {
                                 ThaumcraftBlocks.HOLE
                         ).build(null)
                 );
-
+        public static final RegistrySupplier<BlockEntityType<EldritchPortalBlockEntity>> SUPPLIER_ELDRITCH_PORTAL =
+                BLOCK_ENTITIES.register(
+                        "eldritch_portal",
+                        () -> BlockEntityType.Builder.of(
+                                EldritchPortalBlockEntity::new,
+                                ThaumcraftBlocks.ELDRITCH_PORTAL
+                        ).build(null)
+                );
 
     }
 

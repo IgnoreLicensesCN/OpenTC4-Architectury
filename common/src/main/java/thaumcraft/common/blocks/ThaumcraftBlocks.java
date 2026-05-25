@@ -223,6 +223,7 @@ public class ThaumcraftBlocks {
     public static final HoleBlock HOLE = Registry.SUPPLIER_HOLE_BLOCK.get();
     public static final UrnLootBlock URN_LOOT = Registry.SUPPLIER_URN_LOOT.get();
     public static final CrateLootBlock CRATE_LOOT = Registry.SUPPLIER_CRATE_LOOT.get();
+    public static final EldritchPortalBlock ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL_BLOCK.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -924,6 +925,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "crate_loot",
                         CrateLootBlock::new
+                );
+        public static final RegistrySupplier<EldritchPortalBlock> SUPPLIER_ELDRITCH_PORTAL_BLOCK =
+                BLOCKS.register(
+                        "eldritch_portal",
+                        EldritchPortalBlock::new
                 );
         static {
             BLOCKS.register();

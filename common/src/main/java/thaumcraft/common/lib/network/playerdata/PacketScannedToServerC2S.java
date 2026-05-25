@@ -20,24 +20,16 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":scanned_to_server";
     public static MessageType messageType;
 
-    private int playerId;
-    private ResourceKey<Level> dim;
     private byte type;
     private String id;
     private int entityId;
     private String phenomena;
     private String prefix;
 
-    // ---------------- 构造 ----------------
     public PacketScannedToServerC2S() {
     }
 
-    /**
-     * 服务端发送扫描数据
-     */
-    public PacketScannedToServerC2S(ScanResult scan, Player player, String prefix) {
-        this.playerId = player.getId();
-        this.dim = player.level().dimension();
+    public PacketScannedToServerC2S(ScanResult scan, String prefix) {
         this.type = scan.type;
         this.id = scan.item.toString();
         this.entityId = scan.entity == null ? 0 : scan.entity.getId();
@@ -45,11 +37,8 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
         this.prefix = prefix;
     }
 
-    // ---------------- 编码解码 ----------------
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeInt(playerId);
-        buf.writeResourceLocation(dim.location()); // ResourceKey -> ResourceLocation
         buf.writeByte(type);
         buf.writeUtf(id);
         buf.writeInt(entityId);
@@ -59,10 +48,6 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
 
     public static PacketScannedToServerC2S decode(FriendlyByteBuf buf) {
         PacketScannedToServerC2S msg = new PacketScannedToServerC2S();
-        msg.playerId = buf.readInt();
-
-        ResourceLocation dimId = buf.readResourceLocation();
-        msg.dim = ResourceKey.create(Registries.DIMENSION, dimId);
         msg.type = buf.readByte();
         msg.id = buf.readUtf();
         msg.entityId = buf.readInt();
@@ -71,7 +56,6 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
         return msg;
     }
 
-    // ---------------- 处理 ----------------
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
@@ -79,11 +63,9 @@ public class PacketScannedToServerC2S extends BaseC2SMessage {
         if (server == null) {
             return;
         }
-        Level world = server.getLevel(dim); // 通过 ResourceKey 获取世界
-        if (world != null) {
-            Entity e = entityId == 0 ? null : world.getEntity(entityId);
-            ScanManager.completeScan(player, new ScanResult(type, id, e, phenomena), prefix);
-        }
+        Level world = player.level();
+        Entity e = entityId == 0 ? null : world.getEntity(entityId);
+        ScanManager.completeScan(player, new ScanResult(type, id, e, phenomena), prefix);
     }
 
     @Override

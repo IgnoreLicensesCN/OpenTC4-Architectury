@@ -418,6 +418,7 @@ public class ResearchManager {
         }
     }
 
+    @Deprecated(forRemoval = true,since = "use ResearchItem method")
     public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequisites) {
         for (var preReq : preRequisites) {
             if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}

@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
-import thaumcraft.api.expands.listeners.warp.listeners.*;
 import thaumcraft.api.listeners.warp.listeners.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
@@ -114,12 +113,12 @@ public class WarpEventManager {
     public static void tryTriggerRandomWarpEvent(@NotNull ServerPlayer player) {
         PlayerKnowledge knowledge = Thaumcraft.playerKnowledge;
         PickWarpEventContext warpContext = new PickWarpEventContext(
-                knowledge.getWarpTotal(player.getGameProfile().getName())
+                knowledge.getWarpTotal(player)
                         + getWarpFromGear(player),
                 player,
-                knowledge.getWarpPerm(player.getGameProfile().getName())
-                        + knowledge.getWarpSticky(player.getGameProfile().getName()),
-                knowledge.getWarpCounter(player.getGameProfile().getName())
+                knowledge.getWarpPerm(player)
+                        + knowledge.getWarpSticky(player),
+                knowledge.getWarpCounter(player)
         );
         for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
             if (!condition.check(warpContext,player)) {

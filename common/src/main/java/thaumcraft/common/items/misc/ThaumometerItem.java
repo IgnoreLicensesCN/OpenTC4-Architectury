@@ -168,7 +168,7 @@ public class ThaumometerItem extends Item {
                counter.set(25);
 //               p.stopUsingItem();
                if (ScanManager.completeScan(p, scan, "@")) {
-                  new PacketScannedToServerC2S(scan, p, "@").sendToServer();
+                  new PacketScannedToServerC2S(scan, "@").sendToServer();
                }
             }
 
@@ -179,7 +179,6 @@ public class ThaumometerItem extends Item {
             this.startScan = null;
          }
       }
-
    }
 
    @Override

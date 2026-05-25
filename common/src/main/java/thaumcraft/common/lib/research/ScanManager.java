@@ -413,7 +413,7 @@ public class ScanManager implements IScanEventHandler {
 //            }
 
                 List<String> list = Thaumcraft.getScannedObjects()
-                        .get(player);
+                        .get(player.getGameProfile().getName());
                 return list == null || !list.contains(prefix + generateItemHash(item));
             } else if (scan.type == 2) {
                 if (scan.entity instanceof ItemEntity item) {
@@ -425,16 +425,16 @@ public class ScanManager implements IScanEventHandler {
 //               }
 
                     List<String> list = Thaumcraft.getScannedObjects()
-                            .get(player);
+                            .get(player.getGameProfile().getName());
                     return list == null || !list.contains(prefix + generateItemHash(t.getItem()));
                 } else {
                     List<String> list = Thaumcraft.getScannedEntities()
-                            .get(player);
+                            .get(player.getGameProfile().getName());
                     return list == null || !list.contains(prefix + generateEntityHash(scan.entity));
                 }
             } else if (scan.type == 3) {
                 List<String> list = Thaumcraft.getScannedPhenomena()
-                        .get(player);
+                        .get(player.getGameProfile().getName());
                 return list == null || !list.contains(prefix + scan.phenomena);
             }
 

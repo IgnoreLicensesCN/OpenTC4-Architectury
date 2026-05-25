@@ -20,7 +20,7 @@ public class EldritchObeliskWithTickerBlock extends EldritchObeliskBlock {
         super(properties);
     }
     public EldritchObeliskWithTickerBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(50F,20000F)
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)

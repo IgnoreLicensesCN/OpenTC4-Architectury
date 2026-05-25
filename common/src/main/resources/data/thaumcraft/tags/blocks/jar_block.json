@@ -1,5 +1,9 @@
 {
   "replace": false,
   "values": [
+    "thaumcraft:brain_jar",
+    "thaumcraft:void_jar",
+    "thaumcraft:essentia_jar",
+    "thaumcraft:node_jar"
   ]
 }

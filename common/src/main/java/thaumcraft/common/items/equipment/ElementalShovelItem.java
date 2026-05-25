@@ -24,7 +24,7 @@ import thaumcraft.common.ClientFXUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static thaumcraft.api.ThaumcraftApi.TOOL_THAUMIUM_ELEMENTAL;
+import static thaumcraft.common.items.ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
 
 public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairEnchantable, IArchitectDisplayItem {
     public static final Set<Block> effectiveBlockForElementalShovel = ConcurrentHashMap.newKeySet();

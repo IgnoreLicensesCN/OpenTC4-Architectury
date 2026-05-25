@@ -5,4 +5,5 @@ public class MilkContext {
             ThreadLocal.withInitial(() -> false);
     //a bit trick from chatGPT,
     // then i have a way to identify if milkBucketItem called removeAll
+    //TODO:Replace if there's better way to impl PreventMilkRemoveEffect
 }

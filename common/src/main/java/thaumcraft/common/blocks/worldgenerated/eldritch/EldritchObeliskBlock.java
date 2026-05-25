@@ -20,7 +20,7 @@ public class EldritchObeliskBlock extends SuppressedWarningBlock implements Enti
         super(properties);
     }
     public EldritchObeliskBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(50F,20000F)
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)

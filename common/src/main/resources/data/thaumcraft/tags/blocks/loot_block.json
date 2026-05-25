@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:urn_loot",
+    "thaumcraft:crate_loot"
+  ],
+  "_comment": "digital miner time?"
+}

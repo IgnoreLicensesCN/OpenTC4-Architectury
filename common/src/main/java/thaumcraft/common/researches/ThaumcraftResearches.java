@@ -19,4 +19,6 @@ public class ThaumcraftResearches {
     public static final ResearchItem NODE_TAKE_IT_ALL = ;
     public static final ResearchItem MASTER_NODE_TRAPPING = ;
     public static final FocusPrimalResearch FOCUS_PRIMAL = new FocusPrimalResearch();
+
+    public static final ResearchItem ENTER_OUTER = ;
 }

@@ -3,6 +3,7 @@ package thaumcraft.common.lib.world.dim;
 import java.util.Arrays;
 import java.util.List;
 
+@Deprecated(forRemoval = true)
 public class MazeThread implements Runnable {
     int x;
     int z;
