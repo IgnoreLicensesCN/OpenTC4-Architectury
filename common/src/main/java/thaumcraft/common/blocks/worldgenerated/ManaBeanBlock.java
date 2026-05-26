@@ -89,11 +89,11 @@ public class ManaBeanBlock extends SuppressedWarningBlock
 
     @Override
     public @NotNull BlockState updateShape(
-            BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2
+            BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos
     ) {
-        return direction == Direction.UP && !blockState.canSurvive(levelAccessor, blockPos)
+        return changeFromDirection == Direction.UP && !prevState.canSurvive(levelAccessor, selfPos)
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+                : super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
     }
 
 

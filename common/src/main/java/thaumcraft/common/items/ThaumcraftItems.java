@@ -261,6 +261,7 @@ public class ThaumcraftItems {
     public static final ArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
     public static final ArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
     public static final ArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
+    public static final BlockItem MIRROR = Registry.SUPPLIER_MIRROR.get();
 
 
     //===========================================================================================
@@ -967,6 +968,14 @@ public class ThaumcraftItems {
                         ToolAndArmorMaterial.VOID,
                         ArmorItem.Type.BOOTS,
                         new Item.Properties().stacksTo(1)
+                )
+        );
+
+        public static final RegistrySupplier<BlockItem> SUPPLIER_MIRROR = ITEMS.register(
+                "mirror",
+                () -> new BlockItem(
+                        ThaumcraftBlocks.MIRROR,
+                        new Item.Properties()
                 )
         );
 

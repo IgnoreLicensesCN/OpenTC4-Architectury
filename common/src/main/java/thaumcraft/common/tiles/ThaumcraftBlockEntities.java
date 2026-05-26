@@ -16,6 +16,7 @@ import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceBlockEntit
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
+import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
@@ -78,6 +79,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<WardedBlockEntity> WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
     public static final BlockEntityType<HoleBlockEntity> HOLE = Registry.SUPPLIER_HOLE.get();
     public static final BlockEntityType<EldritchPortalBlockEntity> ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL.get();
+    public static final BlockEntityType<MirrorBlockEntity> MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -447,6 +449,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 EldritchPortalBlockEntity::new,
                                 ThaumcraftBlocks.ELDRITCH_PORTAL
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<MirrorBlockEntity>> SUPPLIER_MIRROR =
+                BLOCK_ENTITIES.register(
+                        "mirror",
+                        () -> BlockEntityType.Builder.of(
+                                MirrorBlockEntity::new,
+                                ThaumcraftBlocks.MIRROR
                         ).build(null)
                 );
 

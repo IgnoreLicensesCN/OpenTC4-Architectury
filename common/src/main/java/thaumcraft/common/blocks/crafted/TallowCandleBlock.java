@@ -53,11 +53,11 @@ public class TallowCandleBlock extends SuppressedWarningBlock implements IInfusi
 
     @Override
     public @NotNull BlockState updateShape(
-            BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2
+            BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos
     ) {
-        return direction == Direction.DOWN && !this.canSurvive(blockState, levelAccessor, blockPos)
+        return changeFromDirection == Direction.DOWN && !this.canSurvive(prevState, levelAccessor, selfPos)
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+                : super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
     }//torch
 
     public static final VoxelShape SHAPE = Block.box(6.0f, 0.0F, 6.0f, 10.0f, 8, 10.0f);

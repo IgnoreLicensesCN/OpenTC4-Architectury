@@ -66,23 +66,23 @@ public class ObsidianTotemBlock extends SuppressedWarningBlock {
         return RENDER_STATES_TOP_TOTEM[base];
     }
     @Override
-    public @NotNull BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor world, BlockPos currentPos, BlockPos neighborPos) {
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor world, BlockPos selfPos, BlockPos changedPos) {
         if (!world.isClientSide()) {
-            boolean up = world.getBlockState(currentPos.above()).getBlock() instanceof ObsidianTotemBlock;
+            boolean up = world.getBlockState(selfPos.above()).getBlock() instanceof ObsidianTotemBlock;
             if (up){
                 return RENDER_STATE_UP_HAS_TOTEM;
             }
-            boolean down = world.getBlockState(currentPos.below()).getBlock() instanceof ObsidianTotemBlock;
+            boolean down = world.getBlockState(selfPos.below()).getBlock() instanceof ObsidianTotemBlock;
             if (!down){
                 return RENDER_STATE_SINGLE_TOTEM;
             }
 
-            int x = currentPos.getX(), y = currentPos.getY(), z = currentPos.getZ();
+            int x = selfPos.getX(), y = selfPos.getY(), z = selfPos.getZ();
             int base = (x % 4 + y % 4 + z % 4) % 4;
 
             return RENDER_STATES_TOP_TOTEM[base];
         }
-        return state;
+        return prevState;
     }
 
     @Override

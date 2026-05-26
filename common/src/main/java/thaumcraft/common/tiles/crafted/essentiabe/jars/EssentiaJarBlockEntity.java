@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.essentiabe.jars;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,8 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
 
@@ -230,19 +233,13 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int canProvideAspectAmountForRemoteDrain(Aspect aspect) {
+    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
         if (aspect == aspectCurrent){
-            return aspectAmountCurrent;
+            int drained = Math.min(amount,this.aspectAmountCurrent);
+            decreaseAspectAmount(drained);
+            return drained;
         }
         return 0;
-    }
-
-    @Override
-    public boolean drainAspectRemote(Aspect aspect, int amount) {
-        if (aspect == aspectCurrent && amount <= this.aspectAmountCurrent){
-            decreaseAspectAmount(amount);
-        }
-        return false;
     }
 
     protected int tickCount = 0;

@@ -40,7 +40,7 @@ import thaumcraft.common.container.InventoryFake;
 import thaumcraft.common.lib.crafting.InfusionRunicAugmentRecipe;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.events.EssentiaHandler;
+import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.network.fx.PacketFXInfusionSourceS2C;
@@ -454,7 +454,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 //draining essentia,may add instability if failed
                 for (Aspect aspect : this.recipeEssentia.getAspects()) {
                     if (this.recipeEssentia.getAmount(aspect) > 0) {
-                        if (EssentiaHandler.drainEssentia(this, aspect, Direction.UNKNOWN, 12)) {
+                        if (EssentiaRemoteDrainHandler.drainEssentia(this, aspect, Direction.UNKNOWN, 12)) {
                             this.recipeEssentia.tryReduce(aspect, 1);
                             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                             this.markDirty();

@@ -21,28 +21,32 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
 
     public static final int TRIGGER_RANGE = 64;
     public static final int TRIGGER_RANGE_SQUARED = TRIGGER_RANGE * TRIGGER_RANGE;
-    public static final Map<Level,CubeChunkedWeakLookups<ArcaneEarBlockEntity>> earsForTriggerEvent = new MapMaker().weakKeys().makeMap();
+    public static final Map<Level, CubeChunkedWeakLookups<ArcaneEarBlockEntity>> earsForTriggerEvent = new MapMaker().weakKeys()
+            .makeMap();
 
     public ArcaneEarBlockEntity(BlockEntityType<? extends ArcaneEarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
-    protected void storeToLookup(Level level){
-        if (level != this.level){
+
+    protected void storeToLookup(Level level) {
+        if (level != this.level) {
             var pos = getBlockPos();
             if (this.level != null) {
                 var lookup = earsForTriggerEvent.get(this.level);
                 if (lookup != null) {
-                    lookup.remove(pos,this);
+                    lookup.remove(pos, this);
                 }
             }
-            if (level != null){
+            if (level != null) {
                 earsForTriggerEvent.computeIfAbsent(
-                        level,
-                        _ignored -> new CubeChunkedWeakLookups<>((byte)6)
-                ).store(pos,this);
+                                level,
+                                _ignored -> new CubeChunkedWeakLookups<>((byte) 6)
+                        )
+                        .store(pos, this);
             }
         }
     }
+
     public ArcaneEarBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ARCANE_EAR, blockPos, blockState);
     }
@@ -53,9 +57,20 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
         super.setLevel(level);
     }
 
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        if (this.level != null) {
+            var lookup = earsForTriggerEvent.get(this.level);
+            if (lookup != null) {
+                lookup.remove(getBlockPos(), this);
+            }
+        }
+    }
+
     public static final int TICK_DELAY = 10;
     public static final int TICK_DELAY_EVENT_MASK = 1 << TICK_DELAY;
-    public static final int TICK_MASK = (1<<(TICK_DELAY + 1)) - 1;
+    public static final int TICK_MASK = (1 << (TICK_DELAY + 1)) - 1;
     public static final int ARCANE_EAR_LISTEN_DISTANCE = 64;
     private int shouldProvideSignalTick = 0;
 
@@ -93,10 +108,12 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
         if (level != this.level) {
             return;
         }
-        if (pos.distSqr(getBlockPos()) <= TRIGGER_RANGE_SQUARED){
+        if (pos.distSqr(getBlockPos()) <= TRIGGER_RANGE_SQUARED) {
             var selfState = getBlockState();
             if (state.getValue(NoteBlock.INSTRUMENT) == selfState.getValue(NoteBlock.INSTRUMENT)
-            && state.getValue(NoteBlock.NOTE).equals(selfState.getValue(NoteBlock.NOTE))) {
+                    && state.getValue(NoteBlock.NOTE)
+                    .equals(selfState.getValue(NoteBlock.NOTE))
+            ) {
                 shouldProvideSignalTick |= TICK_DELAY_EVENT_MASK;
             }
         }

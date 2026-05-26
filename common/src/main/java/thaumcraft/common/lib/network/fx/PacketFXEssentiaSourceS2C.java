@@ -5,7 +5,7 @@ import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import thaumcraft.common.lib.events.EssentiaHandler;
+import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 
 public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
 
@@ -69,15 +69,15 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
 
       String key = x + ":" + y + ":" + z + ":" + tx + ":" + ty + ":" + tz + ":" + color;
 
-      if (EssentiaHandler.sourceFX.containsKey(key)) {
-         EssentiaHandler.EssentiaSourceFX sf = EssentiaHandler.sourceFX.get(key);
+      if (EssentiaRemoteDrainHandler.sourceFX.containsKey(key)) {
+         EssentiaRemoteDrainHandler.EssentiaSourceFX sf = EssentiaRemoteDrainHandler.sourceFX.get(key);
          sf.ticks = 15;
-         EssentiaHandler.sourceFX.remove(key);
-         EssentiaHandler.sourceFX.put(key, sf);
+         EssentiaRemoteDrainHandler.sourceFX.remove(key);
+         EssentiaRemoteDrainHandler.sourceFX.put(key, sf);
       } else {
-         EssentiaHandler.sourceFX.put(
+         EssentiaRemoteDrainHandler.sourceFX.put(
                  key,
-                 new EssentiaHandler.EssentiaSourceFX(
+                 new EssentiaRemoteDrainHandler.EssentiaSourceFX(
                          new BlockPos(x,y, z),
                          new BlockPos(tx,ty, tz),
                          15,

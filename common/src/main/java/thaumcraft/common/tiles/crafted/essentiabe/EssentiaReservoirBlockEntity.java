@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.EssentiaReservoirBlockEntityClientAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +20,7 @@ import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Map;
+import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
 
@@ -168,17 +170,14 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         return aspOwningView;
     }
 
-    @Override
-    public int canProvideAspectAmountForRemoteDrain(Aspect aspect) {
-        return owningAspects.get(aspect);
-    }
 
     @Override
-    public boolean drainAspectRemote(Aspect aspect, int amount) {
-        if (amount <= this.owningAspects.get(aspect)) {
+    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+        int drained = Math.min(amount,this.owningAspects.get(aspect));
+        if (drained != 0){
             decreaseAspectAmount(aspect,amount);
         }
-        return false;
+        return drained;
     }
 
     protected int tickCount = 0;

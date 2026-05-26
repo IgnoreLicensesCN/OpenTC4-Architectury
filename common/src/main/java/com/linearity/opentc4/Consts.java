@@ -16,6 +16,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeIn
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
@@ -320,6 +321,17 @@ public class Consts {
         public static final BlockStateAccessor STORING_BLOCK_STATE = new BlockStateAccessor("storing_state");
         public static final IntTagAccessor SPREAD_DISTANCE = new IntTagAccessor("spread_distance");
         public static final DirectionTagAccessor SPREAD_DIRECTION = new DirectionTagAccessor("spread_direction");
+    }
+    public static class AbstractMirrorBlockEntityTagAccessors {
+        public static final BlockPosAccessor LINKED_POS = new BlockPosAccessor("linked_pos");
+        public static final ResourceLocationTagAccessor LINKED_DIM = new ResourceLocationTagAccessor("linked_dim");
+    }
+    public static class MirrorBlockEntityTagAccessors {
+        public static final ModifiableListAccessor<ItemStack> STORED_ITEMS_ACCESSOR = new ModifiableListAccessor<>(
+                "stored_items",
+                new ItemStackTagAccessor("i")
+        );
+        public static final IntTagAccessor INSTABILITY = new IntTagAccessor("instability");
     }
 
 }

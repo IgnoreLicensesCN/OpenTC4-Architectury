@@ -9,7 +9,7 @@ import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.lib.events.EssentiaHandler;
+import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 import thaumcraft.common.lib.utils.Utils;
 
 public class TileMirrorEssentia extends TileThaumcraft implements IRemoteDrainableAspectSourceBlockEntity {
@@ -186,7 +186,7 @@ public class TileMirrorEssentia extends TileThaumcraft implements IRemoteDrainab
          }
 
          TileEntity te = targetWorld.getTileEntity(this.linkX, this.linkY, this.linkZ);
-         return te instanceof TileMirrorEssentia && EssentiaHandler.drainEssentia(te, tag, this.linkedFacing, 8, true);
+         return te instanceof TileMirrorEssentia && EssentiaRemoteDrainHandler.drainEssentia(te, tag, this.linkedFacing, 8, true);
       } else {
          return false;
       }

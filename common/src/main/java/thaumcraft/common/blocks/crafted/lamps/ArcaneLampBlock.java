@@ -59,12 +59,12 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
 
     // 5. 核心逻辑：检测邻居变化，如果没有支撑则掉落
     @Override
-    public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-        Direction attachedFace = state.getValue(FACING);
-        if (direction == attachedFace && !this.canSurvive(state,level, currentPos)) {
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor level, BlockPos selfPos, BlockPos changedPos) {
+        Direction attachedFace = prevState.getValue(FACING);
+        if (changeFromDirection == attachedFace && !this.canSurvive(prevState,level, selfPos)) {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+        return super.updateShape(prevState, changeFromDirection, neighborState, level, selfPos, changedPos);
     }
 
     @Override

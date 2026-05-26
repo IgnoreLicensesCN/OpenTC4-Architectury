@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanFunction;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,288 +73,52 @@ public class CubeChunkedWeakLookups<StoreItem> {
     private static long packInt(int x,int z){
         return ((long)x << 32) | (z & 0xFFFFFFFFL);
     }
+    //should i hope JIT optimizing instead of expanding?
     public void forItemsNearPos(Vec3i pos, Consumer<StoreItem> action) {
-        var x = pos.getX();
-        var y = pos.getY();
-        var z = pos.getZ();
-        Collection<StoreItem> items;
-        //powered by JetBrains PyCharm
-        items = get(x - this.chunkSize,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y - this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y,z);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y + this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x - this.chunkSize,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y - this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y,z);
-        if (items != null){items.forEach(action);}
-        items = get(x,y,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x,y + this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y - this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y,z);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y + this.chunkSize,z);
-        if (items != null){items.forEach(action);}
-        items = get(x + this.chunkSize,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){items.forEach(action);}
+        forItemsNearPosWithRange(pos,action,chunkSize);
     }
+    public void forItemsNearPosWithRange(Vec3i pos, Consumer<StoreItem> action,int range) {
+
+        var posMin = pos.offset(-range,-range,-range);
+        var posMax = pos.offset(range,range,range);
+
+        for (int yCurrent = posMin.getY(); yCurrent <= posMax.getY(); yCurrent+= chunkSize) {
+            for (int xCurrent = posMin.getX(); xCurrent <= posMax.getX(); xCurrent+= chunkSize) {
+                for (int zCurrent = posMin.getZ(); zCurrent <= posMax.getZ(); zCurrent+= chunkSize) {
+                    var items = get(xCurrent,yCurrent,zCurrent);
+                    if (items != null){
+                        items.forEach(action);
+                    }
+                }
+            }
+        }
+    }
+    @FunctionalInterface
+    public interface Object2BooleanFunction<StoreItem>{
+        boolean apply(StoreItem storeItem);
+    }
+
     //true if broken(function returned true,you can consider this as calling break in for loop)
     @SuppressWarnings("UnusedReturnValue")
     public boolean forItemsNearPosWithBreak(Vec3i pos, Object2BooleanFunction<StoreItem> action) {
-        var x = pos.getX();
-        var y = pos.getY();
-        var z = pos.getZ();
-        Collection<StoreItem> items;
-        //powered by JetBrains PyCharm
-        items = get(x - this.chunkSize,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y - this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y + this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x - this.chunkSize,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y - this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y + this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y - this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y - this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y - this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y + this.chunkSize,z - this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y + this.chunkSize,z);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
-                }
-            }
-        }
-        items = get(x + this.chunkSize,y + this.chunkSize,z + this.chunkSize);
-        if (items != null){
-            for (var item:items){
-                if(action.apply(item)){
-                    return true;
+        return forItemsNearPosWithBreakWithRange(pos,action,chunkSize);
+    }
+
+    public boolean forItemsNearPosWithBreakWithRange(Vec3i pos, Object2BooleanFunction<StoreItem> action,int range) {
+
+        var posMin = pos.offset(-range,-range,-range);
+        var posMax = pos.offset(range,range,range);
+
+        for (int yCurrent = posMin.getY(); yCurrent <= posMax.getY(); yCurrent+= chunkSize) {
+            for (int xCurrent = posMin.getX(); xCurrent <= posMax.getX(); xCurrent+= chunkSize) {
+                for (int zCurrent = posMin.getZ(); zCurrent <= posMax.getZ(); zCurrent+= chunkSize) {
+                    var items = get(xCurrent,yCurrent,zCurrent);
+                    if (items != null){for (var item:items){
+                        if(action.apply(item)){
+                            return true;
+                        }
+                    }
+                    }
                 }
             }
         }
@@ -385,5 +148,6 @@ public class CubeChunkedWeakLookups<StoreItem> {
         }
         return result;
     }
+
 
 }

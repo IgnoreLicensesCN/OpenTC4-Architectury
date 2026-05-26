@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 
 public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
+    public static final BlockPos NULL_POS_TO_WRITE = new BlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     protected final IntTagAccessor xAccessor;
     protected final IntTagAccessor yAccessor;
     protected final IntTagAccessor zAccessor;

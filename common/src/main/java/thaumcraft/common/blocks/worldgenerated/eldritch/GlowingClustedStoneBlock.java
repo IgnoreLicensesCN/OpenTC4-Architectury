@@ -97,7 +97,7 @@ public class GlowingClustedStoneBlock extends SuppressedWarningBlock implements 
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor blockGetter, BlockPos blockPos, BlockPos blockPos2) {
-        return getState(blockState,blockGetter,blockPos);
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor blockGetter, BlockPos selfPos, BlockPos changedPos) {
+        return getState(prevState,blockGetter, selfPos);
     }
 }

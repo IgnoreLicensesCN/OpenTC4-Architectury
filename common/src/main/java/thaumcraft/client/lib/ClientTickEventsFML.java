@@ -44,7 +44,7 @@ import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
-import thaumcraft.common.lib.events.EssentiaHandler;
+import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 
@@ -215,10 +215,10 @@ public class ClientTickEventsFML {
          if (event.phase == Phase.START) {
             ++this.tickCount;
 
-            for(String fxk : EssentiaHandler.sourceFX.keySet().toArray(new String[0])) {
-               EssentiaHandler.EssentiaSourceFX fx = EssentiaHandler.sourceFX.get(fxk);
+            for(String fxk : EssentiaRemoteDrainHandler.sourceFX.keySet().toArray(new String[0])) {
+               EssentiaRemoteDrainHandler.EssentiaSourceFX fx = EssentiaRemoteDrainHandler.sourceFX.get(fxk);
                if (fx.ticks <= 0) {
-                  EssentiaHandler.sourceFX.remove(fxk);
+                  EssentiaRemoteDrainHandler.sourceFX.remove(fxk);
                } else if (world != null) {
                   int mod = 0;
                   TileEntity tile = world.getTileEntity(fx.start.posX, fx.start.posY, fx.start.posZ);
@@ -234,7 +234,7 @@ public class ClientTickEventsFML {
                   }
 
                   --fx.ticks;
-                  EssentiaHandler.sourceFX.put(fxk, fx);
+                  EssentiaRemoteDrainHandler.sourceFX.put(fxk, fx);
                }
             }
          } else if (mc.theWorld != null && !this.checkedDate) {

@@ -29,6 +29,9 @@ import thaumcraft.common.tiles.TileMirrorEssentia;
 import java.util.ArrayList;
 import java.util.List;
 
+//  "tile.blockMirror.0.name": "魔镜",
+//  "tile.blockMirror.6.name": "源质之镜",
+//  "tile.blockMirror.name": "魔镜",
 public class BlockMirror extends BlockContainer {
    public IIcon icon;
    public IIcon iconEss;
@@ -66,7 +69,9 @@ public class BlockMirror extends BlockContainer {
          new TileMirror();
       }
 
-      return metadata > 5 && metadata <= 11 ? new TileMirrorEssentia() : super.createTileEntity(world, metadata);
+      return metadata > 5 && metadata <= 11
+              ? new TileMirrorEssentia()
+              : super.createTileEntity(world, metadata);
    }
 
    public TileEntity createNewTileEntity(World var1, int md) {

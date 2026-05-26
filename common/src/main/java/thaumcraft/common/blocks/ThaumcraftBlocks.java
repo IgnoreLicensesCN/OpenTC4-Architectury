@@ -24,6 +24,7 @@ import thaumcraft.common.blocks.crafted.essentia.jars.*;
 import thaumcraft.common.blocks.crafted.jars.*;
 import thaumcraft.common.blocks.crafted.lamps.*;
 import thaumcraft.common.blocks.crafted.loot.*;
+import thaumcraft.common.blocks.crafted.mirror.MirrorBlock;
 import thaumcraft.common.blocks.crafted.noderelated.*;
 import thaumcraft.common.blocks.crafted.ownedblock.*;
 import thaumcraft.common.blocks.crafted.pavingstone.*;
@@ -224,6 +225,7 @@ public class ThaumcraftBlocks {
     public static final UrnLootBlock URN_LOOT = Registry.SUPPLIER_URN_LOOT.get();
     public static final CrateLootBlock CRATE_LOOT = Registry.SUPPLIER_CRATE_LOOT.get();
     public static final EldritchPortalBlock ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL_BLOCK.get();
+    public static final MirrorBlock MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -930,6 +932,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "eldritch_portal",
                         EldritchPortalBlock::new
+                );
+        public static final RegistrySupplier<MirrorBlock> SUPPLIER_MIRROR =
+                BLOCKS.register(
+                        "mirror",
+                        MirrorBlock::new
                 );
         static {
             BLOCKS.register();

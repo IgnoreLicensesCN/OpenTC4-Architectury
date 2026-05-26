@@ -1,11 +1,8 @@
 package thaumcraft.api.aspects;
 
-import com.linearity.opentc4.OpenTC4;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import thaumcraft.common.lib.events.EssentiaHandler;
-
-import java.lang.reflect.Method;
+import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 
 public class AspectSourceHelper {
 
@@ -21,7 +18,7 @@ public class AspectSourceHelper {
 	 * @return boolean returns true if essentia was found and removed from a source.
 	 */
 	public static boolean drainEssentia(BlockEntity tile, Aspect aspect, Direction direction, int range) {
-		return EssentiaHandler.drainEssentia(tile,aspect,direction,range);//we're open and no need for reflection!
+		return EssentiaRemoteDrainHandler.drainEssentia(tile,aspect,direction,range);//we're open and no need for reflection!
 	}
 	
 	/**
@@ -35,6 +32,6 @@ public class AspectSourceHelper {
 	 */
 	public static boolean findEssentia(BlockEntity tile, Aspect aspect, Direction direction, int range) {
 
-		return EssentiaHandler.findEssentia(tile, aspect, direction, range);//we're open and no need for reflection!
+		return EssentiaRemoteDrainHandler.findEssentia(tile, aspect, direction, range);//we're open and no need for reflection!
 	}
 }

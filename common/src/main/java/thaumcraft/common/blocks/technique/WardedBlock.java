@@ -117,13 +117,15 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
-        if (levelAccessor.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
-            var newState = warded.getStoringState().updateShape(direction,blockState2,levelAccessor,blockPos,blockPos2);
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
+        if (levelAccessor.getBlockEntity(selfPos) instanceof WardedBlockEntity warded) {
+            var newState = warded.getStoringState().updateShape(changeFromDirection,blockState2,levelAccessor, selfPos,
+                    changedPos
+            );
             warded.setStoringState(newState);
 
         }
-        return super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+        return super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
     }
 
     @Override

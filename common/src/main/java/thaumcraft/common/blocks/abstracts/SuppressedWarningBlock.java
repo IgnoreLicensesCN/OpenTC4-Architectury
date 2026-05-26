@@ -112,8 +112,9 @@ public class SuppressedWarningBlock extends Block {
     @Override
     @NotNull
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
-        return super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+    //return next state
+    public BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
+        return super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
     }
 
     @Override

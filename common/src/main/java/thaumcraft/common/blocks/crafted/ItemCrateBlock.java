@@ -88,12 +88,12 @@ public class ItemCrateBlock extends SuppressedWarningBlock implements SimpleWate
         return arg.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(arg);
     }
     @Override
-    public @NotNull BlockState updateShape(BlockState arg, Direction arg2, BlockState arg3, LevelAccessor arg4, BlockPos arg5, BlockPos arg6) {
-        if (arg.getValue(WATERLOGGED)) {
-            arg4.scheduleTick(arg5, Fluids.WATER, Fluids.WATER.getTickDelay(arg4));
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState arg3, LevelAccessor arg4, BlockPos selfPos, BlockPos changedPos) {
+        if (prevState.getValue(WATERLOGGED)) {
+            arg4.scheduleTick(selfPos, Fluids.WATER, Fluids.WATER.getTickDelay(arg4));
         }
 
-        return super.updateShape(arg, arg2, arg3, arg4, arg5, arg6);
+        return super.updateShape(prevState, changeFromDirection, arg3, arg4, selfPos, changedPos);
     }
 
     @Override

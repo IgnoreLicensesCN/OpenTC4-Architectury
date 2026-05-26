@@ -2,6 +2,7 @@ package thaumcraft.api.visnet;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -20,11 +21,13 @@ import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.PAREN
 import static thaumcraft.api.visnet.VisNetHandler.visNetNodeLookups;
 
 public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
-    public static final BlockPos NULL_POS_TO_WRITE = new BlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     public static final int DEFAULT_RANGE = 8;
     public static final Map<Level, Map<VisNetNodeTypeResourceLocation,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> DEFAULT_VIS_NET_NODE_LOOKUPS = new MapMaker().weakKeys().makeMap();
     static {
         visNetNodeLookups.add(DEFAULT_VIS_NET_NODE_LOOKUPS);
+    }
+    protected Map<Level, Map<VisNetNodeTypeResourceLocation,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> getVisNetNodeLookups() {
+        return DEFAULT_VIS_NET_NODE_LOOKUPS;
     }
     public VisNetNodeBlockEntity(BlockEntityType<? extends VisNetNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -36,7 +39,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
         var readPos = PARENT_POS_ACCESSOR.readFromCompoundTag(compoundTag);
-        if (readPos.equals(NULL_POS_TO_WRITE)) {
+        if (readPos.equals(BlockPosAccessor.NULL_POS_TO_WRITE)) {
             parentPos = null;
         }
         else {
@@ -48,7 +51,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         if (parentPos == null){
-            PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag,NULL_POS_TO_WRITE);
+            PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag, BlockPosAccessor.NULL_POS_TO_WRITE);
         }
         else{
             PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag, parentPos);
@@ -126,9 +129,9 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
                     this.parentPos = null;
                 }
             }
-
-
-
+            if (parentPos == null) {
+                findNewParent();
+            }
             if (!Objects.equals(parentPosBefore, this.parentPos)) {
                 parentChanged();
             }
@@ -142,7 +145,10 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     }
     public static final VisNetNodeComparator DEFAULT_NODE_PARENT_COMPARING = ((parent1, parent2, base) -> {
         var basePos = base.getBlockPos();
-        return Integer.compare(parent1.getBlockPos().distManhattan(basePos),parent2.getBlockPos().distManhattan(basePos));
+        return Integer.compare(
+                parent1.getBlockPos().distManhattan(basePos),
+                parent2.getBlockPos().distManhattan(basePos)
+        );
     });
     public void findNewParent() {
         AtomicReference<VisNetNodeBlockEntity> probablyBestParent = new AtomicReference<>(null);
@@ -169,12 +175,12 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
             if (lookupTypedMap == null) continue;
             var sourceLookup = lookupTypedMap.get(SOURCE);
             if (sourceLookup != null) {
-                sourceLookup.forItemsNearPos(selfPos,chooseNodeInLoop);
+                sourceLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
             }
             if (probablyBestParent.get() == null){
                 var relayLookup = lookupTypedMap.get(RELAY);
                 if (relayLookup != null) {
-                    relayLookup.forItemsNearPos(selfPos,chooseNodeInLoop);
+                    relayLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
                 }
             }
         }
@@ -209,12 +215,11 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public static final VisNetNodeTypeResourceLocation RELAY =
             VisNetNodeTypeResourceLocation.of("thaumcraft","relay");
 
-
     protected void storeToLookup(Level level){
         if (level != this.level){
             var pos = getBlockPos();
             if (this.level != null) {
-                var lookupWithType = DEFAULT_VIS_NET_NODE_LOOKUPS.get(this.level);
+                var lookupWithType = getVisNetNodeLookups().get(this.level);
                 if (lookupWithType != null) {
                     var lookup = lookupWithType.get(getVisNetNodeType());
                     if (lookup != null){
@@ -223,11 +228,35 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
                 }
             }
             if (level != null){
-                DEFAULT_VIS_NET_NODE_LOOKUPS.computeIfAbsent(
+                byte rangeBitsNeeded = 3;
+                int range = getRange();
+                while ((1<<rangeBitsNeeded) < range && rangeBitsNeeded < 28){
+                    rangeBitsNeeded += 1;
+                }
+                byte finalRangeBitsNeeded = rangeBitsNeeded;
+                getVisNetNodeLookups().computeIfAbsent(
                         level,
                         _ignored -> new HashMap<>()
-                ).computeIfAbsent(getVisNetNodeType(),_ignored -> new CubeChunkedWeakLookups<>((byte)3))
+                ).computeIfAbsent(getVisNetNodeType(),_ignored -> new CubeChunkedWeakLookups<>(finalRangeBitsNeeded))
                         .store(pos,this);
+
+            }
+        }
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        if (this.level != null){
+            var lookupWithType = getVisNetNodeLookups().get(this.level);
+            if (lookupWithType != null) {
+                var selfType = getVisNetNodeType();
+                if (selfType != null) {
+                    var lookup = lookupWithType.get(selfType);
+                    if (lookup != null) {
+                        lookup.remove(getBlockPos(),this);
+                    }
+                }
             }
         }
     }
