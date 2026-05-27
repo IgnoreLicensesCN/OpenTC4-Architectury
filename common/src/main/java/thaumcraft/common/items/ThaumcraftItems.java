@@ -261,7 +261,8 @@ public class ThaumcraftItems {
     public static final ArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
     public static final ArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
     public static final ArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
-    public static final BlockItem MIRROR = Registry.SUPPLIER_MIRROR.get();
+    public static final MirrorBlockItem MIRROR = Registry.SUPPLIER_MIRROR.get();
+    public static final MirrorBlockItem ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
 
 
     //===========================================================================================
@@ -971,10 +972,17 @@ public class ThaumcraftItems {
                 )
         );
 
-        public static final RegistrySupplier<BlockItem> SUPPLIER_MIRROR = ITEMS.register(
+        public static final RegistrySupplier<MirrorBlockItem> SUPPLIER_MIRROR = ITEMS.register(
                 "mirror",
-                () -> new BlockItem(
+                () -> new MirrorBlockItem(
                         ThaumcraftBlocks.MIRROR,
+                        new Item.Properties()
+                )
+        );
+        public static final RegistrySupplier<MirrorBlockItem> SUPPLIER_ESSENTIA_MIRROR = ITEMS.register(
+                "essentia_mirror",
+                () -> new MirrorBlockItem(
+                        ThaumcraftBlocks.ESSENTIA_MIRROR,
                         new Item.Properties()
                 )
         );

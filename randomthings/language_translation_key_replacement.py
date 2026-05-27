@@ -79,7 +79,9 @@ block_with_item_names = [
     ['tile.blockFluidDeath.name', 'death_fluid'],
     ['tile.blockHole.name','hole'],
     ['tile.blockLootUrn.name','urn_loot'],
-    ['tile.blockLootCrate.name','crate_loot']
+    ['tile.blockLootCrate.name','crate_loot'],
+    ['tile.blockMirror.0.name','mirror'],
+    ['tile.blockMirror.6.name','essentia_mirror']
 ]
 
 force_add_keys = {

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.levelledRemoteDrainables;
 
-//Infusion Matrix/Overchanting Table
+//Infusion Matrix/Overchanting Table/Essentia Mirror
 public interface IRemoteAspectDrainerBlockEntity<Asp extends Aspect> {
     //some may call different-world aspect draining?idk but imagine.
     default boolean canDrainAspectFromPos(
@@ -55,6 +55,8 @@ public interface IRemoteAspectDrainerBlockEntity<Asp extends Aspect> {
     @NotNull BlockPos getBlockPos();
 
     //return drained
+    //now for every drain each remote drainer would only be lookup for once for linear complexity
+    // (since mirror can be remote drain proxy and mirror may drain mirror which leads to chaos)
     default int drainEssentiaRemote(Aspect aspect, int range){
         return drainEssentiaRemote(aspect,1,range,new HashSet<>());
     }

@@ -11,22 +11,29 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.mirror.AbstractMirrorBlockEntity;
+import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
 
+import java.util.List;
 import java.util.Map;
 
 import static thaumcraft.common.blocks.crafted.jars.JarBlock.JAR_SOUND;
 
-public abstract class AbstractMirrorBlock extends SuppressedWarningBlock {
+public abstract class AbstractMirrorBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public AbstractMirrorBlock(Properties properties) {
         super(properties);
@@ -94,5 +101,31 @@ public abstract class AbstractMirrorBlock extends SuppressedWarningBlock {
                 }
             }
         }
+    }
+
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (!level.isClientSide()) {
+            return (level1, blockPos, blockState1, be) -> {
+                if (be instanceof AbstractMirrorBlockEntity mirror) {
+                    mirror.serverTick();
+                }
+            };
+        }
+        return null;
+    }
+
+    @Override
+    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
+        return List.of();//we will drop in BE
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractMirrorBlockEntity mirror) {
+            mirror.blockOnRemoved();
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 }

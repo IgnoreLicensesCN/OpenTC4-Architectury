@@ -7,50 +7,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
-
-import java.util.List;
 
 public class MirrorBlock extends AbstractMirrorBlock implements EntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new MirrorBlockEntity(blockPos,blockState);
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (!level.isClientSide()) {
-            return (level1, blockPos, blockState1, be) -> {
-                if (be instanceof MirrorBlockEntity mirror) {
-                    mirror.serverTick();
-                }
-            };
-        }
-        return null;
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof MirrorBlockEntity mirror) {
-            mirror.blockOnRemoved();
-        }
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
-    @Override
-    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
-        return List.of();//we will drop in BE
     }
 
     @Override
