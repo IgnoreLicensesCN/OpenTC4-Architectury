@@ -1,6 +1,6 @@
 package thaumcraft.common.items.misc;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -26,11 +26,15 @@ public class MirrorBlockItem extends BlockItem {
             var tag = itemStack.getTag();
             if (tag != null){
                 if (LINKED_POS.compoundTagHasKey(tag) && LINKED_DIM.compoundTagHasKey(tag)){
-                    list.add(Component.translatable("tooltip.thaumcraft.mirror.linked_to"));
-                    list.add(Component.literal(LINKED_POS.readFromCompoundTag(tag).toString()));
-                    list.add(Component.literal(LINKED_DIM.readFromCompoundTag(tag).toString()));
-                }
-                if (LINKED_DIM.compoundTagHasKey(tag)){
+                    list.add(Component.translatable("tooltip.thaumcraft.mirror.linked_to")
+                            .withStyle(ChatFormatting.GOLD)
+                    );
+                    list.add(Component.literal(LINKED_POS.readFromCompoundTag(tag).toString())
+                            .withStyle(ChatFormatting.GOLD)
+                    );
+                    list.add(Component.literal(LINKED_DIM.readFromCompoundTag(tag).toString())
+                            .withStyle(ChatFormatting.GOLD)
+                    );
                 }
             }
         }
