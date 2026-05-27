@@ -60,7 +60,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection fromAspectVisList vanilla crafting recipes.
+//	 * @param recipe a collection of vanilla crafting recipes.
 //	 */
 //	public ResearchPage(CraftingRecipe[] recipe) {
 //		this.type = PageType.NORMAL_CRAFTING;
@@ -68,7 +68,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection fromAspectVisList arcane crafting recipes.
+//	 * @param recipe a collection of arcane crafting recipes.
 //	 */
 //	public ResearchPage(IArcaneRecipe[] recipe) {
 //		this.type = PageType.ARCANE_CRAFTING;
@@ -76,7 +76,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection fromAspectVisList arcane crafting recipes.
+//	 * @param recipe a collection of arcane crafting recipes.
 //	 */
 //	public ResearchPage(CrucibleRecipe[] recipe) {
 //		this.type = PageType.CRUCIBLE_CRAFTING;
@@ -84,7 +84,7 @@ public abstract class ResearchPage {
 //	}
 //
 //	/**
-//	 * @param recipe a collection fromAspectVisList infusion crafting recipes.
+//	 * @param recipe a collection of infusion crafting recipes.
 //	 */
 //	public ResearchPage(InfusionRecipe[] recipe) {
 //		this.type = PageType.INFUSION_CRAFTING;
@@ -171,7 +171,7 @@ public abstract class ResearchPage {
 //	}
 	
 	/**
-	 * returns a localized text fromAspectVisList the text field (if one exists). Returns the text field itself otherwise.
+	 * returns a localized text of the text field (if one exists). Returns the text field itself otherwise.
 	 * @return
 	 */
 	public String getTranslatedText() {

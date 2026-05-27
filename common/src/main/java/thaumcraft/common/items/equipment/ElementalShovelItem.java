@@ -70,7 +70,7 @@ public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRe
 
 //    @Override
 //    public Set<ToolType> getToolTypes(ItemStack stack) {
-//        return ImmutableSet.fromAspectVisList(ToolType.SHOVEL);
+//        return ImmutableSet.of(ToolType.SHOVEL);
 //    }
 
 //    @Override

@@ -106,21 +106,21 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 	
 	/**
-	 * @return the amount fromAspectVisList different aspects in this collection
+	 * @return the amount of different aspects in this collection
 	 */
 	public int size() {
 		return aspects.size();
 	}
 	
 	/**
-	 * @return the amount fromAspectVisList total vis in this collection
+	 * @return the amount of total vis in this collection
 	 */
 	public int visSize() {
 		return visSize;
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) fromAspectVisList all the aspects in this collection
+	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection
 	 */
 	public Set<Asp> getAspectTypes() {
 		return aspects.keySet();
@@ -142,7 +142,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) fromAspectVisList all the aspects in this collection sorted by name
+	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by name
 	 * --from Hodgepodge
 	 */
 	public List<Asp> getAspectsSorted() {
@@ -155,7 +155,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 	
 	/**
-	 * @return an array(a list now because Asp[] is not so fine) fromAspectVisList all the aspects in this collection sorted by amount
+	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by amount
 	 */
 	public List<Asp> getAspectsSortedAmount() {
 		return aspectView.keySet().stream()
@@ -173,7 +173,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 	
 	/**
-	 * Reduces the amount fromAspectVisList an aspect in this collection by the given amount.
+	 * Reduces the amount of an aspect in this collection by the given amount.
 	 * @param key to remove
 	 * @param amount to remove
 	 * @return succeed(false if will lead to negative)
@@ -191,7 +191,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 	
 	/**
-	 * Reduces the amount fromAspectVisList an aspect in this collection by the given amount.
+	 * Reduces the amount of an aspect in this collection by the given amount.
 	 * If reduced to 0 or less the aspect will be removed completely. 
 	 * @param key to remove
 	 * @param amount to remove
@@ -303,7 +303,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	
 	/**
 	 * Adds this aspect and amount to the collection. 
-	 * If the aspect exists then only the highest fromAspectVisList the old or new amount will be used.
+	 * If the aspect exists then only the highest of the old or new amount will be used.
 	 * @param aspect to merge
 	 * @param amount to merge
 	 * @return self

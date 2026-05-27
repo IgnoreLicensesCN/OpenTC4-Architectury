@@ -68,7 +68,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     /**
      * Returns the bonus item produced from a smelting operation in the infernal furnace
      *
-     * @param in The input fromAspectVisList the smelting operation. e.g. new ItemStack(oreGold)
+     * @param in The input of the smelting operation. e.g. new ItemStack(oreGold)
      * @return the The bonus item that can be produced
      */
     public static ItemStack getSmeltingBonus(ItemStack in) {
@@ -89,7 +89,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     /**
      * This method is used to determine what bonus items are generated when the infernal furnace smelts items
      *
-     * @param in  The input fromAspectVisList the smelting operation. e.g. new ItemStack(Block.oreGold)
+     * @param in  The input of the smelting operation. e.g. new ItemStack(Block.oreGold)
      * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
      *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
      */
@@ -104,7 +104,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
     /**
      * This method is used to determine what bonus items are generated when the infernal furnace smelts items
      *
-     * @param in  The tag string input fromAspectVisList the smelting operation. e.g. "oreGold"
+     * @param in  The tag string input of the smelting operation. e.g. "oreGold"
      * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
      *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
      */
@@ -206,7 +206,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
                     putItemStackIntoEntity(entity, itemStack);
                 }
 
-                //maybe some fromAspectVisList you can play some redstone tricks?
+                //maybe some of you can play some redstone tricks?
                 //throw too high leads to it's so easy to push item to next furnace? idk
                 //but i must tell to others that THIS FURNACE HAS LIMITED CAPACITY.
                 entity.addDeltaMovement(new Vec3(0, 0.9, 0));

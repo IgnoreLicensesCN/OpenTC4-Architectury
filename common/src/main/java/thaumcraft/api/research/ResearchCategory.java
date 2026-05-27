@@ -57,8 +57,8 @@ public class ResearchCategory {
      * This should only be done at the PostInit stage
      * @param key the key used for this category
      * @param icon the icon to be used for the research category tab
-     * @param background the resource location fromAspectVisList the background image to use for this category
-     * @return the name fromAspectVisList the research linked to this key
+     * @param background the resource location of the background image to use for this category
+     * @return the name of the research linked to this key
      */
     public static void registerCategory(
             ResearchCategoryResourceLocation key,
@@ -71,7 +71,7 @@ public class ResearchCategory {
     }
 
     /**
-     * @return the name fromAspectVisList the research category linked to this key.
+     * @return the name of the research category linked to this key.
      * Must be stored as localization information in the LanguageRegistry.
      */
     public Component getCategoryName() {

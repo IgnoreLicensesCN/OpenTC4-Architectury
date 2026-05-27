@@ -1,25 +1,72 @@
 package com.linearity.opentc4.utils.vanilla1710;
 
+import com.linearity.opentc4.annotations.DegreeValue;
+import com.linearity.opentc4.annotations.RadianValue;
+
 import java.util.Random;
 
 public class MathHelper
 {
-    /** A table fromAspectVisList sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps fromAspectVisList 2*PI / 65536. */
-    private static float[] SIN_TABLE = new float[65536];
+    private static final double[] PERIODIC_TABLE = new double[512];
+    static {
+        for (int i=0;i<PERIODIC_TABLE.length;i++){
+            PERIODIC_TABLE[i] = i * Math.PI * 2.0 / PERIODIC_TABLE.length;
+        }
+    }
+
+    public static double getPeriodic(long i) {
+        return PERIODIC_TABLE[(int) (i&511)];
+    }
+
+    private static final double[] SIN_TABLE_IN_DEGREE = new double[360];
+    private static final float[] SIN_TABLE_IN_DEGREE_FLOAT = new float[360];
+    static {
+        for (int i = 0; i < 360; i++) {
+            SIN_TABLE_IN_DEGREE[i] = Math.sin(Math.PI*i / 180);
+            SIN_TABLE_IN_DEGREE_FLOAT[i] = (float) Math.sin(Math.PI*i / 180);
+        }
+    }
+    public static double sinForDegreeInDouble(@DegreeValue int degree) {
+        degree %= (360);
+        if (degree < 0) {
+            degree += 360;
+        }
+        return SIN_TABLE_IN_DEGREE[degree];
+    }
+    public static float sinForDegreeInFloat(@DegreeValue int degree) {
+        degree %= 360;
+        if (degree < 0) {
+            degree += 360;
+        }
+        return SIN_TABLE_IN_DEGREE_FLOAT[degree];
+    }
+
+    /** A table of sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps of 2*PI / 65536. */
+    private static final float[] SIN_TABLE = new float[65536];
     /**
-     * Though it looks like an array, this is really more like a mapping.  Key (index fromAspectVisList this array) is the upper 5 bits
-     * fromAspectVisList the result fromAspectVisList multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
-     * (value stored in the array) is the unique index (from the right) fromAspectVisList the leftmost one-bit in a 32-bit unsigned
-     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 fromAspectVisList
+     * Though it looks like an array, this is really more like a mapping.  Key (index of this array) is the upper 5 bits
+     * of the result of multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
+     * (value stored in the array) is the unique index (from the right) of the leftmost one-bit in a 32-bit unsigned
+     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 of
      * this number" calculations.
      */
     private static final int[] multiplyDeBruijnBitPosition;
+
+    static
+    {
+        for (int var0 = 0; var0 < 65536; ++var0)
+        {
+            SIN_TABLE[var0] = (float)Math.sin((double)var0 * Math.PI * 2.0D / 65536.0D);
+        }
+
+        multiplyDeBruijnBitPosition = new int[] {0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
+    }
     private static final String __OBFID = "CL_00001496";
 
     /**
      * sin looked up in a table
      */
-    public static final float sin(float p_76126_0_)
+    public static float sin(@RadianValue float p_76126_0_)
     {
         return SIN_TABLE[(int)(p_76126_0_ * 10430.378F) & 65535];
     }
@@ -27,17 +74,17 @@ public class MathHelper
     /**
      * cos looked up in the sin table with the appropriate offset
      */
-    public static final float cos(float p_76134_0_)
+    public static float cos(@RadianValue float p_76134_0_)
     {
         return SIN_TABLE[(int)(p_76134_0_ * 10430.378F + 16384.0F) & 65535];
     }
 
-    public static final float sqrt_float(float p_76129_0_)
+    public static float sqrt_float(float p_76129_0_)
     {
         return (float)Math.sqrt((double)p_76129_0_);
     }
 
-    public static final float sqrt_double(double p_76133_0_)
+    public static float sqrt_double(double p_76133_0_)
     {
         return (float)Math.sqrt(p_76133_0_);
     }
@@ -70,7 +117,7 @@ public class MathHelper
     }
 
     /**
-     * Long version fromAspectVisList floor_double
+     * Long version of floor_double
      */
     public static long floor_double_long(double p_76124_0_)
     {
@@ -90,7 +137,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the unsigned value fromAspectVisList an int.
+     * Returns the unsigned value of an int.
      */
     public static int abs_int(int p_76130_0_)
     {
@@ -110,7 +157,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value fromAspectVisList the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters.
      */
     public static int clamp_int(int p_76125_0_, int p_76125_1_, int p_76125_2_)
@@ -119,7 +166,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value fromAspectVisList the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters
      */
     public static float clamp_float(float p_76131_0_, float p_76131_1_, float p_76131_2_)
@@ -138,7 +185,7 @@ public class MathHelper
     }
 
     /**
-     * Maximum fromAspectVisList the absolute value fromAspectVisList two numbers.
+     * Maximum of the absolute value of two numbers.
      */
     public static double abs_max(double p_76132_0_, double p_76132_2_)
     {
@@ -165,7 +212,7 @@ public class MathHelper
     }
 
     /**
-     * Tests if a string is null or fromAspectVisList length zero
+     * Tests if a string is null or of length zero
      */
     
     public static boolean stringNullOrLengthZero(String p_76139_0_)
@@ -327,7 +374,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the input value rounded up to the next highest power fromAspectVisList two.
+     * Returns the input value rounded up to the next highest power of two.
      */
     
     public static int roundUpToPowerOfTwo(int p_151236_0_)
@@ -342,7 +389,7 @@ public class MathHelper
     }
 
     /**
-     * Is the given value a power fromAspectVisList two?  (1, 2, 4, 8, 16, ...)
+     * Is the given value a power of two?  (1, 2, 4, 8, 16, ...)
      */
     
     private static boolean isPowerOfTwo(int p_151235_0_)
@@ -351,8 +398,8 @@ public class MathHelper
     }
 
     /**
-     * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two fromAspectVisList the given
-     * value.  Optimized for cases where the input value is a power-fromAspectVisList-two.  If the input value is not a power-fromAspectVisList-two,
+     * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
+     * value.  Optimized for cases where the input value is a power-of-two.  If the input value is not a power-of-two,
      * then subtract 1 from the return value.
      */
     
@@ -396,13 +443,4 @@ public class MathHelper
         }
     }
 
-    static
-    {
-        for (int var0 = 0; var0 < 65536; ++var0)
-        {
-            SIN_TABLE[var0] = (float)Math.sin((double)var0 * Math.PI * 2.0D / 65536.0D);
-        }
-
-        multiplyDeBruijnBitPosition = new int[] {0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
-    }
 }

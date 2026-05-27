@@ -1,7 +1,9 @@
 package thaumcraft.api.aspects;
 
 
+import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -9,7 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSourceS2C;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Azanor
@@ -21,6 +26,20 @@ import java.util.Set;
  */
 public interface IRemoteDrainableAspectSourceBlockEntity<Asp extends Aspect>
         /*extends IAspectContainerBlockEntity<Asp>*/ {
+    Map<Level, CubeChunkedWeakLookups<IRemoteDrainableAspectSourceBlockEntity<? extends Aspect>>> levelledRemoteDrainables
+            = new MapMaker().weakKeys().makeMap();
+
+    static void registerToRemoteDrainables(@NotNull Level level, BlockPos pos, IRemoteDrainableAspectSourceBlockEntity<? extends Aspect> drainable) {
+               levelledRemoteDrainables.computeIfAbsent(level,_ignored -> new CubeChunkedWeakLookups<>((byte)4)).store(pos,drainable);
+            }
+
+    static void unregisterFromRemoteDrainables(@NotNull Level level, BlockPos pos, IRemoteDrainableAspectSourceBlockEntity<? extends Aspect> drainable) {
+               var levelled = levelledRemoteDrainables.get(level);
+               if (levelled != null) {
+                  levelled.remove(pos, drainable);
+               }
+            }
+
     //check with method above first.
     //@return false if drain failed
     int drainAspectRemote(Asp aspect, int amount, @Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers);
@@ -41,4 +60,5 @@ public interface IRemoteDrainableAspectSourceBlockEntity<Asp extends Aspect>
             fxPacket.sendToAllAround(serverLevel,aspectDrainer.getBlockPos(),32*32);
         }
     }
+
 }

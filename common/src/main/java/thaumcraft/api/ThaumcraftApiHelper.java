@@ -176,7 +176,7 @@ public class ThaumcraftApiHelper {
 //     *
 //     * @param wand     the wand itemstack
 //     * @param player   the player using the wand
-//     * @param cost     the cost fromAspectVisList the operation.
+//     * @param cost     the cost of the operation.
 //     * @param doit     actually subtract the vis from the wand if true - if false just simulate the result
 //     * @param crafting is this a crafting operation or not - if
 //     *                 false then things like frugal and potency will apply to the costs
@@ -195,7 +195,7 @@ public class ThaumcraftApiHelper {
 //     *
 //     * @param wand   the wand itemstack
 //     * @param player the player using the wand
-//     * @param cost   the cost fromAspectVisList the operation.
+//     * @param cost   the cost of the operation.
 //     * @param doit   actually subtract the vis from the wand if true - if false just simulate the result
 //     * @return was the vis successfully subtracted
 //     */
@@ -211,7 +211,7 @@ public class ThaumcraftApiHelper {
 //     * frugal don't effect them
 //     *
 //     * @param player the player using the wand
-//     * @param cost   the cost fromAspectVisList the operation.
+//     * @param cost   the cost of the operation.
 //     * @return was the vis successfully subtracted
 //     */
 //    @Deprecated(forRemoval = true)
@@ -225,7 +225,7 @@ public class ThaumcraftApiHelper {
 //     *
 //     * @param player    the player using the wand
 //     * @param amount    how much warp to add. Negative amounts are only valid for temporary warp
-//     * @param temporary add temporary warp instead fromAspectVisList permanent
+//     * @param temporary add temporary warp instead of permanent
 //     */
 //    @Deprecated(forRemoval = true,since = "use Thaumcraft#addWarpToPlayer")
 //    public static void addWarpToPlayer(Player player, int amount, boolean temporary) {

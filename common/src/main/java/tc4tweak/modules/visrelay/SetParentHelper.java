@@ -3,7 +3,7 @@ package tc4tweak.modules.visrelay;
 public class SetParentHelper {
 
 //    public static void setParent(TileVisNode parent, TileVisNode child) {
-//        OpenTC4.LOGGER.trace("Force set parent fromAspectVisList {} ({}) to {} ({})", child.getClass().getSimpleName(), child.getBlockPos(), parent.getClass().getSimpleName(), parent.getBlockPos());
+//        OpenTC4.LOGGER.trace("Force set parent of {} ({}) to {} ({})", child.getClass().getSimpleName(), child.getBlockPos(), parent.getClass().getSimpleName(), parent.getBlockPos());
 //        WeakReference<TileVisNode> ref = new WeakReference<>(child);
 //        child.setParent(new WeakReference<>(parent));
 //        parent.getChildren().add(ref);

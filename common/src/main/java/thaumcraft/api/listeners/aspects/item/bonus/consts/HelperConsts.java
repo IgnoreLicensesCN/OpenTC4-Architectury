@@ -53,7 +53,7 @@ public class HelperConsts {
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.LOYALTY, UnmodifiableAspectList.of(Aspects.MIND));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.IMPALING, UnmodifiableAspectList.of(Aspects.WEAPON, Aspects.MOTION));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.RIPTIDE, UnmodifiableAspectList.of(Aspects.WATER, Aspects.MOTION));//added
-        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, UnmodifiableAspectList.of(Aspects.WEATHER, Aspects.ENTROPY));//added,a source fromAspectVisList weather aspect
+        ENCHANTMENT_ASPECT_MAP.put(Enchantments.CHANNELING, UnmodifiableAspectList.of(Aspects.WEATHER, Aspects.ENTROPY));//added,a source of weather aspect
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.MULTISHOT,UnmodifiableAspectList.of(Aspects.WEAPON, Aspects.ORDER));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.QUICK_CHARGE,UnmodifiableAspectList.of(Aspects.MECHANISM, Aspects.MOTION));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.PIERCING,UnmodifiableAspectList.of(Aspects.WEAPON, Aspects.ENTROPY));//added

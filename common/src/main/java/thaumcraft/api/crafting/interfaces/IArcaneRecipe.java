@@ -77,12 +77,12 @@ public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputS
     boolean matches(IArcaneWorkbenchContainer var1, Level world, Player player);
 
     /**
-     * Returns an Item that is the result fromAspectVisList this recipe
+     * Returns an Item that is the result of this recipe
      */
     ItemStack getCraftingResult(IArcaneWorkbenchContainer var1);
 
     /**
-     * Returns the size fromAspectVisList the recipe area
+     * Returns the size of the recipe area
      */
     int getRecipeSize();
 

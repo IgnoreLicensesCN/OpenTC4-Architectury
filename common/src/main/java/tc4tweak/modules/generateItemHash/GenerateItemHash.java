@@ -61,8 +61,8 @@ public class GenerateItemHash {
     }
 
     /**
-     * Replacement fromAspectVisList {@link thaumcraft.common.lib.research.ScanManager#generateItemHash(Item, int)}.
-     * Basically remove all string creation. Blocks fromAspectVisList logic is rearranged to minimize unnecessary hash generation
+     * Replacement of {@link thaumcraft.common.lib.research.ScanManager#generateItemHash(Item, int)}.
+     * Basically remove all string creation. Blocks of logic is rearranged to minimize unnecessary hash generation
      * The returned hash code should be the same.
      * <p>
      * ALERT!!!

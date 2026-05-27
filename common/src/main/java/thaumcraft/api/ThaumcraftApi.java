@@ -50,7 +50,7 @@ public class ThaumcraftApi {
     //Miscellaneous
     /**
      * Portable Hole Block-id Blacklist.
-     * Simply add the block-id's fromAspectVisList blocks you don't want the portable hole to go through.
+     * Simply add the block-id's of blocks you don't want the portable hole to go through.
      */
     public static ArrayList<Block> portableHoleBlackList = new ArrayList<>();
 
@@ -200,7 +200,7 @@ public class ThaumcraftApi {
 //     * Used to assign apsects to the given ore dictionary item.
 //     *
 //     * @param tagString the ore dictionary name
-//     * @param aspects   A ObjectTags object fromAspectVisList the associated aspects
+//     * @param aspects   A ObjectTags object of the associated aspects
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
@@ -219,12 +219,12 @@ public class ThaumcraftApi {
 //    /**
 //     * Used to assign aspects to the given item/block.
 //     * Attempts to automatically generate aspect tags by checking registered recipes.
-//     * Here is an example fromAspectVisList the declaration for pistons:<p>
+//     * Here is an example of the declaration for pistons:<p>
 //     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
 //     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
 //     *
-//     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values fromAspectVisList this item/block should have the same aspects
-//     * @param aspects A ObjectTags object fromAspectVisList the associated aspects
+//     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects
+//     * @param aspects A ObjectTags object of the associated aspects
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerComplexObjectTag(ItemStack item, AspectList<Aspect> aspects) {
@@ -289,14 +289,14 @@ public class ThaumcraftApi {
     //LOOT BAGS //////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Used to add possible loot to treasure bags. As a reference, the weight fromAspectVisList gold coins are 2000
+     * Used to add possible loot to treasure bags. As a reference, the weight of gold coins are 2000
      * and a diamond is 50.
      * The weights are the same for all loot bag types - the only difference is how many items the bag
      * contains.
      *
      * @param item
      * @param weight
-     * @param bagTypes array fromAspectVisList which type fromAspectVisList bag to add this loot to. Multiple types can be specified
+     * @param bagTypes array of which type of bag to add this loot to. Multiple types can be specified
      *                 0 = common, 1 = uncommon, 2 = rare
      */
     @Deprecated(forRemoval = true,since = "add directly to lootBagCommon/lootBagUncommon/lootBagRare")
@@ -329,9 +329,9 @@ public class ThaumcraftApi {
      * The format should be:
      * "[ore item/block id],[ore item/block metadata],[cluster item/block id],[cluster item/block metadata],[chance modifier float]"
      *
-     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe fromAspectVisList the core)
+     * NOTE: The chance modifier is a multiplier applied to the default chance for that cluster to be produced (default 27.5% for a pickaxe of the core)
      *
-     * Example for vanilla iron ore to produce one fromAspectVisList my own native iron clusters (assuming default id's) at double the default chance:
+     * Example for vanilla iron ore to produce one of my own native iron clusters (assuming default id's) at double the default chance:
      * FMLInterModComms.sendMessage("Thaumcraft", "nativeCluster","15,0,25016,16,2.0");
      */
 
@@ -369,7 +369,7 @@ public class ThaumcraftApi {
      * The entity must extend EntityMob.
      * [Entity] is in a similar format to what is used for mob spawners and such (see EntityList.class for vanilla examples).
      * The [level] value indicate how rare the champion version will be - the higher the number the more common.
-     * The number roughly equals the [n] in 100 chance fromAspectVisList a mob being a champion version.
+     * The number roughly equals the [n] in 100 chance of a mob being a champion version.
      * You can give 0 or negative numbers to allow champions to spawn with a very low chance only in particularly dangerous places.
      * However anything less than about -2 will probably result in no spawns at all.
      * Example:

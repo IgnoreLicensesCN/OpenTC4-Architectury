@@ -1,6 +1,5 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
-import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.EssentiaReservoirBlockEntityClientAccessor;
 import net.minecraft.core.BlockPos;
@@ -9,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +19,11 @@ import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import java.util.Map;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
+import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
 
 public class EssentiaReservoirBlockEntity extends TileThaumcraft
         implements
@@ -382,5 +383,25 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
     public int getGooAndGasAmountOnRemove(){
         return owningAspects.visSize() / 16;
+    }
+
+
+    @Override
+    public void setLevel(Level level) {
+        if (this.level != level && this.level != null) {
+            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
+        }
+        super.setLevel(level);
+        if (this.level != null) {
+            registerToRemoteDrainables(this.level,getBlockPos(),this);
+        }
+    }
+
+    @Override
+    public void setRemoved() {
+        if (this.level != null) {
+            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
+        }
+        super.setRemoved();
     }
 }

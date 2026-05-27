@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,8 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
+import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
 
 //maybe i should make an AbstractEssentiaJarBlockEntity
 public class EssentiaJarBlockEntity extends TileThaumcraft
@@ -48,7 +51,26 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
 
     protected @NotNull Aspect aspectCurrent = Aspects.EMPTY;
 
-    public void setAspectAndAmount(@NotNull Aspect aspectCurrent,int aspectAmountCurrent) {
+    @Override
+    public void setLevel(Level level) {
+        if (this.level != level && this.level != null) {
+            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
+        }
+        super.setLevel(level);
+        if (this.level != null) {
+            registerToRemoteDrainables(this.level,getBlockPos(),this);
+        }
+    }
+
+    @Override
+    public void setRemoved() {
+        if (this.level != null) {
+            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
+        }
+        super.setRemoved();
+    }
+
+    public void setAspectAndAmount(@NotNull Aspect aspectCurrent, int aspectAmountCurrent) {
         if (aspectAmountCurrent <= 0 || aspectCurrent.isEmpty()) {
             this.aspectCurrent = Aspects.EMPTY;
             this.aspectAmountCurrent = 0;

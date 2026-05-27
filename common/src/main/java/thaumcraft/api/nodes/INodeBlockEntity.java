@@ -15,13 +15,13 @@ public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<A
 	AspectList<Aspect> getAspectsBase();
 	
 	/**
-	 * Return the type fromAspectVisList node
+	 * Return the type of node
 	 * @return
 	 */
     NodeType getNodeType();
 
 	/**
-	 * Set the type fromAspectVisList node
+	 * Set the type of node
 	 * @return
 	 */
     void setNodeType(NodeType nodeType);
@@ -39,13 +39,13 @@ public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<A
     NodeModifier getNodeModifier();
 		
 	/**
-	 * Return the maximum capacity fromAspectVisList each aspect the node can hold
+	 * Return the maximum capacity of each aspect the node can hold
 	 * @return
 	 */
     int getNodeVisBase(Aspect aspect);
 
 	/**
-	 * Set the maximum capacity fromAspectVisList each aspect the node can hold
+	 * Set the maximum capacity of each aspect the node can hold
 	 * @return
 	 */
     void setNodeVisBase(Aspect aspect, short nodeVisBase);

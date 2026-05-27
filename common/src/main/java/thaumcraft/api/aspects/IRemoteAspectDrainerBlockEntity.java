@@ -5,10 +5,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.levelledRemoteDrainables;
 
 //Infusion Matrix/Overchanting Table
 public interface IRemoteAspectDrainerBlockEntity<Asp extends Aspect> {
@@ -19,22 +21,65 @@ public interface IRemoteAspectDrainerBlockEntity<Asp extends Aspect> {
             Asp aspect,
             @Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers//plz dont make it StackOverFlow.
     ){
+        if (pos.distSqr(getBlockPos()) > getDrainRange() * getDrainRange()) {return false;}
         metDrainers.add(this);
         var toDrainBE = level.getBlockEntity(pos);
         return toDrainBE instanceof IRemoteDrainableAspectSourceBlockEntity<? extends Aspect>
                 && !(toDrainBE instanceof IRemoteAspectDrainerBlockEntity<? extends Aspect> drainer && metDrainers.contains(drainer))
                 ;
     };
-    //maybe suitable for thaumic insurgence InfusionInterceptor (especially GTNH one)
-    //but remember to call BE update this time.
-    @NotNull
-    @UnmodifiableView
-    AspectList<Asp> getAspectsRequired(Asp aspect);
-    void drainAspectFrom(Level level, BlockPos pos, Asp aspect, int amount);
-    //needs imagination to use.
-    default int aspectAmountCanDrainPerTick(Asp aspect) {
-        return 1;
-    }
+    //return amount drained
+    default int drainAspect(IRemoteDrainableAspectSourceBlockEntity<? extends Aspect> drainable, Asp aspect, int amount,Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> drainerMet){
+        if (!canDrainAspectFromPos(
+                drainable.getLevel(),
+                drainable.getBlockPos(),
+                aspect,
+                drainerMet
+        )){
+            return 0;
+        }
+        int drained = ((IRemoteDrainableAspectSourceBlockEntity<Aspect>)drainable)
+                .drainAspectRemote(
+                        aspect,
+                        amount,
+                        drainerMet
+                );
+        if (drained > 0){
+            drainable.playDrainEffect(this,aspect);
+        }
+        return drained;
+    };
+    int getDrainRange();
+
     @Nullable Level getLevel();
     @NotNull BlockPos getBlockPos();
+
+    //return drained
+    default int drainEssentiaRemote(Aspect aspect, int range){
+        return drainEssentiaRemote(aspect,1,range,new HashSet<>());
+    }
+    //return drained
+    default int drainEssentiaRemote(Aspect aspect,int amount, int range,Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> drainerMet) {
+        var level = this.getLevel();
+        if (level == null) return 0;
+        var lookup = levelledRemoteDrainables.get(level);
+        if (lookup == null) return 0;
+        var drainerPos = this.getBlockPos();
+        AtomicInteger toDrain = new AtomicInteger(amount);
+
+        drainerMet.add(this);
+
+        lookup.forItemsNearPosWithBreakWithRange(
+                drainerPos,
+                drainable -> {
+                    int drained = ((IRemoteAspectDrainerBlockEntity<Aspect>)this)
+                            .drainAspect(drainable,aspect,toDrain.get(),drainerMet);
+                    return toDrain.addAndGet(
+                            -drained
+                    ) <= 0;
+                },
+                range
+        );
+        return amount - toDrain.get();
+    }
 }

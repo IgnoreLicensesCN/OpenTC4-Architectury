@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @param aspects What aspects are used to calculate the cost fromAspectVisList this upgrade.
+ * @param aspects What aspects are used to calculate the cost of this upgrade.
  *                The amounts given is ignored,
  *                just the type is used for the calculation.
  */

@@ -94,7 +94,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
             int var3 = row + column * 3;
             return this.getItem(var3);
         } else {
-            throw new IndexOutOfBoundsException("row: " + row + ", column: " + column + "out fromAspectVisList bound");
+            throw new IndexOutOfBoundsException("row: " + row + ", column: " + column + "out of bound");
         }
     }
     @Override

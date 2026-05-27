@@ -150,11 +150,19 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
                 parent2.getBlockPos().distManhattan(basePos)
         );
     });
+    protected final boolean nodeWontConnectToSelf(VisNetNodeBlockEntity another){
+        var parentForAnother = another.getParent();
+        if (parentForAnother == null) return true;
+        if (parentForAnother == this) return false;
+        return nodeWontConnectToSelf(parentForAnother);
+    }
     public void findNewParent() {
         AtomicReference<VisNetNodeBlockEntity> probablyBestParent = new AtomicReference<>(null);
         final Consumer<VisNetNodeBlockEntity> chooseNodeInLoop = (anotherNode) -> {
             if (anotherNode.canConnect(VisNetNodeBlockEntity.this)
-                    && VisNetNodeBlockEntity.this.canConnect(anotherNode)) {
+                    && VisNetNodeBlockEntity.this.canConnect(anotherNode)
+                    && nodeWontConnectToSelf(anotherNode)
+            ) {
                 var currentParent = probablyBestParent.get();
                 if (currentParent == null) {
                     probablyBestParent.set(anotherNode);

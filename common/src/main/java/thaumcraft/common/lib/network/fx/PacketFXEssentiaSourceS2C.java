@@ -1,11 +1,11 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.Minecraft;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 
 public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
 
@@ -19,8 +19,12 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
    private final byte dy;
    private final byte dz;
    private final int color;
+   private final byte mod;
 
    public PacketFXEssentiaSourceS2C(int x, int y, int z, byte dx, byte dy, byte dz, int color) {
+      this(x, y, z, dx, dy, dz, color, (byte) 0);
+   }
+   public PacketFXEssentiaSourceS2C(int x, int y, int z, byte dx, byte dy, byte dz, int color, byte mod) {
       this.x = x;
       this.y = y;
       this.z = z;
@@ -28,6 +32,7 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
       this.dy = dy;
       this.dz = dz;
       this.color = color;
+      this.mod = mod;
    }
 
    @Override
@@ -48,6 +53,7 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
       buf.writeByte(msg.dx);
       buf.writeByte(msg.dy);
       buf.writeByte(msg.dz);
+      buf.writeInt(msg.mod);
    }
 
    public static PacketFXEssentiaSourceS2C decode(FriendlyByteBuf buf) {
@@ -58,7 +64,8 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
       byte dx = buf.readByte();
       byte dy = buf.readByte();
       byte dz = buf.readByte();
-      return new PacketFXEssentiaSourceS2C(x, y, z, dx, dy, dz, color);
+      byte mod = buf.readByte();
+      return new PacketFXEssentiaSourceS2C(x, y, z, dx, dy, dz, color,mod);
    }
 
    @Override
@@ -66,24 +73,11 @@ public class PacketFXEssentiaSourceS2C extends ThaumcraftBaseS2CMessage {
       int tx = this.x - this.dx;
       int ty = this.y - this.dy;
       int tz = this.z - this.dz;
-
-      String key = x + ":" + y + ":" + z + ":" + tx + ":" + ty + ":" + tz + ":" + color;
-
-      if (EssentiaRemoteDrainHandler.sourceFX.containsKey(key)) {
-         EssentiaRemoteDrainHandler.EssentiaSourceFX sf = EssentiaRemoteDrainHandler.sourceFX.get(key);
-         sf.ticks = 15;
-         EssentiaRemoteDrainHandler.sourceFX.remove(key);
-         EssentiaRemoteDrainHandler.sourceFX.put(key, sf);
-      } else {
-         EssentiaRemoteDrainHandler.sourceFX.put(
-                 key,
-                 new EssentiaRemoteDrainHandler.EssentiaSourceFX(
-                         new BlockPos(x,y, z),
-                         new BlockPos(tx,ty, tz),
-                         15,
-                         color
-                 )
-         );
+      var level = Minecraft.getInstance().level;
+      if (level == null) {
+         return;
       }
+
+      ClientFXUtils.essentiaTrailFx(level, tx, ty, tz,x, y + mod, z, color);
    }
 }

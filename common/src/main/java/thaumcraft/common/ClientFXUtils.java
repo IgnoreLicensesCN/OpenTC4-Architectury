@@ -698,7 +698,10 @@ public class ClientFXUtils {
 
     }
 
-    public static void essentiaTrailFx(ClientLevel worldObj, int x, int y, int z, int x2, int y2, int z2, int count, int color, float scale) {
+    public static void essentiaTrailFx(ClientLevel worldObj, int x, int y, int z, int x2, int y2, int z2, int color){
+        essentiaTrailFx(worldObj, x, y, z, x2, y2, z2,15, color, 1);
+    }
+    public static void essentiaTrailFx(ClientLevel worldObj, int x, int y, int z, int x2, int y2, int z2,int countOffset, int color, float scale) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -710,7 +713,7 @@ public class ClientFXUtils {
                 (double) x2 + (double) 0.5F,
                 (double) y2 + (double) 0.5F,
                 (double) z2 + (double) 0.5F,
-                count,
+                countOffset,
                 color,
                 scale
         );

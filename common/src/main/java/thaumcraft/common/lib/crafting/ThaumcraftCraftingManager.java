@@ -478,7 +478,7 @@ public class ThaumcraftCraftingManager {
                     manager.getAllRecipesFor(RecipeType.CRAFTING)
                             .forEach(recipe -> {
                                 var resultStack = recipe.getResultItem(level.registryAccess());
-                                if (!resultStack.is(item)) {return;}//fromAspectVisList course recipe need to match item we expect for.
+                                if (!resultStack.is(item)) {return;}//of course recipe need to match item we expect for.
                                 List<ItemStack> ingredients = new ArrayList<>();
                                 NonNullList<Ingredient> ingredientsInternal = recipe.getIngredients();
                                 for (var ingredientInner : ingredientsInternal) {

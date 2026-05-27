@@ -24,7 +24,7 @@ import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeF
  * <p>no extend now</p>
  * @author Azanor
  * ThaumcraftItems, armor and tools with this interface can receive the Repair enchantment.
- * Repairs 1 point fromAspectVisList durability every 10 seconds (2 for repair II)
+ * Repairs 1 point of durability every 10 seconds (2 for repair II)
  */
 public interface IRepairable {
 

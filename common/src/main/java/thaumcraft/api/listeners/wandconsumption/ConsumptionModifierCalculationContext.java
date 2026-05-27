@@ -8,13 +8,13 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 public class ConsumptionModifierCalculationContext {
     /**
-     * after all fromAspectVisList these listeners,we have the percent fromAspectVisList cost.
+     * after all of these listeners,we have the percent of cost.
      * @param casting the casting using.may not be WandCastingItem
-     * @param wandStack itemstack fromAspectVisList the wand
+     * @param wandStack itemstack of the wand
      * @param user the user using wand.
      * @param aspect the aspect costing.each (primal aspect) will be calculated separately.
      * @param crafting if this operation is crafting item.
-     * @param currentConsumption current consumption percent fromAspectVisList this operation(will pass to after_.
+     * @param currentConsumption current consumption percent of this operation(will pass to after_.
      */
     public final Item casting;
     public final ItemStack wandStack;

@@ -21,7 +21,7 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
 
    public static class FakeThaumcraftPlayerFactory {
 //      private static final GameProfile MINECRAFT = new GameProfile(UUID.fromString("41C82C87-7AfB-4024-BA57-13D2C99CAE77"), "[Minecraft]");
-      // Map fromAspectVisList all active fake player usernames to their entities
+      // Map of all active fake player usernames to their entities
       private static final Map<GameProfile, FakeThaumcraftPlayer> fakeThaumcraftPlayers = new MapMaker().weakValues().makeMap();
 //      private static FakeThaumcraftPlayer MINECRAFT_PLAYER = null;
 //

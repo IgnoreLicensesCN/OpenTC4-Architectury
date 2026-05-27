@@ -7,22 +7,45 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
 import thaumcraft.client.fx.migrated.ThaumcraftParticle;
+import thaumcraft.common.ClientFXUtils;
 
 
 public class FXEssentiaTrail extends ThaumcraftParticle {
     private final double targetX;
     private final double targetY;
     private final double targetZ;
-    private final int count;
+    private final double startX;
+    private final double startY;
+    private final double startZ;
+    private final int color;
+    private final long count;
+    private int countOffset;
+    private float getScaleForCountOffset(int countOffset){
+        if (countOffset > 5){
+            return 1;
+        }else {
+            return countOffset * countOffset / 25.F;
+        }
+    }
     public int particle = 24;
-
     public FXEssentiaTrail(
             ClientLevel par1World, double par2, double par4, double par6,
-            double tx, double ty, double tz, int count, int color, float scale
+            double tx, double ty, double tz, int color, float scale
+    ){
+        this(par1World,par2,par4,par6,tx,ty,tz,15,color,scale);
+    }
+    public FXEssentiaTrail(
+            ClientLevel par1World, double par2, double par4, double par6,
+            double tx, double ty, double tz,int countOffset, int color, float scale
     ) {
         super(par1World, par2, par4, par6, 0.0F, 0.0F, 0.0F);
+        this.color = color;
+        this.startX = par2;
+        this.startY = par4;
+        this.startZ = par6;
+        long count = level.getGameTime() + countOffset;
+        this.quadSize = (float) ((MathHelper.getPeriodic( count * 41) * 0.1F + 1.0F) * scale);//TODO:Change 41 to performance-friendly value
         this.rCol = this.gCol = this.bCol = 0.6F;
-        this.quadSize = (MathHelper.sin((float) count / 2.0F) * 0.1F + 1.0F) * scale;
         this.count = count;
         this.targetX = tx;
         this.targetY = ty;
@@ -36,11 +59,9 @@ public class FXEssentiaTrail extends ThaumcraftParticle {
         }
 
         this.lifetime = base / 2 + this.random.nextInt(base);
-        this.xd = (double) (MathHelper.sin(
-                (float) count / 4.0F) * 0.015F) + this.random.nextGaussian() * (double) 0.002F;
-        this.yd = 0.1F + MathHelper.sin((float) count / 3.0F) * 0.01F;
-        this.zd = (double) (MathHelper.sin(
-                (float) count / 2.0F) * 0.015F) + this.random.nextGaussian() * (double) 0.002F;
+        this.xd = (MathHelper.getPeriodic(count * 20) * 0.015F) + this.random.nextGaussian() * (double) 0.002F;
+        this.yd = 0.1F + MathHelper.getPeriodic( count *27) * 0.01F;
+        this.zd = (MathHelper.getPeriodic(count * 41) * 0.015F) + this.random.nextGaussian() * (double) 0.002F;
         Color c = new Color(color);
         float mr = (float) c.getRed() / 255.0F * 0.2F;
         float mg = (float) c.getGreen() / 255.0F * 0.2F;
@@ -102,10 +123,23 @@ public class FXEssentiaTrail extends ThaumcraftParticle {
                 this.zd += dz * (d13 / Math.min(1.0F, d11));
             }
         }
+        if (this.countOffset > 1) {
+            var nextTickCount = this.countOffset - 1;
+
+            ClientFXUtils.essentiaTrailFx(this.level,
+                    (int) this.startX, (int)this.startY, (int)this.startZ,
+                    (int) this.targetX, (int) this.targetY, (int) this.targetZ,
+                    nextTickCount>=5?0:-(5-this.countOffset),
+                    this.color,
+                    getScaleForCountOffset(nextTickCount)
+            );
+        }
+        this.countOffset = -1;
     }
 
     //   //Right = ( f1,  0, f3 )
 //   //Up    = ( f4, f2, f5 )
+
     @Override
     public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
         float t2 = 0.5625F;
@@ -119,7 +153,7 @@ public class FXEssentiaTrail extends ThaumcraftParticle {
         var f4 = upVec.x;
         var f2 = upVec.y;
         var f5 = upVec.z;
-        float s = MathHelper.sin((float) (this.age - this.count) / 5.0F) * 0.25F + 1.0F;
+        float s = (float) (MathHelper.getPeriodic( (this.age - this.count) *16) * 0.25F + 1.0F);
         float var12 = 0.1F * this.quadSize * s;
         var cameraPos = camera.getPosition();
         float var13 = (float) (this.xo + (this.x - this.xo) * (double) partialTicks - cameraPos.x);
