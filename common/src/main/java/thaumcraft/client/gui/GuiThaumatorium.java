@@ -146,7 +146,7 @@ public class GuiThaumatorium extends GuiContainer {
                GL11.glPushMatrix();
                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                this.drawTexturedModalRect(k + 41 + 16 * pos, l + 57, 176, 8, 14, 6);
-               int i1 = (int)((float)this.inventory.essentia.getAmount(aspect) / (float) this.container.recipes.get(this.index).aspects.getAmount(aspect) * 12.0F);
+               int i1 = (int)((float)this.inventory.essentia.getAmount(aspect) / (float) this.container.recipes.get(this.index).aspects.get(aspect) * 12.0F);
                Color c = new Color(aspect.getColor());
                GL11.glColor4f((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F, 1.0F);
                this.drawTexturedModalRect(k + 42 + 16 * pos, l + 58, 176, 0, i1, 4);
@@ -166,7 +166,7 @@ public class GuiThaumatorium extends GuiContainer {
 
       for(Aspect aspect : this.container.recipes.get(this.index).aspects.getAspectsSorted()) {
          if (count >= this.startAspect) {
-            UtilsFX.drawTag(k + 40 + 16 * pos, l + 40, aspect, (float) this.container.recipes.get(this.index).aspects.getAmount(aspect), 0, this.zLevel);
+            UtilsFX.drawTag(k + 40 + 16 * pos, l + 40, aspect, (float) this.container.recipes.get(this.index).aspects.get(aspect), 0, this.zLevel);
             ++pos;
          }
 

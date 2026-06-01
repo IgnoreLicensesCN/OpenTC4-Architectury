@@ -6,6 +6,8 @@ import net.minecraft.world.level.Level;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.listeners.worldgen.node.listeners.*;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -96,7 +98,7 @@ public class NodeGenerationManager {
             modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
         }
 
-        AspectList<Aspect>nodeAspects = new AspectList<>();
+        AspectList<Aspect> nodeAspects = new LinkedTreeAspectList<>();
         for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
             nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
         }
@@ -116,7 +118,7 @@ public class NodeGenerationManager {
             modifier = picker.onPickingNodeModifier(world, pos, random, silverwood, eerie, small, modifier);
         }
 
-        AspectList<Aspect>nodeAspects = new AspectList<>();
+        AspectList<Aspect>nodeAspects = new LinkedTreeAspectList<>();
         for (NodeAspectGenerator generator : nodeAspectGeneratorManager.getListeners()) {
             nodeAspects = generator.getNodeAspects(world, pos, random, silverwood, eerie, small,nodeAspects, type,modifier);
         }

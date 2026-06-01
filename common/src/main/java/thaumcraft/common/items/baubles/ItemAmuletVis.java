@@ -17,7 +17,8 @@ import net.minecraft.util.IIcon;
 
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -151,11 +152,11 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
-      AspectList<Aspect>out = new AspectList<>();
+      AspectList<Aspect>out = new LinkedTreeAspectList<>();
       AspectList<Aspect>cur = this.getAllVis(wandstack);
 
       for(Aspect aspect : cur.getAspects()) {
-         if (cur.getAmount(aspect) < this.getMaxVis(wandstack)) {
+         if (cur.get(aspect) < this.getMaxVis(wandstack)) {
             out.addAll(aspect, 1);
          }
       }
@@ -164,7 +165,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAllVis(ItemStack is) {
-      AspectList<Aspect>out = new AspectList<>();
+      AspectList<Aspect>out = new LinkedTreeAspectList<>();
 
       for(Aspect aspect : Aspects.getPrimalAspects()) {
          if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
@@ -180,14 +181,14 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
       if (aspects != null && aspects.size() != 0) {
          for(Aspect aspect : aspects.getAspects()) {
-            if (this.getVis(is, aspect) < aspects.getAmount(aspect)) {
+            if (this.getVis(is, aspect) < aspects.get(aspect)) {
                return false;
             }
          }
 
          if (doit) {
             for(Aspect aspect : aspects.getAspects()) {
-               this.storeVis(is, aspect, this.getVis(is, aspect) - aspects.getAmount(aspect));
+               this.storeVis(is, aspect, this.getVis(is, aspect) - aspects.get(aspect));
             }
          }
 

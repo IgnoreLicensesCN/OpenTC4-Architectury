@@ -146,22 +146,20 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         if (!(paperIndex != -1 && dyeIndex != -1)){
             return;
         }
-        for (var entry:aspectsToCopy.entrySet()){
-            var aspect = entry.getKey();
-            var count = entry.getValue() + copiedCount;
-            if (playerOwnedAspects.getOrDefault(aspect,0) < count){
-                return;
-            }
+        if (aspectsToCopy.forEachWithBreak(
+                (aspect,count) -> playerOwnedAspects.getOrDefault(aspect,0) < count
+        )){
+            return;
         }
         //checked
         //consume
-        for (var entry:aspectsToCopy.entrySet()){
-            var aspect = entry.getKey();
-            var count = entry.getValue() + copiedCount;
-            Thaumcraft.playerKnowledge.addAspectPool(player,aspect,-count);
-            ResearchManager.scheduleSave(player);
-            new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)).sendTo(player);
-        }
+        aspectsToCopy.forEach(
+                (aspect,count) -> {
+                    Thaumcraft.playerKnowledge.addAspectPool(player,aspect,-count);
+                    ResearchManager.scheduleSave(player);
+                    new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)).sendTo(player);
+                }
+        );
         playerInventory.items.get(paperIndex).shrink(1);
         if (playerInventory.items.get(paperIndex).isEmpty()){
             playerInventory.items.set(paperIndex, ItemStack.EMPTY);

@@ -24,7 +24,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import tc4tweak.modules.generateItemHash.GenerateItemHash;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.nodes.INodeBlockEntity;
@@ -306,7 +307,7 @@ public class ScanManager implements IScanEventHandler {
         if (entity instanceof Player) {
             s = "player_" + entity.getName()
                     .getString();
-            tags = new AspectList<>();
+            tags = new LinkedTreeAspectList<>();
             tags.addAll(Aspects.MAN, 4);
             if (entity.getName()
                     .getString()
@@ -357,7 +358,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     private static AspectList<Aspect> generateNodeAspects(Level world, String node) {
-        AspectList<Aspect> tags = new AspectList<>();
+        AspectList<Aspect> tags = new LinkedTreeAspectList<>();
         BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
         if (loc != null) {
             ResourceLocation dim = loc.dim();
@@ -370,7 +371,7 @@ public class ScanManager implements IScanEventHandler {
                     AspectList<Aspect> ta = iNodeBlockEntity.getAspects();
 
                     for (var a : ta.getAspectsSorted()) {
-                        tags.mergeWithHighest(a, Math.max(4, ta.getAmount(a) / 10));
+                        tags.mergeWithHighest(a, Math.max(4, ta.get(a) / 10));
                     }
 
                     var nodeType = iNodeBlockEntity.getNodeType();
@@ -545,13 +546,13 @@ public class ScanManager implements IScanEventHandler {
         }
 
         if (player instanceof ServerPlayer && ret && aspects != null) {
-            AspectList<Aspect>aspectsFinal = new AspectList<>();
+            AspectList<Aspect>aspectsFinal = new LinkedTreeAspectList<>();
 
-            for (Aspect aspect : aspects.getAspectTypes()) {
+            for (Aspect aspect : aspects.keySet()) {
                 if (rp.hasDiscoveredParentAspects(
                         player, aspect
                 )) {
-                    int amt = aspects.getAmount(aspect);
+                    int amt = aspects.get(aspect);
                     if (scannedByThaumometer) {
                         amt = 0;
                     }
@@ -625,7 +626,7 @@ public class ScanManager implements IScanEventHandler {
         Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         if (aspects != null && !aspects.isEmpty()) {
-            for (Aspect aspect : aspects.getAspectTypes()) {
+            for (Aspect aspect : aspects.keySet()) {
                 if (aspect instanceof CompoundAspect compoundAspect && !rp.hasDiscoveredParentAspects(
                         player, aspect
                 )) {
@@ -662,7 +663,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
-        AspectList<Aspect> aspects = new AspectList<>();
+        AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
         var serverFlag = !world.isClientSide();
         boolean ret = false;
         if (scan.type == 1) {

@@ -5,7 +5,7 @@ import java.awt.*;
 public class TileEssentiaReservoir
 //        extends TileThaumcraft implements IRemoteDrainableAspectSourceBlockEntity, IWandable, IEssentiaTransportBlockEntity
 {
-//   public AspectList<Aspect>essentia = new AspectList<>();
+//   public AspectList<Aspect>essentia = new LinkedTreeAspectList<>();
 //   public int maxAmount = 256;
 //   public Direction facing;
 //   int count;
@@ -44,7 +44,7 @@ public class TileEssentiaReservoir
 //   public void readCustomNBT(NBTTagCompound nbttagcompound) {
 //      this.essentia.readFromNBT(nbttagcompound);
 //      if (this.essentia.visSize() > this.maxAmount) {
-//         this.essentia = new AspectList<>();
+//         this.essentia = new LinkedTreeAspectList<>();
 //      }
 //
 //      this.facing = Direction.getOrientation(nbttagcompound.getByte("face"));

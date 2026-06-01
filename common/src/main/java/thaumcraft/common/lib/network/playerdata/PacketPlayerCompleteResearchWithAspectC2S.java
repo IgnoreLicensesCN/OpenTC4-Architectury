@@ -47,25 +47,20 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(player)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
         var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
-        for (var aspectCostPair:aspectsCost.entrySet()){
-            var aspectTypeRequired = aspectCostPair.getKey();
-            var aspectCost = aspectCostPair.getValue();
-            if (!(playerOwningAspect.getOrDefault(aspectTypeRequired, 0) >= aspectCost)){
-                return;
-            }
+        if (aspectsCost.forEachWithBreak(
+                (aspectTypeRequired,aspectsAmountCost) -> playerOwningAspect.getOrDefault(aspectTypeRequired, 0) < aspectsAmountCost
+        )){
+            return;
         }
-        for (var aspectCostPair:aspectsCost.entrySet()){
-            var aspectTypeRequired = aspectCostPair.getKey();
-            var aspectCost = aspectCostPair.getValue();
-
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspectTypeRequired, (short) (-aspectCost));
+        aspectsCost.forEach((aspectTypeRequired,aspectsAmountCost) -> {
+            Thaumcraft.playerKnowledge.addAspectPool(player, aspectTypeRequired, (short) (-aspectsAmountCost));
             ResearchManager.scheduleSave(player);
             new PacketAspectPoolS2C(
                     aspectTypeRequired.aspectKey,
-                    (short) (-aspectCost),
+                    (short) (-aspectsAmountCost),
                     Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspectTypeRequired))
                     .sendTo(player);
-        }
+        });
         new PacketResearchCompleteS2C(research.key).sendTo(player);
         Thaumcraft.researchManager.completeResearch(player, research.key);
     }

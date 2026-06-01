@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 import static com.linearity.opentc4.Consts.CrystalEssenceItemTagAccessors.OWNING_ASPECT;

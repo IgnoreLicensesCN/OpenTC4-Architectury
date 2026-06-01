@@ -5,9 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.research.implexample.ResearchNoteUnlockedResearchWithParentsAndWarp;
@@ -45,11 +46,11 @@ public class ResearchMastery
         ResearchCategory.getResearchCategory(shownInfo.category()).addResearchAndShownInfo(this);
     }
     private final AspectList<Aspect> aspects =
-            new UnmodifiableAspectList<>(
-                    new AspectList<>().addAll(Aspects.MIND, 6)
-            .addAll(Aspects.ORDER, 3)
-            .addAll(Aspects.SENSES, 3)
-            .addAll(Aspects.MAGIC, 3)
+            UnmodifiableAspectList.of(
+                    Aspects.MIND, 6,
+                    Aspects.ORDER, 3,
+                    Aspects.SENSES, 3,
+                    Aspects.MAGIC, 3
             );
     private final Aspect themedAspect = Aspects.MIND;
 

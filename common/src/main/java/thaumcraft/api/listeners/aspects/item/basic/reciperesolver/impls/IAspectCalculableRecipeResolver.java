@@ -5,20 +5,18 @@ import com.google.common.collect.Multimap;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.world.item.Item;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import static thaumcraft.api.crafting.interfaces.IArcaneRecipe.getIArcaneRecipes;
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.VanillaTypedRecipeResolver.resolveItemsCommon;
 
 public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {

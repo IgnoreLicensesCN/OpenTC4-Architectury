@@ -2,7 +2,7 @@ package thaumcraft.common.tiles;
 
 @Deprecated(forRemoval = true)
 public class TileAlchemyFurnaceAdvanced /*extends TileThaumcraft*/ {
-//   public AspectList<Aspect>aspects = new AspectList<>();
+//   public AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
 //   public int visSize;
 //   public static int maxVis = 500;
 //   int bellows = -1;

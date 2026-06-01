@@ -41,7 +41,7 @@ public class TileCentrifuge /*extends TileThaumcraft implements IAspectContainer
 //   }
 //
 //   public @NotNull AspectList<Aspect>getAspects() {
-//      AspectList<Aspect>al = new AspectList<>();
+//      AspectList<Aspect>al = new LinkedTreeAspectList<>();
 //      if (this.aspectOut != null) {
 //         al.addAll(this.aspectOut, 1);
 //      }

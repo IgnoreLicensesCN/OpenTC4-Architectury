@@ -1,10 +1,12 @@
 package thaumcraft.api.research;
 
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 //TODO:Migrate page render impl here and subclasses
 public abstract class ResearchPage {
@@ -177,7 +179,7 @@ public abstract class ResearchPage {
 	public String getTranslatedText() {
 		String ret="";
 		if (text != null) {
-			ret = Component.translatable(text);
+			ret = String.valueOf(Component.translatable(text));
 			if (ret.isEmpty()) ret = text;
 		}
 		return ret;

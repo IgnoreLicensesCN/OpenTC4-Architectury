@@ -73,7 +73,7 @@ public class ItemResonator extends Item {
                player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + et.getEssentiaAmount(face), et.getEssentiaType(face).getName()));
             } else if (tile instanceof TileTubeBuffer && ((IAspectContainerBlockEntity)tile).getAspects().size() > 0) {
                for(Aspect aspect : ((IAspectContainerBlockEntity)tile).getAspects().getAspectsSorted()) {
-                  player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + ((IAspectContainerBlockEntity)tile).getAspects().getAmount(aspect), aspect.getName()));
+                  player.addChatMessage(new ChatComponentTranslation("tc.resonator1", "" + ((IAspectContainerBlockEntity)tile).getAspects().get(aspect), aspect.getName()));
                }
             }
 

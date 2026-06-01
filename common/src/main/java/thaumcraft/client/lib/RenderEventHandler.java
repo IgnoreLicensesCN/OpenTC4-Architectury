@@ -31,7 +31,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -298,8 +298,8 @@ public class RenderEventHandler {
                UtilsFX.renderQuadCenteredFromTexture(tag.getImage(), 1.0F, (float)color.getRed() / 255.0F, (float)color.getGreen() / 255.0F, (float)color.getBlue() / 255.0F, bright, 771, 0.75F);
             }
 
-            if (tags.getAmount(tag) >= 0) {
-               String am = "" + tags.getAmount(tag);
+            if (tags.get(tag) >= 0) {
+               String am = "" + tags.get(tag);
                GL11.glScalef(0.04F, 0.04F, 0.04F);
                GL11.glTranslated(0.0F, 6.0F, -0.1);
                int sw = Minecraft.getMinecraft().fontRenderer.getStringWidth(am);

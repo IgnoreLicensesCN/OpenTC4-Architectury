@@ -11,7 +11,7 @@ public class TileAlembic /*extends TileThaumcraft implements IAspectContainerBlo
 //   Direction fd = null;
 //
 //   public @NotNull AspectList<Aspect>getAspects() {
-//      return this.aspect != null ? (new AspectList<>()).addAll(this.aspect, this.amount) : new AspectList<>();
+//      return this.aspect != null ? (new LinkedTreeAspectList<>()).addAll(this.aspect, this.amount) : new LinkedTreeAspectList<>();
 //   }
 //
 //   public void setAspects(AspectList<Aspect>aspects) {

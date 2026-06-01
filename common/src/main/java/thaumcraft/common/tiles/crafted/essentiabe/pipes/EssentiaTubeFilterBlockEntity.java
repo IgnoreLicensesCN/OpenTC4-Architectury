@@ -8,6 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.EssentiaTubeFilterBlockEntityTagAccessors.ASPECT_FILTER;
@@ -15,7 +17,8 @@ import static com.linearity.opentc4.Consts.EssentiaTubeFilterBlockEntityTagAcces
 public class EssentiaTubeFilterBlockEntity
         extends EssentiaTubeBlockEntity
         implements IAspectFilterAccessibleBlockEntity,
-        IAspectDisplayBlockEntity<Aspect> {
+        IAspectDisplayBlockEntity<Aspect>,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect> {
     private @NotNull("null -> empty") Aspect filter = Aspects.EMPTY;
     public EssentiaTubeFilterBlockEntity(BlockEntityType<? extends EssentiaTubeFilterBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -78,7 +81,16 @@ public class EssentiaTubeFilterBlockEntity
         return aspToDisplay;
     }
     private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.owningAspect.isEmpty()?this.filter:this.owningAspect,() -> this.owningAspect.isEmpty()?0:1
+            this
     );
 
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.owningAspect.isEmpty()?this.filter:this.owningAspect;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.owningAspect.isEmpty()?0:1;
+    }
 }

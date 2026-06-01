@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 @Deprecated(forRemoval = true)
 public class TileThaumatorium /*extends TileThaumcraft implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, ISidedInventory*/ {
 //   public ItemStack inputStack = null;
-//   public AspectList<Aspect>essentia = new AspectList<>();
+//   public AspectList<Aspect>essentia = new LinkedTreeAspectList<>();
 //   public ArrayList<Integer> recipeHash = new ArrayList<>();
 //   public ArrayList<AspectList> recipeEssentia = new ArrayList<>();
 //   public ArrayList<String> recipePlayer = new ArrayList<>();
@@ -206,7 +206,7 @@ public class TileThaumatorium /*extends TileThaumcraft implements IAspectContain
 //
 //   private void completeRecipe() {
 //      if (this.currentRecipe != null && this.currentCraft < this.recipeHash.size() && this.currentRecipe.matches(this.essentia, this.inputStack) && this.decrStackSize(0, 1) != null) {
-//         this.essentia = new AspectList<>();
+//         this.essentia = new LinkedTreeAspectList<>();
 //         ItemStack dropped = this.getCurrentOutputRecipe();
 //         Player p = this.level().getPlayerEntityByName(this.recipePlayer.get(this.currentCraft));
 //         if (p != null) {

@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.*;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
@@ -17,15 +18,19 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import static com.linearity.opentc4.Consts.EnergizedAuraNodeBlockEntityTagAccessors.*;
 
 public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
-    protected @NotNull AspectList<Aspect> auraBase = (new AspectList<>())
-            .addAll(Aspects.AIR, 20)
-            .addAll(Aspects.FIRE, 20)
-            .addAll(Aspects.EARTH, 20)
-            .addAll(Aspects.WATER, 20)
-            .addAll(Aspects.ORDER, 20)
-            .addAll(Aspects.ENTROPY, 20);
-    protected @NotNull CentiVisList<Aspect> centiVisBase = new CentiVisList<>();
-    protected @NotNull CentiVisList<Aspect> currentOwningCentiVis = new CentiVisList<>();
+
+    protected @NotNull AspectList<Aspect> auraBase = (new LinkedTreeAspectList<>(){
+        {
+            this.addAll(Aspects.AIR, 20);
+            this.addAll(Aspects.FIRE, 20);
+            this.addAll(Aspects.EARTH, 20);
+            this.addAll(Aspects.WATER, 20);
+            this.addAll(Aspects.ORDER, 20);
+            this .addAll(Aspects.ENTROPY, 20);
+        }
+    });
+    protected @NotNull CentiVisList<Aspect> centiVisBase = new LinkedTreeCentiVisList<>();
+    protected @NotNull CentiVisList<Aspect> currentOwningCentiVis = new LinkedTreeCentiVisList<>();
     protected @NotNull NodeType nodeType = NodeType.NORMAL;
     protected @NotNull NodeModifier nodeModifier = NodeModifier.EMPTY;
     protected @NotNull String id = "blank";
@@ -96,7 +101,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
 
     //TODO:[maybe wont finished]better api
     public void setupNode(){
-        this.centiVisBase = new CentiVisList<>();
+        this.centiVisBase = new LinkedTreeCentiVisList<>();
         var temp = ResearchManager.reduceToPrimals(auraBase, true);
         temp.forEach((aspect,amount) -> {
             int amt = EnergizedAuraNodeBlockEntity.this.nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,amount);
@@ -116,7 +121,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     }
 
     public int consumeCentiVis(Aspect aspect, int amount) {
-        int drain = Math.min(this.currentOwningCentiVis.getAmount(aspect), amount);
+        int drain = Math.min(this.currentOwningCentiVis.get(aspect), amount);
         if (drain > 0) {
             this.currentOwningCentiVis.tryReduce(aspect, drain);
         }

@@ -2,12 +2,12 @@ package thaumcraft.common.lib.crafting;
 
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
+import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
 
@@ -32,9 +32,9 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
             },3,3,SCEPTRE_MATCHER
     ){
         @Override
-        public boolean matches(Container inv, Level world, Player player) {
+        public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
             if (super.matches(inv, world, player)){
-                return resultGenerator.apply(getInputItemStacks(inv)).isEmpty();
+                return resultGenerator.apply(inv.getInputItemStacks()).isEmpty();
             }
             return false;
         }
@@ -85,7 +85,7 @@ public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
 //   }
 //
 //   public AspectList<Aspect>getAspects(Container inv) {
-//      AspectList<Aspect>al = new AspectList<>();
+//      AspectList<Aspect>al = new LinkedTreeAspectList<>();
 //      int cc = -1;
 //      int cr = -1;
 //      ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 2);

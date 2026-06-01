@@ -6,7 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 
@@ -93,7 +94,7 @@ public class InfusionRunicAugmentRecipe /*extends InfusionRecipe*/ {
    }
 
    public AspectList<Aspect>getAspects(ItemStack input) {
-      AspectList<Aspect>out = new AspectList<>();
+      AspectList<Aspect>out = new LinkedTreeAspectList<>();
       int vis = (int)((double)32.0F * Math.pow(2.0F, EventHandlerRunic.getFinalCharge(input)));
       if (vis > 0) {
          out.addAll(Aspects.ARMOR, vis / 2);

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.items.baubles.ItemAmuletRunic;
 import thaumcraft.common.items.baubles.ItemGirdleRunic;
@@ -117,7 +117,9 @@ public class ServerPlayerMixin {
                     charge = EventHandlerRunic.runicInfo.get(player)[0];
                 } else if (charge < EventHandlerRunic.runicInfo.get(player)[0] && EventHandlerRunic.nextCycle.get(player) < time 
                         && WandManager.consumeCentiVisFromInventory(player,
-                        CentiVisList.of(Aspects.AIR, Config.shieldCost,Aspects.EARTH, Config.shieldCost))) {
+                        LinkedTreeCentiVisList.of(Aspects.AIR, Config.shieldCost,Aspects.EARTH, Config.shieldCost)//TODO:Configurable
+                )
+                ) {
                     long interval = Config.shieldRecharge - EventHandlerRunic.runicInfo.get(player)[1] * 500L;
                     EventHandlerRunic.nextCycle.put(player, time + interval);
                     ++charge;

@@ -17,7 +17,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.Difficulty;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.Thaumcraft;
@@ -152,15 +153,15 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    protected void dropFewItems(boolean flag, int i) {
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList<>();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.UNDEAD, 2));
+         new LinkedTreeAspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new LinkedTreeAspectList<>()).addAll(Aspects.UNDEAD, 2));
          this.entityDropItem(ess, 1.0F);
       }
 
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList<>();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.ELDRITCH, 2));
+         new LinkedTreeAspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new LinkedTreeAspectList<>()).addAll(Aspects.ELDRITCH, 2));
          this.entityDropItem(ess, 1.0F);
       }
 

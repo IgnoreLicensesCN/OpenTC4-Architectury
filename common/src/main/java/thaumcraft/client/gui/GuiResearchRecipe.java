@@ -24,7 +24,8 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
@@ -110,7 +111,7 @@ public class GuiResearchRecipe extends GuiScreen {
                                     }
 
                                     ItemStack is2 = is.copy();
-                                    is2.stackSize = tags.getAmount(a);
+                                    is2.stackSize = tags.get(a);
                                     items.add(is2);
                                     this.aspectItems.put(a, items);
                                 }
@@ -123,20 +124,20 @@ public class GuiResearchRecipe extends GuiScreen {
 
             ArrayList<ResearchPage> tpl = new ArrayList<>(Arrays.asList(research.getPages()));
 
-            AspectList<Aspect>tal = new AspectList<>();
+            AspectList<Aspect>tal = new LinkedTreeAspectList<>();
             if (aspectsKnownSorted != null) {
                 int count = 0;
 
                 for (Aspect aspect : aspectsKnownSorted.getAspectsSorted()) {
                     if (count <= 4) {
                         ++count;
-                        tal.addAll(aspect, aspectsKnownSorted.getAmount(aspect));
+                        tal.addAll(aspect, aspectsKnownSorted.get(aspect));
                     }
 
                     if (count == 4) {
                         count = 0;
                         tpl.add(new ResearchPage(tal.copy()));
-                        tal = new AspectList<>();
+                        tal = new LinkedTreeAspectList<>();
                     }
                 }
 
@@ -326,7 +327,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 int count = 0;
 
                 for (Aspect tag : aspects.getAspectsSortedAmount()) {
-                    UtilsFX.drawTag(x + start + 14 + 18 * count + (5 - aspects.size()) * 8, y + 182, tag, (float) aspects.getAmount(tag), 0, 0.0F, 771, 1.0F, false);
+                    UtilsFX.drawTag(x + start + 14 + 18 * count + (5 - aspects.size()) * 8, y + 182, tag, (float) aspects.get(tag), 0, 0.0F, 771, 1.0F, false);
                     ++count;
                 }
 
@@ -456,7 +457,7 @@ public class GuiResearchRecipe extends GuiScreen {
                     }
 
                     GL11.glScalef(2.0F, 2.0F, 2.0F);
-                    UtilsFX.drawTag((x + start) / 2, (y + count * 50) / 2, aspect, (float) aspects.getAmount(aspect), 0, this.zLevel);
+                    UtilsFX.drawTag((x + start) / 2, (y + count * 50) / 2, aspect, (float) aspects.get(aspect), 0, this.zLevel);
                     GL11.glPopMatrix();
                     String text = aspect.getName();
                     int offset = this.fr.getStringWidth(text) / 2;
@@ -568,7 +569,7 @@ public class GuiResearchRecipe extends GuiScreen {
                 int count = 0;
 
                 for (Aspect tag : tags.getAspectsSortedAmount()) {
-                    UtilsFX.drawTag(x + start + 14 + 18 * count + (5 - tags.size()) * 8, y + 172, tag, (float) tags.getAmount(tag), 0, 0.0F, 771, 1.0F);
+                    UtilsFX.drawTag(x + start + 14 + 18 * count + (5 - tags.size()) * 8, y + 172, tag, (float) tags.get(tag), 0, 0.0F, 771, 1.0F);
                     ++count;
                 }
 
@@ -875,7 +876,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
                 int vx = sx + total % 3 * 20 + shift * m;
                 int vy = sy + total / 3 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) rc.aspects.getAmount(tag), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) rc.aspects.get(tag), 0, this.zLevel);
                 ++total;
             }
 
@@ -1049,7 +1050,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
                 int vx = sx + total % 5 * 20 + shift * m;
                 int vy = sy + total / 5 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) ri.getAspects().getAmount(tag), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) ri.getAspects().get(tag), 0, this.zLevel);
                 ++total;
             }
 
@@ -1225,7 +1226,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
                 int vx = sx + total % 5 * 20 + shift * m;
                 int vy = sy + total / 5 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) (ri.basicCostAspects.getAmount(tag) * level), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) (ri.basicCostAspects.get(tag) * level), 0, this.zLevel);
                 ++total;
             }
 

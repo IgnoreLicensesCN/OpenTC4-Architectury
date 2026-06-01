@@ -1,7 +1,8 @@
 package thaumcraft.api.nodes;
 
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.IWorldlyCentiVisContainerBlockEntity;
 
 public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect> {

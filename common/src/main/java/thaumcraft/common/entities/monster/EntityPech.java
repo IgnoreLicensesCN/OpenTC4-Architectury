@@ -31,7 +31,8 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -325,7 +326,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       for(int a = 0; a < 1 + i; ++a) {
          if (this.rand.nextBoolean()) {
             ItemStack is = new ItemStack(ConfigItems.itemManaBean);
-            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
+            ((ItemManaBean)is.getItem()).setAspects(is, (new LinkedTreeAspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
             this.entityDropItem(is, 1.5F);
          }
       }
@@ -670,7 +671,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (!value) {
             AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusAspects(item, al);
-            if (al.getAmount(Aspects.GREED) > 0) {
+            if (al.get(Aspects.GREED) > 0) {
                value = true;
             }
          }
@@ -687,7 +688,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (value == 0) {
             AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusAspects(item, al);
-            value = Math.min(32, al.getAmount(Aspects.GREED));
+            value = Math.min(32, al.get(Aspects.GREED));
          }
 
          return value;

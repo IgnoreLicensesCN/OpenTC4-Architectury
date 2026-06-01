@@ -29,7 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
 import thaumcraft.api.crafting.ThaumcraftInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
@@ -59,7 +60,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
     public boolean checkSurroundings = true;
     public int symmetry = 0;
     public int instability = 0;
-    private AspectList<Aspect>recipeEssentia = new AspectList<>();
+    private AspectList<Aspect>recipeEssentia = new LinkedTreeAspectList<>();
     private ArrayList<ItemStack> recipeIngredients = null;
     private Object recipeOutput = null;
     private String recipePlayer = null;
@@ -308,7 +309,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                             float essmod = recipe2.getAspectsModified(this.recipeInput);
 
                             for (Aspect as : esscost.getAspects()) {
-                                esscost.addAll(as, (int) ((float) esscost.getAmount(as) * essmod));
+                                esscost.addAll(as, (int) ((float) esscost.get(as) * essmod));
                             }
 
                             this.recipeEssentia = esscost;
@@ -400,7 +401,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
             //cancel infusion
             this.instability = 0;
             this.crafting = false;
-            this.recipeEssentia = new AspectList<>();
+            this.recipeEssentia = new LinkedTreeAspectList<>();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.level().playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "thaumcraft:craftfail", 1.0F, 0.6F);
             this.markDirty();
@@ -453,7 +454,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
             if (this.recipeEssentia.visSize() > 0) {
                 //draining essentia,may add instability if failed
                 for (Aspect aspect : this.recipeEssentia.getAspects()) {
-                    if (this.recipeEssentia.getAmount(aspect) > 0) {
+                    if (this.recipeEssentia.get(aspect) > 0) {
                         if (EssentiaRemoteDrainHandler.drainEssentia(this, aspect, Direction.UNKNOWN, 12)) {
                             this.recipeEssentia.tryReduce(aspect, 1);
                             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -636,7 +637,7 @@ public class TileInfusionMatrix extends TileThaumcraft implements IWandable, IAs
                 }
             }
 
-            this.recipeEssentia = new AspectList<>();
+            this.recipeEssentia = new LinkedTreeAspectList<>();
             this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.markDirty();
             this.level().addBlockEvent(this.xCoord, this.yCoord - 2, this.zCoord, ConfigBlocks.blockStoneDevice, 12, 0);

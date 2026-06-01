@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.IArcaneCraftingWandItem;

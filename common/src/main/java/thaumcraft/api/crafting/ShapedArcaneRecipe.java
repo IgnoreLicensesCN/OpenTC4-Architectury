@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;

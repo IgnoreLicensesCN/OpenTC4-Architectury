@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.aspects.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
 

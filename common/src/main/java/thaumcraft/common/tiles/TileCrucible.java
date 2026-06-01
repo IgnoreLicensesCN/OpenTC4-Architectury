@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 @Deprecated(forRemoval = true)
 public class TileCrucible /*extends TileThaumcraft implements IFluidHandler, IWandable, IAspectContainerBlockEntity*/ {
 //   public short heat;
-//   public AspectList<Aspect>aspects = new AspectList<>();
+//   public AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
 //   public final int maxTags = 100;
 //   int bellows = -1;
 //   private int delay = 0;
@@ -182,7 +182,7 @@ public class TileCrucible /*extends TileThaumcraft implements IFluidHandler, IWa
 //            this.spill();
 //         }
 //
-//         this.aspects = new AspectList<>();
+//         this.aspects = new LinkedTreeAspectList<>();
 //         this.markDirty();
 //         this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 //         this.level().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ConfigBlocks.blockMetalDevice, 2, 5);
@@ -303,7 +303,7 @@ public class TileCrucible /*extends TileThaumcraft implements IFluidHandler, IWa
 //   }
 //
 //   public AspectList<Aspect>takeRandomFromSource() {
-//      AspectList<Aspect>output = new AspectList<>();
+//      AspectList<Aspect>output = new LinkedTreeAspectList<>();
 //      if (this.aspects.size() > 0) {
 //         Aspect tag = this.aspects.getAspects()[this.level().rand.nextInt(this.aspects.getAspects().length)];
 //         output.addAll(tag, 1);

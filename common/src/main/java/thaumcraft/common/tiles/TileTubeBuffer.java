@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 @Deprecated(forRemoval = true)
 public class TileTubeBuffer /*extends TileThaumcraft*/
         /*implements IAspectContainerBlockEntity, IEssentiaTransportBlockEntity, IWandable*/ {
-//   public AspectList<Aspect>aspects = new AspectList<>();
+//   public AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
 //   public final int MAXAMOUNT = 8;
 //   public boolean[] openSides = new boolean[]{true, true, true, true, true, true};
 //   public byte[] chokedSides = new byte[]{0, 0, 0, 0, 0, 0};

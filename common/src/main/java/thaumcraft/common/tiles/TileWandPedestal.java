@@ -16,7 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
@@ -199,7 +200,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      INodeBlockEntity node = (INodeBlockEntity)te;
 
                      for(Aspect aspect : as.getAspects()) {
-                        if (node.getAspects().getAmount(aspect) > min) {
+                        if (node.getAspects().get(aspect) > min) {
                            wand.addCentiVis(this.getStackInSlot(0), aspect, 1, true);
                            node.takeFromContainer(aspect, 1);
                            this.somethingChanged = true;
@@ -217,10 +218,10 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new AspectList<>()).addAll(aspect, 1));
+                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedTreeAspectList<>()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
-                                 if (primals.getAmount(aspect2) > 0 && node.getAspects().getAmount(aspect) > min) {
+                                 if (primals.get(aspect2) > 0 && node.getAspects().get(aspect) > min) {
                                     wand.addCentiVis(this.getStackInSlot(0), aspect2, 1, true);
                                     node.takeFromContainer(aspect, 1);
                                     this.somethingChanged = true;
@@ -257,7 +258,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      INodeBlockEntity node = (INodeBlockEntity)te;
 
                      for(Aspect aspect : as.getAspects()) {
-                        if (node.getAspects().getAmount(aspect) > min) {
+                        if (node.getAspects().get(aspect) > min) {
                            amulet.addVis(this.getStackInSlot(0), aspect, 1, true);
                            node.takeFromContainer(aspect, 1);
                            this.draining = true;
@@ -274,10 +275,10 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new AspectList<>()).addAll(aspect, 1));
+                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedTreeAspectList<>()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
-                                 if (primals.getAmount(aspect2) > 0 && node.getAspects().getAmount(aspect) > min) {
+                                 if (primals.get(aspect2) > 0 && node.getAspects().get(aspect) > min) {
                                     amulet.addVis(this.getStackInSlot(0), aspect2, 1, true);
                                     node.takeFromContainer(aspect, 1);
                                     this.draining = true;
@@ -355,20 +356,20 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
       if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof WandCastingItem) {
          WandCastingItem wand = (WandCastingItem)this.getStackInSlot(0).getItem();
          AspectList<Aspect>al = wand.getAllVis(this.getStackInSlot(0));
-         AspectList<Aspect>out = new AspectList<>();
+         AspectList<Aspect>out = new LinkedTreeAspectList<>();
 
          for(Aspect a : al.getAspectsSorted()) {
-            out.addAll(a, al.getAmount(a) / 100);
+            out.addAll(a, al.get(a) / 100);
          }
 
          return out;
       } else if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof ItemAmuletVis) {
          ItemAmuletVis amulet = (ItemAmuletVis)this.getStackInSlot(0).getItem();
          AspectList<Aspect>al = amulet.getAllVis(this.getStackInSlot(0));
-         AspectList<Aspect>out = new AspectList<>();
+         AspectList<Aspect>out = new LinkedTreeAspectList<>();
 
          for(Aspect a : al.getAspectsSorted()) {
-            out.addAll(a, al.getAmount(a) / 100);
+            out.addAll(a, al.get(a) / 100);
          }
 
          return out;

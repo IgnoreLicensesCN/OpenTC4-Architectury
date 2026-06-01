@@ -3,7 +3,7 @@ package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcsta
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 
 import java.util.*;
 

@@ -3,7 +3,8 @@ package thaumcraft.api.research.interfaces;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 //remember it's just a way to do research
 // and maybe you can create a "TimeAndItemResearchable" (moon in specific shape and inventory has a bed) to make that.

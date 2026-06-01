@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ShapelessArcaneRecipeResourceLocation;
@@ -28,7 +29,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
     private final RecipeItemMatcher[] input;
     private final ItemStack[] inputSampleArr;
     
-    public final CentiVisList<Aspect>aspects;
+    public final CentiVisList<Aspect> aspects;
     public final ResearchItem research;
     private final RecipeItemMatcher outMatcher;
 
@@ -55,7 +56,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
         super(id);
         this.resultGenerator = resultGenerator;
         this.research = research;
-        this.aspects = new UnmodifiableCentiVisList<>(aspects);
+        this.aspects = UnmodifiableCentiVisList.of(aspects);
         this.input = recipe;
         this.inputSampleArr = new ItemStack[input.length];
         this.outMatcher = outMatcher;

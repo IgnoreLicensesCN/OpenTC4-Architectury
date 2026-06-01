@@ -12,7 +12,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.HitResult.MovingObjectType;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -118,7 +119,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
          AspectList<Aspect>c = this.getVisCost(itemstack);
 
          for(Aspect a : c.getAspects()) {
-            c.mergeWithHighest(a, c.getAmount(a) * distance);
+            c.mergeWithHighest(a, c.get(a) * distance);
          }
 
          if (wand.consumeAllCentiVis(itemstack, player, c, true, false)) {
@@ -154,6 +155,6 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList<>()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
+      cost = (new LinkedTreeAspectList<>()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
    }
 }

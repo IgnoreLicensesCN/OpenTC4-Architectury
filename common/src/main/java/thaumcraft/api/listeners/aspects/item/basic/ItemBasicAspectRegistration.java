@@ -5,8 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -54,7 +55,7 @@ public class ItemBasicAspectRegistration {
         if (REGISTERED_BASIC_ASPECTS_FOR_ITEMS.containsKey(item)) {
             throw new IllegalArgumentException("Item " + item + " is already registered");
         }
-        REGISTERED_BASIC_ASPECTS_FOR_ITEMS.put(item, new UnmodifiableAspectList<>(aspects));
+        REGISTERED_BASIC_ASPECTS_FOR_ITEMS.put(item, UnmodifiableAspectList.of(aspects));
         ITEMS_WITH_REGISTERED_BASIC_ASPECT_INTERNAL.add(item);
     }
 
@@ -62,7 +63,7 @@ public class ItemBasicAspectRegistration {
         if (REGISTERED_BASIC_ASPECTS_FOR_TAGS.containsKey(tag)) {
             throw new RuntimeException(String.format("Tag %s already registered", tag));
         }
-        REGISTERED_BASIC_ASPECTS_FOR_TAGS.put(tag, new UnmodifiableAspectList<>(aspects));
+        REGISTERED_BASIC_ASPECTS_FOR_TAGS.put(tag, UnmodifiableAspectList.of(aspects));
         var items = platformUtils.getItemsFromTag(tag);
         if (items == null) {
             return;

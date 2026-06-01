@@ -1,7 +1,7 @@
 package thaumcraft.common.items.wands.wandcaps;
 
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.INodeHarmfulComponent;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;

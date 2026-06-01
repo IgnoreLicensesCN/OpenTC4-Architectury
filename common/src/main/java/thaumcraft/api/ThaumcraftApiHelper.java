@@ -17,6 +17,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -148,7 +150,7 @@ public class ThaumcraftApiHelper {
     @Deprecated(forRemoval = true)
     public static AspectList<Aspect> getAllAspectsWithAmount(int amount) {
         if (allAspects.get(amount) == null) {
-            AspectList<Aspect> al = new AspectList<>();
+            AspectList<Aspect> al = new LinkedTreeAspectList<>();
             for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
                 al.addAll(aspect, amount);
             }
@@ -160,7 +162,7 @@ public class ThaumcraftApiHelper {
     @Deprecated(forRemoval = true)
     public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
         if (allCompoundAspects.get(amount) == null) {
-            AspectList<CompoundAspect> al = new AspectList<>();
+            AspectList<CompoundAspect> al = new LinkedTreeAspectList<>();
             for (var aspect : Aspects.getCompoundAspects()) {
                 al.addAll(aspect, amount);
             }

@@ -9,14 +9,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
@@ -50,7 +50,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
     public static final int[] TOP_SLOTS = new int[ASPECT_GIVEN_ITEM_SLOT];
     public static final int[] SIDE_SLOTS = new int[]{ASPECT_GIVEN_ITEM_SLOT};
     public static final int[] SLOTS = new int[]{ASPECT_GIVEN_ITEM_SLOT, FUEL_SLOT};
-    public @NotNull AspectList<Aspect> aspects = new AspectList<>();
+    public @NotNull AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
     public static final  int MAX_VIS_SIZE = 50;
     boolean speedBoost = false;
     public final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);//furnaceItemStacks
@@ -106,7 +106,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
 
             if (this.count % (this.speedBoost ? speedBoostAspectExtractTime : defaultAspectExtractTime) == 0
                     && !this.aspects.isEmpty()) {
-                AspectList<Aspect> exlude = new AspectList<>();
+                AspectList<Aspect> exlude = new LinkedTreeAspectList<>();
                 for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
                     var tile = this.level.getBlockEntity(probablyAlembicPos);
@@ -117,7 +117,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                     var alembicAspect = alembic.getAspect();
                     if (!alembicAspect.isEmpty()
                             && alembic.getAmount() < alembic.getMaxAmount()
-                            && this.aspects.getAmount(alembicAspect) > 0) {
+                            && this.aspects.get(alembicAspect) > 0) {
 
                         this.takeAspectFromContainer(alembicAspect, 1);
                         alembic.addIntoContainer(alembicAspect, 1);
@@ -440,7 +440,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         return null;
     }
     public boolean takeAspectFromContainer(Aspect tag, int amount) {
-        if (this.aspects.getAmount(tag) >= amount) {
+        if (this.aspects.get(tag) >= amount) {
             this.aspects.reduceAndRemoveIfNotPositive(tag, amount);
             return true;
         } else {

@@ -1,78 +1,75 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.aspectlists;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
-import it.unimi.dsi.fastutil.objects.*;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.PrimalAspect;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntBinaryOperator;
 import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
-//TODO: Check for Object2IntMap change
-//TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
-//TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
-//2026.Feb.4 now we have AspectList<PrimalAspect>
-public class AspectList<Asp extends Aspect> /*implements Serializable */{
+
+//default impl
+public class LinkedTreeAspectList<Asp extends Aspect>
+		implements AspectList<Asp> /*implements Serializable */{
 
 	private int visSize;//
 	protected final Object2IntLinkedOpenHashMap<Asp> aspects;//aspects associated with this object
 
 	private final Object2IntMap<Asp> aspectView;
 	
-	public AspectList() {
+	public LinkedTreeAspectList() {
 		this.aspects = new Object2IntLinkedOpenHashMap<>();
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	public AspectList(Asp aspect, int value) {
-		this.aspects = new Object2IntLinkedOpenHashMap<>();
-		this.aspects.put(aspect,value);
-		this.aspectView = Object2IntMaps.unmodifiable(aspects);
-		recalculateVisSize();
-	}
-	protected AspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
+	protected LinkedTreeAspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
 		this.aspects = aspects;
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	public AspectList(@NotNull Map<Asp,Integer> aspects) {
+	public LinkedTreeAspectList(@NotNull Map<Asp,Integer> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
 	}
-	public AspectList(@NotNull Object2IntMap<Asp> aspects) {
+	public LinkedTreeAspectList(@NotNull Object2IntMap<Asp> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
 	}
 
-	public AspectList(int size,float loadFactor) {
+	public LinkedTreeAspectList(int size, float loadFactor) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(size,loadFactor);
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
 
-	public AspectList(@NotNull AspectList<Asp> another) {
+	public LinkedTreeAspectList(@NotNull LinkedTreeAspectList<Asp> another) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(another.aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
 
 	@Deprecated(forRemoval = true,since = "implements IAspectDisplayItem")
-    public static <A extends Aspect> void addAspectDescriptionToList(AspectList<A> aspects, @Nullable Player player, List<Component> aspectDescriptions) {
-       if (aspects != null && !aspects.aspects.isEmpty()) {
-          for(var aspect : aspects.getAspectsSorted()) {
+    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
+       if (aspects != null && !this.aspects.isEmpty()) {
+          for(var aspect : this.getAspectsSorted()) {
              if (player != null && !aspect.hasPlayerDiscovered(player)) {
 				 aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
              } else {
-				 aspectDescriptions.add(Component.literal(aspect.getName() + " x " + aspects.getAmount(aspect)));
+				 aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
              }
           }
        }
@@ -84,16 +81,11 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	public int put(Asp aspect, int amount) {
 		return aspects.put(aspect,amount);
 	}
-    public AspectList<Asp> copy() {
-		AspectList<Asp> out = new AspectList<>();
-		for (var a:this.getAspectTypes())
-			out.addAll(a, this.getAmount(a));
+    public LinkedTreeAspectList<Asp> copy() {
+		var out = new LinkedTreeAspectList<Asp>();
+		for (var a:this.keySet())
+			out.addAll(a, this.get(a));
 		return out;
-	}
-
-	@Deprecated(forRemoval = true,since = "itself may change into Iterable,or i want to make another impl with LongArrayList")
-	public Object2IntSortedMap.FastSortedEntrySet<Asp> entrySet(){
-		return aspects.object2IntEntrySet();
 	}
 
 	@UnmodifiableView
@@ -101,10 +93,6 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return aspectView.keySet();
 	}
 
-	public int get(Asp aspect) {
-		return aspects.getInt(aspect);
-	}
-	
 	/**
 	 * @return the amount of different aspects in this collection
 	 */
@@ -118,19 +106,12 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	public int visSize() {
 		return visSize;
 	}
-	
-	/**
-	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection
-	 */
-	public Set<Asp> getAspectTypes() {
-		return aspects.keySet();
-	}
-	
+
 	/**
 	 * @return an array of all the primal aspects in this collection
 	 */
-	public AspectList<PrimalAspect> getPrimalAspects() {
-		AspectList<PrimalAspect> result = new AspectList<>();
+	public LinkedTreeAspectList<PrimalAspect> getPrimalAspects() {
+		LinkedTreeAspectList<PrimalAspect> result = new LinkedTreeAspectList<>();
 		for (var aspectAndAmount:aspects.object2IntEntrySet()) {
 			var aspect = aspectAndAmount.getKey();
 			var amount = aspectAndAmount.getIntValue();
@@ -159,8 +140,8 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 */
 	public List<Asp> getAspectsSortedAmount() {
 		return aspectView.keySet().stream()
-				.filter(a -> getAmount(a) > 0)
-				.sorted(Comparator.comparingInt(this::getAmount).reversed())
+				.filter(a -> this.get(a) > 0)
+				.sorted(Comparator.comparingInt(this::get).reversed())
 				.toList();//azanor knows little about java's own sorting?
 	}
 	
@@ -168,7 +149,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 * @param key aspect as key
 	 * @return the amount associated with the given aspect in this collection
 	 */
-	public int getAmount(Asp key) {
+	public int get(Asp key) {
 		return aspects.getInt(key);
 	}
 	
@@ -179,9 +160,9 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 * @return succeed(false if will lead to negative)
 	 */
 	public boolean tryReduce(Asp key, int amount) {
-		var currentAmount = getAmount(key);
+		var currentAmount = this.get(key);
 		if (currentAmount>=amount) {
-			int am = getAmount(key)-amount;
+			int am = this.get(key)-amount;
 			aspects.put(key, am);
 			visSize -= currentAmount;
 			visSize += amount;
@@ -195,11 +176,10 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 * If reduced to 0 or less the aspect will be removed completely. 
 	 * @param key to remove
 	 * @param amount to remove
-	 * @return slef
 	 */
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> reduceAndRemoveIfNotPositive(Asp key, int amount) {
-		var currentAmount = getAmount(key);
+	
+	public void reduceAndRemoveIfNotPositive(Asp key, int amount) {
+		var currentAmount = this.get(key);
 		int reducedResult = currentAmount - amount;
 		if (reducedResult<=0) {
 			aspects.removeInt(key);
@@ -209,22 +189,22 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 			this.aspects.put(key, reducedResult);
 			this.visSize -= amount;
 		}
-		return this;
+		
 	}
 	
 	/**
 	 * Simply removes the aspect from the list
 	 * @param key
 //	 * @param amount
-	 * @return self
+	 * 
 	 */
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> remove(Asp key) {
+	
+	public void remove(Asp key) {
 		this.visSize -= aspects.removeInt(key);
-		return this;
+		
 	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> removeIf(Predicate<Object2IntMap.Entry<Asp>> filter) {
+	
+	public void removeIf(Predicate<Object2IntMap.Entry<Asp>> filter) {
 		aspects.object2IntEntrySet().removeIf(entry -> {
 			if (filter.test(entry)) {
 				this.visSize -= entry.getIntValue();
@@ -232,12 +212,7 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 			}
 			return false;
 		});
-		return this;
-	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> removeIfNotPositive() {
-		removeIf(aspectIntegerEntry -> aspectIntegerEntry.getIntValue() <= 0);
-		return this;
+		
 	}
 	
 	/**
@@ -245,28 +220,27 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 * <s>If the aspect exists then its value will be increased by the given amount.</s>
 	 * @param aspect to add
 	 * @param amount to add
-	 * @return self
+	 * 
 	 */
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> addAll(Asp aspect, int amount) {
+	
+	public void addAll(Asp aspect, int amount) {
 		if (aspect == null || aspect.isEmpty()){
 			throw new NullPointerException("aspect is null or empty");
 		}
 		this.aspects.merge(aspect, amount, Integer::sum);
 		this.visSize += amount;
-		return this;
 	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> set(Asp aspect, int amount) {
+	
+	public void set(Asp aspect, int amount) {
 		if (aspect == null){
 			throw new NullPointerException("aspect is null");
 		}
 		var oldValue = this.aspects.put( aspect, amount );
 		this.visSize += amount - oldValue;
-		return this;
+		
 	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> divideAndCeil(int divideBy){
+	
+	public void divideAndCeil(int divideBy){
 		if (divideBy==0){
 			throw new IllegalArgumentException("division by zero");
 		}
@@ -277,27 +251,27 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 			entry.setValue(divided);
 			this.visSize += divided - oldValue;
 		}
-		return this;
+		
 	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> multiply(int multiplier){
+	
+	public void multiply(int multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.object2IntEntrySet()) {
 			int oldValue = entry.getValue();
 			int newValue = oldValue * multiplier;
 			entry.setValue(newValue);
 			this.visSize += newValue - oldValue;
 		}
-		return this;
+		
 	}
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> multiplyAndCeil(float multiplier){
+	
+	public void multiplyAndCeil(float multiplier){
 		for (Map.Entry<Asp, Integer> entry : aspects.object2IntEntrySet()) {
 			int oldValue = entry.getValue();
 			int newValue = (int)Math.ceil(oldValue*multiplier);
 			entry.setValue(newValue);
 			this.visSize += newValue - oldValue;
 		}
-		return this;
+		
 	}
 
 	
@@ -306,20 +280,20 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	 * If the aspect exists then only the highest of the old or new amount will be used.
 	 * @param aspect to merge
 	 * @param amount to merge
-	 * @return self
+	 * 
 	 */
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> mergeWithHighest(Asp aspect, int amount) {
-		if (amount < 0){return this;}
+	
+	public void mergeWithHighest(Asp aspect, int amount) {
+		if (amount < 0){}
 		int oldValue = this.aspects.getOrDefault(aspect, 0);
 		if (amount < oldValue) {
 			amount = oldValue;
 		}
 		this.aspects.put( aspect, amount );
 		this.visSize += amount - oldValue;
-		return this;
+		
 	}
-	@SuppressWarnings("UnusedReturnValue")
+	
 	public int merge(Asp aspect, int amount, IntBinaryOperator chooser) {
 		var oldValue = this.aspects.getOrDefault(aspect, 0);
 		int result = this.aspects.mergeInt(aspect, amount, chooser::applyAsInt);
@@ -328,21 +302,21 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return result;
 	}
 
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> addAll(AspectList<Asp> in) {
-		for (var a:in.getAspectTypes()) {
-			this.addAll(a, in.getAmount(a));
+	
+	public void addAll(AspectList<Asp> in) {
+		for (var a:in.keySet()) {
+			this.addAll(a, in.get(a));
 		}
-		return this;
+		
 	}
 
-	@SuppressWarnings("UnusedReturnValue")
-	public AspectList<Asp> mergeWithHighest(AspectList<Asp> in) {
-		for (var a:in.getAspectTypes()) {
-			this.mergeWithHighest(a, in.getAmount(a));
+	
+	public void mergeWithHighest(AspectList<Asp> in) {
+		for (var a:in.keySet()) {
+			this.mergeWithHighest(a, in.get(a));
 		}
 //		recalculateVisSize();//calculated each loop above
-		return this;
+		
 	}
 
 	public void forEach(ObjIntConsumer<Asp> action) {
@@ -384,28 +358,18 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 
 
-	public void putAllAspects(AspectList<Asp> aspects) {
-		int visSizeChange = 0;
-		for (var entry:aspects.aspects.object2IntEntrySet()){
-			visSizeChange += entry.getIntValue();
-			visSizeChange -= this.aspects.put(entry.getKey(), entry.getIntValue());
-		}
-		this.visSize += visSizeChange;
+	public void overrideAllAspects(AspectList<Asp> aspects) {
+		AtomicInteger visSizeChange = new AtomicInteger();
+		aspects.forEach(
+				(aspect,amount) -> {
+					visSizeChange.addAndGet(amount);
+					visSizeChange.addAndGet(-this.aspects.put(aspect, amount));
+				}
+		);
+		this.visSize += visSizeChange.get();
 	}
 
-
-	public interface AspIntIntBiFunction<Asp extends Aspect> {
-
-		/**
-		 * Applies this function to the given arguments.
-		 *
-		 * @param t the first function argument
-		 * @param u the second function argument
-		 * @return the function result
-		 */
-		int apply(Asp t, int u);
-
-	}
+	@Override
 	public void replaceAll(AspIntIntBiFunction<Asp> biFunction){
 		aspects.object2IntEntrySet().forEach(entry -> {
 			int newValue = biFunction.apply(entry.getKey(), entry.getIntValue());
@@ -414,8 +378,8 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 	}
 
 	@SafeVarargs
-	public static <Asp extends Aspect> AspectList<Asp> of(Asp... aspects){
-		AspectList<Asp> out = new AspectList<>();
+	public static <Asp extends Aspect> LinkedTreeAspectList<Asp> of(Asp... aspects){
+		LinkedTreeAspectList<Asp> out = new LinkedTreeAspectList<>();
 		for (var aspect : aspects){
 			if (aspect != null){
 				out.addAll(aspect,1);
@@ -424,8 +388,8 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return out;
 	}
 
-	public static <Asp extends Aspect> AspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects){
-		return new AspectList<>(aspects);
+	public static <Asp extends Aspect> LinkedTreeAspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects){
+		return new LinkedTreeAspectList<>(aspects);
 	}
 
 	public @Nullable("if empty") Asp randomAspect(RandomSource randomSource){
@@ -481,23 +445,12 @@ public class AspectList<Asp extends Aspect> /*implements Serializable */{
 		return aspects.firstKey();
 	}
 
-	public @NotNull("empty -> empty(aspect)") Asp getAspectAtIndexEnsureInBound(int index){
-		return getAspectAtIndex((index&Integer.MAX_VALUE)%size());
-	}
 	//i say do we really need this?we should have better way.
 	//make this AspectList ordered is just for UI performance i even want it's order not ruled.
-	public @NotNull("empty -> empty(aspect)") Asp getAspectAtIndex(int index) {
-		AtomicInteger i = new AtomicInteger(index);
-		AtomicReference<Asp> currentAsp = new AtomicReference<>((Asp)Aspects.EMPTY);
-		forEachWithBreak((asp,value) -> {
-			currentAsp.set(asp);
-            return i.getAndDecrement() == 0;
-        });
-		return currentAsp.get();
-	}
 
 	public boolean containsKey(Asp aspect) {
 		return this.aspects.containsKey(aspect);
 	}
+
 
 }

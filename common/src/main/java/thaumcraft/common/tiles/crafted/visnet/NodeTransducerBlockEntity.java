@@ -7,7 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.nodes.*;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ClientFXUtils;
@@ -35,15 +36,15 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        tickCount = TRANSDUCER_TICK_COUNT.readFromCompoundTag(compoundTag);
-        statusCode = TRANSDUCER_STATUS_CODE.readFromCompoundTag(compoundTag);
+        tickCount = TRANSDUCER_TICK_COUNT.readIntFromCompoundTag(compoundTag);
+        statusCode = TRANSDUCER_STATUS_CODE.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        TRANSDUCER_TICK_COUNT.writeToCompoundTag(compoundTag,tickCount);
-        TRANSDUCER_STATUS_CODE.writeToCompoundTag(compoundTag,statusCode);
+        TRANSDUCER_TICK_COUNT.writeIntToCompoundTag(compoundTag,tickCount);
+        TRANSDUCER_STATUS_CODE.writeIntToCompoundTag(compoundTag,statusCode);
     }
 
     public void tick(){

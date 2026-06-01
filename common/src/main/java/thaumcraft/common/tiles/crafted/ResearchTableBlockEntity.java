@@ -19,7 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
@@ -118,7 +119,7 @@ public class ResearchTableBlockEntity
     public static final int INK_SLOT = 0;
     public static final int RESEARCH_NOTE_SLOT = 1;
     public final NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length, ItemStack.EMPTY);
-    public final AspectList<Aspect> bonusAspects = new AspectList<>();
+    public final AspectList<Aspect> bonusAspects = new LinkedTreeAspectList<>();
     public int tickCounter = 0;
     public static final int BONUS_ASPECT_REGEN_PERIOD = 600;
 

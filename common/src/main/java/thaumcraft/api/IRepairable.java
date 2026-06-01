@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -66,7 +69,7 @@ public interface IRepairable {
 				return UnmodifiableCentiVisList.EMPTY_PRIMAL;
 			}
 			var reduced = ResearchManager.reduceToPrimals(basic);
-			CentiVisList<PrimalAspect> cost = new CentiVisList<>();
+			CentiVisList<PrimalAspect> cost = new LinkedTreeCentiVisList<>();
 			reduced.forEach(
 					(aspect, amount) -> cost.mergeWithHighest(
 							aspect,
@@ -74,7 +77,7 @@ public interface IRepairable {
 					)
 			);
 
-			return UnmodifiableCentiVisList.viewOf(cost);
+			return UnmodifiableCentiVisList.of(cost);
 		});
 	}
 

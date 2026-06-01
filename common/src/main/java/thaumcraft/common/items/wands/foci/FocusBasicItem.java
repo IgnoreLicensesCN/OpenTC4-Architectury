@@ -9,7 +9,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 
@@ -82,7 +82,7 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
             list.add(Component.translatable(isCentiVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
             for (var aspect:al.getAspectsSorted()) {
                 DecimalFormat myFormatter = new DecimalFormat("#####.##");
-                String amount = myFormatter.format(al.getAmount(aspect)/100f);
+                String amount = myFormatter.format(al.get(aspect)/100f);
                 list.add(aspect.getName().copy()
                         .withStyle(style -> style.withColor(TextColor.fromRgb(aspect.getColor())))
                         .append(Component.literal(" x " + amount))

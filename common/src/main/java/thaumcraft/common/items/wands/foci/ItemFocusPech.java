@@ -8,7 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -82,10 +83,10 @@ public class ItemFocusPech extends ItemFocusBasic {
    }
 
    static {
-      cost = (new AspectList<>()).addAll(Aspects.EARTH, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
-      costAll = (new AspectList<>()).addAll(Aspects.AIR, 10).addAll(Aspects.FIRE, 10).addAll(Aspects.EARTH, 10).addAll(
+      cost = (new LinkedTreeAspectList<>()).addAll(Aspects.EARTH, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
+      costAll = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 10).addAll(Aspects.FIRE, 10).addAll(Aspects.EARTH, 10).addAll(
               Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10).addAll(Aspects.WATER, 10);
-      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new AspectList<>()).addAll(
+      nightshade = new FocusUpgradeType(15, new ResourceLocation("thaumcraft", "textures/foci/nightshade.png"), "focus.upgrade.nightshade.name", "focus.upgrade.nightshade.text", (new LinkedTreeAspectList<>()).addAll(
               Aspects.LIFE, 1).addAll(Aspects.POISON, 1).addAll(Aspects.MAGIC, 1));
    }
 }

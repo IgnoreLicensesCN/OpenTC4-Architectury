@@ -7,7 +7,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
     protected final ListTagAccessor listTagAccessorInternal;
@@ -30,7 +31,7 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
             var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
-        return new CentiVisList<>(result);
+        return new LinkedTreeCentiVisList<>(result);
     }
 
     @Override

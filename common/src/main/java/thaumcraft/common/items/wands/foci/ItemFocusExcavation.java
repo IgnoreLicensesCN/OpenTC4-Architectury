@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands.foci;
 
 @Deprecated(forRemoval = true)
 public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
-//   private static final AspectList<Aspect>cost = (new AspectList<>()).add(Aspect.EARTH, 15);
+//   private static final AspectList<Aspect>cost = (new LinkedTreeAspectList<>()).add(Aspect.EARTH, 15);
 //   static HashMap soundDelay;
 //   static HashMap beam;
 //   static HashMap breakcount;
@@ -18,7 +18,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      lastX = new HashMap<>();
 //      lastY = new HashMap<>();
 //      lastZ = new HashMap<>();
-//      dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new AspectList<>()).add(Aspect.MINE, 1));
+//      dowsing = new FocusUpgradeType("dowsing", new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"), "focus.upgrade.dowsing.name", "focus.upgrade.dowsing.text", (new LinkedTreeAspectList<>()).add(Aspect.MINE, 1));
 //   }
 //
 //   public ItemFocusExcavation() {
@@ -38,7 +38,7 @@ public class ItemFocusExcavation /*extends ItemFocusBasic*/ {
 //      return 409606;
 //   }
 //
-//   private static final AspectList<Aspect>withSilkTouchOrDowsing = (new AspectList<>())
+//   private static final AspectList<Aspect>withSilkTouchOrDowsing = (new LinkedTreeAspectList<>())
 //           .add(Aspect.AIR, 1)
 //           .add(Aspect.FIRE, 1)
 //           .add(Aspect.EARTH, 1)

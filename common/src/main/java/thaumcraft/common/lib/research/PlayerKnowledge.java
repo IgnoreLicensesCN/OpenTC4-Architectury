@@ -3,6 +3,8 @@ package thaumcraft.common.lib.research;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -62,7 +64,7 @@ public class PlayerKnowledge {
    public void addDiscoveredPrimalAspects(Player player) {
       AspectList<Aspect> known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       if (known == null) {
-         known = new AspectList<>();
+         known = new LinkedTreeAspectList<>();
       }
       for (var asp: Aspects.getPrimalAspects()){
 
@@ -91,13 +93,13 @@ public class PlayerKnowledge {
 
    public short getAspectPoolFor(Player player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
-      return known != null ? (short)known.getAmount(aspect) : 0;
+      return known != null ? (short)known.get(aspect) : 0;
    }
 
    public boolean addAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new AspectList<>();
+         al = new LinkedTreeAspectList<>();
       }
 
       if (aspect != null && amount != 0) {
@@ -105,7 +107,7 @@ public class PlayerKnowledge {
          if (amount > 0) {
             al.addAll(aspect, amount);
             ret = true;
-         } else if (al.getAmount(aspect) > 0) {
+         } else if (al.get(aspect) > 0) {
             al.tryReduce(aspect, -amount);
             ret = true;
          }
@@ -123,7 +125,7 @@ public class PlayerKnowledge {
    public boolean setAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new AspectList<>();
+         al = new LinkedTreeAspectList<>();
       }
 
       if (aspect != null) {

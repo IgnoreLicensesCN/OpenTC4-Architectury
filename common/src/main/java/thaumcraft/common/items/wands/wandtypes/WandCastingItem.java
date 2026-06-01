@@ -21,7 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.WandManager;
 
@@ -203,7 +204,7 @@ public class WandCastingItem extends Item
         if (cached != null) {
             return cached;
         }
-        var result = new CentiVisList<>();
+        var result = new LinkedTreeCentiVisList<>();
         var components = getWandComponents(usingWand);
         boolean canCache = true;
         for (var component : components) {

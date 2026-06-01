@@ -12,7 +12,9 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.menu.slot.ArcaneWorkbenchOutputSlot;
@@ -161,7 +163,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
         if (!level.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             ItemStack itemStack = ItemStack.EMPTY;
-            var aspects = CentiVisList.of();
+            CentiVisList<Aspect> aspects = new LinkedTreeCentiVisList<>();
             var workbench = arcaneWorkbenchMenu.blockEntity;
             for (var arcaneRecipe: getIArcaneRecipes()) {
                 if (arcaneRecipe.matches(workbench,level,serverPlayer)){
@@ -173,7 +175,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
                 }
             }
             if (itemStack.isEmpty()) {
-                aspects = CentiVisList.of();
+                aspects = new LinkedTreeCentiVisList<>();
                 Optional<CraftingRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
                 if (optional.isPresent()) {
                     CraftingRecipe craftingRecipe = optional.get();
@@ -201,7 +203,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
         ItemStack ret = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 

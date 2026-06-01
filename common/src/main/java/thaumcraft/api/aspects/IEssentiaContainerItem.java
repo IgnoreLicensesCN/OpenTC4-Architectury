@@ -1,6 +1,8 @@
 package thaumcraft.api.aspects;
 
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 /**
  * 
@@ -23,7 +25,7 @@ public interface IEssentiaContainerItem {
 	@Override
 	public AspectList<Aspect>getAspects(ItemStack itemstack) {
 		if (itemstack.hasTagCompound()) {
-			AspectList<Aspect>aspects = new AspectList<>();
+			AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
 			aspects.load(itemstack.getTagCompound());
 			return aspects.size()>0?aspects:null;
 		}

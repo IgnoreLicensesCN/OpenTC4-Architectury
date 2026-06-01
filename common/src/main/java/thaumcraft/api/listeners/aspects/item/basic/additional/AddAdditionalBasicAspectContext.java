@@ -3,7 +3,7 @@ package thaumcraft.api.listeners.aspects.item.basic.additional;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 
 public class AddAdditionalBasicAspectContext {
     public final Item item;

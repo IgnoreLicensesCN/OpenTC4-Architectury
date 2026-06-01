@@ -1,19 +1,17 @@
 package thaumcraft.common.items.wands.componentbase;
 
 import com.linearity.opentc4.simpleutils.ObjectIntPair;
-import com.linearity.opentc4.simpleutils.SimplePair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.IInventoryTickableComponentItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 

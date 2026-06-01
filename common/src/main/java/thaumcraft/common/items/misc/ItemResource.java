@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.network.chat.Component;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,15 +20,12 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.entities.projectile.EntityAlumentum;
-import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
@@ -38,9 +33,8 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
-import java.util.Random;
 
-import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
+import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescriptionToList;
 
 //TODO:Migrate logic
 public class ItemResource extends Item implements IEssentiaContainerItem {
@@ -276,7 +270,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 
    public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new AspectList<>();
+         AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {

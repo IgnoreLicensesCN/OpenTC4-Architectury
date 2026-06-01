@@ -25,8 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.wands.IEnchantmentRepairVisProviderItem;
@@ -286,9 +287,9 @@ public class EventHandlerEntity {
             cost = ResearchManager.reduceToPrimalsAndCast(cost);
             CentiVisList<Aspect> finalCost = new CentiVisList<>();
 
-            for(Aspect a : cost.getAspectTypes()) {
+            for(Aspect a : cost.keySet()) {
                if (a != null) {
-                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.getAmount(a) * 2) * level);
+                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.get(a) * 2) * level);
                }
             }
             boolean doRepair = WandManager.consumeCentiVisFromInventory(player, finalCost, checkIfCanConsumeForRepair);
@@ -460,12 +461,12 @@ public class EventHandlerEntity {
       if (event.source == ThaumcraftDamageSources.dissolve) {
          AspectList<Aspect>aspects = ScanManager.generateEntityAspects(event.entityLiving);
          if (aspects != null && aspects.size() > 0) {
-            for(Aspect aspect : aspects.getAspectTypes()) {
+            for(Aspect aspect : aspects.keySet()) {
                if (!event.entity.getRandom().nextBoolean()) {
-                  int size = 1 + event.entity.getRandom().nextInt(aspects.getAmount(aspect));
+                  int size = 1 + event.entity.getRandom().nextInt(aspects.get(aspect));
                   size = Math.max(1, size / 2);
                   ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
-                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new AspectList<>()).addAll(aspect, 1));
+                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new LinkedTreeAspectList<>()).addAll(aspect, 1));
                   event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
                }
             }
@@ -507,9 +508,9 @@ public class EventHandlerEntity {
          if (aspectsCompound != null && !aspectsCompound.isEmpty()) {
             AspectList<Aspect>aspects = ResearchManager.reduceToPrimalsAndCast(aspectsCompound);
 
-            for(Aspect aspect : aspects.getAspectTypes()) {
+            for(Aspect aspect : aspects.keySet()) {
                if (event.entityLiving.getRandom().nextBoolean()) {
-                  EntityAspectOrb orb = new EntityAspectOrb(event.entityLiving.level(), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, aspect, 1 + event.entityLiving.getRandom().nextInt(aspects.getAmount(aspect)));
+                  EntityAspectOrb orb = new EntityAspectOrb(event.entityLiving.level(), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, aspect, 1 + event.entityLiving.getRandom().nextInt(aspects.get(aspect)));
                   event.entityLiving.level().spawnEntityInWorld(orb);
                }
             }

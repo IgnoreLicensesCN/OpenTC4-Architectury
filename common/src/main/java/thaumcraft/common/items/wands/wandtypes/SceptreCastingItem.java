@@ -11,8 +11,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.aspects.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwnerItem;
 
 public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwnerItem {
@@ -53,6 +53,6 @@ public class SceptreCastingItem extends WandCastingItem implements IArcaneCrafti
                 key,
                 (int) (value*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)
         ));
-        return UnmodifiableCentiVisList.viewOf(centiVisCapacity);
+        return UnmodifiableCentiVisList.of(centiVisCapacity);
     }
 }

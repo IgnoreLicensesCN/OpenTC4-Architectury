@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerArcaneWorkbench;
@@ -55,8 +55,8 @@ public class GuiArcaneWorkbench extends GuiContainer {
             int count = 0;
 
             for (Aspect primal : this.primals) {
-                float amt = (float) cost.getAmount(primal);
-                if (cost.getAmount(primal) > 0) {
+                float amt = (float) cost.get(primal);
+                if (cost.get(primal) > 0) {
                     float alpha = 0.5F + (MathHelper.sin((float) (this.ip.player.ticksExisted + count * 10) / 2.0F) * 0.2F - 0.2F);
                     if (wand != null) {
                         amt *= wand.getConsumptionModifier(this.tileEntity.getStackInSlot(10), this.ip.player, primal, true);

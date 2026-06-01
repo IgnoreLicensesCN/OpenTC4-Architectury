@@ -45,9 +45,9 @@ public class ResearchNoteData {
 
         CompoundTag tag = stack.getOrCreateTag();
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
+        RESEARCH_NOTE_COLOR_ACCESSOR.writeIntToCompoundTag(tag, researchThemedAspect.getColor());
+        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeBooleanToCompoundTag(tag, false);
+        RESEARCH_NOTE_COPIES_ACCESSOR.writeIntToCompoundTag(tag, 0);
 
         int radius = 1 + noteCreatable.getComplexity();
         var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
@@ -56,7 +56,7 @@ public class ResearchNoteData {
         int placedAspectCount = 0;
 
         for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().stream().toList().get(placedAspectCount), HexType.GIVEN));
+            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().keySet().stream().toList().get(placedAspectCount), HexType.GIVEN));
             ++placedAspectCount;
         }
 
@@ -234,9 +234,9 @@ public class ResearchNoteData {
         CompoundTag tag = stack.getOrCreateTag();
         ResearchNoteData data = new ResearchNoteData();
         data.key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(tag);
-        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readFromCompoundTag(tag);
-        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readFromCompoundTag(tag);
-        data.copiedCount = RESEARCH_NOTE_COPIES_ACCESSOR.readFromCompoundTag(tag);
+        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readIntFromCompoundTag(tag);
+        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readByteFromCompoundTag(tag);
+        data.copiedCount = RESEARCH_NOTE_COPIES_ACCESSOR.readIntFromCompoundTag(tag);
         data.hexGrid = RESEARCH_NOTE_HEXGRID_ACCESSOR.readFromCompoundTag(tag);
         stack.setTag(tag);
         return data;
@@ -246,9 +246,9 @@ public class ResearchNoteData {
         if (stack.isEmpty()) return;
         CompoundTag tag = stack.getOrCreateTag();
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, this.key);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, this.color);
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, this.completed);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, this.copiedCount);
+        RESEARCH_NOTE_COLOR_ACCESSOR.writeIntToCompoundTag(tag, this.color);
+        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeBooleanToCompoundTag(tag, this.completed);
+        RESEARCH_NOTE_COPIES_ACCESSOR.writeIntToCompoundTag(tag, this.copiedCount);
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, this.hexGrid);
     }
 

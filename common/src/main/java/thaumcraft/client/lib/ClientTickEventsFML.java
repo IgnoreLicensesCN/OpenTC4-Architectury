@@ -28,7 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.gui.GuiResearchPopup;
@@ -396,7 +396,7 @@ public class ClientTickEventsFML {
       AspectList<Aspect>aspects = wand.getAllVis(wandstack);
 
       for(Aspect aspect : aspects.getAspects()) {
-         int amt = aspects.getAmount(aspect);
+         int amt = aspects.get(aspect);
          GL11.glPushMatrix();
          if (!Config.dialBottom) {
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
@@ -423,11 +423,11 @@ public class ClientTickEventsFML {
             GL11.glPopMatrix();
          }
 
-         if (this.oldvals.get(player.inventory.currentItem).getAmount(aspect) > amt) {
+         if (this.oldvals.get(player.inventory.currentItem).get(aspect) > amt) {
             GL11.glPushMatrix();
             UtilsFX.drawTexturedQuad(-4, -8 - sh, 128, 0, 8, 8, -90.0F);
             GL11.glPopMatrix();
-         } else if (this.oldvals.get(player.inventory.currentItem).getAmount(aspect) < amt) {
+         } else if (this.oldvals.get(player.inventory.currentItem).get(aspect) < amt) {
             GL11.glPushMatrix();
             UtilsFX.drawTexturedQuad(-4, -8 - sh, 120, 0, 8, 8, -90.0F);
             GL11.glPopMatrix();
@@ -556,7 +556,7 @@ public class ClientTickEventsFML {
          if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
             AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
             if (aspects != null && aspects.size() > 0) {
-               fuel = (short)aspects.getAmount(Aspects.ENERGY);
+               fuel = (short)aspects.get(Aspects.ENERGY);
             }
          }
       }
@@ -699,7 +699,7 @@ public class ClientTickEventsFML {
                            GL11.glDisable(GL11.GL_BLEND);
                            GL11.glPopMatrix();
                            if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
-                              UtilsFX.drawTag(x + shiftx, y + shifty, tag, (float)tags.getAmount(tag), 0, UtilsFX.getGuiZLevel(gui));
+                              UtilsFX.drawTag(x + shiftx, y + shifty, tag, (float)tags.get(tag), 0, UtilsFX.getGuiZLevel(gui));
                            } else {
                               UtilsFX.bindTexture("textures/aspects/_unknown.png");
                               GL11.glPushMatrix();

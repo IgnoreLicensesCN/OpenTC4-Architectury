@@ -26,7 +26,8 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.worldgen.node.NodeGenerationManager;
 import thaumcraft.api.nodes.NodeModifier;
@@ -280,7 +281,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 
         int value = random.nextInt(baura / 2) + baura / 2;
         Aspect ra = BiomeHandler.getRandomBiomeTag(bg.biomeID, random);
-        AspectList<Aspect>al = new AspectList<>();
+        AspectList<Aspect>al = new LinkedTreeAspectList<>();
         if (ra != null) {
             al.addAll(ra, 2);
         } else {
@@ -382,7 +383,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
         float total = 0.0F;
 
         for (int a = 0; a < spread.length; ++a) {
-            if (al.getAmount(al.getAspectsSorted()[a]) == 2) {
+            if (al.get(al.getAspectsSorted()[a]) == 2) {
                 spread[a] = 50 + random.nextInt(25);
             } else {
                 spread[a] = 25 + random.nextInt(50);

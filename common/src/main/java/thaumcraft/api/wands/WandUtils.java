@@ -18,8 +18,9 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
 
 import java.text.DecimalFormat;
@@ -43,24 +44,24 @@ public class WandUtils {
                     Aspects.getPrimalAspects().forEach(aspect -> {
                         map.put(aspect,val);
                     });
-                    return CentiVisList.viewOf(map);
+                    return LinkedTreeCentiVisList.viewOf(map);
                 }
         );
     }
 
     //generate capacity? or whatever you like
     public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCasted(int value) {
-        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedTreeCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValue(int value) {
 
-        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedTreeCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Collection<Aspect> aspects, int value) {
-        return new CentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedTreeCentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Aspect aspect, int value) {
-        return new CentiVisList<>(aspect,value);
+        return LinkedTreeCentiVisList.of(aspect,value);
     }
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
@@ -122,7 +123,7 @@ public class WandUtils {
             var focusItem = focusStack.getItem();
             if (focusItem instanceof IWandFocusItem<?> wandFocusItemNotCasted) {
                 IWandFocusItem<Aspect> wandFocusItem = (IWandFocusItem<Aspect>) wandFocusItemNotCasted;
-                int amt = wandFocusItem.getCentiVisCost(focusStack, wandStack).getAmount(aspect);
+                int amt = wandFocusItem.getCentiVisCost(focusStack, wandStack).get(aspect);
                 if (amt > 0) {
                     focusConsumptionComponent =
                             Component.literal(", "+decimalFormat.format((float) amt * mod / 100.0F) + " ")

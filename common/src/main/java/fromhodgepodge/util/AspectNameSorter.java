@@ -1,12 +1,5 @@
 package fromhodgepodge.util;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Deprecated(forRemoval = true)
 public class AspectNameSorter /*implements Comparator<Aspect>*/ {
 //

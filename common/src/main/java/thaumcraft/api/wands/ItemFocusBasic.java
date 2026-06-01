@@ -1,22 +1,5 @@
 package thaumcraft.api.wands;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.phys.HitResult;
-
-import net.minecraft.world.level.Level;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-
-import java.text.DecimalFormat;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 @Deprecated(forRemoval = true)
 public class ItemFocusBasic /*extends Item*/ {
 	

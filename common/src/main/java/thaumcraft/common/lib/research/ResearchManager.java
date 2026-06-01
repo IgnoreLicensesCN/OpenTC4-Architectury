@@ -17,6 +17,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
@@ -84,7 +86,7 @@ public class ResearchManager {
                     if (aspects != null && !aspects.isEmpty() && researchItem.getAspectTriggers() != null) {
                         researchItem.getAspectTriggers();
                         for (Aspect aspect : researchItem.getAspectTriggers()) {
-                            if (aspects.getAmount(aspect) > 0) {
+                            if (aspects.get(aspect) > 0) {
                                 keys.add(asClueKey);
                                 break;
                             }
@@ -141,7 +143,7 @@ public class ResearchManager {
                     if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
                         ri.getAspectTriggers();
                         for (Aspect aspect : ri.getAspectTriggers()) {
-                            if (aspects.getAmount(aspect) > 0) {
+                            if (aspects.get(aspect) > 0) {
                                 keys.add(ClueResourceLocation.of(ri.key));
                                 break;
                             }
@@ -350,10 +352,10 @@ public class ResearchManager {
     }
 
     public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al, boolean merge) {
-        AspectList<PrimalAspect> out = new AspectList<>();
+        AspectList<PrimalAspect> out = new LinkedTreeAspectList<>();
 
-        for (var aspect : al.getAspectTypes()) {
-            var aspAmount = al.getAmount(aspect);
+        for (var aspect : al.keySet()) {
+            var aspAmount = al.get(aspect);
             if (aspect != null) {
                 if (aspect instanceof PrimalAspect primalAspect) {
                     if (merge) {
@@ -362,24 +364,24 @@ public class ResearchManager {
                         out.addAll(primalAspect, aspAmount);
                     }
                 } else if (aspect instanceof CompoundAspect compoundAspect) {
-                    AspectList<PrimalAspect> send = new AspectList<>();
+                    AspectList<PrimalAspect> send = new LinkedTreeAspectList<>();
                     send.addAll(
                             reduceToPrimals(
-                                    new AspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
+                                    new LinkedTreeAspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
                                     ,merge)
                     );
                     send.addAll(
                             reduceToPrimals(
-                                    new AspectList<>(
+                                    new LinkedTreeAspectList<>(
                                             Map.of(compoundAspect.components.aspectB(), aspAmount))
                                     ,merge)
                     );
 
-                    for (var a : send.getAspectTypes()) {
+                    for (var a : send.keySet()) {
                         if (merge) {
-                            out.mergeWithHighest(a, send.getAmount(a));
+                            out.mergeWithHighest(a, send.get(a));
                         } else {
-                            out.addAll(a, send.getAmount(a));
+                            out.addAll(a, send.get(a));
                         }
                     }
                 }

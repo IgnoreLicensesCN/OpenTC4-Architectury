@@ -7,7 +7,8 @@ import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -45,7 +46,7 @@ public class PacketSyncAspectsS2C extends ThaumcraftBaseS2CMessage {
             }
             dataMap.put(aspect, buf.readInt());
         }
-        return new PacketSyncAspectsS2C(AspectList.viewOf(dataMap));
+        return new PacketSyncAspectsS2C(LinkedTreeAspectList.viewOf(dataMap));
     }
 
     @Override

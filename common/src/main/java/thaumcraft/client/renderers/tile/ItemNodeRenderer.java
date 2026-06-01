@@ -12,7 +12,8 @@ import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeType;
@@ -24,7 +25,7 @@ public class ItemNodeRenderer implements IItemRenderer {
    AspectList<Aspect>aspects;
 
    public ItemNodeRenderer() {
-      this.aspects = (new AspectList<>()).addAll(Aspects.AIR, 40).addAll(Aspects.FIRE, 40).addAll(Aspects.EARTH, 40).addAll(
+      this.aspects = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 40).addAll(Aspects.FIRE, 40).addAll(Aspects.EARTH, 40).addAll(
               Aspects.WATER, 40);
    }
 
@@ -103,12 +104,12 @@ public class ItemNodeRenderer implements IItemRenderer {
                alpha = (float)((double)alpha * (double)1.5F);
             }
 
-            average += (float)node.getAspects().getAmount(aspect);
+            average += (float)node.getAspects().get(aspect);
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(770, aspect.getBlend());
             scale = MathHelper.sin((float)viewer.ticksExisted / (14.0F - (float)count)) * bscale + bscale * 2.0F;
-            scale = 0.2F + scale * ((float)node.getAspects().getAmount(aspect) / 50.0F);
+            scale = 0.2F + scale * ((float)node.getAspects().get(aspect) / 50.0F);
 
 //            UtilsFX.renderAnimatedQuadStrip
             renderAnimatedQuadStrip_tweaked

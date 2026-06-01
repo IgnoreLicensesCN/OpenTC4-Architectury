@@ -8,6 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
 import thaumcraft.api.listeners.manabean.ManaBeanGrowContext;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.worldgenerated.ManaBeanBlock;
@@ -17,7 +19,8 @@ import static com.linearity.opentc4.Consts.ManaBeanBlockEntityOrItemStackTagAcce
 import static thaumcraft.api.listeners.manabean.ManaBeanGrowthManager.onGrowStageChanged;
 
 public class ManaBeanBlockEntity extends TileThaumcraft
-        implements IAspectDisplayBlockEntity<Aspect> {
+        implements IAspectDisplayBlockEntity<Aspect>,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect> {
     public ManaBeanBlockEntity(BlockEntityType<? extends ManaBeanBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -26,8 +29,18 @@ public class ManaBeanBlockEntity extends TileThaumcraft
     }
     private @NotNull Aspect aspectOwning = Aspects.EMPTY;
     private final AspectList<Aspect> aspectListViewOfSingle = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectOwning,() -> 1
+            this
     );
+
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectOwning;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return 1;
+    }
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {

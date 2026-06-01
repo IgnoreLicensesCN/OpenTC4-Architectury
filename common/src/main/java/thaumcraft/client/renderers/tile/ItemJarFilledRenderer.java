@@ -11,7 +11,7 @@ import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -45,7 +45,7 @@ public class ItemJarFilledRenderer implements IItemRenderer {
 
             AspectList<Aspect>aspects = ((ItemJarFilled)item.getItem()).getAspects(item);
             if (aspects != null && aspects.size() == 1) {
-               tjf.amount = aspects.getAmount(aspects.getAspects()[0]);
+               tjf.amount = aspects.get(aspects.getAspects()[0]);
                tjf.aspect = aspects.getAspects()[0];
             }
 

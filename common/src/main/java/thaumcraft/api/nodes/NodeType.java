@@ -3,7 +3,6 @@ package thaumcraft.api.nodes;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,8 +17,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
@@ -89,7 +88,7 @@ public class NodeType {
             var level = node.getLevel();
             if (level != null) {
                 if (level.random.nextInt(500) == 0){
-                    node.setCentiVisBase(new CentiVisList<>());
+                    node.setCentiVisBase(new LinkedTreeCentiVisList<>());
                 }
             }
             super.nodeTypeTickEnergized(node);
@@ -295,11 +294,11 @@ public class NodeType {
                                                     .keySet()
                                                     .toArray(new Aspect[0])[serverLevel.random.nextInt(al.size())];
                                             if (thisNode.getAspects()
-                                                    .getAmount(a) < thisNode.getNodeVisBase(a)) {
+                                                    .get(a) < thisNode.getNodeVisBase(a)) {
                                                 thisNode.addToContainer(a, 1);
                                                 result = true;
                                             } else if (serverLevel.random.nextInt(
-                                                    1 + thisNode.getNodeVisBase(a) * 2) < al.getAmount(a)) {
+                                                    1 + thisNode.getNodeVisBase(a) * 2) < al.get(a)) {
                                                 thisNode.getAspectsBase().addAll(a, 1);
                                                 result = true;
                                             }

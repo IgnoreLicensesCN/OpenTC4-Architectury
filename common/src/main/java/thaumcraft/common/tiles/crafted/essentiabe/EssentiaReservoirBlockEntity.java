@@ -15,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -67,8 +70,8 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         owningAspects.clear();
     }
 
-    protected final AspectList<Aspect> owningAspects = new AspectList<>();
-    public final AspectList<Aspect> aspOwningView = new UnmodifiableAspectList<>(owningAspects);
+    protected final AspectList<Aspect> owningAspects = new LinkedTreeAspectList<>();
+    public final AspectList<Aspect> aspOwningView = new UnmodifiableAspectView<>(owningAspects);
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
@@ -79,7 +82,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.owningAspects.putAllAspects(ASPECTS_OWNING.readFromCompoundTag(compoundTag));
+        this.owningAspects.overrideAllAspects(ASPECTS_OWNING.readFromCompoundTag(compoundTag));
     }
 
     @Override

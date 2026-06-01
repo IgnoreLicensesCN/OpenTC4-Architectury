@@ -7,9 +7,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.*;
 
@@ -32,8 +33,8 @@ public enum BonusTagForItemListeners {
                 AspectList<Aspect> aspectsFromContainer = (AspectList<Aspect>) owner.getOwningBonusAspects(itemstack);
                 if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
                     for (Aspect tag : aspectsFromContainer.copy()
-                            .getAspectTypes()) {
-                        int amountInContainer = currentAspects.getAmount(tag);
+                            .keySet()) {
+                        int amountInContainer = currentAspects.get(tag);
                         if (amountInContainer > 0) {
                             currentAspects.addAll(tag, amountInContainer);
                         }
@@ -90,8 +91,8 @@ public enum BonusTagForItemListeners {
         @Override
         public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
             if (item instanceof BowItem) {
-                currentAspects.mergeWithHighest(Aspects.WEAPON, 3)
-                        .mergeWithHighest(Aspects.FLIGHT, 1);
+                currentAspects.mergeWithHighest(Aspects.WEAPON, 3);
+                currentAspects.mergeWithHighest(Aspects.FLIGHT, 1);
             }
         }
     }),
@@ -158,10 +159,7 @@ public enum BonusTagForItemListeners {
 
                     AspectList<Aspect>aspects = ENCHANTMENT_ASPECT_MAP.get(ench);
                     if (aspects != null) {
-                        for (var addEntry : aspects
-                                .entrySet()) {
-                            currentAspects.mergeWithHighest(addEntry.getKey(), lvl * addEntry.getValue());
-                        }
+                        aspects.forEach((asp,amt) -> currentAspects.mergeWithHighest(asp, lvl * amt));
                     }
 
                     totalLevel += lvl;
@@ -182,18 +180,18 @@ public enum BonusTagForItemListeners {
             if (item instanceof IWandComponentsOwnerItem componentsOwner){
                 double totalCraftingCostCentiVisDividedByType = 0;
                 for (var component:componentsOwner.getWandComponents(itemstack)){
-                    double craftingCostCentiVis = 0;
+                    AtomicReference<Double> craftingCostCentiVis = new AtomicReference<>((double) 0);
                     Set<Aspect> totalCraftingAspectTypes = new HashSet<>(6);
                     if (component.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> craftingCostOwner){
-                        for (var entry:craftingCostOwner.getCraftingCostCentiVis().entrySet()){
-                            totalCraftingAspectTypes.add(entry.getKey());
-                            craftingCostCentiVis += entry.getValue();
-                        }
+                        craftingCostOwner.getCraftingCostCentiVis().forEach((costAspect,costAmount) -> {
+                            totalCraftingAspectTypes.add(costAspect);
+                            craftingCostCentiVis.updateAndGet(v ->  (v + costAmount));
+                        });
                     }
                     if (totalCraftingAspectTypes.isEmpty()){
                         continue;
                     }
-                    totalCraftingCostCentiVisDividedByType += craftingCostCentiVis/totalCraftingAspectTypes.size();
+                    totalCraftingCostCentiVisDividedByType += craftingCostCentiVis.get() /totalCraftingAspectTypes.size();
                 }
                 if (totalCraftingCostCentiVisDividedByType < 0){return;}
                 currentAspects.mergeWithHighest(Aspects.MAGIC,(int)Math.floor(totalCraftingCostCentiVisDividedByType / (2*100)));
@@ -223,9 +221,7 @@ public enum BonusTagForItemListeners {
                     currentAspects.mergeWithHighest(Aspects.MAGIC, effectLvl*2);
                     var aspectForEffect = ASPECTS_FOR_EFFECT_PER_LEVEL.getOrDefault(effect,UnmodifiableAspectList.EMPTY);
                     if (!aspectForEffect.isEmpty()) {
-                        for (var entry:aspectForEffect.entrySet()){
-                            currentAspects.mergeWithHighest(entry.getKey(), entry.getValue()*effectLvl);
-                        }
+                        aspectForEffect.forEach(((asp,amt) -> currentAspects.mergeWithHighest(asp,amt*effectLvl)));
                     }
                 }
             }

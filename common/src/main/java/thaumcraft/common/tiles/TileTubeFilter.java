@@ -22,7 +22,7 @@ public class TileTubeFilter /*extends TileTube implements IAspectContainerBlockE
 //   }
 //
 //   public @NotNull AspectList<Aspect>getAspects() {
-//      return this.aspectFilter != null ? (new AspectList<>()).addAll(this.aspectFilter, -1) : null;
+//      return this.aspectFilter != null ? (new LinkedTreeAspectList<>()).addAll(this.aspectFilter, -1) : null;
 //   }
 //
 //   public void setAspects(AspectList<Aspect>aspects) {

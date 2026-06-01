@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.ArcaneAlembicBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -22,7 +24,8 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         implements IAlembic,
         IEssentiaTransportOutBlockEntity,
         IAspectFilterAccessibleBlockEntity,
-        IAspectDisplayBlockEntity<Aspect>
+        IAspectDisplayBlockEntity<Aspect>,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
 {
     public ArcaneAlembicBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -38,10 +41,17 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     private @NotNull Aspect aspectFilter = Aspects.EMPTY;
     private int aspectAmountCurrent = 0;
     private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent =
-            new UnmodifiableSingleAspectListFromSupplier<>(
-                    () -> this.aspectCurrent,
-                    () -> this.aspectAmountCurrent
-            );
+            new UnmodifiableSingleAspectListFromSupplier<>(this);
+
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectCurrent;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectAmountCurrent;
+    }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {

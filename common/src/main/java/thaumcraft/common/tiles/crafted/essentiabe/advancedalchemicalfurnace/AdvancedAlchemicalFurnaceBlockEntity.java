@@ -8,9 +8,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ThaumcraftSounds;
@@ -31,8 +32,8 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
     public static final int ASPECT_CAPACITY = 500;
     public static final int FUEL_VIS_CAPACITY = 500;
 
-    public AspectList<Aspect> aspects = new AspectList<>();
-    public UnmodifiableAspectList<Aspect> aspectsView = UnmodifiableAspectList.EMPTY;
+    public AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
+    public UnmodifiableAspectView<Aspect> aspectsView = UnmodifiableAspectView.EMPTY;
     public int fuelVisAmouontFire = 0;
     private int fuelVisAmountEntropy = 0;
     private int fuelVisAmountWater = 0;
@@ -50,7 +51,7 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
         aspects = ASPECTS_OWNING.readFromCompoundTag(compoundTag);
-        aspectsView = new UnmodifiableAspectList<>(aspects);
+        aspectsView = new UnmodifiableAspectView<>(aspects);
         fuelVisAmouontFire = FUEL_AMOUNT_FIRE.readIntFromCompoundTag(compoundTag);
         fuelVisAmountEntropy = FUEL_AMOUNT_ENTROPY.readIntFromCompoundTag(compoundTag);
         fuelVisAmountWater = FUEL_AMOUNT_WATER.readIntFromCompoundTag(compoundTag);

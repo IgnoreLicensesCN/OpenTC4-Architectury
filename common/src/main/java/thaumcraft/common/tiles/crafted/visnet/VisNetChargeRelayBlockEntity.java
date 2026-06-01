@@ -14,7 +14,7 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
     }
 
     public VisNetChargeRelayBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ThaumcraftBlockEntities.VIS_CHARGE_RELAY,blockPos, blockState);
+        this(ThaumcraftBlockEntities.VIS_CHARGE_RELAY,blockPos, blockState);
     }
 
     public BlockPos getPosBeingCharged() {
@@ -38,15 +38,15 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
                         var centiVisContainer = (ICentiVisContainerItem<Aspect>)centiVisContainerNotCasted;
                         var aspRoomRemaining = centiVisContainer.getAspectsWithRoomRemaining(stackToCharge);
                         if (!aspRoomRemaining.isEmpty()) {
-                            for(var entry : aspRoomRemaining.entrySet()) {
-                                var aspToCharge = entry.getKey();
-                                var aspAmountCanCharge = entry.getValue();
-                                int drain = Math.min(getCentiVisChargeRate(),aspAmountCanCharge);
-                                if (drain > 0) {
-                                    var canProvide = this.consumeCentiVis(aspToCharge,drain);
-                                    centiVisContainer.addCentiVis(stackToCharge,aspToCharge,canProvide,true);
-                                }
-                            }
+                            aspRoomRemaining.forEach(
+                                    (aspToCharge,aspAmountCanCharge) -> {
+                                        int drain = Math.min(getCentiVisChargeRate(),aspAmountCanCharge);
+                                        if (drain > 0) {
+                                            var canProvide = this.consumeCentiVis(aspToCharge,drain);
+                                            centiVisContainer.addCentiVis(stackToCharge,aspToCharge,canProvide,true);
+                                        }
+                                    }
+                            );
                         }
                     }
                 }

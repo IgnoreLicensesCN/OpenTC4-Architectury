@@ -11,7 +11,8 @@ import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagShort;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.items.baubles.ItemGirdleHover;
@@ -38,8 +39,8 @@ public class Hover {
             ItemStack jar = ItemStack.loadItemStackFromNBT(armor.stackTagCompound.getCompoundTag("jar"));
             if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
                 AspectList<Aspect>aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
-                if (aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0) {
-                    fuel = (short) aspects.getAmount(Aspects.ENERGY);
+                if (aspects != null && aspects.size() > 0 && aspects.get(Aspects.ENERGY) > 0) {
+                    fuel = (short) aspects.get(Aspects.ENERGY);
                 }
             }
         }
@@ -152,8 +153,8 @@ public class Hover {
             short fuel = 0;
             if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
                 AspectList<Aspect>aspects = ((ItemJarFilled) jar.getItem()).getAspects(jar);
-                if (aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0) {
-                    fuel = (short) aspects.getAmount(Aspects.ENERGY);
+                if (aspects != null && aspects.size() > 0 && aspects.get(Aspects.ENERGY) > 0) {
+                    fuel = (short) aspects.get(Aspects.ENERGY);
                 }
             }
 
@@ -176,9 +177,9 @@ public class Hover {
                 is.setTagInfo("charge", new NBTTagShort((short) 0));
                 --fuel;
                 if (fuel > 0) {
-                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList<>()).addAll(Aspects.ENERGY, fuel));
+                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new LinkedTreeAspectList<>()).addAll(Aspects.ENERGY, fuel));
                 } else {
-                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new AspectList<>()).remove(
+                    ((ItemJarFilled) jar.getItem()).setAspects(jar, (new LinkedTreeAspectList<>()).remove(
                             Aspects.ENERGY));
                 }
 

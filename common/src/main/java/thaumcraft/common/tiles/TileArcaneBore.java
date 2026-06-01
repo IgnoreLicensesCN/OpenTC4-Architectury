@@ -65,8 +65,8 @@ public class TileArcaneBore /*extends TileThaumcraft
 //        this.orientation = Direction.UP;
 //        this.baseOrientation = Direction.UP;
 //        this.fakePlayer = null;
-//        this.repairCost = new AspectList<>();
-//        this.currentRepairVis = new AspectList<>();
+//        this.repairCost = new LinkedTreeAspectList<>();
+//        this.currentRepairVis = new LinkedTreeAspectList<>();
 //        this.fortune = 0;
 //        this.speed = 0;
 //        this.area = 0;
@@ -228,7 +228,7 @@ public class TileArcaneBore /*extends TileThaumcraft
 //                    this.setChanged();
 //                }
 //            } else {
-//                this.repairCost = new AspectList<>();
+//                this.repairCost = new LinkedTreeAspectList<>();
 //            }
 //
 //        }

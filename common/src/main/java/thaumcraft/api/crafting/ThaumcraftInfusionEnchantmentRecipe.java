@@ -5,7 +5,6 @@ import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils;
-import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -13,8 +12,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
@@ -202,7 +204,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
             if (ench != enchantment)
                 mod += lvl * .1f;
         }
-		AspectList<Aspect> aspsResult = new AspectList<>(basicCostAspects.size(),1);
+		AspectList<Aspect> aspsResult = new LinkedTreeAspectList<>(basicCostAspects.size(),1);
 		final float finalMod = mod;
 		basicCostAspects.forEach((asp, amount)-> aspsResult.put(asp, (int) (amount * finalMod)));
 		return new UnmodifiableAspectView<>(aspsResult);

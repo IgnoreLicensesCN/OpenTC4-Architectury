@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -31,7 +33,9 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         IValueContainerBasedComparatorSignalProviderBlockEntity,
         IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>{
+        IRemoteDrainableAspectSourceBlockEntity<Aspect>,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
+{
     public EssentiaJarBlockEntity(BlockEntityType<? extends EssentiaJarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -115,9 +119,18 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     protected int aspectAmountCurrent = 0;
     protected @NotNull Aspect aspectFilter = Aspects.EMPTY;
     protected final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectCurrent,() -> this.aspectAmountCurrent
+            this
     );
 
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectCurrent;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectAmountCurrent;
+    }
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);

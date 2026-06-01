@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -62,7 +64,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         if (base == null) {
             return false;
         }
-        if (base.aspects.getAmount(aspect) >= amount) {
+        if (base.aspects.get(aspect) >= amount) {
             base.aspects.reduceAndRemoveIfNotPositive(aspect, amount);
             base.markDirtyAndUpdateSelf();
             return true;
@@ -145,6 +147,6 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         if (type.isEmpty()) {
             return 0;
         }
-        return base.aspectsView.getAmount(getEssentiaType(face));
+        return base.aspectsView.get(getEssentiaType(face));
     }
 }

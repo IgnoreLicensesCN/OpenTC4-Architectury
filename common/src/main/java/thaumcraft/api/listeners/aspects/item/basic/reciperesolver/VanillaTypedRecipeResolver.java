@@ -10,8 +10,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.*;
@@ -163,8 +164,8 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                         if (resultCount == 0){
                             return;
                         }
-                        AspectList<Aspect> allAdded = new AspectList<>();
-                        AspectList<Aspect> remainingItemAspects = new AspectList<>();
+                        AspectList<Aspect> allAdded = new LinkedTreeAspectList<>();
+                        AspectList<Aspect> remainingItemAspects = new LinkedTreeAspectList<>();
                         var ingredientItems = ingredientItemsGetter.apply(recipe);
                         var remainingItemList = ingredientRemainingItemsGetter.apply(recipe);
 
@@ -213,10 +214,10 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
 
                         remainingItemAspects.forEach(allAdded::reduceAndRemoveIfNotPositive);
                         resolvedItemAdder.accept(item);
-                        allAdded = allAdded.divideAndCeil(resultStack.getCount());
+                        allAdded.divideAndCeil(resultStack.getCount());
                         allAdded = resolvedAspectsModifier.apply(recipe,allAdded);
                         allAdded.removeIfNotPositive();
-                        resolvedAspectAdder.accept(item,new UnmodifiableAspectList<>(allAdded));
+                        resolvedAspectAdder.accept(item,UnmodifiableAspectList.of(allAdded));
                         resolvedRecipes.add(recipe);
                         recipesToRemove.add(recipe);
                     });

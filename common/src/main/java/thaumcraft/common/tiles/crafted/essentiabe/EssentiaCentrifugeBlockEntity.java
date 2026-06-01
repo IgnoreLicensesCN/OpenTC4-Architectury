@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -24,7 +26,8 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
         IEssentiaTransportInBlockEntity,
         IEssentiaTransportOutBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IValueContainerBasedComparatorSignalProviderBlockEntity
+        IValueContainerBasedComparatorSignalProviderBlockEntity,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
 {
     public EssentiaCentrifugeBlockEntity(BlockEntityType<? extends EssentiaCentrifugeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -32,9 +35,17 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     public EssentiaCentrifugeBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ESSENTIA_CENTRIFUGE, blockPos, blockState);
     }
-    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectOut,() -> this.aspectOut.isEmpty()?0:1
-    );
+    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(this);
+
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectOut;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectOut.isEmpty()?0:1;
+    }
     private @NotNull("null -> empty") CompoundAspect aspectIn = Aspects.EMPTY_COMPOUND;
     private @NotNull("null -> empty") Aspect aspectOut = Aspects.EMPTY;
     private int tickCount = System.identityHashCode(this) & 3;
@@ -214,6 +225,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     public int comparatorSignalCapacity() {
         return 2;
     }
+
 
     public static class ClientTickContext {
         private @DegreeValue float rotationSpeed;

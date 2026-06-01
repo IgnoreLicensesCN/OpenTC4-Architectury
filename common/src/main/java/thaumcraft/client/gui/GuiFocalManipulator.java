@@ -12,7 +12,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
@@ -38,7 +39,7 @@ public class GuiFocalManipulator extends GuiContainer {
    DecimalFormat myFormatter = new DecimalFormat("#######.#");
    ArrayList<FocusUpgradeType> possibleUpgrades = new ArrayList<>();
    ArrayList<FocusUpgradeType> upgrades = new ArrayList<>();
-   AspectList<Aspect>aspects = new AspectList<>();
+   AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
    HashMap<Long,Sparkle> sparkles = new HashMap<>();
 
    public GuiFocalManipulator(InventoryPlayer par1InventoryPlayer, TileFocalManipulator table) {
@@ -131,7 +132,7 @@ public class GuiFocalManipulator extends GuiContainer {
          this.selected = -1;
          this.possibleUpgrades.clear();
          this.upgrades.clear();
-         this.aspects = new AspectList<>();
+         this.aspects = new LinkedTreeAspectList<>();
          this.table.reset = false;
          this.table.rank = 0;
       }
@@ -155,8 +156,8 @@ public class GuiFocalManipulator extends GuiContainer {
          int start = 0;
          if (this.table.aspects.size() > 0) {
             for(Aspect aspect : this.table.aspects.getAspectsSorted()) {
-               if (aspect != null && this.table.aspects.getAmount(aspect) != 0) {
-                  int size = (int)((float)this.table.aspects.getAmount(aspect) / (float)this.table.size * 96.0F);
+               if (aspect != null && this.table.aspects.get(aspect) != 0) {
+                  int size = (int)((float)this.table.aspects.get(aspect) / (float)this.table.size * 96.0F);
                   Color c = new Color(aspect.getColor());
                   GL11.glColor4f((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F, 0.9F);
                   this.drawTexturedModalRect(k + 48 + start, l + 88, 112 + start, 240, size, 8);
@@ -186,7 +187,7 @@ public class GuiFocalManipulator extends GuiContainer {
                GL11.glTranslated(k + 49, (double)(l + 68) - (double)al.size() * (double)2.5F, 0.0F);
                GL11.glScaled(0.5F, 0.5F, 0.5F);
                this.fontRendererObj.drawStringWithShadow(a.getName(), 0, q * 10, a.getColor());
-               String s = this.myFormatter.format((float)al.getAmount(a) / 100.0F);
+               String s = this.myFormatter.format((float)al.get(a) / 100.0F);
                this.fontRendererObj.drawStringWithShadow(s, 48, q * 10, a.getColor());
                GL11.glPopMatrix();
                ++q;
@@ -236,7 +237,7 @@ public class GuiFocalManipulator extends GuiContainer {
    private void gatherInfo() {
       this.possibleUpgrades.clear();
       this.upgrades.clear();
-      this.aspects = new AspectList<>();
+      this.aspects = new LinkedTreeAspectList<>();
       ItemFocusBasic focus = (ItemFocusBasic)this.table.getStackInSlot(0).getItem();
       short[] s = focus.getAppliedUpgrades(this.table.getStackInSlot(0));
       this.rank = 1;
@@ -307,7 +308,7 @@ public class GuiFocalManipulator extends GuiContainer {
                var7 = mx - (gx + 48 + a * 16);
                var8 = my - (gy + 104);
                if (var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
-                  this.aspects = new AspectList<>();
+                  this.aspects = new LinkedTreeAspectList<>();
                   if (this.selected == u.id()) {
                      this.selected = -1;
                   } else {
@@ -318,7 +319,7 @@ public class GuiFocalManipulator extends GuiContainer {
                         amt *= 2;
                      }
 
-                     AspectList<Aspect>tal = new AspectList<>();
+                     AspectList<Aspect>tal = new LinkedTreeAspectList<>();
 
                      for(Aspect as : FocusUpgradeType.types[this.selected].aspects.getAspects()) {
                         tal.addAll(as, amt);

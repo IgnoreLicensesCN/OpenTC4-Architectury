@@ -22,7 +22,8 @@ import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.renderers.models.gear.ModelHoverHarness;
 import thaumcraft.common.Thaumcraft;
@@ -30,7 +31,7 @@ import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 
 import java.util.List;
 
-import static thaumcraft.api.aspects.AspectList.addAspectDescriptionToList;
+import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescriptionToList;
 
 public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, IVisDiscountGear, IRunicArmor {
    ModelBiped model = null;

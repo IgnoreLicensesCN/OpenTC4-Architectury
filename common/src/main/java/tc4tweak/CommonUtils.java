@@ -7,7 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.research.ResearchCategory;
 
@@ -16,17 +16,17 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CommonUtils {
     // only keep the strings, so tab objects doesn't leak if they are ever removed
     private static final LinkedHashSet<String> originalTabOrders = new LinkedHashSet<>();
 
     public static String toString(AspectList<Aspect> al) {
-        return al.entrySet()
-                .stream()
-                .filter(e -> e.getKey() != null)
-                .map(e -> String.format("%dx%s", e.getIntValue(), e.getKey().getName())).collect(Collectors.joining(";"));
+        return String.valueOf(al);
+//        return al.entrySet()
+//                .stream()
+//                .filter(e -> e.getKey() != null)
+//                .map(e -> String.format("%dx%s", e.getIntValue(), e.getKey().getName())).collect(Collectors.joining(";"));
     }
 
     public static String toString(CrucibleRecipe r) {

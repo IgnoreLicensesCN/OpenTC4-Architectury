@@ -31,7 +31,8 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
@@ -885,7 +886,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
          ItemStack disp = new ItemStack(ConfigItems.itemJarFilled);
          int amt = (int)(64.0F * ((float)this.essentiaAmount / (float)this.getCarryLimit()));
          if (this.essentia != null && this.essentiaAmount > 0) {
-            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new AspectList<>()).addAll(this.essentia, amt));
+            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new LinkedTreeAspectList<>()).addAll(this.essentia, amt));
          }
 
          this.getDataWatcher().updateObject(16, disp);

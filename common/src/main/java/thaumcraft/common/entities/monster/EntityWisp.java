@@ -16,7 +16,8 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
@@ -263,8 +264,8 @@ public class EntityWisp extends EntityFlying implements IMob {
    protected void dropFewItems(boolean flag, int i) {
       if (Aspect.getAspect(this.getType()) != null) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList<>();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspect.getAspect(this.getType()), 2));
+         new LinkedTreeAspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new LinkedTreeAspectList<>()).addAll(Aspect.getAspect(this.getType()), 2));
          this.entityDropItem(ess, 0.0F);
       }
 

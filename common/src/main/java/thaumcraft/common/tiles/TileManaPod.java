@@ -28,7 +28,7 @@ public class TileManaPod /*extends TileThaumcraft implements IAspectContainerBlo
 //
 //      if (l > 2) {
 //         if (l == 3) {
-//            AspectList<Aspect>al = new AspectList<>();
+//            AspectList<Aspect>al = new LinkedTreeAspectList<>();
 //            if (this.aspect != null) {
 //               al.addAll(this.aspect, 1);
 //            }
@@ -89,7 +89,7 @@ public class TileManaPod /*extends TileThaumcraft implements IAspectContainerBlo
 //   }
 //
 //   public @NotNull AspectList<Aspect>getAspects() {
-//      return this.aspect != null && this.getBlockMetadata() == 7 ? (new AspectList<>()).addAll(this.aspect, 1) : null;
+//      return this.aspect != null && this.getBlockMetadata() == 7 ? (new LinkedTreeAspectList<>()).addAll(this.aspect, 1) : null;
 //   }
 //
 //   public void setAspects(AspectList<Aspect>aspects) {

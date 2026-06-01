@@ -3,7 +3,7 @@ package thaumcraft.common.tiles;
 @Deprecated(forRemoval = true)
 public class TileResearchTable /*extends TileThaumcraft implements IInventory*/ {
 //   public ItemStack[] contents = new ItemStack[2];
-//   public AspectList<Aspect>bonusAspects = new AspectList<>();
+//   public AspectList<Aspect>bonusAspects = new LinkedTreeAspectList<>();
 //   int nextRecalc = 0;
 //   Player researcher = null;
 //   public ResearchNoteData data = null;
@@ -21,7 +21,7 @@ public class TileResearchTable /*extends TileThaumcraft implements IInventory*/ 
 //      }
 //
 //      this.nextRecalc = nbttagcompound.getInteger("nextRecalc");
-//      this.bonusAspects = new AspectList<>();
+//      this.bonusAspects = new LinkedTreeAspectList<>();
 //      var2 = nbttagcompound.getTagList("bonusAspects", 10);
 //
 //      for(int var3 = 0; var3 < var2.tagCount(); ++var3) {

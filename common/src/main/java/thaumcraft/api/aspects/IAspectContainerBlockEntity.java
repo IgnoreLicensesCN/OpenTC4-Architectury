@@ -3,6 +3,8 @@ package thaumcraft.api.aspects;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 /**
@@ -28,7 +30,7 @@ public interface IAspectContainerBlockEntity<Asp extends Aspect>
 
 	@UnmodifiableView
 	@NotNull
-	AspectList<Asp> getAspects();
+    AspectList<Asp> getAspects();
 	int getAspectTypeSize();
 	int getAspectMaxSize();
 	void setAspects(AspectList<Asp> aspects);

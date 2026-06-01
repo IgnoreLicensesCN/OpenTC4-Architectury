@@ -13,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
@@ -121,7 +124,7 @@ public class EssentiaBufferBlockEntity
         lastFillIndex = 0;
     }
 
-    private final AspectList<Aspect> aspects = new AspectList<>();
+    private final AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
     private final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
 
     @Override
@@ -215,7 +218,7 @@ public class EssentiaBufferBlockEntity
         if (!canOutputTo(outputToDirection)) {
             return 0;
         }
-        int visRemaining = aspects.getAmount(aspect);
+        int visRemaining = aspects.get(aspect);
         if (visRemaining == 0) {
             return 0;
         }

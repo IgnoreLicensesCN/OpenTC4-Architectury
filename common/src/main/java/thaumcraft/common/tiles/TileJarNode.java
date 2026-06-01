@@ -2,8 +2,8 @@ package thaumcraft.common.tiles;
 
 @Deprecated(forRemoval = true)
 public class TileJarNode /*extends TileJar implements IAspectContainerBlockEntity, INodeBlockEntity, IWandable*/ {
-//   private AspectList<Aspect>aspects = new AspectList<>();
-//   private AspectList<Aspect>aspectsBase = new AspectList<>();
+//   private AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
+//   private AspectList<Aspect>aspectsBase = new LinkedTreeAspectList<>();
 //   private NodeType nodeType;
 //   private NodeModifier nodeModifier;
 //   private String id;
@@ -25,7 +25,7 @@ public class TileJarNode /*extends TileJar implements IAspectContainerBlockEntit
 //   public void readCustomNBT(NBTTagCompound nbttagcompound) {
 //      this.aspects.readFromNBT(nbttagcompound);
 //      this.id = nbttagcompound.getString("nodeId");
-//      AspectList<Aspect>al = new AspectList<>();
+//      AspectList<Aspect>al = new LinkedTreeAspectList<>();
 //      NBTTagList tlist = nbttagcompound.getTagList("AspectsBase", 10);
 //
 //      for(int j = 0; j < tlist.tagCount(); ++j) {
@@ -36,7 +36,7 @@ public class TileJarNode /*extends TileJar implements IAspectContainerBlockEntit
 //      }
 //
 //      short oldBase = nbttagcompound.getShort("nodeVisBase");
-//      this.aspectsBase = new AspectList<>();
+//      this.aspectsBase = new LinkedTreeAspectList<>();
 //      if (oldBase > 0 && al.size() == 0) {
 //         for(Aspect a : this.aspects.getAspects()) {
 //            this.aspectsBase.mergeWithHighest(a, oldBase);

@@ -4,12 +4,14 @@ import net.minecraft.world.item.*;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
 
 import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
 import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
-import static thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners.*;
 
 public class ItemBonusAspectCalculator {
 
@@ -22,7 +24,7 @@ public class ItemBonusAspectCalculator {
         }
     }
 
-    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack,boolean serverFlag){
+    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, boolean serverFlag){
         var item = itemstack.getItem();
         return getBonusAspects(itemstack,serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item));
     }
@@ -34,16 +36,14 @@ public class ItemBonusAspectCalculator {
      * @param basicAspects will be added to result(it won't be modified)
      * @return tags added with bonus
      */
-    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack, AspectList<Aspect> basicAspects) {
-        AspectList<Aspect> aspects = new AspectList<>();
+    public static AspectList<Aspect> getBonusAspects(ItemStack itemstack,@NotNull AspectList<Aspect> basicAspects) {
+        AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
         Item item = itemstack.getItem();
-        UnmodifiableAspectList<Aspect> basicAspectsView = new UnmodifiableAspectList<>(basicAspects);
+        UnmodifiableAspectList<Aspect> basicAspectsView = UnmodifiableAspectList.of(basicAspects);
 
-        if (basicAspects != null) {
-            for (Aspect tag : basicAspects.getAspectTypes()) {
-                if (tag != null) {
-                    aspects.addAll(tag, basicAspects.getAmount(tag));
-                }
+        for (Aspect tag : basicAspects.keySet()) {
+            if (tag != null) {
+                aspects.addAll(tag, basicAspects.get(tag));
             }
         }
 
@@ -56,17 +56,17 @@ public class ItemBonusAspectCalculator {
 
     //TODO:new api(maybe)
     public static AspectList<Aspect> cullTags(AspectList<Aspect> temp) {
-        AspectList<Aspect> temp2 = new AspectList<>();
-        for (Aspect tag : temp.getAspectTypes()) {
+        AspectList<Aspect> temp2 = new LinkedTreeAspectList<>();
+        for (Aspect tag : temp.keySet()) {
             if (tag != null)
-                temp2.addAll(tag, temp.getAmount(tag));
+                temp2.addAll(tag, temp.get(tag));
         }
         while (temp2.size() > 6) {
             Aspect lowest = null;
             float low = Short.MAX_VALUE;
-            for (var tag : temp2.getAspectTypes()) {
+            for (var tag : temp2.keySet()) {
                 if (tag == null) continue;
-                float ta = temp2.getAmount(tag);
+                float ta = temp2.get(tag);
                 if (tag instanceof PrimalAspect) {
                     ta *= .9f;
                 } else if (tag instanceof CompoundAspect compoundAspect) {

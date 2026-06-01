@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.*;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.CrucibleRecipeResourceLocation;
 
@@ -82,8 +83,8 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
         this.research = researchKey;
         this.catalyst = cat;
         StringBuilder hc = new StringBuilder(researchKey.key.toString());
-        for (var asp:tags.getAspectTypes()) {
-            hc.append(asp.getAspectKey()).append(tags.getAmount(asp));
+        for (var asp:tags.keySet()) {
+            hc.append(asp.getAspectKey()).append(tags.get(asp));
         }
         this.hash = hc.toString().hashCode();
         this.inputSample = catalyst.getAvailableItemStackSample().toArray(new ItemStack[0]);
@@ -164,8 +165,8 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	}
 
 	public boolean aspectRequirementMatches(@NotNull AspectList<Aspect> aspectsForRecipe, ItemStack cat) {
-		for (var tag: getAspectRequirement(cat).getAspectTypes()) {
-			if (aspectsForRecipe.getAmount(tag)<aspects.getAmount(tag)) return false;
+		for (var tag: getAspectRequirement(cat).keySet()) {
+			if (aspectsForRecipe.get(tag)<aspects.get(tag)) return false;
 		}
 		return true;
 	}
@@ -179,20 +180,20 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	}
 
 	public AspectList<Aspect> removeMatchingReturnNew(AspectList<Aspect> itags) {
-		AspectList<Aspect> temptags = new AspectList<>(itags);
+		AspectList<Aspect> temptags = new LinkedTreeAspectList<>(itags);
 
 //		temptags.aspects.putAll(itags.aspects);
 
-		for (var tag:aspects.getAspectTypes()) {
-			temptags.reduceAndRemoveIfNotPositive(tag, aspects.getAmount(tag));
+		for (var tag:aspects.keySet()) {
+			temptags.reduceAndRemoveIfNotPositive(tag, aspects.get(tag));
 		}
 
 		itags = temptags;
 		return itags;
 	}
 	public void removeMatching(AspectList<Aspect> itags) {
-		for (var tag:aspects.getAspectTypes()) {
-			itags.reduceAndRemoveIfNotPositive(tag, aspects.getAmount(tag));
+		for (var tag:aspects.keySet()) {
+			itags.reduceAndRemoveIfNotPositive(tag, aspects.get(tag));
 		}
 	}
 

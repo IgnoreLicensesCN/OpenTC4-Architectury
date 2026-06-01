@@ -7,7 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.api.research.*;
@@ -101,8 +102,8 @@ public class ThaumcraftApi {
      * @param aspects
      * @param nbt        you can specify certain nbt keys and their values
      *                   to differentiate between mobs. <br>For example the normal and wither skeleton:
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 5));
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new LinkedTreeAspectList<>()).add(Aspect.DEATH, 5));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new LinkedTreeAspectList<>()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
      */
     public static void registerEntityTag(String entityName, AspectList<Aspect>aspects, EntityTagsNBT... nbt) {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
@@ -204,7 +205,7 @@ public class ThaumcraftApi {
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
-//        if (aspects == null) aspects = new AspectList<>();
+//        if (aspects == null) aspects = new LinkedTreeAspectList<>();
 //        List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
 //        if (!ores.isEmpty()) {
 //            for (ItemStack ore : ores) {
@@ -220,7 +221,7 @@ public class ThaumcraftApi {
 //     * Used to assign aspects to the given item/block.
 //     * Attempts to automatically generate aspect tags by checking registered recipes.
 //     * Here is an example of the declaration for pistons:<p>
-//     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
+//     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new LinkedTreeAspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
 //     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
 //     *
 //     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects

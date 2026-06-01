@@ -2,7 +2,7 @@ package thaumcraft.api.research.implexample;
 
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -19,7 +19,7 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
     public AspectUnlockableResearchWithParents(
             ResearchItemResourceLocation key,
             ResearchCategoryResourceLocation category,
-            AspectList<Aspect> aspectsCost,
+            UnmodifiableAspectList<Aspect> aspectsCost,
             List<ResearchItemResourceLocation> parents
     ) {
         super(key, category,aspectsCost);

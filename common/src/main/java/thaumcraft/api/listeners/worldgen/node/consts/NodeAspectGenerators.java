@@ -12,7 +12,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.worldgen.node.listeners.NodeAspectGenerator;
 import thaumcraft.api.nodes.NodeModifier;
@@ -150,7 +150,7 @@ public class NodeAspectGenerators {
             float total = 0.0F;
 
             for (int a = 0; a < spread.length; ++a) {
-                if (previous.getAmount(previous.getAspectsSorted()[a]) == 2) {
+                if (previous.get(previous.getAspectsSorted().get(a)) == 2) {
                     spread[a] = 50 + random.nextInt(25);
                 } else {
                     spread[a] = 25 + random.nextInt(50);
@@ -160,7 +160,7 @@ public class NodeAspectGenerators {
             }
 
             for (int a = 0; a < spread.length; ++a) {
-                previous.mergeWithHighest(previous.getAspectsSorted()[a], (int) ((float) spread[a] / total * (float) value));
+                previous.mergeWithHighest(previous.getAspectsSorted().get(a), (int) ((float) spread[a] / total * (float) value));
             }
             return previous;
         }

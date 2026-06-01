@@ -3,7 +3,8 @@ package thaumcraft.api.listeners.manabean.consts;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.manabean.ManaBeanGrowContext;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanGrowListener;
@@ -25,7 +26,7 @@ public enum ManaBeanGrowListeners {
             if (level == null){return;}
             var selfPos = be.getBlockPos();
             List<Aspect> aspectsCanCombine = new ArrayList<>(5);
-            AspectList<Aspect> aspectsChangeInto = new AspectList<>(11,1);
+            AspectList<Aspect> aspectsChangeInto = new LinkedTreeAspectList<>(11,1);
             var selfCanCombine = be.getAspectOwning();
             if (!selfCanCombine.isEmpty()){
                 aspectsChangeInto.addAll(selfCanCombine,1);

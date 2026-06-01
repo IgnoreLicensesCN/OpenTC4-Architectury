@@ -3,10 +3,9 @@ package com.linearity.opentc4.recipeclean.recipewrapper;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 
 import java.util.List;
 import java.util.function.Function;

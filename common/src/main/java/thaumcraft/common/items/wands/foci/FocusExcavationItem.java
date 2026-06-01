@@ -33,6 +33,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
@@ -49,17 +53,23 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 public class FocusExcavationItem extends FocusBasicItem {
-    public static final CentiVisList<Aspect> wandCost = new CentiVisList<>(Aspects.EARTH, 15);
-    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing = CentiVisList.fromAspectVisList(
-            new AspectList<>()
-                    .addAll(Aspects.AIR, 1)
-                    .addAll(Aspects.FIRE, 1)
-                    .addAll(Aspects.EARTH, 1)
-                    .addAll(Aspects.WATER, 1)
-                    .addAll(Aspects.ORDER, 1)
-                    .addAll(Aspects.ENTROPY, 1)
-                    .addAll(wandCost)
-    );
+    public static final CentiVisList<Aspect> wandCost = LinkedTreeCentiVisList.of(Aspects.EARTH, 15);
+
+    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing;
+    static {
+        LinkedTreeAspectList<Aspect> wandCostWithSilkTouchOrDowsingInternal;
+        wandCostWithSilkTouchOrDowsingInternal = new LinkedTreeAspectList<>(6 + wandCost.size(),1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.AIR, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.FIRE, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.EARTH, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.WATER, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.ORDER, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.ENTROPY, 1);
+        wandCostWithSilkTouchOrDowsingInternal .addAll(wandCost);
+        wandCostWithSilkTouchOrDowsing = CentiVisList.fromAspectVisList(
+                wandCostWithSilkTouchOrDowsingInternal
+        );
+    }
     public static final FocusUpgradeType dowsing = new FocusUpgradeType(
             FocusUpgradeTypeResourceLocation.of(Thaumcraft.MOD_ID,"dowsing"),
             new ResourceLocation("thaumcraft", "textures/foci/dowsing.png"),

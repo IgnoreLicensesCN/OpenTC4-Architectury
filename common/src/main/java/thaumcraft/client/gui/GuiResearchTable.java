@@ -14,7 +14,8 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
@@ -57,7 +58,7 @@ public class GuiResearchTable extends GuiContainer {
    Player player;
    public Aspect select1 = null;
    public Aspect select2 = null;
-   private AspectList<Aspect>aspectlist = new AspectList<>();
+   private AspectList<Aspect>aspectlist = new LinkedTreeAspectList<>();
    private HashMap runes = new HashMap<>();
    private float popupScale = 0.05F;
    private Aspect draggedAspect;
@@ -126,7 +127,7 @@ public class GuiResearchTable extends GuiContainer {
             int count = 0;
 
             for(Aspect aspect : al.getAspectsSorted()) {
-               UtilsFX.drawTag(gx + 100 + 48 + count * 16, gy + 21, aspect, (float)al.getAmount(aspect), 0, this.zLevel);
+               UtilsFX.drawTag(gx + 100 + 48 + count * 16, gy + 21, aspect, (float)al.get(aspect), 0, this.zLevel);
                ++count;
             }
 
@@ -254,10 +255,10 @@ public class GuiResearchTable extends GuiContainer {
          for(Aspect aspect : aspects.getAspectsSorted()) {
             ++count;
             if (count - 1 >= this.page * 5 && drawn < 25) {
-               boolean faded = aspects.getAmount(aspect) <= 0 && this.tileEntity.bonusAspects.getAmount(aspect) <= 0;
+               boolean faded = aspects.get(aspect) <= 0 && this.tileEntity.bonusAspects.getAmount(aspect) <= 0;
                int xx = drawn / 5 * 16;
                int yy = drawn % 5 * 16;
-               UtilsFX.drawTag(x + xx, y + yy, aspect, (float)aspects.getAmount(aspect), this.tileEntity.bonusAspects.getAmount(aspect), this.zLevel, 771, faded ? 0.33F : 1.0F);
+               UtilsFX.drawTag(x + xx, y + yy, aspect, (float)aspects.get(aspect), this.tileEntity.bonusAspects.getAmount(aspect), this.zLevel, 771, faded ? 0.33F : 1.0F);
                ++drawn;
             }
          }
@@ -632,10 +633,10 @@ public class GuiResearchTable extends GuiContainer {
                      if (aspect != null && !aspect.isPrimal()) {
                         AspectList<Aspect>aspects = Thaumcraft.proxy.getPlayerKnowledge().getAspectsDiscovered(this.username);
                         if (aspects != null
-                                && (aspects.getAmount(aspect.getComponents()[0]) > 0
+                                && (aspects.get(aspect.getComponents()[0]) > 0
                                     || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[0]) > 0
                         )
-                                && (aspects.getAmount(aspect.getComponents()[1]) > 0
+                                && (aspects.get(aspect.getComponents()[1]) > 0
                                     || this.tileEntity.bonusAspects.getAmount(aspect.getComponents()[1]) > 0
                         )
                         ) {
@@ -676,7 +677,7 @@ public class GuiResearchTable extends GuiContainer {
                int yy = drawn % 5 * 16;
                int var7 = mx - (gx + xx + 10);
                int var8 = my - (gy + yy + 40);
-               if ((ignoreZero || aspects.getAmount(aspect) > 0 || this.tileEntity.bonusAspects.getAmount(aspect) > 0) && var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
+               if ((ignoreZero || aspects.get(aspect) > 0 || this.tileEntity.bonusAspects.getAmount(aspect) > 0) && var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
                   return aspect;
                }
 

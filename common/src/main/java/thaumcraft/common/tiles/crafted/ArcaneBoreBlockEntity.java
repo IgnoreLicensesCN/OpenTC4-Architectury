@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -79,8 +81,8 @@ public class ArcaneBoreBlockEntity
     private int lastY = 0;
     private int lastZ = 0;
     private @Nullable BlockPos digPos = null;
-    private @NotNull CentiVisList<PrimalAspect> repairCost = new CentiVisList<>();
-    private final @Modifiable CentiVisList<Aspect> currentRepairVis = new CentiVisList<>();
+    private @NotNull CentiVisList<PrimalAspect> repairCost = new LinkedTreeCentiVisList<>();
+    private final @Modifiable CentiVisList<Aspect> currentRepairVis = new LinkedTreeCentiVisList<>();
     public static final int[] SLOTS = { FOCUS_SLOT,PICKAXE_SLOT };
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length, ItemStack.EMPTY);
     private int spiral = 0;
@@ -465,7 +467,7 @@ public class ArcaneBoreBlockEntity
             if (!this.repairCost.isEmpty() && this.repairCounter % 5L == 0L) {
                 this.repairCost.forEach(
                         (aspect,requiredAmount) -> {
-                            if (this.currentRepairVis.getAmount(aspect) < requiredAmount) {
+                            if (this.currentRepairVis.get(aspect) < requiredAmount) {
                                 this.currentRepairVis.addAll(aspect,
                                         VisNetHandler.drainVis(this.level, selfPos, aspect, requiredAmount)
                                 );
@@ -490,7 +492,7 @@ public class ArcaneBoreBlockEntity
                 this.repairCost = repairCostForStack;
                 if (!repairCostForStack.forEachWithBreak(
                         ((primalAspect, requiredAmount)
-                                -> this.currentRepairVis.getAmount(primalAspect) < requiredAmount)
+                                -> this.currentRepairVis.get(primalAspect) < requiredAmount)
                 )){
                     repairCostForStack.forEach(this.currentRepairVis::reduceAndRemoveIfNotPositive);
                     is.setDamageValue(is.getDamageValue()-enchantmentRepairLevel);
