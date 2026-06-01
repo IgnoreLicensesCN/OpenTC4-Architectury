@@ -113,8 +113,8 @@ public class SuppressedWarningBlock extends Block {
     @NotNull
     @SuppressWarnings("deprecation")
     //return next state
-    public BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
-        return super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
+    public BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
+        return super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);
     }
 
     @Override
@@ -186,6 +186,7 @@ public class SuppressedWarningBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
+        //TODO:[Maybe wont finished]mirror and rotate for Blocks
         return super.mirror(blockState, mirror);
     }
 

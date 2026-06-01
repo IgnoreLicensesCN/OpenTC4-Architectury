@@ -1,5 +1,8 @@
 package thaumcraft.api;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+
+@UtilityLikeAbstraction(reason = "i'm just lazy")
 public interface IValueContainerBasedComparatorSignalProviderBlockEntity {
 
     int currentValueForComparatorSignal();
@@ -11,7 +14,7 @@ public interface IValueContainerBasedComparatorSignalProviderBlockEntity {
         int c = comparatorSignalCapacity();
         int v = currentValueForComparatorSignal();
         if (c > SMALL_SIGNAL_CAPACITY_LIMIT){
-            return v == 0 ? 0 : (byte) Math.max(1, Math.min(15, Math.ceilDiv(v * 15, c)));
+            return v == 0 ? 0 : (byte) Math.clamp(Math.ceilDiv(v * 15, c), 1, 15);
         }
 
         if (c <= 0) return 0;
@@ -20,7 +23,7 @@ public interface IValueContainerBasedComparatorSignalProviderBlockEntity {
         if (row == null) {
             row = CACHE[c] = new byte[c + 1];
             for (int i = 0; i <= c; i++) {
-                row[i] = i == 0 ? 0 : (byte) Math.max(1, Math.min(15, Math.ceilDiv(i * 15, c)));
+                row[i] = i == 0 ? 0 : (byte) Math.clamp(Math.ceilDiv(i * 15, c), 1, 15);
             }
         }
 

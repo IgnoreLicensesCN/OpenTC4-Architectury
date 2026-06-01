@@ -22,6 +22,7 @@ import thaumcraft.common.blocks.crafted.essentia.pipes.*;
 import thaumcraft.common.blocks.crafted.fromtable.*;
 import thaumcraft.common.blocks.crafted.essentia.jars.*;
 import thaumcraft.common.blocks.crafted.infusion.ArcanePedestalBlock;
+import thaumcraft.common.blocks.crafted.infusion.InfusionPillarBlock;
 import thaumcraft.common.blocks.crafted.jars.*;
 import thaumcraft.common.blocks.crafted.lamps.*;
 import thaumcraft.common.blocks.crafted.loot.*;
@@ -230,6 +231,7 @@ public class ThaumcraftBlocks {
     public static final MirrorBlock MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static final EssentiaMirrorBlock ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
     public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
+    public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -952,13 +954,17 @@ public class ThaumcraftBlocks {
                         "arcane_pedestal",
                         ArcanePedestalBlock::new
                 );
+        public static final RegistrySupplier<InfusionPillarBlock> SUPPLIER_INFUSION_PILLAR =
+                BLOCKS.register(
+                        "infusion_pillar",
+                        InfusionPillarBlock::new
+                );
         static {
             BLOCKS.register();
         }
     }
 
     public static void init() {
-
         ThaumcraftFluids.init();
     }
 

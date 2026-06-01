@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.infusion;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -8,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,6 +23,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity;
 
@@ -74,9 +77,7 @@ public class ArcanePedestalBlock extends SuppressedWarningBlock implements Entit
             if (level.getBlockEntity(blockPos) instanceof ArcanePedestalBlockEntity pedestal) {
                 if (!pedestal.isEmpty()){
                     var centerPos = blockPos.above().getCenter();
-                    pedestal.getInventory().forEach(stack -> {
-                        dropItemStack(level,centerPos.x,centerPos.y,centerPos.z,stack);
-                    });
+                    pedestal.getInventory().forEach(stack -> dropItemStack(level,centerPos.x,centerPos.y,centerPos.z,stack));
                 }else if (player != null) {
                     var usingStack = player.getItemInHand(interactionHand);
                     if (!usingStack.isEmpty()){
@@ -103,4 +104,39 @@ public class ArcanePedestalBlock extends SuppressedWarningBlock implements Entit
     }
 
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState blockState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+        if (level.getBlockEntity(blockPos) instanceof Container container){
+            return AbstractContainerMenu.getRedstoneSignalFromContainer(container);
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean triggerEvent(BlockState blockState, Level level, BlockPos pos, int i, int j) {
+        if (level.isClientSide) {
+            if (level instanceof ClientLevel clientLevel){
+                ClientFXUtils.blockSparkle(
+                        clientLevel,
+                        pos.getX(),
+                        pos.getY(),
+                        pos.getZ(),
+                        0xb680ff,
+                        2
+                );
+
+//                level.levelEvent(
+//                        2001,
+//                        pos,
+//                        Block.getId(Blocks.STONE_BRICKS.defaultBlockState())
+//                );
+            }
+        }
+        return super.triggerEvent(blockState, level, pos, i, j);
+    }
 }

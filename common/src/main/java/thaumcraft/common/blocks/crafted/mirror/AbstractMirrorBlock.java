@@ -79,15 +79,15 @@ public abstract class AbstractMirrorBlock extends SuppressedWarningBlock impleme
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
+    public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
         var facing = prevState.getValue(FACING);
         if (changeFromDirection != facing.getOpposite()) {
-            return super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
+            return super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);
         }
         if (!this.canSurvive(prevState, levelAccessor, selfPos)) {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
+        return super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);
     }
 
     @Override

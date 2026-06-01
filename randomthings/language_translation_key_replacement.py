@@ -83,6 +83,10 @@ block_with_item_names = [
     ['tile.blockMirror.0.name','mirror'],
     ['tile.blockMirror.6.name','essentia_mirror'],
     ['tile.blockStoneDevice.1.name','arcane_pedestal'],
+    ['tile.blockStoneDevice.3.name','infusion_pillar'],
+    ['tile.blockStoneDevice.4.name','infusion_pillar'],
+    ['tile.blockStoneDevice.6.name','infusion_pillar'],
+    ['tile.blockStoneDevice.7.name','infusion_pillar'],
 ]
 
 force_add_keys = {
