@@ -29,8 +29,8 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
             this .addAll(Aspects.ENTROPY, 20);
         }
     });
-    protected @NotNull CentiVisList<Aspect> centiVisBase = new LinkedTreeCentiVisList<>();
-    protected @NotNull CentiVisList<Aspect> currentOwningCentiVis = new LinkedTreeCentiVisList<>();
+    protected @NotNull CentiVisList<Aspect> centiVisBase = new LinkedHashCentiVisList<>();
+    protected @NotNull CentiVisList<Aspect> currentOwningCentiVis = new LinkedHashCentiVisList<>();
     protected @NotNull NodeType nodeType = NodeType.NORMAL;
     protected @NotNull NodeModifier nodeModifier = NodeModifier.EMPTY;
     protected @NotNull String id = "blank";
@@ -101,7 +101,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
 
     //TODO:[maybe wont finished]better api
     public void setupNode(){
-        this.centiVisBase = new LinkedTreeCentiVisList<>();
+        this.centiVisBase = new LinkedHashCentiVisList<>();
         var temp = ResearchManager.reduceToPrimals(auraBase, true);
         temp.forEach((aspect,amount) -> {
             int amt = EnergizedAuraNodeBlockEntity.this.nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,amount);

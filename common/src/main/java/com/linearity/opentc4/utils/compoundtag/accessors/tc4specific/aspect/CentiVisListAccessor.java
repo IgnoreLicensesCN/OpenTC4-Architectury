@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
     protected final ListTagAccessor listTagAccessorInternal;
@@ -31,7 +31,7 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
             var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
-        return new LinkedTreeCentiVisList<>(result);
+        return new LinkedHashCentiVisList<>(result);
     }
 
     @Override

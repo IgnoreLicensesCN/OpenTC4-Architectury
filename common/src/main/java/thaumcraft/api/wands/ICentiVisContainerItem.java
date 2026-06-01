@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
@@ -31,7 +31,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
      */
     void storeCentiVisOwning(ItemStack itemStack, CentiVisList<Asp> aspects);
     default void storeCentiVisOwning(ItemStack itemStack, Asp aspect, int vis){
-        var centiVisList = new LinkedTreeCentiVisList<Asp>();
+        var centiVisList = new LinkedHashCentiVisList<Asp>();
         centiVisList.put(aspect,vis);
         storeCentiVisOwning(itemStack,centiVisList);
     }
@@ -84,7 +84,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
     default CentiVisList<Asp> addAllCentiVis(ItemStack stack, CentiVisList<Asp> addInto) {
         var capacity = getAllCentiVisCapacity(stack);
         var visOwning = getAllCentiVisOwning(stack);
-        CentiVisList<Asp> remainingVis = new LinkedTreeCentiVisList<>();
+        CentiVisList<Asp> remainingVis = new LinkedHashCentiVisList<>();
         addInto.forEach((aspect,amount) -> {
             int currentCapacity = capacity.getOrDefault(aspect,0);
             if (currentCapacity == 0){
@@ -104,7 +104,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         var allVis = getAllCentiVisOwning(wandstack);
         var capacity = getAllCentiVisCapacity(wandstack);
 
-        CentiVisList<Asp> res = new LinkedTreeCentiVisList<>(allVis.size(),1.F);
+        CentiVisList<Asp> res = new LinkedHashCentiVisList<>(allVis.size(),1.F);
 
         allVis.forEach((aspect,vis)->{
             var remainingRoom = capacity.getOrDefault(aspect,0) - vis;
@@ -167,7 +167,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
             @NotNull CentiVisList<Asp> aspects,
             boolean doit, boolean crafting,boolean serverSide) {
         if (!aspects.isEmpty()) {
-            CentiVisList<Asp> nl = new LinkedTreeCentiVisList<>();
+            CentiVisList<Asp> nl = new LinkedHashCentiVisList<>();
 
             aspects.forEach((aspect,cost) -> {
 

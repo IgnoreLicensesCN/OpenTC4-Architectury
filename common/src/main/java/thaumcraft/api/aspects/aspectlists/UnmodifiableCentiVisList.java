@@ -78,7 +78,7 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends UnmodifiableAs
         if (aspects.length == 1){
             return ofSingle(aspects[0]);
         }
-        CentiVisList<Asp> out = new LinkedTreeCentiVisList<>();
+        CentiVisList<Asp> out = new LinkedHashCentiVisList<>();
         for (var aspect : aspects){
             if (aspect != null){
                 out.addAll(aspect,1);

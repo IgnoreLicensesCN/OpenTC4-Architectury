@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
@@ -88,7 +88,7 @@ public class NodeType {
             var level = node.getLevel();
             if (level != null) {
                 if (level.random.nextInt(500) == 0){
-                    node.setCentiVisBase(new LinkedTreeCentiVisList<>());
+                    node.setCentiVisBase(new LinkedHashCentiVisList<>());
                 }
             }
             super.nodeTypeTickEnergized(node);

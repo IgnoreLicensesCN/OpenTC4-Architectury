@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandFocusItem;
@@ -53,7 +53,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 public class FocusExcavationItem extends FocusBasicItem {
-    public static final CentiVisList<Aspect> wandCost = LinkedTreeCentiVisList.of(Aspects.EARTH, 15);
+    public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
 
     public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing;
     static {

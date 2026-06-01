@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
 
 import java.text.DecimalFormat;
@@ -44,24 +44,24 @@ public class WandUtils {
                     Aspects.getPrimalAspects().forEach(aspect -> {
                         map.put(aspect,val);
                     });
-                    return LinkedTreeCentiVisList.viewOf(map);
+                    return LinkedHashCentiVisList.viewOf(map);
                 }
         );
     }
 
     //generate capacity? or whatever you like
     public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCasted(int value) {
-        return new LinkedTreeCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedHashCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValue(int value) {
 
-        return new LinkedTreeCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedHashCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Collection<Aspect> aspects, int value) {
-        return new LinkedTreeCentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
+        return new LinkedHashCentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
     }
     public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Aspect aspect, int value) {
-        return LinkedTreeCentiVisList.of(aspect,value);
+        return LinkedHashCentiVisList.of(aspect,value);
     }
 
     public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.menu.slot.ArcaneWorkbenchOutputSlot;
@@ -163,7 +163,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
         if (!level.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             ItemStack itemStack = ItemStack.EMPTY;
-            CentiVisList<Aspect> aspects = new LinkedTreeCentiVisList<>();
+            CentiVisList<Aspect> aspects = new LinkedHashCentiVisList<>();
             var workbench = arcaneWorkbenchMenu.blockEntity;
             for (var arcaneRecipe: getIArcaneRecipes()) {
                 if (arcaneRecipe.matches(workbench,level,serverPlayer)){
@@ -175,7 +175,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
                 }
             }
             if (itemStack.isEmpty()) {
-                aspects = new LinkedTreeCentiVisList<>();
+                aspects = new LinkedHashCentiVisList<>();
                 Optional<CraftingRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
                 if (optional.isPresent()) {
                     CraftingRecipe craftingRecipe = optional.get();

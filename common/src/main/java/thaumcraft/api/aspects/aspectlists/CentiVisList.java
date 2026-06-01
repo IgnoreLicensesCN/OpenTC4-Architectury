@@ -47,6 +47,6 @@ public interface CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//jus
         }
         Object2IntLinkedOpenHashMap<Asp> centiVisCapacity = new Object2IntLinkedOpenHashMap<>(aspects.size(),1);
         aspects.forEach((key, value) -> centiVisCapacity.put(key,value*CENTIVIS_MULTIPLIER));
-        return new LinkedTreeCentiVisList<>(centiVisCapacity);
+        return new LinkedHashCentiVisList<>(centiVisCapacity);
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
@@ -31,7 +31,7 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
     protected CentiVisList<Aspect> getFinalCentiVisCost(Player player) {
         var centiVisCostOriginal = workbenchResultContainer.getCostsCentiVis();
-        CentiVisList<Aspect> centiVisCostFinal = new LinkedTreeCentiVisList<>();
+        CentiVisList<Aspect> centiVisCostFinal = new LinkedHashCentiVisList<>();
         var wandStack = workbench.getStackInWandSlot();
         for (var aspect:centiVisCostOriginal.keySet()){
             float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect,true);
