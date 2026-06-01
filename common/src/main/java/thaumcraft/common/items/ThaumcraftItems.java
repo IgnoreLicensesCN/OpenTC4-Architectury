@@ -263,6 +263,7 @@ public class ThaumcraftItems {
     public static final ArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
     public static final MirrorBlockItem MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static final MirrorBlockItem ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
+    public static final BlockItem ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
 
 
     //===========================================================================================
@@ -985,6 +986,10 @@ public class ThaumcraftItems {
                         ThaumcraftBlocks.ESSENTIA_MIRROR,
                         new Item.Properties()
                 )
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_PEDESTAL = ITEMS.register(
+                "arcane_pedestal",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_PEDESTAL,  new Item.Properties())
         );
 
 

@@ -81,7 +81,8 @@ block_with_item_names = [
     ['tile.blockLootUrn.name','urn_loot'],
     ['tile.blockLootCrate.name','crate_loot'],
     ['tile.blockMirror.0.name','mirror'],
-    ['tile.blockMirror.6.name','essentia_mirror']
+    ['tile.blockMirror.6.name','essentia_mirror'],
+    ['tile.blockStoneDevice.1.name','arcane_pedestal'],
 ]
 
 force_add_keys = {

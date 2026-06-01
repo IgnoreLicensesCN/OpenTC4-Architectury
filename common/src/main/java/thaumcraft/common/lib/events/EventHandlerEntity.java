@@ -170,9 +170,10 @@ public class EventHandlerEntity {
 //               }
 
                if (serverPlayer.tickCount % 40 == 0) {
-                  int a = 0;
                   Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairable || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()) {
+                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairable
+                             || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()
+                     ) {
                         doRepair(stack, serverPlayer);
                      }
                   };
@@ -184,7 +185,10 @@ public class EventHandlerEntity {
 
             updateSpeed(player);
             ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
-            if (world.isClientSide() && (player.isCrouching() || feet.getItem() != ConfigItems.itemBootsTraveller) && prevStep.containsKey(playerName)) {
+            if (
+                    world.isClientSide() && (player.isCrouching()
+                            || feet.getItem() != ConfigItems.itemBootsTraveller
+                    ) && prevStep.containsKey(playerName)) {//TODO:Attribute or whatever or others' impl(Tinker's?Artifacts?)
                player.setMaxUpStep(prevStep.get(playerName));
                prevStep.remove(playerName);
             }

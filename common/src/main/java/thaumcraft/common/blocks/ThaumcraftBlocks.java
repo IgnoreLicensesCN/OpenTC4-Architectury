@@ -21,6 +21,7 @@ import thaumcraft.common.blocks.crafted.essentia.*;
 import thaumcraft.common.blocks.crafted.essentia.pipes.*;
 import thaumcraft.common.blocks.crafted.fromtable.*;
 import thaumcraft.common.blocks.crafted.essentia.jars.*;
+import thaumcraft.common.blocks.crafted.infusion.ArcanePedestalBlock;
 import thaumcraft.common.blocks.crafted.jars.*;
 import thaumcraft.common.blocks.crafted.lamps.*;
 import thaumcraft.common.blocks.crafted.loot.*;
@@ -228,6 +229,7 @@ public class ThaumcraftBlocks {
     public static final EldritchPortalBlock ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL_BLOCK.get();
     public static final MirrorBlock MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static final EssentiaMirrorBlock ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
+    public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -944,6 +946,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "essentia_mirror",
                         EssentiaMirrorBlock::new
+                );
+        public static final RegistrySupplier<ArcanePedestalBlock> SUPPLIER_ARCANE_PEDESTAL =
+                BLOCKS.register(
+                        "arcane_pedestal",
+                        ArcanePedestalBlock::new
                 );
         static {
             BLOCKS.register();

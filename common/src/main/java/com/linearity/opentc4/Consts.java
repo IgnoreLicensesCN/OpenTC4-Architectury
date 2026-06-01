@@ -333,5 +333,8 @@ public class Consts {
         );
         public static final IntTagAccessor INSTABILITY = new IntTagAccessor("instability");
     }
+    public static class ArcanePedestalBlockEntityTagAccessors {
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
+    }
 
 }

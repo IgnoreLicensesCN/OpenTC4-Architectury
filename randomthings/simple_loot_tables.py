@@ -82,7 +82,8 @@ drop_self_block_names = [
     'essentia_centrifuge',
     'essentia_crystallizer',
     'arcane_pressure_plate',
-    'arcane_ear'
+    'arcane_ear',
+    'arcane_pedestal'
 ]
 
 drop_b_for_a_names = [
