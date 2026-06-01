@@ -3,7 +3,6 @@ package thaumcraft.api.aspects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 //usually use IEssentiaTransportOutBlockEntity
 //impl this means BE accepts force-out(without considering suction limits) aspect

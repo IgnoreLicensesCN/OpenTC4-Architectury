@@ -7,7 +7,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.PrimalAspect;
 
@@ -22,7 +21,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
         this.viewingList = viewingList;
     }
     public UnmodifiableAspectView(Object2IntLinkedOpenHashMap<A> viewingMap) {
-        this.viewingList = LinkedTreeAspectList.viewOf(viewingMap);
+        this.viewingList = LinkedHashAspectList.viewOf(viewingMap);
     }
 
     @Override

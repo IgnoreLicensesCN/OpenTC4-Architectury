@@ -4,7 +4,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 //which can be read when in inventory
 //TODO:Another display frame below "item name and description(tooltip/hoverText,whatever)"

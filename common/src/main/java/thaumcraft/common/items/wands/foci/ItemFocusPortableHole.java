@@ -13,7 +13,7 @@ import net.minecraft.util.HitResult.MovingObjectType;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -155,6 +155,6 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    }
 
    static {
-      cost = (new LinkedTreeAspectList<>()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
+      cost = (new LinkedHashAspectList<>()).addAll(Aspects.ENTROPY, 10).addAll(Aspects.AIR, 10);
    }
 }

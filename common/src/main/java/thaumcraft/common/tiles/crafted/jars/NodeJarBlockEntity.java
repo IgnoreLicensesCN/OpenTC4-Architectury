@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.api.tile.TileThaumcraft;

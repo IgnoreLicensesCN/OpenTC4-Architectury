@@ -23,7 +23,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
@@ -58,7 +58,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     public static final int[] SLOTS = new int[]{INPUT_SLOT};//output ItemEntity
     public @NotNull NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length,ItemStack.EMPTY);
     public final @Modifiable @NotNull List<CrucibleRecipe> rememberedRecipes = new ArrayList<>();
-    public final AspectList<Aspect> aspectsOwning = new LinkedTreeAspectList<>();
+    public final AspectList<Aspect> aspectsOwning = new LinkedHashAspectList<>();
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
@@ -77,7 +77,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
 
     public int currentCraftingIndexCache = Integer.MIN_VALUE;
-    protected AspectList<Aspect> aspectRequiredCache = new LinkedTreeAspectList<>();
+    protected AspectList<Aspect> aspectRequiredCache = new LinkedHashAspectList<>();
 
     //returns >= 0(recipe index)if input matched some recipe
     protected int checkAndCalculateIndexCache() {

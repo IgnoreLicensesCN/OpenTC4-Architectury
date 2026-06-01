@@ -34,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedTreeCentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
@@ -57,8 +57,8 @@ public class FocusExcavationItem extends FocusBasicItem {
 
     public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing;
     static {
-        LinkedTreeAspectList<Aspect> wandCostWithSilkTouchOrDowsingInternal;
-        wandCostWithSilkTouchOrDowsingInternal = new LinkedTreeAspectList<>(6 + wandCost.size(),1);
+        LinkedHashAspectList<Aspect> wandCostWithSilkTouchOrDowsingInternal;
+        wandCostWithSilkTouchOrDowsingInternal = new LinkedHashAspectList<>(6 + wandCost.size(),1);
         wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.AIR, 1);
         wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.FIRE, 1);
         wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.EARTH, 1);

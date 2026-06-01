@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchCategory;

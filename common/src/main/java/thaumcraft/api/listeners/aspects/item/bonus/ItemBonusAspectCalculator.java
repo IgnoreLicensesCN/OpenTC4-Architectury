@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.consts.BonusTagForItemListeners;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
@@ -37,7 +37,7 @@ public class ItemBonusAspectCalculator {
      * @return tags added with bonus
      */
     public static AspectList<Aspect> getBonusAspects(ItemStack itemstack,@NotNull AspectList<Aspect> basicAspects) {
-        AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
+        AspectList<Aspect> aspects = new LinkedHashAspectList<>();
         Item item = itemstack.getItem();
         UnmodifiableAspectList<Aspect> basicAspectsView = UnmodifiableAspectList.of(basicAspects);
 
@@ -56,7 +56,7 @@ public class ItemBonusAspectCalculator {
 
     //TODO:new api(maybe)
     public static AspectList<Aspect> cullTags(AspectList<Aspect> temp) {
-        AspectList<Aspect> temp2 = new LinkedTreeAspectList<>();
+        AspectList<Aspect> temp2 = new LinkedHashAspectList<>();
         for (Aspect tag : temp.keySet()) {
             if (tag != null)
                 temp2.addAll(tag, temp.get(tag));

@@ -15,7 +15,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.ClientProxy;
@@ -58,7 +58,7 @@ public class GuiResearchTable extends GuiContainer {
    Player player;
    public Aspect select1 = null;
    public Aspect select2 = null;
-   private AspectList<Aspect>aspectlist = new LinkedTreeAspectList<>();
+   private AspectList<Aspect>aspectlist = new LinkedHashAspectList<>();
    private HashMap runes = new HashMap<>();
    private float popupScale = 0.05F;
    private Aspect draggedAspect;

@@ -21,8 +21,7 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.common.Thaumcraft;
@@ -707,25 +706,25 @@ public class Config {
                                 switch (ore) {
                                     case "woodRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.TREE, 3).addAll(
+                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.TREE, 3).addAll(
                                                     Aspects.TOOL, 1));
                                         }
                                         break;
                                     case "itemRubber":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.MOTION, 2).addAll(
+                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.MOTION, 2).addAll(
                                                     Aspects.TOOL, 2));
                                         }
                                         break;
                                     case "ingotSteel":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.METAL, 3).addAll(
+                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 3).addAll(
                                                     Aspects.ORDER, 1));
                                         }
                                         break;
                                     case "crystalQuartz":
                                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.CRYSTAL, 1).addAll(
+                                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.CRYSTAL, 1).addAll(
                                                     Aspects.ENERGY, 1));
                                         }
                                         break;
@@ -757,25 +756,25 @@ public class Config {
                                 }
                             } else {
                                 for (ItemStack is : OreDictionary.getOres(ore)) {
-                                    ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.CRYSTAL, 2).addAll(
+                                    ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.CRYSTAL, 2).addAll(
                                             Aspects.GREED, 2));
                                 }
                             }
                         } else {
                             for (ItemStack is : OreDictionary.getOres(ore)) {
-                                ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.METAL, 2).addAll(
+                                ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 2).addAll(
                                         Aspects.ENTROPY, 1).addAll(Aspects.TOOL, 1));
                             }
                         }
                     } else {
                         for (ItemStack is : OreDictionary.getOres(ore)) {
-                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.METAL, 3).addAll(
+                            ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 3).addAll(
                                     Aspects.TOOL, 1));
                         }
                     }
                 } else {
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedTreeAspectList<>()).addAll(Aspects.METAL, 2).addAll(Aspects.POISON, 2).addAll(
+                        ItemBasicAspectRegistration.registerItemBasicAspects(is, (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 2).addAll(Aspects.POISON, 2).addAll(
                                 Aspects.ENERGY, 2));
                     }
                 }

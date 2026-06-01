@@ -13,7 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
@@ -39,7 +39,7 @@ public class GuiFocalManipulator extends GuiContainer {
    DecimalFormat myFormatter = new DecimalFormat("#######.#");
    ArrayList<FocusUpgradeType> possibleUpgrades = new ArrayList<>();
    ArrayList<FocusUpgradeType> upgrades = new ArrayList<>();
-   AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
+   AspectList<Aspect>aspects = new LinkedHashAspectList<>();
    HashMap<Long,Sparkle> sparkles = new HashMap<>();
 
    public GuiFocalManipulator(InventoryPlayer par1InventoryPlayer, TileFocalManipulator table) {
@@ -132,7 +132,7 @@ public class GuiFocalManipulator extends GuiContainer {
          this.selected = -1;
          this.possibleUpgrades.clear();
          this.upgrades.clear();
-         this.aspects = new LinkedTreeAspectList<>();
+         this.aspects = new LinkedHashAspectList<>();
          this.table.reset = false;
          this.table.rank = 0;
       }
@@ -237,7 +237,7 @@ public class GuiFocalManipulator extends GuiContainer {
    private void gatherInfo() {
       this.possibleUpgrades.clear();
       this.upgrades.clear();
-      this.aspects = new LinkedTreeAspectList<>();
+      this.aspects = new LinkedHashAspectList<>();
       ItemFocusBasic focus = (ItemFocusBasic)this.table.getStackInSlot(0).getItem();
       short[] s = focus.getAppliedUpgrades(this.table.getStackInSlot(0));
       this.rank = 1;
@@ -308,7 +308,7 @@ public class GuiFocalManipulator extends GuiContainer {
                var7 = mx - (gx + 48 + a * 16);
                var8 = my - (gy + 104);
                if (var7 >= 0 && var8 >= 0 && var7 < 16 && var8 < 16) {
-                  this.aspects = new LinkedTreeAspectList<>();
+                  this.aspects = new LinkedHashAspectList<>();
                   if (this.selected == u.id()) {
                      this.selected = -1;
                   } else {
@@ -319,7 +319,7 @@ public class GuiFocalManipulator extends GuiContainer {
                         amt *= 2;
                      }
 
-                     AspectList<Aspect>tal = new LinkedTreeAspectList<>();
+                     AspectList<Aspect>tal = new LinkedHashAspectList<>();
 
                      for(Aspect as : FocusUpgradeType.types[this.selected].aspects.getAspects()) {
                         tal.addAll(as, amt);

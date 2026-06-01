@@ -24,7 +24,7 @@ import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.nodes.*;
 import thaumcraft.api.wands.INodeHarmfulComponent;
@@ -52,8 +52,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         INodeBlockEntity
         , IWandInteractableBlockOrBlockEntity {
     long lastActiveMillis = 0L;
-    protected AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
-    protected AspectList<Aspect> aspectsBase = new LinkedTreeAspectList<>();
+    protected AspectList<Aspect> aspects = new LinkedHashAspectList<>();
+    protected AspectList<Aspect> aspectsBase = new LinkedHashAspectList<>();
     public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
     private @NotNull NodeType nodeType;
     private @NotNull NodeModifier nodeModifier;

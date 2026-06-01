@@ -32,7 +32,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -326,7 +326,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       for(int a = 0; a < 1 + i; ++a) {
          if (this.rand.nextBoolean()) {
             ItemStack is = new ItemStack(ConfigItems.itemManaBean);
-            ((ItemManaBean)is.getItem()).setAspects(is, (new LinkedTreeAspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
+            ((ItemManaBean)is.getItem()).setAspects(is, (new LinkedHashAspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
             this.entityDropItem(is, 1.5F);
          }
       }

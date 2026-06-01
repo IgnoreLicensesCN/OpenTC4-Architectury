@@ -25,7 +25,7 @@ import tc4tweak.modules.generateItemHash.GenerateItemHash;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.nodes.INodeBlockEntity;
@@ -307,7 +307,7 @@ public class ScanManager implements IScanEventHandler {
         if (entity instanceof Player) {
             s = "player_" + entity.getName()
                     .getString();
-            tags = new LinkedTreeAspectList<>();
+            tags = new LinkedHashAspectList<>();
             tags.addAll(Aspects.MAN, 4);
             if (entity.getName()
                     .getString()
@@ -358,7 +358,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     private static AspectList<Aspect> generateNodeAspects(Level world, String node) {
-        AspectList<Aspect> tags = new LinkedTreeAspectList<>();
+        AspectList<Aspect> tags = new LinkedHashAspectList<>();
         BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
         if (loc != null) {
             ResourceLocation dim = loc.dim();
@@ -546,7 +546,7 @@ public class ScanManager implements IScanEventHandler {
         }
 
         if (player instanceof ServerPlayer && ret && aspects != null) {
-            AspectList<Aspect>aspectsFinal = new LinkedTreeAspectList<>();
+            AspectList<Aspect>aspectsFinal = new LinkedHashAspectList<>();
 
             for (Aspect aspect : aspects.keySet()) {
                 if (rp.hasDiscoveredParentAspects(
@@ -663,7 +663,7 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
-        AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
+        AspectList<Aspect> aspects = new LinkedHashAspectList<>();
         var serverFlag = !world.isClientSide();
         boolean ret = false;
         if (scan.type == 1) {

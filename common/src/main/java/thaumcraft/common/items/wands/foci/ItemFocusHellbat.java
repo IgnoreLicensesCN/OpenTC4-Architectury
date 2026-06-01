@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -143,15 +143,15 @@ public class ItemFocusHellbat extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
-      costBomb = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
-      costDevil = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
+      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
+      costBomb = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
+      costDevil = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
               Aspects.EARTH, 100);
-      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new LinkedTreeAspectList<>()).addAll(
+      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.ENERGY, 1).addAll(Aspects.TRAP, 1));
-      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new LinkedTreeAspectList<>()).addAll(
+      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 1));
-      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new LinkedTreeAspectList<>()).addAll(
+      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.HUNGER, 1).addAll(
               Aspects.LIFE, 1));
    }

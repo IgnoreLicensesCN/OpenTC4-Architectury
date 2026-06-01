@@ -18,7 +18,7 @@ import net.minecraft.util.IIcon;
 import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -152,7 +152,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
-      AspectList<Aspect>out = new LinkedTreeAspectList<>();
+      AspectList<Aspect>out = new LinkedHashAspectList<>();
       AspectList<Aspect>cur = this.getAllVis(wandstack);
 
       for(Aspect aspect : cur.getAspects()) {
@@ -165,7 +165,7 @@ public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
    }
 
    public AspectList<Aspect>getAllVis(ItemStack is) {
-      AspectList<Aspect>out = new LinkedTreeAspectList<>();
+      AspectList<Aspect>out = new LinkedHashAspectList<>();
 
       for(Aspect aspect : Aspects.getPrimalAspects()) {
          if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {

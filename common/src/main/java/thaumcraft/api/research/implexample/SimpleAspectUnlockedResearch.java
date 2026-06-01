@@ -3,7 +3,6 @@ package thaumcraft.api.research.implexample;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
@@ -124,7 +124,7 @@ public class EssentiaBufferBlockEntity
         lastFillIndex = 0;
     }
 
-    private final AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
+    private final AspectList<Aspect> aspects = new LinkedHashAspectList<>();
     private final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
 
     @Override

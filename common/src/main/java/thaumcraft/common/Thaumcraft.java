@@ -4,7 +4,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;

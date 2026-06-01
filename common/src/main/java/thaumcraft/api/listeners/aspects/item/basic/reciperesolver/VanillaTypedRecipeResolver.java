@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
@@ -164,8 +164,8 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
                         if (resultCount == 0){
                             return;
                         }
-                        AspectList<Aspect> allAdded = new LinkedTreeAspectList<>();
-                        AspectList<Aspect> remainingItemAspects = new LinkedTreeAspectList<>();
+                        AspectList<Aspect> allAdded = new LinkedHashAspectList<>();
+                        AspectList<Aspect> remainingItemAspects = new LinkedHashAspectList<>();
                         var ingredientItems = ingredientItemsGetter.apply(recipe);
                         var remainingItemList = ingredientRemainingItemsGetter.apply(recipe);
 

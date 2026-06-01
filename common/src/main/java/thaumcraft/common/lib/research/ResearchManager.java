@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
@@ -352,7 +352,7 @@ public class ResearchManager {
     }
 
     public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al, boolean merge) {
-        AspectList<PrimalAspect> out = new LinkedTreeAspectList<>();
+        AspectList<PrimalAspect> out = new LinkedHashAspectList<>();
 
         for (var aspect : al.keySet()) {
             var aspAmount = al.get(aspect);
@@ -364,15 +364,15 @@ public class ResearchManager {
                         out.addAll(primalAspect, aspAmount);
                     }
                 } else if (aspect instanceof CompoundAspect compoundAspect) {
-                    AspectList<PrimalAspect> send = new LinkedTreeAspectList<>();
+                    AspectList<PrimalAspect> send = new LinkedHashAspectList<>();
                     send.addAll(
                             reduceToPrimals(
-                                    new LinkedTreeAspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
+                                    new LinkedHashAspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
                                     ,merge)
                     );
                     send.addAll(
                             reduceToPrimals(
-                                    new LinkedTreeAspectList<>(
+                                    new LinkedHashAspectList<>(
                                             Map.of(compoundAspect.components.aspectB(), aspAmount))
                                     ,merge)
                     );

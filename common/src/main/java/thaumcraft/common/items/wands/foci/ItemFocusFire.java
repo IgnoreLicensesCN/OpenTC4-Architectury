@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -138,12 +138,12 @@ public class ItemFocusFire extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 10);
-      costBeam = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 10).addAll(Aspects.ORDER, 3);
-      costBall = (new LinkedTreeAspectList<>()).addAll(Aspects.FIRE, 66).addAll(Aspects.ENTROPY, 33);
-      fireball = new FocusUpgradeType(9, new ResourceLocation("thaumcraft", "textures/foci/fireball.png"), "focus.upgrade.fireball.name", "focus.upgrade.fireball.text", (new LinkedTreeAspectList<>()).addAll(
+      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 10);
+      costBeam = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 10).addAll(Aspects.ORDER, 3);
+      costBall = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 66).addAll(Aspects.ENTROPY, 33);
+      fireball = new FocusUpgradeType(9, new ResourceLocation("thaumcraft", "textures/foci/fireball.png"), "focus.upgrade.fireball.name", "focus.upgrade.fireball.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.DARKNESS, 1));
-      firebeam = new FocusUpgradeType(10, new ResourceLocation("thaumcraft", "textures/foci/firebeam.png"), "focus.upgrade.firebeam.name", "focus.upgrade.firebeam.text", (new LinkedTreeAspectList<>()).addAll(
+      firebeam = new FocusUpgradeType(10, new ResourceLocation("thaumcraft", "textures/foci/firebeam.png"), "focus.upgrade.firebeam.name", "focus.upgrade.firebeam.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.ENERGY, 1).addAll(Aspects.AIR, 1));
    }
 }

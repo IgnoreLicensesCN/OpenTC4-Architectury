@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 
 public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> {
     protected final ListTagAccessor listTagAccessorInternal;
@@ -31,7 +31,7 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
             var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
-        return LinkedTreeAspectList.viewOf(result);
+        return LinkedHashAspectList.viewOf(result);
     }
 
     public void readFromCompoundTagInto(CompoundTag tag,AspectList<Aspect> readInto) {

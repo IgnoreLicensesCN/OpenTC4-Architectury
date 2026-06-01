@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
@@ -64,7 +64,7 @@ public class PlayerKnowledge {
    public void addDiscoveredPrimalAspects(Player player) {
       AspectList<Aspect> known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       if (known == null) {
-         known = new LinkedTreeAspectList<>();
+         known = new LinkedHashAspectList<>();
       }
       for (var asp: Aspects.getPrimalAspects()){
 
@@ -99,7 +99,7 @@ public class PlayerKnowledge {
    public boolean addAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new LinkedTreeAspectList<>();
+         al = new LinkedHashAspectList<>();
       }
 
       if (aspect != null && amount != 0) {
@@ -125,7 +125,7 @@ public class PlayerKnowledge {
    public boolean setAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new LinkedTreeAspectList<>();
+         al = new LinkedHashAspectList<>();
       }
 
       if (aspect != null) {

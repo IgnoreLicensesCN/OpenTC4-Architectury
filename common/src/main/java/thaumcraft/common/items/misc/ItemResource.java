@@ -21,7 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
@@ -270,7 +270,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 
    public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
+         AspectList<Aspect>aspects = new LinkedHashAspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {

@@ -17,7 +17,7 @@ import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
@@ -218,7 +218,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedTreeAspectList<>()).addAll(aspect, 1));
+                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedHashAspectList<>()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
                                  if (primals.get(aspect2) > 0 && node.getAspects().get(aspect) > min) {
@@ -275,7 +275,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
                      if (hasThingy) {
                         for(Aspect aspect : node.getAspects().getAspects()) {
                            if (aspect != null && !aspect.isPrimal()) {
-                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedTreeAspectList<>()).addAll(aspect, 1));
+                              AspectList<Aspect>primals = ResearchManager.reduceToPrimals((new LinkedHashAspectList<>()).addAll(aspect, 1));
 
                               for(Aspect aspect2 : as.getAspects()) {
                                  if (primals.get(aspect2) > 0 && node.getAspects().get(aspect) > min) {
@@ -356,7 +356,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
       if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof WandCastingItem) {
          WandCastingItem wand = (WandCastingItem)this.getStackInSlot(0).getItem();
          AspectList<Aspect>al = wand.getAllVis(this.getStackInSlot(0));
-         AspectList<Aspect>out = new LinkedTreeAspectList<>();
+         AspectList<Aspect>out = new LinkedHashAspectList<>();
 
          for(Aspect a : al.getAspectsSorted()) {
             out.addAll(a, al.get(a) / 100);
@@ -366,7 +366,7 @@ public class TileWandPedestal extends TileThaumcraft implements ISidedInventory,
       } else if (this.getStackInSlot(0) != null && this.getStackInSlot(0).getItem() instanceof ItemAmuletVis) {
          ItemAmuletVis amulet = (ItemAmuletVis)this.getStackInSlot(0).getItem();
          AspectList<Aspect>al = amulet.getAllVis(this.getStackInSlot(0));
-         AspectList<Aspect>out = new LinkedTreeAspectList<>();
+         AspectList<Aspect>out = new LinkedHashAspectList<>();
 
          for(Aspect a : al.getAspectsSorted()) {
             out.addAll(a, al.get(a) / 100);

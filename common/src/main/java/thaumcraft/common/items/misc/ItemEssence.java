@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
@@ -78,7 +78,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
 
       for(Aspect tag : Aspects.ALL_ASPECTS.values()) {
          ItemStack i = new ItemStack(this, 1, 1);
-         this.setAspects(i, (new LinkedTreeAspectList<>()).addAll(tag, 8));
+         this.setAspects(i, (new LinkedHashAspectList<>()).addAll(tag, 8));
          stacks.add(i);
       }
 
@@ -135,7 +135,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
             }
 
             ItemStack phial = new ItemStack(this, 1, 1);
-            this.setAspects(phial, (new LinkedTreeAspectList<>()).addAll(tile.aspect, 8));
+            this.setAspects(phial, (new LinkedHashAspectList<>()).addAll(tile.aspect, 8));
             if (tile.takeFromContainer(tile.aspect, 8)) {
                --itemstack.stackSize;
                if (!addItemStackToInventory_tweaked(player.inventory,phial)) {
@@ -161,7 +161,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
             if (tile.takeFromContainer(asp, 8)) {
                --itemstack.stackSize;
                ItemStack phial = new ItemStack(this, 1, 1);
-               this.setAspects(phial, (new LinkedTreeAspectList<>()).addAll(asp, 8));
+               this.setAspects(phial, (new LinkedHashAspectList<>()).addAll(asp, 8));
                if (!addItemStackToInventory_tweaked(player.inventory,phial)) {
                   world.spawnEntityInWorld(new EntityItem(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, phial));
                }
@@ -205,7 +205,7 @@ public class ItemEssence extends Item implements IEssentiaContainerItem {
 
    public AspectList<Aspect>getAspects(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
+         AspectList<Aspect>aspects = new LinkedHashAspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());
          return aspects.size() > 0 ? aspects : null;
       } else {

@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -16,7 +16,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileFocalManipulator extends TileThaumcraftInventory {
-   public AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
+   public AspectList<Aspect>aspects = new LinkedHashAspectList<>();
    public int size = 0;
    public int upgrade = -1;
    public int rank = -1;
@@ -62,7 +62,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
       if ((Platform.getEnvironment() == Env.CLIENT)) {
          this.reset = true;
       } else {
-         this.aspects = new LinkedTreeAspectList<>();
+         this.aspects = new LinkedHashAspectList<>();
       }
 
    }
@@ -106,7 +106,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
       if (complete) {
          this.size = 0;
          this.rank = -1;
-         this.aspects = new LinkedTreeAspectList<>();
+         this.aspects = new LinkedHashAspectList<>();
          this.level().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
          this.markDirty();
       }
@@ -147,7 +147,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                      amt *= 2;
                   }
 
-                  AspectList<Aspect>tal = new LinkedTreeAspectList<>();
+                  AspectList<Aspect>tal = new LinkedHashAspectList<>();
 
                   for(Aspect as : FocusUpgradeType.types[id].aspects.getAspects()) {
                      tal.addAll(as, amt);

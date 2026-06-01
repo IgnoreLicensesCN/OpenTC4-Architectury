@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.crafting.CrucibleRecipe;
@@ -128,7 +128,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
     }
 
 
-    public final AspectList<Aspect> owningAspects = new LinkedTreeAspectList<>();
+    public final AspectList<Aspect> owningAspects = new LinkedHashAspectList<>();
     public int heat = 0;
     protected @NotNull FluidStack fluidStack = create(Fluids.EMPTY, 0);//keep it a instance
 
@@ -372,7 +372,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
 
     @SuppressWarnings("UnusedReturnValue")
     public AspectList<Aspect> takeRandomFromSource(RandomSource random) {
-        AspectList<Aspect>output = new LinkedTreeAspectList<>();
+        AspectList<Aspect>output = new LinkedHashAspectList<>();
         if (!this.owningAspects.isEmpty()) {
             Aspect tag = this.owningAspects.randomAspect(random);
             output.addAll(tag, 1);

@@ -180,7 +180,7 @@ public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 	}
 
 	public AspectList<Aspect> removeMatchingReturnNew(AspectList<Aspect> itags) {
-		AspectList<Aspect> temptags = new LinkedTreeAspectList<>(itags);
+		AspectList<Aspect> temptags = new LinkedHashAspectList<>(itags);
 
 //		temptags.aspects.putAll(itags.aspects);
 

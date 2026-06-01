@@ -25,7 +25,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
@@ -124,7 +124,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
             ArrayList<ResearchPage> tpl = new ArrayList<>(Arrays.asList(research.getPages()));
 
-            AspectList<Aspect>tal = new LinkedTreeAspectList<>();
+            AspectList<Aspect>tal = new LinkedHashAspectList<>();
             if (aspectsKnownSorted != null) {
                 int count = 0;
 
@@ -137,7 +137,7 @@ public class GuiResearchRecipe extends GuiScreen {
                     if (count == 4) {
                         count = 0;
                         tpl.add(new ResearchPage(tal.copy()));
-                        tal = new LinkedTreeAspectList<>();
+                        tal = new LinkedHashAspectList<>();
                     }
                 }
 

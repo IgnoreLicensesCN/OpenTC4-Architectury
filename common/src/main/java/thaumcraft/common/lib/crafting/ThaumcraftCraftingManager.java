@@ -20,7 +20,7 @@ import tc4tweak.modules.objectTag.GetObjectTags;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
@@ -98,7 +98,7 @@ public class ThaumcraftCraftingManager {
     @Deprecated(forRemoval = true)
     public static AspectList<Aspect> findMatchingArcaneRecipeAspects(Container awb, Player player) {
         IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
-        return recipe == null ? new LinkedTreeAspectList<>() :
+        return recipe == null ? new LinkedHashAspectList<>() :
                 recipe.getAspects() == null
                         ? recipe.getAspects(awb)
                         : recipe.getAspects();
@@ -180,7 +180,7 @@ public class ThaumcraftCraftingManager {
         //TODO:Separate to wand additional aspects to API
         if (itemstack.getItem() instanceof WandCastingItem wand) {
             if (tmp == null) {
-                tmp = new LinkedTreeAspectList<>();
+                tmp = new LinkedHashAspectList<>();
             }
             var totalAvgAspects = 0;
             for (var componentItem : wand.getWandComponents(itemstack)) {
@@ -282,7 +282,7 @@ public class ThaumcraftCraftingManager {
         if (sourcetags == null) {
             return sourcetags;
         } else {
-            AspectList<Asp> out = new LinkedTreeAspectList<>();
+            AspectList<Asp> out = new LinkedHashAspectList<>();
 
             for (var aspect : sourcetags.keySet()) {
                 out.mergeWithHighest(aspect, Math.min(amount, sourcetags.get(aspect)));
@@ -335,7 +335,7 @@ public class ThaumcraftCraftingManager {
             for (var cat:cr.catalyst.getAvailableItemStackSample()){
                 ot2 = generateBaseAspects(cat.getItem(), history);
             }
-            AspectList<Aspect> out = new LinkedTreeAspectList<>();
+            AspectList<Aspect> out = new LinkedHashAspectList<>();
             if (ot2 != null && !ot2.isEmpty()) {
                 for (Aspect tt : ot2.keySet()) {
                     out.addAll(tt, ot2.get(tt));
@@ -370,7 +370,7 @@ public class ThaumcraftCraftingManager {
                 if (arcaneRecipe.getRecipeOutput()
                         .getItem() == item) {
                     ArrayList<ItemStack> ingredients = new ArrayList<>();
-                    new LinkedTreeAspectList<>();
+                    new LinkedHashAspectList<>();
 
                     try {
                         for (var stackArr:arcaneRecipe.getAllInputSample()){
@@ -443,7 +443,7 @@ public class ThaumcraftCraftingManager {
                 ingredients.add(is2);
             }
 
-            AspectList<Aspect> out = new LinkedTreeAspectList<>();
+            AspectList<Aspect> out = new LinkedHashAspectList<>();
             AspectList<Aspect> ot2 = getAspectsFromIngredients(ingredients, cr.getRecipeOutput(), history);
 
             for (var tt : ot2.keySet()) {
@@ -513,8 +513,8 @@ public class ThaumcraftCraftingManager {
 
     @Deprecated(forRemoval = true)
     private static AspectList<Aspect> getAspectsFromIngredients(List<ItemStack> ingredients, ItemStack recipeOut, List<ItemStack> history) {
-        AspectList<Aspect> out = new LinkedTreeAspectList<>();
-        AspectList<Aspect> mid = new LinkedTreeAspectList<>();
+        AspectList<Aspect> out = new LinkedHashAspectList<>();
+        AspectList<Aspect> mid = new LinkedHashAspectList<>();
         Iterator<ItemStack> i$ = ingredients.iterator();
 
         while (true) {

@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
@@ -466,7 +466,7 @@ public class EventHandlerEntity {
                   int size = 1 + event.entity.getRandom().nextInt(aspects.get(aspect));
                   size = Math.max(1, size / 2);
                   ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
-                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new LinkedTreeAspectList<>()).addAll(aspect, 1));
+                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new LinkedHashAspectList<>()).addAll(aspect, 1));
                   event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
                }
             }

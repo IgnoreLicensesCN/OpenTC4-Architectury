@@ -6,7 +6,6 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectGetListeners;
 import thaumcraft.api.listeners.aspects.item.basic.additional.AddAdditionalBasicAspectContext;

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
@@ -70,7 +70,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         owningAspects.clear();
     }
 
-    protected final AspectList<Aspect> owningAspects = new LinkedTreeAspectList<>();
+    protected final AspectList<Aspect> owningAspects = new LinkedHashAspectList<>();
     public final AspectList<Aspect> aspOwningView = new UnmodifiableAspectView<>(owningAspects);
 
     @Override

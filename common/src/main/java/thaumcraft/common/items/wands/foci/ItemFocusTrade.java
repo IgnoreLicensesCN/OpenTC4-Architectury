@@ -22,7 +22,7 @@ import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -185,7 +185,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayI
    public AspectList<Aspect>getVisCost(ItemStack itemstack) {
       if (this.isUpgradedWith(itemstack, FocusUpgradeType.silktouch)) {
          if (cost2 == null) {
-            cost2 = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.EARTH, 1).addAll(
+            cost2 = (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.EARTH, 1).addAll(
                     Aspects.WATER, 1).addAll(Aspects.ORDER, 1).addAll(Aspects.ENTROPY, 1);
             cost2.addAll(cost);
          }
@@ -308,7 +308,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayI
    }
 
    static {
-      cost = (new LinkedTreeAspectList<>()).addAll(Aspects.ENTROPY, 5).addAll(Aspects.EARTH, 5).addAll(Aspects.ORDER, 5);
+      cost = (new LinkedHashAspectList<>()).addAll(Aspects.ENTROPY, 5).addAll(Aspects.EARTH, 5).addAll(Aspects.ORDER, 5);
       cost2 = null;
    }
 }

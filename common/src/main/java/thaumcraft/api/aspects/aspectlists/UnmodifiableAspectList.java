@@ -28,19 +28,19 @@ import java.util.function.ObjIntConsumer;
 //usually it's not considered as a view so it shouldn't been changed
 public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmodifiableDefault<A>, Copyable<AspectList<A>> {
 
-    public static final UnmodifiableAspectList<Aspect> EMPTY = new UnmodifiableAspectList<>(new LinkedTreeAspectList<>()){
+    public static final UnmodifiableAspectList<Aspect> EMPTY = new UnmodifiableAspectList<>(new LinkedHashAspectList<>()){
         @Override
         public boolean isEmpty() {
             return true;
         }
     };
-    public static final UnmodifiableAspectList<PrimalAspect> EMPTY_PRIMAL = new UnmodifiableAspectList<>(new LinkedTreeAspectList<>()){
+    public static final UnmodifiableAspectList<PrimalAspect> EMPTY_PRIMAL = new UnmodifiableAspectList<>(new LinkedHashAspectList<>()){
         @Override
         public boolean isEmpty() {
             return true;
         }
     };
-    public static final UnmodifiableAspectList<CompoundAspect> EMPTY_COMPOUND = new UnmodifiableAspectList<>(new LinkedTreeAspectList<>()){
+    public static final UnmodifiableAspectList<CompoundAspect> EMPTY_COMPOUND = new UnmodifiableAspectList<>(new LinkedHashAspectList<>()){
         @Override
         public boolean isEmpty() {
             return true;
@@ -66,7 +66,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
         }
     }
     protected UnmodifiableAspectList(@NotNull Object2IntLinkedOpenHashMap<A> aspects) {
-        this.internalList = new LinkedTreeAspectList<>(aspects).copy();
+        this.internalList = new LinkedHashAspectList<>(aspects).copy();
         //init hash
         {
             var hashTemp = new AtomicInteger(0);
@@ -251,7 +251,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
         if (aspects.length == 1){
             return ofSingle(aspects[0]);
         }
-        AspectList<Asp> out = new LinkedTreeAspectList<>();
+        AspectList<Asp> out = new LinkedHashAspectList<>();
         for (var aspect : aspects){
             if (aspect != null){
                 out.addAll(aspect,1);

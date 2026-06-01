@@ -4,7 +4,6 @@ package thaumcraft.api.aspects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 /**

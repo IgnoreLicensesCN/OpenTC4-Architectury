@@ -21,7 +21,7 @@ import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
 
 //default impl
-public class LinkedTreeAspectList<Asp extends Aspect>
+public class LinkedHashAspectList<Asp extends Aspect>
 		implements AspectList<Asp> /*implements Serializable */{
 
 	private int visSize;//
@@ -29,34 +29,34 @@ public class LinkedTreeAspectList<Asp extends Aspect>
 
 	private final Object2IntMap<Asp> aspectView;
 	
-	public LinkedTreeAspectList() {
+	public LinkedHashAspectList() {
 		this.aspects = new Object2IntLinkedOpenHashMap<>();
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	protected LinkedTreeAspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
+	protected LinkedHashAspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
 		this.aspects = aspects;
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
-	public LinkedTreeAspectList(@NotNull Map<Asp,Integer> aspects) {
+	public LinkedHashAspectList(@NotNull Map<Asp,Integer> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
 	}
-	public LinkedTreeAspectList(@NotNull Object2IntMap<Asp> aspects) {
+	public LinkedHashAspectList(@NotNull Object2IntMap<Asp> aspects) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
 		recalculateVisSize();
 	}
 
-	public LinkedTreeAspectList(int size, float loadFactor) {
+	public LinkedHashAspectList(int size, float loadFactor) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(size,loadFactor);
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
 	}
 
-	public LinkedTreeAspectList(@NotNull LinkedTreeAspectList<Asp> another) {
+	public LinkedHashAspectList(@NotNull LinkedHashAspectList<Asp> another) {
 		this.aspects = new Object2IntLinkedOpenHashMap<>(another.aspects);
 		this.aspectView = Object2IntMaps.unmodifiable(aspects);
 		recalculateVisSize();
@@ -81,8 +81,8 @@ public class LinkedTreeAspectList<Asp extends Aspect>
 	public int put(Asp aspect, int amount) {
 		return aspects.put(aspect,amount);
 	}
-    public LinkedTreeAspectList<Asp> copy() {
-		var out = new LinkedTreeAspectList<Asp>();
+    public LinkedHashAspectList<Asp> copy() {
+		var out = new LinkedHashAspectList<Asp>();
 		for (var a:this.keySet())
 			out.addAll(a, this.get(a));
 		return out;
@@ -110,8 +110,8 @@ public class LinkedTreeAspectList<Asp extends Aspect>
 	/**
 	 * @return an array of all the primal aspects in this collection
 	 */
-	public LinkedTreeAspectList<PrimalAspect> getPrimalAspects() {
-		LinkedTreeAspectList<PrimalAspect> result = new LinkedTreeAspectList<>();
+	public LinkedHashAspectList<PrimalAspect> getPrimalAspects() {
+		LinkedHashAspectList<PrimalAspect> result = new LinkedHashAspectList<>();
 		for (var aspectAndAmount:aspects.object2IntEntrySet()) {
 			var aspect = aspectAndAmount.getKey();
 			var amount = aspectAndAmount.getIntValue();
@@ -378,8 +378,8 @@ public class LinkedTreeAspectList<Asp extends Aspect>
 	}
 
 	@SafeVarargs
-	public static <Asp extends Aspect> LinkedTreeAspectList<Asp> of(Asp... aspects){
-		LinkedTreeAspectList<Asp> out = new LinkedTreeAspectList<>();
+	public static <Asp extends Aspect> LinkedHashAspectList<Asp> of(Asp... aspects){
+		LinkedHashAspectList<Asp> out = new LinkedHashAspectList<>();
 		for (var aspect : aspects){
 			if (aspect != null){
 				out.addAll(aspect,1);
@@ -388,8 +388,8 @@ public class LinkedTreeAspectList<Asp extends Aspect>
 		return out;
 	}
 
-	public static <Asp extends Aspect> LinkedTreeAspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects){
-		return new LinkedTreeAspectList<>(aspects);
+	public static <Asp extends Aspect> LinkedHashAspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects){
+		return new LinkedHashAspectList<>(aspects);
 	}
 
 	public @Nullable("if empty") Asp randomAspect(RandomSource randomSource){

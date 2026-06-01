@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -100,14 +100,14 @@ public class ItemFocusFrost extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new LinkedTreeAspectList<>()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
-      costScatter = (new LinkedTreeAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
+      costScatter = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
               Aspects.AIR, 5);
-      costBoulder = (new LinkedTreeAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+      costBoulder = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
               Aspects.EARTH, 5);
-      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new LinkedTreeAspectList<>()).addAll(
+      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.COLD, 1).addAll(Aspects.WEAPON, 1));
-      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new LinkedTreeAspectList<>()).addAll(
+      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.COLD, 1).addAll(Aspects.CRYSTAL, 1));
    }
 }

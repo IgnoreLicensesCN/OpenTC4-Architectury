@@ -9,7 +9,7 @@ import thaumcraft.codechicken.lib.util.Copyable;
 import java.util.Map;
 
 public class LinkedTreeCentiVisList<Asp extends Aspect>
-        extends LinkedTreeAspectList<Asp>
+        extends LinkedHashAspectList<Asp>
         implements
         CentiVisList<Asp>,
         Copyable<LinkedTreeCentiVisList<Asp>> {
@@ -32,7 +32,7 @@ public class LinkedTreeCentiVisList<Asp extends Aspect>
         super(size, loadFactor);
     }
 
-    public LinkedTreeCentiVisList(@NotNull LinkedTreeAspectList<Asp> another) {
+    public LinkedTreeCentiVisList(@NotNull LinkedHashAspectList<Asp> another) {
         super(another);
     }
 

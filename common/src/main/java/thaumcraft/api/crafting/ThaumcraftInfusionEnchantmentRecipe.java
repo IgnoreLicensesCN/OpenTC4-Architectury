@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
 import thaumcraft.api.research.ResearchItem;
@@ -204,7 +204,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
             if (ench != enchantment)
                 mod += lvl * .1f;
         }
-		AspectList<Aspect> aspsResult = new LinkedTreeAspectList<>(basicCostAspects.size(),1);
+		AspectList<Aspect> aspsResult = new LinkedHashAspectList<>(basicCostAspects.size(),1);
 		final float finalMod = mod;
 		basicCostAspects.forEach((asp, amount)-> aspsResult.put(asp, (int) (amount * finalMod)));
 		return new UnmodifiableAspectView<>(aspsResult);

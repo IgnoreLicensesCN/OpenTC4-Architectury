@@ -16,7 +16,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -297,7 +297,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitectDispla
    }
 
    static {
-      cost = (new LinkedTreeAspectList<>()).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.WATER, 10);
+      cost = (new LinkedHashAspectList<>()).addAll(Aspects.EARTH, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.WATER, 10);
       delay = new HashMap<>();
    }
 }

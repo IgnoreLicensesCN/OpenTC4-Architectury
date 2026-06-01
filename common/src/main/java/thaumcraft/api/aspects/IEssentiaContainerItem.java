@@ -2,7 +2,6 @@ package thaumcraft.api.aspects;
 
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 
 /**
  * 

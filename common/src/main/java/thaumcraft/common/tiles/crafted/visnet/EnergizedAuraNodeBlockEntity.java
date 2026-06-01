@@ -19,7 +19,7 @@ import static com.linearity.opentc4.Consts.EnergizedAuraNodeBlockEntityTagAccess
 
 public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
 
-    protected @NotNull AspectList<Aspect> auraBase = (new LinkedTreeAspectList<>(){
+    protected @NotNull AspectList<Aspect> auraBase = (new LinkedHashAspectList<>(){
         {
             this.addAll(Aspects.AIR, 20);
             this.addAll(Aspects.FIRE, 20);

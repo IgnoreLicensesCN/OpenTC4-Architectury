@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
@@ -50,7 +50,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
     public static final int[] TOP_SLOTS = new int[ASPECT_GIVEN_ITEM_SLOT];
     public static final int[] SIDE_SLOTS = new int[]{ASPECT_GIVEN_ITEM_SLOT};
     public static final int[] SLOTS = new int[]{ASPECT_GIVEN_ITEM_SLOT, FUEL_SLOT};
-    public @NotNull AspectList<Aspect> aspects = new LinkedTreeAspectList<>();
+    public @NotNull AspectList<Aspect> aspects = new LinkedHashAspectList<>();
     public static final  int MAX_VIS_SIZE = 50;
     boolean speedBoost = false;
     public final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);//furnaceItemStacks
@@ -106,7 +106,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
 
             if (this.count % (this.speedBoost ? speedBoostAspectExtractTime : defaultAspectExtractTime) == 0
                     && !this.aspects.isEmpty()) {
-                AspectList<Aspect> exlude = new LinkedTreeAspectList<>();
+                AspectList<Aspect> exlude = new LinkedHashAspectList<>();
                 for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
                     var tile = this.level.getBlockEntity(probablyAlembicPos);

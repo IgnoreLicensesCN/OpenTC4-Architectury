@@ -23,7 +23,6 @@ import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.renderers.models.gear.ModelHoverHarness;
 import thaumcraft.common.Thaumcraft;

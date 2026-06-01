@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
@@ -58,10 +58,10 @@ public class GetObjectTags {
 
         if (itemstack.getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-            if (tmp == null) tmp = new LinkedTreeAspectList<>();
+            if (tmp == null) tmp = new LinkedHashAspectList<>();
             addWandTags(itemstack, tmp, wand);
         } else if (item instanceof PotionItem potionItem) {
-            if (tmp == null) tmp = new LinkedTreeAspectList<>();
+            if (tmp == null) tmp = new LinkedHashAspectList<>();
             addPotionTags(itemstack, potionItem, tmp);
         }
 
@@ -172,6 +172,6 @@ public class GetObjectTags {
         aspect = ThaumcraftCraftingManager.generateBaseAspects(item);
 
         // 不返回 null，因为 null 表示 cache disabled
-        return aspect == null ? new LinkedTreeAspectList<>() : aspect;
+        return aspect == null ? new LinkedHashAspectList<>() : aspect;
     }
 }

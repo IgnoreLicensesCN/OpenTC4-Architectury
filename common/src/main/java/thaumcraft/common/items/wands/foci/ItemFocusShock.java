@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedTreeAspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
@@ -212,12 +212,12 @@ public class ItemFocusShock extends ItemFocusBasic {
    }
 
    static {
-      costBase = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 25);
-      costChain = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 40).addAll(Aspects.WATER, 10);
-      costGround = (new LinkedTreeAspectList<>()).addAll(Aspects.AIR, 75).addAll(Aspects.EARTH, 25);
-      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new LinkedTreeAspectList<>()).addAll(
+      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 25);
+      costChain = (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 40).addAll(Aspects.WATER, 10);
+      costGround = (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 75).addAll(Aspects.EARTH, 25);
+      chainlightning = new FocusUpgradeType(17, new ResourceLocation("thaumcraft", "textures/foci/chainlightning.png"), "focus.upgrade.chainlightning.name", "focus.upgrade.chainlightning.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.WEATHER, 1));
-      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new LinkedTreeAspectList<>()).addAll(
+      earthshock = new FocusUpgradeType(18, new ResourceLocation("thaumcraft", "textures/foci/earthshock.png"), "focus.upgrade.earthshock.name", "focus.upgrade.earthshock.text", (new LinkedHashAspectList<>()).addAll(
               Aspects.WEATHER, 1));
    }
 }
