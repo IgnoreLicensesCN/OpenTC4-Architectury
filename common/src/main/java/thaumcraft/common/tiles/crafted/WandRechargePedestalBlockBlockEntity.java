@@ -1,0 +1,137 @@
+package thaumcraft.common.tiles.crafted;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.api.wands.INodeHarmfulComponent;
+import thaumcraft.api.wands.IWandComponentsOwnerItem;
+import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.IWandRechargePedestalAspectAdder;
+import thaumcraft.common.tiles.abstracts.IWandRechargePedestalUpgradeBlockEntity;
+
+import static thaumcraft.common.items.ThaumcraftItems.ItemTags.RECHARGE_PEDESTAL_CANNOT_APPLY;
+import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
+
+public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockEntity implements IWandRechargePedestalAspectAdder {
+    public WandRechargePedestalBlockBlockEntity(BlockEntityType<? extends WandRechargePedestalBlockBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
+    }
+    public WandRechargePedestalBlockBlockEntity(BlockPos blockPos, BlockState blockState) {
+        this(ThaumcraftBlockEntities.WAND_RECHARGE_PEDESTAL,blockPos,blockState);
+    }
+
+    @Override
+    public boolean canPlaceItem(int i, ItemStack itemStack) {
+        return itemStack.getItem() instanceof ICentiVisContainerItem<? extends Aspect> && !itemStack.is(RECHARGE_PEDESTAL_CANNOT_APPLY);
+    }
+
+    protected int tickCount = 0;
+    public void serverTick(){
+        if (this.level == null){
+            return;
+        }
+        tickCount += 1;
+        if (this.tickCount % 5 != 0){
+            return;
+        }
+        var stack = getItem(0);
+        if (stack.is(RECHARGE_PEDESTAL_CANNOT_APPLY)){
+            return;
+        }
+        if (stack.getItem() instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainerItem) {
+            var aspRequiring = centiVisContainerItem.getAspectsWithRoomRemaining(stack);
+            if (aspRequiring.isEmpty()){
+                return;
+            }
+
+            var lookup = ALL_NODES.get(level);
+            if (lookup != null) {
+                var selfPos = getBlockPos();
+
+                boolean nodeHarmful = centiVisContainerItem instanceof IWandComponentsOwnerItem componentsOwnerItem &&
+                        componentsOwnerItem.getWandComponents(stack).stream().allMatch(componentStack -> componentStack.getItem() instanceof INodeHarmfulComponent);
+                int minAmountToKeep = nodeHarmful?0:1;
+
+                IWandRechargePedestalUpgradeBlockEntity upgradeBE;
+                if (level.getBlockEntity(selfPos.above()) instanceof IWandRechargePedestalUpgradeBlockEntity upgrader) {
+                    upgradeBE = upgrader;
+                } else {
+                    upgradeBE = null;
+                }
+                int maxDrainAmount;
+                if (upgradeBE != null) {
+                    maxDrainAmount = 1 + upgradeBE.additionalMaxDrainAmountOnce();
+                }else {
+                    maxDrainAmount = 1;
+                }
+                boolean drained = lookup.forItemsNearPosWithBreakWithRange(
+                        selfPos,
+                        nodeBE -> {//"Oh the nodes we've cached"--here we go again
+                            var nodeBEPos = nodeBE.getBlockPos();
+                            if (
+                                    Math.abs(nodeBEPos.getX() - selfPos.getX()) > 8
+                                            || Math.abs(nodeBEPos.getY() - selfPos.getY()) > 8
+                                            ||  Math.abs(nodeBEPos.getZ() - selfPos.getZ()) > 8
+                            ){
+                                return false;
+                            }
+                            AspectList<Aspect> aspConsumed = new LinkedHashAspectList<>();
+                            var nodeBEAspects = nodeBE.getAspects();
+                            boolean consumedAspect = nodeBEAspects.forEachWithBreak(
+                                    (asp,amount) -> {
+                                        int canUseAmount = amount - minAmountToKeep;
+                                        if (aspRequiring.containsKey(asp)){
+                                            int remainingAmount = addAspectForContainer(asp,Math.min(canUseAmount,maxDrainAmount),stack,centiVisContainerItem,aspRequiring);
+                                            if (remainingAmount != 0){
+                                                drainedAspect(asp,canUseAmount-remainingAmount);
+                                                return true;
+                                            }
+                                        }
+
+                                        if (upgradeBE != null){
+                                            int consumed = upgradeBE.onDrainingMeetAspect(asp,canUseAmount,stack,centiVisContainerItem,aspRequiring);
+                                            if (consumed != 0){
+                                                drainedAspect(asp,consumed);
+                                                aspConsumed.addAll(asp,consumed);
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    }
+                            );
+                            aspConsumed.forEach(nodeBEAspects::reduceAndRemoveIfNotPositive);
+
+                            return consumedAspect;
+                        },
+                        8
+                );
+                if (drained){
+                    onDraining();
+                }else {
+                    onNotDraining();
+                }
+            }
+        }
+    }
+
+    //mixin point (e.g.for client)
+    protected void drainedAspect(Aspect aspect,int drained){
+        //TODO:Client Side rendering field
+        //public boolean draining = false;
+        //   public int drainX = 0;
+        //   public int drainY = 0;
+        //   public int drainZ = 0;
+        //   public int drainColor = 0;
+    }
+    protected void onDraining(){
+
+    }
+    protected void onNotDraining(){
+
+    }
+}

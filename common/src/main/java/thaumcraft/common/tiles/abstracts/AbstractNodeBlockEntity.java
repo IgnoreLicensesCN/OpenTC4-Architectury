@@ -1,6 +1,8 @@
 package thaumcraft.common.tiles.abstracts;
 
+import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.BlockPosWithDim;
+import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -49,12 +51,16 @@ import static thaumcraft.common.researches.ThaumcraftResearches.*;
 //i think it would be suitable to abstract this since we have 3 types.
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
-        INodeBlockEntity
-        , IWandInteractableBlockOrBlockEntity {
+        INodeBlockEntity,
+        IWandInteractableBlockOrBlockEntity,
+        ICubeChunkBasedWeakLookupOwner<AbstractNodeBlockEntity>
+{
+    public static final Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> ALL_NODES = new MapMaker().weakKeys().makeMap();
+
     long lastActiveMillis = 0L;
     protected AspectList<Aspect> aspects = new LinkedHashAspectList<>();
     protected AspectList<Aspect> aspectsBase = new LinkedHashAspectList<>();
-    public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
+    public static Map<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
     private @NotNull NodeType nodeType;
     private @NotNull NodeModifier nodeModifier;
     int tickCount;
@@ -118,8 +124,15 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         if (nodeIdToLocations != null) {
             nodeIdToLocations.remove(this.id);
         }
+        unregisterFromWeakLookup(this.level);
 
         super.setRemoved();
+    }
+
+    @Override
+    public void setLevel(Level level) {
+        this.registerToCubeLookup(level,this.level);
+        super.setLevel(level);
     }
 
     public static void serverTick(AbstractNodeBlockEntity thiz) {
@@ -611,7 +624,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
 
-    //TODO:If you are silverTree log or something contains a node,override it
+    //If you are silverTree log or something contains a node,override it
     public abstract void removeNode();
 
 
@@ -649,5 +662,15 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
     public @NotNull BlockPos getNodeLockPos() {
         return this.getBlockPos().below();
+    }
+
+    @Override
+    public @NotNull AbstractNodeBlockEntity getStoreItemForLookup() {
+        return this;
+    }
+
+    @Override
+    public @Nullable Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> getSelfLookupMap() {
+        return ALL_NODES;
     }
 }

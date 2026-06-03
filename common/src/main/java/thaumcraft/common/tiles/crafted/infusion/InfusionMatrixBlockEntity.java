@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
+import thaumcraft.api.aspects.IAspectInBlockEntity;
 import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
@@ -57,24 +58,25 @@ import java.util.function.Consumer;
 import static com.linearity.opentc4.Consts.InfusionMatrixBlockEntityTagAccessors.*;
 import static thaumcraft.api.crafting.InfusionRecipe.*;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionMatrixBlock.LIT;
-import static thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider.INFUSION_COMPONENT_PROVIDERS;
+import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity.INFUSION_COMPONENT_PROVIDERS;
 
 public class InfusionMatrixBlockEntity
         extends TileThaumcraft
         implements
         IRemoteAspectDrainerBlockEntity<Aspect>,
         IAspectDisplayBlockEntity<Aspect>,
-        IWandInteractableBlockOrBlockEntity
+        IWandInteractableBlockOrBlockEntity,
+        IAspectInBlockEntity<Aspect>
 {
     //should serialize
-    private final AspectList<Aspect> aspectsRequiring = new LinkedHashAspectList<>();
-    private final List<ItemStack> itemStacksRequiring = new LinkedList<>();
-    private @NotNull("not empty when crafting") ItemStack infusionCenterStack = ItemStack.EMPTY;
-    private @NotNull("not empty when crafting") ItemStack infusionResult = ItemStack.EMPTY;
-    private @Nullable("only when not crafting") String playerLaunchedCrafting = null;
-    private @Nullable("only when not crafting") InfusionRecipeResourceLocation craftingRecipeID = null;
-    private int instability = 0;
-    private boolean crafting = false;
+    protected final AspectList<Aspect> aspectsRequiring = new LinkedHashAspectList<>();
+    protected final List<ItemStack> itemStacksRequiring = new LinkedList<>();
+    protected @NotNull("not empty when crafting") ItemStack infusionCenterStack = ItemStack.EMPTY;
+    protected @NotNull("not empty when crafting") ItemStack infusionResult = ItemStack.EMPTY;
+    protected @Nullable("only when not crafting") String playerLaunchedCrafting = null;
+    protected @Nullable("only when not crafting") InfusionRecipeResourceLocation craftingRecipeID = null;
+    protected int instability = 0;
+    protected boolean crafting = false;
 
     @Override
     public void readCustomNBT(CompoundTag tag) {
@@ -761,5 +763,22 @@ public class InfusionMatrixBlockEntity
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay() {
         return aspectsRequiringView;
+    }
+
+    @Override
+    public boolean doesContainerAccept(Aspect aspect) {
+        return aspectsRequiring.containsKey(aspect);
+    }
+
+    @Override
+    public int addIntoContainer(Aspect aspect, int amount) {
+        int requiringAmount = aspectsRequiring.get(aspect);
+        if (requiringAmount > 0) {
+            int canDrainAmount = Math.min(amount, requiringAmount);
+            aspectsRequiring.reduceAndRemoveIfNotPositive(aspect,canDrainAmount);
+            markDirtyAndUpdateSelf();
+            return amount-canDrainAmount;
+        }
+        return amount;
     }
 }

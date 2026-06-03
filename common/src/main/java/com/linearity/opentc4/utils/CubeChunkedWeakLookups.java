@@ -85,9 +85,9 @@ public class CubeChunkedWeakLookups<StoreItem> {
         forItemsNearPosWithRange(pos, action, chunkSize);
     }
 
-    public void forItemsNearPosWithRange(Vec3i pos, Consumer<StoreItem> action, int rangeManhattanOfOneDim) {
-        var posMin = pos.offset(-rangeManhattanOfOneDim, -rangeManhattanOfOneDim, -rangeManhattanOfOneDim);
-        var posMax = pos.offset(rangeManhattanOfOneDim, rangeManhattanOfOneDim, rangeManhattanOfOneDim);
+    public void forItemsNearPosWithRange(Vec3i cubeCenterPos, Consumer<StoreItem> action, int halfLengthOfCube) {
+        var posMin = cubeCenterPos.offset(-halfLengthOfCube, -halfLengthOfCube, -halfLengthOfCube);
+        var posMax = cubeCenterPos.offset(halfLengthOfCube, halfLengthOfCube, halfLengthOfCube);
         for (int yCurrent = compressIntIntoChunk(posMin.getY()); yCurrent <= compressIntIntoChunk(posMax.getY()); yCurrent += 1) {
             for (int xCurrent = compressIntIntoChunk(posMin.getX()); xCurrent <= compressIntIntoChunk(posMax.getX()); xCurrent += 1) {
                 for (int zCurrent = compressIntIntoChunk(posMin.getZ()); zCurrent <= compressIntIntoChunk(posMax.getZ()); zCurrent += 1) {
@@ -107,14 +107,14 @@ public class CubeChunkedWeakLookups<StoreItem> {
 
     //true if broken(function returned true,you can consider this as calling break in for loop)
     @SuppressWarnings("UnusedReturnValue")
-    public boolean forItemsNearPosWithBreak(Vec3i pos, Object2BooleanFunction<StoreItem> action) {
-        return forItemsNearPosWithBreakWithRange(pos, action, chunkSize);
+    public boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Object2BooleanFunction<StoreItem> action) {
+        return forItemsNearPosWithBreakWithRange(cubeCenterPos, action, chunkSize);
     }
 
-    public boolean forItemsNearPosWithBreakWithRange(Vec3i pos, Object2BooleanFunction<StoreItem> action, int rangeManhattan) {
+    public boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Object2BooleanFunction<StoreItem> action, int rangeManhattan) {
 
-        var posMin = pos.offset(-rangeManhattan, -rangeManhattan, -rangeManhattan);
-        var posMax = pos.offset(rangeManhattan, rangeManhattan, rangeManhattan);
+        var posMin = cubeCenterPos.offset(-rangeManhattan, -rangeManhattan, -rangeManhattan);
+        var posMax = cubeCenterPos.offset(rangeManhattan, rangeManhattan, rangeManhattan);
 
         for (int yCurrent = compressIntIntoChunk(posMin.getY()); yCurrent <= compressIntIntoChunk(posMax.getY()); yCurrent += 1) {
             for (int xCurrent = compressIntIntoChunk(posMin.getX()); xCurrent <= compressIntIntoChunk(posMax.getX()); xCurrent += 1) {

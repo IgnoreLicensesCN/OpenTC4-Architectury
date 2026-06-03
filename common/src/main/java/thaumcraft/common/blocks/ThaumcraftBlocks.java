@@ -234,6 +234,7 @@ public class ThaumcraftBlocks {
     public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
     public static final InfusionMatrixBlock INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
+    public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL =  Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -965,6 +966,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "infusion_matrix",
                         InfusionMatrixBlock::new
+                );
+        public static final RegistrySupplier<WandRechargePedestalBlock> SUPPLIER_WAND_RECHARGE_PEDESTAL =
+                BLOCKS.register(
+                        "wand_recharge_pedestal",
+                        WandRechargePedestalBlock::new
                 );
         static {
             BLOCKS.register();

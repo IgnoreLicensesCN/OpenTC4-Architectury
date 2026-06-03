@@ -80,7 +80,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
         }
     }
 
-    public int getOrDefault(Asp aspect, int defaultValue) {
+    public int getOrDefault(Aspect aspect, int defaultValue) {
         return aspects.getOrDefault(aspect, defaultValue);
     }
 
@@ -156,7 +156,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
      * @param key aspect as key
      * @return the amount associated with the given aspect in this collection
      */
-    public int get(Asp key) {
+    public int get(Aspect key) {
         return aspects.getInt(key);
     }
 
@@ -196,7 +196,6 @@ public class LinkedHashAspectList<Asp extends Aspect>
             this.aspects.put(key, reducedResult);
             this.visSize -= amount;
         }
-
     }
 
     /**
@@ -455,7 +454,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
     }
 
 
-    public boolean containsKey(Asp aspect) {
+    public boolean containsKey(Aspect aspect) {
         return this.aspects.containsKey(aspect);
     }
 

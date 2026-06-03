@@ -33,10 +33,10 @@ import java.util.Random;
 
 //"tile.blockStoneDevice.0.name": "炼金炉",--done
 //    "tile.blockStoneDevice.1.name": "奥术基座",--done
-//    "tile.blockStoneDevice.2.name": "符文矩阵",
+//    "tile.blockStoneDevice.2.name": "符文矩阵",--done
 //    "tile.blockStoneDevice.3.name": "注魔桩",--done
 //    "tile.blockStoneDevice.4.name": "注魔桩",--done
-//    "tile.blockStoneDevice.5.name": "法杖充能基座",
+//    "tile.blockStoneDevice.5.name": "法杖充能基座",--done
 //    "tile.blockStoneDevice.6.name": "注魔桩",--done
 //    "tile.blockStoneDevice.7.name": "注魔桩",--done
 //    "tile.blockStoneDevice.8.name": "复合充能核心",

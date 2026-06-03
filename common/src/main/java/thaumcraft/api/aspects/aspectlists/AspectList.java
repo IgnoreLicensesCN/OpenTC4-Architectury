@@ -28,7 +28,14 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 	@Deprecated(forRemoval = true,since = "implements IAspectDisplayItem")
 	void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions);
 
-	int getOrDefault(Asp aspect, int defaultValue);
+	int getOrDefault(Aspect aspect, int defaultValue);
+	/**
+	 * @param aspect aspect as key
+	 * @return the amount associated with the given aspect in this collection
+	 */
+	default int get(Aspect aspect){
+		return getOrDefault(aspect,0);
+	}
 	int put(Asp aspect, int amount);
 	//for unmodifiable list(not view,something like record or whatever)it may avoid create new instance
 	AspectList<Asp> copy();
@@ -36,13 +43,6 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 	@UnmodifiableView//at least user shouldn't modify it
 	Set<Asp> keySet();
 
-	/**
-	 * @param aspect aspect as key
-	 * @return the amount associated with the given aspect in this collection
-	 */
-	default int get(Asp aspect){
-		return getOrDefault(aspect,0);
-	}
 
 	/**
 	 * @return the amount of different aspects in this collection
@@ -187,5 +187,5 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
         });
 		return currentAsp.get();
 	}
-	boolean containsKey(Asp aspect);
+	boolean containsKey(Aspect aspect);
 }

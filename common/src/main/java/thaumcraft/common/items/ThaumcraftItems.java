@@ -265,6 +265,7 @@ public class ThaumcraftItems {
     public static final MirrorBlockItem ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
     public static final BlockItem ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final BlockItem INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
+    public static final BlockItem WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
 
 
     //===========================================================================================
@@ -996,6 +997,10 @@ public class ThaumcraftItems {
                 "infusion_matrix",
                 () -> new BlockItem(ThaumcraftBlocks.INFUSION_MATRIX, new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_WAND_RECHARGE_PEDESTAL = ITEMS.register(
+                "wand_recharge_pedestal",
+                () -> new BlockItem(ThaumcraftBlocks.WAND_RECHARGE_PEDESTAL, new Item.Properties())
+        );
 
 
 
@@ -1038,6 +1043,9 @@ public class ThaumcraftItems {
                 Registries.ITEM, new ResourceLocation("c:black_dyes"));
         public static final TagKey<Item> REPAIR_ENCHANTMENT_CAN_APPLY = TagKey.create(
                 Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID,"repair_enchantment_can_apply")
+        );
+        public static final TagKey<Item> RECHARGE_PEDESTAL_CANNOT_APPLY = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID,"recharge_pedestal_cannot_apply")
         );
     }
 

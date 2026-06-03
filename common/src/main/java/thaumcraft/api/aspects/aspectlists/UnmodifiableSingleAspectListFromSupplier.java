@@ -59,7 +59,7 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
     }
 
     @Override
-    public int getOrDefault(Asp aspect, int defaultValue) {
+    public int getOrDefault(Aspect aspect, int defaultValue) {
         if (getOnlyAspect() != aspect){
             return defaultValue;
         }
@@ -86,7 +86,7 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
     }
 
     @Override
-    public int get(Asp aspect) {
+    public int get(Aspect aspect) {
         return getOrDefault(aspect,0);
     }
 
@@ -176,7 +176,7 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
     }
 
     @Override
-    public boolean containsKey(Asp aspect) {
+    public boolean containsKey(Aspect aspect) {
         return aspect == getOnlyAspect();
     }
 

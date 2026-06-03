@@ -30,7 +30,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public boolean containsKey(A aspect) {
+    public boolean containsKey(Aspect aspect) {
         return viewingList.containsKey(aspect);
     }
 
@@ -70,7 +70,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public int get(A key) {
+    public int get(Aspect key) {
         return this.viewingList.get(key);
     }
 
@@ -110,7 +110,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public int getOrDefault(A aspect, int defaultValue) {
+    public int getOrDefault(Aspect aspect, int defaultValue) {
         return this.viewingList.getOrDefault(aspect, defaultValue);
     }
 

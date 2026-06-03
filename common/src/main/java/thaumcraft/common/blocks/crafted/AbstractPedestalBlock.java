@@ -47,7 +47,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
                     playPickupSound(level,blockPos);
                 } else if (player != null) {
                     var usingStack = player.getItemInHand(interactionHand);
-                    if (!usingStack.isEmpty()){
+                    if (!usingStack.isEmpty() && pedestal.canPlaceItem(0,usingStack)){
                         var stackToPut = usingStack.split(1);
                         pedestal.setItem(0, stackToPut);
                     }

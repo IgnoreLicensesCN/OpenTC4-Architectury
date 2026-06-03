@@ -149,7 +149,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public int getOrDefault(A aspect, int defaultValue) {
+    public int getOrDefault(Aspect aspect, int defaultValue) {
         return internalList.getOrDefault(aspect,defaultValue);
     }
 
@@ -189,7 +189,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public int get(A key) {
+    public int get(Aspect key) {
         return internalList.get(key);
     }
 
@@ -229,7 +229,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public boolean containsKey(A aspect) {
+    public boolean containsKey(Aspect aspect) {
         return internalList.containsKey(aspect);
     }
 

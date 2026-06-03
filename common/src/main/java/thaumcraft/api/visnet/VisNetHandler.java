@@ -19,9 +19,9 @@ import static thaumcraft.common.lib.utils.Utils.generateVisEffect;
 public class VisNetHandler {
     public static final Collection<
             Map<
-                    Level,
+                    VisNetNodeTypeResourceLocation,
                     Map<
-                            VisNetNodeTypeResourceLocation,
+                            Level,
                             CubeChunkedWeakLookups<VisNetNodeBlockEntity>
                             >
                     >
@@ -43,10 +43,11 @@ public class VisNetHandler {
      */
     public static int drainVis(Level world, BlockPos pos, Aspect aspect, int amount) {
         var drainedAmount = new AtomicInteger(0);
-        for (var map : visNetNodeLookups) {
-            var lookupMap = map.get(world);
-            if (lookupMap != null) {
-                for (var lookup : lookupMap.values()) {
+        for (var typeAndMap : visNetNodeLookups) {
+            for (var entry : typeAndMap.entrySet()) {
+                var map = entry.getValue();
+                var lookup = map.get(world);
+                if (lookup != null) {
                     lookup.forItemsNearPosWithBreak(
                             pos, netNode -> {
 

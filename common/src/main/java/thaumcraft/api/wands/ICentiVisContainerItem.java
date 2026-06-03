@@ -1,5 +1,6 @@
 package thaumcraft.api.wands;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -100,6 +101,8 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         storeCentiVisOwning(stack, visOwning);
         return remainingVis;
     }
+    @Modifiable
+    @NotNull
     default CentiVisList<Asp> getAspectsWithRoomRemaining(ItemStack wandstack) {
         var allVis = getAllCentiVisOwning(wandstack);
         var capacity = getAllCentiVisCapacity(wandstack);
