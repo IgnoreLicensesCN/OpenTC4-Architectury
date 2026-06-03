@@ -1,5 +1,6 @@
 package thaumcraft.common.items.misc.jars;
 
+import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -15,7 +16,6 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.NodeInfo;
 
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import static com.linearity.opentc4.Consts.NodeJarTagAccessors.NODE_INFO;
 
@@ -27,7 +27,7 @@ public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<As
         this(ThaumcraftBlocks.NODE_JAR, new Properties().stacksTo(1));
     }
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
-    public static final Map<ItemStack,NodeInfo> stackToNodeInfoForDisplay = new WeakHashMap<>();
+    public static final Map<ItemStack,NodeInfo> stackToNodeInfoForDisplay = new MapMaker().weakKeys().makeMap();
     public NodeInfo getNodeInfo(ItemStack stack) {
         if (stack.isEmpty()) {
             return NodeInfo.EMPTY;

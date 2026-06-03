@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixinaccessors;
+package com.linearity.opentc4.mixinaccessors.clientbe;
 
 import thaumcraft.common.tiles.crafted.essentiabe.EssentiaReservoirBlockEntity;
 

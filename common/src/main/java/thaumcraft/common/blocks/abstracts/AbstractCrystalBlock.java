@@ -18,11 +18,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.ThaumcraftSounds;
 
-public abstract class AbstractCrystalBlock extends SuppressedWarningBlock implements IInfusionStabiliser  {
+public abstract class AbstractCrystalBlock extends SuppressedWarningBlock implements IInfusionStabilizerBlock  {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final @RGBColor int[] CRYSTAL_COLORS = {
             0xffffff,

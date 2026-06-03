@@ -1148,7 +1148,7 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(fb);
     }
 
-    public static void drawInfusionParticles1(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Item id, int md) {
+    public static void drawInfusionParticles1(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Item id) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -1175,7 +1175,7 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(fb);
     }
 
-    public static void drawInfusionParticles2(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Block id, int md) {
+    public static void drawInfusionParticles2(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Block id) {
         if (!checkPlatformClient()) {
             return;
         }

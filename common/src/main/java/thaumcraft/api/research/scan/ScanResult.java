@@ -30,16 +30,13 @@ public class ScanResult {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ScanResult) {
-			ScanResult sr = (ScanResult) obj;
-			if (type != sr.type)
+		if (obj instanceof ScanResult sr) {
+            if (type != sr.type)
 				return false;
 			if (type == 1
-					&& (item != sr.item))
+					&& (!Objects.equals(item, sr.item)))
 				return false;
 			if (type == 2) {
-				// 旧版用 entity.getEntityId()
-				// 新版改为用 ResourceKey
 				Level level = sr.entity.level();
 				ResourceKey<EntityType<?>> key1 = level.registryAccess()
 						.registryOrThrow(Registries.ENTITY_TYPE)

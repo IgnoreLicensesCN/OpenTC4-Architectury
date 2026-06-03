@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinaccessors.AbstractFurnaceBlockEntityAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.AbstractFurnaceBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;

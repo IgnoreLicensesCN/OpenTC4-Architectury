@@ -2,7 +2,7 @@ package thaumcraft.common.tiles.crafted;
 
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.mixinaccessors.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

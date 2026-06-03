@@ -71,8 +71,7 @@ public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputS
     }
 
     /**
-     * Used to check if a recipe matches current crafting inventory
-     * @param player 
+     * Used to check if a recipe matches current crafting inventory(and research condition meets and more)
      */
     boolean matches(IArcaneWorkbenchContainer var1, Level world, Player player);
 

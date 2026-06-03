@@ -10,6 +10,8 @@ import thaumcraft.api.effects.PreventMilkRemoveEffect;
 
 import java.util.List;
 
+import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
+
 public class InfectiousVisExhaustEffect extends VisExhaustEffect implements PreventMilkRemoveEffect {
     public InfectiousVisExhaustEffect() {
         super(MobEffectCategory.HARMFUL,0x665577);
@@ -19,7 +21,7 @@ public class InfectiousVisExhaustEffect extends VisExhaustEffect implements Prev
     public void applyEffectTick(LivingEntity target, int amplifier) {
         var box = target.getBoundingBox().inflate(4.f);
         List<LivingEntity> targets = target.level().getEntities(
-                EntityTypeTest.forClass(LivingEntity.class),
+                LIVING_TEST,
                 box,livingEntity -> !livingEntity.hasEffect(this));
         for(LivingEntity e : targets) {
             if (amplifier > 0) {

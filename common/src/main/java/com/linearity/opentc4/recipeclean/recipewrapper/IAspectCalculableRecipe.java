@@ -12,19 +12,31 @@ import java.util.function.Function;
 
 public interface IAspectCalculableRecipe {
     //true if this recipe supports aspect calculation
-    boolean supportsAspectCalculation();
+    default boolean supportsAspectCalculation(){
+        return false;
+    };
 
     //note that we just want count and item in stack not CompoundTag
     @NotNull
-    List<List<ItemStack>> getAspectCalculationInputs();
+    default List<List<ItemStack>> getAspectCalculationInputs(){
+        throw new RuntimeException("check supportsAspectCalculation() first!");
+    }
     @NotNull
-    ItemStack getAspectCalculationOutput();
+    default ItemStack getAspectCalculationOutput(){
+        throw new RuntimeException("check supportsAspectCalculation() first!");
+    }
     @NotNull
-    List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining();
+    default List<List<Function<ItemStack,ItemStack>>> getAspectCalculationRemaining(){
+        throw new RuntimeException("check supportsAspectCalculation() first!");
+    }
 
     @NotNull
-    AspectList<Aspect> getAspectCalculationAspectsList();//of course only for input(no aspects output for now)
+    default AspectList<Aspect> getAspectCalculationAspectsList(){
+        throw new RuntimeException("check supportsAspectCalculation() first!");
+    }//of course only for input(no aspects output for now)
     @NotNull
-    CentiVisList<Aspect> getAspectCalculationCentiVisList();//of course only for input(no aspects output for now)
+    default CentiVisList<Aspect> getAspectCalculationCentiVisList(){
+        throw new RuntimeException("check supportsAspectCalculation() first!");
+    }//of course only for input(no aspects output for now)
 
 }

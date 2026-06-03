@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
  * Blocks that implement this interface act as infusion crafting stabilisers like candles and skulls 
  *
  */
+@Deprecated(forRemoval = true,since = "IInfusionStabilizerBlock")
 public interface IInfusionStabiliser {
 
 	boolean canStabaliseInfusion(Level world, BlockPos pos);

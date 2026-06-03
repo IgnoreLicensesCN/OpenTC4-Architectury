@@ -87,6 +87,7 @@ block_with_item_names = [
     ['tile.blockStoneDevice.4.name','infusion_pillar'],
     ['tile.blockStoneDevice.6.name','infusion_pillar'],
     ['tile.blockStoneDevice.7.name','infusion_pillar'],
+    ['tile.blockStoneDevice.2.name','infusion_matrix'],
 ]
 
 force_add_keys = {

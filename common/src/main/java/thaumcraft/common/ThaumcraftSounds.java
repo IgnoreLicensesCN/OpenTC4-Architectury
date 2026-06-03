@@ -32,6 +32,9 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_SQUEEK = new ResourceLocation(Thaumcraft.MOD_ID,"squeek");
         public static final ResourceLocation RES_URN_BREAK = new ResourceLocation(Thaumcraft.MOD_ID,"urnbreak");
         public static final ResourceLocation RES_EVIL_PORTAL = new ResourceLocation(Thaumcraft.MOD_ID,"evilportal");
+        public static final ResourceLocation RES_CRAFT_START = new ResourceLocation(Thaumcraft.MOD_ID,"craftstart");
+        public static final ResourceLocation RES_INFUSER_START = new ResourceLocation(Thaumcraft.MOD_ID,"infuserstart");
+        public static final ResourceLocation RES_INFUSER = new ResourceLocation(Thaumcraft.MOD_ID,"infuser");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -61,4 +64,7 @@ public class ThaumcraftSounds {
     public static final SoundEvent SQUEEK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SQUEEK);
     public static final SoundEvent URN_BREAK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_URN_BREAK);
     public static final SoundEvent EVIL_PORTAL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EVIL_PORTAL);
+    public static final SoundEvent CRAFT_START =  SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAFT_START);
+    public static final SoundEvent INFUSER_START = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER_START);
+    public static final SoundEvent INFUSER = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER);
 }

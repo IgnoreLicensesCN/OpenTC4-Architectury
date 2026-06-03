@@ -18,6 +18,8 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.List;
 
+import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
+
 public class DeathGazeEffect extends MobEffect implements PreventMilkRemoveEffect {
 
     public static final int DEATH_GAZE_EFFECT_COLOR = 0x664433;
@@ -40,7 +42,7 @@ public class DeathGazeEffect extends MobEffect implements PreventMilkRemoveEffec
                 var box = livingWatcher.getBoundingBox().inflate(range);
 
                 List<LivingEntity> list = livingWatcher.level().getEntities(
-                        EntityTypeTest.forClass(LivingEntity.class),
+                        LIVING_TEST,
                         box,
                         entity -> {
                             if (entity == null){

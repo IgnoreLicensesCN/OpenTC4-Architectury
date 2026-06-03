@@ -28,7 +28,7 @@ import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
 
-public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
+public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements EntityBlock {
     public VisNetChargeRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -47,23 +47,6 @@ public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IW
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(COLOR);
-    }
-    @Override
-    public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        var level = useOnContext.getLevel();
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        var state = level.getBlockState(useOnContext.getClickedPos());
-        state = state.setValue(COLOR, (state.getValue(COLOR) + 1)%COLOR_TYPES);
-        level.setBlockAndUpdate(useOnContext.getClickedPos(), state);
-        if (level.getBlockEntity(useOnContext.getClickedPos()) instanceof VisNetRelayBlockEntity relay) {
-            relay.removeThisNode();
-            relay.shouldRefreshVisNetNode =true;
-            relay.markDirtyAndUpdateSelf();
-            level.playSound(null,relay.getBlockPos(), ThaumcraftSounds.CRYSTAL, SoundSource.BLOCKS, 0.2F, 1.0F);
-        }
-        return InteractionResult.SUCCESS;
     }
     public static final VoxelShape SHAPE = Block.box(
             5, 8, 5,

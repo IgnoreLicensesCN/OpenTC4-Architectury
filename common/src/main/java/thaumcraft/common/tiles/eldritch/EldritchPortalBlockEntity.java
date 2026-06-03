@@ -11,6 +11,7 @@ import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.utils.EntityTypeTests.SERVER_PLAYER_TEST;
 import static thaumcraft.common.researches.ThaumcraftResearches.ENTER_OUTER;
 
 public class EldritchPortalBlockEntity extends TileThaumcraft {
@@ -35,7 +36,7 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
             return;
         }
         var pickedPlayerList = this.level.getEntities(
-                EntityTypeTest.forClass(ServerPlayer.class),
+                SERVER_PLAYER_TEST,
                 new AABB(getBlockPos()).inflate(0.5,1,0.5),
                 e -> true
         );

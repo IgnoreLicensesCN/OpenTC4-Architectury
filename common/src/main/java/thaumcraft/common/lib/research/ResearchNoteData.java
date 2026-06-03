@@ -235,7 +235,7 @@ public class ResearchNoteData {
         ResearchNoteData data = new ResearchNoteData();
         data.key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(tag);
         data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readIntFromCompoundTag(tag);
-        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readByteFromCompoundTag(tag);
+        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readBooleanFromCompoundTag(tag);
         data.copiedCount = RESEARCH_NOTE_COPIES_ACCESSOR.readIntFromCompoundTag(tag);
         data.hexGrid = RESEARCH_NOTE_HEXGRID_ACCESSOR.readFromCompoundTag(tag);
         stack.setTag(tag);

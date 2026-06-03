@@ -69,6 +69,7 @@ public abstract class TileThaumcraft extends BlockEntity {
 //        this.readCustomNBT(pkt.func_148857_g());
 //    }
 
+    //TODO:Light update packet for each situation
     public void markDirtyAndUpdateSelf(){
         this.setChanged();
         if (this.level != null) {

@@ -23,6 +23,7 @@ import java.util.Map;
 //W:state west
 //E:state ease
 //M:infusion matrix
+//(right handed up rotate 90)
 //TODO:Model
 public class InfusionPillarBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -57,10 +58,10 @@ public class InfusionPillarBlock extends SuppressedWarningBlock {
     }
 
     public static final Map<Direction,BlockPos> OFFSET_TO_MATRIX = Map.of(
-            Direction.NORTH,BlockPos.ZERO.relative(Direction.NORTH.getOpposite()).relative(Direction.WEST),
-            Direction.WEST,BlockPos.ZERO.relative(Direction.WEST.getOpposite()).relative(Direction.SOUTH),
-            Direction.SOUTH,BlockPos.ZERO.relative(Direction.SOUTH.getOpposite()).relative(Direction.EAST),
-            Direction.EAST,BlockPos.ZERO.relative(Direction.EAST.getOpposite()).relative(Direction.NORTH)
+            Direction.NORTH,BlockPos.ZERO.relative(Direction.NORTH.getOpposite()).relative(Direction.NORTH.getClockWise().getOpposite()),
+            Direction.WEST,BlockPos.ZERO.relative(Direction.WEST.getOpposite()).relative(Direction.SOUTH.getClockWise().getOpposite()),
+            Direction.SOUTH,BlockPos.ZERO.relative(Direction.SOUTH.getOpposite()).relative(Direction.EAST.getClockWise().getOpposite()),
+            Direction.EAST,BlockPos.ZERO.relative(Direction.EAST.getOpposite()).relative(Direction.NORTH.getClockWise().getOpposite())
     );
     public void tickInfusionMatrix(LevelAccessor level,BlockState selfState,BlockPos selfPos){
         var matrixPos = OFFSET_TO_MATRIX.get(selfState.getValue(FACING)).offset(selfPos).above();
@@ -83,5 +84,15 @@ public class InfusionPillarBlock extends SuppressedWarningBlock {
             }
         }
         return super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);
+    }
+
+    @Override
+    public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
+        return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
+    }
+
+    @Override
+    public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
+        return blockState.setValue(FACING, rotation.rotate(blockState.getValue(FACING)));
     }
 }

@@ -22,6 +22,7 @@ import thaumcraft.common.blocks.crafted.essentia.pipes.*;
 import thaumcraft.common.blocks.crafted.fromtable.*;
 import thaumcraft.common.blocks.crafted.essentia.jars.*;
 import thaumcraft.common.blocks.crafted.infusion.ArcanePedestalBlock;
+import thaumcraft.common.blocks.crafted.infusion.InfusionMatrixBlock;
 import thaumcraft.common.blocks.crafted.infusion.InfusionPillarBlock;
 import thaumcraft.common.blocks.crafted.jars.*;
 import thaumcraft.common.blocks.crafted.lamps.*;
@@ -232,6 +233,7 @@ public class ThaumcraftBlocks {
     public static final EssentiaMirrorBlock ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
     public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
+    public static final InfusionMatrixBlock INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -616,7 +618,7 @@ public class ThaumcraftBlocks {
                 RunedStoneBlock::new
         );
 
-        //        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+//        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
 //                "block_of_flesh",
 //                FleshBlock::new
 //        );//shouldn't be this.This is crafted and cant spread taint in latest 1.7.10 TC4
@@ -958,6 +960,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "infusion_pillar",
                         InfusionPillarBlock::new
+                );
+        public static final RegistrySupplier<InfusionMatrixBlock> SUPPLIER_INFUSION_MATRIX =
+                BLOCKS.register(
+                        "infusion_matrix",
+                        InfusionMatrixBlock::new
                 );
         static {
             BLOCKS.register();

@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.clientbe;
 
-import com.linearity.opentc4.mixinaccessors.BrainJarBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.BrainJarBlockEntityClientAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;

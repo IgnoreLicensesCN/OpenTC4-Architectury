@@ -2,29 +2,38 @@ package thaumcraft.common.tiles.crafted.visnet;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
-import com.linearity.opentc4.mixinaccessors.VisNetRelayBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.VisNetRelayBlockEntityClientAccessor;
 import com.linearity.opentc4.simpleutils.bauble.BaubleUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.IVisNetNodeDetectableItem;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
+import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 
+import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
+import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
+
 //TODO:BER(just render model),TileMagicWorkbenchCharger(and interface to charge wand inside.)
-public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
+public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity implements IWandInteractableBlockOrBlockEntity {
     public VisNetRelayBlockEntity(BlockEntityType<? extends VisNetRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -261,4 +270,19 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity {
         return getBlockState().getValue(VisNetRelayBlock.COLOR);
     }
 
+    @Override
+    public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
+        var level = useOnContext.getLevel();
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        var state = level.getBlockState(useOnContext.getClickedPos());
+        state = state.setValue(COLOR, (state.getValue(COLOR) + 1) % COLOR_TYPES);
+        setBlockStateAndUpdate(state);
+        level.setBlockAndUpdate(useOnContext.getClickedPos(), state);
+        this.removeParent();
+        this.markDirtyAndUpdateSelf();
+        level.playSound(null,this.getBlockPos(), ThaumcraftSounds.CRYSTAL, SoundSource.BLOCKS, 0.2F, 1.0F);
+        return InteractionResult.SUCCESS;
+    }
 }

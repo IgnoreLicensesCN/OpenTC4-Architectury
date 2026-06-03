@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.linearity.opentc4.utils.EntityTypeTests.ITEM_ENTITY_TEST;
+import static com.linearity.opentc4.utils.EntityTypeTests.PLAYER_TEST;
+
 public class HungryChestBlockEntity extends ChestBlockEntity {
     private NonNullList<ItemStack> items;
     private final HungryContainerOpenersCounter openersCounter;
@@ -221,7 +224,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
             int j = blockPos.getY();
             int k = blockPos.getZ();
             AABB aABB = new AABB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F);
-            return level.getEntities(EntityTypeTest.forClass(Player.class), aABB, this::isOwnContainer).size();
+            return level.getEntities(PLAYER_TEST, aABB, this::isOwnContainer).size();
         }
 
         public void recheckOpeners(Level level, BlockPos blockPos, BlockState blockState) {
@@ -303,7 +306,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
 
         List<ItemEntity> list = new ArrayList<>(1);
         this.level.getEntities(
-                EntityTypeTest.forClass(ItemEntity.class),
+                ITEM_ENTITY_TEST,
                 new AABB(above),
                 e -> true,
                 list,

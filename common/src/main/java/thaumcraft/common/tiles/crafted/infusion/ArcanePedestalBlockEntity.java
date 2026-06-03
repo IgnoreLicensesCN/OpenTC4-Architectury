@@ -1,19 +1,19 @@
 package thaumcraft.common.tiles.crafted.infusion;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
-import thaumcraft.common.tiles.abstracts.IInfusionItemStackProvider;
+import thaumcraft.common.tiles.abstracts.IInfusionCenterItemStackProvider;
+import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
+import thaumcraft.common.tiles.crafted.AbstractPedestalBlockEntity;
 
-import static com.linearity.opentc4.Consts.ArcanePedestalBlockEntityTagAccessors.STORED_ITEM;
-
-public class ArcanePedestalBlockEntity extends TileThaumcraft implements IDefaultWorldlyContainer, IInfusionItemStackProvider {
+public class ArcanePedestalBlockEntity
+        extends AbstractPedestalBlockEntity
+        implements IInfusionComponentStackProvider,
+        IInfusionCenterItemStackProvider
+{
 
     public ArcanePedestalBlockEntity(BlockEntityType<? extends ArcanePedestalBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -22,30 +22,15 @@ public class ArcanePedestalBlockEntity extends TileThaumcraft implements IDefaul
         this(ThaumcraftBlockEntities.ARCANE_PEDESTAL,blockPos,blockState);
     }
 
-    public static final int[] SLOTS = {0};
-
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
-
     @Override
-    public void readCustomNBT(CompoundTag compoundTag) {
-        super.readCustomNBT(compoundTag);
-        inventory.clear();
-        inventory.set(0, STORED_ITEM.readFromCompoundTag(compoundTag));
+    public void setLevel(Level level) {
+        registerComponentStackProvider(level,this.level);
+        super.setLevel(level);
     }
 
     @Override
-    public void writeCustomNBT(CompoundTag compoundTag) {
-        super.writeCustomNBT(compoundTag);
-        STORED_ITEM.writeToCompoundTag(compoundTag,inventory.getFirst());
-    }
-
-    @Override
-    public NonNullList<ItemStack> getInventory() {
-        return inventory;
-    }
-
-    @Override
-    public int[] getSlots() {
-        return SLOTS;
+    public void setRemoved() {
+        unregisterComponentStackProvider(this.level);
+        super.setRemoved();
     }
 }

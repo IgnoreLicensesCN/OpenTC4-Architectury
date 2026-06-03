@@ -1,4 +1,5 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.utility;
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,15 @@ public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
             list.add(listItemAccessor.readFromCompoundTag(compound));
         }
         return list;
+    }
+
+    public void readFromCompoundTagInto(CompoundTag tag, @Modifiable List<T> list) {
+        var listTag = listAccessor.readFromCompoundTag(tag);
+        var len = listTag.size();
+        for (int i = 0; i < len; i++) {
+            var compound = listTag.getCompound(i);
+            list.add(listItemAccessor.readFromCompoundTag(compound));
+        }
     }
 
     @Override

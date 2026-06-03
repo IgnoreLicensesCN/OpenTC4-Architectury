@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
+import static com.linearity.opentc4.utils.EntityTypeTests.ENTITY_TEST;
 import static thaumcraft.api.listeners.lamp.fertility.apply.FertilityLampAffectManager.affectEntity;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
 import static thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock.LIT;
@@ -210,7 +211,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         HashMultimap<Class<? extends Entity>,Entity> entityMap = HashMultimap.create();
         final var entityLimitTotal = getEntityLimitTotal();
         this.level.getEntities(
-                EntityTypeTest.forClass(Entity.class),
+                ENTITY_TEST,
                 AABB.of(new BoundingBox(getBlockPos())).inflate(getAffectRadius()),
                 e -> this.isAffectiveEntity(e, entityMap),
                 new ArrayList<>(entityLimitTotal),

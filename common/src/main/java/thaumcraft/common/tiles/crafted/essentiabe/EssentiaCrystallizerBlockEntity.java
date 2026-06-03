@@ -2,7 +2,7 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
-import com.linearity.opentc4.mixinaccessors.EssentiaCrystallizerBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCrystallizerBlockEntityClientAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

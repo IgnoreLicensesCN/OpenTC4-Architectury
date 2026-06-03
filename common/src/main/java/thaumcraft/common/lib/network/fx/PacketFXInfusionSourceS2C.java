@@ -1,5 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
+import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
+import com.linearity.opentc4.simpleutils.ObjectIntPair;
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -10,6 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.TileInfusionMatrix;
 import thaumcraft.common.tiles.TilePedestal;
+import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
+import thaumcraft.common.tiles.crafted.infusion.InfusionMatrixBlockEntity;
 
 public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
 
@@ -71,28 +75,27 @@ public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
       int ty = y - dy;
       int tz = z - dz;
 
-      String key = tx + ":" + ty + ":" + tz + ":" + color;
+      ObjectIntPair<BlockPos> key = new ObjectIntPair<>(new BlockPos(tx,ty,tz),color);
 
       BlockEntity be = level.getBlockEntity(new BlockPos(x, y, z));
-      if (!(be instanceof TileInfusionMatrix matrix)) return;
+      if (!(be instanceof InfusionMatrixBlockEntity matrix)) return;
 
       int count = 15;
 
-      // 判断源头是否是 pedestal
       BlockEntity srcTile = level.getBlockEntity(new BlockPos(tx, ty, tz));
-      if (srcTile instanceof TilePedestal) {
+      if (srcTile instanceof IInfusionComponentStackProvider) {
          count = 60;
       }
 
       // SourceFX 更新或新建
-      var map = matrix.sourceFX;
+      var map = ((InfusionMatrixBlockEntityClientAccessor)matrix).opentc4$getClientTickContext().sourceFX;
       if (map.containsKey(key)) {
-         TileInfusionMatrix.SourceFX fx = (TileInfusionMatrix.SourceFX) map.get(key);
+         InfusionMatrixBlockEntity.ClientTickContext.SourceFX fx = map.get(key);
          fx.ticks = count;
          map.put(key, fx);
       } else {
-         map.put(key, new TileInfusionMatrix.SourceFX(
-                 new BlockPos(tx,ty, tz),   // 1.20.1 ChunkPos(x,z) only
+         map.put(key, new InfusionMatrixBlockEntity.ClientTickContext.SourceFX(
+                 new BlockPos(tx,ty, tz),
                  count,
                  color
          ));

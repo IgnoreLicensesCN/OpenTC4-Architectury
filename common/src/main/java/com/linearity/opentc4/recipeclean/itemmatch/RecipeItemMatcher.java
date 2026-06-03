@@ -7,6 +7,7 @@ import java.util.List;
 
 
 public abstract class RecipeItemMatcher implements ReturnItemStackAfterConsume{
+    //should not modify stack
     public abstract boolean matches(@NotNull ItemStack stack);
 
     //fill as many as possible,except tool with different durability.

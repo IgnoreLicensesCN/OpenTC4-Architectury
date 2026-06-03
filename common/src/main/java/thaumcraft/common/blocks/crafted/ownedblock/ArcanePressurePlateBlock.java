@@ -29,6 +29,8 @@ import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.utils.EntityTypeTests.ENTITY_TEST;
+
 public class ArcanePressurePlateBlock extends PressurePlateBlock
         implements IWandInteractableOwnedBlock {
     public ArcanePressurePlateBlock(Sensitivity sensitivity, Properties properties, BlockSetType blockSetType) {
@@ -72,7 +74,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     protected boolean hasValidEntity(Level level, net.minecraft.world.phys.AABB aABB, int settings, OwnedBlockEntity ownedBE) {
         List<Entity> list = new ArrayList<>(1);
         level.getEntities(
-                EntityTypeTest.forClass(Entity.class),
+                ENTITY_TEST,
                 aABB,
                 EntitySelector.NO_SPECTATORS
                         .and(entity -> !entity.isIgnoringBlockTriggers())

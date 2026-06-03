@@ -15,6 +15,7 @@
     "clientbe.EssentiaCentrifugeBlockEntityClientMixin",
     "clientbe.EssentiaCrystallizerBlockEntityClientMixin",
     "clientbe.EssentiaReservoirBlockEntityClientMixin",
+    "clientbe.InfusionMatrixBlockEntityClientMixin",
     "clientbe.VisNetRelayBlockEntityClientMixin"
   ],
   "mixins": [

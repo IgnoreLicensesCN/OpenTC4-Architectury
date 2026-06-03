@@ -19,10 +19,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.crafting.interfaces.IInfusionStabiliser;
+import thaumcraft.common.blocks.abstracts.IInfusionStabilizerBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class TallowCandleBlock extends SuppressedWarningBlock implements IInfusionStabiliser {
+public class TallowCandleBlock extends SuppressedWarningBlock implements IInfusionStabilizerBlock {
     public static final IntegerProperty WAX = IntegerProperty.create("wax", 1, 5);
     public final int color;
     public TallowCandleBlock(Properties properties,int color) {

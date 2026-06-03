@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.BrainJarTagAccessors.EXP;
+import static com.linearity.opentc4.utils.EntityTypeTests.EXPERIENCE_ORB_TEST;
 
 public class BrainJarBlockEntity extends TileThaumcraft implements IValueContainerBasedComparatorSignalProviderBlockEntity {
     public int xp = 0;
@@ -171,7 +172,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         } else if (this.xp < getExpCapacity()) {
             List<ExperienceOrb> list = new ArrayList<>(200);
             this.level.getEntities(
-                    EntityTypeTest.forClass(ExperienceOrb.class),
+                    EXPERIENCE_ORB_TEST,
                     new AABB(getBlockPos()).inflate(getExpConsumeRange()),
                     e -> true,
                     list,
@@ -195,7 +196,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         if (this.level == null){return null;}
         List<ExperienceOrb> list = new ArrayList<>(5);
         this.level.getEntities(
-                EntityTypeTest.forClass(ExperienceOrb.class),
+                EXPERIENCE_ORB_TEST,
                 new AABB(getBlockPos()).inflate(range),
                 e -> true,
                 list,

@@ -1,5 +1,6 @@
 package com.linearity.opentc4.utils;
 
+import com.google.common.collect.MapMaker;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.WeakHashMap;
+import java.util.List;
 import java.util.function.Consumer;
 
 //maybe not best GC but i hope it works enough in daily life
@@ -44,7 +45,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
         itemsContaining.computeIfAbsent(xzKey, k -> new Int2ObjectOpenHashMap<>())
                 .computeIfAbsent(
                         yKey, k -> Collections.newSetFromMap(
-                                new WeakHashMap<>()
+                                new MapMaker().weakKeys().makeMap()
                         )
                 )
                 .add(value);
@@ -84,9 +85,9 @@ public class CubeChunkedWeakLookups<StoreItem> {
         forItemsNearPosWithRange(pos, action, chunkSize);
     }
 
-    public void forItemsNearPosWithRange(Vec3i pos, Consumer<StoreItem> action, int rangeManhattan) {
-        var posMin = pos.offset(-rangeManhattan, -rangeManhattan, -rangeManhattan);
-        var posMax = pos.offset(rangeManhattan, rangeManhattan, rangeManhattan);
+    public void forItemsNearPosWithRange(Vec3i pos, Consumer<StoreItem> action, int rangeManhattanOfOneDim) {
+        var posMin = pos.offset(-rangeManhattanOfOneDim, -rangeManhattanOfOneDim, -rangeManhattanOfOneDim);
+        var posMax = pos.offset(rangeManhattanOfOneDim, rangeManhattanOfOneDim, rangeManhattanOfOneDim);
         for (int yCurrent = compressIntIntoChunk(posMin.getY()); yCurrent <= compressIntIntoChunk(posMax.getY()); yCurrent += 1) {
             for (int xCurrent = compressIntIntoChunk(posMin.getX()); xCurrent <= compressIntIntoChunk(posMax.getX()); xCurrent += 1) {
                 for (int zCurrent = compressIntIntoChunk(posMin.getZ()); zCurrent <= compressIntIntoChunk(posMax.getZ()); zCurrent += 1) {
@@ -157,7 +158,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
             }
             return null;
         }
-        return result;
+        return result==null?null:List.copyOf(result);
     }
 
 

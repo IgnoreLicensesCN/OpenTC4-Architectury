@@ -2,10 +2,7 @@ package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -24,14 +21,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
-public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
+public class VisNetRelayBlock extends SuppressedWarningBlock implements EntityBlock {
     public VisNetRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -68,23 +63,7 @@ public class VisNetRelayBlock extends SuppressedWarningBlock implements IWandInt
         return this.defaultBlockState()
                 .setValue(FACING, context.getClickedFace());
     }
-    @Override
-    public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        var level = useOnContext.getLevel();
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        var state = level.getBlockState(useOnContext.getClickedPos());
-        state = state.setValue(COLOR, (state.getValue(COLOR) + 1)%COLOR_TYPES);
-        level.setBlockAndUpdate(useOnContext.getClickedPos(), state);
-        if (level.getBlockEntity(useOnContext.getClickedPos()) instanceof VisNetRelayBlockEntity relay) {
-            relay.removeThisNode();
-            relay.shouldRefreshVisNetNode =true;
-            relay.markDirtyAndUpdateSelf();
-            level.playSound(null,relay.getBlockPos(), ThaumcraftSounds.CRYSTAL, SoundSource.BLOCKS, 0.2F, 1.0F);
-        }
-        return InteractionResult.SUCCESS;
-    }
+
     private static final VoxelShape SHAPE_DOWN = Block.box(
             5, 0, 5,
             11, 8, 11

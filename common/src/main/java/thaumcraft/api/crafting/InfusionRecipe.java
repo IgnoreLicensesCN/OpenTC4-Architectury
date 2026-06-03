@@ -6,6 +6,7 @@ import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
+import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
 
 import java.util.ArrayList;
@@ -43,7 +45,11 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
  *     --IgnoreLicensesCN
  * </p>
  * **/
-public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<InfusionRecipe, InfusionRecipeResourceLocation> implements RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe
+public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<InfusionRecipe, InfusionRecipeResourceLocation>
+		implements
+		RecipeInAndOutSampler,
+		CanMatchViaOutputSample,
+		IAspectCalculableRecipe
 {
 	//RECIPES/////////////////////////////////////////
 //	private static final List<RecipeInAndOutSampler> craftingRecipes = new CopyOnWriteArrayList<>();
@@ -51,7 +57,7 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
 	public static final List<InfusionRecipe> unmodifiableInfusionRecipes = Collections.unmodifiableList(infusionRecipes);
 	private static final List<ThaumcraftInfusionEnchantmentRecipe> infusionEnchantmentRecipes = new CopyOnWriteArrayList<>();
 	private static final List<ThaumcraftInfusionEnchantmentRecipe> unmodifiableInfusionEnchantmentRecipes = Collections.unmodifiableList(infusionEnchantmentRecipes);
-	public final AspectList<Aspect> aspects;
+	protected final AspectList<Aspect> aspects;
 	public final ResearchItem research;
 	private final RecipeItemMatcher[] components;
 	private final RecipeItemMatcher centralInput;
@@ -162,9 +168,8 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
      * Used to check if a recipe matches current crafting inventory
      * @param player crafting it
      */
-	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player) {
-
-			
+	public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player,BlockPos probablyInfusionMatrixPos) {
+		//infusionEnchantment check XP here
 		if (research.isPlayerCompletedResearch(player)) {
     		return false;
     	}
@@ -173,29 +178,26 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
 			return false;
 		}
 		
-		ItemStack i2 = central.copy();
+		ItemStack i2 = central;
 		if (!centralInput.matches(i2)) {
 			return false;
 		}
 
-		List<ItemStack> ii = new ArrayList<>();
-		for (ItemStack is:input) {
-			ii.add(is.copy());
-		}
+		List<ItemStack> stacksToMatch = new ArrayList<>(input);
 		
 		for (RecipeItemMatcher matcher:components) {
-			boolean b=false;
-			for (int a=0;a<ii.size();a++) {
-				 i2 = ii.get(a).copy();
+			boolean matcherMatched=false;
+			for (int a=0;a<stacksToMatch.size();a++) {
+				 i2 = stacksToMatch.get(a).copy();
 				if (matcher.matches(i2)) {
-					ii.remove(a);
-					b=true;
+					stacksToMatch.remove(a);
+					matcherMatched=true;
 					break;
 				}
 			}
-			if (!b) return false;
+			if (!matcherMatched) return false;
 		}
-		return ii.isEmpty();
+		return stacksToMatch.isEmpty();
     }
 	   
     public ItemStack getRecipeOutput() {
@@ -311,8 +313,11 @@ public class InfusionRecipe extends AbstractResourceLocationIdentifiedRecipe<Inf
 	}
 
 
-	public void onInfusionStart(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
-	public void onInfusionEnd(Level atLevel, BlockPos matrixPos,Player playerActivatedInfusion) {}
+	public void onInfusionStart(Level atLevel, BlockPos matrixPos,@Nullable String playerNameActivatedInfusion) {
+		//infusion enchanting cost XP here
+		atLevel.playSound(null,matrixPos, ThaumcraftSounds.CRAFT_START, SoundSource.BLOCKS, 0.5F, 1.0F);
+	}
+	public void onInfusionEnd(Level atLevel, BlockPos matrixPos,@Nullable String playerNameActivatedInfusion) {}
 
 	private static final Map<InfusionRecipeResourceLocation,InfusionRecipe> INFUSION_RECIPES = new ConcurrentHashMap<>();
 	@Unmodifiable

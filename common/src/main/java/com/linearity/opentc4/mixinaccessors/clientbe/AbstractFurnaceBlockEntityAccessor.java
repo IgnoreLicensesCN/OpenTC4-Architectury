@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixinaccessors;
+package com.linearity.opentc4.mixinaccessors.clientbe;
 
 public interface AbstractFurnaceBlockEntityAccessor {
     int opentc4$getLitTime();

@@ -15,6 +15,7 @@ import thaumcraft.common.tiles.crafted.essentiabe.pipes.*;
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceBlockEntity;
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 import thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity;
+import thaumcraft.common.tiles.crafted.infusion.InfusionMatrixBlockEntity;
 import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
 import thaumcraft.common.tiles.crafted.mirror.EssentiaMirrorBlockEntity;
@@ -84,6 +85,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<MirrorBlockEntity> MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static final BlockEntityType<EssentiaMirrorBlockEntity> ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
     public static final BlockEntityType<ArcanePedestalBlockEntity> ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
+    public static final BlockEntityType<InfusionMatrixBlockEntity> INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -477,6 +479,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 ArcanePedestalBlockEntity::new,
                                 ThaumcraftBlocks.ARCANE_PEDESTAL
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<InfusionMatrixBlockEntity>> SUPPLIER_INFUSION_MATRIX =
+                BLOCK_ENTITIES.register(
+                        "infusion_matrix",
+                        () -> BlockEntityType.Builder.of(
+                                InfusionMatrixBlockEntity::new,
+                                ThaumcraftBlocks.INFUSION_MATRIX
                         ).build(null)
                 );
 

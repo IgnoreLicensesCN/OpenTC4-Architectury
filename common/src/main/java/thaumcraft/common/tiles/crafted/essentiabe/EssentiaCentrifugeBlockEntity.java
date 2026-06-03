@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.DegreeValue;
-import com.linearity.opentc4.mixinaccessors.EssentiaCentrifugeBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCentrifugeBlockEntityClientAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

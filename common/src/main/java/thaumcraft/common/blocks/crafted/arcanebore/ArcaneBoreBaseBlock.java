@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.crafted.arcanebore;
 
-import com.linearity.opentc4.mixinaccessors.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
