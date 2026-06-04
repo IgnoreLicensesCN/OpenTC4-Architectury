@@ -17,6 +17,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.research.scan.ScanResult;
@@ -25,7 +26,6 @@ import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
@@ -288,7 +288,7 @@ public class NodeType {
                                     ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
                                     AspectList<Aspect>al = ScanManager.getScanAspects(scan, serverLevel);
                                     if (al != null && !al.isEmpty()) {
-                                        al = (AspectList<Aspect>)(AspectList<?>)ResearchManager.reduceToPrimals(al.copy());
+                                        al = (AspectList<Aspect>)(AspectList<?>) IAspectReducibleToPrimal.reduceToPrimals(al.copy());
                                         if (!al.isEmpty()) {
                                             Aspect a = al
                                                     .keySet()

@@ -11,7 +11,6 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.common.lib.NodeInfo;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -102,7 +101,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     //TODO:[maybe wont finished]better api
     public void setupNode(){
         this.centiVisBase = new LinkedHashCentiVisList<>();
-        var temp = ResearchManager.reduceToPrimals(auraBase, true);
+        var temp = IAspectReducibleToPrimal.reduceToPrimals(auraBase, true);
         temp.forEach((aspect,amount) -> {
             int amt = EnergizedAuraNodeBlockEntity.this.nodeModifier.onSetupEnergizedNodeAspectAmount(this,aspect,amount);
             amt = EnergizedAuraNodeBlockEntity.this.nodeType.onSetupEnergizedNodeAspectAmount(this,aspect,amt);

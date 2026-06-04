@@ -7,13 +7,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.research.ResearchManager;
 
 public class TileFocalManipulator extends TileThaumcraftInventory {
    public AspectList<Aspect>aspects = new LinkedHashAspectList<>();
@@ -153,7 +153,7 @@ public class TileFocalManipulator extends TileThaumcraftInventory {
                      tal.addAll(as, amt);
                   }
 
-                  this.aspects = ResearchManager.reduceToPrimals(tal);
+                  this.aspects = IAspectReducibleToPrimal.reduceToPrimals(tal);
                   this.size = this.aspects.visSize();
                   this.upgrade = id;
                   if (!p.capabilities.isCreativeMode) {

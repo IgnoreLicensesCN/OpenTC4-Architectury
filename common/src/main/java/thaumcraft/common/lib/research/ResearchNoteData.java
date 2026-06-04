@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CompoundAspect;
+import thaumcraft.api.aspects.IResearchConnectableToOtherAspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
@@ -296,25 +296,6 @@ public class ResearchNoteData {
         }
     }
 
-    private static boolean canAspectConnectToEachOther(Aspect aspectA, Aspect aspectB) {
-        if (aspectA instanceof CompoundAspect compoundAspectA) {
-            if (compoundAspectA.components.aspectA() == aspectB) {
-                return true;
-            }
-            if (compoundAspectA.components.aspectB() == aspectB) {
-                return true;
-            }
-        }
-        if (aspectB instanceof CompoundAspect compoundAspectB) {
-            if (compoundAspectB.components.aspectA() == aspectA) {
-                return true;
-            }
-            return compoundAspectB.components.aspectB() == aspectA;
-        }
-        return false;
-
-    }
-
     private static void checkConnections(
             ResearchNoteData note,
             HexCoord hex,
@@ -339,7 +320,7 @@ public class ResearchNoteData {
                         .aspect();
                 if (aspect1.hasPlayerDiscovered(player)
                         && aspect2.hasPlayerDiscovered(player)
-                        && canAspectConnectToEachOther(aspect1, aspect2)) {
+                        && IResearchConnectableToOtherAspect.canAspectConnectToEachOther(aspect1, aspect2)) {
                     remains.add(target);
                     if (note.hexGrid.get(target)
                             .type() == HexType.GIVEN) {

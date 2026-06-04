@@ -4,6 +4,9 @@ import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -11,7 +14,7 @@ import java.util.Objects;
 
 import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 
-public class PrimalAspect extends Aspect {
+public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
     public static final PrimalAspect EMPTY = new PrimalAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_primal"),
             0x000000,
@@ -75,5 +78,10 @@ public class PrimalAspect extends Aspect {
     @Override
     public boolean hasPlayerDiscovered(@NotNull Player player) {
         return true;
+    }
+
+    @Override
+    public @Unmodifiable @NotNull AspectList<PrimalAspect> reduceToPrimal(boolean merge) {
+        return UnmodifiableAspectList.of(this);
     }
 }

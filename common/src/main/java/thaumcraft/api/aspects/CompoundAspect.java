@@ -3,6 +3,9 @@ package thaumcraft.api.aspects;
 import com.linearity.colorannotation.annotation.RGBColor;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -12,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
 
-public class CompoundAspect extends Aspect {
+public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, IResearchConnectableToOtherAspect {
     public static final Map<CompoundAspectComponent,CompoundAspect> COMPOUND_ASPECT_RECIPES = new ConcurrentHashMap<>();
     public static final CompoundAspect EMPTY = new CompoundAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_compound"),
@@ -86,5 +89,32 @@ public class CompoundAspect extends Aspect {
     @Override
     public int hashCode() {
         return Objects.hashCode(components);
+    }
+
+    private AspectList<PrimalAspect> reducedToPrimal = null;
+    private AspectList<PrimalAspect> mergeReducedToPrimal = null;
+    public @Unmodifiable @NotNull AspectList<PrimalAspect> reduceToPrimal(boolean merge){
+        var cached = merge?mergeReducedToPrimal:reducedToPrimal;
+        if (cached == null) {
+            AspectList<PrimalAspect> reduced = new LinkedHashAspectList<>();
+            if (this.components.aspectA() instanceof IAspectReducibleToPrimal reducibleToPrimal){
+                reduced.addAll(reducibleToPrimal.reduceToPrimal(merge));
+            }
+            if (this.components.aspectB() instanceof IAspectReducibleToPrimal reducibleToPrimal){
+                reduced.addAll(reducibleToPrimal.reduceToPrimal(merge));
+            }
+            cached = reduced;
+            if (merge){
+                mergeReducedToPrimal = cached;
+            }else {
+                reducedToPrimal = cached;
+            }
+        }
+        return cached;
+    }
+
+    @Override
+    public boolean canConnectTo(Aspect aspect) {
+        return this.components.contains(aspect);
     }
 }

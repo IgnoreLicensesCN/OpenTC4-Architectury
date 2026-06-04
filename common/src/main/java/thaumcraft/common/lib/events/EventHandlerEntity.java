@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
@@ -288,7 +289,7 @@ public class EventHandlerEntity {
       if (level > 0) {
          AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
          if (cost != null && !cost.isEmpty()) {
-            cost = ResearchManager.reduceToPrimalsAndCast(cost);
+            cost = IAspectReducibleToPrimal.reduceToPrimalsAndCast(cost);
             CentiVisList<Aspect> finalCost = new CentiVisList<>();
 
             for(Aspect a : cost.keySet()) {
@@ -510,7 +511,7 @@ public class EventHandlerEntity {
       } else if (Platform.getEnvironment() != Env.CLIENT && EntityUtils.getRecentlyHit(event.entityLiving) > 0) {
          AspectList<Aspect>aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
          if (aspectsCompound != null && !aspectsCompound.isEmpty()) {
-            AspectList<Aspect>aspects = ResearchManager.reduceToPrimalsAndCast(aspectsCompound);
+            AspectList<Aspect>aspects = IAspectReducibleToPrimal.reduceToPrimalsAndCast(aspectsCompound);
 
             for(Aspect aspect : aspects.keySet()) {
                if (event.entityLiving.getRandom().nextBoolean()) {

@@ -1,12 +1,17 @@
 package thaumcraft.common.blocks.crafted;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.WandRechargePedestalBlockBlockEntity;
 
@@ -23,6 +28,18 @@ public class WandRechargePedestalBlock extends AbstractPedestalBlock{
                         .noOcclusion()
         );
     }
+    public static final VoxelShape SHAPE = Shapes.or(
+            Shapes.box(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F),
+            Shapes.or(
+                    Shapes.box(0.25F, 0.5F, 0.25F, 0.75F, 1.0F, 0.75F),
+                    Shapes.box(0.125F, 0.25F, 0.125F, 0.875F, 0.5F, 0.875F)
+            )
+    );
+
+    @Override
+    public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return SHAPE;
+    }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -38,6 +55,6 @@ public class WandRechargePedestalBlock extends AbstractPedestalBlock{
                 }
             });
         }
-        return ;
+        return null;//TODO:Client side logic
     }
 }

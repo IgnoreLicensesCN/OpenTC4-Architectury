@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.linearity.opentc4.IAttackBlockListenerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,7 @@ import thaumcraft.api.wands.*;
 import thaumcraft.common.items.wands.WandManager;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
@@ -50,7 +52,8 @@ public class WandCastingItem extends Item
         IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
         IAttackBlockListenerItem,//maybe some focus would use in some cases
         IArchitectDisplayItem,//azanor's old thing for some display
-        IInventoryTickableComponentItem//ticking in inventory.add warp randomly or more?
+        IInventoryTickableComponentItem,//ticking in inventory.add warp randomly or more?
+        IWandBonusAspectOwner//easier to change(override) than what in listeners
 {
 
     public WandCastingItem(
@@ -99,12 +102,11 @@ public class WandCastingItem extends Item
 
     @Override
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
-        var components = getWandComponents(usingWand);
-        for (var component : components) {
+        wandComponentsForEach(usingWand,component -> {
             if (component.getItem() instanceof IWandSpellEventListenableItem listener) {
                 listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
             }
-        }
+        });
     }
 
 
@@ -120,13 +122,12 @@ public class WandCastingItem extends Item
             int finalParentAtContainerIndex,
             boolean bl
     ) {
-        var components = getWandComponents(selfStack);
-        for (var component : components) {
+        wandComponentsForEach(selfStack,component -> {
             if (component.getItem() instanceof IInventoryTickableComponentItem listener) {
                 listener.tickAsComponent(
                         finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
             }
-        }
+        });
     }
 
     @Override
@@ -136,14 +137,13 @@ public class WandCastingItem extends Item
 
     @Override
     public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
-        float result = 1.0F;
-        var components = getWandComponents(usingWand);
-        for (var component : components) {
+        AtomicDouble result = new AtomicDouble(1);
+        wandComponentsForEach(usingWand,component -> {
             if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponent provider) {
-                result *= provider.getCraftingVisMultiplier(usingWand, aspect);
+                result.updateAndGet(v ->  (v * provider.getCraftingVisMultiplier(usingWand, aspect)));
             }
-        }
-        return result;
+        });
+        return (float) result.get();
     }
 
     @Override
@@ -205,9 +205,9 @@ public class WandCastingItem extends Item
             return cached;
         }
         var result = new LinkedHashCentiVisList<>();
-        var components = getWandComponents(usingWand);
-        boolean canCache = true;
-        for (var component : components) {
+        AtomicBoolean canCache = new AtomicBoolean(true);
+
+        wandComponentsForEach(usingWand,component -> {
             var componentItem = component.getItem();
             if (componentItem instanceof IAspectCapacityOwnerComponent<? extends Aspect> owner) {
                 owner.getCentiVisCapacity()
@@ -216,10 +216,11 @@ public class WandCastingItem extends Item
                         );
             }
             if (!(componentItem instanceof IImmutableAspectCapacityOwnerComponent<? extends Aspect>)) {
-                canCache = false;
+                canCache.set(false);
             }
-        }
-        if (canCache) {
+        });
+
+        if (canCache.get()) {
             calculatedCacheForImmutable.put(usingWand, result);
         }
         return result;
@@ -232,22 +233,22 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public List<ItemStack> getWandComponents(ItemStack stack) {
+    public List<ItemStack> getWandComponents(ItemStack componentOwnerStack) {
         int initCapacity = 2;
         if (this.canApplyFocus()){
             initCapacity += 1;
         }
         List<ItemStack> items = new ArrayList<>(initCapacity);
-        var cap = getWandCapAsItemStack(stack);
+        var cap = getWandCapAsItemStack(componentOwnerStack);
         if (!cap.isEmpty()) {
             items.add(cap);
         }
-        var rod = getWandRodAsItemStack(stack);
+        var rod = getWandRodAsItemStack(componentOwnerStack);
         if (!rod.isEmpty()) {
             items.add(rod);
         }
         if (this.canApplyFocus()){
-            var focus = getFocusItemStack(stack);
+            var focus = getFocusItemStack(componentOwnerStack);
             if (!focus.isEmpty()) {
                 items.add(focus);
             }
