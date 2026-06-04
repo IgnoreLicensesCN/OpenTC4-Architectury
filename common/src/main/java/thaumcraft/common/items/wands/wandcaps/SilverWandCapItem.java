@@ -19,14 +19,14 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
     @Override
     public float getBaseCostModifier() {
-        return 1f;
+        return 0;
     }
 
     private final Object2FloatMap<Aspect> specialCostModifierAspects = Object2FloatMap.ofEntries(
-            new UnmodifiableAspectFloatEntry<>(Aspects.AIR,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.EARTH,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.FIRE,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.95f)
+            new UnmodifiableAspectFloatEntry<>(Aspects.AIR,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.EARTH,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.FIRE,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.05f)
     );
     @Override
     public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {

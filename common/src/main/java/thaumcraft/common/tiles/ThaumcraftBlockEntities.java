@@ -87,6 +87,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<ArcanePedestalBlockEntity> ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final BlockEntityType<InfusionMatrixBlockEntity> INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
     public static final BlockEntityType<WandRechargePedestalBlockBlockEntity> WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
+    public static final BlockEntityType<ArcaneSpaBlockEntity> ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -496,6 +497,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 WandRechargePedestalBlockBlockEntity::new,
                                 ThaumcraftBlocks.WAND_RECHARGE_PEDESTAL
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<ArcaneSpaBlockEntity>> SUPPLIER_ARCANE_SPA =
+                BLOCK_ENTITIES.register(
+                        "arcane_spa",
+                        () -> BlockEntityType.Builder.of(
+                                ArcaneSpaBlockEntity::new,
+                                ThaumcraftBlocks.ARCANE_SPA
                         ).build(null)
                 );
 

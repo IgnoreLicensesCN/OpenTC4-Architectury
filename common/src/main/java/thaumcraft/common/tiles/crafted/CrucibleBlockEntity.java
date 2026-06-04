@@ -23,14 +23,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -39,21 +37,24 @@ import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
 import java.awt.*;
 
 import static com.linearity.opentc4.Consts.CrucibleTagAccessors.*;
-import static dev.architectury.fluid.FluidStack.create;
 import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
 
-public class CrucibleBlockEntity extends TileThaumcraft
-        implements
-        IValueContainerBasedComparatorSignalProviderBlockEntity
+public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 {
     private long counter;
     public static final int ASPECT_CAPACITY = 100;
     public static final int BOILING_HEAT = 150;
     public static final int LIQUID_CAPACITY = 2000;
+
+    @Override
+    public int getLiquidCapacity() {
+        return LIQUID_CAPACITY;
+    }
 
     public CrucibleBlockEntity(BlockEntityType<? extends CrucibleBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -75,66 +76,15 @@ public class CrucibleBlockEntity extends TileThaumcraft
     public int getBoilingHeat() {
         return BOILING_HEAT;
     }
-    public int getLiquidCapacity() {
-        return LIQUID_CAPACITY;
-    }
 
-
-    public @NotNull FluidStack getFluidStack() {
-        return fluidStack;
-    }
-
-    public long getFluidAmount() {
-        return fluidStack.getAmount();
-    }
-
-    //return inserted
-    public long insertFluid(Fluid fluid,long maxCanInsert){
-        return insertFluid(fluid,maxCanInsert,true);
-    }
-    public long insertFluid(Fluid fluid,long maxCanInsert,boolean doIt) {
-        if (!canAcceptFluid(fluid)) {
-            return 0;
-        }
-        if (fluid != fluidStack.getFluid() && !fluidStack.isEmpty()) {
-            return 0;
-        }
-        long currentAmount = fluidStack.getAmount();
-        if (currentAmount < 0){
-            currentAmount = 0;
-            fluidStack.setAmount(0);
-        }
-        long spaceToInsert = getLiquidCapacity() - currentAmount;
-        if (spaceToInsert < 0){
-            spaceToInsert = 0;
-            fluidStack.setAmount(getLiquidCapacity());
-        }
-        long inserted = Math.min(spaceToInsert, maxCanInsert);
-        if (doIt){
-            fluidStack.setAmount(currentAmount + inserted);
-        }
-        return inserted;
-    }
-
-    public long extractFluid(Fluid fluid, long maxCanExtract) {
-        return 0L;//no out
-    }
-    protected void decreaseFluid(long amount) {
-        this.fluidStack.setAmount(Math.max(0, this.fluidStack.getAmount() - amount));
-    }
-
+    @Override
     public boolean canAcceptFluid(@NotNull Fluid fluid) {
         return fluid.isSame(Fluids.WATER);
     }
 
-
     public final AspectList<Aspect> owningAspects = new LinkedHashAspectList<>();
     public int heat = 0;
-    protected @NotNull FluidStack fluidStack = create(Fluids.EMPTY, 0);//keep it a instance
 
-    public void setFluidStack(@NotNull FluidStack fluidStack) {
-        this.fluidStack = fluidStack;
-    }
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
@@ -142,7 +92,6 @@ public class CrucibleBlockEntity extends TileThaumcraft
         this.addedAspect = true;
         this.owningAspects.addAll(OWNING_ASPECTS.readFromCompoundTag(compoundTag));
         this.heat = HEAT.readIntFromCompoundTag(compoundTag);
-        this.fluidStack = FLUID.readFromCompoundTag(compoundTag);
     }
 
     @Override
@@ -150,7 +99,6 @@ public class CrucibleBlockEntity extends TileThaumcraft
         super.writeCustomNBT(compoundTag);
         OWNING_ASPECTS.writeToCompoundTag(compoundTag, owningAspects);
         HEAT.writeIntToCompoundTag(compoundTag, heat);
-        FLUID.writeToCompoundTag(compoundTag, fluidStack);
     }
 
     public boolean isHeating() {

@@ -50,6 +50,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.*;
@@ -397,7 +398,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
                 (world, pos, state, be, context) -> new SingleSlotStorage<>() {
                     @Override
                     public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-                        if (be instanceof CrucibleBlockEntity crucible) {
+                        if (be instanceof SingleFluidContainerBlockEntity crucible) {
                             return crucible.insertFluid(resource.getFluid(), maxAmount);
                         }
                         return 0;
@@ -405,7 +406,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
                     @Override
                     public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-                        if (be instanceof CrucibleBlockEntity crucible) {
+                        if (be instanceof SingleFluidContainerBlockEntity crucible) {
                             return crucible.extractFluid(resource.getFluid(), maxAmount);
                         }
                         return 0;
@@ -418,7 +419,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
                     @Override
                     public FluidVariant getResource() {
-                        if (be instanceof CrucibleBlockEntity crucible) {
+                        if (be instanceof SingleFluidContainerBlockEntity crucible) {
                             return FluidVariant.of(crucible.getFluidStack()
                                     .getFluid());
                         }
@@ -427,7 +428,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
                     @Override
                     public long getAmount() {
-                        if (be instanceof CrucibleBlockEntity crucible) {
+                        if (be instanceof SingleFluidContainerBlockEntity crucible) {
                             return crucible.getFluidAmount();
                         }
                         return 0;
@@ -435,13 +436,13 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
                     @Override
                     public long getCapacity() {
-                        if (be instanceof CrucibleBlockEntity crucible) {
+                        if (be instanceof SingleFluidContainerBlockEntity crucible) {
                             return crucible.getLiquidCapacity();
                         }
                         return 0;
                     }
                 },
-                ThaumcraftBlocks.CRUCIBLE
+                ThaumcraftBlocks.CRUCIBLE,ThaumcraftBlocks.ARCANE_SPA
         );
     }
 }

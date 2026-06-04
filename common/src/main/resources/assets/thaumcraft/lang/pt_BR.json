@@ -27,6 +27,7 @@
   "block.thaumcraft.brown_tallow_candle": "Vela de Sebo Marrom",
   "block.thaumcraft.cinder_pearl": "Pérola de Cinzas",
   "block.thaumcraft.cinnabar_ore": "Minério de Cinábrio",
+  "block.thaumcraft.compound_recharge_focus": "Composto de Recarga de Focus",
   "block.thaumcraft.crucible": "Crisol",
   "block.thaumcraft.crusted_taint": "Crosta Maculada",
   "block.thaumcraft.cyan_tallow_candle": "Vela de Sebo Ciano",
@@ -316,6 +317,7 @@
   "item.thaumcraft.brown_tallow_candle": "Vela de Sebo Marrom",
   "item.thaumcraft.cinder_pearl": "Pérola de Cinzas",
   "item.thaumcraft.cinnabar_ore": "Minério de Cinábrio",
+  "item.thaumcraft.compound_recharge_focus": "Composto de Recarga de Focus",
   "item.thaumcraft.crucible": "Crisol",
   "item.thaumcraft.crusted_taint": "Crosta Maculada",
   "item.thaumcraft.cyan_tallow_candle": "Vela de Sebo Ciano",
@@ -994,7 +996,6 @@
   "tile.blockMetalDevice.6.name": "Gradil de Itens (Fechado)",
   "tile.blockMirror.name": "Espelho Mágico",
   "tile.blockSecure.name": "Bloco de Pedra Guardiã",
-  "tile.blockStoneDevice.8.name": "Composto de Recarga de Focus",
   "tile.blockWooden.name": "Bloco de Madeira Arcana",
   "tile.researchtable.noink.0": "Acabou a sua tinta!",
   "tile.researchtable.nomove": "Runas ativas não podem ser movidas!"

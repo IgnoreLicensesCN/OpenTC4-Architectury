@@ -6,6 +6,7 @@ import thaumcraft.api.aspects.Aspect;
 
 import java.util.Map;
 public interface IVisCostModifierOwnerComponent {
+    //cost will be decreased by this
     float getBaseCostModifier();
     //add cost if negative and decrease post if positive
     @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects();

@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.componentbase;
 
+import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
 import net.minecraft.world.item.Item;
@@ -19,8 +20,8 @@ public abstract class ThaumcraftWandCapItem extends Item implements IWandCapProp
     }
 
     @Override
-    public float getBaseCostModifier() {
-        return 1;
+    public @PercentageFloatValue float getBaseCostModifier() {
+        return 0;
     }
 
     @Override

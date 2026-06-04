@@ -6,7 +6,7 @@
   "client": [
   ],
   "mixins": [
-    "EssentiaJarBlockItemMixin"
+    "SingleFluidContainerBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

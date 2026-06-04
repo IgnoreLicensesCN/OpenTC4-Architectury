@@ -14,6 +14,7 @@ public class ThaumcraftResearches {
     public static final ResearchExpertise RESEARCH_EXPERTISE = new ResearchExpertise();
     public static final ResearchMastery RESEARCH_MASTERY = new ResearchMastery();
 
+    public static final ResearchItem CRIMSON = ;
 
     public static final ResearchItem NODE_PRESERVE = ;
     public static final ResearchItem NODE_TAKE_IT_ALL = ;
@@ -21,4 +22,5 @@ public class ThaumcraftResearches {
     public static final FocusPrimalResearch FOCUS_PRIMAL = new FocusPrimalResearch();
 
     public static final ResearchItem ENTER_OUTER = ;
+    public static final ResearchItem PRIME_PEARL_NODE_CONTROL = ;
 }

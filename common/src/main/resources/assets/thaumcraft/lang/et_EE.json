@@ -28,6 +28,7 @@
   "block.thaumcraft.brown_tallow_candle": "Pruun Rasva Küünal",
   "block.thaumcraft.cinder_pearl": "Cinderpearl",
   "block.thaumcraft.cinnabar_ore": "Kinaveri Maak",
+  "block.thaumcraft.compound_recharge_focus": "Compound Recharge Focus",
   "block.thaumcraft.crucible": "Crucible",
   "block.thaumcraft.crusted_taint": "Crusted Taint",
   "block.thaumcraft.cyan_tallow_candle": "Tsüaansinine Rasva Küünal",
@@ -360,6 +361,7 @@
   "item.thaumcraft.brown_tallow_candle": "Pruun Rasva Küünal",
   "item.thaumcraft.cinder_pearl": "Cinderpearl",
   "item.thaumcraft.cinnabar_ore": "Kinaveri Maak",
+  "item.thaumcraft.compound_recharge_focus": "Compound Recharge Focus",
   "item.thaumcraft.crucible": "Crucible",
   "item.thaumcraft.crusted_taint": "Crusted Taint",
   "item.thaumcraft.cyan_tallow_candle": "Tsüaansinine Rasva Küünal",
@@ -1185,7 +1187,6 @@
   "tile.blockMetalDevice.6.name": "Item Grate (Closed)",
   "tile.blockMirror.name": "Maagiline Peegel",
   "tile.blockSecure.name": "Warded Stone Block",
-  "tile.blockStoneDevice.8.name": "Compound Recharge Focus",
   "tile.blockWooden.name": "Arcane Wood Block",
   "tile.researchtable.noink.0": "Teil on tint otsa saanud!",
   "tile.researchtable.noink.1": "Täida uuesti oma kirjutamis vahendid."

@@ -3,6 +3,7 @@ package thaumcraft.common.items.wands.wandtypes;
 import com.google.common.collect.MapMaker;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.linearity.opentc4.IAttackBlockListenerItem;
+import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -196,11 +197,11 @@ public class WandCastingItem extends Item
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
-    private static final Map<ItemStack,CentiVisList<Aspect>> calculatedCacheForImmutable = new WeakHashMap<>();
+    private static final Map<ItemStack,CentiVisList<Aspect>> calculatedCacheForImmutable = new MapMaker().weakKeys().makeMap();
     //costs high and maybe should be cached
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        CentiVisList<Aspect> cached = calculatedCacheForImmutable.get(usingWand);
+        var cached = calculatedCacheForImmutable.get(usingWand);
         if (cached != null) {
             return cached;
         }
@@ -435,7 +436,7 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public float getCostDiscountForAspect(ItemStack wandStack, Aspect aspect) {
+    public @PercentageFloatValue float getCostDiscountForAspect(ItemStack wandStack, Aspect aspect) {
         var cap = getWandComponents(wandStack);
         if (cap instanceof IVisCostModifierOwnerComponent visCostModifierOwner) {
             return visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier());

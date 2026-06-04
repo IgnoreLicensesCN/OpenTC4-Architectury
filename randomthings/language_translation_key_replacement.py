@@ -89,6 +89,8 @@ block_with_item_names = [
     ['tile.blockStoneDevice.7.name','infusion_pillar'],
     ['tile.blockStoneDevice.2.name','infusion_matrix'],
     ['tile.blockStoneDevice.5.name','wand_recharge_pedestal'],
+    ['tile.blockStoneDevice.8.name','compound_recharge_focus'],
+    ['tile.blockStoneDevice.12.name','arcane_spa'],
 ]
 
 force_add_keys = {

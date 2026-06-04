@@ -265,6 +265,8 @@ public class Consts {
     public static class CrucibleTagAccessors {
         public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
         public static final IntTagAccessor HEAT = new IntTagAccessor("heat");
+    }
+    public static class SingleFluidContainerBlockEntityTagAccessors{
         public static final FluidStackTagAccessor FLUID = new FluidStackTagAccessor("fluid");
     }
     public static class GrowthArcaneLampTagAccessors {
@@ -347,6 +349,9 @@ public class Consts {
         public static final IntTagAccessor INSTABILITY = new IntTagAccessor("instability");
         public static final BooleanTagAccessor CRAFTING = new BooleanTagAccessor("crafting");
 
+    }
+    public static class ArcaneSpaBlockEntityTagAccessors {
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
     }
 
 }

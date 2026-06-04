@@ -80,6 +80,8 @@
     "thaumcraft:arcane_pedestal",
     "thaumcraft:infusion_pillar",
     "thaumcraft:infusion_matrix",
-    "thaumcraft:wand_recharge_pedestal"
+    "thaumcraft:wand_recharge_pedestal",
+    "thaumcraft:compound_recharge_focus",
+    "thaumcraft:arcane_spa"
   ]
 }

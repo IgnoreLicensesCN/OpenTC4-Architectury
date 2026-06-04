@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.vanilla1710;
 
-import com.linearity.opentc4.annotations.DegreeValue;
-import com.linearity.opentc4.annotations.RadianValue;
+import com.linearity.opentc4.annotations.forvalue.DegreeValue;
+import com.linearity.opentc4.annotations.forvalue.RadianValue;
 
 import java.util.Random;
 

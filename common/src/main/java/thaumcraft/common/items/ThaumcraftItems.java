@@ -15,19 +15,20 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.items.consumable.AlumentumItem;
-import thaumcraft.common.items.consumable.KnowledgeFragmentItem;
-import thaumcraft.common.items.consumable.ManaBeanItem;
-import thaumcraft.common.items.consumable.ZombieBrainItem;
+import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
+import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
+import thaumcraft.common.items.mateiral.PrimePearlItem;
 import thaumcraft.common.items.misc.*;
-import thaumcraft.common.items.misc.ThaumometerItem;
+import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.misc.jars.NodeJarBlockItem;
 import thaumcraft.common.items.misc.jars.VoidJarBlockItem;
+import thaumcraft.common.items.research.InkWellItem;
+import thaumcraft.common.items.transport.MirrorBlockItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -266,7 +267,9 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final BlockItem INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
     public static final BlockItem WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
-
+    public static final BlockItem COMPOUND_RECHARGE_FOCUS =  Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
+    public static final BlockItem ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
+    public static final BathSaltsItem BATH_SALTS = Registry.SUPPLIER_BATH_SALTS.get();
 
     //===========================================================================================
 
@@ -1001,12 +1004,21 @@ public class ThaumcraftItems {
                 "wand_recharge_pedestal",
                 () -> new BlockItem(ThaumcraftBlocks.WAND_RECHARGE_PEDESTAL, new Item.Properties())
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_COMPOUND_RECHARGE_FOCUS = ITEMS.register(
+                "compound_recharge_focus",
+                () -> new BlockItem(ThaumcraftBlocks.COMPOUND_RECHARGE_FOCUS, new Item.Properties())
+        );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_ARCANE_SPA = ITEMS.register(
+                "arcane_spa",
+                () -> new BlockItem(ThaumcraftBlocks.ARCANE_SPA, new Item.Properties())
+        );
+        public static final RegistrySupplier<BathSaltsItem> SUPPLIER_BATH_SALTS = ITEMS.register(
+                "bath_salts",
+                BathSaltsItem::new
+        );
 
 
 
-        static {
-            Registry.ITEMS.register();
-        }
     }
 
     public static class ItemTags {
@@ -1426,6 +1438,7 @@ public class ThaumcraftItems {
 
     public static void init() {
 
+        Registry.ITEMS.register();
         FuelRegistry.register(6400,ALUMENTUM);
         FuelRegistry.register(400,GREATWOOD_LOG,SILVERWOOD_LOG);//azanor's idea
         FuelRegistry.register(300,GREATWOOD_PLANKS,SILVERWOOD_PLANKS);

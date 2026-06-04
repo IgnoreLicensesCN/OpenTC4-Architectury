@@ -1,0 +1,50 @@
+package com.linearity.opentc4.mixin.client.render;
+
+import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static thaumcraft.client.renderers.item.RenderUtils.ITEM_RENDERERS;
+
+
+@Mixin(ItemRenderer.class)
+public class ItemRendererMixin implements ItemRendererAccessor {
+
+    @Inject(method = "render",
+            at = @At("HEAD"),
+            cancellable = true)
+    private void opentc4$render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
+        if (itemStack != null){
+            var item = itemStack.getItem();
+            var rendererList = ITEM_RENDERERS.get(item);
+            for (var renderer:rendererList.getListeners()){
+                if (renderer != null){
+                    if (renderer.render(itemStack,itemDisplayContext,bl,poseStack,multiBufferSource,i,j,bakedModel)){
+                        ci.cancel();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    @Shadow private void renderModelLists(BakedModel bakedModel, ItemStack itemStack, int i, int j, PoseStack poseStack, VertexConsumer vertexConsumer){
+        throw new RuntimeException("should not reach here");
+    }
+
+    @Override
+    public void opentc4$renderModelLists(BakedModel bakedModel, ItemStack itemStack, int i, int j, PoseStack poseStack, VertexConsumer vertexConsumer) {
+        renderModelLists(bakedModel,itemStack,i,j,poseStack,vertexConsumer);
+    }
+}
+

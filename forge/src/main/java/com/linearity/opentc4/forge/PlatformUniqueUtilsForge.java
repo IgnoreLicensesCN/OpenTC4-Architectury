@@ -309,7 +309,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     @Override
     public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack stack) {
         LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null); // 如果没有流体或不支持，返回空
+        var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null);
         if (handlerItem == null) {return null;}
         handlerItem = handlerItem.copy();
         return FluidStack.create(handlerItem.getFluid(), handlerItem.getAmount());
@@ -318,7 +318,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     @Override
     public long decreaseFluidStackToItemStack(ItemStack stack, FluidStack fluidStack) {
         LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var owningFluidStack = cap.map(handler -> handler.getFluidInTank(0)).orElse(null); // 如果没有流体或不支持，返回空
+        var owningFluidStack = cap.map(handler -> handler.getFluidInTank(0)).orElse(null);
         if (owningFluidStack == null) {return 0;}
         if (owningFluidStack.getFluid() != fluidStack.getFluid()) {
             return 0;

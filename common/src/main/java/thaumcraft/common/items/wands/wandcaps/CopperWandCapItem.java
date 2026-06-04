@@ -19,12 +19,12 @@ public class CopperWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
     @Override
     public float getBaseCostModifier() {
-        return 1.1f;
+        return -0.1f;
     }
 
     private final Object2FloatMap<Aspect> specialCostModifierAspects = Object2FloatMap.ofEntries(
-            new UnmodifiableAspectFloatEntry<>(Aspects.ORDER,1.f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.ENTROPY,1.f)
+            new UnmodifiableAspectFloatEntry<>(Aspects.ORDER,0),
+            new UnmodifiableAspectFloatEntry<>(Aspects.ENTROPY,0)
             );
     @Override
     public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {

@@ -85,7 +85,10 @@ public class LinkedHashAspectList<Asp extends Aspect>
     }
 
     public int put(Asp aspect, int amount) {
-        return aspects.put(aspect, amount);
+        int decreased = aspects.put(aspect, amount);
+        this.visSize += amount;
+        this.visSize -= decreased;
+        return decreased;
     }
 
     public LinkedHashAspectList<Asp> copy() {
@@ -134,7 +137,8 @@ public class LinkedHashAspectList<Asp extends Aspect>
      * --from Hodgepodge
      */
     public List<Asp> getAspectsSorted() {
-        return aspectView.keySet().stream()
+        return aspectView.keySet()
+                .stream()
                 .sorted(Comparator.comparing(
                         Aspect::getNameString,
                         String.CASE_INSENSITIVE_ORDER
@@ -146,7 +150,8 @@ public class LinkedHashAspectList<Asp extends Aspect>
      * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by amount
      */
     public List<Asp> getAspectsSortedAmount() {
-        return aspectView.keySet().stream()
+        return aspectView.keySet()
+                .stream()
                 .filter(a -> this.get(a) > 0)
                 .sorted(Comparator.comparingInt(this::get).reversed())
                 .toList();//azanor knows little about java's own sorting?
@@ -207,7 +212,6 @@ public class LinkedHashAspectList<Asp extends Aspect>
 
     public void remove(Asp key) {
         this.visSize -= aspects.removeInt(key);
-
     }
 
     public void removeIf(Predicate<Object2IntMap.Entry<Asp>> filter) {
@@ -218,7 +222,6 @@ public class LinkedHashAspectList<Asp extends Aspect>
             }
             return false;
         });
-
     }
 
     /**
@@ -253,8 +256,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
         }
         for (Map.Entry<Asp, Integer> entry : aspects.object2IntEntrySet()) {
             int oldValue = entry.getValue();
-            // 除以 divideBy 向上取整
-            int divided = (oldValue + divideBy - 1) / divideBy; // ceil 整数除法
+            int divided = Math.ceilDiv(oldValue,divideBy);
             entry.setValue(divided);
             this.visSize += divided - oldValue;
         }
@@ -409,7 +411,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
 
     public @Nullable("if empty") Asp randomWeightedAspect(RandomSource randomSource) {
         if (visSize <= 0 || aspects.isEmpty()) {
-            return null; // 或者返回你的 Aspect.EMPTY
+            return null;
         }
         int target = randomSource.nextInt(visSize);
         int currentSum = 0;

@@ -43,7 +43,7 @@ import thaumcraft.common.entities.ai.pech.AIPechItemEntityGoto;
 import thaumcraft.common.entities.ai.pech.AIPechTradePlayer;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.ItemManaBean;
+import thaumcraft.common.items.junkbox.ItemManaBean;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;

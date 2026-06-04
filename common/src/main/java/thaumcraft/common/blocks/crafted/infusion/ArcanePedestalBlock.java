@@ -16,7 +16,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.blocks.crafted.AbstractPedestalBlock;
+import thaumcraft.common.blocks.abstracts.AbstractPedestalBlock;
 import thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity;
 
 public class ArcanePedestalBlock extends AbstractPedestalBlock implements EntityBlock {

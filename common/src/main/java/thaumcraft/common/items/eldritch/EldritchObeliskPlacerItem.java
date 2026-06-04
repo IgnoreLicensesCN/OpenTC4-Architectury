@@ -12,8 +12,10 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.List;
@@ -33,11 +35,11 @@ public class EldritchObeliskPlacerItem extends Item {
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var world = useOnContext.getLevel();
+        if (world.isClientSide) {
+            return InteractionResult.CONSUME;
+        }
         var player = useOnContext.getPlayer();
         var clickedPos = useOnContext.getClickedPos();
-        if (Platform.getEnvironment() != Env.CLIENT) {
-            return super.useOn(useOnContext);
-        }
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return super.useOn(useOnContext);
         }
@@ -52,17 +54,12 @@ public class EldritchObeliskPlacerItem extends Item {
                     return InteractionResult.FAIL;
                 }
             }
-            int x = clickedPos.getX();
-            int y = clickedPos.getY();
-            int z = clickedPos.getZ();
-
-            //TODO:Meta -> state
-            world.setBlock(clickedPos.above(1), ConfigBlocks.blockEldritch, 0, 3);
-            world.setBlock(clickedPos.above(3), ConfigBlocks.blockEldritch, 1, 3);
-            world.setBlock(clickedPos.above(4), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(5), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(6), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(7), ConfigBlocks.blockEldritch, 2, 3);
+            world.setBlock(clickedPos.above(1), ThaumcraftBlocks.ELDRITCH_ALTAR.defaultBlockState(),Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(3), ThaumcraftBlocks.ELDRITCH_OBELISK_WITH_TICKER.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(4), ThaumcraftBlocks.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(5), ThaumcraftBlocks.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(6), ThaumcraftBlocks.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(7), ThaumcraftBlocks.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(useOnContext);

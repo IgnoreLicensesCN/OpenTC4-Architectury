@@ -1,5 +1,7 @@
 package thaumcraft.api.wands;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -22,7 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *                The amounts given is ignored,
  *                just the type is used for the calculation.
  */
-public record FocusUpgradeType(FocusUpgradeTypeResourceLocation id, ResourceLocation icon, String name, String text, AspectList<? extends Aspect>aspects) {
+public record FocusUpgradeType(FocusUpgradeTypeResourceLocation id, ResourceLocation icon, String name, String text, AspectList<? extends Aspect> aspects) {
+	//idk if anyone want to tag upgrade but place it here
+	public static final Multimap<ResourceLocation, FocusUpgradeType> FOCUS_UPGRADE_TYPE_TAGGED = MultimapBuilder.hashKeys().hashSetValues().build();
 
 	private static final Map<FocusUpgradeTypeResourceLocation, FocusUpgradeType> types = new ConcurrentHashMap<>();
 	public static final Map<FocusUpgradeTypeResourceLocation, FocusUpgradeType> typesView = Collections.unmodifiableMap(types);
@@ -38,6 +42,13 @@ public record FocusUpgradeType(FocusUpgradeTypeResourceLocation id, ResourceLoca
 			throw new IllegalArgumentException("Unknown FocusUpgradeType: " + id);
 		}
 		return type;
+	}
+
+	public boolean is(ResourceLocation tag){
+		return FOCUS_UPGRADE_TYPE_TAGGED.get(tag).contains(this);
+	}
+	public void registerToTag(ResourceLocation tag){
+		FOCUS_UPGRADE_TYPE_TAGGED.put(tag, this);
 	}
 
 	public FocusUpgradeType(FocusUpgradeTypeResourceLocation id, ResourceLocation icon, String name, String text, AspectList<? extends Aspect>aspects) {

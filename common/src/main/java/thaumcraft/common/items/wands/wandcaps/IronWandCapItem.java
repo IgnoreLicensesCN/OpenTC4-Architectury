@@ -16,7 +16,7 @@ public class IronWandCapItem extends ThaumcraftWandCapItem implements ICraftingC
 
     @Override
     public float getBaseCostModifier() {
-        return 1.1f;
+        return -0.1f;
     }
 
     private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(1);

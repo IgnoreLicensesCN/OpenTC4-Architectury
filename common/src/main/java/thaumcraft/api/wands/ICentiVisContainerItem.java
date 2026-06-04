@@ -1,6 +1,7 @@
 package thaumcraft.api.wands;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -53,9 +54,9 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
      * @param stack stack will be added vis inside
      * @param aspect to add
      * @param centiVisAmount to add (centiVisAmount 1 -> showing 0.01)
-     * @return overflow centiVisAmount
+     * @return overflow centiVis Amount
      */
-    default int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by CENTIVIS_MULTIPLIER*/, boolean doIt) {
+    default @CentiVisAmount int addCentiVis(ItemStack stack, Asp aspect, int centiVisAmount /*alert:not multiplied by CENTIVIS_MULTIPLIER*/, boolean doIt) {
         int capacity = getAllCentiVisCapacity(stack).getOrDefault(aspect,0);
         if (capacity == 0){
             return centiVisAmount;

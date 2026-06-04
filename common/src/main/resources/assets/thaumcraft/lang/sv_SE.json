@@ -28,6 +28,7 @@
   "block.thaumcraft.brown_tallow_candle": "Brunt talgljus",
   "block.thaumcraft.cinder_pearl": "Askpärla",
   "block.thaumcraft.cinnabar_ore": "Cinnobermalm",
+  "block.thaumcraft.compound_recharge_focus": "Sammanslaget laddningsfokus",
   "block.thaumcraft.crucible": "Smältdegel",
   "block.thaumcraft.crusted_taint": "Inrotad smitta",
   "block.thaumcraft.cyan_tallow_candle": "Cyanblått talgljus",
@@ -360,6 +361,7 @@
   "item.thaumcraft.brown_tallow_candle": "Brunt talgljus",
   "item.thaumcraft.cinder_pearl": "Askpärla",
   "item.thaumcraft.cinnabar_ore": "Cinnobermalm",
+  "item.thaumcraft.compound_recharge_focus": "Sammanslaget laddningsfokus",
   "item.thaumcraft.crucible": "Smältdegel",
   "item.thaumcraft.crusted_taint": "Inrotad smitta",
   "item.thaumcraft.cyan_tallow_candle": "Cyanblått talgljus",
@@ -1185,7 +1187,6 @@
   "tile.blockMetalDevice.6.name": "Spisgaller (stängt)",
   "tile.blockMirror.name": "Magisk spegel",
   "tile.blockSecure.name": "Skyddat stenblock",
-  "tile.blockStoneDevice.8.name": "Sammanslaget laddningsfokus",
   "tile.blockWooden.name": "Mystiskt träblock",
   "tile.researchtable.noink.0": "Du har fått slut på bläck!",
   "tile.researchtable.noink.1": "Fyll på dina skrivdon."

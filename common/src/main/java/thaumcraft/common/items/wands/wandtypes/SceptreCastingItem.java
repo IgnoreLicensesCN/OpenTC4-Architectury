@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.MapMaker;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.network.chat.Component;
@@ -14,6 +15,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.IArcaneCraftingVisDiscountOwnerItem;
+
+import java.util.Map;
 
 public class SceptreCastingItem extends WandCastingItem implements IArcaneCraftingVisDiscountOwnerItem {
 
@@ -45,14 +48,23 @@ public class SceptreCastingItem extends WandCastingItem implements IArcaneCrafti
         return builder.build();
     }
 
+    private static final Map<CentiVisList<Aspect>,CentiVisList<Aspect>> convertedCapacity = new MapMaker().weakKeys().makeMap();
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        var originalResult = super.getAllCentiVisCapacity(usingWand);
-        Object2IntLinkedOpenHashMap<Aspect> centiVisCapacity = new Object2IntLinkedOpenHashMap<>(originalResult.size(),1);
-        originalResult.forEach((key, value) -> centiVisCapacity.put(
-                key,
-                (int) (value*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)
-        ));
-        return UnmodifiableCentiVisList.of(centiVisCapacity);
+        return convertedCapacity.computeIfAbsent(
+                super.getAllCentiVisCapacity(usingWand),originalResult -> {
+                    Object2IntLinkedOpenHashMap<Aspect> centiVisCapacity = new Object2IntLinkedOpenHashMap<>(originalResult.size(),1);
+                    originalResult.forEach((key, value) -> centiVisCapacity.put(
+                            key,
+                            (int) (value*SCEPTRE_CENTIVIS_CAPACITY_MULTIPLIER)
+                    ));
+                    return UnmodifiableCentiVisList.of(centiVisCapacity);
+                }
+        );
+    }
+
+    @Override
+    public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
+        return super.getCraftingVisMultiplier(usingWand, aspect) + 0.05F;
     }
 }

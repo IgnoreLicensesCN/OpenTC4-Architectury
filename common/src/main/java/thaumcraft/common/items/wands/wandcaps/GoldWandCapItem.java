@@ -12,10 +12,9 @@ public class GoldWandCapItem extends ThaumcraftWandCapItem implements ICraftingC
         super(new Properties());
     }
 
-
     @Override
     public float getBaseCostModifier() {
-        return 1.f;
+        return 0;
     }
 
     private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(3);

@@ -28,6 +28,7 @@
   "block.thaumcraft.brown_tallow_candle": "Ruskea talikynttilä",
   "block.thaumcraft.cinder_pearl": "Tuhkahelmi",
   "block.thaumcraft.cinnabar_ore": "Sinioperimalmi",
+  "block.thaumcraft.compound_recharge_focus": "Yhdistetty lataustarkennus",
   "block.thaumcraft.crucible": "Taikapata",
   "block.thaumcraft.crusted_taint": "Karstainen Tahra",
   "block.thaumcraft.cyan_tallow_candle": "Turkoosi talikynttilä",
@@ -360,6 +361,7 @@
   "item.thaumcraft.brown_tallow_candle": "Ruskea talikynttilä",
   "item.thaumcraft.cinder_pearl": "Tuhkahelmi",
   "item.thaumcraft.cinnabar_ore": "Sinioperimalmi",
+  "item.thaumcraft.compound_recharge_focus": "Yhdistetty lataustarkennus",
   "item.thaumcraft.crucible": "Taikapata",
   "item.thaumcraft.crusted_taint": "Karstainen Tahra",
   "item.thaumcraft.cyan_tallow_candle": "Turkoosi talikynttilä",
@@ -1171,7 +1173,6 @@
   "tile.blockMetalDevice.6.name": "Tavararitilä (Kiinni)",
   "tile.blockMirror.name": "Taikapeili",
   "tile.blockSecure.name": "Karkoittava kivipalikka",
-  "tile.blockStoneDevice.8.name": "Yhdistetty lataustarkennus",
   "tile.blockWooden.name": "Mystinen puupalikka",
   "tile.researchtable.noink.0": "Sinulta loppui muste!",
   "tile.researchtable.nomove": "Aktiivisia riimuja ei voi siirrellä!"

@@ -48,4 +48,7 @@ public interface IAspectReducibleToPrimal {
     @NotNull
     @Unmodifiable
     AspectList<PrimalAspect> reduceToPrimal(boolean merge);
+    default AspectList<PrimalAspect> reduceToPrimal(){
+        return reduceToPrimal(false);
+    }
 }
