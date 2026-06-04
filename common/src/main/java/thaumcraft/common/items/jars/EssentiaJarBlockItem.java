@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc.jars;
+package thaumcraft.common.items.jars;
 
 import com.linearity.opentc4.annotations.SoftImplement;
 import net.minecraft.ChatFormatting;

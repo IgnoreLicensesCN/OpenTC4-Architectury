@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc.jars;
+package thaumcraft.common.items.jars;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;

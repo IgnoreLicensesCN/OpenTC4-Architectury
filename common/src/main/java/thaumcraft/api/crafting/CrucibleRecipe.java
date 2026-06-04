@@ -27,6 +27,7 @@ import java.util.function.Function;
 
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.UtilityConsts.RETURN_EMPTY_ITEM_LIST_LIST;
 
+//TODO:Clean
 public class CrucibleRecipe extends AbstractResourceLocationIdentifiedRecipe<
 		CrucibleRecipe, CrucibleRecipeResourceLocation
 		>

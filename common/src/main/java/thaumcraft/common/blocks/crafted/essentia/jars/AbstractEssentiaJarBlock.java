@@ -28,7 +28,7 @@ import thaumcraft.api.aspects.IAspectContainerItem;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.crafted.jars.JarBlock;
-import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
+import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
 public abstract class AbstractEssentiaJarBlock extends JarBlock

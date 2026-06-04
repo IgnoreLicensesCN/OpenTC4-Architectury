@@ -17,6 +17,7 @@ public interface IAspectCalculableRecipe {
     };
 
     //note that we just want count and item in stack not CompoundTag
+    //inner List<ItemStack>:what stack could be for the slot,called probableStacks
     @NotNull
     default List<List<ItemStack>> getAspectCalculationInputs(){
         throw new RuntimeException("check supportsAspectCalculation() first!");

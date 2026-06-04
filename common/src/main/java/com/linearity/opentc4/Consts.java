@@ -342,6 +342,7 @@ public class Consts {
     public static class InfusionMatrixBlockEntityTagAccessors {
         public static final AspectListAccessor REQUIRING_ASPECTS = new AspectListAccessor("requiring_aspects");
         public static final ModifiableListAccessor<ItemStack> REQUIRING_ITEMS = new ModifiableListAccessor<>("requiring_items",new ItemStackTagAccessor("i"));
+        public static final ModifiableListAccessor<ItemStack> RETURNING_ITEMS = new ModifiableListAccessor<>("returning_items",new ItemStackTagAccessor("i"));
         public static final ItemStackTagAccessor CENTER_STACK = new ItemStackTagAccessor("center_stack");
         public static final ItemStackTagAccessor RESULT =  new ItemStackTagAccessor("result");
         public static final StringTagAccessor PLAYER_LAUNCHED_CRAFTING = new StringTagAccessor("player_launching_crafting");

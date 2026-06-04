@@ -27,6 +27,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -1020,7 +1021,7 @@ public class GuiResearchRecipe extends GuiScreen {
             String text = Component.translatable("recipe.type.infusion");
             int offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y, 5263440);
-            int inst = Math.min(5, ri.getInstability() / 2);
+            int inst = Math.min(5, ri.getInstabilityExample() / 2);
             text = Component.translatable("tc.inst") + " " + Component.translatable("tc.inst." + inst);
             offset = this.fontRendererObj.getStringWidth(text);
             this.fontRendererObj.drawString(text, x + start + 56 - offset / 2, y + 194, 5263440);
@@ -1037,29 +1038,29 @@ public class GuiResearchRecipe extends GuiScreen {
             int mposx = mx;
             int mposy = my;
             int total = 0;
-            int rows = (ri.getAspects().size() - 1) / 5;
-            int shift = (5 - ri.getAspects().size() % 5) * 10;
+            int rows = (ri.getAspectsExample().size() - 1) / 5;
+            int shift = (5 - ri.getAspectsExample().size() % 5) * 10;
             int sx = x + start + 8;
             int sy = y + 164 - 10 * rows;
 
-            for (Aspect tag : ri.getAspects().getAspectsSorted()) {
+            for (Aspect tag : ri.getAspectsExample().getAspectsSorted()) {
                 int m = 0;
-                if (total / 5 >= rows && (rows > 1 || ri.getAspects().size() < 5)) {
+                if (total / 5 >= rows && (rows > 1 || ri.getAspectsExample().size() < 5)) {
                     m = 1;
                 }
 
                 int vx = sx + total % 5 * 20 + shift * m;
                 int vy = sy + total / 5 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) ri.getAspects().get(tag), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) ri.getAspectsExample().get(tag), 0, this.zLevel);
                 ++total;
             }
 
             ItemStack idisp = null;
-            if (ri.getRecipeOutput() instanceof ItemStack) {
-                idisp = InventoryUtils.cycleItemStack(ri.getRecipeOutput());
+            if (ri.getExampleRecipeOutput() instanceof ItemStack) {
+                idisp = InventoryUtils.cycleItemStack(ri.getExampleRecipeOutput());
             } else {
-                idisp = InventoryUtils.cycleItemStack(ri.getRecipeInput()).copy();
-                Object[] obj = (Object[]) ri.getRecipeOutput();
+                idisp = InventoryUtils.cycleItemStack(ri.getExampleRecipeInput()).copy();
+                Object[] obj = (Object[]) ri.getExampleRecipeOutput();
                 NBTBase tag = (NBTBase) obj[1];
                 idisp.setTagInfo((String) obj[0], tag);
             }
@@ -1079,8 +1080,8 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderHelper.enableGUIStandardItemLighting();
             GL11.glEnable(2884);
-            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(ri.getRecipeInput()), x + 48 + start, y + 94);
-            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(ri.getRecipeInput()).copy().splitStack(1), x + 48 + start, y + 94);
+            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(ri.getExampleRecipeInput()), x + 48 + start, y + 94);
+            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, InventoryUtils.cycleItemStack(ri.getExampleRecipeInput()).copy().splitStack(1), x + 48 + start, y + 94);
             RenderHelper.disableStandardItemLighting();
             GL11.glEnable(2896);
             GL11.glPopMatrix();
@@ -1123,8 +1124,8 @@ public class GuiResearchRecipe extends GuiScreen {
             }
 
             if (mx >= x + 48 + start && my >= y + 94 && mx < x + 48 + start + 16 && my < y + 94 + 16) {
-                List addtext = InventoryUtils.cycleItemStack(ri.getRecipeInput()).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
-                Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(ri.getRecipeInput()));
+                List addtext = InventoryUtils.cycleItemStack(ri.getExampleRecipeInput()).getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+                Object[] ref = this.findRecipeReference(InventoryUtils.cycleItemStack(ri.getExampleRecipeInput()));
                 if (ref != null && !ref[0].equals(this.research.key)) {
                     addtext.add("§8§o" + Component.translatable("recipe.clickthrough"));
                     this.reference.add(Arrays.asList(mx, my, (String) ref[0], (Integer) ref[1]));
@@ -1155,14 +1156,14 @@ public class GuiResearchRecipe extends GuiScreen {
             }
 
             total = 0;
-            rows = (ri.getAspects().size() - 1) / 5;
-            shift = (5 - ri.getAspects().size() % 5) * 10;
+            rows = (ri.getAspectsExample().size() - 1) / 5;
+            shift = (5 - ri.getAspectsExample().size() % 5) * 10;
             sx = x + start + 8;
             sy = y + 164 - 10 * rows;
 
-            for (Aspect tag : ri.getAspects().getAspectsSorted()) {
+            for (Aspect tag : ri.getAspectsExample().getAspectsSorted()) {
                 int m = 0;
-                if (total / 5 >= rows && (rows > 1 || ri.getAspects().size() < 5)) {
+                if (total / 5 >= rows && (rows > 1 || ri.getAspectsExample().size() < 5)) {
                     m = 1;
                 }
 
@@ -1182,7 +1183,7 @@ public class GuiResearchRecipe extends GuiScreen {
 
     private void drawInfusionEnchantingPage(int side, int x, int y, int mx, int my, ResearchPage pageParm) {
         Object tr = pageParm.recipe;
-        ThaumcraftInfusionEnchantmentRecipe ri = (ThaumcraftInfusionEnchantmentRecipe) tr;
+        SimpleInfusionEnchantmentRecipe ri = (SimpleInfusionEnchantmentRecipe) tr;
         if (ri != null) {
             GL11.glPushMatrix();
             int start = side * 152;

@@ -41,7 +41,7 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
-import thaumcraft.common.items.misc.ItemBathSalts;
+import thaumcraft.common.items.junkbox.ItemBathSalts;
 import thaumcraft.common.items.junkbox.ItemCrystalEssence;
 import thaumcraft.common.items.armor.Hover;
 import thaumcraft.common.items.armor.ItemHoverHarness;

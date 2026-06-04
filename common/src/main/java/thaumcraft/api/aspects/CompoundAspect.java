@@ -98,10 +98,10 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
         if (cached == null) {
             AspectList<PrimalAspect> reduced = new LinkedHashAspectList<>();
             if (this.components.aspectA() instanceof IAspectReducibleToPrimal reducibleToPrimal){
-                reduced.addAll(reducibleToPrimal.reduceToPrimal(merge));
+                reduced.mergeWithHighest(reducibleToPrimal.reduceToPrimal(merge));
             }
             if (this.components.aspectB() instanceof IAspectReducibleToPrimal reducibleToPrimal){
-                reduced.addAll(reducibleToPrimal.reduceToPrimal(merge));
+                reduced.mergeWithHighest(reducibleToPrimal.reduceToPrimal(merge));
             }
             cached = reduced;
             if (merge){

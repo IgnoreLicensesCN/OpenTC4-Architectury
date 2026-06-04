@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.jars.EssentiaJarBlockItem;
+import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.VoidJarBlockEntity;
 

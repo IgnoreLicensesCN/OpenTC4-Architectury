@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,7 @@ import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
-import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.listeners.infusion.instabilityevent.InfusionInstabilityEventListener;
 import thaumcraft.api.listeners.infusion.instabilityevent.InfusionInstabilityEventManager;
 import thaumcraft.api.tile.TileThaumcraft;
@@ -56,7 +57,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.InfusionMatrixBlockEntityTagAccessors.*;
-import static thaumcraft.api.crafting.InfusionRecipe.*;
+import static thaumcraft.api.crafting.infusion.InfusionRecipe.*;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionMatrixBlock.LIT;
 import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity.INFUSION_COMPONENT_PROVIDERS;
 
@@ -71,6 +72,7 @@ public class InfusionMatrixBlockEntity
     //should serialize
     protected final AspectList<Aspect> aspectsRequiring = new LinkedHashAspectList<>();
     protected final List<ItemStack> itemStacksRequiring = new LinkedList<>();
+    protected final List<ItemStack> itemStacksReturning = new LinkedList<>();
     protected @NotNull("not empty when crafting") ItemStack infusionCenterStack = ItemStack.EMPTY;
     protected @NotNull("not empty when crafting") ItemStack infusionResult = ItemStack.EMPTY;
     protected @Nullable("only when not crafting") String playerLaunchedCrafting = null;
@@ -96,6 +98,7 @@ public class InfusionMatrixBlockEntity
         super.writeCustomNBT(compoundTag);
         REQUIRING_ASPECTS.writeToCompoundTag(compoundTag,aspectsRequiring);
         REQUIRING_ITEMS.writeToCompoundTag(compoundTag,itemStacksRequiring);
+        RETURNING_ITEMS.writeToCompoundTag(compoundTag,itemStacksReturning);
         CENTER_STACK.writeToCompoundTag(compoundTag,infusionCenterStack);
         RESULT.writeToCompoundTag(compoundTag,infusionResult);
         PLAYER_LAUNCHED_CRAFTING.writeToCompoundTag(compoundTag,playerLaunchedCrafting==null?"":playerLaunchedCrafting);
@@ -150,7 +153,7 @@ public class InfusionMatrixBlockEntity
             return;
         }
         
-        finishCrafting(this.craftingRecipe);
+        finishCrafting(this.craftingRecipe,this.infusionCenterStack);
     }
     
     //true if drained essentia false if can goto next step
@@ -177,7 +180,7 @@ public class InfusionMatrixBlockEntity
                 aspectsRequiring.reduceAndRemoveIfNotPositive(aspect,drained);
                 markDirtyAndUpdateSelf();
             } else {
-                int chanceDenominator = 100 - this.craftingRecipe.getInstability() * 3;
+                int chanceDenominator = 100 - this.craftingRecipe.getInstabilityExample() * 3;
                 if (chanceDenominator > 1){
                     if (this.level.random.nextInt(chanceDenominator) == 0) {
                         ++this.instability;
@@ -204,6 +207,7 @@ public class InfusionMatrixBlockEntity
         ItemStack consumingStack = this.itemStacksRequiring.getFirst();
         if (consumingStack == null || consumingStack.isEmpty()){
             this.itemStacksRequiring.removeFirst();
+            this.itemStacksReturning.removeFirst();
             return true;
         }
 
@@ -213,7 +217,7 @@ public class InfusionMatrixBlockEntity
             if (this.level.getBlockEntity(realProviderPos) instanceof IInfusionComponentStackProvider provider){
                 for (int i=0; i<provider.getContainerSize(); i++){
                     var providingStack = provider.getItem(i);
-                    if (ItemStack.isSameItem(providingStack,consumingStack)){//can consume
+                    if (ItemStack.isSameItemSameTags(providingStack,consumingStack)){//can consume
                         if (this.drainItemTimes < 0) {
                             this.drainItemTimes = 5;
                             if (this.level instanceof ServerLevel serverLevel){
@@ -237,6 +241,19 @@ public class InfusionMatrixBlockEntity
                             }
                             if (consumingStack.isEmpty()){
                                 this.itemStacksRequiring.removeFirst();
+                                var returning = this.itemStacksReturning.removeFirst();
+                                if (!returning.isEmpty()){
+                                    var remaining = provider.storeReturningStack(returning);
+                                    if (!remaining.isEmpty()){
+                                        Containers.dropItemStack(
+                                                this.level,
+                                                realProviderPos.getX() + 0.5,
+                                                realProviderPos.getY() + 0.5,
+                                                realProviderPos.getZ() + 0.5,
+                                                remaining
+                                        );
+                                    }
+                                }
                                 return true;
                             }
                         }
@@ -282,7 +299,7 @@ public class InfusionMatrixBlockEntity
         }
         this.aspectsRequiring.addAll(aspToAdd, 1);
         
-        int chanceDenominator = 50 - (this.craftingRecipe == null ? 0:this.craftingRecipe.getInstability()) * 2;
+        int chanceDenominator = 50 - (this.craftingRecipe == null ? 0:this.craftingRecipe.getInstabilityExample()) * 2;
         if (chanceDenominator > 1) {
             if (this.level.random.nextInt(chanceDenominator) == 0) {
                 ++this.instability;
@@ -303,7 +320,7 @@ public class InfusionMatrixBlockEntity
     }
 
     protected boolean isCenterStackValid() {
-        return ItemStack.isSameItem(getInfusionCenterStack(),this.infusionCenterStack);
+        return ItemStack.isSameItemSameTags(getInfusionCenterStack(),this.infusionCenterStack);
     }
 
     public void clientTick() {
@@ -501,17 +518,21 @@ public class InfusionMatrixBlockEntity
             return InteractionResult.PASS;
         }
 
-        startCrafting(player.getGameProfile().getName(),matchedRecipe,centerStack,componentStacks,componentStacksAndInstability.value());
+
+        startCrafting(player.getGameProfile().getName(),matchedRecipe,centerStack,componentStacks,matchedRecipe.getRemainingStacks(componentStacks),componentStacksAndInstability.value());
 
         return InteractionResult.SUCCESS;
     }
 
-    public void startCrafting(String playerName,InfusionRecipe recipe,ItemStack centerStack,List<ItemStack> componentStacks,int pedestalInstability){
+    public void startCrafting(String playerName,InfusionRecipe recipe,ItemStack centerStack,List<ItemStack> componentStacks,List<ItemStack> remainingStacks,int pedestalInstability){
         if (this.level == null){
             return;
         }
+        if (componentStacks.size() != remainingStacks.size()){
+            throw new IllegalArgumentException("componentStacks and remainingStacks must have same size");
+        }
         this.playerLaunchedCrafting = playerName;
-        recipe.onInfusionStart(this.level,getBlockPos(),this.playerLaunchedCrafting);
+        recipe.onInfusionStart(this.level,getBlockPos(),this.playerLaunchedCrafting,centerStack);
         this.craftingRecipeID = recipe.recipeID;
         this.craftingRecipe = INFUSION_RECIPES_VIEW.get(this.craftingRecipeID);
         this.aspectsRequiring.clear();
@@ -520,13 +541,15 @@ public class InfusionMatrixBlockEntity
         this.infusionResult = recipe.getRecipeOutput(centerStack).copy();
         this.itemStacksRequiring.clear();
         componentStacks.forEach(stack -> this.itemStacksRequiring.add(stack.copy()));
+        this.itemStacksReturning.clear();
+        remainingStacks.forEach(stack -> this.itemStacksReturning.add(stack.copy()));
         this.crafting = true;
-        this.instability = recipe.getInstability() + pedestalInstability
+        this.instability = recipe.getInstabilityExample() + pedestalInstability
                 -surroundingStabilityProviderChecker.recalculateStabilityProviding(this.level,getBlockPos());
 
         markDirtyAndUpdateSelf();
     }
-    public void finishCrafting(InfusionRecipe recipe){
+    public void finishCrafting(InfusionRecipe recipe,ItemStack infusionCenterStack){
         if (this.level != null){
             if (level.getBlockEntity(getCenterPedestalPos()) instanceof IInfusionCenterItemStackProvider centerItemStackProvider){
                 if (!this.infusionResult.isEmpty()){
@@ -534,7 +557,7 @@ public class InfusionMatrixBlockEntity
                 }else {
                     OpenTC4.LOGGER.warn("empty infusionResult found,this might be error or this infusion's onInfusionEnd matters");
                 }
-                recipe.onInfusionEnd(this.level,getBlockPos(),this.playerLaunchedCrafting);
+                recipe.onInfusionEnd(this.level,getBlockPos(),this.playerLaunchedCrafting,infusionCenterStack);
                 clearCraftingInfoAndStop();
             }
         }
@@ -542,6 +565,7 @@ public class InfusionMatrixBlockEntity
     public void clearCraftingInfoAndStop(){
         aspectsRequiring.clear();
         itemStacksRequiring.clear();
+        itemStacksReturning.clear();
         infusionCenterStack = ItemStack.EMPTY;
         infusionResult = ItemStack.EMPTY;
         playerLaunchedCrafting = null;
@@ -739,7 +763,7 @@ public class InfusionMatrixBlockEntity
             if (infusionRecipe.matches(componentStacks,centerStack,this.level,player,getBlockPos())){
                 if (chosenRecipe == null){
                     chosenRecipe = infusionRecipe;
-                }else if (chosenRecipe.getAspects().visSize() < infusionRecipe.getAspects().visSize()){
+                }else if (chosenRecipe.getAspectsExample().visSize() < infusionRecipe.getAspectsExample().visSize()){
                     chosenRecipe = infusionRecipe;
                 }
             }

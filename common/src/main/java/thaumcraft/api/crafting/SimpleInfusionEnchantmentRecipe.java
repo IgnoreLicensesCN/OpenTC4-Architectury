@@ -1,10 +1,9 @@
 package thaumcraft.api.crafting;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import com.linearity.opentc4.recipeclean.itemmatch.EnchantmentItemMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.EnchantableMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.EnchantableResultMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
-import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
-import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
 import com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -12,17 +11,17 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
-import thaumcraft.api.crafting.interfaces.IInfusionAspectsModifiable;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.network.fx.PacketFXInfusionSourceS2C;
 import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
@@ -31,70 +30,112 @@ import java.util.*;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static com.linearity.opentc4.utils.EntityTypeTests.PLAYER_TEST;
-import static com.linearity.opentc4.utils.IndexPicker.indexByTime;
-import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 
-public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
-        implements RecipeInAndOutSampler,
-        IAspectCalculableRecipe,
-        IInfusionAspectsModifiable {
+public class SimpleInfusionEnchantmentRecipe extends InfusionRecipe {
 
     public final AspectList<Aspect> basicCostAspects;
-    public final RecipeItemMatcher[] components;
+    public final @Unmodifiable List<RecipeItemMatcher> components;
     public final Enchantment enchantment;
     public final int recipeXP;
     public final int instability;
-    private final ItemStack[] inputSampleArr;
+    public final ResearchItem research;
+    public final EnchantableMatcher matcher;
+    public final EnchantableResultMatcher resultMatcher;
 
-    public ThaumcraftInfusionEnchantmentRecipe(
+    public SimpleInfusionEnchantmentRecipe(
             InfusionRecipeResourceLocation id,
-            ResearchItem research,
-            Enchantment toApply,
+            @Unmodifiable List<RecipeItemMatcher> components,
+            Enchantment toEnchant,
             AspectList<Aspect> basicCostAspects,
-            int inst,
-            RecipeItemMatcher[] recipe
-    ) {
-        super(
-                id,
-                research, itemStacks -> {
-                    var inCenter = itemStacks[itemStacks.length - 1];
-                    if (inCenter == null || inCenter.isEmpty()) {
-                        return ItemStack.EMPTY;
-                    }
-                    inCenter = inCenter.copy();
-                    if (!toApply.canEnchant(inCenter)) {
-                        return ItemStack.EMPTY;
-                    }
-                    var currentLevel = EnchantmentHelper.getItemEnchantmentLevel(toApply, inCenter);
-                    if (toApply.getMaxLevel() <= currentLevel) {
-                        return ItemStack.EMPTY;
-                    }
-                    EnchantmentHelper.setEnchantmentLevel(inCenter.getOrCreateTag(), currentLevel + 1);
-                    return inCenter;
+            ResearchItem research,
+            int instability,
+            int recipeXP
 
-                },
-                inst,
-                basicCostAspects,
-                EnchantmentItemMatcher.of(toApply),
-                recipe,
-                EnchantmentItemMatcher.of(toApply)
-        );
-        this.enchantment = toApply;
-        this.components = recipe;
-        this.inputSampleArr = new ItemStack[components.length + 1];
-        this.inputSampleArr[components.length] = new ItemStack(Items.ENCHANTED_BOOK);
+    ) {
+        super(id);
         this.basicCostAspects = basicCostAspects;
-        this.instability = inst;
-        this.recipeXP = Math.max(1, toApply.getMinCost(1) / 3);
+        this.research = research;
+        this.instability = instability;
+        this.enchantment = toEnchant;
+        this.recipeXP = recipeXP;
+        this.components = components;
+        this.matcher = EnchantableMatcher.of(this.enchantment);
+        this.resultMatcher = EnchantableResultMatcher.of(this.enchantment);
     }
+
+    @Override
+    public ResearchItem getResearch() {
+        return research;
+    }
+
+    @Override
+    public List<ItemStack> getExampleRecipeInput() {
+        return matcher.getAvailableItemStackSample();
+    }
+
+    @Override
+    public ItemStack getRecipeOutput(ItemStack input) {
+        var result = input.copy();
+        var enchantmentMap = new HashMap<>(EnchantmentHelper.getEnchantments(input));
+        enchantmentMap.put(enchantment, EnchantmentHelper.getEnchantments(input).getOrDefault(enchantment,0) + 1);
+        EnchantmentHelper.setEnchantments(enchantmentMap,result);
+        return result;
+    }
+
+    @Override
+    public AspectList<Aspect> getAspects(ItemStack input) {
+        return getAspectsModified(input, this.basicCostAspects);
+    }
+
+    //    public SimpleInfusionEnchantmentRecipe(
+//            InfusionRecipeResourceLocation id,
+//            ResearchItem research,
+//            Enchantment toApply,
+//            AspectList<Aspect> basicCostAspects,
+//            int inst,
+//            RecipeItemMatcher[] recipe
+//    ) {
+//        super(
+//                id,
+//                research, itemStacks -> {
+//                    var inCenter = itemStacks[itemStacks.length - 1];
+//                    if (inCenter == null || inCenter.isEmpty()) {
+//                        return ItemStack.EMPTY;
+//                    }
+//                    inCenter = inCenter.copy();
+//                    if (!toApply.canEnchant(inCenter)) {
+//                        return ItemStack.EMPTY;
+//                    }
+//                    var currentLevel = EnchantmentHelper.getItemEnchantmentLevel(toApply, inCenter);
+//                    if (toApply.getMaxLevel() <= currentLevel) {
+//                        return ItemStack.EMPTY;
+//                    }
+//                    EnchantmentHelper.setEnchantmentLevel(inCenter.getOrCreateTag(), currentLevel + 1);
+//                    return inCenter;
+//
+//                },
+//                inst,
+//                basicCostAspects,
+//                EnchantmentItemMatcher.of(toApply),
+//                recipe,
+//                EnchantmentItemMatcher.of(toApply)
+//        );
+//        this.enchantment = toApply;
+//        this.components = recipe;
+//        this.inputSampleArr = new ItemStack[components.length + 1];
+//        this.inputSampleArr[components.length] = new ItemStack(Items.ENCHANTED_BOOK);
+//        this.basicCostAspects = basicCostAspects;
+//        this.instability = inst;
+//        this.recipeXP = Math.max(1, toApply.getMinCost(1) / 3);
+//    }
 
     /**
      * Used to check if a recipe matches current crafting inventory
      *
      */
     public boolean matches(List<ItemStack> input, ItemStack central, Level world, Player player, BlockPos probablyInfusionMatrixPos) {
-        if (!super.matches(input, central, world, player, probablyInfusionMatrixPos)) {
+        if (!simpleMatch(input, central, player, research, components, matcher)) {
             return false;
         }
 
@@ -117,10 +158,10 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
                 return false;
             }
         }
-        return checkPlayersNearbyExperience(player, probablyInfusionMatrixPos);
+        return checkPlayersNearbyExperience(player, probablyInfusionMatrixPos, calcXP(central));
     }
 
-    public boolean checkPlayersNearbyExperience(Player player, BlockPos probablyInfusionMatrixPos) {
+    public boolean checkPlayersNearbyExperience(Player player, BlockPos probablyInfusionMatrixPos,int toCost) {
         var level = player.level();
 
         List<Player> targets =
@@ -129,7 +170,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
                         new AABB(player.blockPosition()).inflate(10.0F, 10.0F, 10.0F),
                         _ignored -> true
                 );
-        int levelRemaining = this.recipeXP;
+        int levelRemaining = toCost;
         if (!targets.isEmpty()) {
             for (Player playerBeingTokenXP : targets) {
                 //taking XP from players(yes multiple players!)
@@ -144,7 +185,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
         return false;
     }
 
-    public void costPlayersNearbyExperience(Player player, BlockPos probablyInfusionMatrixPos) {
+    public void costPlayersNearbyExperience(Player player, BlockPos probablyInfusionMatrixPos,int toCost) {
         var level = player.level();
         if (!(level instanceof ServerLevel serverLevel)){
             throw new IllegalCallerException("should be called in serverLevel");
@@ -156,7 +197,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
                         new AABB(player.blockPosition()).inflate(10.0F, 10.0F, 10.0F),
                         _ignored -> true
                 );
-        int levelRemaining = this.recipeXP;
+        int levelRemaining = toCost;
         if (!targets.isEmpty()) {
             for (Player playerBeingTokenXP : targets) {
                 //taking XP from players(yes multiple players!)
@@ -195,13 +236,11 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
 
     public Enchantment getEnchantment() {
         return enchantment;
-
     }
 
-    public AspectList<Aspect> getAspects() {
+    public AspectList<Aspect> getAspectsExample() {
         return basicCostAspects;
     }
-
 
     public int getInstability(ItemStack recipeInput) {
         int i = 0;
@@ -218,7 +257,7 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
         return recipeXP * (1 + EnchantmentHelper.getEnchantments(recipeInput).get(enchantment));
     }
 
-    public AspectList<Aspect> getAspectsModified(ItemStack recipeInput, AspectList<Aspect> basicCostAspects) {
+    protected AspectList<Aspect> getAspectsModified(ItemStack recipeInput, AspectList<Aspect> basicCostAspects) {
         float mod = EnchantmentHelper.getEnchantments(recipeInput).get(enchantment);
         Map<Enchantment, Integer> map1 = EnchantmentHelper.getEnchantments(recipeInput);
         for (Map.Entry<Enchantment, Integer> entry : map1.entrySet()) {
@@ -234,46 +273,8 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
     }
 
     @Override
-    public ItemStack[] getInputSample() {
-        //setting central a book
-        int lvlBefore = indexByTime(enchantment.getMaxLevel() - 1);
-        if (lvlBefore == 0) {
-            enchantmentMapBefore.clear();
-        } else {
-            enchantmentMapBefore.put(enchantment, lvlBefore);
-        }
-        EnchantmentHelper.setEnchantments(
-                enchantmentMapBefore
-                , inputSampleArr[inputSampleArr.length - 1]
-        );
-
-
-        for (int i = 0; i < inputSampleArr.length; i++) {
-            inputSampleArr[i] = pickByTime(components[i].getAvailableItemStackSample());
-        }
-        return inputSampleArr;
-    }
-
-    private final ItemStack[] enchantmentSampleBook = new ItemStack[]{new ItemStack(Items.ENCHANTED_BOOK)};
-    private final Map<Enchantment, Integer> enchantmentMap = new HashMap<>();
-    private final Map<Enchantment, Integer> enchantmentMapBefore = new HashMap<>();
-
-    @Override
-    public ItemStack[] getOutputSample(ItemStack[] inputSample) {
-        int lvlBefore = indexByTime(enchantment.getMaxLevel() - 1);
-
-        enchantmentMap.put(enchantment, lvlBefore + 1);
-        EnchantmentHelper.setEnchantments(
-                enchantmentMap
-                , enchantmentSampleBook[0]
-        );
-        return enchantmentSampleBook;
-    }
-
-
-    @Override
-    public void onInfusionStart(Level atLevel, BlockPos matrixPos, @Nullable String playerNameActivatedInfusion) {
-        super.onInfusionStart(atLevel, matrixPos, playerNameActivatedInfusion);
+    public void onInfusionStart(Level atLevel, BlockPos matrixPos, @Nullable String playerNameActivatedInfusion,ItemStack centralStack) {
+        super.onInfusionStart(atLevel, matrixPos, playerNameActivatedInfusion,centralStack);
         Player player = platformUtils.getServer().getPlayerList().getPlayerByName(playerNameActivatedInfusion);
         if (player == null){
             player = atLevel.getNearestPlayer(
@@ -283,7 +284,27 @@ public class ThaumcraftInfusionEnchantmentRecipe extends InfusionRecipe
                     10,false);
         }
         if (player != null) {
-            costPlayersNearbyExperience(player, matrixPos);
+            costPlayersNearbyExperience(player, matrixPos,calcXP(centralStack));
         }
+    }
+
+    @Override
+    public List<ItemStack> getRemainingStacks(List<ItemStack> inputsNotCenter){
+        List<ItemStack> outStacks = new LinkedList<>();
+        int counter = 0;
+        for (var in: inputsNotCenter){
+            var matcher = components.get(counter);
+            if (!matcher.matches(in)){
+                throw new IllegalArgumentException("should match recipe before getRemainingStacks!");
+            }
+            outStacks.add(matcher.getRemainingStack(in));
+            counter += 1;
+        }
+        return outStacks;
+    }
+
+    @Override
+    public boolean matchViaOutput(ItemStack res) {
+        return resultMatcher.matches(res);
     }
 }

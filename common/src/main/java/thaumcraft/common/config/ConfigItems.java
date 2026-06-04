@@ -20,6 +20,7 @@ import thaumcraft.common.entities.golems.*;
 import thaumcraft.common.items.armor.*;
 import thaumcraft.common.items.baubles.*;
 import thaumcraft.common.items.equipment.*;
+import thaumcraft.common.items.junkbox.ItemBathSalts;
 import thaumcraft.common.items.junkbox.ItemCrystalEssence;
 import thaumcraft.common.items.junkbox.ItemManaBean;
 import thaumcraft.common.items.junkbox.ItemZombieBrain;

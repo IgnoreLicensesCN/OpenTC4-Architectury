@@ -1,4 +1,4 @@
-package thaumcraft.common.items.misc.jars;
+package thaumcraft.common.items.jars;
 
 import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.ThaumcraftBlocks;

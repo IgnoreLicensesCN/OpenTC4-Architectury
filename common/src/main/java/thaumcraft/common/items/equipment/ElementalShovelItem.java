@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.common.items.ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
 
+//TODO:Verify ai code i used before,that might be a mistake
 public class ElementalShovelItem extends ShovelItem /*ItemSpade*/ implements IRepairEnchantable, IArchitectDisplayItem {
     public static final Set<Block> effectiveBlockForElementalShovel = ConcurrentHashMap.newKeySet();
     public static final Set<TagKey<Block>> effectiveTagForElementalShovel = ConcurrentHashMap.newKeySet();

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.jars.NodeJarBlockItem;
+import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
 

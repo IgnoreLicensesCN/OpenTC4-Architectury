@@ -320,9 +320,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
 
 
     public void mergeWithHighest(AspectList<Asp> in) {
-        for (var a : in.keySet()) {
-            this.mergeWithHighest(a, in.get(a));
-        }
+        in.forEach(this::mergeWithHighest);
 //		recalculateVisSize();//calculated each loop above
 
     }

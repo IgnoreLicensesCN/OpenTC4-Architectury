@@ -3,8 +3,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -51,7 +51,6 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                 }
             }
         }
-        //TODO
     }
 
     private void spawnClerics() {
@@ -102,7 +101,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         if (success > 2) {
             BlockState state = serverLevel.getBlockState(this.getBlockPos());
             state.setValue(EldritchAltarBlock.SPAWNED_CLERICS,true);
-            serverLevel.setBlock(this.getBlockPos(),state,3);
+            serverLevel.setBlockAndUpdate(this.getBlockPos(),state);
         }
 
     }

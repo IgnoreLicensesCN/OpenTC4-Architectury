@@ -23,6 +23,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
@@ -146,11 +147,11 @@ public class ThaumcraftCraftingManager {
     }
 
     @Deprecated(forRemoval = true)
-    public static ThaumcraftInfusionEnchantmentRecipe findMatchingInfusionEnchantmentRecipe(List<ItemStack> items, ItemStack input, Player player) {
-        ThaumcraftInfusionEnchantmentRecipe var13 = null;
+    public static SimpleInfusionEnchantmentRecipe findMatchingInfusionEnchantmentRecipe(List<ItemStack> items, ItemStack input, Player player) {
+        SimpleInfusionEnchantmentRecipe var13 = null;
 
-        for (ThaumcraftInfusionEnchantmentRecipe var11 : InfusionRecipe.getInfusionEnchantmentRecipes()) {
-            if (var11 instanceof ThaumcraftInfusionEnchantmentRecipe && var11.matches(items, input, player.level(), player)) {
+        for (SimpleInfusionEnchantmentRecipe var11 : InfusionRecipe.getInfusionEnchantmentRecipes()) {
+            if (var11 instanceof SimpleInfusionEnchantmentRecipe && var11.matches(items, input, player.level(), player)) {
                 var13 = var11;
                 break;
             }
@@ -431,9 +432,9 @@ public class ThaumcraftCraftingManager {
         if (cr == null) {
             return null;
         } else {
-            AspectList<Aspect> ot = cr.getAspects().copy();
+            AspectList<Aspect> ot = cr.getAspectsExample().copy();
             ArrayList<ItemStack> ingredients = new ArrayList<>();
-            ItemStack is = cr.getRecipeInput().copy();
+            ItemStack is = cr.getExampleRecipeInput().copy();
             is.setCount(1);
             ingredients.add(is);
 
@@ -444,14 +445,14 @@ public class ThaumcraftCraftingManager {
             }
 
             AspectList<Aspect> out = new LinkedHashAspectList<>();
-            AspectList<Aspect> ot2 = getAspectsFromIngredients(ingredients, cr.getRecipeOutput(), history);
+            AspectList<Aspect> ot2 = getAspectsFromIngredients(ingredients, cr.getExampleRecipeOutput(), history);
 
             for (var tt : ot2.keySet()) {
                 out.addAll(tt, ot2.get(tt));
             }
 
             for (var tt : ot.keySet()) {
-                int amt = (int) (Math.sqrt(ot.get(tt)) / (double) cr.getRecipeOutput()
+                int amt = (int) (Math.sqrt(ot.get(tt)) / (double) cr.getExampleRecipeOutput()
                         .getCount());
                 out.addAll(tt, amt);
             }
