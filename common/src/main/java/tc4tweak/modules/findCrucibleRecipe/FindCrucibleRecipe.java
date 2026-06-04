@@ -2,7 +2,7 @@ package tc4tweak.modules.findCrucibleRecipe;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 
 import java.util.List;
 

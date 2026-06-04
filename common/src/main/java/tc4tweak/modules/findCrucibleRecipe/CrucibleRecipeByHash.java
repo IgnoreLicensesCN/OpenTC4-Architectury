@@ -4,7 +4,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import tc4tweak.CommonUtils;
 import tc4tweak.modules.FlushableCache;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 
 import java.util.List;
 

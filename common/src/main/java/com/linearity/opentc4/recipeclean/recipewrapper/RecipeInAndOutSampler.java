@@ -4,6 +4,7 @@ import com.linearity.opentc4.annotations.JEILikeOnly;
 import net.minecraft.world.item.ItemStack;
 
 @JEILikeOnly
+@Deprecated(forRemoval = true)
 public interface RecipeInAndOutSampler {
     //you know we can just get inputs
     @JEILikeOnly

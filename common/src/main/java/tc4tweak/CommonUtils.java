@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.research.ResearchCategory;
 
 import java.lang.ref.Reference;
@@ -30,7 +30,7 @@ public class CommonUtils {
     }
 
     public static String toString(CrucibleRecipe r) {
-        return "CrucibleRecipe{key=" + r.research + ",catalyst=" + r.catalyst + ",output=" + r.getRecipeOutput() + ",aspects=" + toString(r.aspects) + "}";
+        return "CrucibleRecipe{key=" + r.research + ",catalyst=" + r.catalyst + ",output=" + r.getRecipeOutputExample() + ",aspects=" + toString(r.aspectsRequiring) + "}";
     }
 
     public static void sortResearchCategories(boolean force) {

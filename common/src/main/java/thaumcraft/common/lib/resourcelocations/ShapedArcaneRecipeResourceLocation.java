@@ -2,8 +2,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

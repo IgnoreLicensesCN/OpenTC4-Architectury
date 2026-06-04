@@ -1,6 +1,7 @@
-package thaumcraft.api.crafting;
+package thaumcraft.api.crafting.arcane;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.annotations.JEILikeOnly;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
+import thaumcraft.api.crafting.AbstractResourceLocationIdentifiedRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ShapelessArcaneRecipeResourceLocation;
@@ -23,6 +25,7 @@ import java.util.function.Function;
 
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
+//TODO:Clean
 public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapelessArcaneRecipe, ShapelessArcaneRecipeResourceLocation> implements IArcaneRecipe
 {
     private final Function<ItemStack[],ItemStack> resultGenerator;
@@ -100,7 +103,9 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
     public int getRecipeSize(){ return input.length; }
 
     @Override
-    public ItemStack getRecipeOutput(){ return getOutputSample(getInputSample())[0]; }
+    public ItemStack getRecipeOutputExample(){
+        return getOutputSample(getInputSample())[0];
+    }
 
     @Override
     public ItemStack getCraftingResult(IArcaneWorkbenchContainer var1){
@@ -216,8 +221,9 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
 //        return this.input;
 //    }
     
-    @Override		
-	public CentiVisList<Aspect> getAspects() {
+    @Override
+    @JEILikeOnly
+	public CentiVisList<Aspect> getAspectsExample() {
 		return aspects;
 	}
     
@@ -231,7 +237,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
 		return research;
 	}
 
-    @Override
+    @JEILikeOnly
     public ItemStack[] getInputSample() {
         for (int i=0;i<input.length;i++){
             inputSampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
@@ -241,7 +247,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
 
 
     private final ItemStack[] outputSampleArr = new ItemStack[1];
-    @Override
+
     public ItemStack[] getOutputSample(ItemStack[] inputSample) {
         outputSampleArr[0] = resultGenerator.apply(inputSample);
         return outputSampleArr;

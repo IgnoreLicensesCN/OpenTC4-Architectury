@@ -458,5 +458,4 @@ public class LinkedHashAspectList<Asp extends Aspect>
         return this.aspects.containsKey(aspect);
     }
 
-
 }

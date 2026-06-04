@@ -1,5 +1,6 @@
 package thaumcraft.api.crafting.interfaces;
 
+import com.linearity.opentc4.annotations.JEILikeOnly;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import com.linearity.opentc4.recipeclean.recipewrapper.RecipeInAndOutSampler;
@@ -9,8 +10,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.crafting.ShapedArcaneRecipe;
-import thaumcraft.api.crafting.ShapelessArcaneRecipe;
+import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.arcane.ShapelessArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
@@ -22,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * dont store crafting result or anything here,it's a singleton.
  * --IgnoreLicensesCN
  */
-public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputSample, IAspectCalculableRecipe
+public interface IArcaneRecipe extends CanMatchViaOutputSample, IAspectCalculableRecipe
 {
 
 
@@ -85,8 +86,9 @@ public interface IArcaneRecipe extends RecipeInAndOutSampler, CanMatchViaOutputS
      */
     int getRecipeSize();
 
-    ItemStack getRecipeOutput();
-    CentiVisList<Aspect> getAspects();
+    @JEILikeOnly
+    ItemStack getRecipeOutputExample();
+    CentiVisList<Aspect> getAspectsExample();
     CentiVisList<Aspect> getAspects(IArcaneWorkbenchContainer var1);
     ResearchItem getResearch();
 

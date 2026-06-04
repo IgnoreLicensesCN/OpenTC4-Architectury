@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,10 +20,10 @@ public class FastCrucibleRecipeMatcher {
 
     public void registerRecipe(CrucibleRecipe recipe) {
         recipeMap.computeIfAbsent(
-                recipe.aspects.size(),
+                recipe.getAspectRequirementMin().size(),
                 k -> new Int2ObjectRBTreeMap<>(integerComparator))
                 .computeIfAbsent(
-                        recipe.aspects.visSize(),
+                        recipe.getAspectRequirementMin().visSize(),
                         k -> new ArrayList<>())
                 .add(recipe);
     }

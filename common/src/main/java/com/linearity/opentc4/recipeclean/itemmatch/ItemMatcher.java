@@ -19,8 +19,6 @@ public class ItemMatcher extends RecipeItemMatcher {
         this.sample = List.of(new ItemStack(item));
     }
 
-
-
     @Override
     public boolean matches(@NotNull ItemStack stack) {
         return Objects.equals(this.item, stack.getItem());
@@ -48,5 +46,10 @@ public class ItemMatcher extends RecipeItemMatcher {
 
     public static @NotNull ItemMatcher of(@NotNull final Item item) {
         return cache.computeIfAbsent(item, ItemMatcher::new);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemMatcher{" + "item=" + item + '}';
     }
 }

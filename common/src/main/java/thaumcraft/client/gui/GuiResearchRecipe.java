@@ -26,8 +26,11 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
-import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.arcane.ShapelessArcaneRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
+import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
@@ -864,20 +867,20 @@ public class GuiResearchRecipe extends GuiScreen {
             int mposx = mx;
             int mposy = my;
             int total = 0;
-            int rows = (rc.aspects.size() - 1) / 3;
-            int shift = (3 - rc.aspects.size() % 3) * 10;
+            int rows = (rc.aspectsRequiring.size() - 1) / 3;
+            int shift = (3 - rc.aspectsRequiring.size() % 3) * 10;
             int sx = x + start + 28;
             int sy = y + 96 + 32 - 10 * rows;
 
-            for (Aspect tag : rc.aspects.getAspectsSorted()) {
+            for (Aspect tag : rc.aspectsRequiring.getAspectsSorted()) {
                 int m = 0;
-                if (total / 3 >= rows && (rows > 1 || rc.aspects.size() < 3)) {
+                if (total / 3 >= rows && (rows > 1 || rc.aspectsRequiring.size() < 3)) {
                     m = 1;
                 }
 
                 int vx = sx + total % 3 * 20 + shift * m;
                 int vy = sy + total / 3 * 20;
-                UtilsFX.drawTag(vx, vy, tag, (float) rc.aspects.get(tag), 0, this.zLevel);
+                UtilsFX.drawTag(vx, vy, tag, (float) rc.aspectsRequiring.get(tag), 0, this.zLevel);
                 ++total;
             }
 
@@ -886,8 +889,8 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             RenderHelper.enableGUIStandardItemLighting();
             GL11.glEnable(2884);
-            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, rc.getRecipeOutput(), x + 48 + start, y + 36);
-            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, rc.getRecipeOutput(), x + 48 + start, y + 36);
+            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, rc.getRecipeOutputExample(), x + 48 + start, y + 36);
+            itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, rc.getRecipeOutputExample(), x + 48 + start, y + 36);
             RenderHelper.disableStandardItemLighting();
             GL11.glEnable(2896);
             GL11.glPopMatrix();
@@ -902,7 +905,7 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glEnable(2896);
             GL11.glPopMatrix();
             if (mx >= x + 48 + start && my >= y + 36 && mx < x + 48 + start + 16 && my < y + 36 + 16) {
-                this.drawCustomTooltip(this, itemRenderer, this.fontRendererObj, rc.getRecipeOutput().getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips), mx, my, 11);
+                this.drawCustomTooltip(this, itemRenderer, this.fontRendererObj, rc.getRecipeOutputExample().getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips), mx, my, 11);
             }
 
             if (mx >= x + 26 + start && my >= y + 72 && mx < x + 26 + start + 16 && my < y + 72 + 16) {
@@ -920,9 +923,9 @@ public class GuiResearchRecipe extends GuiScreen {
 
             total = 0;
 
-            for (Aspect tag : rc.aspects.getAspectsSorted()) {
+            for (Aspect tag : rc.aspectsRequiring.getAspectsSorted()) {
                 int m = 0;
-                if (total / 3 >= rows && (rows > 1 || rc.aspects.size() < 3)) {
+                if (total / 3 >= rows && (rows > 1 || rc.aspectsRequiring.size() < 3)) {
                     m = 1;
                 }
 

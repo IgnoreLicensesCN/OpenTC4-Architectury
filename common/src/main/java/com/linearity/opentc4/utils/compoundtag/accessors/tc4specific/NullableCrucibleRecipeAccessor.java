@@ -4,9 +4,9 @@ import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccess
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.CrucibleRecipeResourceLocationTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 
-import static thaumcraft.api.crafting.CrucibleRecipe.CRUCIBLE_RECIPES_VIEW;
+import static thaumcraft.api.crafting.crucible.CrucibleRecipe.CRUCIBLE_RECIPES_VIEW;
 
 public class NullableCrucibleRecipeAccessor extends CompoundTagAccessor<CrucibleRecipe> {
     private final CrucibleRecipeResourceLocationTagAccessor internalAccessor;

@@ -22,8 +22,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
+import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
@@ -52,7 +53,7 @@ public class ThaumcraftCraftingManager {
             ItemStack temp = lastDrop.copy();
             temp.setCount(1);
             if (ResearchManager.isResearchComplete(username, recipe.research) && recipe.matches(aspects, temp)) {
-                int result = recipe.aspects.size();
+                int result = recipe.aspectsRequiring.size();
                 if (result > highest) {
                     highest = result;
                     resultRecipe = recipe;
@@ -329,8 +330,8 @@ public class ThaumcraftCraftingManager {
     private static AspectList<Aspect> generateTagsFromCrucibleRecipes(Item item, List<ItemStack> history) {
         CrucibleRecipe cr = CrucibleRecipe.getCrucibleRecipe(new ItemStack(item, 1));
         if (cr != null) {
-            AspectList<Aspect> ot = cr.aspects.copy();
-            int ss = cr.getRecipeOutput()
+            AspectList<Aspect> ot = cr.aspectsRequiring.copy();
+            int ss = cr.getRecipeOutputExample()
                     .getCount();
             AspectList<Aspect> ot2 = null;
             for (var cat:cr.catalyst.getAvailableItemStackSample()){

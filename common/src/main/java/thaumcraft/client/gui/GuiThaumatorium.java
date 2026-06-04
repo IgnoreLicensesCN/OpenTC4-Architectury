@@ -84,14 +84,14 @@ public class GuiThaumatorium extends GuiContainer {
             }
          }
 
-         if (this.container.recipes.get(this.index).aspects.size() > 6) {
+         if (this.container.recipes.get(this.index).aspectsRequiring.size() > 6) {
             if (this.startAspect > 0) {
                this.drawTexturedModalRect(k + 32, l + 40, 192, 32, 8, 16);
             } else {
                this.drawTexturedModalRect(k + 32, l + 40, 176, 32, 8, 16);
             }
 
-            if (this.startAspect < this.container.recipes.get(this.index).aspects.size() - 1) {
+            if (this.startAspect < this.container.recipes.get(this.index).aspectsRequiring.size() - 1) {
                this.drawTexturedModalRect(k + 136, l + 40, 200, 32, 8, 16);
             } else {
                this.drawTexturedModalRect(k + 136, l + 40, 184, 32, 8, 16);
@@ -141,12 +141,12 @@ public class GuiThaumatorium extends GuiContainer {
       int count = 0;
       int pos = 0;
       if (this.inventory.recipeHash.contains(this.container.recipes.get(this.index).hash)) {
-         for(Aspect aspect : this.container.recipes.get(this.index).aspects.getAspectsSorted()) {
+         for(Aspect aspect : this.container.recipes.get(this.index).aspectsRequiring.getAspectsSorted()) {
             if (count >= this.startAspect) {
                GL11.glPushMatrix();
                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                this.drawTexturedModalRect(k + 41 + 16 * pos, l + 57, 176, 8, 14, 6);
-               int i1 = (int)((float)this.inventory.essentia.getAmount(aspect) / (float) this.container.recipes.get(this.index).aspects.get(aspect) * 12.0F);
+               int i1 = (int)((float)this.inventory.essentia.getAmount(aspect) / (float) this.container.recipes.get(this.index).aspectsRequiring.get(aspect) * 12.0F);
                Color c = new Color(aspect.getColor());
                GL11.glColor4f((float)c.getRed() / 255.0F, (float)c.getGreen() / 255.0F, (float)c.getBlue() / 255.0F, 1.0F);
                this.drawTexturedModalRect(k + 42 + 16 * pos, l + 58, 176, 0, i1, 4);
@@ -164,9 +164,9 @@ public class GuiThaumatorium extends GuiContainer {
       count = 0;
       pos = 0;
 
-      for(Aspect aspect : this.container.recipes.get(this.index).aspects.getAspectsSorted()) {
+      for(Aspect aspect : this.container.recipes.get(this.index).aspectsRequiring.getAspectsSorted()) {
          if (count >= this.startAspect) {
-            UtilsFX.drawTag(k + 40 + 16 * pos, l + 40, aspect, (float) this.container.recipes.get(this.index).aspects.get(aspect), 0, this.zLevel);
+            UtilsFX.drawTag(k + 40 + 16 * pos, l + 40, aspect, (float) this.container.recipes.get(this.index).aspectsRequiring.get(aspect), 0, this.zLevel);
             ++pos;
          }
 
@@ -191,12 +191,12 @@ public class GuiThaumatorium extends GuiContainer {
       GL11.glEnable(2896);
       GL11.glEnable(2884);
       GL11.glEnable(GL11.GL_BLEND);
-      itemRender.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, this.container.recipes.get(this.index).getRecipeOutput(), x + 112, y + 16);
-      itemRender.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, this.container.recipes.get(this.index).getRecipeOutput(), x + 112, y + 16);
+      itemRender.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, this.container.recipes.get(this.index).getRecipeOutputExample(), x + 112, y + 16);
+      itemRender.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, this.container.recipes.get(this.index).getRecipeOutputExample(), x + 112, y + 16);
       int xx = mx - (x + 112);
       int yy = my - (y + 16);
       if (xx >= 0 && yy >= 0 && xx < 16 && yy < 16) {
-         this.renderToolTip(this.container.recipes.get(this.index).getRecipeOutput(), mx, my);
+         this.renderToolTip(this.container.recipes.get(this.index).getRecipeOutputExample(), mx, my);
       }
 
       if (dull) {
@@ -240,7 +240,7 @@ public class GuiThaumatorium extends GuiContainer {
             }
          }
 
-         if (this.container.recipes.get(this.index).aspects.size() > 6) {
+         if (this.container.recipes.get(this.index).aspectsRequiring.size() > 6) {
             if (this.startAspect > 0) {
                x = mx - (gx + 32);
                y = my - (gy + 40);
@@ -250,7 +250,7 @@ public class GuiThaumatorium extends GuiContainer {
                }
             }
 
-            if (this.startAspect < this.container.recipes.get(this.index).aspects.size() - 1) {
+            if (this.startAspect < this.container.recipes.get(this.index).aspectsRequiring.size() - 1) {
                x = mx - (gx + 136);
                y = my - (gy + 40);
                if (x >= 0 && y >= 0 && x < 8 && y < 16) {

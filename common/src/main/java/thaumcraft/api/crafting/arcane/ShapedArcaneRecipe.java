@@ -1,6 +1,7 @@
-package thaumcraft.api.crafting;
+package thaumcraft.api.crafting.arcane;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.annotations.JEILikeOnly;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
+import thaumcraft.api.crafting.AbstractResourceLocationIdentifiedRecipe;
 import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
@@ -24,6 +26,7 @@ import java.util.function.Function;
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
+//TODO:Clean
 public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
     //Added in for future ease of change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
@@ -257,7 +260,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getRecipeOutputExample() {
         return resultGenerator.apply(List.of(getInputSample()));
     }
 
@@ -309,47 +312,11 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
                 if (!target.matches(slot)) {
                     return false;
                 }
-//                if (target instanceof ItemStack)
-//                {
-//                    if (!checkItemEquals((ItemStack)target, slot))
-//                    {
-//                        return false;
-//                    }
-//                }
-//                else if (target instanceof ArrayList)
-//                {
-//                    boolean matched = false;
-//
-//                    for (ItemStack item : (ArrayList<ItemStack>)target)
-//                    {
-//                        matched = matched || checkItemEquals(item, slot);
-//                    }
-//
-//                    if (!matched)
-//                    {
-//                        return false;
-//                    }
-//                }
-//                else if (target == null && slot != null)
-//                {
-//                    return false;
-//                }
             }
         }
 
         return true;
     }
-
-//    private boolean checkItemEquals(ItemStack target, ItemStack input)
-//    {
-//        if (input == null && target != null || input != null && target == null)
-//        {
-//            return false;
-//        }
-//        return (target.getItem() == input.getItem() &&
-//        		(!target.hasTagCompound() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input,target)) &&
-//        		(ignoresDamage(target)|| target.getDamageValue() == input.getDamageValue()));
-//    }
 
     public ShapedArcaneRecipe setMirrored(boolean mirror) {
         mirrored = mirror;
@@ -367,7 +334,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
     }
 
     @Override
-    public CentiVisList<Aspect> getAspects() {
+    public CentiVisList<Aspect> getAspectsExample() {
         return aspectsGenerator.apply(null);
     }
 
@@ -381,7 +348,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
         return research;
     }
 
-    @Override
+    @JEILikeOnly
     public ItemStack[] getInputSample() {
         for (int i = 0; i < input.length; i++) {
             sampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
@@ -391,11 +358,11 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
 
     private final ItemStack[] resultStore = new ItemStack[1];
 
-    @Override
-    public ItemStack[] getOutputSample(ItemStack[] inputSample) {
-        resultStore[0] = resultGenerator.apply(Arrays.asList(inputSample));
-        return resultStore;
-    }
+//    @Override
+//    public ItemStack[] getOutputSample(ItemStack[] inputSample) {
+//        resultStore[0] = resultGenerator.apply(Arrays.asList(inputSample));
+//        return resultStore;
+//    }
 
     @Override
     public boolean matchViaOutput(ItemStack res) {

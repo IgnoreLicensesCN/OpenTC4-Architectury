@@ -17,7 +17,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;

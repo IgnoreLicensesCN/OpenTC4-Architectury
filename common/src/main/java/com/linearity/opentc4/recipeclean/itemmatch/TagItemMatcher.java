@@ -52,4 +52,9 @@ public class TagItemMatcher extends RecipeItemMatcher {
     public static @NotNull TagItemMatcher of(@NotNull String tag) {
         return cache.computeIfAbsent(tag, TagItemMatcher::new);
     }
+
+    @Override
+    public String toString() {
+        return "TagItemMatcher{" + "tag=" + tag + '}';
+    }
 }

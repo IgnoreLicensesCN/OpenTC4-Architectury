@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.tiles.TileThaumatorium;
 
@@ -72,7 +72,7 @@ public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
             }
 
             GL11.glScaled(0.75F, 0.75F, 0.75F);
-            ItemStack is = recipe.getRecipeOutput().copy();
+            ItemStack is = recipe.getRecipeOutputExample().copy();
             is.stackSize = 1;
             this.entityitem = new EntityItem(tile.getLevel(), 0.0F, 0.0F, 0.0F, is);
             this.entityitem.hoverStart = 0.0F;

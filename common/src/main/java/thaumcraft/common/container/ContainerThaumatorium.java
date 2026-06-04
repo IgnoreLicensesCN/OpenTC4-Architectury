@@ -7,7 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileThaumatorium;
 
@@ -87,7 +87,7 @@ public class ContainerThaumatorium extends Container {
          }
 
          if (!found) {
-            this.thaumatorium.recipeEssentia.add(this.recipes.get(button).aspects.copy());
+            this.thaumatorium.recipeEssentia.add(this.recipes.get(button).aspectsRequiring.copy());
             this.thaumatorium.recipePlayer.add(par1Player.getCommandSenderName());
             this.thaumatorium.recipeHash.add(this.recipes.get(button).hash);
          }

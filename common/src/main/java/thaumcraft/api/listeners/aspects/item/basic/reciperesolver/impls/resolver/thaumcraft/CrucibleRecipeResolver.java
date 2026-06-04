@@ -1,7 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.resolver.thaumcraft;
 
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.IAspectCalculableRecipeResolver;
 
 public class CrucibleRecipeResolver extends IAspectCalculableRecipeResolver {

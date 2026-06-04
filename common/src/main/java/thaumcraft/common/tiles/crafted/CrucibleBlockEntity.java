@@ -28,7 +28,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -396,9 +396,9 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 
                 if (recipeChosen != null && this.getFluidAmount() > 0) {
                     burnIntoAspect = false;
-                    recipeChosen.removeMatching(this.owningAspects);
+                    recipeChosen.removeMatching(this.owningAspects,stack);
                     this.decreaseFluid(50);
-                    ItemStack out = recipeChosen.getRecipeOutput().copy();
+                    ItemStack out = recipeChosen.getRecipeOutput(stack);
                     this.ejectItem(out);
 
 //                TODO:better crucible crafting API

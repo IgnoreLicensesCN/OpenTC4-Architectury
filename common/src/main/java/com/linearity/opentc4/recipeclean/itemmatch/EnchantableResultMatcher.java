@@ -32,4 +32,9 @@ public class EnchantableResultMatcher extends RecipeItemMatcher{
     public static EnchantableResultMatcher of(Enchantment enchantment) {
         return enchantableMatcherMap.computeIfAbsent(enchantment, EnchantableResultMatcher::new);
     }
+
+    @Override
+    public String toString() {
+        return  "EnchantableResultMatcher{" + "enchantment=" + enchantment + '}';
+    }
 }

@@ -188,4 +188,7 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 		return currentAsp.get();
 	}
 	boolean containsKey(Aspect aspect);
+	default boolean containsEnough(Aspect aspect,int amount){
+		return getOrDefault(aspect,0) >= amount;
+	}
 }

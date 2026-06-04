@@ -17,7 +17,7 @@ public class StrictItemStackMatcher extends RecipeItemMatcher {
 
     @Override
     public boolean matches(@NotNull ItemStack stack) {
-        return InventoryUtils.areItemStacksEqual(this.stack,stack,false,false);
+        return ItemStack.matches(this.stack,stack);
     }
 
     @Override
@@ -34,5 +34,10 @@ public class StrictItemStackMatcher extends RecipeItemMatcher {
     @Override
     public int hashCode() {
         return Objects.hashCode(stack);
+    }
+
+    @Override
+    public String toString() {
+        return "StrictItemStackMatcher{" + "stack=" + stack + '}';
     }
 }

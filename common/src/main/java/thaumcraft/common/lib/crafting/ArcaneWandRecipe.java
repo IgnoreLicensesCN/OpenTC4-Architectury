@@ -4,7 +4,7 @@ import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;

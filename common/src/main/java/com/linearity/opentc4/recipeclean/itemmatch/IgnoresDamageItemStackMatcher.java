@@ -59,4 +59,9 @@ public class IgnoresDamageItemStackMatcher extends RecipeItemMatcher {
     public @NotNull IgnoresDamageItemStackMatcher of(ItemStack stack) {
         return cache.computeIfAbsent(stack, IgnoresDamageItemStackMatcher::new);
     }
+
+    @Override
+    public String toString() {
+        return "IgnoresDamageItemStackMatcher{" + "stack=" + stack + '}';
+    }
 }

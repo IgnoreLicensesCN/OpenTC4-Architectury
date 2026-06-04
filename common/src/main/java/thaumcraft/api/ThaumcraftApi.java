@@ -8,7 +8,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.crafting.*;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.api.research.*;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;

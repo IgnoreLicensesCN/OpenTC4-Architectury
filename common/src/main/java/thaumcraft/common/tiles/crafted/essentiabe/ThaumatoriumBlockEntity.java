@@ -24,7 +24,7 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.tile.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachmentBlock;
@@ -349,9 +349,9 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (!recipe.matches(aspectsOwning,inStack)){
             return null;
         }
-        recipe.removeMatching(aspectsOwning);
+        recipe.removeMatching(aspectsOwning,inStack);
         inStack.shrink(1);
-        var out = recipe.getRecipeOutput().copy();
+        var out = recipe.getRecipeOutput(inStack);
         if (inStack.isEmpty()){
             currentCraftingIndexCache = Integer.MIN_VALUE;
         }

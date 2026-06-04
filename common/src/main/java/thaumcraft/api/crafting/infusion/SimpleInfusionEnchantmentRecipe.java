@@ -1,4 +1,4 @@
-package thaumcraft.api.crafting;
+package thaumcraft.api.crafting.infusion;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.recipeclean.itemmatch.EnchantableMatcher;
@@ -21,7 +21,6 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
-import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.network.fx.PacketFXInfusionSourceS2C;
 import thaumcraft.common.lib.resourcelocations.InfusionRecipeResourceLocation;
