@@ -44,6 +44,7 @@ public class InfusionMatrixBlock extends SuppressedWarningBlock implements Entit
                         .sound(SoundType.STONE)
                         .requiresCorrectToolForDrops()
                         .noOcclusion()
+                        .lightLevel(s -> 10)
         );
     }
 

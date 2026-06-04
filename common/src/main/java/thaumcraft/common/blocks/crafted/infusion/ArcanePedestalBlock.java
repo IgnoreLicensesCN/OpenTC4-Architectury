@@ -33,6 +33,7 @@ public class ArcanePedestalBlock extends AbstractPedestalBlock implements Entity
         );
     }
 
+    //TODO:Better shape
     public static final VoxelShape SHAPE = Shapes.box(0.25F, 0.0F, 0.25F, 0.75F, 0.99F, 0.75F);
 
     @Override

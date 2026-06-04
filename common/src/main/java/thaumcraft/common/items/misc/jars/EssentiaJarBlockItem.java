@@ -19,6 +19,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;

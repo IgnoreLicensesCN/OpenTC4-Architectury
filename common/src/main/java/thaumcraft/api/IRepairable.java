@@ -13,7 +13,6 @@ import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,7 +67,7 @@ public interface IRepairable {
 			if (basic.isEmpty()) {
 				return UnmodifiableCentiVisList.EMPTY_PRIMAL;
 			}
-			var reduced = ResearchManager.reduceToPrimals(basic);
+			var reduced = IAspectReducibleToPrimal.reduceToPrimals(basic);
 			CentiVisList<PrimalAspect> cost = new LinkedHashCentiVisList<>();
 			reduced.forEach(
 					(aspect, amount) -> cost.mergeWithHighest(

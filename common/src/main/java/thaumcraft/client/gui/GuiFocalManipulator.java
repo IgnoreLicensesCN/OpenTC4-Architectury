@@ -12,13 +12,13 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerFocalManipulator;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileFocalManipulator;
 
 import java.awt.*;
@@ -325,7 +325,7 @@ public class GuiFocalManipulator extends GuiContainer {
                         tal.addAll(as, amt);
                      }
 
-                     this.aspects = ResearchManager.reduceToPrimals(tal);
+                     this.aspects = IAspectReducibleToPrimal.reduceToPrimals(tal);
                   }
 
                   this.playButtonClick();

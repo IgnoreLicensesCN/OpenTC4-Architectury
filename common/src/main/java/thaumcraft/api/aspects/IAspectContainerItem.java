@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
-//(dont impl for empty jar)
+//(dont impl for empty jar)(oh there's no special "empty jar" now)
 public interface IAspectContainerItem<Asp extends Aspect> extends IBonusAspectOwnerItem<Asp> {
     @NotNull AspectList<Asp> getAspects(ItemStack itemstack);
     default @NotNull AspectList<Asp> getOwningBonusAspects(ItemStack stack){

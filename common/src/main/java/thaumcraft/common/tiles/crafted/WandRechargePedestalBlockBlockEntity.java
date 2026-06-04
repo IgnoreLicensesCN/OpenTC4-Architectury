@@ -14,6 +14,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalAspectAdder;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalUpgradeBlockEntity;
 
+import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.RECHARGE_PEDESTAL_CANNOT_APPLY;
 import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
 
@@ -39,12 +40,12 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
         if (this.tickCount % 5 != 0){
             return;
         }
-        var stack = getItem(0);
-        if (stack.is(RECHARGE_PEDESTAL_CANNOT_APPLY)){
+        var fillingStack = getItem(0);
+        if (fillingStack.is(RECHARGE_PEDESTAL_CANNOT_APPLY)){
             return;
         }
-        if (stack.getItem() instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainerItem) {
-            var aspRequiring = centiVisContainerItem.getAspectsWithRoomRemaining(stack);
+        if (fillingStack.getItem() instanceof ICentiVisContainerItem<? extends Aspect> centiVisContainerItem) {
+            var aspRequiring = centiVisContainerItem.getAspectsWithRoomRemaining(fillingStack);
             if (aspRequiring.isEmpty()){
                 return;
             }
@@ -54,7 +55,7 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
                 var selfPos = getBlockPos();
 
                 boolean nodeHarmful = centiVisContainerItem instanceof IWandComponentsOwnerItem componentsOwnerItem &&
-                        componentsOwnerItem.getWandComponents(stack).stream().allMatch(componentStack -> componentStack.getItem() instanceof INodeHarmfulComponent);
+                        componentsOwnerItem.isWandNodeHarmful(fillingStack);
                 int minAmountToKeep = nodeHarmful?0:1;
 
                 IWandRechargePedestalUpgradeBlockEntity upgradeBE;
@@ -71,7 +72,8 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
                 }
                 boolean drained = lookup.forItemsNearPosWithBreakWithRange(
                         selfPos,
-                        nodeBE -> {//"Oh the nodes we've cached"--here we go again
+                        nodeBE -> {
+                            //"Oh the nodes we've cached"--here we go again(consuming nodeBE)
                             var nodeBEPos = nodeBE.getBlockPos();
                             if (
                                     Math.abs(nodeBEPos.getX() - selfPos.getX()) > 8
@@ -86,15 +88,23 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
                                     (asp,amount) -> {
                                         int canUseAmount = amount - minAmountToKeep;
                                         if (aspRequiring.containsKey(asp)){
-                                            int remainingAmount = addAspectForContainer(asp,Math.min(canUseAmount,maxDrainAmount),stack,centiVisContainerItem,aspRequiring);
-                                            if (remainingAmount != 0){
-                                                drainedAspect(asp,canUseAmount-remainingAmount);
+                                            int remainingAmount =
+                                                    addAspectForContainer(
+                                                            asp,
+                                                            Math.min(canUseAmount,maxDrainAmount)*CENTIVIS_MULTIPLIER,
+                                                            fillingStack,
+                                                            centiVisContainerItem,
+                                                            aspRequiring
+                                                    );
+                                            int consumed = canUseAmount-remainingAmount;
+                                            if (consumed != 0){
+                                                drainedAspect(asp,consumed);
+                                                aspConsumed.addAll(asp,consumed);
                                                 return true;
                                             }
                                         }
-
                                         if (upgradeBE != null){
-                                            int consumed = upgradeBE.onDrainingMeetAspect(asp,canUseAmount,stack,centiVisContainerItem,aspRequiring);
+                                            int consumed = upgradeBE.onDrainingMeetAspect(asp,canUseAmount,fillingStack,centiVisContainerItem,aspRequiring);
                                             if (consumed != 0){
                                                 drainedAspect(asp,consumed);
                                                 aspConsumed.addAll(asp,consumed);
@@ -119,7 +129,7 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
         }
     }
 
-    //mixin point (e.g.for client)
+    //mixin point?
     protected void drainedAspect(Aspect aspect,int drained){
         //TODO:Client Side rendering field
         //public boolean draining = false;

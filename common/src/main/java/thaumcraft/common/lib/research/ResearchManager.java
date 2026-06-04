@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
@@ -342,53 +341,6 @@ public class ResearchManager {
         }
         var result = COMPOUND_ASPECT_RECIPES.get(new CompoundAspectComponent(aspect1, aspect2));
         return result == null ?Aspects.EMPTY : result;
-    }
-
-    public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al) {
-        return reduceToPrimals(al, false);
-    }
-    public static AspectList<Aspect> reduceToPrimalsAndCast(AspectList<Aspect> al) {
-        return (AspectList<Aspect>)(AspectList<?>)reduceToPrimals(al, false);
-    }
-
-    public static AspectList<PrimalAspect> reduceToPrimals(AspectList<Aspect> al, boolean merge) {
-        AspectList<PrimalAspect> out = new LinkedHashAspectList<>();
-
-        for (var aspect : al.keySet()) {
-            var aspAmount = al.get(aspect);
-            if (aspect != null) {
-                if (aspect instanceof PrimalAspect primalAspect) {
-                    if (merge) {
-                        out.mergeWithHighest(primalAspect, aspAmount);
-                    } else {
-                        out.addAll(primalAspect, aspAmount);
-                    }
-                } else if (aspect instanceof CompoundAspect compoundAspect) {
-                    AspectList<PrimalAspect> send = new LinkedHashAspectList<>();
-                    send.addAll(
-                            reduceToPrimals(
-                                    new LinkedHashAspectList<>(Map.of(compoundAspect.components.aspectA(), aspAmount))
-                                    ,merge)
-                    );
-                    send.addAll(
-                            reduceToPrimals(
-                                    new LinkedHashAspectList<>(
-                                            Map.of(compoundAspect.components.aspectB(), aspAmount))
-                                    ,merge)
-                    );
-
-                    for (var a : send.keySet()) {
-                        if (merge) {
-                            out.mergeWithHighest(a, send.get(a));
-                        } else {
-                            out.addAll(a, send.get(a));
-                        }
-                    }
-                }
-            }
-        }
-
-        return out;
     }
 
     public static boolean completeClueUnsaved(Player player, ClueResourceLocation key) {

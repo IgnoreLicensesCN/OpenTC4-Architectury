@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.bonus.consts;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -12,14 +13,9 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 import thaumcraft.api.listeners.aspects.item.bonus.listeners.BonusTagForItemListener;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
-import thaumcraft.api.wands.IWandComponentsOwnerItem;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static thaumcraft.api.listeners.aspects.item.bonus.consts.HelperConsts.*;
 
@@ -28,17 +24,22 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_BONUS_OWNER(new BonusTagForItemListener(10) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(
+                @NotNull Item item,
+                @NotNull ItemStack itemstack,
+                @NotNull UnmodifiableAspectList<Aspect> basicAspects,
+                @NotNull AspectList<Aspect> currentAspects
+        ) {
             if (item instanceof IBonusAspectOwnerItem<? extends Aspect> owner) {
-                AspectList<Aspect> aspectsFromContainer = (AspectList<Aspect>) owner.getOwningBonusAspects(itemstack);
-                if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
-                    for (Aspect tag : aspectsFromContainer.copy()
-                            .keySet()) {
-                        int amountInContainer = currentAspects.get(tag);
-                        if (amountInContainer > 0) {
-                            currentAspects.addAll(tag, amountInContainer);
-                        }
-                    }
+                var aspectsFromContainer = owner.getOwningBonusAspects(itemstack);
+                if (!aspectsFromContainer.isEmpty()) {
+                    aspectsFromContainer.forEach(
+                            (aspect, value) -> {
+                                if (value > 0){
+                                    currentAspects.addAll(aspect,value);
+                                }
+                            }
+                    );
                 }
             }
         }
@@ -46,7 +47,7 @@ public enum BonusTagForItemListeners {
 //
 //    DEFAULT_ON_ESSENTIA_CONTAINER(new BonusTagForItemListener(10) {
 //        @Override
-//        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+//        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
 //            if (item instanceof IEssentiaContainerItem essentiaContainer) {
 //                AspectList<Aspect> aspectsFromContainer = essentiaContainer.getAspects(itemstack);
 //                if (aspectsFromContainer != null && !aspectsFromContainer.isEmpty()) {
@@ -64,7 +65,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_ARMOR(new BonusTagForItemListener(20) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof ArmorItem armorItem) {
                 currentAspects.mergeWithHighest(
                         Aspects.ARMOR, armorItem.getMaterial()
@@ -76,7 +77,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_SWORD(new BonusTagForItemListener(30) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof SwordItem swordItem) {
                 float damage = swordItem.getTier()
                         .getAttackDamageBonus() + swordItem.getDamage();
@@ -89,7 +90,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_BOW(new BonusTagForItemListener(40) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof BowItem) {
                 currentAspects.mergeWithHighest(Aspects.WEAPON, 3);
                 currentAspects.mergeWithHighest(Aspects.FLIGHT, 1);
@@ -99,7 +100,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_PICKAXE(new BonusTagForItemListener(50) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof PickaxeItem pickaxe) {
                 Tier tier = pickaxe.getTier();
                 currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
@@ -108,7 +109,7 @@ public enum BonusTagForItemListeners {
     }),
     DEFAULT_ON_TOOL(new BonusTagForItemListener(60) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof TieredItem tiered) {
                 Tier tier = tiered.getTier();
                 currentAspects.mergeWithHighest(Aspects.MINE, tier.getLevel() + 1);//yeah harvest lvl
@@ -118,7 +119,7 @@ public enum BonusTagForItemListeners {
 
     DEFAULT_ON_SHEARS(new BonusTagForItemListener(70) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof ShearsItem shears) {
                 int maxDamage = shears.getMaxDamage();
                 currentAspects.mergeWithHighest(
@@ -130,7 +131,7 @@ public enum BonusTagForItemListeners {
     }),
     DEFAULT_ON_HOE(new BonusTagForItemListener(70) {
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (item instanceof HoeItem hoe) {
                 int maxDamage = hoe.getMaxDamage();
                 currentAspects.mergeWithHighest(
@@ -146,9 +147,8 @@ public enum BonusTagForItemListeners {
     DEFAULT_ENCHANTMENTS(new BonusTagForItemListener(80) {
 
         @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect>basicAspects, @NotNull AspectList<Aspect>currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect>basicAspects,@Modifiable @NotNull AspectList<Aspect>currentAspects) {
             if (!itemstack.isEmpty()) {
-
                 //what i will replace the default read nbt ways with
                 Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemstack);
 
@@ -171,37 +171,9 @@ public enum BonusTagForItemListeners {
             }
         }
     }),
-    MIGRATED_CASTING(new BonusTagForItemListener(90) {
+    MIGRATED_POTION( new BonusTagForItemListener(90) {
         @Override
-        public void onItem(@NotNull Item item,
-                           @NotNull ItemStack itemstack,
-                           @NotNull UnmodifiableAspectList<Aspect> basicAspects,
-                           @NotNull AspectList<Aspect> currentAspects) {
-            if (item instanceof IWandComponentsOwnerItem componentsOwner){
-                double totalCraftingCostCentiVisDividedByType = 0;
-                for (var component:componentsOwner.getWandComponents(itemstack)){
-                    AtomicReference<Double> craftingCostCentiVis = new AtomicReference<>((double) 0);
-                    Set<Aspect> totalCraftingAspectTypes = new HashSet<>(6);
-                    if (component.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> craftingCostOwner){
-                        craftingCostOwner.getCraftingCostCentiVis().forEach((costAspect,costAmount) -> {
-                            totalCraftingAspectTypes.add(costAspect);
-                            craftingCostCentiVis.updateAndGet(v ->  (v + costAmount));
-                        });
-                    }
-                    if (totalCraftingAspectTypes.isEmpty()){
-                        continue;
-                    }
-                    totalCraftingCostCentiVisDividedByType += craftingCostCentiVis.get() /totalCraftingAspectTypes.size();
-                }
-                if (totalCraftingCostCentiVisDividedByType < 0){return;}
-                currentAspects.mergeWithHighest(Aspects.MAGIC,(int)Math.floor(totalCraftingCostCentiVisDividedByType / (2*100)));
-                currentAspects.mergeWithHighest(Aspects.TOOL,(int)Math.floor(totalCraftingCostCentiVisDividedByType / (3*100)));
-            }
-        }
-    }),
-    MIGRATED_POTION( new BonusTagForItemListener(100) {
-        @Override
-        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects, @NotNull AspectList<Aspect> currentAspects) {
+        public void onItem(@NotNull Item item, @NotNull ItemStack itemstack, @NotNull UnmodifiableAspectList<Aspect> basicAspects,@Modifiable @NotNull AspectList<Aspect> currentAspects) {
             currentAspects.mergeWithHighest(Aspects.WATER, 1);
             List<MobEffectInstance> effects =  PotionUtils.getMobEffects(itemstack);
             if (!effects.isEmpty()) {

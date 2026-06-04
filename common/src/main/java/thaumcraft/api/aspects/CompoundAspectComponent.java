@@ -1,5 +1,7 @@
 package thaumcraft.api.aspects;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +15,7 @@ public record CompoundAspectComponent(Aspect aspectA, Aspect aspectB)
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "CompoundAspectComponent{" +
                 "aspectA=" + aspectA +
                 ", aspectB=" + aspectB +
@@ -32,7 +34,11 @@ public record CompoundAspectComponent(Aspect aspectA, Aspect aspectB)
         return Objects.hash(aspectA) + Objects.hash(aspectB);
     }
     @Override
-    public Iterator<Aspect> iterator() {
+    public @NotNull Iterator<Aspect> iterator() {
         return List.of(aspectA, aspectB).iterator();
+    }
+
+    public boolean contains(Aspect aspect) {
+        return aspectA == aspect || aspectB == aspect;
     }
 }
