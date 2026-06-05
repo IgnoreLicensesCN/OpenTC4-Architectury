@@ -16,7 +16,6 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +25,13 @@ import java.util.function.Function;
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-//TODO:Clean
-public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
+public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
     //Added in for future ease of change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
 
     //    public ItemStack output = null;
-    public final RecipeItemMatcher[] input;
+    public final List<RecipeItemMatcher> input;
     private final ItemStack[] sampleArr;
     protected final Function<List<ItemStack>, ItemStack> resultGenerator;
     //    public final AspectList<Aspect>aspects;
@@ -125,7 +123,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
         this.aspectsGenerator = aspectsGenerator;
 //        this.aspects = aspects;
 //        StringBuilder shape = new StringBuilder();
-        this.input = input;
+        this.input = List.of(input);
         this.sampleArr = new ItemStack[input.length];
         this.width = width;
         this.height = height;
@@ -256,7 +254,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
 
     @Override
     public int getRecipeSize() {
-        return input.length;
+        return input.size();
     }
 
     @Override
@@ -301,9 +299,9 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
 
                 if (subX >= 0 && subY >= 0 && subX < this.width && subY < this.height) {
                     if (mirror) {
-                        target = input[this.width - subX - 1 + subY * this.width];
+                        target = input.get(this.width - subX - 1 + subY * this.width);
                     } else {
-                        target = input[subX + subY * this.width];
+                        target = input.get(subX + subY * this.width);
                     }
                 }
 
@@ -329,7 +327,7 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
      *
      * @return The recipes input vales.
      */
-    public RecipeItemMatcher[] getInput() {
+    public List<RecipeItemMatcher> getInput() {
         return this.input;
     }
 
@@ -350,8 +348,8 @@ public class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe
 
     @JEILikeOnly
     public ItemStack[] getInputSample() {
-        for (int i = 0; i < input.length; i++) {
-            sampleArr[i] = pickByTime(input[i].getAvailableItemStackSample());
+        for (int i = 0; i < input.size(); i++) {
+            sampleArr[i] = pickByTime(input.get(i).getAvailableItemStackSample());
         }
         return sampleArr;
     }

@@ -33,70 +33,11 @@ public abstract class CrucibleRecipe
 	private static final List<CrucibleRecipe> unmodifiableCrucibleRecipes = Collections.unmodifiableList(crucibleRecipes);
 	private static final FastCrucibleRecipeMatcher fastCrucibleRecipeMatcher = new FastCrucibleRecipeMatcher();
 
-	//if dynamic,plz set this
-	// to least aspects and vis size of this recipe
-	// and override #matches to match dynamic condition.
-	// to ensure fastCrucibleRecipeMatcher works
-
 	public final ResearchItem research;
 	public CrucibleRecipe(@NotNull CrucibleRecipeResourceLocation recipeID,ResearchItem research) {
 		super(recipeID);
 		this.research = research;
 	}
-	//will auto register
-//	public CrucibleRecipe(
-//			CrucibleRecipeResourceLocation id,
-//            ResearchItem researchKey,
-//            Function<ItemStack,ItemStack> resultGetter,
-//            RecipeItemMatcher cat,
-//			UnmodifiableAspectList<Aspect> tags,
-//            RecipeItemMatcher outputMatcher
-//    ) {
-//		this(id,researchKey,resultGetter,cat,tags,outputMatcher,null,null,null);
-//	}
-//    public CrucibleRecipe(
-//			CrucibleRecipeResourceLocation id,
-//            ResearchItem researchKey,
-//            Function<ItemStack,ItemStack> resultGetter,
-//            RecipeItemMatcher cat,
-//			UnmodifiableAspectList<Aspect> tags,
-//            RecipeItemMatcher outputMatcher,
-//            ItemStack outputForAspectCalculation,
-//            List<List<ItemStack>> inputForAspectCalculation,
-//            List<List<Function<ItemStack,ItemStack>>> remainingForAspectCalculation
-//    ){
-//		super(id);
-//        this.recipeOutputGetter = resultGetter;
-//        this.aspectsRequiring = tags;
-//        this.research = researchKey;
-//        this.catalyst = cat;
-//        StringBuilder hc = new StringBuilder(researchKey.key.toString());
-//        for (var asp:tags.keySet()) {
-//            hc.append(asp.getAspectKey()).append(tags.get(asp));
-//        }
-//        this.hash = hc.toString().hashCode();
-//        this.inputSample = catalyst.getAvailableItemStackSample().toArray(new ItemStack[0]);
-//        this.outputMatcher = outputMatcher;
-//        this.supportsAspectCalculation =
-//                inputForAspectCalculation != null
-//                && outputForAspectCalculation != null
-//                && remainingForAspectCalculation != null;
-//		if (!this.supportsAspectCalculation
-//				&& !(inputForAspectCalculation == null
-//				&& outputForAspectCalculation == null
-//				&& remainingForAspectCalculation == null
-//		)
-//		){
-//			OpenTC4.LOGGER.warn(
-//					"""
-//                            not all aspect calculation elements are null or notnull,
-//                            this might be a bug or misunderstanding.
-//                            using researchItem:{}
-//                            """,research,new Exception());
-//		}
-//        this.inputForAspectCalculation = inputForAspectCalculation == null?List.of():inputForAspectCalculation;
-//        this.outputForAspectCalculation = outputForAspectCalculation == null?ItemStack.EMPTY:outputForAspectCalculation;
-//    }
 
 	public static @UnmodifiableView List<CrucibleRecipe> getCrucibleRecipes() {
 		return unmodifiableCrucibleRecipes;
@@ -137,6 +78,9 @@ public abstract class CrucibleRecipe
 	}
 	//this is for dynamic aspect requirement recipe
 	public abstract AspectList<Aspect> getAspectRequirement(ItemStack cat);
+	//if dynamic,plz set this
+	// to least aspects and vis size of this recipe
+	// to ensure fastCrucibleRecipeMatcher works
 	public abstract AspectList<Aspect> getAspectRequirementMin();
 
 	public abstract boolean catalystMatches(ItemStack cat);
@@ -156,9 +100,6 @@ public abstract class CrucibleRecipe
 		}
 	}
 	public abstract List<ItemStack> getRecipeOutputExample();
-
-	@Override
-	public abstract boolean matchViaOutput(ItemStack res);
 
 
 	private static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES = new ConcurrentHashMap<>();
