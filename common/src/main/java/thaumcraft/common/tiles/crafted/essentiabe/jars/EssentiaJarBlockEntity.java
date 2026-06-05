@@ -277,7 +277,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         return 0;
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     public void serverTick(){
         if (level == null){return;}
         tickCount+=1;

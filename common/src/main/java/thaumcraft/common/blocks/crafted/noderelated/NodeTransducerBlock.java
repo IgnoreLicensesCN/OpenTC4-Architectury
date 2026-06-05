@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.visnet.NodeTransducerBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.NodeTransducerBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 //TODO:BER

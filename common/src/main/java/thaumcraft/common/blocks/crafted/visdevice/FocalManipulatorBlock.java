@@ -39,7 +39,6 @@ public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainer
                         .strength(3,25)
                         .sound(SoundType.STONE)
                         .requiresCorrectToolForDrops()
-                        .noOcclusion()
         );
     }
 

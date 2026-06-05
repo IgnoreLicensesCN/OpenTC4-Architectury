@@ -272,6 +272,7 @@ public class ThaumcraftItems {
     public static final BlockItem ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
     public static final BathSaltsItem BATH_SALTS = Registry.SUPPLIER_BATH_SALTS.get();
     public static final BlockItem FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+    public static final BlockItem FLUX_SCRUBBER =  Registry.SUPPLIER_FLUX_SCRUBBER.get();
 
     //===========================================================================================
 
@@ -1023,9 +1024,11 @@ public class ThaumcraftItems {
                         "focal_manipulator",
                         () -> new BlockItem(ThaumcraftBlocks.FOCAL_MANIPULATOR, new Item.Properties())
                 );
-
-
-
+        public static final RegistrySupplier<BlockItem> SUPPLIER_FLUX_SCRUBBER =
+                ITEMS.register(
+                        "flux_scrubber",
+                        () -> new BlockItem(ThaumcraftBlocks.FLUX_SCRUBBER, new Item.Properties())
+                );
     }
 
     public static class ItemTags {

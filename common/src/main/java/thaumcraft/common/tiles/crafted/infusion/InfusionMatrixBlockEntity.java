@@ -113,7 +113,7 @@ public class InfusionMatrixBlockEntity
 
     //should not serialize
     public final AspectList<Aspect> aspectsRequiringView = new UnmodifiableAspectView<>(aspectsRequiring);
-    private int tickCount = 0;
+    private int tickCount = System.identityHashCode(this) & 63;
 
     private @Nullable("only when not crafting") InfusionRecipe craftingRecipe = null;
 

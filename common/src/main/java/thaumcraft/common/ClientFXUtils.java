@@ -28,7 +28,7 @@ import thaumcraft.client.fx.migrated.beams.*;
 import thaumcraft.client.fx.migrated.bolt.*;
 import thaumcraft.client.fx.migrated.other.*;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetRelayBlockEntity;
 
 import java.awt.*;
 import java.util.Map;

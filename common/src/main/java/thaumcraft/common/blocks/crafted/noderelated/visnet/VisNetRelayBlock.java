@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetRelayBlockEntity;
 
 //TODO:loot table,BER
 public class VisNetRelayBlock extends SuppressedWarningBlock implements EntityBlock {

@@ -23,7 +23,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         this(ThaumcraftBlockEntities.ELDRITCH_ALTAR, blockPos, blockState);
     }
 
-    public int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public void serverTick() {
         if (this.level == null || this.level.isClientSide) {

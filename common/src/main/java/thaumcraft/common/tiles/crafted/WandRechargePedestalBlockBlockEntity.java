@@ -10,6 +10,7 @@ import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandComponentsOwnerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.AbstractPedestalBlockEntity;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalAspectAdder;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalUpgradeBlock;
 
@@ -31,7 +32,7 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
         return itemStack.getItem() instanceof ICentiVisContainerItem<? extends Aspect> && !itemStack.is(RECHARGE_PEDESTAL_CANNOT_APPLY);
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public void serverTick() {
         if (this.level == null) {

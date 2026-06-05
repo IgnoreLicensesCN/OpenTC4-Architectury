@@ -19,7 +19,7 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 
 public class AbstractMirrorBlockEntity extends TileThaumcraft {
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     protected int inc = 40;
 
     public AbstractMirrorBlockEntity(BlockEntityType<? extends AbstractMirrorBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {

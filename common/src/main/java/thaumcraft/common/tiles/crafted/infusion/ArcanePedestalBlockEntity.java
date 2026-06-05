@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.abstracts.ICubeChunkBasedWeakLookupOwner;
 import thaumcraft.common.tiles.abstracts.IInfusionCenterItemStackProvider;
 import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
-import thaumcraft.common.tiles.crafted.AbstractPedestalBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractPedestalBlockEntity;
 
 import java.util.Map;
 

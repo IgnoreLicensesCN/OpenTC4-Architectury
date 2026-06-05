@@ -63,7 +63,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
     public int getLiquidCapacity() {
         return LIQUID_CAPACITY;
     }
-    private int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     public boolean shouldPause(){
         if (this.level == null){
             return true;

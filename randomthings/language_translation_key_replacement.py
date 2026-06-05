@@ -92,6 +92,7 @@ block_with_item_names = [
     ['tile.blockStoneDevice.8.name','compound_recharge_focus'],
     ['tile.blockStoneDevice.12.name','arcane_spa'],
     ['tile.blockStoneDevice.13.name','focal_manipulator'],
+    ['tile.blockStoneDevice.14.name','flux_scrubber'],
 ]
 
 force_add_keys = {

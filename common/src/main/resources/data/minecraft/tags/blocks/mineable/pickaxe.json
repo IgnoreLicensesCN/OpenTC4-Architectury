@@ -83,6 +83,7 @@
     "thaumcraft:wand_recharge_pedestal",
     "thaumcraft:compound_recharge_focus",
     "thaumcraft:arcane_spa",
-    "thaumcraft:focal_manipulator"
+    "thaumcraft:focal_manipulator",
+    "thaumcraft:flux_scrubber"
   ]
 }

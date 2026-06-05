@@ -26,7 +26,7 @@ import thaumcraft.common.lib.world.dim.*;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class AncientLockInsertedBlockEntity extends BlockEntity {
-    public int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public AncientLockInsertedBlockEntity(BlockEntityType<? extends AncientLockInsertedBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);

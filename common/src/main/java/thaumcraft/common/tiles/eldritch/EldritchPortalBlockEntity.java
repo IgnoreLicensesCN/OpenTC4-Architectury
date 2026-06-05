@@ -19,7 +19,7 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
     public EldritchPortalBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.ELDRITCH_PORTAL,blockPos,blockState);
     }
-    private int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public int getTickCount() {
         return tickCount;

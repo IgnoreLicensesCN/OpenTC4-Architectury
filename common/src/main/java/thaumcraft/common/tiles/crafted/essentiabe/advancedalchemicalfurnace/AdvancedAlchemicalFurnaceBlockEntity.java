@@ -65,7 +65,7 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         return FUEL_VIS_CAPACITY;
     }
     
-    public int tickCount = 0;
+    public int tickCount  = System.identityHashCode(this) & 63;
     public int burnItemTickCooldown = 0;
 
 

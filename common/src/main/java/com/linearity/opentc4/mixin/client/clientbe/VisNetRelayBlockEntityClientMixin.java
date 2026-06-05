@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetRelayBlockEntity;
 
 @Environment(EnvType.CLIENT)
 @Mixin(VisNetRelayBlockEntity.class)

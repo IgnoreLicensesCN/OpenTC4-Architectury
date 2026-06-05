@@ -20,7 +20,7 @@ import java.util.Collections;
 public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTransportBlockEntity {
    public int essentia = 0;
    public int charges = 0;
-   public int power = 0;
+   public int power = 0;//centivis amount
    public Direction facing = Direction.getOrientation(0);
    public int count = 0;
    ArrayList<BlockCoordinates> checklist = new ArrayList<>();

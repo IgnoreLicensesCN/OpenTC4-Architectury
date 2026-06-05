@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.abstracts;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 
 import static com.linearity.opentc4.Consts.AbstractPedestalBlockEntityTagAccessors.STORED_ITEM;
 

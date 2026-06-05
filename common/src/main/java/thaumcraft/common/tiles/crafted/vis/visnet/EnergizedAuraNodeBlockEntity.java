@@ -1,4 +1,4 @@
-package thaumcraft.common.tiles.crafted.visnet;
+package thaumcraft.common.tiles.crafted.vis.visnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

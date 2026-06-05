@@ -6,7 +6,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.crafted.visdevice.FocalManipulatorBlock;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.essentiabe.*;
 import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.*;
@@ -22,7 +21,10 @@ import thaumcraft.common.tiles.crafted.lamp.*;
 import thaumcraft.common.tiles.crafted.mirror.EssentiaMirrorBlockEntity;
 import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
 import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.*;
+import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.NodeTransducerBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetChargeRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetRelayBlockEntity;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
 import thaumcraft.common.tiles.node.*;
@@ -91,6 +93,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<WandRechargePedestalBlockBlockEntity> WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
     public static final BlockEntityType<ArcaneSpaBlockEntity> ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
     public static final BlockEntityType<FocalManipulatorBlockEntity> FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+    public static final BlockEntityType<FluxScrubberBlockEntity> FLUX_SCRUBBER = Registry.SUPPLIER_FLUX_SCRUBBER.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -518,6 +521,15 @@ public class ThaumcraftBlockEntities {
                                 ThaumcraftBlocks.FOCAL_MANIPULATOR
                         ).build(null)
                 );
+        public static final RegistrySupplier<BlockEntityType<FluxScrubberBlockEntity>> SUPPLIER_FLUX_SCRUBBER =
+                BLOCK_ENTITIES.register(
+                        "flux_scrubber",
+                        () -> BlockEntityType.Builder.of(
+                                FluxScrubberBlockEntity::new,
+                                ThaumcraftBlocks.FLUX_SCRUBBER
+                        ).build(null)
+                );
+
 
     }
 

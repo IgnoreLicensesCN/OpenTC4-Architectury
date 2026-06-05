@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.tiles.crafted.AbstractPedestalBlockEntity;
+import thaumcraft.common.tiles.abstracts.AbstractPedestalBlockEntity;
 
 @UtilityLikeAbstraction(reason = "lazy to write #use everywhere")
 public abstract class AbstractPedestalBlock extends SuppressedWarningBlock implements EntityBlock {

@@ -5,7 +5,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.NodeModifierResourceLocation;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 

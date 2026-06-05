@@ -156,7 +156,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         return getBlockState().getValue(FACING);
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public int getRunningTickDelay(){
         return 5;

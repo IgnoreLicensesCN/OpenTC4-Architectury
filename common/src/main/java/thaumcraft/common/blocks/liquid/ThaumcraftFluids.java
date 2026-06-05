@@ -32,6 +32,8 @@ public class ThaumcraftFluids {
 
     public static class Tags{
         public static final TagKey<Fluid> CRUCIBLE_HEATER = TagKey.create(
-                Registries.FLUID, new ResourceLocation("thaumcraft:crucuble_heater"));
+                Registries.FLUID, new ResourceLocation(Thaumcraft.MOD_ID,"crucuble_heater"));
+        public static final TagKey<Fluid> FLUX = TagKey.create(
+                Registries.FLUID, new ResourceLocation(Thaumcraft.MOD_ID,"flux"));
     }
 }

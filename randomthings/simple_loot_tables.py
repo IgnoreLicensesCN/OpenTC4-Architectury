@@ -88,7 +88,8 @@ drop_self_block_names = [
     'wand_recharge_pedestal',
     'compound_recharge_focus',
     'arcane_spa',
-    'focal_manipulator'
+    'focal_manipulator',
+    'flux_scrubber'
 ]
 
 drop_b_for_a_names = [
