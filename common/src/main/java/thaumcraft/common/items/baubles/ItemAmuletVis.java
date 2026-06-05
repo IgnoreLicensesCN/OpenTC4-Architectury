@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 //TODO:impl IVisNetNodeDetectableItem
-public class ItemAmuletVis extends Item implements IBauble, IRunicArmor {
+public class ItemAmuletVis extends Item implements IBauble, IRunicShieldProviderItem {
    public IIcon[] icon = new IIcon[2];
    DecimalFormat myFormatter = new DecimalFormat("#######.##");
 

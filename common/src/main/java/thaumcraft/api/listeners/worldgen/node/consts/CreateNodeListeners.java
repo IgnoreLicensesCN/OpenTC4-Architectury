@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.listeners.worldgen.node.CreateNodeContext;
 import thaumcraft.api.listeners.worldgen.node.listeners.CreateNodeListener;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
@@ -17,7 +18,7 @@ public class CreateNodeListeners {
             if (te == null) {
                 return false;
             }
-            if (te instanceof AbstractNodeBlockEntity nodeBlockEntity) {
+            if (te instanceof INodeBlockEntity nodeBlockEntity) {
                 nodeBlockEntity.setNodeType(context.nodeType);
                 nodeBlockEntity.setNodeModifier(context.nodeModifier);
                 nodeBlockEntity.setAspectsWithBase(context.aspects);

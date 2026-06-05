@@ -11,12 +11,12 @@ import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 
-public class ItemVoidArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor, IWarpingGear {
+public class ItemVoidArmor extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem, IWarpingGear {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

@@ -315,6 +315,9 @@ public class Consts {
     public static class CrystalEssenceItemTagAccessors {
         public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
+    public static class WispEssenceItemTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+    }
     public static class ArcaneEarTagAccessors {
         public static final IntTagAccessor SHOULD_TICK_MASKS = new IntTagAccessor("should_tick_masks");
     }

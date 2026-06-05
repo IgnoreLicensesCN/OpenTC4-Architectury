@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
@@ -47,7 +47,7 @@ public class InfusionRunicAugmentRecipe /*extends InfusionRecipe*/ {
    public boolean matches(ArrayList<ItemStack> input, ItemStack central, Level world, Player player) {
       if (!this.research.isEmpty() && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), this.research)) {
          return false;
-      } else if (!(central.getItem() instanceof IRunicArmor)) {
+      } else if (!(central.getItem() instanceof IRunicShieldProviderItem)) {
          return false;
       } else {
          ItemStack i2 = null;

@@ -15,7 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
@@ -23,7 +23,7 @@ import thaumcraft.common.config.ConfigItems;
 
 import java.util.List;
 
-public class ItemRobeArmor extends ItemArmor implements IRepairEnchantable, IVisDiscountGear, IRunicArmor {
+public class ItemRobeArmor extends ItemArmor implements IRepairEnchantable, IVisDiscountGear, IRunicShieldProviderItem {
    public IIcon iconChest;
    public IIcon iconLegs;
    public IIcon iconBoots;

@@ -15,8 +15,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import thaumcraft.api.IRunicArmor;
-import thaumcraft.api.IWarpingGear;
+import thaumcraft.api.listeners.warp.WarpEventManager;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
@@ -27,11 +27,11 @@ import thaumcraft.common.lib.network.playerdata.PacketRunicCharge;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 //TODO
+@Deprecated
 public class EventHandlerRunic {
    //TODO:toInt concurrent map
    public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
@@ -39,6 +39,7 @@ public class EventHandlerRunic {
    public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
    //int-arr based runicInfo go fuck yourself TODO:Expand it
+   @Deprecated(forRemoval = true)
    public static Map<Player,int[]> runicInfo = new MapMaker().weakKeys().makeMap();
    public static boolean isDirty = true;
    public static int rechargeDelay = 0;
@@ -266,18 +267,19 @@ public class EventHandlerRunic {
          event.toolTip.add(EnumChatFormatting.GOLD + Component.translatable("item.runic.charge") + " +" + charge);
       }
 
-      int warp = getFinalWarp(event.itemStack, event.Player);
+      int warp = WarpEventManager.getFinalWarp(event.itemStack, event.Player);
       if (warp > 0) {
          event.toolTip.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("item.warping") + " " + warp);
       }
 
    }
 
+   @Deprecated(forRemoval = true)
    public static int getFinalCharge(ItemStack stack) {
-      if (!(stack.getItem() instanceof IRunicArmor)) {
+      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
          return 0;
       } else {
-         IRunicArmor armor = (IRunicArmor)stack.getItem();
+         IRunicShieldProviderItem armor = (IRunicShieldProviderItem)stack.getItem();
          int base = armor.getRunicCharge(stack);
          if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
             base += stack.stackTagCompound.getByte("RS.HARDEN");
@@ -287,7 +289,7 @@ public class EventHandlerRunic {
    }
 
    public static int getHardening(ItemStack stack) {
-      if (!(stack.getItem() instanceof IRunicArmor)) {
+      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
          return 0;
       } else {
          int base = 0;
@@ -299,12 +301,4 @@ public class EventHandlerRunic {
       }
    }
 
-   public static int getFinalWarp(ItemStack stack, Player player) {
-      if (stack != null && stack.getItem() instanceof IWarpingGear) {
-         IWarpingGear armor = (IWarpingGear)stack.getItem();
-         return armor.getWarp(stack, player);
-      } else {
-         return 0;
-      }
-   }
 }

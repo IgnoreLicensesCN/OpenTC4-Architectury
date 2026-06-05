@@ -24,10 +24,11 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.client.renderers.models.gear.ModelRobe;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 
 import java.util.List;
 
-public class ItemVoidRobeArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor, IVisDiscountGear, IGoggles, IRevealer, ISpecialArmor, IWarpingGear {
+public class ItemVoidRobeArmor extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem, IVisDiscountGear, IGoggles, IRevealer, ISpecialArmor, IWarpingGear {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

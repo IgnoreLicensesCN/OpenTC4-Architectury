@@ -3,8 +3,10 @@ package thaumcraft.api.listeners.warp;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
+import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
 import thaumcraft.api.listeners.warp.listeners.*;
 import thaumcraft.common.Thaumcraft;
@@ -136,5 +138,14 @@ public class WarpEventManager {
             result = listener.onGettingWarpEventDelayForPlayer(player);
         }
         return result;
+    }
+
+    public static int getFinalWarp(ItemStack stack, Player player) {
+       if (stack != null && stack.getItem() instanceof IWarpingGear) {
+          IWarpingGear armor = (IWarpingGear)stack.getItem();
+          return armor.getWarp(stack, player);
+       } else {
+          return 0;
+       }
     }
 }

@@ -11,13 +11,13 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.ItemRunic;
 import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemAmuletRunic extends ItemRunic implements IBauble, IRunicArmor {
+public class ItemAmuletRunic extends ItemRunic implements IBauble, IRunicShieldProviderItem {
    public IIcon[] icon = new IIcon[2];
 
    public ItemAmuletRunic() {

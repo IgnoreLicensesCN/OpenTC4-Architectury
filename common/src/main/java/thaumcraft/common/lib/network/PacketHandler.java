@@ -25,6 +25,7 @@ public class PacketHandler {
         PacketSyncAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncAspectsS2C.ID, PacketSyncAspectsS2C::decode);
         PacketScannedToServerC2S.messageType = INSTANCE.registerC2S(PacketScannedToServerC2S.ID, PacketScannedToServerC2S::decode);
         PacketRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketRunicChargeS2C.ID, PacketRunicChargeS2C::decode);
+        PacketRunicCapacityS2C.messageType = INSTANCE.registerS2C(PacketRunicCapacityS2C.ID, PacketRunicCapacityS2C::decode);
         PacketResearchCompleteS2C.messageType = INSTANCE.registerS2C(PacketResearchCompleteS2C.ID, PacketResearchCompleteS2C::decode);
         PacketClueCompleteS2C.messageType = INSTANCE.registerS2C(PacketClueCompleteS2C.ID, PacketClueCompleteS2C::decode);
 //        PacketPlayerCompleteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCompleteC2S.ID, PacketPlayerCompleteC2S::decode);

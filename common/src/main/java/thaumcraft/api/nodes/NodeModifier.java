@@ -4,7 +4,6 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.NodeModifierResourceLocation;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
@@ -18,12 +17,12 @@ public class NodeModifier {
     // 预定义常量
     public static final NodeModifier BRIGHT = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"bright"),400,1.5f){
         @Override
-        public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
+        public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode) {
             return 1;
         }
 
         @Override
-        public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode) {
+        public void onPeriodicReduceSize(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (level != null){
                 if (level.getRandom().nextInt(5) == 0){
@@ -39,7 +38,7 @@ public class NodeModifier {
     };
     public static final NodeModifier PALE   = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"pale"),900,1.f){
         @Override
-        public void onAttackAnotherNode(AbstractNodeBlockEntity thisNode, AbstractNodeBlockEntity beingAttacked, Aspect stoleAspect) {
+        public void onAttackAnotherNode(INodeBlockEntity thisNode, INodeBlockEntity beingAttacked, Aspect stoleAspect) {
             var level = thisNode.getLevel();
             if (level == null){
                 level = beingAttacked.getLevel();
@@ -47,18 +46,18 @@ public class NodeModifier {
             if (level != null && !level.isClientSide) {
                 if (level.random.nextInt(100) == 0){
                     thisNode.setNodeModifier(NodeModifier.EMPTY);
-                    thisNode.regenerationTickPeriod = -1;//feature:attack another node to remove "pale"(chance:1/100)
+                    thisNode.setRegenerationTickPeriod(-1);//feature:attack another node to remove "pale"(chance:1/100)
                 }
             }
             super.onAttackAnotherNode(thisNode, beingAttacked, stoleAspect);
         }
         @Override
-        public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
+        public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode) {
             return 3;
         }
 
         @Override
-        public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
+        public boolean allowToAttackAnotherNode(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (level != null){
                 return !level.random.nextBoolean();
@@ -67,7 +66,7 @@ public class NodeModifier {
         }
 
         @Override
-        public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode) {
+        public void onPeriodicReduceSize(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (level != null){
                 if (level.getRandom().nextInt(25) == 0){
@@ -83,7 +82,7 @@ public class NodeModifier {
     };
     public static final NodeModifier FADING = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"fading"),0,1.f){
         @Override
-        public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
+        public boolean allowToAttackAnotherNode(INodeBlockEntity thisNode) {
             return false;
         }
 
@@ -94,7 +93,7 @@ public class NodeModifier {
     };
     public static final NodeModifier EMPTY = new NodeModifier(NodeModifierResourceLocation.of(Thaumcraft.MOD_ID,"empty"),600,1.f){
         @Override
-        public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode) {
+        public void onPeriodicReduceSize(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (level != null){
                 if (level.getRandom().nextInt(5) == 0){
@@ -134,12 +133,10 @@ public class NodeModifier {
         VALUES.add(modifier);
     }
 
-    /** 返回所有 NodeModifier（顺序和定义顺序一致） */
     public static List<NodeModifier> values() {
         return Collections.unmodifiableList(VALUES);
     }
 
-    /** 类似 enum 的 valueOf 方法 */
     public static NodeModifier valueOf(NodeModifierResourceLocation name) {
         NodeModifier modifier = BY_NAME.get(name);
         if (modifier == null) {
@@ -151,7 +148,6 @@ public class NodeModifier {
         return BY_NAME.getOrDefault(name,NodeModifier.EMPTY);
     }
 
-    /** 返回名称 */
     public NodeModifierResourceLocation name() {
         return name;
     }
@@ -172,7 +168,7 @@ public class NodeModifier {
         return Objects.hashCode(name);
     }
 
-    public int getRegenValue(AbstractNodeBlockEntity node) {
+    public int getRegenValue(INodeBlockEntity node) {
         return regenValue;
     }
 
@@ -180,7 +176,7 @@ public class NodeModifier {
         return attackBiggerNodeChangeModifier;
     }
 
-    public void onAttackAnotherNode(AbstractNodeBlockEntity thisNode, AbstractNodeBlockEntity beingAttacked, Aspect stoleAspect) {
+    public void onAttackAnotherNode(INodeBlockEntity thisNode, INodeBlockEntity beingAttacked, Aspect stoleAspect) {
 
         var level = thisNode.getLevel();
         if (level == null){
@@ -196,13 +192,13 @@ public class NodeModifier {
             );
         }
     }
-    public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
+    public boolean allowToAttackAnotherNode(INodeBlockEntity thisNode) {
         return true;
     }
-    public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode){
+    public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode){
         return 2;
     }
-    public void onPeriodicReduceSize(AbstractNodeBlockEntity thisNode){
+    public void onPeriodicReduceSize(INodeBlockEntity thisNode){
 
     }
 

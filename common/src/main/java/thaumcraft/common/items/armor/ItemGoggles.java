@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
@@ -24,7 +24,7 @@ import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemGoggles extends ItemArmor implements IRepairEnchantable, IVisDiscountGear, IRevealer, IGoggles, IRunicArmor {
+public class ItemGoggles extends ItemArmor implements IRepairEnchantable, IVisDiscountGear, IRevealer, IGoggles, IRunicShieldProviderItem {
    public IIcon icon;
 
    public ItemGoggles(ItemArmor.ArmorMaterial enumarmormaterial, int j, int k) {

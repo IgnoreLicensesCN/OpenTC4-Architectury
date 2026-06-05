@@ -14,16 +14,17 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.crafted.visdevice.FocalManipulatorBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.consumable.*;
+import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
+import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
+import thaumcraft.common.items.consumable.aspectowning.WispEssenceItem;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
-import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
@@ -273,6 +274,7 @@ public class ThaumcraftItems {
     public static final BathSaltsItem BATH_SALTS = Registry.SUPPLIER_BATH_SALTS.get();
     public static final BlockItem FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
     public static final BlockItem FLUX_SCRUBBER =  Registry.SUPPLIER_FLUX_SCRUBBER.get();
+    public static final WispEssenceItem WISP_ESSENCE = Registry.SUPPLIER_WISP_ESSENCE.get();
 
     //===========================================================================================
 
@@ -1029,6 +1031,12 @@ public class ThaumcraftItems {
                         "flux_scrubber",
                         () -> new BlockItem(ThaumcraftBlocks.FLUX_SCRUBBER, new Item.Properties())
                 );
+        public static final RegistrySupplier<WispEssenceItem> SUPPLIER_WISP_ESSENCE =
+                ITEMS.register(
+                        "wisp_essence",
+                        WispEssenceItem::new
+                );
+
     }
 
     public static class ItemTags {

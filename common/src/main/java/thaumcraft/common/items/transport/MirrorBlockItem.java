@@ -29,8 +29,6 @@ public class MirrorBlockItem extends BlockItem {
                     list.add(Component.literal(LINKED_POS.readFromCompoundTag(tag).toString()));
                     list.add(Component.literal(LINKED_DIM.readFromCompoundTag(tag).toString()));
                 }
-                if (LINKED_DIM.compoundTagHasKey(tag)){
-                }
             }
         }
     }

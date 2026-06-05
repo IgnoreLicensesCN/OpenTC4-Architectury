@@ -27,6 +27,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
 import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatures;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static thaumcraft.api.IRepairable.repairCostCache;
@@ -49,6 +50,7 @@ public final class OpenTC4 {
     }
     public static void onInitialize() {
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
+        ThaumcraftRunicShieldTypes.init();
         ThaumcraftEnchantments.init();
         ThaumcraftBlocks.init();
         ThaumcraftItems.init();
@@ -73,7 +75,7 @@ public final class OpenTC4 {
 
     }
     public static void onInitializeClient() {
-        onInitialize();
+//        onInitialize();
 
         Particles.init();
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();

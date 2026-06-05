@@ -45,6 +45,7 @@ public final class OpenTC4Forge {
         // Run our common setup.
         OpenTC4.init(platformUniqueUtilsForge);
         OpenTC4.onInitialize();
+        //TODO:Baubles
     }
 
     @SubscribeEvent

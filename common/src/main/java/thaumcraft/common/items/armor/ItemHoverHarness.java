@@ -19,7 +19,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import net.minecraft.world.item.Tier;
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -32,7 +32,7 @@ import java.util.List;
 
 import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescriptionToList;
 
-public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, IVisDiscountGear, IRunicArmor {
+public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, IVisDiscountGear, IRunicShieldProviderItem {
    ModelBiped model = null;
    public IIcon icon;
    public IIcon iconLightningRing;

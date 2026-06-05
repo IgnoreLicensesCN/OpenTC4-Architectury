@@ -35,6 +35,7 @@
     "MobMixin",
     "MonsterMixin",
     "NoteBlockMixin",
+    "PlayerMixin",
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerMixin"

@@ -92,7 +92,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditToolIte
             ItemStack writeToolStack,
             ResearchItem researchItem
     ) {
-        if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
+        if (!(researchItem instanceof IResearchNoteCreatableResearch)) {
             return;
         }
         var inv = player.getInventory();

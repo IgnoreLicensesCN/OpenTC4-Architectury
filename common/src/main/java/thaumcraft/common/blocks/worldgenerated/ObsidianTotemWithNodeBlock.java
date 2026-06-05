@@ -26,6 +26,8 @@ import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
+import static thaumcraft.common.blocks.abstracts.AbstractNodeBlock.nodeBlockOnRemove;
+
 public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock, INodeBlock {
     public ObsidianTotemWithNodeBlock(Properties properties) {
         super(properties);
@@ -73,16 +75,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
             BlockState newState,
             boolean isMoving
     ) {
-        if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
-            var x = pos.getX();
-            var y = pos.getY();
-            var z = pos.getZ();
-            // 粒子
-            ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
-        }
-        if (level instanceof ServerLevel serverLevel && newState.isAir()) {
-            //TODO:wispEssences
-        }
+        nodeBlockOnRemove(state, level, pos, newState, isMoving);
         super.onRemove(state, level, pos, newState, isMoving);
     }
     @Override
@@ -90,7 +83,6 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
         if (level.isClientSide() && level.random.nextBoolean()) {
             UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(),blockPos.getY(),blockPos.getZ(), 0);
         }
-//        super.spawnDestroyParticles(level, player, blockPos, blockState);
     }
 
     @Override

@@ -32,7 +32,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IManaBeanAspectCombineProviderBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.consumable.ManaBeanItem;
+import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.tiles.generated.ManaBeanBlockEntity;
 

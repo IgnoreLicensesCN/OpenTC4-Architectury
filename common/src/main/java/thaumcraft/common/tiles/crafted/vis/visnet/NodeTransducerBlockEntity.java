@@ -86,7 +86,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                 var modifier = energizedNode.nodeModifier;
                 this.level.setBlockAndUpdate(getNodePos(),ThaumcraftBlocks.AURA_NODE.defaultBlockState());
                 var nodeBE = this.level.getBlockEntity(getNodePos());
-                if (nodeBE instanceof AbstractNodeBlockEntity nodeBlockEntity){
+                if (nodeBE instanceof INodeBlockEntity nodeBlockEntity){
                     nodeBlockEntity.setNodeType(type);
                     nodeBlockEntity.setNodeModifier(modifier);
                     nodeBlockEntity.setAspectsBase(base.copy());

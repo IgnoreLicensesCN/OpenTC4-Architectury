@@ -1,6 +1,7 @@
 package com.linearity.opentc4.fabric;
 
 import com.linearity.opentc4.OpenTC4;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
@@ -19,5 +20,6 @@ public final class OpenTC4Fabric implements ModInitializer {
 
         // Run our common setup.
         OpenTC4.init(platformUniqueUtilsFabric);
+        //TODO:Baubles
     }
 }

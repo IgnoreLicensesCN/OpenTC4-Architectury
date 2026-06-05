@@ -7,11 +7,10 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.listeners.warp.WarpEventManager;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
-import thaumcraft.common.lib.events.EventHandlerRunic;
-import thaumcraft.common.lib.network.misc.PacketMiscEvent;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -352,12 +351,12 @@ public class WarpEvents {
 //   }
 
    public static int getWarpFromGear(Player player) {
-      AtomicInteger w = new AtomicInteger(EventHandlerRunic.getFinalWarp(player.getMainHandItem(), player));
-      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(EventHandlerRunic.getFinalWarp(armorInSlot, player)));
+      AtomicInteger w = new AtomicInteger(WarpEventManager.getFinalWarp(player.getMainHandItem(), player));
+      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(WarpEventManager.getFinalWarp(armorInSlot, player)));
       forEachBauble(player,(slot, stack, item) -> {
-         w.addAndGet(EventHandlerRunic.getFinalWarp(stack, player));
+         w.addAndGet(WarpEventManager.getFinalWarp(stack, player));
          return false;
       });
-      return w.addAndGet(EventHandlerRunic.getFinalWarp(player.getOffhandItem(), player));
+      return w.addAndGet(WarpEventManager.getFinalWarp(player.getOffhandItem(), player));
    }
 }

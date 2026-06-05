@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.misc.ItemWispEssence;
+import thaumcraft.common.items.junkbox.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXWispZap;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;

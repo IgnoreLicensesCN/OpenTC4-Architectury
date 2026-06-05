@@ -14,7 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.aspects.Aspect;
@@ -22,7 +22,7 @@ import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemCultistBoots extends ItemArmor implements IRepairEnchantable, IRunicArmor, IWarpingGear, IVisDiscountGear {
+public class ItemCultistBoots extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem, IWarpingGear, IVisDiscountGear {
    public IIcon icon;
 
    public ItemCultistBoots(ItemArmor.ArmorMaterial enumarmormaterial, int j, int k) {

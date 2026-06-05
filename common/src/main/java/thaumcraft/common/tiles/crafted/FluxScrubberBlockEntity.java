@@ -67,7 +67,7 @@ implements IEssentiaTransportOutBlockEntity {
         }
         checkProgressForEssentia();
         if (this.centiVisAmount < 5) {
-            this.centiVisAmount += VisNetHandler.drainCentiVis(this.level, getBlockPos(), Aspects.AIR, 10);
+            this.centiVisAmount += VisNetHandler.drainCentiVis(this.level, getBlockPos(), getCentiVisRequiring(), 10);
         }
 
         if (centiVisAmount >= 5) {

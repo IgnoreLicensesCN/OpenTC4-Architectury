@@ -11,12 +11,12 @@ import net.minecraft.world.item.EnumRarity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemGirdleHover extends Item implements IBauble, IRunicArmor {
+public class ItemGirdleHover extends Item implements IBauble, IRunicShieldProviderItem {
    public IIcon icon;
 
    public ItemGirdleHover() {

@@ -1,4 +1,4 @@
-package thaumcraft.common.items.consumable;
+package thaumcraft.common.items.consumable.aspectowning;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;

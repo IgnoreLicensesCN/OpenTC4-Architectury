@@ -31,7 +31,6 @@ import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class NodeType {
     public static final NodeType NORMAL = new NodeType(NodeTypeResourceLocation.of("thaumcraft:normal"),1.f){
 
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
             
             
@@ -56,7 +55,7 @@ public class NodeType {
     };
     public static final NodeType UNSTABLE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:unstable"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             var pos = thisNode.getBlockPos();
 
@@ -105,7 +104,7 @@ public class NodeType {
     };
     public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft:dark"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
 
             if (!(thisNode.getLevel() instanceof ServerLevel serverLevel)) return false;
@@ -123,8 +122,6 @@ public class NodeType {
 //                    && thisNode.getVisNetNodeType() == NodeType.DARK &&
                     thisNode.getTickCount() % 50 == 0
             ) {
-                int x = pos.getX() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
-                int z = pos.getZ() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
                 var randomPickPos = pos.offset(
                         serverLevel.random.nextInt(23)-11,
                         serverLevel.random.nextInt(23)-11,
@@ -176,7 +173,7 @@ public class NodeType {
     };
     public static final NodeType TAINTED = new NodeType(NodeTypeResourceLocation.of("thaumcraft:tainted"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (!(level instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
@@ -213,12 +210,12 @@ public class NodeType {
     };
     public static final NodeType HUNGRY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:hungry"),1.5f){
         @Override
-        public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
+        public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode) {
             return 1;
         }
 
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
 
             var pos = thisNode.getBlockPos();
@@ -367,7 +364,7 @@ public class NodeType {
     };
     public static final NodeType PURE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:pure"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
 
             if (!(thisNode.getLevel() instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
@@ -400,7 +397,7 @@ public class NodeType {
     };
     public static final NodeType EMPTY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:empty"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
             
             
@@ -481,14 +478,14 @@ public class NodeType {
         return attackBiggerNodeChangeModifier;
     }
 
-    public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
+    public boolean allowToAttackAnotherNode(INodeBlockEntity thisNode) {
         return true;
     }
-    public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode){
+    public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode){
         return 2;
     }
 
-    public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+    public boolean nodeTypeTick(INodeBlockEntity thisNode) {
         var level = thisNode.getLevel();
         if (!(level instanceof ServerLevel serverLevel)) return false;
         var pos = thisNode.getBlockPos();

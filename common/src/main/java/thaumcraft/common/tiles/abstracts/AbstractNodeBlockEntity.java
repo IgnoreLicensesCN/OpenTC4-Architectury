@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.abstracts;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.BlockPosWithDim;
 import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
@@ -50,6 +51,7 @@ import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.common.researches.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.
+@UtilityLikeAbstraction
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
         INodeBlockEntity,
@@ -76,6 +78,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public Entity drainEntity;
     public HitResult drainCollision;
 
+    @Override
     public int getTickCount() {
         return tickCount;
     }
@@ -97,6 +100,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         this.color = new Color(0XFFFFFF);
     }
 
+    @Override
     public String getId() {
         if (this.id == null) {
             this.id = this.generateId();
@@ -168,6 +172,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
 
+    @Override
     public void nodeChange() {
         this.regenerationTickPeriod = -1;
         markDirtyAndUpdateSelf();
@@ -293,19 +298,23 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
     }
 
+    @Override
     public AspectList<Aspect> getAspects() {
         return this.aspects;
     }
 
+    @Override
     public AspectList<Aspect> getAspectsBase() {
         return this.aspectsBase;
     }
 
+    @Override
     public void setAspectsWithBase(AspectList<Aspect> aspects) {
         this.aspects = aspects;
         this.aspectsBase = aspects.copy();
     }
 
+    @Override
     public void setAspectsBase(AspectList<Aspect> aspects) {
         this.aspectsBase = aspects.copy();
     }
@@ -323,6 +332,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return this.aspects.tryReduce(aspect, amount);
     }
 
+    @Override
     public Aspect takeRandomPrimalFromSource() {
         AspectList<PrimalAspect> primals = this.aspects.getPrimalAspects();
         Aspect asp = primals.randomAspect(this.level != null ? this.level.random : RandomSource.createNewThreadLocalInstance());//[this.level.random.nextInt(primals.length)];
@@ -463,7 +473,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         var pos2 = new BlockPos(pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset);
         BlockEntity probablyAnotherNode = this.level.getBlockEntity(pos2);
-        if (probablyAnotherNode instanceof AbstractNodeBlockEntity anotherNode
+        if (probablyAnotherNode instanceof INodeBlockEntity anotherNode
                 && this.level.getBlockState(pos2).getBlock() instanceof INodeBlock nodeBlock
                 && !nodeBlock.preventAttackFromAnotherNode()
         ) {
@@ -505,7 +515,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 }
 
                 if (didAttackNode) {
-                    anotherNode.wait = anotherNode.regenerationTickPeriod / 2;
+                    anotherNode.setWait(anotherNode.getRegenerationTickPeriod() / 2);
                     probablyAnotherNode.setChanged();
                     if (probablyAnotherNode.hasLevel() && probablyAnotherNode.getLevel() != null) {
                         probablyAnotherNode.getLevel()
@@ -540,6 +550,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
 
         return false;
+    }
+
+    @Override
+    public void setWait(int wait) {
+        this.wait = wait;
     }
 
     private boolean handleRecharge() {
@@ -674,5 +689,15 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     @Override
     public @Nullable Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> getSelfLookupMap() {
         return ALL_NODES;
+    }
+
+    @Override
+    public void setRegenerationTickPeriod(int regenerationTickPeriod) {
+        this.regenerationTickPeriod = regenerationTickPeriod;
+    }
+
+    @Override
+    public int getRegenerationTickPeriod() {
+        return regenerationTickPeriod;
     }
 }

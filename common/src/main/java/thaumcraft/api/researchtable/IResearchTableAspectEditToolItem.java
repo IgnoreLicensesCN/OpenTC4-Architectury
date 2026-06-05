@@ -30,6 +30,7 @@ public interface IResearchTableAspectEditToolItem extends IResearchTableEditAspe
             ItemStack writeToolStack,
             ResearchItem researchItem
     );
+    //one day we may have "ITC6ResearchNoteCreatableResearch" instead?
     void createResearchNote(
             Level atLevel,
             ServerPlayer player,

@@ -1,22 +1,24 @@
-package thaumcraft.common.items.misc;
+package thaumcraft.common.items.consumable.aspectowning;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.IAspectDisplayItem;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
-import static com.linearity.opentc4.Consts.CrystalEssenceItemTagAccessors.OWNING_ASPECT;
+import static com.linearity.opentc4.Consts.WispEssenceItemTagAccessors.OWNING_ASPECT;
 
-public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<Aspect>, IAspectDisplayItem<Aspect> {
-    public CrystalEssenceItem(Properties properties) {
+public class WispEssenceItem  extends Item implements IBonusAspectOwnerItem<Aspect>, IAspectDisplayItem<Aspect> {
+    public WispEssenceItem(Properties properties) {
         super(properties);
     }
-    public CrystalEssenceItem() {
+    public WispEssenceItem() {
         this(new Properties());
     }
     public ItemStack ofAspect(Aspect aspect) {
@@ -39,7 +41,7 @@ public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<As
         if (aspect.isEmpty()){
             return UnmodifiableAspectList.EMPTY;
         }
-        return UnmodifiableAspectList.of(aspect);
+        return UnmodifiableAspectList.of(aspect,2);
     }
 
     public Aspect getOwningAspect(ItemStack stack) {
@@ -63,6 +65,6 @@ public class CrystalEssenceItem extends Item implements IBonusAspectOwnerItem<As
 
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack stack) {
-        return UnmodifiableAspectList.of(getOwningAspect(stack));
+        return getOwningBonusAspects(stack);
     }
 }

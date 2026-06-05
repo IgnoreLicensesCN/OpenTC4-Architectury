@@ -1,5 +1,6 @@
-package thaumcraft.api;
+package thaumcraft.common.runicshield;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -10,13 +11,11 @@ import net.minecraft.world.item.ItemStack;
  * Recharging, hardening, etc. is handled internally by thaumcraft. 
  *
  */
-
-public interface IRunicArmor {
+//the only way(in interface)to add runicShield capacity
+public interface IRunicShieldProviderItem {
 	
 	/**
 	 * returns how much charge this item can provide. This is the base shielding value - any hardening is stored and calculated internally. 
 	 */
-    int getRunicCharge(ItemStack itemstack);
-	
-
+    Object2IntMap<RunicShieldType> getRunicCharge(ItemStack itemstack);
 }

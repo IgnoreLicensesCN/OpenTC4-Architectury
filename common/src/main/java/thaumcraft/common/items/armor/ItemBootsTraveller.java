@@ -10,10 +10,10 @@ import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.common.Thaumcraft;
 
-public class ItemBootsTraveller extends ItemArmor implements IRepairEnchantable, IRunicArmor {
+public class ItemBootsTraveller extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem {
    public IIcon icon;
 
    public ItemBootsTraveller(ItemArmor.ArmorMaterial enumarmormaterial, int j, int k) {

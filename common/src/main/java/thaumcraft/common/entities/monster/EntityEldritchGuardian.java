@@ -27,7 +27,7 @@ import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AILongRangeAttack;
 import thaumcraft.common.entities.projectile.EntityEldritchOrb;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.ItemWispEssence;
+import thaumcraft.common.items.junkbox.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXSonic;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;

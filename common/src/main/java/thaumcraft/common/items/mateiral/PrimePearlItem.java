@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
+import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class PrimePearlItem extends Item {
         var pos = useOnContext.getClickedPos();
 
         BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof AbstractNodeBlockEntity node) {
+        if (te instanceof INodeBlockEntity node) {
 //            player.swingItem();
             player.swing(useOnContext.getHand(), true);
             if (!world.isClientSide) {

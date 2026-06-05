@@ -14,11 +14,11 @@ import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
 import thaumcraft.api.IRepairEnchantable;
-import thaumcraft.api.IRunicArmor;
+import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.client.renderers.models.gear.ModelLeaderArmor;
 import thaumcraft.common.Thaumcraft;
 
-public class ItemCultistLeaderArmor extends ItemArmor implements IRepairEnchantable, IRunicArmor {
+public class ItemCultistLeaderArmor extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

@@ -1,8 +1,14 @@
 package thaumcraft.api.nodes;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IWorldlyCentiVisContainerBlockEntity;
+import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 
 public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect> {
 
@@ -49,5 +55,25 @@ public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<A
 	 * @return
 	 */
     void setNodeVisBase(Aspect aspect, short nodeVisBase);
-	
+
+	@Nullable INodeLockBlock getCurrentNodeLock();
+
+	@NotNull BlockPos getNodeLockPos();
+
+	Level getLevel();
+
+	BlockPos getBlockPos();
+
+
+	void setRegenerationTickPeriod(int regenerationTickPeriod);
+	int getRegenerationTickPeriod();
+
+	void setChanged();
+	BlockState getBlockState();
+	NodeLockResourceLocation getLockId();
+	Aspect takeRandomPrimalFromSource();
+	int getTickCount();
+	void nodeChange();
+
+	void setWait(int wait);
 }
