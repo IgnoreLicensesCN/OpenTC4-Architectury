@@ -23,7 +23,8 @@ public class ArcaneSpaMenu extends AbstractThaumcraftMenu<ArcaneSpaBlockEntity> 
             ArcaneSpaBlockEntity be
     ) {
         super(menuType, containerID, be, be.getContainerSize());
-        addSlot(new Slot(be, , 84, 25));
+        addSlot(new Slot(be,0, 84, 25));
         addPlayerInventorySlots(inventory);
     }
+    //someone,help me,Screen something!
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
-@UtilityLikeAbstraction
+@UtilityLikeAbstraction(reason = "lazy to write UI things")
 public interface IThaumcraftBEWithMenu<M extends AbstractContainerMenu,BE extends IThaumcraftBEWithMenu<M, BE>>
         extends ExtendedMenuProvider {
 

@@ -22,7 +22,7 @@ public class FocalManipulatorMenu extends AbstractThaumcraftMenu<FocalManipulato
             FocalManipulatorBlockEntity be
     ) {
         super(menuType, containerID, be, be.getContainerSize());
-        addSlot(new Slot(be,, 84, 25));
+        addSlot(new Slot(be,0, 84, 25));
         addPlayerInventorySlots(inventory);
     }
 }

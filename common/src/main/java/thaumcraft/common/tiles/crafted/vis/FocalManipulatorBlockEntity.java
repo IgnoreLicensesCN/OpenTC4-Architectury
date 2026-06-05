@@ -97,6 +97,7 @@ public class FocalManipulatorBlockEntity
                     focus.addWandUpgrade(stack, upgrade);
                     this.centiVisRequiring.clear();
                     this.upgradeToApply = FocusUpgradeTypeResourceLocation.EMPTY;
+                    this.level.playSound(null,getBlockPos(), ThaumcraftSounds.WAND,SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
                 markDirtyAndUpdateSelf();
                 return;
@@ -105,7 +106,13 @@ public class FocalManipulatorBlockEntity
             CentiVisList<Aspect> drained = new LinkedHashCentiVisList<>(this.centiVisRequiring.size(),1);
             this.centiVisRequiring.forEach(
                     (aspectRequiring,amountRequiring) -> {
-                        int amountDrained = VisNetHandler.drainCentiVis(this.level,getBlockPos(),aspectRequiring,amountRequiring);
+                        int amountDrained =
+                                VisNetHandler.drainCentiVis(
+                                        this.level,
+                                        getBlockPos(),
+                                        aspectRequiring,
+                                        Math.min(getMaxCentiVisPerDrain(),amountRequiring)
+                                );
                         if (amountDrained > 0){
                             drained.addAll(aspectRequiring,amountDrained);
                         }

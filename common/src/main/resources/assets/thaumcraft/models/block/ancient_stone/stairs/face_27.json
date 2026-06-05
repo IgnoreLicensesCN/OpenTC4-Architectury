@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "thaumcraft:block/ancient_stone_2",
-    "top": "thaumcraft:block/ancient_stone_2",
-    "side": "thaumcraft:block/ancient_stone_4"
-  }
-}

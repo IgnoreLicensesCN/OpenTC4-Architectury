@@ -75,15 +75,15 @@ public class ThaumcraftBlocks {
     public static final Block ARCANE_STONE_BLOCK = Registry.SUPPLIER_ARCANE_STONE_BLOCK.get();
     public static final Block ARCANE_STONE_BRICKS = Registry.SUPPLIER_ARCANE_STONE_BRICKS.get();
     public static final Block GOLEM_FETTER = Registry.SUPPLIER_GOLEM_FETTER.get();
-    public static final AncientStoneBlock ANCIENT_STONE = Registry.SUPPLIER_ANCIENT_STONE.get();
-    public static final AncientRockBlock ANCIENT_ROCK = Registry.SUPPLIER_ANCIENT_ROCK.get();
+    public static final Block ANCIENT_STONE = Registry.SUPPLIER_ANCIENT_STONE.get();
+    public static final Block ANCIENT_ROCK = Registry.SUPPLIER_ANCIENT_ROCK.get();
     public static final Block CRUSTED_STONE = Registry.SUPPLIER_CRUSTED_STONE.get();
     public static final Block ANCIENT_STONE_PEDESTAL = Registry.SUPPLIER_ANCIENT_STONE_PEDESTAL.get();
-    public static final AncientStoneStairBlock ANCIENT_STONE_STAIRS = Registry.SUPPLIER_ANCIENT_STONE_STAIRS.get();
+    public static final StairBlock ANCIENT_STONE_STAIRS = Registry.SUPPLIER_ANCIENT_STONE_STAIRS.get();
     public static final StairBlock ARCANE_STONE_BRICK_STAIRS = Registry.SUPPLIER_ARCANE_STONE_BRICK_STAIRS.get();
     public static final StairBlock GREATWOOD_PLANKS_STAIRS = Registry.SUPPLIER_GREATWOOD_PLANKS_STAIRS.get();
     public static final StairBlock SILVERWOOD_PLANKS_STAIRS = Registry.SUPPLIER_SILVERWOOD_PLANKS_STAIRS.get();
-    public static final AncientStoneSlabBlock ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
+    public static final SlabBlock ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
     public static final SlabBlock ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
     public static final SlabBlock GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
     public static final SlabBlock SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
@@ -237,10 +237,11 @@ public class ThaumcraftBlocks {
     public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
     public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
     public static final InfusionMatrixBlock INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
-    public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL =  Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
-    public static final CompoundRechargeFocusBlock COMPOUND_RECHARGE_FOCUS =  Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
-    public static final ArcaneSpaBlock ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
+    public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
+    public static final CompoundRechargeFocusBlock COMPOUND_RECHARGE_FOCUS = Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
+    public static final ArcaneSpaBlock ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
     public static final FocalManipulatorBlock FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -305,10 +306,11 @@ public class ThaumcraftBlocks {
         );
         public static final RegistrySupplier<GolemFetterBlock> SUPPLIER_GOLEM_FETTER = BLOCKS.register(
                 "golem_fetter", GolemFetterBlock::new);
-        public static final RegistrySupplier<AncientStoneBlock> SUPPLIER_ANCIENT_STONE = BLOCKS.register(
-                "ancient_stone", AncientStoneBlock::new);
-        public static final RegistrySupplier<AncientRockBlock> SUPPLIER_ANCIENT_ROCK = BLOCKS.register(
-                "ancient_rock", AncientRockBlock::new);
+        public static final RegistrySupplier<Block> SUPPLIER_ANCIENT_STONE = BLOCKS.register(
+                "ancient_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2.F, 10.F)));
+        public static final RegistrySupplier<Block> SUPPLIER_ANCIENT_ROCK = BLOCKS.register(
+                "ancient_rock", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2.F,10.F))
+        );
         public static final RegistrySupplier<Block> SUPPLIER_CRUSTED_STONE = BLOCKS.register(
                 "crusted_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
                         .strength(2.F, 10.F)
@@ -318,8 +320,10 @@ public class ThaumcraftBlocks {
                 "ancient_stone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
                         .strength(2.F, 10.F))
         );
-        public static final RegistrySupplier<AncientStoneStairBlock> SUPPLIER_ANCIENT_STONE_STAIRS = BLOCKS.register(
-                "ancient_stone_stairs", AncientStoneStairBlock::new);
+        public static final RegistrySupplier<StairBlock> SUPPLIER_ANCIENT_STONE_STAIRS = BLOCKS.register(
+                "ancient_stone_stairs", () -> new StairBlock(ThaumcraftBlocks.ANCIENT_STONE.defaultBlockState(),
+                        BlockBehaviour.Properties.copy(ThaumcraftBlocks.ANCIENT_STONE))
+        );
         public static final RegistrySupplier<StairBlock> SUPPLIER_ARCANE_STONE_BRICK_STAIRS = BLOCKS.register(
                 "arcane_stone_brick_stairs", () -> new StairBlock(
                         SUPPLIER_ARCANE_STONE_BRICKS.get()
@@ -338,8 +342,8 @@ public class ThaumcraftBlocks {
                                 .defaultBlockState(), BlockBehaviour.Properties.copy(SUPPLIER_SILVERWOOD_PLANKS.get())
                 )
         );
-        public static final RegistrySupplier<AncientStoneSlabBlock> SUPPLIER_ANCIENT_STONE_SLAB = BLOCKS.register(
-                "ancient_stone_slab", AncientStoneSlabBlock::new);
+        public static final RegistrySupplier<SlabBlock> SUPPLIER_ANCIENT_STONE_SLAB = BLOCKS.register(
+                "ancient_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(ThaumcraftBlocks.ANCIENT_STONE)));
         public static final RegistrySupplier<SlabBlock> SUPPLIER_ARCANE_STONE_BRICK_SLAB = BLOCKS.register(
                 "arcane_stone_brick_slab",
                 () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_ARCANE_STONE_BRICKS.get())
@@ -357,27 +361,33 @@ public class ThaumcraftBlocks {
 
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_AIR_CRYSTAL = BLOCKS.register(
                 "air_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{Aspects.AIR.color}){}
+                () -> new AbstractCrystalBlock(new int[]{Aspects.AIR.color}) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_FIRE_CRYSTAL = BLOCKS.register(
                 "fire_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0xff3c01}){}
+                () -> new AbstractCrystalBlock(new int[]{0xff3c01}) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_WATER_CRYSTAL = BLOCKS.register(
                 "water_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0x0090ff}){}
+                () -> new AbstractCrystalBlock(new int[]{0x0090ff}) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_EARTH_CRYSTAL = BLOCKS.register(
                 "earth_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{Aspects.EARTH.color}){}
+                () -> new AbstractCrystalBlock(new int[]{Aspects.EARTH.color}) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_ORDER_CRYSTAL = BLOCKS.register(
                 "order_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0xeeccff}){}
+                () -> new AbstractCrystalBlock(new int[]{0xeeccff}) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_ENTROPY_CRYSTAL = BLOCKS.register(
                 "entropy_crystal_cluster",
-                ()-> new AbstractCrystalBlock(new int[]{0x555577}){}
+                () -> new AbstractCrystalBlock(new int[]{0x555577}) {
+                }
         );
         private static final @RGBColor int[] MIXED_PARTICLE_COLORS = new @RGBColor int[]{
                 0xffff7e,
@@ -389,11 +399,13 @@ public class ThaumcraftBlocks {
         };
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_MIXED_CRYSTAL = BLOCKS.register(
                 "mixed_crystal_cluster",
-                ()-> new AbstractCrystalBlock(MIXED_PARTICLE_COLORS){}
+                () -> new AbstractCrystalBlock(MIXED_PARTICLE_COLORS) {
+                }
         );
         public static final RegistrySupplier<AbstractCrystalBlock> SUPPLIER_STRANGE_CRYSTALS = BLOCKS.register(
                 "strange_crystals",
-                ()-> new AbstractCrystalBlock(new int[]{0xFFFFFF}){}
+                () -> new AbstractCrystalBlock(new int[]{0xFFFFFF}) {
+                }
         );
         public static final RegistrySupplier<HungryChestBlock> SUPPLIER_HUNGRY_CHEST = BLOCKS.register(
                 "hungry_chest",
@@ -408,7 +420,7 @@ public class ThaumcraftBlocks {
                 () -> new Block(
                         BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
                                 .sound(SoundType.STONE)
-                                .strength(1.5f,5.f)
+                                .strength(1.5f, 5.f)
                 )
         );
         public static final RegistrySupplier<DropExperienceBlock> SUPPLIER_AMBER_ORE = BLOCKS.register(
@@ -416,7 +428,7 @@ public class ThaumcraftBlocks {
                 () -> new DropExperienceBlock(
                         BlockBehaviour.Properties.copy(Blocks.GOLD_ORE)
                                 .sound(SoundType.STONE)
-                                .strength(1.5f,5.f), UniformInt.of(1,4)
+                                .strength(1.5f, 5.f), UniformInt.of(1, 4)
                 )
         );
         public static final RegistrySupplier<AirInfusedStoneBlock> SUPPLIER_AIR_INFUSED_STONE = BLOCKS.register(
@@ -446,13 +458,13 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<Block> SUPPLIER_AMBER_BLOCK = BLOCKS.register(
                 "amber_block",
                 () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
-                        .strength(1.5f,5.f)
+                        .strength(1.5f, 5.f)
                 )
         );
         public static final RegistrySupplier<Block> SUPPLIER_AMBER_BRICK = BLOCKS.register(
                 "amber_brick",
                 () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
-                        .strength(1.5f,5.f)
+                        .strength(1.5f, 5.f)
                 )
         );
         public static final RegistrySupplier<WardedGlassBlock> SUPPLIER_WARDED_GLASS = BLOCKS.register(
@@ -603,7 +615,7 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<Block> SUPPLIER_ANCIENT_GATEWAY = BLOCKS.register(
                 "ancient_gateway",
                 () -> new Block(BlockBehaviour.Properties.of()
-                        .strength(-1,Float.MAX_VALUE)
+                        .strength(-1, Float.MAX_VALUE)
                         .sound(SoundType.STONE)
                         .mapColor(MapColor.COLOR_BLACK)
                         .lightLevel(s -> 12))
@@ -625,7 +637,7 @@ public class ThaumcraftBlocks {
                 RunedStoneBlock::new
         );
 
-//        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
+        //        public static final RegistrySupplier<FleshBlock> SUPPLIER_FLESH = BLOCKS.register(
 //                "block_of_flesh",
 //                FleshBlock::new
 //        );//shouldn't be this.This is crafted and cant spread taint in latest 1.7.10 TC4
@@ -681,11 +693,11 @@ public class ThaumcraftBlocks {
                 "glimmer_of_light",
                 GlimmerOfLightBlock::new
         );
-        public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY =  BLOCKS.register(
+        public static final RegistrySupplier<VisNetRelayBlock> SUPPLIER_VIS_RELAY = BLOCKS.register(
                 "vis_relay",
                 VisNetRelayBlock::new
         );
-        public static final RegistrySupplier<VisNetChargeRelayBlock> SUPPLIER_VIS_CHARGE_RELAY =  BLOCKS.register(
+        public static final RegistrySupplier<VisNetChargeRelayBlock> SUPPLIER_VIS_CHARGE_RELAY = BLOCKS.register(
                 "vis_charge_relay",
                 VisNetChargeRelayBlock::new
         );
@@ -695,54 +707,54 @@ public class ThaumcraftBlocks {
         );
         public static final RegistrySupplier<NodeStabilizerBlock> SUPPLIER_NODE_STABILIZER =
                 BLOCKS.register(
-                "node_stabilizer",
-                NodeStabilizerBlock::new
-        );
+                        "node_stabilizer",
+                        NodeStabilizerBlock::new
+                );
         public static final RegistrySupplier<AdvancedNodeStabilizerBlock> SUPPLIER_ADVANCED_NODE_STABILIZER =
                 BLOCKS.register(
-                "advanced_node_stabilizer",
-                AdvancedNodeStabilizerBlock::new
-        );
+                        "advanced_node_stabilizer",
+                        AdvancedNodeStabilizerBlock::new
+                );
         public static final RegistrySupplier<NodeTransducerBlock> SUPPLIER_NODE_TRANSDUCER =
                 BLOCKS.register(
-                "node_transducer",
-                NodeTransducerBlock::new
-        );
+                        "node_transducer",
+                        NodeTransducerBlock::new
+                );
         public static final RegistrySupplier<ImpassableBlock> SUPPLIER_IMPASSABLE_BLOCK =
                 BLOCKS.register(
-                "impassable",
-                ImpassableBlock::new
-        );
+                        "impassable",
+                        ImpassableBlock::new
+                );
         public static final RegistrySupplier<SappingFieldBlock> SUPPLIER_SAPPING_FIELD =
                 BLOCKS.register(
-                "sapping_field",
-                SappingFieldBlock::new
-        );
+                        "sapping_field",
+                        SappingFieldBlock::new
+                );
         public static final RegistrySupplier<StaticFieldBlock> SUPPLIER_STATIC_FIELD =
                 BLOCKS.register(
-                "static_field",
-                StaticFieldBlock::new
-        );
+                        "static_field",
+                        StaticFieldBlock::new
+                );
         public static final RegistrySupplier<AlchemicalFurnaceBlock> SUPPLIER_ALCHEMICAL_FURNACE =
                 BLOCKS.register(
-                "alchemical_furnace",
-                AlchemicalFurnaceBlock::new
-        );
+                        "alchemical_furnace",
+                        AlchemicalFurnaceBlock::new
+                );
         public static final RegistrySupplier<Block> SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT =
                 BLOCKS.register(
-                "advanced_alchemical_construct",
-                () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
-                        .lightLevel(s -> 11)
-                        .strength(3,17)
-                )
-        );
+                        "advanced_alchemical_construct",
+                        () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                                .lightLevel(s -> 11)
+                                .strength(3, 17)
+                        )
+                );
         public static final RegistrySupplier<Block> SUPPLIER_ALCHEMICAL_CONSTRUCT =
                 BLOCKS.register(
-                "alchemical_construct",
-                () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
-                        .strength(3,17)
-                )
-        );
+                        "alchemical_construct",
+                        () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                                .strength(3, 17)
+                        )
+                );
         public static final RegistrySupplier<ArcaneAlembicBlock> SUPPLIER_ARCANE_ALEMBIC = BLOCKS.register(
                 "arcane_alembic",
                 ArcaneAlembicBlock::new
@@ -1016,33 +1028,33 @@ public class ThaumcraftBlocks {
         );
     }
 
-    public static class Tags{
+    public static class Tags {
         public static final TagKey<Block> JAR_BLOCK = TagKey.create(
-                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"jar_block")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "jar_block")
         );//TODO:Jars put in
         public static final TagKey<Block> CRUCIBLE_HEATER = TagKey.create(
-                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"crucible_heater")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "crucible_heater")
         );
         public static final TagKey<Block> REDSTONE_CONTROLLABLE_CRUCIBLE_HEATER = TagKey.create(
-                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"redstone_controllable_crucible_heater")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "redstone_controllable_crucible_heater")
         );
         public static final TagKey<Block> GROWTH_LAMP_NOT_AFFECTIVE = TagKey.create(
-                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_not_affective")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "growth_lamp_not_affective")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE = TagKey.create(
-                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "growth_lamp_affective")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE_RANDOM_TICK = TagKey.create(
-                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective_random_tick")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "growth_lamp_affective_random_tick")
         );
         public static final TagKey<Block> GROWTH_LAMP_AFFECTIVE_TICK = TagKey.create(
-                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID,"growth_lamp_affective_tick")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "growth_lamp_affective_tick")
         );
         public static final TagKey<Block> GLIMMER_OF_LIGHT_WONT_OVERRIDE = TagKey.create(
-                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"glimmer_of_light_wont_override")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "glimmer_of_light_wont_override")
         );
         public static final TagKey<Block> MANA_BEAN_SURVIVES = TagKey.create(
-                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID,"mana_bean_survives")
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "mana_bean_survives")
         );
     }
 }

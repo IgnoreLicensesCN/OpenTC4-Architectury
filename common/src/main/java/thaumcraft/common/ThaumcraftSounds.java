@@ -35,6 +35,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_CRAFT_START = new ResourceLocation(Thaumcraft.MOD_ID,"craftstart");
         public static final ResourceLocation RES_INFUSER_START = new ResourceLocation(Thaumcraft.MOD_ID,"infuserstart");
         public static final ResourceLocation RES_INFUSER = new ResourceLocation(Thaumcraft.MOD_ID,"infuser");
+        public static final ResourceLocation RES_WAND = new ResourceLocation(Thaumcraft.MOD_ID,"wand");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -67,4 +68,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent CRAFT_START =  SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAFT_START);
     public static final SoundEvent INFUSER_START = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER_START);
     public static final SoundEvent INFUSER = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER);
+    public static final SoundEvent WAND = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WAND);
 }

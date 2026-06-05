@@ -5,9 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -16,10 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -27,10 +22,9 @@ import thaumcraft.common.tiles.eldritch.RunedStoneBlockEntity;
 
 public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock {
     public static final IntProvider RUNED_STONE_EXP_DROP = UniformInt.of(1,4);
-    public static final IntegerProperty FACE_STATE = AncientStoneBlock.FACE_STATE;
 
     public RunedStoneBlock() {
-        super(
+        this(
                 BlockBehaviour.Properties.of()
                         .strength(15,30)
                         .sound(SoundType.STONE)
@@ -38,17 +32,14 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
                         .lightLevel(s -> 4),
                 RUNED_STONE_EXP_DROP
         );
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACE_STATE, 0));
     }
 
     public RunedStoneBlock(Properties properties) {
-        super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACE_STATE, 0));
+        this(properties,RUNED_STONE_EXP_DROP);
     }
 
     public RunedStoneBlock(Properties properties, IntProvider intProvider) {
         super(properties, intProvider);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACE_STATE, 0));
     }
 
     @Override
@@ -92,23 +83,6 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
                 runedStone.serverTick();
             }
         };
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(FACE_STATE);
-    }
-
-
-    @Override
-    public @NotNull BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
-        var coord = blockPlaceContext.getClickedPos();
-        var seed = coord.asLong();
-        seed = (seed ^ (seed >>> 33)) * 0xff51afd7ed558ccdL;
-        seed = (seed ^ (seed >>> 33)) * 0xc4ceb9fe1a85ec53L;
-        seed = seed ^ (seed >>> 33);
-        return defaultBlockState().setValue(FACE_STATE, (int)(seed&63));
     }
 
 }
