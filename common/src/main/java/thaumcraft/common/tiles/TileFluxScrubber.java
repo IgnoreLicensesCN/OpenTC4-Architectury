@@ -7,7 +7,6 @@ import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
-import thaumcraft.api.tile.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
@@ -49,7 +48,7 @@ public class TileFluxScrubber extends TileThaumcraft implements IEssentiaTranspo
          }
 
          if (this.power < 5) {
-            this.power += VisNetHandler.drainVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.AIR, 10);
+            this.power += VisNetHandler.drainCentiVis(this.level(), this.xCoord, this.yCoord, this.zCoord, Aspects.AIR, 10);
          }
 
          if (this.power >= 5) {

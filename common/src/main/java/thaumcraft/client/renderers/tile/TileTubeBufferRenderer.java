@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelTubeValve;
-import thaumcraft.common.tiles.TileTubeBuffer;
+import thaumcraft.common.tiles.junkbox.TileTubeBuffer;
 
 public class TileTubeBufferRenderer extends TileEntitySpecialRenderer {
    private ModelTubeValve model = new ModelTubeValve();

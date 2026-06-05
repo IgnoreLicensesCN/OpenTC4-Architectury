@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -12,15 +13,19 @@ import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.menu.menu.ArcaneSpaMenu;
+import thaumcraft.common.tiles.IThaumcraftBEWithMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
-import static com.linearity.opentc4.Consts.AbstractPedestalBlockEntityTagAccessors.STORED_ITEM;
+import static com.linearity.opentc4.Consts.ArcaneSpaBlockEntityTagAccessors.STORED_ITEM;
 
 //TODO:GUI
 public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
-    implements IDefaultWorldlyContainer {
+    implements IDefaultWorldlyContainer,
+        IThaumcraftBEWithMenu<ArcaneSpaMenu,ArcaneSpaBlockEntity>
+{
     public ArcaneSpaBlockEntity(BlockEntityType<? extends ArcaneSpaBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -131,5 +136,17 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
             return true;
         }
         else return fstate.is(ThaumcraftFluids.PURE_FLUID_FLOWING) && !fstate.isSource();
+    }
+
+    @Override
+    public @NotNull Component getDisplayName() {
+        return Component.translatable("block.thaumcraft.arcane_spa");
+    }
+
+    private final IThaumcraftBEWithMenu.IThaumcraftBEWithMenuFactory<ArcaneSpaMenu,ArcaneSpaBlockEntity> menuFactory
+            = ArcaneSpaMenu::new;
+    @Override
+    public @NotNull IThaumcraftBEWithMenuFactory<ArcaneSpaMenu, ArcaneSpaBlockEntity> getMenuFactory() {
+        return menuFactory;
     }
 }

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ChestList;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -287,7 +287,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     }
 
     public void tryConsumeCentiVis() {
-        speedyTime += VisNetHandler.drainVis(this.level, this.getBlockPos(), Aspects.FIRE, 5);
+        speedyTime += VisNetHandler.drainCentiVis(this.level, this.getBlockPos(), Aspects.FIRE, 5);
     }
 
     public ItemStack insertItemStack(ItemStack itemStackIn) {

@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -25,7 +25,7 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.lib.world.ChunkLoc;
-import thaumcraft.common.tiles.TileSensor;
+import thaumcraft.common.tiles.junkbox.TileSensor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,7 +122,7 @@ public class ServerTickEventsFML {
                             didSomething = true;
                             if (!vs.player.capabilities.isCreativeMode) {
                                 int fortune = wand.getFocusTreasure(vs.player.inventory.getStackInSlot(vs.wand));
-                                boolean silk = wand.getFocus(vs.player.inventory.getStackInSlot(vs.wand)).isUpgradedWith(wand.getFocusItem(vs.player.inventory.getStackInSlot(vs.wand)), FocusUpgradeType.silktouch);
+                                boolean silk = wand.getFocus(vs.player.inventory.getStackInSlot(vs.wand)).isUpgradedWith(wand.getFocusItem(vs.player.inventory.getStackInSlot(vs.wand)), ThaumcraftFocusUpgradeTypes.SILKTOUCH);
                                 vs.player.inventory.decrStackSize(slot, 1);
                                 ArrayList<ItemStack> ret = new ArrayList<>();
                                 if (silk && bi.canSilkHarvest(world, vs.player, vs.x, vs.y, vs.z, md)) {

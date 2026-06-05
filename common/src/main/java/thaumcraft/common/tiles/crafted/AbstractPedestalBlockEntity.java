@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 
 import static com.linearity.opentc4.Consts.AbstractPedestalBlockEntityTagAccessors.STORED_ITEM;

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.worldgenerated.eldritch.AncientStoneStairBlock;
 
-//TODO Remove FACE_STATE if there's a way to map texture
+//TODO:Remove FACE_STATE if there's a way to map texture.Do it before release!
 public class AncientStoneSlabBlock extends SlabBlock {
     public AncientStoneSlabBlock(Properties properties) {
         super(properties);

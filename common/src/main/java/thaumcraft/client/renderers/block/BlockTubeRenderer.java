@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.blocks.junkbox.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.awt.*;
 

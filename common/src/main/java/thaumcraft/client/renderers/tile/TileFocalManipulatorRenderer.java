@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelArcaneWorkbench;
-import thaumcraft.common.tiles.TileFocalManipulator;
+import thaumcraft.common.tiles.junkbox.TileFocalManipulator;
 
 @SideOnly(Side.CLIENT)
 public class TileFocalManipulatorRenderer extends TileEntitySpecialRenderer {

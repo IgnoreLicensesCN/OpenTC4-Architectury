@@ -13,8 +13,9 @@ import net.minecraft.server.MinecraftServer;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityShockOrb;
@@ -95,7 +96,7 @@ public class ItemFocusShock extends ItemFocusBasic {
          if (wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), Platform.getEnvironment() != Env.CLIENT, false)) {
             if (Platform.getEnvironment() != Env.CLIENT) {
                EntityShockOrb orb = new EntityShockOrb(world, p);
-               orb.area += this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.enlarge) * 2;
+               orb.area += this.getUpgradeLevel(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ENLARGE) * 2;
                orb.damage = (int)((double)orb.damage + (double)wand.getFocusPotency(itemstack) * 1.33);
                world.spawnEntityInWorld(orb);
                world.playSoundAtEntity(orb, "thaumcraft:zap", 1.0F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.2F);
@@ -155,7 +156,7 @@ public class ItemFocusShock extends ItemFocusBasic {
                int cl = this.getUpgradeLevel(wand.getFocusItem(stack), chainlightning) * 2;
                pointedEntity.attackEntityFrom(DamageSource.causePlayerDamage(p), (float)((cl > 0 ? 6 : 4) + potency));
                if (cl > 0) {
-                  cl += this.getUpgradeLevel(wand.getFocusItem(stack), FocusUpgradeType.enlarge) * 2;
+                  cl += this.getUpgradeLevel(wand.getFocusItem(stack), ThaumcraftFocusUpgradeTypes.ENLARGE) * 2;
                   EntityLivingBase center = (EntityLivingBase)pointedEntity;
                   ArrayList<Integer> targets = new ArrayList<>();
                   targets.add(pointedEntity.getEntityId());
@@ -191,21 +192,21 @@ public class ItemFocusShock extends ItemFocusBasic {
    }
 
    public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-      return !type.equals(FocusUpgradeType.enlarge) || this.isUpgradedWith(focusstack, chainlightning) || this.isUpgradedWith(focusstack, earthshock);
+      return !type.equals(ThaumcraftFocusUpgradeTypes.ENLARGE) || this.isUpgradedWith(focusstack, chainlightning) || this.isUpgradedWith(focusstack, earthshock);
    }
 
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, chainlightning, earthshock};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, chainlightning, earthshock};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ENLARGE};
          default:
             return null;
       }

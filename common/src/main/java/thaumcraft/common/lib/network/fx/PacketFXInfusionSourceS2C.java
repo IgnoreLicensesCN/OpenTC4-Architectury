@@ -10,8 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.TileInfusionMatrix;
-import thaumcraft.common.tiles.TilePedestal;
 import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
 import thaumcraft.common.tiles.crafted.infusion.InfusionMatrixBlockEntity;
 

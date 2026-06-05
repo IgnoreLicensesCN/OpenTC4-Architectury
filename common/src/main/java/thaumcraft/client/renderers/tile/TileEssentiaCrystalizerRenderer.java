@@ -12,7 +12,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileEssentiaCrystalizer;
+import thaumcraft.common.tiles.junkbox.TileEssentiaCrystalizer;
 
 @SideOnly(Side.CLIENT)
 public class TileEssentiaCrystalizerRenderer extends TileEntitySpecialRenderer {

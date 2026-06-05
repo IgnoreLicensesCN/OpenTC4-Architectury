@@ -37,10 +37,11 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
-import thaumcraft.api.wands.FocusUpgradeType;
-import thaumcraft.api.wands.IWandFocusItem;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.api.wands.focus.IWandFocusItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandFocusEngineItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
@@ -83,17 +84,9 @@ public class FocusExcavationItem extends FocusBasicItem {
     }
 
     @Override
-    public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-        return super.canApplyUpgrade(focusstack, player, type, rank);
-    }
-
-    @Override
     public CentiVisList<Aspect> getCentiVisCost(ItemStack focusstack, @Nullable ItemStack wandStack) {
-        if (!(focusstack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem)) {
-            return wandCost;
-        }
-        var upgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusstack,wandStack);
-        if (upgrades.getOrDefault(FocusUpgradeType.silktouch,0) > 0
+        var upgrades = this.getWandUpgradesWithWandModifiers(focusstack,wandStack);
+        if (upgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.SILKTOUCH,0) > 0
                 || upgrades.getOrDefault(dowsing,0) > 0
         ) {
             return wandCostWithSilkTouchOrDowsing;
@@ -112,39 +105,31 @@ public class FocusExcavationItem extends FocusBasicItem {
     }
 
     public static final List<FocusUpgradeType> RANK_0_UPGRADES =
-            List.of(FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.treasure);
+            List.of(ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.TREASURE);
 
     public static final List<FocusUpgradeType> RANK_1_UPGRADES =
-            List.of(FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.enlarge);
+            List.of(ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ENLARGE);
 
     public static final List<FocusUpgradeType> RANK_2_UPGRADES =
-            List.of(FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.treasure, dowsing);
+            List.of(ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.TREASURE, dowsing);
 
     public static final List<FocusUpgradeType> RANK_3_UPGRADES =
-            List.of(FocusUpgradeType.frugal, FocusUpgradeType.frugal, FocusUpgradeType.enlarge);
+            List.of(ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE);
 
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
-            List.of(FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.treasure, FocusUpgradeType.silktouch);
+            List.of(ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.TREASURE, ThaumcraftFocusUpgradeTypes.SILKTOUCH);
 
 
 
     @Override
     public List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusstack) {
         if (focusstack == null) {return List.of();}
-        var item = focusstack.getItem();
-        if (item instanceof IWandFocusItem<? extends Aspect> focusItem) {
-            int rank = focusItem.getAppliedWandUpgrades(focusstack)
-                    .values()
-                    .stream()
-                    .mapToInt(Integer::intValue)
-                    .sum();
-
-            if (rank == 0) return RANK_0_UPGRADES;
-            if (rank == 1) return RANK_1_UPGRADES;
-            if (rank == 2) return RANK_2_UPGRADES;
-            if (rank == 3) return RANK_3_UPGRADES;
-            if (rank >= 4) return RANK_4_UPGRADES;
-        }
+        int rank = getRank(focusstack);
+        if (rank == 0) return RANK_0_UPGRADES;
+        if (rank == 1) return RANK_1_UPGRADES;
+        if (rank == 2) return RANK_2_UPGRADES;
+        if (rank == 3) return RANK_3_UPGRADES;
+        if (rank >= 4) return RANK_4_UPGRADES;
         return List.of();
     }
 
@@ -238,7 +223,7 @@ public class FocusExcavationItem extends FocusBasicItem {
                 BlockState blockState = level.getBlockState(mopBlockPos);
                 float hardness = blockState.getDestroySpeed(level, mopBlockPos);
                 if (hardness >= 0.0F) {
-                    int pot = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.potency, 0);
+                    int pot = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(ThaumcraftFocusUpgradeTypes.POTENCY, 0);
                     float speed = 0.05F + (float)pot * 0.1F;
                     if (blockState.is(BlockTags.BASE_STONE_OVERWORLD) ||
                             blockState.is(BlockTags.DIRT)  ||
@@ -266,7 +251,7 @@ public class FocusExcavationItem extends FocusBasicItem {
                             }
                         } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
-                                for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(FocusUpgradeType.enlarge,0); ++a) {
+                                for(int a = 0; a < wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(ThaumcraftFocusUpgradeTypes.ENLARGE,0); ++a) {
                                     if (container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), false, false,serverSideFlag)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
                                         container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag);
@@ -324,8 +309,8 @@ public class FocusExcavationItem extends FocusBasicItem {
         }
         var wandUpgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand);
         {
-            int fortune = wandUpgrades.getOrDefault(FocusUpgradeType.treasure, 0);
-            boolean silk = wandUpgrades.getOrDefault(FocusUpgradeType.silktouch, 0) > 0;
+            int fortune = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.TREASURE, 0);
+            boolean silk = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.SILKTOUCH, 0) > 0;
             boolean canHarvest =
                     !state.requiresCorrectToolForDrops()
                             || player.hasCorrectToolForDrops(state);

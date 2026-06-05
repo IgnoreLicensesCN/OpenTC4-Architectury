@@ -8,10 +8,10 @@ import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
-import thaumcraft.common.tiles.TileArcaneBoreBase;
-import thaumcraft.common.tiles.TileArcaneLamp;
-import thaumcraft.common.tiles.TileArcaneLampFertility;
-import thaumcraft.common.tiles.TileArcaneLampGrowth;
+import thaumcraft.common.tiles.junkbox.TileArcaneBoreBase;
+import thaumcraft.common.tiles.junkbox.TileArcaneLamp;
+import thaumcraft.common.tiles.junkbox.TileArcaneLampFertility;
+import thaumcraft.common.tiles.junkbox.TileArcaneLampGrowth;
 
 public class TileArcaneLampRenderer extends TileEntitySpecialRenderer {
    private ModelBoreBase model = new ModelBoreBase();

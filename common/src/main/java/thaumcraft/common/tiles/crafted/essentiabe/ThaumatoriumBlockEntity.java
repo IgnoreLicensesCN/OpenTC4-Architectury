@@ -25,7 +25,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachmentBlock;
 import thaumcraft.common.lib.utils.InventoryUtils;

@@ -13,7 +13,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
-import thaumcraft.common.tiles.TileInfusionMatrix;
+import thaumcraft.common.tiles.junkbox.TileInfusionMatrix;
 
 import java.util.Random;
 

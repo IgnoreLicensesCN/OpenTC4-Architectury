@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileManaPod;
+import thaumcraft.common.tiles.junkbox.TileManaPod;
 
 import java.util.Random;
 

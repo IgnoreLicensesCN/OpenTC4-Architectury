@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileHole;
+import thaumcraft.common.tiles.junkbox.TileHole;
 
 import java.nio.FloatBuffer;
 import java.util.Random;

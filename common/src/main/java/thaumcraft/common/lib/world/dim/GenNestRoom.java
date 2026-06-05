@@ -3,7 +3,7 @@ package thaumcraft.common.lib.world.dim;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileCrystal;
+import thaumcraft.common.tiles.junkbox.TileCrystal;
 
 import java.util.Random;
 

@@ -12,9 +12,9 @@ import net.minecraftforge.fluids.*;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.tiles.TileEssentiaReservoir;
-import thaumcraft.common.tiles.TileJarFillable;
-import thaumcraft.common.tiles.TileJarFillableVoid;
+import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileJarFillableVoid;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

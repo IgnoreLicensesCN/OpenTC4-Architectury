@@ -235,7 +235,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
 
     @Override
     public String toString() {
-        return "UnmodifiableList{ " + internalList.toString() + " }";
+        return "UnmodifiableAspectList{ " + internalList.toString() + " }";
     }
 
 

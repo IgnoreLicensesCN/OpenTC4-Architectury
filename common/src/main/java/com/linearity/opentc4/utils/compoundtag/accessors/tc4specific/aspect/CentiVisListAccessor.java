@@ -34,6 +34,16 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
         return new LinkedHashCentiVisList<>(result);
     }
 
+    public void readFromCompoundTagInto(CompoundTag tag,CentiVisList<Aspect> into) {
+        var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
+        for (int i = 0; i < listTag.size(); i++) {
+            var compoundTag = listTag.getCompound(i);
+            var hexCoord = keyAccessor.readFromCompoundTag(compoundTag);
+            var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
+            into.addAll(hexCoord, hexType);
+        }
+    }
+
     @Override
     public void writeToCompoundTag(CompoundTag tag, CentiVisList<Aspect> toWrite) {
         var listTag = new ListTag();

@@ -1,0 +1,122 @@
+package thaumcraft.api.aspects.aspectlists;
+
+import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
+import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.PrimalAspect;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.ObjIntConsumer;
+
+public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnmodifiableDefault<A>,CentiVisList<A> {
+    public static final UnmodifiableCentiVisView<Aspect> EMPTY = new UnmodifiableCentiVisView<>(UnmodifiableCentiVisList.EMPTY);
+    private final CentiVisList<A> viewingList;
+    public UnmodifiableCentiVisView(CentiVisList<A> viewingList) {
+        this.viewingList = viewingList;
+    }
+    public UnmodifiableCentiVisView(Object2IntLinkedOpenHashMap<A> viewingMap) {
+        this.viewingList = LinkedHashCentiVisList.viewOf(viewingMap);
+    }
+
+    @Override
+    public @NotNull("empty -> empty(aspect)") A getFirstAspect() {
+        return this.viewingList.getFirstAspect();
+    }
+
+    @Override
+    public boolean containsKey(Aspect aspect) {
+        return viewingList.containsKey(aspect);
+    }
+
+    @Override
+    public String toString() {
+        return "UnmodifiableCentiVisView(" + viewingList + ")";
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.viewingList.isEmpty();
+    }
+
+    @Override
+    public A randomAspect(RandomSource randomSource) {
+        return this.viewingList.randomAspect(randomSource);
+    }
+
+    @Override
+    public @Nullable("if empty") A randomWeightedAspect(RandomSource randomSource) {
+        return viewingList.randomWeightedAspect(randomSource);
+    }
+
+    @Override
+    public void forEach(ObjIntConsumer<A> action) {
+        this.viewingList.forEach(action);
+    }
+
+    @Override
+    public boolean forEachWithBreak(ObjInt2BooleanFunction<A> action) {
+        return viewingList.forEachWithBreak(action);
+    }
+
+    @Override
+    public void acceptForIndex(int index, ObjIntConsumer<A> action) {
+        this.viewingList.acceptForIndex(index,action);
+    }
+
+    @Override
+    public int get(Aspect key) {
+        return this.viewingList.get(key);
+    }
+
+    @Override
+    public List<A> getAspectsSortedAmount() {
+        return this.viewingList.getAspectsSortedAmount();
+    }
+
+    @Override
+    public List<A> getAspectsSorted() {
+        return this.viewingList.getAspectsSorted();
+    }
+
+    @Override
+    public AspectList<PrimalAspect> getPrimalAspects() {
+        return this.viewingList.getPrimalAspects();
+    }
+
+    @Override
+    public Set<A> keySet() {
+        return this.viewingList.keySet();
+    }
+
+    @Override
+    public int visSize() {
+        return this.viewingList.visSize();
+    }
+
+    @Override
+    public int size() {
+        return this.viewingList.size();
+    }
+
+    @Override
+    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
+        //TODO:Remove
+    }
+
+    @Override
+    public int getOrDefault(Aspect aspect, int defaultValue) {
+        return this.viewingList.getOrDefault(aspect, defaultValue);
+    }
+
+    @Override
+    public AspectList<A> copy() {
+        return this.viewingList.copy();
+    }
+
+}

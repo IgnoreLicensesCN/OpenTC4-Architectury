@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
+@UtilityLikeAbstraction
 public abstract class AbstractExtendedMenuProviderContainerBlock extends AbstractContainerBlock {
     public AbstractExtendedMenuProviderContainerBlock(Properties properties) {
         super(properties);

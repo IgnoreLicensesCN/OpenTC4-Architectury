@@ -16,7 +16,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileAlchemyFurnaceAdvanced;
+import thaumcraft.common.tiles.junkbox.TileAlchemyFurnaceAdvanced;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 

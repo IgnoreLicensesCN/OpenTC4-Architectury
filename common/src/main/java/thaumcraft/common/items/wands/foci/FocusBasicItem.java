@@ -1,5 +1,7 @@
 package thaumcraft.common.items.wands.foci;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -10,13 +12,12 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.wands.FocusUpgradeType;
-import thaumcraft.api.wands.IWandFocusItem;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.api.wands.focus.IWandFocusItem;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_ACCESSOR;
@@ -27,12 +28,12 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
     }
 
     public void addFocusInformation(ItemStack focusstack, List<Component> list) {
-        for (Map.Entry<FocusUpgradeType, Integer> entry:this.getAppliedWandUpgrades(focusstack).entrySet()) {
+        for (var entry: this.getAppliedWandUpgrades(focusstack).object2IntEntrySet()) {
             var upgradeType = FocusUpgradeType.getType(entry.getKey().id());
             list.add(
                     upgradeType.getLocalizedName().copy()
                             .append(" ")
-                            .append("enchantment.level." + entry.getValue())
+                            .append("enchantment.level." + entry.getIntValue())
                                     .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
             );
         }
@@ -48,16 +49,18 @@ public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspe
         return FOCUS_UPGRADE_ACCESSOR.readFromCompoundTag(focusStack.getOrCreateTag())
                 .stream()
                 .map(FocusUpgradeType::getType)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> getAppliedWandUpgrades(ItemStack focusStack) {
-        return getAppliedWandUpgradesWithOrder(focusStack).stream()
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.summingInt(e -> 1)
-                ));
+    public Object2IntMap<FocusUpgradeType> getAppliedWandUpgrades(ItemStack focusStack) {
+        var upgrades = getAppliedWandUpgradesWithOrder(focusStack);
+        var map = new Object2IntOpenHashMap<FocusUpgradeType>();
+        for (var upgrade:upgrades){
+            map.merge(upgrade, 1,Integer::sum);
+        }
+        return map;
     }
 
     @Override

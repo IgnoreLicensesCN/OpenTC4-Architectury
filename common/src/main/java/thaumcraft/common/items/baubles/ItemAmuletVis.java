@@ -23,7 +23,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileVisRelay;
+import thaumcraft.common.tiles.junkbox.TileVisRelay;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;

@@ -7,7 +7,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
 
 @Deprecated(forRemoval = true)
 public class PacketCheck {

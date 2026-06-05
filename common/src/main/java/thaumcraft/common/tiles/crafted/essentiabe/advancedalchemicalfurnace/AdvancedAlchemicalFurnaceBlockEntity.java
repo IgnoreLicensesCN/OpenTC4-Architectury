@@ -12,7 +12,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceUpperFenceBlock;
@@ -94,15 +94,15 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         var pos = getBlockPos();
         int pt = this.fuelVisAmouontFire--;
         if (this.fuelVisAmouontFire <= getFuelVisCapacity()) {
-            this.fuelVisAmouontFire += VisNetHandler.drainVis(this.level, pos, Aspects.FIRE, 50);
+            this.fuelVisAmouontFire += VisNetHandler.drainCentiVis(this.level, pos, Aspects.FIRE, 50);
         }
 
         if (this.fuelVisAmountEntropy <= getFuelVisCapacity()) {
-            this.fuelVisAmountEntropy += VisNetHandler.drainVis(this.level, pos, Aspects.ENTROPY, 50);
+            this.fuelVisAmountEntropy += VisNetHandler.drainCentiVis(this.level, pos, Aspects.ENTROPY, 50);
         }
 
         if (this.fuelVisAmountWater <= getFuelVisCapacity()) {
-            this.fuelVisAmountWater += VisNetHandler.drainVis(this.level, pos, Aspects.WATER, 50);
+            this.fuelVisAmountWater += VisNetHandler.drainCentiVis(this.level, pos, Aspects.WATER, 50);
         }
 
         if (pt / 50 != this.fuelVisAmouontFire / 50) {

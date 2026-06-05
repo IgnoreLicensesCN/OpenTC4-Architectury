@@ -14,9 +14,8 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 

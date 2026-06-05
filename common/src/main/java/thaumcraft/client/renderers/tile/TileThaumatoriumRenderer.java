@@ -15,7 +15,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileThaumatorium;
+import thaumcraft.common.tiles.junkbox.TileThaumatorium;
 
 @SideOnly(Side.CLIENT)
 public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {

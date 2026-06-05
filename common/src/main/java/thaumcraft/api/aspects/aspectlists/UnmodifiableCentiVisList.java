@@ -121,6 +121,12 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends UnmodifiableAs
                 });
     }
 
+    @Override
+    public String toString() {
+        return "UnmodifiableCentiVisList{ " + internalList.toString() + " }";
+    }
+
+
     //you should cache it yourself now.
     public static <Asp extends Aspect> UnmodifiableCentiVisList<Asp> of(Asp aspect,int value,Asp aspect2,int value2){
 

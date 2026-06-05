@@ -14,7 +14,7 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -86,7 +86,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
 
 
     void processEssentia() {
-        if (this.level == null) {
+        if (this.level == null || this.aspectIn.isEmpty()) {
             return;
         }
         var comps = this.aspectIn.components;

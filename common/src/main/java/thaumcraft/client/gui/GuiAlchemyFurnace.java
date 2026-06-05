@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerAlchemyFurnace;
-import thaumcraft.common.tiles.TileAlchemyFurnace;
+import thaumcraft.common.tiles.junkbox.TileAlchemyFurnace;
 
 @SideOnly(Side.CLIENT)
 public class GuiAlchemyFurnace extends GuiContainer {

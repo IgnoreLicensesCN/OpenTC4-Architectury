@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S35PacketUpdateBlockEntity;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileHole;
+import thaumcraft.common.tiles.junkbox.TileHole;
 
 import java.io.IOException;
 

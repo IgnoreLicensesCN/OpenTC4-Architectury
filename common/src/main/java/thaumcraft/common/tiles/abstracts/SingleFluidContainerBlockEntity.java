@@ -9,7 +9,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 
 import static com.linearity.opentc4.Consts.SingleFluidContainerBlockEntityTagAccessors.FLUID;
 import static dev.architectury.fluid.FluidStack.create;

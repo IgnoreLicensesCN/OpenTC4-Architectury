@@ -19,7 +19,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.abstracts.IThaumcraftFurnaceAttachmentBlock;
 import thaumcraft.common.blocks.crafted.essentia.AlchemicalFurnaceBlock;
 import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 
 import static com.linearity.opentc4.Consts.AbstractMirrorBlockEntityTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;

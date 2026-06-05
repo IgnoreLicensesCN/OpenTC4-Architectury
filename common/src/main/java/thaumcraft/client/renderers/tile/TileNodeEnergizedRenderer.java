@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileNodeEnergized;
+import thaumcraft.common.tiles.junkbox.TileNodeEnergized;
 
 @SideOnly(Side.CLIENT)
 public class TileNodeEnergizedRenderer extends TileEntitySpecialRenderer {

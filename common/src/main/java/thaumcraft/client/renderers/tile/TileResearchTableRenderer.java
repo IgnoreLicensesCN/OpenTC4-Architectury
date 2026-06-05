@@ -17,7 +17,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
 
 @SideOnly(Side.CLIENT)
 public class TileResearchTableRenderer extends TileEntitySpecialRenderer {

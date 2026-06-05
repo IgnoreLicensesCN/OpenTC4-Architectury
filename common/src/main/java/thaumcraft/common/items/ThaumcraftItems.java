@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.crafted.visdevice.FocalManipulatorBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
@@ -270,6 +271,7 @@ public class ThaumcraftItems {
     public static final BlockItem COMPOUND_RECHARGE_FOCUS =  Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
     public static final BlockItem ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
     public static final BathSaltsItem BATH_SALTS = Registry.SUPPLIER_BATH_SALTS.get();
+    public static final BlockItem FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
 
     //===========================================================================================
 
@@ -1016,6 +1018,11 @@ public class ThaumcraftItems {
                 "bath_salts",
                 BathSaltsItem::new
         );
+        public static final RegistrySupplier<BlockItem> SUPPLIER_FOCAL_MANIPULATOR =
+                ITEMS.register(
+                        "focal_manipulator",
+                        () -> new BlockItem(ThaumcraftBlocks.FOCAL_MANIPULATOR, new Item.Properties())
+                );
 
 
 

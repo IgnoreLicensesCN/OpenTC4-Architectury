@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +15,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaTransportInBlockEntity;
 import thaumcraft.api.aspects.IEssentiaTransportOutBlockEntity;
 import thaumcraft.api.listeners.lamp.fertility.check.FertilityLampAffectiveManager;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.ArrayList;

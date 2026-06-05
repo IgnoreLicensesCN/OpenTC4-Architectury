@@ -5,7 +5,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.tiles.TileMagicBox;
+import thaumcraft.common.tiles.junkbox.TileMagicBox;
 
 public class ContainerMagicBox extends Container {
    private TileMagicBox box;

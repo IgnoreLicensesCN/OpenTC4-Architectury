@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileThaumatorium;
+import thaumcraft.common.tiles.junkbox.TileThaumatorium;
 
 import java.util.ArrayList;
 

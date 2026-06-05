@@ -623,10 +623,12 @@ public class ScanManager implements IScanEventHandler {
     }
 
     public static boolean validScan(AspectList<Aspect>aspects, Player player) {
-        Thaumcraft var10000 = Thaumcraft.instance;
         PlayerKnowledge rp = Thaumcraft.playerKnowledge;
         if (aspects != null && !aspects.isEmpty()) {
             for (Aspect aspect : aspects.keySet()) {
+                if (aspect.isEmpty()){
+                    continue;
+                }
                 if (aspect instanceof CompoundAspect compoundAspect && !rp.hasDiscoveredParentAspects(
                         player, aspect
                 )) {

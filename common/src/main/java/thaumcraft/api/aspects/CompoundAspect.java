@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -22,12 +23,19 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
             0x000000,
             new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
             1,
-            true) {
+            true
+    ) {
         @Override
         public boolean isEmpty() {
             return true;
         }
+
+        @Override
+        public @Unmodifiable @NotNull AspectList<PrimalAspect> reduceToPrimal(boolean merge) {
+            return UnmodifiableAspectList.EMPTY_PRIMAL;
+        }
     };
+    //only for empty
     private CompoundAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
         super(aspectKey,color,image,blend);
         this.components = null;

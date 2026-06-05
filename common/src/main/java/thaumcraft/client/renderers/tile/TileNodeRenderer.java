@@ -22,7 +22,7 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.items.research.ThaumometerItem;
-import thaumcraft.common.tiles.TileJarNode;
+import thaumcraft.common.tiles.junkbox.TileJarNode;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 @SideOnly(Side.CLIENT)

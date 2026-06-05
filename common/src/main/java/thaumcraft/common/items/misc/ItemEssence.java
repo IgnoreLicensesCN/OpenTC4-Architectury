@@ -20,8 +20,8 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileAlembic;
-import thaumcraft.common.tiles.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileAlembic;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
 
 import java.util.List;
 

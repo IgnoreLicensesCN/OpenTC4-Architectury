@@ -6,41 +6,28 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.HitResult.MovingObjectType;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.items.misc.ItemEssence;
 import thaumcraft.common.items.equipment.ItemElementalPickaxe;
 import thaumcraft.common.items.equipment.ItemPrimalCrusher;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
-import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.ChunkLoc;
-import thaumcraft.common.lib.world.dim.Cell;
-import thaumcraft.common.lib.world.dim.CellLoc;
-import thaumcraft.common.lib.world.dim.MazeHandler;
-import thaumcraft.common.tiles.TileSensor;
-
-import java.util.ArrayList;
 
 //TODO
 public class EventHandlerWorld implements IFuelHandler {
@@ -159,7 +146,7 @@ public class EventHandlerWorld implements IFuelHandler {
                          ItemFocusExcavation.dowsing))) {
             int fortune = EnchantmentHelper.getFortuneModifier(player);
             if (held.getItem() instanceof WandCastingItem) {
-               fortune = ((WandCastingItem)held.getItem()).getFocus(held).getUpgradeLevel(((WandCastingItem)held.getItem()).getFocusItem(held), FocusUpgradeType.treasure);
+               fortune = ((WandCastingItem)held.getItem()).getFocus(held).getUpgradeLevel(((WandCastingItem)held.getItem()).getFocusItem(held), ThaumcraftFocusUpgradeTypes.TREASURE);
             }
 
             float chance = 0.2F + (float)fortune * 0.075F;

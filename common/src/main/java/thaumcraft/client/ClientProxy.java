@@ -78,6 +78,7 @@ import thaumcraft.common.entities.projectile.*;
 import thaumcraft.common.lib.events.KeyHandler;
 import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.awt.*;
 import java.lang.reflect.Field;

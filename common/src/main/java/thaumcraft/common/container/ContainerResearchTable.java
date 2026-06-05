@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.misc.ItemResearchNotes;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
 
 public class ContainerResearchTable extends Container {
    public TileResearchTable tileEntity;

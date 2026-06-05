@@ -4,7 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.listeners.researchtable.listeners.WriteAspectAfterListener;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;

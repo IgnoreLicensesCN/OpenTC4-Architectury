@@ -34,8 +34,9 @@ import thaumcraft.common.blocks.crafted.ownedblock.*;
 import thaumcraft.common.blocks.crafted.pavingstone.*;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.*;
 import thaumcraft.common.blocks.crafted.essentia.thaumatorium.*;
-import thaumcraft.common.blocks.crafted.rechargepedestal.CompoundRechargeFocusBlock;
-import thaumcraft.common.blocks.crafted.rechargepedestal.WandRechargePedestalBlock;
+import thaumcraft.common.blocks.crafted.visdevice.FocalManipulatorBlock;
+import thaumcraft.common.blocks.crafted.visdevice.rechargepedestal.CompoundRechargeFocusBlock;
+import thaumcraft.common.blocks.crafted.visdevice.rechargepedestal.WandRechargePedestalBlock;
 import thaumcraft.common.blocks.liquid.*;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.*;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.*;
@@ -239,6 +240,7 @@ public class ThaumcraftBlocks {
     public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL =  Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
     public static final CompoundRechargeFocusBlock COMPOUND_RECHARGE_FOCUS =  Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
     public static final ArcaneSpaBlock ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
+    public static final FocalManipulatorBlock FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
         public static final RegistrySupplier<FluxGooBlock> SUPPLIER_FLUX_GOO = BLOCKS.register(
@@ -985,6 +987,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "arcane_spa",
                         ArcaneSpaBlock::new
+                );
+        public static final RegistrySupplier<FocalManipulatorBlock> SUPPLIER_FOCAL_MANIPULATOR =
+                BLOCKS.register(
+                        "focal_manipulator",
+                        FocalManipulatorBlock::new
                 );
 
         static {

@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemPickaxe;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
-import thaumcraft.common.tiles.TileArcaneBore;
+import thaumcraft.common.tiles.junkbox.TileArcaneBore;
 
 public class ContainerArcaneBore extends Container {
    private TileArcaneBore tileEntity;

@@ -27,6 +27,7 @@ import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.util.List;
 import java.util.Random;

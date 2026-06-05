@@ -53,7 +53,7 @@ public class PlayerKnowledge {
    }
 
    public boolean hasDiscoveredParentAspects(Player player, Aspect aspect) {
-      if (!(aspect instanceof CompoundAspect compoundAspect)) {
+      if (!(aspect instanceof CompoundAspect compoundAspect) || aspect.isEmpty()) {
          return false;
       }
       var components = compoundAspect.components;

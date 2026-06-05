@@ -11,8 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityPrimalOrb;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -72,15 +73,15 @@ public class ItemFocusPrimal extends ItemFocusBasic {
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, seeker};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, seeker};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL};
          default:
             return null;
       }

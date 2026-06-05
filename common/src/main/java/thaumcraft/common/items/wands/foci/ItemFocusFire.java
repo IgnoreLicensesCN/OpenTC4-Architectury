@@ -10,8 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityEmber;
 import thaumcraft.common.entities.projectile.EntityExplosiveOrb;
@@ -66,7 +67,7 @@ public class ItemFocusFire extends ItemFocusBasic {
             if (Platform.getEnvironment() != Env.CLIENT) {
                EntityExplosiveOrb orb = new EntityExplosiveOrb(world, p);
                orb.strength += (float)wand.getFocusPotency(itemstack) * 0.4F;
-               orb.onFire = this.isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.alchemistsfire);
+               orb.onFire = this.isUpgradedWith(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE);
                world.spawnEntityInWorld(orb);
                world.playAuxSFXAtEntity(null, 1009, (int)p.posX, (int)p.posY, (int)p.posZ, 0);
             }
@@ -105,7 +106,7 @@ public class ItemFocusFire extends ItemFocusBasic {
                   orb.duration = 30;
                }
 
-               orb.firey = this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.alchemistsfire);
+               orb.firey = this.getUpgradeLevel(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE);
                orb.posX += orb.motionX;
                orb.posY += orb.motionY;
                orb.posZ += orb.motionZ;
@@ -119,22 +120,22 @@ public class ItemFocusFire extends ItemFocusBasic {
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.alchemistsfire};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, fireball, firebeam};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, fireball, firebeam};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.alchemistsfire};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          default:
             return null;
       }
    }
 
    public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-      return !type.equals(FocusUpgradeType.alchemistsfire) || !this.isUpgradedWith(focusstack, fireball) || !this.isUpgradedWith(focusstack, FocusUpgradeType.alchemistsfire);
+      return !type.equals(ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE) || !this.isUpgradedWith(focusstack, fireball) || !this.isUpgradedWith(focusstack, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FIRE);
    }
 
    static {

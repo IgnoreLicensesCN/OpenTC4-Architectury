@@ -18,15 +18,16 @@ import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
-import thaumcraft.common.tiles.TileWarded;
+import thaumcraft.common.tiles.junkbox.TileWarded;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,26 +144,26 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitectDispla
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.architect};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ARCHITECT};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          default:
             return null;
       }
    }
 
    public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-      return !type.equals(FocusUpgradeType.enlarge) || this.isUpgradedWith(focusstack, FocusUpgradeType.architect);
+      return !type.equals(ThaumcraftFocusUpgradeTypes.ENLARGE) || this.isUpgradedWith(focusstack, ThaumcraftFocusUpgradeTypes.ARCHITECT);
    }
 
    public int getMaxAreaSize(ItemStack focusstack) {
-      return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge);
+      return 3 + this.getUpgradeLevel(focusstack, ThaumcraftFocusUpgradeTypes.ENLARGE);
    }
 
    public List<BlockPos> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {
@@ -180,7 +181,7 @@ public class ItemFocusWarding extends ItemFocusBasic implements IArchitectDispla
       int sizeX = 0;
       int sizeY = 0;
       int sizeZ = 0;
-      if (this.isUpgradedWith(wand.getFocusItem(stack), FocusUpgradeType.architect)) {
+      if (this.isUpgradedWith(wand.getFocusItem(stack), ThaumcraftFocusUpgradeTypes.ARCHITECT)) {
          sizeX = WandManager.getAreaX(stack);
          sizeY = WandManager.getAreaY(stack);
          sizeZ = WandManager.getAreaZ(stack);

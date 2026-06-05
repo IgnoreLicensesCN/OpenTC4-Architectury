@@ -7,6 +7,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
 import thaumcraft.client.renderers.item.RenderUtils;
@@ -52,6 +53,7 @@ public final class OpenTC4 {
         ThaumcraftBlocks.init();
         ThaumcraftItems.init();
         ThaumcraftBlockEntities.init();
+        ThaumcraftFocusUpgradeTypes.init();
         ThaumcraftEntities.init();
         ThaumcraftDispenseBehaviors.init();
         BiomeWithTypes.init();

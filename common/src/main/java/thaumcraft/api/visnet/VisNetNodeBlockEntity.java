@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.abstracts.ICubeChunkBasedWeakLookupOwner;
 
@@ -68,7 +68,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
     public abstract boolean isSource();
 
     /**
-     * This method should never be called directly. Use {@link VisNetHandler#drainVis} instead
+     * This method should never be called directly. Use {@link VisNetHandler#drainCentiVis} instead
      * <p>IgnoreLicensesCN:maybe you can call it in some ways?if you really want to drain from someone directly.</p>
      * @param aspect what aspect to drain
      * @param vis how much to drain

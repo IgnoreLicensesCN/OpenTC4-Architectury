@@ -7,13 +7,13 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerArcaneBore;
 import thaumcraft.common.items.equipment.ItemElementalPickaxe;
 import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
-import thaumcraft.common.tiles.TileArcaneBore;
+import thaumcraft.common.tiles.junkbox.TileArcaneBore;
 
 @SideOnly(Side.CLIENT)
 public class GuiArcaneBore extends GuiContainer {
@@ -61,7 +61,7 @@ public class GuiArcaneBore extends GuiContainer {
          base += 9;
       }
 
-      if (this.bore.getStackInSlot(1) != null && EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, this.bore.getStackInSlot(1)) > 0 || this.bore.getStackInSlot(0) != null && this.bore.getStackInSlot(0).getItem() instanceof ItemFocusBasic && ((ItemFocusBasic)this.bore.getStackInSlot(0).getItem()).isUpgradedWith(this.bore.getStackInSlot(0), FocusUpgradeType.silktouch)) {
+      if (this.bore.getStackInSlot(1) != null && EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, this.bore.getStackInSlot(1)) > 0 || this.bore.getStackInSlot(0) != null && this.bore.getStackInSlot(0).getItem() instanceof ItemFocusBasic && ((ItemFocusBasic)this.bore.getStackInSlot(0).getItem()).isUpgradedWith(this.bore.getStackInSlot(0), ThaumcraftFocusUpgradeTypes.SILKTOUCH)) {
          text = "Silk Touch";
          this.fontRendererObj.drawStringWithShadow(text, 4, 34 + base, 8421631);
          base += 9;

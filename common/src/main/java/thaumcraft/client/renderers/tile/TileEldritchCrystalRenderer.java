@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileCrystal;
+import thaumcraft.common.tiles.junkbox.TileCrystal;
 
 @SideOnly(Side.CLIENT)
 public class TileEldritchCrystalRenderer extends TileEntitySpecialRenderer {

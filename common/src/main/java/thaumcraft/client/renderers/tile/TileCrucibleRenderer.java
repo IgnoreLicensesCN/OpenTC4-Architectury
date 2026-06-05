@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileCrucible;
+import thaumcraft.common.tiles.junkbox.TileCrucible;
 
 public class TileCrucibleRenderer extends TileEntitySpecialRenderer {
    public void renderEntityAt(TileCrucible cr, double x, double y, double z, float fq) {

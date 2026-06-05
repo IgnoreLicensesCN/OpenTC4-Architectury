@@ -36,7 +36,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
 
     @Override
     public String toString() {
-        return this.viewingList.toString();
+        return "UnmodifiableAspectView(" + viewingList + ")";
     }
 
     @Override

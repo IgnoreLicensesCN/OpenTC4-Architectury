@@ -39,7 +39,7 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 import thaumcraft.common.entities.monster.EntityPech;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
-import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.junkbox.*;
 
 public class CommonProxy implements IGuiHandler {
 //   public PlayerKnowledge playerKnowledge;

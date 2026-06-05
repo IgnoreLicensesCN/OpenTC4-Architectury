@@ -25,7 +25,7 @@ import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockArcS2C;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.WorldGenEldritchRing;
-import thaumcraft.common.tiles.TileBanner;
+import thaumcraft.common.tiles.junkbox.TileBanner;
 
 import java.util.List;
 

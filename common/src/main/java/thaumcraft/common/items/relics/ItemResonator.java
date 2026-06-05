@@ -19,7 +19,7 @@ import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.TileTubeBuffer;
+import thaumcraft.common.tiles.junkbox.TileTubeBuffer;
 
 import java.util.List;
 

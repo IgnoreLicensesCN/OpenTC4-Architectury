@@ -32,7 +32,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.lib.utils.HexCoordUtils;
-import thaumcraft.common.tiles.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
 
 import java.awt.*;
 import java.util.ArrayList;

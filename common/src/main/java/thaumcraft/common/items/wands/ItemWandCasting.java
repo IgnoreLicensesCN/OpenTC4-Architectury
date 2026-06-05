@@ -6,7 +6,7 @@ import thaumcraft.api.wands.*;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileOwned;
+import thaumcraft.common.tiles.junkbox.TileOwned;
 
 @Deprecated(forRemoval = true)
 public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {

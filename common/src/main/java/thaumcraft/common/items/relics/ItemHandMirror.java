@@ -18,12 +18,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraft.core.Direction;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileMirror;
+import thaumcraft.common.tiles.junkbox.TileMirror;
 
 import java.util.List;
 

@@ -12,8 +12,9 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityFireBat;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -124,15 +125,15 @@ public class ItemFocusHellbat extends ItemFocusBasic {
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, batbombs, devilbats};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, batbombs, devilbats};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, vampirebats};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, vampirebats};
          default:
             return null;
       }

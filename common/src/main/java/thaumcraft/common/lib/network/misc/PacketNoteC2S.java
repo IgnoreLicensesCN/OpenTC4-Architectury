@@ -4,16 +4,13 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.TileSensor;
+import thaumcraft.common.tiles.junkbox.TileSensor;
 
 public class PacketNoteC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":note_c2s";

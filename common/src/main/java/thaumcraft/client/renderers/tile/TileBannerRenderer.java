@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBanner;
 import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.tiles.TileBanner;
+import thaumcraft.common.tiles.junkbox.TileBanner;
 
 import java.awt.*;
 

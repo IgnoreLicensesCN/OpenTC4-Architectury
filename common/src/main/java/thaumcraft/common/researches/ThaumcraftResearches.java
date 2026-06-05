@@ -23,4 +23,5 @@ public class ThaumcraftResearches {
 
     public static final ResearchItem ENTER_OUTER = ;
     public static final ResearchItem PRIME_PEARL_NODE_CONTROL = ;
+    public static final ResearchItem FOCAL_MANIPULATION = ;
 }

@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -71,7 +71,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
             if (this.crystallizingAspect.isEmpty()) {
                 this.fillReservoir();
             } else {
-                this.progressTickCount += 1 + VisNetHandler.drainVis(
+                this.progressTickCount += 1 + VisNetHandler.drainCentiVis(
                         this.level, pos.getX(),pos.getY(),pos.getZ(),
                         Aspects.EARTH,
                         Math.min(20, Math.max(1, (maxProgress - this.progressTickCount) / 2))) * 2;

@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.TileEldritchLock;
+import thaumcraft.common.tiles.junkbox.TileEldritchLock;
 
 import java.nio.FloatBuffer;
 import java.util.Random;

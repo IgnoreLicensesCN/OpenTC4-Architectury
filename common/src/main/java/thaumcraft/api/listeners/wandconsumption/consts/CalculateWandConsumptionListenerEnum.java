@@ -7,6 +7,8 @@ import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;
 import thaumcraft.api.listeners.wandconsumption.listeners.CalculateWandConsumptionListener;
 import thaumcraft.api.wands.*;
+import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +99,7 @@ public enum CalculateWandConsumptionListenerEnum {
                     if (!focusStack.isEmpty() && !context.crafting && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
                         context.currentConsumption -= (float) wandFocusItem
                                 .getWandUpgradesWithWandModifiers(focusStack,context.wandStack)
-                                .getOrDefault(FocusUpgradeType.frugal,0) / 10.0F;
+                                .getOrDefault(ThaumcraftFocusUpgradeTypes.FRUGAL,0) / 10.0F;
                     }
                 }
             }

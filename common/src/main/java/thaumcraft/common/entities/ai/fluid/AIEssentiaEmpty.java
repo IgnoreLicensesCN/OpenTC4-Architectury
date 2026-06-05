@@ -7,8 +7,8 @@ import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.GolemHelper;
-import thaumcraft.common.tiles.TileEssentiaReservoir;
-import thaumcraft.common.tiles.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
 
 public class AIEssentiaEmpty extends EntityAIBase {
    private EntityGolemBase theGolem;

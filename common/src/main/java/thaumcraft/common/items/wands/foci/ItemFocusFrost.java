@@ -10,8 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityFrostShard;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -39,7 +40,7 @@ public class ItemFocusFrost extends ItemFocusBasic {
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult mob) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
       if (Platform.getEnvironment() != Env.CLIENT && wand.consumeAllCentiVis(itemstack, p, this.getVisCost(itemstack), true, false)) {
-         int frosty = this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.alchemistsfrost);
+         int frosty = this.getUpgradeLevel(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST);
          EntityFrostShard shard = null;
          if (this.isUpgradedWith(wand.getFocusItem(itemstack), scattershot)) {
             for(int a = 0; a < 5 + wand.getFocusPotency(itemstack) * 2; ++a) {
@@ -85,15 +86,15 @@ public class ItemFocusFrost extends ItemFocusBasic {
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.alchemistsfrost};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, scattershot, iceboulder, FocusUpgradeType.alchemistsfrost};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, scattershot, iceboulder, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.potency, FocusUpgradeType.alchemistsfrost};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
          default:
             return null;
       }

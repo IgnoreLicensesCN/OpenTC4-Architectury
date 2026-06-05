@@ -1,5 +1,6 @@
 package thaumcraft.api.visnet;
 
+import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
 import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -41,7 +42,7 @@ public class VisNetHandler {
      * @param amount how much to drain
      * @return how much was actually drained
      */
-    public static int drainVis(Level world, BlockPos pos, Aspect aspect, int amount) {
+    public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount) {
         var drainedAmount = new AtomicInteger(0);
         for (var typeAndMap : visNetNodeLookups) {
             for (var entry : typeAndMap.entrySet()) {

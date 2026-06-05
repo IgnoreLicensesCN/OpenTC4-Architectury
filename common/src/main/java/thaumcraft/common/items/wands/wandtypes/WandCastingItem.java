@@ -26,6 +26,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.wands.*;
+import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.items.wands.WandManager;
 
 import java.util.*;
@@ -404,7 +406,7 @@ public class WandCastingItem extends Item
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
-                        && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
+                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
                         && focus instanceof IArchitectDisplayItem architect
                 ) {
                     return architect.getArchitectBlocks(usingWand, world, pos, side, player);
@@ -420,7 +422,7 @@ public class WandCastingItem extends Item
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
-                        && focus.isUpgradedWith(focusStack, FocusUpgradeType.architect)
+                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
                         && focus instanceof IArchitectDisplayItem architect
                 ) {
                     return architect.showAxis(usingWand, world, player, side, axis);

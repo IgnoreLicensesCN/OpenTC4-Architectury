@@ -45,8 +45,8 @@ import thaumcraft.common.items.armor.ItemFortressArmor;
 import thaumcraft.common.items.armor.ItemVoidRobeArmor;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.research.ScanManager;
-import thaumcraft.common.tiles.TileSensor;
-import thaumcraft.common.tiles.TileWandPedestal;
+import thaumcraft.common.tiles.junkbox.TileSensor;
+import thaumcraft.common.tiles.junkbox.TileWandPedestal;
 import truetyper.FontLoader;
 import truetyper.TrueTypeFont;
 

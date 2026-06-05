@@ -46,7 +46,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
 import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 import thaumcraft.common.lib.research.ScanManager;
-import thaumcraft.common.tiles.TileInfusionMatrix;
+import thaumcraft.common.tiles.junkbox.TileInfusionMatrix;
 
 import java.awt.*;
 import java.text.DecimalFormat;

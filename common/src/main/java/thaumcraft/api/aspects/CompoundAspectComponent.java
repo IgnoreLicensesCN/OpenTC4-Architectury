@@ -24,9 +24,9 @@ public record CompoundAspectComponent(Aspect aspectA, Aspect aspectB)
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CompoundAspectComponent that)) return false;
-        return(Objects.equals(aspectA, that.aspectA) && Objects.equals(aspectB, that.aspectB))
-                || (Objects.equals(aspectA, that.aspectB) && Objects.equals(aspectB, that.aspectA));
+        if (!(o instanceof CompoundAspectComponent(Aspect a, Aspect b))) return false;
+        return(Objects.equals(aspectA, a) && Objects.equals(aspectB, b))
+                || (Objects.equals(aspectA, b) && Objects.equals(aspectB, a));
     }
 
     @Override

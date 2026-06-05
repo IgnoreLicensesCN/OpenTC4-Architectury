@@ -230,7 +230,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 
                 this.decreaseFluid(2);
                 this.owningAspects.reduceAndRemoveIfNotPositive(a, 1);
-                if (a instanceof CompoundAspect compoundAspect) {
+                if (a instanceof CompoundAspect compoundAspect && !a.isEmpty()) {
                     if (random.nextBoolean()) {
                         this.addedAspect = true;
                         this.owningAspects.addAll(compoundAspect.components.aspectA(), 1);

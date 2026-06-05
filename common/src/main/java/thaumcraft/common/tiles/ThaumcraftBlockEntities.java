@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.crafted.visdevice.FocalManipulatorBlock;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.essentiabe.*;
 import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.*;
@@ -20,6 +21,7 @@ import thaumcraft.common.tiles.crafted.jars.*;
 import thaumcraft.common.tiles.crafted.lamp.*;
 import thaumcraft.common.tiles.crafted.mirror.EssentiaMirrorBlockEntity;
 import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 import thaumcraft.common.tiles.crafted.visnet.*;
 import thaumcraft.common.tiles.eldritch.*;
 import thaumcraft.common.tiles.generated.*;
@@ -88,6 +90,7 @@ public class ThaumcraftBlockEntities {
     public static final BlockEntityType<InfusionMatrixBlockEntity> INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
     public static final BlockEntityType<WandRechargePedestalBlockBlockEntity> WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
     public static final BlockEntityType<ArcaneSpaBlockEntity> ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
+    public static final BlockEntityType<FocalManipulatorBlockEntity> FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
     public static class Registry{
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
                 Registries.BLOCK_ENTITY_TYPE
@@ -505,6 +508,14 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 ArcaneSpaBlockEntity::new,
                                 ThaumcraftBlocks.ARCANE_SPA
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<FocalManipulatorBlockEntity>> SUPPLIER_FOCAL_MANIPULATOR =
+                BLOCK_ENTITIES.register(
+                        "focal_manipulator",
+                        () -> BlockEntityType.Builder.of(
+                                FocalManipulatorBlockEntity::new,
+                                ThaumcraftBlocks.FOCAL_MANIPULATOR
                         ).build(null)
                 );
 

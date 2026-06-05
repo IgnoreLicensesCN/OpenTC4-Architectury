@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerDeconstructionTable;
-import thaumcraft.common.tiles.TileDeconstructionTable;
+import thaumcraft.common.tiles.junkbox.TileDeconstructionTable;
 
 import java.util.Arrays;
 

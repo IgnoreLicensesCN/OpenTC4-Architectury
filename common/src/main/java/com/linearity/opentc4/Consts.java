@@ -357,5 +357,10 @@ public class Consts {
     public static class ArcaneSpaBlockEntityTagAccessors {
         public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
     }
+    public static class FocalManipulatorBlockEntityTagAccessors {
+        public static final CentiVisListAccessor CENTIVIS_REQUIRING = new CentiVisListAccessor("centivis_requiring");
+        public static final ResourceLocationTagAccessor UPGRADE_TP_APPLY = new ResourceLocationTagAccessor("upgrade_tp_apply");
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
+    }
 
 }

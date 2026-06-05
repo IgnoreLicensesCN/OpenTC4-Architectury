@@ -13,8 +13,8 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
-import thaumcraft.common.tiles.TileAlembic;
-import thaumcraft.common.tiles.TileTube;
+import thaumcraft.common.tiles.junkbox.TileAlembic;
+import thaumcraft.common.tiles.junkbox.TileTube;
 
 @SideOnly(Side.CLIENT)
 public class TileAlembicRenderer extends TileEntitySpecialRenderer {

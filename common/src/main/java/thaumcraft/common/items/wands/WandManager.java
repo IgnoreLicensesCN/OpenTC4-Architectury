@@ -21,10 +21,10 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
-import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.IWandTriggerManager;
 import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.IWandFocusEngineItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
@@ -34,8 +34,8 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.util.*;
 import java.util.function.Function;
@@ -654,7 +654,7 @@ public class WandManager implements IWandTriggerManager {
     public static void toggleMisc(ItemStack itemstack, Level world, Player player) {
         if (itemstack.getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitectDisplayItem && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
+            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitectDisplayItem && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ARCHITECT)) {
                 int dim = getAreaDim(itemstack);
                 IArchitectDisplayItem fa = (IArchitectDisplayItem) wand.getFocus(itemstack);
                 if (player.isSneaking()) {

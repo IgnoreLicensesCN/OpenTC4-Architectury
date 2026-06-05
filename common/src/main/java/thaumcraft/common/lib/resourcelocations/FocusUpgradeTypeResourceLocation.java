@@ -2,7 +2,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.TileSensor;
+import thaumcraft.common.tiles.junkbox.TileSensor;
 
 public class PacketNoteS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":note_s2c";

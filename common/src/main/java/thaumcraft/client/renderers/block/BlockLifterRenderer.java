@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
 import thaumcraft.common.blocks.junkbox.BlockLifter;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileLifter;
+import thaumcraft.common.tiles.junkbox.TileLifter;
 
 import java.awt.*;
 

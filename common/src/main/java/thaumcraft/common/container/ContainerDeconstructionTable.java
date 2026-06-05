@@ -15,7 +15,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileDeconstructionTable;
+import thaumcraft.common.tiles.junkbox.TileDeconstructionTable;
 
 public class ContainerDeconstructionTable extends Container {
    private TileDeconstructionTable table;

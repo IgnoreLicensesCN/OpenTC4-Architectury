@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.BlockUtils;
-import thaumcraft.common.tiles.TileCrystal;
-import thaumcraft.common.tiles.TileEldritchCrabSpawner;
+import thaumcraft.common.tiles.junkbox.TileCrystal;
+import thaumcraft.common.tiles.junkbox.TileEldritchCrabSpawner;
 
 import java.util.ArrayList;
 import java.util.Random;

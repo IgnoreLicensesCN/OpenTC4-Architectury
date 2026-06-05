@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 

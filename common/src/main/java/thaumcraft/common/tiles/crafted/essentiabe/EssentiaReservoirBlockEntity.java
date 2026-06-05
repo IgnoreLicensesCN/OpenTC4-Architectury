@@ -18,7 +18,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 

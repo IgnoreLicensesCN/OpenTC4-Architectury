@@ -65,7 +65,7 @@ public class ItemBonusAspectCalculator {
             Aspect lowest = null;
             float low = Short.MAX_VALUE;
             for (var tag : temp2.keySet()) {
-                if (tag == null) continue;
+                if (tag == null || tag.isEmpty()) continue;
                 float ta = temp2.get(tag);
                 if (tag instanceof PrimalAspect) {
                     ta *= .9f;

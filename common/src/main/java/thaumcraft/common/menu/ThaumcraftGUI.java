@@ -7,12 +7,13 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.common.tiles.IThaumcraftBEWithMenu;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.menu.menu.*;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
 import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 
 import java.util.function.Supplier;
 
@@ -23,6 +24,8 @@ public class ThaumcraftGUI {
     public static final MenuType<AlchemicalFurnaceMenu> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
     public static final MenuType<ThaumatoriumMenu> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
     public static final MenuType<ArcaneBoreMenu> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
+    public static final MenuType<FocalManipulatorMenu> FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+    public static final MenuType<ArcaneSpaMenu> ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
     public static class Registry{
         public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MENU);
 
@@ -50,12 +53,23 @@ public class ThaumcraftGUI {
                 "arcane_bore",
                 simpleMenuTypeSupplier(ArcaneBoreMenu::new, ArcaneBoreBlockEntity.class)
         );
+        public static final RegistrySupplier<MenuType<FocalManipulatorMenu>> SUPPLIER_FOCAL_MANIPULATOR = MENUS.register(
+                "focal_manipulator",
+                simpleMenuTypeSupplier(FocalManipulatorMenu::new, FocalManipulatorBlockEntity.class)
+        );
+        public static final RegistrySupplier<MenuType<ArcaneSpaMenu>> SUPPLIER_ARCANE_SPA = MENUS.register(
+                "arcane_spa",
+                simpleMenuTypeSupplier(ArcaneSpaMenu::new, ArcaneSpaBlockEntity.class)
+        );
     }
 
     public static void init(){}
 
-    public static <M extends AbstractContainerMenu,BE extends TileThaumcraftWithMenu<M,BE>>
-    Supplier<MenuType<M>> simpleMenuTypeSupplier(TileThaumcraftWithMenu.TileThaumcraftWithMenuFactory<M,BE> factory, Class<BE> blockEntityClass){
+    public static <M extends AbstractContainerMenu,BE extends IThaumcraftBEWithMenu<M,BE>>
+    Supplier<MenuType<M>> simpleMenuTypeSupplier(
+            IThaumcraftBEWithMenu.IThaumcraftBEWithMenuFactory<M, BE> factory,
+            Class<BE> blockEntityClass
+    ){
         return () -> MenuRegistry.ofExtended(((id, inventory, buf) -> {
             var bPos = buf.readBlockPos();
             var level = inventory.player.level();

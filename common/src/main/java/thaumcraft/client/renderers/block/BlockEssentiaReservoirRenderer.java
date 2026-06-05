@@ -8,7 +8,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.junkbox.BlockEssentiaReservoir;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileEssentiaReservoir;
+import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 
 public class BlockEssentiaReservoirRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

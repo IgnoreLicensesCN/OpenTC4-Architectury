@@ -31,8 +31,8 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
-import thaumcraft.common.tiles.TileBanner;
-import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.tiles.junkbox.TileBanner;
+import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
 import java.util.HashSet;
 import java.util.List;

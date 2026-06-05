@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -9,11 +10,12 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.*;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
@@ -38,8 +40,8 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> modifyWandUpgrades(ItemStack componentStack,Map<FocusUpgradeType, Integer> wandUpgrades) {
-        wandUpgrades.merge(FocusUpgradeType.potency,1,Integer::sum);
+    public Object2IntMap<FocusUpgradeType> modifyWandUpgrades(ItemStack componentStack, Object2IntMap<FocusUpgradeType> wandUpgrades) {
+        wandUpgrades.merge(ThaumcraftFocusUpgradeTypes.POTENCY,1,Integer::sum);
         return wandUpgrades;
     }
 

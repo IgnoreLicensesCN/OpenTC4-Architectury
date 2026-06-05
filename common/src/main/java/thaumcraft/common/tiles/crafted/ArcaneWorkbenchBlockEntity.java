@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.IArcaneCraftingWandItem;
 import thaumcraft.api.wands.ICentiVisContainerItem;
@@ -79,11 +79,8 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         if (direction == Direction.UP || slot == WAND_SLOT) {
             var item = itemStack.getItem();
-            if (item instanceof IArcaneCraftingWandItem craftingWand
-                && craftingWand.canInsertIntoArcaneCraftingTable(itemStack)) {
-                return true;
-            }
-            return false;
+            return item instanceof IArcaneCraftingWandItem craftingWand
+                    && craftingWand.canInsertIntoArcaneCraftingTable(itemStack);
         }
         return true;
     }

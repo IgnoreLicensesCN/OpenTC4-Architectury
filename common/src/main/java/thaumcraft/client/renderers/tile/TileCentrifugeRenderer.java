@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCentrifuge;
-import thaumcraft.common.tiles.TileCentrifuge;
+import thaumcraft.common.tiles.junkbox.TileCentrifuge;
 
 public class TileCentrifugeRenderer extends TileEntitySpecialRenderer {
    private ModelCentrifuge model = new ModelCentrifuge();

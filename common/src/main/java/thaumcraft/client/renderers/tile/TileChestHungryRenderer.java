@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileChestHungry;
+import thaumcraft.common.tiles.junkbox.TileChestHungry;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockMetaSafely;
 

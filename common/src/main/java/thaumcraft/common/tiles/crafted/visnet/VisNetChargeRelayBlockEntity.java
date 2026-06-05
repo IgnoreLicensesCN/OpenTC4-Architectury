@@ -8,7 +8,7 @@ import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity{
+public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity {
     public VisNetChargeRelayBlockEntity(BlockEntityType<? extends VisNetChargeRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }

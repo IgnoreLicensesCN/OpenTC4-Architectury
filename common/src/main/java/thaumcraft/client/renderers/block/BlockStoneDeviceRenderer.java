@@ -9,6 +9,10 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.common.blocks.BlockStoneDevice;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.junkbox.TileFocalManipulator;
+import thaumcraft.common.tiles.junkbox.TileInfusionMatrix;
+import thaumcraft.common.tiles.junkbox.TileNodeConverter;
+import thaumcraft.common.tiles.junkbox.TileNodeStabilizer;
 
 public class BlockStoneDeviceRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

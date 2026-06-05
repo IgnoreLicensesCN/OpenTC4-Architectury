@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerThaumatorium;
-import thaumcraft.common.tiles.TileThaumatorium;
+import thaumcraft.common.tiles.junkbox.TileThaumatorium;
 
 import java.awt.*;
 

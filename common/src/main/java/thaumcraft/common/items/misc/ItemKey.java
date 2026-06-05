@@ -20,7 +20,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.junkbox.BlockArcaneDoor;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileOwned;
+import thaumcraft.common.tiles.junkbox.TileOwned;
 
 import java.util.List;
 

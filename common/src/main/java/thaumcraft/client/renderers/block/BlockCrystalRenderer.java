@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileCrystal;
-import thaumcraft.common.tiles.TileEldritchCrystal;
+import thaumcraft.common.tiles.junkbox.TileCrystal;
+import thaumcraft.common.tiles.junkbox.TileEldritchCrystal;
 
 public class BlockCrystalRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

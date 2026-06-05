@@ -15,13 +15,14 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.tiles.TileHole;
+import thaumcraft.common.tiles.junkbox.TileHole;
 
 public class ItemFocusPortableHole extends ItemFocusBasic {
    IIcon depthIcon = null;
@@ -123,7 +124,7 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
          }
 
          if (wand.consumeAllCentiVis(itemstack, player, c, true, false)) {
-            int di = this.getUpgradeLevel(wand.getFocusItem(itemstack), FocusUpgradeType.extend);
+            int di = this.getUpgradeLevel(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.EXTEND);
             short dur = (short)(120 + 60 * di);
             createHole(world, mop.blockX, mop.blockY, mop.blockZ, mop.sideHit, (byte)(distance + 1), dur);
          }
@@ -140,15 +141,15 @@ public class ItemFocusPortableHole extends ItemFocusBasic {
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.extend};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.EXTEND};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.extend};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.EXTEND};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.extend};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.EXTEND};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.extend};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.EXTEND};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.extend};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.EXTEND};
          default:
             return null;
       }

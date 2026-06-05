@@ -24,8 +24,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
@@ -125,7 +126,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayI
             if (pb != null && (Platform.getEnvironment() == Env.CLIENT)) {
                player.swingItem();
             } else if (pb != null && world.getTileEntity(x, y, z) == null && world.getBlock(x, y, z).getMaterial() != Config.taintMaterial) {
-               if (this.isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
+               if (this.isUpgradedWith(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ARCHITECT)) {
                   int sizeX = WandManager.getAreaX(itemstack);
                   int sizeZ = WandManager.getAreaZ(itemstack);
 
@@ -183,7 +184,7 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayI
    }
 
    public AspectList<Aspect>getVisCost(ItemStack itemstack) {
-      if (this.isUpgradedWith(itemstack, FocusUpgradeType.silktouch)) {
+      if (this.isUpgradedWith(itemstack, ThaumcraftFocusUpgradeTypes.SILKTOUCH)) {
          if (cost2 == null) {
             cost2 = (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.EARTH, 1).addAll(
                     Aspects.WATER, 1).addAll(Aspects.ORDER, 1).addAll(Aspects.ENTROPY, 1);
@@ -199,22 +200,22 @@ public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayI
    public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
       switch (rank) {
          case 1:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 2:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 3:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.treasure, FocusUpgradeType.architect};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.TREASURE, ThaumcraftFocusUpgradeTypes.ARCHITECT};
          case 4:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE};
          case 5:
-            return new FocusUpgradeType[]{FocusUpgradeType.frugal, FocusUpgradeType.enlarge, FocusUpgradeType.silktouch};
+            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.ENLARGE, ThaumcraftFocusUpgradeTypes.SILKTOUCH};
          default:
             return null;
       }
    }
 
    public int getMaxAreaSize(ItemStack focusstack) {
-      return 3 + this.getUpgradeLevel(focusstack, FocusUpgradeType.enlarge) * 2;
+      return 3 + this.getUpgradeLevel(focusstack, ThaumcraftFocusUpgradeTypes.ENLARGE) * 2;
    }
 
    public List<BlockPos> getArchitectBlocks(ItemStack stack, World world, int x, int y, int z, int side, Player player) {

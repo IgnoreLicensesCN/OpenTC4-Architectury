@@ -9,12 +9,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.TileResearchTable;
-import thaumcraft.common.tiles.TileTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileTable;
 
 public class ItemInkwell extends Item implements IScribeTools {
    @SideOnly(Side.CLIENT)

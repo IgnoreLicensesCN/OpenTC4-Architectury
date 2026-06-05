@@ -28,7 +28,7 @@ import thaumcraft.api.listeners.researchtable.WriteAspectManager;
 import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
 import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
 import thaumcraft.api.researchtable.IResearchTableEditAspectListenerItem;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.menu.menu.ResearchTableMenu;
 import thaumcraft.common.lib.research.ResearchNoteData;

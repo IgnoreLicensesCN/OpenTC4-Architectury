@@ -15,8 +15,8 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileJarFillable;
-import thaumcraft.common.tiles.TileJarFillableVoid;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileJarFillableVoid;
 
 public class ItemJarFilledRenderer implements IItemRenderer {
    RenderBlocks rb = new RenderBlocks();

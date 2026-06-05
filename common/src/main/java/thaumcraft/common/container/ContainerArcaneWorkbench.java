@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingManager;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-import thaumcraft.common.tiles.TileArcaneWorkbench;
+import thaumcraft.common.tiles.junkbox.TileArcaneWorkbench;
 
 import static tc4tweak.modules.findRecipes.FindRecipes.getNormalCraftingRecipeOutput;
 
