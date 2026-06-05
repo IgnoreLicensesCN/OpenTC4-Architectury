@@ -22,10 +22,11 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
@@ -66,7 +67,7 @@ public class ThaumcraftCraftingManager {
 
     @Deprecated(forRemoval = true)
     public static ItemStack findMatchingArcaneRecipe(Container awb, Player player) {
-        IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
+        AbstractArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
         return recipe == null ? null : recipe.getCraftingResult(awb);
 //      int var2 = 0;
 //      ItemStack var3 = null;
@@ -85,11 +86,11 @@ public class ThaumcraftCraftingManager {
 //         }
 //      }
 //
-//      IArcaneRecipe var13 = null;
+//      AbstractArcaneRecipe var13 = null;
 //
 //      for(Object var11 : ThaumcraftApi.getCraftingRecipes()) {
-//         if (var11 instanceof IArcaneRecipe && ((IArcaneRecipe)var11).matches(awb, player.level(), player)) {
-//            var13 = (IArcaneRecipe)var11;
+//         if (var11 instanceof AbstractArcaneRecipe && ((AbstractArcaneRecipe)var11).matches(awb, player.level(), player)) {
+//            var13 = (AbstractArcaneRecipe)var11;
 //            break;
 //         }
 //      }
@@ -99,7 +100,7 @@ public class ThaumcraftCraftingManager {
 
     @Deprecated(forRemoval = true)
     public static AspectList<Aspect> findMatchingArcaneRecipeAspects(Container awb, Player player) {
-        IArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
+        AbstractArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
         return recipe == null ? new LinkedHashAspectList<>() :
                 recipe.getAspects() == null
                         ? recipe.getAspects(awb)
@@ -121,11 +122,11 @@ public class ThaumcraftCraftingManager {
 //         }
 //      }
 //
-//      IArcaneRecipe var13 = null;
+//      AbstractArcaneRecipe var13 = null;
 //
 //      for(Object var11 : ThaumcraftApi.getCraftingRecipes()) {
-//         if (var11 instanceof IArcaneRecipe && ((IArcaneRecipe)var11).matches(awb, player.level(), player)) {
-//            var13 = (IArcaneRecipe)var11;
+//         if (var11 instanceof AbstractArcaneRecipe && ((AbstractArcaneRecipe)var11).matches(awb, player.level(), player)) {
+//            var13 = (AbstractArcaneRecipe)var11;
 //            break;
 //         }
 //      }
@@ -365,7 +366,7 @@ public class ThaumcraftCraftingManager {
     private static AspectList<Aspect> generateTagsFromArcaneRecipes(Item item, List<ItemStack> history) {
         AspectList<Aspect> ret = null;
         int value = 0;
-        List<IArcaneRecipe> recipeList = IArcaneRecipe.getIArcaneRecipes();
+        List<AbstractArcaneRecipe> recipeList = AbstractArcaneRecipe.getAbstractArcaneRecipes();
 
         for (var arcaneRecipe : recipeList) {
             if (arcaneRecipe.getRecipeOutput() != null) {

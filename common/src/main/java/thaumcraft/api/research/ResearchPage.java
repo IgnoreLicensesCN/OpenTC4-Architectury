@@ -71,7 +71,7 @@ public abstract class ResearchPage {
 //	/**
 //	 * @param recipe a collection of arcane crafting recipes.
 //	 */
-//	public ResearchPage(IArcaneRecipe[] recipe) {
+//	public ResearchPage(AbstractArcaneRecipe[] recipe) {
 //		this.type = PageType.ARCANE_CRAFTING;
 //		this.recipe = recipe;
 //	}
@@ -103,7 +103,7 @@ public abstract class ResearchPage {
 //	/**
 //	 * @param recipe an arcane worktable crafting recipe.
 //	 */
-//	public ResearchPage(IArcaneRecipe recipe) {
+//	public ResearchPage(AbstractArcaneRecipe recipe) {
 //		this.type = PageType.ARCANE_CRAFTING;
 //		this.recipe = recipe;
 //		this.recipeOutput = recipe.getRecipeOutput();

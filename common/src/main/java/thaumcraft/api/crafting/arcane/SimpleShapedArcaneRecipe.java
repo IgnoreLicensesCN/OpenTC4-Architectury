@@ -7,7 +7,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.SameValueList;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class SimpleShapedArcaneRecipe extends ShapedArcaneRecipe {
     public SimpleShapedArcaneRecipe(
-            ShapedArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             ItemStack result,
             CentiVisList<Aspect> centiVisCost,

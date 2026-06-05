@@ -32,7 +32,7 @@ import static thaumcraft.common.items.ThaumcraftItems.CRYSTAL_ESSENCE;
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportInBlockEntity,
-        IAspectInBlockEntity<Aspect>,
+        IEssentiaForceInBlockEntity<Aspect>,
         IValueContainerBasedComparatorSignalProviderBlockEntity {
     public EssentiaCrystallizerBlockEntity(BlockEntityType<? extends EssentiaCrystallizerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);

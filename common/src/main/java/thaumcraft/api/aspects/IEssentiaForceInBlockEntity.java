@@ -5,7 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 //usually use IEssentiaTransportInBlockEntity
 //impl this means BE accepts force-add(without considering suction limits) aspect
 @ApiStatus.Experimental
-public interface IAspectInBlockEntity<Asp extends Aspect> {
+public interface IEssentiaForceInBlockEntity<Asp extends Aspect> {
     /**
      * This method is used to add a certain amount of aspect an aspect to the tile entity.
      * @param aspect to add

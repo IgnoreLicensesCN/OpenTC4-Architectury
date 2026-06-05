@@ -10,10 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
-import thaumcraft.api.crafting.AbstractResourceLocationIdentifiedRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.Collections;
@@ -25,7 +23,7 @@ import java.util.function.Function;
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
-public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapedArcaneRecipe, ShapedArcaneRecipeResourceLocation> implements IArcaneRecipe {
+public class ShapedArcaneRecipe extends AbstractArcaneRecipe {
     //Added in for future ease of change, but hard coded for now.
     private static final int MAX_CRAFT_GRID_WIDTH = 3;
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
@@ -49,7 +47,7 @@ public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentif
     private final @NotNull CentiVisList<Aspect> centiVisListForCalculation;
     //since the original is too messy,i should do some cleaning for this.
     public ShapedArcaneRecipe(
-            ShapedArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             AspectList<Aspect> aspects,
@@ -62,7 +60,7 @@ public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentif
     }
 
     public ShapedArcaneRecipe(
-            ShapedArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             CentiVisList<Aspect> aspects,
@@ -84,7 +82,7 @@ public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentif
     }
 
     public ShapedArcaneRecipe(
-            ShapedArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
@@ -96,7 +94,7 @@ public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentif
         this(id,research,resultGenerator,aspectsGenerator,input,width,height,outMatcher,null,null,null,null);
     }
     public ShapedArcaneRecipe(
-            ShapedArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<List<ItemStack>, ItemStack> resultGenerator,
             Function<List<ItemStack>, CentiVisList<Aspect>> aspectsGenerator,
@@ -412,11 +410,12 @@ public abstract class ShapedArcaneRecipe extends AbstractResourceLocationIdentif
         return centiVisListForCalculation;
     }
 
-    private static final Map<ShapedArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES = new ConcurrentHashMap<>();
+    private static final Map<AbstractArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES = new ConcurrentHashMap<>();
     @Unmodifiable
-    public static final Map<ShapedArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPED_ARCANE_RECIPES);
+    public static final Map<AbstractArcaneRecipeResourceLocation,ShapedArcaneRecipe> SHAPED_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPED_ARCANE_RECIPES);
     @Override
-    protected void registerRecipe(ShapedArcaneRecipeResourceLocation recipeID) {
+    protected void registerRecipe(AbstractArcaneRecipeResourceLocation recipeID) {
+        super.registerRecipe(recipeID);
         var got = SHAPED_ARCANE_RECIPES.get(recipeID);
         if (got != null) {
             throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);

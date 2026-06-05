@@ -62,7 +62,7 @@ public class ArcaneBoreBlockEntity
         implements
         IDefaultWorldlyContainer,
         IEssentiaTransportInBlockEntity,
-        IAspectInBlockEntity<PrimalAspect>,
+        IEssentiaForceInBlockEntity<PrimalAspect>,
         IWandInteractableBlockOrBlockEntity
 {
 

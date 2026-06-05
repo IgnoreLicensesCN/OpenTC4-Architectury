@@ -17,7 +17,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     implements
-        IAspectOutBlockEntity<Aspect>,
+        IEssentiaForceOutBlockEntity<Aspect>,
         IEssentiaTransportOutBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity {
 

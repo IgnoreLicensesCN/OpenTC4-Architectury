@@ -11,6 +11,7 @@ import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
+import static thaumcraft.api.crafting.arcane.AbstractArcaneRecipe.ARCANE_RECIPES_VIEW;
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
 public class ArcaneWorkbenchOutputSlot extends ResultSlot {
@@ -45,9 +46,16 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
     @Override
     public void onTake(Player player, ItemStack itemStack) {
-        super.onTake(player, itemStack);
         if (!workbench.consumeCentiVisNoThrow(player,getFinalCentiVisCost(player))){
             OpenTC4.LOGGER.warn("failed to consume CentiVis");
-        };
+        }
+        var recipe = ARCANE_RECIPES_VIEW.get(workbench.getRecipeResourceLocation());
+        if (recipe != null) {
+            recipe.afterCrafting(workbench,player.level(),player);
+        }
+//        else {
+//            OpenTC4.LOGGER.warn("failed to find recipe for location {}", workbench.getRecipeResourceLocation());
+//        }
+        super.onTake(player, itemStack);
     }
 }

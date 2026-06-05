@@ -21,9 +21,9 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
 import thaumcraft.api.wands.WandTriggerRegistry;
@@ -247,218 +247,218 @@ public class ConfigRecipes {
          ItemStack banner = new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 8);
          banner.setTagCompound(new NBTTagCompound());
          banner.stackTagCompound.setByte("color", (byte)a);
-         ConfigResearch.recipes.put("Banner_" + a, IArcaneRecipe.addArcaneCraftingRecipe("BANNERS", banner, (new LinkedHashAspectList<>()).addAll(
+         ConfigResearch.recipes.put("Banner_" + a, AbstractArcaneRecipe.addArcaneCraftingRecipe("BANNERS", banner, (new LinkedHashAspectList<>()).addAll(
                  Aspects.WATER, 5).addAll(Aspects.EARTH, 5), "WS", "WS", "WB", 'W', new ItemStack(Blocks.wool, 1, a), 'S', "stickWood", 'B', "slabWood"));
       }
 
-      ConfigResearch.recipes.put("PrimalCharm", IArcaneRecipe.addArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("PrimalCharm", AbstractArcaneRecipe.addArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 25).addAll(Aspects.FIRE, 25).addAll(Aspects.AIR, 25).addAll(Aspects.WATER, 25).addAll(
               Aspects.ORDER, 25).addAll(Aspects.ENTROPY, 25), "123", "ISI", "456", 'S', new ItemStack(ConfigItems.itemShard, 1, 6), 'I', Items.gold_ingot, '1', new ItemStack(ConfigItems.itemShard, 1, 0), '2', new ItemStack(ConfigItems.itemShard, 1, 1), '3', new ItemStack(ConfigItems.itemShard, 1, 2), '4', new ItemStack(ConfigItems.itemShard, 1, 3), '5', new ItemStack(ConfigItems.itemShard, 1, 4), '6', new ItemStack(ConfigItems.itemShard, 1, 5)));
-      ConfigResearch.recipes.put("ArcaneDoor", IArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemArcaneDoor), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneDoor", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemArcaneDoor), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 20).addAll(Aspects.ORDER, 10).addAll(Aspects.EARTH, 10).addAll(Aspects.FIRE, 5), "TDT", "DBD", "TDT", 'T', "ingotThaumium", 'B', new ItemStack(ConfigItems.itemZombieBrain), 'D', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
-      ConfigResearch.recipes.put("WardedGlass", IArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigBlocks.blockCosmeticOpaque, 8, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WardedGlass", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigBlocks.blockCosmeticOpaque, 8, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 10).addAll(Aspects.EARTH, 5).addAll(Aspects.FIRE, 5), "GGG", "WBW", "GGG", 'B', new ItemStack(ConfigItems.itemZombieBrain), 'G', new ItemStack(Blocks.glass), 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
-      ConfigResearch.recipes.put("IronKey", IArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("IronKey", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "NNI", "N  ", 'I', Items.iron_ingot, 'N', "nuggetIron"));
-      ConfigResearch.recipes.put("FluxScrubber", IArcaneRecipe.addArcaneCraftingRecipe("FLUXSCRUB", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FluxScrubber", AbstractArcaneRecipe.addArcaneCraftingRecipe("FLUXSCRUB", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.AIR, 8), " B ", "GOG", "STS", 'B', new ItemStack(ConfigBlocks.blockWoodenDevice), 'G', new ItemStack(Blocks.iron_bars), 'T', new ItemStack(ConfigBlocks.blockTube), 'O', new ItemStack(ThaumcraftItems.VIS_FILTER), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7)));
       if (Config.wardedStone) {
-         ConfigResearch.recipes.put("GoldKey", IArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 1), (new LinkedHashAspectList<>()).addAll(
+         ConfigResearch.recipes.put("GoldKey", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 1), (new LinkedHashAspectList<>()).addAll(
                  Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "NNI", "N  ", 'I', Items.gold_ingot, 'N', Items.gold_nugget));
-         ConfigResearch.recipes.put("ArcanePressurePlate", IArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
+         ConfigResearch.recipes.put("ArcanePressurePlate", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
                  Aspects.WATER, 20).addAll(Aspects.ORDER, 10).addAll(Aspects.FIRE, 5).addAll(Aspects.EARTH, 10), " B ", "TDT", 'T', new ItemStack(ThaumcraftItems.THAUMIUM_INGOT), 'B', new ItemStack(ConfigItems.itemZombieBrain), 'D', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
       }
 
-      ConfigResearch.recipes.put("NodeStabilizerBlock", IArcaneRecipe.addArcaneCraftingRecipe("NODESTABILIZER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("NodeStabilizerBlock", AbstractArcaneRecipe.addArcaneCraftingRecipe("NODESTABILIZER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 32).addAll(Aspects.EARTH, 32).addAll(Aspects.ORDER, 32), " G ", "QPQ", "SNS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(Blocks.piston), 'Q', new ItemStack(Blocks.quartz_block), 'N', new ItemStack(ThaumcraftItems.NITOR)));
-      ConfigResearch.recipes.put("NodeTransducer", IArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("NodeTransducer", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32), "RCR", "ISI", "RAR", 'S', new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), 'C', new ItemStack(Items.comparator), 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(Blocks.redstone_block), 'A', new ItemStack(ThaumcraftItems.NITOR)));
-      ConfigResearch.recipes.put("NodeRelay", IArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockMetalDevice, 2, 14), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("NodeRelay", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockMetalDevice, 2, 14), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 8).addAll(Aspects.ORDER, 8), " I ", "ISI", " I ", 'I', new ItemStack(Items.iron_ingot), 'S', new ItemStack(ConfigItems.itemShard, 1, 6)));
-      ConfigResearch.recipes.put("NodeChargeRelay", IArcaneRecipe.addArcaneCraftingRecipe("VISCHARGERELAY", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("NodeChargeRelay", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISCHARGERELAY", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.AIR, 16), " R ", "W W", "I I", 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 14), 'W', new ItemStack(ConfigItems.itemWandRod, 1, 0)));
-      ConfigResearch.recipes.put("FocalManipulator", IArcaneRecipe.addArcaneCraftingRecipe("FOCALMANIPULATION", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 13), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocalManipulator", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCALMANIPULATION", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 13), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32).addAll(Aspects.EARTH, 32).addAll(
               Aspects.WATER, 32).addAll(Aspects.ORDER, 32), "IQI", "SPS", "GTG", 'Q', new ItemStack(ConfigBlocks.blockSlabStone, 1, 0), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'T', new ItemStack(ConfigBlocks.blockTable), 'I', new ItemStack(Items.iron_ingot), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)));
-      ConfigResearch.recipes.put("GolemFetter", IArcaneRecipe.addArcaneCraftingRecipe("GOLEMFETTER", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 9), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemFetter", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOLEMFETTER", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 9), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 5).addAll(Aspects.ORDER, 5), "SSS", "IRI", "BBB", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'I', new ItemStack(Items.iron_ingot), 'B', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'R', new ItemStack(Blocks.redstone_block)));
-      ConfigResearch.recipes.put("ArcaneStone1", IArcaneRecipe.addArcaneCraftingRecipe("ARCANESTONE", new ItemStack(ConfigBlocks.blockCosmeticSolid, 9, 6), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneStone1", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANESTONE", new ItemStack(ConfigBlocks.blockCosmeticSolid, 9, 6), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 1).addAll(Aspects.FIRE, 1), "SSS", "SCS", "SSS", 'S', "stone", 'C', new ItemStack(ConfigItems.itemShard, 1, 32767)));
       ConfigResearch.recipes.put("ArcaneStone2", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 7), "SS", "SS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)));
       ConfigResearch.recipes.put("ArcaneStone3", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockStairsArcaneStone, 4, 0), "K  ", "KK ", "KKK", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7)));
       ConfigResearch.recipes.put("ArcaneStone4", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockSlabStone, 6, 0), "KKK", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7)));
-      ConfigResearch.recipes.put("PaveTravel", IArcaneRecipe.addArcaneCraftingRecipe("PAVETRAVEL", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("PaveTravel", AbstractArcaneRecipe.addArcaneCraftingRecipe("PAVETRAVEL", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 10).addAll(Aspects.AIR, 10), "SAS", "SBS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'A', new ItemStack(ConfigItems.itemShard, 1, 0), 'B', new ItemStack(ConfigItems.itemShard, 1, 3)));
-      ConfigResearch.recipes.put("ArcaneLamp", IArcaneRecipe.addArcaneCraftingRecipe("ARCANELAMP", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 7), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneLamp", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANELAMP", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 7), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 8).addAll(Aspects.AIR, 8).addAll(Aspects.WATER, 4).addAll(Aspects.ENTROPY, 4), " S ", "IAI", " N ", 'A', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0), 'S', new ItemStack(Blocks.daylight_detector), 'N', new ItemStack(ThaumcraftItems.NITOR), 'I', new ItemStack(Items.iron_ingot)));
-      ConfigResearch.recipes.put("ArcaneSpa", IArcaneRecipe.addArcaneCraftingRecipe("ARCANESPA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneSpa", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANESPA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 16).addAll(Aspects.ORDER, 8).addAll(Aspects.EARTH, 4), "QIQ", "SJS", "SPS", 'P', new ItemStack(Blocks.piston), 'J', new ItemStack(ConfigBlocks.blockJar), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'Q', new ItemStack(Blocks.quartz_block), 'I', new ItemStack(Blocks.iron_bars)));
-      ConfigResearch.recipes.put("PaveWard", IArcaneRecipe.addArcaneCraftingRecipe("PAVEWARD", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("PaveWard", AbstractArcaneRecipe.addArcaneCraftingRecipe("PAVEWARD", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 10).addAll(Aspects.ORDER, 10), "SAS", "SBS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'A', new ItemStack(ConfigItems.itemShard, 1, 1), 'B', new ItemStack(ConfigItems.itemShard, 1, 4)));
-      ConfigResearch.recipes.put("Levitator", IArcaneRecipe.addArcaneCraftingRecipe("LEVITATOR", new ItemStack(ConfigBlocks.blockLifter), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Levitator", AbstractArcaneRecipe.addArcaneCraftingRecipe("LEVITATOR", new ItemStack(ConfigBlocks.blockLifter), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.EARTH, 5), "WEW", "BNB", "WAW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'E', new ItemStack(ConfigItems.itemShard, 1, 3), 'A', new ItemStack(ConfigItems.itemShard, 1, 0), 'N', new ItemStack(ThaumcraftItems.NITOR), 'B', Items.iron_ingot));
-      ConfigResearch.recipes.put("ArcaneEar", IArcaneRecipe.addArcaneCraftingRecipe("ARCANEEAR", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneEar", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANEEAR", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 10), "GIG", "GBG", "WRW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', Items.redstone, 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'B', new ItemStack(ConfigItems.itemZombieBrain)));
-      ConfigResearch.recipes.put("MirrorGlass", IArcaneRecipe.addShapelessArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.MIRRORED_GLASS, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("MirrorGlass", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.MIRRORED_GLASS, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 10).addAll(Aspects.EARTH, 10), new ItemStack(QUICK_SILVER), Blocks.glass_pane));
       ConfigResearch.recipes.put("BoneBow",
-              IArcaneRecipe.addArcaneCraftingRecipe(
+              AbstractArcaneRecipe.addArcaneCraftingRecipe(
                       "BONEBOW",
                       new ItemStack(ConfigItems.itemBowBone), (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 16).addAll(Aspects.ENTROPY, 32), "SB ", "SEB", "SB ", 'E', new ItemStack(ConfigItems.itemShard, 1, 5), 'B', Items.bone, 'S', Items.string));
       Aspect[] pa = new Aspect[]{Aspects.AIR, Aspects.FIRE, Aspects.WATER, Aspects.EARTH, Aspects.ORDER, Aspects.ENTROPY};
 
       for(int a = 0; a < 6; ++a) {
-         ConfigResearch.recipes.put("PrimalArrow_" + a, IArcaneRecipe.addArcaneCraftingRecipe("PRIMALARROW", new ItemStack(ConfigItems.itemPrimalArrow, 8, a), (new LinkedHashAspectList<>()).addAll(pa[a], 8), "AAA", "ASA", "AAA", 'A', Items.arrow, 'S', new ItemStack(ConfigItems.itemShard, 1, a)));
+         ConfigResearch.recipes.put("PrimalArrow_" + a, AbstractArcaneRecipe.addArcaneCraftingRecipe("PRIMALARROW", new ItemStack(ConfigItems.itemPrimalArrow, 8, a), (new LinkedHashAspectList<>()).addAll(pa[a], 8), "AAA", "ASA", "AAA", 'A', Items.arrow, 'S', new ItemStack(ConfigItems.itemShard, 1, a)));
       }
 
-      ConfigResearch.recipes.put("InfusionMatrix", IArcaneRecipe.addArcaneCraftingRecipe("INFUSION", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("InfusionMatrix", AbstractArcaneRecipe.addArcaneCraftingRecipe("INFUSION", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 40), "SBS", "BEB", "SBS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'E', Items.ender_pearl, 'B', new ItemStack(ConfigItems.itemShard, 1, 32767)));
-      ConfigResearch.recipes.put("ArcanePedestal", IArcaneRecipe.addArcaneCraftingRecipe("INFUSION", new ItemStack(ConfigBlocks.blockStoneDevice, 2, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcanePedestal", AbstractArcaneRecipe.addArcaneCraftingRecipe("INFUSION", new ItemStack(ConfigBlocks.blockStoneDevice, 2, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5), "SSS", " S ", "SSS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)));
-      ConfigResearch.recipes.put("WardedJar", IArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockJar, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WardedJar", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockJar, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 1), "GWG", "G G", "GGG", 'W', "slabWood", 'G', Blocks.glass_pane));
-      ConfigResearch.recipes.put("JarVoid", IArcaneRecipe.addArcaneCraftingRecipe("JARVOID", new ItemStack(ConfigBlocks.blockJar, 1, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("JarVoid", AbstractArcaneRecipe.addArcaneCraftingRecipe("JARVOID", new ItemStack(ConfigBlocks.blockJar, 1, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ENTROPY, 15), "O", "J", "P", 'O', Blocks.obsidian, 'P', Items.blaze_powder, 'J', new ItemStack(ConfigBlocks.blockJar, 1, 0)));
       ArcaneWandRecipe wr = new ArcaneWandRecipe();
       ThaumcraftApi.getCraftingRecipes().add(wr);
       ArcaneSceptreRecipe sr = new ArcaneSceptreRecipe();
       ThaumcraftApi.getCraftingRecipes().add(sr);
-      ConfigResearch.recipes.put("WandCapGold", IArcaneRecipe.addArcaneCraftingRecipe("CAP_gold", new ItemStack(ConfigItems.itemWandCap, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandCapGold", AbstractArcaneRecipe.addArcaneCraftingRecipe("CAP_gold", new ItemStack(ConfigItems.itemWandCap, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandCap.caps.get("gold").getCraftCost()).addAll(Aspects.FIRE, WandCap.caps.get("gold").getCraftCost()).addAll(
               Aspects.AIR, WandCap.caps.get("gold").getCraftCost()), "NNN", "N N", 'N', Items.gold_nugget));
       if (Config.foundCopperIngot) {
-         ConfigResearch.recipes.put("WandCapCopper", IArcaneRecipe.addArcaneCraftingRecipe("CAP_copper", new ItemStack(ConfigItems.itemWandCap, 1, 3), (new LinkedHashAspectList<>()).addAll(
+         ConfigResearch.recipes.put("WandCapCopper", AbstractArcaneRecipe.addArcaneCraftingRecipe("CAP_copper", new ItemStack(ConfigItems.itemWandCap, 1, 3), (new LinkedHashAspectList<>()).addAll(
                  Aspects.ORDER, WandCap.caps.get("copper").getCraftCost()).addAll(Aspects.FIRE, WandCap.caps.get("copper").getCraftCost()).addAll(
                  Aspects.AIR, WandCap.caps.get("copper").getCraftCost()), "NNN", "N N", 'N', "nuggetCopper"));
       }
 
       if (Config.foundSilverIngot) {
-         ConfigResearch.recipes.put("WandCapSilverInert", IArcaneRecipe.addArcaneCraftingRecipe("CAP_silver", new ItemStack(ConfigItems.itemWandCap, 1, 5), (new LinkedHashAspectList<>()).addAll(
+         ConfigResearch.recipes.put("WandCapSilverInert", AbstractArcaneRecipe.addArcaneCraftingRecipe("CAP_silver", new ItemStack(ConfigItems.itemWandCap, 1, 5), (new LinkedHashAspectList<>()).addAll(
                  Aspects.ORDER, WandCap.caps.get("silver").getCraftCost()).addAll(Aspects.FIRE, WandCap.caps.get("silver").getCraftCost()).addAll(
                  Aspects.AIR, WandCap.caps.get("silver").getCraftCost()), "NNN", "N N", 'N', "nuggetSilver"));
       }
 
-      ConfigResearch.recipes.put("WandCapThaumiumInert", IArcaneRecipe.addArcaneCraftingRecipe("CAP_thaumium", new ItemStack(ConfigItems.itemWandCap, 1, 6), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandCapThaumiumInert", AbstractArcaneRecipe.addArcaneCraftingRecipe("CAP_thaumium", new ItemStack(ConfigItems.itemWandCap, 1, 6), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandCap.caps.get("thaumium").getCraftCost()).addAll(Aspects.FIRE, WandCap.caps.get("thaumium").getCraftCost()).addAll(
               Aspects.AIR, WandCap.caps.get("thaumium").getCraftCost()), "NNN", "N N", 'N', "nuggetThaumium"));
-      ConfigResearch.recipes.put("WandCapVoidInert", IArcaneRecipe.addArcaneCraftingRecipe("CAP_void", new ItemStack(ConfigItems.itemWandCap, 1, 8), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandCapVoidInert", AbstractArcaneRecipe.addArcaneCraftingRecipe("CAP_void", new ItemStack(ConfigItems.itemWandCap, 1, 8), (new LinkedHashAspectList<>()).addAll(
               Aspects.ENTROPY, WandCap.caps.get("void").getCraftCost() * 3).addAll(Aspects.ORDER, WandCap.caps.get("void").getCraftCost() * 3).addAll(
               Aspects.FIRE, WandCap.caps.get("void").getCraftCost() * 2).addAll(Aspects.AIR, WandCap.caps.get("void").getCraftCost() * 2), "NNN", "N N", 'N', "nuggetVoid"));
-      ConfigResearch.recipes.put("WandRodGreatwood", IArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood", new ItemStack(ConfigItems.itemWandRod, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodGreatwood", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood", new ItemStack(ConfigItems.itemWandRod, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.ENTROPY, WandRod.rods.get("greatwood").getCraftCost()), " G", "G ", 'G', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0)));
-      ConfigResearch.recipes.put("WandRodGreatwoodStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 50), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodGreatwoodStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 50), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("greatwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 0)));
-      ConfigResearch.recipes.put("WandRodObsidianStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_obsidian_staff", new ItemStack(ConfigItems.itemWandRod, 1, 51), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodObsidianStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_obsidian_staff", new ItemStack(ConfigItems.itemWandRod, 1, 51), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("obsidian_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 1)));
-      ConfigResearch.recipes.put("WandRodSilverwoodStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_silverwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 52), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodSilverwoodStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_silverwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 52), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("silverwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 2)));
-      ConfigResearch.recipes.put("WandRodIceStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_ice_staff", new ItemStack(ConfigItems.itemWandRod, 1, 53), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodIceStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_ice_staff", new ItemStack(ConfigItems.itemWandRod, 1, 53), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("ice_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 3)));
-      ConfigResearch.recipes.put("WandRodQuartzStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_quartz_staff", new ItemStack(ConfigItems.itemWandRod, 1, 54), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodQuartzStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_quartz_staff", new ItemStack(ConfigItems.itemWandRod, 1, 54), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("quartz_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 4)));
-      ConfigResearch.recipes.put("WandRodReedStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_reed_staff", new ItemStack(ConfigItems.itemWandRod, 1, 55), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodReedStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_reed_staff", new ItemStack(ConfigItems.itemWandRod, 1, 55), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("reed_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 5)));
-      ConfigResearch.recipes.put("WandRodBlazeStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_blaze_staff", new ItemStack(ConfigItems.itemWandRod, 1, 56), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodBlazeStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_blaze_staff", new ItemStack(ConfigItems.itemWandRod, 1, 56), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("blaze_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 6)));
-      ConfigResearch.recipes.put("WandRodBoneStaff", IArcaneRecipe.addArcaneCraftingRecipe("ROD_bone_staff", new ItemStack(ConfigItems.itemWandRod, 1, 57), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("WandRodBoneStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_bone_staff", new ItemStack(ConfigItems.itemWandRod, 1, 57), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, WandRod.rods.get("bone_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 7)));
-      ConfigResearch.recipes.put("FocusFire", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSFIRE", new ItemStack(ConfigItems.itemFocusFire), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusFire", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSFIRE", new ItemStack(ConfigItems.itemFocusFire), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 20).addAll(Aspects.ENTROPY, 10), "CQC", "Q#Q", "CQC", '#', Items.fire_charge, 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 1)));
-      ConfigResearch.recipes.put("FocusFrost", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSFROST", new ItemStack(ConfigItems.itemFocusFrost), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusFrost", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSFROST", new ItemStack(ConfigItems.itemFocusFrost), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 10).addAll(Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10), "CQC", "Q#Q", "CQC", '#', Items.diamond, 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 2)));
-      ConfigResearch.recipes.put("FocusShock", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSSHOCK", new ItemStack(ConfigItems.itemFocusShock), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusShock", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSSHOCK", new ItemStack(ConfigItems.itemFocusShock), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10), "CQC", "Q#Q", "CQC", '#', Items.potato, 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 0)));
-      ConfigResearch.recipes.put("FocusTrade", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSTRADE", new ItemStack(ConfigItems.itemFocusTrade), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusTrade", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSTRADE", new ItemStack(ConfigItems.itemFocusTrade), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 15).addAll(Aspects.ENTROPY, 15).addAll(Aspects.EARTH, 10), "CQE", "Q#Q", "CQE", '#', new ItemStack(QUICK_SILVER), 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 6), 'E', new ItemStack(ConfigItems.itemShard, 1, 6)));
-      ConfigResearch.recipes.put("FocusExcavation", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSEXCAVATION", new ItemStack(ConfigItems.itemFocusExcavation), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusExcavation", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSEXCAVATION", new ItemStack(ConfigItems.itemFocusExcavation), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 20).addAll(Aspects.ENTROPY, 5).addAll(Aspects.ORDER, 5), "CQC", "Q#Q", "CQC", '#', "gemEmerald", 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 3)));
-      ConfigResearch.recipes.put("FocusPrimal", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSPRIMAL", new ItemStack(ConfigItems.itemFocusPrimal), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusPrimal", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSPRIMAL", new ItemStack(ConfigItems.itemFocusPrimal), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 25).addAll(Aspects.ENTROPY, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.AIR, 25).addAll(
               Aspects.FIRE, 25).addAll(Aspects.WATER, 25), "CQC", "Q#Q", "CQC", '#', new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1), 'Q', Items.quartz, 'C', Items.diamond));
-      ConfigResearch.recipes.put("FocusPouch", IArcaneRecipe.addArcaneCraftingRecipe("FOCUSPOUCH", new ItemStack(ConfigItems.itemFocusPouch), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("FocusPouch", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSPOUCH", new ItemStack(ConfigItems.itemFocusPouch), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 10).addAll(Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10), "LGL", "LBL", "LLL", 'B', new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), 'L', Items.leather, 'G', Items.gold_ingot));
-      ConfigResearch.recipes.put("Deconstructor", IArcaneRecipe.addArcaneCraftingRecipe("DECONSTRUCTOR", new ItemStack(ConfigBlocks.blockTable, 1, 14), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Deconstructor", AbstractArcaneRecipe.addArcaneCraftingRecipe("DECONSTRUCTOR", new ItemStack(ConfigBlocks.blockTable, 1, 14), (new LinkedHashAspectList<>()).addAll(
               Aspects.ENTROPY, 20), " S ", "ATP", 'T', new ItemStack(ConfigBlocks.blockTable, 1, 0), 'S', new ItemStack(ThaumcraftItems.THAUMOMETER), 'P', new ItemStack(Items.golden_pickaxe), 'A', new ItemStack(Items.golden_axe)));
-      ConfigResearch.recipes.put("ArcaneBoreBase", IArcaneRecipe.addArcaneCraftingRecipe("ARCANEBORE", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 4), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("ArcaneBoreBase", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANEBORE", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 10), "WIW", "IDI", "WIW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'I', Items.iron_ingot, 'D', Blocks.dispenser));
-      ConfigResearch.recipes.put("EnchantedFabric", IArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("EnchantedFabric", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 1).addAll(Aspects.EARTH, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.WATER, 1).addAll(Aspects.ORDER, 1).addAll(
               Aspects.ENTROPY, 1), " S ", "SCS", " S ", 'S', new ItemStack(Items.string, 1, 32767), 'C', new ItemStack(Blocks.wool, 1, 32767)));
-      ConfigResearch.recipes.put("RobeChest", IArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemChestRobe, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("RobeChest", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemChestRobe, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5), "I I", "III", "III", 'I', new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC)));
-      ConfigResearch.recipes.put("RobeLegs", IArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemLegsRobe, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("RobeLegs", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemLegsRobe, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5), "III", "I I", "I I", 'I', new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC)));
-      ConfigResearch.recipes.put("RobeBoots", IArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemBootsRobe, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("RobeBoots", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemBootsRobe, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 3), "I I", "I I", 'I', new ItemStack(ThaumcraftItems.ENCHANTED_FABRIC)));
       GameRegistry.addRecipe(new RecipesRobeArmorDyes());
-      ConfigResearch.recipes.put("Goggles", IArcaneRecipe.addArcaneCraftingRecipe("GOGGLES", new ItemStack(ConfigItems.itemGoggles), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Goggles", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOGGLES", new ItemStack(ConfigItems.itemGoggles), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5).addAll(Aspects.FIRE, 5).addAll(Aspects.WATER, 5).addAll(Aspects.EARTH, 5).addAll(Aspects.ENTROPY, 3).addAll(
               Aspects.ORDER, 3), "LGL", "L L", "TGT", 'T', ThaumcraftItems.THAUMOMETER, 'G', Items.gold_ingot, 'L', Items.leather));
-      ConfigResearch.recipes.put("HungryChest", IArcaneRecipe.addArcaneCraftingRecipe("HUNGRYCHEST", new ItemStack(ConfigBlocks.blockChestHungry), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("HungryChest", AbstractArcaneRecipe.addArcaneCraftingRecipe("HUNGRYCHEST", new ItemStack(ConfigBlocks.blockChestHungry), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5).addAll(Aspects.ORDER, 3).addAll(Aspects.ENTROPY, 3), "WTW", "W W", "WWW", 'W', "plankWood", 'T', Blocks.trapdoor));
-      ConfigResearch.recipes.put("GolemBell", IArcaneRecipe.addArcaneCraftingRecipe("GOLEMBELL", new ItemStack(ConfigItems.itemGolemBell), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("GolemBell", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOLEMBELL", new ItemStack(ConfigItems.itemGolemBell), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 5), " QQ", " QQ", "S  ", 'S', "stickWood", 'Q', Items.quartz));
-      ConfigResearch.recipes.put("CoreBlank", IArcaneRecipe.addArcaneCraftingRecipe("COREGATHER", new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("CoreBlank", AbstractArcaneRecipe.addArcaneCraftingRecipe("COREGATHER", new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 5).addAll(Aspects.FIRE, 5), " C ", "CNC", " C ", 'C', Items.brick, 'N', new ItemStack(ThaumcraftItems.NITOR)));
-      ConfigResearch.recipes.put("UpgradeAir", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEAIR", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeAir", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEAIR", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 0)));
-      ConfigResearch.recipes.put("UpgradeEarth", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEEARTH", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeEarth", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEEARTH", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 3)));
-      ConfigResearch.recipes.put("UpgradeFire", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEFIRE", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeFire", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEFIRE", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 1)));
-      ConfigResearch.recipes.put("UpgradeWater", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEWATER", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeWater", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEWATER", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 2)));
-      ConfigResearch.recipes.put("UpgradeOrder", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEORDER", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 4), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeOrder", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEORDER", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 4)));
-      ConfigResearch.recipes.put("UpgradeEntropy", IArcaneRecipe.addArcaneCraftingRecipe("UPGRADEENTROPY", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 5), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("UpgradeEntropy", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEENTROPY", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 5), (new LinkedHashAspectList<>()).addAll(
               Aspects.ENTROPY, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 5)));
-      ConfigResearch.recipes.put("TinyHat", IArcaneRecipe.addArcaneCraftingRecipe("TINYHAT", new ItemStack(ConfigItems.itemGolemDecoration, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyHat", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYHAT", new ItemStack(ConfigItems.itemGolemDecoration, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 8).addAll(Aspects.FIRE, 8), " C ", " G ", "CCC", 'C', new ItemStack(Blocks.wool, 1, 15), 'G', Items.gold_ingot));
-      ConfigResearch.recipes.put("TinyFez", IArcaneRecipe.addArcaneCraftingRecipe("TINYFEZ", new ItemStack(ConfigItems.itemGolemDecoration, 1, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyFez", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYFEZ", new ItemStack(ConfigItems.itemGolemDecoration, 1, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 4).addAll(Aspects.EARTH, 4), "CCS", "CCS", "  S", 'C', new ItemStack(Blocks.wool, 1, 14), 'S', Items.string));
-      ConfigResearch.recipes.put("TinyBowtie", IArcaneRecipe.addArcaneCraftingRecipe("TINYBOWTIE", new ItemStack(ConfigItems.itemGolemDecoration, 1, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyBowtie", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYBOWTIE", new ItemStack(ConfigItems.itemGolemDecoration, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 4).addAll(Aspects.ORDER, 4), "CSC", "C C", 'C', new ItemStack(Blocks.wool, 1, 15), 'S', Items.string));
-      ConfigResearch.recipes.put("TinyGlasses", IArcaneRecipe.addArcaneCraftingRecipe("TINYGLASSES", new ItemStack(ConfigItems.itemGolemDecoration, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyGlasses", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYGLASSES", new ItemStack(ConfigItems.itemGolemDecoration, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 4).addAll(Aspects.WATER, 4), "GIG", 'G', Blocks.glass, 'I', Items.iron_ingot));
-      ConfigResearch.recipes.put("TinyDart", IArcaneRecipe.addArcaneCraftingRecipe("TINYDART", new ItemStack(ConfigItems.itemGolemDecoration, 1, 4), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyDart", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYDART", new ItemStack(ConfigItems.itemGolemDecoration, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 4).addAll(Aspects.FIRE, 4), "AIA", "ADA", "AIA", 'I', Items.iron_ingot, 'D', Blocks.dispenser, 'A', Items.arrow));
-      ConfigResearch.recipes.put("TinyVisor", IArcaneRecipe.addArcaneCraftingRecipe("TINYVISOR", new ItemStack(ConfigItems.itemGolemDecoration, 1, 5), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyVisor", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYVISOR", new ItemStack(ConfigItems.itemGolemDecoration, 1, 5), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 4).addAll(Aspects.WATER, 4), "IHI", 'I', Items.iron_ingot, 'H', new ItemStack(Items.iron_helmet, 1, 32767)));
-      ConfigResearch.recipes.put("TinyArmor", IArcaneRecipe.addArcaneCraftingRecipe("TINYARMOR", new ItemStack(ConfigItems.itemGolemDecoration, 1, 6), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyArmor", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYARMOR", new ItemStack(ConfigItems.itemGolemDecoration, 1, 6), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 8), "I I", "IAI", 'I', Items.iron_ingot, 'A', new ItemStack(Items.iron_chestplate, 1, 32767)));
-      ConfigResearch.recipes.put("TinyHammer", IArcaneRecipe.addArcaneCraftingRecipe("TINYHAMMER", new ItemStack(ConfigItems.itemGolemDecoration, 1, 7), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TinyHammer", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYHAMMER", new ItemStack(ConfigItems.itemGolemDecoration, 1, 7), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 4).addAll(Aspects.FIRE, 4), "III", "III", " I ", 'I', Items.iron_ingot));
-      ConfigResearch.recipes.put("Filter", IArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ThaumcraftItems.VIS_FILTER, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Filter", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ThaumcraftItems.VIS_FILTER, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 5).addAll(Aspects.WATER, 5), "GWG", 'G', Items.gold_ingot, 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 7)));
-      ConfigResearch.recipes.put("AlchemyFurnace", IArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("AlchemyFurnace", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 5).addAll(Aspects.WATER, 5), "SCS", "SFS", "SSS", 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 0), 'F', Blocks.furnace, 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)));
-      ConfigResearch.recipes.put("Alembic", IArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Alembic", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5).addAll(Aspects.WATER, 5), "FIG", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.bucket, 'G', Items.gold_ingot, 'F', new ItemStack(ThaumcraftItems.VIS_FILTER), 'L', new ItemStack(ConfigBlocks.blockMagicalLeaves, 1, 1)));
-      ConfigResearch.recipes.put("Bellows", IArcaneRecipe.addArcaneCraftingRecipe("BELLOWS", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Bellows", AbstractArcaneRecipe.addArcaneCraftingRecipe("BELLOWS", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 5), "WW ", "LCI", "WW ", 'W', "plankWood", 'C', new ItemStack(ConfigItems.itemShard, 1, 0), 'I', Items.iron_ingot, 'L', Items.leather));
-      ConfigResearch.recipes.put("Tube", IArcaneRecipe.addArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 8, 0), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Tube", AbstractArcaneRecipe.addArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 8, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), " Q ", "IGI", " B ", 'I', Items.iron_ingot, 'B', Items.gold_nugget, 'G', Blocks.glass, 'Q', new ItemStack(ConfigItems.itemNugget, 1, 5)));
-      ConfigResearch.recipes.put("Resonator", IArcaneRecipe.addArcaneCraftingRecipe("TUBES", new ItemStack(ConfigItems.itemResonator), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Resonator", AbstractArcaneRecipe.addArcaneCraftingRecipe("TUBES", new ItemStack(ConfigItems.itemResonator), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.AIR, 5), "I I", "INI", " S ", 'I', Items.iron_ingot, 'N', Items.quartz, 'S', "stickWood"));
-      ConfigResearch.recipes.put("TubeValve", IArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 1, 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TubeValve", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), new ItemStack(ConfigBlocks.blockTube, 1, 0), new ItemStack(Blocks.lever)));
-      ConfigResearch.recipes.put("TubeFilter", IArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TubeFilter", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 16), new ItemStack(ConfigBlocks.blockTube, 1, 0), new ItemStack(ThaumcraftItems.VIS_FILTER)));
-      ConfigResearch.recipes.put("TubeRestrict", IArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 5), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TubeRestrict", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 5), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.EARTH, 16), new ItemStack(ConfigBlocks.blockTube, 1, 0), "stone"));
-      ConfigResearch.recipes.put("TubeOneway", IArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 6), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TubeOneway", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 6), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 8).addAll(Aspects.ENTROPY, 8), new ItemStack(ConfigBlocks.blockTube, 1, 0), "dyeBlue"));
-      ConfigResearch.recipes.put("TubeBuffer", IArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 4), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("TubeBuffer", AbstractArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "PVP", "T T", "PRP", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'V', new ItemStack(ConfigBlocks.blockTube, 1, 1), 'R', new ItemStack(ConfigBlocks.blockTube, 1, 5), 'P', new ItemStack(ConfigItems.itemEssence, 1, 0)));
-      ConfigResearch.recipes.put("AlchemicalConstruct", IArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("AlchemicalConstruct", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "VTF", "TWT", "FTV", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'V', new ItemStack(ConfigBlocks.blockTube, 1, 1), 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'F', new ItemStack(ThaumcraftItems.VIS_FILTER)));
-      ConfigResearch.recipes.put("AdvAlchemyConstruct", IArcaneRecipe.addArcaneCraftingRecipe("ADVALCHEMYFURNACE", new ItemStack(ConfigBlocks.blockMetalDevice, 4, 3), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("AdvAlchemyConstruct", AbstractArcaneRecipe.addArcaneCraftingRecipe("ADVALCHEMYFURNACE", new ItemStack(ConfigBlocks.blockMetalDevice, 4, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 10).addAll(Aspects.ORDER, 30).addAll(Aspects.EARTH, 10), "VAV", "APA", "VAV", 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), 'V', new ItemStack(ThaumcraftItems.VOID_INGOT,1), 'P', new ItemStack(ThaumcraftItems.PRIME_PEARL)));
-      ConfigResearch.recipes.put("Centrifuge", IArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Centrifuge", AbstractArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5).addAll(Aspects.ENTROPY, 5), " T ", "ACP", " T ", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'P', new ItemStack(Blocks.piston), 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 1), 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9)));
-      ConfigResearch.recipes.put("EssentiaCrystalizer", IArcaneRecipe.addArcaneCraftingRecipe("ESSENTIACRYSTAL", new ItemStack(ConfigBlocks.blockTube, 1, 7), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("EssentiaCrystalizer", AbstractArcaneRecipe.addArcaneCraftingRecipe("ESSENTIACRYSTAL", new ItemStack(ConfigBlocks.blockTube, 1, 7), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.EARTH, 15).addAll(Aspects.ORDER, 5), "IDI", "QCQ", "WTW", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'D', new ItemStack(Blocks.dispenser), 'Q', new ItemStack(ConfigItems.itemShard, 1, 6), 'I', "ingotIron", 'W', "plankWood", 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9)));
-      ConfigResearch.recipes.put("MnemonicMatrix", IArcaneRecipe.addArcaneCraftingRecipe("THAUMATORIUM", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("MnemonicMatrix", AbstractArcaneRecipe.addArcaneCraftingRecipe("THAUMATORIUM", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 5).addAll(Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "IAI", "ABA", "IAI", 'B', new ItemStack(ConfigItems.itemZombieBrain), 'A', new ItemStack(ThaumcraftItems.AMBER_GEM), 'I', new ItemStack(Items.iron_ingot)));
    }
 

@@ -6,16 +6,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.resourcelocations.ShapedArcaneRecipeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
 
 //TODO:Impl with current API
-public class ArcaneWandRecipe /*implements IArcaneRecipe*/ {
+public class ArcaneWandRecipe /*implements AbstractArcaneRecipe*/ {
     public static final ShapedArcaneRecipe INSTANCE = new ShapedArcaneRecipe(
 
-            ShapedArcaneRecipeResourceLocation.of(Thaumcraft.MOD_ID,"wand"),
+            AbstractArcaneRecipeResourceLocation.of(Thaumcraft.MOD_ID,"wand"),
             ,
             arr -> {
                 ItemStack centerStack = arr.get(4);

@@ -16,7 +16,7 @@ import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
  * <p>renamed from IAspectContainer</p>
  * <p>change:Node will no longer use this.they will go to {@link IWorldlyCentiVisContainerBlockEntity}.</p>
  * <p>Vis and aspect(for infusion) should be different!</p>
- * <p>Separated into {@link IAspectOutBlockEntity} and {@link IAspectInBlockEntity}</p>
+ * <p>Separated into {@link IEssentiaForceOutBlockEntity} and {@link IEssentiaForceInBlockEntity}</p>
  * <p>for items contains bonus aspects use {@link IBonusAspectOwnerItem}</p>
  * <p>for BEs needs to show aspect use {@link IAspectDisplayBlockEntity}</p>
  * <p>for itemss needs to show aspect use {@link IAspectDisplayItem}</p>

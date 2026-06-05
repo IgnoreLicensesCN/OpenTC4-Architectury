@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
-import thaumcraft.api.aspects.IAspectInBlockEntity;
+import thaumcraft.api.aspects.IEssentiaForceInBlockEntity;
 import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
@@ -67,7 +67,7 @@ public class InfusionMatrixBlockEntity
         IRemoteAspectDrainerBlockEntity<Aspect>,
         IAspectDisplayBlockEntity<Aspect>,
         IWandInteractableBlockOrBlockEntity,
-        IAspectInBlockEntity<Aspect>
+        IEssentiaForceInBlockEntity<Aspect>
 {
     //should serialize
     protected final AspectList<Aspect> aspectsRequiring = new LinkedHashAspectList<>();

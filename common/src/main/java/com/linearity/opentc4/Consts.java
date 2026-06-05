@@ -229,6 +229,9 @@ public class Consts {
         public static final IntTagAccessor FUEL_REMAINING_TIME = new IntTagAccessor("fuel_remaining_time");
         public static final IntTagAccessor FUEL_TOTAL_TIME = new IntTagAccessor("fuel_total_time");
     }
+    public static class ArcaneWorkbenchBlockEntityTagAccessors {
+        public static final ResourceLocationTagAccessor CURRENT_RECIPE =  new ResourceLocationTagAccessor("current_recipe");
+    }
     public static class ArcaneAlembicBlockEntityTagAccessors {
         public static final IntTagAccessor ASPECT_AMOUNT = new IntTagAccessor("aspect_amount");
         public static final AspectAccessor ASPECT_CURRENT = new AspectAccessor("aspect_current");

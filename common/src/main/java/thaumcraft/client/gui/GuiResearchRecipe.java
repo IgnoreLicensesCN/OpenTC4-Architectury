@@ -31,7 +31,7 @@ import thaumcraft.api.crafting.arcane.ShapelessArcaneRecipe;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.client.ClientProxy;
@@ -528,7 +528,7 @@ public class GuiResearchRecipe extends GuiScreen {
     }
 
     private void drawArcaneCraftingPage(int side, int x, int y, int mx, int my, ResearchPage pageParm) {
-        IArcaneRecipe recipe = null;
+        AbstractArcaneRecipe recipe = null;
         Object tr = null;
         if (pageParm.recipe instanceof Object[]) {
             try {

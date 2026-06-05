@@ -6,7 +6,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 
 //usually use IEssentiaTransportOutBlockEntity
 //impl this means BE accepts force-out(without considering suction limits) aspect
-public interface IAspectOutBlockEntity<Asp extends Aspect> {
+public interface IEssentiaForceOutBlockEntity<Asp extends Aspect> {
     @UnmodifiableView
     @NotNull
     AspectList<Asp> getAspects();

@@ -10,10 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
-import thaumcraft.api.crafting.AbstractResourceLocationIdentifiedRecipe;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.lib.resourcelocations.ShapelessArcaneRecipeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import java.util.function.Function;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 //TODO:Clean
-public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRecipe<ShapelessArcaneRecipe, ShapelessArcaneRecipeResourceLocation> implements IArcaneRecipe
+public class ShapelessArcaneRecipe extends AbstractArcaneRecipe
 {
     private final Function<ItemStack[],ItemStack> resultGenerator;
     private final RecipeItemMatcher[] input;
@@ -44,7 +42,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
 
     //do not set ItemStack.EMPTY matcher here.
     public ShapelessArcaneRecipe(
-            ShapelessArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<ItemStack[],ItemStack> resultGenerator,
             CentiVisList<Aspect>aspects,
@@ -88,7 +86,7 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
     }
 
     public ShapelessArcaneRecipe(
-            ShapelessArcaneRecipeResourceLocation id,
+            AbstractArcaneRecipeResourceLocation id,
             ResearchItem research,
             Function<ItemStack[],ItemStack> resultGenerator,
             CentiVisList<Aspect>aspects,
@@ -303,11 +301,12 @@ public class ShapelessArcaneRecipe extends AbstractResourceLocationIdentifiedRec
     }
 
 
-    private static final Map<ShapelessArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES = new ConcurrentHashMap<>();
+    private static final Map<AbstractArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES = new ConcurrentHashMap<>();
     @Unmodifiable
-    public static final Map<ShapelessArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPELESS_ARCANE_RECIPES);
+    public static final Map<AbstractArcaneRecipeResourceLocation,ShapelessArcaneRecipe> SHAPELESS_ARCANE_RECIPES_VIEW = Collections.unmodifiableMap(SHAPELESS_ARCANE_RECIPES);
     @Override
-    protected void registerRecipe(ShapelessArcaneRecipeResourceLocation recipeID) {
+    protected void registerRecipe(AbstractArcaneRecipeResourceLocation recipeID) {
+        super.registerRecipe(recipeID);
         var got = SHAPELESS_ARCANE_RECIPES.get(recipeID);
         if (got != null) {
             throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);

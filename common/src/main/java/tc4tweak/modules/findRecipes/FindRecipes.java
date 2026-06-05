@@ -8,7 +8,8 @@ import net.minecraft.world.item.crafting.CraftingManager;
 import net.minecraft.world.level.Level;
 import tc4tweak.ConfigurationHandler;
 import tc4tweak.network.NetworkedConfiguration;
-import thaumcraft.api.crafting.interfaces.IArcaneRecipe;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 
 public class FindRecipes {
     private static final ArcaneCraftingHistory cache = new ArcaneCraftingHistory();
@@ -16,11 +17,11 @@ public class FindRecipes {
     private FindRecipes() {
     }
 
-    public static IArcaneRecipe findArcaneRecipe(Container inv, Player player) {
-        IArcaneRecipe r = cache.findInCache(inv, player);
+    public static AbstractArcaneRecipe findArcaneRecipe(Container inv, Player player) {
+        AbstractArcaneRecipe r = cache.findInCache(inv, player);
         if (r != null)
             return r;
-        r = (IArcaneRecipe.getIArcaneRecipes()).parallelStream()
+        r = (AbstractArcaneRecipe.getAbstractArcaneRecipes()).parallelStream()
                 .filter(o -> o.matches(inv, player.level(), player))
                 .findFirst()
                 .orElse(null);
