@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -33,7 +33,7 @@ public class RunedStoneBlockEntity extends BlockEntity {
         if (p != null) {
             p.hurt(this.level.damageSources().magic(),2.F);
             if (this.level.random.nextBoolean()) {
-                Thaumcraft.addWarpToPlayer(p, 1 + this.level.random.nextInt(2), true);
+                WarpInfo.getFromPlayer(p).addTempWarp(1 + this.level.random.nextInt(2));
             }
 
             new PacketFXBlockZapS2C(

@@ -9,11 +9,8 @@ import com.linearity.opentc4.simpleutils.ListenerManager;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
 import thaumcraft.api.listeners.warp.listeners.*;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
-import thaumcraft.common.lib.research.PlayerKnowledge;
-
 
 
 import static thaumcraft.api.listeners.warp.consts.AfterPickEventListeners.SPAWN_GUARD_IF_NO_EVENT;
@@ -22,7 +19,7 @@ import static thaumcraft.api.listeners.warp.consts.BeforePickEventListeners.CALC
 import static thaumcraft.api.listeners.warp.consts.BeforePickEventListeners.THAUMIC_FORTRESS_MASK_DISCOUNT;
 import static thaumcraft.api.listeners.warp.consts.WarpConditions.NO_WARP_WARD;
 import static thaumcraft.api.listeners.warp.consts.WarpConditions.WARP_AND_COUNTER;
-import static thaumcraft.common.lib.WarpEvents.*;
+import static thaumcraft.api.listeners.warp.consts.WarpEvents.*;
 
 
 public class WarpEventManager {
@@ -106,21 +103,21 @@ public class WarpEventManager {
                     new PacketMiscEventS2C((short)0).sendTo(player);
                 }
             }
-            if (player instanceof ServerPlayer) {
-                new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
+            if (player instanceof ServerPlayer serverPlayer) {
+                WarpInfo.getFromPlayer(player).syncTo(serverPlayer);
             }
         }
     }
 
     public static void tryTriggerRandomWarpEvent(@NotNull ServerPlayer player) {
-        PlayerKnowledge knowledge = Thaumcraft.playerKnowledge;
+        WarpInfo warpInfo = WarpInfo.getFromPlayer(player);
         PickWarpEventContext warpContext = new PickWarpEventContext(
-                knowledge.getWarpTotal(player)
+                warpInfo.getTotalWarp()
                         + getWarpFromGear(player),
                 player,
-                knowledge.getWarpPerm(player)
-                        + knowledge.getWarpSticky(player),
-                knowledge.getWarpCounter(player)
+                warpInfo.getPermWarp()
+                        + warpInfo.getStickyWarp(),
+                warpInfo.getWarpEventCounter()
         );
         for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
             if (!condition.check(warpContext,player)) {
@@ -141,9 +138,8 @@ public class WarpEventManager {
     }
 
     public static int getFinalWarp(ItemStack stack, Player player) {
-       if (stack != null && stack.getItem() instanceof IWarpingGear) {
-          IWarpingGear armor = (IWarpingGear)stack.getItem();
-          return armor.getWarp(stack, player);
+       if (stack != null && stack.getItem() instanceof IWarpingGear armor) {
+           return armor.getWarp(stack, player);
        } else {
           return 0;
        }

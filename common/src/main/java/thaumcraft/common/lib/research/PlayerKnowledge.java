@@ -11,6 +11,7 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated(forRemoval = true,since = "we can make things like this instances inside Player instance and save them with player data now")
 public class PlayerKnowledge {
    public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
    public final Map<String, Set<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
@@ -137,6 +138,7 @@ public class PlayerKnowledge {
       }
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpCounter(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -149,14 +151,17 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpCounter(Player player, int amount) {
       this.warpCount.put(player.getGameProfile().getName(), amount);
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpTotal(Player player) {
       return this.getWarpPerm(player) + this.getWarpTemp(player) + this.getWarpSticky(player);
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpPerm(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -169,6 +174,7 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpTemp(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -181,6 +187,7 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpSticky(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -193,29 +200,35 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpTemp(Player player, int amount) {
       int er = this.getWarpTemp(player) + amount;
       this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpPerm(Player player, int amount) {
       int er = this.getWarpPerm(player) + amount;
       this.warp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpSticky(Player player, int amount) {
       int er = this.getWarpSticky(player) + amount;
       this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpSticky(Player player, int amount) {
       this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpPerm(Player player, int amount) {
       this.warp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpTemp(Player player, int amount) {
       this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }

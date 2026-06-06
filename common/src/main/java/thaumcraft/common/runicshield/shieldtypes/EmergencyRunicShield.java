@@ -7,7 +7,6 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
-//  "tc.research_page.RUNICEMERGENCY.1": "这是种特别版的护盾护身符.<BR>较改造前的护身符充能量略少些,但当护盾被打破时这项升级能够立即再为护盾增加8点能量.<BR>在1分钟内只能激活一次这种效果.",
 public class EmergencyRunicShield extends CoolingDownAndTriggerOnShieldDownShieldType {
     public EmergencyRunicShield(RunicShieldTypeResourceLocation shieldTypeResourceLocation,int priority) {
         super(shieldTypeResourceLocation,priority);

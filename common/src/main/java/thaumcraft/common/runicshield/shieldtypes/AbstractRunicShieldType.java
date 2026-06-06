@@ -111,14 +111,14 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
             float damage, /*may decreased by shields before*/
             EntityRunicShieldInfo shieldInfo
     ){
-        int owningShield = shieldInfo.shieldCharged.getInt(this);
+        int owningShield = shieldInfo.getShieldChargedFor(this);
         if (owningShield <= 0) {
             return damage;
         }
         int damageCeil = (int) Math.ceil(damage);
         int damageToReduce = Math.min(damageCeil, owningShield);
         int remaining = owningShield - damageToReduce;
-        shieldInfo.shieldCharged.put(this, remaining);
+        shieldInfo.setShieldChargedFor(this, remaining);
         if (damageToReduce > 0){
             onDamagingShield(victim, source, damageToReduce, shieldInfo);
         }

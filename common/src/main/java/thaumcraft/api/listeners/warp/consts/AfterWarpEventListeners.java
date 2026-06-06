@@ -13,7 +13,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 
 
-import static thaumcraft.common.lib.WarpEvents.grantResearch;
+import static thaumcraft.api.listeners.warp.consts.WarpEvents.grantResearch;
 
 public class AfterWarpEventListeners {
     public static final WarpEventListenerAfter CHECK_RESEARCH = new WarpEventListenerAfter(0) {

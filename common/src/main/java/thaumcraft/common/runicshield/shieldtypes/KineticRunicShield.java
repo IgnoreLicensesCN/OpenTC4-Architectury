@@ -22,7 +22,7 @@ public class KineticRunicShield extends CoolingDownAndTriggerOnShieldDownShieldT
                         victim.getX(),
                         victim.getY() + (victim.getBbHeight() / 2),
                         victim.getZ(),
-                        1.5F + shieldInfo.shieldCharged.getInt(this)/2.F,
+                        1.5F + shieldInfo.getShieldChargedFor(this)/2.F,
                         Level.ExplosionInteraction.MOB
                 );
     }

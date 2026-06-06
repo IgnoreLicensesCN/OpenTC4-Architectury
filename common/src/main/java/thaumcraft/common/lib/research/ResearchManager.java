@@ -2,6 +2,7 @@ package thaumcraft.common.lib.research;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
@@ -21,6 +22,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
@@ -406,16 +408,18 @@ public class ResearchManager {
 
     }
 
+    @UtilityLikeAbstraction(reason = "not sure wtf azanor wants")
     public static void addKindsOfWarps(Player player, int warp) {
         if (warp > 0 && !Config.wuss && (player instanceof ServerPlayer)) {
+            var warpInfo = WarpInfo.getFromPlayer(player);
             if (warp > 1) {
                 int halved = warp / 2;
                 if (warp - halved > 0) {
-                    Thaumcraft.addWarpToPlayer(player, warp - halved, false);
+                    warpInfo.addTempWarp(warp - halved);
                 }
-                Thaumcraft.addStickyWarpToPlayer(player, halved);
+                warpInfo.addStickyWarp(halved);
             } else {
-                Thaumcraft.addWarpToPlayer(player, warp, false);
+                warpInfo.addTempWarp(warp);
             }
         }
     }
@@ -515,6 +519,7 @@ public class ResearchManager {
 
     }
 
+    @Deprecated(forRemoval = true)
     public static void loadPlayerData(Player player, File file1, File file2, boolean legacy) {
         try {
             CompoundTag data = null;
@@ -732,6 +737,8 @@ public class ResearchManager {
         }
     }
 
+    @Deprecated(forRemoval = true,since = "we can mixin into player's logic and impl our own data logic " +
+            "so all related to this should be mental illness")
     public static void scheduleSave(Player player) {
         if (!(player instanceof ServerPlayer)){return;}
         //TODO:Impl or remove

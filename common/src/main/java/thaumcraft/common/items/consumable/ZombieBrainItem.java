@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.warp.WarpInfo;
 
 public class ZombieBrainItem extends Item {
     public ZombieBrainItem() {
@@ -37,13 +37,9 @@ public class ZombieBrainItem extends Item {
     ) {
         if (!level.isClientSide && entity instanceof ServerPlayer player) {
             if (level.getRandom().nextFloat() < 0.1F) {
-                Thaumcraft.addStickyWarpToPlayer(player, 1);
+                WarpInfo.getFromPlayer(player).addStickyWarp(1);
             } else {
-                Thaumcraft.addWarpToPlayer(
-                        player,
-                        1 + level.getRandom().nextInt(3),
-                        true
-                );
+                WarpInfo.getFromPlayer(player).addTempWarp(1 + level.getRandom().nextInt(3));
             }
         }
 

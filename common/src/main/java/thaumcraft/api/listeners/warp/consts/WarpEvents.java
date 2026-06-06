@@ -1,4 +1,4 @@
-package thaumcraft.common.lib;
+package thaumcraft.api.listeners.warp.consts;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;

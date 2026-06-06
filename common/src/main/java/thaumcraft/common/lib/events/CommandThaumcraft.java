@@ -16,6 +16,7 @@ import thaumcraft.api.research.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.PacketSyncResearchS2C;
@@ -292,7 +293,6 @@ public class CommandThaumcraft{
             Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)i);
         }
 
-        ResearchManager.scheduleSave(player);
         player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."),false);
         icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
         new PacketSyncAspectsS2C(player).sendTo(player);
@@ -311,7 +311,6 @@ public class CommandThaumcraft{
 
          if (aspect != null) {
             Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)i);
-            ResearchManager.scheduleSave(player);
             new PacketSyncAspectsS2C(player).sendTo(player);
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()),false);
             icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
@@ -323,41 +322,34 @@ public class CommandThaumcraft{
    }
 
    private static void setWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-      if (type.equalsIgnoreCase("PERM")) {
-         Thaumcraft.playerKnowledge.setWarpPerm(player, i);
-         ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
-      } else if (type.equalsIgnoreCase("TEMP")) {
-         Thaumcraft.playerKnowledge.setWarpTemp(player, i);
-         ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
-      } else {
-         Thaumcraft.playerKnowledge.setWarpSticky(player, i);
-         ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
-      }
+       var warpInfo = WarpInfo.getFromPlayer(player);
+       if (type.equalsIgnoreCase("PERM")) {
+           warpInfo.setPermWarp(i);
+           warpInfo.syncTo(player);
+       } else if (type.equalsIgnoreCase("TEMP")) {
+           warpInfo.setTempWarp(i);
+           warpInfo.syncTo(player);
+       } else {
+           warpInfo.setStickyWarp(i);
+           warpInfo.syncTo(player);
+       }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i),false);
       icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
    }
 
    private static void addWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-      if (type.equalsIgnoreCase("PERM")) {
-         Thaumcraft.playerKnowledge.addWarpPerm(player, i);
-         ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
-          new PacketWarpMessageS2C((byte)0, i).sendTo(player);
-      } else if (type.equalsIgnoreCase("TEMP")) {
-         Thaumcraft.playerKnowledge.addWarpTemp(player, i);
-         ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
-          new PacketWarpMessageS2C((byte)2, i).sendTo(player);
-      } else {
-         Thaumcraft.playerKnowledge.addWarpSticky(player, i);
-          ResearchManager.scheduleSave(player);
-          new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
-          new PacketWarpMessageS2C((byte)1, i).sendTo(player);
-      }
+       var warpInfo = WarpInfo.getFromPlayer(player);
+       if (type.equalsIgnoreCase("PERM")) {
+           warpInfo.addPermWarp(i);
+           warpInfo.syncTo(player);
+       } else if (type.equalsIgnoreCase("TEMP")) {
+           warpInfo.addTempWarp(i);
+           warpInfo.syncTo(player);
+       } else {
+           warpInfo.addStickyWarp(i);
+           warpInfo.syncTo(player);
+       }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."),false);
       icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);

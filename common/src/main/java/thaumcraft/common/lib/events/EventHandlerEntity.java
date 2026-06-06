@@ -47,7 +47,7 @@ import thaumcraft.common.items.armor.Hover;
 import thaumcraft.common.items.armor.ItemHoverHarness;
 import thaumcraft.common.items.equipment.ItemBowBone;
 import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.WarpEvents;
+import thaumcraft.api.listeners.warp.consts.WarpEvents;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.effects.effectshaderhandlers.BlurredVisionShaderHandler;

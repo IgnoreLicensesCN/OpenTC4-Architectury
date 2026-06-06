@@ -6,12 +6,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 import thaumcraft.api.listeners.warp.listeners.WarpEvent;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
 import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
 
-import static thaumcraft.common.lib.WarpEvents.*;
+import static thaumcraft.api.listeners.warp.consts.WarpEvents.*;
 
 /**
  * I placed events here so that you can unregister them easily.
@@ -174,13 +173,11 @@ public enum WarpEventsEnum {
     DECREASE_A_STICKY_WARP(new WarpEvent(1, 76) {//azanor may get something wrong.
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-
-            if (Thaumcraft.playerKnowledge.getWarpSticky(player) > 0) {
-                Thaumcraft.playerKnowledge.addWarpSticky(
-                        player, -1
-                );
+            WarpInfo info = WarpInfo.getFromPlayer(player);
+            if (info.getStickyWarp() > 0) {
+                info.setStickyWarp(-1);
                 if (player instanceof ServerPlayer serverPlayer) {
-                    new PacketSyncWarpS2C(player, (byte) 1).sendTo(serverPlayer);
+                    info.syncTo(serverPlayer);
                     new PacketWarpMessageS2C((byte) 1, -1).sendTo(serverPlayer);
                 }
             }

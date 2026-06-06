@@ -2,6 +2,7 @@ package thaumcraft.common;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import org.spongepowered.asm.mixin.injection.Desc;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.items.wands.WandManager;
@@ -54,6 +55,7 @@ public class Thaumcraft {
         return playerKnowledge.aspectsDiscovered;
     }
 
+    @Deprecated(forRemoval = true)
     public static void addWarpToPlayer(Player _player, int amount, boolean temporary) {
 //        if (_player instanceof FakeThaumcraftPlayer) {return;}
         if (!(_player instanceof ServerPlayer player)) {return;}
@@ -80,6 +82,7 @@ public class Thaumcraft {
         }
     }
 
+    @Deprecated(forRemoval = true)
     public static void addStickyWarpToPlayer(Player _player, int amount) {
 //        if (_player instanceof FakeThaumcraftPlayer) {
 //            return;

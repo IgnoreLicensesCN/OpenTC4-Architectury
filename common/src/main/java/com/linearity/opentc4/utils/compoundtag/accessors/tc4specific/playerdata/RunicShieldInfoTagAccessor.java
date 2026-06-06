@@ -1,6 +1,7 @@
-package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific;
+package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.playerdata;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.RunicShieldTypeResourceLocationTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableMapValueAccessorFromKeyTagAccessor;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 import static thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType.RUNIC_SHIELD_TYPES_VIEW;
 
-public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShieldInfo> {
+public class RunicShieldInfoTagAccessor extends CompoundTagAccessor<EntityRunicShieldInfo> {
     private static final Map<RunicShieldTypeResourceLocation,CompoundTagAccessor<?>> additionalInfoAccessors = new HashMap<>();
     {
         RUNIC_SHIELD_TYPES_VIEW.forEach((key,value)->{
@@ -28,6 +29,7 @@ public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShie
         });
     }
 
+    private final CompoundTagAccessorImpl warpTagAccessor = new CompoundTagAccessorImpl(tagKey);
     private final IntTagAccessor rechargeDelayAccessor = new IntTagAccessor(tagKey + "_recharge_delay");
     private final Object2IntLinkedOpenHashMapAccessor<RunicShieldTypeResourceLocation> shieldChargedAccessor
             = new Object2IntLinkedOpenHashMapAccessor<>(
@@ -49,20 +51,21 @@ public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShie
                     key -> (CompoundTagAccessor<Object>) additionalInfoAccessors.get(key)
     );
 
-    protected RunicShieldInfoAccessor(String tagKey) {
+    public RunicShieldInfoTagAccessor(String tagKey) {
         super(tagKey);
     }
 
     @Override
     public EntityRunicShieldInfo readFromCompoundTag(CompoundTag tag) {
-        EntityRunicShieldInfo result = new EntityRunicShieldInfo(null);
+        tag = warpTagAccessor.readFromCompoundTag(tag);
+        EntityRunicShieldInfo result = new EntityRunicShieldInfo();
         result.rechargeDelay = rechargeDelayAccessor.readIntFromCompoundTag(tag);
         {
             var capacityMap = shieldCapacityAccessor.readFromCompoundTag(tag);
             capacityMap.forEach((key, value) -> {
                 var type = RUNIC_SHIELD_TYPES_VIEW.get(key);
                 if (type != null) {
-                    result.shieldCapacity.put(type, value);
+                    result.setShieldCapacityFor(type, value);
                 }
             });
         }
@@ -71,7 +74,7 @@ public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShie
             chargedMap.forEach((key, value) -> {
                 var type = RUNIC_SHIELD_TYPES_VIEW.get(key);
                 if (type != null) {
-                    result.shieldCharged.put(type, value);
+                    result.setShieldChargedFor(type, value);
                 }
             });
         }
@@ -88,18 +91,19 @@ public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShie
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tag, EntityRunicShieldInfo value) {
+    public void writeToCompoundTag(CompoundTag tagOuter, EntityRunicShieldInfo value) {
+        var tag = new CompoundTag();
         rechargeDelayAccessor.writeIntToCompoundTag(tag,value.rechargeDelay);
         {
-            var capacityToWrite = new Object2IntLinkedOpenHashMap<RunicShieldTypeResourceLocation>(value.shieldCapacity.size());
-            value.shieldCapacity.forEach(
+            var capacityToWrite = new Object2IntLinkedOpenHashMap<RunicShieldTypeResourceLocation>();
+            value.shieldCapacityForEach(
                     (k, v) -> capacityToWrite.put(k.id, v)
             );
             shieldCapacityAccessor.writeToCompoundTag(tag, capacityToWrite);
         }
         {
-            var chargedToWrite = new Object2IntLinkedOpenHashMap<RunicShieldTypeResourceLocation>(value.shieldCharged.size());
-            value.shieldCapacity.forEach(
+            var chargedToWrite = new Object2IntLinkedOpenHashMap<RunicShieldTypeResourceLocation>();
+            value.shieldChargedForEach(
                     (k, v) -> chargedToWrite.put(k.id, v)
             );
             shieldChargedAccessor.writeToCompoundTag(tag, chargedToWrite);
@@ -111,10 +115,11 @@ public class RunicShieldInfoAccessor extends CompoundTagAccessor<EntityRunicShie
             );
             additionalInfoAccessor.writeToCompoundTag(tag,additionalToWrite);
         }
+        warpTagAccessor.writeToCompoundTag(tagOuter,tag);
     }
 
     @Override
     public boolean compoundTagHasKey(CompoundTag tag) {
-        return tag.contains(tagKey);
+        return warpTagAccessor.compoundTagHasKey(tag);
     }
 }
