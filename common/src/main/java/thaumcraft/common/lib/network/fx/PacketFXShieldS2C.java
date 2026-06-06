@@ -74,7 +74,6 @@ public class PacketFXShieldS2C extends ThaumcraftBaseS2CMessage {
          mc.particleEngine.add(fx);
       }
 
-      // ---- target == -1: 两个方向 ----
       else if (this.target == -1) {
          FXShieldRunes fx1 = new FXShieldRunes(mc.level, p.getX(), p.getY(), p.getZ(), p, 8, 0.0F, 90.0F);
          mc.particleEngine.add(fx1);
@@ -83,13 +82,11 @@ public class PacketFXShieldS2C extends ThaumcraftBaseS2CMessage {
          mc.particleEngine.add(fx2);
       }
 
-      // ---- target == -2: 单方向 270° ----
       else if (this.target == -2) {
          FXShieldRunes fx = new FXShieldRunes(mc.level, p.getX(), p.getY(), p.getZ(), p, 8, 0.0F, 270.0F);
          mc.particleEngine.add(fx);
       }
 
-      // ---- target == -3: 单方向 90° ----
       else if (this.target == -3) {
          FXShieldRunes fx = new FXShieldRunes(mc.level, p.getX(), p.getY(), p.getZ(), p, 8, 0.0F, 90.0F);
          mc.particleEngine.add(fx);

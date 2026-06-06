@@ -161,69 +161,84 @@ public class EventHandlerRunic {
             }
          }
 
-         if (event.source == DamageSource.drown || event.source == DamageSource.wither || event.source == DamageSource.outOfWorld || event.source == DamageSource.starve) {
-            return;
-         }
+//         if (
+//                 event.source == DamageSource.drown
+//                 || event.source == DamageSource.wither
+//                 || event.source == DamageSource.outOfWorld
+//                 || event.source == DamageSource.starve
+//         ) {
+//            return;
+//         }
 
-         if (this.runicInfo.containsKey(player.getEntityId()) && this.runicCharge.containsKey(player.getEntityId()) && this.runicCharge.get(player.getEntityId()) > 0) {
-            int target = -1;
-            if (event.source.getEntity() != null) {
-               target = event.source.getEntity().getEntityId();
-            }
+//         if (this.runicInfo.containsKey(player.getEntityId())
+//                 && this.runicCharge.containsKey(player.getEntityId()) &
+//                 & this.runicCharge.get(player.getEntityId()) > 0) {
+//            int target = -1;
+//            if (event.source.getEntity() != null) {
+//               target = event.source.getEntity().getEntityId();
+//            }
+//
+//            if (event.source == DamageSource.fall) {
+//               target = -2;
+//            }
+//
+//            if (event.source == DamageSource.fallingBlock) {
+//               target = -3;
+//            }
+//
+//            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
 
-            if (event.source == DamageSource.fall) {
-               target = -2;
-            }
+//            int charge = this.runicCharge.get(player.getEntityId());
+//            if ((float)charge > event.ammount) {
+//               charge = (int)((float)charge - event.ammount);
+//               event.ammount = 0.0F;
+//            } else {
+//               event.ammount -= (float)charge;
+//               charge = 0;
+//            }
 
-            if (event.source == DamageSource.fallingBlock) {
-               target = -3;
-            }
+//            String key = player.getEntityId() + ":" + 2;
+//            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[2] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
+//               this.upgradeCooldown.put(key, time + 20000L);
+//               player.level().newExplosion(player, player.posX, player.posY + (double)(player.height / 2.0F), player.posZ, 1.5F + (float)((Integer[])this.runicInfo.get(player.getEntityId()))[2] * 0.5F, false, false);
+//            }
 
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(event.entity.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 64.0F));
-            int charge = this.runicCharge.get(player.getEntityId());
-            if ((float)charge > event.ammount) {
-               charge = (int)((float)charge - event.ammount);
-               event.ammount = 0.0F;
-            } else {
-               event.ammount -= (float)charge;
-               charge = 0;
-            }
+//            key = player.getEntityId() + ":" + 3;
+//            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[3] > 0
+//                    && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
+//               this.upgradeCooldown.put(key, time + 20000L);
+//               synchronized(player) {
+//                  try {
+//                     player.addEffect(new MobEffectInstance(
+//                             Potion.regeneration.id,
+//                             240,
+//                             ((Integer[])this.runicInfo.get(player.getEntityId()))[3]),
+//                             false,
+//                             true
+//                     );
+//                  } catch (Exception ignored) {
+//                  }
+//               }
+//
+//               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_effect", 1.0F, 1.0F);
+//            }
 
-            String key = player.getEntityId() + ":" + 2;
-            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[2] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
-               this.upgradeCooldown.put(key, time + 20000L);
-               player.level().newExplosion(player, player.posX, player.posY + (double)(player.height / 2.0F), player.posZ, 1.5F + (float)((Integer[])this.runicInfo.get(player.getEntityId()))[2] * 0.5F, false, false);
-            }
-
-            key = player.getEntityId() + ":" + 3;
-            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[3] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
-               this.upgradeCooldown.put(key, time + 20000L);
-               synchronized(player) {
-                  try {
-                     player.addEffect(new MobEffectInstance(Potion.regeneration.id, 240, ((Integer[])this.runicInfo.get(player.getEntityId()))[3]),false,true);
-                  } catch (Exception ignored) {
-                  }
-               }
-
-               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_effect", 1.0F, 1.0F);
-            }
-
-            key = player.getEntityId() + ":" + 4;
-            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[4] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
-               this.upgradeCooldown.put(key, time + 60000L);
-               int t = 8 * ((Integer[])this.runicInfo.get(player.getEntityId()))[4];
-               charge = Math.min(((Integer[])this.runicInfo.get(player.getEntityId()))[0], t);
-               this.isDirty = true;
-               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_charge", 1.0F, 1.0F);
-            }
-
-            if (charge <= 0) {
-               this.rechargeDelay = Config.shieldWait;
-            }
-
-            this.runicCharge.put(player.getEntityId(), charge);
-            PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
-         }
+//            key = player.getEntityId() + ":" + 4;
+//            if (charge <= 0 && ((Integer[])this.runicInfo.get(player.getEntityId()))[4] > 0 && (!this.upgradeCooldown.containsKey(key) || this.upgradeCooldown.get(key) < time)) {
+//               this.upgradeCooldown.put(key, time + 60000L);
+//               int t = 8 * ((Integer[])this.runicInfo.get(player.getEntityId()))[4];
+//               charge = Math.min(((Integer[])this.runicInfo.get(player.getEntityId()))[0], t);
+//               this.isDirty = true;
+//               player.level().playSoundAtEntity(player, "thaumcraft:runic_shield_charge", 1.0F, 1.0F);
+//            }
+//
+//            if (charge <= 0) {
+//               this.rechargeDelay = Config.shieldWait;
+//            }
+//
+//            this.runicCharge.put(player.getEntityId(), charge);
+//            PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
+//         }
       } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
          EntityMob mob = (EntityMob)event.entity;
          int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
@@ -256,7 +271,6 @@ public class EventHandlerRunic {
             event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (LivingEntity)event.entity, event.source, event.ammount);
          }
       }
-
    }
 
    //TODO:Migrate to item

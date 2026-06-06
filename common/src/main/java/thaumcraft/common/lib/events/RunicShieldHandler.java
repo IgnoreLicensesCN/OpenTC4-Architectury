@@ -1,81 +1,85 @@
 package thaumcraft.common.lib.events;
 
-import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.lib.network.playerdata.PacketRunicCapacityS2C;
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
-import thaumcraft.common.runicshield.RunicShieldType;
+import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 public class RunicShieldHandler {
 
     public static void updateRunicShieldForPlayer(ServerPlayer player) {
+        var shieldInfo = EntityRunicShieldInfo.getFromPlayer(player);
         if (player.tickCount % 40 == 0) {
-            updateRunicShieldCapacityForPlayer(player);
+            updateRunicShieldCapacityForPlayer(player,shieldInfo);
         }
-        rechargeRunicShieldForPlayer(player);
+        rechargeRunicShieldForPlayer(player,shieldInfo);
     }
-    public static void rechargeRunicShieldForPlayer(ServerPlayer player) {
-        var shieldInfo = ((PlayerRunicShieldInfoMixinAccessor)player).opentc4$getPlayerRunicShieldInfo();
+    public static void rechargeRunicShieldForPlayer(Entity entity,EntityRunicShieldInfo shieldInfo) {
         if (shieldInfo.rechargeDelay > 0) {
             shieldInfo.rechargeDelay -= 1;
         }
 
         shieldInfo.shieldCapacity.keySet().forEach(
-                runicShieldType -> runicShieldType.rechargeTickForPlayer(player)
+                runicShieldType -> runicShieldType.rechargeTickForEntity(entity,shieldInfo)
         );
-        if (shieldInfo.shouldSync){
-            shieldInfo.shouldSync = false;
-            shieldInfo.scheduleSyncTo(player);
+        if (shieldInfo.shouldSyncCharge){
+            shieldInfo.shouldSyncCharge = false;
+            if (entity instanceof ServerPlayer serverPlayer) {
+                shieldInfo.syncChargeSendPacket(serverPlayer);
+            }
         }
     }
-    public static void updateRunicShieldCapacityForPlayer(ServerPlayer player) {
-        var shieldInfo = ((PlayerRunicShieldInfoMixinAccessor)player).opentc4$getPlayerRunicShieldInfo();
+    public static void updateRunicShieldCapacityForPlayer(Entity entity,EntityRunicShieldInfo shieldInfo) {
 
-        var capacityMap = shieldInfo.shieldCapacity;
-        var capacityMapOld = new Object2IntOpenHashMap<>(shieldInfo.shieldCapacity);
-        capacityMap.clear();
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                ItemStack stack = player.getItemBySlot(slot);
+        if (entity instanceof ServerPlayer player) {
+            var capacityMap = shieldInfo.shieldCapacity;
+
+            var capacityMapOld = new Object2IntOpenHashMap<>(shieldInfo.shieldCapacity);
+            capacityMap.clear();
+            var capacityMapCache = new Object2IntRBTreeMap<>(AbstractRunicShieldType::compareTo);//i want its order
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+                    ItemStack stack = player.getItemBySlot(slot);
+                    if (stack.isEmpty()) {
+                        continue;
+                    }
+                    if (stack.getItem() instanceof IRunicShieldProviderItem shieldProvider) {
+                        capacityMapCache.putAll(shieldProvider.getRunicCharge(stack));
+                    }
+                }
+            }
+
+            forEachBauble(player, (a, stack, item) -> {
                 if (stack.isEmpty()) {
-                    continue;
+                    return false;
                 }
                 if (stack.getItem() instanceof IRunicShieldProviderItem shieldProvider) {
-                    capacityMap.putAll(shieldProvider.getRunicCharge(stack));
+                    capacityMapCache.putAll(shieldProvider.getRunicCharge(stack));
+                }
+                return false;
+            });
+            capacityMap.putAll(capacityMapCache);
+
+
+            if (capacityMap.size() != capacityMapOld.size()) {
+                shieldInfo.syncCapacitySendPacket(player);
+                return;
+            }
+            for (var entry : capacityMap.object2IntEntrySet()) {
+                var type = entry.getKey();
+                var capacity = entry.getIntValue();
+                if (capacityMapOld.getInt(type) != capacity) {
+                    shieldInfo.syncCapacitySendPacket(player);
+                    break;
                 }
             }
         }
-
-        forEachBauble(player,(a,stack,item) -> {
-            if (stack.isEmpty()) {
-                return false;
-            }
-            if (stack.getItem() instanceof IRunicShieldProviderItem shieldProvider) {
-                capacityMap.putAll(shieldProvider.getRunicCharge(stack));
-            }
-            return false;
-        });
-        if (capacityMap.size() != capacityMapOld.size()) {
-            new PacketRunicCapacityS2C(capacityMap).sendTo(player);
-            return;
-        }
-        for (var entry : capacityMap.object2IntEntrySet()) {
-            var type = entry.getKey();
-            var capacity = entry.getIntValue();
-            if (capacityMapOld.getInt(type) != capacity) {
-                new PacketRunicCapacityS2C(capacityMap).sendTo(player);
-                break;
-            }
-        }
-    }
-    public static void putShieldForPlayer(Player player, Object2IntMap<RunicShieldType> runicShieldWithType){
-        //TODO
     }
 }

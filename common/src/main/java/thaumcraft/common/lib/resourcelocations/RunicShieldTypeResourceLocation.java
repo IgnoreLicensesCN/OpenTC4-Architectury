@@ -2,15 +2,15 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.runicshield.RunicShieldType;
+import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RunicShieldTypeResourceLocation extends VariedResourceLocation<RunicShieldType, RunicShieldTypeResourceLocation> {
+public class RunicShieldTypeResourceLocation extends VariedResourceLocation<AbstractRunicShieldType, RunicShieldTypeResourceLocation> {
     public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("","");
-    public static final VariedResourceLocationBuilder<RunicShieldType, RunicShieldTypeResourceLocation> BUILDER = RunicShieldTypeResourceLocation::of;
-    public static final VariedResourceLocationParser<RunicShieldType, RunicShieldTypeResourceLocation> PARSER = RunicShieldTypeResourceLocation::of;
+    public static final VariedResourceLocationBuilder<AbstractRunicShieldType, RunicShieldTypeResourceLocation> BUILDER = RunicShieldTypeResourceLocation::of;
+    public static final VariedResourceLocationParser<AbstractRunicShieldType, RunicShieldTypeResourceLocation> PARSER = RunicShieldTypeResourceLocation::of;
 
 
     protected RunicShieldTypeResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {

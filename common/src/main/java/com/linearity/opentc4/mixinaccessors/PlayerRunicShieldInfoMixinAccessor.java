@@ -1,7 +1,7 @@
 package com.linearity.opentc4.mixinaccessors;
 
-import thaumcraft.common.runicshield.PlayerRunicShieldInfo;
+import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 public interface PlayerRunicShieldInfoMixinAccessor {
-    PlayerRunicShieldInfo opentc4$getPlayerRunicShieldInfo();
+    EntityRunicShieldInfo opentc4$getPlayerRunicShieldInfo();
 }

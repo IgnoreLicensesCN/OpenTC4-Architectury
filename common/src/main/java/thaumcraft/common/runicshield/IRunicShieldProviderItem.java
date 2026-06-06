@@ -2,6 +2,7 @@ package thaumcraft.common.runicshield;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 /**
  * 
@@ -17,5 +18,5 @@ public interface IRunicShieldProviderItem {
 	/**
 	 * returns how much charge this item can provide. This is the base shielding value - any hardening is stored and calculated internally. 
 	 */
-    Object2IntMap<RunicShieldType> getRunicCharge(ItemStack itemstack);
+    Object2IntMap<AbstractRunicShieldType> getRunicCharge(ItemStack itemstack);
 }

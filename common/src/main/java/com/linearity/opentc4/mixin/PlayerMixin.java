@@ -1,18 +1,47 @@
 package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import thaumcraft.common.runicshield.PlayerRunicShieldInfo;
+import org.spongepowered.asm.mixin.injection.*;
+import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
-@Mixin(Player.class)
+import java.util.concurrent.atomic.AtomicReference;
+
+@Mixin(value = Player.class,priority = 900)
 public class PlayerMixin implements PlayerRunicShieldInfoMixinAccessor {
     @Unique
-    private final PlayerRunicShieldInfo opentc4$playerRunicShieldInfo = new PlayerRunicShieldInfo((Player)(Object)this);
+    private final EntityRunicShieldInfo opentc4$playerRunicShieldInfo = new EntityRunicShieldInfo((Player)(Object)this);
 
     @Override
-    public PlayerRunicShieldInfo opentc4$getPlayerRunicShieldInfo() {
+    public EntityRunicShieldInfo opentc4$getPlayerRunicShieldInfo() {
         return opentc4$playerRunicShieldInfo;
+    }
+
+    @ModifyVariable(
+            method = "actuallyHurt",
+            at = @At("HEAD"),
+            argsOnly = true
+    )
+    private float opentc4$playerActuallyHurt(float f,DamageSource source){
+        var player = (Player)(Object)this;
+        if (!player.level().isClientSide){
+            var shieldInfo = EntityRunicShieldInfo.getFromPlayer(player);
+            AtomicReference<Float> floatAtomicReference = new AtomicReference<>(f);
+            shieldInfo.shieldCapacity.keySet().forEach(
+                    shieldType ->
+                            floatAtomicReference.updateAndGet(
+                                    finalDamage -> shieldType.beforeActuallyHurt(player,source,finalDamage,shieldInfo))
+            );
+            if (shieldInfo.shouldSyncCharge && player instanceof ServerPlayer serverPlayer){
+                shieldInfo.syncChargeSendPacket(serverPlayer);
+            }
+            shieldInfo.shouldSyncCharge = false;
+            return floatAtomicReference.get();
+        }
+        return f;
     }
 }

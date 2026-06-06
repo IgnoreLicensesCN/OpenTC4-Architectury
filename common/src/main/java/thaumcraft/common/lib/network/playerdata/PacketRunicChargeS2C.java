@@ -1,6 +1,5 @@
 package thaumcraft.common.lib.network.playerdata;
 
-import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
 import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -10,15 +9,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.RunicShieldType;
+import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 public class PacketRunicChargeS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":runic_charge";
 
     public static MessageType messageType;
 
-    public final Object2IntMap<RunicShieldType> shieldCharged;
-    public PacketRunicChargeS2C(Object2IntMap<RunicShieldType> shieldCharged) {
+    public final Object2IntMap<AbstractRunicShieldType<?>> shieldCharged;
+    public PacketRunicChargeS2C(Object2IntMap<AbstractRunicShieldType<?>> shieldCharged) {
         this.shieldCharged = shieldCharged;
     }
 
@@ -32,11 +32,11 @@ public class PacketRunicChargeS2C extends ThaumcraftBaseS2CMessage {
 
     public static PacketRunicChargeS2C decode(FriendlyByteBuf buf) {
         int size = buf.readInt();
-        Object2IntMap<RunicShieldType> decoded = new Object2IntOpenHashMap<>(size);
+        Object2IntMap<AbstractRunicShieldType<?>> decoded = new Object2IntOpenHashMap<>(size);
         for (int i = 0; i < size; i++) {
             var key = buf.readResourceLocation();
             var value = buf.readInt();
-            var type = RunicShieldType.RUNIC_SHIELD_TYPES_VIEW.get(RunicShieldTypeResourceLocation.of(key));
+            var type = AbstractRunicShieldType.RUNIC_SHIELD_TYPES_VIEW.get(RunicShieldTypeResourceLocation.of(key));
             if (type != null) {
                 decoded.put(type,value);
             }
@@ -57,7 +57,7 @@ public class PacketRunicChargeS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
-        ((PlayerRunicShieldInfoMixinAccessor)player).opentc4$getPlayerRunicShieldInfo().syncChargeS2C(
+        EntityRunicShieldInfo.getFromPlayer(player).syncChargeClientSide(
                 this.shieldCharged
         );
     }
