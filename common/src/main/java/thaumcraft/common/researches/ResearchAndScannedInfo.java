@@ -1,6 +1,7 @@
 package thaumcraft.common.researches;
 
 import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
@@ -8,30 +9,36 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncAllScannedS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 //i have to say this one is misunderstanding.
 //It just like "Oh i need some string to record something"
 // not all research need this,I can just say "you've picked PrimePearl >= 1(MC statics or whatever)"(or i may lookup items scanned for resource location) so research is unlocked
 // (or some advancement?like twilight forest)
-//
 public class ResearchAndScannedInfo {
-    @ApiStatus.Internal
+    @ApiStatus.Internal//idk if use public do you have other ideas than methods below?
     public final Collection<ResearchItemResourceLocation> completedResearches = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
     public final Collection<ClueResourceLocation> completedClues = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
-    public /*client need ordered one to display*/ @NotNull AspectList<Aspect> owningResearchAspect = new HashAspectList<>();
+    public /*client need ordered one to display so not final*/ @NotNull AspectList<Aspect> owningResearchAspect = new HashAspectList<>();
+    @ApiStatus.Internal
+    public final Map<ScannedTypeResourceLocation, Set<ResourceLocation>> scannedThings = new ConcurrentHashMap<>();
 
     public boolean hasResearchID(ResearchItemResourceLocation researchID){
         return completedResearches.contains(researchID);
     }
+
     public void addResearchID(ResearchItemResourceLocation researchID){
         completedResearches.add(researchID);
     }
@@ -53,6 +60,16 @@ public class ResearchAndScannedInfo {
     public void setResearchAspect(Aspect aspect,int amount){
         owningResearchAspect.set(aspect,amount);
     }
+    public void addScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsScanned){
+        scannedThings.computeIfAbsent(scannedType,k -> ConcurrentHashMap.newKeySet()).add(thingsScanned);
+    }
+    public boolean hasScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsToKnowIfScanned){
+        var scannedSet = scannedThings.get(scannedType);
+        if (scannedSet == null){
+            return false;
+        }
+        return scannedSet.contains(thingsToKnowIfScanned);
+    }
 
 
     public static ResearchAndScannedInfo getFromPlayer(Player player){
@@ -65,6 +82,7 @@ public class ResearchAndScannedInfo {
         syncResearchSendPacket(player);
         syncClueSendPacket(player);
         syncOwningResearchSendPacket(player);
+        syncScannedSendPacket(player);
     }
     public void syncResearchSendPacket(ServerPlayer player){
         new PacketSyncResearchCompletedS2C(this).sendTo(player);
@@ -75,6 +93,9 @@ public class ResearchAndScannedInfo {
     public void syncOwningResearchSendPacket(ServerPlayer player){
         new PacketSyncResearchAspectsS2C(owningResearchAspect).sendTo(player);
     }
+    public void syncScannedSendPacket(ServerPlayer player){
+        new PacketSyncAllScannedS2C(scannedThings).sendTo(player);
+    }
     public void syncResearchClientSide(Collection<ResearchItemResourceLocation> researchIDs){
         this.completedResearches.clear();
         this.completedResearches.addAll(researchIDs);
@@ -83,9 +104,16 @@ public class ResearchAndScannedInfo {
         this.completedClues.clear();
         this.completedClues.addAll(clueIDs);
     }
-
     public void syncResearchAspectClientSide(AspectList<Aspect> aspects){
         this.owningResearchAspect = aspects;
+    }
+    public void syncScannedClientSide(Map<ScannedTypeResourceLocation, Set<ResourceLocation>> things){
+        this.scannedThings.clear();
+        this.scannedThings.putAll(things);
+    }
+    public void syncScannedClientSide(ScannedTypeResourceLocation type,Set<ResourceLocation> things){
+        this.scannedThings.remove(type);
+        this.scannedThings.put(type,things);
     }
 
 }

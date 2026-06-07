@@ -8,9 +8,7 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.*;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncClueCompletedS2C;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.*;
 
 public class PacketHandler {
     public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(Thaumcraft.MOD_ID + "main_net_manager");
@@ -20,12 +18,15 @@ public class PacketHandler {
         PacketWarpMessageS2C.messageType = INSTANCE.registerS2C(PacketWarpMessageS2C.ID, PacketWarpMessageS2C::decode);
         PacketSyncWipeS2C.messageType = INSTANCE.registerS2C(PacketSyncWipeS2C.ID, PacketSyncWipeS2C::decode);
         PacketSyncWarpS2C.messageType = INSTANCE.registerS2C(PacketSyncWarpS2C.ID, PacketSyncWarpS2C::decode);
-        PacketSyncScannedPhenomenaS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedPhenomenaS2C.ID, PacketSyncScannedPhenomenaS2C::decode);
+        PacketSyncScannedVisNodeS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedVisNodeS2C.ID, PacketSyncScannedVisNodeS2C::decode);
         PacketSyncScannedItemsS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedItemsS2C.ID, PacketSyncScannedItemsS2C::decode);
         PacketSyncScannedEntitiesS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedEntitiesS2C.ID, PacketSyncScannedEntitiesS2C::decode);
         PacketSyncResearchCompletedS2C.messageType = INSTANCE.registerS2C(PacketSyncResearchCompletedS2C.ID, PacketSyncResearchCompletedS2C::decode);
         PacketSyncClueCompletedS2C.messageType = INSTANCE.registerS2C(PacketSyncClueCompletedS2C.ID, PacketSyncClueCompletedS2C::decode);
         PacketSyncResearchAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncResearchAspectsS2C.ID, PacketSyncResearchAspectsS2C::decode);
+
+        PacketSyncAllScannedS2C.messageType = INSTANCE.registerS2C(PacketSyncAllScannedS2C.ID,PacketSyncAllScannedS2C::read);
+
         PacketScannedToServerC2S.messageType = INSTANCE.registerC2S(PacketScannedToServerC2S.ID, PacketScannedToServerC2S::decode);
         PacketRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketRunicChargeS2C.ID, PacketRunicChargeS2C::decode);
         PacketRunicCapacityS2C.messageType = INSTANCE.registerS2C(PacketRunicCapacityS2C.ID, PacketRunicCapacityS2C::decode);
