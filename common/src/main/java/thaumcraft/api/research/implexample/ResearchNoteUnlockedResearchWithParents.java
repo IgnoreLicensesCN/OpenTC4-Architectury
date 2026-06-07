@@ -34,7 +34,6 @@ public abstract class ResearchNoteUnlockedResearchWithParents
         return parents;
     }
 
-
     @Override
     public boolean canPlayerResearch(Player player) {
         return researchedAllParents(player);

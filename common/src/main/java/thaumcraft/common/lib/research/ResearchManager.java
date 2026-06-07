@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.warp.WarpInfo;

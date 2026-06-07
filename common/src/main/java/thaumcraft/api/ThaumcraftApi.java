@@ -11,6 +11,8 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.api.research.*;
+import thaumcraft.api.research.client.ResearchCategory;
+import thaumcraft.api.research.client.ResearchPage;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;

@@ -24,7 +24,7 @@ import tc4tweak.modules.researchBrowser.DrawResearchBrowserBorders;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;

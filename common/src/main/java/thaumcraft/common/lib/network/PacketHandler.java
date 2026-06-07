@@ -8,6 +8,8 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.*;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncClueCompletedS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 
 public class PacketHandler {
     public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(Thaumcraft.MOD_ID + "main_net_manager");
@@ -20,8 +22,8 @@ public class PacketHandler {
         PacketSyncScannedPhenomenaS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedPhenomenaS2C.ID, PacketSyncScannedPhenomenaS2C::decode);
         PacketSyncScannedItemsS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedItemsS2C.ID, PacketSyncScannedItemsS2C::decode);
         PacketSyncScannedEntitiesS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedEntitiesS2C.ID, PacketSyncScannedEntitiesS2C::decode);
-        PacketSyncResearchS2C.messageType = INSTANCE.registerS2C(PacketSyncResearchS2C.ID, PacketSyncResearchS2C::decode);
-        PacketSyncClueS2C.messageType = INSTANCE.registerS2C(PacketSyncClueS2C.ID, PacketSyncClueS2C::decode);
+        PacketSyncResearchCompletedS2C.messageType = INSTANCE.registerS2C(PacketSyncResearchCompletedS2C.ID, PacketSyncResearchCompletedS2C::decode);
+        PacketSyncClueCompletedS2C.messageType = INSTANCE.registerS2C(PacketSyncClueCompletedS2C.ID, PacketSyncClueCompletedS2C::decode);
         PacketSyncAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncAspectsS2C.ID, PacketSyncAspectsS2C::decode);
         PacketScannedToServerC2S.messageType = INSTANCE.registerC2S(PacketScannedToServerC2S.ID, PacketScannedToServerC2S::decode);
         PacketRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketRunicChargeS2C.ID, PacketRunicChargeS2C::decode);

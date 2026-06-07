@@ -1,4 +1,4 @@
-package thaumcraft.api.research.render;
+package thaumcraft.api.research.client.render;
 
 import net.minecraft.resources.ResourceLocation;
 

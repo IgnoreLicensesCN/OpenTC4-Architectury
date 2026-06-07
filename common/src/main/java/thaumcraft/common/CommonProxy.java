@@ -29,7 +29,7 @@ import tc4tweak.network.MessageSendConfiguration;
 import tc4tweak.network.MessageSendConfigurationV2;
 import tc4tweak.network.NetworkedConfiguration;
 import tc4tweak.network.TileHoleSyncPacket;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.container.*;
 import thaumcraft.common.entities.ContainerPech;

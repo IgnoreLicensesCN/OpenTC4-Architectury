@@ -1,9 +1,9 @@
-package thaumcraft.api.research.render.impls;
+package thaumcraft.api.research.client.render.impls;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.research.render.ItemStackShownIconForeground;
-import thaumcraft.api.research.render.SimpleShownIconForeground;
+import thaumcraft.api.research.client.render.ItemStackShownIconForeground;
+import thaumcraft.api.research.client.render.SimpleShownIconForeground;
 import thaumcraft.common.items.ThaumcraftItems;
 
 public class ShownIconsForeground {

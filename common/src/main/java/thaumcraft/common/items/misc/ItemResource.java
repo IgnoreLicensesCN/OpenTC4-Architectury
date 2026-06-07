@@ -35,7 +35,24 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 import java.util.List;
 
 import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescriptionToList;
-
+//item.ItemResource.0.name=源动之焰
+//item.ItemResource.1.name=闪耀之光
+//item.ItemResource.2.name=神秘锭
+//item.ItemResource.3.name=水银
+//item.ItemResource.4.name=魔力油脂
+//item.ItemResource.5.name=僵尸之脑(死亡)
+//item.ItemResource.6.name=琥珀
+//item.ItemResource.7.name=魔力布匹
+//item.ItemResource.8.name=魔力滤管
+//item.ItemResource.9.name=知识碎片
+//item.ItemResource.10.name=镜面玻璃
+//item.ItemResource.11.name=腐化粘浆
+//item.ItemResource.12.name=腐化触手
+//item.ItemResource.13.name=罐子标签
+//item.ItemResource.14.name=世界盐
+//item.ItemResource.15.name=元始魔力
+//item.ItemResource.16.name=虚空锭
+//item.ItemResource.17.name=虚空种子
 //TODO:Migrate logic
 public class ItemResource extends Item implements IEssentiaContainerItem {
    public IIcon[] icon = new IIcon[19];

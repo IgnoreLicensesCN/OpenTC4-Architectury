@@ -1,16 +1,11 @@
 package thaumcraft.api.research;
 
-import com.linearity.opentc4.OpenTC4;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.api.research.interfaces.IRenderableResearch;
-import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
-import thaumcraft.api.research.interfaces.IResearchParentsOwner;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.research.ResearchManager;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,12 +18,7 @@ public abstract class ResearchItem
 	 * A short string used as a key for this research. Must be unique
 	 */
 	public final ResearchItemResourceLocation key;
-	
-	//although we have ThaumcraftShownResearchItem it's still fine to add category here
-	protected final List<ResearchCategoryResourceLocation> categoryInternal = new ArrayList<>();
-    @UnmodifiableView
-    public final List<ResearchCategoryResourceLocation> category = Collections.unmodifiableList(categoryInternal);
-	
+
 //    /**
 //     * This links to any research that needs to be completed before this research can be discovered or learnt.
 //     */
@@ -101,30 +91,15 @@ public abstract class ResearchItem
 	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
     {
     	this.key = key;
-        this.categoryInternal.add(category);
-//        this.setVirtual();
         registerResearchItem();
     }
 
-    public static boolean doesPlayerHaveRequisites(Player player, ResearchItemResourceLocation key) {
-        var research = getResearch(key);
-        return research.doesPlayerHaveRequisites(player);
-    }
+//    public static boolean doesPlayerHaveRequisites(Player player, ResearchItemResourceLocation key) {
+//        var research = getResearch(key);
+//        return research.doesPlayerHaveRequisites(player);
+//    }
 
-    public boolean doesPlayerHaveRequisites(Player player) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
-        if (this instanceof IResearchParentsOwner parentsOwner) {
-            if (!researched.containsAll(parentsOwner.getParents())){
-                return false;
-            }
-        }
-        if (this instanceof IResearchParentsHiddenOwner parentsHiddenOwner) {
-            if (!researched.containsAll(parentsHiddenOwner.getParentsHidden())){
-                return false;
-            }
-        }
-        return true;
-    }
+
 
     private void registerResearchItem(){
         if (researchItems.containsKey(this.key)){
@@ -151,7 +126,7 @@ public abstract class ResearchItem
      * @param key the research key
      * @return the ResearchItem object.
      */
-    public static ResearchItem getResearch(ResearchItemResourceLocation key) {
+    public static @Nullable ResearchItem getResearch(ResearchItemResourceLocation key) {
         return researchItems.get(key);
     }
 
@@ -165,23 +140,22 @@ public abstract class ResearchItem
     	return Component.translatable("tc.research_text."+key);
     }
 
-    public ResearchItem addCategory(ResearchCategoryResourceLocation categoryKey){
-        var category = ResearchCategory.getResearchCategory(categoryKey);
-        if (category == null){
-            OpenTC4.LOGGER.error("ResearchCategory {} does not exist",categoryKey);
-            return this;
-        }
-
-        category.addResearchAndShownInfo(this);
-        this.categoryInternal.add(categoryKey);
-        return this;
-    }
+//    public ResearchItem addCategory(ResearchCategoryResourceLocation categoryKey){
+//        var category = ResearchCategory.getResearchCategory(categoryKey);
+//        if (category == null){
+//            OpenTC4.LOGGER.error("ResearchCategory {} does not exist",categoryKey);
+//            return this;
+//        }
+//
+//        category.addResearchAndShownInfo(this);
+//        this.categoryInternal.add(categoryKey);
+//        return this;
+//    }
 
     @Override
     public String toString() {
         return "ResearchItem{" +
                 "key=" + key +
-                ", categoryInternal=" + categoryInternal +
 //                ", category=" + category +
 //                ", isSecondary=" + isSecondary +
 //                ", isStub=" + isStub +
@@ -198,11 +172,11 @@ public abstract class ResearchItem
     }
 
     public boolean isPlayerCompletedResearch(Player player){
-        return ResearchManager.getResearchForPlayer(player).contains(this.key);
+        return ResearchAndScannedInfo.getFromPlayer(player).hasResearchID(this.key);
     }
 
     public void completeResearch(Player player){
-        Thaumcraft.researchManager.completeResearch(player, key);
+        ResearchAndScannedInfo.getFromPlayer(player).addResearchID(this.key);
     }
 
     //keep for interface

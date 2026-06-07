@@ -11,161 +11,164 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchParentsHiddenOwner;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
-import thaumcraft.common.lib.network.playerdata.PacketSyncResearchS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.Objects;
 
-public class CommandThaumcraft{
+public class CommandThaumcraft {
 
-   public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
 
-      // 主命令 /thaumcraft
-      dispatcher.register(
-              Commands.literal("thaumcraft")
-                      .requires(src -> src.hasPermission(2))
-                      .then(Commands.literal("help")
-                              .executes(ctx -> {
-                                 sendHelp(ctx.getSource());
-                                 return 1;
-                              })
-                      )
-                      .then(Commands.literal("research")
-                              .then(Commands.argument("player", StringArgumentType.word())
-                                      .then(Commands.argument("action", StringArgumentType.word())
-                                              .executes(ctx -> {
+        // 主命令 /thaumcraft
+        dispatcher.register(
+                Commands.literal("thaumcraft")
+                        .requires(src -> src.hasPermission(2))
+                        .then(Commands.literal("help")
+                                .executes(ctx -> {
+                                    sendHelp(ctx.getSource());
+                                    return 1;
+                                })
+                        )
+                        .then(Commands.literal("research")
+                                        .then(Commands.argument("player", StringArgumentType.word())
+                                                        .then(Commands.argument("action", StringArgumentType.word())
+                                                                        .executes(ctx -> {
 //                                                  String playerArg = StringArgumentType.getString(ctx, "player");
-                                                 String playerName = StringArgumentType.getString(ctx, "player");
-                                                 if (Objects.equals(playerName, "list")) {
-                                                     listResearch(ctx.getSource());
-                                                 }
-                                                 String action = StringArgumentType.getString(ctx, "action");
-                                                 ServerPlayer player = getPlayer(ctx.getSource(), playerName);
-                                                 if (player == null) {
-                                                    ctx.getSource().sendFailure(Component.literal("Player not found"));
-                                                    return 0;
-                                                 }
-                                                 if (Objects.equals(action,"all")){
-                                                     giveAllResearch(ctx.getSource(), player);
-                                                 }else if (Objects.equals(action,"reset")){
-                                                     resetResearch(ctx.getSource(), player);
-                                                 }else{
-                                                     if (action == null){
-                                                         ctx.getSource().sendFailure(Component.literal("research not found"));
-                                                         return 0;
-                                                     }
-                                                     if (action.startsWith("@")){
-                                                         var clueLoc = ResearchItemResourceLocation.tryParse(action.substring(1));
-                                                         if (clueLoc != null) {
-                                                             giveClue(ctx.getSource(), player, clueLoc);
-                                                             return 1;
-                                                         }else {
-                                                             ctx.getSource().sendFailure(Component.literal("research not found"));
-                                                             return 0;
-                                                         }
-                                                     }
-                                                     var researchLoc = ResearchItemResourceLocation.tryParse(action);
-                                                     if (researchLoc != null) {
-                                                         giveResearch(ctx.getSource(), player, researchLoc);
-                                                     }else {
-                                                         ctx.getSource().sendFailure(Component.literal("research not found"));
-                                                         return 0;
-                                                     }
-                                                 }
-                                                 return 1;
-                                              })
-                                      )
-                              )
-                      )
-                      .then(Commands.literal("aspect")
-                              .then(Commands.argument("player", StringArgumentType.word())
-                                      .then(Commands.argument("aspect", StringArgumentType.word())
-                                              .then(Commands.argument("amount", IntegerArgumentType.integer(1))
-                                                      .executes(ctx -> {
-                                                         ServerPlayer player = getPlayer(ctx.getSource(), StringArgumentType.getString(ctx, "player"));
-                                                         if (player == null) {
-                                                            ctx.getSource().sendFailure(Component.literal("Player not found"));
-                                                            return 0;
-                                                         }
-                                                         String aspect = StringArgumentType.getString(ctx, "aspect");
-                                                         int amount = IntegerArgumentType.getInteger(ctx, "amount");
-                                                         if ("all".equalsIgnoreCase(aspect)){
-                                                             giveAllAspect(ctx.getSource(), player, amount);
-                                                         }else{
-                                                             var resLoc = AspectResourceLocation.tryParse(aspect);
-                                                             if (resLoc == null) {
-                                                                 ctx.getSource().sendFailure(Component.literal("aspect not found"));
-                                                                 return 0;
-                                                             }
-                                                             giveAspect(ctx.getSource(), player, resLoc, amount);
-                                                         }
-                                                         return 1;
-                                                      })
-                                              )
-                                      )
-                              )
-                      )
-                      .then(Commands.literal("warp")
-                              .then(Commands.argument("player", StringArgumentType.word())
-                                      .then(Commands.argument("mode", StringArgumentType.word()) // add / set
-                                              .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                                      .executes(ctx -> {
-                                                         ServerPlayer player = getPlayer(ctx.getSource(), StringArgumentType.getString(ctx, "player"));
-                                                         if (player == null) {
-                                                            ctx.getSource().sendFailure(Component.literal("Player not found"));
-                                                            return 0;
-                                                         }
-                                                         String mode = StringArgumentType.getString(ctx, "mode");
+                                                                            String playerName = StringArgumentType.getString(ctx, "player");
+                                                                            if (Objects.equals(playerName, "list")) {
+                                                                                listResearch(ctx.getSource());
+                                                                            }
+                                                                            String action = StringArgumentType.getString(ctx, "action");
+                                                                            ServerPlayer player = getPlayer(ctx.getSource(), playerName);
+                                                                            if (player == null) {
+                                                                                ctx.getSource().sendFailure(Component.literal("Player not found"));
+                                                                                return 0;
+                                                                            }
+                                                                            if (Objects.equals(action, "all")) {
+                                                                                giveAllResearch(ctx.getSource(), player);
+                                                                            } else if (Objects.equals(action, "reset")) {
+                                                                                resetResearch(ctx.getSource(), player);
+                                                                            } else {
+                                                                                if (action == null) {
+                                                                                    ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                                                    return 0;
+                                                                                }
+                                                                                if (action.startsWith("@")) {
+                                                                                    var clueLoc = ClueResourceLocation.tryParse(action.substring(1));
+                                                                                    if (clueLoc != null) {
+                                                                                        giveClue(ctx.getSource(), player, clueLoc);
+                                                                                        return 1;
+                                                                                    } else {
+                                                                                        ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                                                        return 0;
+                                                                                    }
+                                                                                }
+                                                                                var researchLoc = ResearchItemResourceLocation.tryParse(action);
+                                                                                if (researchLoc != null) {
+                                                                                    giveResearch(ctx.getSource(), player, researchLoc);
+                                                                                } else {
+                                                                                    ctx.getSource().sendFailure(Component.literal("research not found"));
+                                                                                    return 0;
+                                                                                }
+                                                                            }
+                                                                            return 1;
+                                                                        })
+                                                        )
+                                        )
+                        )
+                        .then(Commands.literal("aspect")
+                                .then(Commands.argument("player", StringArgumentType.word())
+                                        .then(Commands.argument("aspect", StringArgumentType.word())
+                                                .then(Commands.argument("amount", IntegerArgumentType.integer(1))
+                                                        .executes(ctx -> {
+                                                            ServerPlayer player = getPlayer(ctx.getSource(), StringArgumentType.getString(ctx, "player"));
+                                                            if (player == null) {
+                                                                ctx.getSource().sendFailure(Component.literal("Player not found"));
+                                                                return 0;
+                                                            }
+                                                            String aspect = StringArgumentType.getString(ctx, "aspect");
+                                                            int amount = IntegerArgumentType.getInteger(ctx, "amount");
+                                                            if ("all".equalsIgnoreCase(aspect)) {
+                                                                giveAllAspect(ctx.getSource(), player, amount);
+                                                            } else {
+                                                                var resLoc = AspectResourceLocation.tryParse(aspect);
+                                                                if (resLoc == null) {
+                                                                    ctx.getSource().sendFailure(Component.literal("aspect not found"));
+                                                                    return 0;
+                                                                }
+                                                                giveAspect(ctx.getSource(), player, resLoc, amount);
+                                                            }
+                                                            return 1;
+                                                        })
+                                                )
+                                        )
+                                )
+                        )
+                        .then(Commands.literal("warp")
+                                .then(Commands.argument("player", StringArgumentType.word())
+                                        .then(Commands.argument("mode", StringArgumentType.word()) // add / set
+                                                .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                                        .executes(ctx -> {
+                                                            ServerPlayer player = getPlayer(ctx.getSource(), StringArgumentType.getString(ctx, "player"));
+                                                            if (player == null) {
+                                                                ctx.getSource().sendFailure(Component.literal("Player not found"));
+                                                                return 0;
+                                                            }
+                                                            String mode = StringArgumentType.getString(ctx, "mode");
 
-                                                         int amount = IntegerArgumentType.getInteger(ctx, "amount");
+                                                            int amount = IntegerArgumentType.getInteger(ctx, "amount");
 
-                                                         String type = StringArgumentType.getString(ctx, "type");
-                                                         if (Objects.equals(mode, "add")) {
-                                                             addWarp(ctx.getSource(), player, amount, type);
-                                                         }else if (Objects.equals(mode, "set")) {
-                                                             setWarp(ctx.getSource(), player, amount, type);
-                                                         }
-                                                         return 1;
-                                                      })
-                                              )
-                                      )
-                              )
-                      )
-      );
+                                                            String type = StringArgumentType.getString(ctx, "type");
+                                                            if (Objects.equals(mode, "add")) {
+                                                                addWarp(ctx.getSource(), player, amount, type);
+                                                            } else if (Objects.equals(mode, "set")) {
+                                                                setWarp(ctx.getSource(), player, amount, type);
+                                                            }
+                                                            return 1;
+                                                        })
+                                                )
+                                        )
+                                )
+                        )
+        );
 
-      // 别名 /thaum -> /thaumcraft
-      dispatcher.register(Commands.literal("thaum")
-              .requires(src -> src.hasPermission(2))
-              .redirect(dispatcher.getRoot().getChild("thaumcraft")));
-      // 别名 /tc -> /thaumcraft
-      dispatcher.register(Commands.literal("tc")
-              .requires(src -> src.hasPermission(2))
-              .redirect(dispatcher.getRoot().getChild("thaumcraft")));
-   }
+        // 别名 /thaum -> /thaumcraft
+        dispatcher.register(Commands.literal("thaum")
+                .requires(src -> src.hasPermission(2))
+                .redirect(dispatcher.getRoot().getChild("thaumcraft")));
+        // 别名 /tc -> /thaumcraft
+        dispatcher.register(Commands.literal("tc")
+                .requires(src -> src.hasPermission(2))
+                .redirect(dispatcher.getRoot().getChild("thaumcraft")));
+    }
 
-   private static void sendHelp(CommandSourceStack source) {
-      source.sendSuccess(() -> Component.literal("§3You can also use /thaum or /tc instead of /thaumcraft."), false);
-      source.sendSuccess(() -> Component.literal("§3Use /thaumcraft research <player> <all|reset|<research>>"), false);
-      source.sendSuccess(() -> Component.literal("§3Use /thaumcraft aspect <player> <aspect|all> <amount>"), false);
-      source.sendSuccess(() -> Component.literal("§3Use /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>"), false);
-   }
+    private static void sendHelp(CommandSourceStack source) {
+        source.sendSuccess(() -> Component.literal("§3You can also use /thaum or /tc instead of /thaumcraft."), false);
+        source.sendSuccess(() -> Component.literal("§3Use /thaumcraft research <player> <all|reset|<research>>"), false);
+        source.sendSuccess(() -> Component.literal("§3Use /thaumcraft aspect <player> <aspect|all> <amount>"), false);
+        source.sendSuccess(() -> Component.literal("§3Use /thaumcraft warp <player> <add|set> <amount> <PERM|TEMP>"), false);
+    }
 
-   private static ServerPlayer getPlayer(CommandSourceStack source, String name) {
-      MinecraftServer server = source.getServer();
-      return server.getPlayerList().getPlayerByName(name);
-   }
+    private static ServerPlayer getPlayer(CommandSourceStack source, String name) {
+        MinecraftServer server = source.getServer();
+        return server.getPlayerList().getPlayerByName(name);
+    }
 
-   // -------------------------
-   // 以下方法留给你实现具体逻辑
-   // -------------------------
+    // -------------------------
+    // 以下方法留给你实现具体逻辑
+    // -------------------------
 //   private static void handleResearch(CommandSourceStack source, String listOrPlayer, String action) {
 //       if ("list".equalsIgnoreCase(action)) {
 //           listAllResearch(source);
@@ -176,17 +179,18 @@ public class CommandThaumcraft{
 //       } else {
 //           giveResearchRecursive(source, player, argument);
 //       }
-////      source.sendSuccess(() -> Component.literal("Research command executed for " + player.getGameProfile().getName() + " action=" + action), false);
+
+    /// /      source.sendSuccess(() -> Component.literal("Research command executed for " + player.getGameProfile().getName() + " action=" + action), false);
 //   }
+    private static void handleAspect(CommandSourceStack source, ServerPlayer player, String aspect, int amount) {
+        source.sendSuccess(() -> Component.literal("Aspect command executed for " + player.getGameProfile().getName() + " aspect=" + aspect + " amount=" + amount), false);
+    }
 
-   private static void handleAspect(CommandSourceStack source, ServerPlayer player, String aspect, int amount) {
-      source.sendSuccess(() -> Component.literal("Aspect command executed for " + player.getGameProfile().getName() + " aspect=" + aspect + " amount=" + amount), false);
-   }
+    private static void handleWarp(CommandSourceStack source, ServerPlayer player, String mode, int amount, String type) {
+        source.sendSuccess(() -> Component.literal("Warp command executed for " + player.getGameProfile().getName() + " mode=" + mode + " amount=" + amount + " type=" + type), false);
+    }
 
-   private static void handleWarp(CommandSourceStack source, ServerPlayer player, String mode, int amount, String type) {
-      source.sendSuccess(() -> Component.literal("Warp command executed for " + player.getGameProfile().getName() + " mode=" + mode + " amount=" + amount + " type=" + type), false);
-   }
-//
+    //
 //   private List<String> aliases = new ArrayList<>();
 //
 //   public CommandThaumcraft() {
@@ -284,143 +288,138 @@ public class CommandThaumcraft{
 //   }
 //
     private static void giveAllAspect(CommandSourceStack icommandsender, ServerPlayer player, int i) {
-        for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)i);
+        for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
+            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short) i);
         }
 
-        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."),false);
-        icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
+        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."), false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
         new PacketSyncAspectsS2C(player).sendTo(player);
     }
-   private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, AspectResourceLocation aspectTag, int i) {
 
-         Aspect aspect = Aspect.getAspect(aspectTag);
-         if (aspect == null) {
-            for(var a : Aspects.ALL_ASPECTS.values()) {
-               if (aspectTag.equals(a.getAspectKey())) {
-                  aspect = a;
-                  break;
-               }
+    private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, AspectResourceLocation aspectTag, int i) {
+
+        Aspect aspect = Aspect.getAspect(aspectTag);
+        if (aspect == null) {
+            for (var a : Aspects.ALL_ASPECTS.values()) {
+                if (aspectTag.equals(a.getAspectKey())) {
+                    aspect = a;
+                    break;
+                }
             }
-         }
+        }
 
-         if (aspect != null) {
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)i);
+        if (aspect != null) {
+            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short) i);
             new PacketSyncAspectsS2C(player).sendTo(player);
-            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()),false);
-            icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-         } else {
-            icommandsender.sendSuccess(() -> Component.literal("§cAspect does not exist."),false);
-         }
+            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()), false);
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+        } else {
+            icommandsender.sendSuccess(() -> Component.literal("§cAspect does not exist."), false);
+        }
 
 
-   }
+    }
 
-   private static void setWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-       var warpInfo = WarpInfo.getFromPlayer(player);
-       if (type.equalsIgnoreCase("PERM")) {
-           warpInfo.setPermWarp(i);
-           warpInfo.syncSendPacket(player);
-       } else if (type.equalsIgnoreCase("TEMP")) {
-           warpInfo.setTempWarp(i);
-           warpInfo.syncSendPacket(player);
-       } else {
-           warpInfo.setStickyWarp(i);
-           warpInfo.syncSendPacket(player);
-       }
+    private static void setWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
+        var warpInfo = WarpInfo.getFromPlayer(player);
+        if (type.equalsIgnoreCase("PERM")) {
+            warpInfo.setPermWarp(i);
+            warpInfo.syncSendPacket(player);
+        } else if (type.equalsIgnoreCase("TEMP")) {
+            warpInfo.setTempWarp(i);
+            warpInfo.syncSendPacket(player);
+        } else {
+            warpInfo.setStickyWarp(i);
+            warpInfo.syncSendPacket(player);
+        }
 
-      player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i),false);
-      icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-   }
+        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i), false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+    }
 
-   private static void addWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-       var warpInfo = WarpInfo.getFromPlayer(player);
-       if (type.equalsIgnoreCase("PERM")) {
-           warpInfo.addPermWarp(i);
-           warpInfo.syncSendPacket(player);
-       } else if (type.equalsIgnoreCase("TEMP")) {
-           warpInfo.addTempWarp(i);
-           warpInfo.syncSendPacket(player);
-       } else {
-           warpInfo.addStickyWarp(i);
-           warpInfo.syncSendPacket(player);
-       }
+    private static void addWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
+        var warpInfo = WarpInfo.getFromPlayer(player);
+        if (type.equalsIgnoreCase("PERM")) {
+            warpInfo.addPermWarp(i);
+            warpInfo.syncSendPacket(player);
+        } else if (type.equalsIgnoreCase("TEMP")) {
+            warpInfo.addTempWarp(i);
+            warpInfo.syncSendPacket(player);
+        } else {
+            warpInfo.addStickyWarp(i);
+            warpInfo.syncSendPacket(player);
+        }
 
-      player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."),false);
-      icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-   }
+        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."), false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+    }
 
     static void listResearch(CommandSourceStack icommandsender) {
-      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-         for(ResearchItem ri : cat.researches.values()) {
-            icommandsender.sendSuccess(() -> Component.literal("§5" + ri.key),false);
-         }
-      }
-   }
-
-    static void giveClue(CommandSourceStack icommandsender, ServerPlayer player, ResearchItemResourceLocation clueForResearch) {
-        if (ResearchItem.getResearch(clueForResearch) != null) {
-            Thaumcraft.researchManager.completeClue(player, clueForResearch.convertToClueResLoc());
-            new PacketSyncResearchS2C(player).sendTo(player);
-            player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you clue " + clueForResearch));
-            icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-        } else {
-            icommandsender.sendSuccess(() -> Component.literal("§cResearch does not exist."),false);
+        for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
+            for (ResearchItem ri : cat.researches.values()) {
+                icommandsender.sendSuccess(() -> Component.literal("§5" + ri.key), false);
+            }
         }
     }
-   static void giveResearch(CommandSourceStack icommandsender, ServerPlayer player, ResearchItemResourceLocation research) {
-      if (ResearchItem.getResearch(research) != null) {
-         giveRecursiveResearch(player, research);
-          new PacketSyncResearchS2C(player).sendTo(player);
-         player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + research + " research and its requisites."));
-         icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-      } else {
-         icommandsender.sendSuccess(() -> Component.literal("§cResearch does not exist."),false);
-      }
-   }
 
-   static void giveRecursiveResearch(ServerPlayer player, ResearchItemResourceLocation researchResLoc) {
-       var research = ResearchItem.getResearch(researchResLoc);
-       if (research == null){
-           return;
-       }
-      if (!research.isPlayerCompletedResearch(player)) {
-          research.completeResearch(player);
-          if (research instanceof IResearchParentsOwner parentsOwner){
-              parentsOwner.getParents().forEach(
-                      parentResLoc -> giveRecursiveResearch(player, parentResLoc)
-              );
-          }
-          if (research instanceof IResearchParentsHiddenOwner parentsHiddenOwner){
-              parentsHiddenOwner.getParentsHidden().forEach(
-                      parentResLoc -> giveRecursiveResearch(player, parentResLoc)
-              );
-          }
+    static void giveClue(CommandSourceStack icommandsender, ServerPlayer player, ClueResourceLocation clueForResearch) {
+
+        ResearchAndScannedInfo.getFromPlayer(player).addClue(clueForResearch);
+        new PacketClueCompleteS2C(clueForResearch).sendTo(player);
+        player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you clue " + clueForResearch));
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+    }
+
+    static void giveResearch(CommandSourceStack icommandsender, ServerPlayer player, ResearchItemResourceLocation research) {
+        if (ResearchItem.getResearch(research) != null) {
+            giveRecursiveResearch(player, research);
+            player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + research + " research and its requisites."));
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+        } else {
+            icommandsender.sendSuccess(() -> Component.literal("§cResearch does not exist."), false);
+        }
+    }
+
+    static void giveRecursiveResearch(ServerPlayer player, ResearchItemResourceLocation researchResLoc) {
+        var research = ResearchItem.getResearch(researchResLoc);
+        if (research == null) {
+            return;
+        }
+        if (!research.isPlayerCompletedResearch(player)) {
+            if (research instanceof IResearchParentsOwner parentsOwner) {
+                parentsOwner.getParents().forEach(
+                        parentResLoc -> giveRecursiveResearch(player, parentResLoc)
+                );
+            }
+            new PacketResearchCompleteS2C(research.key).sendTo(player);
+            research.completeResearch(player);
 //         if (ResearchItem.getResearch(researchResLoc).siblings != null) {
 //            for(var rsi : ResearchItem.getResearch(researchResLoc).siblings) {
 //               giveRecursiveResearch(player, rsi);
 //            }
 //         }
-      }
+        }
 
-   }
+    }
 
-   static void giveAllResearch(CommandSourceStack icommandsender, ServerPlayer player) {
-      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-         for(ResearchItem ri : cat.researches.values()) {
-            if (!ri.isPlayerCompletedResearch(player)) {
-                ri.completeResearch(player);
+    static void giveAllResearch(CommandSourceStack icommandsender, ServerPlayer player) {
+        for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
+            for (ResearchItem ri : cat.researches.values()) {
+                if (!ri.isPlayerCompletedResearch(player)) {
+                    giveRecursiveResearch(player, ri.getKey());
+                }
             }
-         }
-      }
+        }
 
-      player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has given you all research."),false);
-      icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-       new PacketSyncResearchS2C(player).sendTo(player);
-   }
+        player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has given you all research."), false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
 
-   static void resetResearch(CommandSourceStack icommandsender, ServerPlayer player) {
-      Thaumcraft.playerKnowledge.researchCompleted.remove(player.getGameProfile().getName());
+    }
+
+    static void resetResearch(CommandSourceStack icommandsender, ServerPlayer player) {
+        var researchInfo = ResearchAndScannedInfo.getFromPlayer(player);
+        researchInfo.completedResearches.clear();
 
 //      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
 //         for(ResearchItem ri : cat.researches.values()) {
@@ -430,8 +429,8 @@ public class CommandThaumcraft{
 //         }
 //      }
 
-      player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has reset you research."),false);
-      icommandsender.sendSuccess(() -> Component.literal("§5Success!"),false);
-       new PacketSyncResearchS2C(player).sendTo(player);
-   }
+        player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has reset you research."), false);
+        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+        new PacketSyncResearchCompletedS2C(researchInfo).sendTo(player);
+    }
 }

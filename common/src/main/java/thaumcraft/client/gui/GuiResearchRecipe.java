@@ -33,7 +33,7 @@ import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.ResearchPage;
+import thaumcraft.api.research.client.ResearchPage;
 import thaumcraft.client.ClientProxy;
 import thaumcraft.client.lib.TCFontRenderer;
 import thaumcraft.client.lib.UtilsFX;

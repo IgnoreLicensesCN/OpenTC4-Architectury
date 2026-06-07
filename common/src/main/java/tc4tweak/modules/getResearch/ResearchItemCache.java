@@ -1,7 +1,7 @@
 package tc4tweak.modules.getResearch;
 
 import tc4tweak.modules.FlushableCache;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 

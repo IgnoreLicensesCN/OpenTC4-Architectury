@@ -1,7 +1,7 @@
 package thaumcraft.common.researches;
 
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 

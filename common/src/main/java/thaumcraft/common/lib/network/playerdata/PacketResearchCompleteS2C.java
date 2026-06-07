@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -21,9 +21,8 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     public static MessageType messageType;
 
-    private ResearchItemResourceLocation key;
+    private final ResearchItemResourceLocation key;
 
-    public PacketResearchCompleteS2C(){}
     public PacketResearchCompleteS2C(ResearchItemResourceLocation key) {
         this.key = key;
     }
@@ -50,12 +49,15 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer(); // 客户端玩家
+        Player player = context.getPlayer();
 
-        Thaumcraft.researchManager.completeResearch(player, key);
+        //TODO:Rewrite highlight logic
 
-        // clue
         var research = ResearchItem.getResearch(key);
+        if (research != null) {
+            research.completeResearch(player);
+        }
+        // clue
         if (!research.isVirtual()) {
             ClientTickEventsFML.researchPopup.queueResearchInformation(ResearchItem.getResearch(key));
             GuiResearchBrowser.highlightedResearch.add(key);

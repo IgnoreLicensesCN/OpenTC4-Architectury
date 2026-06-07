@@ -1,11 +1,13 @@
-package thaumcraft.api.research.render;
+package thaumcraft.api.research.client.render;
 
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 
 //sometimes we want research appear in many places like:
 //infusion in TC4's own category,and after it unlocked,
 //i want it appear in mine,like ThaumicBasics?
 //behavior here
+@RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
 public record ShownInfoInResearchCategory(
         ResearchCategoryResourceLocation category,
         int column, int row, ShownIconBackground background, ShownIconForeground foreground

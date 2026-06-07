@@ -1,0 +1,64 @@
+package thaumcraft.common.researches;
+
+import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.ApiStatus;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
+import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
+import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+
+//i have to say this one is misunderstanding.
+//It just like "Oh i need some string to record something"
+// not all research need this,I can just say "you've picked PrimePearl >= 1(MC statics or whatever)"(or i may lookup items scanned for resource location) so research is unlocked
+// (or some advancement?like twilight forest)
+//
+public class ResearchAndScannedInfo {
+    @ApiStatus.Internal
+    public final Collection<ResearchItemResourceLocation> completedResearches = ConcurrentHashMap.newKeySet();
+    @ApiStatus.Internal
+    public final Collection<ClueResourceLocation> completedClues = ConcurrentHashMap.newKeySet();
+
+    public boolean hasResearchID(ResearchItemResourceLocation researchID){
+        return completedResearches.contains(researchID);
+    }
+    public void addResearchID(ResearchItemResourceLocation researchID){
+        completedResearches.add(researchID);
+    }
+    public boolean hasClue(ClueResourceLocation clueID){
+        return completedClues.contains(clueID);
+    }
+    public void addClue(ClueResourceLocation clueID){
+        completedClues.add(clueID);
+    }
+
+
+    public static ResearchAndScannedInfo getFromPlayer(Player player){
+        return ((PlayerResearchAndScannedInfoAccessor)player).opentc4$getResearchAndScannedInfo();
+    }
+    public static void setForPlayer(Player player, ResearchAndScannedInfo researchAndScannedInfo){
+        ((PlayerResearchAndScannedInfoAccessor)player).opentc4$setResearchAndScannedInfo(researchAndScannedInfo);
+    }
+    public void syncAllSendPacket(ServerPlayer player){
+        syncResearchSendPacket(player);
+        syncClueSendPacket(player);
+    }
+    public void syncResearchSendPacket(ServerPlayer player){
+        new PacketSyncResearchCompletedS2C(this).sendTo(player);
+    }
+    public void syncClueSendPacket(ServerPlayer player){
+        new PacketSyncResearchCompletedS2C(this).sendTo(player);
+    }
+    public void syncResearchClientSide(Collection<ResearchItemResourceLocation> researchIDs){
+        this.completedResearches.clear();
+        this.completedResearches.addAll(researchIDs);
+    }
+    public void syncClueClientSide(Collection<ClueResourceLocation> clueIDs){
+        this.completedClues.clear();
+        this.completedClues.addAll(clueIDs);
+    }
+
+}

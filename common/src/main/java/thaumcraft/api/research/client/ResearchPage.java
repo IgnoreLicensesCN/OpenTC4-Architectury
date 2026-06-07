@@ -1,4 +1,4 @@
-package thaumcraft.api.research;
+package thaumcraft.api.research.client;
 
 
 import net.minecraft.network.chat.Component;

@@ -56,7 +56,7 @@ public class ThaumcraftItems {
     public static final KnowledgeFragmentItem KNOWLEDGE_FRAGMENT = Registry.SUPPLIER_KNOWLEDGE_FRAGMENT.get();//itemResource:9
     public static final Item MIRRORED_GLASS = Registry.SUPPLIER_MIRRORED_GLASS.get();//itemResource:10
     public static final Item TAINTED_GOO = Registry.SUPPLIER_TAINTED_GOO.get();//itemResource:11
-    public static final Item TAINT_TENDRIL = Registry.SUPPLIER_TAINT_TENDRIL.get();//itemResource:12
+    public static final Item TAINT_TENDRIL = Registry.SUPPLIER_TAINT_TENDRIL.get();//itemResource:12 //TODO:new class
     public static final Item JAR_LABEL = Registry.SUPPLIER_JAR_LABEL.get();//itemResource:13
     public static final Item SALIS_MUNDUS = Registry.SUPPLIER_SALIS_MUNDUS.get();//itemResource:14
     public static final PrimalCharmItem PRIMAL_CHARM = Registry.SUPPLIER_PRIMAL_CHARM.get();//itemResource:15

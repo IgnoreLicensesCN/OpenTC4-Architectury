@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.items.misc.ItemResearchNotes;
+import thaumcraft.common.items.junkbox.ItemResearchNotes;
 import thaumcraft.common.tiles.junkbox.TileResearchTable;
 
 public class ContainerResearchTable extends Container {

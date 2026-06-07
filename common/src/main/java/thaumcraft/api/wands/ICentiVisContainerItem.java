@@ -13,6 +13,8 @@ import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
+//Oh I forgot that (Thaumic Horizon)crystal disposable wand.
+//In that case you may want to make capacity returns centivis owning.
 public interface ICentiVisContainerItem<Asp extends Aspect> {
     int CENTIVIS_MULTIPLIER = 100;
     boolean tryCastAspectClass(Class<? extends Aspect> aspClass);

@@ -1,8 +1,11 @@
 package thaumcraft.common.items.consumable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,11 +18,13 @@ import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
+import thaumcraft.api.research.interfaces.IResearchableResearch;
 import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
+import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.research.HexEntry;
 import thaumcraft.common.lib.research.HexType;
 import thaumcraft.common.lib.research.ResearchManager;
@@ -225,4 +230,32 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
 
     }
 
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        var stack = player.getItemInHand(interactionHand);
+        if (!level.isClientSide && !stack.isEmpty()){
+            var noteData = getResearchNoteData(stack);
+            if (noteData == null) {return InteractionResultHolder.pass(stack);}
+            if (!noteData.completed){return InteractionResultHolder.pass(stack);}
+            var researchID = noteData.key;
+            var research =  ResearchItem.getResearch(researchID);
+            if (research == null) return InteractionResultHolder.pass(stack);
+            if (research.isPlayerCompletedResearch(player)){return InteractionResultHolder.pass(stack);}
+            if (research instanceof IResearchableResearch researchable) {
+                if (researchable.canPlayerResearch(player)){
+                    research.completeResearch(player);
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        new PacketResearchCompleteS2C(researchID).sendTo(serverPlayer);
+                    }
+                    stack.shrink(1);
+                    level.playSound(player,player.blockPosition(),ThaumcraftSounds.LEARN, SoundSource.PLAYERS, 0.75F, 1.0F);
+                } else {
+                    player.displayClientMessage(Component.translatable("tc.researcherror"),true);
+                }
+            }
+            //TODO:[maybe wont finished]RandomHiddenResearchNoteItem if someone likes,but "hidden" is a client side logic now
+        }
+        return InteractionResultHolder.sidedSuccess(stack,level.isClientSide());
+    }
+    //TODO:Description(Research description api go first,and then get from research description api(we need the same one in the book)
 }

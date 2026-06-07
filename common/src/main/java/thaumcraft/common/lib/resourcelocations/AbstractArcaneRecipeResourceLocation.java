@@ -8,7 +8,11 @@ import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AbstractArcaneRecipeResourceLocation extends AbstractRecipeResourceLocation<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> {
+public class AbstractArcaneRecipeResourceLocation
+        extends AbstractRecipeResourceLocation<
+        AbstractArcaneRecipe,
+        AbstractArcaneRecipeResourceLocation
+        > {
     public static final AbstractArcaneRecipeResourceLocation EMPTY = new AbstractArcaneRecipeResourceLocation("","");
     public static final VariedResourceLocationBuilder<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> BUILDER = AbstractArcaneRecipeResourceLocation::of;
     public static final VariedResourceLocationParser<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> PARSER = AbstractArcaneRecipeResourceLocation::of;

@@ -1,6 +1,6 @@
-package thaumcraft.api.research.render.impls;
+package thaumcraft.api.research.client.render.impls;
 
-import thaumcraft.api.research.render.ShownIconBackground;
+import thaumcraft.api.research.client.render.ShownIconBackground;
 
 public class ShownIconsBackground {
     public static final ShownIconBackground DEFAULT = new ShownIconBackground();

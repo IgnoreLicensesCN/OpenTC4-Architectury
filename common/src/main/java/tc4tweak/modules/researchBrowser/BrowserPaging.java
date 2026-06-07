@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import tc4tweak.ClientUtils;
 import tc4tweak.CommonUtils;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.lib.research.ResearchManager;

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 
 import java.lang.ref.Reference;
 import java.lang.reflect.Field;

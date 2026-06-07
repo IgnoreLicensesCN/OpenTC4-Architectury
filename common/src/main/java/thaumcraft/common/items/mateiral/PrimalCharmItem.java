@@ -21,6 +21,7 @@ import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import java.util.List;
 import java.util.Random;
 
+import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 import static thaumcraft.common.researches.ThaumcraftResearches.FOCUS_PRIMAL;
 
 public class PrimalCharmItem extends Item {
@@ -30,6 +31,7 @@ public class PrimalCharmItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag){
+        super.appendHoverText(stack, world, tooltip, flag);
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
@@ -57,7 +59,7 @@ public class PrimalCharmItem extends Item {
                     case 4 -> Aspects.ORDER;
                     case 5 -> Aspects.ENTROPY;
                     default -> null;
-                };
+                };//but dont add other primal aspect(if there is)here
 
                 if (aspect != null) {
                     EntityAspectOrb orb = new EntityAspectOrb(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
@@ -71,7 +73,8 @@ public class PrimalCharmItem extends Item {
                 var clueLoc = FOCUS_PRIMAL.key.convertToClueResLoc();
                 player.sendSystemMessage(
                         Component.translatable("tc.primalcharm.trigger")
-                                .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)
+                                .withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC),
+                        true //maybe cool?
                 );
                 new PacketClueCompleteS2C(clueLoc).sendTo(player);
                 FOCUS_PRIMAL.giveClueToPlayer(player);

@@ -8,11 +8,13 @@ import thaumcraft.api.research.ResearchItem;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Deprecated(forRemoval = true)
-public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, ClueResourceLocation> {
+//only for research needs this.
+//store some string and tell both side "Oh we have something."
+//you may need some i-ma-gi-na-tion to use this.
+public class ClueResourceLocation extends VariedResourceLocation<String, ClueResourceLocation> {
     public static final ClueResourceLocation EMPTY = new ClueResourceLocation("","");
-    public static final VariedResourceLocationBuilder<ResearchItem, ClueResourceLocation> BUILDER = ClueResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, ClueResourceLocation> PARSER = ClueResourceLocation::of;
+    public static final VariedResourceLocationBuilder<String, ClueResourceLocation> BUILDER = ClueResourceLocation::of;
+    public static final VariedResourceLocationParser<String, ClueResourceLocation> PARSER = ClueResourceLocation::of;
 
 
     protected ClueResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -53,10 +55,6 @@ public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, C
         }
         return of(split[0],split[1]);
     }
-    public ResearchItemResourceLocation convertToResearchItemResLoc(){
-        return ResearchItemResourceLocation.of(this.getNamespace(),this.getPath());
-    }
-
     @Nullable
     public static ClueResourceLocation tryParse(String string) {
         try {

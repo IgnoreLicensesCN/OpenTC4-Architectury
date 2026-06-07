@@ -1,10 +1,11 @@
-package thaumcraft.api.research;
+package thaumcraft.api.research.client;
 
 import com.linearity.opentc4.OpenTC4;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IRenderableResearch;
-import thaumcraft.api.research.render.ShownInfoInResearchCategory;
+import thaumcraft.api.research.client.render.ShownInfoInResearchCategory;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
