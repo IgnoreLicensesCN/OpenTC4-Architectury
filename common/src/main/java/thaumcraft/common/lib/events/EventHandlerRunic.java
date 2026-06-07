@@ -31,7 +31,7 @@ import java.util.Map;
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
 
 //TODO
-@Deprecated
+@Deprecated(forRemoval = true)
 public class EventHandlerRunic {
    //TODO:toInt concurrent map
    public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();

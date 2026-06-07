@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntBinaryOperator;
 import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
-//TODO: Check for Object2IntMap change
+
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
 //2026.Feb.4 now we have AspectList<PrimalAspect>

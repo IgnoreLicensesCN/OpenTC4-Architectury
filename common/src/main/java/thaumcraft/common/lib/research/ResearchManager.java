@@ -48,6 +48,7 @@ import static thaumcraft.common.ThaumcraftSounds.LEARN;
 import static thaumcraft.common.lib.events.EventHandlerEntity.getThaumcraftPlayersDirectory;
 
 @ApiStatus.Internal
+@Deprecated(forRemoval = true)
 public class ResearchManager {
     static ArrayList<ResearchItem> allHiddenResearch = null;
     static ArrayList<ResearchItem> allValidResearch = null;
@@ -552,38 +553,6 @@ public class ResearchManager {
                 loadAspectNBT(data, player);
                 loadScannedNBT(data, player);
 
-
-                if (THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR.compoundTagHasKey(data)) {
-                    int shielding = THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR.readIntFromCompoundTag(data);
-                    EventHandlerRunic.runicCharge.put(player, shielding);
-                    EventHandlerRunic.isDirty = true;
-                }
-
-                if (THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.compoundTagHasKey(data)) {
-                    int warp = THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.readIntFromCompoundTag(data);
-                    if (legacy && !THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.compoundTagHasKey(data)) {
-                        warp /= 2;
-                        Thaumcraft.playerKnowledge.setWarpSticky(player, warp);
-                    }
-                    Thaumcraft.playerKnowledge.setWarpPerm(player, warp);
-                }
-
-                if (THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.compoundTagHasKey(data)) {
-                    int warpTemp = THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.readIntFromCompoundTag(data);
-                    Thaumcraft.playerKnowledge.setWarpTemp(player, warpTemp);
-                }
-
-                if (THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.compoundTagHasKey(data)) {
-                    int warpSticky = THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.readIntFromCompoundTag(data);
-                    Thaumcraft.playerKnowledge.setWarpSticky(player, warpSticky);
-                }
-
-                if (THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.compoundTagHasKey(data)) {
-                    int warpCounter = THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.readIntFromCompoundTag(data);
-                    Thaumcraft.playerKnowledge.setWarpCounter(player, warpCounter);
-                } else {
-                    Thaumcraft.playerKnowledge.setWarpCounter(player, 0);
-                }
 
             } else {
                 for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {

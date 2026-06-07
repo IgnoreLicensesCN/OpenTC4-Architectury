@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ByteTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 

@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.playerdata;
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.Minecraft;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -33,7 +34,10 @@ public class PacketSyncWarpS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        WarpInfo.getFromPlayer(context.getPlayer()).setTo(data);
+        var player = Minecraft.getInstance().player;
+        if (player != null) {
+            WarpInfo.setForPlayer(player,data);
+        }
     }
 
     @Override

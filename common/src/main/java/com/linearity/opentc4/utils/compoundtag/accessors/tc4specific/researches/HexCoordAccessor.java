@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.lib.utils.HexCoord;

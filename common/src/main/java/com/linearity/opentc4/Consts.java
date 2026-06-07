@@ -16,6 +16,10 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeIn
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableSetTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -44,25 +48,7 @@ public class Consts {
     }
 
     public static class ThaumcraftPlayerCompoundTagAccessors {
-        private static final String WARP_PERM = "Thaumcraft.eldritch";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR =
-                new IntTagAccessor(WARP_PERM);
 
-        private static final String WARP_TEMP = "Thaumcraft.eldritch.temp";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR =
-                new IntTagAccessor(WARP_TEMP);
-
-        private static final String WARP_STICKY = "Thaumcraft.eldritch.sticky";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR =
-                new IntTagAccessor(WARP_STICKY);
-
-        private static final String WARP_COUNTER = "Thaumcraft.eldritch.counter";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR =
-                new IntTagAccessor(WARP_COUNTER);
-
-        private static final String SHIELDING = "Thaumcraft.shielding";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR =
-                new IntTagAccessor(SHIELDING);
         public static final ResearchItemResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
                 new ResearchItemResourceLocationTagAccessor("research");
 

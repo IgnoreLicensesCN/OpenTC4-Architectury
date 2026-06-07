@@ -8,6 +8,7 @@ import thaumcraft.api.research.ResearchItem;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated(forRemoval = true)
 public class ClueResourceLocation extends VariedResourceLocation<ResearchItem, ClueResourceLocation> {
     public static final ClueResourceLocation EMPTY = new ClueResourceLocation("","");
     public static final VariedResourceLocationBuilder<ResearchItem, ClueResourceLocation> BUILDER = ClueResourceLocation::of;

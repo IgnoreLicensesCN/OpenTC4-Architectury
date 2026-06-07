@@ -1,17 +1,17 @@
-package com.linearity.opentc4.utils.compoundtag.accessors.utility;
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility.collection;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
+public class NullFilteredModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
     protected final ListTagAccessor listAccessor;
     protected final CompoundTagAccessor<T> listItemAccessor;
-    public ModifiableListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
+    public NullFilteredModifiableListAccessor(String tagKey, CompoundTagAccessor<T> listItemAccessor) {
         super(tagKey);
         this.listItemAccessor = listItemAccessor;
         this.listAccessor = new ListTagAccessor(tagKey + "_list");
@@ -24,24 +24,35 @@ public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
         List<T> list = new ArrayList<>(len);
         for (int i = 0; i < len; i++) {
             var compound = listTag.getCompound(i);
-            list.add(listItemAccessor.readFromCompoundTag(compound));
+            var gotItem = listItemAccessor.readFromCompoundTag(compound);
+            if (gotItem == null){
+                continue;
+            }
+            list.add(gotItem);
         }
         return list;
-    }
-
-    public void readFromCompoundTagInto(CompoundTag tag, @Modifiable List<T> list) {
-        var listTag = listAccessor.readFromCompoundTag(tag);
-        var len = listTag.size();
-        for (int i = 0; i < len; i++) {
-            var compound = listTag.getCompound(i);
-            list.add(listItemAccessor.readFromCompoundTag(compound));
-        }
     }
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, List<T> value) {
         var listTag = new ListTag();
         for (T t : value) {
+            if (t == null) {
+                continue;
+            }
+            var compound = new CompoundTag();
+            listItemAccessor.writeToCompoundTag(compound,t);
+            listTag.add(compound);
+        }
+        listAccessor.writeToCompoundTag(tag,listTag);
+    }
+
+    public void writeToCompoundTag(CompoundTag tag, Collection<T> value) {
+        var listTag = new ListTag();
+        for (T t : value) {
+            if (t == null) {
+                continue;
+            }
             var compound = new CompoundTag();
             listItemAccessor.writeToCompoundTag(compound,t);
             listTag.add(compound);

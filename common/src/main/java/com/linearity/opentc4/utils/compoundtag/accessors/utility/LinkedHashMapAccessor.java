@@ -1,13 +1,11 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.utility;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 //'d better not used if k or v is basic type
 public class LinkedHashMapAccessor<K,V> extends CompoundTagAccessor<LinkedHashMap<K,V>> {

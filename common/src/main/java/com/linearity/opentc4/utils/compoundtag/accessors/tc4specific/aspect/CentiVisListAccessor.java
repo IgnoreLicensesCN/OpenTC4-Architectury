@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;

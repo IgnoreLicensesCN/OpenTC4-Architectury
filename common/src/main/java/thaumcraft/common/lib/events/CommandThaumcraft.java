@@ -7,7 +7,6 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.aspects.Aspect;
@@ -20,11 +19,7 @@ import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.PacketSyncResearchS2C;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
-import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.Objects;
@@ -325,13 +320,13 @@ public class CommandThaumcraft{
        var warpInfo = WarpInfo.getFromPlayer(player);
        if (type.equalsIgnoreCase("PERM")) {
            warpInfo.setPermWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        } else if (type.equalsIgnoreCase("TEMP")) {
            warpInfo.setTempWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        } else {
            warpInfo.setStickyWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i),false);
@@ -342,13 +337,13 @@ public class CommandThaumcraft{
        var warpInfo = WarpInfo.getFromPlayer(player);
        if (type.equalsIgnoreCase("PERM")) {
            warpInfo.addPermWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        } else if (type.equalsIgnoreCase("TEMP")) {
            warpInfo.addTempWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        } else {
            warpInfo.addStickyWarp(i);
-           warpInfo.syncTo(player);
+           warpInfo.syncSendPacket(player);
        }
 
       player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."),false);

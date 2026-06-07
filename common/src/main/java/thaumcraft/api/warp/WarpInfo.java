@@ -59,20 +59,13 @@ public class WarpInfo {
         stickyWarp += amount;
     }
 
-    public void setTo(WarpInfo copyFrom){
-        this.tempWarp = copyFrom.tempWarp;
-        this.permWarp = copyFrom.permWarp;
-        this.stickyWarp = copyFrom.stickyWarp;
-        this.warpEventCounter = copyFrom.warpEventCounter;
-    }
-
     public static WarpInfo getFromPlayer(Player player){
         return ((PlayerWarpInfoMixinAccessor)player).opentc4$getWarpInfo();
     }
     public static void setForPlayer(Player player, WarpInfo info){
-        getFromPlayer(player).setTo(info);
+        ((PlayerWarpInfoMixinAccessor)player).opentc4$setWarpInfo(info);
     }
-    public void syncTo(ServerPlayer player){
+    public void syncSendPacket(ServerPlayer player){
         new PacketSyncWarpS2C(getFromPlayer(player)).sendTo(player);
     }
 }

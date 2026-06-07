@@ -1,10 +1,9 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
 
 public class RunicShieldTypeResourceLocationTagAccessor extends CompoundTagAccessor<RunicShieldTypeResourceLocation> {

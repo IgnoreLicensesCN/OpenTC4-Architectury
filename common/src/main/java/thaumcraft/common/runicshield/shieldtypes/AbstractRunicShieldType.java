@@ -1,7 +1,7 @@
 package thaumcraft.common.runicshield.shieldtypes;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.ITagAccessorOwner;
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;

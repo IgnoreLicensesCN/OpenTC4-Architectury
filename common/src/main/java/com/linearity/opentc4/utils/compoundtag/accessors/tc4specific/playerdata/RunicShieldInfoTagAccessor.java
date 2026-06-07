@@ -1,11 +1,11 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.playerdata;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.RunicShieldTypeResourceLocationTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableMapValueAccessorFromKeyTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.Object2IntLinkedOpenHashMapAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableMapValueAccessorFromKeyTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.Object2IntLinkedOpenHashMapAccessor;
 import it.unimi.dsi.fastutil.Function;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.nbt.CompoundTag;

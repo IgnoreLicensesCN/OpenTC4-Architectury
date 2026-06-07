@@ -1,5 +1,6 @@
 package com.linearity.opentc4.mixin;
 
+import com.linearity.opentc4.annotations.StoleFrom;
 import com.linearity.opentc4.playerdata.AdditionalPlayerDataManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,10 +14,10 @@ import thaumcraft.common.lib.events.RunicShieldHandler;
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin {
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void opentc4$beforeServerPlayerTick(CallbackInfo ci) {
-        ServerPlayer player = (ServerPlayer)(Object)this;
-    }
+//    @Inject(method = "tick", at = @At("HEAD"))
+//    private void opentc4$beforeServerPlayerTick(CallbackInfo ci) {
+//        ServerPlayer player = (ServerPlayer)(Object)this;
+//    }
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void opentc4$afterServerPlayerTick(CallbackInfo ci) {
@@ -29,19 +30,21 @@ public class ServerPlayerMixin {
         RunicShieldHandler.updateRunicShieldForPlayer(player);
     }
 
+    @StoleFrom("architectury")
     @Inject(method = "restoreFrom", at = @At("RETURN"))
     private void opentc4$restoreFrom(ServerPlayer serverPlayer, boolean cloningForTeleport, CallbackInfo ci) {
         var toPlayer = (ServerPlayer) (Object) this;
-        AdditionalPlayerDataManager.syncDataFromBeingClonedToCloning(
+        AdditionalPlayerDataManager.syncDataFromBeingClonedToCloningServer(
                 serverPlayer,toPlayer,cloningForTeleport
         );
     }
 
-
+    @StoleFrom("architectury")
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     private void opentc4$addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         AdditionalPlayerDataManager.writePlayerDataIntoTag((ServerPlayer)(Object)this,tag);
     }
+    @StoleFrom("architectury")
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
     private void opentc4$readAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         AdditionalPlayerDataManager.readPlayerDataFromTag((ServerPlayer)(Object)this,tag);

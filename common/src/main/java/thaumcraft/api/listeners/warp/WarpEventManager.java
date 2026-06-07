@@ -104,7 +104,7 @@ public class WarpEventManager {
                 }
             }
             if (player instanceof ServerPlayer serverPlayer) {
-                WarpInfo.getFromPlayer(player).syncTo(serverPlayer);
+                WarpInfo.getFromPlayer(player).syncSendPacket(serverPlayer);
             }
         }
     }

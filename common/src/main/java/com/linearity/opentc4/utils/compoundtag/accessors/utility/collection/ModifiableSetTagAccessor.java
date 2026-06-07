@@ -1,9 +1,9 @@
-package com.linearity.opentc4.utils.compoundtag.accessors.utility;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility.collection;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +22,12 @@ public class ModifiableSetTagAccessor<T> extends CompoundTagAccessor<Set<T>> {
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, Set<T> value) {
-        accessorInternal.writeToCompoundTag(tag,new ArrayList<>(value));
+        accessorInternal.writeToCompoundTag(tag,value);
     }
 
+    public void writeToCompoundTag(CompoundTag tag, Collection<T> value) {
+        accessorInternal.writeToCompoundTag(tag,value);
+    }
     @Override
     public boolean compoundTagHasKey(CompoundTag tag) {
         return accessorInternal.compoundTagHasKey(tag);

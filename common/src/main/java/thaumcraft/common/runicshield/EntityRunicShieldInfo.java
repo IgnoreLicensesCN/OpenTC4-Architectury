@@ -96,16 +96,6 @@ public class EntityRunicShieldInfo {
         //but if you store that entity instance here i will kick your ass(memory leak).
     }
 
-    public void setTo(EntityRunicShieldInfo info) {
-        this.rechargeDelay = info.rechargeDelay;
-        this.shieldCharged.clear();
-        this.shieldCapacity.clear();
-        this.runicShieldAdditionalInfo.clear();
-        this.shieldCharged.putAll(info.shieldCharged);
-        this.shieldCapacity.putAll(info.shieldCapacity);
-        this.runicShieldAdditionalInfo.putAll(info.runicShieldAdditionalInfo);
-    }
-
     public boolean shouldSyncCharge = false;
 
     public void syncCapacitySendPacket(ServerPlayer player) {
@@ -135,7 +125,7 @@ public class EntityRunicShieldInfo {
     }
 
     public static void setForPlayer(Player player, EntityRunicShieldInfo info) {
-        getFromPlayer(player).setTo(info);
+        ((PlayerRunicShieldInfoMixinAccessor) player).opentc4$setPlayerRunicShieldInfo(info);
     }
 
     public void randomCharge(int amountToCharge, RandomSource random) {

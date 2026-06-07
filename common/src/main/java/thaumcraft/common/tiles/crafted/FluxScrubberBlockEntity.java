@@ -119,7 +119,7 @@ implements IEssentiaTransportOutBlockEntity {
             int yz = easyLCGState % ((distance*2 + 1)*(distance*2 + 1));
             int y = yz /((distance*2 + 1));
             int z = yz %((distance*2 + 1));
-            var posToCheck = new BlockPos(x,y,z);
+            var posToCheck = new BlockPos(x,y,z).offset(getBlockPos());
             if (this.isFlux(posToCheck)) {
                 this.centiVisAmount -= 5;
 
@@ -134,7 +134,7 @@ implements IEssentiaTransportOutBlockEntity {
                 }
 
                 if (this.level instanceof ServerLevel serverLevel){
-                    new PacketFXBlockSparkleS2C(x, y, z, 14483711).sendToAllAround(serverLevel,posToCheck,32*32);
+                    new PacketFXBlockSparkleS2C(x, y, z, 0xdd00ff).sendToAllAround(serverLevel,posToCheck,32*32);
                 }
                 ++this.progressForNextEssentiaGeneration;
                 markDirtyAndUpdateSelf();

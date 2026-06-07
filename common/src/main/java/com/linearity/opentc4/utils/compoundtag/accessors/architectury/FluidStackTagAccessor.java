@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.architectury;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.nbt.CompoundTag;

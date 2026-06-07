@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.fx;
 
+import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -17,7 +18,7 @@ public class PacketFXBlockSparkleS2C extends ThaumcraftBaseS2CMessage {
    private final int y;
    private final int z;
    private final int color;
-   public PacketFXBlockSparkleS2C(int x, int y, int z, int color) {
+   public PacketFXBlockSparkleS2C(int x, int y, int z,@RGBColor int color) {
       this.x = x;
       this.y = y;
       this.z = z;

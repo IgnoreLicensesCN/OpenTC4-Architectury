@@ -1,6 +1,6 @@
 package thaumcraft.common.runicshield.shieldtypes;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
 

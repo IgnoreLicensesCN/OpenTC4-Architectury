@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.compoundtag.accessors.utility;
+package com.linearity.opentc4.utils.compoundtag.accessors.utility.collection;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.StringTagAccessor;
 

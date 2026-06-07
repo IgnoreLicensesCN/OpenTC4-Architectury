@@ -11,7 +11,10 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Deprecated(forRemoval = true,since = "we can make things like this instances inside Player instance and save them with player data now")
+@Deprecated(forRemoval = true,since =
+        "we can make things like this instances inside Player instance" +
+                " and save them with player data now"
+)
 public class PlayerKnowledge {
    public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
    public final Map<String, Set<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();

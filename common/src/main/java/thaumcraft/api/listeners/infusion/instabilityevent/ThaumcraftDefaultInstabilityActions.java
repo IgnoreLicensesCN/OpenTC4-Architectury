@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
@@ -141,9 +141,9 @@ public class ThaumcraftDefaultInstabilityActions {
     public static void infusionWarpPlayer(InfusionInstabilityEventListener.InfusionInstabilityEventContext ctx) {
         getLivingNear(ctx.level,ctx.matrixPos,1, EntityTypeTests.PLAYER_TEST).forEach(player -> {
             if (ctx.level.random.nextInt(4) == 0) {
-                Thaumcraft.addStickyWarpToPlayer(player, 1);
+                WarpInfo.getFromPlayer(player).addStickyWarp(1);
             } else {
-                Thaumcraft.addWarpToPlayer(player, 1 + ctx.level.random.nextInt(5), true);
+                WarpInfo.getFromPlayer(player).addTempWarp(1 + ctx.level.random.nextInt(5));
             }
         });
     }
