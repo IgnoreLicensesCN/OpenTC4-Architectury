@@ -1,17 +1,15 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
@@ -21,7 +19,6 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
     public static final CompoundAspect EMPTY = new CompoundAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_compound"),
             0x000000,
-            new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
             1,
             true
     ) {
@@ -36,11 +33,20 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
         }
     };
     //only for empty
-    private CompoundAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
-        super(aspectKey,color,image,blend);
+    private CompoundAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, int blend, boolean noRegisterArg) {
+        super(aspectKey,color,blend,noRegisterArg);
         this.components = null;
     }
     public final @NotNull("unless it's empty") CompoundAspectComponent components;
+
+    public static @NotNull Aspect getCombinationResult(Aspect aspect1, Aspect aspect2) {
+        if (aspect1.isEmpty() || aspect2.isEmpty()) {
+            return Aspects.EMPTY;
+        }
+        var result = COMPOUND_ASPECT_RECIPES.get(CompoundAspectComponent.of(aspect1, aspect2));
+        return result == null ?Aspects.EMPTY : result;
+    }
+
     private void verifyDuplicate(CompoundAspect registeringAspect){
         var duplicatedIfNotNull = COMPOUND_ASPECT_RECIPES.getOrDefault(components,null);
         if (duplicatedIfNotNull != null) {
@@ -52,8 +58,8 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
         }
         COMPOUND_ASPECT_RECIPES.put(components,this);
     }
-    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, @NotNull CompoundAspectComponent components, ResourceLocation image, int blend) {
-        super(tag,color,image,blend);
+    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, @NotNull CompoundAspectComponent components, int blend) {
+        super(tag,color,blend);
         this.components = components;
         COMPOUND_ASPECTS.put(tag,this);
         verifyDuplicate(this);
@@ -63,15 +69,9 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
      * Shortcut constructor I use for the default aspects - you shouldn't be using this.
      */
     public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, CompoundAspectComponent components) {
-        this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),1);
+        this(tag,color,components,1);
     }
 
-    /**
-     * Shortcut constructor I use for the default aspects - you shouldn't be using this.
-     */
-    public CompoundAspect(AspectResourceLocation tag, @RGBColor int color, CompoundAspectComponent components, int blend) {
-        this(tag,color,components,new ResourceLocation(tag.getNamespace(),"textures/aspects/"+tag.getPath()+".png"),blend);
-    }
 
     public boolean isCombinedFrom(Aspect a, Aspect b) {
         return components.isCombinedFrom(a,b);
@@ -83,22 +83,9 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
                 "aspectKey=" + aspectKey +
                 ", components=" + components +
                 ", color=" + color +
-                ", image=" + image +
                 ", blend=" + blend +
                 '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof CompoundAspect that)) return false;
-        return Objects.equals(components, that.components);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(components);
-    }
-
     private AspectList<PrimalAspect> reducedToPrimal = null;
     private AspectList<PrimalAspect> mergeReducedToPrimal = null;
     public @Unmodifiable @NotNull AspectList<PrimalAspect> reduceToPrimal(boolean merge){

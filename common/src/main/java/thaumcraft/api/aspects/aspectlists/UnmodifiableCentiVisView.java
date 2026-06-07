@@ -2,6 +2,7 @@ package thaumcraft.api.aspects.aspectlists;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,6 @@ import thaumcraft.api.aspects.PrimalAspect;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.ObjIntConsumer;
 
 public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnmodifiableDefault<A>,CentiVisList<A> {
     public static final UnmodifiableCentiVisView<Aspect> EMPTY = new UnmodifiableCentiVisView<>(UnmodifiableCentiVisList.EMPTY);
@@ -55,7 +55,7 @@ public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnm
     }
 
     @Override
-    public void forEach(ObjIntConsumer<A> action) {
+    public void forEach(ObjectIntBiConsumer<A> action) {
         this.viewingList.forEach(action);
     }
 
@@ -65,7 +65,7 @@ public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnm
     }
 
     @Override
-    public void acceptForIndex(int index, ObjIntConsumer<A> action) {
+    public void acceptForIndex(int index, ObjectIntBiConsumer<A> action) {
         this.viewingList.acceptForIndex(index,action);
     }
 
@@ -102,11 +102,6 @@ public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnm
     @Override
     public int size() {
         return this.viewingList.size();
-    }
-
-    @Override
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        //TODO:Remove
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagByte;
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.lib.events.EventHandlerRunic;
 

@@ -149,7 +149,7 @@ public class ResearchNoteData {
 
             if (!isConnected(start, end, hexGrid, visited)) {
                 // 找最短路径恢复
-                List<HexCoord> path = findPathAllowRemoved(start, end, hexGrid);
+                List<HexCoord> path = findPathAllowRemoved(start, end);
                 for (HexCoord key : path) {
                     if (!hexGrid.containsKey(key)) {
                         hexGrid.put(key, HexEntry.EMPTY);
@@ -189,8 +189,7 @@ public class ResearchNoteData {
     // 找到 start -> end 的路径，允许穿过被移除 hex
     //author:ChatGPT
     private static List<HexCoord> findPathAllowRemoved(
-            HexCoord start, HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid
+            HexCoord start, HexCoord end
     ) {
         Map<HexCoord, HexCoord> cameFromMap = new HashMap<>();
         Queue<HexCoord> queue = new ArrayDeque<>();

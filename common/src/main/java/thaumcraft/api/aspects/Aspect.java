@@ -1,53 +1,56 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 public abstract class Aspect {
 
 	public final @NotNull AspectResourceLocation aspectKey;
 	public final @RGBColor int color;
-	public final @NotNull ResourceLocation image;
 	public final int blend;
+	private final int hash;
 
 	/**
 	 * Use this constructor to register your own aspects.
 	 * @param aspectKey the key that will be used to reference this aspect, as well as its latin display name
 	 * @param color color to display the tag in
-	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
-	public Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
+	public Aspect(
+			@NotNull AspectResourceLocation aspectKey,
+			@RGBColor int color,
+			int blend
+	) {
 		if (Aspects.ALL_ASPECTS.containsKey(aspectKey)) throw new IllegalArgumentException(aspectKey +" already registered!");
 		this.aspectKey = aspectKey;
 		this.color = color;
-		this.image = image;
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(aspectKey, this);
+		this.hash = Aspects.ALL_ASPECTS.size();//all aspect with same key should be same
 	}
 	@SuppressWarnings("unused")
-	private Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
+	//CONSTRUCTOR FOR EMPTY
+    Aspect(
+            @NotNull AspectResourceLocation aspectKey,
+            @RGBColor int color,
+            int blend,
+            boolean noRegisterArg
+    ) {
 		this.aspectKey = aspectKey;
 		this.color = color;
-		this.image = image;
 		this.blend = blend;
+		this.hash = 0;
 	}
 
 	public static final Aspect EMPTY = new Aspect(
 			AspectResourceLocation.of(Thaumcraft.MOD_ID,""),
 			0x000000,
-			new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
 			1,
 			true) {
 		@Override
@@ -60,19 +63,9 @@ public abstract class Aspect {
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color) {
-		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),1);
-	}
-	
-	/**
-	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
-	 */
-	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color, int blend) {
-		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
+		this(aspectKey,color,1);
 	}
 
-
-
-	
 	public @RGBColor int getColor() {
 		return color;
 	}
@@ -107,7 +100,6 @@ public abstract class Aspect {
 		return "Aspect{" +
 				"aspectKey=" + aspectKey +
 				", color=" + color +
-				", image=" + image +
 				", blend=" + blend +
 				'}';
 	}
@@ -115,16 +107,15 @@ public abstract class Aspect {
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Aspect aspect)) return false;
-        return color == aspect.color && blend == aspect.blend && Objects.equals(
-				aspectKey, aspect.aspectKey) && Objects.equals(image, aspect.image);
+        return this == o;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(aspectKey, color, image, blend);
+		return hash;
 	}
 
 	public boolean hasPlayerDiscovered(@NotNull Player player) {
-		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, this);
+		return ResearchAndScannedInfo.getFromPlayer(player).hasResearchAspect(this);
 	}
 }

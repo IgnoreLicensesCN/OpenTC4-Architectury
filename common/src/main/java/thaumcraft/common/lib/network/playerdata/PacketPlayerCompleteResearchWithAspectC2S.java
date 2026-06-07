@@ -8,8 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
     public static MessageType messageType;
@@ -46,22 +46,21 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (!(research instanceof IAspectUnlockableResearch aspectUnlockable)){return;}
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(player)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
-        var playerOwningAspect = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
         if (aspectsCost.forEachWithBreak(
-                (aspectTypeRequired,aspectsAmountCost) -> playerOwningAspect.getOrDefault(aspectTypeRequired, 0) < aspectsAmountCost
+                (aspectTypeRequired,aspectsAmountCost) -> info.getResearchAspect(aspectTypeRequired) < aspectsAmountCost
         )){
             return;
         }
         aspectsCost.forEach((aspectTypeRequired,aspectsAmountCost) -> {
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspectTypeRequired, (short) (-aspectsAmountCost));
-            ResearchManager.scheduleSave(player);
+            info.addResearchAspect(aspectTypeRequired, (short) (-aspectsAmountCost));
             new PacketAspectPoolS2C(
                     aspectTypeRequired.aspectKey,
                     (short) (-aspectsAmountCost),
-                    Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspectTypeRequired))
+                    info.getResearchAspect(aspectTypeRequired))
                     .sendTo(player);
         });
         new PacketResearchCompleteS2C(research.key).sendTo(player);
-        Thaumcraft.researchManager.completeResearch(player, research.key);
+        research.completeResearch(player);
     }
 }

@@ -6,7 +6,6 @@ import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
 
 public class PacketSyncItemAspectsC2S extends BaseC2SMessage {
     public static MessageType messageType;

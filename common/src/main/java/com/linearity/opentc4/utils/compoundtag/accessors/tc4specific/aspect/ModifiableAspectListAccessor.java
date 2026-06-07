@@ -8,13 +8,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 
-public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> {
+public class ModifiableAspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> {
     protected final ListTagAccessor listTagAccessorInternal;
     protected final CompoundTagAccessor<Aspect> keyAccessor;
     protected final IntTagAccessor valueAccessor;
-    public AspectListAccessor(String tagKey) {
+    public ModifiableAspectListAccessor(String tagKey) {
         super(tagKey);
         this.keyAccessor = new AspectAccessor(tagKey + "_aspect");
         this.valueAccessor = new IntTagAccessor(tagKey + "_amount");
@@ -34,7 +34,9 @@ public class AspectListAccessor extends CompoundTagAccessor<AspectList<Aspect>> 
         return LinkedHashAspectList.viewOf(result);
     }
 
+
     public void readFromCompoundTagInto(CompoundTag tag,AspectList<Aspect> readInto) {
+        readInto.clear();
         var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
         for (int i = 0; i < listTag.size(); i++) {
             var compoundTag = listTag.getCompound(i);

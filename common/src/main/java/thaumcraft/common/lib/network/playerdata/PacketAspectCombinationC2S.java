@@ -4,18 +4,17 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.research.ScanManager;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
 public class PacketAspectCombinationC2S extends BaseC2SMessage {
@@ -72,7 +71,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       BlockEntity be = world.getBlockEntity(tablePos);
       if (!(be instanceof IResearchAspectProviderBlockEntity aspectProviderBE)) return;
       if (!sanityCheckAspectCombination0(this, serverPlayer, aspectProviderBE)) return;
-      Aspect combinationResult = ResearchManager.getCombinationResult(aspect1, aspect2);
+      Aspect combinationResult = CompoundAspect.getCombinationResult(aspect1, aspect2);
 
       costAspect(aspectProviderBE,serverPlayer,aspect1, canUseProviderAspect1);
       costAspect(aspectProviderBE,serverPlayer,aspect2, canUseProviderAspect2);
@@ -82,8 +81,6 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
          ScanManager.checkAndSyncAspectKnowledge(serverPlayer, combinationResult, 1);
       }
 
-      // 保存玩家知识
-      ResearchManager.scheduleSave(serverPlayer);
    }
 
    private static boolean sanityCheckAspectCombination0(PacketAspectCombinationC2S packet,
@@ -109,16 +106,18 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    }
 
    public static boolean playerHasAspect(ServerPlayer player, Aspect aspect, int threshold) {
-      return Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect) >= threshold;
+      var info = ResearchAndScannedInfo.getFromPlayer(player);
+      return info.getResearchAspect(aspect) >= threshold;
    }
 
    private void costAspect(IResearchAspectProviderBlockEntity aspectProviderBE,ServerPlayer player,Aspect aspect,boolean canUseProviderAspect) {
-      if (Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect) <= 0 && canUseProviderAspect) {
+      var info = ResearchAndScannedInfo.getFromPlayer(player);
+      if (info.getResearchAspect(aspect) <= 0 && canUseProviderAspect) {
          aspectProviderBE.costAspect(aspect,1);
       } else {
-         Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short) -1);
+         info.addResearchAspect(aspect, (short) -1);
          new PacketAspectPoolS2C(aspect, (short) 0,
-                 Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)).sendTo(player);
+                 info.getResearchAspect(aspect)).sendTo(player);
       }
    }
 

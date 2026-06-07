@@ -15,11 +15,8 @@ import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
-import thaumcraft.common.lib.network.playerdata.PacketSyncAspectsS2C;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -288,17 +285,18 @@ public class CommandThaumcraft {
 //   }
 //
     private static void giveAllAspect(CommandSourceStack icommandsender, ServerPlayer player, int i) {
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
         for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short) i);
+            info.addResearchAspect(aspect, i);
         }
 
         player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."), false);
         icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
-        new PacketSyncAspectsS2C(player).sendTo(player);
+        info.syncResearchSendPacket(player);
     }
 
     private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, AspectResourceLocation aspectTag, int i) {
-
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
         Aspect aspect = Aspect.getAspect(aspectTag);
         if (aspect == null) {
             for (var a : Aspects.ALL_ASPECTS.values()) {
@@ -310,8 +308,7 @@ public class CommandThaumcraft {
         }
 
         if (aspect != null) {
-            Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short) i);
-            new PacketSyncAspectsS2C(player).sendTo(player);
+            info.addResearchAspect(aspect, i);
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()), false);
             icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
         } else {
@@ -431,6 +428,6 @@ public class CommandThaumcraft {
 
         player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " has reset you research."), false);
         icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
-        new PacketSyncResearchCompletedS2C(researchInfo).sendTo(player);
+        researchInfo.syncResearchSendPacket(player);
     }
 }

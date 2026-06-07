@@ -5,16 +5,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.listeners.warp.WarpEventManager;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
@@ -24,209 +24,7 @@ public class WarpEvents {
 
    public static void checkWarpEvent(ServerPlayer player) {
       tryTriggerRandomWarpEvent(player);
-//      int warp = Thaumcraft.playerKnowledge.getWarpTotal(player.getGameProfile().getName());
-//      int actualwarp = Thaumcraft.playerKnowledge.getWarpPerm(player.getGameProfile().getName())
-//              + Thaumcraft.playerKnowledge.getWarpSticky(player.getGameProfile().getName());
-//      warp += getWarpFromGear(player);
-//      int warpCounter = Thaumcraft.playerKnowledge.getWarpCounter(player.getGameProfile().getName());
-//      int r = player.getRandom().nextInt(100);
-//      if (warpCounter > 0 && warp > 0 && (double)r <= Math.sqrt(warpCounter)) {
-//         warp = Math.min(100, (warp + warp + warpCounter) / 3);
-//         warpCounter = (int)((double)warpCounter - Math.max(5.0F, Math.sqrt(warpCounter) * (double)2.0F));
-//         Thaumcraft.playerKnowledge.setWarpCounter(player.getGameProfile().getName(), warpCounter);
-//         int eff = player.getRandom().nextInt(warp);
-//         ItemStack helm = player.inventory.armorInventory[3];
-//         if (helm != null
-//                 && helm.getItem() instanceof ItemFortressArmor
-//                 && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask")
-//                 && helm.stackTagCompound.getInteger("mask") == 0) {
-//            eff -= 2 + player.getRandom().nextInt(4);
-//         }
-//
-//         PacketHandler.INSTANCE.sendTo(new PacketMiscEvent((short)0), (ServerPlayer)player);
-//         if (eff > 0) {
-//            if (eff <= 4) {
-//               grantResearch(player, 1);
-//               player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.3")));
-//            }
-//            else if (eff > 8) {
-//               if (eff <= 12) {
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.11")));
-//               }
-//               else if (eff <= 16) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionVisExhaustID, 5000, Math.min(3, warp / 15), true);
-//                  pe.getCurativeItems().clear();
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.1")));
-//               }
-//               else if (eff <= 20) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionThaumarhiaID, Math.min(32000, 10 * warp), 0, true);
-//                  pe.getCurativeItems().clear();
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.15")));
-//               }
-//               else if (eff <= 24) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionUnHungerID, 5000, Math.min(3, warp / 15), true);
-//                  pe.getCurativeItems().clear();
-//                  pe.addCurativeItem(new ItemStack(ThaumcraftItems.rotten_flesh));
-//                  pe.addCurativeItem(new ItemStack(ConfigItems.itemZombieBrain));
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.2")));
-//               }
-//               else if (eff <= 28) {
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.12")));
-//               }
-//               else if (eff <= 32) {
-//                  spawnMist(player, warp, 1);
-//               }
-//               else if (eff <= 36) {
-//                  try {
-//                     player.addEffect(new MobEffectInstance(Config.potionBlurredID, Math.min(32000, 10 * warp), 0, true));
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//               }
-//               else if (eff <= 40) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionSunScornedID, 5000, Math.min(3, warp / 15), true);
-//                  pe.getCurativeItems().clear();
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.5")));
-//               }
-//               else if (eff <= 44) {
-//                  try {
-//                     player.addEffect(new MobEffectInstance(Potion.digSlowdown.id, 1200, Math.min(3, warp / 15), true));
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.9")));
-//               }
-//               else if (eff <= 48) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionInfVisExhaustID, 6000, Math.min(3, warp / 15), false);
-//                  pe.getCurativeItems().clear();
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.1")));
-//               }
-//               else if (eff <= 52) {
-//                  player.addEffect(new MobEffectInstance(Potion.nightVision.id, Math.min(40 * warp, 6000), 0, true));
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.10")));
-//               }
-//               else if (eff <= 56) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionDeathGazeID, 6000, Math.min(3, warp / 15), true);
-//                  pe.getCurativeItems().clear();
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.4")));
-//               }
-//               else if (eff <= 60) {
-//                  suddenlySpiders(player, warp, false);
-//               }
-//               else if (eff <= 64) {
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.13")));
-//               }
-//               else if (eff <= 68) {
-//                  spawnMist(player, warp, warp / 30);
-//               }
-//               else if (eff <= 72) {
-//                  try {
-//                     player.addEffect(new MobEffectInstance(Potion.blindness.id, Math.min(32000, 5 * warp), 0, true));
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//               }
-//               else if (eff == 76) {//??? "=="?
-//                  if (Thaumcraft.playerKnowledge.getWarpSticky(player.getGameProfile().getName()) > 0) {
-//                     Thaumcraft.playerKnowledge.addWarpSticky(player.getGameProfile().getName(), -1);
-//                     PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)1), (ServerPlayer)player);
-//                     PacketHandler.INSTANCE.sendTo(new PacketWarpMessageS2C(player, (byte)1, -1), (ServerPlayer)player);
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.14")));
-//               }
-//               else if (eff <= 80) {
-//                  MobEffectInstance pe = new MobEffectInstance(Config.potionUnHungerID, 6000, Math.min(3, warp / 15), true);
-//                  pe.getCurativeItems().clear();
-//                  pe.addCurativeItem(new ItemStack(ThaumcraftItems.rotten_flesh));
-//                  pe.addCurativeItem(new ItemStack(ConfigItems.itemZombieBrain));
-//
-//                  try {
-//                     player.addEffect(pe);
-//                  } catch (Exception e) {
-//                     e.printStackTrace();
-//                  }
-//
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.2")));
-//               }
-//               else if (eff <= 84) {
-//                  grantResearch(player, warp / 10);
-//                  player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.3")));
-//               }
-//               else if (eff > 88) {
-//                  if (eff <= 92) {
-//                     suddenlySpiders(player, warp, true);
-//                  } else {
-//                     spawnMist(player, warp, warp / 15);
-//                  }
-//               }
-//            }
-//         }
-//
-//         if (actualwarp > 10 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "BATHSALTS") && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "@BATHSALTS")) {
-//            player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.8")));
-//            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("@BATHSALTS"), (ServerPlayer)player);
-//            Thaumcraft.researchManager.completeResearch(player, "@BATHSALTS");
-//         }
-//
-//         if (actualwarp > 25 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMINOR")) {
-//            grantResearch(player, 10);
-//            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMINOR"), (ServerPlayer)player);
-//            Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMINOR");
-//         }
-//
-//         if (actualwarp > 50 && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMAJOR")) {
-//            grantResearch(player, 20);
-//            PacketHandler.INSTANCE.sendTo(new PacketResearchComplete("ELDRITCHMAJOR"), (ServerPlayer)player);
-//            Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMAJOR");
-//         }
-//      }
-//
-//      Thaumcraft.playerKnowledge.addWarpTemp(player.getGameProfile().getName(), -1);
-//      PacketHandler.INSTANCE.sendTo(new PacketSyncWarp(player, (byte)2), (ServerPlayer)player);
+
    }
 
    public static void spawnMist(ServerPlayer player, int warp, int guardian) {
@@ -244,15 +42,14 @@ public class WarpEvents {
 
    public static void grantResearch(Player player, int times) {
       int amt = 1 + player.getRandom().nextInt(times);
-
+      var info = ResearchAndScannedInfo.getFromPlayer(player);
       for(int a = 0; a < amt; ++a) {
-         Aspect aspect = Aspects.getPrimalAspects().get(player.getRandom().nextInt(6));
-         Thaumcraft.playerKnowledge.addAspectPool(player.getGameProfile().getName(), aspect, (short)1);
+         var aspectTypes = new ArrayList<PrimalAspect>(Aspects.getPrimalAspects());
+         var aspect = aspectTypes.get(player.getRandom().nextInt(aspectTypes.size()));
+         info.addResearchAspect(aspect,1);
 
-         new PacketAspectPoolS2C(aspect.getAspectKey(), (short) 1, Thaumcraft.playerKnowledge.getAspectPoolFor(player.getGameProfile().getName(), aspect)).sendTo((ServerPlayer)player);
+         new PacketAspectPoolS2C(aspect.getAspectKey(), (short) 1, info.getResearchAspect(aspect)).sendTo((ServerPlayer)player);
       }
-
-      ResearchManager.scheduleSave(player.getGameProfile().getName());
    }
 
    public static void spawnGuardian(Player player) {

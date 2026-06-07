@@ -21,7 +21,6 @@ import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import java.util.List;
 import java.util.Random;
 
-import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 import static thaumcraft.common.researches.ThaumcraftResearches.FOCUS_PRIMAL;
 
 public class PrimalCharmItem extends Item {

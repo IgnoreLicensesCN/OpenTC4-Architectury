@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.codechicken.lib.util.Copyable;
 
 import java.util.HashMap;
@@ -23,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.ObjIntConsumer;
 
 //usually it's not considered as a view so it shouldn't been changed
 public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmodifiableDefault<A>, Copyable<AspectList<A>> {
@@ -194,7 +195,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public void forEach(ObjIntConsumer<A> action) {
+    public void forEach(ObjectIntBiConsumer<A> action) {
         internalList.forEach(action);
     }
 
@@ -204,7 +205,7 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public void acceptForIndex(int index, ObjIntConsumer<A> action) {
+    public void acceptForIndex(int index, ObjectIntBiConsumer<A> action) {
         internalList.acceptForIndex(index,action);
     }
 

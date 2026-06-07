@@ -15,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -26,7 +25,6 @@ import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.lib.events.EventHandlerRunic;
 import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -43,7 +41,6 @@ import static com.linearity.opentc4.Consts.PlayerDataAccessors.*;
 import static com.linearity.opentc4.Consts.ThaumcraftPlayerCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.LOGGER;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.api.aspects.CompoundAspect.COMPOUND_ASPECT_RECIPES;
 import static thaumcraft.common.ThaumcraftSounds.LEARN;
 import static thaumcraft.common.lib.events.EventHandlerEntity.getThaumcraftPlayersDirectory;
 
@@ -336,14 +333,6 @@ public class ResearchManager {
     @ApiStatus.Internal
     public static Set<ClueResourceLocation> getClueForPlayerSafe(Player player) {
         return Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
-    }
-
-    public static @NotNull Aspect getCombinationResult(Aspect aspect1, Aspect aspect2) {
-        if (aspect1.isEmpty() || aspect2.isEmpty()) {
-            return Aspects.EMPTY;
-        }
-        var result = COMPOUND_ASPECT_RECIPES.get(new CompoundAspectComponent(aspect1, aspect2));
-        return result == null ?Aspects.EMPTY : result;
     }
 
     public static boolean completeClueUnsaved(Player player, ClueResourceLocation key) {
@@ -725,17 +714,17 @@ public class ResearchManager {
             saveScannedNBT(data, player);
 
 
-            // runic shielding
-            if (EventHandlerRunic.runicCharge.containsKey(player)) {
-                THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR
-                        .writeIntToCompoundTag(data, EventHandlerRunic.runicCharge.get(player));
-            }
+//            // runic shielding
+//            if (EventHandlerRunic.runicCharge.containsKey(player)) {
+//                THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR
+//                        .writeIntToCompoundTag(data, EventHandlerRunic.runicCharge.get(player));
+//            }
 
             // warp values
-            THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpPerm(player));
-            THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpTemp(player));
-            THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpSticky(player));
-            THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpCounter(player));
+//            THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpPerm(player));
+//            THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpTemp(player));
+//            THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpSticky(player));
+//            THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpCounter(player));
 
 //            if (Thaumcraft.instance.runicEventHandler.runicCharge.containsKey(playerName)) {
 //                data.setTag("Thaumcraft.shielding", new NBTTagInt(Thaumcraft.instance.runicEventHandler.runicCharge.get(playerName)));

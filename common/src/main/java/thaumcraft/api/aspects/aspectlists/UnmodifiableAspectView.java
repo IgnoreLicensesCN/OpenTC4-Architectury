@@ -2,17 +2,16 @@ package thaumcraft.api.aspects.aspectlists;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
-import net.minecraft.network.chat.Component;
+import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.ObjIntConsumer;
 
 public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmodifiableDefault<A> {
     public static final UnmodifiableAspectView<Aspect> EMPTY = new UnmodifiableAspectView<>(UnmodifiableAspectList.EMPTY);
@@ -55,7 +54,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public void forEach(ObjIntConsumer<A> action) {
+    public void forEach(ObjectIntBiConsumer<A> action) {
         this.viewingList.forEach(action);
     }
 
@@ -65,7 +64,7 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     }
 
     @Override
-    public void acceptForIndex(int index, ObjIntConsumer<A> action) {
+    public void acceptForIndex(int index, ObjectIntBiConsumer<A> action) {
         this.viewingList.acceptForIndex(index,action);
     }
 
@@ -102,11 +101,6 @@ public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmod
     @Override
     public int size() {
         return this.viewingList.size();
-    }
-
-    @Override
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        //TODO:Remove
     }
 
     @Override

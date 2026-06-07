@@ -8,7 +8,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.mc.DirectionTagAccessor
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.ModifiableAspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CompoundAspectAccessor;
@@ -32,7 +32,7 @@ public class Consts {
 
 
     public static class PlayerDataAccessors {
-        public static final AspectListAccessor PLAYER_RESEARCH_ASPECTS = new AspectListAccessor("player_research_aspects");
+        public static final ModifiableAspectListAccessor PLAYER_RESEARCH_ASPECTS = new ModifiableAspectListAccessor("player_research_aspects");
         private static final String CLUE = "THAUMCRAFT.CLUE";
         public static final ModifiableSetTagAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
                 new ModifiableSetTagAccessor<>(
@@ -198,7 +198,7 @@ public class Consts {
         private static final String TICK_COUNT = "tick_count";
         public static final IntTagAccessor TICK_COUNT_ACCESSOR = new IntTagAccessor(TICK_COUNT);
         private static final String BONUS_ASPECT = "bonus_aspect";
-        public static final AspectListAccessor BONUS_ASPECT_ACCESSOR = new AspectListAccessor(BONUS_ASPECT);
+        public static final ModifiableAspectListAccessor BONUS_ASPECT_ACCESSOR = new ModifiableAspectListAccessor(BONUS_ASPECT);
     }
     public static class EnergizedAuraNodeBlockEntityTagAccessors {
         public static final NodeInfoAccessor NODE_INFO = NodeBlockEntityCompoundTagAccessors.NODE_INFO;
@@ -209,7 +209,7 @@ public class Consts {
         public static final IntTagAccessor TRANSDUCER_STATUS_CODE = new IntTagAccessor("status_code");
     }
     public static class AlchemicalFurnaceBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
         public static final IntTagAccessor COOKED_TIME = new IntTagAccessor("cooked_time");
         public static final IntTagAccessor REQUIRED_COOK_TIME = new IntTagAccessor("required_cook_time");
         public static final IntTagAccessor FUEL_REMAINING_TIME = new IntTagAccessor("fuel_remaining_time");
@@ -229,10 +229,10 @@ public class Consts {
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
     }
     public static class EssentiaReservoirBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
     }
     public static class AdvancedAlchemicalFurnaceBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
         public static final IntTagAccessor FUEL_AMOUNT_FIRE = new IntTagAccessor("fuel_amount_fire");
         public static final IntTagAccessor FUEL_AMOUNT_ENTROPY = new IntTagAccessor("fuel_amount_entropy");
         public static final IntTagAccessor FUEL_AMOUNT_WATER = new IntTagAccessor("fuel_amount_water");
@@ -252,7 +252,7 @@ public class Consts {
         public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("jar_node_info");
     }
     public static class CrucibleTagAccessors {
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("aspects");
         public static final IntTagAccessor HEAT = new IntTagAccessor("heat");
     }
     public static class SingleFluidContainerBlockEntityTagAccessors{
@@ -267,7 +267,7 @@ public class Consts {
 
     public static class ThaumatoriumBlockEntityTagAccessors {
         public static final NullFilteredModifiableListAccessor<CrucibleRecipe> RECIPES = new NullFilteredModifiableListAccessor<>("recipes",new NullableCrucibleRecipeAccessor("recipe"));
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("aspects");
     }
 
     public static class ManaBeanBlockEntityOrItemStackTagAccessors {
@@ -286,7 +286,7 @@ public class Consts {
     }
 
     public static class EssentiaBufferBlockEntityTagAccessors {
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("owning_aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("owning_aspects");
         public static final ByteTagAccessor OPEN_SIDES = new ByteTagAccessor("open_sides");
         public static final ByteArrayTagAccessor SUCTION_LIMITS = new ByteArrayTagAccessor("suction_limits");
 
@@ -332,7 +332,7 @@ public class Consts {
     }
 
     public static class InfusionMatrixBlockEntityTagAccessors {
-        public static final AspectListAccessor REQUIRING_ASPECTS = new AspectListAccessor("requiring_aspects");
+        public static final ModifiableAspectListAccessor REQUIRING_ASPECTS = new ModifiableAspectListAccessor("requiring_aspects");
         public static final ModifiableListAccessor<ItemStack> REQUIRING_ITEMS = new ModifiableListAccessor<>("requiring_items",new ItemStackTagAccessor("i"));
         public static final ModifiableListAccessor<ItemStack> RETURNING_ITEMS = new ModifiableListAccessor<>("returning_items",new ItemStackTagAccessor("i"));
         public static final ItemStackTagAccessor CENTER_STACK = new ItemStackTagAccessor("center_stack");

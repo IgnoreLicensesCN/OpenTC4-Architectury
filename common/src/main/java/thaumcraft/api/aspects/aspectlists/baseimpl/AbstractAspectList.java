@@ -1,7 +1,5 @@
-package thaumcraft.api.aspects.aspectlists;
+package thaumcraft.api.aspects.aspectlists.baseimpl;
 
-import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
-import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.network.chat.Component;
@@ -11,74 +9,40 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntBinaryOperator;
-import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
 
-//default impl
-public class LinkedHashAspectList<Asp extends Aspect>
-        implements AspectList<Asp> /*implements Serializable */ {
+public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Object2IntMap<Asp>> implements AspectList<Asp> {
 
     private int visSize;
-    //i say do we really need this?we should have better way.
-    //make this AspectList ordered is just for UI performance i even want it's order not ruled.
-    protected final Object2IntLinkedOpenHashMap<Asp> aspects;//aspects associated with this object
+    protected final MapClass aspects;
 
     private final Object2IntMap<Asp> aspectView;
 
-    public LinkedHashAspectList() {
-        this.aspects = new Object2IntLinkedOpenHashMap<>();
-        this.aspectView = Object2IntMaps.unmodifiable(aspects);
-        recalculateVisSize();
-    }
-
-    protected LinkedHashAspectList(@NotNull Object2IntLinkedOpenHashMap<Asp> aspects) {
+    protected AbstractAspectList(@NotNull MapClass aspects) {
         this.aspects = aspects;
-        this.aspectView = Object2IntMaps.unmodifiable(aspects);
-        recalculateVisSize();
-    }
-
-    public LinkedHashAspectList(@NotNull Map<Asp, Integer> aspects) {
-        this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
         this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
         recalculateVisSize();
     }
 
-    public LinkedHashAspectList(@NotNull Object2IntMap<Asp> aspects) {
-        this.aspects = new Object2IntLinkedOpenHashMap<>(aspects);
-        this.aspectView = Object2IntMaps.unmodifiable(this.aspects);
-        recalculateVisSize();
-    }
 
-    public LinkedHashAspectList(int size, float loadFactor) {
-        this.aspects = new Object2IntLinkedOpenHashMap<>(size, loadFactor);
-        this.aspectView = Object2IntMaps.unmodifiable(aspects);
-        recalculateVisSize();
-    }
-
-    public LinkedHashAspectList(@NotNull LinkedHashAspectList<Asp> another) {
-        this.aspects = new Object2IntLinkedOpenHashMap<>(another.aspects);
-        this.aspectView = Object2IntMaps.unmodifiable(aspects);
-        recalculateVisSize();
-    }
-
-    @Deprecated(forRemoval = true, since = "implements IAspectDisplayItem")
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        if (aspects != null && !this.aspects.isEmpty()) {
-            for (var aspect : this.getAspectsSorted()) {
-                if (player != null && !aspect.hasPlayerDiscovered(player)) {
-                    aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
-                } else {
-                    aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
-                }
-            }
-        }
-    }
+//    @Deprecated(forRemoval = true, since = "implements IAspectDisplayItem")
+//    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
+//        if (aspects != null && !this.aspects.isEmpty()) {
+//            for (var aspect : this.getAspectsSorted()) {
+//                if (player != null && !aspect.hasPlayerDiscovered(player)) {
+//                    aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
+//                } else {
+//                    aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
+//                }
+//            }
+//        }
+//    }
 
     public int getOrDefault(Aspect aspect, int defaultValue) {
         return aspects.getOrDefault(aspect, defaultValue);
@@ -325,46 +289,6 @@ public class LinkedHashAspectList<Asp extends Aspect>
 
     }
 
-    public void forEach(ObjIntConsumer<Asp> action) {
-        var iterator = aspects.object2IntEntrySet().fastIterator();
-        while (iterator.hasNext()) {
-            var entry = iterator.next();
-            action.accept(entry.getKey(), entry.getIntValue());
-        }
-    }
-
-    //true if action returns true(and will break loop)
-    public boolean forEachWithBreak(ObjInt2BooleanFunction<Asp> action) {
-        var iterator = aspects.object2IntEntrySet().fastIterator();
-        while (iterator.hasNext()) {
-            var entry = iterator.next();
-            if (action.accept(entry.getKey(), entry.getIntValue())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void acceptForIndex(int index, ObjIntConsumer<Asp> action) {
-        if (aspects.size() <= index) {
-            throw new IndexOutOfBoundsException(
-                    "Index out of bound!Expected smaller than " + aspects.size() + ", got " + index
-            );
-        }
-        var iterator = aspects.object2IntEntrySet().fastIterator();
-        int indexCurrent = 0;
-        while (iterator.hasNext()) {
-            var entry = iterator.next();
-            if (indexCurrent == index) {
-                action.accept(entry.getKey(), entry.getIntValue());
-                return;
-            }
-            indexCurrent += 1;
-        }
-
-    }
-
-
     public void overrideAllAspects(AspectList<Asp> aspects) {
         AtomicInteger visSizeChange = new AtomicInteger();
         aspects.forEach(
@@ -384,20 +308,6 @@ public class LinkedHashAspectList<Asp extends Aspect>
         });
     }
 
-    @SafeVarargs
-    public static <Asp extends Aspect> LinkedHashAspectList<Asp> of(Asp... aspects) {
-        LinkedHashAspectList<Asp> out = new LinkedHashAspectList<>();
-        for (var aspect : aspects) {
-            if (aspect != null) {
-                out.addAll(aspect, 1);
-            }
-        }
-        return out;
-    }
-
-    public static <Asp extends Aspect> LinkedHashAspectList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects) {
-        return new LinkedHashAspectList<>(aspects);
-    }
 
     public @Nullable("if empty") Asp randomAspect(RandomSource randomSource) {
         if (this.size() == 0) {
@@ -420,7 +330,7 @@ public class LinkedHashAspectList<Asp extends Aspect>
             }
         }
 
-        return aspects.firstKey();
+        return (Asp) aspects.keySet().toArray()[0];
     }
 
 
@@ -448,14 +358,22 @@ public class LinkedHashAspectList<Asp extends Aspect>
         this.aspects.clear();
     }
 
-    public @NotNull("empty -> empty(aspect)") Asp getFirstAspect() {
-        if (aspects.isEmpty()) return (Asp) Aspects.EMPTY;
-        return aspects.firstKey();
-    }
-
 
     public boolean containsKey(Aspect aspect) {
         return this.aspects.containsKey(aspect);
     }
 
+
+    @Deprecated(forRemoval = true, since = "implements IAspectDisplayItem")
+    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
+        if (aspects != null && !this.aspects.isEmpty()) {
+            for (var aspect : this.getAspectsSorted()) {
+                if (player != null && !aspect.hasPlayerDiscovered(player)) {
+                    aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
+                } else {
+                    aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
+                }
+            }
+        }
+    }
 }

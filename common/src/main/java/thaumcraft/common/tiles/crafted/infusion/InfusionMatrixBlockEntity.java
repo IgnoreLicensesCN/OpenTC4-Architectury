@@ -36,7 +36,7 @@ import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
 import thaumcraft.api.aspects.IEssentiaForceInBlockEntity;
 import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.listeners.infusion.instabilityevent.InfusionInstabilityEventListener;

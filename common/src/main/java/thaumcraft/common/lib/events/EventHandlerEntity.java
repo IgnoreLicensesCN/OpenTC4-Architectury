@@ -27,7 +27,7 @@ import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;

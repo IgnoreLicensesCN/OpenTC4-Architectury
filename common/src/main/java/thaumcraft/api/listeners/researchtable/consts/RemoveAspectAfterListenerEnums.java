@@ -7,6 +7,7 @@ import thaumcraft.api.listeners.researchtable.listeners.RemoveAspectAfterListene
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.researches.ThaumcraftResearches;
 
 public enum RemoveAspectAfterListenerEnums {
@@ -39,16 +40,12 @@ public enum RemoveAspectAfterListenerEnums {
                         SoundSource.BLOCKS,
                         .2F,.9F + context.atLevel.random.nextFloat()*0.2f
                 );
-                var playerName = context.player.getGameProfile().getName();
-                Thaumcraft.playerKnowledge.addAspectPool(
-                        playerName,
-                        context.aspectToRemove,
-                        (short) 1);
-                ResearchManager.scheduleSave(playerName);
+                var info = ResearchAndScannedInfo.getFromPlayer(context.player);
+                info.addResearchAspect(context.aspectToRemove,1);
                 new PacketAspectPoolS2C(
                         context.aspectToRemove.aspectKey,
                         0,
-                        Thaumcraft.playerKnowledge.getAspectPoolFor(playerName,context.aspectToRemove)).sendTo(context.player);
+                        info.getResearchAspect(context.aspectToRemove)).sendTo(context.player);
             }
         }
     });

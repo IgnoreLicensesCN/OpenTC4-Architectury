@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.MapColor;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
@@ -37,8 +38,8 @@ public class PureFluidBlock extends LiquidBlock {
         if (!level.isClientSide && blockState.getFluidState().isSource()) {
             if (entity instanceof Player player) {
                 if (!player.hasEffect(ThaumcraftEffects.WARP_WARD)){
-
-                    int warp = Thaumcraft.playerKnowledge.getWarpPerm(player);
+                    var info = WarpInfo.getFromPlayer(player);
+                    int warp = info.getPermWarp();
                     int div = 1;
                     if (warp > 0) {
                         div = (int)Math.sqrt(warp);

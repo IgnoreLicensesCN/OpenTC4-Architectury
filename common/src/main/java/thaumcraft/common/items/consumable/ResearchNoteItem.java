@@ -20,16 +20,15 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
 import thaumcraft.api.research.interfaces.IResearchableResearch;
 import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.research.HexEntry;
 import thaumcraft.common.lib.research.HexType;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.lib.utils.HexCoord;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.function.Predicate;
 
@@ -38,7 +37,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         super(props);
     }
     public ResearchNoteItem() {
-        super(new Properties().stacksTo(1));
+        this(new Properties().stacksTo(1));
     }
 
     @Override
@@ -126,9 +125,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         if (!(researchItem instanceof IResearchNoteCopyable copyable)){return;}
 
         var aspectsToCopy = copyable.getCopyResearchBaseAspects();
-        var copiedCount = researchData.copiedCount;
-        var playerName = player.getGameProfile().getName();
-        var playerOwnedAspects = Thaumcraft.playerKnowledge.getAspectsDiscovered(player);
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
 
         //checkToConsume
         var playerInventory = player.getInventory();
@@ -152,7 +149,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
             return;
         }
         if (aspectsToCopy.forEachWithBreak(
-                (aspect,count) -> playerOwnedAspects.getOrDefault(aspect,0) < count
+                (aspect,count) -> info.getResearchAspect(aspect) < count
         )){
             return;
         }
@@ -160,9 +157,8 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         //consume
         aspectsToCopy.forEach(
                 (aspect,count) -> {
-                    Thaumcraft.playerKnowledge.addAspectPool(player,aspect,-count);
-                    ResearchManager.scheduleSave(player);
-                    new PacketAspectPoolS2C(aspect.getAspectKey(), 0, Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)).sendTo(player);
+                    info.addResearchAspect(aspect, -count);
+                    new PacketAspectPoolS2C(aspect.getAspectKey(), 0, info.getResearchAspect(aspect)).sendTo(player);
                 }
         );
         playerInventory.items.get(paperIndex).shrink(1);
@@ -231,7 +227,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         var stack = player.getItemInHand(interactionHand);
         if (!level.isClientSide && !stack.isEmpty()){
             var noteData = getResearchNoteData(stack);

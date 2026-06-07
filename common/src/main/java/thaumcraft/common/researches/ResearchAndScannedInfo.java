@@ -4,6 +4,11 @@ import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
@@ -21,6 +26,8 @@ public class ResearchAndScannedInfo {
     public final Collection<ResearchItemResourceLocation> completedResearches = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
     public final Collection<ClueResourceLocation> completedClues = ConcurrentHashMap.newKeySet();
+    @ApiStatus.Internal
+    public /*client need ordered one to display*/ @NotNull AspectList<Aspect> owningResearchAspect = new HashAspectList<>();
 
     public boolean hasResearchID(ResearchItemResourceLocation researchID){
         return completedResearches.contains(researchID);
@@ -34,6 +41,18 @@ public class ResearchAndScannedInfo {
     public void addClue(ClueResourceLocation clueID){
         completedClues.add(clueID);
     }
+    public boolean hasResearchAspect(Aspect aspect){
+        return owningResearchAspect.containsKey(aspect);
+    }
+    public int getResearchAspect(Aspect aspect){
+        return owningResearchAspect.get(aspect);
+    }
+    public void addResearchAspect(Aspect aspect,int amount){
+        owningResearchAspect.addAll(aspect,amount);
+    }
+    public void setResearchAspect(Aspect aspect,int amount){
+        owningResearchAspect.set(aspect,amount);
+    }
 
 
     public static ResearchAndScannedInfo getFromPlayer(Player player){
@@ -45,12 +64,16 @@ public class ResearchAndScannedInfo {
     public void syncAllSendPacket(ServerPlayer player){
         syncResearchSendPacket(player);
         syncClueSendPacket(player);
+        syncOwningResearchSendPacket(player);
     }
     public void syncResearchSendPacket(ServerPlayer player){
         new PacketSyncResearchCompletedS2C(this).sendTo(player);
     }
     public void syncClueSendPacket(ServerPlayer player){
         new PacketSyncResearchCompletedS2C(this).sendTo(player);
+    }
+    public void syncOwningResearchSendPacket(ServerPlayer player){
+        new PacketSyncResearchAspectsS2C(owningResearchAspect).sendTo(player);
     }
     public void syncResearchClientSide(Collection<ResearchItemResourceLocation> researchIDs){
         this.completedResearches.clear();
@@ -59,6 +82,10 @@ public class ResearchAndScannedInfo {
     public void syncClueClientSide(Collection<ClueResourceLocation> clueIDs){
         this.completedClues.clear();
         this.completedClues.addAll(clueIDs);
+    }
+
+    public void syncResearchAspectClientSide(AspectList<Aspect> aspects){
+        this.owningResearchAspect = aspects;
     }
 
 }

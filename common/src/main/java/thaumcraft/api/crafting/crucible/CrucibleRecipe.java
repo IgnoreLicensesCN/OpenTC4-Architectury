@@ -12,6 +12,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import tc4tweak.modules.findCrucibleRecipe.FindCrucibleRecipe;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.crafting.AbstractResourceLocationIdentifiedRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.CrucibleRecipeResourceLocation;

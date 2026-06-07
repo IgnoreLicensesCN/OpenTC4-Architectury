@@ -18,7 +18,6 @@ public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
     public static final PrimalAspect EMPTY = new PrimalAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_primal"),
             0x000000,
-            new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
             1,
             true
     ){
@@ -47,8 +46,8 @@ public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
     }
 
     @SuppressWarnings("unused")
-    private PrimalAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
-        super(aspectKey,color,image,blend);
+    private PrimalAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, int blend, boolean noRegisterArg) {
+        super(aspectKey,color,blend,noRegisterArg);
         this.chatcolor = "0";
     }
 
@@ -58,7 +57,6 @@ public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
                 "chatcolor='" + chatcolor + '\'' +
                 ", aspectKey=" + aspectKey +
                 ", color=" + color +
-                ", image=" + image +
                 ", blend=" + blend +
                 '}';
     }
@@ -68,11 +66,6 @@ public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
         if (!(o instanceof PrimalAspect that)) return false;
         if (!super.equals(o)) return false;
         return Objects.equals(chatcolor, that.chatcolor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), chatcolor);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects.aspectlists;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
+import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,6 @@ import thaumcraft.api.aspects.PrimalAspect;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Set;
-import java.util.function.ObjIntConsumer;
 
 //before using weakRef we have
 //BE -(strong)-> List
@@ -33,10 +33,6 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
     private final WeakReference<SingleAspectAndAmountSupplier<Asp>> supplierRef;
     public UnmodifiableSingleAspectListFromSupplier(SingleAspectAndAmountSupplier<Asp> supplier) {
         this.supplierRef = new WeakReference<>(supplier);
-    }
-    @Override
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        //TODO:Remove method
     }
 
     private @Nullable Asp getOnlyAspect(){
@@ -123,7 +119,7 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
         return getAspectsSorted();//it's singleton
     }
     @Override
-    public void forEach(ObjIntConsumer<Asp> action) {
+    public void forEach(ObjectIntBiConsumer<Asp> action) {
 
         var aspect = getOnlyAspect();
         if (aspect == null){
@@ -143,7 +139,7 @@ public class UnmodifiableSingleAspectListFromSupplier<Asp extends Aspect>
     }
 
     @Override
-    public void acceptForIndex(int index, ObjIntConsumer<Asp> action) {
+    public void acceptForIndex(int index, ObjectIntBiConsumer<Asp> action) {
         var aspect = getOnlyAspect();
         if (aspect == null){
             return;

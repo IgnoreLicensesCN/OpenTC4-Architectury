@@ -12,6 +12,7 @@ import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
@@ -32,7 +33,6 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
         this.total = total;
     }
 
-    // ------------------ 编码/解码 ------------------
     public static void encode(PacketAspectPoolS2C msg, FriendlyByteBuf buf) {
         buf.writeResourceLocation(msg.key);
         buf.writeInt(msg.amountChanged);
@@ -61,13 +61,13 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
         Aspect aspect = Aspect.getAspect(this.key);
         var player = Minecraft.getInstance().player;
         if (aspect != null && player != null) {
-            boolean success = Thaumcraft.playerKnowledge.setAspectPool(
-                    player,
+            var info = ResearchAndScannedInfo.getFromPlayer(player);
+            info.setResearchAspect(
                     aspect,
                     this.total
             );
 
-            if (success && this.amountChanged > 0) {
+            if (this.amountChanged > 0) {
                 var text = Component.translatable(
                         "tc.addaspectpool",
                         Component.literal(String.valueOf(this.amountChanged)),

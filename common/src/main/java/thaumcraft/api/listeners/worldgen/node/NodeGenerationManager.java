@@ -7,7 +7,7 @@ import com.linearity.opentc4.simpleutils.ListenerManager;
 import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.listeners.worldgen.node.listeners.*;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;

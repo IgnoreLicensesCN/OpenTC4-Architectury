@@ -4,11 +4,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.listeners.researchtable.listeners.WriteAspectAfterListener;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.researches.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
@@ -18,7 +17,7 @@ public enum WriteAspectAfterListenerEnums {
         public void onEventTriggered(WriteAspectContext context) {
 
             if (context.doDrainAspect
-                    && ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
+                    && ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player)) {
                 if (context.atLevel.random.nextDouble() < 0.1) {
                     context.atLevel.playSound(
                             context.player,
@@ -55,16 +54,12 @@ public enum WriteAspectAfterListenerEnums {
         @Override
         public void onEventTriggered(WriteAspectContext context) {
             if (context.doDrainAspect && !context.aspectToWrite.isEmpty()){
-                var playerName = context.player.getGameProfile().getName();
-                Thaumcraft.playerKnowledge.addAspectPool(
-                        playerName,
-                        context.aspectToWrite,
-                        (short) -1);
-                ResearchManager.scheduleSave(playerName);
+                var info = ResearchAndScannedInfo.getFromPlayer(context.player);
+                info.addResearchAspect(context.aspectToWrite,-1);
                 new PacketAspectPoolS2C(
                         context.aspectToWrite.aspectKey,
                         0,
-                        Thaumcraft.playerKnowledge.getAspectPoolFor(playerName,context.aspectToWrite)).sendTo(context.player);
+                        info.getResearchAspect(context.aspectToWrite)).sendTo(context.player);
             }
         }
     }),

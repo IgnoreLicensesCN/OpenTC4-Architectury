@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ClueResourceLocationTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResearchItemResourceLocationTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.HashAspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableConcurrentSetTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -21,6 +22,7 @@ public class ResearchAndScannedInfoTagAccessor extends CompoundTagAccessor<Resea
             tagKey + "_clues",
             new ClueResourceLocationTagAccessor("clue_id")
     );
+    private final HashAspectListAccessor researchAspectsAccessor = new HashAspectListAccessor(tagKey + "_research_aspects");
 
     public ResearchAndScannedInfoTagAccessor(String tagKey) {
         super(tagKey);
@@ -32,6 +34,7 @@ public class ResearchAndScannedInfoTagAccessor extends CompoundTagAccessor<Resea
         ResearchAndScannedInfo info = new ResearchAndScannedInfo();
         info.completedResearches.addAll(researchIDAccessor.readFromCompoundTag(innerTag));
         info.completedClues.addAll(clueIDAccessor.readFromCompoundTag(innerTag));
+        info.owningResearchAspect.addAll(researchAspectsAccessor.readFromCompoundTag(innerTag));
         return info;
     }
 
@@ -40,6 +43,7 @@ public class ResearchAndScannedInfoTagAccessor extends CompoundTagAccessor<Resea
         CompoundTag wrappedTag = new CompoundTag();
         researchIDAccessor.writeToCompoundTag(wrappedTag,value.completedResearches);
         clueIDAccessor.writeToCompoundTag(wrappedTag,value.completedClues);
+        researchAspectsAccessor.writeToCompoundTag(wrappedTag,value.owningResearchAspect);
         wrappedTagAccessor.writeToCompoundTag(tag,wrappedTag);
     }
 

@@ -26,7 +26,9 @@ import java.util.function.Predicate;
 public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 
 	@Deprecated(forRemoval = true,since = "implements IAspectDisplayItem")
-	void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions);
+	default void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions){
+
+	};
 
 	int getOrDefault(Aspect aspect, int defaultValue);
 	/**
@@ -142,10 +144,10 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 
 	void mergeWithHighest(AspectList<Asp> in);
 
-	void forEach(ObjIntConsumer<Asp> action);
+	void forEach(ObjectIntBiConsumer<Asp> action);
 	//true if action returns true(and will break loop)
 	boolean forEachWithBreak(ObjInt2BooleanFunction<Asp> action);
-	void acceptForIndex(int index,ObjIntConsumer<Asp> action);
+	void acceptForIndex(int index,ObjectIntBiConsumer<Asp> action);
 
 	void overrideAllAspects(AspectList<Asp> aspects);
 
@@ -171,7 +173,14 @@ public interface AspectList<Asp extends Aspect> /*implements Serializable */{
 
 	void clear();
 
-	@NotNull("empty -> empty(aspect)") Asp getFirstAspect();
+	default @NotNull("empty -> empty(aspect)") Asp getFirstAspect() {
+		for (var aspect : keySet()){
+			if (aspect != null){
+				return aspect;
+			}
+		}
+		return (Asp) Aspects.EMPTY;
+	}
 
 	default @NotNull("empty -> empty(aspect)") Asp getAspectAtIndexEnsureInBound(int index){
 		return getAspectAtIndex((index&Integer.MAX_VALUE)%size());

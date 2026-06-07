@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;

@@ -10,6 +10,7 @@ import thaumcraft.api.listeners.manabean.listeners.ManaBeanEatListener;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -49,12 +50,12 @@ public enum ManaBeanEatListeners {
                     }
                     var aspect = context.aspectOwning;
                     if (!aspect.isEmpty() && level.random.nextInt(4) == 0){
-                        Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)1);
-                        ResearchManager.scheduleSave(player);
+                        var info = ResearchAndScannedInfo.getFromPlayer(player);
+                        info.addResearchAspect(aspect,1);
                         new PacketAspectPoolS2C(
                                 aspect,
                                 1,
-                                Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)
+                                info.getResearchAspect(aspect)
                         ).sendTo(player);
                     }
                 }

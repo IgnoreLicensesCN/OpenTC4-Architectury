@@ -13,6 +13,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
 import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 public class KnowledgeFragmentItem extends Item {
     public KnowledgeFragmentItem() {
@@ -29,9 +30,9 @@ public class KnowledgeFragmentItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             for(Aspect a : Aspects.getPrimalAspects()) {
                 short q = (short)(world.getRandom().nextInt(2) + 1);
-                Thaumcraft.playerKnowledge.addAspectPool(player, a, q);
-                ResearchManager.scheduleSave(serverPlayer);
-                new PacketAspectPoolS2C(a.getAspectKey(), q, Thaumcraft.playerKnowledge.getAspectPoolFor(player, a))
+                var info = ResearchAndScannedInfo.getFromPlayer(player);
+                info.addResearchAspect(a,q);
+                new PacketAspectPoolS2C(a.getAspectKey(), q, info.getResearchAspect(a))
                         .sendTo(serverPlayer);
             }
         }

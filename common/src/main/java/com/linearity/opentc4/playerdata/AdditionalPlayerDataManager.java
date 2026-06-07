@@ -15,7 +15,7 @@ import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 public class AdditionalPlayerDataManager {
     public static final RunicShieldInfoTagAccessor SHIELD_ACCESSOR = new RunicShieldInfoTagAccessor("player_runic_shield");
     public static final WarpInfoTagAccessor PLAYER_WARP_INFO = new WarpInfoTagAccessor("player_warp_info");
-    public static final ResearchAndScannedInfoTagAccessor PLAYER_COMPLETED_RESEARCH_INFO = new ResearchAndScannedInfoTagAccessor("player_completed_research_info");
+    public static final ResearchAndScannedInfoTagAccessor PLAYER_COMPLETED_RESEARCH_INFO = new ResearchAndScannedInfoTagAccessor("player_research_and_scanned_info");
 
     public static void syncDataFromBeingClonedToCloningServer(ServerPlayer beingCloned, ServerPlayer cloningInto, boolean cloningForTeleport) {
 

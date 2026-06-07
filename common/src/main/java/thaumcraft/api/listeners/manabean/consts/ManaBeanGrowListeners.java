@@ -3,13 +3,13 @@ package thaumcraft.api.listeners.manabean.consts;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.manabean.ManaBeanGrowContext;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanGrowListener;
 import thaumcraft.common.blocks.abstracts.IManaBeanAspectCombineProviderBlock;
-import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public enum ManaBeanGrowListeners {
                 for (int j = i + 1; j < aspectsCanCombine.size(); j++){
                     var aspect1 = aspectsCanCombine.get(i);
                     var aspect2 = aspectsCanCombine.get(j);
-                    var combined = ResearchManager.getCombinationResult(aspect1, aspect2);
+                    var combined = CompoundAspect.getCombinationResult(aspect1, aspect2);
                     if (!combined.isEmpty()){
                         aspectsChangeInto.addAll(combined,4);
                     }
