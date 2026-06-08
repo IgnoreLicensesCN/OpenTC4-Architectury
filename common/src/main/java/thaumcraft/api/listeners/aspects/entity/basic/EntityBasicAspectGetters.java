@@ -1,8 +1,10 @@
-package thaumcraft.api.listeners.aspects.entity;
+package thaumcraft.api.listeners.aspects.entity.basic;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.ShouldNotModify;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -19,17 +21,50 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EntityBasicAspectGetter {
+public enum EntityBasicAspectGetters {
+    ENTITY_BASIC(
+            new EntityBasicAspectGetter(0) {
+                @Override
+                public void onGetBasicAspect(Entity entityToGetAspect, @Modifiable AspectList<Aspect> aspects) {
+                    aspects.addAll(EntityBasicAspectGetters.getBasicAspectsForEntityType(entityToGetAspect.getType()));
+                }
+            }
+    ),
+    PLAYER_BASIC(
+            new EntityBasicAspectGetter(0) {
+                @Override
+                public void onGetBasicAspect(Entity entityToGetAspect, @Modifiable AspectList<Aspect> aspects) {
+                    if (entityToGetAspect instanceof Player player) {
+                        aspects.addAll(EntityBasicAspectGetters.getAspectsForPlayer(player));
+                    }
+                }
+            }
+    ),
+    ;
     private static final Map<EntityType<?>,@Unmodifiable AspectList<Aspect>> ENTITY_TYPE_TO_ASPECTS = new ConcurrentHashMap<>();
     private static final Map<TagKey<EntityType<?>>,@Unmodifiable AspectList<Aspect>> ADDITIONAL_ENTITY_TYPE_ASPECTS = new ConcurrentHashMap<>();
     private static final Map<EntityType<?>,@Unmodifiable AspectList<Aspect>> CALCULATED_RESULT = new ConcurrentHashMap<>();
+    private static final Map<Player,@Unmodifiable AspectList<Aspect>> ASPECTS_FOR_PLAYER = new MapMaker().weakKeys().makeMap();
+    private static final Map<String,@Unmodifiable AspectList<Aspect>> ASPECTS_FOR_PLAYER_SPECIAL_NAMES = new ConcurrentHashMap<>();
+
+    static {
+        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("azanor",UnmodifiableAspectList.of(Aspects.ELDRITCH, 20, Aspects.MAN, 4));//Greetings!
+        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("direwolf20",UnmodifiableAspectList.of(Aspects.BEAST, 20, Aspects.MAN, 4));//https://www.youtube.com/user/direwolf20
+        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("pahimar",UnmodifiableAspectList.of(Aspects.EXCHANGE, 20, Aspects.MAN, 4));//ee3 author?idk
+        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("acdeasdff",UnmodifiableAspectList.of(Aspects.MECHANISM, 20, Aspects.MAN, 4));//yeah this is just for me XD
+    }
+
+    public final EntityBasicAspectGetter listener;
+    EntityBasicAspectGetters(EntityBasicAspectGetter listener) {
+        this.listener = listener;
+    }
 
     public static AspectList<Aspect> getBasicAspectsForEntityType(EntityType<?> entityType){
         return CALCULATED_RESULT.computeIfAbsent(
                 entityType,
                 type -> {
                     var result = new HashAspectList<Aspect>();
-                    result.addAll(ENTITY_TYPE_TO_ASPECTS.getOrDefault(type,UnmodifiableAspectList.EMPTY));
+                    result.addAll(ENTITY_TYPE_TO_ASPECTS.getOrDefault(type, UnmodifiableAspectList.EMPTY));
 
                     for (var entry : ADDITIONAL_ENTITY_TYPE_ASPECTS.entrySet()) {
                         if (type.is(entry.getKey())){
@@ -41,7 +76,8 @@ public class EntityBasicAspectGetter {
                 }
         );
     }
-    public static void addAspectsForEntityTag(TagKey<EntityType<?>> tag,@ShouldNotModify AspectList<Aspect> aspects,boolean overrideAllBefore){
+
+    public static void addAspectsForEntityTag(TagKey<EntityType<?>> tag, @ShouldNotModify AspectList<Aspect> aspects, boolean overrideAllBefore){
         if (overrideAllBefore){
             ADDITIONAL_ENTITY_TYPE_ASPECTS.put(tag,aspects);
         }else {
@@ -52,6 +88,7 @@ public class EntityBasicAspectGetter {
         }
         CALCULATED_RESULT.clear();
     }
+
     public static void addBasicAspectsForEntity(EntityType<?> entityType, @Unmodifiable AspectList<Aspect> aspects){
         var result = new HashAspectList<>();
         result.addAll(aspects);
@@ -63,14 +100,6 @@ public class EntityBasicAspectGetter {
         CALCULATED_RESULT.clear();
     }
 
-    private static final Map<Player,@Unmodifiable AspectList<Aspect>> ASPECTS_FOR_PLAYER = new MapMaker().weakKeys().makeMap();
-    private static final Map<String,@Unmodifiable AspectList<Aspect>> ASPECTS_FOR_PLAYER_SPECIAL_NAMES = new ConcurrentHashMap<>();
-    static {
-        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("azanor",UnmodifiableAspectList.of(Aspects.ELDRITCH, 20, Aspects.MAN, 4));//Greetings!
-        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("direwolf20",UnmodifiableAspectList.of(Aspects.BEAST, 20, Aspects.MAN, 4));//https://www.youtube.com/user/direwolf20
-        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("pahimar",UnmodifiableAspectList.of(Aspects.EXCHANGE, 20, Aspects.MAN, 4));//ee3 author?idk
-        ASPECTS_FOR_PLAYER_SPECIAL_NAMES.put("acdeasdff",UnmodifiableAspectList.of(Aspects.MECHANISM, 20, Aspects.MAN, 4));//yeah this is just for me XD
-    }
     public static @Unmodifiable AspectList<Aspect> getAspectsForPlayer(Player player){
         var playerName = getSafeStringForResourceLocation(player.getGameProfile().getName());
         var specialCase = ASPECTS_FOR_PLAYER_SPECIAL_NAMES.getOrDefault(playerName,UnmodifiableAspectList.EMPTY);
@@ -98,22 +127,27 @@ public class EntityBasicAspectGetter {
         StringBuilder sb = new StringBuilder();
 
         for (char c : input.toCharArray()) {
-            // 1. Convert uppercase A-Z to lowercase a-z automatically
             char lowerC = Character.toLowerCase(c);
-
-            // 2. If it is already a valid Minecraft character, keep it as is
             if ((lowerC >= 'a' && lowerC <= 'z') ||
                     (lowerC >= '0' && lowerC <= '9') ||
                     lowerC == '_') {
                 sb.append(lowerC);
             }
-            // 3. If it is Chinese or any other special char, map 1 char to 1 letter
             else {
-                int letterIndex = Math.abs( c) % 26;
+                int letterIndex = Math.abs(c) % 26;
                 sb.append((char) ('a' + letterIndex));
             }
         }
 
         return sb.toString();
+    }
+
+    public static void init(){
+        addBasicAspectsForEntity(EntityType.ZOMBIE,UnmodifiableAspectList.of(
+                Aspects.UNDEAD, 2,
+                Aspects.MAN, 1,
+                Aspects.EARTH, 1)
+        );
+        //TODO:Fill all in
     }
 }

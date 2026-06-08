@@ -5,11 +5,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.listeners.aspects.entity.EntityBasicAspectGetter;
+import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.api.scan.ScanManager;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
-import static thaumcraft.api.listeners.aspects.entity.EntityBasicAspectGetter.getSafeStringForResourceLocation;
+import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters.getSafeStringForResourceLocation;
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.ENTITY;
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.PLAYER;
 
@@ -65,7 +65,7 @@ public enum EntityScanListeners {
             if (info.hasScannedForType(ENTITY,entityID)){
                 return false;
             }
-            var entityBasicAspects = EntityBasicAspectGetter.getBasicAspectsForEntityType(entityType);
+            var entityBasicAspects = EntityBasicAspectGetters.getBasicAspectsForEntityType(entityType);
             if (ScanManager.CommonScanManager.onMeetAspectsToScan(player,entityBasicAspects)){
                 info.addScannedForType(ENTITY,entityID);
                 return true;
@@ -80,7 +80,7 @@ public enum EntityScanListeners {
         if (info.hasScannedForType(PLAYER,resLoc)){
             return false;
         }
-        var playerBeingScannedAspects = EntityBasicAspectGetter.getAspectsForPlayer(playerBeingScanned);
+        var playerBeingScannedAspects = EntityBasicAspectGetters.getAspectsForPlayer(playerBeingScanned);
         if (ScanManager.CommonScanManager.onMeetAspectsToScan(player,playerBeingScannedAspects)){
             info.addScannedForType(PLAYER,resLoc);
             return true;

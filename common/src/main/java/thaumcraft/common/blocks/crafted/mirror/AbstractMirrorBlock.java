@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.mirror;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,13 +27,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.mirror.AbstractMirrorBlockEntity;
-import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
 
 import java.util.List;
 import java.util.Map;
 
 import static thaumcraft.common.blocks.crafted.jars.JarBlock.JAR_SOUND;
 
+@UtilityLikeAbstraction(reason = "lazy writing")
 public abstract class AbstractMirrorBlock extends SuppressedWarningBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public AbstractMirrorBlock(Properties properties) {

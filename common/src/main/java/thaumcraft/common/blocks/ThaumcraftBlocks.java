@@ -1062,5 +1062,8 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> MANA_BEAN_SURVIVES = TagKey.create(
                 Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "mana_bean_survives")
         );
+        public static final TagKey<Block> REFLECTS_PLAYER = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "reflects_player")
+        );
     }
 }

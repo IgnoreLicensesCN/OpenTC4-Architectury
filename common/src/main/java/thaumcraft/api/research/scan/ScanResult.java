@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public class ScanResult {
 	public byte type = 0;   //1=blocks,2=entities,3=phenomena
 	public String item;

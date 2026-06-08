@@ -3,7 +3,6 @@ package thaumcraft.api.scan.itemstack;
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
