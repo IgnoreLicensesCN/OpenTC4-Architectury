@@ -105,6 +105,7 @@ public class ThaumometerItem extends Item {
                                         0.3F + level.getRandom().nextFloat() * 0.7F,
                                         (int) (player.getBoundingBox().maxY - player.getBoundingBox().minY * 15.0F),
                                         0.03F);
+
                             }
                         }
                         ClientFXUtils.blockRunes(
