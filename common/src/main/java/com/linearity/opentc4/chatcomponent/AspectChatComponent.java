@@ -1,5 +1,6 @@
 package com.linearity.opentc4.chatcomponent;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 
+@UtilityLikeAbstraction(reason = "the string pattern matters")
 public record AspectChatComponent(AspectResourceLocation aspectResourceLocation) implements ComponentContents {
     @Override
     public <T> @NotNull Optional<T> visit(FormattedText.ContentConsumer<T> contentConsumer) {
@@ -19,14 +21,13 @@ public record AspectChatComponent(AspectResourceLocation aspectResourceLocation)
 
     @Override
     public <T> @NotNull Optional<T> visit(FormattedText.StyledContentConsumer<T> styledContentConsumer, Style style) {
-        return styledContentConsumer.accept(style, aspectResourceLocation.toString());
+        return styledContentConsumer.accept(style, wrapAspectResourceLocation(aspectResourceLocation));
     }
 
     public @NotNull String toString() {
-        return "aspect{" + this.aspectResourceLocation + "}";
+        return wrapAspectResourceLocation(aspectResourceLocation);
     }
 
-    public static final String ASPECT_RESOURCE_LOCATION_HEAD = "[AspectResourceLocation]{";
     public static String wrapAspectResourceLocation(@NotNull AspectResourceLocation aspectResourceLocation) {
         return "[AspectResourceLocation]{" + aspectResourceLocation + "}";
     }

@@ -1,6 +1,7 @@
 package com.linearity.opentc4.mixin.client;
 
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,13 +16,18 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.chatcomponent.AspectChatComponent.findFirstWrappedAspectResourceLocation;
 import static com.linearity.opentc4.chatcomponent.AspectChatComponent.unwrapAspectResourceLocation;
 import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 
-//powered by gemini i may have to fix this part(supports itemStack rendering)
+//powered by gemini i may have to fix this part(supports itemStack rendering?)
 //TODO:Test it
 @Mixin(Font.class)
 public abstract class FontRendererMixin {
@@ -181,8 +187,26 @@ public abstract class FontRendererMixin {
     }
 
     @Unique
+    private final Map<AspectResourceLocation,ResourceLocation> opentc4$aspectResLocToTexture = new ConcurrentHashMap<>();
+    @Unique
+    private static final ResourceLocation UNDISCOVERED_TEXTURE = new ResourceLocation(Thaumcraft.MOD_ID,"textures/gui/aspects/_unknown.png");
+    @Unique
     private void opentc4$renderAspect(AspectResourceLocation aspectResourceLocation, float currentX, float g, Matrix4f matrix4f, MultiBufferSource multiBufferSource) {
-        ResourceLocation myTexture = new ResourceLocation(aspectResourceLocation.getNamespace(), "textures/gui/aspects_colored/" + aspectResourceLocation.getPath() + ".png");
+        ResourceLocation myTexture = opentc4$aspectResLocToTexture.computeIfAbsent(
+                aspectResourceLocation,
+                aspResLoc -> new ResourceLocation(aspResLoc.getNamespace(), "textures/gui/aspects_colored/" + aspResLoc.getPath() + ".png")
+        );
+        var aspect = ALL_ASPECTS.get(aspectResourceLocation);
+        if (aspect == null) {
+            return;
+        }
+        var player = Minecraft.getInstance().player;
+        if (player != null){
+            var info = ResearchAndScannedInfo.getFromPlayer(player);
+            if (!info.hasResearchAspect(aspect)){
+                myTexture = UNDISCOVERED_TEXTURE;
+            }
+        }
 
         VertexConsumer consumer = multiBufferSource.getBuffer(RenderType.text(myTexture));
 
