@@ -11,16 +11,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.List;
 
 import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
 
-public class DeathGazeEffect extends MobEffect implements PreventMilkRemoveEffect {
+public class DeathGazeEffect extends MobEffect implements IPreventMilkRemoveEffect {
 
     public static final int DEATH_GAZE_EFFECT_COLOR = 0x664433;
     public static int warpVignette = 0;

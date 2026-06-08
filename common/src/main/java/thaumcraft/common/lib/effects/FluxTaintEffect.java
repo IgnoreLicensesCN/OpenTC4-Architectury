@@ -7,12 +7,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.api.entities.ITaintedMob;
 
 import java.util.Objects;
 
-public class FluxTaintEffect extends MobEffect implements PreventMilkRemoveEffect
+public class FluxTaintEffect extends MobEffect implements IPreventMilkRemoveEffect
 {
     public FluxTaintEffect()
     {

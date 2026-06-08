@@ -1,25 +1,16 @@
 package tc4tweak.modules.getResearch;
 
-import tc4tweak.modules.FlushableCache;
-import thaumcraft.api.research.client.ResearchCategory;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-class ResearchItemCache extends FlushableCache<Map<ResearchItemResourceLocation, ResearchItem>> {
-    @Override
-    protected Map<ResearchItemResourceLocation, ResearchItem> createCache() {
-        return ResearchCategory.researchCategories.values().stream()
-                .flatMap(l -> l.researches.values().stream())
-                .collect(Collectors.toMap(
-                        i -> i.key,
-                        Function.identity(),
-                        (u, v) -> u,
-                        LinkedHashMap::new
-                ));
-    }
+@Deprecated(forRemoval = true)
+class ResearchItemCache /*extends FlushableCache<Map<ResearchItemResourceLocation, ResearchItem>>*/ {
+//    @Override
+//    protected Map<ResearchItemResourceLocation, ResearchItem> createCache() {
+//        return ResearchCategory.researchCategories.values().stream()
+//                .flatMap(l -> l.researches.values().stream())
+//                .collect(Collectors.toMap(
+//                        i -> i.key,
+//                        Function.identity(),
+//                        (u, v) -> u,
+//                        LinkedHashMap::new
+//                ));
+//    }
 }

@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinstackhelper.MilkContext;
+import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
@@ -30,7 +30,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Mixin(value=LivingEntity.class,priority = 214748364)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin implements InMilkContextAccessor {
+    @Unique
+    private boolean opentc4$isInMilkContext = false;
+
+    @Override
+    public void opentc4$setInMilkContext(boolean inMilkContext) {
+        this.opentc4$isInMilkContext = inMilkContext;
+    }
+
     @Inject(method = "tick",at=@At("HEAD"))
     public void opentc4$livingTickBefore(CallbackInfo ci) {
     }
@@ -65,11 +73,11 @@ public abstract class LivingEntityMixin {
     @Unique private final Map<MobEffect, MobEffectInstance> opentc4$storedEffectsToPreventRemove = new ConcurrentHashMap<>();
     @Inject(method = "removeAllEffects",at=@At("HEAD"))
     public void opentc4$preventMilkRemoveEffect(CallbackInfoReturnable<Boolean> cir) {
-        if (!MilkContext.FROM_MILK.get()) {return;}//a bit trick from chatGPT
+        if (!opentc4$isInMilkContext) {return;}
         for (var entry : activeEffects.entrySet()) {
             var effect = entry.getKey();
             var effectInstance = entry.getValue();
-            if (effect instanceof PreventMilkRemoveEffect preventMilkRemoveEffect){
+            if (effect instanceof IPreventMilkRemoveEffect preventMilkRemoveEffect){
                 if (preventMilkRemoveEffect.preventMilkRemove(effectInstance,(LivingEntity)(Object)this)){
                     opentc4$storedEffectsToPreventRemove.put(effect, effectInstance);
                 }

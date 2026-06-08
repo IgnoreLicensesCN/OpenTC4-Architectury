@@ -1,21 +1,20 @@
 package tc4tweak.modules.blockJar;
 
-import tc4tweak.network.NetworkedConfiguration;
-
+@Deprecated(forRemoval = true)
 public class EntityCollisionBox {
-    @Deprecated(forRemoval = true)
-    public static final float[] VANILLA_PARAMETERS = {
-        0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F
-    };
-    public static final float[] SMALLER_PARAMETERS = {
-        0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F
-    };
-
-    @Deprecated(forRemoval = true,since = "always use smaller jar now")
-    public static float getBlockJarEntityCollisionBoxParameter(int index) {
-        if (NetworkedConfiguration.isSmallerJar())
-            return SMALLER_PARAMETERS[index];
-        else
-            return VANILLA_PARAMETERS[index];
-    }
+//    @Deprecated(forRemoval = true)
+//    public static final float[] VANILLA_PARAMETERS = {
+//        0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F
+//    };
+//    public static final float[] SMALLER_PARAMETERS = {
+//        0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F
+//    };
+//
+//    @Deprecated(forRemoval = true,since = "always use smaller jar now")
+//    public static float getBlockJarEntityCollisionBoxParameter(int index) {
+//        if (NetworkedConfiguration.isSmallerJar())
+//            return SMALLER_PARAMETERS[index];
+//        else
+//            return VANILLA_PARAMETERS[index];
+//    }
 }

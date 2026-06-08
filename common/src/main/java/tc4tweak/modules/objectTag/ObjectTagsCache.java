@@ -1,17 +1,7 @@
 package tc4tweak.modules.objectTag;
 
-import com.linearity.opentc4.OpenTC4;
-import net.minecraft.world.item.Item;
-import tc4tweak.modules.FlushableCache;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 //congratulations!we dont need itemmeta! consider all of them 0!
-class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList<Aspect>>> {
+class ObjectTagsCache /*extends FlushableCache<ConcurrentMap<Item, AspectList<Aspect>>> */{
 
 //    private static TIntObjectMap<AspectList> bakeSubmap(@SuppressWarnings("rawtypes") Map.Entry<List, AspectList> e) {
 //        TIntObjectMap<AspectList> submap = new TIntObjectHashMap<>();
@@ -28,22 +18,22 @@ class ObjectTagsCache extends FlushableCache<ConcurrentMap<Item, AspectList<Aspe
 //        }
 //        return submap;
 //    }
-
-
-    @Override
-    public ConcurrentMap<Item, AspectList<Aspect>> createCache() {
-        ConcurrentHashMap<Item, AspectList<Aspect>> map = new ConcurrentHashMap<>();
-        ThaumcraftApi.objectTags.entrySet().parallelStream().forEach(e -> {
-            Item key = e.getKey();
-            AspectList<Aspect> val = e.getValue();
-
-            map.merge(key, val.copy(),
-                    (a, b) -> {
-                        OpenTC4.LOGGER.warn("duplicate aspect tag for {}", key);
-                        return a.copy().addAll(b);
-                    }
-            );
-        });
-        return map;
-    }
+//
+//
+//    @Override
+//    public ConcurrentMap<Item, AspectList<Aspect>> createCache() {
+//        ConcurrentHashMap<Item, AspectList<Aspect>> map = new ConcurrentHashMap<>();
+//        ThaumcraftApi.objectTags.entrySet().parallelStream().forEach(e -> {
+//            Item key = e.getKey();
+//            AspectList<Aspect> val = e.getValue();
+//
+//            map.merge(key, val.copy(),
+//                    (a, b) -> {
+//                        OpenTC4.LOGGER.warn("duplicate aspect tag for {}", key);
+//                        return a.copy().addAll(b);
+//                    }
+//            );
+//        });
+//        return map;
+//    }
 }

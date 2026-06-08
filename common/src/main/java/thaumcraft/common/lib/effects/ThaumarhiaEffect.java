@@ -1,15 +1,13 @@
 package thaumcraft.common.lib.effects;
 
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
-import thaumcraft.common.config.ConfigBlocks;
 
-public class ThaumarhiaEffect extends MobEffect implements PreventMilkRemoveEffect {
+public class ThaumarhiaEffect extends MobEffect implements IPreventMilkRemoveEffect {
     protected ThaumarhiaEffect() {
         super(MobEffectCategory.HARMFUL, 0x664477);
     }

@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinstackhelper.MilkContext;
+import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MilkBucketItem;
@@ -14,23 +14,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MilkBucketItemMixin {
     @Inject(
             method = "finishUsingItem",
-            at = @At("HEAD")
+            at = @At(value = "INVOKE",target = "Lnet/minecraft/world/entity/LivingEntity;removeAllEffects()Z")
     )
     private void opentc4$markMilkContext(
             ItemStack stack, Level level, LivingEntity entity,
             CallbackInfoReturnable<ItemStack> cir
     ) {
-        MilkContext.FROM_MILK.set(true);//a bit trick from chatGPT
+        ((InMilkContextAccessor)entity).opentc4$setInMilkContext(true);
     }
 
     @Inject(
             method = "finishUsingItem",
-            at = @At("RETURN")
+            at = @At(value = "INVOKE_ASSIGN",target = "Lnet/minecraft/world/entity/LivingEntity;removeAllEffects()Z")
     )
     private void opentc4$clearMilkContext(
-            ItemStack itemStack, Level level, LivingEntity livingEntity, CallbackInfoReturnable<ItemStack> cir
+            ItemStack itemStack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir
     ) {
-        MilkContext.FROM_MILK.remove();//a bit trick from chatGPT
+        ((InMilkContextAccessor)entity).opentc4$setInMilkContext(false);
     }
 }
 

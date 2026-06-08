@@ -5,9 +5,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
-public class BlurredVisionEffect extends MobEffect  implements PreventMilkRemoveEffect {
+public class BlurredVisionEffect extends MobEffect  implements IPreventMilkRemoveEffect {
     protected BlurredVisionEffect() {
         super(MobEffectCategory.HARMFUL, 0x808080);
     }

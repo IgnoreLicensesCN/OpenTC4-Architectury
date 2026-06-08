@@ -44,7 +44,6 @@ public final class OpenTC4 {
     public static void init(PlatformUniqueUtils utils) {
         OpenTC4.platformUtils = utils;
 
-        //sorry for abc but i'm tired
         utils.registerCommand(CommandThaumcraft::register);
 
 

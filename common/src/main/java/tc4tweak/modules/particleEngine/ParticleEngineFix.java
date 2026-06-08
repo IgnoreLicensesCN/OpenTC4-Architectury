@@ -1,18 +1,5 @@
 package tc4tweak.modules.particleEngine;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import net.minecraft.client.Minecraft;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 @Deprecated(forRemoval = true,since = "use mc's own")
 public enum ParticleEngineFix {
 //    INSTANCE;

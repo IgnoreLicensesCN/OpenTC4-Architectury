@@ -8,9 +8,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
-public class SunScornedEffect extends MobEffect implements PreventMilkRemoveEffect {
+public class SunScornedEffect extends MobEffect implements IPreventMilkRemoveEffect {
     protected SunScornedEffect() {
         super(MobEffectCategory.HARMFUL, 0xf8d86a);
     }

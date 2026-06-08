@@ -5,9 +5,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
-public class WarpWardEffect extends MobEffect implements PreventMilkRemoveEffect {
+public class WarpWardEffect extends MobEffect implements IPreventMilkRemoveEffect {
     protected WarpWardEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xe0f2f7);
     }

@@ -2,17 +2,14 @@ package thaumcraft.common.lib.effects;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.entity.EntityTypeTest;
-import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
 import java.util.List;
 
 import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
 
-public class InfectiousVisExhaustEffect extends VisExhaustEffect implements PreventMilkRemoveEffect {
+public class InfectiousVisExhaustEffect extends VisExhaustEffect implements IPreventMilkRemoveEffect {
     public InfectiousVisExhaustEffect() {
         super(MobEffectCategory.HARMFUL,0x665577);
     }
