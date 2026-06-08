@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IResearchConnectableToOtherAspect;
+import thaumcraft.api.aspects.aspect.IResearchConnectableToOtherAspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;

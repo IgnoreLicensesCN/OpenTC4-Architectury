@@ -1,9 +1,12 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.aspect;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.ShouldNotModify;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 
@@ -23,7 +26,7 @@ public interface IAspectReducibleToPrimal {
         private static final Map<@Unmodifiable AspectList<Aspect>, AspectList<PrimalAspect>> reducedToPrimalMapMerged = new MapMaker().weakKeys().makeMap();
     }
 
-    static @Modifiable AspectList<PrimalAspect> reduceToPrimals(@Unmodifiable AspectList<Aspect> aspectsIn, boolean merge) {
+    static @Modifiable AspectList<PrimalAspect> reduceToPrimals(@ShouldNotModify AspectList<Aspect> aspectsIn, boolean merge) {
         var usingMap = merge ? ReducedCache.reducedToPrimalMapMerged : ReducedCache.reducedToPrimalMap;
         return usingMap.computeIfAbsent(
                 aspectsIn, toReduce -> {

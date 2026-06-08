@@ -40,15 +40,13 @@ public class WarpEvents {
       player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.6")),true);
    }
 
-   public static void grantResearch(Player player, int times) {
+   public static void grantResearch(ServerPlayer player, int times) {
       int amt = 1 + player.getRandom().nextInt(times);
       var info = ResearchAndScannedInfo.getFromPlayer(player);
       for(int a = 0; a < amt; ++a) {
          var aspectTypes = new ArrayList<PrimalAspect>(Aspects.getPrimalAspects());
          var aspect = aspectTypes.get(player.getRandom().nextInt(aspectTypes.size()));
-         info.addResearchAspect(aspect,1);
-
-         new PacketUpdateAspectS2C(aspect.getAspectKey(), (short) 1, info.getResearchAspect(aspect)).sendTo((ServerPlayer)player);
+         info.addResearchAspectAndSyncToPlayer(aspect,1,player);
       }
    }
 

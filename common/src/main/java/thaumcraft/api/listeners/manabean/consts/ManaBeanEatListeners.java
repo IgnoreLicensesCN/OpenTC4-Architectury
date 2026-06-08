@@ -49,12 +49,7 @@ public enum ManaBeanEatListeners {
                     var aspect = context.aspectOwning;
                     if (!aspect.isEmpty() && level.random.nextInt(4) == 0){
                         var info = ResearchAndScannedInfo.getFromPlayer(player);
-                        info.addResearchAspect(aspect,1);
-                        new PacketUpdateAspectS2C(
-                                aspect,
-                                1,
-                                info.getResearchAspect(aspect)
-                        ).sendTo(player);
+                        info.addResearchAspectAndSyncToPlayer(aspect,1,player);
                     }
                 }
             }

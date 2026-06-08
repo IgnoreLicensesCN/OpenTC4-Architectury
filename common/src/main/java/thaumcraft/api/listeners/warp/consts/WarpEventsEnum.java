@@ -176,10 +176,7 @@ public enum WarpEventsEnum {
             WarpInfo info = WarpInfo.getFromPlayer(player);
             if (info.getStickyWarp() > 0) {
                 info.setStickyWarp(-1);
-                if (player instanceof ServerPlayer serverPlayer) {
-                    info.syncSendPacket(serverPlayer);
-                    new PacketChangeWarpS2C((byte) 1, -1).sendTo(serverPlayer);
-                }
+                new PacketChangeWarpS2C((byte) 1, -1).sendTo(player);
             }
 
             player.displayClientMessage(

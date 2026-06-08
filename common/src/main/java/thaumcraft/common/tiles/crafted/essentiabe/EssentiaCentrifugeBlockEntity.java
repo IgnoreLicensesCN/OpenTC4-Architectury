@@ -14,6 +14,8 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -22,7 +24,7 @@ import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAcces
 import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAccessors.ASPECT_OUT;
 
 public class EssentiaCentrifugeBlockEntity extends TileThaumcraft 
-        implements 
+        implements
         IEssentiaTransportInBlockEntity,
         IEssentiaTransportOutBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,

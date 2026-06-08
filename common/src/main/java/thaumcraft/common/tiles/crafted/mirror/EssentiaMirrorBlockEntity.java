@@ -5,17 +5,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
-import thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteEssentiaDrainerBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Set;
 
 public class EssentiaMirrorBlockEntity extends AbstractMirrorBlockEntity
         implements
-        IRemoteAspectDrainerBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>
-{
+        IRemoteEssentiaDrainerBlockEntity,
+        IRemoteDrainableEssentiaSourceBlockEntity {
     public EssentiaMirrorBlockEntity(BlockEntityType<? extends EssentiaMirrorBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -33,19 +32,19 @@ public class EssentiaMirrorBlockEntity extends AbstractMirrorBlockEntity
     }
 
     @Override
-    public int drainEssentiaRemote(Aspect aspect, int amount, int range, Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> drainerMet) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, int range, Set<IRemoteEssentiaDrainerBlockEntity> drainerMet) {
         if (getValidLinkedMirror() instanceof EssentiaMirrorBlockEntity linkedMirror && linkedMirror.checkHasValidLinkTo(this)) {
             return linkedMirror.drainEssentiaRemoteAsProxy(aspect, amount, range, drainerMet);
         }
         return 0;
     }
 
-    protected int drainEssentiaRemoteAsProxy(Aspect aspect, int amount, int range, Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> drainerMet) {
-        return IRemoteAspectDrainerBlockEntity.super.drainEssentiaRemote(aspect, Math.clamp(amount,0,getMaxDrainAmount()), range, drainerMet);
+    protected int drainEssentiaRemoteAsProxy(Aspect aspect, int amount, int range, Set<IRemoteEssentiaDrainerBlockEntity> drainerMet) {
+        return IRemoteEssentiaDrainerBlockEntity.super.drainEssentiaRemote(aspect, Math.clamp(amount,0,getMaxDrainAmount()), range, drainerMet);
     }
 
     @Override
-    public int drainAspectRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         return drainEssentiaRemote(aspect, amount, getDrainRange(), metDrainers);
     }
 }

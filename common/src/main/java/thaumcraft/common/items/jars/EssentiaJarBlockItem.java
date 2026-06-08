@@ -138,7 +138,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (!filterAspect.isEmpty()) {
             Component filterComponent;
             if (player != null && !filterAspect.hasPlayerDiscovered(player)) {
-                filterComponent = Component.translatable("tc.aspect.unknown")
+                filterComponent = Component.translatable("aspect.thaumcraft.unknown")
                         .withStyle(ChatFormatting.DARK_PURPLE);
             } else {
                 filterComponent = filterAspect.getName()

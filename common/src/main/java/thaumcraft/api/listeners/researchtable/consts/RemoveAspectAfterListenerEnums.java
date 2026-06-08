@@ -39,11 +39,7 @@ public enum RemoveAspectAfterListenerEnums {
                         .2F,.9F + context.atLevel.random.nextFloat()*0.2f
                 );
                 var info = ResearchAndScannedInfo.getFromPlayer(context.player);
-                info.addResearchAspect(context.aspectToRemove,1);
-                new PacketUpdateAspectS2C(
-                        context.aspectToRemove.aspectKey,
-                        0,
-                        info.getResearchAspect(context.aspectToRemove)).sendTo(context.player);
+                info.addResearchAspectAndSyncToPlayer(context.aspectToRemove,1,context.player);
             }
         }
     });

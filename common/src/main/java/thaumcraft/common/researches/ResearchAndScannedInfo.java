@@ -7,11 +7,14 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
 import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncAllScannedS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
@@ -26,12 +29,27 @@ import java.util.concurrent.ConcurrentHashMap;
 // not all research need this,I can just say "you've picked PrimePearl >= 1(MC statics or whatever)"(or i may lookup items scanned for resource location) so research is unlocked
 // (or some advancement?like twilight forest)
 public class ResearchAndScannedInfo {
+    public boolean playerScanning = false;
     @ApiStatus.Internal//idk if use public do you have other ideas than methods below?
     public final Collection<ResearchItemResourceLocation> completedResearches = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
     public final Collection<ClueResourceLocation> completedClues = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
     public /*client need ordered one to display so not final*/ @NotNull AspectList<Aspect> owningResearchAspect = new HashAspectList<>();
+    {
+        owningResearchAspect.addAll(INITIAL_ASPECTS);
+    }
+    public static final AspectList<Aspect> INITIAL_ASPECTS = new HashAspectList<>();
+    static {
+        INITIAL_ASPECTS.addAll(UnmodifiableAspectList.of(
+                Aspects.EARTH,10,
+                Aspects.WATER,10,
+                Aspects.FIRE,10,
+                Aspects.AIR,10,
+                Aspects.ORDER,10,
+                Aspects.ENTROPY,10
+        ));
+    }
     @ApiStatus.Internal
     public final Map<ScannedTypeResourceLocation, Set<ResourceLocation>> scannedThings = new ConcurrentHashMap<>();
 
@@ -56,6 +74,10 @@ public class ResearchAndScannedInfo {
     }
     public void addResearchAspect(Aspect aspect,int amount){
         owningResearchAspect.addAll(aspect,amount);
+    }
+    public void addResearchAspectAndSyncToPlayer(Aspect aspect,int amount, ServerPlayer serverPlayer){
+        this.addResearchAspect(aspect, amount);
+        new PacketUpdateAspectS2C(aspect, amount, this.getResearchAspect(aspect)).sendTo(serverPlayer);
     }
     public void setResearchAspect(Aspect aspect,int amount){
         owningResearchAspect.set(aspect,amount);

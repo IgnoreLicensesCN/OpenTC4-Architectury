@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;

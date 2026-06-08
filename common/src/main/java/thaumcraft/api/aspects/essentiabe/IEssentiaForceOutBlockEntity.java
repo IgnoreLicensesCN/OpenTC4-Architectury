@@ -1,7 +1,8 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 
 //usually use IEssentiaTransportOutBlockEntity

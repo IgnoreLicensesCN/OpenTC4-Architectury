@@ -112,12 +112,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         var pos = this.getBlockPos();
         var level = this.level;
         var levelResLoc = level.dimension().location();
-//        var posWithDim = new BlockPosWithDim(
-//                level == null ? UNKNOWN_DIM : level.dimension().location(), pos
-//        );
         this.id = NodeIDResourceLocation.of(
                 levelResLoc.getNamespace() + "_" + levelResLoc.getPath(),
-                pos.getX() + "_" + pos.getY() + "_" + pos.getZ()
+                String.valueOf(pos.getX()).replace('-','_')
+                        + "_" + String.valueOf(pos.getY()).replace('-','_')
+                        + "_" + String.valueOf(pos.getZ()).replace('-','_')
         );
 
         return this.id;
@@ -391,12 +390,14 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
     public void readNodeInfo(NodeInfo nodeInfo) {
-
         this.id = nodeInfo.nodeId;
         this.nodeType = nodeInfo.nodeType;
         this.nodeModifier = nodeInfo.nodeModifier;
         this.aspects = nodeInfo.nodeAspects;
         this.aspectsBase = nodeInfo.nodeAspectsBase;
+    }
+    public NodeInfo getNodeInfo() {
+        return new NodeInfo(this.id, this.nodeType, this.nodeModifier, this.aspects, this.aspectsBase);
     }
 
     @Override
@@ -421,7 +422,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         if (this.id == null) {
             this.id = this.generateId();
         }
-        NODE_INFO.writeToCompoundTag(tag, new NodeInfo(this.id, this.nodeType, this.nodeModifier, this.aspects, this.aspectsBase));
+        NODE_INFO.writeToCompoundTag(tag, getNodeInfo());
         NODE_LAST_ACTIVE_ACCESSOR.writeLongToCompoundTag(tag, this.lastActiveMillis);
     }
 

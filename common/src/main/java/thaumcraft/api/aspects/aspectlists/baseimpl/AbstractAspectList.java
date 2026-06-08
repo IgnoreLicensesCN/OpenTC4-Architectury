@@ -36,7 +36,7 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
 //        if (aspects != null && !this.aspects.isEmpty()) {
 //            for (var aspect : this.getAspectsSorted()) {
 //                if (player != null && !aspect.hasPlayerDiscovered(player)) {
-//                    aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
+//                    aspectDescriptions.add(Component.translatable("aspect.thaumcraft.unknown"));
 //                } else {
 //                    aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
 //                }
@@ -369,7 +369,7 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
         if (aspects != null && !this.aspects.isEmpty()) {
             for (var aspect : this.getAspectsSorted()) {
                 if (player != null && !aspect.hasPlayerDiscovered(player)) {
-                    aspectDescriptions.add(Component.translatable("tc.aspect.unknown"));
+                    aspectDescriptions.add(Component.translatable("aspect.thaumcraft.unknown"));
                 } else {
                     aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
                 }

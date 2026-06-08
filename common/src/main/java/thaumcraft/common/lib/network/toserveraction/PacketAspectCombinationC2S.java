@@ -12,9 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
@@ -77,9 +76,12 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       costAspect(aspectProviderBE,serverPlayer,aspect1, canUseProviderAspect1);
       costAspect(aspectProviderBE,serverPlayer,aspect2, canUseProviderAspect2);
 
-      // 完成组合，添加新的 aspect 知识
       if (!combinationResult.isEmpty()) {
-         ScanManager.checkAndSyncAspectKnowledge(serverPlayer, combinationResult, 1);
+         ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
+         if (!info.hasResearchAspect(combinationResult)){
+            new PacketAspectDiscoveryS2C(combinationResult).sendTo(serverPlayer);
+         }
+         info.addResearchAspectAndSyncToPlayer(combinationResult,1,serverPlayer);
       }
 
    }
@@ -116,9 +118,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       if (info.getResearchAspect(aspect) <= 0 && canUseProviderAspect) {
          aspectProviderBE.costAspect(aspect,1);
       } else {
-         info.addResearchAspect(aspect, (short) -1);
-         new PacketUpdateAspectS2C(aspect, (short) 0,
-                 info.getResearchAspect(aspect)).sendTo(player);
+         info.addResearchAspectAndSyncToPlayer(aspect, (short) -1,player);
       }
    }
 

@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IWorldlyCentiVisContainerBlockEntity;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 
-public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect> {
+public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect>, INodeInfoProviderBlockEntity {
 
 	/**
 	 * Unique identifier to distinguish nodes. Normal node id's are based on world id and coordinates

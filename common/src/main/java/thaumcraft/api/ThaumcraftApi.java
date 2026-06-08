@@ -87,15 +87,6 @@ public class ThaumcraftApi {
     }
 
     /**
-     * not really working atm, so ignore it for now
-     *
-     * @param scanEventHandler
-     */
-    public static void registerScanEventhandler(IScanEventHandler scanEventHandler) {
-        scanEventhandlers.add(scanEventHandler);
-    }
-
-    /**
      * This is used to add aspects to entities which you can then scan using a thaumometer.
      * Also used to calculate vis drops from mobs.
      *

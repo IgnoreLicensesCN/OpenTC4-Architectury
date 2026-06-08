@@ -12,7 +12,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
-import thaumcraft.api.aspects.IEssentiaTransportConnectableBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportConnectableBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
 public class AbstractEssentiaTubeBlock

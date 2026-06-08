@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.menu.menu.DeconstructionTableMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;

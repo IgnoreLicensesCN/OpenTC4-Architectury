@@ -55,14 +55,9 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
             return;
         }
         aspectsCost.forEach((aspectTypeRequired,aspectsAmountCost) -> {
-            info.addResearchAspect(aspectTypeRequired, (short) (-aspectsAmountCost));
-            new PacketUpdateAspectS2C(
-                    aspectTypeRequired.aspectKey,
-                    (short) (-aspectsAmountCost),
-                    info.getResearchAspect(aspectTypeRequired))
-                    .sendTo(player);
+            info.addResearchAspectAndSyncToPlayer(aspectTypeRequired, (-aspectsAmountCost),player);
         });
         new PacketResearchCompleteS2C(research.key).sendTo(player);
-        research.completeResearch(player);
+        research.completeResearchFor(player);
     }
 }

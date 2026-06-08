@@ -1,4 +1,4 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;

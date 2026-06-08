@@ -1,7 +1,8 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspect;
 
 public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConnectableBlockEntity{
     /**
@@ -15,7 +16,7 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      * @return how much was actually taken
      */
     //directly take
-    int takeEssentia(Aspect aspect, int amount,@NotNull Direction outputToDirection);
+    int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection);
     /**
      * remove the specified amount of essentia from this transport tile
      * @return how much was actually taken

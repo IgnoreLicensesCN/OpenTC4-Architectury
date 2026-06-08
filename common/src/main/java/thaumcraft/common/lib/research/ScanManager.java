@@ -49,6 +49,7 @@ import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspec
 import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
 import static thaumcraft.api.nodes.NodeType.*;
 
+@Deprecated(forRemoval = true)
 public class ScanManager implements IScanEventHandler {
     public ScanResult scanPhenomena(ItemStack stack, Level world, Player player) {
         return null;
@@ -283,122 +284,122 @@ public class ScanManager implements IScanEventHandler {
 //      return hash.toString().hashCode();
     }
 
-    public static AspectList<Aspect> generateEntityAspects(Entity entity) {
-        AspectList<Aspect> tags = null;
-        String s = null;
+//    public static AspectList<Aspect> generateEntityAspects(Entity entity) {
+//        AspectList<Aspect> tags = null;
+//        String s = null;
+//
+//        try {
+//            s = entity.getType()
+//                    .arch$registryName()
+//                    .toString();
+//        } catch (Throwable var11) {
+//            OpenTC4.LOGGER.error(var11);
+//            try {
+//                s = entity.getName()
+//                        .getString();
+//            } catch (Throwable ignored) {
+//            }
+//        }
+//
+//        if (s == null) {
+//            s = "generic";
+//        }
+//
+//        if (entity instanceof Player) {
+//            s = "player_" + entity.getName()
+//                    .getString();
+//            tags = new LinkedHashAspectList<>();
+//            tags.addAll(Aspects.MAN, 4);
+//            if (entity.getName()
+//                    .getString()
+//                    .equalsIgnoreCase("azanor")) {//Greetings!
+//                tags.addAll(Aspects.ELDRITCH, 20);
+//            } else if (entity.getName()
+//                    .getString()
+//                    .equalsIgnoreCase("direwolf20")) {//https://www.youtube.com/user/direwolf20
+//                tags.addAll(Aspects.BEAST, 20);
+//            } else if (entity.getName()
+//                    .getString()
+//                    .equalsIgnoreCase("pahimar")) {//ee3 author?idk
+//                tags.addAll(Aspects.EXCHANGE, 20);
+//            } else if (entity.getName()
+//                    .getString()
+//                    .equalsIgnoreCase("acdeasdff")) {//yeah this is just for me XD
+//                tags.addAll(Aspects.MECHANISM, 20);
+//            } else {
+//                Random rand = new Random(s.hashCode());
+//                Aspect[] posa = Aspects.ALL_ASPECTS.values()
+//                        .toArray(new Aspect[0]);
+//                tags.addAll(posa[rand.nextInt(posa.length)], 4);
+//                tags.addAll(posa[rand.nextInt(posa.length)], 4);
+//                tags.addAll(posa[rand.nextInt(posa.length)], 4);
+//            }
+//        } else {
+//            label73:
+//            for (ThaumcraftApi.EntityTags et : ThaumcraftApi.scanEntities) {
+//                if (et.entityName.equals(s)) {
+//                    if (et.nbts != null && et.nbts.length != 0) {
+//                        CompoundTag tc = new CompoundTag();
+//                        entity.save(tc);
+//
+//                        for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
+//                            if (!tc.contains(nbt.name)
+//                                    || !Objects.equals(Utils.getNBTDataFromId(tc, nbt.name), nbt.value)) {
+//                                continue label73;
+//                            }
+//                        }
+//
+//                    }
+//                    tags = et.aspects;
+//                }
+//            }
+//        }
+//
+//        return tags;
+//    }
 
-        try {
-            s = entity.getType()
-                    .arch$registryName()
-                    .toString();
-        } catch (Throwable var11) {
-            OpenTC4.LOGGER.error(var11);
-            try {
-                s = entity.getName()
-                        .getString();
-            } catch (Throwable ignored) {
-            }
-        }
-
-        if (s == null) {
-            s = "generic";
-        }
-
-        if (entity instanceof Player) {
-            s = "player_" + entity.getName()
-                    .getString();
-            tags = new LinkedHashAspectList<>();
-            tags.addAll(Aspects.MAN, 4);
-            if (entity.getName()
-                    .getString()
-                    .equalsIgnoreCase("azanor")) {
-                tags.addAll(Aspects.ELDRITCH, 20);
-            } else if (entity.getName()
-                    .getString()
-                    .equalsIgnoreCase("direwolf20")) {//https://www.youtube.com/user/direwolf20
-                tags.addAll(Aspects.BEAST, 20);
-            } else if (entity.getName()
-                    .getString()
-                    .equalsIgnoreCase("pahimar")) {//ee3 author?idk
-                tags.addAll(Aspects.EXCHANGE, 20);
-            } else if (entity.getName()
-                    .getString()
-                    .equalsIgnoreCase("acdeasdff")) {//yeah this is just for me XD
-                tags.addAll(Aspects.MECHANISM, 20);
-            } else {
-                Random rand = new Random(s.hashCode());
-                Aspect[] posa = Aspects.ALL_ASPECTS.values()
-                        .toArray(new Aspect[0]);
-                tags.addAll(posa[rand.nextInt(posa.length)], 4);
-                tags.addAll(posa[rand.nextInt(posa.length)], 4);
-                tags.addAll(posa[rand.nextInt(posa.length)], 4);
-            }
-        } else {
-            label73:
-            for (ThaumcraftApi.EntityTags et : ThaumcraftApi.scanEntities) {
-                if (et.entityName.equals(s)) {
-                    if (et.nbts != null && et.nbts.length != 0) {
-                        CompoundTag tc = new CompoundTag();
-                        entity.save(tc);
-
-                        for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
-                            if (!tc.contains(nbt.name)
-                                    || !Objects.equals(Utils.getNBTDataFromId(tc, nbt.name), nbt.value)) {
-                                continue label73;
-                            }
-                        }
-
-                    }
-                    tags = et.aspects;
-                }
-            }
-        }
-
-        return tags;
-    }
-
-    private static AspectList<Aspect> generateNodeAspects(Level world, String node) {
-        AspectList<Aspect> tags = new LinkedHashAspectList<>();
-        BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
-        if (loc != null) {
-            ResourceLocation dim = loc.dim();
-            BlockPos pos = loc.pos();
-            if (Objects.equals(dim, world.dimension()
-                    .location()
-            )) {
-                BlockEntity tnb = world.getBlockEntity(pos);
-                if (tnb instanceof INodeBlockEntity iNodeBlockEntity) {
-                    AspectList<Aspect> ta = iNodeBlockEntity.getAspects();
-
-                    for (var a : ta.getAspectsSorted()) {
-                        tags.mergeWithHighest(a, Math.max(4, ta.get(a) / 10));
-                    }
-
-                    var nodeType = iNodeBlockEntity.getNodeType();
-                    //TODO:API
-                    if (nodeType == UNSTABLE) {
-                        tags.mergeWithHighest(Aspects.ENTROPY, 4);
-                    }
-                    if (nodeType == HUNGRY) {
-                        tags.mergeWithHighest(Aspects.HUNGER, 4);
-                    }
-                    if (nodeType == TAINTED) {
-                        tags.mergeWithHighest(Aspects.TAINT, 4);
-                    }
-                    if (nodeType == PURE) {
-                        tags.mergeWithHighest(Aspects.HEAL, 2);
-                        tags.addAll(Aspects.ORDER, 2);
-                    }
-                    if (nodeType == DARK) {
-                        tags.mergeWithHighest(Aspects.DEATH, 2);
-                        tags.addAll(Aspects.DARKNESS, 2);
-                    }
-                }
-            }
-        }
-
-        return tags.size() > 0 ? tags : null;
-    }
+//    private static AspectList<Aspect> generateNodeAspects(Level world, String node) {
+//        AspectList<Aspect> tags = new LinkedHashAspectList<>();
+//        BlockPosWithDim loc = AbstractNodeBlockEntity.nodeIdToLocations.get(node);
+//        if (loc != null) {
+//            ResourceLocation dim = loc.dim();
+//            BlockPos pos = loc.pos();
+//            if (Objects.equals(dim, world.dimension()
+//                    .location()
+//            )) {
+//                BlockEntity tnb = world.getBlockEntity(pos);
+//                if (tnb instanceof INodeBlockEntity iNodeBlockEntity) {
+//                    AspectList<Aspect> ta = iNodeBlockEntity.getAspects();
+//
+//                    for (var a : ta.getAspectsSorted()) {
+//                        tags.mergeWithHighest(a, Math.max(4, ta.get(a) / 10));
+//                    }
+//
+//                    var nodeType = iNodeBlockEntity.getNodeType();
+//                    //TODO:API
+//                    if (nodeType == UNSTABLE) {
+//                        tags.mergeWithHighest(Aspects.ENTROPY, 4);
+//                    }
+//                    if (nodeType == HUNGRY) {
+//                        tags.mergeWithHighest(Aspects.HUNGER, 4);
+//                    }
+//                    if (nodeType == TAINTED) {
+//                        tags.mergeWithHighest(Aspects.TAINT, 4);
+//                    }
+//                    if (nodeType == PURE) {
+//                        tags.mergeWithHighest(Aspects.HEAL, 2);
+//                        tags.addAll(Aspects.ORDER, 2);
+//                    }
+//                    if (nodeType == DARK) {
+//                        tags.mergeWithHighest(Aspects.DEATH, 2);
+//                        tags.addAll(Aspects.DARKNESS, 2);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return tags.size() > 0 ? tags : null;
+//    }
 
     public static boolean isValidScanTarget(Player player, ScanResult scan, String prefix) {
         if (scan == null) {
@@ -442,258 +443,260 @@ public class ScanManager implements IScanEventHandler {
             return true;
         }
     }
-
-    public static boolean hasBeenScanned(Player player, ScanResult scan) {
-        if (scan.type == 1) {
-//         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
-//            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
-//         }
-            var itemResLoc = new ResourceLocation(scan.item);
-            var item = BuiltInRegistries.ITEM.get(itemResLoc);
-            List<String> list = Thaumcraft.getScannedObjects()
-                    .get(player);
-            var hash = generateItemHash(item);
-            return list != null && (list.contains("@" + hash) || list.contains("#" + hash));
-        } else if (scan.type == 2) {
-            if (scan.entity instanceof ItemEntity item) {
-                ItemStack t = item.getItem()
-                        .copy();
-                t.setCount(1);
-//            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
-//               t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
+//
+//    public static boolean hasBeenScanned(Player player, ScanResult scan) {
+//        if (scan.type == 1) {
+////         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
+////            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
+////         }
+//            var itemResLoc = new ResourceLocation(scan.item);
+//            var item = BuiltInRegistries.ITEM.get(itemResLoc);
+//            List<String> list = Thaumcraft.getScannedObjects()
+//                    .get(player);
+//            var hash = generateItemHash(item);
+//            return list != null && (list.contains("@" + hash) || list.contains("#" + hash));
+//        } else if (scan.type == 2) {
+//            if (scan.entity instanceof ItemEntity item) {
+//                ItemStack t = item.getItem()
+//                        .copy();
+//                t.setCount(1);
+////            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
+////               t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
+////            }
+//
+//                List<String> list = Thaumcraft.getScannedObjects()
+//                        .get(player);
+//                return list != null && (list.contains("@" + generateItemHash(t.getItem())) || list.contains(
+//                        "#" + generateItemHash(t.getItem())));
+//            } else {
+//                List<String> list = Thaumcraft.getScannedEntities()
+//                        .get(player);
+//                return list != null && (list.contains("@" + generateEntityHash(scan.entity)) || list.contains(
+//                        "#" + generateEntityHash(scan.entity)));
 //            }
+//        } else if (scan.type == 3) {
+//            List<String> list = Thaumcraft.getScannedPhenomena()
+//                    .get(player);
+//            return list != null && (list.contains("@" + scan.phenomena) || list.contains("#" + scan.phenomena));
+//        }
+//
+//        return false;
+//    }
 
-                List<String> list = Thaumcraft.getScannedObjects()
-                        .get(player);
-                return list != null && (list.contains("@" + generateItemHash(t.getItem())) || list.contains(
-                        "#" + generateItemHash(t.getItem())));
-            } else {
-                List<String> list = Thaumcraft.getScannedEntities()
-                        .get(player);
-                return list != null && (list.contains("@" + generateEntityHash(scan.entity)) || list.contains(
-                        "#" + generateEntityHash(scan.entity)));
-            }
-        } else if (scan.type == 3) {
-            List<String> list = Thaumcraft.getScannedPhenomena()
-                    .get(player);
-            return list != null && (list.contains("@" + scan.phenomena) || list.contains("#" + scan.phenomena));
-        }
-
-        return false;
-    }
-
-    public static boolean completeScan(Player player, ScanResult scan, String prefix) {
-        boolean serverFlag = player instanceof ServerPlayer serverPlayer;
-        AspectList<Aspect> aspects = null;
-        Thaumcraft var10000 = Thaumcraft.instance;
-        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
-        boolean ret = false;
-        boolean scannedByThaumometer = prefix.equals("#") && !isValidScanTarget(player, scan, "@");
-//      Object clue = null;
-        ItemStack clueStack = null;
-        ResourceKey<EntityType<?>> clueEntityType = null;
-        if (scan.type == 1) {
-//         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
-//            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
-//         }
-            var itemResLoc = new ResourceLocation(scan.item);
-            var item = BuiltInRegistries.ITEM.get(itemResLoc);
-
-            aspects = getBonusAspects(new ItemStack(item),serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item));
-
-            if (validScan(aspects, player)) {
-                clueStack = new ItemStack(item);
-                Thaumcraft.researchManager.completeScannedObject(
-                        player, prefix + generateItemHash(item)
-                );
-                ret = true;
-            }
-        } else if (scan.type == 2) {
-            if (scan.entity instanceof ItemEntity itemEntity) {
-                ItemStack t = itemEntity.getItem()
-                        .copy();
-                t.setCount(1);
-
-                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
-                if (validScan(aspects, player)) {
-                    clueStack = itemEntity.getItem();
-                    Thaumcraft.researchManager.completeScannedObject(
-                            player, prefix + generateItemHash(t.getItem())
-                    );
-                    ret = true;
-                }
-            } else {
-                aspects = generateEntityAspects(scan.entity);
-                if (validScan(aspects, player)) {
-                    clueEntityType = scan.entity.getType()
-                            .arch$holder()
-                            .unwrapKey()
-                            .get();
-                    Thaumcraft.researchManager.completeScannedEntity(
-                            player, prefix + generateEntityHash(scan.entity)
-                    );
-                    ret = true;
-                }
-            }
-        } else if (scan.type == 3 && scan.phenomena.startsWith("NODE")) {
-            aspects = generateNodeAspects(player.level(), scan.phenomena.replace("NODE", ""));
-            if (validScan(aspects, player)) {
-                Thaumcraft.researchManager.completeScannedPhenomena(
-                        player, prefix + scan.phenomena
-                );
-                ret = true;
-            }
-        }
-
-        if (player instanceof ServerPlayer && ret && aspects != null) {
-            AspectList<Aspect>aspectsFinal = new LinkedHashAspectList<>();
-
-            for (Aspect aspect : aspects.keySet()) {
-                if (rp.hasDiscoveredParentAspects(
-                        player, aspect
-                )) {
-                    int amt = aspects.get(aspect);
-                    if (scannedByThaumometer) {
-                        amt = 0;
-                    }
-
-                    if (prefix.equals("#")) {
-                        ++amt;
-                    }
-
-                    int a = checkAndSyncAspectKnowledge(player, aspect, amt);
-                    if (a > 0) {
-                        aspectsFinal.mergeWithHighest(aspect, a);
-                    }
-                }
-            }
-
-            if (clueStack != null) {
-                ResearchManager.createClue(player.level(), player, clueStack, aspectsFinal);
-            }
-            if (clueEntityType != null) {
-                ResearchManager.createClue(player.level(), player, clueEntityType, aspectsFinal);
-            }
-        }
-
-        return ret;
-    }
-
-    public static int checkAndSyncAspectKnowledge(Player player, Aspect aspect, int amount) {
-        Thaumcraft var10000 = Thaumcraft.instance;
-        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
-        int save = 0;
-        if (!rp.hasDiscoveredAspect(player, aspect) && player instanceof ServerPlayer serverPlayer) {
-            new PacketAspectDiscoveryS2C(aspect).sendTo(serverPlayer);
-            amount += 2;
-            save = amount;
-        }
-
-        if (rp.getAspectPoolFor(
-                player, aspect
-        ) >= Config.aspectTotalCap) {
-            amount = (int) Math.sqrt(amount);
-        }
-
-        if (amount > 1 && (float) rp.getAspectPoolFor(
-                player, aspect
-        ) >= (float) Config.aspectTotalCap * 1.25F) {
-            amount = 1;
-        }
-
-        if (rp.addAspectPool(
-                player, aspect, (short) amount
-        )) {
-            new PacketUpdateAspectS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
-                    player, aspect
-            )
-            ).sendTo((ServerPlayer) player);
-            save = amount;
-        }
-
-        if (save > 0) {
-            Thaumcraft.researchManager.completeAspect(
-                    player, aspect, rp.getAspectPoolFor(
-                            player, aspect
-                    )
-            );
-        }
-
-        return save;
-    }
-
-    public static boolean validScan(AspectList<Aspect>aspects, Player player) {
-        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
-        if (aspects != null && !aspects.isEmpty()) {
-            for (Aspect aspect : aspects.keySet()) {
-                if (aspect.isEmpty()){
-                    continue;
-                }
-                if (aspect instanceof CompoundAspect compoundAspect && !rp.hasDiscoveredParentAspects(
-                        player, aspect
-                )) {
-                    if (player.level()
-                            .isClientSide()) {
-                        for (Aspect parent : compoundAspect.components) {
-                            if (!rp.hasDiscoveredAspect(
-                                    player, parent
-                            )) {
-                                PlayerNotifications.addNotification((
-                                        Component.translatable("tc.discoveryerror")
-                                                .append(Component.translatable("tc.aspect.help."
-                                                        + parent.getAspectKey()))
-
-                                ));
-                                break;
-                            }
-                        }
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        } else {
-            if (player.level()
-                    .isClientSide()) {
-                PlayerNotifications.addNotification(Component.translatable("tc.unknownobject"));
-            }
-
-            return false;
-        }
-    }
-
-    public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
-        AspectList<Aspect> aspects = new LinkedHashAspectList<>();
-        var serverFlag = !world.isClientSide();
-        boolean ret = false;
-        if (scan.type == 1) {
-//         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
-//            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
-//         }
-
-            var itemResLoc = new ResourceLocation(scan.item);
-            var item = BuiltInRegistries.ITEM.get(itemResLoc);
-            aspects = getBonusAspects(new ItemStack(item), serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item) );
-        } else if (scan.type == 2) {
-            if (scan.entity instanceof ItemEntity item
-            ) {
-                ItemStack t = item.getItem()
-                        .copy();
-                t.setCount(1);
-//            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
-//               t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
+//    public static boolean completeScan(Player player, ScanResult scan, String prefix) {
+//        boolean serverFlag = player instanceof ServerPlayer serverPlayer;
+//        AspectList<Aspect> aspects = null;
+//        Thaumcraft var10000 = Thaumcraft.instance;
+//        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
+//        boolean ret = false;
+//        boolean scannedByThaumometer = prefix.equals("#") && !isValidScanTarget(player, scan, "@");
+////      Object clue = null;
+//        ItemStack clueStack = null;
+//        ResourceKey<EntityType<?>> clueEntityType = null;
+//        if (scan.type == 1) {
+////         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
+////            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
+////         }
+//            var itemResLoc = new ResourceLocation(scan.item);
+//            var item = BuiltInRegistries.ITEM.get(itemResLoc);
+//
+//            aspects = getBonusAspects(new ItemStack(item),serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item));
+//
+//            if (validScan(aspects, player)) {
+//                clueStack = new ItemStack(item);
+//                Thaumcraft.researchManager.completeScannedObject(
+//                        player, prefix + generateItemHash(item)
+//                );
+//                ret = true;
 //            }
+//        } else if (scan.type == 2) {
+//            if (scan.entity instanceof ItemEntity itemEntity) {
+//                ItemStack t = itemEntity.getItem()
+//                        .copy();
+//                t.setCount(1);
+//
+//                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
+//                if (validScan(aspects, player)) {
+//                    clueStack = itemEntity.getItem();
+//                    Thaumcraft.researchManager.completeScannedObject(
+//                            player, prefix + generateItemHash(t.getItem())
+//                    );
+//                    ret = true;
+//                }
+//            } else {
+//                aspects = generateEntityAspects(scan.entity);
+//                if (validScan(aspects, player)) {
+//                    clueEntityType = scan.entity.getType()
+//                            .arch$holder()
+//                            .unwrapKey()
+//                            .get();
+//                    Thaumcraft.researchManager.completeScannedEntity(
+//                            player, prefix + generateEntityHash(scan.entity)
+//                    );
+//                    ret = true;
+//                }
+//            }
+//        } else if (scan.type == 3 && scan.phenomena.startsWith("NODE")) {
+//            aspects = generateNodeAspects(player.level(), scan.phenomena.replace("NODE", ""));
+//            if (validScan(aspects, player)) {
+//                Thaumcraft.researchManager.completeScannedPhenomena(
+//                        player, prefix + scan.phenomena
+//                );
+//                ret = true;
+//            }
+//        }
+//
+//        if (player instanceof ServerPlayer && ret && aspects != null) {
+//            AspectList<Aspect>aspectsFinal = new LinkedHashAspectList<>();
+//
+//            for (Aspect aspect : aspects.keySet()) {
+//                if (rp.hasDiscoveredParentAspects(
+//                        player, aspect
+//                )) {
+//                    int amt = aspects.get(aspect);
+//                    if (scannedByThaumometer) {
+//                        amt = 0;
+//                    }
+//
+//                    if (prefix.equals("#")) {
+//                        ++amt;
+//                    }
+//
+//                    int a = checkAndSyncAspectKnowledge(player, aspect, amt);
+//                    if (a > 0) {
+//                        aspectsFinal.mergeWithHighest(aspect, a);
+//                    }
+//                }
+//            }
+//
+//            if (clueStack != null) {
+//                ResearchManager.createClue(player.level(), player, clueStack, aspectsFinal);
+//            }
+//            if (clueEntityType != null) {
+//                ResearchManager.createClue(player.level(), player, clueEntityType, aspectsFinal);
+//            }
+//        }
+//
+//        return ret;
+//    }
 
-                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
-            } else {
-                aspects = generateEntityAspects(scan.entity);
-            }
-        } else if (scan.type == 3 && scan.phenomena.startsWith("NODE")) {
-            aspects = generateNodeAspects(world, scan.phenomena.replace("NODE", ""));
-        }
+//    public static int checkAndSyncAspectKnowledge(Player player, Aspect aspect, int amount) {
+//        Thaumcraft var10000 = Thaumcraft.instance;
+//        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
+//        int save = 0;
+//        if (!rp.hasDiscoveredAspect(player, aspect) && player instanceof ServerPlayer serverPlayer) {
+//            new PacketAspectDiscoveryS2C(aspect).sendTo(serverPlayer);
+//            amount += 2;
+//            save = amount;
+//        }
+//
+//        {//Oh i dont want this part so removed for now
+//            if (rp.getAspectPoolFor(
+//                    player, aspect
+//            ) >= Config.aspectTotalCap) {
+//                amount = (int) Math.sqrt(amount);
+//            }
+//
+//            if (amount > 1 && (float) rp.getAspectPoolFor(
+//                    player, aspect
+//            ) >= (float) Config.aspectTotalCap * 1.25F) {
+//                amount = 1;
+//            }
+//        }
+//
+//        if (rp.addAspectPool(
+//                player, aspect, (short) amount
+//        )) {
+//            new PacketUpdateAspectS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
+//                    player, aspect
+//            )
+//            ).sendTo((ServerPlayer) player);
+//            save = amount;
+//        }
+//
+//        if (save > 0) {
+//            Thaumcraft.researchManager.completeAspect(
+//                    player, aspect, rp.getAspectPoolFor(
+//                            player, aspect
+//                    )
+//            );
+//        }
+//
+//        return save;
+//    }
 
-        return aspects;
-    }
+//    public static boolean validScan(AspectList<Aspect>aspects, Player player) {
+//        PlayerKnowledge rp = Thaumcraft.playerKnowledge;
+//        if (aspects != null && !aspects.isEmpty()) {
+//            for (Aspect aspect : aspects.keySet()) {
+//                if (aspect.isEmpty()){
+//                    continue;
+//                }
+//                if (aspect instanceof CompoundAspect compoundAspect && !rp.hasDiscoveredParentAspects(
+//                        player, aspect
+//                )) {
+//                    if (player.level()
+//                            .isClientSide()) {
+//                        for (Aspect parent : compoundAspect.components) {
+//                            if (!rp.hasDiscoveredAspect(
+//                                    player, parent
+//                            )) {
+//                                PlayerNotifications.addNotification((
+//                                        Component.translatable("tc.discoveryerror")
+//                                                .append(Component.translatable("aspect.thaumcraft.help."
+//                                                        + parent.getAspectKey()))
+//
+//                                ));
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    return false;
+//                }
+//            }
+//
+//            return true;
+//        } else {
+//            if (player.level()
+//                    .isClientSide()) {
+//                PlayerNotifications.addNotification(Component.translatable("tc.unknownobject"));
+//            }
+//
+//            return false;
+//        }
+//    }
+
+//    public static AspectList<Aspect> getScanAspects(ScanResult scan, Level world) {
+//        AspectList<Aspect> aspects = new LinkedHashAspectList<>();
+//        var serverFlag = !world.isClientSide();
+//        boolean ret = false;
+//        if (scan.type == 1) {
+////         if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
+////            scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
+////         }
+//
+//            var itemResLoc = new ResourceLocation(scan.item);
+//            var item = BuiltInRegistries.ITEM.get(itemResLoc);
+//            aspects = getBonusAspects(new ItemStack(item), serverFlag? getBasicAspectsServer(item): getBasicAspectsClient(item) );
+//        } else if (scan.type == 2) {
+//            if (scan.entity instanceof ItemEntity item
+//            ) {
+//                ItemStack t = item.getItem()
+//                        .copy();
+//                t.setCount(1);
+////            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
+////               t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
+////            }
+//
+//                aspects = getBonusAspects(t, serverFlag? getBasicAspectsServer(t.getItem()): getBasicAspectsClient(t.getItem()) );
+//            } else {
+//                aspects = generateEntityAspects(scan.entity);
+//            }
+//        } else if (scan.type == 3 && scan.phenomena.startsWith("NODE")) {
+//            aspects = generateNodeAspects(world, scan.phenomena.replace("NODE", ""));
+//        }
+//
+//        return aspects;
+//    }
 }

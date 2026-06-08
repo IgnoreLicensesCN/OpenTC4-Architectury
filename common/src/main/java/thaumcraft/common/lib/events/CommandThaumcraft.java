@@ -308,7 +308,7 @@ public class CommandThaumcraft {
         }
 
         if (aspect != null) {
-            info.addResearchAspect(aspect, i);
+            info.addResearchAspectAndSyncToPlayer(aspect, i,player);
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()), false);
             icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
         } else {
@@ -390,7 +390,7 @@ public class CommandThaumcraft {
                 );
             }
             new PacketResearchCompleteS2C(research.key).sendTo(player);
-            research.completeResearch(player);
+            research.completeResearchFor(player);
 //         if (ResearchItem.getResearch(researchResLoc).siblings != null) {
 //            for(var rsi : ResearchItem.getResearch(researchResLoc).siblings) {
 //               giveRecursiveResearch(player, rsi);

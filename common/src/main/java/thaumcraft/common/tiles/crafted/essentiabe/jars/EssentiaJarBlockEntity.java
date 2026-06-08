@@ -16,6 +16,7 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableSingleAspectListFromSupplier;
+import thaumcraft.api.aspects.essentiabe.*;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -23,8 +24,8 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
 //maybe i should make an AbstractEssentiaJarBlockEntity
 public class EssentiaJarBlockEntity extends TileThaumcraft
@@ -33,7 +34,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         IValueContainerBasedComparatorSignalProviderBlockEntity,
         IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>,
+        IRemoteDrainableEssentiaSourceBlockEntity,
         UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
 {
     public EssentiaJarBlockEntity(BlockEntityType<? extends EssentiaJarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -268,7 +269,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         if (aspect == aspectCurrent){
             int drained = Math.min(amount,this.aspectAmountCurrent);
             decreaseAspectAmount(drained);

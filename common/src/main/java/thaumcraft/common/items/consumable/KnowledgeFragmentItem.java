@@ -29,9 +29,7 @@ public class KnowledgeFragmentItem extends Item {
             for(Aspect a : Aspects.getPrimalAspects()) {
                 short q = (short)(world.getRandom().nextInt(2) + 1);
                 var info = ResearchAndScannedInfo.getFromPlayer(player);
-                info.addResearchAspect(a,q);
-                new PacketUpdateAspectS2C(a.getAspectKey(), q, info.getResearchAspect(a))
-                        .sendTo(serverPlayer);
+                info.addResearchAspectAndSyncToPlayer(a,q,serverPlayer);
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());

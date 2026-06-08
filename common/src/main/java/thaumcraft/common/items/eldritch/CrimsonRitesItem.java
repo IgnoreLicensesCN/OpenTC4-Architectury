@@ -2,7 +2,6 @@ package thaumcraft.common.items.eldritch;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,8 +16,6 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.researches.ThaumcraftResearches;
 
 import java.util.List;
-
-import static thaumcraft.common.lib.research.ResearchManager.unlockResearchForPlayer;
 
 public class CrimsonRitesItem extends Item {
     public CrimsonRitesItem() {
@@ -39,7 +36,7 @@ public class CrimsonRitesItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
         if (!level.isClientSide) {
-            ThaumcraftResearches.CRIMSON.completeResearch(player);
+            ThaumcraftResearches.CRIMSON.completeResearchFor(player);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, new ItemStack(this));
         }
         return new  InteractionResultHolder<>(InteractionResult.CONSUME, new ItemStack(this));

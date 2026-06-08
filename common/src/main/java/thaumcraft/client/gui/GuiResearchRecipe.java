@@ -481,7 +481,7 @@ public class GuiResearchRecipe extends GuiScreen {
                         this.fontRendererObj.drawString("=", x + start + 7 + 32, y + 12 + count * 50, 10066329);
                         this.fontRendererObj.drawString("+", x + start + 4 + 79, y + 12 + count * 50, 10066329);
                     } else {
-                        this.fr.drawString(Component.translatable("tc.aspect.primal"), x + start + 48, y + 12 + count * 50, 4473924);
+                        this.fr.drawString(Component.translatable("aspect.thaumcraft.primal"), x + start + 48, y + 12 + count * 50, 4473924);
                     }
                 }
 

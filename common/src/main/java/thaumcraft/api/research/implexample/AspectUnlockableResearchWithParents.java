@@ -1,25 +1,25 @@
 package thaumcraft.api.research.implexample;
 
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedResearch implements IAspectUnlockableResearch, IResearchParentsOwner {
+public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedResearch
+        implements IAspectUnlockableResearch, IResearchParentsOwner {
 
     private final List<ResearchItemResourceLocation> parents;
     public AspectUnlockableResearchWithParents(
             ResearchItemResourceLocation key,
             ResearchCategoryResourceLocation category,
-            UnmodifiableAspectList<Aspect> aspectsCost,
+            @Unmodifiable AspectList<Aspect> aspectsCost,
             List<ResearchItemResourceLocation> parents
     ) {
         super(key, category,aspectsCost);
@@ -28,8 +28,15 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
 
     @Override
     public boolean canPlayerCompleteResearchWithAspect(Player player) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
-        return researched.containsAll(getParents());
+        for (var parentKey : getParents()) {
+            var parentResearch = ResearchItem.getResearch(parentKey);
+            if (parentResearch != null) {
+                if (!parentResearch.isPlayerCompletedResearch(player)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -39,7 +46,6 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
 
     @Override
     public boolean canPlayerResearch(Player player) {
-        Set<ResearchItemResourceLocation> researched = new HashSet<>(ResearchManager.getResearchForPlayer(player));
-        return researched.containsAll(getParents());
+        return canPlayerCompleteResearchWithAspect(player);
     }
 }

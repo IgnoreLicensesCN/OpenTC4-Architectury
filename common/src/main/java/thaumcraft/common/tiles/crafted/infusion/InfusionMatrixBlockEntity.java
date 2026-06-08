@@ -33,8 +33,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
-import thaumcraft.api.aspects.IEssentiaForceInBlockEntity;
-import thaumcraft.api.aspects.IRemoteAspectDrainerBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteEssentiaDrainerBlockEntity;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
@@ -64,7 +64,7 @@ import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity
 public class InfusionMatrixBlockEntity
         extends TileThaumcraft
         implements
-        IRemoteAspectDrainerBlockEntity<Aspect>,
+        IRemoteEssentiaDrainerBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
         IWandInteractableBlockOrBlockEntity,
         IEssentiaForceInBlockEntity<Aspect>
@@ -772,11 +772,11 @@ public class InfusionMatrixBlockEntity
     }
 
     @Override
-    public boolean canDrainAspectFromPos(Level level, BlockPos pos, Aspect aspect, @Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public boolean canDrainEssentiaFromPos(Level level, BlockPos pos, Aspect aspect, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         if (!aspectsRequiring.containsKey(aspect)){
             return false;
         }
-        return IRemoteAspectDrainerBlockEntity.super.canDrainAspectFromPos(level, pos, aspect, metDrainers);
+        return IRemoteEssentiaDrainerBlockEntity.super.canDrainEssentiaFromPos(level, pos, aspect, metDrainers);
     }
 
     @Override

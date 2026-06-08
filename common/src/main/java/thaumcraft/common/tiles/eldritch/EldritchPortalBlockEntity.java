@@ -59,7 +59,7 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
                             player.getYRot()
                     );
                     if (!ENTER_OUTER.isPlayerCompletedResearch(player)) {
-                        ENTER_OUTER.completeResearch(player);
+                        ENTER_OUTER.completeResearchFor(player);
                     }
                 }
             });

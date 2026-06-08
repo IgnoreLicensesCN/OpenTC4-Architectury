@@ -12,7 +12,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;

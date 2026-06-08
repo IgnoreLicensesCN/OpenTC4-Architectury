@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.tiles.junkbox.TileAlembic;
 import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;

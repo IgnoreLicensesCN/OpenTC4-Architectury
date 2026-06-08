@@ -33,3 +33,4 @@
 * mana bean break time wont relate to growth(cocoa bean break time now),but now you can use axe and fortune works to multiply the result( (1 (or 2 if growth stage is 7 and 2/3 chance))*(1(+\[0,fortuneLevel\] only when growth 7)))
 * mana bean can be affected with growth lamp
 * all 4 Infusion Pillars wont change instantly when one broken but infusion matrix still checks during infusion
+  * scan always add aspect as the same amount(old TC4 is:when owned amount >= 100(can be configured) sqrt amount to get,when >= 1.25*(100(can be configured)) only get 1)

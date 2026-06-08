@@ -1,6 +1,8 @@
 package thaumcraft.api.aspects;
 
 
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceOutBlockEntity;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
 /**

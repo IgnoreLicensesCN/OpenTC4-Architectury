@@ -3,6 +3,7 @@ package thaumcraft.common.lib.network.toserveraction.scan;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 
@@ -32,12 +33,14 @@ public class PacketScannedEntityC2S extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        var player = context.getPlayer();
-        if (player == null) {return;}
-        var level = player.level();
-        var entity = level.getEntity(entityID);
-        if (entity != null){
-            onPlayerScanEntity(player, entity);
-        }
+        context.queue(() -> {
+            var player = context.getPlayer();
+            if (!(player instanceof ServerPlayer serverPlayer)) {return;}
+            var level = player.level();
+            var entity = level.getEntity(entityID);
+            if (entity != null){
+                onPlayerScanEntity(serverPlayer, entity);
+            }
+        });
     }
 }

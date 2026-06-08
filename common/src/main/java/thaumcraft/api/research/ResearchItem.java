@@ -175,7 +175,7 @@ public abstract class ResearchItem
         return ResearchAndScannedInfo.getFromPlayer(player).hasResearchID(this.key);
     }
 
-    public void completeResearch(Player player){
+    public void completeResearchFor(Player player){
         ResearchAndScannedInfo.getFromPlayer(player).addResearchID(this.key);
     }
 

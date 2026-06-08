@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.lamp.fertility.apply;
 
+import com.linearity.opentc4.annotations.ShouldNotModify;
 import com.linearity.opentc4.simpleutils.ListenerManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
@@ -51,7 +52,7 @@ public class FertilityLampAffectManager {
     }
 
     public static<E extends Entity>  boolean affectEntity(
-            Class<E> entity, @UnmodifiableView Set<E> entitiesOfClass, int recommendedEntityLimit) {
+            Class<E> entity, @ShouldNotModify Set<E> entitiesOfClass, int recommendedEntityLimit) {
         var context = new FertilityLampAffectContext<>(entity,entitiesOfClass,recommendedEntityLimit);
         for (var checker : affectActions.getListeners()){
             checker.apply(context);

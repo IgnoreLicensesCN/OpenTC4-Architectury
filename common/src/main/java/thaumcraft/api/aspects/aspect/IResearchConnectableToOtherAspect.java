@@ -1,4 +1,6 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.aspect;
+
+import thaumcraft.api.aspects.Aspect;
 
 public interface IResearchConnectableToOtherAspect {
     static boolean canAspectConnectToEachOther(Aspect aspectA, Aspect aspectB) {

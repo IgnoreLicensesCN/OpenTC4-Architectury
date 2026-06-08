@@ -38,7 +38,6 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
         return new PacketAspectDiscoveryS2C(Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation())));
     }
 
-    // 客户端处理逻辑
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (!context.getPlayer().level().isClientSide) return;

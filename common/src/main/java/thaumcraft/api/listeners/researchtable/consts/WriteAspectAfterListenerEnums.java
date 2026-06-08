@@ -55,11 +55,7 @@ public enum WriteAspectAfterListenerEnums {
         public void onEventTriggered(WriteAspectContext context) {
             if (context.doDrainAspect && !context.aspectToWrite.isEmpty()){
                 var info = ResearchAndScannedInfo.getFromPlayer(context.player);
-                info.addResearchAspect(context.aspectToWrite,-1);
-                new PacketUpdateAspectS2C(
-                        context.aspectToWrite.aspectKey,
-                        0,
-                        info.getResearchAspect(context.aspectToWrite)).sendTo(context.player);
+                info.addResearchAspectAndSyncToPlayer(context.aspectToWrite,-1,context.player);
             }
         }
     }),

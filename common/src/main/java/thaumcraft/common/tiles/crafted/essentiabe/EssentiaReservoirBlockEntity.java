@@ -18,6 +18,10 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteEssentiaDrainerBlockEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -25,15 +29,15 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
 public class EssentiaReservoirBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>{
+        IRemoteDrainableEssentiaSourceBlockEntity {
 
     public EssentiaReservoirBlockEntity(BlockEntityType<? extends EssentiaReservoirBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -176,7 +180,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
 
     @Override
-    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         int drained = Math.min(amount,this.owningAspects.get(aspect));
         if (drained != 0){
             decreaseAspectAmount(aspect,amount);

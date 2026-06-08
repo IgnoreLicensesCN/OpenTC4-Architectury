@@ -1,4 +1,4 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 
 /**

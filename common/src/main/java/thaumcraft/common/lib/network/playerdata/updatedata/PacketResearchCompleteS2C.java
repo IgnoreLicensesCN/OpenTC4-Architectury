@@ -55,7 +55,7 @@ public class PacketResearchCompleteS2C extends ThaumcraftBaseS2CMessage {
 
         var research = ResearchItem.getResearch(key);
         if (research != null) {
-            research.completeResearch(player);
+            research.completeResearchFor(player);
         }
         // clue
         if (!research.isVirtual()) {

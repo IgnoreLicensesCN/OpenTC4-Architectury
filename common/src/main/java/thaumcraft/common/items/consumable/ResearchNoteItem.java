@@ -157,8 +157,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         //consume
         aspectsToCopy.forEach(
                 (aspect,count) -> {
-                    info.addResearchAspect(aspect, -count);
-                    new PacketUpdateAspectS2C(aspect.getAspectKey(), 0, info.getResearchAspect(aspect)).sendTo(player);
+                    info.addResearchAspectAndSyncToPlayer(aspect, -count, player);
                 }
         );
         playerInventory.items.get(paperIndex).shrink(1);
@@ -239,7 +238,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
             if (research.isPlayerCompletedResearch(player)){return InteractionResultHolder.pass(stack);}
             if (research instanceof IResearchableResearch researchable) {
                 if (researchable.canPlayerResearch(player)){
-                    research.completeResearch(player);
+                    research.completeResearchFor(player);
                     if (player instanceof ServerPlayer serverPlayer) {
                         new PacketResearchCompleteS2C(researchID).sendTo(serverPlayer);
                     }

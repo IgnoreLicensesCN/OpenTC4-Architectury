@@ -1,7 +1,8 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspect;
 
 public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConnectableBlockEntity{
     /**

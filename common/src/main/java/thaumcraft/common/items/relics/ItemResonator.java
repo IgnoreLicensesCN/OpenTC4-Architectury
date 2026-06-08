@@ -16,7 +16,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.core.Direction;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;
-import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.codechicken.lib.raytracer.RayTracer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.junkbox.TileTubeBuffer;

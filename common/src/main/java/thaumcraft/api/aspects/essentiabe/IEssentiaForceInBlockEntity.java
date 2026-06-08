@@ -1,6 +1,7 @@
-package thaumcraft.api.aspects;
+package thaumcraft.api.aspects.essentiabe;
 
 import org.jetbrains.annotations.ApiStatus;
+import thaumcraft.api.aspects.Aspect;
 
 //usually use IEssentiaTransportInBlockEntity
 //impl this means BE accepts force-add(without considering suction limits) aspect

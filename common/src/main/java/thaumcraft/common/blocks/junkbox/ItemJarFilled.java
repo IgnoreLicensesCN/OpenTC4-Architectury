@@ -34,7 +34,7 @@ public class ItemJarFilled /*extends Item implements IEssentiaContainerItem*/ {
 //         if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
 //            list.add("§5" + tag.getName());
 //         } else {
-//            list.add("§5" + Component.translatable("tc.aspect.unknown"));
+//            list.add("§5" + Component.translatable("aspect.thaumcraft.unknown"));
 //         }
 //      }
 //

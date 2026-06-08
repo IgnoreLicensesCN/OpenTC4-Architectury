@@ -1,20 +1,30 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspect.IResearchConnectableToOtherAspect;
+import thaumcraft.api.aspects.aspect.IScanDiscoverableAspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
+import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
 
-public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, IResearchConnectableToOtherAspect {
+public class CompoundAspect extends Aspect implements
+        IAspectReducibleToPrimal,
+        IResearchConnectableToOtherAspect,
+        IScanDiscoverableAspect
+{
     public static final Map<CompoundAspectComponent,CompoundAspect> COMPOUND_ASPECT_RECIPES = new ConcurrentHashMap<>();
     public static final CompoundAspect EMPTY = new CompoundAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_compound"),
@@ -111,5 +121,26 @@ public class CompoundAspect extends Aspect implements IAspectReducibleToPrimal, 
     @Override
     public boolean canConnectTo(Aspect aspect) {
         return this.components.contains(aspect);
+    }
+
+    @Override
+    public boolean canPlayerDiscover(Player player) {
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
+        if (info != null) {
+            return info.hasResearchAspect(components.aspectA()) && info.hasResearchAspect(components.aspectB());
+        }
+        return false;
+    }
+
+    @Override
+    public @Nullable AspectResourceLocation getOneOfAspectRequiredToDiscover(Player player) {
+        var info = ResearchAndScannedInfo.getFromPlayer(player);
+        if (!info.hasResearchAspect(components.aspectA())){
+            return components.aspectA().aspectKey;
+        }
+        if (!info.hasResearchAspect(components.aspectB())){
+            return components.aspectB().aspectKey;
+        }
+        return null;
     }
 }

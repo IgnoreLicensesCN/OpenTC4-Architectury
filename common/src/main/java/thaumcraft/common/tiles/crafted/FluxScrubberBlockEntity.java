@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.blocks.crafted.FluxScrubberBlock;
 import thaumcraft.common.blocks.liquid.FiniteFlowingFluid;
