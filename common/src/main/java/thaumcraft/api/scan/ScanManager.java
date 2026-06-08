@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspect.IScanDiscoverableAspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -19,7 +18,6 @@ import thaumcraft.api.scan.itemstack.ItemStackScanManager;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.misc.PacketPlayerNotificationS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 

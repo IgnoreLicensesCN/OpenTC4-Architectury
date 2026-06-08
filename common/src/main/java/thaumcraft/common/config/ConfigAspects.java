@@ -27,7 +27,8 @@ public class ConfigAspects {
    }
 
    private static void registerEntityAspects() {
-      ThaumcraftApi.registerEntityTag("Zombie", (new LinkedHashAspectList<>()).addAll(Aspects.UNDEAD, 2).addAll(Aspects.MAN, 1).addAll(
+      ThaumcraftApi.registerEntityTag("Zombie", (
+              new LinkedHashAspectList<>()).addAll(Aspects.UNDEAD, 2).addAll(Aspects.MAN, 1).addAll(
               Aspects.EARTH, 1));
       ThaumcraftApi.registerEntityTag("Giant", (new LinkedHashAspectList<>()).addAll(Aspects.UNDEAD, 4).addAll(Aspects.MAN, 3).addAll(
               Aspects.EARTH, 3));

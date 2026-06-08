@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -21,13 +20,11 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
-import thaumcraft.api.research.scan.ScanResult;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
-import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
@@ -38,6 +35,7 @@ import java.util.*;
 
 import static com.linearity.opentc4.Consts.PURE_NODE_Y_RANGE;
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
+import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetterManager.getAspectsForEntity;
 
 public class NodeType {
     private static final Map<NodeTypeResourceLocation, NodeType> BY_NAME = new LinkedHashMap<>();
@@ -293,11 +291,9 @@ public class NodeType {
                                                 .fellOutOfWorld(), 1.0F
                                 );
                                 if (!entity.isAlive()) {
-                                    //TODO:use rewritten api
-                                    ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
-                                    AspectList<Aspect>al = ScanManager.getScanAspects(scan, serverLevel);
-                                    if (al != null && !al.isEmpty()) {
-                                        al = (AspectList<Aspect>)(AspectList<?>) IAspectReducibleToPrimal.reduceToPrimals(al.copy());
+                                    AspectList<Aspect>al = getAspectsForEntity(entity);
+                                    if (!al.isEmpty()) {
+                                        al = (AspectList<Aspect>)(AspectList<?>) IAspectReducibleToPrimal.reduceToPrimals(al);
                                         if (!al.isEmpty()) {
                                             Aspect a = al
                                                     .keySet()

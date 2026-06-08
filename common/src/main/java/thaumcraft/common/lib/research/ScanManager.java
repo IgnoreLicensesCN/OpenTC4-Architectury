@@ -1,142 +1,93 @@
 package thaumcraft.common.lib.research;
 
-import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.utils.BlockPosWithDim;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import tc4tweak.modules.generateItemHash.GenerateItemHash;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CompoundAspect;
-import thaumcraft.api.nodes.INodeBlockEntity;
-import thaumcraft.api.research.scan.IScanEventHandler;
-import thaumcraft.api.research.scan.ScanResult;
-import thaumcraft.client.lib.PlayerNotifications;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.golems.EntityGolemBase;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
-import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
-import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
-import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
-import static thaumcraft.api.nodes.NodeType.*;
-
 @Deprecated(forRemoval = true)
-public class ScanManager implements IScanEventHandler {
-    public ScanResult scanPhenomena(ItemStack stack, Level world, Player player) {
-        return null;
-    }
+public class ScanManager /*implements IScanEventHandler*/ {
+//    public ScanResult scanPhenomena(ItemStack stack, Level world, Player player) {
+//        return null;
+//    }
 
-    public static int generateEntityHash(Entity entity) {
-        String hash;
-
-        if (entity instanceof Player player) {
-            hash = "player_" + player;
-        }else{
-            hash = entity.getType().toString();
-        }
-
-        // Thaumcraft 自定义 NBT 匹配
-        CompoundTag tc = new CompoundTag();
-        entity.saveWithoutId(tc);
-
-        outer:
-        for (ThaumcraftApi.EntityTags et : ThaumcraftApi.scanEntities) {
-            if (!et.entityName.equals(hash) || et.nbts == null || et.nbts.length == 0) continue;
-
-            // NBT 完全匹配
-            for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
-                if (!tc.contains(nbt.name)) continue outer;
-
-                Object val = switch (tc.get(nbt.name)) {
-                    case null -> null;
-                    case net.minecraft.nbt.IntTag t -> t.getAsInt();
-                    case net.minecraft.nbt.LongTag t -> t.getAsLong();
-                    case net.minecraft.nbt.ByteTag t -> t.getAsByte();
-                    case net.minecraft.nbt.ShortTag t -> t.getAsShort();
-                    case net.minecraft.nbt.FloatTag t -> t.getAsFloat();
-                    case net.minecraft.nbt.DoubleTag t -> t.getAsDouble();
-                    case net.minecraft.nbt.StringTag t -> t.getAsString();
-                    case net.minecraft.nbt.CompoundTag t -> t;
-                    case net.minecraft.nbt.ListTag t -> t;
-                    default -> null;
-                };
-
-                if (!Objects.equals(val, nbt.value)) continue outer;
-            }
-
-            // 将 NBT 值拼接到 hash
-            for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
-                Tag nbtTag = tc.get(nbt.name);
-                Object val;
-                if (nbtTag == null) {
-                    val = null;
-                } else {
-                    val = switch (nbtTag) {
-                        case net.minecraft.nbt.IntTag t -> t.getAsInt();
-                        case net.minecraft.nbt.LongTag t -> t.getAsLong();
-                        case net.minecraft.nbt.ByteTag t -> t.getAsByte();
-                        case net.minecraft.nbt.ShortTag t -> t.getAsShort();
-                        case net.minecraft.nbt.FloatTag t -> t.getAsFloat();
-                        case net.minecraft.nbt.DoubleTag t -> t.getAsDouble();
-                        case net.minecraft.nbt.StringTag t -> t.getAsString();
-                        case net.minecraft.nbt.CompoundTag t -> t;
-                        case net.minecraft.nbt.ListTag t -> t;
-                        default -> null;
-                    };
-                }
-
-                hash += nbt.name + val;
-            }
-        }
-
-
-        // 实体状态处理
-        if (entity instanceof LivingEntity le && le.isBaby()) {
-            hash += "CHILD";
-        }
-
-        if (entity instanceof Creeper creeper) {
-            if (creeper.isPowered()) hash += "POWERED";
-            if (creeper.getSwellDir() > 0) hash += "FLASHING";
-        }
-
-        if (entity instanceof EntityGolemBase golem) {
-            hash += golem.getGolemType()
-                    .name();
-        }
-
-        // 最终 hash
-        return hash.hashCode();
-    }
+//    public static int generateEntityHash(Entity entity) {
+//        String hash;
+//
+//        if (entity instanceof Player player) {
+//            hash = "player_" + player;
+//        }else{
+//            hash = entity.getType().toString();
+//        }
+//
+//        // Thaumcraft 自定义 NBT 匹配
+//        CompoundTag tc = new CompoundTag();
+//        entity.saveWithoutId(tc);
+//
+//        outer:
+//        for (ThaumcraftApi.EntityTags et : ThaumcraftApi.scanEntities) {
+//            if (!et.entityName.equals(hash) || et.nbts == null || et.nbts.length == 0) continue;
+//
+//            // NBT 完全匹配
+//            for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
+//                if (!tc.contains(nbt.name)) continue outer;
+//
+//                Object val = switch (tc.get(nbt.name)) {
+//                    case null -> null;
+//                    case net.minecraft.nbt.IntTag t -> t.getAsInt();
+//                    case net.minecraft.nbt.LongTag t -> t.getAsLong();
+//                    case net.minecraft.nbt.ByteTag t -> t.getAsByte();
+//                    case net.minecraft.nbt.ShortTag t -> t.getAsShort();
+//                    case net.minecraft.nbt.FloatTag t -> t.getAsFloat();
+//                    case net.minecraft.nbt.DoubleTag t -> t.getAsDouble();
+//                    case net.minecraft.nbt.StringTag t -> t.getAsString();
+//                    case net.minecraft.nbt.CompoundTag t -> t;
+//                    case net.minecraft.nbt.ListTag t -> t;
+//                    default -> null;
+//                };
+//
+//                if (!Objects.equals(val, nbt.value)) continue outer;
+//            }
+//
+//            // 将 NBT 值拼接到 hash
+//            for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
+//                Tag nbtTag = tc.get(nbt.name);
+//                Object val;
+//                if (nbtTag == null) {
+//                    val = null;
+//                } else {
+//                    val = switch (nbtTag) {
+//                        case net.minecraft.nbt.IntTag t -> t.getAsInt();
+//                        case net.minecraft.nbt.LongTag t -> t.getAsLong();
+//                        case net.minecraft.nbt.ByteTag t -> t.getAsByte();
+//                        case net.minecraft.nbt.ShortTag t -> t.getAsShort();
+//                        case net.minecraft.nbt.FloatTag t -> t.getAsFloat();
+//                        case net.minecraft.nbt.DoubleTag t -> t.getAsDouble();
+//                        case net.minecraft.nbt.StringTag t -> t.getAsString();
+//                        case net.minecraft.nbt.CompoundTag t -> t;
+//                        case net.minecraft.nbt.ListTag t -> t;
+//                        default -> null;
+//                    };
+//                }
+//
+//                hash += nbt.name + val;
+//            }
+//        }
+//
+//
+//        // 实体状态处理
+//        if (entity instanceof LivingEntity le && le.isBaby()) {
+//            hash += "CHILD";
+//        }
+//
+//        if (entity instanceof Creeper creeper) {
+//            if (creeper.isPowered()) hash += "POWERED";
+//            if (creeper.getSwellDir() > 0) hash += "FLASHING";
+//        }
+//
+//        if (entity instanceof EntityGolemBase golem) {
+//            hash += golem.getGolemType()
+//                    .name();
+//        }
+//
+//        // 最终 hash
+//        return hash.hashCode();
+//    }
 //   private static int generateEntityHash(Entity entity) {
 //      ResourceLocation resourceLocation = entity.getType().arch$registryName();
 //      String hash = resourceLocation != null?resourceLocation.toString():null;//EntityList.getEntityString(entity);
@@ -211,8 +162,8 @@ public class ScanManager implements IScanEventHandler {
 //      return hash.hashCode();
 //   }
 
-    public static int generateItemHash(Item item) {
-        return GenerateItemHash.generateItemHash(item);
+//    public static int generateItemHash(Item item) {
+//        return GenerateItemHash.generateItemHash(item);
 //      ItemStack t = new ItemStack(item, 1, meta);
 //
 //      try {
@@ -282,7 +233,7 @@ public class ScanManager implements IScanEventHandler {
 //      }
 //
 //      return hash.toString().hashCode();
-    }
+//    }
 
 //    public static AspectList<Aspect> generateEntityAspects(Entity entity) {
 //        AspectList<Aspect> tags = null;
@@ -376,7 +327,6 @@ public class ScanManager implements IScanEventHandler {
 //                    }
 //
 //                    var nodeType = iNodeBlockEntity.getNodeType();
-//                    //TODO:API
 //                    if (nodeType == UNSTABLE) {
 //                        tags.mergeWithHighest(Aspects.ENTROPY, 4);
 //                    }
@@ -401,48 +351,48 @@ public class ScanManager implements IScanEventHandler {
 //        return tags.size() > 0 ? tags : null;
 //    }
 
-    public static boolean isValidScanTarget(Player player, ScanResult scan, String prefix) {
-        if (scan == null) {
-            return false;
-        } else if (prefix.equals("@") && !isValidScanTarget(player, scan, "#")) {
-            return false;
-        } else {
-            if (scan.type == 1) {
-                var itemResLoc = new ResourceLocation(scan.item);
-                var item = BuiltInRegistries.ITEM.get(itemResLoc);
-//            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
-//               scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
+//    public static boolean isValidScanTarget(Player player, ScanResult scan, String prefix) {
+//        if (scan == null) {
+//            return false;
+//        } else if (prefix.equals("@") && !isValidScanTarget(player, scan, "#")) {
+//            return false;
+//        } else {
+//            if (scan.type == 1) {
+//                var itemResLoc = new ResourceLocation(scan.item);
+//                var item = BuiltInRegistries.ITEM.get(itemResLoc);
+////            if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(Item.getItemById(scan.id), scan.meta))) {
+////               scan.meta = ((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(Item.getItemById(scan.id), scan.meta)))[0];
+////            }
+//
+//                List<String> list = Thaumcraft.getScannedObjects()
+//                        .get(player.getGameProfile().getName());
+//                return list == null || !list.contains(prefix + generateItemHash(item));
+//            } else if (scan.type == 2) {
+//                if (scan.entity instanceof ItemEntity item) {
+//                    ItemStack t = item.getItem()
+//                            .copy();
+//                    t.setCount(1);
+////               if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
+////                  t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
+////               }
+//
+//                    List<String> list = Thaumcraft.getScannedObjects()
+//                            .get(player.getGameProfile().getName());
+//                    return list == null || !list.contains(prefix + generateItemHash(t.getItem()));
+//                } else {
+//                    List<String> list = Thaumcraft.getScannedEntities()
+//                            .get(player.getGameProfile().getName());
+//                    return list == null || !list.contains(prefix + generateEntityHash(scan.entity));
+//                }
+//            } else if (scan.type == 3) {
+//                List<String> list = Thaumcraft.getScannedPhenomena()
+//                        .get(player.getGameProfile().getName());
+//                return list == null || !list.contains(prefix + scan.phenomena);
 //            }
-
-                List<String> list = Thaumcraft.getScannedObjects()
-                        .get(player.getGameProfile().getName());
-                return list == null || !list.contains(prefix + generateItemHash(item));
-            } else if (scan.type == 2) {
-                if (scan.entity instanceof ItemEntity item) {
-                    ItemStack t = item.getItem()
-                            .copy();
-                    t.setCount(1);
-//               if (ThaumcraftApi.groupedObjectTags.containsKey(Arrays.asList(t.getItem(), t.getDamageValue()))) {
-//                  t.setItemDamage(((int[])ThaumcraftApi.groupedObjectTags.get(Arrays.asList(t.getItem(), t.getDamageValue())))[0]);
-//               }
-
-                    List<String> list = Thaumcraft.getScannedObjects()
-                            .get(player.getGameProfile().getName());
-                    return list == null || !list.contains(prefix + generateItemHash(t.getItem()));
-                } else {
-                    List<String> list = Thaumcraft.getScannedEntities()
-                            .get(player.getGameProfile().getName());
-                    return list == null || !list.contains(prefix + generateEntityHash(scan.entity));
-                }
-            } else if (scan.type == 3) {
-                List<String> list = Thaumcraft.getScannedPhenomena()
-                        .get(player.getGameProfile().getName());
-                return list == null || !list.contains(prefix + scan.phenomena);
-            }
-
-            return true;
-        }
-    }
+//
+//            return true;
+//        }
+//    }
 //
 //    public static boolean hasBeenScanned(Player player, ScanResult scan) {
 //        if (scan.type == 1) {

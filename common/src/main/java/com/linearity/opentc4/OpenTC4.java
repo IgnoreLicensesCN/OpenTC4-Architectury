@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
+import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
@@ -70,6 +71,7 @@ public final class OpenTC4 {
 
         EventListeners.init();
         ThaumcraftItemAspects.init();
+        EntityBasicAspectGetters.init();
 
         platformUtils.init();
 
