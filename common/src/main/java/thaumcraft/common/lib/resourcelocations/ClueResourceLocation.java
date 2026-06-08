@@ -43,7 +43,7 @@ public class ClueResourceLocation extends VariedResourceLocation<String, ClueRes
     public static ClueResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> ClueResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new ClueResourceLocation(namespace,path));
     }
     public static ClueResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

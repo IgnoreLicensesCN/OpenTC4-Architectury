@@ -36,7 +36,7 @@ public class VisNetNodeTypeResourceLocation extends VariedResourceLocation<Objec
     public static VisNetNodeTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> VisNetNodeTypeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new VisNetNodeTypeResourceLocation(namespace,path));
     }
     public static VisNetNodeTypeResourceLocation of(String namespaceAndPath){
         var split = namespaceAndPath.split(":");

@@ -1,10 +1,7 @@
 package thaumcraft.common.items.eldritch;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.List;
 
@@ -40,10 +36,9 @@ public class EldritchObeliskPlacerItem extends Item {
         }
         var player = useOnContext.getPlayer();
         var clickedPos = useOnContext.getClickedPos();
-        if (!(player instanceof ServerPlayer serverPlayer)) {
+        if (player == null) {
             return super.useOn(useOnContext);
         }
-
 
         if (useOnContext.getClickedFace() == Direction.UP) {
             player.swing(useOnContext.getHand(),true);

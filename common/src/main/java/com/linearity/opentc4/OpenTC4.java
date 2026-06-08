@@ -34,12 +34,12 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import static thaumcraft.api.IRepairable.repairCostCache;
 
 public final class OpenTC4 {
-    public static boolean DEBUG_FLAG = false;;
-    public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;;
+    public static boolean DEBUG_FLAG = false;
+    public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;
     public static final String MOD_ID = "opentc4";
     public static final String MOD_NAME = "OpenTC4";
     public static PlatformUniqueUtils platformUtils;
-    public static final Logger LOGGER = LogManager.getLogger("OpenTC4");
+    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     public static void init(PlatformUniqueUtils utils) {
         OpenTC4.platformUtils = utils;
@@ -76,7 +76,6 @@ public final class OpenTC4 {
 
     }
     public static void onInitializeClient() {
-//        onInitialize();
 
         Particles.init();
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();

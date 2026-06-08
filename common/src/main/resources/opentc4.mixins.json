@@ -9,6 +9,8 @@
     "LivingEntityClientMixin",
     "SheetsMixin",
     "client.ClientPacketListenerMixin",
+    "client.FontRendererMixin",
+    "client.StringSplitterMixin",
     "client.clientbe.ArcaneBoreBlockEntityClientMixin",
     "client.clientbe.BrainJarBlockEntityClientMixin",
     "client.clientbe.CrucibleBlockEntityClientMixin",

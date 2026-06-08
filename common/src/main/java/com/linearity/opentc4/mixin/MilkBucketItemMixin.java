@@ -25,7 +25,7 @@ public class MilkBucketItemMixin {
 
     @Inject(
             method = "finishUsingItem",
-            at = @At(value = "INVOKE_ASSIGN",target = "Lnet/minecraft/world/entity/LivingEntity;removeAllEffects()Z")
+            at = @At(value = "INVOKE",target = "Lnet/minecraft/world/entity/LivingEntity;removeAllEffects()Z",shift = At.Shift.AFTER)
     )
     private void opentc4$clearMilkContext(
             ItemStack itemStack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir

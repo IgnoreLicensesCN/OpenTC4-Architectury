@@ -16,7 +16,6 @@ import thaumcraft.common.researches.ResearchAndScannedInfo;
 import static thaumcraft.common.researches.ThaumcraftResearchCategories.BASICS;
 import static thaumcraft.common.researches.ThaumcraftResearches.ASPECTS;
 
-
 public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_discovery";
     public static MessageType messageType;
@@ -27,13 +26,11 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
         this.aspect = aspect;
     }
 
-    // 编码
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeResourceLocation(aspect.aspectKey);
     }
 
-    // 解码
     public static PacketAspectDiscoveryS2C decode(FriendlyByteBuf buf) {
         return new PacketAspectDiscoveryS2C(Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation())));
     }
@@ -48,9 +45,9 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
 
         ResearchAndScannedInfo.getFromPlayer(context.getPlayer()).addResearchAspect(aspect,0);
 
-        Component notification = Component.translatable("tc.addaspectdiscovery", aspect.getName())
+        Component notification = Component.translatable("tc.addaspectdiscovery", aspect.getImageComponent().copy().append(aspect.getName()))
                 .withStyle(ChatFormatting.GOLD);
-        PlayerNotifications.addNotification(notification, aspect);
+        PlayerNotifications.addNotification(notification);
 
         player.playSound(
                 net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP, // 原 "random.orb" 替换为 Minecraft 1.20+

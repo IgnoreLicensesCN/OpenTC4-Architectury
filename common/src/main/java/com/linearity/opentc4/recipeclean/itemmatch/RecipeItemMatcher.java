@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-
+//oh i mean using List<Object> to make this is terrible.
 public abstract class RecipeItemMatcher implements ReturnItemStackAfterConsume{
     //should not modify stack
     public abstract boolean matches(@NotNull ItemStack stack);

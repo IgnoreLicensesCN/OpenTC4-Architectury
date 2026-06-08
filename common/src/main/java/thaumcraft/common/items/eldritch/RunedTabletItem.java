@@ -2,7 +2,6 @@ package thaumcraft.common.items.eldritch;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -11,6 +10,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 
@@ -31,13 +31,13 @@ public class RunedTabletItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
+    public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
 
         var world = useOnContext.getLevel();
         var player = useOnContext.getPlayer();
         var pos = useOnContext.getClickedPos();
 
-        if (world.isClientSide() || !(player instanceof ServerPlayer serverPlayer)) {return super.useOn(useOnContext);}
+        if (world.isClientSide() || player == null) {return InteractionResult.sidedSuccess(world.isClientSide());}
 
         var blockState = world.getBlockState(pos);
         var block = blockState.getBlock();
@@ -49,6 +49,6 @@ public class RunedTabletItem extends Item {
                     SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         }
-        return super.useOn(useOnContext);
+        return InteractionResult.FAIL;
     }
 }

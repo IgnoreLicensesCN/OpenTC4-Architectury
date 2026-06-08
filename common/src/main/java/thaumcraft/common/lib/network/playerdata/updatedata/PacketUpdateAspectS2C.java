@@ -71,10 +71,10 @@ public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
                 var text = Component.translatable(
                         "tc.addaspectpool",
                         Component.literal(String.valueOf(this.amountChanged)),
-                        aspect.getName()
+                        aspect.getImageComponent().copy().append(aspect.getName())
                 );
 
-                PlayerNotifications.addNotification(text, aspect);
+                PlayerNotifications.addNotification(text);
 
                 for (int i = 0; i < this.amountChanged; i++) {
                     PlayerNotifications.addAspectNotification(aspect);

@@ -38,7 +38,7 @@ public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocat
     public static NodeIDResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> NodeIDResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new NodeIDResourceLocation(namespace,path));
     }
     public static NodeIDResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

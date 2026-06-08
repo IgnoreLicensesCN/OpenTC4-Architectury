@@ -40,7 +40,7 @@ public class NodeTypeResourceLocation extends VariedResourceLocation<NodeType, N
     public static NodeTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> NodeTypeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new NodeTypeResourceLocation(namespace,path));
     }
     public static NodeTypeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

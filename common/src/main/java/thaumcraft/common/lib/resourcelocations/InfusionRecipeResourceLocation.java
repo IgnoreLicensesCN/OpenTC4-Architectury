@@ -40,7 +40,7 @@ public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocati
     public static InfusionRecipeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> InfusionRecipeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new InfusionRecipeResourceLocation(namespace,path));
     }
     public static InfusionRecipeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

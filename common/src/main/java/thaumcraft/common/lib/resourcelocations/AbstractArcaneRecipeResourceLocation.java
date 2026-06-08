@@ -3,7 +3,6 @@ package thaumcraft.common.lib.resourcelocations;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
-import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,7 +43,7 @@ public class AbstractArcaneRecipeResourceLocation
     public static AbstractArcaneRecipeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> AbstractArcaneRecipeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new AbstractArcaneRecipeResourceLocation(namespace,path));
     }
     public static AbstractArcaneRecipeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

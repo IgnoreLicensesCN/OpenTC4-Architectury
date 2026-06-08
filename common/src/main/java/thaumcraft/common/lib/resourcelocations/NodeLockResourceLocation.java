@@ -35,7 +35,7 @@ public class NodeLockResourceLocation extends VariedResourceLocation<INodeLockBl
     public static NodeLockResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> NodeLockResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new NodeLockResourceLocation(namespace,path));
     }
     public static NodeLockResourceLocation of(String namespaceAndPath){
         var split = namespaceAndPath.split(":");

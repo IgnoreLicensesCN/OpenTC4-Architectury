@@ -21,6 +21,7 @@ import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscovery
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
+import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.VIS_NODE;
 
 //TODO:[maybe wont finished]listener for unlock aspect
@@ -76,9 +77,10 @@ public class ScanManager {
             }
             if (!scanAddAspects(player,aspects)){
                 var needToDiscover = getOneOfAspectNeedToDiscover(player,aspects);
-                if (needToDiscover != null){
+                var aspectNeeded = ALL_ASPECTS.get(needToDiscover);
+                if (needToDiscover != null && aspectNeeded != null){
                     new PacketPlayerNotificationS2C(Component.translatable("tc.discoveryerror",
-                            Component.translatable("aspect." + needToDiscover.getNamespace() + ".help." + needToDiscover.getPath())
+                            aspectNeeded.getLocalizedDescription()
                     ));
                 }
                 return false;

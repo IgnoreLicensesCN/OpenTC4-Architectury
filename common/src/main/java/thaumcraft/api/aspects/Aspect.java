@@ -1,7 +1,9 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
+import com.linearity.opentc4.chatcomponent.AspectChatComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,16 +71,34 @@ public abstract class Aspect {
 	public @RGBColor int getColor() {
 		return color;
 	}
-	
+
+	protected Component name;
 	public Component getName() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
+		if (name == null) {
+			name = Component.translatable("aspect."+aspectKey.getNamespace()+"."+aspectKey.getPath());
+		}
+		return name;
 	}
+	protected String nameString;
 	public String getNameString() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath()).getString();
+		if (nameString == null) {
+			nameString = getName().getString();
+		}
+		return nameString;
 	}
-	
+	protected Component localizedDescription;
 	public Component getLocalizedDescription() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
+		if (localizedDescription == null) {
+			localizedDescription = Component.translatable("aspect."+aspectKey.getNamespace()+".helper."+aspectKey.getPath());
+		}
+		return localizedDescription;
+	}
+	protected Component imageComponent;
+	public Component getImageComponent(){
+		if (imageComponent == null) {
+			imageComponent = MutableComponent.create(new AspectChatComponent(this.aspectKey));
+		}
+		return imageComponent;
 	}
 	
 	public @NotNull AspectResourceLocation getAspectKey() {

@@ -42,7 +42,7 @@ public class ScannedTypeResourceLocation extends VariedResourceLocation<String, 
     public static ScannedTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> ScannedTypeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new ScannedTypeResourceLocation(namespace,path));
     }
     public static ScannedTypeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

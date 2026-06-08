@@ -4,6 +4,11 @@
             "type": "directory",
             "source": "aspects_colored",
             "prefix": "aspects_colored/"
+        },
+        {
+            "type": "directory",
+            "source": "aspects",
+            "prefix": "aspects/"
         }
     ]
 }

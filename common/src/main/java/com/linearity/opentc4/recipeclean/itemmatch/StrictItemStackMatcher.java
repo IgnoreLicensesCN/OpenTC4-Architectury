@@ -2,7 +2,6 @@ package com.linearity.opentc4.recipeclean.itemmatch;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
 import java.util.Objects;

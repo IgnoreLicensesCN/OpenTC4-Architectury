@@ -8,49 +8,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.projectile.EntityAlumentum;
 
 public class BehaviorDispenseAlumentum extends AbstractProjectileDispenseBehavior {
 
-//   @Override
-//   public ItemStack dispense(BlockSource source, ItemStack stack) {
-//
-//      // 如果 damage != 0，走默认行为
-//      if (stack.getDamageValue() != 0) {
-//         return DispenseItemBehavior.NOOP.dispense(source, stack);
-//      }
-//
-//      Level level = source.getLevel();
-//      Direction dir = source.getBlockState().getValue(DispenserBlock.FACING);
-//
-//      double x = source.x() + dir.getStepX() * 0.7D;
-//      double y = source.y() + dir.getStepY() * 0.7D;
-//      double z = source.z() + dir.getStepZ() * 0.7D;
-//
-//      Projectile proj = new EntityAlumentum(level, x, y, z);
-//
-//      // 与旧版 setThrowableHeading 对应
-//      proj.shoot(
-//              dir.getStepX(),
-//              dir.getStepY() + 0.1F,
-//              dir.getStepZ(),
-//              1.1F,     // velocity（原来 func_82500_b）
-//              6.0F      // inaccuracy（原来 func_82498_a）
-//      );
-//
-//      level.addFreshEntity(proj);
-//
-//      // play sound
-//      level.levelEvent(1009, source.getPos(), 0);
-//
-//      stack.shrink(1);
-//      return stack;
-//   }
-
-
 
    @Override
-   protected Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
+   protected @NotNull Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
       return new EntityAlumentum(level, pos.x(), pos.y(), pos.z());
    }
 
