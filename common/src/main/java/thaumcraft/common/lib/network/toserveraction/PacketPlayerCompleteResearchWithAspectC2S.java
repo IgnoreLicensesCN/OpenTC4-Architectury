@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.toserveraction;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
@@ -8,6 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
@@ -54,7 +56,7 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         }
         aspectsCost.forEach((aspectTypeRequired,aspectsAmountCost) -> {
             info.addResearchAspect(aspectTypeRequired, (short) (-aspectsAmountCost));
-            new PacketAspectPoolS2C(
+            new PacketUpdateAspectS2C(
                     aspectTypeRequired.aspectKey,
                     (short) (-aspectsAmountCost),
                     info.getResearchAspect(aspectTypeRequired))

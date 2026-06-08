@@ -8,7 +8,7 @@ import thaumcraft.api.listeners.warp.PickWarpEventContext;
 import thaumcraft.api.listeners.warp.listeners.WarpEvent;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
 
 import static thaumcraft.api.listeners.warp.consts.WarpEvents.*;
 
@@ -178,7 +178,7 @@ public enum WarpEventsEnum {
                 info.setStickyWarp(-1);
                 if (player instanceof ServerPlayer serverPlayer) {
                     info.syncSendPacket(serverPlayer);
-                    new PacketWarpMessageS2C((byte) 1, -1).sendTo(serverPlayer);
+                    new PacketChangeWarpS2C((byte) 1, -1).sendTo(serverPlayer);
                 }
             }
 

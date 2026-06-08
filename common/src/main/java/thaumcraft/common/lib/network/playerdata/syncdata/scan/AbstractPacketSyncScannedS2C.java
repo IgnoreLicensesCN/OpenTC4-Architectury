@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata.syncdata;
+package thaumcraft.common.lib.network.playerdata.syncdata.scan;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.FriendlyByteBuf;
@@ -8,7 +8,6 @@ import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;

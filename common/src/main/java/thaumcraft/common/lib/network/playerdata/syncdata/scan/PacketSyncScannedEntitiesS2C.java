@@ -1,16 +1,12 @@
-package thaumcraft.common.lib.network.playerdata.syncdata;
+package thaumcraft.common.lib.network.playerdata.syncdata.scan;
 
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.scan.ThaumcraftScannedTypes;
-import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 

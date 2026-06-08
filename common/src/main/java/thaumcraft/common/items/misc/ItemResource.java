@@ -28,7 +28,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
-import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.utils.InventoryUtils;
 

@@ -3,7 +3,7 @@ package thaumcraft.api.warp;
 import com.linearity.opentc4.mixinaccessors.PlayerWarpInfoMixinAccessor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncWarpS2C;
 
 //instance should bind to entity
 public class WarpInfo {

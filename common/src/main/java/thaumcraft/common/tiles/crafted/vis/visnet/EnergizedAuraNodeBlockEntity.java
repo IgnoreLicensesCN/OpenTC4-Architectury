@@ -2,6 +2,7 @@ package thaumcraft.common.tiles.crafted.vis.visnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +34,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     protected @NotNull CentiVisList<Aspect> currentOwningCentiVis = new LinkedHashCentiVisList<>();
     protected @NotNull NodeType nodeType = NodeType.NORMAL;
     protected @NotNull NodeModifier nodeModifier = NodeModifier.EMPTY;
-    protected @NotNull String id = "blank";
+    protected @NotNull ResourceLocation id = NodeInfo.EMPTY_ID;
 
     public @NotNull AspectList<Aspect> getAuraBase() {
         return auraBase;

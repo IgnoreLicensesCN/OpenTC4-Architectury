@@ -17,6 +17,8 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class ItemBasicAspectGetter {
     public static final ListenerManager<ItemBasicAspectGetListener> basicListeners = new ListenerManager<>();
@@ -31,15 +33,18 @@ public class ItemBasicAspectGetter {
     }
     private static final Map<Item,AspectList<Aspect>> CACHE = new HashMap<>();
     public static final Map<Item, AspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
-    public static final AtomicBoolean REQUESTED_ASPECT_LIST = new AtomicBoolean(false);
+    public static final AtomicLong REQUESTED_ASPECT_LIST_AT = new AtomicLong(0);
+    public static final long REQUEST_ASPECT_LIST_COOLDOWN = 5000;//milliseconds
     //expose to outer to get basic aspects
     public static AspectList<Aspect> getBasicAspects(@NotNull Item i,boolean isClientSide){
         return isClientSide ? getBasicAspectsClient(i) : getBasicAspectsServer(i);
     }
     public static AspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
 
-        if (CLIENT_CACHE.isEmpty() && !REQUESTED_ASPECT_LIST.get()){
-            REQUESTED_ASPECT_LIST.set(true);
+        if (CLIENT_CACHE.isEmpty()
+                && System.currentTimeMillis() - REQUESTED_ASPECT_LIST_AT.get() > REQUEST_ASPECT_LIST_COOLDOWN
+        ) {
+            REQUESTED_ASPECT_LIST_AT.set(System.currentTimeMillis());
             new PacketSyncItemAspectsC2S().sendToServer();
         }
         return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);

@@ -17,7 +17,6 @@ import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.REQUESTED_ASPECT_LIST;
 
 public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     public static MessageType messageType;
@@ -61,7 +60,6 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     }
 
     public static PacketSyncItemAspectsS2C decode(FriendlyByteBuf bufOuter) {
-        REQUESTED_ASPECT_LIST.set(true);
         return new PacketSyncItemAspectsS2C(
                 bufOuter.readMap(
                         bufForItem -> bufForItem.readById(BuiltInRegistries.ITEM),
@@ -87,6 +85,5 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         ItemBasicAspectGetter.CLIENT_CACHE.clear();
         ItemBasicAspectGetter.CLIENT_CACHE.putAll(syncResult);
-        REQUESTED_ASPECT_LIST.set(false);
     }
 }

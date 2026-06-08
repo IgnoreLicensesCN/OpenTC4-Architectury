@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.updatedata;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;

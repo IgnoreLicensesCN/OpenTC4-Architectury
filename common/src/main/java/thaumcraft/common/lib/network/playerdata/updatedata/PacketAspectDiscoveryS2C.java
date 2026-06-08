@@ -1,13 +1,11 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.updatedata;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.client.Minecraft;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;

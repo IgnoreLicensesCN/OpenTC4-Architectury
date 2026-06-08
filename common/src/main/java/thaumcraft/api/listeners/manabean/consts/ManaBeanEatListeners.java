@@ -7,9 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import thaumcraft.api.listeners.manabean.ManaBeanEatContext;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanEatListener;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.List;
@@ -52,7 +50,7 @@ public enum ManaBeanEatListeners {
                     if (!aspect.isEmpty() && level.random.nextInt(4) == 0){
                         var info = ResearchAndScannedInfo.getFromPlayer(player);
                         info.addResearchAspect(aspect,1);
-                        new PacketAspectPoolS2C(
+                        new PacketUpdateAspectS2C(
                                 aspect,
                                 1,
                                 info.getResearchAspect(aspect)

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncAllScannedS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncAllScannedS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;

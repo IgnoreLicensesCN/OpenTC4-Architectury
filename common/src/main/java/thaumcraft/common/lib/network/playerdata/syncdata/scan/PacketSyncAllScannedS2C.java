@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata.syncdata;
+package thaumcraft.common.lib.network.playerdata.syncdata.scan;
 
 import com.linearity.opentc4.simpleutils.SimplePair;
 import dev.architectury.networking.NetworkManager;

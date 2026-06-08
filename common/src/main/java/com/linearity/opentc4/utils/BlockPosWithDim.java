@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public record BlockPosWithDim(ResourceLocation dim, BlockPos pos) implements Comparable<BlockPosWithDim> {
     public static final ResourceLocation UNKNOWN_DIM = new ResourceLocation("thaumcraft","unknown");
     @Override

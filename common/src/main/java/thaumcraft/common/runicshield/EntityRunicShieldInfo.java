@@ -8,8 +8,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.lib.network.playerdata.PacketRunicCapacityS2C;
-import thaumcraft.common.lib.network.playerdata.PacketRunicChargeS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateRunicCapacityS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateRunicChargeS2C;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.ArrayList;
@@ -99,11 +99,11 @@ public class EntityRunicShieldInfo {
     public boolean shouldSyncCharge = false;
 
     public void syncCapacitySendPacket(ServerPlayer player) {
-        new PacketRunicCapacityS2C(this.shieldCapacity).sendTo(player);
+        new PacketUpdateRunicCapacityS2C(this.shieldCapacity).sendTo(player);
     }
 
     public void syncChargeSendPacket(ServerPlayer player) {
-        new PacketRunicChargeS2C(this.shieldCharged).sendTo(player);
+        new PacketUpdateRunicChargeS2C(this.shieldCharged).sendTo(player);
     }
 
     public void syncCapacityClientSide(

@@ -1,11 +1,14 @@
 package thaumcraft.common.lib.network.gamedata;
 
+import com.google.common.collect.MapMaker;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.common.Thaumcraft;
+
+import java.util.Map;
 
 public class PacketSyncItemAspectsC2S extends BaseC2SMessage {
     public static MessageType messageType;
@@ -24,10 +27,16 @@ public class PacketSyncItemAspectsC2S extends BaseC2SMessage {
         return new PacketSyncItemAspectsC2S();
     }
 
+    private static final Map<ServerPlayer,Integer> PLAYER_PACKET_COOLDOWN = new MapMaker().weakKeys().makeMap();
+    public static final int PACKET_COOLDOWN = 20*5;
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
-            new PacketSyncItemAspectsS2C().sendTo(serverPlayer);
+            var nextRun = PLAYER_PACKET_COOLDOWN.getOrDefault(serverPlayer,0);
+            if (serverPlayer.tickCount >= nextRun) {
+                new PacketSyncItemAspectsS2C().sendTo(serverPlayer);
+                PLAYER_PACKET_COOLDOWN.put(serverPlayer,serverPlayer.tickCount + PACKET_COOLDOWN);
+            }
         }
     }
 }

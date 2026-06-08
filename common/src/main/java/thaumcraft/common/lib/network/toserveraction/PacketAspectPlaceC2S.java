@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.toserveraction;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
@@ -23,13 +23,6 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
    private final Aspect aspect;
    private final byte q;
    private final byte r;
-
-   public PacketAspectPlaceC2S(byte q, byte r, BlockPos placeAspectToPos, Aspect aspect) {
-      this.placeAspectToPos = placeAspectToPos;
-      this.aspect = aspect;
-      this.q = q;
-      this.r = r;
-   }
 
    @Override
    public void write(FriendlyByteBuf buf) {

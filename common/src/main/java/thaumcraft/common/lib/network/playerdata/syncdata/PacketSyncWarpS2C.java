@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.syncdata;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;

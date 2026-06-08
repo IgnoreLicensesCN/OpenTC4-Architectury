@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.toserveraction;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
@@ -116,7 +117,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
          aspectProviderBE.costAspect(aspect,1);
       } else {
          info.addResearchAspect(aspect, (short) -1);
-         new PacketAspectPoolS2C(aspect, (short) 0,
+         new PacketUpdateAspectS2C(aspect, (short) 0,
                  info.getResearchAspect(aspect)).sendTo(player);
       }
    }

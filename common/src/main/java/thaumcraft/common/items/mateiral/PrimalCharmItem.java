@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
 
 import java.util.List;
 import java.util.Random;

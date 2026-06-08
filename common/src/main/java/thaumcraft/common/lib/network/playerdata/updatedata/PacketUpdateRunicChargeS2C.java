@@ -1,36 +1,36 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.updatedata;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.simple.MessageType;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
-public class PacketRunicCapacityS2C extends ThaumcraftBaseS2CMessage {
-    public static final String ID = Thaumcraft.MOD_ID + ":runic_capacity";
+public class PacketUpdateRunicChargeS2C extends ThaumcraftBaseS2CMessage {
+    public static final String ID = Thaumcraft.MOD_ID + ":runic_charge";
 
     public static MessageType messageType;
 
-    public final Object2IntMap<AbstractRunicShieldType<?>> shieldCapacity;
-    public PacketRunicCapacityS2C(Object2IntMap<AbstractRunicShieldType<?>> shieldCharged) {
-        this.shieldCapacity = shieldCharged;
+    public final Object2IntMap<AbstractRunicShieldType<?>> shieldCharged;
+    public PacketUpdateRunicChargeS2C(Object2IntMap<AbstractRunicShieldType<?>> shieldCharged) {
+        this.shieldCharged = shieldCharged;
     }
 
-    public static void encode(PacketRunicCapacityS2C msg, FriendlyByteBuf buf) {
-        buf.writeInt(msg.shieldCapacity.size());
-        msg.shieldCapacity.forEach((key, value) -> {
+    public static void encode(PacketUpdateRunicChargeS2C msg, FriendlyByteBuf buf) {
+        buf.writeInt(msg.shieldCharged.size());
+        msg.shieldCharged.forEach((key, value) -> {
             buf.writeResourceLocation(key.id);
             buf.writeInt(value);
         });
     }
 
-    public static PacketRunicCapacityS2C decode(FriendlyByteBuf buf) {
+    public static PacketUpdateRunicChargeS2C decode(FriendlyByteBuf buf) {
         int size = buf.readInt();
         Object2IntMap<AbstractRunicShieldType<?>> decoded = new Object2IntOpenHashMap<>(size);
         for (int i = 0; i < size; i++) {
@@ -41,7 +41,7 @@ public class PacketRunicCapacityS2C extends ThaumcraftBaseS2CMessage {
                 decoded.put(type,value);
             }
         }
-        return new PacketRunicCapacityS2C(decoded);
+        return new PacketUpdateRunicChargeS2C(decoded);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class PacketRunicCapacityS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
-        EntityRunicShieldInfo.getFromPlayer(player).syncCapacityClientSide(
-                this.shieldCapacity
+        EntityRunicShieldInfo.getFromPlayer(player).syncChargeClientSide(
+                this.shieldCharged
         );
     }
 }

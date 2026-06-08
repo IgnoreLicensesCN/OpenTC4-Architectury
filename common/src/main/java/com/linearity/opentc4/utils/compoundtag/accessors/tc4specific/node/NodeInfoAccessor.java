@@ -2,12 +2,13 @@ package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.StringTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.ModifiableAspectListAccessor;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.lib.NodeInfo;
 
 public class NodeInfoAccessor extends CompoundTagAccessor<NodeInfo> {
-    private final StringTagAccessor nodeIdAccessor;
+    private final ResourceLocationTagAccessor nodeIdAccessor;
     private final NodeTypeAccessor nodeTypeAccessor;
     private final NodeModifierAccessor nodeModifierAccessor;
     private final ModifiableAspectListAccessor nodeAspectsAccessor;
@@ -15,7 +16,7 @@ public class NodeInfoAccessor extends CompoundTagAccessor<NodeInfo> {
 
     public NodeInfoAccessor(String tagKey) {
         super(tagKey);
-        this.nodeIdAccessor = new StringTagAccessor(tagKey + "_id");
+        this.nodeIdAccessor = new ResourceLocationTagAccessor(tagKey + "_id");
         this.nodeTypeAccessor = new NodeTypeAccessor(tagKey + "_type");
         this.nodeModifierAccessor = new NodeModifierAccessor(tagKey + "_modifier");
         this.nodeAspectsAccessor = new ModifiableAspectListAccessor(tagKey + "_aspects");

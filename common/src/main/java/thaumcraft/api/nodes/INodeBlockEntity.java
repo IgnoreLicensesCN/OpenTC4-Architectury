@@ -1,6 +1,7 @@
 package thaumcraft.api.nodes;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<A
 	 * Unique identifier to distinguish nodes. Normal node id's are based on world id and coordinates
 	 * @return
 	 */
-    String getId();
+    ResourceLocation getId();
 	
 	AspectList<Aspect> getAspectsBase();
 	

@@ -6,7 +6,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
@@ -93,7 +93,7 @@ public class DeconstructionTableResultSlot extends Slot {
             deconstructionTable.storingAspect = Aspects.EMPTY;
             var info = ResearchAndScannedInfo.getFromPlayer(serverPlayer);
             info.addResearchAspect(aspect, 1);
-            new PacketAspectPoolS2C(aspect.getAspectKey(),
+            new PacketUpdateAspectS2C(aspect.getAspectKey(),
                     (short) 1, info.getResearchAspect(aspect)).sendTo(serverPlayer);
             setChanged();
         }

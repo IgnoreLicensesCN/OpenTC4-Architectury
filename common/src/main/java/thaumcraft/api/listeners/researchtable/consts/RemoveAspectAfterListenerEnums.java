@@ -4,9 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.listeners.RemoveAspectAfterListener;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.researches.ThaumcraftResearches;
 
@@ -42,7 +40,7 @@ public enum RemoveAspectAfterListenerEnums {
                 );
                 var info = ResearchAndScannedInfo.getFromPlayer(context.player);
                 info.addResearchAspect(context.aspectToRemove,1);
-                new PacketAspectPoolS2C(
+                new PacketUpdateAspectS2C(
                         context.aspectToRemove.aspectKey,
                         0,
                         info.getResearchAspect(context.aspectToRemove)).sendTo(context.player);

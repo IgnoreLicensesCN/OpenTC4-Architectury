@@ -7,7 +7,7 @@ import thaumcraft.api.listeners.researchtable.listeners.WriteAspectAfterListener
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
@@ -56,7 +56,7 @@ public enum WriteAspectAfterListenerEnums {
             if (context.doDrainAspect && !context.aspectToWrite.isEmpty()){
                 var info = ResearchAndScannedInfo.getFromPlayer(context.player);
                 info.addResearchAspect(context.aspectToWrite,-1);
-                new PacketAspectPoolS2C(
+                new PacketUpdateAspectS2C(
                         context.aspectToWrite.aspectKey,
                         0,
                         info.getResearchAspect(context.aspectToWrite)).sendTo(context.player);

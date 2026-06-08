@@ -19,7 +19,6 @@ public class PacketMiscEventS2C  extends ThaumcraftBaseS2CMessage {
     public static final short MIST_EVENT = 1;
     public static final short MIST_EVENT_SHORT = 2;
 
-    public PacketMiscEventS2C(){}
     public PacketMiscEventS2C(short type){
         this.type = type;
     }

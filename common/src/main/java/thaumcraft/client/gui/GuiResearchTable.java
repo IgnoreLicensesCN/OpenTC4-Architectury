@@ -25,7 +25,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.container.ContainerResearchTable;
 import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationC2S;
+import thaumcraft.common.lib.network.toserveraction.PacketAspectCombinationC2S;
 import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationToServer;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPlaceToServer;
 import thaumcraft.common.lib.research.ResearchManager;

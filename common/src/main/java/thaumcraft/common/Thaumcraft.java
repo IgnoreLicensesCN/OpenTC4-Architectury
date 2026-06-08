@@ -2,13 +2,12 @@ package thaumcraft.common;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import org.spongepowered.asm.mixin.injection.Desc;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.events.EventHandlerRunic;
-import thaumcraft.common.lib.network.playerdata.PacketSyncWarpS2C;
-import thaumcraft.common.lib.network.playerdata.PacketWarpMessageS2C;
+import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncWarpS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
 import thaumcraft.common.lib.research.PlayerKnowledge;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -69,11 +68,11 @@ public class Thaumcraft {
 
                         playerKnowledge.addWarpTemp(player, amount);
                         new PacketSyncWarpS2C(player, (byte)2).sendTo(player);
-                        new PacketWarpMessageS2C((byte)2, amount).sendTo(player);
+                        new PacketChangeWarpS2C((byte)2, amount).sendTo(player);
                     } else {
                         playerKnowledge.addWarpPerm(player, amount);
                         new PacketSyncWarpS2C(player, (byte)0).sendTo(player);
-                        new PacketWarpMessageS2C((byte)0, amount).sendTo(player);
+                        new PacketChangeWarpS2C((byte)0, amount).sendTo(player);
                     }
 
                     playerKnowledge.setWarpCounter(player, playerKnowledge.getWarpTotal(player));
@@ -93,7 +92,7 @@ public class Thaumcraft {
                 if (amount >= 0 || playerKnowledge.getWarpSticky(player) > 0) {
                     playerKnowledge.addWarpSticky(player, amount);
                     new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
-                    new PacketWarpMessageS2C((byte)1, amount).sendTo(player);
+                    new PacketChangeWarpS2C((byte)1, amount).sendTo(player);
                     playerKnowledge.setWarpCounter(player, playerKnowledge.getWarpTotal(player));
                 }
             }

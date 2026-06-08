@@ -2,10 +2,10 @@ package thaumcraft.common.tiles.abstracts;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.utils.BlockPosWithDim;
 import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.lib.resourcelocations.NodeIDResourceLocation;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
@@ -43,7 +44,6 @@ import java.util.*;
 import java.util.List;
 
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
-import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
 
 import com.linearity.opentc4.Color;
 
@@ -62,13 +62,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     long lastActiveMillis = 0L;
     protected AspectList<Aspect> aspects = new LinkedHashAspectList<>();
     protected AspectList<Aspect> aspectsBase = new LinkedHashAspectList<>();
-    public static Map<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
     private @NotNull NodeType nodeType;
     private @NotNull NodeModifier nodeModifier;
     int tickCount;
     public int regenerationTickPeriod;
     int wait;
-    public String id;
+    public ResourceLocation id;
     public NodeLockResourceLocation nodeLockId;
     boolean catchUp;
     public int drainColor;
@@ -101,7 +100,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public String getId() {
+    public ResourceLocation getId() {
         if (this.id == null) {
             this.id = this.generateId();
         }
@@ -109,25 +108,23 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return this.id;
     }
 
-    public String generateId() {
+    public ResourceLocation generateId() {
         var pos = this.getBlockPos();
         var level = this.level;
-        var posWithDim = new BlockPosWithDim(
-                level == null ? UNKNOWN_DIM : level.dimension().location(), pos
+        var levelResLoc = level.dimension().location();
+//        var posWithDim = new BlockPosWithDim(
+//                level == null ? UNKNOWN_DIM : level.dimension().location(), pos
+//        );
+        this.id = NodeIDResourceLocation.of(
+                levelResLoc.getNamespace() + "_" + levelResLoc.getPath(),
+                pos.getX() + "_" + pos.getY() + "_" + pos.getZ()
         );
-        this.id = posWithDim.toString();
-        if (level != null && nodeIdToLocations != null) {
-            nodeIdToLocations.put(this.id, posWithDim);
-        }
 
         return this.id;
     }
 
     @Override
     public void setRemoved() {
-        if (nodeIdToLocations != null) {
-            nodeIdToLocations.remove(this.id);
-        }
         unregisterFromWeakLookup(this.level);
 
         super.setRemoved();
@@ -406,7 +403,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public void readCustomNBT(CompoundTag tag) {
         var nodeInfo = NODE_INFO.readFromCompoundTag(tag);
         readNodeInfo(nodeInfo);
-        addNodeToCache();
         this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readLongFromCompoundTag(tag);
 
         var modifier = this.getNodeModifier();
@@ -420,17 +416,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
 
-    public void addNodeToCache() {
-        if (this.level != null && nodeIdToLocations != null) {
-            nodeIdToLocations.put(
-                    this.id, new BlockPosWithDim(
-                            this.level.dimension()
-                                    .location(), this.getBlockPos()
-                    )
-            );
-        }
-    }
-
     @Override
     public void writeCustomNBT(CompoundTag tag) {
         if (this.id == null) {
@@ -438,7 +423,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
         NODE_INFO.writeToCompoundTag(tag, new NodeInfo(this.id, this.nodeType, this.nodeModifier, this.aspects, this.aspectsBase));
         NODE_LAST_ACTIVE_ACCESSOR.writeLongToCompoundTag(tag, this.lastActiveMillis);
-        addNodeToCache();
     }
 
     //attack another node(zap~),take vis from there.

@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata.syncdata;
+package thaumcraft.common.lib.network.playerdata.syncdata.scan;
 
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.scan.ThaumcraftScannedTypes;

@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.updatedata;
 
 
 import dev.architectury.networking.NetworkManager;
@@ -11,27 +11,27 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 
-public class PacketWarpMessageS2C extends ThaumcraftBaseS2CMessage {
+public class PacketChangeWarpS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":warp_message";
 
     public final int data;
     public final byte type;
 
-    public PacketWarpMessageS2C(byte type, int data) {
-        this.data = data;
+    public PacketChangeWarpS2C(byte type, int data) {
         this.type = type;
+        this.data = data;
     }
 
     /**
      * 解码
      */
-    public static PacketWarpMessageS2C decode(FriendlyByteBuf buf) {
+    public static PacketChangeWarpS2C decode(FriendlyByteBuf buf) {
         int data = buf.readInt();
         byte type = buf.readByte();
-        return new PacketWarpMessageS2C(type, data);
+        return new PacketChangeWarpS2C(type, data);
     }
 
-    public static void encode(PacketWarpMessageS2C msg, FriendlyByteBuf buf) {
+    public static void encode(PacketChangeWarpS2C msg, FriendlyByteBuf buf) {
         buf.writeInt(msg.data);
         buf.writeByte(msg.type);
     }

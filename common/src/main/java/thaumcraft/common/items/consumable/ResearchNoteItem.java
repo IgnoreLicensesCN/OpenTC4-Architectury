@@ -22,8 +22,8 @@ import thaumcraft.api.research.interfaces.IResearchableResearch;
 import thaumcraft.api.researchtable.IResearchNoteDataOwnerItem;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.research.HexEntry;
 import thaumcraft.common.lib.research.HexType;
 import thaumcraft.common.lib.research.ResearchNoteData;
@@ -158,7 +158,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         aspectsToCopy.forEach(
                 (aspect,count) -> {
                     info.addResearchAspect(aspect, -count);
-                    new PacketAspectPoolS2C(aspect.getAspectKey(), 0, info.getResearchAspect(aspect)).sendTo(player);
+                    new PacketUpdateAspectS2C(aspect.getAspectKey(), 0, info.getResearchAspect(aspect)).sendTo(player);
                 }
         );
         playerInventory.items.get(paperIndex).shrink(1);

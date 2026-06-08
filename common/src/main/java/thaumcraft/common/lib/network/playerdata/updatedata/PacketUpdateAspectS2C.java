@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.updatedata;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;
@@ -14,7 +14,7 @@ import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
-public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
+public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
     public static MessageType messageType;
 
@@ -24,26 +24,26 @@ public class PacketAspectPoolS2C extends ThaumcraftBaseS2CMessage {
     private static long lastSound = 0L;
     public static final long SOUND_DELAY = 100L;
 
-    public PacketAspectPoolS2C(Aspect key, int amountChanged, int total){
+    public PacketUpdateAspectS2C(Aspect key, int amountChanged, int total){
         this(key.getAspectKey(), amountChanged, total);
     }
-    public PacketAspectPoolS2C(AspectResourceLocation key, int amountChanged, int total) {
+    public PacketUpdateAspectS2C(AspectResourceLocation key, int amountChanged, int total) {
         this.key = key;
         this.amountChanged = amountChanged;
         this.total = total;
     }
 
-    public static void encode(PacketAspectPoolS2C msg, FriendlyByteBuf buf) {
+    public static void encode(PacketUpdateAspectS2C msg, FriendlyByteBuf buf) {
         buf.writeResourceLocation(msg.key);
         buf.writeInt(msg.amountChanged);
         buf.writeInt(msg.total);
     }
 
-    public static PacketAspectPoolS2C decode(FriendlyByteBuf buf) {
+    public static PacketUpdateAspectS2C decode(FriendlyByteBuf buf) {
         ResourceLocation key = buf.readResourceLocation();
         int amount = buf.readInt();
         int total = buf.readInt();
-        return new PacketAspectPoolS2C(AspectResourceLocation.of(key), amount, total);
+        return new PacketUpdateAspectS2C(AspectResourceLocation.of(key), amount, total);
     }
 
     @Override

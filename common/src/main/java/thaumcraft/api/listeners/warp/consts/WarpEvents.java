@@ -11,7 +11,7 @@ import thaumcraft.api.listeners.warp.WarpEventManager;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class WarpEvents {
          var aspect = aspectTypes.get(player.getRandom().nextInt(aspectTypes.size()));
          info.addResearchAspect(aspect,1);
 
-         new PacketAspectPoolS2C(aspect.getAspectKey(), (short) 1, info.getResearchAspect(aspect)).sendTo((ServerPlayer)player);
+         new PacketUpdateAspectS2C(aspect.getAspectKey(), (short) 1, info.getResearchAspect(aspect)).sendTo((ServerPlayer)player);
       }
    }
 

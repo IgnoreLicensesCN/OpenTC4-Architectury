@@ -11,7 +11,7 @@ import thaumcraft.api.listeners.warp.listeners.WarpEvent;
 import thaumcraft.api.listeners.warp.listeners.WarpEventListenerAfter;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 
 
 import static thaumcraft.api.listeners.warp.consts.WarpEvents.grantResearch;

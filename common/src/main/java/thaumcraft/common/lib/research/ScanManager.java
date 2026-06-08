@@ -35,8 +35,8 @@ import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-import thaumcraft.common.lib.network.playerdata.PacketAspectDiscoveryS2C;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
@@ -604,7 +604,7 @@ public class ScanManager implements IScanEventHandler {
         if (rp.addAspectPool(
                 player, aspect, (short) amount
         )) {
-            new PacketAspectPoolS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
+            new PacketUpdateAspectS2C(aspect.getAspectKey(), (short) amount, rp.getAspectPoolFor(
                     player, aspect
             )
             ).sendTo((ServerPlayer) player);

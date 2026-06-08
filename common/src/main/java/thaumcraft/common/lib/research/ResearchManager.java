@@ -25,8 +25,8 @@ import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.lib.network.playerdata.PacketClueCompleteS2C;
-import thaumcraft.common.lib.network.playerdata.PacketResearchCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 

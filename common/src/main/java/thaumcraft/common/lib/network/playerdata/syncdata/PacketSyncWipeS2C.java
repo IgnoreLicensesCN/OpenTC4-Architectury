@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.network.playerdata;
+package thaumcraft.common.lib.network.playerdata.syncdata;
 
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.api.warp.WarpInfo;
@@ -23,9 +23,6 @@ public class PacketSyncWipeS2C extends ThaumcraftBaseS2CMessage {
     public void write(FriendlyByteBuf buf) {
     }
 
-    /**
-     * 收到消息时执行
-     */
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
@@ -39,15 +36,12 @@ public class PacketSyncWipeS2C extends ThaumcraftBaseS2CMessage {
             WarpInfo.getFromPlayer(player).setTempWarp(0);
             WarpInfo.getFromPlayer(player).setPermWarp(0);
             WarpInfo.getFromPlayer(player).setWarpEventCounter(0);
-//            Thaumcraft.playerKnowledge.wipePlayerKnowledge(name);//TODO:scanned
+            info.scannedThings.clear();
         }
     }
 
     public static MessageType messageType;
 
-    /**
-     * 返回消息类型
-     */
     @Override
     public MessageType getType() {
         return messageType;
