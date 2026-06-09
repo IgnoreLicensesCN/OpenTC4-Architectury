@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.api.listeners.warp.WarpEventManager.getFinalWarp;
 import static thaumcraft.api.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
 
 public class WarpEvents {
@@ -146,12 +147,15 @@ public class WarpEvents {
 //   }
 
    public static int getWarpFromGear(Player player) {
-      AtomicInteger w = new AtomicInteger(WarpEventManager.getFinalWarp(player.getMainHandItem(), player));
-      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(WarpEventManager.getFinalWarp(armorInSlot, player)));
+      AtomicInteger w = new AtomicInteger(
+              getFinalWarp(player.getMainHandItem(), player)
+                      + getFinalWarp(player.getOffhandItem(), player)//time changes now
+      );
+      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(getFinalWarp(armorInSlot, player)));
       forEachBauble(player,(slot, stack, item) -> {
-         w.addAndGet(WarpEventManager.getFinalWarp(stack, player));
+         w.addAndGet(getFinalWarp(stack, player));
          return false;
       });
-      return w.addAndGet(WarpEventManager.getFinalWarp(player.getOffhandItem(), player));
+      return w.addAndGet(getFinalWarp(player.getOffhandItem(), player));
    }
 }

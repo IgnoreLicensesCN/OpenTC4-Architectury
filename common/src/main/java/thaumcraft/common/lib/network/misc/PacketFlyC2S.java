@@ -5,7 +5,7 @@ import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.armor.Hover;
+import thaumcraft.common.items.equipment.armor.Hover;
 
 public class PacketFlyC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":set_fly";

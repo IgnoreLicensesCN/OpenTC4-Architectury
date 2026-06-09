@@ -18,9 +18,10 @@ public abstract class ComponentElementRenderer implements Comparable<ComponentEl
     public int compareTo(@NotNull ComponentElementRenderer o) {
         return Integer.compare(weight, o.weight);
     }
-
+    //null if cant render for that.
     public abstract @Nullable ComponentElementSplitParts getPartsIfExistsAndCanRender(String toSplitIntoParts);
     //return width **added**
+    //don't cause performance issue here
     public abstract int renderPartForElement(
             String elementContent,
             float xCoordCurrent,

@@ -1,4 +1,4 @@
-package thaumcraft.common.items.armor;
+package thaumcraft.common.items.equipment.armor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

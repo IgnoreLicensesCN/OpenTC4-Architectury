@@ -1,4 +1,4 @@
-package thaumcraft.common.items.armor;
+package thaumcraft.common.items.equipment.armor;
 
 import net.minecraft.world.level.block.BlockColored;
 import net.minecraft.entity.passive.EntitySheep;
@@ -7,7 +7,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.world.item.ItemArmor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.IRecipe;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 

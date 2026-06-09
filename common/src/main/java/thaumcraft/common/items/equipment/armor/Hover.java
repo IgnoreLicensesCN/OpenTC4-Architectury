@@ -1,4 +1,4 @@
-package thaumcraft.common.items.armor;
+package thaumcraft.common.items.equipment.armor;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;

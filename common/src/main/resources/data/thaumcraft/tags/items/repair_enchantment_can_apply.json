@@ -8,6 +8,17 @@
     "thaumcraft:void_helmet",
     "thaumcraft:void_chestplate",
     "thaumcraft:void_leggings",
-    "thaumcraft:void_boots"
+    "thaumcraft:void_boots",
+
+    "thaumcraft:thaumium_sword",
+    "thaumcraft:thaumium_shovel",
+    "thaumcraft:thaumium_pickaxe",
+    "thaumcraft:thaumium_hoe",
+    "thaumcraft:thaumium_axe",
+    "thaumcraft:void_sword",
+    "thaumcraft:void_shovel",
+    "thaumcraft:void_pickaxe",
+    "thaumcraft:void_hoe",
+    "thaumcraft:void_axe"
   ]
 }

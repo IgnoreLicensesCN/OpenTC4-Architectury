@@ -23,6 +23,7 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
+import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
 import thaumcraft.common.items.research.ThaumometerItem;
@@ -275,6 +276,16 @@ public class ThaumcraftItems {
     public static final BlockItem FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
     public static final BlockItem FLUX_SCRUBBER =  Registry.SUPPLIER_FLUX_SCRUBBER.get();
     public static final WispEssenceItem WISP_ESSENCE = Registry.SUPPLIER_WISP_ESSENCE.get();
+    public static final VoidSwordItem VOID_SWORD = Registry.SUPPLIER_VOID_SWORD.get();
+    public static final VoidShovelItem VOID_SHOVEL = Registry.SUPPLIER_VOID_SHOVEL.get();
+    public static final VoidPickaxeItem VOID_PICKAXE = Registry.SUPPLIER_VOID_PICKAXE.get();
+    public static final VoidHoeItem VOID_HOE = Registry.SUPPLIER_VOID_HOE.get();
+    public static final VoidAxeItem VOID_AXE = Registry.SUPPLIER_VOID_AXE.get();
+    public static final SwordItem THAUMIUM_SWORD = Registry.SUPPLIER_THAUMIUM_SWORD.get();
+    public static final ShovelItem THAUMIUM_SHOVEL = Registry.SUPPLIER_THAUMIUM_SHOVEL.get();
+    public static final PickaxeItem THAUMIUM_PICKAXE = Registry.SUPPLIER_THAUMIUM_PICKAXE.get();
+    public static final AxeItem THAUMIUM_AXE = Registry.SUPPLIER_THAUMIUM_AXE.get();
+    public static final HoeItem THAUMIUM_HOE = Registry.SUPPLIER_THAUMIUM_HOE.get();
 
     //===========================================================================================
 
@@ -953,7 +964,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_HELMET = ITEMS.register(
                 "void_helmet",
                 () -> new ArmorItem(
-                        ToolAndArmorMaterial.VOID,
+                        ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.HELMET,
                         new Item.Properties().stacksTo(1)
                 )
@@ -961,7 +972,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_CHESTPLATE = ITEMS.register(
                 "void_chestplate",
                 () -> new ArmorItem(
-                        ToolAndArmorMaterial.VOID,
+                        ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.CHESTPLATE,
                         new Item.Properties().stacksTo(1)
                 )
@@ -969,7 +980,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_LEGGINGS = ITEMS.register(
                 "void_leggings",
                 () -> new ArmorItem(
-                        ToolAndArmorMaterial.VOID,
+                        ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.LEGGINGS,
                         new Item.Properties().stacksTo(1)
                 )
@@ -977,7 +988,7 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_BOOTS = ITEMS.register(
                 "void_boots",
                 () -> new ArmorItem(
-                        ToolAndArmorMaterial.VOID,
+                        ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.BOOTS,
                         new Item.Properties().stacksTo(1)
                 )
@@ -1037,6 +1048,52 @@ public class ThaumcraftItems {
                         WispEssenceItem::new
                 );
 
+        public static final RegistrySupplier<VoidSwordItem> SUPPLIER_VOID_SWORD = ITEMS.register(
+                "void_sword",
+                VoidSwordItem::new
+        );
+        public static final RegistrySupplier<VoidShovelItem> SUPPLIER_VOID_SHOVEL = ITEMS.register(
+                "void_shovel",
+                VoidShovelItem::new
+        );
+        public static final RegistrySupplier<VoidPickaxeItem> SUPPLIER_VOID_PICKAXE = ITEMS.register(
+                "void_pickaxe",
+                VoidPickaxeItem::new
+        );
+        public static final RegistrySupplier<VoidHoeItem> SUPPLIER_VOID_HOE = ITEMS.register(
+                "void_hoe",
+                VoidHoeItem::new
+        );
+        public static final RegistrySupplier<VoidAxeItem> SUPPLIER_VOID_AXE = ITEMS.register(
+                "void_axed",
+                VoidAxeItem::new
+        );
+
+        public static final RegistrySupplier<SwordItem> SUPPLIER_THAUMIUM_SWORD = ITEMS.register(
+                "thaumium_sword",
+                () -> new SwordItem(ToolAndArmorMaterial.TOOL_THAUMIUM,3, -2.4F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                )
+        );
+        public static final RegistrySupplier<ShovelItem> SUPPLIER_THAUMIUM_SHOVEL = ITEMS.register(
+                "thaumium_shovel",
+                () -> new ShovelItem(ToolAndArmorMaterial.TOOL_THAUMIUM,1.5F, -3.0F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                )
+        );
+        public static final RegistrySupplier<PickaxeItem> SUPPLIER_THAUMIUM_PICKAXE = ITEMS.register(
+                "thaumium_pickaxe",
+                () -> new PickaxeItem(ToolAndArmorMaterial.TOOL_THAUMIUM,1, -2.8F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                )
+        );
+        public static final RegistrySupplier<AxeItem> SUPPLIER_THAUMIUM_AXE = ITEMS.register(
+                "thaumium_axe",
+                () -> new AxeItem(ToolAndArmorMaterial.TOOL_THAUMIUM,6.0F, -3.1F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                )
+        );
+        public static final RegistrySupplier<HoeItem> SUPPLIER_THAUMIUM_HOE = ITEMS.register(
+                "thaumium_hoe",
+                () -> new HoeItem(ToolAndArmorMaterial.TOOL_THAUMIUM,-2, -1.0F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                )
+        );
     }
 
     public static class ItemTags {
@@ -1129,6 +1186,7 @@ public class ThaumcraftItems {
             }
         };
         public static final Tier TOOL_VOID = new Tier() {
+            //"VOID", 4, 150, 8F, 3, 10
             @Override
             public int getUses() {
                 return 150;
@@ -1154,7 +1212,7 @@ public class ThaumcraftItems {
                 return 10;
             }
 
-            public static final Ingredient ingredient = Ingredient.of(VOID_INGOT_TAG);
+            public static final Ingredient ingredient = Ingredient.of(PRIMAL_CHARM);
             @Override
             public @NotNull Ingredient getRepairIngredient() {
                 return ingredient;
@@ -1347,7 +1405,7 @@ public class ThaumcraftItems {
                 return 0;
             }
         };
-        public static final ArmorMaterial VOID = new ArmorMaterial() {
+        public static final ArmorMaterial ARMOR_VOID = new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
                 return switch (type) {

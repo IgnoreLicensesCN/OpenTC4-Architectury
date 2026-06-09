@@ -135,7 +135,8 @@ public class WandUtils {
             }
         }
         if (shiftKeyDownFlag) {
-            list.add(aspect.getName().copy()
+            list.add(
+                    aspect.getName().copy()
                     .withStyle(style -> style.withColor(TextColor.fromRgb(aspect.getColor())))
                     .append(Component.literal(" x "+amountString + "/" + capacityString).withStyle(style -> Style.EMPTY))
                     .append(Component.literal(" ,").withStyle(style -> Style.EMPTY))
@@ -156,10 +157,10 @@ public class WandUtils {
     }
 
     public static void addFocusInformation(IWandFocusItem<? extends Aspect> focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
-		for (var entry:focus.getAppliedWandUpgrades(focusstack).entrySet()) {
+		for (var entry:focus.getAppliedWandUpgrades(focusstack).object2IntEntrySet()) {
             FocusUpgradeType type = entry.getKey();
             var id = type.id();
-            var lvl = entry.getValue();
+            var lvl = entry.getIntValue();
             var lvlComponent = (lvl>1?Component.literal(" ").append(Component.translatable("enchantment.level." + lvl)):Component.empty());
             list.add(
                     type.getLocalizedName().copy()

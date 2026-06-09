@@ -15,7 +15,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.armor.ItemHoverHarness;
+import thaumcraft.common.items.equipment.armor.ItemHoverHarness;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.HashMap;

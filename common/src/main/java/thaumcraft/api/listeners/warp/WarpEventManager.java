@@ -33,9 +33,9 @@ public class WarpEventManager {
     public static final ListenerManager<PickWarpEventListenerAfter> pickWarpEventListenerAfterManager = new ListenerManager<>();
     public static final ListenerManager<WarpConditionChecker> warpConditionCheckerManager = new ListenerManager<>();
     public static final ListenerManager<GettingWarpDelayListener> gettingWarpDelayListenerManager = new ListenerManager<>();
-    
-    public static void init(){
-        for (var eventEnum: WarpEventsEnum.values()){
+
+    public static void init() {
+        for (var eventEnum : WarpEventsEnum.values()) {
             warpEventManager.registerListener(eventEnum.event);
         }
         pickWarpEventListenerBeforeManager.registerListener(THAUMIC_FORTRESS_MASK_DISCOUNT);
@@ -50,8 +50,8 @@ public class WarpEventManager {
         warpConditionCheckerManager.registerListener(NO_WARP_WARD);
 
     }
-    
-    public static  WarpEvent pickWarpEventWithListener(PickWarpEventContext warpContext,Player player) {
+
+    public static WarpEvent pickWarpEventWithListener(PickWarpEventContext warpContext, Player player) {
         for (PickWarpEventListenerBefore listener : pickWarpEventListenerBeforeManager.getListeners()) {
             listener.beforePickEvent(warpContext, player);
         }
@@ -75,32 +75,32 @@ public class WarpEventManager {
         }
 
         for (PickWarpEventListenerAfter listener : pickWarpEventListenerAfterManager.getListeners()) {
-            picked = listener.afterPickEvent(warpContext,picked,player);
+            picked = listener.afterPickEvent(warpContext, picked, player);
         }
         return picked;
     }
 
     public static void triggerRandomWarpEvent(PickWarpEventContext warpContext, ServerPlayer player) {
-        triggerWarpEvent(warpContext, pickWarpEventWithListener(warpContext,player),player);
+        triggerWarpEvent(warpContext, pickWarpEventWithListener(warpContext, player), player);
     }
 
     public static void triggerWarpEvent(PickWarpEventContext warpContext, WarpEvent e, ServerPlayer player) {
         e.enable();
         for (WarpEventListenerBefore listener : warpEventListenerBeforeManager.getListeners()) {
-            listener.onWarpEvent(warpContext,e,player);
+            listener.onWarpEvent(warpContext, e, player);
         }
         if (e.enabledFlag) {
-            e.onEventTriggered(warpContext,player);
-            if (e.retryAnotherFlag){
-                triggerRandomWarpEvent(warpContext,player);
+            e.onEventTriggered(warpContext, player);
+            if (e.retryAnotherFlag) {
+                triggerRandomWarpEvent(warpContext, player);
                 return;
             }
             for (WarpEventListenerAfter listener : warpEventListenerAfterManager.getListeners()) {
-                listener.onWarpEvent(warpContext,e,player);
+                listener.onWarpEvent(warpContext, e, player);
             }
-            if (e.sendMiscPacket){
+            if (e.sendMiscPacket) {
                 if (player instanceof ServerPlayer) {
-                    new PacketMiscEventS2C((short)0).sendTo(player);
+                    new PacketMiscEventS2C((short) 0).sendTo(player);
                 }
             }
             if (player instanceof ServerPlayer serverPlayer) {
@@ -120,14 +120,15 @@ public class WarpEventManager {
                 warpInfo.getWarpEventCounter()
         );
         for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
-            if (!condition.check(warpContext,player)) {
+            if (!condition.check(warpContext, player)) {
                 return;
             }
         }
-        triggerRandomWarpEvent(warpContext,player);
+        triggerRandomWarpEvent(warpContext, player);
     }
 
     public static final int defaultCheckWarpEventDelay = 2000;
+
     //unit:tick
     public static int getWarpEventDelayForPlayer(ServerPlayer player) {
         int result = defaultCheckWarpEventDelay;
@@ -138,10 +139,10 @@ public class WarpEventManager {
     }
 
     public static int getFinalWarp(ItemStack stack, Player player) {
-       if (stack != null && stack.getItem() instanceof IWarpingGear armor) {
-           return armor.getWarp(stack, player);
-       } else {
-          return 0;
-       }
+        if (stack != null && stack.getItem() instanceof IWarpingGear armor) {
+            return armor.getWarp(stack, player);
+        }
+        //need some map to lookup?
+        return 0;
     }
 }

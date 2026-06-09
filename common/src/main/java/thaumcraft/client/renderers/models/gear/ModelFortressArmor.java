@@ -9,7 +9,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.item.ItemStack;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.items.armor.ItemFortressArmor;
+import thaumcraft.common.items.equipment.armor.ItemFortressArmor;
 
 import java.util.HashMap;
 

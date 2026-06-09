@@ -5,7 +5,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.items.armor.ItemHoverHarness;
+import thaumcraft.common.items.equipment.armor.ItemHoverHarness;
 
 import java.util.Objects;
 

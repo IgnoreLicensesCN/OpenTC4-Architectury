@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 import thaumcraft.api.listeners.warp.listeners.PickWarpEventListenerBefore;
 import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.items.armor.ItemFortressArmor;
+import thaumcraft.common.items.equipment.armor.ItemFortressArmor;
 
 public class BeforePickEventListeners {
     public static final PickWarpEventListenerBefore THAUMIC_FORTRESS_MASK_DISCOUNT = new PickWarpEventListenerBefore(0) {
