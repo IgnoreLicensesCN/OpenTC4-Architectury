@@ -1,31 +1,24 @@
 package com.linearity.opentc4.mixin.client;
 
+import com.linearity.opentc4.chatcomponent.ComponentElementRenderer;
+import com.linearity.opentc4.chatcomponent.ComponentElementSplitParts;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.linearity.opentc4.chatcomponent.AspectChatComponent.findFirstWrappedAspectResourceLocation;
-import static com.linearity.opentc4.chatcomponent.AspectChatComponent.unwrapAspectResourceLocation;
-import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
+import static com.linearity.opentc4.chatcomponent.ComponentRendering.COMPONENT_ELEMENT_RENDERERS;
 
 //powered by gemini i may have to fix this part(supports itemStack rendering?)
 //TODO:Test it
@@ -82,26 +75,39 @@ public abstract class FontRendererMixin {
             boolean bl2,
             CallbackInfoReturnable<Integer> cir){
         if (string.isEmpty()){return;}
-        var splitted = findFirstWrappedAspectResourceLocation(string);
-        if (splitted == null){
-            return;
+        ComponentElementRenderer renderer = null;
+        ComponentElementSplitParts splitParts = null;
+        for (var rendererMayUse:COMPONENT_ELEMENT_RENDERERS.getListeners()){
+            var parts = rendererMayUse.getPartsIfExistsAndCanRender(string);
+            if (parts != null){
+                renderer = rendererMayUse;
+                splitParts = parts;
+                break;
+            }
         }
-        var resLoc = unwrapAspectResourceLocation(splitted[1]);
-        if (!ALL_ASPECTS.containsKey(AspectResourceLocation.of(resLoc))) {
-            return;
-        }
+        if (renderer == null){return;}
 
         float currentX = f;
 
-        if (!splitted[0].isEmpty()){
-            currentX = this.drawInternal(splitted[0], currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k, bl2);
+        if (!splitParts.beforeElement().isEmpty()){
+            currentX = this.drawInternal(splitParts.beforeElement(), currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k, bl2);
         }
-        if (!bl) {
-            opentc4$renderAspect(resLoc,currentX, g, matrix4f, multiBufferSource);
-        }
-        currentX += this.lineHeight;
-        if (!splitted[2].isEmpty()){
-            currentX = this.drawInternal(splitted[2], currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k, false);
+        currentX += renderer.renderPartForElement(
+                splitParts.elementContent(),
+                currentX,
+                g,
+                i,
+                bl,
+                matrix4f,
+                multiBufferSource,
+                displayMode,
+                j,
+                k,
+                bl2,
+                this.lineHeight
+        );
+        if (!splitParts.afterElement().isEmpty()){
+            currentX = this.drawInternal(splitParts.afterElement(), currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k, false);
         }
         cir.setReturnValue((int) currentX + (bl ? 1 : 0));
     }
@@ -113,7 +119,9 @@ public abstract class FontRendererMixin {
     public void opentc4$drawInternalCharSequence(
             FormattedCharSequence formattedCharSequence,
             float f, float g, int i, boolean bl,
-            Matrix4f matrix4f, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int j, int k,
+            Matrix4f matrix4f,
+            MultiBufferSource multiBufferSource, Font.DisplayMode displayMode,
+            int j, int k,
             CallbackInfoReturnable<Integer> cir){
 
         StringBuilder textDetector = new StringBuilder();
@@ -123,24 +131,26 @@ public abstract class FontRendererMixin {
         });
         String fullText = textDetector.toString();
 
-        String[] splitResult = findFirstWrappedAspectResourceLocation(fullText);
-        if (splitResult == null) {
-            return;
+        ComponentElementRenderer renderer = null;
+        ComponentElementSplitParts splitParts = null;
+        for (var rendererMayUse:COMPONENT_ELEMENT_RENDERERS.getListeners()){
+            var parts = rendererMayUse.getPartsIfExistsAndCanRender(fullText);
+            if (parts != null){
+                renderer = rendererMayUse;
+                splitParts = parts;
+                break;
+            }
         }
-        String textBefore = splitResult[0];
-        String matchedTag = splitResult[1];
-        String textAfter = splitResult[2];
-
-        var aspectResourceLocation = unwrapAspectResourceLocation(matchedTag);
-        if (!ALL_ASPECTS.containsKey(aspectResourceLocation)) {
-            return;
-        }
+        if (renderer == null){return;}
+        String textBefore = splitParts.beforeElement();
+        String matchedContent = splitParts.elementContent();
+        String textAfter = splitParts.afterElement();
 
         int startTagIndex = textBefore.length();
-        int endTagIndex = startTagIndex + matchedTag.length() - 1;
+        int endTagIndex = startTagIndex + matchedContent.length() - 1;
 
-        java.util.List<Object[]> beforeList = new java.util.ArrayList<>();
-        java.util.List<Object[]> afterList = new java.util.ArrayList<>();
+        List<Object[]> beforeList = new ArrayList<>(textBefore.length());
+        List<Object[]> afterList = new ArrayList<>(textAfter.length());
 
         int[] charCounter = {0}; // 计数器
 
@@ -155,7 +165,6 @@ public abstract class FontRendererMixin {
             return true;
         });
 
-        // 4. 用无敌的 Lambda 重新捏造前半段和后半段的 Sequence
         FormattedCharSequence beforeSeq = (sink) -> {
             for (int m = 0; m < beforeList.size(); m++) {
                 Object[] data = beforeList.get(m);
@@ -176,61 +185,13 @@ public abstract class FontRendererMixin {
         if (!textBefore.isEmpty()){
             currentX = this.drawInternal(beforeSeq, currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k);
         }
-        if (!bl) {
-            opentc4$renderAspect(aspectResourceLocation,currentX,g,matrix4f,multiBufferSource);
-        }
-        currentX += lineHeight;
+        currentX += renderer.renderPartForElement(
+                matchedContent,
+                currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k,false,this.lineHeight
+        );
         if (!textAfter.isEmpty()){
             currentX = this.drawInternal(afterSeq, currentX, g, i, bl, matrix4f, multiBufferSource, displayMode, j, k);
         }
         cir.setReturnValue((int) currentX + (bl ? 1 : 0));
-    }
-
-    @Unique
-    private final Map<AspectResourceLocation,ResourceLocation> opentc4$aspectResLocToTexture = new ConcurrentHashMap<>();
-    @Unique
-    private static final ResourceLocation UNDISCOVERED_TEXTURE = new ResourceLocation(Thaumcraft.MOD_ID,"textures/gui/aspects/_unknown.png");
-    @Unique
-    private void opentc4$renderAspect(AspectResourceLocation aspectResourceLocation, float currentX, float g, Matrix4f matrix4f, MultiBufferSource multiBufferSource) {
-        ResourceLocation myTexture = opentc4$aspectResLocToTexture.computeIfAbsent(
-                aspectResourceLocation,
-                aspResLoc -> new ResourceLocation(aspResLoc.getNamespace(), "textures/gui/aspects_colored/" + aspResLoc.getPath() + ".png")
-        );
-        var aspect = ALL_ASPECTS.get(aspectResourceLocation);
-        if (aspect == null) {
-            return;
-        }
-        var player = Minecraft.getInstance().player;
-        if (player != null){
-            var info = ResearchAndScannedInfo.getFromPlayer(player);
-            if (!info.hasResearchAspect(aspect)){
-                myTexture = UNDISCOVERED_TEXTURE;
-            }
-        }
-
-        VertexConsumer consumer = multiBufferSource.getBuffer(RenderType.text(myTexture));
-
-        float u0 = 0.0F, u1 = 1.0F;
-        float v0 = 0.0F, v1 = 1.0F;
-
-        consumer.vertex(matrix4f, currentX, g, 0.0F)
-                .color(1.0F, 1.0F, 1.0F, 1.0F)
-                .uv(u0, v0)
-                .uv2(0xf000f0);
-
-        consumer.vertex(matrix4f, currentX, g + lineHeight, 0.0F)
-                .color(1.0F, 1.0F, 1.0F, 1.0F)
-                .uv(u0, v1)
-                .uv2(0xf000f0);
-
-        consumer.vertex(matrix4f, currentX + lineHeight, g + lineHeight, 0.0F)
-                .color(1.0F, 1.0F, 1.0F, 1.0F)
-                .uv(u1, v1)
-                .uv2(0xf000f0);
-
-        consumer.vertex(matrix4f, currentX + lineHeight, g, 0.0F)
-                .color(1.0F, 1.0F, 1.0F, 1.0F)
-                .uv(u1, v0)
-                .uv2(15728880);
     }
 }
