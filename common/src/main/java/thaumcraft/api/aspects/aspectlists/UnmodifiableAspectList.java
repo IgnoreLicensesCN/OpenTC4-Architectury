@@ -5,9 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -143,11 +141,6 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
         return hash;
     }
 
-
-    @Override
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        internalList.addAspectDescriptionToList(player,aspectDescriptions);
-    }
 
     @Override
     public int getOrDefault(Aspect aspect, int defaultValue) {

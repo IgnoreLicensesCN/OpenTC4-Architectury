@@ -351,5 +351,7 @@ public class Consts {
         public static final ResourceLocationTagAccessor UPGRADE_TP_APPLY = new ResourceLocationTagAccessor("upgrade_tp_apply");
         public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
     }
-
+    public static class AugmentationRunicShieldTagAccessors {
+        public static final IntTagAccessor RUNIC_AUGMENTATION_LEVEL = new IntTagAccessor("runic_augmentation_level");
+    }
 }

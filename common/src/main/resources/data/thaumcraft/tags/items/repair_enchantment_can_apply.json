@@ -19,6 +19,8 @@
     "thaumcraft:void_shovel",
     "thaumcraft:void_pickaxe",
     "thaumcraft:void_hoe",
-    "thaumcraft:void_axe"
+    "thaumcraft:void_axe",
+
+    "thaumcraft:primal_crusher"
   ]
 }

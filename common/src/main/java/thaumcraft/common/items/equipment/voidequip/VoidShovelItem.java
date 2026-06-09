@@ -6,7 +6,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +30,7 @@ public class VoidShovelItem extends ShovelItem implements IWarpingGear {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, list, tooltipFlag);
         list.add(Component.translatable("enchantment.special.sapless").withStyle(ChatFormatting.GOLD));//added not vanilla feature
+        addWarpTooltip(itemStack, level, list, tooltipFlag);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class VoidShovelItem extends ShovelItem implements IWarpingGear {
         return super.hurtEnemy(itemStack, target, attacker);
     }
     @Override
-    public int getWarp(ItemStack itemstack, Player player) {
+    public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
         return 1;
     }
 

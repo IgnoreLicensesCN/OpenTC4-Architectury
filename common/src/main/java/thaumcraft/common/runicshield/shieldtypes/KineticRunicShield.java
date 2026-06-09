@@ -1,5 +1,7 @@
 package thaumcraft.common.runicshield.shieldtypes;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -26,5 +28,10 @@ public class KineticRunicShield extends CoolingDownAndTriggerOnShieldDownShieldT
                         Level.ExplosionInteraction.MOB
                 );
     }
-
+    public Component getShieldName(){
+        if (shieldName == null){
+            shieldName = Component.translatable("runic_shield.thaumcraft.runic_kinetic").withStyle(ChatFormatting.AQUA);
+        }
+        return shieldName;
+    }
 }

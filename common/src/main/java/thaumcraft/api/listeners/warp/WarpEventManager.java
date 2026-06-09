@@ -1,11 +1,14 @@
 package thaumcraft.api.listeners.warp;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.simpleutils.ListenerManager;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
 import thaumcraft.api.listeners.warp.listeners.*;
@@ -138,9 +141,9 @@ public class WarpEventManager {
         return result;
     }
 
-    public static int getFinalWarp(ItemStack stack, Player player) {
+    public static int getFinalWarp(ItemStack stack,@Nullable Entity entityEquipped) {
         if (stack != null && stack.getItem() instanceof IWarpingGear armor) {
-            return armor.getWarp(stack, player);
+            return armor.getWarp(stack, entityEquipped);
         }
         //need some map to lookup?
         return 0;

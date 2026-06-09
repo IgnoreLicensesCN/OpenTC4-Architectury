@@ -354,7 +354,7 @@ public class FocusExcavationItem extends FocusBasicItem {
                 Block.popResource(
                         level, pos, state.getBlock().asItem().getDefaultInstance());
             }
-//                //TODO:Multi-platform
+//                //TODO:Multi-platform?(break block event)
 //                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
 
         } else {
@@ -385,9 +385,9 @@ public class FocusExcavationItem extends FocusBasicItem {
     }
 
     protected boolean breakNeighbour(LivingEntity p, BlockPos pos, BlockState state, ItemStack usingWand) {
+        //TODO:Faster
         List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
         Collections.shuffle(directions, ThreadLocalRandom.current());
-
         for(Direction dir : directions) {
             if (p.level().getBlockState(pos) == state
                     && excavate(p.level(), usingWand, p, state, pos.offset(dir.getNormal()))

@@ -31,12 +31,11 @@ import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble
 //TODO
 @Deprecated(forRemoval = true)
 public class EventHandlerRunic {
-   //TODO:toInt concurrent map
    public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Integer> lastCharge = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
    public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
-   //int-arr based runicInfo go fuck yourself TODO:Expand it
+   //int-arr based runicInfo go fuck yourself
    @Deprecated(forRemoval = true)
    public static Map<Player,int[]> runicInfo = new MapMaker().weakKeys().makeMap();
    public static boolean isDirty = true;
@@ -271,20 +270,19 @@ public class EventHandlerRunic {
       }
    }
 
-   //TODO:Migrate to item
-   @SubscribeEvent
-   public void tooltipEvent(ItemTooltipEvent event) {
-      int charge = getFinalCharge(event.itemStack);
-      if (charge > 0) {
-         event.toolTip.add(EnumChatFormatting.GOLD + Component.translatable("item.runic.charge") + " +" + charge);
-      }
-
-      int warp = WarpEventManager.getFinalWarp(event.itemStack, event.Player);
-      if (warp > 0) {
-         event.toolTip.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("item.warping") + " " + warp);
-      }
-
-   }
+//   @SubscribeEvent
+//   public void tooltipEvent(ItemTooltipEvent event) {
+//      int charge = getFinalCharge(event.itemStack);
+//      if (charge > 0) {
+//         event.toolTip.add(EnumChatFormatting.GOLD + Component.translatable("item.runic.charge") + " +" + charge);
+//      }
+//
+//      int warp = WarpEventManager.getFinalWarp(event.itemStack, event.Player);
+//      if (warp > 0) {
+//         event.toolTip.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("item.warping") + " " + warp);
+//      }
+//
+//   }
 
    @Deprecated(forRemoval = true)
    public static int getFinalCharge(ItemStack stack) {

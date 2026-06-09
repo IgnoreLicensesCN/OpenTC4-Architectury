@@ -19,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import net.minecraftforge.common.ISpecialArmor;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.*;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
@@ -233,7 +234,7 @@ public class ItemVoidRobeArmor extends ItemArmor implements IRepairEnchantable, 
       }
    }
 
-   public int getWarp(ItemStack itemstack, Player player) {
+   public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
       return 2;
    }
 }

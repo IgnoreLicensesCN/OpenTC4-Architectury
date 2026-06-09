@@ -363,17 +363,4 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
         return this.aspects.containsKey(aspect);
     }
 
-
-    @Deprecated(forRemoval = true, since = "implements IAspectDisplayItem")
-    public void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions) {
-        if (aspects != null && !this.aspects.isEmpty()) {
-            for (var aspect : this.getAspectsSorted()) {
-                if (player != null && !aspect.hasPlayerDiscovered(player)) {
-                    aspectDescriptions.add(Component.translatable("aspect.thaumcraft.unknown"));
-                } else {
-                    aspectDescriptions.add(Component.literal(aspect.getName() + " x " + this.get(aspect)));
-                }
-            }
-        }
-    }
 }

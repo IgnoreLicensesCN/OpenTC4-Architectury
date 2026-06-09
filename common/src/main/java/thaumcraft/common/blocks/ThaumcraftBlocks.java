@@ -1065,5 +1065,10 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> REFLECTS_PLAYER = TagKey.create(
                 Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "reflects_player")
         );
+        public static final TagKey<Block> PRIMAL_CRUSHER_MINEABLE =
+                TagKey.create(
+                        Registries.BLOCK,
+                        new ResourceLocation(Thaumcraft.MOD_ID, "primal_crusher_mineable")
+                );
     }
 }

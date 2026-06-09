@@ -2,6 +2,8 @@ package thaumcraft.common.runicshield.shieldtypes;
 
 import com.linearity.opentc4.utils.compoundtag.accessors.ITagAccessorOwner;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -58,7 +60,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
     public int getTickCooldownAfterRegen(Entity entity, EntityRunicShieldInfo shieldInfo) {
         //TODO:[maybe wont finished]also "Vote in democracy" to decide if change to chargedShield's own feature
         int chargedTypeCapacity = Math.clamp(shieldInfo.shieldCapacity.getInt(CHARGED), 0, 4);
-        return 40 - 10 * chargedTypeCapacity;
+        return 40 - (10 * chargedTypeCapacity);
     }
 
     //called every tick
@@ -171,4 +173,12 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
     }
 
     public abstract @Nullable CompoundTagAccessor<AdditionalInfoClass> getOwningTagAccessor();
+
+    protected Component shieldName;
+    public Component getShieldName(){
+        if (shieldName == null){
+            shieldName = Component.translatable("runic_shield.thaumcraft.runic_armor").withStyle(ChatFormatting.GOLD);
+        }
+        return shieldName;
+    }
 }

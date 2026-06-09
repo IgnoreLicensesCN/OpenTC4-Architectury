@@ -2,9 +2,7 @@ package thaumcraft.api.aspects.aspectlists;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.*;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -17,18 +15,12 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntBinaryOperator;
-import java.util.function.ObjIntConsumer;
 import java.util.function.Predicate;
 
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
 public interface AspectList<Asp extends Aspect> /*implements Serializable */{
-
-	@Deprecated(forRemoval = true,since = "implements IAspectDisplayItem")
-	default void addAspectDescriptionToList(@Nullable Player player, List<Component> aspectDescriptions){
-
-	};
 
 	int getOrDefault(Aspect aspect, int defaultValue);
 	/**

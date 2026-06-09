@@ -1,5 +1,7 @@
 package thaumcraft.common.runicshield.shieldtypes;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -27,5 +29,11 @@ public class EmergencyRunicShield extends CoolingDownAndTriggerOnShieldDownShiel
                 1,
                 1
         );
+    }
+    public Component getShieldName(){
+        if (shieldName == null){
+            shieldName = Component.translatable("runic_shield.thaumcraft.runic_emergency").withStyle(ChatFormatting.GREEN);
+        }
+        return shieldName;
     }
 }

@@ -3,14 +3,20 @@ package com.linearity.opentc4.mixin;
 import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
 import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
 import com.linearity.opentc4.mixinaccessors.PlayerWarpInfoMixinAccessor;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import thaumcraft.api.warp.WarpInfo;
+import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
@@ -84,5 +90,21 @@ public class PlayerMixin
             return floatAtomicReference.get();
         }
         return f;
+    }
+
+    //hope wont crash
+    @WrapOperation(
+            method = "attack(Lnet/minecraft/world/entity/Entity;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/player/Player;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;"
+            )
+    )
+    private ItemStack opentc4$bypassSweepCheck(Player player, InteractionHand hand, Operation<ItemStack> original) {
+        ItemStack itemStack = original.call(player, hand);
+        if (itemStack.getItem() instanceof ISwordLikeItem) {
+            return Items.DIAMOND_SWORD.getDefaultInstance();
+        }
+        return itemStack;
     }
 }

@@ -23,6 +23,7 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
+import thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
@@ -286,6 +287,7 @@ public class ThaumcraftItems {
     public static final PickaxeItem THAUMIUM_PICKAXE = Registry.SUPPLIER_THAUMIUM_PICKAXE.get();
     public static final AxeItem THAUMIUM_AXE = Registry.SUPPLIER_THAUMIUM_AXE.get();
     public static final HoeItem THAUMIUM_HOE = Registry.SUPPLIER_THAUMIUM_HOE.get();
+    public static final PrimalCrusherItem PRIMAL_CRUSHER = Registry.SUPPLIER_PRIMAL_CRUSHER.get();
 
     //===========================================================================================
 
@@ -933,7 +935,7 @@ public class ThaumcraftItems {
                 () -> new ArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.HELMET,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_CHESTPLATE = ITEMS.register(
@@ -941,7 +943,7 @@ public class ThaumcraftItems {
                 () -> new ArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.CHESTPLATE,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_LEGGINGS = ITEMS.register(
@@ -949,7 +951,7 @@ public class ThaumcraftItems {
                 () -> new ArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.LEGGINGS,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_BOOTS = ITEMS.register(
@@ -957,40 +959,40 @@ public class ThaumcraftItems {
                 () -> new ArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.BOOTS,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         //TODO:Warp
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_HELMET = ITEMS.register(
                 "void_helmet",
-                () -> new ArmorItem(
+                () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.HELMET,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_CHESTPLATE = ITEMS.register(
                 "void_chestplate",
-                () -> new ArmorItem(
+                () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.CHESTPLATE,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_LEGGINGS = ITEMS.register(
                 "void_leggings",
-                () -> new ArmorItem(
+                () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.LEGGINGS,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
         public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_BOOTS = ITEMS.register(
                 "void_boots",
-                () -> new ArmorItem(
+                () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
                         ArmorItem.Type.BOOTS,
-                        new Item.Properties().stacksTo(1)
+                        new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
 
@@ -1093,6 +1095,10 @@ public class ThaumcraftItems {
                 "thaumium_hoe",
                 () -> new HoeItem(ToolAndArmorMaterial.TOOL_THAUMIUM,-2, -1.0F, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
+        );
+        public static final RegistrySupplier<PrimalCrusherItem> SUPPLIER_PRIMAL_CRUSHER = ITEMS.register(
+                "primal_crusher",
+                PrimalCrusherItem::new
         );
     }
 
@@ -1507,6 +1513,38 @@ public class ThaumcraftItems {
             @Override
             public float getKnockbackResistance() {
                 return 0;
+            }
+        };
+        public static final Tier PRIMAL_VOID = new Tier() {
+
+            @Override
+            public int getUses() {
+                return 500;
+            }
+
+            @Override
+            public float getSpeed() {
+                return 8.0F;
+            }
+
+            @Override
+            public float getAttackDamageBonus() {
+                return 4.0F;
+            }
+
+            @Override
+            public int getLevel() {
+                return 5;
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 20;
+            }
+            private final Ingredient ingredient = Ingredient.of(PRIMAL_CHARM);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
             }
         };
     }

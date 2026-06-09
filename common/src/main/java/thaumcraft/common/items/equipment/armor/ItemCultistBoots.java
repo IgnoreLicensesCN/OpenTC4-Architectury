@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.IVisDiscountGear;
@@ -56,7 +57,7 @@ public class ItemCultistBoots extends ItemArmor implements IRepairEnchantable, I
       return 0;
    }
 
-   public int getWarp(ItemStack itemstack, Player player) {
+   public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
       return 1;
    }
 

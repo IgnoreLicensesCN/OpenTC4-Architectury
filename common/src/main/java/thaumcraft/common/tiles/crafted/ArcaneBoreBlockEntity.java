@@ -186,7 +186,7 @@ public class ArcaneBoreBlockEntity
         var pickaxeStack = getPickaxe();
         if (!pickaxeStack.isEmpty()
                 && pickaxeStack.getItem() instanceof IDowsingTool dowsingTool
-                && dowsingTool.canDowsing()
+                && dowsingTool.canDowsing(pickaxeStack,null)
         ) {
             return true;
         }

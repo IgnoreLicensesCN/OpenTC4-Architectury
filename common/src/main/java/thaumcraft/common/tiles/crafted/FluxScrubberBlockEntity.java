@@ -113,7 +113,8 @@ implements IEssentiaTransportOutBlockEntity {
             return;
         }
         int distance = getCleanDistance();
-        easyLCGState = (easyLCGState + LCGStep) % ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
+        int distanceCube = ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
+        easyLCGState = (easyLCGState + LCGStep) % distanceCube;
         for (int i = 0; i< getMaxToCheckEachRun(); i++){
             int x = (easyLCGState/((distance*2 + 1)*(distance*2 + 1))) ;
             int yz = easyLCGState % ((distance*2 + 1)*(distance*2 + 1));

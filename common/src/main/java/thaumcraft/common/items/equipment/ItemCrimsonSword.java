@@ -17,6 +17,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import net.minecraftforge.common.util.EnumHelper;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.Thaumcraft;
@@ -70,7 +71,7 @@ public class ItemCrimsonSword extends ItemSword implements IRepairEnchantable, I
       return super.hitEntity(is, target, hitter);
    }
 
-   public int getWarp(ItemStack itemstack, Player player) {
+   public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
       return 2;
    }
 
