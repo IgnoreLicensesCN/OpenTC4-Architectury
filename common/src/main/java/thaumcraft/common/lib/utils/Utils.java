@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -209,7 +208,7 @@ public class Utils {
 //      }
 //   }
 
-    public static void resetFloatCounter(ServerPlayer player) {
+    public static void resetAboveGroundCounter(ServerPlayer player) {
         ((ServerGamePacketListenerImplAccessor) player.connection).opentc4$setAboveGroundTickCount(0);
     }
 

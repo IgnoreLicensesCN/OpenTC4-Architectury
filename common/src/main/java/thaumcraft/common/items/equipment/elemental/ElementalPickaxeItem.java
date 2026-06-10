@@ -8,6 +8,7 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.abstracts.IDowsingTool;
@@ -31,7 +32,7 @@ public class ElementalPickaxeItem extends PickaxeItem implements IDowsingTool {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
+    public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var stack = useOnContext.getItemInHand();
         var level = useOnContext.getLevel();
         if (!level.isClientSide){

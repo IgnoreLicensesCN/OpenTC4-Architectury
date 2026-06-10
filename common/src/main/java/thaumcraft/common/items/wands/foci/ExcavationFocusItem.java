@@ -5,7 +5,6 @@ import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,9 +51,9 @@ import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
+import static com.linearity.opentc4.simpleutils.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
 
 public class ExcavationFocusItem extends BasicFocusItem {
@@ -65,12 +64,12 @@ public class ExcavationFocusItem extends BasicFocusItem {
         LinkedHashAspectList<Aspect> wandCostWithSilkTouchOrDowsingInternal;
         wandCostWithSilkTouchOrDowsingInternal = new LinkedHashAspectList<>(6 + wandCost.size(),1);
         wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.AIR, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.FIRE, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.EARTH, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.WATER, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.ORDER, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(Aspects.ENTROPY, 1);
-        wandCostWithSilkTouchOrDowsingInternal .addAll(wandCost);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.FIRE, 1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.EARTH, 1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.WATER, 1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.ORDER, 1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.ENTROPY, 1);
+        wandCostWithSilkTouchOrDowsingInternal.addAll(wandCost);
         wandCostWithSilkTouchOrDowsing = CentiVisList.fromAspectVisList(
                 wandCostWithSilkTouchOrDowsingInternal
         );
@@ -372,18 +371,27 @@ public class ExcavationFocusItem extends BasicFocusItem {
         }
     }
 
+    protected int easyLCGState = 0;
+    protected static final int[] LCGNeededPrimesExample = {
+            3877, 6737, 7237, 62327, 39439, 53791, 53549, 16759,
+            1987, 35897, 46589, 59369, 26647, 56629, 26387, 1931,
+            43451, 4409, 823, 14947, 22907, 9533, 36343, 46601,
+            36833, 26903, 1667, 4519, 53777, 38917, 37181, 56417,
+            14923, 42989, 58481, 12577, 54151, 18691, 44927, 47591,
+            29569, 54499, 16223, 63997, 12149, 6551, 59341, 30553,
+            58909, 34883, 1759, 11093, 13873, 64621, 13367, 16741,
+            14221, 28429, 50873, 9127, 54721, 2447, 16057, 28183
+    };
+    protected int LCGStep = LCGNeededPrimesExample[Math.abs(System.identityHashCode(this)% LCGNeededPrimesExample.length)];
+
     protected boolean breakNeighbour(LivingEntity p, BlockPos pos, BlockState state, ItemStack usingWand) {
-        //TODO:Faster
-        List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
-        Collections.shuffle(directions, ThreadLocalRandom.current());
-        for(Direction dir : directions) {
-            if (p.level().getBlockState(pos) == state
-                    && excavate(p.level(), usingWand, p, state, pos.offset(dir.getNormal()))
+        easyLCGState = (easyLCGState + LCGStep) % 720;
+        for(var dir:DIRECTIONS_SHUFFLED[easyLCGState]) {
+            if (p.level().getBlockState(pos.relative(dir)) == state && excavate(p.level(), usingWand, p, state, pos.relative(dir))
             ) {
                 return true;
             }
         }
-
         return false;
     }
 

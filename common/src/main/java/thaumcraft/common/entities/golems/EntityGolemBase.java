@@ -55,6 +55,7 @@ import thaumcraft.common.lib.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//TODO:impl OwnableEntity
 public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpawnData {
    public InventoryMob inventory;
    public ItemStack itemCarried;

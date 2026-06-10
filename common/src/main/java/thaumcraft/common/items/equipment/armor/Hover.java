@@ -124,7 +124,7 @@ public class Hover {
 
             if (hover && expendCharge(player, armor)) {
                 if (player instanceof ServerPlayer) {
-                    Utils.resetFloatCounter((ServerPlayer) player);
+                    Utils.resetAboveGroundCounter((ServerPlayer) player);
                 }
 
                 player.fallDistance = 0.0F;
