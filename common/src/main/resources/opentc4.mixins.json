@@ -25,6 +25,7 @@
     "AbstractFurnaceBlockEntityMixin",
     "BambooSaplingBlockMixin",
     "BiomeMixin",
+    "BlockStateBaseMixin",
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
     "DefaultAttributesAccessor",

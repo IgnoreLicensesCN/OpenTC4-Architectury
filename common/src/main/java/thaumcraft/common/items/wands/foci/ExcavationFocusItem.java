@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.foci;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -19,16 +20,16 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -46,12 +47,15 @@ import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
+
+import static net.minecraft.world.level.block.Block.getDrops;
 
 public class ExcavationFocusItem extends BasicFocusItem {
     public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
@@ -278,7 +282,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
 
 
 
-    private boolean excavate(Level level, ItemStack usingWand, LivingEntity user, BlockState state,BlockPos pos) {
+    protected boolean excavate(Level level, ItemStack usingWand, LivingEntity user, BlockState state,BlockPos pos) {
         if (!(user instanceof Player player)) {return false;}
         GameType gt = GameType.SURVIVAL;
 
@@ -303,21 +307,8 @@ public class ExcavationFocusItem extends BasicFocusItem {
         if (focusStack.isEmpty()) {
             return false;
         }
-        var fItem = focusStack.getItem();
-        if (!(fItem instanceof IWandFocusItem<? extends Aspect> wandFocusItem)){
-            return false;
-        }
-        var wandUpgrades = wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,usingWand);
         {
-            int fortune = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.TREASURE, 0);
-            boolean silk = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.SILKTOUCH, 0) > 0;
-            boolean canHarvest =
-                    !state.requiresCorrectToolForDrops()
-                            || player.hasCorrectToolForDrops(state);
-            boolean canSilk = silk && canHarvest &&
-                    !state.getBlock().asItem().canBeDepleted() &&
-                    !state.requiresCorrectToolForDrops();
-            getResourceFromBlock(level, state, pos, silk, canSilk, fortune,stack -> Block.popResource(level, pos, stack));
+            getResourceFromBlock(focusStack,usingWand,level, state, pos,stack -> Block.popResource(level, pos, stack));
 
             level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
@@ -326,59 +317,56 @@ public class ExcavationFocusItem extends BasicFocusItem {
             return true;
         }
     }
-    public static void getResourceFromBlockCanHarvest(
+    protected ItemStack getFakePickaxeStackForFocus(ItemStack focusStack,@Nullable ItemStack wandStack) {
+        boolean dowsing = this.getWandUpgradesWithWandModifiers(focusStack,wandStack).getOrDefault(ExcavationFocusItem.dowsing,0) > 0;
+        ItemStack fakeDiamondPickaxeStack = new ItemStack(dowsing? ThaumcraftItems.ELEMENTAL_PICKAXE :Items.DIAMOND_PICKAXE);
+        EnchantmentHelper.setEnchantments(getEnchantmentsFromFocus(focusStack,wandStack),fakeDiamondPickaxeStack);
+        return fakeDiamondPickaxeStack;
+    }
+    protected @Modifiable Map<Enchantment,Integer> getEnchantmentsFromFocus(ItemStack focusStack,@Nullable ItemStack wandStack){
+        var wandUpgrades = this.getWandUpgradesWithWandModifiers(focusStack,wandStack);
+        int fortune = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.TREASURE, 0);
+        int silk = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.SILKTOUCH, 0);
+
+        Map<Enchantment,Integer> enchantments = new HashMap<>();
+        if (fortune != 0){
+            enchantments.put(Enchantments.BLOCK_FORTUNE, fortune);
+            enchantments.put(Enchantments.SILK_TOUCH, silk);
+        }
+        return enchantments;
+    }
+    public void getResourceFromBlock(
+            ItemStack focusStack,
+            @Nullable ItemStack wandStack,
             Level level,
             BlockState state,
             BlockPos pos,
-            boolean silk,
-            int fortune,
             Consumer<ItemStack> resourceConsumer
     ){
-        boolean canSilk = silk &&
-                !state.getBlock().asItem().canBeDepleted() &&
-                !state.requiresCorrectToolForDrops();
-        getResourceFromBlock(level, state, pos, silk, canSilk, fortune,resourceConsumer);
+        getResourceFromBlock(level,state,pos,getFakePickaxeStackForFocus(focusStack,wandStack),resourceConsumer);
     }
     public static void getResourceFromBlock(
             Level level,
             BlockState state,
             BlockPos pos,
-            boolean silk,
-            boolean canSilk,
-            int fortune,
+            ItemStack pickaxeStack,
             Consumer<ItemStack> resourceConsumer
     ) {
-        if (silk && canSilk
-        ) {
-            if (!level.isClientSide) {
-                Block.popResource(
-                        level, pos, state.getBlock().asItem().getDefaultInstance());
-            }
-//                //TODO:Multi-platform?(break block event)
-//                ForgeEventFactory.fireBlockHarvesting(items, world, state, x, y, z, md, 0, 1.0F, true, player);
+        if (level instanceof ServerLevel serverLevel) {
+            var drops = getDrops(state, serverLevel, pos, serverLevel.getBlockEntity(pos), null, pickaxeStack);
+            drops.forEach(resourceConsumer);
 
-        } else {
-            //x,y,z -> pos(BlockPos)
-            //md:metadata(removed,dont care)
-            //fortune:fortune level
-            //calculate mine block drop (including drop exp) with fortune
-            if (level instanceof ServerLevel serverLevel) {
-                var block = state.getBlock();
-                LootTable lootTable = serverLevel.getServer().getLootData()
-                        .getLootTable(state.getBlock().getLootTable());
-                LootParams.Builder builder = new LootParams.Builder(serverLevel)
-                        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                        .withOptionalParameter(LootContextParams.BLOCK_STATE, state)
-                        .withLuck(fortune);
-                var lootParams = builder.create(LootContextParamSets.BLOCK);
-
-                lootTable.getRandomItems(lootParams,resourceConsumer);
-                if (block instanceof DropExperienceBlockAccessor accessor) {
-                    if (serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
-                        ExperienceOrb.award(serverLevel, Vec3.atCenterOf(pos), (accessor).opentc4$getRandomXp(
-                                state, level, level.getRandom(), pos, fortune,0));
-                    }
+            var block = state.getBlock();
+            if (block instanceof DropExperienceBlockAccessor accessor) {
+                var enchantments = EnchantmentHelper.getEnchantments(pickaxeStack);
+                if (serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+                    ExperienceOrb.award(serverLevel, Vec3.atCenterOf(pos), (accessor).opentc4$getRandomXp(
+                            state,
+                            level,
+                            level.getRandom(),
+                            pos,
+                            enchantments.getOrDefault(Enchantments.BLOCK_FORTUNE,0),
+                            enchantments.getOrDefault(Enchantments.SILK_TOUCH,0)));
                 }
             }
         }

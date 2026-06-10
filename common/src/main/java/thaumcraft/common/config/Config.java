@@ -35,6 +35,7 @@ import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
 import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.abstracts.IDowsingTool;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.equipment.ItemElementalAxe;
 import thaumcraft.common.lib.enchantment.EnchantmentHaste;
@@ -623,7 +624,7 @@ public class Config {
                     foundCopperOre = true;
 
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        Utils.addSpecialMiningResult(is, new ItemStack(ConfigItems.itemNugget, 1, 17), 1.0F);
+                        IDowsingTool.addDowsingResult(is, new ItemStack(ConfigItems.itemNugget, 1, 17), 1.0F);
                     }
                 }
 
@@ -631,7 +632,7 @@ public class Config {
                     foundTinOre = true;
 
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        Utils.addSpecialMiningResult(is, new ItemStack(ConfigItems.itemNugget, 1, 18), 1.0F);
+                        IDowsingTool.addDowsingResult(is, new ItemStack(ConfigItems.itemNugget, 1, 18), 1.0F);
                     }
                 }
 
@@ -639,7 +640,7 @@ public class Config {
                     foundSilverOre = true;
 
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        Utils.addSpecialMiningResult(is, new ItemStack(ConfigItems.itemNugget, 1, 19), 1.0F);
+                        IDowsingTool.addDowsingResult(is, new ItemStack(ConfigItems.itemNugget, 1, 19), 1.0F);
                     }
                 }
 
@@ -647,7 +648,7 @@ public class Config {
                     foundLeadOre = true;
 
                     for (ItemStack is : OreDictionary.getOres(ore)) {
-                        Utils.addSpecialMiningResult(is, new ItemStack(ConfigItems.itemNugget, 1, 20), 1.0F);
+                        IDowsingTool.addDowsingResult(is, new ItemStack(ConfigItems.itemNugget, 1, 20), 1.0F);
                     }
                 }
 
@@ -854,9 +855,9 @@ public class Config {
         CropUtils.addStandardCrop(new ItemStack(ConfigBlocks.blockManaPod), 7);
         CropUtils.addStackedCrop(Blocks.reeds, 32767);
         CropUtils.addStackedCrop(Blocks.cactus, 32767);
-        Utils.addSpecialMiningResult(new ItemStack(Blocks.iron_ore), new ItemStack(ConfigItems.itemNugget, 1, 16), 1.0F);
-        Utils.addSpecialMiningResult(new ItemStack(Blocks.gold_ore), new ItemStack(ConfigItems.itemNugget, 1, 31), 0.9F);
-        Utils.addSpecialMiningResult(new ItemStack(ConfigBlocks.blockCustomOre, 1, 0), new ItemStack(ConfigItems.itemNugget, 1, 21), 0.9F);
+        IDowsingTool.addDowsingResult(new ItemStack(Blocks.iron_ore), new ItemStack(ConfigItems.itemNugget, 1, 16), 1.0F);
+        IDowsingTool.addDowsingResult(new ItemStack(Blocks.gold_ore), new ItemStack(ConfigItems.itemNugget, 1, 31), 0.9F);
+        IDowsingTool.addDowsingResult(new ItemStack(ConfigBlocks.blockCustomOre, 1, 0), new ItemStack(ConfigItems.itemNugget, 1, 21), 0.9F);
 
         aspectOrder.addAll(Aspects.ALL_ASPECTS.values());
 

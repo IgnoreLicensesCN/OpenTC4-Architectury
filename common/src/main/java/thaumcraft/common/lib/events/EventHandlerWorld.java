@@ -1,36 +1,6 @@
 package thaumcraft.common.lib.events;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.HitResult.MovingObjectType;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.NoteBlockEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.misc.ItemEssence;
-import thaumcraft.common.items.equipment.ItemElementalPickaxe;
-import thaumcraft.common.items.equipment.ItemPrimalCrusher;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
-import thaumcraft.common.lib.utils.Utils;
-
-//TODO
-public class EventHandlerWorld implements IFuelHandler {
+public class EventHandlerWorld /*implements IFuelHandler*/ {
 //   @SubscribeEvent
 //   public void worldLoad(WorldEvent.Load event) {
 //      if (Platform.getEnvironment() != Env.CLIENT && event.world.dimension() == 0) {
@@ -102,68 +72,68 @@ public class EventHandlerWorld implements IFuelHandler {
 //      }
 //   }
 
-   @SubscribeEvent
-   public void onCrafting(PlayerEvent.ItemCraftedEvent event) {
-      int warp = ThaumcraftApi.getWarp(event.crafting);
-      if (!Config.wuss && warp > 0 && Platform.getEnvironment() != Env.CLIENT) {
-         Thaumcraft.addStickyWarpToPlayer(event.player, warp);
-      }//crafting for warp
+//   @SubscribeEvent
+//   public void onCrafting(PlayerEvent.ItemCraftedEvent event) {
+//      int warp = ThaumcraftApi.getWarp(event.crafting);
+//      if (!Config.wuss && warp > 0 && Platform.getEnvironment() != Env.CLIENT) {
+//         Thaumcraft.addStickyWarpToPlayer(event.player, warp);
+//      }//crafting for warp
 
-      if (event.crafting.getItem() == ConfigItems.itemResource
-              && event.crafting.getDamageValue() == 13
-              && event.crafting.hasTagCompound()) {
-         for(int var2 = 0; var2 < 9; ++var2) {
-            ItemStack var3 = event.craftMatrix.getStackInSlot(var2);
-            if (var3 != null && var3.getItem() instanceof ItemEssence) {
-               ++var3.stackSize;
-               event.craftMatrix.setInventorySlotContents(var2, var3);
-            }
-         }
-      }//label keeping aspect provider
+//      if (event.crafting.getItem() == ConfigItems.itemResource
+//              && event.crafting.getDamageValue() == 13
+//              && event.crafting.hasTagCompound()) {
+//         for(int var2 = 0; var2 < 9; ++var2) {
+//            ItemStack var3 = event.craftMatrix.getStackInSlot(var2);
+//            if (var3 != null && var3.getItem() instanceof ItemEssence) {
+//               ++var3.stackSize;
+//               event.craftMatrix.setInventorySlotContents(var2, var3);
+//            }
+//         }
+//      }//label keeping aspect provider
+//
+//      if (event.crafting.getItem() == Item.getItemFromBlock(ConfigBlocks.blockMetalDevice) && event.crafting.getDamageValue() == 3) {
+//         ItemStack var3 = event.craftMatrix.getStackInSlot(4);
+//         ++var3.stackSize;
+//         event.craftMatrix.setInventorySlotContents(4, var3);
+//      }//keeping pearl
 
-      if (event.crafting.getItem() == Item.getItemFromBlock(ConfigBlocks.blockMetalDevice) && event.crafting.getDamageValue() == 3) {
-         ItemStack var3 = event.craftMatrix.getStackInSlot(4);
-         ++var3.stackSize;
-         event.craftMatrix.setInventorySlotContents(4, var3);
-      }//keeping pearl
+//   }
 
-   }
-
-   @SubscribeEvent
-   public void harvestEvent(BlockEvent.HarvestDropsEvent event) {
-      //applying dowsing if no skilltouch
-      Player player = event.harvester;
-      if (event.drops != null && !event.drops.isEmpty() && player != null) {
-         ItemStack held = player.inventory.getCurrentItem();
-         if (held != null
-                 && (held.getItem() instanceof ItemElementalPickaxe
-                 || held.getItem() instanceof ItemPrimalCrusher
-                 ||
-                 held.getItem() instanceof WandCastingItem
-                         && ((WandCastingItem)held.getItem()).getFocus(held) != null
-                         && ((WandCastingItem)held.getItem()).getFocus(held)
-                         .isUpgradedWith(((WandCastingItem)held.getItem()).getFocusItem(held),
-                         ItemFocusExcavation.dowsing))) {
-            int fortune = EnchantmentHelper.getFortuneModifier(player);
-            if (held.getItem() instanceof WandCastingItem) {
-               fortune = ((WandCastingItem)held.getItem()).getFocus(held).getUpgradeLevel(((WandCastingItem)held.getItem()).getFocusItem(held), ThaumcraftFocusUpgradeTypes.TREASURE);
-            }
-
-            float chance = 0.2F + (float)fortune * 0.075F;
-
-            for(int a = 0; a < event.drops.size(); ++a) {
-               ItemStack is = event.drops.get(a);
-               ItemStack smr = Utils.findSpecialMiningResult(is, chance, event.world.getRandom());
-               if (!is.isItemEqual(smr)) {
-                  event.drops.set(a, smr);
-                  if (Platform.getEnvironment() != Env.CLIENT) {
-                     event.world.playSoundEffect((float)event.x + 0.5F, (float)event.y + 0.5F, (float)event.z + 0.5F, "random.orb", 0.2F, 0.7F + event.world.getRandom().nextFloat() * 0.2F);
-                  }
-               }
-            }
-         }
-      }
-   }
+//   @SubscribeEvent
+//   public void harvestEvent(BlockEvent.HarvestDropsEvent event) {
+//      //applying dowsing if no skilltouch
+//      Player player = event.harvester;
+//      if (event.drops != null && !event.drops.isEmpty() && player != null) {
+//         ItemStack held = player.inventory.getCurrentItem();
+//         if (held != null
+//                 && (held.getItem() instanceof ItemElementalPickaxe
+//                 || held.getItem() instanceof ItemPrimalCrusher
+//                 ||
+//                 held.getItem() instanceof WandCastingItem
+//                         && ((WandCastingItem)held.getItem()).getFocus(held) != null
+//                         && ((WandCastingItem)held.getItem()).getFocus(held)
+//                         .isUpgradedWith(((WandCastingItem)held.getItem()).getFocusItem(held),
+//                         ItemFocusExcavation.dowsing))) {
+//            int fortune = EnchantmentHelper.getFortuneModifier(player);
+//            if (held.getItem() instanceof WandCastingItem) {
+//               fortune = ((WandCastingItem)held.getItem()).getFocus(held).getUpgradeLevel(((WandCastingItem)held.getItem()).getFocusItem(held), ThaumcraftFocusUpgradeTypes.TREASURE);
+//            }
+//
+//            float chance = 0.2F + (float)fortune * 0.075F;
+//
+//            for(int a = 0; a < event.drops.size(); ++a) {
+//               ItemStack is = event.drops.get(a);
+//               ItemStack smr = IDowsingTool.findDowsingResult(is, chance, event.world.getRandom());
+//               if (!is.isItemEqual(smr)) {
+//                  event.drops.set(a, smr);
+//                  if (Platform.getEnvironment() != Env.CLIENT) {
+//                     event.world.playSoundEffect((float)event.x + 0.5F, (float)event.y + 0.5F, (float)event.z + 0.5F, "random.orb", 0.2F, 0.7F + event.world.getRandom().nextFloat() * 0.2F);
+//                  }
+//               }
+//            }
+//         }
+//      }
+//   }
 
 //   @SubscribeEvent
 //   public void noteEvent(NoteBlockEvent.Play event) {
@@ -176,28 +146,28 @@ public class EventHandlerWorld implements IFuelHandler {
 //         list.add(new Integer[]{event.x, event.y, event.z, event.instrument.ordinal(), event.getVanillaNoteId()});
 //         TileSensor.noteBlockEvents.put(event.world, list);
 //      }
-   }
+//   }
 
-   @SubscribeEvent
-   public void fillBucket(FillBucketEvent event) {
-   //restore bucket pure and death
-      if (event.target.typeOfHit == MovingObjectType.BLOCK) {
-         if (event.world.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == ConfigBlocks.blockFluidPure && event.world.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) == 0) {
-            event.world.setBlockToAir(event.target.blockX, event.target.blockY, event.target.blockZ);
-            event.result = new ItemStack(ConfigItems.itemBucketPure);
-            event.setResult(Result.ALLOW);
-            return;
-         }
-
-         if (event.world.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == ConfigBlocks.blockFluidDeath && event.world.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) == 3) {
-            event.world.setBlockToAir(event.target.blockX, event.target.blockY, event.target.blockZ);
-            event.result = new ItemStack(ConfigItems.itemBucketDeath);
-            event.setResult(Result.ALLOW);
-            return;
-         }
-      }
-
-   }
+//   @SubscribeEvent
+//   public void fillBucket(FillBucketEvent event) {
+//   //restore bucket pure and death
+//      if (event.target.typeOfHit == MovingObjectType.BLOCK) {
+//         if (event.world.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == ConfigBlocks.blockFluidPure && event.world.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) == 0) {
+//            event.world.setBlockToAir(event.target.blockX, event.target.blockY, event.target.blockZ);
+//            event.result = new ItemStack(ConfigItems.itemBucketPure);
+//            event.setResult(Result.ALLOW);
+//            return;
+//         }
+//
+//         if (event.world.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) == ConfigBlocks.blockFluidDeath && event.world.getBlockMetadata(event.target.blockX, event.target.blockY, event.target.blockZ) == 3) {
+//            event.world.setBlockToAir(event.target.blockX, event.target.blockY, event.target.blockZ);
+//            event.result = new ItemStack(ConfigItems.itemBucketDeath);
+//            event.setResult(Result.ALLOW);
+//            return;
+//         }
+//      }
+//
+//   }
 
 //   @SubscribeEvent
 //   public void placeBlockEvent(BlockEvent.PlaceEvent event) {

@@ -1,4 +1,4 @@
-package thaumcraft.common.items.equipment;
+package thaumcraft.common.items.equipment.elemental;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ import static thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem.bl
 public class ElementalShovelItem extends ShovelItem {
 
     public ElementalShovelItem() {
-        super(TOOL_THAUMIUM_ELEMENTAL, 3, -2.8f, new Properties().stacksTo(1).rarity(Rarity.RARE));
+        super(TOOL_THAUMIUM_ELEMENTAL, 1.5F, -3.0F, new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
 
     protected ItemStack getRequiredItemFromInventory(Item item, Inventory inventory) {
@@ -190,7 +191,7 @@ public class ElementalShovelItem extends ShovelItem {
                     BlockState targetState = world.getBlockState(targetPos);
 
                     if (targetState.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
-                        destroyBlockWithDrops(world, targetPos, living);
+                        destroyBlockWithDrops(world, targetPos, living,toolStack);
                         toolStack.hurtAndBreak(1, living, e -> e.broadcastBreakEvent(living.getUsedItemHand()));
 
                     }
@@ -202,17 +203,19 @@ public class ElementalShovelItem extends ShovelItem {
         return super.mineBlock(toolStack, world, minedState, pos, living);
     }
 
-
     private Direction getDigDirection(LivingEntity living) {
         if (living.getXRot() > 45) return Direction.DOWN;
         if (living.getXRot() < -45) return Direction.UP;
 
         return living.getDirection();
     }
-    private void destroyBlockWithDrops(Level world, BlockPos pos, LivingEntity living) {
+    private void destroyBlockWithDrops(Level world, BlockPos pos, LivingEntity living,ItemStack shovelStack) {
         BlockState st = world.getBlockState(pos);
         if (st.getDestroySpeed(world, pos) >= 0 && !st.isAir()) {
-            world.destroyBlock(pos, true, living);
+            if (world.destroyBlock(pos, false, living)){
+                BlockEntity blockEntity = st.hasBlockEntity() ? world.getBlockEntity(pos) : null;
+                Block.dropResources(st, world, pos, blockEntity, living, shovelStack);
+            }
         }
     }
 

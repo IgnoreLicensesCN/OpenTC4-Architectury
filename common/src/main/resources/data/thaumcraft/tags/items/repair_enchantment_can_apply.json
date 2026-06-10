@@ -23,6 +23,10 @@
 
     "thaumcraft:primal_crusher",
 
-    "thaumcraft:elemental_shovel"
+    "thaumcraft:elemental_shovel",
+    "thaumcraft:elemental_pickaxe",
+    "thaumcraft:elemental_sword",
+    "thaumcraft:elemental_hoe",
+    "thaumcraft:elemental_axe"
   ]
 }

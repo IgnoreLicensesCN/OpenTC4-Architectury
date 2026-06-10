@@ -1,6 +1,5 @@
 package thaumcraft.common.lib.utils;
 
-import com.linearity.opentc4.OpenTC4;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -27,11 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static com.linearity.opentc4.utils.IndexPicker.indexByTime;
-import static com.linearity.opentc4.utils.vanilla1710.Vanilla1710Utils.ignoresDamage;
 
 public class InventoryUtils {
    public static @NotNull("null -> empty") ItemStack placeItemStackIntoInventory(ItemStack stack, Container inventory, Direction side, boolean doit) {
@@ -54,91 +51,42 @@ public class InventoryUtils {
 
       if (container instanceof WorldlyContainer worldly && side != null) {
          int[] slots = worldly.getSlotsForFace(side);
-          // 先尝试填充已有相同物品的槽位
-          for (int slot : slots) {
-             if (canMerge(container.getItem(slot), stack)) {
-                stack = tryInsert(container, stack, slot, side, simulate);
-                if (stack.isEmpty()) return ItemStack.EMPTY;
-             }
-          }
-
-          // 再尝试塞进空槽
-          for (int slot : slots) {
-             stack = tryInsert(container, stack, slot, side, simulate);
-             if (stack.isEmpty()) return ItemStack.EMPTY;
-          }
+         {
+            for (int slot : slots) {
+               if (canMerge(container.getItem(slot), stack)) {
+                  stack = tryInsert(container, stack, slot, side, simulate);
+                  if (stack.isEmpty()) return ItemStack.EMPTY;
+               }
+            }
+            for (int slot : slots) {
+               stack = tryInsert(container, stack, slot, side, simulate);
+               if (stack.isEmpty()) return ItemStack.EMPTY;
+            }
+         }
           return stack;
       }
       int size = container.getContainerSize();
-
-      // 先尝试塞已有同类物品
-      for (int slot = 0; slot < size; slot++) {
-         if (canMerge(container.getItem(slot), stack)) {
+      {
+         for (int slot = 0; slot < size; slot++) {
+            if (canMerge(container.getItem(slot), stack)) {
+               stack = tryInsert(container, stack, slot, side, simulate);
+               if (stack.isEmpty()) return ItemStack.EMPTY;
+            }
+         }
+         for (int slot = 0; slot < size; slot++) {
             stack = tryInsert(container, stack, slot, side, simulate);
             if (stack.isEmpty()) return ItemStack.EMPTY;
          }
       }
 
-      // 再尝试空槽
-      for (int slot = 0; slot < size; slot++) {
-         stack = tryInsert(container, stack, slot, side, simulate);
-         if (stack.isEmpty()) return ItemStack.EMPTY;
-      }
-
       return stack;
 
    }
-
-   //TODO:Verify
-   public static ItemStack attemptInsertion(Container container, ItemStack stack, int slot,
-                                            @Nullable Direction side, boolean doInsert) {
-      if (stack.isEmpty()) return ItemStack.EMPTY;
-
-      ItemStack slotStack = container.getItem(slot);
-
-      // 检查面向插入规则
-      if (canInsertItemToInventory(container, stack, slot, side)) {
-
-         boolean inserted = false;
-
-         // 空槽
-         if (slotStack.isEmpty()) {
-            int move = Math.min(stack.getCount(), stack.getMaxStackSize());
-            if (doInsert) {
-               container.setItem(slot, stack.copyWithCount(move));
-               container.setChanged();
-            }
-            stack = stack.copyWithCount(stack.getCount() - move);
-            inserted = move > 0;
-         }
-         // 同类物品叠加
-         else if (ItemStack.isSameItemSameTags(slotStack, stack)) {
-            int available = Math.min(slotStack.getMaxStackSize() - slotStack.getCount(), stack.getCount());
-            if (available > 0) {
-               if (doInsert) {
-                  slotStack.grow(available);
-                  container.setItem(slot, slotStack);
-                  container.setChanged();
-               }
-               stack = stack.copyWithCount(stack.getCount() - available);
-               inserted = true;
-            }
-         }
-
-         // Hopper 特殊处理（可选）
-         if (inserted && doInsert && container instanceof WorldlyContainer) {
-            // 这里可以调用你的自定义事件/标记
-            container.setChanged();
-         }
-      }
-
-      return stack;
-   }
-
+   @Deprecated(forRemoval = true)
    public static boolean inventoryContains(Container inventory, ItemStack stack, Direction side, boolean useOre, boolean ignoreDamage, boolean ignoreNBT) {
       return !extractStack(inventory, stack, side, useOre, ignoreDamage, ignoreNBT, false).isEmpty();
    }
-
+   @Deprecated(forRemoval = true)
    public static ItemStack extractStack(Container inventory, ItemStack target, Direction side, boolean useOre, boolean ignoreDamage, boolean ignoreNBT, boolean doit) {
       ItemStack outStack = ItemStack.EMPTY;
 
@@ -152,6 +100,7 @@ public class InventoryUtils {
       return outStack.isEmpty() ? ItemStack.EMPTY : outStack.copy();
    }
 
+   @Deprecated(forRemoval = true)
    public static ItemStack attemptExtraction(Container container, ItemStack stack, int slot,
                                              @Nullable Direction side,
                                              boolean useOre, boolean ignoreDamage,
@@ -216,50 +165,6 @@ public class InventoryUtils {
       return false;
    }
 
-   @Deprecated(forRemoval = true,since = "we have RecipeItemMatcher")
-   public static boolean areItemStacksEqualStrict(ItemStack a, ItemStack b) {
-      return areItemStacksEqual(a, b, false, false);
-   }
-
-   /** 通用比较，仅用 Item + tag + 耐久（忽略 OreDictionary） */
-   @Deprecated(forRemoval = true,since = "we have RecipeItemMatcher")
-   public static boolean areItemStacksEqual(ItemStack a, ItemStack b,
-                                            boolean ignoreDamage,
-                                            boolean ignoreNBT) {
-      if (a.isEmpty() && b.isEmpty()) return true;
-      if (a.isEmpty() || b.isEmpty()) return false;
-
-      // NBT 比较
-      boolean nbtEqual = ignoreNBT || ItemStack.isSameItemSameTags(a, b);
-
-      // 耐久比较
-      boolean damageEqual = a.getDamageValue() == b.getDamageValue();
-      if (ignoreDamage && a.isDamageableItem() && b.isDamageableItem()) damageEqual = true;
-      if (ignoreDamage && (ignoresDamage(a) || ignoresDamage(b))) damageEqual = true;
-
-      return a.getItem() == b.getItem() && damageEqual && nbtEqual;
-   }
-
-   @Deprecated(forRemoval = true,since = "we have RecipeItemMatcher")
-   public static boolean areItemStacksEqualForCrafting(ItemStack a, ItemStack b,
-                                                       boolean ignoreDamage,
-                                                       boolean ignoreNBT) {
-      if (a.isEmpty() && b.isEmpty()) return true;
-      if (a.isEmpty() || b.isEmpty()) return false;
-
-      // NBT 比较
-      boolean nbtEqual = ignoreNBT || ItemStack.isSameItemSameTags(a, b);
-
-      // 耐久比较
-      boolean damageEqual = a.getDamageValue() == b.getDamageValue();
-      if (ignoreDamage && a.isDamageableItem() && b.isDamageableItem()) damageEqual = true;
-      if (ignoreDamage && (a.getDamageValue() == 32767 || b.getDamageValue() == 32767)) damageEqual = true;
-
-      // 堆叠大小限制（1.7.10 做法）
-      boolean stackSizeValid = a.getCount() <= a.getMaxStackSize();
-
-      return a.getItem() == b.getItem() && damageEqual && nbtEqual && stackSizeValid;
-   }
 
    public static boolean consumeInventoryItem(Player player, Item item, int damage) {
       for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -459,66 +364,6 @@ public class InventoryUtils {
       }
       return null;
    }
-
-   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
-   public static ItemStack cycleItemStack(ItemStack stack) {
-      ItemStack it = stack.copy();
-      if (ignoresDamage(it)) {
-         List<Item> variants = OpenTC4.platformUtils.getItemVariants(stack.getItem());
-         if (!variants.isEmpty()) {
-            int idx = indexByTime(variants.size());
-            ItemStack it2 = new ItemStack(variants.get(idx));
-            it2.setTag(it.getTag());
-            it = it2;
-         }
-      }
-      else if (it.isDamageableItem()) {
-         int md = indexByTime(it.getMaxDamage(),10);
-         it.setDamageValue(md);
-      }
-
-
-      return it;
-   }
-   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
-   public static ItemStack cycleItemStack(Item item) {
-      return cycleItemStack(new ItemStack(item));
-   }
-
-   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
-   public static ItemStack cycleItemStack(List<?> list) {
-      if (list.isEmpty()) return ItemStack.EMPTY;
-      int idx = indexByTime(list.size());
-      Object o = list.get(idx);
-      if (o instanceof List<?> list1){
-         return cycleItemStack(list1);
-      }
-      if (o instanceof ItemStack stack) {
-         return cycleItemStack(stack);
-      }
-      if (o instanceof Item item) {
-         return cycleItemStack(item);
-      }
-      if (o instanceof String s) {
-         return cycleItemStack(s);
-      }
-      throw new UnsupportedOperationException("not supported obj with class:" + o + " " + o.getClass());
-   }
-   @Deprecated(forRemoval = true,since = "should be replaced with matcher(use them to show item example)")
-   public static ItemStack cycleItemStack(String key) {
-      // 输入是列表
-      List<Item> items = OpenTC4.platformUtils.getItemsFromTag(key);
-      if (!items.isEmpty()) {
-         int idx = indexByTime(items.size());
-         return cycleItemStack(items.get(idx));
-      }
-      return ItemStack.EMPTY;
-   }
-
-
-
-
-
    public static boolean canMerge(ItemStack existing, ItemStack incoming) {
       return !existing.isEmpty()
               && ItemStack.isSameItemSameTags(existing, incoming)
@@ -577,5 +422,18 @@ public class InventoryUtils {
          return false;
       }
       return rand.nextInt(level + 1) > 0;
+   }
+
+
+
+
+   public static List<ItemStack> stackOfAmount(ItemStack stack, int amount) {
+      List<ItemStack> list = new ArrayList<>(Math.ceilDiv(stack.getMaxStackSize(), amount));
+      while (amount > stack.getMaxStackSize()) {
+         list.add(stack.copyWithCount(stack.getMaxStackSize()));
+         amount -= stack.getMaxStackSize();
+      }
+      list.add(stack.copyWithCount(amount));
+      return list;
    }
 }

@@ -41,12 +41,10 @@ import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.client.fx.migrated.beams.FXBeamBore;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.abstracts.IDowsingTool;
 import thaumcraft.common.items.wands.foci.ExcavationFocusItem;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.menu.menu.ArcaneBoreMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
@@ -58,7 +56,6 @@ import java.util.List;
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock.*;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.DRILL_FACING;
-import static thaumcraft.common.items.wands.foci.ExcavationFocusItem.getResourceFromBlockCanHarvest;
 
 //TODO[Maybe wont finished]:faster this shit
 public class ArcaneBoreBlockEntity
@@ -166,38 +163,6 @@ public class ArcaneBoreBlockEntity
             result += EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.BLOCK_EFFICIENCY, 0);
         }
         return result;
-    }
-    protected boolean hasSilkTouch(){
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof PickaxeItem) {
-            if (EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.SILK_TOUCH, 0) > 0){
-                return true;
-            }
-        }
-
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
-            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            return upgrades.getInt(ThaumcraftFocusUpgradeTypes.SILKTOUCH) > 0;
-        }
-        return false;
-    }
-    protected boolean hasDowsing(){
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty()
-                && pickaxeStack.getItem() instanceof IDowsingTool dowsingTool
-                && dowsingTool.canDowsing(pickaxeStack,null)
-        ) {
-            return true;
-        }
-
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
-            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            return upgrades.getInt(ExcavationFocusItem.dowsing) > 0;
-        }
-        return false;
-
     }
 
     protected void dig(){
@@ -381,21 +346,22 @@ public class ArcaneBoreBlockEntity
         if (digPos != null) {
             var digState = this.level.getBlockState(digPos);
             if (!digState.isAir()) {
-                int fortuneLevel = getFortuneLevel();
-                boolean silktouch = hasSilkTouch();
 
 //                    this.level.blockEvent(
 //                            pos,
 //                            getBlockState().getBlock(), 99, Block.getIdFromBlock(bi) + (md << 12));
                 List<ItemStack> items = new ArrayList<>();
-                getResourceFromBlockCanHarvest(
-                        this.level,
-                        digState,
-                        digPos,
-                        silktouch,
-                        fortuneLevel,
-                        items::add
-                );
+                var focusStack = getFocus();
+                if (focusStack.getItem() instanceof ExcavationFocusItem focusItem) {
+                    focusItem.getResourceFromBlock(
+                            focusStack,
+                            null,
+                            this.level,
+                            digState,
+                            digPos,
+                            items::add
+                    );
+                }
 
 //                    TODO[if arcane bore produces more itemEntity than expected]:remove itemEntity
 //                    List<EntityItem> targets = this.level().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.digX, this.digY, this.digZ, this.digX + 1, this.digY + 1, this.digZ + 1).expand(1.0F, 1.0F, 1.0F));
@@ -409,14 +375,15 @@ public class ArcaneBoreBlockEntity
                 if (!items.isEmpty()) {
                     for (ItemStack is : items) {
                         ItemStack dropped = is.copy();
-                        boolean canDowsing = hasDowsing();
-                        if (!silktouch && canDowsing) {
-                            dropped = Utils.findSpecialMiningResult(
-                                    is,
-                                    0.2F + (float) fortuneLevel * 0.075F,
-                                    this.level.random
-                            );
-                        }
+                        //TODO:Migrate to drop listener
+//                        boolean canDowsing = hasDowsing();
+//                        if (!silktouch && canDowsing) {
+//                            dropped = Utils.findSpecialMiningResult(
+//                                    is,
+//                                    0.2F + (float) fortuneLevel * 0.075F,
+//                                    this.level.random
+//                            );
+//                        }
                         var outDir = getOutputDirection();
                         var outPos = pos.relative(outDir);
                         if (this.level.getBlockEntity(outPos) instanceof WorldlyContainer container) {

@@ -14,7 +14,6 @@ import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
@@ -35,8 +34,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class Utils {
-    public static HashMap<Item, ItemStack> specialMiningResult = new HashMap<>();
-    public static HashMap<Item, Float> specialMiningChance = new HashMap<>();
     public static final String[] colorNames = new String[]{"White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
     public static final int[] colors = new int[]{15790320, 15435844, 12801229, 6719955, 14602026, 4312372, 14188952, 4408131, 10526880, 2651799, 8073150, 2437522, 5320730, 3887386, 11743532, 1973019};
 //    public static HashMap<WorldCoordinates, Long> effectBuffer = new HashMap<>();
@@ -82,20 +79,6 @@ public class Utils {
 
         return y;
     }
-
-    @Deprecated(forRemoval = true, since = "I dont get Equivalent Exchange 3 in 1.20.1")
-    public static boolean isEETransmutionItem(Item item) {
-//      try {
-//         String itemClass = "com.pahimar.ee3.item.ITransmutationStone";
-//         Class ee = Class.forName(itemClass);
-//         if (ee.isAssignableFrom(item.getClass())) {
-//            return true;
-//         }
-//      } catch (Exception ignored) {
-//      }
-
-        return false;
-    }
 //never used
 //   public static void copyFile(File sourceFile, File destFile) throws IOException {
 //      if (!destFile.exists()) {
@@ -115,24 +98,6 @@ public class Utils {
 //      }
 //
 //      return var3;
-    }
-
-    public static void addSpecialMiningResult(ItemStack in, ItemStack out, float chance) {
-        specialMiningResult.put(in.getItem(), out);
-        specialMiningChance.put(in.getItem(), chance);
-    }
-
-    public static ItemStack findSpecialMiningResult(ItemStack is, float chance, RandomSource rand) {
-        ItemStack dropped = is.copy();
-        float r = rand.nextFloat();
-        var key = is.getItem();
-        if (specialMiningResult.containsKey(key) && r <= chance * specialMiningChance.get(key)) {
-            dropped = specialMiningResult.get(key)
-                    .copy();
-            dropped.setCount(dropped.getCount() * is.getCount());
-        }
-
-        return dropped;
     }
 
     public static float clamp_float(float par0, float par1, float par2) {

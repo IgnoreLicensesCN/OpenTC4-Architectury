@@ -98,10 +98,5 @@ public interface IWandFocusItem<Asp extends Aspect> {
     //you need to cooldown by yourself
     default void onPlayerStoppedUsingFocus(ItemStack wandstack,ItemStack focusStack, Level world, LivingEntity user, int count) {}
 
-    //you need to cooldown by yourself
-//    default boolean onFocusBlockStartBreak(ItemStack wandstack, int x, int y,int z, Player player) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
     default void onLeftClickBlock(ItemStack wandstack,ItemStack focusStack, Player player, InteractionHand interactionHand) {}
 }
