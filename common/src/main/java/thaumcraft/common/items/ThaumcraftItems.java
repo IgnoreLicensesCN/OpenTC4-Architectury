@@ -23,6 +23,7 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
+import thaumcraft.common.items.equipment.ElementalShovelItem;
 import thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
@@ -292,6 +293,7 @@ public class ThaumcraftItems {
     public static final Item THAUMIUM_NUGGET = Registry.SUPPLIER_THAUMIUM_NUGGET.get();
     public static final Item COPPER_NUGGET = Registry.SUPPLIER_COPPER_NUGGET.get();
     public static final Item QUICKSILVER_DROP = Registry.SUPPLIER_QUICKSILVER_DROP.get();
+    public static final ElementalShovelItem ELEMENTAL_SHOVEL = Registry.SUPPLIER_ELEMENTAL_SHOVEL.get();
 
     //===========================================================================================
 
@@ -1111,6 +1113,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<PrimalCrusherItem> SUPPLIER_PRIMAL_CRUSHER = ITEMS.register(
                 "primal_crusher",
                 PrimalCrusherItem::new
+        );
+        public static final RegistrySupplier<ElementalShovelItem> SUPPLIER_ELEMENTAL_SHOVEL = ITEMS.register(
+                "elemental_shovel",
+                ElementalShovelItem::new
         );
     }
 

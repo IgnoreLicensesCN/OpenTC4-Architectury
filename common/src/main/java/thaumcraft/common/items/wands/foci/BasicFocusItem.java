@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_ACCESSOR;
 
-public abstract class FocusBasicItem extends Item implements IWandFocusItem<Aspect> {
-    public FocusBasicItem(Properties properties) {
+public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspect> {
+    public BasicFocusItem(Properties properties) {
         super(properties);
     }
 

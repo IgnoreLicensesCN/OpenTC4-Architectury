@@ -124,7 +124,8 @@ block_with_item_names = [
     ['tile.blockFluxGoo.name','flux_goo'],
     ['tile.blockFluidPure.name','pure_fluid'],
     ['tile.blockMirror.name','mirror'],
-    ['tile.blockPortalEldritch.name','eldritch_portal']
+    ['tile.blockPortalEldritch.name','eldritch_portal'],
+    ['item.ItemShovelElemental.name','elemental_shovel'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

@@ -25,7 +25,7 @@ public class NodeBlockEntity extends AbstractNodeBlockEntity {
     @Override
     public void removeNode() {
         if (this.level != null) {
-            this.level.setBlock(this.getBlockPos(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+            level.destroyBlock(getBlockPos(), true);
         }
     }
 }

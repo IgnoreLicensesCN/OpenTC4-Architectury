@@ -332,8 +332,8 @@ public class ConfigItems {
       GameRegistry.registerItem(itemTripleMeatTreat, "TripleMeatTreat", "Thaumcraft");
       itemSwordElemental = (new ItemElementalSword(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemSwordElemental");
       GameRegistry.registerItem(itemSwordElemental, "ItemSwordElemental", "Thaumcraft");
-      itemShovelElemental = (new ElementalShovelItem(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemShovelElemental");
-      GameRegistry.registerItem(itemShovelElemental, "ItemShovelElemental", "Thaumcraft");
+//      itemShovelElemental = (new ElementalShovelItem(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemShovelElemental");
+//      GameRegistry.registerItem(itemShovelElemental, "ItemShovelElemental", "Thaumcraft");
       itemPickElemental = (new ItemElementalPickaxe(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemPickaxeElemental");
       GameRegistry.registerItem(itemPickElemental, "ItemPickaxeElemental", "Thaumcraft");
       itemAxeElemental = (new ItemElementalAxe(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemAxeElemental");

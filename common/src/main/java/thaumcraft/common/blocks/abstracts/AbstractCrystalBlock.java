@@ -105,8 +105,7 @@ public abstract class AbstractCrystalBlock extends SuppressedWarningBlock implem
     @Override
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!state.canSurvive(world, pos)) {
-            dropResources(state,world, pos);
-            world.removeBlock(pos, false);
+            world.destroyBlock(pos, true);
         }
     }
     @Override

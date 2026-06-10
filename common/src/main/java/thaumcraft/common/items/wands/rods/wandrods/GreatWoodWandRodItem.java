@@ -10,7 +10,6 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-//dont add crafting method for this,just redirect stick here.
 public class GreatWoodWandRodItem extends ThaumcraftWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwnerComponent<Aspect> {
     public GreatWoodWandRodItem() {
         super(new Properties());

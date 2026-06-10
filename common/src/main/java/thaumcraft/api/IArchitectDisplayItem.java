@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-//maybe should be removed?
+@Deprecated(forRemoval = true)
 public interface IArchitectDisplayItem {
 
 	/**

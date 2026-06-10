@@ -1,13 +1,5 @@
 package thaumcraft.common.items.wands;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.wands.*;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.junkbox.TileOwned;
-
 @Deprecated(forRemoval = true)
 public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {
 //    private IIcon icon;
@@ -325,72 +317,71 @@ public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {
 //
 //    }
 
-    public boolean onItemUseFirst(ItemStack itemstack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        Block bi = world.getBlock(x, y, z);
-        int md = world.getBlockMetadata(x, y, z);
-        boolean result = false;
-        Direction direction = Direction.getOrientation(side);
-        if (bi instanceof IWandable) {
-            int ret = ((IWandable) bi).onWandRightClick(world, itemstack, player, x, y, z, side, md);
-            if (ret >= 0) {
-                return ret == 1;
-            }
-        }
-
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof IWandable) {
-            int ret = ((IWandable) tile).onWandRightClick(world, itemstack, player, x, y, z, side, md);
-            if (ret >= 0) {
-                return ret == 1;
-            }
-        }
-
-        if (WandTriggerRegistry.hasTrigger(bi)) {
-            return WandTriggerRegistry.performTrigger(world, itemstack, player, x, y, z, side, bi, md);
-        } else {
-            //TODO:Migrate this part to block
-            if ((bi == ConfigBlocks.blockWoodenDevice && md == 2 
-                    || bi == ConfigBlocks.blockCosmeticOpaque && md == 2) 
-                    && (!Config.wardedStone || tile instanceof TileOwned && player.getGameProfile().getName().equals(((TileOwned) tile).owner))
-            ) {
-                if (Platform.getEnvironment() != Env.CLIENT) {
-                    ((TileOwned) tile).safeToRemove = true;
-                    world.spawnEntityInWorld(new EntityItem(world, (double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, new ItemStack(bi, 1, md)));
-                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(bi) + (md << 12));
-                    world.setBlockToAir(x, y, z);
-                } else {
-                    player.swingItem();
-                }
-            }
-
-            if (bi == ConfigBlocks.blockArcaneDoor 
-                    && (!Config.wardedStone || tile instanceof TileOwned && player.getCommandSenderName().equals(((TileOwned) tile).owner))) {
-                if (Platform.getEnvironment() != Env.CLIENT) {
-                    ((TileOwned) tile).safeToRemove = true;
-                    if ((md & 8) == 0) {
-                        tile = world.getTileEntity(x, y + 1, z);
-                    } else {
-                        tile = world.getTileEntity(x, y - 1, z);
-                    }
-
-                    if (tile instanceof TileOwned) {
-                        ((TileOwned) tile).safeToRemove = true;
-                    }
-
-                    if (Config.wardedStone || !Config.wardedStone && (md & 8) == 0) {
-                        world.spawnEntityInWorld(new EntityItem(world, (double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, new ItemStack(ConfigItems.itemArcaneDoor)));
-                    }
-
-                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(bi) + (md << 12));
-                    world.setBlockToAir(x, y, z);
-                } else {
-                    player.swingItem();
-                }
-            }
-
-            return result;
-        }
-    }
+//    public boolean onItemUseFirst(ItemStack itemstack, Player player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+//        Block bi = world.getBlock(x, y, z);
+//        int md = world.getBlockMetadata(x, y, z);
+//        boolean result = false;
+//        Direction direction = Direction.getOrientation(side);
+//        if (bi instanceof IWandable) {
+//            int ret = ((IWandable) bi).onWandRightClick(world, itemstack, player, x, y, z, side, md);
+//            if (ret >= 0) {
+//                return ret == 1;
+//            }
+//        }
+//
+//        TileEntity tile = world.getTileEntity(x, y, z);
+//        if (tile instanceof IWandable) {
+//            int ret = ((IWandable) tile).onWandRightClick(world, itemstack, player, x, y, z, side, md);
+//            if (ret >= 0) {
+//                return ret == 1;
+//            }
+//        }
+//
+//        if (WandTriggerRegistry.hasTrigger(bi)) {
+//            return WandTriggerRegistry.performTrigger(world, itemstack, player, x, y, z, side, bi, md);
+//        } else {
+//            if ((bi == ConfigBlocks.blockWoodenDevice && md == 2
+//                    || bi == ConfigBlocks.blockCosmeticOpaque && md == 2)
+//                    && (!Config.wardedStone || tile instanceof TileOwned && player.getGameProfile().getName().equals(((TileOwned) tile).owner))
+//            ) {
+//                if (Platform.getEnvironment() != Env.CLIENT) {
+//                    ((TileOwned) tile).safeToRemove = true;
+//                    world.spawnEntityInWorld(new EntityItem(world, (double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, new ItemStack(bi, 1, md)));
+//                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(bi) + (md << 12));
+//                    world.setBlockToAir(x, y, z);
+//                } else {
+//                    player.swingItem();
+//                }
+//            }
+//
+//            if (bi == ConfigBlocks.blockArcaneDoor
+//                    && (!Config.wardedStone || tile instanceof TileOwned && player.getCommandSenderName().equals(((TileOwned) tile).owner))) {
+//                if (Platform.getEnvironment() != Env.CLIENT) {
+//                    ((TileOwned) tile).safeToRemove = true;
+//                    if ((md & 8) == 0) {
+//                        tile = world.getTileEntity(x, y + 1, z);
+//                    } else {
+//                        tile = world.getTileEntity(x, y - 1, z);
+//                    }
+//
+//                    if (tile instanceof TileOwned) {
+//                        ((TileOwned) tile).safeToRemove = true;
+//                    }
+//
+//                    if (Config.wardedStone || !Config.wardedStone && (md & 8) == 0) {
+//                        world.spawnEntityInWorld(new EntityItem(world, (double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, new ItemStack(ConfigItems.itemArcaneDoor)));
+//                    }
+//
+//                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(bi) + (md << 12));
+//                    world.setBlockToAir(x, y, z);
+//                } else {
+//                    player.swingItem();
+//                }
+//            }
+//
+//            return result;
+//        }
+//    }
 
 //    public ItemFocusBasic getFocus(ItemStack stack) {
 //        if (stack == null) {

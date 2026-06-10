@@ -64,7 +64,7 @@ public class PrimalCrusherItem extends DiggerItem implements ISwordLikeItem, IWa
         addWarpTooltip(itemStack, level, list, tooltipFlag);
     }
 
-    private static final BlockPos[][] blockPosOffsetsOfDirection = new BlockPos[Direction.values().length][];
+    public static final BlockPos[][] blockPosOffsetsOfDirection = new BlockPos[Direction.values().length][];
     static {
         blockPosOffsetsOfDirection[Direction.UP.ordinal()] = new BlockPos[]{
                 new BlockPos(1,0,1),new BlockPos(1,0,0),new BlockPos(1,0,-1),

@@ -42,7 +42,7 @@ import thaumcraft.client.fx.migrated.beams.FXBeamBore;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.abstracts.IDowsingTool;
-import thaumcraft.common.items.wands.foci.FocusExcavationItem;
+import thaumcraft.common.items.wands.foci.ExcavationFocusItem;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -58,7 +58,7 @@ import java.util.List;
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock.*;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.DRILL_FACING;
-import static thaumcraft.common.items.wands.foci.FocusExcavationItem.getResourceFromBlockCanHarvest;
+import static thaumcraft.common.items.wands.foci.ExcavationFocusItem.getResourceFromBlockCanHarvest;
 
 //TODO[Maybe wont finished]:faster this shit
 public class ArcaneBoreBlockEntity
@@ -135,8 +135,8 @@ public class ArcaneBoreBlockEntity
     protected int getFortuneLevel(){
         int result = 0;
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
             result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.TREASURE);
         }
         var pickaxeStack = getPickaxe();
@@ -148,8 +148,8 @@ public class ArcaneBoreBlockEntity
     protected int getEnlargeLevel(){
         int result = 0;
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
             result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.ENLARGE);
         }
         return result;
@@ -157,8 +157,8 @@ public class ArcaneBoreBlockEntity
     protected int getSpeedLevel(){
         int result = 0;
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
             result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.POTENCY);
         }
         var pickaxeStack = getPickaxe();
@@ -176,8 +176,8 @@ public class ArcaneBoreBlockEntity
         }
 
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
             return upgrades.getInt(ThaumcraftFocusUpgradeTypes.SILKTOUCH) > 0;
         }
         return false;
@@ -192,9 +192,9 @@ public class ArcaneBoreBlockEntity
         }
 
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            return upgrades.getInt(FocusExcavationItem.dowsing) > 0;
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
+            return upgrades.getInt(ExcavationFocusItem.dowsing) > 0;
         }
         return false;
 
@@ -458,7 +458,7 @@ public class ArcaneBoreBlockEntity
     }
     protected boolean hasFocus(){
         var focusStack = getFocus();
-        return !focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem;
+        return !focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem;
     }
     protected boolean hasPickaxe(){
         var pickaxeStack = getPickaxe();

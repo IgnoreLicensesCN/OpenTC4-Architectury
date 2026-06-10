@@ -53,7 +53,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
-public class FocusExcavationItem extends FocusBasicItem {
+public class ExcavationFocusItem extends BasicFocusItem {
     public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
 
     public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing;
@@ -79,7 +79,7 @@ public class FocusExcavationItem extends FocusBasicItem {
             UnmodifiableAspectList.of(Aspects.MINE, 1)
     );
 
-    public FocusExcavationItem() {
+    public ExcavationFocusItem() {
         super(new Properties().stacksTo(1));
     }
 

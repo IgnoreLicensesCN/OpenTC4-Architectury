@@ -49,7 +49,6 @@ public class PacketFXBlockSparkleS2C extends ThaumcraftBaseS2CMessage {
 
    @Override
    public void handle(NetworkManager.PacketContext context) {
-      // ensure run on main thread
       context.queue(() -> {
          var world = Minecraft.getInstance().level;
          if (world != null) {
