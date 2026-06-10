@@ -262,10 +262,10 @@ public class ThaumcraftItems {
     public static final ArmorItem THAUMIUM_CHESTPLATE = Registry.SUPPLIER_THAUMIUM_CHESTPLATE.get();
     public static final ArmorItem THAUMIUM_LEGGINGS = Registry.SUPPLIER_THAUMIUM_LEGGINGS.get();
     public static final ArmorItem THAUMIUM_BOOTS = Registry.SUPPLIER_THAUMIUM_BOOTS.get();
-    public static final ArmorItem VOID_HELMET = Registry.SUPPLIER_VOID_HELMET.get();
-    public static final ArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
-    public static final ArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
-    public static final ArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
+    public static final VoidArmorItem VOID_HELMET = Registry.SUPPLIER_VOID_HELMET.get();
+    public static final VoidArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
+    public static final VoidArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
+    public static final VoidArmorItem VOID_BOOTS = Registry.SUPPLIER_VOID_BOOTS.get();
     public static final MirrorBlockItem MIRROR = Registry.SUPPLIER_MIRROR.get();
     public static final MirrorBlockItem ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
     public static final BlockItem ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
@@ -288,6 +288,10 @@ public class ThaumcraftItems {
     public static final AxeItem THAUMIUM_AXE = Registry.SUPPLIER_THAUMIUM_AXE.get();
     public static final HoeItem THAUMIUM_HOE = Registry.SUPPLIER_THAUMIUM_HOE.get();
     public static final PrimalCrusherItem PRIMAL_CRUSHER = Registry.SUPPLIER_PRIMAL_CRUSHER.get();
+    public static final Item VOID_NUGGET = Registry.SUPPLIER_VOID_NUGGET.get();
+    public static final Item THAUMIUM_NUGGET = Registry.SUPPLIER_THAUMIUM_NUGGET.get();
+    public static final Item COPPER_NUGGET = Registry.SUPPLIER_COPPER_NUGGET.get();
+    public static final Item QUICKSILVER_DROP = Registry.SUPPLIER_QUICKSILVER_DROP.get();
 
     //===========================================================================================
 
@@ -331,6 +335,15 @@ public class ThaumcraftItems {
                 "void_seed", () -> new Item(new Item.Properties()));
         public static final RegistrySupplier<Item> SUPPLIER_GOLD_COIN = ITEMS.register(
                 "gold_coin", () -> new Item(new Item.Properties()));
+
+        public static final RegistrySupplier<Item> SUPPLIER_VOID_NUGGET = ITEMS.register(
+                "void_nugget", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_NUGGET = ITEMS.register(
+                "thaumium_nugget", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_COPPER_NUGGET = ITEMS.register(
+                "copper_nugget", () -> new Item(new Item.Properties()));
+        public static final RegistrySupplier<Item> SUPPLIER_QUICKSILVER_DROP = ITEMS.register(
+                "quicksilver_drop", () -> new Item(new Item.Properties()));
 
         public static final RegistrySupplier<EldritchEyeItem> SUPPLIER_ELDRITCH_EYE = ITEMS.register(
                 "eldritch_eye", EldritchEyeItem::new);
@@ -962,8 +975,7 @@ public class ThaumcraftItems {
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        //TODO:Warp
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_HELMET = ITEMS.register(
+        public static final RegistrySupplier<VoidArmorItem> SUPPLIER_VOID_HELMET = ITEMS.register(
                 "void_helmet",
                 () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
@@ -971,7 +983,7 @@ public class ThaumcraftItems {
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_CHESTPLATE = ITEMS.register(
+        public static final RegistrySupplier<VoidArmorItem> SUPPLIER_VOID_CHESTPLATE = ITEMS.register(
                 "void_chestplate",
                 () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
@@ -979,7 +991,7 @@ public class ThaumcraftItems {
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_LEGGINGS = ITEMS.register(
+        public static final RegistrySupplier<VoidArmorItem> SUPPLIER_VOID_LEGGINGS = ITEMS.register(
                 "void_leggings",
                 () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,
@@ -987,7 +999,7 @@ public class ThaumcraftItems {
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_VOID_BOOTS = ITEMS.register(
+        public static final RegistrySupplier<VoidArmorItem> SUPPLIER_VOID_BOOTS = ITEMS.register(
                 "void_boots",
                 () -> new VoidArmorItem(
                         ToolAndArmorMaterial.ARMOR_VOID,

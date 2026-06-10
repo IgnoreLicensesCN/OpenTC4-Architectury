@@ -116,6 +116,15 @@ block_with_item_names = [
     ['item.ItemBucketDeath.name','death_fluid_bucket'],
     ['item.ItemBucketPure.name','pure_fluid_bucket'],
     ['item.ItemBathSalts.name','bath_salts'],
+    ['item.ItemNugget.5.name','quicksilver_drop'],
+    ['item.ItemNugget.6.name','thaumium_nugget'],
+    ['item.ItemNugget.7.name','void_nugget'],
+    ['item.ItemNugget.1.name','copper_nugget'],
+    ['tile.blockFluxGas.name','flux_gas'],
+    ['tile.blockFluxGoo.name','flux_goo'],
+    ['tile.blockFluidPure.name','pure_fluid'],
+    ['tile.blockMirror.name','mirror'],
+    ['tile.blockPortalEldritch.name','eldritch_portal']
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -130,6 +139,13 @@ force_add_keys = {
 }
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
+
+def key_sorter(key_string):
+    parts = key_string.split('.')
+
+    part_count = len(parts)
+
+    return (parts[0],part_count, parts)
 
 for fileName in os.listdir(language_file_folder):
     if fileName.endswith('.json'):
@@ -161,9 +177,10 @@ for fileName in os.listdir(language_file_folder):
                     language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:
                 raise Exception(str(block_with_item_name_pair))
-        language_dict = dict(sorted(language_dict.items()))
+        sorted_keys = (sorted(list(language_dict.keys()), key=key_sorter))
+        language_dict_final = {k: language_dict[k] for k in sorted_keys}
         with open(language_file_path, mode='w', encoding='utf-8') as f2write:
-            json.dump(language_dict, f2write, indent=2, ensure_ascii=False)
+            json.dump(language_dict_final, f2write, indent=2, ensure_ascii=False)
 
             # replace_pattern = ''
             # if isinstance(block_with_item_name_pair[1],list):
