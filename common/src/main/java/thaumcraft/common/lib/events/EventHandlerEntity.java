@@ -524,90 +524,90 @@ public class EventHandlerEntity {
 
    }
 
-   @SubscribeEvent
-   public void bowNocked(ArrowNockEvent event) {
-      if (event.Player.inventory.hasItem(ConfigItems.itemPrimalArrow)) {
-         event.Player.setItemInUse(event.result, event.result.getItem().getMaxItemUseDuration(event.result));
-         event.setCanceled(true);
-      }
+//   @SubscribeEvent
+//   public void bowNocked(ArrowNockEvent event) {
+//      if (event.Player.inventory.hasItem(ConfigItems.itemPrimalArrow)) {
+//         event.Player.setItemInUse(event.result, event.result.getItem().getMaxItemUseDuration(event.result));
+//         event.setCanceled(true);
+//      }
+//
+//   }
 
-   }
-
-   @SubscribeEvent
-   public void bowShot(ArrowLooseEvent event) {
-      if (event.Player.inventory.hasItem(ConfigItems.itemPrimalArrow)) {
-         float f = 0.0F;
-         float dam = 2.0F;
-         if (event.bow.getItem() instanceof ItemBowBone) {
-            f = (float)event.charge / 10.0F;
-            f = (f * f + f * 2.0F) / 3.0F;
-            if ((double)f < 0.1) {
-               return;
-            }
-
-            dam = 2.5F;
-         } else {
-            f = (float)event.charge / 20.0F;
-            f = (f * f + f * 2.0F) / 3.0F;
-            if ((double)f < 0.1) {
-               return;
-            }
-         }
-
-         if (f > 1.0F) {
-            f = 1.0F;
-         }
-
-         int type = 0;
-
-         for(int j = 0; j < event.Player.inventory.mainInventory.length; ++j) {
-            if (event.Player.inventory.mainInventory[j] != null && event.Player.inventory.mainInventory[j].getItem() == ConfigItems.itemPrimalArrow) {
-               type = event.Player.inventory.mainInventory[j].getDamageValue();
-               break;
-            }
-         }
-
-         EntityPrimalArrow entityarrow = new EntityPrimalArrow(event.Player.level(), event.Player, f * dam, type);
-         if (event.bow.getItem() instanceof ItemBowBone) {
-            entityarrow.setDamage(entityarrow.getDamage() + (double)0.5F);
-         } else if (f == 1.0F) {
-            entityarrow.setIsCritical(true);
-         }
-
-         int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, event.bow);
-         if (k > 0) {
-            entityarrow.setDamage(entityarrow.getDamage() + (double)k * (double)0.5F + (double)0.5F);
-         }
-
-         int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, event.bow);
-         if (type == 3) {
-            ++l;
-         }
-
-         if (l > 0) {
-            entityarrow.setKnockbackStrength(l);
-         }
-
-         if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, event.bow) > 0) {
-            entityarrow.setFire(100);
-         }
-
-         event.bow.damageItem(1, event.Player);
-         event.Player.level().playSoundAtEntity(event.Player, "random.bow", 1.0F, 1.0F / (event.Player.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-         boolean flag = EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, event.bow) > 0 && event.Player.getRandom().nextFloat() < 0.33F;
-
-          if (!event.Player.capabilities.isCreativeMode || !flag) {
-            InventoryUtils.consumeInventoryItem(event.Player, ConfigItems.itemPrimalArrow, type);
-         }
-
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            event.Player.level().spawnEntityInWorld(entityarrow);
-         }
-
-         event.setCanceled(true);
-      }
-
-   }
+//   @SubscribeEvent
+//   public void bowShot(ArrowLooseEvent event) {
+//      if (event.Player.inventory.hasItem(ConfigItems.itemPrimalArrow)) {
+//         float f = 0.0F;
+//         float dam = 2.0F;
+//         if (event.bow.getItem() instanceof ItemBowBone) {
+//            f = (float)event.charge / 10.0F;
+//            f = (f * f + f * 2.0F) / 3.0F;
+//            if ((double)f < 0.1) {
+//               return;
+//            }
+//
+//            dam = 2.5F;
+//         } else {
+//            f = (float)event.charge / 20.0F;
+//            f = (f * f + f * 2.0F) / 3.0F;
+//            if ((double)f < 0.1) {
+//               return;
+//            }
+//         }
+//
+//         if (f > 1.0F) {
+//            f = 1.0F;
+//         }
+//
+//         int type = 0;
+//
+//         for(int j = 0; j < event.Player.inventory.mainInventory.length; ++j) {
+//            if (event.Player.inventory.mainInventory[j] != null && event.Player.inventory.mainInventory[j].getItem() == ConfigItems.itemPrimalArrow) {
+//               type = event.Player.inventory.mainInventory[j].getDamageValue();
+//               break;
+//            }
+//         }
+//
+//         EntityPrimalArrow entityarrow = new EntityPrimalArrow(event.Player.level(), event.Player, f * dam, type);
+//         if (event.bow.getItem() instanceof ItemBowBone) {
+//            entityarrow.setDamage(entityarrow.getDamage() + (double)0.5F);
+//         } else if (f == 1.0F) {
+//            entityarrow.setIsCritical(true);
+//         }
+//
+//         int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, event.bow);
+//         if (k > 0) {
+//            entityarrow.setDamage(entityarrow.getDamage() + (double)k * (double)0.5F + (double)0.5F);
+//         }
+//
+//         int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, event.bow);
+//         if (type == 3) {
+//            ++l;
+//         }
+//
+//         if (l > 0) {
+//            entityarrow.setKnockbackStrength(l);
+//         }
+//
+//         if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, event.bow) > 0) {
+//            entityarrow.setFire(100);
+//         }
+//
+//         event.bow.damageItem(1, event.Player);
+//         event.Player.level().playSoundAtEntity(event.Player, "random.bow", 1.0F, 1.0F / (event.Player.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+//         boolean flag = EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, event.bow) > 0 && event.Player.getRandom().nextFloat() < 0.33F;
+//
+//          if (!event.Player.capabilities.isCreativeMode || !flag) {
+//            InventoryUtils.consumeInventoryItem(event.Player, ConfigItems.itemPrimalArrow, type);
+//         }
+//
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            event.Player.level().spawnEntityInWorld(entityarrow);
+//         }
+//
+//         event.setCanceled(true);
+//      }
+//
+//   }
 
 //   @SubscribeEvent
 //   public void finishedUsingItem(PlayerUseItemEvent.Finish event) {

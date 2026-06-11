@@ -24,6 +24,8 @@ import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.equipment.elemental.*;
+import thaumcraft.common.items.equipment.specialtool.BoneBowItem;
+import thaumcraft.common.items.equipment.specialtool.CrimsonSwordItem;
 import thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
@@ -277,10 +279,9 @@ public class ThaumcraftItems {
         public static final ElementalSwordItem ELEMENTAL_SWORD = Registry.SUPPLIER_ELEMENTAL_SWORD.get();
         public static final ElementalHoeItem ELEMENTAL_HOE = Registry.SUPPLIER_ELEMENTAL_HOE.get();
         public static final ElementalAxeItem ELEMENTAL_AXE = Registry.SUPPLIER_ELEMENTAL_AXE.get();
+        public static final CrimsonSwordItem CRIMSON_SWORD = Registry.SUPPLIER_CRIMSON_SWORD.get();
+        public static final BoneBowItem BONE_BOW = Registry.SUPPLIER_BONE_BOW.get();
     }
-
-
-    //===========================================================================================
 
     public static class Registry {
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ITEM);
@@ -1120,6 +1121,14 @@ public class ThaumcraftItems {
                 "elemental_axe",
                 ElementalAxeItem::new
         );
+        public static final RegistrySupplier<CrimsonSwordItem> SUPPLIER_CRIMSON_SWORD = ITEMS.register(
+                "crimson_sword",
+                CrimsonSwordItem::new
+        );
+        public static final RegistrySupplier<BoneBowItem> SUPPLIER_BONE_BOW = ITEMS.register(
+                "bone_bow",
+                BoneBowItem::new
+        );
     }
 
     public static class ItemTags {
@@ -1555,6 +1564,40 @@ public class ThaumcraftItems {
             @Override
             public float getAttackDamageBonus() {
                 return 4.0F;
+            }
+
+            @Override
+            public int getLevel() {
+                return 5;
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 20;
+            }
+
+            private final Ingredient ingredient = Ingredient.of(ThaumcraftItemInstances.PRIMAL_CHARM);
+
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
+            }
+        };
+        public static final Tier CRIMSON_VOID = new Tier() {
+
+            @Override
+            public int getUses() {
+                return 200;
+            }
+
+            @Override
+            public float getSpeed() {
+                return 8.0F;
+            }
+
+            @Override
+            public float getAttackDamageBonus() {
+                return 3.5F;
             }
 
             @Override

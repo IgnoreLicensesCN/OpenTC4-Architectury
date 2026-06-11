@@ -130,6 +130,8 @@ block_with_item_names = [
     ['item.ItemSwordElemental.name','elemental_sword'],
     ['item.ItemAxeElemental.name','elemental_axe'],
     ['item.ItemHoeElemental.name','elemental_hoe'],
+    ['item.ItemBowBone.name','bone_bow'],
+    ['item.ItemSwordCrimson.name','crimson_sword'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

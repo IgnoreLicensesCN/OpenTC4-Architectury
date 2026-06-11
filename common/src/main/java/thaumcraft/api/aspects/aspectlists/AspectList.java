@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 //TODO:[maybe wont finished] change Aspect count to Rational(will surly shake the whole TC4)
 //TODO:[maybe wont finished] even faster impl(long[] intID and amount for each long)
 //2026.Feb.4 now we have AspectList<PrimalAspect>
-public interface AspectList<Asp extends Aspect> /*implements Serializable */{
+public interface AspectList<Asp extends Aspect>{
 
 	int getOrDefault(Aspect aspect, int defaultValue);
 	/**
