@@ -12,16 +12,16 @@ public class BlockMatcherPresents {
     public static final SimpleFluidMatcher LAVA_SOURCE_MATCHER = new SimpleFluidMatcher(Fluids.LAVA, true);
 
     public static final SimpleBlockMatcher ADVANCED_ALCHEMICAL_CONSTRUCT_MATCHER = SimpleBlockMatcher.of(
-            ThaumcraftBlocks.ADVANCED_ALCHEMICAL_CONSTRUCT
+            ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_CONSTRUCT
     );
     public static final SimpleBlockMatcher ALCHEMICAL_CONSTRUCT_MATCHER = SimpleBlockMatcher.of(
-            ThaumcraftBlocks.ALCHEMICAL_CONSTRUCT
+            ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_CONSTRUCT
     );
     public static final SimpleBlockMatcher ALCHEMICAL_FURNACE_MATCHER = SimpleBlockMatcher.of(
-            ThaumcraftBlocks.ALCHEMICAL_FURNACE
+            ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_FURNACE
     );
     public static final SimpleBlockMatcher ARCANE_ALEMBIC_MATCHER = SimpleBlockMatcher.of(
-            ThaumcraftBlocks.ARCANE_ALEMBIC
+            ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_ALEMBIC
     );
 
 }

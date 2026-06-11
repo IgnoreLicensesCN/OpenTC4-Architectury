@@ -31,7 +31,7 @@ public class ThaumcraftDefaultInstabilityActions {
         var containerPos = container.getBlockPos();
         var containerPosAbove = containerPos.above();
         if (level.getBlockState(containerPosAbove).isAir()){
-            level.setBlockAndUpdate(containerPosAbove, ThaumcraftFluids.FLUX_GOO_FLUID.defaultFluidState().setValue(ThaumcraftFluids.FLUX_GOO_FLUID.liquidLevel,7).createLegacyBlock());
+            level.setBlockAndUpdate(containerPosAbove, ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID.defaultFluidState().setValue(ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID.liquidLevel,7).createLegacyBlock());
         }
         level.playSound(null,containerPos, SoundEvents.PLAYER_SWIM, SoundSource.BLOCKS,0.3F,1.F);
     };
@@ -39,7 +39,7 @@ public class ThaumcraftDefaultInstabilityActions {
         var containerPos = container.getBlockPos();
         var containerPosAbove = containerPos.above();
         if (level.getBlockState(containerPosAbove).isAir()){
-            level.setBlockAndUpdate(containerPosAbove, ThaumcraftFluids.FLUX_GAS_FLUID.defaultFluidState().setValue(ThaumcraftFluids.FLUX_GAS_FLUID.liquidLevel,7).createLegacyBlock());
+            level.setBlockAndUpdate(containerPosAbove, ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GAS_FLUID.defaultFluidState().setValue(ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GAS_FLUID.liquidLevel,7).createLegacyBlock());
         }
         level.playSound(null,containerPos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS,0.3F,1.F);
     };
@@ -121,9 +121,9 @@ public class ThaumcraftDefaultInstabilityActions {
     public static void infusionFluxEntity(LivingEntity living){
         if (!living.level().isClientSide){
             if (living.level().random.nextBoolean()) {
-                living.addEffect(new MobEffectInstance(ThaumcraftEffects.FLUX_TAINT, 120, 0/*, false*/));
+                living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT, 120, 0/*, false*/));
             } else {
-                living.addEffect(new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 2400, 0/*, true*/));
+                living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST, 2400, 0/*, true*/));
             }
         }
     }

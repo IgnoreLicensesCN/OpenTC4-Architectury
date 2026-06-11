@@ -16,7 +16,7 @@ public class DeconstructionTableMenu extends AbstractThaumcraftMenu<Deconstructi
             int containerID,
             Inventory inventory,
             DeconstructionTableBlockEntity deconstructionTable){
-        this(ThaumcraftGUI.DECONSTRUCTION_TABLE,containerID,inventory,deconstructionTable);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.DECONSTRUCTION_TABLE,containerID,inventory,deconstructionTable);
     }
     public DeconstructionTableMenu(
             @Nullable MenuType<? extends DeconstructionTableMenu> menuType,

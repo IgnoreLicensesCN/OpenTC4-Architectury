@@ -41,7 +41,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_JAR, blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 64;

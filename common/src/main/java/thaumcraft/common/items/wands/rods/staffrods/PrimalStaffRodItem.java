@@ -46,7 +46,7 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     }
 
     @Override
-    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
+    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean parentSelected) {
         var wandItem = usingWand.getItem();
         if (wandItem instanceof ICentiVisContainerItem<? extends Aspect> containerNotCasted){
             var container = (ICentiVisContainerItem<Aspect>)containerNotCasted;

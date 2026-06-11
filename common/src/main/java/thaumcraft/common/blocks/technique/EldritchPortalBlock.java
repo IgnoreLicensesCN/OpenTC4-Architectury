@@ -54,7 +54,7 @@ public class EldritchPortalBlock extends SuppressedWarningBlock implements Entit
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!level.isClientSide){
-            if (level.getBlockState(pos.below()).getBlock() != ThaumcraftBlocks.ELDRITCH_PORTAL
+            if (level.getBlockState(pos.below()).getBlock() != ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_PORTAL
                     || !(level.getBlockState(pos.above()).getBlock() instanceof EldritchObeliskBlock)
             ){
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

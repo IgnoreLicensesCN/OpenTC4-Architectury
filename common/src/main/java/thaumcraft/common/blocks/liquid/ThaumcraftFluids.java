@@ -10,11 +10,15 @@ import thaumcraft.common.Thaumcraft;
 
 public class ThaumcraftFluids {
 
-    public static final FluxGooFluid FLUX_GOO_FLUID = Registry.SUPPLIER_FLUX_GOO_FLUID.get();
-    public static final FluxGasFluid FLUX_GAS_FLUID = Registry.SUPPLIER_FLUX_GAS_FLUID.get();
-    public static final DeathFluid DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
-    public static final PureFluid.PureFluidSource PURE_FLUID_SOURCE = Registry.SUPPLIER_PURE_FLUID_SOURCE.get();
-    public static final PureFluid.PureFluidFlowing PURE_FLUID_FLOWING = Registry.SUPPLIER_PURE_FLUID_FLOWING.get();
+    public static class ThaumcraftFluidInstances {
+
+        public static final FluxGooFluid FLUX_GOO_FLUID = Registry.SUPPLIER_FLUX_GOO_FLUID.get();
+        public static final FluxGasFluid FLUX_GAS_FLUID = Registry.SUPPLIER_FLUX_GAS_FLUID.get();
+        public static final DeathFluid DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
+        public static final PureFluid.PureFluidSource PURE_FLUID_SOURCE = Registry.SUPPLIER_PURE_FLUID_SOURCE.get();
+        public static final PureFluid.PureFluidFlowing PURE_FLUID_FLOWING = Registry.SUPPLIER_PURE_FLUID_FLOWING.get();
+    }
+
     public static class Registry {
         public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.FLUID);
         public static final RegistrySupplier<FluxGooFluid> SUPPLIER_FLUX_GOO_FLUID = FLUIDS.register("flux_goo",FluxGooFluid::new);

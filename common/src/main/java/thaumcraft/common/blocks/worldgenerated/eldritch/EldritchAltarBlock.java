@@ -62,7 +62,7 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() == ThaumcraftBlocks.ELDRITCH_ALTAR) {
+        if (blockState.getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_ALTAR) {
             return new EldritchAltarBlockEntity(blockPos, blockState);
         }
         return null;
@@ -70,7 +70,7 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ELDRITCH_ALTAR && !level0.isClientSide) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_ALTAR && !level0.isClientSide) {
             return (level, blockPos, blockState, blockEntity) -> {
                 if (blockEntity instanceof EldritchAltarBlockEntity eldritchAltarBlockEntity && Platform.getEnvironment() == Env.SERVER) {
                     eldritchAltarBlockEntity.serverTick();

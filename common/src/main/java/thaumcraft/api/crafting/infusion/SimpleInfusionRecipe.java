@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+//the usual form of infusion recipe
+//items in and the only possible itemStack out
 public class SimpleInfusionRecipe extends InfusionRecipe{
     protected final @Unmodifiable List<RecipeItemMatcher> components;
     protected final RecipeItemMatcher centralInput;

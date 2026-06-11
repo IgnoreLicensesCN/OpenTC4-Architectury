@@ -24,7 +24,7 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
     }
 
     public GrowthArcaneLampBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.GROWTH_ARCANE_LAMP, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.GROWTH_ARCANE_LAMP, blockPos, blockState);
     }
 
     public static final int CHARGES_PER_ESSENTIA = 100;

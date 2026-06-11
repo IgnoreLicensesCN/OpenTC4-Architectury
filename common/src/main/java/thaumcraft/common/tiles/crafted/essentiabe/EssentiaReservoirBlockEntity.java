@@ -43,7 +43,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaReservoirBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_RESERVOIR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_RESERVOIR, blockPos, blockState);
     }
 
     public Direction getFacing(){

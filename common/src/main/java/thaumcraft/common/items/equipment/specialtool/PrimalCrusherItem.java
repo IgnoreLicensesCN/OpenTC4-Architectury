@@ -4,7 +4,9 @@ import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.abstracts.IDowsingTool;
-import thaumcraft.common.items.abstracts.ISwordLikeItem;
+import thaumcraft.common.items.abstracts.IDropFollowingUserTool;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,23 +28,27 @@ import java.util.Set;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.PRIMAL_CRUSHER_MINEABLE;
 
 //TODO:[maybe wont finished]"Vote in democracy"(third times?) to change it's feature like axe or hoe mineable?
-public class PrimalCrusherItem extends DiggerItem implements ISwordLikeItem, IWarpingGear, IDowsingTool {
-    public PrimalCrusherItem(float f, float g, Tier tier, TagKey<Block> tagKey, Properties properties) {
-        super(f, g, tier, tagKey, properties);
+public class PrimalCrusherItem extends SwordItem implements IWarpingGear, IDowsingTool, IDropFollowingUserTool {
+    private final TagKey<Block> blocks = PRIMAL_CRUSHER_MINEABLE;
+    protected final float speed;
+    public PrimalCrusherItem(float f, float g, Tier tier, Properties properties) {
+        super(tier,(int)f, g, properties);
+        this.attackDamage = f + tier.getAttackDamageBonus();
+        this.speed = tier.getSpeed();
     }
+    private final float attackDamage;
     public PrimalCrusherItem() {
         this(
                 3.5F,
                 -2.4F,
                 ThaumcraftItems.ToolAndArmorMaterial.PRIMAL_VOID,
-                PRIMAL_CRUSHER_MINEABLE,
                 new Properties().stacksTo(1).rarity(Rarity.EPIC)
         );
     }
+
     @Override
-    public boolean hurtEnemy(ItemStack itemStack, LivingEntity livingEntity, LivingEntity livingEntity2) {
-        itemStack.hurtAndBreak(1, livingEntity2, livingEntityx -> livingEntityx.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        return true;
+    public float getDamage() {
+        return this.attackDamage;
     }
 
     @Override
@@ -105,8 +111,39 @@ public class PrimalCrusherItem extends DiggerItem implements ISwordLikeItem, IWa
                     }
                 }
             }
+            stacksBreakingNear.remove(itemStack);
         }
-        stacksBreakingNear.remove(itemStack);
-        return super.mineBlock(itemStack, level, blockState, blockPos, livingEntity);
+        if (!level.isClientSide && blockState.getDestroySpeed(level, blockPos) != 0.0F) {
+            itemStack.hurtAndBreak(1, livingEntity, livingEntityx -> livingEntityx.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(BlockState blockState) {
+        int i = this.getTier().getLevel();
+        if (i < 3 && blockState.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
+            return false;
+        } else if (i < 2 && blockState.is(BlockTags.NEEDS_IRON_TOOL)) {
+            return false;
+        } else {
+            return (i >= 1 || !blockState.is(BlockTags.NEEDS_STONE_TOOL)) && blockState.is(this.blocks);
+        }
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack itemStack, BlockState blockState) {
+        return blockState.is(this.blocks) ? this.speed : 1.0F;
+    }
+
+    @Override
+    public boolean canMakeDropFollowPlayer(ItemStack usingToolStack, BlockState droppingState, ServerLevel level, BlockPos atPos, Entity entityToFollow, ItemStack stackToDrop) {
+        var block = Block.byItem(stackToDrop.getItem());
+        return block.defaultBlockState().is(PRIMAL_CRUSHER_MINEABLE);
+    }
+    @Override
+    public int getFollowingItemEntityTailColor(){
+        return 2;
     }
 }

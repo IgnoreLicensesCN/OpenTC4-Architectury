@@ -28,7 +28,7 @@ public class NodeJarBlockEntity extends TileThaumcraft
     }
 
     public NodeJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.NODE_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.NODE_JAR, blockPos, blockState);
     }
 
     @Override

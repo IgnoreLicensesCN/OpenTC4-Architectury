@@ -14,10 +14,10 @@ import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.GROWTH_LAMP_AFFECTI
 public class GrowthLampAffectManager {
 
 
-    public static final ListenerManager<GrowthAffectApplier> affectActions = new ListenerManager<>();
+    public static final ListenerManager<GrowthLampGrowthAffectApplier> affectActions = new ListenerManager<>();
 
     static {
-        affectActions.registerListener(new GrowthAffectApplier(-100) {
+        affectActions.registerListener(new GrowthLampGrowthAffectApplier(-100) {
             @Override
             public void apply(GrowthLampAffectContext context) {
                 if (context.state.getBlock() instanceof IGrowthArcaneLampAffectiveBlock affectBlock) {
@@ -26,7 +26,7 @@ public class GrowthLampAffectManager {
                 }
             }
         });
-        affectActions.registerListener(new GrowthAffectApplier(0) {
+        affectActions.registerListener(new GrowthLampGrowthAffectApplier(0) {
             @Override
             public void apply(GrowthLampAffectContext context) {
                 if (context.state.is(GROWTH_LAMP_AFFECTIVE_RANDOM_TICK)){
@@ -43,7 +43,7 @@ public class GrowthLampAffectManager {
                 }
             }
         });
-        affectActions.registerListener(new GrowthAffectApplier(100) {
+        affectActions.registerListener(new GrowthLampGrowthAffectApplier(100) {
             @Override
             public void apply(GrowthLampAffectContext context) {
                 if (context.state.is(GROWTH_LAMP_AFFECTIVE_TICK)){
@@ -60,7 +60,7 @@ public class GrowthLampAffectManager {
                 }
             }
         });
-        affectActions.registerListener(new GrowthAffectApplier(200) {
+        affectActions.registerListener(new GrowthLampGrowthAffectApplier(200) {
             @Override
             public void apply(GrowthLampAffectContext context) {
                 if (context.state.getBlock() instanceof BonemealableBlock bonemealable) {

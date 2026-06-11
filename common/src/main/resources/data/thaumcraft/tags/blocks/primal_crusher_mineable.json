@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#minecraft:mineable/pickaxe",
-    "#minecraft:mineable/shovel"
+    "#minecraft:mineable/shovel",
+    "#thaumcraft:tainted_material"
   ]
 }

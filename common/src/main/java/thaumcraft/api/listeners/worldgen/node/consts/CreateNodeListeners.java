@@ -33,7 +33,7 @@ public class CreateNodeListeners {
         @Override
         public boolean onCreateNode(WorldGenLevel world, CreateNodeContext context) {
             if (world.getBlockState(context.pos).isAir()) {
-                world.setBlock(context.pos, ThaumcraftBlocks.AURA_NODE.defaultBlockState(), 3);
+                world.setBlock(context.pos, ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE.defaultBlockState(), 3);
             }
 
             BlockEntity te = world.getBlockEntity(context.pos);

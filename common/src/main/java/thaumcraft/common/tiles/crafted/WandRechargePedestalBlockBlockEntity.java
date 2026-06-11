@@ -24,7 +24,7 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
     }
 
     public WandRechargePedestalBlockBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.WAND_RECHARGE_PEDESTAL, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.WAND_RECHARGE_PEDESTAL, blockPos, blockState);
     }
 
     @Override

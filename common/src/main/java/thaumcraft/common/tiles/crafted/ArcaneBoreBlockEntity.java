@@ -92,7 +92,7 @@ public class ArcaneBoreBlockEntity
         super(blockEntityType, blockPos, blockState, menuFactory);
     }
     public ArcaneBoreBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_BORE, blockPos, blockState, ArcaneBoreMenu::new);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_BORE, blockPos, blockState, ArcaneBoreMenu::new);
     }
     public @NotNull BlockPos getDrillPos(){
         var pos = this.getBlockPos();

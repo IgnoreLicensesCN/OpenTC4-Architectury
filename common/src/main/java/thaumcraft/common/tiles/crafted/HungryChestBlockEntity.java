@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +50,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
     }
 
     public HungryChestBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.HUNGRY_CHEST,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST,blockPos, blockState);
     }
 
     static void playSound(Level level, BlockPos blockPos, BlockState blockState, SoundEvent soundEvent) {

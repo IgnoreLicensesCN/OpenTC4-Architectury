@@ -73,7 +73,7 @@ public class ArcaneBoreDrillBlock extends SuppressedWarningBlock implements IWan
                 return;
             }
             var probablyDrillState = level.getBlockState(fromPos);
-            if (probablyDrillState.getBlock() != ThaumcraftBlocks.ARCANE_BORE_BASE) {
+            if (probablyDrillState.getBlock() != ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_BORE_BASE) {
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             }else if (probablyDrillState.getValue(FACING_TO_DRILL).getOpposite() != selfFacing) {
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

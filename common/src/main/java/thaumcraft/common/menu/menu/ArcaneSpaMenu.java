@@ -13,7 +13,7 @@ public class ArcaneSpaMenu extends AbstractThaumcraftMenu<ArcaneSpaBlockEntity> 
     public ArcaneSpaMenu(int containerID,
                          Inventory inventory,
                          ArcaneSpaBlockEntity be) {
-        this(ThaumcraftGUI.ARCANE_SPA, containerID, inventory, be);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_SPA, containerID, inventory, be);
     }
 
     public ArcaneSpaMenu(

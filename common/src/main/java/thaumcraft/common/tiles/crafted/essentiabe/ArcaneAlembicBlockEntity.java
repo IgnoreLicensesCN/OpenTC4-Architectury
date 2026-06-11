@@ -33,7 +33,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     }
 
     public ArcaneAlembicBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_ALEMBIC, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_ALEMBIC, blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 32;

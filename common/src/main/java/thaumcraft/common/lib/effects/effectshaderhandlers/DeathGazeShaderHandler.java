@@ -7,6 +7,6 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 public class DeathGazeShaderHandler extends AbstractShaderHandler {
     public static final DeathGazeShaderHandler INSTANCE = new DeathGazeShaderHandler();
     public DeathGazeShaderHandler() {
-        super(new ResourceLocation(Thaumcraft.MOD_ID, "shaders/post/desaturatetc.json"),ThaumcraftEffects.DEATH_GAZE);
+        super(new ResourceLocation(Thaumcraft.MOD_ID, "shaders/post/desaturatetc.json"), ThaumcraftEffects.ThaumcraftEffectTypeInstances.DEATH_GAZE);
     }
 }

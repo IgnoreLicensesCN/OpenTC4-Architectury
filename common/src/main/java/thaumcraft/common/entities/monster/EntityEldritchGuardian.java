@@ -172,7 +172,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.dropItem(ThaumcraftItems.ELDRITCH_EYE);
+      this.dropItem(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE);
    }
 
    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {

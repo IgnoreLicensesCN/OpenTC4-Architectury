@@ -65,7 +65,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public EnergizedAuraNodeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ENERGIZED_NODE,blockPos,blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ENERGIZED_NODE,blockPos,blockState);
     }
     @Override
     public boolean isSource() {

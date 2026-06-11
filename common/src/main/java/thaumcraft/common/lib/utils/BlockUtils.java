@@ -32,10 +32,6 @@ import java.util.List;
 
 public class BlockUtils {
    static HashMap<Integer,ArrayList[]> blockEventCache = new HashMap<>();
-   static int lastx = 0;
-   static int lasty = 0;
-   static int lastz = 0;
-   static double lastdistance = 0.0F;
 
    public static boolean harvestBlock(Level world, Player player, int x, int y, int z) {
       return harvestBlock(world, player, x, y, z, false, 0);
@@ -161,6 +157,38 @@ public class BlockUtils {
       return flag;
    }
 
+
+
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player) {
+      return breakFurthestBlock(world, x, y, z, block, player, false, 0);
+   }
+
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
+      lastx = x;
+      lasty = y;
+      lastz = z;
+      lastdistance = 0.0F;
+      findBlocks(world, x, y, z, block);
+      boolean worked = harvestBlock(world, player, lastx, lasty, lastz, followitem, color);
+      world.markBlockForUpdate(x, y, z);
+      if (worked) {
+         world.markBlockForUpdate(lastx, lasty, lastz);
+
+         for(int xx = -3; xx <= 3; ++xx) {
+            for(int yy = -3; yy <= 3; ++yy) {
+               for(int zz = -3; zz <= 3; ++zz) {
+                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.getRandom().nextInt(150));
+               }
+            }
+         }
+      }
+
+      return worked;
+   }
+   static int lastx = 0;
+   static int lasty = 0;
+   static int lastz = 0;
+   static double lastdistance = 0.0F;
    public static void findBlocks(Level world, int x, int y, int z, Block block) {
       int count = 0;
 
@@ -197,33 +225,6 @@ public class BlockUtils {
          }
       }
 
-   }
-
-   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player) {
-      return breakFurthestBlock(world, x, y, z, block, player, false, 0);
-   }
-
-   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
-      lastx = x;
-      lasty = y;
-      lastz = z;
-      lastdistance = 0.0F;
-      findBlocks(world, x, y, z, block);
-      boolean worked = harvestBlock(world, player, lastx, lasty, lastz, followitem, color);
-      world.markBlockForUpdate(x, y, z);
-      if (worked) {
-         world.markBlockForUpdate(lastx, lasty, lastz);
-
-         for(int xx = -3; xx <= 3; ++xx) {
-            for(int yy = -3; yy <= 3; ++yy) {
-               for(int zz = -3; zz <= 3; ++zz) {
-                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.getRandom().nextInt(150));
-               }
-            }
-         }
-      }
-
-      return worked;
    }
 
    public static HitResult getTargetBlock(Level world, double x, double y, double z, float yaw, float pitch, boolean par3, double range) {

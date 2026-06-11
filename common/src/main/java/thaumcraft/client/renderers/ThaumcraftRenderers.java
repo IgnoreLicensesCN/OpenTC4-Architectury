@@ -12,11 +12,11 @@ public class ThaumcraftRenderers {
     }
     public static void initBlocks(){
         BlockEntityRendererRegistry.register(
-                ThaumcraftBlockEntities.HUNGRY_CHEST,
+                ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST,
                 HungryChestRenderer::new
         );
         BlockEntityRendererRegistry.register(
-                ThaumcraftBlockEntities.ELDRITCH_VOID,
+                ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_VOID,
                 EldritchVoidRenderer::new
         );
     }

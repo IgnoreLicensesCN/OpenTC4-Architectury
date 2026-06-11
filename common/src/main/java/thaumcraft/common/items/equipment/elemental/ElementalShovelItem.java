@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.items.abstracts.IDropFollowingUserTool;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 
 import java.util.*;
@@ -27,7 +29,7 @@ import java.util.*;
 import static thaumcraft.common.items.ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
 import static thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem.blockPosOffsetsOfDirection;
 
-public class ElementalShovelItem extends ShovelItem {
+public class ElementalShovelItem extends ShovelItem implements IDropFollowingUserTool {
 
     public ElementalShovelItem() {
         super(TOOL_THAUMIUM_ELEMENTAL, 1.5F, -3.0F, new Properties().stacksTo(1).rarity(Rarity.RARE));
@@ -164,7 +166,6 @@ public class ElementalShovelItem extends ShovelItem {
 //            return true;
 //        }
 //    }
-
     private static final Set<ItemStack> stackMiningBlocks = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
     @Override
     public boolean mineBlock(ItemStack toolStack, Level world, BlockState minedState, BlockPos pos, LivingEntity living) {
@@ -217,6 +218,17 @@ public class ElementalShovelItem extends ShovelItem {
                 Block.dropResources(st, world, pos, blockEntity, living, shovelStack);
             }
         }
+    }
+
+    @Override
+    public boolean canMakeDropFollowPlayer(ItemStack usingToolStack, BlockState droppingState, ServerLevel level, BlockPos atPos, Entity entityToFollow, ItemStack stackToDrop) {
+        var block = Block.byItem(stackToDrop.getItem());
+        return block.defaultBlockState().is(BlockTags.MINEABLE_WITH_AXE);
+    }
+
+    @Override
+    public int getFollowingItemEntityTailColor(){
+        return 3;
     }
 
 }

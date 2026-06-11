@@ -35,7 +35,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         super(blockEntityType, blockPos, blockState);
     }
     public BrainJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BRAIN_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.BRAIN_JAR, blockPos, blockState);
     }
 
     @Override

@@ -11,7 +11,7 @@ import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
-import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GAS_FLUID;
+import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GAS_FLUID;
 
 public class FluxGasBlock extends FiniteLiquidBlock {
    public FluxGasBlock() {
@@ -28,7 +28,7 @@ public class FluxGasBlock extends FiniteLiquidBlock {
 
 
    public static BlockState fullOfGas(){
-      var blockInstance = ThaumcraftBlocks.FLUX_GAS;
+      var blockInstance = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS;
       return blockInstance.defaultBlockState().setValue(
               blockInstance.finiteFluid.liquidLevel,
               blockInstance.finiteFluid.maxLevel);
@@ -45,7 +45,7 @@ public class FluxGasBlock extends FiniteLiquidBlock {
 
       MobEffectInstance effect;
       if (level.random.nextBoolean()) {
-         effect = new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 1200, lvl / 3, true, false);
+         effect = new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST, 1200, lvl / 3, true, false);
       } else {
          effect = new MobEffectInstance(MobEffects.CONFUSION, 80 + lvl * 20, 0, false, false,false);
       }

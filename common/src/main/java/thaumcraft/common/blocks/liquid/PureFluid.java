@@ -21,12 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXBubble;
 import thaumcraft.common.items.ThaumcraftItems;
 
-import static thaumcraft.common.blocks.ThaumcraftBlocks.PURE_FLUID;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.PURE_FLUID;
 
 public abstract class PureFluid extends FlowingFluid {
 
     public @NotNull Item getBucket() {
-        return ThaumcraftItems.PURE_FLUID_BUCKET;
+        return ThaumcraftItems.ThaumcraftItemInstances.PURE_FLUID_BUCKET;
     }
 
     @Override
@@ -81,12 +81,12 @@ public abstract class PureFluid extends FlowingFluid {
 
     @Override
     public @NotNull Fluid getFlowing() {
-        return ThaumcraftFluids.PURE_FLUID_FLOWING;
+        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING;
     }
 
     @Override
     public @NotNull Fluid getSource() {
-        return ThaumcraftFluids.PURE_FLUID_SOURCE;
+        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE;
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class PureFluid extends FlowingFluid {
     }
     @Override
     public boolean isSame(Fluid fluid) {
-        return fluid == ThaumcraftFluids.PURE_FLUID_SOURCE || fluid == ThaumcraftFluids.PURE_FLUID_FLOWING;
+        return fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE || fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING;
     }
 
     @Override

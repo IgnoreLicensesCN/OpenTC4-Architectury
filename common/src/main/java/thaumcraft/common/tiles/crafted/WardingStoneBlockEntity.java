@@ -23,7 +23,7 @@ public class WardingStoneBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public WardingStoneBlockEntity(BlockPos blockPos, BlockState blockState){
-        this(ThaumcraftBlockEntities.WARDING_STONE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.WARDING_STONE, blockPos, blockState);
     }
 
     public void serverTick() {
@@ -60,8 +60,8 @@ public class WardingStoneBlockEntity extends TileThaumcraft {
             var poses = new BlockPos[]{blockPos.above(), blockPos.above().above()};
             for (var pos:poses){
                 var bState = serverLevel.getBlockState(pos);
-                if (bState.isAir() && bState.getBlock() != ThaumcraftBlocks.WARDING_AURA){
-                    serverLevel.setBlock(pos,ThaumcraftBlocks.WARDING_AURA.defaultBlockState(),3);
+                if (bState.isAir() && bState.getBlock() != ThaumcraftBlocks.ThaumcraftBlockInstances.WARDING_AURA){
+                    serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.WARDING_AURA.defaultBlockState(),3);
                 }
             }
         }

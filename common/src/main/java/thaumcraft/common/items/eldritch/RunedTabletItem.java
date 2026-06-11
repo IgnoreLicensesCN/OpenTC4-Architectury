@@ -42,8 +42,8 @@ public class RunedTabletItem extends Item {
         var blockState = world.getBlockState(pos);
         var block = blockState.getBlock();
 
-        if (block == ThaumcraftBlocks.ANCIENT_LOCK_EMPTY) {
-            ThaumcraftBlocks.ANCIENT_LOCK_EMPTY.insertRunedTablet(world,blockState,pos);
+        if (block == ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_EMPTY) {
+            ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_EMPTY.insertRunedTablet(world,blockState,pos);
             useOnContext.getItemInHand().shrink(1);
             world.playSound(null,pos, RUNIC_SHIELD_CHARGE,
                     SoundSource.BLOCKS, 1.0F, 1.0F);

@@ -1,0 +1,6 @@
+{
+  "_comment": "if considered affective,elemental hoe will call #tick() (not random tick) for these blocks",
+  "replace": false,
+  "values": [
+  ]
+}

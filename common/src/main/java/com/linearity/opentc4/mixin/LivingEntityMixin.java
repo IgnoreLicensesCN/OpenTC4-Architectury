@@ -103,14 +103,14 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         //idk if it's suitable to make a interface for item so i didn't
         Item item = itemStack.getItem();
         var living = (LivingEntity)(Object)this;
-        var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.UNNATURAL_HUNGER);
+        var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER);
         if (unnaturalHungerInstance != null){
-            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItems.ZOMBIE_BRAIN){
+            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItems.ThaumcraftItemInstances.ZOMBIE_BRAIN){
                 int amp = unnaturalHungerInstance.getAmplifier() - 1;
                 int duration = unnaturalHungerInstance.getDuration() - 600;
-                living.removeEffect(ThaumcraftEffects.UNNATURAL_HUNGER);
+                living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER);
                 if (duration > 0 && amp >= 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.UNNATURAL_HUNGER, duration, amp, true,true));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER, duration, amp, true,true));
                 }
 
                 if (living instanceof ServerPlayer serverPlayer){

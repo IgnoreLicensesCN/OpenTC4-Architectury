@@ -32,7 +32,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public AncientLockInsertedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ThaumcraftBlockEntities.ANCIENT_LOCK_INSERTED, blockPos, blockState);
+        super(ThaumcraftBlockEntities.BlockEntityTypeInstances.ANCIENT_LOCK_INSERTED, blockPos, blockState);
     }
     
     public void tick() {

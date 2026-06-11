@@ -24,7 +24,7 @@ implements IEssentiaTransportOutBlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public FluxScrubberBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.FLUX_SCRUBBER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.FLUX_SCRUBBER, blockPos, blockState);
     }
 
     protected int essentiaAmount = 0;
@@ -80,7 +80,7 @@ implements IEssentiaTransportOutBlockEntity {
             return false;
         }
         var fluid = this.level.getBlockState(pos).getFluidState().getType();
-        return fluid == ThaumcraftFluids.FLUX_GOO_FLUID;
+        return fluid == ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID;
     }
 
     //range added:ball(radius) -> cube(half length)

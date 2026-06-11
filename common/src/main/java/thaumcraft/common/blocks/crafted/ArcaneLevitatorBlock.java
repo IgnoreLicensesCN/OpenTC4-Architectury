@@ -54,12 +54,12 @@ public class ArcaneLevitatorBlock extends SuppressedWarningBlock
             if (!serverLevel.getBlockState(pickPos).isAir()){
                 break;
             }
-            serverLevel.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ARCANE_LEVITATOR_BUBBLE.defaultBlockState());
+            serverLevel.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_LEVITATOR_BUBBLE.defaultBlockState());
         }
         yOffset += 1;
         var posToClear = blockPos.above(yOffset);
         if (yOffset + blockPos.getY() <= serverLevel.getMaxBuildHeight()
-                && serverLevel.getBlockState(posToClear).getBlock() == ThaumcraftBlocks.ARCANE_LEVITATOR_BUBBLE
+                && serverLevel.getBlockState(posToClear).getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_LEVITATOR_BUBBLE
         ){
             serverLevel.setBlockAndUpdate(posToClear, Blocks.AIR.defaultBlockState());
         }

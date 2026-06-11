@@ -70,10 +70,10 @@ public class ResearchTableRightPartBlock extends SuppressedWarningBlock {
         super.tick(blockState, level, blockPos, randomSource);
         var facing = blockState.getValue(FACING);
         var probablyLeftPartBlockState = level.getBlockState(getLeftPartPos(facing,blockPos));
-        if (!probablyLeftPartBlockState.is(ThaumcraftBlocks.RESEARCH_TABLE_LEFT_PART)
+        if (!probablyLeftPartBlockState.is(ThaumcraftBlocks.ThaumcraftBlockInstances.RESEARCH_TABLE_LEFT_PART)
                 || !Objects.equals(probablyLeftPartBlockState.getValue(ResearchTableLeftPartBlock.FACING).getOpposite(),facing)
         ) {
-            level.setBlockAndUpdate(blockPos, ThaumcraftBlocks.TABLE.defaultBlockState().setValue(TableBlock.AXIS, facing.getAxis()));
+            level.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TABLE.defaultBlockState().setValue(TableBlock.AXIS, facing.getAxis()));
         }
     }
 

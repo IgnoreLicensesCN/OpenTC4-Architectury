@@ -21,13 +21,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.api.wands.focus.IWandFocusItem;
-import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.items.wands.WandManager;
 
 import java.util.*;
@@ -43,8 +41,6 @@ public class WandCastingItem extends Item
         implements
         //oh it's too looooooong. but it's reasonable i have to say
         IWandSpellEventListenableItem,//TODO:Call it in every focus
-        IWandCapOwnerItem,//usually there should be for a wand
-        IWandRodOwnerItem,//usually there should be for a wand
         IEnchantmentRepairVisProviderItem,//if someone wants
         IArcaneCraftingVisMultiplierProvider,//Staff should make this not work
         IVisCostModifierOwnerItem,
@@ -54,7 +50,6 @@ public class WandCastingItem extends Item
         IWandComponentsOwnerItem,//anyone wants more than cap&rod?
         IWandComponentNameOwnerItem,//get name "iron cap&wood rod wand"
         IAttackBlockListenerItem,//maybe some focus would use in some cases
-        IArchitectDisplayItem,//azanor's old thing for some display
         IInventoryTickableComponentItem,//ticking in inventory.add warp randomly or more?
         IWandBonusAspectOwner//easier to change(override) than what in listeners
 {
@@ -71,9 +66,9 @@ public class WandCastingItem extends Item
         );
         platformUtils.registerOnLeftClickBlockListenerForItem(this, this);
     }
-    @Override
+
     @NotNull("null -> empty")
-    public ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
+    protected ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
@@ -87,9 +82,8 @@ public class WandCastingItem extends Item
         return WAND_CAP_ACCESSOR.readFromCompoundTag(tag);
     }
 
-    @Override
     @NotNull("null -> empty")
-    public ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
+    protected ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
@@ -103,6 +97,29 @@ public class WandCastingItem extends Item
         return WAND_ROD_ACCESSOR.readFromCompoundTag(tag);
     }
 
+    @Override
+    public List<ItemStack> getWandComponents(ItemStack componentOwnerStack) {
+        int initCapacity = 2;
+        if (this.canApplyFocus()){
+            initCapacity += 1;
+        }
+        List<ItemStack> items = new ArrayList<>(initCapacity);
+        var cap = getWandCapAsItemStack(componentOwnerStack);
+        if (!cap.isEmpty()) {
+            items.add(cap);
+        }
+        var rod = getWandRodAsItemStack(componentOwnerStack);
+        if (!rod.isEmpty()) {
+            items.add(rod);
+        }
+        if (this.canApplyFocus()){
+            var focus = getFocusItemStack(componentOwnerStack);
+            if (!focus.isEmpty()) {
+                items.add(focus);
+            }
+        }
+        return Collections.unmodifiableList(items);
+    }
     @Override
     public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
         wandComponentsForEach(usingWand,component -> {
@@ -123,12 +140,12 @@ public class WandCastingItem extends Item
             Level level,
             Entity owner,
             int finalParentAtContainerIndex,
-            boolean bl
+            boolean parentSelected
     ) {
         wandComponentsForEach(selfStack,component -> {
             if (component.getItem() instanceof IInventoryTickableComponentItem listener) {
                 listener.tickAsComponent(
-                        finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, bl);
+                        finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, parentSelected);
             }
         });
     }
@@ -235,29 +252,6 @@ public class WandCastingItem extends Item
         appendWandHoverText(this, stack, level, list, tooltipFlag, Minecraft.getInstance().player);
     }
 
-    @Override
-    public List<ItemStack> getWandComponents(ItemStack componentOwnerStack) {
-        int initCapacity = 2;
-        if (this.canApplyFocus()){
-            initCapacity += 1;
-        }
-        List<ItemStack> items = new ArrayList<>(initCapacity);
-        var cap = getWandCapAsItemStack(componentOwnerStack);
-        if (!cap.isEmpty()) {
-            items.add(cap);
-        }
-        var rod = getWandRodAsItemStack(componentOwnerStack);
-        if (!rod.isEmpty()) {
-            items.add(rod);
-        }
-        if (this.canApplyFocus()){
-            var focus = getFocusItemStack(componentOwnerStack);
-            if (!focus.isEmpty()) {
-                items.add(focus);
-            }
-        }
-        return Collections.unmodifiableList(items);
-    }
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
@@ -400,37 +394,37 @@ public class WandCastingItem extends Item
         return InteractionResult.PASS;
     }
 
-    public List<BlockPos> getArchitectBlocks(ItemStack usingWand, Level world, BlockPos pos, Direction side, Player player) {
-        if (canApplyFocus()) {
-            var focusStack = getFocusItemStack(usingWand);
-            if (!focusStack.isEmpty()) {
-                var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
-                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
-                        && focus instanceof IArchitectDisplayItem architect
-                ) {
-                    return architect.getArchitectBlocks(usingWand, world, pos, side, player);
-                }
-            }
-        }
-        return null;
-    }
-
-    public boolean showAxis(ItemStack usingWand, Level world, Player player, Direction side, EnumAxis axis) {
-        if (canApplyFocus()) {
-            var focusStack = getFocusItemStack(usingWand);
-            if (!focusStack.isEmpty()) {
-                var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
-                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
-                        && focus instanceof IArchitectDisplayItem architect
-                ) {
-                    return architect.showAxis(usingWand, world, player, side, axis);
-                }
-            }
-        }
-        return false;
-    }
+//    public List<BlockPos> getArchitectBlocks(ItemStack usingWand, Level world, BlockPos pos, Direction side, Player player) {
+//        if (canApplyFocus()) {
+//            var focusStack = getFocusItemStack(usingWand);
+//            if (!focusStack.isEmpty()) {
+//                var focusItem = focusStack.getItem();
+//                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
+//                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
+//                        && focus instanceof IArchitectDisplayItem architect
+//                ) {
+//                    return architect.getArchitectBlocks(usingWand, world, pos, side, player);
+//                }
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public boolean showAxis(ItemStack usingWand, Level world, Player player, Direction side, EnumAxis axis) {
+//        if (canApplyFocus()) {
+//            var focusStack = getFocusItemStack(usingWand);
+//            if (!focusStack.isEmpty()) {
+//                var focusItem = focusStack.getItem();
+//                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus
+//                        && focus.isUpgradedWith(focusStack, ThaumcraftFocusUpgradeTypes.ARCHITECT)
+//                        && focus instanceof IArchitectDisplayItem architect
+//                ) {
+//                    return architect.showAxis(usingWand, world, player, side, axis);
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {

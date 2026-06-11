@@ -34,7 +34,7 @@ public class AncientLockInsertedBlock extends AncientLockEmptyBlock implements E
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
         if (blockState0.getBlock() != this){return null;}
-        if (blockEntityType != ThaumcraftBlockEntities.ANCIENT_LOCK_INSERTED){return null;}
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.ANCIENT_LOCK_INSERTED){return null;}
         return (level, blockPos, blockState, blockEntity) -> {
             if (blockEntity instanceof AncientLockInsertedBlockEntity lock){
                 lock.tick();

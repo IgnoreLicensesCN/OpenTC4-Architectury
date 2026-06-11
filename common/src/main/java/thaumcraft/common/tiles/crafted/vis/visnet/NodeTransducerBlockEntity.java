@@ -14,7 +14,6 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.EnergizedAuraNodeBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import static com.linearity.opentc4.Consts.NodeTransducerBlockEntityTagAccessors.TRANSDUCER_STATUS_CODE;
 import static com.linearity.opentc4.Consts.NodeTransducerBlockEntityTagAccessors.TRANSDUCER_TICK_COUNT;
@@ -24,7 +23,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public NodeTransducerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.NODE_TRANSDUCER,blockPos,blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.NODE_TRANSDUCER,blockPos,blockState);
     }
     public static final int STATUS_CODE_OFF = 0;
     public static final int STATUS_CODE_SETTING_UP = 1;
@@ -61,7 +60,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                 NodeType type = auraNode.getNodeType();
                 NodeModifier mod = auraNode.getNodeModifier();
                 var id = auraNode.getId();
-                this.level.setBlockAndUpdate(getNodePos(), ThaumcraftBlocks.ENERGIZED_NODE.defaultBlockState());
+                this.level.setBlockAndUpdate(getNodePos(), ThaumcraftBlocks.ThaumcraftBlockInstances.ENERGIZED_NODE.defaultBlockState());
                 var be = this.level.getBlockEntity(getNodePos());
                 if (be instanceof EnergizedAuraNodeBlockEntity energizedNode) {
                     energizedNode.setAuraBase(base.copy());
@@ -71,7 +70,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                     energizedNode.setupNode();
                 }
                 this.checkStatus();
-                this.level.blockEvent(getBlockPos(),ThaumcraftBlocks.NODE_TRANSDUCER,10,10);
+                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.NODE_TRANSDUCER,10,10);
                 this.markDirtyAndUpdateSelf();
             }
         }
@@ -84,7 +83,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                 var base = energizedNode.auraBase;
                 var type = energizedNode.nodeType;
                 var modifier = energizedNode.nodeModifier;
-                this.level.setBlockAndUpdate(getNodePos(),ThaumcraftBlocks.AURA_NODE.defaultBlockState());
+                this.level.setBlockAndUpdate(getNodePos(), ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE.defaultBlockState());
                 var nodeBE = this.level.getBlockEntity(getNodePos());
                 if (nodeBE instanceof INodeBlockEntity nodeBlockEntity){
                     nodeBlockEntity.setNodeType(type);
@@ -92,7 +91,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                     nodeBlockEntity.setAspectsBase(base.copy());
                 }
                 this.statusCode = STATUS_CODE_OFF;
-                this.level.blockEvent(getBlockPos(),ThaumcraftBlocks.NODE_TRANSDUCER,10,10);
+                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.NODE_TRANSDUCER,10,10);
                 this.markDirtyAndUpdateSelf();
             }
         }

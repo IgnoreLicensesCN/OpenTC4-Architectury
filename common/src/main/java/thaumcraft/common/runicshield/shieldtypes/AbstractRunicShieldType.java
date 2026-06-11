@@ -102,7 +102,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         if (victim.isInvulnerableTo(source)) {
             return damage;
         }
-        if (shouldIgnoreDamageForSource(source)){
+        if (damageCanBypassShield(source)){
             return damage;
         }
         return onDamagingShield(victim, source, damage, shieldInfo);
@@ -152,7 +152,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         }
     }
 
-    public boolean shouldIgnoreDamageForSource(DamageSource source){
+    public boolean damageCanBypassShield(DamageSource source){
         if (source.is(BYPASS_RUNIC_SHIELD)){
             return true;
         }

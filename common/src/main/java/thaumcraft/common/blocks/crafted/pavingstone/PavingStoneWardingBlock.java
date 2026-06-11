@@ -57,7 +57,7 @@ public class PavingStoneWardingBlock extends SuppressedWarningBlock implements E
         if (level.isClientSide()) {
             return null;
         }
-        if (blockEntityType != ThaumcraftBlockEntities.WARDING_STONE) {
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.WARDING_STONE) {
             return null;
         }
         if (level.isClientSide){

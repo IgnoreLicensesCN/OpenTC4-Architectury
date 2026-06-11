@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.monster.EntityThaumicSlime;
 
 import static thaumcraft.common.ThaumcraftSounds.GORE;
-import static thaumcraft.common.blocks.ThaumcraftBlocks.FLUX_GOO;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO;
 
 public class FluxGooFluid extends FiniteFlowingFluid {
     public FluxGooFluid(int maxLevel, Direction gravityDirection) {

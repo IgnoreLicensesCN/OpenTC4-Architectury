@@ -1,8 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -73,7 +71,7 @@ public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements Ent
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level0, BlockState blockState0, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.ELDRITCH_CRAB_SPAWNER){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_CRAB_SPAWNER){
             return null;
         }
         if (blockState0.getBlock() != this){

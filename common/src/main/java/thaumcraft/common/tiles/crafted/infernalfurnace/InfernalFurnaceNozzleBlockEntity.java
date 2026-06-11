@@ -21,7 +21,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
         super(blockEntityType, blockPos, blockState);
     }
     public InfernalFurnaceNozzleBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.INFERNAL_FURNACE_NOZZLE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.INFERNAL_FURNACE_NOZZLE, blockPos, blockState);
     }
 
     int drawDelay = 0;
@@ -34,7 +34,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
             if (core != null){
                 if (core.speedyTime < 60){
                     var selfPos = getBlockPos();
-                    var facing = ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),selfPos);
+                    var facing = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),selfPos);
                     var facingBE = level.getBlockState(selfPos.relative(facing));
                     if (facingBE instanceof IEssentiaTransportOutBlockEntity outBE){
                         if (outBE.canOutputTo(facing.getOpposite())){
@@ -58,7 +58,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     }
 
     protected Direction getFacing(){
-        return ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),getBlockPos());
+        return ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),getBlockPos());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
         if (this.level == null) return null;
         var pos = this.getBlockPos();
         var state = this.getBlockState();
-        var selfPosRelated = ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.findSelfPosRelatedInMultipart(this.level,state,pos);
+        var selfPosRelated = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE.findSelfPosRelatedInMultipart(this.level,state,pos);
         var furnaceCorePos = pos.offset(selfPosRelated.multiply(-1)).offset(SELF_POS_1_1_1);
         if (level.getBlockEntity(furnaceCorePos) instanceof InfernalFurnaceBlockEntity furnaceCore) {
             return furnaceCore;
@@ -115,6 +115,6 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     @Override
     public boolean isConnectable(@NotNull Direction face) {
         if (this.level == null) return false;
-        return face == ThaumcraftBlocks.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),getBlockPos());
+        return face == ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE.getFacingFromState(this.level,getBlockState(),getBlockPos());
     }
 }

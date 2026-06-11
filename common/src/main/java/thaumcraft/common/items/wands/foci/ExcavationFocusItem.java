@@ -318,7 +318,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
     }
     protected ItemStack getFakePickaxeStackForFocus(ItemStack focusStack,@Nullable ItemStack wandStack) {
         boolean dowsing = this.getWandUpgradesWithWandModifiers(focusStack,wandStack).getOrDefault(ExcavationFocusItem.dowsing,0) > 0;
-        ItemStack fakeDiamondPickaxeStack = new ItemStack(dowsing? ThaumcraftItems.ELEMENTAL_PICKAXE :Items.DIAMOND_PICKAXE);
+        ItemStack fakeDiamondPickaxeStack = new ItemStack(dowsing? ThaumcraftItems.ThaumcraftItemInstances.ELEMENTAL_PICKAXE :Items.DIAMOND_PICKAXE);
         EnchantmentHelper.setEnchantments(getEnchantmentsFromFocus(focusStack,wandStack),fakeDiamondPickaxeStack);
         return fakeDiamondPickaxeStack;
     }

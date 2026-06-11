@@ -51,7 +51,6 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
-import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -442,7 +441,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
                         return 0;
                     }
                 },
-                ThaumcraftBlocks.CRUCIBLE,ThaumcraftBlocks.ARCANE_SPA
+                ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE, ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_SPA
         );
     }
 }

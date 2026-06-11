@@ -25,7 +25,7 @@ public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchCrabSpawnerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ELDRITCH_CRAB_SPAWNER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_CRAB_SPAWNER, blockPos, blockState);
     }
     
     public int ticks = 0;
@@ -45,7 +45,7 @@ public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
             this.count = 50 + this.level.random.nextInt(50);
         } else {
             if (this.count == 15 && this.isActivated() && this.maxEntitiesNotReached()) {
-                this.level.blockEvent(pos, ThaumcraftBlocks.ELDRITCH_CRAB_SPAWNER, 1, 0);
+                this.level.blockEvent(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_CRAB_SPAWNER, 1, 0);
                 this.level.playSound(null,pos,SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 1.0F);
             }
 

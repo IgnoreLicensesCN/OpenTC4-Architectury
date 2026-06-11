@@ -482,7 +482,7 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void livingTick(LivingDeathEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.FLUX_TAINT)) {
+      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT)) {
          Entity entity = null;
          if (event.entityLiving instanceof EntityCreeper) {
             entity = new EntityTaintCreeper(event.entityLiving.level());

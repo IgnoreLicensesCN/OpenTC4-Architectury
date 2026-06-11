@@ -4,7 +4,6 @@ import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
@@ -17,61 +16,61 @@ public class ThaumcraftBlockAndItemColors {
 
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.AIR_CRYSTAL.particleColors[0], ThaumcraftBlocks.AIR_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.FIRE_CRYSTAL.particleColors[0], ThaumcraftBlocks.FIRE_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.WATER_CRYSTAL.particleColors[0], ThaumcraftBlocks.WATER_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.EARTH_CRYSTAL.particleColors[0], ThaumcraftBlocks.EARTH_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.ORDER_CRYSTAL.particleColors[0], ThaumcraftBlocks.ORDER_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.ENTROPY_CRYSTAL.particleColors[0], ThaumcraftBlocks.ENTROPY_CRYSTAL
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_CRYSTAL.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_CRYSTAL
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, pos, i)
-                        -> ThaumcraftBlocks.MIXED_CRYSTAL.particleColors[(int) (((pos == null ? 0x39c5bb : pos.asLong() * 3129871L) ^ 0xBADC0FFEEL) % ThaumcraftBlocks.MIXED_CRYSTAL.particleColors.length)],
-                ThaumcraftBlocks.STRANGE_CRYSTALS
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.MIXED_CRYSTAL.particleColors[(int) (((pos == null ? 0x39c5bb : pos.asLong() * 3129871L) ^ 0xBADC0FFEEL) % ThaumcraftBlocks.ThaumcraftBlockInstances.MIXED_CRYSTAL.particleColors.length)],
+                ThaumcraftBlocks.ThaumcraftBlockInstances.STRANGE_CRYSTALS
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
-                        -> ThaumcraftBlocks.STRANGE_CRYSTALS.particleColors[0], ThaumcraftBlocks.STRANGE_CRYSTALS
+                        -> ThaumcraftBlocks.ThaumcraftBlockInstances.STRANGE_CRYSTALS.particleColors[0], ThaumcraftBlocks.ThaumcraftBlockInstances.STRANGE_CRYSTALS
         );
 
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[0],
-                ThaumcraftItems.AIR_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.AIR_SHARD
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[1],
-                ThaumcraftItems.FIRE_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.FIRE_SHARD
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[2],
-                ThaumcraftItems.WATER_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.WATER_SHARD
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[3],
-                ThaumcraftItems.EARTH_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.EARTH_SHARD
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[4],
-                ThaumcraftItems.ORDER_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.ORDER_SHARD
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[5],
-                ThaumcraftItems.ENTROPY_SHARD
+                ThaumcraftItems.ThaumcraftItemInstances.ENTROPY_SHARD
         );
 
 
@@ -79,120 +78,120 @@ public class ThaumcraftBlockAndItemColors {
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.AIR_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.AIR_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_INFUSED_STONE
         );
 
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.FIRE_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.FIRE_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.WATER_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.WATER_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.EARTH_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.EARTH_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.ORDER_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.ORDER_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_INFUSED_STONE
         );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i)
                         -> {
                     if (i == 0) {
-                        return ThaumcraftBlocks.ENTROPY_INFUSED_STONE.rgbColor;
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_INFUSED_STONE.rgbColor;
                     }
                     return 0xFFFFFF;
-                }, ThaumcraftBlocks.ENTROPY_INFUSED_STONE
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_INFUSED_STONE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.WHITE_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.WHITE_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.WHITE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.WHITE_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ORANGE_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.ORANGE_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.ORANGE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.ORANGE_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.MAGENTA_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.MAGENTA_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.MAGENTA_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.LIGHT_BLUE_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.LIGHT_BLUE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.LIGHT_BLUE_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.YELLOW_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.YELLOW_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.YELLOW_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.YELLOW_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIME_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.LIME_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.LIME_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.LIME_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.PINK_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.PINK_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.PINK_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.PINK_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.GRAY_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.GRAY_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.GRAY_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.GRAY_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.LIGHT_GRAY_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.LIGHT_GRAY_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.LIGHT_GRAY_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.CYAN_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.CYAN_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.CYAN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.CYAN_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.PURPLE_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.PURPLE_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.PURPLE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.PURPLE_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BLUE_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.BLUE_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.BLUE_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.BLUE_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BROWN_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.BROWN_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.BROWN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.BROWN_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.GREEN_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.GREEN_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.GREEN_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.GREEN_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.RED_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.RED_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.RED_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.RED_TALLOW_CANDLE
         );
         blockColors.register(
-                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.BLACK_TALLOW_CANDLE.color,
-                ThaumcraftBlocks.BLACK_TALLOW_CANDLE
+                (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.BLACK_TALLOW_CANDLE.color,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.BLACK_TALLOW_CANDLE
         );
 
         blockColors.register(
@@ -202,8 +201,8 @@ public class ThaumcraftBlockAndItemColors {
                     }
                     return GrassColor.get(0.5D, 1.0D);
                 },
-                ThaumcraftBlocks.CRUSTED_TAINT,
-                ThaumcraftBlocks.TAINTED_GRASS
+                ThaumcraftBlocks.ThaumcraftBlockInstances.CRUSTED_TAINT,
+                ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS
         );
     }
 }

@@ -37,7 +37,7 @@ public enum WarpEventsEnum {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.VIS_EXHAUST, 5000, Math.min(3, warpContext.warp / 15), true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.1")), true);
@@ -48,7 +48,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.THAUMARHIA, Math.min(32000, 10 * warpContext.warp), 0, true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.THAUMARHIA, Math.min(32000, 10 * warpContext.warp), 0, true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.15")), true);
@@ -58,7 +58,7 @@ public enum WarpEventsEnum {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.UNNATURAL_HUNGER, 5000, Math.min(3, warpContext.warp / 15), true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.2")), true);
@@ -82,7 +82,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
             player.addEffect(
                     new MobEffectInstance(
-                            ThaumcraftEffects.BLURRED_VISION, Math.min(32000, 10 * warpContext.warp), 0,
+                            ThaumcraftEffects.ThaumcraftEffectTypeInstances.BLURRED_VISION, Math.min(32000, 10 * warpContext.warp), 0,
                             true, true
                     ));
         }
@@ -92,7 +92,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.SUN_SCORNED, 5000, Math.min(3, warpContext.warp / 15), true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.SUN_SCORNED, 5000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.5")), true);
@@ -115,7 +115,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.INFECTIOUS_VIS_EXHAUST, 6000, Math.min(3, warpContext.warp / 15), true, false);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.INFECTIOUS_VIS_EXHAUST, 6000, Math.min(3, warpContext.warp / 15), true, false);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.1")), true);
@@ -138,7 +138,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
             MobEffectInstance pe =new MobEffectInstance(
-                    ThaumcraftEffects.DEATH_GAZE, 6000, Math.min(3, warpContext.warp / 15), true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.DEATH_GAZE, 6000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.4")), true);
@@ -188,7 +188,7 @@ public enum WarpEventsEnum {
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
 
             MobEffectInstance pe = new MobEffectInstance(
-                    ThaumcraftEffects.UNNATURAL_HUNGER, 6000, Math.min(3, warpContext.warp / 15), true, true);
+                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER, 6000, Math.min(3, warpContext.warp / 15), true, true);
             player.addEffect(pe);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.2")), true);

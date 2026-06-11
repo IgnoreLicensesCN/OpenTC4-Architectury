@@ -173,16 +173,16 @@ public class ResearchTableBlockEntity
                     var pickBlockState = level.getBlockState(pickBlockPos);
                     var pickBlock = pickBlockState.getBlock();
                     if (
-                            pickBlock == ThaumcraftBlocks.AIR_INFUSED_STONE
-                                    || pickBlock == ThaumcraftBlocks.AIR_CRYSTAL
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_INFUSED_STONE
+                                    || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.AIR_CRYSTAL
                     ) {
                         if (level.random.nextInt(20) == 0) {
                             bonusAspects.mergeWithHighest(Aspects.AIR, 1);
                         }
                     }
                     if (
-                            pickBlock == ThaumcraftBlocks.FIRE_CRYSTAL
-                                    || pickBlock == ThaumcraftBlocks.FIRE_INFUSED_STONE
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_CRYSTAL
+                                    || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FIRE_INFUSED_STONE
                                     || pickBlockState.is(BlockTags.FIRE)
                                     || pickBlockState.getFluidState().is(FluidTags.LAVA)
                     ) {
@@ -191,8 +191,8 @@ public class ResearchTableBlockEntity
                         }
                     }
                     if (
-                            pickBlock == ThaumcraftBlocks.EARTH_CRYSTAL
-                                    || pickBlock == ThaumcraftBlocks.EARTH_INFUSED_STONE
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_CRYSTAL
+                                    || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.EARTH_INFUSED_STONE
                                     || pickBlockState.is(BlockTags.DIRT)
                                     || pickBlockState.is(BlockTags.SAND)
 
@@ -203,8 +203,8 @@ public class ResearchTableBlockEntity
                     }
 
                     if (
-                            pickBlock == ThaumcraftBlocks.WATER_CRYSTAL
-                                    || pickBlock == ThaumcraftBlocks.WATER_INFUSED_STONE
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_CRYSTAL
+                                    || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.WATER_INFUSED_STONE
                                     || pickBlockState.getFluidState().is(FluidTags.WATER)
 
                     ) {
@@ -214,8 +214,8 @@ public class ResearchTableBlockEntity
                     }
 
                     if (
-                            pickBlock == ThaumcraftBlocks.ORDER_CRYSTAL
-                            || pickBlock == ThaumcraftBlocks.ORDER_INFUSED_STONE
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_CRYSTAL
+                            || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.ORDER_INFUSED_STONE
                             || CONSIDERED_REDSTONE_COMPONENTS.contains(pickBlock)
                     ) {
                         if (level.random.nextInt(20) == 0) {
@@ -224,8 +224,8 @@ public class ResearchTableBlockEntity
                     }
 
                     if (
-                            pickBlock == ThaumcraftBlocks.ENTROPY_CRYSTAL
-                                    || pickBlock == ThaumcraftBlocks.ENTROPY_INFUSED_STONE
+                            pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_CRYSTAL
+                                    || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_INFUSED_STONE
                     ) {
                         if (level.random.nextInt(20) == 0) {
                             bonusAspects.mergeWithHighest(Aspects.ENTROPY, 1);
@@ -244,7 +244,7 @@ public class ResearchTableBlockEntity
     }
 
     public ResearchTableBlockEntity(BlockPos pos, BlockState state) {
-        this(ThaumcraftBlockEntities.RESEARCH_TABLE, pos, state, ResearchTableMenu::new);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.RESEARCH_TABLE, pos, state, ResearchTableMenu::new);
     }
 
     public ResearchTableBlockEntity(BlockEntityType<? extends ResearchTableBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState, IThaumcraftBEWithMenu.IThaumcraftBEWithMenuFactory<ResearchTableMenu, ResearchTableBlockEntity> menuFactory) {

@@ -65,7 +65,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaTubeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_TUBE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE, blockPos, blockState);
     }
 
 

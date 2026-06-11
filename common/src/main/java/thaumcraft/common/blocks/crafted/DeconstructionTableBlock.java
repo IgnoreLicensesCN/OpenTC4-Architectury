@@ -31,7 +31,7 @@ public class DeconstructionTableBlock extends AbstractExtendedMenuProviderContai
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.DECONSTRUCTION_TABLE) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.DECONSTRUCTION_TABLE) {
             return (level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof DeconstructionTableBlockEntity deconstructionTable) {
                     deconstructionTable.tick();

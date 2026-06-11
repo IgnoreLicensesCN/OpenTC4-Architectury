@@ -34,7 +34,7 @@ public interface IAspectLabelAttachableBlock {
                 var spawnEntityPos = pos.getCenter();
                 level.addFreshEntity(new ItemEntity(
                         level, spawnEntityPos.x, spawnEntityPos.y, spawnEntityPos.z, new ItemStack(
-                        ThaumcraftItems.JAR_LABEL)
+                        ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL)
                 ));
                 return true;
             }

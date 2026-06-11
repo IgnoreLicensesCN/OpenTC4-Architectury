@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.lamp.FertilityArcaneLampBlockEntity;
-import thaumcraft.common.tiles.crafted.lamp.GrowthArcaneLampBlockEntity;
 
 public class FertilityArcaneLampBlock extends ArcaneLampBlock implements EntityBlock {
 
@@ -66,7 +65,7 @@ public class FertilityArcaneLampBlock extends ArcaneLampBlock implements EntityB
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         if (!level.isClientSide) {
-            if (blockState.getBlock() == this && blockEntityType == ThaumcraftBlockEntities.FERTILITY_ARCANE_LAMP){
+            if (blockState.getBlock() == this && blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.FERTILITY_ARCANE_LAMP){
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof FertilityArcaneLampBlockEntity lamp){
                         lamp.serverTick();

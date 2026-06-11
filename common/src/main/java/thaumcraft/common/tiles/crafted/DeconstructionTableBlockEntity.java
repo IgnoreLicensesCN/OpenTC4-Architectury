@@ -39,7 +39,7 @@ public class DeconstructionTableBlockEntity
         super(blockEntityType, blockPos, blockState,DeconstructionTableMenu::new);
     }
     public DeconstructionTableBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.DECONSTRUCTION_TABLE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.DECONSTRUCTION_TABLE, blockPos, blockState);
     }
 
     @Override

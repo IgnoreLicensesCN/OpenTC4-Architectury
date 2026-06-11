@@ -10,7 +10,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ObsidianTotemNodeBlockEntity extends AbstractNodeBlockEntity {
     public ObsidianTotemNodeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.OBSIDIAN_TOTEM_NODE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.OBSIDIAN_TOTEM_NODE, blockPos, blockState);
     }
 
     public ObsidianTotemNodeBlockEntity(BlockEntityType<? extends ObsidianTotemNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -25,7 +25,7 @@ public class ObsidianTotemNodeBlockEntity extends AbstractNodeBlockEntity {
     @Override
     public void removeNode() {
         if (this.level != null) {
-            this.level.setBlock(this.getBlockPos(), ThaumcraftBlocks.OBSIDIAN_TOTEM.defaultBlockState(), Block.UPDATE_ALL);
+            this.level.setBlock(this.getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TOTEM.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 

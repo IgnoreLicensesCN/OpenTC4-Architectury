@@ -47,7 +47,7 @@ public class HungryChestBlock extends ChestBlock implements EntityBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.HUNGRY_CHEST){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST){
             return null;
         }
         if (level.isClientSide){

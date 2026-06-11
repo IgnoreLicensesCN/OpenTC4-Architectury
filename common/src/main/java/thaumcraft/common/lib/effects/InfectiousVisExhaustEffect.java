@@ -24,7 +24,7 @@ public class InfectiousVisExhaustEffect extends VisExhaustEffect implements IPre
             if (amplifier > 0) {
                 e.addEffect(new MobEffectInstance(this, 6000, amplifier - 1, false,true));
             } else {
-                e.addEffect(new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 6000, 0, false,true));
+                e.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST, 6000, 0, false,true));
             }
         }
     }

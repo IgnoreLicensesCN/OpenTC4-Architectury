@@ -36,7 +36,7 @@ public class ResearchNoteData {
         if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
         }
-        var stack = ThaumcraftItems.RESEARCH_NOTE.getDefaultInstance();
+        var stack = ThaumcraftItems.ThaumcraftItemInstances.RESEARCH_NOTE.getDefaultInstance();
         var researchKey = researchItem.key;
         Aspect researchThemedAspect = Aspects.EMPTY;
         if (researchItem instanceof IThemedAspectOwner themedAspectOwner){

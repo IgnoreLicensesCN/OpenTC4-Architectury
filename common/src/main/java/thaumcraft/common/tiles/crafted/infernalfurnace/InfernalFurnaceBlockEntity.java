@@ -46,7 +46,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     }
 
     public InfernalFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.INFERNAL_FURNACE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.INFERNAL_FURNACE, blockPos, blockState);
     }
 
     public void serverTick() {
@@ -79,7 +79,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
                 outputResult(outputs);
                 level.blockEvent(
                         this.getBlockPos().offset(VecTransformations.rotate(
-                                ThaumcraftBlocks.INFERNAL_FURNACE_BAR.
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_BAR.
                                         findTransformBasePosRelatedToSelf(
                                                 level,
                                                 this.getBlockState(),
@@ -88,7 +88,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
                                 ,getRotation()
                                 )
                         ),
-                        ThaumcraftBlocks.INFERNAL_FURNACE_BAR,
+                        ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_BAR,
                         1,0
                 );
             }

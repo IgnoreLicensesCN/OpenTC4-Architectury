@@ -76,7 +76,7 @@ public class EntityTaintacleGiant extends EntityTaintacle implements ITaintedMob
    protected void dropFewItems(boolean flag, int i) {
       ArrayList<Entity> ents = EntityUtils.getEntitiesInRange(this.level(), this.posX, this.posY, this.posZ, this, EntityTaintacleGiant.class, 48.0F);
       if (ents == null || ents.isEmpty()) {
-         EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItems.PRIME_PEARL), this.height / 2.0F);
+         EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL), this.height / 2.0F);
       }
 
    }

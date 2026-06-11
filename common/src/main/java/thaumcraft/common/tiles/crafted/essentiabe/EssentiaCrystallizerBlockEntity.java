@@ -30,7 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 
 import static com.linearity.opentc4.Consts.EssentiaCrystallizerBlockEntityTagAccessors.ASPECT_CRYSTALLIZING;
-import static thaumcraft.common.items.ThaumcraftItems.CRYSTAL_ESSENCE;
+import static thaumcraft.common.items.ThaumcraftItems.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         implements
@@ -41,7 +41,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaCrystallizerBlockEntity( BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_CRYSTALLIZER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_CRYSTALLIZER, blockPos, blockState);
     }
     protected @NotNull("null -> empty") Aspect crystallizingAspect = Aspects.EMPTY;
 
@@ -178,7 +178,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
                 stack);
         ie2.setDeltaMovement(offsetVec.getX()*0.04F,offsetVec.getY()*0.04F,offsetVec.getZ()*0.04F);
 
-        this.level.blockEvent(bpos, ThaumcraftBlocks.ESSENTIA_CRYSTALLIZER, 0, 0);
+        this.level.blockEvent(bpos, ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_CRYSTALLIZER, 0, 0);
         return this.level.addFreshEntity(ie2);
     }
 

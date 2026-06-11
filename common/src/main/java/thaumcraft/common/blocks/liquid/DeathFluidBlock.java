@@ -16,7 +16,7 @@ public class DeathFluidBlock extends FiniteLiquidBlock{
     }
     public DeathFluidBlock() {
         this(
-                ThaumcraftFluids.DEATH_FLUID,
+                ThaumcraftFluids.ThaumcraftFluidInstances.DEATH_FLUID,
                 Properties.of()                      // 方块属性
                         .mapColor(MapColor.COLOR_PURPLE) // 方块颜色
                         .strength(-1.0F, 3600000.0F)     // 不可破坏

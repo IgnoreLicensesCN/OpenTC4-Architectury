@@ -54,7 +54,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         super(blockEntityType, blockPos, blockState,ThaumatoriumMenu::new);
     }
     public ThaumatoriumBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.THAUMATORIUM, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.THAUMATORIUM, blockPos, blockState);
     }
     public static final int INPUT_SLOT = 0;
     public static final int[] SLOTS = new int[]{INPUT_SLOT};//output ItemEntity

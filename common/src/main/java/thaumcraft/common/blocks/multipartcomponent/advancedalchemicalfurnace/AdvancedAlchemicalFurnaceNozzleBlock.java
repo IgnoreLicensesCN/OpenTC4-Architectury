@@ -46,7 +46,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlock extends AbstractAdvancedAlchem
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
-            serverLevel.setBlock(pos, ThaumcraftBlocks.ADVANCED_ALCHEMICAL_CONSTRUCT.defaultBlockState(), 3);
+            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_CONSTRUCT.defaultBlockState(), 3);
         }
     }
 

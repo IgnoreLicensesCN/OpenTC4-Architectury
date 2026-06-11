@@ -82,7 +82,7 @@ public class EssentiaBufferBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_BUFFER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_BUFFER, blockPos, blockState);
     }
 
     private int tickCount = System.identityHashCode(this) & 31;

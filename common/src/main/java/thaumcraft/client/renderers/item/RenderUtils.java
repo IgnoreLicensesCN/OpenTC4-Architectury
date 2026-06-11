@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.common.items.ThaumcraftItems.THAUMOMETER;
+import static thaumcraft.common.items.ThaumcraftItems.ThaumcraftItemInstances.THAUMOMETER;
 
 public class RenderUtils {
 

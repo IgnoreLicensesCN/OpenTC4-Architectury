@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -49,7 +48,7 @@ public class CrustedTaintBlock extends AbstractTaintBlock {
     @Override
     public void onBlockOutOfTaintBiome(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (random.nextInt(20) == 0) {
-            world.setBlock(blockPos, ThaumcraftBlocks.FLUX_GOO.defaultBlockState(), 3);
+            world.setBlock(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO.defaultBlockState(), 3);
         }
     }
 

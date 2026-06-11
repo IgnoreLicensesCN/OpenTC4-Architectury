@@ -1,8 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
-import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
@@ -87,7 +84,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
 
     @Override
     public Item asItem() {
-        return ThaumcraftItems.OBSIDIAN_TOTEM;
+        return ThaumcraftItems.ThaumcraftItemInstances.OBSIDIAN_TOTEM;
     }
 
 
@@ -99,7 +96,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.OBSIDIAN_TOTEM_NODE){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.OBSIDIAN_TOTEM_NODE){
             return null;
         }
         if (level.isClientSide){

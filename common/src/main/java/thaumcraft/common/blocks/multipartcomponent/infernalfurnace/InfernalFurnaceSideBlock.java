@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.infernalfurnace.InfernalFurnaceNozzleBlockEntity;
 
 import static com.linearity.opentc4.VecTransformations.transformRelatedDirection;
-import static thaumcraft.common.tiles.ThaumcraftBlockEntities.INFERNAL_FURNACE_NOZZLE;
+import static thaumcraft.common.tiles.ThaumcraftBlockEntities.BlockEntityTypeInstances.INFERNAL_FURNACE_NOZZLE;
 
 public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent implements EntityBlock {
     public static final IntegerProperty SIDE_TYPE = IntegerProperty.create("side", 0, 3);

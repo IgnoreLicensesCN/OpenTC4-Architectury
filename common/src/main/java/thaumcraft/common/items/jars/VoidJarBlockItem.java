@@ -8,6 +8,6 @@ public class VoidJarBlockItem extends EssentiaJarBlockItem {
         super(block, properties);
     }
     public VoidJarBlockItem() {
-        this(ThaumcraftBlocks.VOID_JAR, new Properties().stacksTo(1));
+        this(ThaumcraftBlocks.ThaumcraftBlockInstances.VOID_JAR, new Properties().stacksTo(1));
     }
 }

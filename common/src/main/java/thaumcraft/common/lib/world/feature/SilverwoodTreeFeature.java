@@ -35,11 +35,11 @@ public class SilverwoodTreeFeature extends Feature<TreeConfiguration> {
         var worldGenLevel = context.level();
         var pos = context.origin();
         var posBelow = pos.below();
-        var knotState = ThaumcraftBlocks.SILVERWOOD_KNOT.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
-        var leaveState = ThaumcraftBlocks.SILVERWOOD_LEAVES.defaultBlockState();
-        var logFaceY = ThaumcraftBlocks.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
-        var logFaceX = ThaumcraftBlocks.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
-        var logFaceZ = ThaumcraftBlocks.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+        var knotState = ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_KNOT.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+        var leaveState = ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES.defaultBlockState();
+        var logFaceY = ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+        var logFaceX = ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+        var logFaceZ = ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 
         var x = pos.getX();

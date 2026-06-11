@@ -14,7 +14,7 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity {
     }
 
     public VisNetChargeRelayBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.VIS_CHARGE_RELAY,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_CHARGE_RELAY,blockPos, blockState);
     }
 
     public BlockPos getPosBeingCharged() {

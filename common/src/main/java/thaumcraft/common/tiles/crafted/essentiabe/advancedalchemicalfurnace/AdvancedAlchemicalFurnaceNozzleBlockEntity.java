@@ -27,7 +27,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         super(type, pos, state);
     }
     public AdvancedAlchemicalFurnaceNozzleBlockEntity(BlockPos pos, BlockState state) {
-        this(ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE,pos,state);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE,pos,state);
     }
     public Direction getFacing() {
         return this.getBlockState().getValue(AdvancedAlchemicalFurnaceNozzleBlock.FACING);

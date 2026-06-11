@@ -22,7 +22,7 @@ public class VoidJarBlock extends AbstractEssentiaJarBlock {
 
     @Override
     public EssentiaJarBlockItem getEssentiaJarItem() {
-        return ThaumcraftItems.VOID_JAR;
+        return ThaumcraftItems.ThaumcraftItemInstances.VOID_JAR;
     }
 
     public VoidJarBlock() {
@@ -40,7 +40,7 @@ public class VoidJarBlock extends AbstractEssentiaJarBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level != null && !level.isClientSide && blockEntityType == ThaumcraftBlockEntities.VOID_JAR) {
+        if (level != null && !level.isClientSide && blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.VOID_JAR) {
             return (level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof VoidJarBlockEntity jar) {
                     jar.serverTick();

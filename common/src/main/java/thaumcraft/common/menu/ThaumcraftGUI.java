@@ -18,14 +18,17 @@ import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 import java.util.function.Supplier;
 
 public class ThaumcraftGUI {
-    public static final MenuType<ArcaneWorkbenchMenu> ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
-    public static final MenuType<DeconstructionTableMenu> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
-    public static final MenuType<ResearchTableMenu> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
-    public static final MenuType<AlchemicalFurnaceMenu> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
-    public static final MenuType<ThaumatoriumMenu> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
-    public static final MenuType<ArcaneBoreMenu> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
-    public static final MenuType<FocalManipulatorMenu> FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
-    public static final MenuType<ArcaneSpaMenu> ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
+    public static class ThaumcraftMenuTypeInstances {
+        public static final MenuType<ArcaneWorkbenchMenu> ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
+        public static final MenuType<DeconstructionTableMenu> DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
+        public static final MenuType<ResearchTableMenu> RESEARCH_TABLE = Registry.SUPPLIER_RESEARCH_TABLE.get();
+        public static final MenuType<AlchemicalFurnaceMenu> ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
+        public static final MenuType<ThaumatoriumMenu> THAUMATORIUM = Registry.SUPPLIER_THAUMATORIUM.get();
+        public static final MenuType<ArcaneBoreMenu> ARCANE_BORE = Registry.SUPPLIER_ARCANE_BORE.get();
+        public static final MenuType<FocalManipulatorMenu> FOCAL_MANIPULATOR =  Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+        public static final MenuType<ArcaneSpaMenu> ARCANE_SPA =  Registry.SUPPLIER_ARCANE_SPA.get();
+    }
+
     public static class Registry{
         public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.MENU);
 
@@ -63,7 +66,9 @@ public class ThaumcraftGUI {
         );
     }
 
-    public static void init(){}
+    public static void init(){
+        Registry.MENUS.register();
+    }
 
     public static <M extends AbstractContainerMenu,BE extends IThaumcraftBEWithMenu<M,BE>>
     Supplier<MenuType<M>> simpleMenuTypeSupplier(

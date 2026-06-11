@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -106,7 +104,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
 
         if (bState.isAir()) {
             return true;
-        } else if (block == ThaumcraftBlocks.FLUX_GOO
+        } else if (block == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO
                 && (bState.getValue(FiniteLiquidBlock.LEVEL) >= 4)
         ) {
             return false;
@@ -170,9 +168,9 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
                     )
             ) {
                 if (living instanceof ServerPlayer && level.random.nextInt(100) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.FLUX_TAINT,80,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,80,0));
                 }else if(!(living instanceof ServerPlayer) && level.random.nextInt(20) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.FLUX_TAINT,160,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,160,0));
                 }
 
             }

@@ -34,7 +34,7 @@ import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
  * </p>
  * <p>
  *     so there's something
- *     TODO:store real output into infusion matrix.
+ *     did:store real output into infusion matrix.
  * </p>
  * <p>
  *     --IgnoreLicensesCN

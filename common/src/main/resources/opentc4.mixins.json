@@ -25,6 +25,7 @@
     "AbstractFurnaceBlockEntityMixin",
     "BambooSaplingBlockMixin",
     "BiomeMixin",
+    "BlockMixin",
     "BlockStateBaseMixin",
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
@@ -46,6 +47,7 @@
     "PlayerMixin",
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
+    "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],
   "injectors": {

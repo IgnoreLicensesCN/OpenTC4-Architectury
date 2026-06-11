@@ -70,11 +70,6 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         public static final RegistrySupplier<Feature<TreeConfiguration>> SUPPLIER_GREATWOOD_GENERATED_FEATURE
                 = WORLD_GEN_FEATURES.register("greatwood_generated_feature", () -> new GreatwoodTreeFeature(false));
 
-
-        static {
-            WORLD_GEN_FEATURES.register();
-        }
-
     }
 
     public static class Configureds {
@@ -111,9 +106,9 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                 "silverwood_planted_configured", () -> new ConfiguredFeature<>(
                         Features.SILVERWOOD_PLAYER_PLANTED_FEATURE,
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.SILVERWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.SILVERWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -124,9 +119,9 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                 "silverwood_generated_configured", () -> new ConfiguredFeature<>(
                         Features.SILVERWOOD_GENERATED_FEATURE,
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.SILVERWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.SILVERWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -137,9 +132,9 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                 "greatwood_planted_configured", () -> new ConfiguredFeature<>(
                         Features.GREATWOOD_PLAYER_PLANTED_FEATURE,
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.GREATWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.GREATWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -150,9 +145,9 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                 "greatwood_generated_configured", () -> new ConfiguredFeature<>(
                         Features.GREATWOOD_GENERATED_FEATURE,
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.GREATWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.GREATWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -171,7 +166,7 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                                                         Feature.SIMPLE_BLOCK,
                                                         new SimpleBlockConfiguration(
                                                                 BlockStateProvider.simple(
-                                                                        ThaumcraftBlocks.CINDER_PEARL
+                                                                        ThaumcraftBlocks.ThaumcraftBlockInstances.CINDER_PEARL
                                                                 )
                                                         ),
                                                         new BlockPredicate() {
@@ -198,9 +193,6 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                                 )
                 );
 
-        static {
-            WORLD_GEN_CONFIGURED_FEATURES.register();
-        }
     }
 
     public static class PlacedFeatureRegistry {
@@ -212,9 +204,6 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                         new ResourceLocation(Thaumcraft.MOD_ID, "cinder_pearl_placed")
                 );
 
-        static {
-            PLACED_FEATURES.register();
-        }
     }
 
     public static class BiomeModifiers {
@@ -237,5 +226,9 @@ public class ThaumcraftWorldGenConfiguredFeatures {
     }
     public static void init() {
         BiomeModifiers.init();
+
+        FeaturesRegistry.WORLD_GEN_FEATURES.register();
+        ConfiguredRegistry.WORLD_GEN_CONFIGURED_FEATURES.register();
+        PlacedFeatureRegistry.PLACED_FEATURES.register();
     }
 }

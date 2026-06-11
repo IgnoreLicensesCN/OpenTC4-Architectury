@@ -11,6 +11,6 @@ public class EldritchCapstoneBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchCapstoneBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ELDRITCH_CAPSTONE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_CAPSTONE, blockPos, blockState);
     }
 }

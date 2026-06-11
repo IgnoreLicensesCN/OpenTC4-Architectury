@@ -17,7 +17,7 @@ public class WarpConditions {
     public static final WarpConditionChecker NO_WARP_WARD = new WarpConditionChecker(1) {
         @Override
         public boolean check(PickWarpEventContext context, Player player) {
-            return player.hasEffect(ThaumcraftEffects.WARP_WARD);
+            return player.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD);
         }
     };
 }

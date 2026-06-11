@@ -15,7 +15,7 @@ public class RunedStoneBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public RunedStoneBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.RUNED_STONE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.RUNED_STONE, blockPos, blockState);
     }
 
     int count = 20;

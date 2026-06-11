@@ -47,7 +47,7 @@ public class EtherealBloomBlock extends BushBlock implements EntityBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.ETHEREAL_BLOOM){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.ETHEREAL_BLOOM){
             return null;
         }
         return (level1, blockPos, blockState1, blockEntity) -> {

@@ -45,7 +45,7 @@ public class FocalManipulatorBlockEntity
         super(blockEntityType, blockPos, blockState, menuFactory);
     }
     public FocalManipulatorBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.FOCAL_MANIPULATOR, blockPos, blockState, FocalManipulatorMenu::new);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.FOCAL_MANIPULATOR, blockPos, blockState, FocalManipulatorMenu::new);
     }
 
     protected final CentiVisList<Aspect> centiVisRequiring = new LinkedHashCentiVisList<>();

@@ -24,7 +24,7 @@ public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<As
         super(block, properties);
     }
     public NodeJarBlockItem() {
-        this(ThaumcraftBlocks.NODE_JAR, new Properties().stacksTo(1));
+        this(ThaumcraftBlocks.ThaumcraftBlockInstances.NODE_JAR, new Properties().stacksTo(1));
     }
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
     public static final Map<ItemStack,NodeInfo> stackToNodeInfoForDisplay = new MapMaker().weakKeys().makeMap();

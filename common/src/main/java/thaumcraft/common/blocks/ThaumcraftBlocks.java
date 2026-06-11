@@ -51,197 +51,187 @@ import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class ThaumcraftBlocks {
-    public static final FluxGooBlock FLUX_GOO = Registry.SUPPLIER_FLUX_GOO.get();
-    public static final FluxGasBlock FLUX_GAS = Registry.SUPPLIER_FLUX_GAS.get();
-    public static final NitorBlock NITOR_BLOCK = Registry.SUPPLIER_NITOR_BLOCK.get();
-    public static final AuraNodeBlock AURA_NODE = Registry.SUPPLIER_AURA_NODE.get();
-    public static final RotatedPillarBlock GREATWOOD_LOG = Registry.SUPPLIER_GREATWOOD_LOG.get();
-    public static final RotatedPillarBlock SILVERWOOD_LOG = Registry.SUPPLIER_SILVERWOOD_LOG.get();
-    public static final SilverWoodKnotBlock SILVERWOOD_KNOT = Registry.SUPPLIER_SILVERWOOD_KNOT.get();
-    public static final Block GREATWOOD_PLANKS = Registry.SUPPLIER_GREATWOOD_PLANKS.get();
-    public static final Block SILVERWOOD_PLANKS = Registry.SUPPLIER_SILVERWOOD_PLANKS.get();
-    public static final LeavesBlock GREATWOOD_LEAVES = Registry.SUPPLIER_GREATWOOD_LEAVES.get();
-    public static final SilverwoodLeavesBlock SILVERWOOD_LEAVES = Registry.SUPPLIER_SILVERWOOD_LEAVES.get();
-    public static final SaplingBlock GREATWOOD_SAPLING = Registry.SUPPLIER_GREATWOOD_SAPLING.get();
-    public static final SaplingBlock SILVERWOOD_SAPLING = Registry.SUPPLIER_SILVERWOOD_SAPLING.get();
-    public static final ObsidianTotemBlock OBSIDIAN_TOTEM = Registry.SUPPLIER_OBSIDIAN_TOTEM.get();
-    public static final ObsidianTotemWithNodeBlock OBSIDIAN_TOTEM_WITH_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE.get();
-    public static final Block OBSIDIAN_TILE = Registry.SUPPLIER_OBSIDIAN_TILE.get();
-    public static final PavingStoneTravelBlock PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
-    public static final PavingStoneWardingBlock PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
-    public static final WardingAuraBlock WARDING_AURA = Registry.SUPPLIER_WARDING_AURA.get();
-    public static final Block THAUMIUM_BLOCK = Registry.SUPPLIER_THAUMIUM_BLOCK.get();
-    public static final Block TALLOW_BLOCK = Registry.SUPPLIER_TALLOW_BLOCK.get();
-    public static final Block ARCANE_STONE_BLOCK = Registry.SUPPLIER_ARCANE_STONE_BLOCK.get();
-    public static final Block ARCANE_STONE_BRICKS = Registry.SUPPLIER_ARCANE_STONE_BRICKS.get();
-    public static final Block GOLEM_FETTER = Registry.SUPPLIER_GOLEM_FETTER.get();
-    public static final Block ANCIENT_STONE = Registry.SUPPLIER_ANCIENT_STONE.get();
-    public static final Block ANCIENT_ROCK = Registry.SUPPLIER_ANCIENT_ROCK.get();
-    public static final Block CRUSTED_STONE = Registry.SUPPLIER_CRUSTED_STONE.get();
-    public static final Block ANCIENT_STONE_PEDESTAL = Registry.SUPPLIER_ANCIENT_STONE_PEDESTAL.get();
-    public static final StairBlock ANCIENT_STONE_STAIRS = Registry.SUPPLIER_ANCIENT_STONE_STAIRS.get();
-    public static final StairBlock ARCANE_STONE_BRICK_STAIRS = Registry.SUPPLIER_ARCANE_STONE_BRICK_STAIRS.get();
-    public static final StairBlock GREATWOOD_PLANKS_STAIRS = Registry.SUPPLIER_GREATWOOD_PLANKS_STAIRS.get();
-    public static final StairBlock SILVERWOOD_PLANKS_STAIRS = Registry.SUPPLIER_SILVERWOOD_PLANKS_STAIRS.get();
-    public static final SlabBlock ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
-    public static final SlabBlock ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
-    public static final SlabBlock GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
-    public static final SlabBlock SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
-
-    public static final AbstractCrystalBlock AIR_CRYSTAL = Registry.SUPPLIER_AIR_CRYSTAL.get();
-    public static final AbstractCrystalBlock FIRE_CRYSTAL = Registry.SUPPLIER_FIRE_CRYSTAL.get();
-    public static final AbstractCrystalBlock WATER_CRYSTAL = Registry.SUPPLIER_WATER_CRYSTAL.get();
-    public static final AbstractCrystalBlock EARTH_CRYSTAL = Registry.SUPPLIER_EARTH_CRYSTAL.get();
-    public static final AbstractCrystalBlock ORDER_CRYSTAL = Registry.SUPPLIER_ORDER_CRYSTAL.get();
-    public static final AbstractCrystalBlock ENTROPY_CRYSTAL = Registry.SUPPLIER_ENTROPY_CRYSTAL.get();
-    public static final AbstractCrystalBlock MIXED_CRYSTAL = Registry.SUPPLIER_MIXED_CRYSTAL.get();
-    public static final AbstractCrystalBlock STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
-
-    public static final HungryChestBlock HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
-    public static final EldritchVoidBlock ELDRITCH_VOID = Registry.SUPPLIER_ELDRITCH_VOID.get();
-
-    public static final Block CINNABAR_ORE = Registry.SUPPLIER_CINNABAR_ORE.get();
-    public static final Block AMBER_ORE = Registry.SUPPLIER_AMBER_ORE.get();
-    public static final AirInfusedStoneBlock AIR_INFUSED_STONE = Registry.SUPPLIER_AIR_INFUSED_STONE.get();
-    public static final FireInfusedStoneBlock FIRE_INFUSED_STONE = Registry.SUPPLIER_FIRE_INFUSED_STONE.get();
-    public static final WaterInfusedStoneBlock WATER_INFUSED_STONE = Registry.SUPPLIER_WATER_INFUSED_STONE.get();
-    public static final EarthInfusedStoneBlock EARTH_INFUSED_STONE = Registry.SUPPLIER_EARTH_INFUSED_STONE.get();
-    public static final OrderInfusedStoneBlock ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
-    public static final EntropyInfusedStoneBlock ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
-
-    public static final Block AMBER_BLOCK = Registry.SUPPLIER_AMBER_BLOCK.get();
-    public static final Block AMBER_BRICK = Registry.SUPPLIER_AMBER_BRICK.get();
-
-    public static final WardedGlassBlock WARDED_GLASS = Registry.SUPPLIER_WARDED_GLASS.get();
-
-    public static final TallowCandleBlock WHITE_TALLOW_CANDLE = Registry.SUPPLIER_WHITE_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock ORANGE_TALLOW_CANDLE = Registry.SUPPLIER_ORANGE_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock MAGENTA_TALLOW_CANDLE = Registry.SUPPLIER_MAGENTA_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock LIGHT_BLUE_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock YELLOW_TALLOW_CANDLE = Registry.SUPPLIER_YELLOW_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock LIME_TALLOW_CANDLE = Registry.SUPPLIER_LIME_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock PINK_TALLOW_CANDLE = Registry.SUPPLIER_PINK_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock GRAY_TALLOW_CANDLE = Registry.SUPPLIER_GRAY_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock LIGHT_GRAY_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock CYAN_TALLOW_CANDLE = Registry.SUPPLIER_CYAN_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock PURPLE_TALLOW_CANDLE = Registry.SUPPLIER_PURPLE_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock BLUE_TALLOW_CANDLE = Registry.SUPPLIER_BLUE_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock BROWN_TALLOW_CANDLE = Registry.SUPPLIER_BROWN_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock GREEN_TALLOW_CANDLE = Registry.SUPPLIER_GREEN_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
-    public static final TallowCandleBlock BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
-
-    public static final ShimmerLeafBlock SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
-    public static final CinderPearlBlock CINDER_PEARL = Registry.SUPPLIER_CINDER_PEARL.get();
-    public static final ManaShroomBlock MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
-
-    public static final EtherealBloomBlock ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
-
-    public static final InfernalFurnaceBarBlock INFERNAL_FURNACE_BAR = Registry.SUPPLIER_INFERNAL_FURNACE_BAR.get();
-    public static final InfernalFurnaceSideBlock INFERNAL_FURNACE_SIDE = Registry.SUPPLIER_INFERNAL_FURNACE_SIDE.get();
-    public static final InfernalFurnaceCornerBlock INFERNAL_FURNACE_CORNER = Registry.SUPPLIER_INFERNAL_FURNACE_CORNER.get();
-    public static final InfernalFurnaceEdgeXAxisBlock INFERNAL_FURNACE_X_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_X_AXIS.get();
-    public static final InfernalFurnaceEdgeYAxisBlock INFERNAL_FURNACE_Y_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Y_AXIS.get();
-    public static final InfernalFurnaceEdgeZAxisBlock INFERNAL_FURNACE_Z_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Z_AXIS.get();
-    public static final InfernalFurnaceLavaBlock INFERNAL_FURNACE_LAVA = Registry.SUPPLIER_INFERNAL_FURNACE_LAVA.get();
-
-    public static final ArcaneBellowBlock ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
-    public static final ArcaneDoorBlock ARCANE_DOOR = Registry.SUPPLIER_ARCANE_DOOR.get();
-
-    public static final EldritchAltarBlock ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
-
-    public static final EldritchObeliskBlock ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
-    public static final EldritchObeliskWithTickerBlock ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
-    public static final EldritchCapstoneBlock ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
-    public static final GlowingClustedStoneBlock GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
-    public static final GlyphedStoneBlock GLYPHED_STONE = Registry.SUPPLIER_GLYPHED_STONE.get();
-    public static final Block ANCIENT_GATEWAY = Registry.SUPPLIER_ANCIENT_GATEWAY.get();
-    public static final AncientLockEmptyBlock ANCIENT_LOCK_EMPTY = Registry.SUPPLIER_ANCIENT_LOCK_EMPTY.get();
-    public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
-    public static final EldritchCrabSpawnerBlock ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
-    public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
-    public static final CrustedTaintBlock CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
-    public static final TaintedSoilBlock TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
-    //    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
-    public static final FibrousTaintBlock FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
-    public static final TaintedGrassBlock TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
-    public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
-    public static final SporeStalkBlock SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
-    public static final MatureSporeStalkBlock MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
-    public static final TableBlock TABLE = Registry.SUPPLIER_TABLE.get();
-    public static final ArcaneWorkbenchBlock ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
-    public static final DeconstructionTableBlock DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
-    public static final ResearchTableLeftPartBlock RESEARCH_TABLE_LEFT_PART = Registry.SUPPLIER_RESEARCH_TABLE_LEFT_PART.get();
-    public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
-    public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
-    public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
-    public static final VisNetChargeRelayBlock VIS_CHARGE_RELAY = Registry.SUPPLIER_VIS_CHARGE_RELAY.get();
-    public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
-    public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
-    public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
-    public static final NodeTransducerBlock NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
-    public static final ImpassableBlock IMPASSABLE = Registry.SUPPLIER_IMPASSABLE_BLOCK.get();
-    public static final SappingFieldBlock SAPPING_FIELD = Registry.SUPPLIER_SAPPING_FIELD.get();
-    public static final StaticFieldBlock STATIC_FIELD = Registry.SUPPLIER_STATIC_FIELD.get();
-    public static final AlchemicalFurnaceBlock ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
-    public static final Block ADVANCED_ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT.get();
-    public static final Block ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ALCHEMICAL_CONSTRUCT.get();
-    public static final ArcaneAlembicBlock ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
-    public static final AdvancedAlchemicalFurnaceUpperFenceBlock ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE
-            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE.get();
-    public static final AdvancedAlchemicalFurnaceBaseCornerBlock ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER
-            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER.get();
-    public static final AdvancedAlchemicalFurnaceNozzleBlock ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
-            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
-    public static final AdvancedAlchemicalFurnaceAlembicBlock ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC
-            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC.get();
-    public static final AdvancedAlchemicalFurnaceBaseBlock ADVANCED_ALCHEMICAL_FURNACE_BASE
-            = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE.get();
-    public static final EssentiaJarBlock ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
-    public static final VoidJarBlock VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
-    public static final BrainJarBlock BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
-    public static final NodeJarBlock NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
-    public static final ItemCrateBlock ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
-    public static final CrucibleBlock CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
-    public static final ArcaneLampBlock ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
-    public static final GrowthArcaneLampBlock GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
-    public static final FertilityArcaneLampBlock FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
-    public static final ThaumatoriumBottomBlock THAUMATORIUM_BOTTOM = Registry.SUPPLIER_THAUMATORIUM_BOTTOM.get();
-    public static final ThaumatoriumTopBlock THAUMATORIUM_TOP = Registry.SUPPLIER_THAUMATORIUM_TOP.get();
-    public static final MnemonicMatrixBlock MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
-    public static final ArcaneLevitatorBubbleBlock ARCANE_LEVITATOR_BUBBLE = Registry.SUPPLIER_ARCANE_LEVITATOR_BUBBLE.get();
-    public static final ArcaneLevitatorBlock ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
-    public static final EssentiaReservoirBlock ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
-    public static final ManaBeanBlock MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
-    public static final EssentiaTubeBlock ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
-    public static final EssentiaTubeValveBlock ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
-    public static final EssentiaTubeFilterBlock ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
-    public static final EssentiaTubeRestrictBlock ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
-    public static final EssentiaTubeOnewayBlock ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
-    public static final EssentiaBufferBlock ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
-    public static final EssentiaCentrifugeBlock ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
-    public static final EssentiaCrystallizerBlock ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
-    public static final ArcanePressurePlateBlock ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
-    public static final ArcaneBoreBaseBlock ARCANE_BORE_BASE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
-    public static final ArcaneBoreDrillBlock ARCANE_BORE_DRILL = Registry.SUPPLIER_ARCANE_BORE_DRILL.get();
-    public static final ArcaneEarBlock ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
-    public static final DeathFluidBlock DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
-    public static final PureFluidBlock PURE_FLUID = Registry.SUPPLIER_PURE_FLUID.get();
-    public static final WardedBlock WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
-    public static final HoleBlock HOLE = Registry.SUPPLIER_HOLE_BLOCK.get();
-    public static final UrnLootBlock URN_LOOT = Registry.SUPPLIER_URN_LOOT.get();
-    public static final CrateLootBlock CRATE_LOOT = Registry.SUPPLIER_CRATE_LOOT.get();
-    public static final EldritchPortalBlock ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL_BLOCK.get();
-    public static final MirrorBlock MIRROR = Registry.SUPPLIER_MIRROR.get();
-    public static final EssentiaMirrorBlock ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
-    public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
-    public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
-    public static final InfusionMatrixBlock INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
-    public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
-    public static final CompoundRechargeFocusBlock COMPOUND_RECHARGE_FOCUS = Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
-    public static final ArcaneSpaBlock ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
-    public static final FocalManipulatorBlock FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
-    public static final FluxScrubberBlock FLUX_SCRUBBER = Registry.SUPPLIER_FLUX_SCRUBBER.get();
+    public static class ThaumcraftBlockInstances {
+        public static final FluxGooBlock FLUX_GOO = Registry.SUPPLIER_FLUX_GOO.get();
+        public static final FluxGasBlock FLUX_GAS = Registry.SUPPLIER_FLUX_GAS.get();
+        public static final NitorBlock NITOR_BLOCK = Registry.SUPPLIER_NITOR_BLOCK.get();
+        public static final AuraNodeBlock AURA_NODE = Registry.SUPPLIER_AURA_NODE.get();
+        public static final RotatedPillarBlock GREATWOOD_LOG = Registry.SUPPLIER_GREATWOOD_LOG.get();
+        public static final RotatedPillarBlock SILVERWOOD_LOG = Registry.SUPPLIER_SILVERWOOD_LOG.get();
+        public static final SilverWoodKnotBlock SILVERWOOD_KNOT = Registry.SUPPLIER_SILVERWOOD_KNOT.get();
+        public static final Block GREATWOOD_PLANKS = Registry.SUPPLIER_GREATWOOD_PLANKS.get();
+        public static final Block SILVERWOOD_PLANKS = Registry.SUPPLIER_SILVERWOOD_PLANKS.get();
+        public static final LeavesBlock GREATWOOD_LEAVES = Registry.SUPPLIER_GREATWOOD_LEAVES.get();
+        public static final SilverwoodLeavesBlock SILVERWOOD_LEAVES = Registry.SUPPLIER_SILVERWOOD_LEAVES.get();
+        public static final SaplingBlock GREATWOOD_SAPLING = Registry.SUPPLIER_GREATWOOD_SAPLING.get();
+        public static final SaplingBlock SILVERWOOD_SAPLING = Registry.SUPPLIER_SILVERWOOD_SAPLING.get();
+        public static final ObsidianTotemBlock OBSIDIAN_TOTEM = Registry.SUPPLIER_OBSIDIAN_TOTEM.get();
+        public static final ObsidianTotemWithNodeBlock OBSIDIAN_TOTEM_WITH_NODE = Registry.SUPPLIER_OBSIDIAN_TOTEM_WITH_NODE.get();
+        public static final Block OBSIDIAN_TILE = Registry.SUPPLIER_OBSIDIAN_TILE.get();
+        public static final PavingStoneTravelBlock PAVING_STONE_TRAVEL = Registry.SUPPLIER_PAVING_STONE_TRAVEL.get();
+        public static final PavingStoneWardingBlock PAVING_STONE_WARDING = Registry.SUPPLIER_PAVING_STONE_WARDING.get();
+        public static final WardingAuraBlock WARDING_AURA = Registry.SUPPLIER_WARDING_AURA.get();
+        public static final Block THAUMIUM_BLOCK = Registry.SUPPLIER_THAUMIUM_BLOCK.get();
+        public static final Block TALLOW_BLOCK = Registry.SUPPLIER_TALLOW_BLOCK.get();
+        public static final Block ARCANE_STONE_BLOCK = Registry.SUPPLIER_ARCANE_STONE_BLOCK.get();
+        public static final Block ARCANE_STONE_BRICKS = Registry.SUPPLIER_ARCANE_STONE_BRICKS.get();
+        public static final Block GOLEM_FETTER = Registry.SUPPLIER_GOLEM_FETTER.get();
+        public static final Block ANCIENT_STONE = Registry.SUPPLIER_ANCIENT_STONE.get();
+        public static final Block ANCIENT_ROCK = Registry.SUPPLIER_ANCIENT_ROCK.get();
+        public static final Block CRUSTED_STONE = Registry.SUPPLIER_CRUSTED_STONE.get();
+        public static final Block ANCIENT_STONE_PEDESTAL = Registry.SUPPLIER_ANCIENT_STONE_PEDESTAL.get();
+        public static final StairBlock ANCIENT_STONE_STAIRS = Registry.SUPPLIER_ANCIENT_STONE_STAIRS.get();
+        public static final StairBlock ARCANE_STONE_BRICK_STAIRS = Registry.SUPPLIER_ARCANE_STONE_BRICK_STAIRS.get();
+        public static final StairBlock GREATWOOD_PLANKS_STAIRS = Registry.SUPPLIER_GREATWOOD_PLANKS_STAIRS.get();
+        public static final StairBlock SILVERWOOD_PLANKS_STAIRS = Registry.SUPPLIER_SILVERWOOD_PLANKS_STAIRS.get();
+        public static final SlabBlock ANCIENT_STONE_SLAB = Registry.SUPPLIER_ANCIENT_STONE_SLAB.get();
+        public static final SlabBlock ARCANE_STONE_BRICK_SLAB = Registry.SUPPLIER_ARCANE_STONE_BRICK_SLAB.get();
+        public static final SlabBlock GREATWOOD_PLANKS_SLAB = Registry.SUPPLIER_GREATWOOD_PLANKS_SLAB.get();
+        public static final SlabBlock SILVERWOOD_PLANKS_SLAB = Registry.SUPPLIER_SILVERWOOD_PLANKS_SLAB.get();
+        public static final AbstractCrystalBlock AIR_CRYSTAL = Registry.SUPPLIER_AIR_CRYSTAL.get();
+        public static final AbstractCrystalBlock FIRE_CRYSTAL = Registry.SUPPLIER_FIRE_CRYSTAL.get();
+        public static final AbstractCrystalBlock WATER_CRYSTAL = Registry.SUPPLIER_WATER_CRYSTAL.get();
+        public static final AbstractCrystalBlock EARTH_CRYSTAL = Registry.SUPPLIER_EARTH_CRYSTAL.get();
+        public static final AbstractCrystalBlock ORDER_CRYSTAL = Registry.SUPPLIER_ORDER_CRYSTAL.get();
+        public static final AbstractCrystalBlock ENTROPY_CRYSTAL = Registry.SUPPLIER_ENTROPY_CRYSTAL.get();
+        public static final AbstractCrystalBlock MIXED_CRYSTAL = Registry.SUPPLIER_MIXED_CRYSTAL.get();
+        public static final AbstractCrystalBlock STRANGE_CRYSTALS = Registry.SUPPLIER_STRANGE_CRYSTALS.get();
+        public static final HungryChestBlock HUNGRY_CHEST = Registry.SUPPLIER_HUNGRY_CHEST.get();
+        public static final EldritchVoidBlock ELDRITCH_VOID = Registry.SUPPLIER_ELDRITCH_VOID.get();
+        public static final Block CINNABAR_ORE = Registry.SUPPLIER_CINNABAR_ORE.get();
+        public static final Block AMBER_ORE = Registry.SUPPLIER_AMBER_ORE.get();
+        public static final AirInfusedStoneBlock AIR_INFUSED_STONE = Registry.SUPPLIER_AIR_INFUSED_STONE.get();
+        public static final FireInfusedStoneBlock FIRE_INFUSED_STONE = Registry.SUPPLIER_FIRE_INFUSED_STONE.get();
+        public static final WaterInfusedStoneBlock WATER_INFUSED_STONE = Registry.SUPPLIER_WATER_INFUSED_STONE.get();
+        public static final EarthInfusedStoneBlock EARTH_INFUSED_STONE = Registry.SUPPLIER_EARTH_INFUSED_STONE.get();
+        public static final OrderInfusedStoneBlock ORDER_INFUSED_STONE = Registry.SUPPLIER_ORDER_INFUSED_STONE.get();
+        public static final EntropyInfusedStoneBlock ENTROPY_INFUSED_STONE = Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
+        public static final Block AMBER_BLOCK = Registry.SUPPLIER_AMBER_BLOCK.get();
+        public static final Block AMBER_BRICK = Registry.SUPPLIER_AMBER_BRICK.get();
+        public static final WardedGlassBlock WARDED_GLASS = Registry.SUPPLIER_WARDED_GLASS.get();
+        public static final TallowCandleBlock WHITE_TALLOW_CANDLE = Registry.SUPPLIER_WHITE_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock ORANGE_TALLOW_CANDLE = Registry.SUPPLIER_ORANGE_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock MAGENTA_TALLOW_CANDLE = Registry.SUPPLIER_MAGENTA_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock LIGHT_BLUE_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_BLUE_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock YELLOW_TALLOW_CANDLE = Registry.SUPPLIER_YELLOW_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock LIME_TALLOW_CANDLE = Registry.SUPPLIER_LIME_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock PINK_TALLOW_CANDLE = Registry.SUPPLIER_PINK_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock GRAY_TALLOW_CANDLE = Registry.SUPPLIER_GRAY_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock LIGHT_GRAY_TALLOW_CANDLE = Registry.SUPPLIER_LIGHT_GRAY_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock CYAN_TALLOW_CANDLE = Registry.SUPPLIER_CYAN_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock PURPLE_TALLOW_CANDLE = Registry.SUPPLIER_PURPLE_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock BLUE_TALLOW_CANDLE = Registry.SUPPLIER_BLUE_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock BROWN_TALLOW_CANDLE = Registry.SUPPLIER_BROWN_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock GREEN_TALLOW_CANDLE = Registry.SUPPLIER_GREEN_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock RED_TALLOW_CANDLE = Registry.SUPPLIER_RED_TALLOW_CANDLE.get();
+        public static final TallowCandleBlock BLACK_TALLOW_CANDLE = Registry.SUPPLIER_BLACK_TALLOW_CANDLE.get();
+        public static final ShimmerLeafBlock SHIMMER_LEAF = Registry.SUPPLIER_SHIMMER_LEAF.get();
+        public static final CinderPearlBlock CINDER_PEARL = Registry.SUPPLIER_CINDER_PEARL.get();
+        public static final ManaShroomBlock MANA_SHROOM = Registry.SUPPLIER_MANA_SHROOM.get();
+        public static final EtherealBloomBlock ETHEREAL_BLOOM = Registry.SUPPLIER_ETHEREAL_BLOOM.get();
+        public static final InfernalFurnaceBarBlock INFERNAL_FURNACE_BAR = Registry.SUPPLIER_INFERNAL_FURNACE_BAR.get();
+        public static final InfernalFurnaceSideBlock INFERNAL_FURNACE_SIDE = Registry.SUPPLIER_INFERNAL_FURNACE_SIDE.get();
+        public static final InfernalFurnaceCornerBlock INFERNAL_FURNACE_CORNER = Registry.SUPPLIER_INFERNAL_FURNACE_CORNER.get();
+        public static final InfernalFurnaceEdgeXAxisBlock INFERNAL_FURNACE_X_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_X_AXIS.get();
+        public static final InfernalFurnaceEdgeYAxisBlock INFERNAL_FURNACE_Y_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Y_AXIS.get();
+        public static final InfernalFurnaceEdgeZAxisBlock INFERNAL_FURNACE_Z_AXIS = Registry.SUPPLIER_INFERNAL_FURNACE_Z_AXIS.get();
+        public static final InfernalFurnaceLavaBlock INFERNAL_FURNACE_LAVA = Registry.SUPPLIER_INFERNAL_FURNACE_LAVA.get();
+        public static final ArcaneBellowBlock ARCANE_BELLOW = Registry.SUPPLIER_ARCANE_BELLOW.get();
+        public static final ArcaneDoorBlock ARCANE_DOOR = Registry.SUPPLIER_ARCANE_DOOR.get();
+        public static final EldritchAltarBlock ELDRITCH_ALTAR = Registry.SUPPLIER_ELDRITCH_ALTAR.get();
+        public static final EldritchObeliskBlock ELDRITCH_OBELISK = Registry.SUPPLIER_ELDRITCH_OBELISK.get();
+        public static final EldritchObeliskWithTickerBlock ELDRITCH_OBELISK_WITH_TICKER = Registry.SUPPLIER_ELDRITCH_OBELISK_WITH_TICKER.get();
+        public static final EldritchCapstoneBlock ELDRITCH_CAPSTONE = Registry.SUPPLIER_ELDRITCH_CAPSTONE.get();
+        public static final GlowingClustedStoneBlock GLOWING_CRUSTED_STONE = Registry.SUPPLIER_GLOWING_CRUSTED_STONE.get();
+        public static final GlyphedStoneBlock GLYPHED_STONE = Registry.SUPPLIER_GLYPHED_STONE.get();
+        public static final Block ANCIENT_GATEWAY = Registry.SUPPLIER_ANCIENT_GATEWAY.get();
+        public static final AncientLockEmptyBlock ANCIENT_LOCK_EMPTY = Registry.SUPPLIER_ANCIENT_LOCK_EMPTY.get();
+        public static final AncientLockInsertedBlock ANCIENT_LOCK_INSERTED = Registry.SUPPLIER_ANCIENT_LOCK_INSERTED.get();
+        public static final EldritchCrabSpawnerBlock ELDRITCH_CRAB_SPAWNER = Registry.SUPPLIER_ELDRITCH_CRAB_SPAWNER.get();
+        public static final RunedStoneBlock RUNED_STONE = Registry.SUPPLIER_RUNED_STONE.get();
+        public static final CrustedTaintBlock CRUSTED_TAINT = Registry.SUPPLIER_CRUSTED_TAINT.get();
+        public static final TaintedSoilBlock TAINTED_SOIL = Registry.SUPPLIER_TAINTED_SOIL.get();
+        //    public static final FleshBlock BLOCK_OF_FLESH = Registry.SUPPLIER_FLESH.get();
+        public static final FibrousTaintBlock FIBROUS_TAINT = Registry.SUPPLIER_FIBROUS_TAINT.get();
+        public static final TaintedGrassBlock TAINTED_GRASS = Registry.SUPPLIER_TAINTED_GRASS.get();
+        public static final TaintedPlantBlock TAINTED_PLANT = Registry.SUPPLIER_TAINTED_PLANT.get();
+        public static final SporeStalkBlock SPORE_STALK = Registry.SUPPLIER_SPORE_STALK.get();
+        public static final MatureSporeStalkBlock MATURE_SPORE_STALK = Registry.SUPPLIER_MATURE_SPORE_STALK.get();
+        public static final TableBlock TABLE = Registry.SUPPLIER_TABLE.get();
+        public static final ArcaneWorkbenchBlock ARCANE_WORKBENCH = Registry.SUPPLIER_ARCANE_WORKBENCH.get();
+        public static final DeconstructionTableBlock DECONSTRUCTION_TABLE = Registry.SUPPLIER_DECONSTRUCTION_TABLE.get();
+        public static final ResearchTableLeftPartBlock RESEARCH_TABLE_LEFT_PART = Registry.SUPPLIER_RESEARCH_TABLE_LEFT_PART.get();
+        public static final ResearchTableRightPartBlock RESEARCH_TABLE_RIGHT_PART = Registry.SUPPLIER_RESEARCH_TABLE_RIGHT_PART.get();
+        public static final GlimmerOfLightBlock GLIMMER_OF_LIGHT = Registry.SUPPLIER_GLIMMER_OF_LIGHT.get();
+        public static final VisNetRelayBlock VIS_RELAY = Registry.SUPPLIER_VIS_RELAY.get();
+        public static final VisNetChargeRelayBlock VIS_CHARGE_RELAY = Registry.SUPPLIER_VIS_CHARGE_RELAY.get();
+        public static final EnergizedAuraNodeBlock ENERGIZED_NODE = Registry.SUPPLIER_ENERGIZED_NODE.get();
+        public static final NodeStabilizerBlock NODE_STABILIZER = Registry.SUPPLIER_NODE_STABILIZER.get();
+        public static final AdvancedNodeStabilizerBlock ADVANCED_NODE_STABILIZER = Registry.SUPPLIER_ADVANCED_NODE_STABILIZER.get();
+        public static final NodeTransducerBlock NODE_TRANSDUCER = Registry.SUPPLIER_NODE_TRANSDUCER.get();
+        public static final ImpassableBlock IMPASSABLE = Registry.SUPPLIER_IMPASSABLE_BLOCK.get();
+        public static final SappingFieldBlock SAPPING_FIELD = Registry.SUPPLIER_SAPPING_FIELD.get();
+        public static final StaticFieldBlock STATIC_FIELD = Registry.SUPPLIER_STATIC_FIELD.get();
+        public static final AlchemicalFurnaceBlock ALCHEMICAL_FURNACE = Registry.SUPPLIER_ALCHEMICAL_FURNACE.get();
+        public static final Block ADVANCED_ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_CONSTRUCT.get();
+        public static final Block ALCHEMICAL_CONSTRUCT = Registry.SUPPLIER_ALCHEMICAL_CONSTRUCT.get();
+        public static final ArcaneAlembicBlock ARCANE_ALEMBIC = Registry.SUPPLIER_ARCANE_ALEMBIC.get();
+        public static final AdvancedAlchemicalFurnaceUpperFenceBlock ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE
+                = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE.get();
+        public static final AdvancedAlchemicalFurnaceBaseCornerBlock ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER
+                = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER.get();
+        public static final AdvancedAlchemicalFurnaceNozzleBlock ADVANCED_ALCHEMICAL_FURNACE_NOZZLE
+                = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.get();
+        public static final AdvancedAlchemicalFurnaceAlembicBlock ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC
+                = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC.get();
+        public static final AdvancedAlchemicalFurnaceBaseBlock ADVANCED_ALCHEMICAL_FURNACE_BASE
+                = Registry.SUPPLIER_ADVANCED_ALCHEMICAL_FURNACE_BASE.get();
+        public static final EssentiaJarBlock ESSENTIA_JAR = Registry.SUPPLIER_ESSENTIA_JAR.get();
+        public static final VoidJarBlock VOID_JAR = Registry.SUPPLIER_VOID_JAR.get();
+        public static final BrainJarBlock BRAIN_JAR = Registry.SUPPLIER_BRAIN_JAR.get();
+        public static final NodeJarBlock NODE_JAR = Registry.SUPPLIER_NODE_JAR.get();
+        public static final ItemCrateBlock ITEM_CRATE = Registry.SUPPLIER_ITEM_CRATE.get();
+        public static final CrucibleBlock CRUCIBLE = Registry.SUPPLIER_CRUCIBLE.get();
+        public static final ArcaneLampBlock ARCANE_LAMP = Registry.SUPPLIER_ARCANE_LAMP.get();
+        public static final GrowthArcaneLampBlock GROWTH_ARCANE_LAMP = Registry.SUPPLIER_GROWTH_ARCANE_LAMP.get();
+        public static final FertilityArcaneLampBlock FERTILITY_ARCANE_LAMP = Registry.SUPPLIER_FERTILITY_ARCANE_LAMP.get();
+        public static final ThaumatoriumBottomBlock THAUMATORIUM_BOTTOM = Registry.SUPPLIER_THAUMATORIUM_BOTTOM.get();
+        public static final ThaumatoriumTopBlock THAUMATORIUM_TOP = Registry.SUPPLIER_THAUMATORIUM_TOP.get();
+        public static final MnemonicMatrixBlock MNEMONIC_MATRIX = Registry.SUPPLIER_MNEMONIC_MATRIX.get();
+        public static final ArcaneLevitatorBubbleBlock ARCANE_LEVITATOR_BUBBLE = Registry.SUPPLIER_ARCANE_LEVITATOR_BUBBLE.get();
+        public static final ArcaneLevitatorBlock ARCANE_LEVITATOR = Registry.SUPPLIER_ARCANE_LEVITATOR.get();
+        public static final EssentiaReservoirBlock ESSENTIA_RESERVOIR = Registry.SUPPLIER_ESSENTIA_RESERVOIR.get();
+        public static final ManaBeanBlock MANA_BEAN = Registry.SUPPLIER_MANA_BEAN.get();
+        public static final EssentiaTubeBlock ESSENTIA_TUBE = Registry.SUPPLIER_ESSENTIA_TUBE.get();
+        public static final EssentiaTubeValveBlock ESSENTIA_TUBE_VALVE = Registry.SUPPLIER_ESSENTIA_TUBE_VALVE.get();
+        public static final EssentiaTubeFilterBlock ESSENTIA_TUBE_FILTER = Registry.SUPPLIER_ESSENTIA_TUBE_FILTER.get();
+        public static final EssentiaTubeRestrictBlock ESSENTIA_TUBE_RESTRICT = Registry.SUPPLIER_ESSENTIA_TUBE_RESTRICT.get();
+        public static final EssentiaTubeOnewayBlock ESSENTIA_TUBE_ONEWAY = Registry.SUPPLIER_ESSENTIA_TUBE_ONEWAY.get();
+        public static final EssentiaBufferBlock ESSENTIA_BUFFER = Registry.SUPPLIER_ESSENTIA_BUFFER.get();
+        public static final EssentiaCentrifugeBlock ESSENTIA_CENTRIFUGE = Registry.SUPPLIER_ESSENTIA_CENTRIFUGE.get();
+        public static final EssentiaCrystallizerBlock ESSENTIA_CRYSTALLIZER = Registry.SUPPLIER_ESSENTIA_CRYSTALLIZER.get();
+        public static final ArcanePressurePlateBlock ARCANE_PRESSURE_PLATE = Registry.SUPPLIER_ARCANE_PRESSURE_PLATE.get();
+        public static final ArcaneBoreBaseBlock ARCANE_BORE_BASE = Registry.SUPPLIER_ARCANE_BORE_BASE.get();
+        public static final ArcaneBoreDrillBlock ARCANE_BORE_DRILL = Registry.SUPPLIER_ARCANE_BORE_DRILL.get();
+        public static final ArcaneEarBlock ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
+        public static final DeathFluidBlock DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
+        public static final PureFluidBlock PURE_FLUID = Registry.SUPPLIER_PURE_FLUID.get();
+        public static final WardedBlock WARDED_BLOCK = Registry.SUPPLIER_WARDED_BLOCK.get();
+        public static final HoleBlock HOLE = Registry.SUPPLIER_HOLE_BLOCK.get();
+        public static final UrnLootBlock URN_LOOT = Registry.SUPPLIER_URN_LOOT.get();
+        public static final CrateLootBlock CRATE_LOOT = Registry.SUPPLIER_CRATE_LOOT.get();
+        public static final EldritchPortalBlock ELDRITCH_PORTAL = Registry.SUPPLIER_ELDRITCH_PORTAL_BLOCK.get();
+        public static final MirrorBlock MIRROR = Registry.SUPPLIER_MIRROR.get();
+        public static final EssentiaMirrorBlock ESSENTIA_MIRROR = Registry.SUPPLIER_ESSENTIA_MIRROR.get();
+        public static final ArcanePedestalBlock ARCANE_PEDESTAL = Registry.SUPPLIER_ARCANE_PEDESTAL.get();
+        public static final InfusionPillarBlock INFUSION_PILLAR = Registry.SUPPLIER_INFUSION_PILLAR.get();
+        public static final InfusionMatrixBlock INFUSION_MATRIX = Registry.SUPPLIER_INFUSION_MATRIX.get();
+        public static final WandRechargePedestalBlock WAND_RECHARGE_PEDESTAL = Registry.SUPPLIER_WAND_RECHARGE_PEDESTAL.get();
+        public static final CompoundRechargeFocusBlock COMPOUND_RECHARGE_FOCUS = Registry.SUPPLIER_COMPOUND_RECHARGE_FOCUS.get();
+        public static final ArcaneSpaBlock ARCANE_SPA = Registry.SUPPLIER_ARCANE_SPA.get();
+        public static final FocalManipulatorBlock FOCAL_MANIPULATOR = Registry.SUPPLIER_FOCAL_MANIPULATOR.get();
+        public static final FluxScrubberBlock FLUX_SCRUBBER = Registry.SUPPLIER_FLUX_SCRUBBER.get();
+    }
 
     public static class Registry {
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BLOCK);
@@ -322,8 +312,8 @@ public class ThaumcraftBlocks {
                         .strength(2.F, 10.F))
         );
         public static final RegistrySupplier<StairBlock> SUPPLIER_ANCIENT_STONE_STAIRS = BLOCKS.register(
-                "ancient_stone_stairs", () -> new StairBlock(ThaumcraftBlocks.ANCIENT_STONE.defaultBlockState(),
-                        BlockBehaviour.Properties.copy(ThaumcraftBlocks.ANCIENT_STONE))
+                "ancient_stone_stairs", () -> new StairBlock(ThaumcraftBlockInstances.ANCIENT_STONE.defaultBlockState(),
+                        BlockBehaviour.Properties.copy(ThaumcraftBlockInstances.ANCIENT_STONE))
         );
         public static final RegistrySupplier<StairBlock> SUPPLIER_ARCANE_STONE_BRICK_STAIRS = BLOCKS.register(
                 "arcane_stone_brick_stairs", () -> new StairBlock(
@@ -344,7 +334,7 @@ public class ThaumcraftBlocks {
                 )
         );
         public static final RegistrySupplier<SlabBlock> SUPPLIER_ANCIENT_STONE_SLAB = BLOCKS.register(
-                "ancient_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(ThaumcraftBlocks.ANCIENT_STONE)));
+                "ancient_stone_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(ThaumcraftBlockInstances.ANCIENT_STONE)));
         public static final RegistrySupplier<SlabBlock> SUPPLIER_ARCANE_STONE_BRICK_SLAB = BLOCKS.register(
                 "arcane_stone_brick_slab",
                 () -> new SlabBlock(BlockBehaviour.Properties.copy(SUPPLIER_ARCANE_STONE_BRICKS.get())
@@ -1070,5 +1060,19 @@ public class ThaumcraftBlocks {
                         Registries.BLOCK,
                         new ResourceLocation(Thaumcraft.MOD_ID, "primal_crusher_mineable")
                 );
+
+
+        public static final TagKey<Block> ELEMENTAL_HOE_NOT_AFFECTIVE = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "elemental_hoe_not_affective")
+        );
+        public static final TagKey<Block> ELEMENTAL_HOE_AFFECTIVE = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "elemental_hoe_affective")
+        );
+        public static final TagKey<Block> ELEMENTAL_HOE_AFFECTIVE_RANDOM_TICK = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "elemental_hoe_affective_random_tick")
+        );
+        public static final TagKey<Block> ELEMENTAL_HOE_AFFECTIVE_TICK = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "elemental_hoe_affective_tick")
+        );
     }
 }

@@ -56,7 +56,7 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.setBlock(pos, ThaumcraftBlocks.ALCHEMICAL_FURNACE.defaultBlockState(), 3);
+            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_FURNACE.defaultBlockState(), 3);
         }
     }
 
@@ -70,7 +70,7 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE && blockState.getBlock() == this && !level.isClientSide()) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE && blockState.getBlock() == this && !level.isClientSide()) {
             return ((level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof AdvancedAlchemicalFurnaceBlockEntity furnace) {
                     furnace.serverTick();

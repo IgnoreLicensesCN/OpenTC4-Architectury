@@ -26,7 +26,7 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public AdvancedAlchemicalFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE, blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 500;

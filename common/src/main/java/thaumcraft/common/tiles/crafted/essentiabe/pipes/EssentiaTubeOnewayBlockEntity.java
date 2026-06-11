@@ -17,7 +17,7 @@ public class EssentiaTubeOnewayBlockEntity extends EssentiaTubeBlockEntity {
     }
 
     public EssentiaTubeOnewayBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_TUBE_ONEWAY, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_ONEWAY, blockPos, blockState);
     }
 
     @Override

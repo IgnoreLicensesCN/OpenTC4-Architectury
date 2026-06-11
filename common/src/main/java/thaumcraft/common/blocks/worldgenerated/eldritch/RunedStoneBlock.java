@@ -71,7 +71,7 @@ public class RunedStoneBlock extends DropExperienceBlock implements EntityBlock 
         if (blockState0.getBlock() != this){
             return null;
         }
-        if (blockEntityType != ThaumcraftBlockEntities.RUNED_STONE){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.RUNED_STONE){
             return null;
         }
         if (level0.isClientSide) {

@@ -160,7 +160,7 @@ public class AuraNodeBlock extends AbstractNodeBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.AURA_NODE){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.AURA_NODE){
             return null;
         }
         if (level.isClientSide){

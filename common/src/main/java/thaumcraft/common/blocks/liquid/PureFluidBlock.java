@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 public class PureFluidBlock extends LiquidBlock {
@@ -22,7 +21,7 @@ public class PureFluidBlock extends LiquidBlock {
     }
     public PureFluidBlock() {
         this(
-                ThaumcraftFluids.PURE_FLUID_SOURCE,
+                ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE,
                 Properties.of()                      // 方块属性
                         .mapColor(MapColor.COLOR_PURPLE) // 方块颜色
                         .strength(-1.0F, 3600000.0F)     // 不可破坏
@@ -37,7 +36,7 @@ public class PureFluidBlock extends LiquidBlock {
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         if (!level.isClientSide && blockState.getFluidState().isSource()) {
             if (entity instanceof Player player) {
-                if (!player.hasEffect(ThaumcraftEffects.WARP_WARD)){
+                if (!player.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD)){
                     var info = WarpInfo.getFromPlayer(player);
                     int warp = info.getPermWarp();
                     int div = 1;
@@ -50,7 +49,7 @@ public class PureFluidBlock extends LiquidBlock {
 
                     player.addEffect(
                             new MobEffectInstance(
-                                    ThaumcraftEffects.WARP_WARD,
+                                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD,
                                     Math.min(32000, 200000 / div),
                                     0
                             )

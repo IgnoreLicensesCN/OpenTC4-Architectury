@@ -44,7 +44,7 @@ public class EntityAlumentum extends ThrowableItemProjectile {
 
    @Override
    protected @NotNull Item getDefaultItem() {
-      return ThaumcraftItems.ALUMENTUM;
+      return ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM;
    }
    @Override
    public void tick() {

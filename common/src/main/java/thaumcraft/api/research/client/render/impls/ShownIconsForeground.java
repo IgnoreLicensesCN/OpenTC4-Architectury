@@ -17,6 +17,6 @@ public class ShownIconsForeground {
             );
     public static final ItemStackShownIconForeground RESEARCH_FOREGROUND_ICON =
             new ItemStackShownIconForeground(
-                    new ItemStack(ThaumcraftItems.INK_WELL)
+                    new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.INK_WELL)
             );
 }

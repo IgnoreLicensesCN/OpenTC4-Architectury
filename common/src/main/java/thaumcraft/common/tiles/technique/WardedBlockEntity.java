@@ -20,7 +20,7 @@ public class WardedBlockEntity extends OwnedBlockEntity {
     }
 
     public WardedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.WARDED_BLOCK,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.WARDED_BLOCK,blockPos, blockState);
     }
 
     protected @NotNull BlockState storingState = Blocks.AIR.defaultBlockState();

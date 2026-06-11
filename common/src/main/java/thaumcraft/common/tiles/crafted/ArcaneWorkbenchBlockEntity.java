@@ -51,7 +51,7 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         super(blockEntityType, blockPos, blockState,ArcaneWorkbenchMenu::new);
     }
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_WORKBENCH, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_WORKBENCH, blockPos, blockState);
     }
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {

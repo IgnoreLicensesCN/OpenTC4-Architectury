@@ -115,7 +115,7 @@ public class NitorBlock extends SuppressedWarningBlock {
     }
     @Override
     public @NotNull ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
-        return ThaumcraftItems.NITOR.getDefaultInstance();
+        return ThaumcraftItems.ThaumcraftItemInstances.NITOR.getDefaultInstance();
     }
 
     @Override
@@ -152,6 +152,6 @@ public class NitorBlock extends SuppressedWarningBlock {
 
     @Override
     public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
-        return List.of(ThaumcraftItems.NITOR.getDefaultInstance());
+        return List.of(ThaumcraftItems.ThaumcraftItemInstances.NITOR.getDefaultInstance());
     }
 }
