@@ -132,6 +132,12 @@ block_with_item_names = [
     ['item.ItemHoeElemental.name','elemental_hoe'],
     ['item.ItemBowBone.name','bone_bow'],
     ['item.ItemSwordCrimson.name','crimson_sword'],
+    ['item.ItemPrimalArrow.0.name','air_arrow'],
+    ['item.ItemPrimalArrow.1.name','fire_arrow'],
+    ['item.ItemPrimalArrow.2.name','water_arrow'],
+    ['item.ItemPrimalArrow.3.name','earth_arrow'],
+    ['item.ItemPrimalArrow.4.name','order_arrow'],
+    ['item.ItemPrimalArrow.5.name','entropy_arrow'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -147,12 +153,17 @@ force_add_keys = {
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
 
+def special_key_sort_weight(parts:list[str]):
+    if parts[-1].endswith("_arrow") or parts[-1].endswith("_candle"):
+        return 1
+    return 0
+
 def key_sorter(key_string):
     parts = key_string.split('.')
 
     part_count = len(parts)
 
-    return (parts[0],part_count, parts)
+    return (parts[0],part_count, parts[1],special_key_sort_weight(parts),parts)
 
 for fileName in os.listdir(language_file_folder):
     if fileName.endswith('.json'):

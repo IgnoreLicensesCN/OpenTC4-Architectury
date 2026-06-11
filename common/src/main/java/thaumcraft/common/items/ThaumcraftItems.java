@@ -24,9 +24,7 @@ import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.equipment.elemental.*;
-import thaumcraft.common.items.equipment.specialtool.BoneBowItem;
-import thaumcraft.common.items.equipment.specialtool.CrimsonSwordItem;
-import thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem;
+import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
@@ -281,6 +279,12 @@ public class ThaumcraftItems {
         public static final ElementalAxeItem ELEMENTAL_AXE = Registry.SUPPLIER_ELEMENTAL_AXE.get();
         public static final CrimsonSwordItem CRIMSON_SWORD = Registry.SUPPLIER_CRIMSON_SWORD.get();
         public static final BoneBowItem BONE_BOW = Registry.SUPPLIER_BONE_BOW.get();
+        public static final AirArrowItem AIR_ARROW = Registry.SUPPLIER_AIR_ARROW.get();
+        public static final FireArrowItem FIRE_ARROW = Registry.SUPPLIER_FIRE_ARROW.get();
+        public static final EarthArrowItem EARTH_ARROW = Registry.SUPPLIER_EARTH_ARROW.get();
+        public static final WaterArrowItem WATER_ARROW = Registry.SUPPLIER_WATER_ARROW.get();
+        public static final OrderArrowItem ORDER_ARROW = Registry.SUPPLIER_ORDER_ARROW.get();
+        public static final EntropyArrowItem ENTROPY_ARROW =  Registry.SUPPLIER_ENTROPY_ARROW.get();
     }
 
     public static class Registry {
@@ -1128,6 +1132,30 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<BoneBowItem> SUPPLIER_BONE_BOW = ITEMS.register(
                 "bone_bow",
                 BoneBowItem::new
+        );
+        public static final RegistrySupplier<AirArrowItem> SUPPLIER_AIR_ARROW = ITEMS.register(
+                "air_arrow",
+                AirArrowItem::new
+        );
+        public static final RegistrySupplier<FireArrowItem> SUPPLIER_FIRE_ARROW = ITEMS.register(
+                "fire_arrow",
+                FireArrowItem::new
+        );
+        public static final RegistrySupplier<EarthArrowItem> SUPPLIER_EARTH_ARROW = ITEMS.register(
+                "earth_arrow",
+                EarthArrowItem::new
+        );
+        public static final RegistrySupplier<WaterArrowItem> SUPPLIER_WATER_ARROW = ITEMS.register(
+                "water_arrow",
+                WaterArrowItem::new
+        );
+        public static final RegistrySupplier<OrderArrowItem> SUPPLIER_ORDER_ARROW = ITEMS.register(
+                "order_arrow",
+                OrderArrowItem::new
+        );
+        public static final RegistrySupplier<EntropyArrowItem> SUPPLIER_ENTROPY_ARROW = ITEMS.register(
+                "entropy_arrow",
+                EntropyArrowItem::new
         );
     }
 
