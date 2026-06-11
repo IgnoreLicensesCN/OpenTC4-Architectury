@@ -6,7 +6,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.IRepairEnchantable;
 import thaumcraft.common.items.ThaumcraftItems;
 
 public class EnchantmentRepair extends Enchantment {
@@ -33,8 +32,7 @@ public class EnchantmentRepair extends Enchantment {
    @Override
    public boolean canEnchant(ItemStack stack) {
       return stack.isDamageableItem() && (
-              stack.getItem() instanceof IRepairEnchantable
-                      || stack.is(Items.ENCHANTED_BOOK)
+              stack.is(Items.ENCHANTED_BOOK)
                       || stack.is(ThaumcraftItems.ItemTags.REPAIR_ENCHANTMENT_CAN_APPLY)
       );
    }

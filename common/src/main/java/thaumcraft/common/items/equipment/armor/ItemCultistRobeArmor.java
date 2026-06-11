@@ -64,7 +64,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairEnchantabl
    }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisDiscount(stack, player, null) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisCostPercentDecrease(stack, player, null) + "%");
       super.addInformation(stack, player, list, par4);
    }
 
@@ -76,7 +76,7 @@ public class ItemCultistRobeArmor extends ItemArmor implements IRepairEnchantabl
       return 0;
    }
 
-   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
+   public int getVisCostPercentDecrease(ItemStack stack, LivingEntity living, Aspect aspect) {
       return 1;
    }
 

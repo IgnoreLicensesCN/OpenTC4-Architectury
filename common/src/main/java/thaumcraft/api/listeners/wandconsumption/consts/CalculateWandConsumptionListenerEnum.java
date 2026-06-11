@@ -50,7 +50,7 @@ public enum CalculateWandConsumptionListenerEnum {
                 forEachBauble(player,(slot, baubleStack, item) -> {
                     var discountGear = IVisDiscountGear.getDiscountGearHandlerForItem(item);
                     if (discountGear != null) {
-                        context.currentConsumption -= (discountGear.getVisDiscount(baubleStack, player, context.aspect)/100F);
+                        context.currentConsumption -= (discountGear.getVisCostPercentDecrease(baubleStack, player, context.aspect)/100F);
                     }
                     return false;
                 });
@@ -58,7 +58,7 @@ public enum CalculateWandConsumptionListenerEnum {
                 for (var equipStack : player.getArmorSlots()) {
                     IVisDiscountGear visDiscountGear = IVisDiscountGear.getDiscountGearHandlerForItem(equipStack.getItem());
                     if (visDiscountGear != null) {
-                        context.currentConsumption -= (visDiscountGear.getVisDiscount(equipStack, player, context.aspect)/100F);
+                        context.currentConsumption -= (visDiscountGear.getVisCostPercentDecrease(equipStack, player, context.aspect)/100F);
                     }
                 }
             }

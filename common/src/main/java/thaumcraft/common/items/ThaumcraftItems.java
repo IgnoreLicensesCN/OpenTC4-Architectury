@@ -23,6 +23,10 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
+import thaumcraft.common.items.equipment.armor.GogglesOfRevealingItem;
+import thaumcraft.common.items.equipment.armor.RobeArmorItem;
+import thaumcraft.common.items.equipment.armor.ThaumiumArmorItem;
+import thaumcraft.common.items.equipment.armor.VoidArmorItem;
 import thaumcraft.common.items.equipment.elemental.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
@@ -41,6 +45,7 @@ import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
 import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
+import static net.minecraft.world.item.Items.GOLD_INGOT;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.THAUMIUM_INGOT_TAG;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.VOID_INGOT_TAG;
 
@@ -238,10 +243,10 @@ public class ThaumcraftItems {
         public static final BlockItem ARCANE_EAR = Registry.SUPPLIER_ARCANE_EAR.get();
         public static final BucketItem DEATH_FLUID_BUCKET = Registry.SUPPLIER_DEATH_FLUID_BUCKET.get();
         public static final BucketItem PURE_FLUID_BUCKET = Registry.SUPPLIER_PURE_FLUID_BUCKET.get();
-        public static final ArmorItem THAUMIUM_HELMET = Registry.SUPPLIER_THAUMIUM_HELMET.get();
-        public static final ArmorItem THAUMIUM_CHESTPLATE = Registry.SUPPLIER_THAUMIUM_CHESTPLATE.get();
-        public static final ArmorItem THAUMIUM_LEGGINGS = Registry.SUPPLIER_THAUMIUM_LEGGINGS.get();
-        public static final ArmorItem THAUMIUM_BOOTS = Registry.SUPPLIER_THAUMIUM_BOOTS.get();
+        public static final ThaumiumArmorItem THAUMIUM_HELMET = Registry.SUPPLIER_THAUMIUM_HELMET.get();
+        public static final ThaumiumArmorItem THAUMIUM_CHESTPLATE = Registry.SUPPLIER_THAUMIUM_CHESTPLATE.get();
+        public static final ThaumiumArmorItem THAUMIUM_LEGGINGS = Registry.SUPPLIER_THAUMIUM_LEGGINGS.get();
+        public static final ThaumiumArmorItem THAUMIUM_BOOTS = Registry.SUPPLIER_THAUMIUM_BOOTS.get();
         public static final VoidArmorItem VOID_HELMET = Registry.SUPPLIER_VOID_HELMET.get();
         public static final VoidArmorItem VOID_CHESTPLATE = Registry.SUPPLIER_VOID_CHESTPLATE.get();
         public static final VoidArmorItem VOID_LEGGINGS = Registry.SUPPLIER_VOID_LEGGINGS.get();
@@ -285,6 +290,11 @@ public class ThaumcraftItems {
         public static final WaterArrowItem WATER_ARROW = Registry.SUPPLIER_WATER_ARROW.get();
         public static final OrderArrowItem ORDER_ARROW = Registry.SUPPLIER_ORDER_ARROW.get();
         public static final EntropyArrowItem ENTROPY_ARROW =  Registry.SUPPLIER_ENTROPY_ARROW.get();
+        public static final GogglesOfRevealingItem GOGGLES_OF_REVEALING = Registry.SUPPLIER_GOGGLES_OF_REVEALING.get();
+//        public static final RobeArmorItem ROBE_HELMET = Registry.SUPPLIER_ROBE_HELMET.get();
+        public static final RobeArmorItem ROBE_CHESTPLATE = Registry.SUPPLIER_ROBE_CHESTPLATE.get();
+        public static final RobeArmorItem ROBE_LEGGINGS = Registry.SUPPLIER_ROBE_LEGGINGS.get();
+        public static final RobeArmorItem ROBE_BOOTS = Registry.SUPPLIER_ROBE_BOOTS.get();
     }
 
     public static class Registry {
@@ -935,34 +945,33 @@ public class ThaumcraftItems {
                         ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE, new Item.Properties().craftRemainder(
                         Items.BUCKET).stacksTo(1))
         );
-        //TODO:Repair enchantable
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_HELMET = ITEMS.register(
+        public static final RegistrySupplier<ThaumiumArmorItem> SUPPLIER_THAUMIUM_HELMET = ITEMS.register(
                 "thaumium_helmet",
-                () -> new ArmorItem(
+                () -> new ThaumiumArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.HELMET,
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_CHESTPLATE = ITEMS.register(
+        public static final RegistrySupplier<ThaumiumArmorItem> SUPPLIER_THAUMIUM_CHESTPLATE = ITEMS.register(
                 "thaumium_chestplate",
-                () -> new ArmorItem(
+                () -> new ThaumiumArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.CHESTPLATE,
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_LEGGINGS = ITEMS.register(
+        public static final RegistrySupplier<ThaumiumArmorItem> SUPPLIER_THAUMIUM_LEGGINGS = ITEMS.register(
                 "thaumium_leggings",
-                () -> new ArmorItem(
+                () -> new ThaumiumArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.LEGGINGS,
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                 )
         );
-        public static final RegistrySupplier<ArmorItem> SUPPLIER_THAUMIUM_BOOTS = ITEMS.register(
+        public static final RegistrySupplier<ThaumiumArmorItem> SUPPLIER_THAUMIUM_BOOTS = ITEMS.register(
                 "thaumium_boots",
-                () -> new ArmorItem(
+                () -> new ThaumiumArmorItem(
                         ToolAndArmorMaterial.THAUMIUM,
                         ArmorItem.Type.BOOTS,
                         new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
@@ -1156,6 +1165,26 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<EntropyArrowItem> SUPPLIER_ENTROPY_ARROW = ITEMS.register(
                 "entropy_arrow",
                 EntropyArrowItem::new
+        );
+        public static final RegistrySupplier<GogglesOfRevealingItem> SUPPLIER_GOGGLES_OF_REVEALING = ITEMS.register(
+                "goggles_of_revealing",
+                GogglesOfRevealingItem::new
+        );
+//        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_HELMET = ITEMS.register(
+//                "robe_helmet",
+//                () -> new RobeArmorItem(ArmorItem.Type.HELMET)
+//        );
+        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_CHESTPLATE = ITEMS.register(
+                "robe_chestplate",
+                () -> new RobeArmorItem(ArmorItem.Type.CHESTPLATE)
+        );
+        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_LEGGINGS = ITEMS.register(
+                "robe_leggings",
+                () -> new RobeArmorItem(ArmorItem.Type.LEGGINGS)
+        );
+        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_BOOTS = ITEMS.register(
+                "robe_boots",
+                () -> new RobeArmorItem(ArmorItem.Type.BOOTS)
         );
     }
 
@@ -1367,14 +1396,14 @@ public class ThaumcraftItems {
                 return 0;
             }
         };
-        public static final ArmorMaterial SPECIAL = new ArmorMaterial() {
+        public static final ArmorMaterial ROBE = new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
                 return switch (type) {
-                    case HELMET -> 13 * 25;
-                    case CHESTPLATE -> 15 * 25;
-                    case LEGGINGS -> 16 * 25;
-                    case BOOTS -> 11 * 25;
+                    case HELMET -> 11 * 25;
+                    case CHESTPLATE -> 16 * 25;
+                    case LEGGINGS -> 15 * 25;
+                    case BOOTS -> 13 * 25;
                 };
             }
 
@@ -1398,9 +1427,62 @@ public class ThaumcraftItems {
                 return SoundEvents.ARMOR_EQUIP_IRON;
             }
 
+            private final Ingredient ingredient = Ingredient.of(ThaumcraftItemInstances.ENCHANTED_FABRIC);
             @Override
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.EMPTY;
+                return ingredient;
+            }
+
+            @Override
+            public @NotNull String getName() {
+                return "special";
+            }
+
+            @Override
+            public float getToughness() {
+                return 0;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return 0;
+            }
+        };
+        public static final ArmorMaterial SPECIAL = new ArmorMaterial() {
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 11 * 25;
+                    case CHESTPLATE -> 16 * 25;
+                    case LEGGINGS -> 15 * 25;
+                    case BOOTS -> 13 * 25;
+                };
+            }
+
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case HELMET -> 1;
+                    case CHESTPLATE -> 3;
+                    case LEGGINGS -> 2;
+                    case BOOTS -> 1;
+                };
+            }
+
+            @Override
+            public int getEnchantmentValue() {
+                return 25;
+            }
+
+            @Override
+            public @NotNull SoundEvent getEquipSound() {
+                return SoundEvents.ARMOR_EQUIP_IRON;
+            }
+
+            private final Ingredient ingredient = Ingredient.of(GOLD_INGOT);
+            @Override
+            public @NotNull Ingredient getRepairIngredient() {
+                return ingredient;
             }
 
             @Override

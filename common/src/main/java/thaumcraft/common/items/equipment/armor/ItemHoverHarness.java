@@ -79,7 +79,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, I
       return par2ItemStack.isItemEqual(new ItemStack(Items.gold_ingot)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
    }
 
-   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
+   public int getVisCostPercentDecrease(ItemStack stack, LivingEntity living, Aspect aspect) {
       return aspect == Aspects.AIR ? 5 : 2;
    }
 
@@ -110,7 +110,7 @@ public class ItemHoverHarness extends ArmorItem implements IRepairEnchantable, I
          }
       }
 
-      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisDiscount(is, player, null) + "%");
-      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + " (Aer): " + this.getVisDiscount(is, player, Aspects.AIR) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + ": " + this.getVisCostPercentDecrease(is, player, null) + "%");
+      list.add(EnumChatFormatting.DARK_PURPLE + Component.translatable("tc.visdiscount") + " (Aer): " + this.getVisCostPercentDecrease(is, player, Aspects.AIR) + "%");
    }
 }

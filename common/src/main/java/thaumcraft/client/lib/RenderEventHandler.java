@@ -171,7 +171,7 @@ public class RenderEventHandler {
          }
       }
 
-      if (event.player.inventory.armorItemInSlot(3) != null && event.player.inventory.armorItemInSlot(3).getItem() instanceof IGoggles && ((IGoggles)event.player.inventory.armorItemInSlot(3).getItem()).showIngamePopups(event.player.inventory.armorItemInSlot(3), event.player)) {
+      if (event.player.inventory.armorItemInSlot(3) != null && event.player.inventory.armorItemInSlot(3).getItem() instanceof IGoggles && ((IGoggles)event.player.inventory.armorItemInSlot(3).getItem()).showAsWearingGogglesOfRevealing(event.player.inventory.armorItemInSlot(3), event.player)) {
          boolean spaceAbove = event.player.level().isAirBlock(target.blockX, target.blockY + 1, target.blockZ);
          TileEntity te = event.player.level().getTileEntity(target.blockX, target.blockY, target.blockZ);
          if (te != null) {

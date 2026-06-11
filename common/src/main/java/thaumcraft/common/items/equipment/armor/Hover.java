@@ -27,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import static baubles.api.expanded.BaubleExpandedSlots.getTypeFromBaubleType;
 import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBaubleWithBaubleType;
 
+//i heard that there's a ticking method in player's inventory(belongs to item).we can use that.
+@Deprecated(forRemoval = true)
 public class Hover {
     public static final int EFFICIENCY = 360;
     static Map<String, Boolean> hovering = new ConcurrentHashMap<>();

@@ -83,7 +83,7 @@ public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear,
    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
    }
 
-   public int getVisDiscount(ItemStack stack, LivingEntity living, Aspect aspect) {
+   public int getVisCostPercentDecrease(ItemStack stack, LivingEntity living, Aspect aspect) {
       return stack.getItemDamage() >= 3 && stack.getItemDamage() <= 8 && Aspects.getPrimalAspects().get(stack.getItemDamage() - 3) == aspect ? 1 : 0;
    }
 

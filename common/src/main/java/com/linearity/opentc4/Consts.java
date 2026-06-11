@@ -102,10 +102,6 @@ public class Consts {
         public static final IntTagAccessor BLOCK_Z_ACCESSOR = new IntTagAccessor(BLOCK_Z);
     }
 
-    public static class EnchantmentConsts{
-
-    }
-
     public static class ResearchNoteCompoundTagAccessors {
 
         private static final String RESEARCH_NOTE_COLOR = "color";

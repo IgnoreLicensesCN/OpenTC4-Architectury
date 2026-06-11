@@ -7,10 +7,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
@@ -37,8 +37,7 @@ public interface IDowsingTool {
                 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack) * 0.075F
         );
     }
-
-    default @Nullable SimplePair<ItemStack /*notConverted*/ , List<ItemStack> /*converted*/> findDowsingResult(
+    static @Nullable SimplePair<ItemStack /*notConverted*/ , List<ItemStack> /*converted*/> findDowsingResult(
             ItemStack dowsingStack,
             ItemStack toolStack,
             RandomSource rand
@@ -63,12 +62,23 @@ public interface IDowsingTool {
         }
 
         if (toPair != null) {
-            float chance = getConvertChance(toolStack,toPair.value());
+            float toolDowsingChance = 0;
+            int dowsingLevel = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.DOWSING, dowsingStack);
+            if (dowsingLevel > 0){
+                toolDowsingChance += toPair.value() * (
+                        0.2F + dowsingLevel * 0.075F);
+            }
+            if (toolStack.getItem() instanceof IDowsingTool dowsingTool) {
+                toolDowsingChance += dowsingTool.getConvertChance(toolStack,toPair.value());
+            }
+            if (toolDowsingChance <= 0){
+                return null;
+            }
             int amountRemaining = dowsingStack.getCount();
-            float convertedAllParts = dowsingStack.getCount() * chance;
+            float convertedAllParts = dowsingStack.getCount() * toolDowsingChance;
             int converted = (int) Math.floor(convertedAllParts);
             converted += rand.nextFloat() < (convertedAllParts-converted)?1:0;
-            if (chance >= 1){
+            if (toolDowsingChance >= 1){
                 amountRemaining = 0;
             } else {
                 amountRemaining -= converted;

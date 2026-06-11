@@ -11,12 +11,14 @@ import net.minecraft.world.item.ItemStack;
  * goggles of revealing can apart from view nodes which is handled by IRevealer.
  *
  */
-
+//TODO:Make renderer judge with this in a method so that it can be mixin
 public interface IGoggles {
 	
 	/*
 	 * If this method returns true things like block essentia contents will be shown.
 	 */
-    boolean showIngamePopups(ItemStack itemstack, LivingEntity player);
+    default boolean showAsWearingGogglesOfRevealing(ItemStack itemstack, LivingEntity player){
+		return true;
+	};
 
 }

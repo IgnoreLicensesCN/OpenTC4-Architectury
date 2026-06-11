@@ -55,6 +55,7 @@ import java.util.function.Consumer;
 
 import static com.linearity.opentc4.simpleutils.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
+import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.DOWSING;
 
 public class ExcavationFocusItem extends BasicFocusItem {
     public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
@@ -317,22 +318,39 @@ public class ExcavationFocusItem extends BasicFocusItem {
         }
     }
     protected ItemStack getFakePickaxeStackForFocus(ItemStack focusStack,@Nullable ItemStack wandStack) {
-        boolean dowsing = this.getWandUpgradesWithWandModifiers(focusStack,wandStack).getOrDefault(ExcavationFocusItem.dowsing,0) > 0;
-        ItemStack fakeDiamondPickaxeStack = new ItemStack(dowsing? ThaumcraftItems.ThaumcraftItemInstances.ELEMENTAL_PICKAXE :Items.DIAMOND_PICKAXE);
-        EnchantmentHelper.setEnchantments(getEnchantmentsFromFocus(focusStack,wandStack),fakeDiamondPickaxeStack);
+        return getFakePickaxeStackForFocusFromPickaxe(focusStack,wandStack,new ItemStack(Items.DIAMOND_PICKAXE));
+    }
+    protected ItemStack getFakePickaxeStackForFocusFromPickaxe(ItemStack focusStack,@Nullable ItemStack wandStack,ItemStack pickaxeStack) {
+        ItemStack fakeDiamondPickaxeStack = pickaxeStack.copy();
+        var enchantments = new HashMap<>(EnchantmentHelper.getEnchantments(focusStack));
+        getEnchantmentsFromFocus(focusStack,wandStack).forEach((enchantment, level) -> enchantments.merge(enchantment,level,Integer::sum));
+        EnchantmentHelper.setEnchantments(enchantments,fakeDiamondPickaxeStack);
         return fakeDiamondPickaxeStack;
     }
     protected @Modifiable Map<Enchantment,Integer> getEnchantmentsFromFocus(ItemStack focusStack,@Nullable ItemStack wandStack){
         var wandUpgrades = this.getWandUpgradesWithWandModifiers(focusStack,wandStack);
         int fortune = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.TREASURE, 0);
         int silk = wandUpgrades.getOrDefault(ThaumcraftFocusUpgradeTypes.SILKTOUCH, 0);
+        int dowsing = wandUpgrades.getOrDefault(ExcavationFocusItem.dowsing,0);
 
         Map<Enchantment,Integer> enchantments = new HashMap<>();
         if (fortune != 0){
             enchantments.put(Enchantments.BLOCK_FORTUNE, fortune);
             enchantments.put(Enchantments.SILK_TOUCH, silk);
+            enchantments.put(DOWSING, dowsing);
         }
         return enchantments;
+    }
+    public void getResourceFromBlock(
+            ItemStack focusStack,
+            @Nullable ItemStack wandStack,
+            Level level,
+            BlockState state,
+            BlockPos pos,
+            ItemStack pickaxeStack,
+            Consumer<ItemStack> resourceConsumer
+    ){
+        getResourceFromBlock(level,state,pos,getFakePickaxeStackForFocusFromPickaxe(focusStack,wandStack,pickaxeStack),resourceConsumer);
     }
     public void getResourceFromBlock(
             ItemStack focusStack,

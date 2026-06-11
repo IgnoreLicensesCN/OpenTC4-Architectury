@@ -3,8 +3,10 @@ package com.linearity.opentc4.chatcomponent;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
 import java.util.Optional;

@@ -60,6 +60,16 @@ public abstract class Aspect {
 			return true;
 		}
 	};
+	public static final Aspect UNKNOWN = new Aspect(
+			AspectResourceLocation.of(Thaumcraft.MOD_ID,"_unknown"),
+			0x000000,
+			1,
+			true) {
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+	};
 	
 	/**
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
@@ -78,6 +88,13 @@ public abstract class Aspect {
 			name = Component.translatable("aspect."+aspectKey.getNamespace()+"."+aspectKey.getPath());
 		}
 		return name;
+	}
+	protected Component nameColored;
+	public Component getNameColored() {
+		if (nameColored == null) {
+			nameColored = getName().copy().withStyle(style -> style.withColor(color));
+		}
+		return nameColored;
 	}
 	protected String nameString;
 	public String getNameString() {

@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
  * Equipped head slot items that extend this class will make nodes visible in world.
  *
  */
-
+@Deprecated(forRemoval = true,since = "use IGoggles")
 public interface IRevealer {
 	
 	/*

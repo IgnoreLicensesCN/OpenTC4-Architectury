@@ -37,7 +37,6 @@ import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.abstracts.IDowsingTool;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
-import thaumcraft.common.items.equipment.ItemElementalAxe;
 import thaumcraft.common.lib.enchantment.EnchantmentHaste;
 import thaumcraft.common.lib.enchantment.EnchantmentRepair;
 import thaumcraft.common.lib.utils.CropUtils;

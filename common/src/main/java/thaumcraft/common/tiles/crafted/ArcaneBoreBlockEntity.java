@@ -129,19 +129,6 @@ public class ArcaneBoreBlockEntity
         repairPickaxe();
     }
 
-    protected int getFortuneLevel(){
-        int result = 0;
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
-            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.TREASURE);
-        }
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof PickaxeItem) {
-            result += EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
-        }
-        return result;
-    }
     protected int getEnlargeLevel(){
         int result = 0;
         var focusStack = getFocus();
@@ -181,9 +168,7 @@ public class ArcaneBoreBlockEntity
             generateDrop();
             damagePickaxe();
             if (digPos != null) {
-//                TODO:Add break particle(method below works only in client side?and im lazy)
-//                this.level.addDestroyBlockEffect(digPos, this.level.getBlockState(digPos));
-                this.level.setBlockAndUpdate(digPos, Blocks.AIR.defaultBlockState());
+                this.level.destroyBlock(digPos, false);
             }
 //            if (this.base != null) {
 //                for (int lb = 2; lb < 6; ++lb) {
@@ -359,6 +344,7 @@ public class ArcaneBoreBlockEntity
                             this.level,
                             digState,
                             digPos,
+                            getPickaxe(),
                             items::add
                     );
                 }
