@@ -15,15 +15,39 @@ public interface IFlyingAbilityProviderWearing {
 
         public static final Map<Player, Set<IPlayerEquippedSlotAccess>> flyingEnabledPlayers = new MapMaker().weakKeys().makeMap();
 
+        public static void letPlayerDown(Player player) {
+            if (!player.isCreative() && !player.isSpectator()) {
+                var abilities = player.getAbilities();
+                abilities.mayfly = false;
+                abilities.flying = false;
+                if (player instanceof ServerPlayer serverPlayer){
+                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
+                }
+            }
+        }
+        public static void flyPlayer(Player player) {
+            if (!player.isCreative() && !player.isSpectator()) {
+                var abilities = player.getAbilities();
+                abilities.mayfly = true;
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
+                }
+            }
+        }
+
         public static void unregisterFlyingProviderForPlayer(Player player, IPlayerEquippedSlotAccess slotAccess) {
-            var map = flyingEnabledPlayers.get(player);
-            if (map == null) {return;}
-            map.remove(slotAccess);
+            var slotaccesses = flyingEnabledPlayers.get(player);
+            if (slotaccesses == null) {return;}
+            slotaccesses.remove(slotAccess);
+            if (slotaccesses.isEmpty()) {
+                letPlayerDown(player);
+            }
         }
 
         public static void registerFlyingProviderForPlayer(Player player, IPlayerEquippedSlotAccess slotAccess) {
             var providers = flyingEnabledPlayers.computeIfAbsent(player, k -> ConcurrentHashMap.newKeySet());
             providers.add(slotAccess);
+            flyPlayer(player);
         }
 
         public static void checkFlyingProviderForPlayer(Player player) {
@@ -42,12 +66,7 @@ public interface IFlyingAbilityProviderWearing {
                 accessesToRemove.forEach(flyingProviderAtSlots::remove);
                 if (!canFlyWithFlyingProvider[0]){
                     flyingEnabledPlayers.remove(player);
-                    var abilities = player.getAbilities();
-                    abilities.mayfly = false;
-                    abilities.flying = false;
-                    if (player instanceof ServerPlayer serverPlayer){
-                        serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
-                    }
+                    letPlayerDown(player);
                 }
             }
         }

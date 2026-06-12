@@ -167,32 +167,17 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
                     costTickerTicking = false;
                 }
             }
-            boolean canFly = (fuelInfo.leftInt() != 0 || costTickerTicking);
+            boolean canFlyForFuel = (fuelInfo.leftInt() != 0 || costTickerTicking);
 
             if (abilities.flying) {
                 checkAndConsumeFuel(harnessStack, p);
                 multiplySpeed(harnessStack,p);
                 p.resetFallDistance();
             }
-            if (abilities.mayfly && !canFly) {
-                abilities.mayfly = false;
+            if (abilities.mayfly && !canFlyForFuel) {
                 FlyingAbilityProviderCheck.unregisterFlyingProviderForPlayer(p, CHESTPLATE_ACCESS);
-                abilities.flying = false;
-                if (entity instanceof ServerPlayer serverPlayer){
-                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
-                    serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(
-                            0, serverPlayer.containerMenu.incrementStateId(), 6, harnessStack
-                    ));
-                }
-            } else if (!abilities.mayfly && canFly) {
-                abilities.mayfly = true;
+            } else if (!abilities.mayfly && canFlyForFuel) {
                 FlyingAbilityProviderCheck.registerFlyingProviderForPlayer(p, CHESTPLATE_ACCESS);
-                if (entity instanceof ServerPlayer serverPlayer) {
-                    serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
-                    serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(
-                            0,serverPlayer.containerMenu.incrementStateId(),6,harnessStack
-                    ));
-                }
             }
         }
     }
