@@ -3,8 +3,8 @@ package com.linearity.opentc4.forge;
 import com.linearity.opentc4.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
-import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
+import com.linearity.opentc4.utils.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
@@ -15,7 +15,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
@@ -35,9 +34,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.tags.ITag;
-import net.minecraftforge.registries.tags.ITagManager;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,6 +42,8 @@ import org.lwjgl.glfw.GLFW;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     public MinecraftServer server;
@@ -140,16 +139,6 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     public MinecraftServer getServer() {
         return server;
     }
-    @Override
-    public List<Item> getItemsFromTag(String key) {
-        if (key == null) {
-            return null;
-        }
-
-        // 创建 TagKey
-        TagKey<Item> tagKey = TagKey.create(Registries.ITEM, ResourceLocation.tryParse(key));
-        return getItemsFromTag(tagKey);
-    }
 
     @Override
     public List<Item> getItemsFromTag(@NotNull TagKey<Item> tagKey) {
@@ -159,28 +148,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         return items;
     }
 
-    @Override
-    public List<String> getTagsFromItem(ItemStack stack) {
-        if (stack == null) return List.of();
-
-        Item item = stack.getItem();
-        IForgeRegistry<Item> registry = net.minecraftforge.registries.ForgeRegistries.ITEMS;
-        ITagManager<Item> tagManager = registry.tags();
-
-        if (tagManager == null) return List.of();
-
-        List<String> tags = new ArrayList<>();
-        tagManager.getTagNames().forEach(tagid -> {
-            ITag<Item> tag = tagManager.getTag(tagid);
-            if (tag.contains(item)) {
-                tags.add(tagid.location().toString());
-            }
-        });
-
-        return tags;
-    }
-
-//    @Override
+    //    @Override
 //    public boolean isItemStackMatchTag(ItemStack stack, String tagStr) {
 //        if (stack == null || tagStr == null) return false;
 //
@@ -211,12 +179,11 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     @Override
     public List<EquippedBaubleSlot> listEquippedSlots(Player player) {
         List<EquippedBaubleSlot> result = new ArrayList<>();
-
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
             handler.getCurios().forEach((slotType, stacksHandler) -> {
                 var stacks = stacksHandler.getStacks();
                 for (int i = 0; i < stacks.getSlots(); i++) {
-                    result.add(EquippedBaubleSlot.curios(slotType, i));
+                    result.add(new EquippedBaubleSlot(slotType, i));
                 }
             });
         });
@@ -234,7 +201,7 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
                 for (int i = 0; i < slots.getSlots(); i++) {
                     ItemStack stack = slots.getStackInSlot(i);
                     if (!stack.isEmpty()) {
-                        if (consumer.accept(EquippedBaubleSlot.curios(entry.getKey(),i), stack, stack.getItem())) {
+                        if (consumer.accept(new EquippedBaubleSlot(entry.getKey(),i), stack, stack.getItem())) {
                             return true;
                         }
                     }
@@ -264,20 +231,24 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
             Player player,
             BaubleConsumer<Item> consumer
     ) {
-        return CuriosApi.getCuriosInventory(player).map(handler -> {
-            for (var entry : handler.getCurios().entrySet()) {
-                var slots = entry.getValue().getStacks();
-                for (int i = 0; i < slots.getSlots(); i++) {
-                    ItemStack stack = slots.getStackInSlot(i);
-                    if (!stack.isEmpty() && Objects.equals(entry.getKey(), baubleType)) {
-                        if (consumer.accept(EquippedBaubleSlot.curios(entry.getKey(),i), stack, stack.getItem())) {
-                            return true;
+        AtomicBoolean result = new AtomicBoolean(false);
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+            var curiosMap = handler.getCurios();
+            var stacksHandler = curiosMap.get(baubleType);
+            if (stacksHandler != null) {
+                var stacks = stacksHandler.getStacks();
+                for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                    ItemStack stack = stacks.getStackInSlot(i);
+                    if (!stack.isEmpty()) {
+                        if (consumer.accept(new EquippedBaubleSlot(baubleType,i), stack, stack.getItem())) {
+                            result.set(true);
+                            break;
                         }
                     }
                 }
             }
-            return false;
-        }).orElse(false);
+        });
+        return result.get();
     }
     @Override
     public <T> boolean forEachBaubleWithType(
@@ -368,15 +339,20 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
 
     @Override
     public Optional<ItemStack> getEquippedItem(Player player, EquippedBaubleSlot key) {
-        if (!"curios".equals(key.namespace())) return Optional.empty();
-
-        return CuriosApi.getCuriosInventory(player).flatMap(handler -> {
-            var slot = handler.getCurios().get(key.slotType());
-            if (slot == null) return Optional.empty();
-            var stacks = slot.getStacks();
-            if (key.index() < 0 || key.index() >= stacks.getSlots()) return Optional.empty();
-            return Optional.of(stacks.getStackInSlot(key.index()));
-        });
+        var inv = CuriosApi.getCuriosInventory(player);
+        if (!inv.isPresent()) {
+            return Optional.empty();
+        }
+        AtomicReference<ItemStack> resultAtomic = new AtomicReference<>();
+        inv.ifPresent(handler -> handler.findCurio(key.slotType(),key.index())
+                .ifPresent(result -> {
+            resultAtomic.set(result.stack());
+        }));
+        ItemStack result = resultAtomic.get();
+        if (result == null) {
+            return Optional.empty();
+        }
+        return Optional.of(result);
     }
 
 }

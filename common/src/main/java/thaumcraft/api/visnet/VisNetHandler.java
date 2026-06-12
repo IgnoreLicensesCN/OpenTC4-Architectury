@@ -1,7 +1,7 @@
 package thaumcraft.api.visnet;
 
 import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;

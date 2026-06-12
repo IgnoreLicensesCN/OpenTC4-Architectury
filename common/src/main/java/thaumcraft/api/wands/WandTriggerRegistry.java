@@ -94,7 +94,7 @@ public class WandTriggerRegistry {
 
 //	/**
 //	 * This is called by the onItemUseFirst function in wands.
-//	 * Parameters and return value functions like you would expect for that function.
+//	 * Parameters and return rightInt functions like you would expect for that function.
 //	 * @param world
 //	 * @param wand
 //	 * @param player

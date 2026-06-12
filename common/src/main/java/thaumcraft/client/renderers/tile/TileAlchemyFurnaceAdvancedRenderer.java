@@ -23,7 +23,7 @@ import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeS
 @SideOnly(Side.CLIENT)
 public class TileAlchemyFurnaceAdvancedRenderer extends TileEntitySpecialRenderer {
    public static IModelCustom model = null;
-   public static final ResourceLocation FURNACE = new ResourceLocation("thaumcraft", "textures/models/adv_alch_furnace.obj");
+   public static final ResourceLocation FURNACE = new ResourceLocation("thaumcraft", "textures/models/adv_alch_furnace.left");
 
    public TileAlchemyFurnaceAdvancedRenderer() {
       if (model == null){

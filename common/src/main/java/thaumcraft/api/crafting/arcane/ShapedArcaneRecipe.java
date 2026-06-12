@@ -320,7 +320,7 @@ public class ShapedArcaneRecipe extends AbstractArcaneRecipe {
     }
 
     /**
-     * Returns the input for this recipe, any mod accessing this value should never
+     * Returns the input for this recipe, any mod accessing this rightInt should never
      * manipulate the values in this array as it will effect the recipe itself.
      *
      * @return The recipes input vales.

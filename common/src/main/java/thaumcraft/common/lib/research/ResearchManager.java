@@ -1,627 +1,582 @@
 package thaumcraft.common.lib.research;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.ApiStatus;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.*;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.research.client.ResearchCategory;
-import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.research.interfaces.IResearchWarpOwner;
-import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
-import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
-import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
-
-import static com.linearity.opentc4.Consts.PlayerDataAccessors.*;
-import static com.linearity.opentc4.Consts.ThaumcraftPlayerCompoundTagAccessors.*;
-import static com.linearity.opentc4.OpenTC4.LOGGER;
-import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.common.ThaumcraftSounds.LEARN;
-import static thaumcraft.common.lib.events.EventHandlerEntity.getThaumcraftPlayersDirectory;
-
-@ApiStatus.Internal
 @Deprecated(forRemoval = true)
 public class ResearchManager {
-    static ArrayList<ResearchItem> allHiddenResearch = null;
-    static ArrayList<ResearchItem> allValidResearch = null;
-
-    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
-    public static boolean createClue(Level world, Player player, ItemStack clue, AspectList<Aspect> aspects) {
-        return createClue(world, player, clue.getItem(), aspects);
-    }
-
-    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
-    public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
-        List<ClueResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
-            label110:
-            for (ResearchItem researchItem : rcl.researches.values()) {
-                var asClueKey = researchItem.key.convertToClueResLoc();
-                boolean valid = !researchItem.tags.isEmpty()
-                        && (researchItem.isLost() || researchItem.isHidden())
-                        && !isResearchComplete(player.getGameProfile().getName(), researchItem.key
-                ) && !isClueComplete(
-                        player.getGameProfile()
-                                .getName(), asClueKey
-                );
-                if (valid) {
-                    if (researchItem.getItemTriggers() != null) {
-                        for (ItemStack stack : researchItem.getItemTriggers()) {
-                            if (
-                                    Objects.equals(stack.getItem(), clue)
-//                             InventoryUtils.areItemStacksEqual(stack, clue, true, true)
-                            ) {
-                                keys.add(asClueKey);
-                                continue label110;
-                            }
-                        }
-                    }
-
-                    if (aspects != null && !aspects.isEmpty() && researchItem.getAspectTriggers() != null) {
-                        researchItem.getAspectTriggers();
-                        for (Aspect aspect : researchItem.getAspectTriggers()) {
-                            if (aspects.get(aspect) > 0) {
-                                keys.add(asClueKey);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!keys.isEmpty()) {
-            var key = keys.get(world.getRandom().nextInt(keys.size()));
-            if (player instanceof ServerPlayer serverPlayer) {
-                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
-            }else {
-                LOGGER.warn("createclue:not a server player:{}",player.getGameProfile().getName());
-            }
-            Thaumcraft.researchManager.completeClue(player, key);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
-    public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
-        List<ClueResourceLocation> keys = new ArrayList<>();
-        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
-            label110:
-            for (ResearchItem ri : rcl.researches.values()) {
-                var convertedKey = ri.key.convertToClueResLoc();
-                boolean valid =
-                        !ri.tags.isEmpty()
-                                && (ri.isLost() || ri.isHidden()) && !isResearchComplete(
-                                player.getGameProfile()
-                                        .getName(), ri.key
-                        ) && !isClueComplete(
-                                player.getGameProfile()
-                                        .getName(),
-                                convertedKey
-                        );
-                if (valid) {
-                    {
-                        if (ri.getEntityTriggers() != null) {
-                            ri.getEntityTriggers();
-                            for (ResourceKey<EntityType<?>> entity : ri.getEntityTriggers()) {
-                                if (clue.equals(entity)) {
-                                    keys.add(ClueResourceLocation.of(ri.key));
-                                    continue label110;
-                                }
-                            }
-                        }
-                    }
-
-                    if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
-                        ri.getAspectTriggers();
-                        for (Aspect aspect : ri.getAspectTriggers()) {
-                            if (aspects.get(aspect) > 0) {
-                                keys.add(ClueResourceLocation.of(ri.key));
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!keys.isEmpty()) {
-            var key = keys.get(world.getRandom().nextInt(keys.size()));
-            if (player instanceof ServerPlayer serverPlayer) {
-                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
-            }else {
-                LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
-            }
-            Thaumcraft.researchManager.completeClue(player, key);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface,or PERISH")
-    public static ResourceLocation findHiddenResearch(Player player) {
-        if (allHiddenResearch == null) {
-            allHiddenResearch = new ArrayList<>();
-
-            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-                for (ResearchItem ri : cat.researches.values()) {
-                    if (ri.isHidden() && ri.tags != null && !ri.tags.isEmpty()) {
-                        allHiddenResearch.add(ri);
-                    }
-                }
-            }
-        }
-
-        ArrayList<ResourceLocation> keys = new ArrayList<>();
-
-        for (ResearchItem research : allHiddenResearch) {
-            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
-                    && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
-                    && (research.getItemTriggers() != null
-                    || research.getEntityTriggers() != null
-                    || research.getAspectTriggers() != null
-            )
-            ) {
-                keys.add(research.key);
-            }
-        }
-
-        Random rand = new Random(player.level().getDayTime() / 10L / 5L);
-        if (!keys.isEmpty()) {
-            int r = rand.nextInt(keys.size());
-            return keys.get(r);
-        } else {
-            return EMPTY_RESEARCH;
-        }
-    }
-    @Deprecated(forRemoval = true)
-    public static final ResourceLocation EMPTY_RESEARCH = new ResourceLocation("","");
-
-    @Deprecated(forRemoval = true,since = "unused,should be called mental illness")
-    public static ResourceLocation findMatchingResearch(Player player, Aspect aspect) {
-        ResourceLocation randomMatch = null;
-        if (allValidResearch == null) {
-            allValidResearch = new ArrayList<>();
-
-            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-                for (ResearchItem ri : cat.researches.values()) {
-                    boolean secondary = ri.isSecondary() && Config.researchDifficulty == 0 || Config.researchDifficulty == -1;
-                    if (!secondary && !ri.isHidden() && !ri.isLost() && !ri.isAutoUnlock() && !ri.isVirtual() && !ri.isStub()) {
-                        allValidResearch.add(ri);
-                    }
-                }
-            }
-        }
-
-        ArrayList<ResourceLocation> keys = new ArrayList<>();
-
-        for (ResearchItem research : allValidResearch) {
-            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
-                    && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
-                    && research.tags.getAmount(aspect) > 0) {
-                keys.add(research.key);
-            }
-        }
-
-        if (!keys.isEmpty()) {
-            randomMatch = keys.get(player.getRandom().nextInt(keys.size()));
-        }
-
-        return randomMatch;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static int getAlreadyExistsResearchSlot(Player player, ResearchItemResourceLocation key) {
-        var inv = player.getInventory().items;
-        for (int a = 0; a < inv.size(); a++) {
-            ItemStack stack = inv.get(a);
-            if (!stack.isEmpty()
-                    && stack.is(ConfigItems.itemResearchNotes)) {
-                ResearchNoteData data = getData(stack);
-                if (data != null && data.key.equals(key)) {
-                    return a;
-                }
-            }
-        }
-        return -1;
-    }
-
-    @Deprecated(forRemoval = true,since = "use ResearchItem's isComplete instead")
-    public static boolean isResearchComplete(String playername, ResearchItemResourceLocation key) {
-        var research = ResearchItem.getResearch(key);
-        if (research == null) {
-            return false;
-        }
-        return research.isPlayerCompletedResearch(playername);
-    }
-
-    @Deprecated(forRemoval = true,since = "IStringBasedResearchClueOwner and IResearchClueOwner")
-    public static boolean isClueComplete(Player player, ClueResourceLocation key) {
-        if (ResearchItem.getResearch(ResearchItemResourceLocation.of(key)) == null) {
-            return false;
-        } else {
-            var completed = getClueForPlayer(player);
-            return completed != null && !completed.isEmpty() && completed.contains(key);
-        }
-    }
-
-    @ApiStatus.Internal
-    public static Set<ClueResourceLocation> getClueForPlayer(Player player) {
-        var playerName = player.getGameProfile().getName();
-        var out = Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
-
-        try {
-            var server = platformUtils.getServer();
-            if (
-                    out == null && player instanceof ServerPlayer //Thaumcraft.getClientWorld() == null && server != null
-            ) {
-                Thaumcraft.getCompletedClue().put(playerName, ConcurrentHashMap.newKeySet());
-                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
-
-
-                File dir = getThaumcraftPlayersDirectory(server);
-                File file1 = new File(dir, id + ".thaum");
-                File file2 = new File(dir, id + ".thaumbak");
-                loadPlayerData(player, file1, file2, false);
-                out = Thaumcraft.getCompletedClue().get(playerName);
-            }
-        } catch (Exception e) {
-            LOGGER.error("getClueForPlayer", e);
-        }
-
-        return out;
-    }
-    public static List<ResearchItemResourceLocation> getResearchForPlayer(Player player) {
-        var playerName = player.getGameProfile().getName();
-        var out = Thaumcraft.getCompletedResearch().get(playerName);
-
-        try {
-            var server = platformUtils.getServer();
-            if (
-                    out == null && player instanceof ServerPlayer //Thaumcraft.getClientWorld() == null && server != null
-            ) {
-                Thaumcraft.getCompletedResearch().put(playerName, new ArrayList<>());
-                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
-
-
-                File dir = getThaumcraftPlayersDirectory(server);
-                File file1 = new File(dir, id + ".thaum");
-                File file2 = new File(dir, id + ".thaumbak");
-                loadPlayerData(player, file1, file2, false);
-
-                out = Thaumcraft.getCompletedResearch().get(playerName);
-            }
-        } catch (Exception e) {
-            LOGGER.error("getClueForPlayer", e);
-        }
-
-        return out;
-    }
-
-    public static List<ResearchItemResourceLocation> getResearchForPlayerSafe(Player player) {
-        return Thaumcraft.getCompletedResearch().get(player.getGameProfile().getName());
-    }
-
-    @ApiStatus.Internal
-    public static Set<ClueResourceLocation> getClueForPlayerSafe(Player player) {
-        return Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
-    }
-
-    public static boolean completeClueUnsaved(Player player, ClueResourceLocation key) {
-        var completed = getClueForPlayerSafe(player);
-        if (completed != null && completed.contains(key)) {
-            return false;
-        } else {
-            if (completed == null) {
-                completed = ConcurrentHashMap.newKeySet();
-            }
-
-            completed.add(key);
-            Thaumcraft.getCompletedClue().put(player.getGameProfile().getName(), completed);
-            return true;
-        }
-    }
-    public static boolean completeResearchUnsaved(Player player, ResearchItemResourceLocation key) {
-        var completed = getResearchForPlayerSafe(player);
-        if (completed != null && completed.contains(key)) {
-            return false;
-        } else {
-            if (completed == null) {
-                completed = new ArrayList<>();
-            }
-
-            completed.add(key);
-            Thaumcraft.getCompletedResearch().put(player.getGameProfile().getName(), completed);
-            return true;
-        }
-    }
-
-    @Deprecated(forRemoval = true,since = "use ResearchItem method")
-    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequisites) {
-        for (var preReq : preRequisites) {
-            if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
-        }
-        if (isResearchComplete(player.getGameProfile().getName(), research)){return;}
-        new PacketResearchCompleteS2C(research).sendTo(player);
-        Thaumcraft.researchManager.completeResearch(player, research);
-        player.playSound(LEARN);//,.75f,1.f
-    }
-    @ApiStatus.Internal
-    public void completeClue(Player player, ClueResourceLocation key){
-
-        String playerName = player.getGameProfile().getName();
-        if (completeClueUnsaved(player, key)) {
-            int warp = ThaumcraftApi.getClueWarp(key);
-            addKindsOfWarps(player, warp);
-            scheduleSave(player);
-        }
-    }
-    @ApiStatus.Internal
-    public void completeResearch(Player player, ResearchItemResourceLocation key) {
-        if (completeResearchUnsaved(player, key)) {
-            int warp;
-            var research = ResearchItem.getResearch(key);
-            if (research instanceof IResearchWarpOwner warpOwner){
-                warp = warpOwner.getWarp();
-                addKindsOfWarps(player, warp);
-            }
-            scheduleSave(player);
-        }
-
-    }
-
-    @UtilityLikeAbstraction(reason = "not sure wtf azanor wants")
-    public static void addKindsOfWarps(Player player, int warp) {
-        if (warp > 0 && !Config.wuss && (player instanceof ServerPlayer)) {
-            var warpInfo = WarpInfo.getFromPlayer(player);
-            if (warp > 1) {
-                int halved = warp / 2;
-                if (warp - halved > 0) {
-                    warpInfo.addTempWarp(warp - halved);
-                }
-                warpInfo.addStickyWarp(halved);
-            } else {
-                warpInfo.addTempWarp(warp);
-            }
-        }
-    }
-    public static boolean completeAspectUnsaved(Player player, Aspect aspect, int amount) {
-        if (aspect == null) {
-            return false;
-        } else {
-            Thaumcraft.playerKnowledge.addDiscoveredAspect(player, aspect);
-            Thaumcraft.playerKnowledge.setAspectPool(player, aspect, amount);
-            return true;
-        }
-    }
-
-    public void completeAspect(Player player, Aspect aspect, int amount) {
-        if (completeAspectUnsaved(player, aspect, amount)) {
-            scheduleSave(player);
-        }
-    }
-
-    public static boolean completeScannedObjectUnsaved(Player player, String object) {
-        String username = player.getGameProfile().getName();
-        List<String> completed = Thaumcraft.getScannedObjects().get(username);
-        if (completed == null) {
-            completed = new ArrayList<>();
-        }
-
-        if (!completed.contains(object)) {
-            completed.add(object);
-            String t = object.replaceFirst("#", "@");
-            if (object.startsWith("#")) {
-                completed.remove(t);
-            }
-
-            Thaumcraft.getScannedObjects().put(username, completed);
-        }
-
-        return true;
-    }
-
-    public static boolean completeScannedEntityUnsaved(Player player, String key) {
-        String username = player.getGameProfile().getName();
-        List<String> completed = Thaumcraft.getScannedEntities().get(username);
-        if (completed == null) {
-            completed = new ArrayList<>();
-        }
-
-        if (!completed.contains(key)) {
-            completed.add(key);
-            String t = key.replaceFirst("#", "@");
-            if (key.startsWith("#") && completed.contains(t) && completed.remove(t)) {
-            }
-
-            Thaumcraft.getScannedEntities().put(username, completed);
-        }
-
-        return true;
-    }
-
-    public static boolean completeScannedPhenomenaUnsaved(Player player, String key) {
-        String username = player.getGameProfile().getName();
-        List<String> completed = Thaumcraft.getScannedPhenomena().get(username);
-        if (completed == null) {
-            completed = new ArrayList<>();
-        }
-
-        if (!completed.contains(key)) {
-            completed.add(key);
-            String replacedKey = key.replaceFirst("#", "@");
-            if (key.startsWith("#") && completed.contains(replacedKey)) {
-                completed.remove(replacedKey);
-            }
-
-            Thaumcraft.getScannedPhenomena().put(username, completed);
-        }
-
-        return true;
-    }
-
-    public void completeScannedObject(Player player, String object) {
-        if (completeScannedObjectUnsaved(player, object)) {
-            scheduleSave(player);
-        }
-
-    }
-
-    public void completeScannedEntity(Player player, String key) {
-        if (completeScannedEntityUnsaved(player, key)) {
-            scheduleSave(player);
-        }
-
-    }
-
-    public void completeScannedPhenomena(Player player, String key) {
-        if (completeScannedPhenomenaUnsaved(player, key)) {
-            scheduleSave(player);
-        }
-
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void loadPlayerData(Player player, File file1, File file2, boolean legacy) {
-        try {
-            CompoundTag data = null;
-            if (file1 != null && file1.exists()) {
-                try {
-                    FileInputStream fileinputstream = new FileInputStream(file1);
-                    data = NbtIo.readCompressed(fileinputstream);
-                    fileinputstream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (file1 == null || !file1.exists() || data == null || data.isEmpty()) {
-                LOGGER.warn("Thaumcraft data not found for {}. Trying to load backup Thaumcraft data.", player.getGameProfile().getName());
-                if (file2 != null && file2.exists()) {
-                    try {
-                        FileInputStream fileinputstream = new FileInputStream(file2);
-                        data = NbtIo.readCompressed(fileinputstream);
-                        fileinputstream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            if (data != null) {
-                loadResearchNBT(data, player);
-                loadClueNBT(data, player);
-                loadAspectNBT(data, player);
-                loadScannedNBT(data, player);
-
-
-            } else {
-                for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-                    if (!(aspect instanceof CompoundAspect)) {
-//                        Thaumcraft.researchManager;
-                        completeAspectUnsaved(player, aspect, (short) (15 + ThreadLocalRandom.current().nextInt(5)));
-                    }
-                }
-
-                scheduleSave(player);
-                LOGGER.info("Assigning initial aspects to {}({})", player.getGameProfile().getName(),player.getGameProfile().getId());
-            }
-        } catch (Exception exception1) {
-            exception1.printStackTrace();
-            LOGGER.fatal("Error loading Thaumcraft data");
-        }
-
-    }
-
-    public static void loadResearchNBT(CompoundTag entityData, Player player) {
-        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.readFromCompoundTag(entityData)
-                .forEach(
-                        researchTag -> completeResearchUnsaved(player, researchTag)
-                );
-//        ListTag list = THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR
-//                .readFromCompoundTag(entityData);
+//    static ArrayList<ResearchItem> allHiddenResearch = null;
+//    static ArrayList<ResearchItem> allValidResearch = null;
 //
-//        if (list == null) return;
+//    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
+//    public static boolean createClue(Level world, Player player, ItemStack clue, AspectList<Aspect> aspects) {
+//        return createClue(world, player, clue.getItem(), aspects);
+//    }
 //
-//        for (int i = 0; i < list.size(); ++i) {
-//            CompoundTag rs = list.getCompound(i);
-//            var key = LIST_TAG_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
-//            if (key != null) {
-//                completeResearchUnsaved(player, key);
+//    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
+//    public static boolean createClue(Level world, Player player, Item clue, AspectList<Aspect> aspects) {
+//        List<ClueResourceLocation> keys = new ArrayList<>();
+//        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
+//            label110:
+//            for (ResearchItem researchItem : rcl.researches.values()) {
+//                var asClueKey = researchItem.key.convertToClueResLoc();
+//                boolean valid = !researchItem.tags.isEmpty()
+//                        && (researchItem.isLost() || researchItem.isHidden())
+//                        && !isResearchComplete(player.getGameProfile().getName(), researchItem.key
+//                ) && !isClueComplete(
+//                        player.getGameProfile()
+//                                .getName(), asClueKey
+//                );
+//                if (valid) {
+//                    if (researchItem.getItemTriggers() != null) {
+//                        for (ItemStack stack : researchItem.getItemTriggers()) {
+//                            if (
+//                                    Objects.equals(stack.getItem(), clue)
+////                             InventoryUtils.areItemStacksEqual(stack, clue, true, true)
+//                            ) {
+//                                keys.add(asClueKey);
+//                                continue label110;
+//                            }
+//                        }
+//                    }
+//
+//                    if (aspects != null && !aspects.isEmpty() && researchItem.getAspectTriggers() != null) {
+//                        researchItem.getAspectTriggers();
+//                        for (Aspect aspect : researchItem.getAspectTriggers()) {
+//                            if (aspects.get(aspect) > 0) {
+//                                keys.add(asClueKey);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
 //            }
 //        }
-    }
-    public static void loadClueNBT(CompoundTag entityData, Player player) {
-        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.readFromCompoundTag(entityData).forEach(
-                clueResourceLocation -> completeClueUnsaved(player, clueResourceLocation)
-        );
-//        ListTag list = THAUMCRAFT_PLAYER_CLUE_ACCESSOR
-//                .readFromCompoundTag(entityData);
 //
-//        if (list == null) return;
+//        if (!keys.isEmpty()) {
+//            var key = keys.get(world.getRandom().nextInt(keys.size()));
+//            if (player instanceof ServerPlayer serverPlayer) {
+//                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
+//            }else {
+//                LOGGER.warn("createclue:not a server player:{}",player.getGameProfile().getName());
+//            }
+//            Thaumcraft.researchManager.completeClue(player, key);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 //
-//        for (int i = 0; i < list.size(); ++i) {
-//            CompoundTag rs = list.getCompound(i);
-//            var key = LIST_TAG_CLUE_ACCESSOR.readFromCompoundTag(rs);
-//            if (key != null) {
-//                completeClueUnsaved(player, key);
+//    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface")
+//    public static boolean createClue(Level world, Player player, ResourceKey<EntityType<?>> clue, AspectList<Aspect> aspects) {
+//        List<ClueResourceLocation> keys = new ArrayList<>();
+//        for (ResearchCategory rcl : ResearchCategory.researchCategories.values()) {
+//            label110:
+//            for (ResearchItem ri : rcl.researches.values()) {
+//                var convertedKey = ri.key.convertToClueResLoc();
+//                boolean valid =
+//                        !ri.tags.isEmpty()
+//                                && (ri.isLost() || ri.isHidden()) && !isResearchComplete(
+//                                player.getGameProfile()
+//                                        .getName(), ri.key
+//                        ) && !isClueComplete(
+//                                player.getGameProfile()
+//                                        .getName(),
+//                                convertedKey
+//                        );
+//                if (valid) {
+//                    {
+//                        if (ri.getEntityTriggers() != null) {
+//                            ri.getEntityTriggers();
+//                            for (ResourceKey<EntityType<?>> entity : ri.getEntityTriggers()) {
+//                                if (clue.equals(entity)) {
+//                                    keys.add(ClueResourceLocation.of(ri.key));
+//                                    continue label110;
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    if (aspects != null && !aspects.isEmpty() && ri.getAspectTriggers() != null) {
+//                        ri.getAspectTriggers();
+//                        for (Aspect aspect : ri.getAspectTriggers()) {
+//                            if (aspects.get(aspect) > 0) {
+//                                keys.add(ClueResourceLocation.of(ri.key));
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
 //            }
 //        }
-    }
-    public static void loadAspectNBT(CompoundTag entityData, Player player) {
-
-        PLAYER_RESEARCH_ASPECTS
-                .readFromCompoundTag(entityData)
-                .forEach(
-                        (key, value) -> completeAspectUnsaved(player, key, value)
-                );
-
-//        ListTag list = THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR
-//                .readFromCompoundTag(entityData);
-//        if (list == null) return;
 //
-//        for (int i = 0; i < list.size(); ++i) {
-//            CompoundTag rs = list.getCompound(i);
-//
-//            var key = LIST_TAG_ASPECT_ACCESSOR.readFromCompoundTag(rs);
-//            if (key == null) continue;
-//
-//            Aspect aspect = Aspect.getAspect(key);
-//            if (aspect == null) continue;
-//
-//            int amount = LIST_TAG_ASPECT_INT_ACCESSOR.readIntFromCompoundTag(rs);
-//
-//            completeAspectUnsaved(player, aspect, amount);
+//        if (!keys.isEmpty()) {
+//            var key = keys.get(world.getRandom().nextInt(keys.size()));
+//            if (player instanceof ServerPlayer serverPlayer) {
+//                new PacketClueCompleteS2C(key).sendTo(serverPlayer);
+//            }else {
+//                LOGGER.warn("createclue:not a server playere:{}",player.getGameProfile().getName());
+//            }
+//            Thaumcraft.researchManager.completeClue(player, key);
+//            return true;
+//        } else {
+//            return false;
 //        }
-    }
+//    }
+
+//    @Deprecated(forRemoval = true,since = "should be migrated to ResearchItem or a interface,or PERISH")
+//    public static ResourceLocation findHiddenResearch(Player player) {
+//        if (allHiddenResearch == null) {
+//            allHiddenResearch = new ArrayList<>();
+//
+//            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
+//                for (ResearchItem ri : cat.researches.values()) {
+//                    if (ri.isHidden() && ri.tags != null && !ri.tags.isEmpty()) {
+//                        allHiddenResearch.add(ri);
+//                    }
+//                }
+//            }
+//        }
+//
+//        ArrayList<ResourceLocation> keys = new ArrayList<>();
+//
+//        for (ResearchItem research : allHiddenResearch) {
+//            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
+//                    && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
+//                    && (research.getItemTriggers() != null
+//                    || research.getEntityTriggers() != null
+//                    || research.getAspectTriggers() != null
+//            )
+//            ) {
+//                keys.add(research.key);
+//            }
+//        }
+//
+//        Random rand = new Random(player.level().getDayTime() / 10L / 5L);
+//        if (!keys.isEmpty()) {
+//            int r = rand.nextInt(keys.size());
+//            return keys.get(r);
+//        } else {
+//            return EMPTY_RESEARCH;
+//        }
+//    }
+//    @Deprecated(forRemoval = true)
+//    public static final ResourceLocation EMPTY_RESEARCH = new ResourceLocation("","");
+//
+//    @Deprecated(forRemoval = true,since = "unused,should be called mental illness")
+//    public static ResourceLocation findMatchingResearch(Player player, Aspect aspect) {
+//        ResourceLocation randomMatch = null;
+//        if (allValidResearch == null) {
+//            allValidResearch = new ArrayList<>();
+//
+//            for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
+//                for (ResearchItem ri : cat.researches.values()) {
+//                    boolean secondary = ri.isSecondary() && Config.researchDifficulty == 0 || Config.researchDifficulty == -1;
+//                    if (!secondary && !ri.isHidden() && !ri.isLost() && !ri.isAutoUnlock() && !ri.isVirtual() && !ri.isStub()) {
+//                        allValidResearch.add(ri);
+//                    }
+//                }
+//            }
+//        }
+//
+//        ArrayList<ResourceLocation> keys = new ArrayList<>();
+//
+//        for (ResearchItem research : allValidResearch) {
+//            if (!isResearchComplete(player.getGameProfile().getName(), research.key)
+//                    && ResearchItem.doesPlayerHaveRequisites(player.getGameProfile().getName(), research.key)
+//                    && research.tags.getAmount(aspect) > 0) {
+//                keys.add(research.key);
+//            }
+//        }
+//
+//        if (!keys.isEmpty()) {
+//            randomMatch = keys.get(player.getRandom().nextInt(keys.size()));
+//        }
+//
+//        return randomMatch;
+//    }
+//
+//    @Deprecated(forRemoval = true)
+//    public static int getAlreadyExistsResearchSlot(Player player, ResearchItemResourceLocation key) {
+//        var inv = player.getInventory().items;
+//        for (int a = 0; a < inv.size(); a++) {
+//            ItemStack stack = inv.get(a);
+//            if (!stack.isEmpty()
+//                    && stack.is(ConfigItems.itemResearchNotes)) {
+//                ResearchNoteData data = getData(stack);
+//                if (data != null && data.key.equals(key)) {
+//                    return a;
+//                }
+//            }
+//        }
+//        return -1;
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "use ResearchItem's isComplete instead")
+//    public static boolean isResearchComplete(String playername, ResearchItemResourceLocation key) {
+//        var research = ResearchItem.getResearch(key);
+//        if (research == null) {
+//            return false;
+//        }
+//        return research.isPlayerCompletedResearch(playername);
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "IStringBasedResearchClueOwner and IResearchClueOwner")
+//    public static boolean isClueComplete(Player player, ClueResourceLocation key) {
+//        if (ResearchItem.getResearch(ResearchItemResourceLocation.of(key)) == null) {
+//            return false;
+//        } else {
+//            var completed = getClueForPlayer(player);
+//            return completed != null && !completed.isEmpty() && completed.contains(key);
+//        }
+//    }
+//
+//    @ApiStatus.Internal
+//    public static Set<ClueResourceLocation> getClueForPlayer(Player player) {
+//        var playerName = player.getGameProfile().getName();
+//        var out = Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
+//
+//        try {
+//            var server = platformUtils.getServer();
+//            if (
+//                    out == null && player instanceof ServerPlayer //Thaumcraft.getClientWorld() == null && server != null
+//            ) {
+//                Thaumcraft.getCompletedClue().put(playerName, ConcurrentHashMap.newKeySet());
+//                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
+//
+//
+//                File dir = getThaumcraftPlayersDirectory(server);
+//                File file1 = new File(dir, id + ".thaum");
+//                File file2 = new File(dir, id + ".thaumbak");
+//                loadPlayerData(player, file1, file2, false);
+//                out = Thaumcraft.getCompletedClue().get(playerName);
+//            }
+//        } catch (Exception e) {
+//            LOGGER.error("getClueForPlayer", e);
+//        }
+//
+//        return out;
+//    }
+//    public static List<ResearchItemResourceLocation> getResearchForPlayer(Player player) {
+//        var playerName = player.getGameProfile().getName();
+//        var out = Thaumcraft.getCompletedResearch().get(playerName);
+//
+//        try {
+//            var server = platformUtils.getServer();
+//            if (
+//                    out == null && player instanceof ServerPlayer //Thaumcraft.getClientWorld() == null && server != null
+//            ) {
+//                Thaumcraft.getCompletedResearch().put(playerName, new ArrayList<>());
+//                UUID id = UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
+//
+//
+//                File dir = getThaumcraftPlayersDirectory(server);
+//                File file1 = new File(dir, id + ".thaum");
+//                File file2 = new File(dir, id + ".thaumbak");
+//                loadPlayerData(player, file1, file2, false);
+//
+//                out = Thaumcraft.getCompletedResearch().get(playerName);
+//            }
+//        } catch (Exception e) {
+//            LOGGER.error("getClueForPlayer", e);
+//        }
+//
+//        return out;
+//    }
+//
+//    public static List<ResearchItemResourceLocation> getResearchForPlayerSafe(Player player) {
+//        return Thaumcraft.getCompletedResearch().get(player.getGameProfile().getName());
+//    }
+//
+//    @ApiStatus.Internal
+//    public static Set<ClueResourceLocation> getClueForPlayerSafe(Player player) {
+//        return Thaumcraft.getCompletedClue().get(player.getGameProfile().getName());
+//    }
+//
+//    public static boolean completeClueUnsaved(Player player, ClueResourceLocation key) {
+//        var completed = getClueForPlayerSafe(player);
+//        if (completed != null && completed.contains(key)) {
+//            return false;
+//        } else {
+//            if (completed == null) {
+//                completed = ConcurrentHashMap.newKeySet();
+//            }
+//
+//            completed.add(key);
+//            Thaumcraft.getCompletedClue().put(player.getGameProfile().getName(), completed);
+//            return true;
+//        }
+//    }
+//    public static boolean completeResearchUnsaved(Player player, ResearchItemResourceLocation key) {
+//        var completed = getResearchForPlayerSafe(player);
+//        if (completed != null && completed.contains(key)) {
+//            return false;
+//        } else {
+//            if (completed == null) {
+//                completed = new ArrayList<>();
+//            }
+//
+//            completed.add(key);
+//            Thaumcraft.getCompletedResearch().put(player.getGameProfile().getName(), completed);
+//            return true;
+//        }
+//    }
+
+//    @Deprecated(forRemoval = true,since = "use ResearchItem method")
+//    public static void unlockResearchForPlayer(Level world, ServerPlayer player, ResearchItemResourceLocation research, ResearchItemResourceLocation... preRequisites) {
+//        for (var preReq : preRequisites) {
+//            if (!isResearchComplete(player.getGameProfile().getName(), preReq)){return;}
+//        }
+//        if (isResearchComplete(player.getGameProfile().getName(), research)){return;}
+//        new PacketResearchCompleteS2C(research).sendTo(player);
+//        Thaumcraft.researchManager.completeResearch(player, research);
+//        player.playSound(LEARN);//,.75f,1.f
+//    }
+//    @ApiStatus.Internal
+//    public void completeClue(Player player, ClueResourceLocation key){
+//
+//        String playerName = player.getGameProfile().getName();
+//        if (completeClueUnsaved(player, key)) {
+//            int warp = ThaumcraftApi.getClueWarp(key);
+//            addKindsOfWarps(player, warp);
+//            scheduleSave(player);
+//        }
+//    }
+//    @ApiStatus.Internal
+//    public void completeResearch(Player player, ResearchItemResourceLocation key) {
+//        if (completeResearchUnsaved(player, key)) {
+//            int warp;
+//            var research = ResearchItem.getResearch(key);
+//            if (research instanceof IResearchWarpOwner warpOwner){
+//                warp = warpOwner.getWarp();
+//                addKindsOfWarps(player, warp);
+//            }
+//            scheduleSave(player);
+//        }
+//
+//    }
+//
+//    @UtilityLikeAbstraction(reason = "not sure wtf azanor wants")
+//    public static void addKindsOfWarps(Player player, int warp) {
+//        if (warp > 0 && !Config.wuss && (player instanceof ServerPlayer)) {
+//            var warpInfo = WarpInfo.getFromPlayer(player);
+//            if (warp > 1) {
+//                int halved = warp / 2;
+//                if (warp - halved > 0) {
+//                    warpInfo.addTempWarp(warp - halved);
+//                }
+//                warpInfo.addStickyWarp(halved);
+//            } else {
+//                warpInfo.addTempWarp(warp);
+//            }
+//        }
+//    }
+//    public static boolean completeAspectUnsaved(Player player, Aspect aspect, int amount) {
+//        if (aspect == null) {
+//            return false;
+//        } else {
+//            Thaumcraft.playerKnowledge.addDiscoveredAspect(player, aspect);
+//            Thaumcraft.playerKnowledge.setAspectPool(player, aspect, amount);
+//            return true;
+//        }
+//    }
+//
+//    public void completeAspect(Player player, Aspect aspect, int amount) {
+//        if (completeAspectUnsaved(player, aspect, amount)) {
+//            scheduleSave(player);
+//        }
+//    }
+//
+//    public static boolean completeScannedObjectUnsaved(Player player, String object) {
+//        String username = player.getGameProfile().getName();
+//        List<String> completed = Thaumcraft.getScannedObjects().get(username);
+//        if (completed == null) {
+//            completed = new ArrayList<>();
+//        }
+//
+//        if (!completed.contains(object)) {
+//            completed.add(object);
+//            String t = object.replaceFirst("#", "@");
+//            if (object.startsWith("#")) {
+//                completed.remove(t);
+//            }
+//
+//            Thaumcraft.getScannedObjects().put(username, completed);
+//        }
+//
+//        return true;
+//    }
+//
+//    public static boolean completeScannedEntityUnsaved(Player player, String key) {
+//        String username = player.getGameProfile().getName();
+//        List<String> completed = Thaumcraft.getScannedEntities().get(username);
+//        if (completed == null) {
+//            completed = new ArrayList<>();
+//        }
+//
+//        if (!completed.contains(key)) {
+//            completed.add(key);
+//            String t = key.replaceFirst("#", "@");
+//            if (key.startsWith("#") && completed.contains(t) && completed.remove(t)) {
+//            }
+//
+//            Thaumcraft.getScannedEntities().put(username, completed);
+//        }
+//
+//        return true;
+//    }
+//
+//    public static boolean completeScannedPhenomenaUnsaved(Player player, String key) {
+//        String username = player.getGameProfile().getName();
+//        List<String> completed = Thaumcraft.getScannedPhenomena().get(username);
+//        if (completed == null) {
+//            completed = new ArrayList<>();
+//        }
+//
+//        if (!completed.contains(key)) {
+//            completed.add(key);
+//            String replacedKey = key.replaceFirst("#", "@");
+//            if (key.startsWith("#") && completed.contains(replacedKey)) {
+//                completed.remove(replacedKey);
+//            }
+//
+//            Thaumcraft.getScannedPhenomena().put(username, completed);
+//        }
+//
+//        return true;
+//    }
+
+//    public void completeScannedObject(Player player, String object) {
+//        if (completeScannedObjectUnsaved(player, object)) {
+//            scheduleSave(player);
+//        }
+//
+//    }
+//
+//    public void completeScannedEntity(Player player, String key) {
+//        if (completeScannedEntityUnsaved(player, key)) {
+//            scheduleSave(player);
+//        }
+//
+//    }
+//
+//    public void completeScannedPhenomena(Player player, String key) {
+//        if (completeScannedPhenomenaUnsaved(player, key)) {
+//            scheduleSave(player);
+//        }
+//
+//    }
+//
+//    @Deprecated(forRemoval = true)
+//    public static void loadPlayerData(Player player, File file1, File file2, boolean legacy) {
+//        try {
+//            CompoundTag data = null;
+//            if (file1 != null && file1.exists()) {
+//                try {
+//                    FileInputStream fileinputstream = new FileInputStream(file1);
+//                    data = NbtIo.readCompressed(fileinputstream);
+//                    fileinputstream.close();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            if (file1 == null || !file1.exists() || data == null || data.isEmpty()) {
+//                LOGGER.warn("Thaumcraft data not found for {}. Trying to load backup Thaumcraft data.", player.getGameProfile().getName());
+//                if (file2 != null && file2.exists()) {
+//                    try {
+//                        FileInputStream fileinputstream = new FileInputStream(file2);
+//                        data = NbtIo.readCompressed(fileinputstream);
+//                        fileinputstream.close();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            if (data != null) {
+//                loadResearchNBT(data, player);
+//                loadClueNBT(data, player);
+//                loadAspectNBT(data, player);
+//                loadScannedNBT(data, player);
+//
+//
+//            } else {
+//                for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
+//                    if (!(aspect instanceof CompoundAspect)) {
+////                        Thaumcraft.researchManager;
+//                        completeAspectUnsaved(player, aspect, (short) (15 + ThreadLocalRandom.current().nextInt(5)));
+//                    }
+//                }
+//
+//                scheduleSave(player);
+//                LOGGER.info("Assigning initial aspects to {}({})", player.getGameProfile().getName(),player.getGameProfile().getId());
+//            }
+//        } catch (Exception exception1) {
+//            exception1.printStackTrace();
+//            LOGGER.fatal("Error loading Thaumcraft data");
+//        }
+//
+//    }
+//
+//    public static void loadResearchNBT(CompoundTag entityData, Player player) {
+//        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.readFromCompoundTag(entityData)
+//                .forEach(
+//                        researchTag -> completeResearchUnsaved(player, researchTag)
+//                );
+////        ListTag list = THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR
+////                .readFromCompoundTag(entityData);
+////
+////        if (list == null) return;
+////
+////        for (int i = 0; i < list.size(); ++i) {
+////            CompoundTag rs = list.getCompound(i);
+////            var key = LIST_TAG_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
+////            if (key != null) {
+////                completeResearchUnsaved(player, key);
+////            }
+////        }
+//    }
+//    public static void loadClueNBT(CompoundTag entityData, Player player) {
+//        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.readFromCompoundTag(entityData).forEach(
+//                clueResourceLocation -> completeClueUnsaved(player, clueResourceLocation)
+//        );
+////        ListTag list = THAUMCRAFT_PLAYER_CLUE_ACCESSOR
+////                .readFromCompoundTag(entityData);
+////
+////        if (list == null) return;
+////
+////        for (int i = 0; i < list.size(); ++i) {
+////            CompoundTag rs = list.getCompound(i);
+////            var key = LIST_TAG_CLUE_ACCESSOR.readFromCompoundTag(rs);
+////            if (key != null) {
+////                completeClueUnsaved(player, key);
+////            }
+////        }
+//    }
+//    public static void loadAspectNBT(CompoundTag entityData, Player player) {
+//
+//        PLAYER_RESEARCH_ASPECTS
+//                .readFromCompoundTag(entityData)
+//                .forEach(
+//                        (key, rightInt) -> completeAspectUnsaved(player, key, rightInt)
+//                );
+//
+////        ListTag list = THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR
+////                .readFromCompoundTag(entityData);
+////        if (list == null) return;
+////
+////        for (int i = 0; i < list.size(); ++i) {
+////            CompoundTag rs = list.getCompound(i);
+////
+////            var key = LIST_TAG_ASPECT_ACCESSOR.readFromCompoundTag(rs);
+////            if (key == null) continue;
+////
+////            Aspect aspect = Aspect.getAspect(key);
+////            if (aspect == null) continue;
+////
+////            int amount = LIST_TAG_ASPECT_INT_ACCESSOR.readIntFromCompoundTag(rs);
+////
+////            completeAspectUnsaved(player, aspect, amount);
+////        }
+//    }
 
 
 //    public static void loadResearchNBT(CompoundTag entityData, String playerName) {
@@ -653,215 +608,214 @@ public class ResearchManager {
 //        }
 //    }
 
-    public static void loadScannedNBT(CompoundTag entityData, Player player) {
-
-        // ---- THAUMCRAFT.SCAN.OBJECTS ----
-        ListTag objList = THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.readFromCompoundTag(entityData);
-
-        if (objList != null) {
-            for (int i = 0; i < objList.size(); ++i) {
-                CompoundTag rs = objList.getCompound(i);
-                String key = LIST_TAG_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
-                if (key != null) {
-                    completeScannedObjectUnsaved(player, key);
-                }
-            }
-        }
-
-        // ---- THAUMCRAFT.SCAN.ENTITIES ----
-        ListTag entList = THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.readFromCompoundTag(entityData);
-
-        if (entList != null) {
-            for (int i = 0; i < entList.size(); ++i) {
-                CompoundTag rs = entList.getCompound(i);
-                String key = LIST_TAG_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
-                if (key != null) {
-                    completeScannedEntityUnsaved(player, key);
-                }
-            }
-        }
-
-        // ---- THAUMCRAFT.SCAN.PHENOMENA ----
-        ListTag pheList = THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.readFromCompoundTag(entityData);
-
-        if (pheList != null) {
-            for (int i = 0; i < pheList.size(); ++i) {
-                CompoundTag rs = pheList.getCompound(i);
-                String key = LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
-                if (key != null) {
-                    completeScannedPhenomenaUnsaved(player, key);
-                }
-            }
-        }
-    }
-
-    @Deprecated(forRemoval = true,since = "we can mixin into player's logic and impl our own data logic " +
-            "so all related to this should be mental illness")
-    public static void scheduleSave(Player player) {
-        if (!(player instanceof ServerPlayer)){return;}
-        //TODO:Impl or remove
-        //azanor left this method without explaining
-    }
-
-    public static boolean savePlayerData(Player player, File file1, File file2) {
-        boolean success = true;
-
-        try {
-            CompoundTag data = new CompoundTag();
-            saveResearchNBT(data, player);
-            saveClueNBT(data, player);
-            saveAspectNBT(data, player);
-            saveScannedNBT(data, player);
-
-
-//            // runic shielding
-//            if (EventHandlerRunic.runicCharge.containsKey(player)) {
-//                THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR
-//                        .writeIntToCompoundTag(data, EventHandlerRunic.runicCharge.get(player));
-//            }
-
-            // warp values
-//            THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpPerm(player));
-//            THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpTemp(player));
-//            THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpSticky(player));
-//            THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpCounter(player));
-
-//            if (Thaumcraft.instance.runicEventHandler.runicCharge.containsKey(playerName)) {
-//                data.setTag("Thaumcraft.shielding", new NBTTagInt(Thaumcraft.instance.runicEventHandler.runicCharge.get(playerName)));
-//            }
+//    public static void loadScannedNBT(CompoundTag entityData, Player player) {
 //
-//            data.setTag("Thaumcraft.eldritch", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpPerm(playerName)));
-//            data.setTag("Thaumcraft.eldritch.temp", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpTemp(playerName)));
-//            data.setTag("Thaumcraft.eldritch.sticky", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpSticky(playerName)));
-//            data.setTag("Thaumcraft.eldritch.counter", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpCounter(playerName)));
-
-
-            var playerName = player.getGameProfile().getName();
-            if (file1 != null && file1.exists()) {
-                try {
-                    Files.copy(file1, file2);
-                } catch (Exception var8) {
-                    LOGGER.error("Could not backup old research file for player {}", playerName, var8);
-                }
-            }
-
-            try {
-                if (file1 != null) {
-                    FileOutputStream fileoutputstream = new FileOutputStream(file1);
-                    NbtIo.writeCompressed(data, fileoutputstream);
-                    fileoutputstream.close();
-                }
-            } catch (Exception var9) {
-                LOGGER.error("Could not save research file for player {}", playerName);
-                if (file1.exists()) {
-                    try {
-                        file1.delete();
-                    } catch (Exception ignored) {
-                        LOGGER.error("Could not delete old research file for player {}", playerName);
-                    }
-                }
-
-                success = false;
-            }
-        } catch (Exception exception1) {
-            LOGGER.fatal("Error saving Thaumcraft data",exception1);
-            success = false;
-        }
-
-        return success;
-    }
-
-    public static void saveResearchNBT(CompoundTag entityData, Player player) {
-//        var res = getResearchForPlayer(player);
-//        ListTag tagList = new ListTag();
+//        // ---- THAUMCRAFT.SCAN.OBJECTS ----
+//        ListTag objList = THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.readFromCompoundTag(entityData);
 //
-//        if (res != null && !res.isEmpty()) {
-//            for (var playerResearch : res) {
-//                CompoundTag f = new CompoundTag();
-//                LIST_TAG_RESEARCH_ACCESSOR.writeToCompoundTag(f, playerResearch);
-//                tagList.add(f);
-//            }
-//        }
-//
-//        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.writeToCompoundTag(entityData, tagList);
-        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.writeToCompoundTag(entityData, getResearchForPlayer(player));
-    }
-
-
-    public static void saveClueNBT(CompoundTag entityData, Player player) {
-//        var res = getClueForPlayer(player);
-//        ListTag tagList = new ListTag();
-//
-//        if (res != null && !res.isEmpty()) {
-//            for (var key : res) {
-//                CompoundTag f = new CompoundTag();
-//                LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);
-//                tagList.add(f);
-//            }
-//        }
-
-        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.writeToCompoundTag(entityData, getClueForPlayer(player));
-    }
-
-    public static void saveAspectNBT(CompoundTag entityData, Player player) {
-        var playerName = player.getGameProfile().getName();
-        AspectList<Aspect> res = Thaumcraft.getKnownAspects().get(playerName);
-        PLAYER_RESEARCH_ASPECTS.writeToCompoundTag(entityData,res);
-//        ListTag tagList = new ListTag();
-//
-//        if (res != null && !res.isEmpty()) {
-//            for (Aspect aspect : res.getAspectTypes()) {
-//                if (aspect != null) {
-//                    CompoundTag f = new CompoundTag();
-//                    // 用 Accessor 写入 key 和 amount
-//                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, aspect.getAspectKey());
-//                    ASPECT_AMOUNT_ACCESSOR.writeIntToCompoundTag(f, res.getAmount(aspect));
-//                    tagList.add(f);
+//        if (objList != null) {
+//            for (int i = 0; i < objList.size(); ++i) {
+//                CompoundTag rs = objList.getCompound(i);
+//                String key = LIST_TAG_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
+//                if (key != null) {
+//                    completeScannedObjectUnsaved(player, key);
 //                }
 //            }
 //        }
-//        THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR.writeToCompoundTag(entityData, tagList);
-    }
-
-    public static void saveScannedNBT(CompoundTag entityData, Player player) {
-        var playerName = player.getGameProfile().getName();
-        List<String> objects = Thaumcraft.getScannedObjects().get(playerName);
-        ListTag objectTagList = new ListTag();
-        if (objects != null && !objects.isEmpty()) {
-            for (String obj : objects) {
-                if (obj != null) {
-                    CompoundTag f = new CompoundTag();
-                    LIST_TAG_SCANNED_OBJECT_ACCESSOR.writeToCompoundTag(f, obj); // 这里 f 只需要 key
-                    objectTagList.add(f);
-                }
-            }
-        }
-        THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.writeToCompoundTag(entityData, objectTagList);
-
-        List<String> entities = Thaumcraft.getScannedEntities().get(playerName);
-        ListTag entityTagList = new ListTag();
-        if (entities != null && !entities.isEmpty()) {
-            for (String e : entities) {
-                if (e != null) {
-                    CompoundTag f = new CompoundTag();
-                    LIST_TAG_SCANNED_ENTITY_ACCESSOR.writeToCompoundTag(f, e);
-                    entityTagList.add(f);
-                }
-            }
-        }
-        THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.writeToCompoundTag(entityData, entityTagList);
-
-        List<String> phenomena = Thaumcraft.getScannedPhenomena().get(playerName);
-        ListTag phenomenaTagList = new ListTag();
-        if (phenomena != null && !phenomena.isEmpty()) {
-            for (String p : phenomena) {
-                if (p != null) {
-                    CompoundTag f = new CompoundTag();
-                    LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.writeToCompoundTag(f, p);
-                    phenomenaTagList.add(f);
-                }
-            }
-        }
-        THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.writeToCompoundTag(entityData, phenomenaTagList);
-    }
+//
+//        // ---- THAUMCRAFT.SCAN.ENTITIES ----
+//        ListTag entList = THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.readFromCompoundTag(entityData);
+//
+//        if (entList != null) {
+//            for (int i = 0; i < entList.size(); ++i) {
+//                CompoundTag rs = entList.getCompound(i);
+//                String key = LIST_TAG_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
+//                if (key != null) {
+//                    completeScannedEntityUnsaved(player, key);
+//                }
+//            }
+//        }
+//
+//        // ---- THAUMCRAFT.SCAN.PHENOMENA ----
+//        ListTag pheList = THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.readFromCompoundTag(entityData);
+//
+//        if (pheList != null) {
+//            for (int i = 0; i < pheList.size(); ++i) {
+//                CompoundTag rs = pheList.getCompound(i);
+//                String key = LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
+//                if (key != null) {
+//                    completeScannedPhenomenaUnsaved(player, key);
+//                }
+//            }
+//        }
+//    }
+//
+//    @Deprecated(forRemoval = true,since = "we can mixin into player's logic and impl our own data logic " +
+//            "so all related to this should be mental illness")
+//    public static void scheduleSave(Player player) {
+//        if (!(player instanceof ServerPlayer)){return;}
+//        //azanor left this method without explaining
+//    }
+//
+//    public static boolean savePlayerData(Player player, File file1, File file2) {
+//        boolean success = true;
+//
+//        try {
+//            CompoundTag data = new CompoundTag();
+//            saveResearchNBT(data, player);
+//            saveClueNBT(data, player);
+//            saveAspectNBT(data, player);
+//            saveScannedNBT(data, player);
+//
+//
+////            // runic shielding
+////            if (EventHandlerRunic.runicCharge.containsKey(player)) {
+////                THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR
+////                        .writeIntToCompoundTag(data, EventHandlerRunic.runicCharge.get(player));
+////            }
+//
+//            // warp values
+////            THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpPerm(player));
+////            THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpTemp(player));
+////            THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpSticky(player));
+////            THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR.writeIntToCompoundTag(data, Thaumcraft.playerKnowledge.getWarpCounter(player));
+//
+////            if (Thaumcraft.instance.runicEventHandler.runicCharge.containsKey(playerName)) {
+////                data.setTag("Thaumcraft.shielding", new NBTTagInt(Thaumcraft.instance.runicEventHandler.runicCharge.get(playerName)));
+////            }
+////
+////            data.setTag("Thaumcraft.eldritch", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpPerm(playerName)));
+////            data.setTag("Thaumcraft.eldritch.temp", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpTemp(playerName)));
+////            data.setTag("Thaumcraft.eldritch.sticky", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpSticky(playerName)));
+////            data.setTag("Thaumcraft.eldritch.counter", new NBTTagInt(Thaumcraft.playerKnowledge.getWarpCounter(playerName)));
+//
+//
+//            var playerName = player.getGameProfile().getName();
+//            if (file1 != null && file1.exists()) {
+//                try {
+//                    Files.copy(file1, file2);
+//                } catch (Exception var8) {
+//                    LOGGER.error("Could not backup old research file for player {}", playerName, var8);
+//                }
+//            }
+//
+//            try {
+//                if (file1 != null) {
+//                    FileOutputStream fileoutputstream = new FileOutputStream(file1);
+//                    NbtIo.writeCompressed(data, fileoutputstream);
+//                    fileoutputstream.close();
+//                }
+//            } catch (Exception var9) {
+//                LOGGER.error("Could not save research file for player {}", playerName);
+//                if (file1.exists()) {
+//                    try {
+//                        file1.delete();
+//                    } catch (Exception ignored) {
+//                        LOGGER.error("Could not delete old research file for player {}", playerName);
+//                    }
+//                }
+//
+//                success = false;
+//            }
+//        } catch (Exception exception1) {
+//            LOGGER.fatal("Error saving Thaumcraft data",exception1);
+//            success = false;
+//        }
+//
+//        return success;
+//    }
+//
+//    public static void saveResearchNBT(CompoundTag entityData, Player player) {
+////        var res = getResearchForPlayer(player);
+////        ListTag tagList = new ListTag();
+////
+////        if (res != null && !res.isEmpty()) {
+////            for (var playerResearch : res) {
+////                CompoundTag f = new CompoundTag();
+////                LIST_TAG_RESEARCH_ACCESSOR.writeToCompoundTag(f, playerResearch);
+////                tagList.add(f);
+////            }
+////        }
+////
+////        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.writeToCompoundTag(entityData, tagList);
+//        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.writeToCompoundTag(entityData, getResearchForPlayer(player));
+//    }
+//
+//
+//    public static void saveClueNBT(CompoundTag entityData, Player player) {
+////        var res = getClueForPlayer(player);
+////        ListTag tagList = new ListTag();
+////
+////        if (res != null && !res.isEmpty()) {
+////            for (var key : res) {
+////                CompoundTag f = new CompoundTag();
+////                LIST_TAG_CLUE_ACCESSOR.writeToCompoundTag(f, key);
+////                tagList.add(f);
+////            }
+////        }
+//
+//        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.writeToCompoundTag(entityData, getClueForPlayer(player));
+//    }
+//
+//    public static void saveAspectNBT(CompoundTag entityData, Player player) {
+//        var playerName = player.getGameProfile().getName();
+//        AspectList<Aspect> res = Thaumcraft.getKnownAspects().get(playerName);
+//        PLAYER_RESEARCH_ASPECTS.writeToCompoundTag(entityData,res);
+////        ListTag tagList = new ListTag();
+////
+////        if (res != null && !res.isEmpty()) {
+////            for (Aspect aspect : res.getAspectTypes()) {
+////                if (aspect != null) {
+////                    CompoundTag f = new CompoundTag();
+////                    // 用 Accessor 写入 key 和 amount
+////                    ASPECT_KEY_ACCESSOR.writeToCompoundTag(f, aspect.getAspectKey());
+////                    ASPECT_AMOUNT_ACCESSOR.writeIntToCompoundTag(f, res.getAmount(aspect));
+////                    tagList.add(f);
+////                }
+////            }
+////        }
+////        THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR.writeToCompoundTag(entityData, tagList);
+//    }
+//
+//    public static void saveScannedNBT(CompoundTag entityData, Player player) {
+//        var playerName = player.getGameProfile().getName();
+//        List<String> objects = Thaumcraft.getScannedObjects().get(playerName);
+//        ListTag objectTagList = new ListTag();
+//        if (objects != null && !objects.isEmpty()) {
+//            for (String left : objects) {
+//                if (left != null) {
+//                    CompoundTag f = new CompoundTag();
+//                    LIST_TAG_SCANNED_OBJECT_ACCESSOR.writeToCompoundTag(f, left); // 这里 f 只需要 key
+//                    objectTagList.add(f);
+//                }
+//            }
+//        }
+//        THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.writeToCompoundTag(entityData, objectTagList);
+//
+//        List<String> entities = Thaumcraft.getScannedEntities().get(playerName);
+//        ListTag entityTagList = new ListTag();
+//        if (entities != null && !entities.isEmpty()) {
+//            for (String e : entities) {
+//                if (e != null) {
+//                    CompoundTag f = new CompoundTag();
+//                    LIST_TAG_SCANNED_ENTITY_ACCESSOR.writeToCompoundTag(f, e);
+//                    entityTagList.add(f);
+//                }
+//            }
+//        }
+//        THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.writeToCompoundTag(entityData, entityTagList);
+//
+//        List<String> phenomena = Thaumcraft.getScannedPhenomena().get(playerName);
+//        ListTag phenomenaTagList = new ListTag();
+//        if (phenomena != null && !phenomena.isEmpty()) {
+//            for (String p : phenomena) {
+//                if (p != null) {
+//                    CompoundTag f = new CompoundTag();
+//                    LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.writeToCompoundTag(f, p);
+//                    phenomenaTagList.add(f);
+//                }
+//            }
+//        }
+//        THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.writeToCompoundTag(entityData, phenomenaTagList);
+//    }
 }

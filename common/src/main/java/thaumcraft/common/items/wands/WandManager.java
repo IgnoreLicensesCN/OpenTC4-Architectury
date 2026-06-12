@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -40,7 +40,7 @@ import thaumcraft.common.tiles.junkbox.*;
 import java.util.*;
 import java.util.function.Function;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
 import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_CONSTRUCT_MATCHER;
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 

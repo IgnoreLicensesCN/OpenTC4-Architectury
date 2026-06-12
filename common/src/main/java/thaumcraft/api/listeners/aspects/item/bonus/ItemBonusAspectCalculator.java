@@ -2,7 +2,7 @@ package thaumcraft.api.listeners.aspects.item.bonus;
 
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.NotNull;
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;

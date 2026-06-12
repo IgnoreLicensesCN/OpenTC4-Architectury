@@ -57,15 +57,6 @@ public abstract class CrucibleRecipe
 		return null;
 	}
 
-	/**
-	 * @param hash the unique recipe code
-	 * @return the recipe
-	 */
-	@Deprecated(forRemoval=true)
-	public static CrucibleRecipe getCrucibleRecipeFromHash(int hash) {
-		return FindCrucibleRecipe.getCrucibleRecipeFromHash(hash);
-	}
-
 
 	public boolean matches(@NotNull AspectList<Aspect> aspectsForRecipe, ItemStack cat) {
 		if (!catalystMatches(cat)) return false;

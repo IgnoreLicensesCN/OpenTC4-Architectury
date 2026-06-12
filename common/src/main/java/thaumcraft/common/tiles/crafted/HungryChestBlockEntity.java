@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.linearity.opentc4.utils.EntityTypeTests.ITEM_ENTITY_TEST;
-import static com.linearity.opentc4.utils.EntityTypeTests.PLAYER_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ITEM_ENTITY_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.PLAYER_TEST;
 
 public class HungryChestBlockEntity extends ChestBlockEntity {
     private NonNullList<ItemStack> items;

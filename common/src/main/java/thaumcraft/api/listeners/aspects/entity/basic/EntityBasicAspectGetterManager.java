@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.aspects.entity.basic;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;

@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SideOnly(Side.CLIENT)
 public class ModelHoverHarness extends ModelBiped {
    HashMap<Integer,Long> timingShock = new HashMap<>();
-   private static final ResourceLocation HARNESS = new ResourceLocation("thaumcraft", "textures/models/hoverharness.obj");
+   private static final ResourceLocation HARNESS = new ResourceLocation("thaumcraft", "textures/models/hoverharness.left");
    private IModelCustom modelBack;
 
    public ModelHoverHarness() {

@@ -19,7 +19,7 @@ import thaumcraft.common.tiles.junkbox.TileTube;
 @SideOnly(Side.CLIENT)
 public class TileAlembicRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation ALEMBIC = new ResourceLocation("thaumcraft", "textures/models/alembic.obj");
+   private static final ResourceLocation ALEMBIC = new ResourceLocation("thaumcraft", "textures/models/alembic.left");
    private ModelBoreBase modelBore;
 
    public TileAlembicRenderer() {

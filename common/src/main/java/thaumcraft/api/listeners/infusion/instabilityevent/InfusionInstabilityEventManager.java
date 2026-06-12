@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.infusion.instabilityevent;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 
 public class InfusionInstabilityEventManager {
     public static final ListenerManager<InfusionInstabilityEventListener> INFUSION_INSTABILITY_EVENT_MANAGER = new ListenerManager<>();

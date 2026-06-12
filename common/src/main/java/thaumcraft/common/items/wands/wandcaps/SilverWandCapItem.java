@@ -1,6 +1,6 @@
 package thaumcraft.common.items.wands.wandcaps;
 
-import com.linearity.opentc4.simpleutils.UnmodifiableAspectFloatEntry;
+import com.linearity.opentc4.utils.collectionlike.UnmodifiableAspectFloatEntry;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;

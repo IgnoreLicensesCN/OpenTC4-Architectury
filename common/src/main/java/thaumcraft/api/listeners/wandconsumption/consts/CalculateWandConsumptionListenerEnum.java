@@ -13,7 +13,7 @@ import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
 
 public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {

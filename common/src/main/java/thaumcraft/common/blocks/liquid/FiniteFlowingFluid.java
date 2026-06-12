@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks.liquid;
 
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import com.linearity.opentc4.utils.CollectionsMinecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.linearity.opentc4.utils.DirectionHelper.getDirectionAroundNotOpposite;
+import static com.linearity.opentc4.utils.consts.DirectionHelper.getDirectionAroundNotOpposite;
 
 public abstract class FiniteFlowingFluid extends FlowingFluid {
     public final IntegerProperty liquidLevel;
@@ -211,7 +211,7 @@ public abstract class FiniteFlowingFluid extends FlowingFluid {
 
         setFluidWithCheck(serverLevel,fluidState.setValue(liquidLevel, levelEach),blockPos);
         for (int i=0;i<directionToStack.size();i++){
-            var pair = directionToStack.get(i).obj();
+            var pair = directionToStack.get(i).left();
             int levelToSet = levelEach;
             if (i < levelRemaining){
                 levelToSet += 1;

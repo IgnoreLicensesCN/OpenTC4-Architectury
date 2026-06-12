@@ -1,5 +1,6 @@
 package com.linearity.opentc4.recipeclean.itemmatch;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -10,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 public class TagItemMatcher extends RecipeItemMatcher {
-    private final String tag;
+    private final TagKey<Item> tag;
     private final List<ItemStack> sampleView;
 
-    private TagItemMatcher(String tag) {
+    private TagItemMatcher(TagKey<Item> tag) {
         this.tag = tag;
         Set<Item> itemsExample = new HashSet<>(platformUtils.getItemsFromTag(tag));
 
@@ -27,7 +28,7 @@ public class TagItemMatcher extends RecipeItemMatcher {
 
     @Override
     public boolean matches(@NotNull ItemStack stack) {
-        return platformUtils.isItemStackMatchTag(stack, tag);
+        return stack.is(tag);
     }
 
     @Override
@@ -47,9 +48,9 @@ public class TagItemMatcher extends RecipeItemMatcher {
     }
 
 
-    private static final Map<String,TagItemMatcher> cache = new ConcurrentHashMap<>();
+    private static final Map<TagKey<Item>,TagItemMatcher> cache = new ConcurrentHashMap<>();
 
-    public static @NotNull TagItemMatcher of(@NotNull String tag) {
+    public static @NotNull TagItemMatcher of(@NotNull TagKey<Item> tag) {
         return cache.computeIfAbsent(tag, TagItemMatcher::new);
     }
 

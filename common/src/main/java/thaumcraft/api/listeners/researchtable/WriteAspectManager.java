@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.researchtable;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import thaumcraft.api.listeners.researchtable.consts.RemoveAspectAfterListenerEnums;
 import thaumcraft.api.listeners.researchtable.consts.RemoveAspectBeforeListenerEnums;
 import thaumcraft.api.listeners.researchtable.consts.WriteAspectAfterListenerEnums;

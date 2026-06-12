@@ -392,6 +392,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
                 CrucibleRecipe recipeChosen = cachedRecipe;
                 if (recipeChosen == null){
                     recipeChosen = CrucibleRecipe.findRecipeCanUse(player,stack,this.owningAspects);
+                    cachedRecipe = recipeChosen;
                 }
 
                 if (recipeChosen != null && this.getFluidAmount() > 0) {
@@ -414,18 +415,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
             if (burnIntoAspect){
                 var burntInto = getBonusAspects(stack,!(level.isClientSide));
                 if (burntInto.isEmpty()) {
-                    itemEntity.addDeltaMovement(new Vec3(
-                            (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F,
-                                    .35F,
-                            (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F
-                    ));
-                    this.level.playSound(
-                            itemEntity,
-                            getBlockPos(),
-                            SoundEvents.ITEM_PICKUP,
-                            SoundSource.BLOCKS,
-                            0.2F,
-                            1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.4F);
+                    throwOutItemCantBurnIntoAspect(itemEntity);
                     return;
                 }
                 this.addedAspect = true;
@@ -451,20 +441,38 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
         if (stack.isEmpty()) {
             itemEntity.setItem(ItemStack.EMPTY);
             itemEntity.discard();
-        } else {
+        }
+        else {
             itemEntity.setItem(stack);
         }
         this.setChanged();
     }
-    public void ejectItem(ItemStack items) {
+
+    private void throwOutItemCantBurnIntoAspect(ItemEntity itemEntity) {
+        var level = itemEntity.level();
+        itemEntity.addDeltaMovement(new Vec3(
+                (level.random.nextFloat() - level.random.nextFloat()) * 0.2F,
+                        .35F,
+                (level.random.nextFloat() - level.random.nextFloat()) * 0.2F
+        ));
+        level.playSound(
+                itemEntity,
+                getBlockPos(),
+                SoundEvents.ITEM_PICKUP,
+                SoundSource.BLOCKS,
+                0.2F,
+                1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
+    }
+
+    public void ejectItem(ItemStack stack) {
         boolean first = true;
 
         do {
-            ItemStack spitout = items.copy();
+            ItemStack spitout = stack.copy();
             if (spitout.getCount() > spitout.getMaxStackSize()) {
                 spitout.setCount(spitout.getMaxStackSize());
             }
-            items.setCount(items.getCount() - spitout.getCount());
+            stack.setCount(stack.getCount() - spitout.getCount());
 
             //TODO:SpecialItemEntity
             EntitySpecialItem entityitem = new EntitySpecialItem(this.level(), (float)this.xCoord + 0.5F, (float)this.yCoord + 0.71F, (float)this.zCoord + 0.5F, spitout);
@@ -473,7 +481,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
             entityitem.motionZ = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
             this.level.spawnEntityInWorld(entityitem);
             first = false;
-        } while(!items.isEmpty());
+        } while(!stack.isEmpty());
 
     }
     

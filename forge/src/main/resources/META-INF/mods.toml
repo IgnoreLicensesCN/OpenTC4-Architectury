@@ -33,3 +33,10 @@ mandatory = true
 versionRange = "[9.2.14,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.opentc4]]
+modId="curios"
+mandatory=true
+versionRange="[5.0,)"
+ordering="NONE"
+side="BOTH"

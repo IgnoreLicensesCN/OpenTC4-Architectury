@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.listeners.wandconsumption.consts.CalculateWandConsumptionListenerEnum;
 import thaumcraft.api.listeners.wandconsumption.listeners.CalculateWandConsumptionListener;

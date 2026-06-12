@@ -10,7 +10,7 @@ import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
 
 public class RunicShieldHandler {
 

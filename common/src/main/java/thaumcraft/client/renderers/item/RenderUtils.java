@@ -1,6 +1,6 @@
 package thaumcraft.client.renderers.item;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
@@ -20,7 +20,7 @@ public class RenderUtils {
         if (inited){return;}
         inited = true;
         ITEM_RENDERERS.computeIfAbsent(THAUMOMETER,item -> new ListenerManager<>()).registerListener(ThaumometerItemRenderer.INSTANCE);
-        platformUtils.registerModelForItem(THAUMOMETER, ResourceLocation.tryParse("thaumcraft:models/item/scanner.obj"));
-        platformUtils.registerModel(ResourceLocation.tryParse("thaumcraft:models/special/hemis.obj"));
+        platformUtils.registerModelForItem(THAUMOMETER, ResourceLocation.tryParse("thaumcraft:models/item/scanner.left"));
+        platformUtils.registerModel(ResourceLocation.tryParse("thaumcraft:models/special/hemis.left"));
     }
 }

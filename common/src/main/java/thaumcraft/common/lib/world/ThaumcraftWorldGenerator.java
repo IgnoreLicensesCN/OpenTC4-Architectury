@@ -450,7 +450,7 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
 //                if (random.nextInt(150) == 0) {
 //                    if (WorldGenMound.generateStatic(world, random, randPosX, randPosY, randPosZ)) {
 //                        auraGen = true;
-//                        int value = random.nextInt(200) + 400;
+//                        int rightInt = random.nextInt(200) + 400;
 //                        createRandomNodeAt(
 //                                world,
 //                                randPosX + 9, randPosY + 8, randPosZ + 9,

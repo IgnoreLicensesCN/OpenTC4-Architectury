@@ -122,8 +122,8 @@ public class FXEssentiaTrail /*extends EntityFX*/ {
 //      }
 //   }
 //
-//   public void setGravity(float value) {
-//      this.particleGravity = value;
+//   public void setGravity(float rightInt) {
+//      this.particleGravity = rightInt;
 //   }
 //
 //   protected boolean pushOutOfBlocks(double par1, double par3, double par5) {

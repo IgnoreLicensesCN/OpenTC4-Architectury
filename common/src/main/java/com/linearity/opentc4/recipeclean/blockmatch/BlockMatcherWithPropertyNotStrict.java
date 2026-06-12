@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Objects;
 
-//if put null into properties,any value for this property will consider true
+//if put null into properties,any rightInt for this property will consider true
 //blockState being matched must have all property in map but state property count no need to equals to property count
 public class BlockMatcherWithPropertyNotStrict implements IBlockMatcher {
     public BlockMatcherWithPropertyNotStrict(Block block, PropertyMap<?> properties) {

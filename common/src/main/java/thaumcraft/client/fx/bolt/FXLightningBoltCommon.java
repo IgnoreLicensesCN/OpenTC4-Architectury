@@ -269,8 +269,8 @@ public class FXLightningBoltCommon {
 //         return Float.compare(o2.light, o1.light);
 //      }
 //
-//      public int compare(Object obj, Object obj1) {
-//         return this.compare((Segment)obj, (Segment)obj1);
+//      public int compare(Object left, Object obj1) {
+//         return this.compare((Segment)left, (Segment)obj1);
 //      }
 //   }
 //
@@ -282,8 +282,8 @@ public class FXLightningBoltCommon {
 //         return comp == 0 ? Integer.compare(o1.segmentno, o2.segmentno) : comp;
 //      }
 //
-//      public int compare(Object obj, Object obj1) {
-//         return this.compare((Segment)obj, (Segment)obj1);
+//      public int compare(Object left, Object obj1) {
+//         return this.compare((Segment)left, (Segment)obj1);
 //      }
 //   }
 }

@@ -135,7 +135,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
             Function<Recipe,@Unmodifiable List<List<ItemStack>>> ingredientItemsGetter,
             Function<Recipe,@Unmodifiable /* only call get(i) get(j) */
                     //should have same structure as above,like arr[A][B] and arr[A][B]
-                    //at least,we will access them.When accessing please give the correct value
+                    //at least,we will access them.When accessing please give the correct rightInt
                     List<List<Function<ItemStack,ItemStack>>>> ingredientRemainingItemsGetter,
             Consumer<Item> resolvedItemAdder,
             BiConsumer<Item,UnmodifiableAspectList<Aspect>> resolvedAspectAdder,

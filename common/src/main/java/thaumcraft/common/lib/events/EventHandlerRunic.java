@@ -14,7 +14,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import thaumcraft.api.listeners.warp.WarpEventManager;
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
@@ -26,7 +25,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
 
 //TODO
 @Deprecated(forRemoval = true)

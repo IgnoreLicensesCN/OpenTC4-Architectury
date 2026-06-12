@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts;
 
-import com.linearity.opentc4.simpleutils.ObjectFloatPair;
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.ObjectFloatPair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,11 +65,11 @@ public interface IDowsingTool {
             float toolDowsingChance = 0;
             int dowsingLevel = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.DOWSING, dowsingStack);
             if (dowsingLevel > 0){
-                toolDowsingChance += toPair.value() * (
+                toolDowsingChance += toPair.rightFloat() * (
                         0.2F + dowsingLevel * 0.075F);
             }
             if (toolStack.getItem() instanceof IDowsingTool dowsingTool) {
-                toolDowsingChance += dowsingTool.getConvertChance(toolStack,toPair.value());
+                toolDowsingChance += dowsingTool.getConvertChance(toolStack,toPair.rightFloat());
             }
             if (toolDowsingChance <= 0){
                 return null;
@@ -83,7 +83,7 @@ public interface IDowsingTool {
             } else {
                 amountRemaining -= converted;
             }
-            return new SimplePair<>(dowsingStack.copyWithCount(amountRemaining), InventoryUtils.stackOfAmount(toPair.obj(), converted));
+            return new SimplePair<>(dowsingStack.copyWithCount(amountRemaining), InventoryUtils.stackOfAmount(toPair.left(), converted));
         }
         return null;
     }

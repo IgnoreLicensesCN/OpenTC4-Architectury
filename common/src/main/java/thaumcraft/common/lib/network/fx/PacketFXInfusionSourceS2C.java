@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;

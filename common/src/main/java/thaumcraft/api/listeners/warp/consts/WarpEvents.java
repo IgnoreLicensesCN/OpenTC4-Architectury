@@ -7,17 +7,16 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.listeners.warp.WarpEventManager;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBaubleAndArmor;
 import static thaumcraft.api.listeners.warp.WarpEventManager.getFinalWarp;
 import static thaumcraft.api.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
 
@@ -151,11 +150,7 @@ public class WarpEvents {
               getFinalWarp(player.getMainHandItem(), player)
                       + getFinalWarp(player.getOffhandItem(), player)//time changes now
       );
-      player.getArmorSlots().forEach(armorInSlot -> w.addAndGet(getFinalWarp(armorInSlot, player)));
-      forEachBauble(player,(slot, stack, item) -> {
-         w.addAndGet(getFinalWarp(stack, player));
-         return false;
-      });
+      forEachBaubleAndArmor(player,armorInSlot -> w.addAndGet(getFinalWarp(armorInSlot, player)));
       return w.addAndGet(getFinalWarp(player.getOffhandItem(), player));
    }
 }

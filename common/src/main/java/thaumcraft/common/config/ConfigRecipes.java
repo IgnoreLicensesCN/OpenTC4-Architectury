@@ -30,8 +30,6 @@ import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock;
 import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.equipment.armor.RecipesRobeArmorDyes;
-import thaumcraft.common.items.equipment.armor.RecipesVoidRobeArmorDyes;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ArcaneSceptreRecipe;
 import thaumcraft.common.lib.crafting.ArcaneWandRecipe;

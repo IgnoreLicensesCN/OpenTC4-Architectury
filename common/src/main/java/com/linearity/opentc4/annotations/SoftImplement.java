@@ -24,4 +24,4 @@ public @interface SoftImplement {
      */
     String value();
 }
-//is there anyone made an IDEA plugin to redirect #value() to original method? TODO:[maybe wont finished]IDEA plugin to redirect to original method
+//is there anyone made an IDEA plugin to redirect #rightInt() to original method? TODO:[maybe wont finished]IDEA plugin to redirect to original method

@@ -21,7 +21,7 @@ import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeS
 
 public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.obj");
+   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.left");
    private String tex = "textures/models/obelisk_cap.png";
    private String tex2 = "textures/models/obelisk_cap_2.png";
    private ItemStack eye = null;

@@ -2,7 +2,7 @@ package thaumcraft.common.tiles.abstracts;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

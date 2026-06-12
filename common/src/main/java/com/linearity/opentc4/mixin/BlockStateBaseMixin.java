@@ -24,31 +24,31 @@ public class BlockStateBaseMixin {
     private List<ItemStack> opentc4$dowseDrops(List<ItemStack> drops, LootParams.Builder builder) {
 
         var toolStack = builder.getOptionalParameter(LootContextParams.TOOL);
-        if (toolStack == null){
+        if (toolStack == null) {
             return drops;
         }
         var dowsingLevel = EnchantmentHelper.getEnchantments(toolStack).get(ThaumcraftEnchantments.DOWSING);
-        if ((toolStack.getItem() instanceof IDowsingTool || dowsingLevel > 0)) {
-            var random = RandomSource.createNewThreadLocalInstance();
-            List<ItemStack> dropAsNormal = new ArrayList<>(drops.size());
-            for (ItemStack drop : drops) {
-                var dowsingResult = IDowsingTool.findDowsingResult(
-                        drop,
-                        toolStack,
-                        random
-                );
-                if (dowsingResult == null) {
-                    dropAsNormal.add(drop);
-                }else {
-                    var remaining = dowsingResult.a();
-                    if (!remaining.isEmpty()) {
-                        dropAsNormal.add(remaining);
-                    }
-                    dropAsNormal.addAll(dowsingResult.b());
-                }
-            }
-            return dropAsNormal;
+        if (!(toolStack.getItem() instanceof IDowsingTool || dowsingLevel > 0)) {
+            return drops;
         }
-        return drops;
+        var random = RandomSource.createNewThreadLocalInstance();
+        List<ItemStack> dropAsNormal = new ArrayList<>(drops.size());
+        for (ItemStack drop : drops) {
+            var dowsingResult = IDowsingTool.findDowsingResult(
+                    drop,
+                    toolStack,
+                    random
+            );
+            if (dowsingResult == null) {
+                dropAsNormal.add(drop);
+            } else {
+                var remaining = dowsingResult.a();
+                if (!remaining.isEmpty()) {
+                    dropAsNormal.add(remaining);
+                }
+                dropAsNormal.addAll(dowsingResult.b());
+            }
+        }
+        return dropAsNormal;
     }
 }

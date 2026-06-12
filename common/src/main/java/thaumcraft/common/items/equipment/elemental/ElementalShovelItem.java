@@ -109,8 +109,8 @@ public class ElementalShovelItem extends ShovelItem implements IDropFollowingUse
 
 
 //    private boolean isEffectiveAgainst(Block block) {
-//        for (Block value : isEffective) {
-//            if (value == block) {
+//        for (Block rightInt : isEffective) {
+//            if (rightInt == block) {
 //                return true;
 //            }
 //        }

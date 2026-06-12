@@ -22,7 +22,6 @@
     "client.render.ItemRendererMixin"
   ],
   "mixins": [
-    "AbstractContainerMenuAccessor",
     "AbstractFurnaceBlockEntityMixin",
     "BambooSaplingBlockMixin",
     "BiomeMixin",
@@ -49,8 +48,7 @@
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerGameModeMixin",
-    "ServerPlayerMixin",
-    "SlotAccessor"
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

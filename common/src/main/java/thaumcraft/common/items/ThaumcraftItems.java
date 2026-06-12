@@ -23,10 +23,7 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
-import thaumcraft.common.items.equipment.armor.GogglesOfRevealingItem;
-import thaumcraft.common.items.equipment.armor.RobeArmorItem;
-import thaumcraft.common.items.equipment.armor.ThaumiumArmorItem;
-import thaumcraft.common.items.equipment.armor.VoidArmorItem;
+import thaumcraft.common.items.equipment.armor.*;
 import thaumcraft.common.items.equipment.elemental.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
@@ -295,6 +292,7 @@ public class ThaumcraftItems {
         public static final RobeArmorItem ROBE_CHESTPLATE = Registry.SUPPLIER_ROBE_CHESTPLATE.get();
         public static final RobeArmorItem ROBE_LEGGINGS = Registry.SUPPLIER_ROBE_LEGGINGS.get();
         public static final RobeArmorItem ROBE_BOOTS = Registry.SUPPLIER_ROBE_BOOTS.get();
+        public static final ThaumostaticHarnessItem THAUMOSTATIC_HARNESS = Registry.SUPPLIER_THAUMOSTATIC_HARNESS.get();
     }
 
     public static class Registry {
@@ -1185,6 +1183,10 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_BOOTS = ITEMS.register(
                 "robe_boots",
                 () -> new RobeArmorItem(ArmorItem.Type.BOOTS)
+        );
+        public static final RegistrySupplier<ThaumostaticHarnessItem> SUPPLIER_THAUMOSTATIC_HARNESS = ITEMS.register(
+                "thaumostatic_harness",
+                ThaumostaticHarnessItem::new
         );
     }
 

@@ -20,7 +20,7 @@ import thaumcraft.common.tiles.junkbox.TileThaumatorium;
 @SideOnly(Side.CLIENT)
 public class TileThaumatoriumRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation TM = new ResourceLocation("thaumcraft", "textures/models/thaumatorium.obj");
+   private static final ResourceLocation TM = new ResourceLocation("thaumcraft", "textures/models/thaumatorium.left");
    EntityItem entityitem = null;
 
    public TileThaumatoriumRenderer() {

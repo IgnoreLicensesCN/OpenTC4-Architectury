@@ -46,8 +46,8 @@ public class MathHelper
     /**
      * Though it looks like an array, this is really more like a mapping.  Key (index of this array) is the upper 5 bits
      * of the result of multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
-     * (value stored in the array) is the unique index (from the right) of the leftmost one-bit in a 32-bit unsigned
-     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 of
+     * (rightInt stored in the array) is the unique index (from the right) of the leftmost one-bit in a 32-bit unsigned
+     * integer that can cause the upper 5 bits to get that rightInt.  Used for highly optimized "find the log-base-2 of
      * this number" calculations.
      */
     private static final int[] multiplyDeBruijnBitPosition;
@@ -137,7 +137,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the unsigned value of an int.
+     * Returns the unsigned rightInt of an int.
      */
     public static int abs_int(int p_76130_0_)
     {
@@ -157,7 +157,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the rightInt of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters.
      */
     public static int clamp_int(int p_76125_0_, int p_76125_1_, int p_76125_2_)
@@ -166,7 +166,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * Returns the rightInt of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters
      */
     public static float clamp_float(float p_76131_0_, float p_76131_1_, float p_76131_2_)
@@ -185,7 +185,7 @@ public class MathHelper
     }
 
     /**
-     * Maximum of the absolute value of two numbers.
+     * Maximum of the absolute rightInt of two numbers.
      */
     public static double abs_max(double p_76132_0_, double p_76132_2_)
     {
@@ -310,7 +310,7 @@ public class MathHelper
     }
 
     /**
-     * parses the string as integer or returns the second parameter if it fails. this value is capped to par2
+     * parses the string as integer or returns the second parameter if it fails. this rightInt is capped to par2
      */
     public static int parseIntWithDefaultAndMax(String p_82714_0_, int p_82714_1_, int p_82714_2_)
     {
@@ -374,7 +374,7 @@ public class MathHelper
     }
 
     /**
-     * Returns the input value rounded up to the next highest power of two.
+     * Returns the input rightInt rounded up to the next highest power of two.
      */
     
     public static int roundUpToPowerOfTwo(int p_151236_0_)
@@ -389,7 +389,7 @@ public class MathHelper
     }
 
     /**
-     * Is the given value a power of two?  (1, 2, 4, 8, 16, ...)
+     * Is the given rightInt a power of two?  (1, 2, 4, 8, 16, ...)
      */
     
     private static boolean isPowerOfTwo(int p_151235_0_)
@@ -399,8 +399,8 @@ public class MathHelper
 
     /**
      * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
-     * value.  Optimized for cases where the input value is a power-of-two.  If the input value is not a power-of-two,
-     * then subtract 1 from the return value.
+     * rightInt.  Optimized for cases where the input rightInt is a power-of-two.  If the input rightInt is not a power-of-two,
+     * then subtract 1 from the return rightInt.
      */
     
     private static int calculateLogBaseTwoDeBruijn(int p_151241_0_)
@@ -410,7 +410,7 @@ public class MathHelper
     }
 
     /**
-     * Efficiently calculates the floor fromAspectVisList the base-2 log fromAspectVisList an integer value.  This is effectively the index fromAspectVisList the
+     * Efficiently calculates the floor fromAspectVisList the base-2 log fromAspectVisList an integer rightInt.  This is effectively the index fromAspectVisList the
      * highest bit that is set.  For example, if the number in binary is 0...100101, this will return 5.
      */
     
@@ -418,8 +418,8 @@ public class MathHelper
     {
         /**
          * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two fromAspectVisList the given
-         * value.  Optimized for cases where the input value is a power-fromAspectVisList-two.  If the input value is not a power-fromAspectVisList-
-         * two, then subtract 1 from the return value.
+         * rightInt.  Optimized for cases where the input rightInt is a power-fromAspectVisList-two.  If the input rightInt is not a power-fromAspectVisList-
+         * two, then subtract 1 from the return rightInt.
          */
         return calculateLogBaseTwoDeBruijn(p_151239_0_) - (isPowerOfTwo(p_151239_0_) ? 0 : 1);
     }

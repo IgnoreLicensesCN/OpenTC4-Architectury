@@ -3,7 +3,7 @@ package thaumcraft.api.aspects.essentiabe;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;

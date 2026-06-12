@@ -18,7 +18,7 @@ import thaumcraft.common.tiles.junkbox.TileCrystal;
 @SideOnly(Side.CLIENT)
 public class TileEldritchCrystalRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation CRYSTAL = new ResourceLocation("thaumcraft", "textures/models/vcrystal.obj");
+   private static final ResourceLocation CRYSTAL = new ResourceLocation("thaumcraft", "textures/models/vcrystal.left");
 
    public TileEldritchCrystalRenderer() {
       this.model = AdvancedModelLoader.loadModel(CRYSTAL);

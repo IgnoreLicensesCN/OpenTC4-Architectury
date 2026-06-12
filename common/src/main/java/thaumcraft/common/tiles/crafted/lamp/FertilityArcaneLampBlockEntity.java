@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
-import static com.linearity.opentc4.utils.EntityTypeTests.ENTITY_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static thaumcraft.api.listeners.lamp.fertility.apply.FertilityLampAffectManager.affectEntity;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
 import static thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock.LIT;

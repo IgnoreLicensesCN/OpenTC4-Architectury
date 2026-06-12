@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.manabean;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import thaumcraft.api.listeners.manabean.consts.ManaBeanGrowListeners;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanGrowListener;
 

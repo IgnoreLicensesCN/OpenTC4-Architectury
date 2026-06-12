@@ -47,7 +47,7 @@ public class Object2IntLinkedOpenHashMapAccessor<K> extends CompoundTagAccessor<
         }
         listTagAccessorInternal.writeToCompoundTag(tag, listTag);
     }
-    //copied but different cast for object2IntEntrySet return value
+    //copied but different cast for object2IntEntrySet return rightInt
     public void writeToCompoundTag(CompoundTag tag, Object2IntMap<K> value) {
         var listTag = new ListTag();
         for (var entry : value.object2IntEntrySet()) {

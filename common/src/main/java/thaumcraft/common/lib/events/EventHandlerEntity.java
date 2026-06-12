@@ -217,7 +217,7 @@ public class EventHandlerEntity {
 //                       AtomicReference<ResourceKey<Biome>> biomeResKeyRef = new AtomicReference<>();
 //                       biomeHolder.unwrapKey().ifPresent(biomeResKeyRef::set);
 //                       if (biomeResKeyRef.get() == null) {
-//                          biomeResKeyRef.set(BiomeWithTypes.getBiomeResKey(biomeHolder.value()));
+//                          biomeResKeyRef.set(BiomeWithTypes.getBiomeResKey(biomeHolder.rightInt()));
 //                       }
 //                       Collection<BiomeType> biomeTypes = BiomeWithTypes.getBiomeTypes(biomeResKeyRef.get());
 //

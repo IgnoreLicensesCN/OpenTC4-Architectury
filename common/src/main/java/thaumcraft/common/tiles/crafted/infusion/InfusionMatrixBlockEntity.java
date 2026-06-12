@@ -6,7 +6,7 @@ import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -316,7 +316,7 @@ public class InfusionMatrixBlockEntity
             return Collections.emptyList();
         }
         
-        return componentProviderChecker.checkComponentProviderNearby(_ignored -> {},this.level,getBlockPos()).obj();
+        return componentProviderChecker.checkComponentProviderNearby(_ignored -> {},this.level,getBlockPos()).left();
     }
 
     protected boolean isCenterStackValid() {
@@ -512,14 +512,14 @@ public class InfusionMatrixBlockEntity
             return InteractionResult.PASS;
         }
         var componentStacksAndInstability = componentProviderChecker.getInfusionComponentStacksAndInstability(this.level,getBlockPos());
-        var componentStacks = componentStacksAndInstability.obj();
+        var componentStacks = componentStacksAndInstability.left();
         var matchedRecipe = tryMatchRecipe(centerStack,componentStacks,player);
         if (matchedRecipe == null) {
             return InteractionResult.PASS;
         }
 
 
-        startCrafting(player.getGameProfile().getName(),matchedRecipe,centerStack,componentStacks,matchedRecipe.getRemainingStacks(componentStacks),componentStacksAndInstability.value());
+        startCrafting(player.getGameProfile().getName(),matchedRecipe,centerStack,componentStacks,matchedRecipe.getRemainingStacks(componentStacks),componentStacksAndInstability.rightInt());
 
         return InteractionResult.SUCCESS;
     }
@@ -600,7 +600,7 @@ public class InfusionMatrixBlockEntity
         //List<ItemStack> component stacks,int instability
         protected @NotNull ObjectIntPair<List<ItemStack>> getInfusionComponentStacksAndInstability(Level level, BlockPos matrixPos){
             var result = new ArrayList<ItemStack>(16);
-            int instability = checkComponentProviderNearby(result::add,level,matrixPos).value();
+            int instability = checkComponentProviderNearby(result::add,level,matrixPos).rightInt();
             return new ObjectIntPair<>(result,instability);
         }
 

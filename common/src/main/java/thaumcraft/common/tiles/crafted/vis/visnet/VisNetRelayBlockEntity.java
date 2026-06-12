@@ -3,7 +3,7 @@ package thaumcraft.common.tiles.crafted.vis.visnet;
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.mixinaccessors.clientbe.VisNetRelayBlockEntityClientAccessor;
-import com.linearity.opentc4.simpleutils.bauble.BaubleUtils;
+import com.linearity.opentc4.utils.bauble.BaubleUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -21,7 +21,7 @@ import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 @SideOnly(Side.CLIENT)
 public class TileEssentiaReservoirRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/reservoir.obj");
+   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/reservoir.left");
 
    public TileEssentiaReservoirRenderer() {
       this.model = AdvancedModelLoader.loadModel(RELAY);

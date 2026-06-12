@@ -22,7 +22,7 @@ import java.util.List;
 public interface IRunicShieldProviderItem {
 	
 	/**
-	 * returns how much charge this item can provide. This is the base shielding value
+	 * returns how much charge this item can provide. This is the base shielding rightInt
 	 */
 	@Unmodifiable
     Object2IntMap<AbstractRunicShieldType<?>> getRunicCharge(ItemStack itemstack);

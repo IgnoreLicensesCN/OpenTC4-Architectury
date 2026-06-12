@@ -20,7 +20,7 @@ public class FXShieldRunes extends EntityFX {
    float yaw = 0.0F;
    float pitch = 0.0F;
    private IModelCustom model;
-   private static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/hemis.obj");
+   private static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/hemis.left");
 
    public FXShieldRunes(World world, double d, double d1, double d2, Entity target, int age, float yaw, float pitch) {
       super(world, d, d1, d2, 0.0F, 0.0F, 0.0F);

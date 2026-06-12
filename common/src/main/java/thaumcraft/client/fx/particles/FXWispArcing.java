@@ -102,7 +102,7 @@ public class FXWispArcing /*extends EntityFX*/ {
 //
 //   }
 //
-//   public void setGravity(float value) {
-//      this.particleGravity = value;
+//   public void setGravity(float rightInt) {
+//      this.particleGravity = rightInt;
 //   }
 }

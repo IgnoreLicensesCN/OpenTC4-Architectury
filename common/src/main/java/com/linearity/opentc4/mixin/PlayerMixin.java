@@ -15,12 +15,16 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.warp.WarpInfo;
+import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
 
 @Mixin(value = Player.class,priority = 900)
 public class PlayerMixin
@@ -106,5 +110,13 @@ public class PlayerMixin
             return Items.DIAMOND_SWORD.getDefaultInstance();
         }
         return itemStack;
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("HEAD")
+    )
+    private void opentc4$playerTick(CallbackInfo ci){
+        IFlyingAbilityProviderWearing.FlyingAbilityProviderCheck.checkFlyingProviderForPlayer((Player)(Object)this);
     }
 }

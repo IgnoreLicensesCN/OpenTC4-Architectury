@@ -9,6 +9,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class FakeUseOnContext extends UseOnContext {
+    //i like that protected constructor
     public FakeUseOnContext(Level level, @Nullable Player player, InteractionHand interactionHand, ItemStack itemStack, BlockHitResult blockHitResult) {
         super(level, player, interactionHand, itemStack, blockHitResult);
     }

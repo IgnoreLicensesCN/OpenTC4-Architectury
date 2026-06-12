@@ -14,7 +14,7 @@ import thaumcraft.common.tiles.junkbox.TileEldritchCrabSpawner;
 @SideOnly(Side.CLIENT)
 public class TileEldritchCrabSpawnerRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation VENT = new ResourceLocation("thaumcraft", "textures/models/crabvent.obj");
+   private static final ResourceLocation VENT = new ResourceLocation("thaumcraft", "textures/models/crabvent.left");
 
    public TileEldritchCrabSpawnerRenderer() {
       this.model = AdvancedModelLoader.loadModel(VENT);

@@ -1,6 +1,6 @@
 package thaumcraft.common.items.equipment.elemental;
 
-import com.linearity.opentc4.utils.EntityTypeTests;
+import com.linearity.opentc4.utils.consts.EntityTypeTests;
 import com.linearity.opentc4.utils.FurthestBlockFinder;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -24,8 +24,6 @@ import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.abstracts.IDropFollowingUserTool;
 import thaumcraft.common.items.abstracts.IRedirectBreakPosItem;
 import thaumcraft.common.lib.network.fx.PacketFXBlockBubbleS2C;
-
-import java.awt.*;
 
 public class ElementalAxeItem extends AxeItem implements IDropFollowingUserTool, IRedirectBreakPosItem {
     public ElementalAxeItem(Tier tier, float f, float g, Properties properties) {

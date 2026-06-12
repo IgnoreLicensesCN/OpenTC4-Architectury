@@ -35,7 +35,7 @@ public class AdvancedAlchemicalFurnaceBaseCornerBlock extends AbstractAdvancedAl
             case CORNER_NORTH_EAST -> POS_RELATED_NORTH_EAST;
             case CORNER_SOUTH_EAST -> POS_RELATED_SOUTH_EAST;
             case CORNER_SOUTH_WEST -> POS_RELATED_SOUTH_WEST;
-            default -> throw new IllegalStateException("Unexpected corner value: " + state.getValue(AT_CORNER));
+            default -> throw new IllegalStateException("Unexpected corner rightInt: " + state.getValue(AT_CORNER));
         };
     }
 

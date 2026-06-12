@@ -46,14 +46,13 @@ import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-import static com.linearity.opentc4.simpleutils.DirectionShuffles.DIRECTIONS_SHUFFLED;
+import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
 import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.DOWSING;
 

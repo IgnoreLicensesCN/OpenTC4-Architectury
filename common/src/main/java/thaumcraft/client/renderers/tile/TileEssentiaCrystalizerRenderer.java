@@ -18,8 +18,8 @@ import thaumcraft.common.tiles.junkbox.TileEssentiaCrystalizer;
 public class TileEssentiaCrystalizerRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
    private IModelCustom model2;
-   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/crystalizer.obj");
-   private static final ResourceLocation CRYSTAL = new ResourceLocation("thaumcraft", "textures/models/vis_relay.obj");
+   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/crystalizer.left");
+   private static final ResourceLocation CRYSTAL = new ResourceLocation("thaumcraft", "textures/models/vis_relay.left");
 
    public TileEssentiaCrystalizerRenderer() {
       this.model = AdvancedModelLoader.loadModel(RELAY);

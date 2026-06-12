@@ -141,6 +141,7 @@ block_with_item_names = [
     ['item.ItemChestplateRobe.name','robe_chestplate'],
     ['item.ItemBootsRobe.name','robe_boots'],
     ['item.ItemLeggingsRobe.name','robe_leggings'],
+    ['item.HoverHarness.name','thaumostatic_harness'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

@@ -1,6 +1,6 @@
 package thaumcraft.common.items.wands.componentbase;
 
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;

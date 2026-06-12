@@ -298,7 +298,7 @@ public class Utils {
 //         Field modifiersField = Field.class.getDeclaredField("modifiers");
 //         modifiersField.setAccessible(true);
 //         modifiersField.setInt(field, field.getModifiers() & -17);
-//         field.set(instance, value);
+//         field.set(instance, rightInt);
 //      } catch (Exception e) {
 //         e.printStackTrace();
 //      }

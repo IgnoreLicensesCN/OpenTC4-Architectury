@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.BrainJarTagAccessors.EXP;
-import static com.linearity.opentc4.utils.EntityTypeTests.EXPERIENCE_ORB_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.EXPERIENCE_ORB_TEST;
 
 public class BrainJarBlockEntity extends TileThaumcraft implements IValueContainerBasedComparatorSignalProviderBlockEntity {
     public int xp = 0;

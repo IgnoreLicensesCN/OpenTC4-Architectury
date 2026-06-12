@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;

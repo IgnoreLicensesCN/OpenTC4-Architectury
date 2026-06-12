@@ -21,13 +21,14 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
 import java.util.List;
 
 import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.*;
 
-public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerItem<Aspect>,IAspectDisplayItem<Aspect> {
+public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProviderItem,IAspectContainerItem<Aspect>,IAspectDisplayItem<Aspect> {
     public EssentiaJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
@@ -219,10 +220,14 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
         if (stack.isEmpty()) return EssentiaJarInfo.EMPTY;
         var tag = stack.getTag();
         if (tag == null) return EssentiaJarInfo.EMPTY;
+        var aspect = ASPECT.readFromCompoundTag(tag);
+        var amount =  AMOUNT.readIntFromCompoundTag(tag);
+        var filter = ASPECT.readFromCompoundTag(tag);
+        if (aspect.isEmpty()){
+            amount = 0;
+        }
         return new EssentiaJarInfo(
-                ASPECT.readFromCompoundTag(tag),
-                AMOUNT.readIntFromCompoundTag(tag),
-                ASPECT_FILTER.readFromCompoundTag(tag)
+                aspect,amount,filter
         );
     }
 
@@ -259,5 +264,41 @@ public class EssentiaJarBlockItem extends BlockItem implements IAspectContainerI
             return 64;
         }
         return 1;
+    }
+
+    @Override
+    public int getFuelEssentiaAmount(ItemStack itemStack,Aspect aspect) {
+        if (aspect.isEmpty()) return 0;
+        var jarInfo = getJarInfo(itemStack);
+        if (jarInfo.aspect != aspect) return 0;
+        return jarInfo.amount;
+    }
+
+    @Override
+    public int consumeFuelEssentiaAmount(ItemStack itemStack, Aspect aspect, int toConsume) {
+        if (aspect.isEmpty()) return 0;
+        var jarInfo = getJarInfo(itemStack);
+        if (jarInfo.aspect != aspect) return 0;
+        int remain = Math.max(0, jarInfo.amount-toConsume);
+        int cost = jarInfo.amount-remain;
+        setAspectAmount(itemStack,remain);
+        return cost;
+    }
+
+    @Override
+    public int addFuelEssentiaAmount(ItemStack itemStack, Aspect aspect, int toAdd) {
+        if (aspect.isEmpty()) return 0;
+        var jarInfo = getJarInfo(itemStack);
+        if (jarInfo.aspect != aspect && !jarInfo.aspect.isEmpty()) return 0;
+        int maxSize = getAspectMaxVisSize(itemStack);
+        if (jarInfo.amount == maxSize) return 0;
+        int afterAdded = Math.min(jarInfo.amount + toAdd, maxSize);
+        setAspectAmdAmount(itemStack, aspect, afterAdded);
+        return afterAdded - jarInfo.amount;
+    }
+
+    @Override
+    public int getMaxFuelEssentiaAmount(ItemStack itemStack, Aspect aspect) {
+        return getAspectMaxVisSize(itemStack);
     }
 }

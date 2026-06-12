@@ -1,7 +1,7 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
-import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
+import com.linearity.opentc4.utils.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.bauble.EquippedBaubleSlot;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;
@@ -9,7 +9,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
@@ -28,14 +27,8 @@ import java.util.Optional;
 //a impl for fabric and one for forge
 public abstract class PlatformUniqueUtils {
 
-    public abstract List<Item> getItemsFromTag(String key);
     public abstract List<Item> getItemsFromTag(TagKey<Item> key);
-    public abstract List<String> getTagsFromItem(ItemStack stack);
-    public boolean isItemStackMatchTag(ItemStack stack, String tag){
-        return stack.is(
-                TagKey.create(Registries.ITEM, new ResourceLocation(tag))
-        );
-    };
+
     public abstract MinecraftServer getServer();
     public abstract KeyMapping registerKeyBinding(String key, int glfwKeyCode, String categoryName);
     public abstract void registerKeyBinding(KeyMapping mapping);

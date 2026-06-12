@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.lamp.fertility.check;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import thaumcraft.api.listeners.lamp.fertility.IFertilityAffectiveEntity;

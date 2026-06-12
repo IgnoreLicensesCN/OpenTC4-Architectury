@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +28,7 @@ import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.linearity.opentc4.utils.EntityTypeTests.ENTITY_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 
 public class ArcanePressurePlateBlock extends PressurePlateBlock
         implements IWandInteractableOwnedBlock {

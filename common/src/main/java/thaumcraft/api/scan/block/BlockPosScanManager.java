@@ -1,10 +1,9 @@
 package thaumcraft.api.scan.block;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 public class BlockPosScanManager {

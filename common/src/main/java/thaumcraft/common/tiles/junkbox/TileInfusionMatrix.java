@@ -227,9 +227,9 @@ public class TileInfusionMatrix /*extends TileThaumcraft implements IWandable, I
 //                        }
 //
 //                        if (recipe.getRecipeOutput(this.recipeInput) instanceof Object[]) {
-//                            Object[] obj = (Object[]) recipe.getRecipeOutput(this.recipeInput);
-//                            this.recipeOutputLabel = (String) obj[0];
-//                            this.recipeOutput = obj[1];
+//                            Object[] left = (Object[]) recipe.getRecipeOutput(this.recipeInput);
+//                            this.recipeOutputLabel = (String) left[0];
+//                            this.recipeOutput = left[1];
 //                        } else {
 //                            this.recipeOutput = recipe.getRecipeOutput(this.recipeInput);
 //                        }

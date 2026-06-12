@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.infusion.instabilityevent;
 
-import com.linearity.opentc4.utils.EntityTypeTests;
+import com.linearity.opentc4.utils.consts.EntityTypeTests;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

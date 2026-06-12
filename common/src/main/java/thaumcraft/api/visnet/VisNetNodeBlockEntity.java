@@ -1,7 +1,7 @@
 package thaumcraft.api.visnet;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

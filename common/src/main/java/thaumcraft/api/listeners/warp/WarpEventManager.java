@@ -2,12 +2,11 @@ package thaumcraft.api.listeners.warp;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;

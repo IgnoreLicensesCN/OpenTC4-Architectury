@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster;
 
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.core.registries.BuiltInRegistries;

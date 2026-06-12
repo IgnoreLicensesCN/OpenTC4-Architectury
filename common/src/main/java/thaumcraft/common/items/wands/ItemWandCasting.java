@@ -76,7 +76,7 @@ public class ItemWandCasting /*extends Item implements IArchitectDisplayItem*/ {
 //        }
 //
 //        name = name.replace("%ROD", Component.translatable("item.Wand." + rod + ".rod"));
-//        name = name.replace("%OBJ", this.isStaff(is) ? Component.translatable("item.Wand.staff.obj") : (this.isSceptre(is) ? Component.translatable("item.Wand.sceptre.obj") : Component.translatable("item.Wand.wand.obj")));
+//        name = name.replace("%OBJ", this.isStaff(is) ? Component.translatable("item.Wand.staff.left") : (this.isSceptre(is) ? Component.translatable("item.Wand.sceptre.left") : Component.translatable("item.Wand.wand.left")));
 //        return name;
 //    }
 

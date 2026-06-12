@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles.crafted.infusion;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;

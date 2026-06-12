@@ -17,7 +17,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.List;
 
-import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
 
 public class DeathGazeEffect extends MobEffect implements IPreventMilkRemoveEffect {
 

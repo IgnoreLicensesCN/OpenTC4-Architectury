@@ -7,7 +7,7 @@ import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
 import java.util.List;
 
-import static com.linearity.opentc4.utils.EntityTypeTests.LIVING_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
 
 public class InfectiousVisExhaustEffect extends VisExhaustEffect implements IPreventMilkRemoveEffect {
     public InfectiousVisExhaustEffect() {

@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.network.playerdata.syncdata.scan;
 
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;

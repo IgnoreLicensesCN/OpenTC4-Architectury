@@ -133,7 +133,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
             Entity victim /*only for player in vanilla TC4*/,
             DamageSource source,
             float damage, /*may decreased by shields before*/
-            float damaged, /* shield value damaged */
+            float damaged, /* shield rightInt damaged */
             EntityRunicShieldInfo shieldInfo
     ){
         if (victim.level() instanceof ServerLevel serverLevel) {

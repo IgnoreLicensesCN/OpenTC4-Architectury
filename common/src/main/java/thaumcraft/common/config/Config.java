@@ -416,7 +416,7 @@ public class Config {
         }
 
         Property golIgDel = config.get("general", "golem_ignore_delay", golemIgnoreDelay);
-        golIgDel.comment = "How many milliseconds a golem will ignore an item after it has failed to find a destination or use for it. Min value 1000";
+        golIgDel.comment = "How many milliseconds a golem will ignore an item after it has failed to find a destination or use for it. Min rightInt 1000";
         golemIgnoreDelay = golIgDel.getInt();
         if (golemIgnoreDelay < 1000) {
             golemIgnoreDelay = 1000;

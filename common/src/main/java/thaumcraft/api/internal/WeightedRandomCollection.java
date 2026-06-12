@@ -1,9 +1,7 @@
 package thaumcraft.api.internal;
 
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.Weight;
-import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import oshi.annotation.concurrent.NotThreadSafe;
@@ -37,12 +35,12 @@ public class WeightedRandomCollection<Obj>{
         }
         int pickValue = rand.nextInt(totalWeight);
         for (var item : internalContainer) {
-            pickValue -= item.value();
+            pickValue -= item.rightInt();
             if (pickValue < 0) {
-                return item.obj();
+                return item.left();
             }
         }
-        return internalContainer.getFirst().obj();
+        return internalContainer.getFirst().left();
     }
     public void clear(){
         internalContainer.clear();
@@ -52,7 +50,7 @@ public class WeightedRandomCollection<Obj>{
         return totalWeight;
     }
     public void sort(){
-        internalContainer.sort((a,b) -> -Integer.compare(a.value(), b.value()));
+        internalContainer.sort((a,b) -> -Integer.compare(a.rightInt(), b.rightInt()));
         sorted = true;
     }
 }

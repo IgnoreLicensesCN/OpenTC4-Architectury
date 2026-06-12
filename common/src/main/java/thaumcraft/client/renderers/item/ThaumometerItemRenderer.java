@@ -24,7 +24,7 @@ public class ThaumometerItemRenderer extends ItemRenderListener {
 
     public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer(100);
 
-//    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");//loaded
+//    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.left");//loaded
     private static final ResourceLocation SCAN_SCREEN = new ResourceLocation("thaumcraft", "textures/item/scanscreen.png");
 
     public ThaumometerItemRenderer(int weight) {
@@ -126,7 +126,7 @@ public class ThaumometerItemRenderer extends ItemRenderListener {
         consumer = bufferSource.getBuffer(RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS));
         getItemRenderer().opentc4$renderModelLists(
                 bakedModel, stack, light, overlay, poseStack, consumer
-        );//dont forget to render obj part :)
+        );//dont forget to render left part :)
         poseStack.popPose();
         return true;
     }

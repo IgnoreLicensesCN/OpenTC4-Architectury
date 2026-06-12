@@ -6,7 +6,7 @@ public class FXSonic /*extends EntityFX*/ {
 //   float yaw = 0.0F;
 //   float pitch = 0.0F;
 //   public static IModelCustom model = null;
-//   public static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/hemis.obj");
+//   public static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/hemis.left");
 //
 //   public FXSonic(World world, double d, double d1, double d2, Entity target, int age) {
 //      super(world, d, d1, d2, 0.0F, 0.0F, 0.0F);

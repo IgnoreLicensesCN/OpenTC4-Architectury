@@ -26,6 +26,8 @@ import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
+import java.util.List;
+
 public class Consts {
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;
@@ -45,36 +47,6 @@ public class Consts {
                         RESEARCH,
                         new ResearchItemResourceLocationTagAccessor(RESEARCH + "_key")
                 );
-    }
-
-    public static class ThaumcraftPlayerCompoundTagAccessors {
-
-        public static final ResearchItemResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
-                new ResearchItemResourceLocationTagAccessor("research");
-
-        private static final String SCAN_OBJECTS = "THAUMCRAFT.SCAN.OBJECTS";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR =
-                new ListTagAccessor(SCAN_OBJECTS);
-
-        private static final String SCAN_ENTITIES = "THAUMCRAFT.SCAN.ENTITIES";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR =
-                new ListTagAccessor(SCAN_ENTITIES);
-
-        private static final String SCAN_PHENOMENA = "THAUMCRAFT.SCAN.PHENOMENA";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR =
-                new ListTagAccessor(SCAN_PHENOMENA);
-
-
-        private static final String SCAN_OBJECT_ITEM = "scannedObj";
-        public static final StringTagAccessor LIST_TAG_SCANNED_OBJECT_ACCESSOR =
-                new StringTagAccessor(SCAN_OBJECT_ITEM);
-
-        private static final String SCAN_ENTITY_ITEM = "scannedEntity";
-        public static final StringTagAccessor LIST_TAG_SCANNED_ENTITY_ACCESSOR =
-                new StringTagAccessor(SCAN_ENTITY_ITEM);
-        private static final String SCAN_PHENOMENA_ITEM = "scannedPhenomena";
-        public static final StringTagAccessor LIST_TAG_SCANNED_PHENOMENA_ACCESSOR =
-                new StringTagAccessor(SCAN_PHENOMENA_ITEM);
     }
 
     public static class WorldCoordsCompoundTagAccessors {
@@ -349,5 +321,11 @@ public class Consts {
     }
     public static class AugmentationRunicShieldTagAccessors {
         public static final IntTagAccessor RUNIC_AUGMENTATION_LEVEL = new IntTagAccessor("runic_augmentation_level");
+    }
+    public static class BundleLikeItemTagAccessors {
+        public static final ModifiableListAccessor<ItemStack> BUNDLE_STACKS = new ModifiableListAccessor<>(
+                "bundle_stacks",
+                new ItemStackTagAccessor("stack")
+        );
     }
 }
