@@ -1,10 +1,8 @@
-package thaumcraft.common.items.equipment.armor;
+package thaumcraft.common.items.equipment.armor.thaumaturge;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.collectionlike.IntIntPair;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;

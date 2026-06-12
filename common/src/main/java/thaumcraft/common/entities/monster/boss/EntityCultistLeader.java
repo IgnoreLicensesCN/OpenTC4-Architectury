@@ -11,7 +11,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.Level;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AICultistHurtByTarget;
@@ -54,7 +53,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
    }
 
    public void generateName() {
-      int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+      int t = (int)this.getEntityAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
          this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.CultistLeader.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
       }

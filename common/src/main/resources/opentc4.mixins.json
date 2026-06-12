@@ -6,7 +6,7 @@
   "client": [
     "ClientChunkCacheMixin",
     "ClientChunkCacheStorageMixin",
-    "LivingEntityClientMixin",
+    "client.LivingEntityClientMixin",
     "SheetsMixin",
     "client.ClientPacketListenerMixin",
     "client.FontRendererMixin",

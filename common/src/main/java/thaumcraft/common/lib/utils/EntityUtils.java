@@ -1,7 +1,10 @@
 package thaumcraft.common.lib.utils;
 
 import com.linearity.opentc4.mixin.LivingEntityAccessor;
+import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrarManager;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -24,17 +27,14 @@ import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.*;
 
 public class EntityUtils {
 
-
+    @Deprecated(forRemoval = true,since = "got some misunderstanding")
     public static class AttributeModifierTweaked extends AttributeModifier {
 
         public AttributeModifierTweaked(UUID p_i1606_1_, String p_i1606_2_, double p_i1606_3_, Operation p_i1606_5_) {
@@ -50,29 +50,30 @@ public class EntityUtils {
     public static final Set<EntityType<? extends LivingEntity>> livingEntityTypes = ConcurrentHashMap.newKeySet();
 
     public static void init() {
-        RegistrarManager manager = RegistrarManager.get(Thaumcraft.MOD_ID);
-        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":mobmod"), CHAMPION_MOD)
-                .build();
-        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":championhealth"), CHAMPION_HEALTH)
-                .build();
-        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":championdmg"), CHAMPION_DAMAGE)
-                .build();
-        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":blodspeedboost"), BOLDBUFF)
-                .build();
-        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":mightlydmgboost"), MIGHTYBUFF)
-                .build();
-        int counter = 0;
-        for (AttributeModifierTweaked modifier : HPBUFF) {
-            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":hpbuff_" + counter), modifier)
-                    .build();
-            counter += 1;
-        }
-        counter = 0;
-        for (AttributeModifierTweaked modifier : DMGBUFF) {
-            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":dmgbuff_" + counter), modifier)
-                    .build();
-            counter += 1;
-        }
+        Registry.ATTRIBUTES.register();
+//        RegistrarManager manager = RegistrarManager.get(Thaumcraft.MOD_ID);
+//        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":mobmod"), ThaumcraftAttributeInstances.CHAMPION_MOD)
+//                .build();
+//        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":championhealth"), ThaumcraftAttributeInstances.CHAMPION_HEALTH)
+//                .build();
+//        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":championdmg"), ThaumcraftAttributeInstances.CHAMPION_DAMAGE)
+//                .build();
+//        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":blodspeedboost"), ThaumcraftAttributeInstances.BOLDBUFF)
+//                .build();
+//        manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":mightlydmgboost"), ThaumcraftAttributeInstances.MIGHTYBUFF)
+//                .build();
+//        int counter = 0;
+//        for (AttributeModifierTweaked modifier : ThaumcraftAttributeInstances.HPBUFF) {
+//            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":hpbuff_" + counter), modifier)
+//                    .build();
+//            counter += 1;
+//        }
+//        counter = 0;
+//        for (AttributeModifierTweaked modifier : ThaumcraftAttributeInstances.DMGBUFF) {
+//            manager.builder(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":dmgbuff_" + counter), modifier)
+//                    .build();
+//            counter += 1;
+//        }
 //        for (EntityType<? extends Entity> entityType: DefaultAttributesAccessor.opentc4$getSuppliers().keySet()) {
 //            try {
 //                Entity tryCreated = ((EntityTypeAccessor)entityType).opentc4$getFactory().create(entityType,null);
@@ -86,43 +87,86 @@ public class EntityUtils {
 //            }
 //        }
     }
+    public static final UUID CHAMPION_HEALTH_MODIFIER_UUID = UUID.fromString("a62bef38-48cc-42a6-ac5e-ef913841c4fd");
+    public static AttributeModifier getNewChampionHealthModifier(){
+        return new AttributeModifier(CHAMPION_HEALTH_MODIFIER_UUID, "Champion health buff", 30.0F, ADDITION);
+    }
+    public static final UUID CHAMPION_DAMAGE_MODIFIER_UUID = UUID.fromString("a340d2db-d881-4c25-ac62-f0ad14cd63b0");
+    public static AttributeModifier getNewChampionDamageModifier(){
+        return new AttributeModifier(CHAMPION_DAMAGE_MODIFIER_UUID, "Champion damage buff", 2.0F, MULTIPLY_TOTAL);
+    }
+    public static final UUID BOLD_BUFF_MODIFIER_UUID = UUID.fromString("4b1edd33-caa9-47ae-a702-d86c05701037");
+    public static AttributeModifier getNewBoldBuffModifier(){
+        return new AttributeModifier(BOLD_BUFF_MODIFIER_UUID, "Bold speed boost", 0.3, MULTIPLY_BASE);
+    }
+    public static final UUID MIGHTY_BUFF_MODIFIER_UUID = UUID.fromString("7163897f-07f5-49b3-9ce4-b74beb83d2d3");
+    public static AttributeModifier getNewMightyBuffModifier(){
+        return new AttributeModifier(MIGHTY_BUFF_MODIFIER_UUID, "Mighty damage boost", 3.0F, MULTIPLY_TOTAL);
+    }
+    public static class ThaumcraftAttributeInstances {
 
-    public static final double CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED = -2.;
-    public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED = -1.;
-    public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED = 0.;
-
-    public static final Attribute CHAMPION_MOD = (new RangedAttribute("tc.mobmod", -2.0F, -2.0F, 100.0F)).setSyncable(
-            true);/*.setDescription("Champion modifier")*/
-    public static final AttributeModifierTweaked CHAMPION_HEALTH = new AttributeModifierTweaked(
-            UUID.fromString("a62bef38-48cc-42a6-ac5e-ef913841c4fd"), "Champion health buff", 30.0F, ADDITION);
-    public static final AttributeModifierTweaked CHAMPION_DAMAGE = new AttributeModifierTweaked(
-            UUID.fromString("a340d2db-d881-4c25-ac62-f0ad14cd63b0"), "Champion damage buff", 2.0F, MULTIPLY_TOTAL);
-    public static final AttributeModifierTweaked BOLDBUFF = new AttributeModifierTweaked(
-            UUID.fromString("4b1edd33-caa9-47ae-a702-d86c05701037"), "Bold speed boost", 0.3, MULTIPLY_BASE);
-    public static final AttributeModifierTweaked MIGHTYBUFF = new AttributeModifierTweaked(
-            UUID.fromString("7163897f-07f5-49b3-9ce4-b74beb83d2d3"), "Mighty damage boost", 3.0F, MULTIPLY_TOTAL);
-    public static final AttributeModifierTweaked[] HPBUFF = new AttributeModifierTweaked[]{
-            new AttributeModifierTweaked(
-                    UUID.fromString("54d621c1-dd4d-4b43-8bd2-5531c8875797"), "HEALTH BUFF 1", 50.0F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("f51257dc-b7fa-4f7a-92d7-75d68e8592c4"), "HEALTH BUFF 2", 50.0F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("3d6b2e42-4141-4364-b76d-0e8664bbd0bb"), "HEALTH BUFF 3", 50.0F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("02c97a08-801c-4131-afa2-1427a6151934"), "HEALTH BUFF 4", 50.0F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("0f354f6a-33c5-40be-93be-81b1338567f1"), "HEALTH BUFF 5", 50.0F, ADDITION)};
-    public static final AttributeModifierTweaked[] DMGBUFF = new AttributeModifierTweaked[]{
-            new AttributeModifierTweaked(
-                    UUID.fromString("534f8c57-929a-48cf-bbd6-0fd851030748"), "DAMAGE BUFF 1", 0.5F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("d317a76e-0e7c-4c61-acfd-9fa286053b32"), "DAMAGE BUFF 2", 0.5F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("ff462d63-26a2-4363-830e-143ed97e2a4f"), "DAMAGE BUFF 3", 0.5F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("cf1eb39e-0c67-495f-887c-0d3080828d2f"), "DAMAGE BUFF 4", 0.5F, ADDITION),
-            new AttributeModifierTweaked(
-                    UUID.fromString("3cfab9da-2701-43d8-ac07-885f16fa4117"), "DAMAGE BUFF 5", 0.5F, ADDITION)};
+        public static final double CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED = -2.;
+        public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED = -1.;
+        public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED = 0.;
+        public static final Attribute CHAMPION_MOD = Registry.SUPPLIER_CHAMPION_MOD.get();
+        public static final Attribute STEP_HEIGHT_ADDITION_NOT_SNEAKING = Registry.SUPPLIER_STEP_HEIGHT_ADDITION_NOT_SNEAKING.get();
+        public static final Attribute FLYING_SPEED_CONTROL_OVERRIDE = Registry.SUPPLIER_FLYING_SPEED_CONTROL_OVERRIDE.get();
+//        public static final Attribute FORWARD_IMPULSE_NOT_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER.get();
+//        public static final Attribute FORWARD_IMPULSE_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_IN_WATER.get();
+//        public static final AttributeModifierTweaked CHAMPION_HEALTH = new AttributeModifierTweaked(
+//                UUID.fromString("a62bef38-48cc-42a6-ac5e-ef913841c4fd"), "Champion health buff", 30.0F, ADDITION);
+//        public static final AttributeModifierTweaked CHAMPION_DAMAGE = new AttributeModifierTweaked(
+//                UUID.fromString("a340d2db-d881-4c25-ac62-f0ad14cd63b0"), "Champion damage buff", 2.0F, MULTIPLY_TOTAL);
+//        public static final AttributeModifierTweaked BOLDBUFF = new AttributeModifierTweaked(
+//                UUID.fromString("4b1edd33-caa9-47ae-a702-d86c05701037"), "Bold speed boost", 0.3, MULTIPLY_BASE);
+//        public static final AttributeModifierTweaked MIGHTYBUFF = new AttributeModifierTweaked(
+//                UUID.fromString("7163897f-07f5-49b3-9ce4-b74beb83d2d3"), "Mighty damage boost", 3.0F, MULTIPLY_TOTAL);
+//        public static final AttributeModifierTweaked[] HPBUFF = new AttributeModifierTweaked[]{
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("54d621c1-dd4d-4b43-8bd2-5531c8875797"), "HEALTH BUFF 1", 50.0F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("f51257dc-b7fa-4f7a-92d7-75d68e8592c4"), "HEALTH BUFF 2", 50.0F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("3d6b2e42-4141-4364-b76d-0e8664bbd0bb"), "HEALTH BUFF 3", 50.0F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("02c97a08-801c-4131-afa2-1427a6151934"), "HEALTH BUFF 4", 50.0F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("0f354f6a-33c5-40be-93be-81b1338567f1"), "HEALTH BUFF 5", 50.0F, ADDITION)};
+//        public static final AttributeModifierTweaked[] DMGBUFF = new AttributeModifierTweaked[]{
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("534f8c57-929a-48cf-bbd6-0fd851030748"), "DAMAGE BUFF 1", 0.5F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("d317a76e-0e7c-4c61-acfd-9fa286053b32"), "DAMAGE BUFF 2", 0.5F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("ff462d63-26a2-4363-830e-143ed97e2a4f"), "DAMAGE BUFF 3", 0.5F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("cf1eb39e-0c67-495f-887c-0d3080828d2f"), "DAMAGE BUFF 4", 0.5F, ADDITION),
+//                new AttributeModifierTweaked(
+//                        UUID.fromString("3cfab9da-2701-43d8-ac07-885f16fa4117"), "DAMAGE BUFF 5", 0.5F, ADDITION)};
+    }
+    public static class Registry {
+        public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ATTRIBUTE);
+        public static final RegistrySupplier<Attribute> SUPPLIER_CHAMPION_MOD = ATTRIBUTES.register(
+                "champion_modifier_applied_state",
+                () -> new RangedAttribute("tc.mobmod", -2.0F, -2.0F, 100.0F).setSyncable(true)
+        );
+        public static final RegistrySupplier<Attribute> SUPPLIER_STEP_HEIGHT_ADDITION_NOT_SNEAKING = ATTRIBUTES.register(
+                "attributes." + Thaumcraft.MOD_ID + ".step_height_addition_not_sneaking",
+                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".step_height_addition_not_sneaking", 0, 0, 100.0F).setSyncable(true)
+        );
+        public static final RegistrySupplier<Attribute> SUPPLIER_FLYING_SPEED_CONTROL_OVERRIDE = ATTRIBUTES.register(
+                "attributes." + Thaumcraft.MOD_ID + ".flying_speed_control_override",
+                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".flying_speed_control_override", 0, 0, 100.0F).setSyncable(true)
+        );
+//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER = ATTRIBUTES.register(
+//                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",
+//                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",0,0,100).setSyncable(true)
+//        );
+//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_IN_WATER = ATTRIBUTES.register(
+//                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_in_water",
+//                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_in_water",0,0,100).setSyncable(true)
+//        );
+    }
 
     // 简单重载：只给 range
     public static Entity getPointedEntity(Entity entity, double range) {
@@ -330,6 +374,7 @@ public class EntityUtils {
         return Utils.isLyingInCone(target, origin, lookPos, fov);
     }
 
+    //TODO:Migrate to entity drop item logic(whatever it will lead to,always floating or anything else)
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {
         if (stack.getCount() != 0 && !stack.isEmpty()) {
             EntitySpecialItem entityitem = new EntitySpecialItem(
@@ -341,8 +386,7 @@ public class EntityUtils {
             if (entity.captureDrops) {
                 entity.capturedDrops.add(entityitem);
             } else {
-                entity.level()
-                        .spawnEntityInWorld(entityitem);
+                entity.level().addFreshEntity(entityitem);
             }
 
             return entityitem;
@@ -358,24 +402,24 @@ public class EntityUtils {
                     .nextInt(ChampionModifier.mods.length);
         }
 
-        AttributeInstance modai = entity.getAttribute(CHAMPION_MOD);
+        AttributeInstance modai = entity.getAttribute(ThaumcraftAttributeInstances.CHAMPION_MOD);
         if (modai == null) {
             return;
         }
-        modai.setBaseValue(CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
+        modai.setBaseValue(ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
 //      modai.removeModifier(ChampionModifier.mods[type].attributeMod);
 //      modai.applyModifier(ChampionModifier.mods[type].attributeMod);
         if (!(entity instanceof EntityThaumcraftBoss)) {
+
             AttributeInstance iattributeinstance = entity.getAttribute(Attributes.MAX_HEALTH);
             assert iattributeinstance != null;
-            iattributeinstance.removeModifier(CHAMPION_HEALTH);
-            iattributeinstance.addPermanentModifier(CHAMPION_HEALTH);
+            iattributeinstance.removeModifier(CHAMPION_HEALTH_MODIFIER_UUID);
+            iattributeinstance.addPermanentModifier(getNewChampionHealthModifier());
+
             AttributeInstance iattributeinstance2 = entity.getAttribute(Attributes.ATTACK_DAMAGE);
             assert iattributeinstance2 != null;
-            iattributeinstance2.removeModifier(CHAMPION_DAMAGE);
-            iattributeinstance2.addPermanentModifier(CHAMPION_DAMAGE);
-//         iattributeinstance2.removeModifier(CHAMPION_DAMAGE);
-//         iattributeinstance2.applyModifier(CHAMPION_DAMAGE);
+            iattributeinstance2.removeModifier(CHAMPION_DAMAGE_MODIFIER_UUID);
+            iattributeinstance2.addPermanentModifier(getNewChampionDamageModifier());
             entity.heal(25.0F);
             entity.setCustomName(Component.literal(
                     ChampionModifier.mods[type].getModNameLocalized() + " " + entity.getName()
@@ -395,16 +439,16 @@ public class EntityUtils {
                 if (sai == null) {
                     return;
                 }
-                sai.removeModifier(BOLDBUFF);
-                sai.addPermanentModifier(BOLDBUFF);
+                sai.removeModifier(BOLD_BUFF_MODIFIER_UUID);
+                sai.addPermanentModifier(getNewBoldBuffModifier());
                 break;
             case 3:
                 AttributeInstance mai = entity.getAttribute(Attributes.ATTACK_DAMAGE);
                 if (mai == null) {
                     return;
                 }
-                mai.removeModifier(MIGHTYBUFF);
-                mai.addPermanentModifier(MIGHTYBUFF);
+                mai.removeModifier(MIGHTY_BUFF_MODIFIER_UUID);
+                mai.addPermanentModifier(getNewMightyBuffModifier());
                 break;
             case 5:
                 AttributeInstance attrInstance = entity.getAttribute(Attributes.MAX_HEALTH);

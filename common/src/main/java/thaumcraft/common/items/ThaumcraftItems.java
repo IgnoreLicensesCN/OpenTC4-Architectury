@@ -23,7 +23,14 @@ import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
-import thaumcraft.common.items.equipment.armor.*;
+import thaumcraft.common.items.equipment.armor.cultist.CultistBootsItem;
+import thaumcraft.common.items.equipment.armor.cultist.CultistLeaderPlateArmorItem;
+import thaumcraft.common.items.equipment.armor.cultist.CultistPlateArmorItem;
+import thaumcraft.common.items.equipment.armor.cultist.CultistRobeArmorItem;
+import thaumcraft.common.items.equipment.armor.thaumaturge.*;
+import thaumcraft.common.items.equipment.armor.voidarmor.VoidArmorItem;
+import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeArmorItem;
+import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeHelmetItem;
 import thaumcraft.common.items.equipment.elemental.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
@@ -293,6 +300,20 @@ public class ThaumcraftItems {
         public static final RobeArmorItem ROBE_LEGGINGS = Registry.SUPPLIER_ROBE_LEGGINGS.get();
         public static final RobeArmorItem ROBE_BOOTS = Registry.SUPPLIER_ROBE_BOOTS.get();
         public static final ThaumostaticHarnessItem THAUMOSTATIC_HARNESS = Registry.SUPPLIER_THAUMOSTATIC_HARNESS.get();
+        public static final TravellerBootsItem TRAVELLER_BOOTS =  Registry.SUPPLIER_TRAVELLER_BOOTS.get();
+        public static final CultistBootsItem CULTIST_BOOTS = Registry.SUPPLIER_CULTIST_BOOTS.get();
+        public static final CultistPlateArmorItem CULTIST_PLATE_CHESTPLATE =  Registry.SUPPLIER_CULTIST_PLATE_CHESTPLATE.get();
+        public static final CultistPlateArmorItem CULTIST_PLATE_HELMET =  Registry.SUPPLIER_CULTIST_PLATE_HELMET.get();
+        public static final CultistPlateArmorItem CULTIST_PLATE_LEGGINGS =  Registry.SUPPLIER_CULTIST_PLATE_LEGGINGS.get();
+        public static final CultistRobeArmorItem CULTIST_ROBE_CHESTPLATE =  Registry.SUPPLIER_CULTIST_ROBE_CHESTPLATE.get();
+        public static final CultistRobeArmorItem CULTIST_ROBE_HELMET =  Registry.SUPPLIER_CULTIST_ROBE_HELMET.get();
+        public static final CultistRobeArmorItem CULTIST_ROBE_LEGGINGS =  Registry.SUPPLIER_CULTIST_ROBE_LEGGINGS.get();
+        public static final CultistLeaderPlateArmorItem CULTIST_LEADER_PLATE_CHESTPLATE =  Registry.SUPPLIER_CULTIST_LEADER_PLATE_CHESTPLATE.get();
+        public static final CultistLeaderPlateArmorItem CULTIST_LEADER_PLATE_HELMET =  Registry.SUPPLIER_CULTIST_LEADER_PLATE_HELMET.get();
+        public static final CultistLeaderPlateArmorItem CULTIST_LEADER_PLATE_LEGGINGS =  Registry.SUPPLIER_CULTIST_LEADER_PLATE_LEGGINGS.get();
+        public static final VoidRobeArmorItem VOID_ROBE_LEGGINGS = Registry.SUPPLIER_VOID_ROBE_LEGGINGS.get();
+        public static final VoidRobeArmorItem VOID_ROBE_CHESTPLATE = Registry.SUPPLIER_VOID_ROBE_CHESTPLATE.get();
+        public static final VoidRobeHelmetItem VOID_ROBE_HELMET = Registry.SUPPLIER_VOID_ROBE_HELMET.get();
     }
 
     public static class Registry {
@@ -1187,6 +1208,62 @@ public class ThaumcraftItems {
         public static final RegistrySupplier<ThaumostaticHarnessItem> SUPPLIER_THAUMOSTATIC_HARNESS = ITEMS.register(
                 "thaumostatic_harness",
                 ThaumostaticHarnessItem::new
+        );
+        public static final RegistrySupplier<TravellerBootsItem> SUPPLIER_TRAVELLER_BOOTS = ITEMS.register(
+                "traveller_boots",
+                TravellerBootsItem::new
+        );
+        public static final RegistrySupplier<CultistBootsItem> SUPPLIER_CULTIST_BOOTS = ITEMS.register(
+                "cultist_boots",
+                CultistBootsItem::new
+        );
+        public static final RegistrySupplier<CultistPlateArmorItem> SUPPLIER_CULTIST_PLATE_CHESTPLATE = ITEMS.register(
+                "cultist_plate_chestplate",
+                () -> new  CultistPlateArmorItem(ArmorItem.Type.CHESTPLATE)
+        );
+        public static final RegistrySupplier<CultistPlateArmorItem> SUPPLIER_CULTIST_PLATE_HELMET = ITEMS.register(
+                "cultist_plate_helmet",
+                () -> new  CultistPlateArmorItem(ArmorItem.Type.HELMET)
+        );
+        public static final RegistrySupplier<CultistPlateArmorItem> SUPPLIER_CULTIST_PLATE_LEGGINGS = ITEMS.register(
+                "cultist_plate_leggings",
+                () -> new  CultistPlateArmorItem(ArmorItem.Type.LEGGINGS)
+        );
+        public static final RegistrySupplier<CultistRobeArmorItem> SUPPLIER_CULTIST_ROBE_CHESTPLATE = ITEMS.register(
+                "cultist_robe_chestplate",
+                () -> new  CultistRobeArmorItem(ArmorItem.Type.CHESTPLATE)
+        );
+        public static final RegistrySupplier<CultistRobeArmorItem> SUPPLIER_CULTIST_ROBE_HELMET = ITEMS.register(
+                "cultist_robe_helmet",
+                () -> new  CultistRobeArmorItem(ArmorItem.Type.HELMET)
+        );
+        public static final RegistrySupplier<CultistRobeArmorItem> SUPPLIER_CULTIST_ROBE_LEGGINGS = ITEMS.register(
+                "cultist_robe_leggings",
+                () -> new  CultistRobeArmorItem(ArmorItem.Type.LEGGINGS)
+        );
+        public static final RegistrySupplier<CultistLeaderPlateArmorItem> SUPPLIER_CULTIST_LEADER_PLATE_CHESTPLATE = ITEMS.register(
+                "cultist_leader_plate_chestplate",
+                () -> new  CultistLeaderPlateArmorItem(ArmorItem.Type.CHESTPLATE)
+        );
+        public static final RegistrySupplier<CultistLeaderPlateArmorItem> SUPPLIER_CULTIST_LEADER_PLATE_HELMET = ITEMS.register(
+                "cultist_leader_plate_helmet",
+                () -> new  CultistLeaderPlateArmorItem(ArmorItem.Type.HELMET)
+        );
+        public static final RegistrySupplier<CultistLeaderPlateArmorItem> SUPPLIER_CULTIST_LEADER_PLATE_LEGGINGS = ITEMS.register(
+                "cultist_leader_plate_leggings",
+                () -> new  CultistLeaderPlateArmorItem(ArmorItem.Type.LEGGINGS)
+        );
+        public static final RegistrySupplier<VoidRobeArmorItem> SUPPLIER_VOID_ROBE_LEGGINGS = ITEMS.register(
+                "void_robe_leggings",
+                () -> new VoidRobeArmorItem(ArmorItem.Type.LEGGINGS)
+        );
+        public static final RegistrySupplier<VoidRobeArmorItem> SUPPLIER_VOID_ROBE_CHESTPLATE = ITEMS.register(
+                "void_robe_chestplate",
+                () -> new VoidRobeArmorItem(ArmorItem.Type.CHESTPLATE)
+        );
+        public static final RegistrySupplier<VoidRobeHelmetItem> SUPPLIER_VOID_ROBE_HELMET = ITEMS.register(
+                "void_robe_helmet",
+                VoidRobeHelmetItem::new
         );
     }
 

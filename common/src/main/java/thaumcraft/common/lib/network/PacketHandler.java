@@ -37,9 +37,9 @@ public class PacketHandler {
         PacketSyncScannedItemsS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedItemsS2C.ID, PacketSyncScannedItemsS2C::decode);
         PacketSyncScannedEntitiesS2C.messageType = INSTANCE.registerS2C(PacketSyncScannedEntitiesS2C.ID, PacketSyncScannedEntitiesS2C::decode);
 
-        PacketScannedEntityC2S.messageType = INSTANCE.registerS2C(PacketScannedEntityC2S.ID, PacketScannedEntityC2S::read);
-        PacketScannedBlockPosC2S.messageType = INSTANCE.registerS2C(PacketScannedBlockPosC2S.ID, PacketScannedBlockPosC2S::read);
-        PacketScannedItemStackC2S.messageType = INSTANCE.registerS2C(PacketScannedItemStackC2S.ID, PacketScannedItemStackC2S::read);
+        PacketScannedEntityC2S.messageType = INSTANCE.registerC2S(PacketScannedEntityC2S.ID, PacketScannedEntityC2S::read);
+        PacketScannedBlockPosC2S.messageType = INSTANCE.registerC2S(PacketScannedBlockPosC2S.ID, PacketScannedBlockPosC2S::read);
+        PacketScannedItemStackC2S.messageType = INSTANCE.registerC2S(PacketScannedItemStackC2S.ID, PacketScannedItemStackC2S::read);
 
         PacketUpdateRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketUpdateRunicChargeS2C.ID, PacketUpdateRunicChargeS2C::decode);
         PacketUpdateRunicCapacityS2C.messageType = INSTANCE.registerS2C(PacketUpdateRunicCapacityS2C.ID, PacketUpdateRunicCapacityS2C::decode);
@@ -56,7 +56,6 @@ public class PacketHandler {
 
         PacketBoreDigS2C.messageType = INSTANCE.registerS2C(PacketBoreDigS2C.ID, PacketBoreDigS2C::decode);
         PacketConfigS2C.messageType = INSTANCE.registerS2C(PacketConfigS2C.ID, PacketConfigS2C::decode);
-        PacketFlyC2S.messageType = INSTANCE.registerC2S(PacketFlyC2S.ID, PacketFlyC2S::decode);
 
         PacketItemKeyC2S.messageType = INSTANCE.registerC2S(PacketItemKeyC2S.ID,PacketItemKeyC2S::decode);
         PacketMiscEventS2C.messageType = INSTANCE.registerS2C(PacketMiscEventS2C.ID, PacketMiscEventS2C::decode);

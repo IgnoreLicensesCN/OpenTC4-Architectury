@@ -1,4 +1,4 @@
-package thaumcraft.common.items.equipment.armor;
+package thaumcraft.common.items.equipment.armor.thaumaturge;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

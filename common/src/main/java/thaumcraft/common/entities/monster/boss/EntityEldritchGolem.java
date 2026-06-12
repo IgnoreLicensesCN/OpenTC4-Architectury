@@ -45,7 +45,7 @@ public class EntityEldritchGolem extends EntityThaumcraftBoss implements IEldrit
    }
 
    public void generateName() {
-      int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+      int t = (int)this.getEntityAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
          this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.EldritchGolem.name"),
                  ChampionModifier.mods[t].getModNameLocalized()));

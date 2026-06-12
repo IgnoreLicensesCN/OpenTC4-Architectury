@@ -2,6 +2,7 @@ package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -29,8 +30,24 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Mixin(value=LivingEntity.class,priority = 214748364)
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.FLYING_SPEED_CONTROL_OVERRIDE;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.STEP_HEIGHT_ADDITION_NOT_SNEAKING;
+
+@Mixin(value=LivingEntity.class,priority = 214748)
 public abstract class LivingEntityMixin implements InMilkContextAccessor {
+
+    @ModifyReturnValue(
+            method = "maxUpStep",
+            at = @At("RETURN")
+    )
+    private float opentc4$maxUpStepAddition(float prev){
+        var living = (LivingEntity)(Object)this;
+        if (living.isShiftKeyDown()) {
+            return prev;
+        }
+        return (float) (prev + living.getAttributeValue(STEP_HEIGHT_ADDITION_NOT_SNEAKING));
+    }
+
     @Unique
     private boolean opentc4$isInMilkContext = false;
 
@@ -49,12 +66,25 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
             opentc4$performChampionMobEffect(monster);
         }
     }
+    
+    @ModifyReturnValue(
+            method = "getFlyingSpeed",
+            at = @At("RETURN")
+    )
+    private float opentc4$overrideFlyingSpeed(float prev){
+        var entity = (LivingEntity)(Object)this;
+        var speedOverride = entity.getAttributeValue(FLYING_SPEED_CONTROL_OVERRIDE);
+        if (speedOverride > 10E-4){
+            return (float) speedOverride;
+        }
+        return prev;
+    }
 
     @Unique
     public void opentc4$performChampionMobEffect(Monster monster) {
         if (opentc4$checkedNoEffect){return;}
         if (!monster.isDeadOrDying()) {
-            var instance = monster.getAttribute(EntityUtils.CHAMPION_MOD);
+            var instance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
             if (instance == null) {
                 opentc4$checkedNoEffect = true;
                 return;
@@ -70,6 +100,8 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     @Unique private boolean opentc4$checkedNoEffect = false;
 
     @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
+    @Shadow
+    private float speed;
     @Unique private final Map<MobEffect, MobEffectInstance> opentc4$storedEffectsToPreventRemove = new ConcurrentHashMap<>();
     @Inject(method = "removeAllEffects",at=@At("HEAD"))
     public void opentc4$preventMilkRemoveEffect(CallbackInfoReturnable<Boolean> cir) {

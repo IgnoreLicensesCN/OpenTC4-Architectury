@@ -58,7 +58,7 @@ public class EntityEldritchWarden extends EntityThaumcraftBoss implements IRange
    }
 
    public void generateName() {
-      int t = (int)this.getEntityAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
+      int t = (int)this.getEntityAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
       if (t >= 0) {
          this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.EldritchWarden.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
       }

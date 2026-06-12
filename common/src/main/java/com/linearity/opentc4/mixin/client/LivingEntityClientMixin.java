@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixin.client;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -28,7 +28,7 @@ public abstract class LivingEntityClientMixin {
     public void opentc4$renderChampionMob(Monster monster) {
         if (opentc4$checkedNoEffect){return;}
         if (!monster.isDeadOrDying()) {
-            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.CHAMPION_MOD);
+            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
             int t = (int) championModInstance.getBaseValue();
             if (t >= 0) {
                 ChampionModifier.mods[t].effect.showFX(monster);

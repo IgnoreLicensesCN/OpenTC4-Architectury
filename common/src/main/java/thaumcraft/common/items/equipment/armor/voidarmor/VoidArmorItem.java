@@ -1,4 +1,4 @@
-package thaumcraft.common.items.equipment.armor;
+package thaumcraft.common.items.equipment.armor.voidarmor;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

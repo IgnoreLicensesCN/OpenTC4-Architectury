@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigEntities;
@@ -34,8 +33,8 @@ import thaumcraft.common.lib.world.dim.MazeHandler;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static thaumcraft.common.lib.utils.EntityUtils.CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED;
-import static thaumcraft.common.lib.utils.EntityUtils.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED;
 
 @Mixin(Mob.class)
 public class MobMixin {
@@ -54,7 +53,7 @@ public class MobMixin {
             var level = serverLevelAccessor.getLevel();
             var dim = level.dimension();
             var pos = monster.blockPosition();
-            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.CHAMPION_MOD);
+            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
             if (championModInstance != null) {
                 if (championModInstance.getBaseValue() == CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED) {
                     int championChance = random.nextInt(100);

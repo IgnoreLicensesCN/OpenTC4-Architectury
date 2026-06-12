@@ -398,7 +398,7 @@ public class EventHandlerEntity {
                }
             }
          } else if (event.entity instanceof LivingEntity mob) {
-            AttributeInstance championMobInstance = mob.getAttribute(EntityUtils.CHAMPION_MOD);
+            AttributeInstance championMobInstance = mob.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
             if (championMobInstance == null) {return;}
          }
       }
@@ -431,7 +431,7 @@ public class EventHandlerEntity {
               && !fakePlayerFlag
               && event.entity instanceof EntityMob
               && !(event.entity instanceof EntityThaumcraftBoss)
-              && ((EntityMob)event.entity).getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
+              && ((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
          int i = 5 + event.entity.getRandom().nextInt(3);
 
          while(i > 0) {

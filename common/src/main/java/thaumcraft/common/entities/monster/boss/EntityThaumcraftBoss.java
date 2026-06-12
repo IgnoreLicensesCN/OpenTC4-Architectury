@@ -16,7 +16,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.damagesource.DamageSource;
 
-import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -150,13 +149,13 @@ public class EntityThaumcraftBoss extends Monster implements IBossDisplayData {
             IAttributeInstance iattributeinstance2 = this.getEntityAttribute(SharedMonsterAttributes.attackDamage);
 
             for(int a = 0; a < 5; ++a) {
-               iattributeinstance2.removeModifier(EntityUtils.DMGBUFF[a]);
-               iattributeinstance.removeModifier(EntityUtils.HPBUFF[a]);
+               iattributeinstance2.removeModifier(EntityUtils.ThaumcraftAttributeInstances.DMGBUFF[a]);
+               iattributeinstance.removeModifier(EntityUtils.ThaumcraftAttributeInstances.HPBUFF[a]);
             }
 
             for(int a = 0; a < Math.min(5, players - 1); ++a) {
-               iattributeinstance.applyModifier(EntityUtils.HPBUFF[a]);
-               iattributeinstance2.applyModifier(EntityUtils.DMGBUFF[a]);
+               iattributeinstance.applyModifier(EntityUtils.ThaumcraftAttributeInstances.HPBUFF[a]);
+               iattributeinstance2.applyModifier(EntityUtils.ThaumcraftAttributeInstances.DMGBUFF[a]);
             }
 
             double mm = this.getMaxHealth() / om;
