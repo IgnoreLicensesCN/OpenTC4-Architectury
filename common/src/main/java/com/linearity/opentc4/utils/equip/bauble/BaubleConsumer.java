@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.bauble;
+package com.linearity.opentc4.utils.equip.bauble;
 
 import net.minecraft.world.item.ItemStack;
 

@@ -23,7 +23,6 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectDisplayItem;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.items.abstracts.IBundleLikeItem;
 import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
@@ -31,14 +30,14 @@ import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.harness.IHarnessFlyingSpeedModifier;
 import thaumcraft.common.items.abstracts.harness.IHarnessFuelDurationMultiplier;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
-import thaumcraft.common.lib.resourcelocations.FlyingProviderTypeResourceLocation;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBaubleAndArmor;
+import static com.linearity.opentc4.utils.equip.EquipmentSlotSlotAccess.CHESTPLATE_ACCESS;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
 
 public class ThaumostaticHarnessItem extends ArmorItem implements
         IVisDiscountGear,
@@ -149,7 +148,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
         var progressInfo = getFuelProgressAndMaxProgress(itemStack);
         return Math.min(1 + 12 * progressInfo.leftInt() / progressInfo.rightInt(), 13);
     }
-    public static final FlyingProviderTypeResourceLocation FLYING_PROVIDER_TYPE = FlyingProviderTypeResourceLocation.of(Thaumcraft.MOD_ID,"thaumostatic_harness");
+
     private static final Map<Player,AtomicInteger> PLAYER_NEXT_COST_ASPECT_TICK = new MapMaker().weakKeys().makeMap();
     public static final int DEFAULT_COST_TICK_DURATION = 360;
     @Override
@@ -177,7 +176,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
             }
             if (abilities.mayfly && !canFly) {
                 abilities.mayfly = false;
-                FlyingAbilityProviderCheck.unregisterFlyingProviderForPlayer(p, FLYING_PROVIDER_TYPE);
+                FlyingAbilityProviderCheck.unregisterFlyingProviderForPlayer(p, CHESTPLATE_ACCESS);
                 abilities.flying = false;
                 if (entity instanceof ServerPlayer serverPlayer){
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
@@ -187,7 +186,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
                 }
             } else if (!abilities.mayfly && canFly) {
                 abilities.mayfly = true;
-                FlyingAbilityProviderCheck.registerFlyingProviderForPlayer(p, FLYING_PROVIDER_TYPE);
+                FlyingAbilityProviderCheck.registerFlyingProviderForPlayer(p, CHESTPLATE_ACCESS);
                 if (entity instanceof ServerPlayer serverPlayer) {
                     serverPlayer.connection.send(new ClientboundPlayerAbilitiesPacket(abilities));
                     serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(

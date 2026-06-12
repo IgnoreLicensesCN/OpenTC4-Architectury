@@ -24,7 +24,7 @@ import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 
 @Mixin(value = Player.class,priority = 900)
 public class PlayerMixin

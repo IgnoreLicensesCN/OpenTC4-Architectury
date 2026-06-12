@@ -25,7 +25,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
 
-import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 
 //TODO
 @Deprecated(forRemoval = true)

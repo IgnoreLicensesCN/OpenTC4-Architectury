@@ -15,8 +15,8 @@ import thaumcraft.common.researches.ResearchAndScannedInfo;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBauble;
-import static com.linearity.opentc4.utils.bauble.BaubleUtils.forEachBaubleAndArmor;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
 import static thaumcraft.api.listeners.warp.WarpEventManager.getFinalWarp;
 import static thaumcraft.api.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
 

@@ -1,7 +1,7 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.utils.bauble.BaubleConsumer;
-import com.linearity.opentc4.utils.bauble.EquippedBaubleSlot;
+import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.equip.bauble.EquippedBaubleSlot;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;

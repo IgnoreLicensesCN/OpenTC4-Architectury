@@ -6,8 +6,8 @@ import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.fabric.client.ThaumcraftModelProvider;
 import com.linearity.opentc4.fabric.mixinaccessor.AttributeSupplierAccessor;
 import com.linearity.opentc4.mixin.DefaultAttributesAccessor;
-import com.linearity.opentc4.utils.bauble.BaubleConsumer;
-import com.linearity.opentc4.utils.bauble.EquippedBaubleSlot;
+import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.equip.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
@@ -53,7 +53,6 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 

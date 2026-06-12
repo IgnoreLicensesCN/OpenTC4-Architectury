@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.linearity.opentc4.Consts.BundleLikeItemTagAccessors.BUNDLE_STACKS;
 
+//yeah guys i failed to make a backpack item so using this
 //changed weight to item count(at least for default impl)
 @StoleFrom({"minecraft","BundleItem"})
 public interface IBundleLikeItem {
