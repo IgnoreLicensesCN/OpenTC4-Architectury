@@ -16,7 +16,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.wands.focus.IWandFocusItem;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 

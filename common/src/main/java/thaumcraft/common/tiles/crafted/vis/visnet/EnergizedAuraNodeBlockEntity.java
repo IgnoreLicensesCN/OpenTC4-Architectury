@@ -10,6 +10,8 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.*;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;

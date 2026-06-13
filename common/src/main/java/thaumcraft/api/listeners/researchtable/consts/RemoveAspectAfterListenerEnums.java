@@ -4,19 +4,18 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.RemoveAspectContext;
 import thaumcraft.api.listeners.researchtable.listeners.RemoveAspectAfterListener;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
-import thaumcraft.common.researches.ThaumcraftResearches;
+import thaumcraft.api.research.ResearchAndScannedInfo;
+import thaumcraft.api.research.ThaumcraftResearches;
 
 public enum RemoveAspectAfterListenerEnums {
     RESEARCH_EXPERTISE_AMD_MASTERY(
             new RemoveAspectAfterListener(20) {
                 @Override
                 public void onEventTriggered(RemoveAspectContext context) {
-                    if (ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
+                    if (ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player)) {
                         float returnAspectChance = 0.25F;
 
-                        if (ThaumcraftResearches.RESEARCH_MASTERY.isPlayerCompletedResearch(context.player.getGameProfile().getName())) {
+                        if (ThaumcraftResearches.RESEARCH_MASTERY.isPlayerCompletedResearch(context.player)) {
                             returnAspectChance = 0.5F;
                         }
                         if (!context.doReturnAspect && context.atLevel.random.nextFloat() < returnAspectChance){

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.CrucibleRecipeResourceLocation;
 

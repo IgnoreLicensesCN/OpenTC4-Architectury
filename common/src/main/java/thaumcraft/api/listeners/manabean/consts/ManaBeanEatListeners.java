@@ -7,8 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import thaumcraft.api.listeners.manabean.ManaBeanEatContext;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanEatListener;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.List;
 import java.util.Set;

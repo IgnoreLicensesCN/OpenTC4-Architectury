@@ -11,10 +11,10 @@ import thaumcraft.client.gui.GuiResearchBrowser;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
-import static thaumcraft.common.researches.ThaumcraftResearchCategories.BASICS;
-import static thaumcraft.common.researches.ThaumcraftResearches.ASPECTS;
+import static thaumcraft.api.research.client.ThaumcraftResearchCategories.BASICS;
+import static thaumcraft.api.research.ThaumcraftResearches.ASPECTS;
 
 public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_discovery";

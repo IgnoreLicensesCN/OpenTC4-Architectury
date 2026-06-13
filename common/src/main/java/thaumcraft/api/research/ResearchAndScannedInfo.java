@@ -1,4 +1,4 @@
-package thaumcraft.common.researches;
+package thaumcraft.api.research;
 
 import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
 import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncAllScannedS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;

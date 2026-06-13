@@ -1,16 +1,16 @@
-package thaumcraft.api.aspects.aspectlists;
+package thaumcraft.api.aspects.aspectlists.unmodifiable;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectListUnmodifiableDefault;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

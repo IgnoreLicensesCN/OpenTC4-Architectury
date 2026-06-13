@@ -35,7 +35,7 @@ public interface IAspectLabelAttachableBlock {
                 level.addFreshEntity(new ItemEntity(
                         level, spawnEntityPos.x, spawnEntityPos.y, spawnEntityPos.z, new ItemStack(
                         ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL)
-                ));
+                ));//maybe you can just do not drop it since "oh i tore it into pieces it cant be removed in one piece"
                 return true;
             }
         }

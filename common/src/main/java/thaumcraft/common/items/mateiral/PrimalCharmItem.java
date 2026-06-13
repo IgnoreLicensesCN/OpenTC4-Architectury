@@ -21,7 +21,7 @@ import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C
 import java.util.List;
 import java.util.Random;
 
-import static thaumcraft.common.researches.ThaumcraftResearches.FOCUS_PRIMAL;
+import static thaumcraft.api.research.ThaumcraftResearches.FOCUS_PRIMAL;
 
 public class PrimalCharmItem extends Item {
     public PrimalCharmItem() {
@@ -37,8 +37,7 @@ public class PrimalCharmItem extends Item {
         Random rand = new Random(stack.hashCode() + player.tickCount / 120);
         int r = rand.nextInt(200);
         if (r < 25) {
-            tooltip.add(Component.literal("tc.primalcharm." + rand.nextInt(5)).withStyle(style -> style.withColor(
-                    ChatFormatting.GOLD)));
+            tooltip.add(Component.literal("tc.primalcharm." + rand.nextInt(5)).withStyle(ChatFormatting.GOLD));
         }
     }
 

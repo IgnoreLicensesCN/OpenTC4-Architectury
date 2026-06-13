@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerBlock;
-import thaumcraft.common.researches.ThaumcraftResearches;
+import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;

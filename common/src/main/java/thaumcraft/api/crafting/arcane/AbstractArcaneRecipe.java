@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
@@ -115,10 +116,14 @@ public abstract class AbstractArcaneRecipe
     public abstract int getRecipeSize();
 
     @JEILikeOnly
-    public abstract ItemStack getRecipeOutputExample();
+    public @Nullable("if not supported") ItemStack getRecipeOutputExample(){
+        return null;
+    }
     @JEILikeOnly
-    public abstract CentiVisList<Aspect> getAspectsExample();
-    public abstract CentiVisList<Aspect> getAspects(IArcaneWorkbenchContainer var1);
+    public @Nullable("if not supported") CentiVisList<Aspect> getCentiVisCostExample(){
+        return null;
+    }
+    public abstract CentiVisList<Aspect> getCentiVisCost(IArcaneWorkbenchContainer var1);
     public abstract ResearchItem getResearch();
 
 }

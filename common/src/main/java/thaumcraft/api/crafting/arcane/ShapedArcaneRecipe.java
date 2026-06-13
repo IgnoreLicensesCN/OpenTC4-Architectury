@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.*;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
@@ -330,12 +332,12 @@ public class ShapedArcaneRecipe extends AbstractArcaneRecipe {
     }
 
     @Override
-    public CentiVisList<Aspect> getAspectsExample() {
+    public CentiVisList<Aspect> getCentiVisCostExample() {
         return aspectsGenerator.apply(null);
     }
 
     @Override
-    public CentiVisList<Aspect> getAspects(IArcaneWorkbenchContainer inv) {
+    public CentiVisList<Aspect> getCentiVisCost(IArcaneWorkbenchContainer inv) {
         return aspectsGenerator.apply(inv.getInputItemStacks());
     }
 

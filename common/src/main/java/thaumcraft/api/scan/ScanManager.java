@@ -19,7 +19,7 @@ import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.misc.PacketPlayerNotificationS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import static thaumcraft.api.aspects.Aspects.ALL_ASPECTS;
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.VIS_NODE;

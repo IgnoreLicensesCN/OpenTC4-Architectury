@@ -11,7 +11,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":clue_complete";

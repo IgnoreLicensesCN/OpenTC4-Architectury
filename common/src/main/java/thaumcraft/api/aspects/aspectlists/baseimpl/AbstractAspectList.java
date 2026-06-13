@@ -55,7 +55,7 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
         return decreased;
     }
 
-    public LinkedHashAspectList<Asp> copy() {
+    public AspectList<Asp> copy() {
         var out = new LinkedHashAspectList<Asp>();
         for (var a : this.keySet())
             out.addAll(a, this.get(a));
@@ -269,7 +269,7 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
 
     public int merge(Asp aspect, int amount, IntBinaryOperator chooser) {
         var oldValue = this.aspects.getOrDefault(aspect, 0);
-        int result = this.aspects.mergeInt(aspect, amount, chooser::applyAsInt);
+        int result = this.aspects.mergeInt(aspect, amount, chooser);
         var newValue = this.aspects.getOrDefault(aspect, 0);
         this.visSize += newValue - oldValue;
         return result;

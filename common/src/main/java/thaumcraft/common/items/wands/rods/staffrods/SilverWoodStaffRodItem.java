@@ -5,12 +5,12 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.api.wands.WorkAsStaffRod;
-import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftStaffRodItem;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class SilverWoodStaffRodItem extends ThaumcraftWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
+public class SilverWoodStaffRodItem extends ThaumcraftStaffRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
     public SilverWoodStaffRodItem() {
         super(new Properties());
     }

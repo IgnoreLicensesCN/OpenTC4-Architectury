@@ -12,7 +12,7 @@ import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";

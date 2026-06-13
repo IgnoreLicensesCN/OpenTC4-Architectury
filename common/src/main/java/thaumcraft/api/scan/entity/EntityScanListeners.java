@@ -7,7 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.api.scan.ScanManager;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters.getSafeStringForResourceLocation;
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.ENTITY;

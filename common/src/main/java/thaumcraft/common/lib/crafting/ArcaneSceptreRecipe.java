@@ -1,189 +1,154 @@
 package thaumcraft.common.lib.crafting;
 
+import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import thaumcraft.api.crafting.arcane.ShapedArcaneRecipe;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.HashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
+import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
+import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 
+import java.util.List;
+import java.util.Map;
+
+import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.WAND_CAP_ACCESSOR;
+import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.WAND_ROD_ACCESSOR;
 import static com.linearity.opentc4.SomeRecipeItemMatchers.*;
-//TODO:Impl with current API
-public class ArcaneSceptreRecipe /*implements AbstractArcaneRecipe*/ {
 
-   public static final ShapedArcaneRecipe INSTANCE = new ShapedArcaneRecipe(
-           AbstractArcaneRecipeResourceLocation.of(Thaumcraft.MOD_ID,"sceptre"),
-           ,//"SCEPTRE",
-           arr -> {
-              ItemStack centerStack = arr.get(4);
-              int capCount = 0;
-              //TODO:Finish
+//tried
+public class ArcaneSceptreRecipe extends AbstractArcaneRecipe {
 
-              },arr -> {
+    private final RecipeItemMatcher[] inMatchers = new RecipeItemMatcher[]{
+            EMPTY_MATCHER, WAND_CAP_MATCHER, PRIMAL_CHARM_MATCHER,
+            EMPTY_MATCHER, WAND_ROD_MATCHER, WAND_CAP_MATCHER,
+            WAND_CAP_MATCHER, EMPTY_MATCHER, EMPTY_MATCHER
+    };
 
-              },
-           new RecipeItemMatcher[]{
-                   EMPTY_MATCHER,WAND_CAP_MATCHER,PRIMAL_CHARM_MATCHER,
-                   EMPTY_MATCHER,WAND_ROD_MATCHER,WAND_CAP_MATCHER,
-                   WAND_CAP_MATCHER,EMPTY_MATCHER,EMPTY_MATCHER
-           },3,3,SCEPTRE_MATCHER
-   ){
-       @Override
-       public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
-           if (super.matches(inv, world, player)){
-               return resultGenerator.apply(inv.getInputItemStacks()).isEmpty();
-           }
-           return false;
-       }
-   };
+    private ArcaneSceptreRecipe() {
+        super(AbstractArcaneRecipeResourceLocation.of(Thaumcraft.MOD_ID, "arcane_sceptre"));
+    }
 
+    @Override
+    public ResearchItem getResearch() {
+        return ThaumcraftResearches.SCEPTRE_CRAFTING;
+    }
 
-//   private static final int MAX_CRAFT_GRID_WIDTH = 3;
-//   private static final int MAX_CRAFT_GRID_HEIGHT = 3;
-//   private boolean mirrored = true;
-//
-//   public ItemStack getCraftingResult(Container inv) {
-//      ItemStack out = null;
-//      String bc = null;
-//      String br = null;
-//      int cc = 0;
-//      int cr = 0;
-//      ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 0);
-//      ItemStack cap2 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 1);
-//      ItemStack cap3 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 2);
-//      ItemStack rod = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 1);
-//      ItemStack focus = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 0);
-//      if (ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 0) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 1) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 2) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 2) == null) {
-//         if (cap1 != null && cap2 != null && cap3 != null && rod != null && focus != null && this.checkItemEquals(focus, new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) && this.checkItemEquals(cap1, cap2) && this.checkItemEquals(cap1, cap3)) {
-//            for(WandCap wc : WandCap.caps.values()) {
-//               if (this.checkItemEquals(cap1, wc.getItem())) {
-//                  bc = wc.getTag();
-//                  cc = wc.getCraftCost();
-//                  break;
-//               }
-//            }
-//
-//            for(WandRod wr : WandRod.rods.values()) {
-//               if (this.checkItemEquals(rod, wr.getItem())) {
-//                  br = wr.getTag();
-//                  cr = wr.getCraftCost();
-//                  break;
-//               }
-//            }
-//
-//            if (bc != null && br != null) {
-//               int cost = (int)((float)(cc * cr) * 1.5F);
-//               out = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
-//               ((WandCastingItem)out.getItem()).setCap(out, WandCap.caps.get(bc));
-//               ((WandCastingItem)out.getItem()).setRod(out, WandRod.rods.get(br));
-//               out.setTagInfo("sceptre", new NBTTagByte((byte)1));
-//            }
-//         }
-//
-//         return out;
-//      } else {
-//         return null;
-//      }
-//   }
-//
-//   public AspectList<Aspect>getAspects(Container inv) {
-//      AspectList<Aspect>al = new LinkedTreeAspectList<>();
-//      int cc = -1;
-//      int cr = -1;
-//      ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 0);
-//      ItemStack cap2 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 1);
-//      ItemStack cap3 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 2);
-//      ItemStack rod = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 1);
-//      ItemStack focus = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 0);
-//      if (ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 0) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 1) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 2) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 2) == null) {
-//         if (cap1 != null && cap2 != null && cap3 != null && rod != null && focus != null && this.checkItemEquals(focus, new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) && this.checkItemEquals(cap1, cap2) && this.checkItemEquals(cap1, cap3)) {
-//            for(WandCap wc : WandCap.caps.values()) {
-//               if (this.checkItemEquals(cap1, wc.getItem())) {
-//                  cc = wc.getCraftCost();
-//                  break;
-//               }
-//            }
-//
-//            for(WandRod wr : WandRod.rods.values()) {
-//               if (this.checkItemEquals(rod, wr.getItem())) {
-//                  cr = wr.getCraftCost();
-//                  break;
-//               }
-//            }
-//
-//            if (cc >= 0 && cr >= 0) {
-//               int cost = (int)((float)(cc * cr) * 1.5F);
-//
-//               for(Aspect as : Aspect.getPrimalAspects()) {
-//                  al.add(as, cost);
-//               }
-//            }
-//         }
-//
-//         return al;
-//      } else {
-//         return al;
-//      }
-//   }
-//
-//   public ItemStack getRecipeOutput() {
-//      return null;
-//   }
-//
-//   public boolean matches(Container inv, Level world, Player player) {
-//      if (!ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "SCEPTRE")) {
-//         return false;
-//      } else {
-//         ItemStack cap1 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 0);
-//         ItemStack cap2 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 1);
-//         ItemStack cap3 = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 2);
-//         ItemStack rod = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 1);
-//         ItemStack focus = ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 0);
-//         return ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 0) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 0, 1) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 1, 2) == null && ThaumcraftApiHelper.getStackInRowAndColumn(inv, 2, 2) == null && this.checkMatch(cap1, cap2, cap3, rod, focus, player);
-//      }
-//   }
-//
-//   private boolean checkMatch(ItemStack cap1, ItemStack cap2, ItemStack cap3, ItemStack rod, ItemStack focus, Player player) {
-//      boolean bc = false;
-//      boolean br = false;
-//      if (cap1 != null && cap2 != null && cap3 != null && rod != null && focus != null && this.checkItemEquals(focus, new ItemStack(ThaumcraftItems.PRIMAL_CHARM, 1)) && this.checkItemEquals(cap1, cap2) && this.checkItemEquals(cap1, cap3)) {
-//         for(WandCap wc : WandCap.caps.values()) {
-//            if (this.checkItemEquals(cap1, wc.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wc.getResearch())) {
-//               bc = true;
-//               break;
-//            }
-//         }
-//
-//         for(WandRod wr : WandRod.rods.values()) {
-//            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), wr.getResearch())) {
-//               br = true;
-//               break;
-//            }
-//         }
-//      }
-//
-//      return br && bc;
-//   }
-//
-//   private boolean checkItemEquals(ItemStack target, ItemStack input) {
-//      if ((input != null || target == null) && (input == null || target != null)) {
-//         return target.getItem() == input.getItem() && target.getDamageValue() == input.getDamageValue();
-//      } else {
-//         return false;
-//      }
-//   }
-//
-//   public int getRecipeSizeLimit() {
-//      return 9;
-//   }
-//
-//   public AspectList<Aspect>getAspects() {
-//      return null;
-//   }
-//
-//   public String getResearch() {
-//      return "";
-//   }
+    @Override
+    public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
+        if (!getResearch().isPlayerCompletedResearch(player)){
+            return false;
+        }
+        var stacks = inv.getInputItemStacks();
+        var result = getResult(stacks);
+        return result != null;
+    }
+
+    protected static final Map<SimplePair<ItemStack,ItemStack>,SimplePair<ItemStack,CentiVisList<Aspect>>> resultCaches = new MapMaker().weakKeys().makeMap();
+
+    protected @Nullable SimplePair<ItemStack,ItemStack> getProbablyComponentPair(List<ItemStack> stacks){
+
+        if (stacks.size() != 9) {
+            return null;
+        }
+        ItemStack cap = ItemStack.EMPTY;
+        ItemStack rod = ItemStack.EMPTY;
+        for (int i = 0; i < 9; i++){
+            var currentStack = stacks.get(i);
+            var currentMatcher = inMatchers[i];
+            if (!currentMatcher.matches(currentStack)){
+                return null;
+            }
+            if (currentMatcher == WAND_CAP_MATCHER){
+                if (cap.isEmpty()){
+                    cap = stacks.get(i);
+                }else if(!ItemStack.isSameItemSameTags(cap, currentStack)){
+                    return null;
+                }
+            }else if (currentMatcher == WAND_ROD_MATCHER){
+                rod = currentStack;//there's only one rod
+            }
+        }
+        return new SimplePair<>(cap, rod);
+    }
+    protected @Nullable SimplePair<ItemStack, CentiVisList<Aspect>> getResult(List<ItemStack> stacks){
+        var componentPair = getProbablyComponentPair(stacks);
+        if (componentPair == null){
+            return null;
+        }
+        var resultCache = resultCaches.get(componentPair);
+        if (resultCache != null){
+            return resultCache;
+        }
+        var cap = componentPair.a();
+        var rod = componentPair.b();
+
+        if (cap.isEmpty() || rod.isEmpty()){
+            return null;
+        }
+        if (!(cap.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> capCostOwner)){
+            return null;
+        }
+        if (!(rod.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> rodCostOwner)){
+            return null;
+        }
+        var requiredCentiVis = new HashCentiVisList<>();
+        capCostOwner.getCraftingCostCentiVis().forEach((aspect,amount) -> requiredCentiVis.merge(
+                aspect,amount,(a,b) -> (int)((a*b*1.5)/100)
+        ));
+        rodCostOwner.getCraftingCostCentiVis().forEach((aspect,amount) -> requiredCentiVis.merge(
+                aspect,amount,(a,b) -> (int)((a*b*1.5)/100)
+        ));
+        var wandResult = getItemOfResult().getDefaultInstance();
+        var tag = wandResult.getOrCreateTag();
+        WAND_CAP_ACCESSOR.writeToCompoundTag(tag,cap);
+        WAND_ROD_ACCESSOR.writeToCompoundTag(tag,rod);
+        var resultPair = new  SimplePair<ItemStack, CentiVisList<Aspect>>(cap, requiredCentiVis);
+        resultCaches.put(componentPair,resultPair);
+        return resultPair;
+    }
+
+    @Override
+    public ItemStack getCraftingResult(IArcaneWorkbenchContainer var1) {
+        var result = getResult(var1.getInputItemStacks());
+        if (result == null){
+            return ItemStack.EMPTY;
+        }
+        return result.a();
+    }
+
+    @Override
+    public int getRecipeSize() {
+        return 9;
+    }
+
+    @Override
+    public CentiVisList<Aspect> getCentiVisCost(IArcaneWorkbenchContainer var1) {
+        var result = getResult(var1.getInputItemStacks());
+        if (result == null){
+            return UnmodifiableCentiVisList.of();
+        }
+        return result.b();
+    }
+
+    @Override
+    public boolean matchViaOutput(ItemStack res) {
+        return res.getItem() == getItemOfResult();
+    }
+
+    protected Item getItemOfResult(){
+        return ThaumcraftItems.ThaumcraftItemInstances.SCEPTRE_CASTING;
+    }
 }

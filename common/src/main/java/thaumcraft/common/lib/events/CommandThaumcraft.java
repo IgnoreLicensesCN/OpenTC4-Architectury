@@ -20,7 +20,7 @@ import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchComplet
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.Objects;
 

@@ -4,13 +4,12 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
-import thaumcraft.api.wands.WorkAsStaffRod;
-import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftStaffRodItem;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class GreatWoodStaffRodItem extends ThaumcraftWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
+public class GreatWoodStaffRodItem extends ThaumcraftStaffRodItem implements ICraftingCostAspectOwnerComponent<Aspect> {
     public GreatWoodStaffRodItem() {
         super(new Properties());
     }

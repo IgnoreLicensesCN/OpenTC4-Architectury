@@ -1,4 +1,4 @@
-package thaumcraft.api.aspects.aspectlists;
+package thaumcraft.api.aspects.aspectlists.unmodifiable;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -14,6 +14,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectListUnmodifiableDefault;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.codechicken.lib.util.Copyable;
 

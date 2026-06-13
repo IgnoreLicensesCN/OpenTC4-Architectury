@@ -4,11 +4,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
 import thaumcraft.api.listeners.researchtable.listeners.WriteAspectAfterListener;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
-import thaumcraft.common.researches.ThaumcraftResearches;
+import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
 
 public enum WriteAspectAfterListenerEnums {

@@ -4,6 +4,7 @@ import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.collectionlike.IntIntPair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -217,5 +218,9 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
             }
         }
         return getFuelProgressAndMaxProgress(selfStack).leftInt() > 0;
+    }
+    @Override
+    public @NotNull EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.CHEST;
     }
 }

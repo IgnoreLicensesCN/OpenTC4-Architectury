@@ -1,27 +1,28 @@
-package thaumcraft.api.aspects.aspectlists;
+package thaumcraft.api.aspects.aspectlists.unmodifiable;
 
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntBiConsumer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectListUnmodifiableDefault;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 
 import java.util.List;
 import java.util.Set;
 
-public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnmodifiableDefault<A>,CentiVisList<A> {
-    public static final UnmodifiableCentiVisView<Aspect> EMPTY = new UnmodifiableCentiVisView<>(UnmodifiableCentiVisList.EMPTY);
-    private final CentiVisList<A> viewingList;
-    public UnmodifiableCentiVisView(CentiVisList<A> viewingList) {
+public class UnmodifiableAspectView<A extends Aspect> implements AspectListUnmodifiableDefault<A> {
+    public static final UnmodifiableAspectView<Aspect> EMPTY = new UnmodifiableAspectView<>(UnmodifiableAspectList.EMPTY);
+    private final AspectList<A> viewingList;
+    public UnmodifiableAspectView(AspectList<A> viewingList) {
         this.viewingList = viewingList;
     }
-    public UnmodifiableCentiVisView(Object2IntLinkedOpenHashMap<A> viewingMap) {
-        this.viewingList = LinkedHashCentiVisList.viewOf(viewingMap);
+    public UnmodifiableAspectView(Object2IntLinkedOpenHashMap<A> viewingMap) {
+        this.viewingList = LinkedHashAspectList.viewOf(viewingMap);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class UnmodifiableCentiVisView<A extends Aspect> implements AspectListUnm
 
     @Override
     public String toString() {
-        return "UnmodifiableCentiVisView(" + viewingList + ")";
+        return "UnmodifiableAspectView(" + viewingList + ")";
     }
 
     @Override

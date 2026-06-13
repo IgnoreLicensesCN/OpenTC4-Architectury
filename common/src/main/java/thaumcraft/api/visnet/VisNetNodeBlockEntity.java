@@ -2,6 +2,7 @@ package thaumcraft.api.visnet;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -100,10 +101,12 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
     }
 
     public VisNetNodeBlockEntity getRootSource() {
-        var parent = getParent();
-        return parent != null ?
-                parent.getRootSource() : this.isSource() ?
-                this : null;
+        var parent = this;
+        while (true){
+            if (parent == null) return null;
+            if (parent.isSource()) return parent;
+            parent = parent.getParent();
+        }
     }
     public void setParent(VisNetNodeBlockEntity parent) {
         this.parentPos = parent.getBlockPos();
@@ -140,37 +143,48 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
 
     @FunctionalInterface
     public interface VisNetNodeComparator{
-        int compare(VisNetNodeBlockEntity parent1, VisNetNodeBlockEntity parent2,VisNetNodeBlockEntity base);
+        int compare(ObjectIntPair<VisNetNodeBlockEntity> parent1, ObjectIntPair<VisNetNodeBlockEntity> parent2,VisNetNodeBlockEntity base);
     }
-    public static final VisNetNodeComparator DEFAULT_NODE_PARENT_COMPARING = ((parent1, parent2, base) -> {
+    public static final VisNetNodeComparator DEFAULT_NODE_PARENT_COMPARING = ((parent1Pair, parent2Pair, base) -> {
         var basePos = base.getBlockPos();
+        var compareNodeDistance = Integer.compare(parent1Pair.rightInt(), parent2Pair.rightInt());
+        if (compareNodeDistance != 0) {
+            return compareNodeDistance;
+        }
         return Integer.compare(
-                parent1.getBlockPos().distManhattan(basePos),
-                parent2.getBlockPos().distManhattan(basePos)
+                parent1Pair.left().getBlockPos().distManhattan(basePos),
+                parent2Pair.left().getBlockPos().distManhattan(basePos)
         );
     });
-    protected final boolean nodeWontConnectToSelf(VisNetNodeBlockEntity another){
-        var parentForAnother = another.getParent();
-        if (parentForAnother == null) return true;
-        if (parentForAnother == this) return false;
-        return nodeWontConnectToSelf(parentForAnother);
+    //-1 if connect to self
+    protected final int getNodesToFinalParent(VisNetNodeBlockEntity another){
+        int result = 0;
+        while (true){
+            var parentForAnother = another.getParent();
+            if (parentForAnother == null) return result;
+            if (parentForAnother == this) return -1;
+            result += 1;
+            another = parentForAnother;
+        }
     }
     public void findNewParent() {
-        AtomicReference<VisNetNodeBlockEntity> probablyBestParent = new AtomicReference<>(null);
+        AtomicReference<ObjectIntPair<VisNetNodeBlockEntity>> probablyBestParent = new AtomicReference<>(null);
         final Consumer<VisNetNodeBlockEntity> chooseNodeInLoop = (anotherNode) -> {
+            int toFinalParentNodes = getNodesToFinalParent(anotherNode);
             if (anotherNode.canConnect(VisNetNodeBlockEntity.this)
                     && VisNetNodeBlockEntity.this.canConnect(anotherNode)
-                    && nodeWontConnectToSelf(anotherNode)
+                    && toFinalParentNodes >= 0
             ) {
+                var anotherNodeAndDistance = new ObjectIntPair<>(anotherNode,toFinalParentNodes);
                 var currentParent = probablyBestParent.get();
                 if (currentParent == null) {
-                    probablyBestParent.set(anotherNode);
+                    probablyBestParent.set(anotherNodeAndDistance);
                 }else {
                     var compareResult = DEFAULT_NODE_PARENT_COMPARING.compare(
-                            currentParent,anotherNode,VisNetNodeBlockEntity.this
+                            currentParent,anotherNodeAndDistance,VisNetNodeBlockEntity.this
                     );
                     if (compareResult > 0){
-                        probablyBestParent.set(anotherNode);
+                        probablyBestParent.set(anotherNodeAndDistance);
                     }
                 }
             }
@@ -194,7 +208,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
                 }
             }
         }
-        this.parentPos = probablyBestParent.get().parentPos;
+        this.parentPos = probablyBestParent.get().left().parentPos;
     }
     
     public void parentChanged() { }

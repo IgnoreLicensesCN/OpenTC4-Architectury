@@ -4,7 +4,7 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.IImmutableAspectCapacityOwnerComponent;
 import thaumcraft.api.wands.IWandComponentNameOwnerItem;
 import thaumcraft.api.wands.IWandRodPropertiesOwnerComponent;

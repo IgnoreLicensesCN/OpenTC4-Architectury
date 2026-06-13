@@ -81,7 +81,7 @@ public class ConfigResearch {
               Aspects.ELDRITCH, 6).addAll(Aspects.AIR, 3), 7, -2, 2, new ItemStack(ConfigItems.itemFocusPortableHole))).setPages(new ResearchPage("tc.research_page.FOCUSPORTABLEHOLE.1"), new ResearchPage((InfusionRecipe)recipes.get("FocusPortableHole"))).setConcealed().setParents("FOCUSTRADE", "INFUSION").registerResearchItem();
       (new ResearchItem("FOCUSPOUCH", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.VOID, 6).addAll(Aspects.MAGIC, 3).addAll(
               Aspects.TOOL, 3), 4, -1, 1, new ItemStack(ConfigItems.itemFocusPouch))).setPages(new ResearchPage("tc.research_page.FOCUSPOUCH.1"), new ResearchPage((AbstractArcaneRecipe)recipes.get("FocusPouch"))).setParents("FOCUSFIRE").setSecondary().registerResearchItem();
-      (new ResearchItem("CAP_iron", "THAUMATURGY")).setAutoUnlock().registerResearchItem();
+      (new ResearchItem("CAP_iron")).setAutoUnlock().registerResearchItem();
       (new ResearchItem("CAP_gold", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 3).addAll(Aspects.GREED, 3).addAll(
               Aspects.TOOL, 3), 3, 2, 1, new ItemStack(ConfigItems.itemWandCap, 1, 1))).setPages(new ResearchPage("tc.research_page.CAP_gold.1"), new ResearchPage((AbstractArcaneRecipe)recipes.get("WandCapGold"))).setParents("BASICTHAUMATURGY").registerResearchItem();
       (new ResearchItem("CAP_thaumium", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.METAL, 6).addAll(Aspects.MAGIC, 6).addAll(
@@ -96,7 +96,7 @@ public class ConfigResearch {
                  Aspects.TOOL, 3).addAll(Aspects.AURA, 3), 5, 1, 1, new ItemStack(ConfigItems.itemWandCap, 1, 4))).setPages(new ResearchPage("tc.research_page.CAP_silver.1"), new ResearchPage((AbstractArcaneRecipe)recipes.get("WandCapSilverInert")), new ResearchPage((InfusionRecipe)recipes.get("WandCapSilver"))).setConcealed().setParents("CAP_gold", "INFUSION").registerResearchItem();
       }
 
-      (new ResearchItem("ROD_wood", "THAUMATURGY")).setAutoUnlock().registerResearchItem();
+      (new ResearchItem("ROD_wood")).setAutoUnlock().registerResearchItem();
       (new ResearchItem("ROD_greatwood", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.TOOL, 3).addAll(Aspects.TREE, 6).addAll(
               Aspects.MAGIC, 3), -5, 2, 1, new ItemStack(ConfigItems.itemWandRod, 1, 0))).setPages(new ResearchPage("tc.research_page.ROD_greatwood.1"), new ResearchPage((AbstractArcaneRecipe)recipes.get("WandRodGreatwood"))).setParents("BASICTHAUMATURGY").registerResearchItem();
       (new ResearchItem("ROD_reed", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.TOOL, 3).addAll(Aspects.AIR, 6).addAll(

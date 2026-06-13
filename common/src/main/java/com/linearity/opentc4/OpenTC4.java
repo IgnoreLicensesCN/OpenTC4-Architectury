@@ -9,6 +9,7 @@ import thaumcraft.api.listeners.EventListeners;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
+import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.fx.migrated.Particles;
 import thaumcraft.client.renderers.ThaumcraftRenderers;
@@ -49,8 +50,11 @@ public final class OpenTC4 {
 
 
     }
+
     public static void onInitialize() {
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
+        ThaumcraftResearches.init();//at least i dont think things like Item or Block would appear here now
+
         ThaumcraftRunicShieldTypes.init();
         ThaumcraftEnchantments.init();
         ThaumcraftBlocks.init();
@@ -99,5 +103,7 @@ public final class OpenTC4 {
         ItemBasicAspectGetter.onDatapackReload();
         HolderCache.onDatapackReload();
         repairCostCache.clear();
+
+        //TODO:Recipes init here
     }
 }

@@ -10,7 +10,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.SERVER_PLAYER_TEST;
-import static thaumcraft.common.researches.ThaumcraftResearches.ENTER_OUTER;
+import static thaumcraft.api.research.ThaumcraftResearches.ENTER_OUTER;
 
 public class EldritchPortalBlockEntity extends TileThaumcraft {
     public EldritchPortalBlockEntity(BlockEntityType<? extends EldritchPortalBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {

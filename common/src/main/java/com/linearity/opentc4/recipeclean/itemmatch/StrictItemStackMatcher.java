@@ -27,7 +27,7 @@ public class StrictItemStackMatcher extends RecipeItemMatcher {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof StrictItemStackMatcher that)) return false;
-        return Objects.equals(stack, that.stack);
+        return ItemStack.matches(this.stack,that.stack);
     }
 
     @Override

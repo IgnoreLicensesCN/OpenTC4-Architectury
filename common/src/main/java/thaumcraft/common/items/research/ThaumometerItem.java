@@ -20,7 +20,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.network.toserveraction.scan.PacketScannedBlockPosC2S;
 import thaumcraft.common.lib.network.toserveraction.scan.PacketScannedEntityC2S;
 import thaumcraft.common.lib.utils.EntityUtils;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

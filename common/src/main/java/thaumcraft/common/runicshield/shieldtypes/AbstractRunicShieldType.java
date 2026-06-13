@@ -16,7 +16,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.fx.PacketFXShieldS2C;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;

@@ -6,7 +6,7 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;

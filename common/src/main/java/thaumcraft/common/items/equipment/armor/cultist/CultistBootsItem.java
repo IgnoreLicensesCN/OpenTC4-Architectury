@@ -2,9 +2,11 @@ package thaumcraft.common.items.equipment.armor.cultist;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.IWarpingGear;
@@ -37,5 +39,9 @@ public class CultistBootsItem extends ArmorItem implements IVisDiscountGear, IAu
     @Override
     public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
         return 1;
+    }
+    @Override
+    public @NotNull EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.FEET;
     }
 }

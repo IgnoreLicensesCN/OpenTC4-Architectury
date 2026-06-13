@@ -14,7 +14,7 @@ import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscoveryS2C;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
 public class PacketAspectCombinationC2S extends BaseC2SMessage {

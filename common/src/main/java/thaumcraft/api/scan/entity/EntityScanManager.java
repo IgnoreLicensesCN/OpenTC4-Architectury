@@ -4,7 +4,7 @@ import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class EntityScanManager {
     public static final ListenerManager<EntityScanListener> ENTITY_SCAN_LISTENERS = new ListenerManager<>();

@@ -3,7 +3,7 @@ package thaumcraft.api.research.implexample;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
@@ -17,7 +17,7 @@ public class SimpleAspectUnlockedResearch extends ResearchItem implements IAspec
             ResearchCategoryResourceLocation category,
             AspectList<Aspect> aspectsCost
     ) {
-        super(key, category);
+        super(key);
         this.aspects = UnmodifiableAspectList.of(aspectsCost);
     }
 

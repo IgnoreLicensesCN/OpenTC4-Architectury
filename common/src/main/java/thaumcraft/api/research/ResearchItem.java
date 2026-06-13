@@ -3,9 +3,7 @@ package thaumcraft.api.research;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -88,7 +86,7 @@ public abstract class ResearchItem
 
 //	private ResearchPage[] pages = null;
 	
-	public ResearchItem(ResearchItemResourceLocation key, ResearchCategoryResourceLocation category)
+	public ResearchItem(ResearchItemResourceLocation key)
     {
     	this.key = key;
         registerResearchItem();
@@ -108,18 +106,6 @@ public abstract class ResearchItem
         researchItems.put(this.key, this);
     }
 
-    public ResearchItem(ResearchItemResourceLocation key)
-    {
-        this.key = key;
-//        this.setVirtual();
-        registerResearchItem();
-    }
-
-    public ResearchItem(ResearchItemResourceLocation key, int complex)
-    {
-        this.key = key;
-        registerResearchItem();
-    }
 
     private static final Map<ResearchItemResourceLocation, ResearchItem> researchItems = new ConcurrentHashMap<>();
     /**

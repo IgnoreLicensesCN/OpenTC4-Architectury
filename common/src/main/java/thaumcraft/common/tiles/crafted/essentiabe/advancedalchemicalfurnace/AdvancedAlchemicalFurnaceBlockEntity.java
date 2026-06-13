@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ThaumcraftSounds;

@@ -6,8 +6,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.crafted.DeconstructionTableBlockEntity;
 
 import java.util.Optional;

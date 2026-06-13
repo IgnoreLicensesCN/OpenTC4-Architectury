@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.ISwordLikeItem;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 import java.util.concurrent.atomic.AtomicReference;

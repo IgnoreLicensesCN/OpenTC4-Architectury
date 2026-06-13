@@ -4,7 +4,7 @@ package thaumcraft.api.research.interfaces;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 //i should say research clue is not limited to string now
 // maybe you can just "owned item" or "used something"/"ate something"

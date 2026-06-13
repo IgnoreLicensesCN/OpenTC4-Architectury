@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.Collection;
 

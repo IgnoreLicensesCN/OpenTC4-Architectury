@@ -16,7 +16,7 @@ public abstract class ResearchNoteUnlockedResearch extends ResearchItem implemen
             ResearchCategoryResourceLocation category,
             @Range(from = 1, to = 3) int complexity
     ) {
-        super(key, category);
+        super(key);
         this.complexity = complexity;
     }
 

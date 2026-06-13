@@ -25,7 +25,10 @@ import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemFortressArmor extends ItemArmor implements IRepairEnchantable, IRunicShieldProviderItem, ISpecialArmor, IGoggles, IRevealer {
+public class ItemFortressArmor extends ItemArmor
+        implements IRepairEnchantable,
+        IRunicShieldProviderItem,
+        ISpecialArmor, IGoggles, IRevealer {
    public IIcon iconHelm;
    public IIcon iconChest;
    public IIcon iconLegs;

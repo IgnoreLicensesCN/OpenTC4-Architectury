@@ -13,7 +13,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.researches.ThaumcraftResearches;
+import thaumcraft.api.research.ThaumcraftResearches;
 
 import java.util.List;
 

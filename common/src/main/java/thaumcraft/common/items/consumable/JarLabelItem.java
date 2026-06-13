@@ -24,7 +24,7 @@ public class JarLabelItem extends Item {
         var pos = useOnContext.getClickedPos();
         var state = level.getBlockState(pos);
         var stack = useOnContext.getItemInHand();
-        var aspect = LABEL_ASPECT.readFromCompoundTag(stack.getOrCreateTag());
+        var aspect = getLabelAspect(stack);
         if (level.getBlockState(pos).getBlock() instanceof IAspectLabelAttachableBlock aspectLabelAttachableBlock
                 && !aspect.isEmpty()
         ) {
@@ -43,5 +43,15 @@ public class JarLabelItem extends Item {
 
     public void setLabelAspect(ItemStack stack, Aspect labelAspect) {
         LABEL_ASPECT.writeToCompoundTag(stack.getOrCreateTag(),labelAspect);
+    }
+    public @NotNull("could be empty") Aspect getLabelAspect(ItemStack stack) {
+        if (!stack.hasTag()) {
+            return Aspect.EMPTY;
+        }
+        var stackTag = stack.getTag();
+        if (stackTag == null) {
+            return Aspect.EMPTY;
+        }
+        return LABEL_ASPECT.readFromCompoundTag(stackTag);
     }
 }

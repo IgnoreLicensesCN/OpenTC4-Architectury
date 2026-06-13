@@ -2,6 +2,7 @@ package thaumcraft.api.aspects.aspectlists;
 
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 

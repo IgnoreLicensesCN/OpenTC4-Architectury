@@ -101,9 +101,9 @@ public class ThaumcraftCraftingManager {
     public static AspectList<Aspect> findMatchingArcaneRecipeAspects(Container awb, Player player) {
         AbstractArcaneRecipe recipe = FindRecipes.findArcaneRecipe(awb, player);
         return recipe == null ? new LinkedHashAspectList<>() :
-                recipe.getAspects() == null
-                        ? recipe.getAspects(awb)
-                        : recipe.getAspects();
+                recipe.getCentiVisCost() == null
+                        ? recipe.getCentiVisCost(awb)
+                        : recipe.getCentiVisCost();
 //      int var2 = 0;
 //      ItemStack var3 = null;
 //      ItemStack var4 = null;
@@ -388,11 +388,11 @@ public class ThaumcraftCraftingManager {
                             }
                         }
                         AspectList<Aspect> ph = getAspectsFromIngredients(ingredients, arcaneRecipe.getRecipeOutput(), history);
-                        if (arcaneRecipe.getAspects() != null) {
-                            for (var a : arcaneRecipe.getAspects().keySet()
+                        if (arcaneRecipe.getCentiVisCost() != null) {
+                            for (var a : arcaneRecipe.getCentiVisCost().keySet()
                             ) {
                                 ph.addAll(
-                                        a, (int) (Math.sqrt(arcaneRecipe.getAspects()
+                                        a, (int) (Math.sqrt(arcaneRecipe.getCentiVisCost()
                                                 .get(a)) / (double) ((float) arcaneRecipe.getRecipeOutput()
                                                 .getCount()))
                                 );

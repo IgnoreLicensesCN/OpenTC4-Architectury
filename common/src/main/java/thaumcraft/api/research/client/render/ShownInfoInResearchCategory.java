@@ -8,6 +8,7 @@ import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 //i want it appear in mine,like ThaumicBasics?
 //behavior here
 @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
+@Deprecated(forRemoval = true,since = "plan to migrate to resource pack behavior")
 public record ShownInfoInResearchCategory(
         ResearchCategoryResourceLocation category,
         int column, int row, ShownIconBackground background, ShownIconForeground foreground

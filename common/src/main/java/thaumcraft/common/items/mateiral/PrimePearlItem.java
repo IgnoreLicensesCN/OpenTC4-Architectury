@@ -26,7 +26,7 @@ import java.util.List;
 
 import static thaumcraft.common.blocks.liquid.FluxGasBlock.fullOfGas;
 import static thaumcraft.common.blocks.liquid.FluxGooBlock.fullOfGoo;
-import static thaumcraft.common.researches.ThaumcraftResearches.PRIME_PEARL_NODE_CONTROL;
+import static thaumcraft.api.research.ThaumcraftResearches.PRIME_PEARL_NODE_CONTROL;
 
 
 public class PrimePearlItem extends Item {

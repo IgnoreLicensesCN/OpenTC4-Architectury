@@ -12,7 +12,7 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
-import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRodItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect>, IWandUpgradeModifier {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponent<Aspect>, IWandUpgradeModifier {
     public PrimalStaffRodItem() {
         super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER));
     }

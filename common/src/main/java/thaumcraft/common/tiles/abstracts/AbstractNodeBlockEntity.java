@@ -48,7 +48,7 @@ import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*
 import com.linearity.opentc4.Color;
 
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
-import static thaumcraft.common.researches.ThaumcraftResearches.*;
+import static thaumcraft.api.research.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.
 @UtilityLikeAbstraction

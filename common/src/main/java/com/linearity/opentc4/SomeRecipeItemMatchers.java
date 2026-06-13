@@ -1,16 +1,48 @@
 package com.linearity.opentc4;
 
 import com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher;
+import com.linearity.opentc4.recipeclean.itemmatch.ItemClassInstanceOfMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
-import thaumcraft.common.config.ConfigItems;
+import thaumcraft.api.wands.IWandCapPropertiesOwnerComponent;
+import thaumcraft.api.wands.WorkAsStaffRod;
+import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.ThaumcraftItems;
+
+import java.util.List;
 
 public class SomeRecipeItemMatchers {
 
     public static final RecipeItemMatcher EMPTY_MATCHER = EmptyMatcher.EMPTY_MATCHER;
-    public static final RecipeItemMatcher WAND_CAP_MATCHER = ItemMatcher.of(ConfigItems.itemWandCap);//TODO:This itemWandCap will be removed
-    public static final RecipeItemMatcher WAND_ROD_MATCHER = ItemMatcher.of(ConfigItems.itemWandRod);//TODO:This itemWandRod will be removed
-    public static final RecipeItemMatcher PRIMAL_CHARM_MATCHER = ItemMatcher.of(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM);
-    public static final RecipeItemMatcher SCEPTRE_MATCHER = ItemMatcher.of(ConfigItems.itemSceptre);//TODO:Sceptre Item Instance
+    public static final RecipeItemMatcher WAND_CAP_MATCHER = ItemClassInstanceOfMatcher.of(IWandCapPropertiesOwnerComponent.class,
+            List.of(
+                    ThaumcraftItems.Registry.SUPPLIER_IRON_WAND_CAP.get().getDefaultInstance(),
+                    ThaumcraftItems.Registry.SUPPLIER_COPPER_WAND_CAP.get().getDefaultInstance(),
+                    ThaumcraftItems.Registry.SUPPLIER_GOLD_WAND_CAP.get().getDefaultInstance(),
+                    ThaumcraftItems.Registry.SUPPLIER_THAUMIUM_WAND_CAP.get().getDefaultInstance(),
+                    ThaumcraftItems.Registry.SUPPLIER_VOID_WAND_CAP.get().getDefaultInstance()
+            ));
+    public static final RecipeItemMatcher WAND_ROD_MATCHER = ItemClassInstanceOfMatcher.of(WorkAsWandRod.class, List.of(
+            ThaumcraftItems.Registry.SUPPLIER_BLAZE_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_BONE_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_GREATWOOD_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_SILVERWOOD_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_OBSIDIAN_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_ICE_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_QUARTZ_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_REED_WAND_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_WOOD_WAND_ROD.get().getDefaultInstance()
+    ));
+    public static final RecipeItemMatcher STAFF_ROD_MATCHER = ItemClassInstanceOfMatcher.of(WorkAsStaffRod.class, List.of(
+            ThaumcraftItems.Registry.SUPPLIER_BLAZE_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_BONE_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_GREATWOOD_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_SILVERWOOD_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_OBSIDIAN_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_ICE_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_QUARTZ_STAFF_ROD.get().getDefaultInstance(),
+            ThaumcraftItems.Registry.SUPPLIER_REED_STAFF_ROD.get().getDefaultInstance()
+    ));
+    public static final RecipeItemMatcher PRIMAL_CHARM_MATCHER = ItemMatcher.of(ThaumcraftItems.Registry.SUPPLIER_PRIMAL_CHARM.get());
+    public static final RecipeItemMatcher SCEPTRE_MATCHER = ItemMatcher.of(ThaumcraftItems.Registry.SUPPLIER_SCEPTRE_CASTING.get());//TODO:Sceptre Item Instance
 }

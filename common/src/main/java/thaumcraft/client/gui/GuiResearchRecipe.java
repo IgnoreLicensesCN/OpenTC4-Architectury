@@ -568,7 +568,7 @@ public class GuiResearchRecipe extends GuiScreen {
             GL11.glPopMatrix();
             int mposx = mx;
             int mposy = my;
-            AspectList<Aspect>tags = recipe.getAspects();
+            AspectList<Aspect>tags = recipe.getCentiVisCost();
             if (tags != null && tags.size() > 0) {
                 int count = 0;
 

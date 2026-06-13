@@ -10,7 +10,7 @@ import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;

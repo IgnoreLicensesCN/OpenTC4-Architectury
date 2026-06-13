@@ -8,10 +8,9 @@ import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IAspectUnlockableResearch;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
     public static MessageType messageType;

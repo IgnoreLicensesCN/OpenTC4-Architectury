@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectView;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
 
 import java.util.Locale;

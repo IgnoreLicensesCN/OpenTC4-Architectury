@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.items.ThaumcraftItems;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
@@ -49,11 +48,11 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     }
 
     @Unique
-    private boolean opentc4$isInMilkContext = false;
+    private final ThreadLocal<Boolean> opentc4$isInMilkContext = new ThreadLocal<>();
 
     @Override
     public void opentc4$setInMilkContext(boolean inMilkContext) {
-        this.opentc4$isInMilkContext = inMilkContext;
+        this.opentc4$isInMilkContext.set(inMilkContext);
     }
 
     @Inject(method = "tick",at=@At("HEAD"))
@@ -100,24 +99,14 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     @Unique private boolean opentc4$checkedNoEffect = false;
 
     @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
-    @Shadow
-    private float speed;
     @Unique private final Map<MobEffect, MobEffectInstance> opentc4$storedEffectsToPreventRemove = new ConcurrentHashMap<>();
-    @Inject(method = "removeAllEffects",at=@At("HEAD"))
-    public void opentc4$preventMilkRemoveEffect(CallbackInfoReturnable<Boolean> cir) {
-        if (!opentc4$isInMilkContext) {return;}
-        for (var entry : activeEffects.entrySet()) {
-            var effect = entry.getKey();
-            var effectInstance = entry.getValue();
-            if (effect instanceof IPreventMilkRemoveEffect preventMilkRemoveEffect){
-                if (preventMilkRemoveEffect.preventMilkRemove(effectInstance,(LivingEntity)(Object)this)){
-                    opentc4$storedEffectsToPreventRemove.put(effect, effectInstance);
-                }
-            }
-        }
-        for (var effect: opentc4$storedEffectsToPreventRemove.keySet()){
-            activeEffects.remove(effect);
-        }
+    @Inject(
+            method = "onEffectRemoved",at=@At("HEAD"),cancellable = true
+    )
+    public void opentc4$preventMilkRemoveEffect(MobEffectInstance mobEffectInstance, CallbackInfo ci) {
+        if (!opentc4$isInMilkContext.get()) {return;}
+        opentc4$storedEffectsToPreventRemove.put(mobEffectInstance.getEffect(), mobEffectInstance);
+        ci.cancel();
     }
     @Inject(method = "removeAllEffects",at=@At("TAIL"))
     public void opentc4$preventMilkRemoveEffect_restore(CallbackInfoReturnable<Boolean> cir) {

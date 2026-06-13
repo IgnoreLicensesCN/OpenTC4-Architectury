@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
@@ -170,7 +170,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
                 if (arcaneRecipe.matches(workbench,level,serverPlayer)){
                     itemStack = arcaneRecipe.getCraftingResult(workbench);
                     if (!itemStack.isEmpty()){
-                        costAspects = arcaneRecipe.getAspects(workbench);
+                        costAspects = arcaneRecipe.getCentiVisCost(workbench);
                         arcaneWorkbenchMenu.blockEntity.setRecipeResourceLocation(arcaneRecipe.getRecipeID());
                         break;
                     }

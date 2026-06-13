@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixinaccessors;
 
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public interface PlayerResearchAndScannedInfoAccessor {
     ResearchAndScannedInfo opentc4$getResearchAndScannedInfo();

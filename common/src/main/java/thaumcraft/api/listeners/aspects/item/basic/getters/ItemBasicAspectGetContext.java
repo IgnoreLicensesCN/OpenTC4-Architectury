@@ -3,7 +3,7 @@ package thaumcraft.api.listeners.aspects.item.basic.getters;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 
 public class ItemBasicAspectGetContext {
     public @NotNull UnmodifiableAspectList<Aspect> result = UnmodifiableAspectList.EMPTY;

@@ -79,5 +79,8 @@ public class TravellerBootsItem extends ArmorItem implements IAugmentationRunicS
             entity.fallDistance -= 0.25F;
         }
 
+    }@Override
+    public @NotNull EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.FEET;
     }
 }

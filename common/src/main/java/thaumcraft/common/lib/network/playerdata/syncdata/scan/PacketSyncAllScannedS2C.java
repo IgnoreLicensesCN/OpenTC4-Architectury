@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
-import thaumcraft.common.researches.ResearchAndScannedInfo;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.HashMap;
 import java.util.Map;
