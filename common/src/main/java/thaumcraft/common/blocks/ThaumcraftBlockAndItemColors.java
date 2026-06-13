@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.world.level.GrassColor;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 
 public class ThaumcraftBlockAndItemColors {
@@ -50,27 +50,27 @@ public class ThaumcraftBlockAndItemColors {
 
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[0],
-                ThaumcraftItems.ThaumcraftItemInstances.AIR_SHARD()
+                ThaumcraftItemInstances.AIR_SHARD()
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[1],
-                ThaumcraftItems.ThaumcraftItemInstances.FIRE_SHARD()
+                ThaumcraftItemInstances.FIRE_SHARD()
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[2],
-                ThaumcraftItems.ThaumcraftItemInstances.WATER_SHARD()
+                ThaumcraftItemInstances.WATER_SHARD()
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[3],
-                ThaumcraftItems.ThaumcraftItemInstances.EARTH_SHARD()
+                ThaumcraftItemInstances.EARTH_SHARD()
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[4],
-                ThaumcraftItems.ThaumcraftItemInstances.ORDER_SHARD()
+                ThaumcraftItemInstances.ORDER_SHARD()
         );
         ColorHandlerRegistry.registerItemColors(
                 (itemStack, i) -> AbstractCrystalBlock.CRYSTAL_COLORS[5],
-                ThaumcraftItems.ThaumcraftItemInstances.ENTROPY_SHARD()
+                ThaumcraftItemInstances.ENTROPY_SHARD()
         );
 
 

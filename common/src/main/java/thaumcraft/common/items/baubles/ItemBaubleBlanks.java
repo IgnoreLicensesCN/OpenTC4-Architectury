@@ -15,14 +15,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 
 import java.util.List;
 
-public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGear, IRunicShieldProviderItem {
+public class ItemBaubleBlanks extends Item implements IBauble, IVisDiscountGearItem, IRunicShieldProviderItem {
    public IIcon[] icon = new IIcon[4];
 
    public ItemBaubleBlanks() {

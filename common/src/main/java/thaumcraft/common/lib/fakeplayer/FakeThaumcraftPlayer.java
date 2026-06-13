@@ -36,7 +36,7 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
 
       /**
        * Get a fake player with a given username,
-       * Mods should either hold weak references to the return rightInt, or listen for a
+       * Mods should either hold weak references to the return value, or listen for a
        * WorldEvent.Unload and kill all references to prevent worlds staying in memory.
        */
       public static FakeThaumcraftPlayer get(ServerLevel world, GameProfile profile){
@@ -45,7 +45,7 @@ public class FakeThaumcraftPlayer extends ServerPlayer {
 
       /**
        * Get a fake player with a given username,
-       * Mods should either hold weak references to the return rightInt, or listen for a
+       * Mods should either hold weak references to the return value, or listen for a
        * WorldEvent.Unload and kill all references to prevent worlds staying in memory.
        */
       public static FakeThaumcraftPlayer get(ServerLevel world, String username)

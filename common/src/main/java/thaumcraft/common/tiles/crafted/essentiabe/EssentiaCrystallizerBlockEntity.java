@@ -30,7 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 
 import static com.linearity.opentc4.Consts.EssentiaCrystallizerBlockEntityTagAccessors.ASPECT_CRYSTALLIZING;
-import static thaumcraft.common.items.ThaumcraftItems.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
+import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         implements

@@ -361,7 +361,7 @@ public class ThaumcraftApi {
      * the "championWhiteList" string message in the format "[Entity]:[level]"
      * The entity must extend EntityMob.
      * [Entity] is in a similar format to what is used for mob spawners and such (see EntityList.class for vanilla examples).
-     * The [level] rightInt indicate how rare the champion version will be - the higher the number the more common.
+     * The [level] value indicate how rare the champion version will be - the higher the number the more common.
      * The number roughly equals the [n] in 100 chance of a mob being a champion version.
      * You can give 0 or negative numbers to allow champions to spawn with a very low chance only in particularly dangerous places.
      * However anything less than about -2 will probably result in no spawns at all.

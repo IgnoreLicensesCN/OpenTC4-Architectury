@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.common.ChestGenHooks;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import java.util.List;
 import java.util.Random;
@@ -103,6 +103,6 @@ public class ComponentWizardTower extends StructureVillagePieces.Village {
    }
 
    static {
-      towerChestContents = new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.glowstone_dust, 0, 1, 3, 3), new WeightedRandomChestContent(Items.glass_bottle, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_nugget, 0, 1, 3, 5), new WeightedRandomChestContent(Items.fire_charge, 0, 1, 1, 5), new WeightedRandomChestContent(Items.skull, 0, 1, 1, 3), new WeightedRandomChestContent(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT(), 1, 3, 20), new WeightedRandomChestContent(ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM(),1, 1, 5), new WeightedRandomChestContent(ThaumcraftItems.ThaumcraftItemInstances.NITOR(),1, 1, 5), new WeightedRandomChestContent(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT(),1, 2, 5), new WeightedRandomChestContent(ConfigItems.itemThaumonomicon, 0, 1, 1, 20)};
+      towerChestContents = new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.glowstone_dust, 0, 1, 3, 3), new WeightedRandomChestContent(Items.glass_bottle, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_nugget, 0, 1, 3, 5), new WeightedRandomChestContent(Items.fire_charge, 0, 1, 1, 5), new WeightedRandomChestContent(Items.skull, 0, 1, 1, 3), new WeightedRandomChestContent(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT(), 1, 3, 20), new WeightedRandomChestContent(ThaumcraftItemInstances.ALUMENTUM(),1, 1, 5), new WeightedRandomChestContent(ThaumcraftItemInstances.NITOR(),1, 1, 5), new WeightedRandomChestContent(ThaumcraftItemInstances.THAUMIUM_INGOT(),1, 2, 5), new WeightedRandomChestContent(ConfigItems.itemThaumonomicon, 0, 1, 1, 20)};
    }
 }

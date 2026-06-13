@@ -1,4 +1,4 @@
-package thaumcraft.common.items.abstracts;
+package thaumcraft.common.items.abstracts.armorcomponents;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.ItemStack;

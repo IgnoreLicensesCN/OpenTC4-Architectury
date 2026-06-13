@@ -26,7 +26,7 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 
 import java.util.*;
 
-import static thaumcraft.common.items.ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
+import static thaumcraft.common.items.ThaumcraftToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
 import static thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem.blockPosOffsetsOfDirection;
 
 public class ElementalShovelItem extends ShovelItem implements IDropFollowingUserTool {
@@ -109,8 +109,8 @@ public class ElementalShovelItem extends ShovelItem implements IDropFollowingUse
 
 
 //    private boolean isEffectiveAgainst(Block block) {
-//        for (Block rightInt : isEffective) {
-//            if (rightInt == block) {
+//        for (Block value : isEffective) {
+//            if (value == block) {
 //                return true;
 //            }
 //        }

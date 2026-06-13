@@ -8,14 +8,14 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IVisDiscountGearItem;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
 import java.util.List;
 
-public class CultistBootsItem extends ArmorItem implements IVisDiscountGear, IAugmentationRunicShieldProviderItem, IWarpingGear {
+public class CultistBootsItem extends ArmorItem implements IVisDiscountGearItem, IAugmentationRunicShieldProviderItem, IWarpingGear {
     public CultistBootsItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
         super(armorMaterial, type, properties);
     }

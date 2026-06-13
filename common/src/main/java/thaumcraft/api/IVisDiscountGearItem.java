@@ -23,13 +23,13 @@ import java.util.Map;
  * individual items really shouldn't have a discount more than 5%</s>
  * <p>Forget above --IgnoreLicensesCN</p>
  */
-public interface IVisDiscountGear {
+public interface IVisDiscountGearItem {
 	//if you dont want to mixin a interface,put it here
-	Map<Item,IVisDiscountGear> VIS_DISCOUNT_GEAR_ADDITIONS = new HashMap<>();
+	Map<Item, IVisDiscountGearItem> VIS_DISCOUNT_GEAR_ADDITIONS = new HashMap<>();
 
-	static @Nullable IVisDiscountGear getDiscountGearHandlerForItem(Item item) {
+	static @Nullable IVisDiscountGearItem getDiscountGearHandlerForItem(Item item) {
 		var gear = VIS_DISCOUNT_GEAR_ADDITIONS.get(item);
-		if (gear == null && item instanceof IVisDiscountGear visDiscountGear) {
+		if (gear == null && item instanceof IVisDiscountGearItem visDiscountGear) {
 			gear = visDiscountGear;
 		}
 		return gear;
@@ -40,12 +40,15 @@ public interface IVisDiscountGear {
 	int getVisCostPercentDecrease(ItemStack stack, @Nullable LivingEntity living, @Nullable Aspect aspect);
 
 	default void addVisDiscountToolTip(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag, @Nullable LivingEntity livingWatchingThis, @Nullable Aspect aspect) {
-		var componentToAdd = Component.translatable("tc.visdiscount",
-						": " + this.getVisCostPercentDecrease(stack, livingWatchingThis, aspect) + "%")
-				.withStyle(ChatFormatting.DARK_PURPLE);
-		if (aspect != null) {
-			componentToAdd = aspect.getImageComponent().copy().append(aspect.getNameColored()).append(componentToAdd);
+		var costDecrease = this.getVisCostPercentDecrease(stack, livingWatchingThis, aspect);
+		if (costDecrease != 0){
+			var componentToAdd = Component.translatable("tc.visdiscount",
+							": " + costDecrease + "%")
+					.withStyle(ChatFormatting.DARK_PURPLE);
+			if (aspect != null) {
+				componentToAdd = aspect.getImageComponent().copy().append(aspect.getNameColored()).append(componentToAdd);
+			}
+			tooltip.add(componentToAdd);
 		}
-		tooltip.add(componentToAdd);
 	}
 }

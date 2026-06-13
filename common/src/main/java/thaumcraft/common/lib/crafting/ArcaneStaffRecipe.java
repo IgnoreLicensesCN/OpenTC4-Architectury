@@ -16,7 +16,7 @@ import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
@@ -149,6 +149,6 @@ public class ArcaneStaffRecipe extends AbstractArcaneRecipe {
     }
 
     protected Item getItemOfResult(){
-        return ThaumcraftItems.ThaumcraftItemInstances.STAFF_CASTING();
+        return ThaumcraftItemInstances.STAFF_CASTING();
     }
 }

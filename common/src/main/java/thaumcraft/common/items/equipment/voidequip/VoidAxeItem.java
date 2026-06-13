@@ -10,7 +10,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class VoidAxeItem extends AxeItem implements IWarpingGear {
     }
     public VoidAxeItem() {
         this(
-                ThaumcraftItems.ToolAndArmorMaterial.TOOL_VOID,
+                ThaumcraftToolAndArmorMaterial.TOOL_VOID,
                 5, -3.0F,
                 new Properties().rarity(Rarity.UNCOMMON).stacksTo(1)
         );

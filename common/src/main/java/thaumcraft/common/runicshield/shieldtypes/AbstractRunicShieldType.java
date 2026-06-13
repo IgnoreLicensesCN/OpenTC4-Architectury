@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static thaumcraft.api.damagesource.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
 import static thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes.CHARGED;
 
+//TODO:[maybe wont finished] Attribute to calculate but maybe not so fine?maybe we dont need this kind
 public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         implements Comparable<AbstractRunicShieldType<AdditionalInfoClass>>,
         ITagAccessorOwner<AdditionalInfoClass>
@@ -122,7 +123,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         int remaining = owningShield - damageToReduce;
         shieldInfo.setShieldChargedFor(this, remaining);
         if (damageToReduce > 0){
-            onDamagingShield(victim, source, damageToReduce, shieldInfo);
+            onDamagedShield(victim, source,damage, damageToReduce, shieldInfo);
         }
         if (damageToReduce > 0 && remaining <= 0){
             onShieldRunningOut(victim, source, shieldInfo);
@@ -133,7 +134,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
             Entity victim /*only for player in vanilla TC4*/,
             DamageSource source,
             float damage, /*may decreased by shields before*/
-            float damaged, /* shield rightInt damaged */
+            float damaged, /* shield value damaged */
             EntityRunicShieldInfo shieldInfo
     ){
         if (victim.level() instanceof ServerLevel serverLevel) {

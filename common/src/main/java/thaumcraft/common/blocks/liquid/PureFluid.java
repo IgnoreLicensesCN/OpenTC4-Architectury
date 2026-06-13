@@ -19,14 +19,14 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXBubble;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.PURE_FLUID;
 
 public abstract class PureFluid extends FlowingFluid {
 
     public @NotNull Item getBucket() {
-        return ThaumcraftItems.ThaumcraftItemInstances.PURE_FLUID_BUCKET();
+        return ThaumcraftItemInstances.PURE_FLUID_BUCKET();
     }
 
     @Override

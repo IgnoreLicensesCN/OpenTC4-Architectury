@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 public class EntityAlumentum extends ThrowableItemProjectile {
    public static EntityType<EntityAlumentum> entityAlumentumType;
@@ -44,7 +44,7 @@ public class EntityAlumentum extends ThrowableItemProjectile {
 
    @Override
    protected @NotNull Item getDefaultItem() {
-      return ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM();
+      return ThaumcraftItemInstances.ALUMENTUM();
    }
    @Override
    public void tick() {

@@ -23,7 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSparkle;
 import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import java.util.List;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
@@ -115,7 +115,7 @@ public class NitorBlock extends SuppressedWarningBlock {
     }
     @Override
     public @NotNull ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
-        return ThaumcraftItems.ThaumcraftItemInstances.NITOR().getDefaultInstance();
+        return ThaumcraftItemInstances.NITOR().getDefaultInstance();
     }
 
     @Override
@@ -152,6 +152,6 @@ public class NitorBlock extends SuppressedWarningBlock {
 
     @Override
     public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
-        return List.of(ThaumcraftItems.ThaumcraftItemInstances.NITOR().getDefaultInstance());
+        return List.of(ThaumcraftItemInstances.NITOR().getDefaultInstance());
     }
 }

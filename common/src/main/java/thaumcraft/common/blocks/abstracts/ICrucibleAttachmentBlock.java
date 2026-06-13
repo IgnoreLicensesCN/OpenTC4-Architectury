@@ -19,7 +19,7 @@ public interface ICrucibleAttachmentBlock {
             BlockState attachmentState,
             CrucibleBlockEntity crucibleBlockEntity){
     };
-    //return rightInt will be set to capacity
+    //return value will be set to capacity
     default int onCalculatingCrucibleCapacity(
             Level level,
             BlockPos attachmentPos,

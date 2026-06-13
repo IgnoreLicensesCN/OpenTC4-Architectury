@@ -44,7 +44,7 @@ public class FXEssentiaTrail extends ThaumcraftParticle {
         this.startY = par4;
         this.startZ = par6;
         long count = level.getGameTime() + countOffset;
-        this.quadSize = (float) ((MathHelper.getPeriodic( count * 41) * 0.1F + 1.0F) * scale);//TODO:Change 41 to performance-friendly rightInt
+        this.quadSize = (float) ((MathHelper.getPeriodic( count * 41) * 0.1F + 1.0F) * scale);//TODO:Change 41 to performance-friendly value
         this.rCol = this.gCol = this.bCol = 0.6F;
         this.count = count;
         this.targetX = tx;

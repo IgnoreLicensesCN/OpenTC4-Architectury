@@ -5,7 +5,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IGoggles;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 public class VoidRobeHelmetItem extends VoidRobeArmorItem implements IGoggles {
     public VoidRobeHelmetItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
@@ -13,7 +13,7 @@ public class VoidRobeHelmetItem extends VoidRobeArmorItem implements IGoggles {
     }
 
     public VoidRobeHelmetItem() {
-        this(ThaumcraftItems.ToolAndArmorMaterial.ARMOR_VOID,Type.HELMET,new Properties().stacksTo(1).rarity(Rarity.EPIC));
+        this(ThaumcraftToolAndArmorMaterial.ARMOR_VOID,Type.HELMET,new Properties().stacksTo(1).rarity(Rarity.EPIC));
     }
 
     @Override

@@ -73,7 +73,7 @@ public class FXBurst /*extends EntityFX*/ {
 //
 //   }
 //
-//   public void setGravity(float rightInt) {
-//      this.particleGravity = rightInt;
+//   public void setGravity(float value) {
+//      this.particleGravity = value;
 //   }
 }

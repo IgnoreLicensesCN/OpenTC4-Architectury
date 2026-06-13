@@ -328,4 +328,8 @@ public class Consts {
                 new ItemStackTagAccessor("stack")
         );
     }
+    public static class ThaumiumFortressHelmetItemTagAccessors {
+        public static final ItemStackTagAccessor GOGGLES = new ItemStackTagAccessor("goggles");
+        public static final ItemStackTagAccessor MASK = new ItemStackTagAccessor("mask");
+    }
 }

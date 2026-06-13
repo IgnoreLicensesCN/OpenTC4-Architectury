@@ -190,7 +190,7 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
 
     /**
      * Adds this aspect and amount to the collection.
-     * <s>If the aspect exists then its rightInt will be increased by the given amount.</s>
+     * <s>If the aspect exists then its value will be increased by the given amount.</s>
      *
      * @param aspect to add
      * @param amount to add

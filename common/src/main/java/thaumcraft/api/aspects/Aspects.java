@@ -4,7 +4,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemsRegistry;
 import thaumcraft.common.items.displayhelper.AspectItem;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -88,7 +88,7 @@ public class Aspects {
             ASPECT_RESOURCE_LOCATION_TO_ITEM_MAP.computeIfAbsent(aspectResLoc,
                     aspResLocation -> {
                 var supplier = ASPECT_RESOURCE_LOCATION_TO_ITEM_SUPPLIER_MAP.computeIfAbsent(
-                        aspResLocation, aspResLocationToCompute -> ThaumcraftItems.Registry.ITEMS.register(
+                        aspResLocation, aspResLocationToCompute -> ThaumcraftItemsRegistry.ITEMS.register(
                                 aspResLocationToCompute,() -> new AspectItem(aspectInstance)
                         )
                 );

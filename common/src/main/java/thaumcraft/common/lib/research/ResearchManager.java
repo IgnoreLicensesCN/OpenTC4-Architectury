@@ -556,7 +556,7 @@ public class ResearchManager {
 //        PLAYER_RESEARCH_ASPECTS
 //                .readFromCompoundTag(entityData)
 //                .forEach(
-//                        (key, rightInt) -> completeAspectUnsaved(player, key, rightInt)
+//                        (key, value) -> completeAspectUnsaved(player, key, value)
 //                );
 //
 ////        ListTag list = THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR

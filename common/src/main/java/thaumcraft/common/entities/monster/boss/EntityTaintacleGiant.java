@@ -14,7 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.entities.monster.EntityTaintacle;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class EntityTaintacleGiant extends EntityTaintacle implements ITaintedMob
    protected void dropFewItems(boolean flag, int i) {
       ArrayList<Entity> ents = EntityUtils.getEntitiesInRange(this.level(), this.posX, this.posY, this.posZ, this, EntityTaintacleGiant.class, 48.0F);
       if (ents == null || ents.isEmpty()) {
-         EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL()), this.height / 2.0F);
+         EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItemInstances.PRIME_PEARL()), this.height / 2.0F);
       }
 
    }

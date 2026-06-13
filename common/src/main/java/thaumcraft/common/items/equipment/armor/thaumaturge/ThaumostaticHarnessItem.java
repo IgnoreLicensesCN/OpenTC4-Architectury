@@ -16,13 +16,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectDisplayItem;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.items.abstracts.IBundleLikeItem;
 import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
 import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
@@ -40,7 +40,7 @@ import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategor
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FUEL_DURATION_ADD_PERCENT;
 
 public class ThaumostaticHarnessItem extends ArmorItem implements
-        IVisDiscountGear,
+        IVisDiscountGearItem,
         IAugmentationRunicShieldProviderItem,
         IBundleLikeItem,
         IAspectDisplayItem<Aspect>,
@@ -50,7 +50,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
         super(armorMaterial, type, properties);
     }
     public ThaumostaticHarnessItem(){
-        this(ThaumcraftItems.ToolAndArmorMaterial.SPECIAL, Type.CHESTPLATE, new Properties().stacksTo(1).rarity(Rarity.EPIC).durability(400));
+        this(ThaumcraftToolAndArmorMaterial.SPECIAL, Type.CHESTPLATE, new Properties().stacksTo(1).rarity(Rarity.EPIC).durability(400));
     }
 
     @Override

@@ -41,7 +41,7 @@ public class ScanManager /*implements IScanEventHandler*/ {
 //                    default -> null;
 //                };
 //
-//                if (!Objects.equals(val, nbt.rightInt)) continue outer;
+//                if (!Objects.equals(val, nbt.value)) continue outer;
 //            }
 //
 //            // 将 NBT 值拼接到 hash
@@ -114,7 +114,7 @@ public class ScanManager /*implements IScanEventHandler*/ {
 //               Class c = val.getClass();
 //
 //               try {
-//                  if (!c.cast(val).equals(c.cast(nbt.rightInt))) {
+//                  if (!c.cast(val).equals(c.cast(nbt.value))) {
 //                     continue label101;
 //                  }
 //               } catch (Exception var13) {
@@ -127,7 +127,7 @@ public class ScanManager /*implements IScanEventHandler*/ {
 //               Class c = val.getClass();
 //
 //               try {
-//                  hash = hash + nbt.name + c.cast(nbt.rightInt);
+//                  hash = hash + nbt.name + c.cast(nbt.value);
 //               } catch (Exception ignored) {
 //               }
 //            }
@@ -295,7 +295,7 @@ public class ScanManager /*implements IScanEventHandler*/ {
 //
 //                        for (ThaumcraftApi.EntityTagsNBT nbt : et.nbts) {
 //                            if (!tc.contains(nbt.name)
-//                                    || !Objects.equals(Utils.getNBTDataFromId(tc, nbt.name), nbt.rightInt)) {
+//                                    || !Objects.equals(Utils.getNBTDataFromId(tc, nbt.name), nbt.value)) {
 //                                continue label73;
 //                            }
 //                        }

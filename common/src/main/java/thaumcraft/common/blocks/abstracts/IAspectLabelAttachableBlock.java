@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.IAspectFilterAccessibleBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 public interface IAspectLabelAttachableBlock {
     //then maybe someone would make a jar-label bag with lots of labels
@@ -34,7 +34,7 @@ public interface IAspectLabelAttachableBlock {
                 var spawnEntityPos = pos.getCenter();
                 level.addFreshEntity(new ItemEntity(
                         level, spawnEntityPos.x, spawnEntityPos.y, spawnEntityPos.z, new ItemStack(
-                        ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL())
+                        ThaumcraftItemInstances.JAR_LABEL())
                 ));//maybe you can just do not drop it since "oh i tore it into pieces it cant be removed in one piece"
                 return true;
             }

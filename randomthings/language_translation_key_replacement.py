@@ -156,6 +156,10 @@ block_with_item_names = [
     ['item.ItemLeggingsVoidRobe.name','void_robe_leggings'],
     ['item.ItemChestplateVoidRobe.name','void_robe_chestplate'],
     ['item.ItemHelmetVoidRobe.name','void_robe_helmet'],
+
+    ['item.ItemHelmetFortress.name','thaumium_fortress_helmet'],
+    ['item.ItemChestplateFortress.name','thaumium_fortress_chestplate'],
+    ['item.ItemLeggingsFortress.name','thaumium_fortress_leggings'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

@@ -29,7 +29,7 @@ import thaumcraft.api.wands.WandRod;
 import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ArcaneSceptreRecipe;
 import thaumcraft.common.lib.crafting.ArcaneWandRecipe;
@@ -101,17 +101,17 @@ public class ConfigRecipes {
          ConfigResearch.recipes.put("BalancedShard_" + a, CrucibleRecipe.registerCrucibleRecipe("CRUCIBLE", new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, a), al));
       }
 
-      ConfigResearch.recipes.put("Alumentum", CrucibleRecipe.registerCrucibleRecipe("ALUMENTUM", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Items.coal, 1, 32767), (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Alumentum", CrucibleRecipe.registerCrucibleRecipe("ALUMENTUM", new ItemStack(ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Items.coal, 1, 32767), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.ENERGY, 3).mergeWithHighest(Aspects.FIRE, 3).mergeWithHighest(Aspects.ENTROPY, 3)));
-      ConfigResearch.recipes.put("Nitor", CrucibleRecipe.registerCrucibleRecipe("NITOR", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), "dustGlowstone", (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Nitor", CrucibleRecipe.registerCrucibleRecipe("NITOR", new ItemStack(ThaumcraftItemInstances.NITOR()), "dustGlowstone", (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.ENERGY, 3).mergeWithHighest(Aspects.FIRE, 3).mergeWithHighest(Aspects.LIGHT, 3)));
-      ConfigResearch.recipes.put("Thaumium", CrucibleRecipe.registerCrucibleRecipe("THAUMIUM", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.iron_ingot), (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Thaumium", CrucibleRecipe.registerCrucibleRecipe("THAUMIUM", new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.iron_ingot), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.MAGIC, 4)));
-      ConfigResearch.recipes.put("VoidMetal", CrucibleRecipe.registerCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED(), 1), (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("VoidMetal", CrucibleRecipe.registerCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.METAL, 8)));
-      ConfigResearch.recipes.put("VoidSeed", CrucibleRecipe.registerCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED(), 1), new ItemStack(Items.wheat_seeds), (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("VoidSeed", CrucibleRecipe.registerCrucibleRecipe("VOIDMETAL", new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), new ItemStack(Items.wheat_seeds), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.DARKNESS, 8).mergeWithHighest(Aspects.VOID, 8).mergeWithHighest(Aspects.ELDRITCH, 2)));
-      ConfigResearch.recipes.put("Tallow", CrucibleRecipe.registerCrucibleRecipe("TALLOW", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MAGIC_TALLOW()), new ItemStack(Items.rotten_flesh), (new LinkedHashAspectList<>()).mergeWithHighest(
+      ConfigResearch.recipes.put("Tallow", CrucibleRecipe.registerCrucibleRecipe("TALLOW", new ItemStack(ThaumcraftItemInstances.MAGIC_TALLOW()), new ItemStack(Items.rotten_flesh), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.MAGIC, 2)));
       ConfigResearch.recipes.put("AltGunpowder", CrucibleRecipe.registerCrucibleRecipe("ALCHEMICALDUPLICATION", new ItemStack(Items.gunpowder, 2, 0), new ItemStack(Items.gunpowder), (new LinkedHashAspectList<>()).mergeWithHighest(
               Aspects.FIRE, 4).mergeWithHighest(Aspects.ENTROPY, 4)));
@@ -232,7 +232,7 @@ public class ConfigRecipes {
               Aspects.FLESH, 5).addAll(Aspects.BEAST, 5)));
       ConfigResearch.recipes.put("CoreLiquid", CrucibleRecipe.registerCrucibleRecipe("CORELIQUID", new ItemStack(ConfigItems.itemGolemCore, 1, 5), new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.VOID, 5)));
-      ConfigResearch.recipes.put("BathSalts", CrucibleRecipe.registerCrucibleRecipe("BATHSALTS", new ItemStack(ConfigItems.itemBathSalts), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("BathSalts", CrucibleRecipe.registerCrucibleRecipe("BATHSALTS", new ItemStack(ConfigItems.itemBathSalts), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.MIND, 6).addAll(Aspects.AURA, 6).addAll(
               Aspects.ORDER, 6).addAll(Aspects.HEAL, 6)));
       ConfigResearch.recipes.put("SaneSoap", CrucibleRecipe.registerCrucibleRecipe("SANESOAP", new ItemStack(ConfigItems.itemSanitySoap), new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), (new LinkedHashAspectList<>()).addAll(
@@ -249,7 +249,7 @@ public class ConfigRecipes {
                  Aspects.WATER, 5).addAll(Aspects.EARTH, 5), "WS", "WS", "WB", 'W', new ItemStack(Blocks.wool, 1, a), 'S', "stickWood", 'B', "slabWood"));
       }
 
-      ConfigResearch.recipes.put("PrimalCharm", AbstractArcaneRecipe.addArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("PrimalCharm", AbstractArcaneRecipe.addArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 25).addAll(Aspects.FIRE, 25).addAll(Aspects.AIR, 25).addAll(Aspects.WATER, 25).addAll(
               Aspects.ORDER, 25).addAll(Aspects.ENTROPY, 25), "123", "ISI", "456", 'S', new ItemStack(ConfigItems.itemShard, 1, 6), 'I', Items.gold_ingot, '1', new ItemStack(ConfigItems.itemShard, 1, 0), '2', new ItemStack(ConfigItems.itemShard, 1, 1), '3', new ItemStack(ConfigItems.itemShard, 1, 2), '4', new ItemStack(ConfigItems.itemShard, 1, 3), '5', new ItemStack(ConfigItems.itemShard, 1, 4), '6', new ItemStack(ConfigItems.itemShard, 1, 5)));
       ConfigResearch.recipes.put("ArcaneDoor", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemArcaneDoor), (new LinkedHashAspectList<>()).addAll(
@@ -259,25 +259,25 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("IronKey", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "NNI", "N  ", 'I', Items.iron_ingot, 'N', "nuggetIron"));
       ConfigResearch.recipes.put("FluxScrubber", AbstractArcaneRecipe.addArcaneCraftingRecipe("FLUXSCRUB", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.AIR, 8), " B ", "GOG", "STS", 'B', new ItemStack(ConfigBlocks.blockWoodenDevice), 'G', new ItemStack(Blocks.iron_bars), 'T', new ItemStack(ConfigBlocks.blockTube), 'O', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER()), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7)));
+              Aspects.WATER, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.AIR, 8), " B ", "GOG", "STS", 'B', new ItemStack(ConfigBlocks.blockWoodenDevice), 'G', new ItemStack(Blocks.iron_bars), 'T', new ItemStack(ConfigBlocks.blockTube), 'O', new ItemStack(ThaumcraftItemInstances.VIS_FILTER()), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7)));
       if (Config.wardedStone) {
          ConfigResearch.recipes.put("GoldKey", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigItems.itemKey, 2, 1), (new LinkedHashAspectList<>()).addAll(
                  Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "NNI", "N  ", 'I', Items.gold_ingot, 'N', Items.gold_nugget));
          ConfigResearch.recipes.put("ArcanePressurePlate", AbstractArcaneRecipe.addArcaneCraftingRecipe("WARDEDARCANA", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
-                 Aspects.WATER, 20).addAll(Aspects.ORDER, 10).addAll(Aspects.FIRE, 5).addAll(Aspects.EARTH, 10), " B ", "TDT", 'T', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), 'B', new ItemStack(ConfigItems.itemZombieBrain), 'D', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
+                 Aspects.WATER, 20).addAll(Aspects.ORDER, 10).addAll(Aspects.FIRE, 5).addAll(Aspects.EARTH, 10), " B ", "TDT", 'T', new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), 'B', new ItemStack(ConfigItems.itemZombieBrain), 'D', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6)));
       }
 
       ConfigResearch.recipes.put("NodeStabilizerBlock", AbstractArcaneRecipe.addArcaneCraftingRecipe("NODESTABILIZER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 32).addAll(Aspects.EARTH, 32).addAll(Aspects.ORDER, 32), " G ", "QPQ", "SNS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(Blocks.piston), 'Q', new ItemStack(Blocks.quartz_block), 'N', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR())));
+              Aspects.WATER, 32).addAll(Aspects.EARTH, 32).addAll(Aspects.ORDER, 32), " G ", "QPQ", "SNS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(Blocks.piston), 'Q', new ItemStack(Blocks.quartz_block), 'N', new ItemStack(ThaumcraftItemInstances.NITOR())));
       ConfigResearch.recipes.put("NodeTransducer", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11), (new LinkedHashAspectList<>()).addAll(
-              Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32), "RCR", "ISI", "RAR", 'S', new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), 'C', new ItemStack(Items.comparator), 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(Blocks.redstone_block), 'A', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR())));
+              Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32), "RCR", "ISI", "RAR", 'S', new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), 'C', new ItemStack(Items.comparator), 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(Blocks.redstone_block), 'A', new ItemStack(ThaumcraftItemInstances.NITOR())));
       ConfigResearch.recipes.put("NodeRelay", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISPOWER", new ItemStack(ConfigBlocks.blockMetalDevice, 2, 14), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 8).addAll(Aspects.ORDER, 8), " I ", "ISI", " I ", 'I', new ItemStack(Items.iron_ingot), 'S', new ItemStack(ConfigItems.itemShard, 1, 6)));
       ConfigResearch.recipes.put("NodeChargeRelay", AbstractArcaneRecipe.addArcaneCraftingRecipe("VISCHARGERELAY", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.AIR, 16), " R ", "W W", "I I", 'I', new ItemStack(Items.iron_ingot), 'R', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 14), 'W', new ItemStack(ConfigItems.itemWandRod, 1, 0)));
       ConfigResearch.recipes.put("FocalManipulator", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCALMANIPULATION", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 13), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 32).addAll(Aspects.AIR, 32).addAll(Aspects.ENTROPY, 32).addAll(Aspects.EARTH, 32).addAll(
-              Aspects.WATER, 32).addAll(Aspects.ORDER, 32), "IQI", "SPS", "GTG", 'Q', new ItemStack(ConfigBlocks.blockSlabStone, 1, 0), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'T', new ItemStack(ConfigBlocks.blockTable), 'I', new ItemStack(Items.iron_ingot), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1)));
+              Aspects.WATER, 32).addAll(Aspects.ORDER, 32), "IQI", "SPS", "GTG", 'Q', new ItemStack(ConfigBlocks.blockSlabStone, 1, 0), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'T', new ItemStack(ConfigBlocks.blockTable), 'I', new ItemStack(Items.iron_ingot), 'G', new ItemStack(Items.gold_ingot), 'P', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1)));
       ConfigResearch.recipes.put("GolemFetter", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOLEMFETTER", new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 9), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 5).addAll(Aspects.ORDER, 5), "SSS", "IRI", "BBB", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'I', new ItemStack(Items.iron_ingot), 'B', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'R', new ItemStack(Blocks.redstone_block)));
       ConfigResearch.recipes.put("ArcaneStone1", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANESTONE", new ItemStack(ConfigBlocks.blockCosmeticSolid, 9, 6), (new LinkedHashAspectList<>()).addAll(
@@ -288,16 +288,16 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("PaveTravel", AbstractArcaneRecipe.addArcaneCraftingRecipe("PAVETRAVEL", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 10).addAll(Aspects.AIR, 10), "SAS", "SBS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'A', new ItemStack(ConfigItems.itemShard, 1, 0), 'B', new ItemStack(ConfigItems.itemShard, 1, 3)));
       ConfigResearch.recipes.put("ArcaneLamp", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANELAMP", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 7), (new LinkedHashAspectList<>()).addAll(
-              Aspects.FIRE, 8).addAll(Aspects.AIR, 8).addAll(Aspects.WATER, 4).addAll(Aspects.ENTROPY, 4), " S ", "IAI", " N ", 'A', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0), 'S', new ItemStack(Blocks.daylight_detector), 'N', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), 'I', new ItemStack(Items.iron_ingot)));
+              Aspects.FIRE, 8).addAll(Aspects.AIR, 8).addAll(Aspects.WATER, 4).addAll(Aspects.ENTROPY, 4), " S ", "IAI", " N ", 'A', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0), 'S', new ItemStack(Blocks.daylight_detector), 'N', new ItemStack(ThaumcraftItemInstances.NITOR()), 'I', new ItemStack(Items.iron_ingot)));
       ConfigResearch.recipes.put("ArcaneSpa", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANESPA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 16).addAll(Aspects.ORDER, 8).addAll(Aspects.EARTH, 4), "QIQ", "SJS", "SPS", 'P', new ItemStack(Blocks.piston), 'J', new ItemStack(ConfigBlocks.blockJar), 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6), 'Q', new ItemStack(Blocks.quartz_block), 'I', new ItemStack(Blocks.iron_bars)));
       ConfigResearch.recipes.put("PaveWard", AbstractArcaneRecipe.addArcaneCraftingRecipe("PAVEWARD", new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 3), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 10).addAll(Aspects.ORDER, 10), "SAS", "SBS", 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7), 'A', new ItemStack(ConfigItems.itemShard, 1, 1), 'B', new ItemStack(ConfigItems.itemShard, 1, 4)));
       ConfigResearch.recipes.put("Levitator", AbstractArcaneRecipe.addArcaneCraftingRecipe("LEVITATOR", new ItemStack(ConfigBlocks.blockLifter), (new LinkedHashAspectList<>()).addAll(
-              Aspects.AIR, 10).addAll(Aspects.EARTH, 5), "WEW", "BNB", "WAW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'E', new ItemStack(ConfigItems.itemShard, 1, 3), 'A', new ItemStack(ConfigItems.itemShard, 1, 0), 'N', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), 'B', Items.iron_ingot));
+              Aspects.AIR, 10).addAll(Aspects.EARTH, 5), "WEW", "BNB", "WAW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'E', new ItemStack(ConfigItems.itemShard, 1, 3), 'A', new ItemStack(ConfigItems.itemShard, 1, 0), 'N', new ItemStack(ThaumcraftItemInstances.NITOR()), 'B', Items.iron_ingot));
       ConfigResearch.recipes.put("ArcaneEar", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANEEAR", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 10), "GIG", "GBG", "WRW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'R', Items.redstone, 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'B', new ItemStack(ConfigItems.itemZombieBrain)));
-      ConfigResearch.recipes.put("MirrorGlass", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MIRRORED_GLASS(), 1), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("MirrorGlass", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("BASICARTIFACE", new ItemStack(ThaumcraftItemInstances.MIRRORED_GLASS(), 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 10).addAll(Aspects.EARTH, 10), new ItemStack(QUICK_SILVER), Blocks.glass_pane));
       ConfigResearch.recipes.put("BoneBow",
               AbstractArcaneRecipe.addArcaneCraftingRecipe(
@@ -345,21 +345,21 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("WandRodGreatwood", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood", new ItemStack(ConfigItems.itemWandRod, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.ENTROPY, WandRod.rods.get("greatwood").getCraftCost()), " G", "G ", 'G', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0)));
       ConfigResearch.recipes.put("WandRodGreatwoodStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_greatwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 50), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("greatwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 0)));
+              Aspects.ORDER, WandRod.rods.get("greatwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 0)));
       ConfigResearch.recipes.put("WandRodObsidianStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_obsidian_staff", new ItemStack(ConfigItems.itemWandRod, 1, 51), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("obsidian_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 1)));
+              Aspects.ORDER, WandRod.rods.get("obsidian_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 1)));
       ConfigResearch.recipes.put("WandRodSilverwoodStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_silverwood_staff", new ItemStack(ConfigItems.itemWandRod, 1, 52), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("silverwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 2)));
+              Aspects.ORDER, WandRod.rods.get("silverwood_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 2)));
       ConfigResearch.recipes.put("WandRodIceStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_ice_staff", new ItemStack(ConfigItems.itemWandRod, 1, 53), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("ice_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 3)));
+              Aspects.ORDER, WandRod.rods.get("ice_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 3)));
       ConfigResearch.recipes.put("WandRodQuartzStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_quartz_staff", new ItemStack(ConfigItems.itemWandRod, 1, 54), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("quartz_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 4)));
+              Aspects.ORDER, WandRod.rods.get("quartz_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 4)));
       ConfigResearch.recipes.put("WandRodReedStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_reed_staff", new ItemStack(ConfigItems.itemWandRod, 1, 55), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("reed_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 5)));
+              Aspects.ORDER, WandRod.rods.get("reed_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 5)));
       ConfigResearch.recipes.put("WandRodBlazeStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_blaze_staff", new ItemStack(ConfigItems.itemWandRod, 1, 56), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("blaze_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 6)));
+              Aspects.ORDER, WandRod.rods.get("blaze_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 6)));
       ConfigResearch.recipes.put("WandRodBoneStaff", AbstractArcaneRecipe.addArcaneCraftingRecipe("ROD_bone_staff", new ItemStack(ConfigItems.itemWandRod, 1, 57), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, WandRod.rods.get("bone_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 7)));
+              Aspects.ORDER, WandRod.rods.get("bone_staff").getCraftCost()), "  S", " G ", "G  ", 'S', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'G', new ItemStack(ConfigItems.itemWandRod, 1, 7)));
       ConfigResearch.recipes.put("FocusFire", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSFIRE", new ItemStack(ConfigItems.itemFocusFire), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 20).addAll(Aspects.ENTROPY, 10), "CQC", "Q#Q", "CQC", '#', Items.fire_charge, 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 1)));
       ConfigResearch.recipes.put("FocusFrost", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSFROST", new ItemStack(ConfigItems.itemFocusFrost), (new LinkedHashAspectList<>()).addAll(
@@ -372,32 +372,32 @@ public class ConfigRecipes {
               Aspects.EARTH, 20).addAll(Aspects.ENTROPY, 5).addAll(Aspects.ORDER, 5), "CQC", "Q#Q", "CQC", '#', "gemEmerald", 'Q', Items.quartz, 'C', new ItemStack(ConfigItems.itemShard, 1, 3)));
       ConfigResearch.recipes.put("FocusPrimal", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSPRIMAL", new ItemStack(ConfigItems.itemFocusPrimal), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 25).addAll(Aspects.ENTROPY, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.AIR, 25).addAll(
-              Aspects.FIRE, 25).addAll(Aspects.WATER, 25), "CQC", "Q#Q", "CQC", '#', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'Q', Items.quartz, 'C', Items.diamond));
+              Aspects.FIRE, 25).addAll(Aspects.WATER, 25), "CQC", "Q#Q", "CQC", '#', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), 'Q', Items.quartz, 'C', Items.diamond));
       ConfigResearch.recipes.put("FocusPouch", AbstractArcaneRecipe.addArcaneCraftingRecipe("FOCUSPOUCH", new ItemStack(ConfigItems.itemFocusPouch), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 10).addAll(Aspects.ORDER, 10).addAll(Aspects.ENTROPY, 10), "LGL", "LBL", "LLL", 'B', new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), 'L', Items.leather, 'G', Items.gold_ingot));
       ConfigResearch.recipes.put("Deconstructor", AbstractArcaneRecipe.addArcaneCraftingRecipe("DECONSTRUCTOR", new ItemStack(ConfigBlocks.blockTable, 1, 14), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ENTROPY, 20), " S ", "ATP", 'T', new ItemStack(ConfigBlocks.blockTable, 1, 0), 'S', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMOMETER()), 'P', new ItemStack(Items.golden_pickaxe), 'A', new ItemStack(Items.golden_axe)));
+              Aspects.ENTROPY, 20), " S ", "ATP", 'T', new ItemStack(ConfigBlocks.blockTable, 1, 0), 'S', new ItemStack(ThaumcraftItemInstances.THAUMOMETER()), 'P', new ItemStack(Items.golden_pickaxe), 'A', new ItemStack(Items.golden_axe)));
       ConfigResearch.recipes.put("ArcaneBoreBase", AbstractArcaneRecipe.addArcaneCraftingRecipe("ARCANEBORE", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 10), "WIW", "IDI", "WIW", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'I', Items.iron_ingot, 'D', Blocks.dispenser));
-      ConfigResearch.recipes.put("EnchantedFabric", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("EnchantedFabric", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 1).addAll(Aspects.EARTH, 1).addAll(Aspects.FIRE, 1).addAll(Aspects.WATER, 1).addAll(Aspects.ORDER, 1).addAll(
               Aspects.ENTROPY, 1), " S ", "SCS", " S ", 'S', new ItemStack(Items.string, 1, 32767), 'C', new ItemStack(Blocks.wool, 1, 32767)));
       ConfigResearch.recipes.put("RobeChest", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemChestRobe, 1), (new LinkedHashAspectList<>()).addAll(
-              Aspects.AIR, 5), "I I", "III", "III", 'I', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC())));
+              Aspects.AIR, 5), "I I", "III", "III", 'I', new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC())));
       ConfigResearch.recipes.put("RobeLegs", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemLegsRobe, 1), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 5), "III", "I I", "I I", 'I', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC())));
+              Aspects.WATER, 5), "III", "I I", "I I", 'I', new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC())));
       ConfigResearch.recipes.put("RobeBoots", AbstractArcaneRecipe.addArcaneCraftingRecipe("ENCHFABRIC", new ItemStack(ConfigItems.itemBootsRobe, 1), (new LinkedHashAspectList<>()).addAll(
-              Aspects.EARTH, 3), "I I", "I I", 'I', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC())));
+              Aspects.EARTH, 3), "I I", "I I", 'I', new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC())));
       GameRegistry.addRecipe(new RecipesRobeArmorDyes());
       ConfigResearch.recipes.put("Goggles", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOGGLES", new ItemStack(ConfigItems.itemGoggles), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5).addAll(Aspects.FIRE, 5).addAll(Aspects.WATER, 5).addAll(Aspects.EARTH, 5).addAll(Aspects.ENTROPY, 3).addAll(
-              Aspects.ORDER, 3), "LGL", "L L", "TGT", 'T', ThaumcraftItems.ThaumcraftItemInstances.THAUMOMETER(), 'G', Items.gold_ingot, 'L', Items.leather));
+              Aspects.ORDER, 3), "LGL", "L L", "TGT", 'T', ThaumcraftItemInstances.THAUMOMETER(), 'G', Items.gold_ingot, 'L', Items.leather));
       ConfigResearch.recipes.put("HungryChest", AbstractArcaneRecipe.addArcaneCraftingRecipe("HUNGRYCHEST", new ItemStack(ConfigBlocks.blockChestHungry), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 5).addAll(Aspects.ORDER, 3).addAll(Aspects.ENTROPY, 3), "WTW", "W W", "WWW", 'W', "plankWood", 'T', Blocks.trapdoor));
       ConfigResearch.recipes.put("GolemBell", AbstractArcaneRecipe.addArcaneCraftingRecipe("GOLEMBELL", new ItemStack(ConfigItems.itemGolemBell), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 5), " QQ", " QQ", "S  ", 'S', "stickWood", 'Q', Items.quartz));
       ConfigResearch.recipes.put("CoreBlank", AbstractArcaneRecipe.addArcaneCraftingRecipe("COREGATHER", new ItemStack(ConfigItems.itemGolemCore, 1, 100), (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, 5).addAll(Aspects.FIRE, 5), " C ", "CNC", " C ", 'C', Items.brick, 'N', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR())));
+              Aspects.ORDER, 5).addAll(Aspects.FIRE, 5), " C ", "CNC", " C ", 'C', Items.brick, 'N', new ItemStack(ThaumcraftItemInstances.NITOR())));
       ConfigResearch.recipes.put("UpgradeAir", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEAIR", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10), "NNN", "NCN", "NNN", 'N', Items.gold_nugget, 'C', new ItemStack(ConfigItems.itemShard, 1, 0)));
       ConfigResearch.recipes.put("UpgradeEarth", AbstractArcaneRecipe.addArcaneCraftingRecipe("UPGRADEEARTH", new ItemStack(ConfigItems.itemGolemUpgrade, 1, 1), (new LinkedHashAspectList<>()).addAll(
@@ -426,12 +426,12 @@ public class ConfigRecipes {
               Aspects.EARTH, 8), "I I", "IAI", 'I', Items.iron_ingot, 'A', new ItemStack(Items.iron_chestplate, 1, 32767)));
       ConfigResearch.recipes.put("TinyHammer", AbstractArcaneRecipe.addArcaneCraftingRecipe("TINYHAMMER", new ItemStack(ConfigItems.itemGolemDecoration, 1, 7), (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, 4).addAll(Aspects.FIRE, 4), "III", "III", " I ", 'I', Items.iron_ingot));
-      ConfigResearch.recipes.put("Filter", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER(), 2), (new LinkedHashAspectList<>()).addAll(
+      ConfigResearch.recipes.put("Filter", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ThaumcraftItemInstances.VIS_FILTER(), 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.ORDER, 5).addAll(Aspects.WATER, 5), "GWG", 'G', Items.gold_ingot, 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 7)));
       ConfigResearch.recipes.put("AlchemyFurnace", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 5).addAll(Aspects.WATER, 5), "SCS", "SFS", "SSS", 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 0), 'F', Blocks.furnace, 'S', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6)));
       ConfigResearch.recipes.put("Alembic", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 1), (new LinkedHashAspectList<>()).addAll(
-              Aspects.AIR, 5).addAll(Aspects.WATER, 5), "FIG", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.bucket, 'G', Items.gold_ingot, 'F', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER()), 'L', new ItemStack(ConfigBlocks.blockMagicalLeaves, 1, 1)));
+              Aspects.AIR, 5).addAll(Aspects.WATER, 5), "FIG", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.bucket, 'G', Items.gold_ingot, 'F', new ItemStack(ThaumcraftItemInstances.VIS_FILTER()), 'L', new ItemStack(ConfigBlocks.blockMagicalLeaves, 1, 1)));
       ConfigResearch.recipes.put("Bellows", AbstractArcaneRecipe.addArcaneCraftingRecipe("BELLOWS", new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 0), (new LinkedHashAspectList<>()).addAll(
               Aspects.AIR, 10).addAll(Aspects.ORDER, 5), "WW ", "LCI", "WW ", 'W', "plankWood", 'C', new ItemStack(ConfigItems.itemShard, 1, 0), 'I', Items.iron_ingot, 'L', Items.leather));
       ConfigResearch.recipes.put("Tube", AbstractArcaneRecipe.addArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 8, 0), (new LinkedHashAspectList<>()).addAll(
@@ -441,7 +441,7 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("TubeValve", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBES", new ItemStack(ConfigBlocks.blockTube, 1, 1), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), new ItemStack(ConfigBlocks.blockTube, 1, 0), new ItemStack(Blocks.lever)));
       ConfigResearch.recipes.put("TubeFilter", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 3), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 5).addAll(Aspects.ORDER, 16), new ItemStack(ConfigBlocks.blockTube, 1, 0), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER())));
+              Aspects.WATER, 5).addAll(Aspects.ORDER, 16), new ItemStack(ConfigBlocks.blockTube, 1, 0), new ItemStack(ThaumcraftItemInstances.VIS_FILTER())));
       ConfigResearch.recipes.put("TubeRestrict", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 5), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.EARTH, 16), new ItemStack(ConfigBlocks.blockTube, 1, 0), "stone"));
       ConfigResearch.recipes.put("TubeOneway", AbstractArcaneRecipe.addShapelessArcaneCraftingRecipe("TUBEFILTER", new ItemStack(ConfigBlocks.blockTube, 1, 6), (new LinkedHashAspectList<>()).addAll(
@@ -449,80 +449,80 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("TubeBuffer", AbstractArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 4), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "PVP", "T T", "PRP", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'V', new ItemStack(ConfigBlocks.blockTube, 1, 1), 'R', new ItemStack(ConfigBlocks.blockTube, 1, 5), 'P', new ItemStack(ConfigItems.itemEssence, 1, 0)));
       ConfigResearch.recipes.put("AlchemicalConstruct", AbstractArcaneRecipe.addArcaneCraftingRecipe("DISTILESSENTIA", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "VTF", "TWT", "FTV", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'V', new ItemStack(ConfigBlocks.blockTube, 1, 1), 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'F', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER())));
+              Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "VTF", "TWT", "FTV", 'W', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6), 'V', new ItemStack(ConfigBlocks.blockTube, 1, 1), 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'F', new ItemStack(ThaumcraftItemInstances.VIS_FILTER())));
       ConfigResearch.recipes.put("AdvAlchemyConstruct", AbstractArcaneRecipe.addArcaneCraftingRecipe("ADVALCHEMYFURNACE", new ItemStack(ConfigBlocks.blockMetalDevice, 4, 3), (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 10).addAll(Aspects.ORDER, 30).addAll(Aspects.EARTH, 10), "VAV", "APA", "VAV", 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), 'V', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), 'P', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL())));
+              Aspects.WATER, 10).addAll(Aspects.ORDER, 30).addAll(Aspects.EARTH, 10), "VAV", "APA", "VAV", 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9), 'V', new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), 'P', new ItemStack(ThaumcraftItemInstances.PRIME_PEARL())));
       ConfigResearch.recipes.put("Centrifuge", AbstractArcaneRecipe.addArcaneCraftingRecipe("CENTRIFUGE", new ItemStack(ConfigBlocks.blockTube, 1, 2), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.ORDER, 5).addAll(Aspects.ENTROPY, 5), " T ", "ACP", " T ", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'P', new ItemStack(Blocks.piston), 'A', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 1), 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9)));
       ConfigResearch.recipes.put("EssentiaCrystalizer", AbstractArcaneRecipe.addArcaneCraftingRecipe("ESSENTIACRYSTAL", new ItemStack(ConfigBlocks.blockTube, 1, 7), (new LinkedHashAspectList<>()).addAll(
               Aspects.WATER, 5).addAll(Aspects.EARTH, 15).addAll(Aspects.ORDER, 5), "IDI", "QCQ", "WTW", 'T', new ItemStack(ConfigBlocks.blockTube, 1, 0), 'D', new ItemStack(Blocks.dispenser), 'Q', new ItemStack(ConfigItems.itemShard, 1, 6), 'I', "ingotIron", 'W', "plankWood", 'C', new ItemStack(ConfigBlocks.blockMetalDevice, 1, 9)));
       ConfigResearch.recipes.put("MnemonicMatrix", AbstractArcaneRecipe.addArcaneCraftingRecipe("THAUMATORIUM", new ItemStack(ConfigBlocks.blockMetalDevice, 1, 12), (new LinkedHashAspectList<>()).addAll(
-              Aspects.FIRE, 5).addAll(Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "IAI", "ABA", "IAI", 'B', new ItemStack(ConfigItems.itemZombieBrain), 'A', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), 'I', new ItemStack(Items.iron_ingot)));
+              Aspects.FIRE, 5).addAll(Aspects.WATER, 5).addAll(Aspects.ORDER, 5), "IAI", "ABA", "IAI", 'B', new ItemStack(ConfigItems.itemZombieBrain), 'A', new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), 'I', new ItemStack(Items.iron_ingot)));
    }
 
    private static void initializeInfusionEnchantmentRecipes() {
       ConfigResearch.recipes.put("InfEnchRepair", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.enchantmentsList[ThaumcraftApi.enchantRepair], 4, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 8).addAll(Aspects.CRAFT, 10).addAll(Aspects.ORDER, 10), new ItemStack[]{new ItemStack(Blocks.anvil), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 8).addAll(Aspects.CRAFT, 10).addAll(Aspects.ORDER, 10), new ItemStack[]{new ItemStack(Blocks.anvil), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnchHaste", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.enchantmentsList[ThaumcraftApi.enchantHaste], 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.TRAVEL, 8).addAll(Aspects.FLIGHT, 8), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.TRAVEL, 8).addAll(Aspects.FLIGHT, 8), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch0", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.protection, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 8), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 8), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch1", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.fireProtection, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.FIRE, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.magma_cream), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.FIRE, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.magma_cream), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch2", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.blastProtection, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.ENTROPY, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.gunpowder), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.ENTROPY, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.gunpowder), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch3", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.projectileProtection, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.FLIGHT, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.arrow), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.ARMOR, 4).addAll(Aspects.FLIGHT, 4), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.arrow), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch4", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.featherFalling, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.AIR, 4).addAll(Aspects.FLIGHT, 4), new ItemStack[]{new ItemStack(Items.feather), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.AIR, 4).addAll(Aspects.FLIGHT, 4), new ItemStack[]{new ItemStack(Items.feather), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch5", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.respiration, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.AIR, 8).addAll(Aspects.WATER, 8), new ItemStack[]{new ItemStack(Items.reeds), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.AIR, 8).addAll(Aspects.WATER, 8), new ItemStack[]{new ItemStack(Items.reeds), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch6", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.aquaAffinity, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.MOTION, 8).addAll(Aspects.WATER, 8), new ItemStack[]{new ItemStack(Items.reeds), new ItemStack(Items.slime_ball), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.MOTION, 8).addAll(Aspects.WATER, 8), new ItemStack[]{new ItemStack(Items.reeds), new ItemStack(Items.slime_ball), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch7", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.thorns, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8).addAll(Aspects.PLANT, 8), new ItemStack[]{new ItemStack(Blocks.deadbush), new ItemStack(Items.quartz), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8).addAll(Aspects.PLANT, 8), new ItemStack[]{new ItemStack(Blocks.deadbush), new ItemStack(Items.quartz), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch8", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.sharpness, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch9", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.smite, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.UNDEAD, 4), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.glowstone_dust), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.UNDEAD, 4), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.glowstone_dust), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch10", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.baneOfArthropods, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.BEAST, 4), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.BEAST, 4), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch11", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.knockback, 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 3).addAll(Aspects.MOTION, 3), new ItemStack[]{new ItemStack(Blocks.piston), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 3).addAll(Aspects.MOTION, 3), new ItemStack[]{new ItemStack(Blocks.piston), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch12", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.fireAspect, 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.FIRE, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.blaze_powder), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.FIRE, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.blaze_powder), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch13", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.looting, 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.GREED, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.GREED, 8), new ItemStack[]{new ItemStack(Items.iron_sword), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch14", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.efficiency, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.ORDER, 4), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.ORDER, 4), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch15", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.silkTouch, 5, (new LinkedHashAspectList<>()).addAll(
               Aspects.MAGIC, 16).addAll(Aspects.TOOL, 16).addAll(Aspects.ORDER, 16).addAll(Aspects.HARVEST, 16).addAll(
-              Aspects.MINE, 16), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Blocks.web), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MINE, 16), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Blocks.web), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch16", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.unbreaking, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.ORDER, 8), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Blocks.obsidian), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.ORDER, 8), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Blocks.obsidian), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch17", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.fortune, 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.GREED, 8), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.TOOL, 4).addAll(Aspects.GREED, 8), new ItemStack[]{new ItemStack(Items.iron_pickaxe), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch18", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.power, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 8), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch19", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.punch, 2, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 3).addAll(Aspects.MOTION, 3), new ItemStack[]{new ItemStack(Blocks.piston), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 3).addAll(Aspects.MOTION, 3), new ItemStack[]{new ItemStack(Blocks.piston), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch20", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.flame, 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.FIRE, 8), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(Items.blaze_powder), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 4).addAll(Aspects.WEAPON, 4).addAll(Aspects.FIRE, 8), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(Items.blaze_powder), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("InfEnch21", InfusionRecipe.addInfusionEnchantmentRecipe("INFUSIONENCHANTMENT", Enchantment.infinity, 5, (new LinkedHashAspectList<>()).addAll(
-              Aspects.MAGIC, 8).addAll(Aspects.WEAPON, 16).addAll(Aspects.VOID, 16).addAll(Aspects.EXCHANGE, 16), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(Items.arrow), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.MAGIC, 8).addAll(Aspects.WEAPON, 16).addAll(Aspects.VOID, 16).addAll(Aspects.EXCHANGE, 16), new ItemStack[]{new ItemStack(Items.bow), new ItemStack(Items.arrow), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
    }
 
    private static void initializeInfusionRecipes() {
       if (Config.foundSilverIngot) {
          ConfigResearch.recipes.put("WandCapSilver", InfusionRecipe.addInfusionCraftingRecipe("CAP_silver", new ItemStack(ConfigItems.itemWandCap, 1, 4), 4, (new LinkedHashAspectList<>()).addAll(
-                 Aspects.ENERGY, WandCap.caps.get("silver").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("silver").getCraftCost()), new ItemStack(ConfigItems.itemWandCap, 1, 5), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+                 Aspects.ENERGY, WandCap.caps.get("silver").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("silver").getCraftCost()), new ItemStack(ConfigItems.itemWandCap, 1, 5), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       }
 
       ConfigResearch.recipes.put("WandCapThaumium", InfusionRecipe.addInfusionCraftingRecipe("CAP_thaumium", new ItemStack(ConfigItems.itemWandCap, 1, 2), 5, (new LinkedHashAspectList<>()).addAll(
-              Aspects.ENERGY, WandCap.caps.get("thaumium").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("thaumium").getCraftCost()), new ItemStack(ConfigItems.itemWandCap, 1, 6), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.ENERGY, WandCap.caps.get("thaumium").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("thaumium").getCraftCost()), new ItemStack(ConfigItems.itemWandCap, 1, 6), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("WandCapVoid", InfusionRecipe.addInfusionCraftingRecipe("CAP_void", new ItemStack(ConfigItems.itemWandCap, 1, 7), 8, (new LinkedHashAspectList<>()).addAll(
               Aspects.ENERGY, WandCap.caps.get("void").getCraftCost() * 2).addAll(Aspects.VOID, WandCap.caps.get("void").getCraftCost() * 2).addAll(
-              Aspects.ELDRITCH, WandCap.caps.get("void").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("void").getCraftCost() * 2), new ItemStack(ConfigItems.itemWandCap, 1, 8), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
+              Aspects.ELDRITCH, WandCap.caps.get("void").getCraftCost() * 2).addAll(Aspects.AURA, WandCap.caps.get("void").getCraftCost() * 2), new ItemStack(ConfigItems.itemWandCap, 1, 8), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1)}));
       ConfigResearch.recipes.put("WandRodObsidian", InfusionRecipe.addInfusionCraftingRecipe("ROD_obsidian", new ItemStack(ConfigItems.itemWandRod, 1, 1), 3, (new LinkedHashAspectList<>()).addAll(
               Aspects.EARTH, WandRod.rods.get("obsidian").getCraftCost() * 2).addAll(Aspects.MAGIC, WandRod.rods.get("obsidian").getCraftCost()).addAll(
               Aspects.DARKNESS, WandRod.rods.get("blaze").getCraftCost()), new ItemStack(Blocks.obsidian), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, 3)}));
@@ -550,7 +550,7 @@ public class ConfigRecipes {
               Aspects.AIR, WandRod.rods.get("primal_staff").getCraftCost()).addAll(Aspects.FIRE, WandRod.rods.get("primal_staff").getCraftCost()).addAll(
               Aspects.WATER, WandRod.rods.get("primal_staff").getCraftCost()).addAll(Aspects.EARTH, WandRod.rods.get("primal_staff").getCraftCost()).addAll(
               Aspects.ORDER, WandRod.rods.get("primal_staff").getCraftCost()).addAll(Aspects.ENTROPY, WandRod.rods.get("primal_staff").getCraftCost()).addAll(
-              Aspects.MAGIC, WandRod.rods.get("primal_staff").getCraftCost() * 2), new ItemStack(ConfigItems.itemWandRod, 1, 2), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemWandRod, 1, 1), new ItemStack(ConfigItems.itemWandRod, 1, 3), new ItemStack(ConfigItems.itemWandRod, 1, 4), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemWandRod, 1, 5), new ItemStack(ConfigItems.itemWandRod, 1, 6), new ItemStack(ConfigItems.itemWandRod, 1, 7)}));
+              Aspects.MAGIC, WandRod.rods.get("primal_staff").getCraftCost() * 2), new ItemStack(ConfigItems.itemWandRod, 1, 2), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemWandRod, 1, 1), new ItemStack(ConfigItems.itemWandRod, 1, 3), new ItemStack(ConfigItems.itemWandRod, 1, 4), new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemWandRod, 1, 5), new ItemStack(ConfigItems.itemWandRod, 1, 6), new ItemStack(ConfigItems.itemWandRod, 1, 7)}));
       ConfigResearch.recipes.put("FocusHellbat", InfusionRecipe.addInfusionCraftingRecipe("FOCUSHELLBAT", new ItemStack(ConfigItems.itemFocusHellbat), 3, (new LinkedHashAspectList<>()).addAll(
               Aspects.FIRE, 25).addAll(Aspects.AIR, 15).addAll(Aspects.BEAST, 15).addAll(Aspects.ENTROPY, 25), new ItemStack(Items.magma_cream), new ItemStack[]{new ItemStack(Items.quartz), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(Items.quartz), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(Items.quartz), new ItemStack(ConfigItems.itemShard, 1, 5)}));
       ConfigResearch.recipes.put("FocusPortableHole", InfusionRecipe.addInfusionCraftingRecipe("FOCUSPORTABLEHOLE", new ItemStack(ConfigItems.itemFocusPortableHole), 3, (new LinkedHashAspectList<>()).addAll(
@@ -559,12 +559,12 @@ public class ConfigRecipes {
               Aspects.EARTH, 25).addAll(Aspects.ARMOR, 25).addAll(Aspects.ORDER, 25).addAll(Aspects.MIND, 10), new ItemStack(Items.nether_star), new ItemStack[]{new ItemStack(QUICK_SILVER), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(Items.quartz), new ItemStack(ConfigItems.itemShard, 1, 4), new ItemStack(QUICK_SILVER), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(Items.quartz), new ItemStack(ConfigItems.itemShard, 1, 4)}));
       ConfigResearch.recipes.put("WandPed", InfusionRecipe.addInfusionCraftingRecipe("WANDPED", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 5), 3, (new LinkedHashAspectList<>()).addAll(
               Aspects.AURA, 10).addAll(
-              Aspects.MAGIC, 15).addAll(Aspects.EXCHANGE, 15), new ItemStack(ConfigBlocks.blockStoneDevice, 1, 1), new ItemStack[]{new ItemStack(Items.gold_ingot), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(Items.diamond)}));
+              Aspects.MAGIC, 15).addAll(Aspects.EXCHANGE, 15), new ItemStack(ConfigBlocks.blockStoneDevice, 1, 1), new ItemStack[]{new ItemStack(Items.gold_ingot), new ItemStack(Items.diamond), new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(Items.diamond)}));
       ConfigResearch.recipes.put("WandPedFocus", InfusionRecipe.addInfusionCraftingRecipe("WANDPEDFOC", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 8), 4, (new LinkedHashAspectList<>()).addAll(
-              Aspects.ORDER, 10).addAll(Aspects.MAGIC, 15).addAll(Aspects.EXCHANGE, 10), new ItemStack(Items.comparator), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VIS_FILTER())}));
+              Aspects.ORDER, 10).addAll(Aspects.MAGIC, 15).addAll(Aspects.EXCHANGE, 10), new ItemStack(Items.comparator), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItemInstances.VIS_FILTER()), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ThaumcraftItemInstances.VIS_FILTER())}));
       ConfigResearch.recipes.put("NodeStabilizerAdv", InfusionRecipe.addInfusionCraftingRecipe("NODESTABILIZERADV", new ItemStack(ConfigBlocks.blockStoneDevice, 1, 10), 10, (new LinkedHashAspectList<>()).addAll(
               Aspects.AURA, 32).addAll(Aspects.MAGIC, 16).addAll(
-              Aspects.ORDER, 16).addAll(Aspects.ENERGY, 16), new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Blocks.redstone_block)}));
+              Aspects.ORDER, 16).addAll(Aspects.ENERGY, 16), new ItemStack(ConfigBlocks.blockStoneDevice, 1, 9), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(Blocks.redstone_block), new ItemStack(ThaumcraftItemInstances.ALUMENTUM()), new ItemStack(Blocks.redstone_block)}));
       ConfigResearch.recipes.put("JarBrain", InfusionRecipe.addInfusionCraftingRecipe("JARBRAIN", new ItemStack(ConfigBlocks.blockJar, 1, 1), 4, (new LinkedHashAspectList<>()).addAll(
               Aspects.MIND, 10).addAll(Aspects.SENSES, 10).addAll(Aspects.UNDEAD, 20), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack[]{new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(Items.spider_eye), new ItemStack(Items.water_bucket), new ItemStack(Items.spider_eye)}));
       ConfigResearch.recipes.put("AdvancedGolem", InfusionRecipe.addInfusionCraftingRecipe("ADVANCEDGOLEM", new Object[]{"advanced", new NBTTagByte((byte)1)}, 3, (new LinkedHashAspectList<>()).addAll(
@@ -576,16 +576,16 @@ public class ConfigRecipes {
               Aspects.FLIGHT, 16).addAll(Aspects.ENERGY, 32).addAll(Aspects.AIR, 32).addAll(Aspects.TRAVEL, 16), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(Items.feather), new ItemStack(Items.gold_ingot), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(Items.feather), new ItemStack(Items.gold_ingot)}));
       ConfigResearch.recipes.put("VisAmulet", InfusionRecipe.addInfusionCraftingRecipe("VISAMULET", new ItemStack(ConfigItems.itemAmuletVis, 1, 1), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.AURA, 24).addAll(
-              Aspects.ENERGY, 64).addAll(Aspects.MAGIC, 64).addAll(Aspects.VOID, 24), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigBlocks.blockCrystal, 1, 6)}));
+              Aspects.ENERGY, 64).addAll(Aspects.MAGIC, 64).addAll(Aspects.VOID, 24), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new ItemStack(ConfigBlocks.blockCrystal, 1, 6)}));
       ConfigResearch.recipes.put("RunicAmulet", InfusionRecipe.addInfusionCraftingRecipe("RUNICARMOR", new ItemStack(ConfigItems.itemAmuletRunic, 1, 0), 4, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 20).addAll(Aspects.MAGIC, 35).addAll(
-              Aspects.ENERGY, 35), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
+              Aspects.ENERGY, 35), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
       ConfigResearch.recipes.put("RunicAmuletEmergency", InfusionRecipe.addInfusionCraftingRecipe("RUNICEMERGENCY", new ItemStack(ConfigItems.itemAmuletRunic, 1, 1), 7, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 20).addAll(Aspects.MAGIC, 35).addAll(
               Aspects.EARTH, 32).addAll(Aspects.VOID, 32), new ItemStack(ConfigItems.itemAmuletRunic, 1, 0), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(Items.potionitem, 1, 8233), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ConfigItems.itemShard, 1, 3)}));
       ConfigResearch.recipes.put("RunicRing", InfusionRecipe.addInfusionCraftingRecipe("RUNICARMOR", new ItemStack(ConfigItems.itemRingRunic, 1, 1), 3, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 10).addAll(Aspects.MAGIC, 25).addAll(
-              Aspects.ENERGY, 25), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
+              Aspects.ENERGY, 25), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
       ConfigResearch.recipes.put("RunicRingCharged", InfusionRecipe.addInfusionCraftingRecipe("RUNICCHARGED", new ItemStack(ConfigItems.itemRingRunic, 1, 2), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 16).addAll(Aspects.MAGIC, 16).addAll(
               Aspects.ENERGY, 64), new ItemStack(ConfigItems.itemRingRunic, 1, 1), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(Items.potionitem, 1, 8226), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(ConfigItems.itemShard, 1, 1)}));
@@ -594,7 +594,7 @@ public class ConfigRecipes {
               Aspects.WATER, 32).addAll(Aspects.HEAL, 32), new ItemStack(ConfigItems.itemRingRunic, 1, 1), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, 2), new ItemStack(ConfigItems.itemShard, 1, 2), new ItemStack(Items.potionitem, 1, 8257), new ItemStack(ConfigItems.itemShard, 1, 2), new ItemStack(ConfigItems.itemShard, 1, 2)}));
       ConfigResearch.recipes.put("RunicGirdle", InfusionRecipe.addInfusionCraftingRecipe("RUNICARMOR", new ItemStack(ConfigItems.itemGirdleRunic, 1, 0), 4, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 30).addAll(Aspects.MAGIC, 50).addAll(
-              Aspects.ENERGY, 50), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
+              Aspects.ENERGY, 50), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemInkwell)}));
       ConfigResearch.recipes.put("RunicGirdleKinetic", InfusionRecipe.addInfusionCraftingRecipe("RUNICKINETIC", new ItemStack(ConfigItems.itemGirdleRunic, 1, 1), 7, (new LinkedHashAspectList<>()).addAll(
               Aspects.ARMOR, 33).addAll(Aspects.MAGIC, 55).addAll(
               Aspects.AIR, 64), new ItemStack(ConfigItems.itemGirdleRunic, 1, 0), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(Items.potionitem, 1, 16428), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ConfigItems.itemShard, 1, 0)}));
@@ -605,12 +605,12 @@ public class ConfigRecipes {
       ThaumcraftApi.getCraftingRecipes().add(ra);
       if (Config.allowMirrors) {
          ConfigResearch.recipes.put("Mirror", InfusionRecipe.addInfusionCraftingRecipe("MIRROR", new ItemStack(ConfigBlocks.blockMirror, 1, 0), 1, (new LinkedHashAspectList<>()).addAll(
-                 Aspects.TRAVEL, 8).addAll(Aspects.DARKNESS, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack[]{new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.ender_pearl)}));
+                 Aspects.TRAVEL, 8).addAll(Aspects.DARKNESS, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack[]{new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.ender_pearl)}));
          ConfigResearch.recipes.put("MirrorHand", InfusionRecipe.addInfusionCraftingRecipe("MIRRORHAND", new ItemStack(ConfigItems.itemHandMirror), 5, (new LinkedHashAspectList<>()).addAll(
                  Aspects.TOOL, 16).addAll(
                  Aspects.TRAVEL, 16), new ItemStack(ConfigBlocks.blockMirror, 1, 0), new ItemStack[]{new ItemStack(Items.stick), new ItemStack(Items.compass), new ItemStack(Items.map)}));
          ConfigResearch.recipes.put("MirrorEssentia", InfusionRecipe.addInfusionCraftingRecipe("MIRRORESSENTIA", new ItemStack(ConfigBlocks.blockMirror, 1, 6), 2, (new LinkedHashAspectList<>()).addAll(
-                 Aspects.TRAVEL, 8).addAll(Aspects.WATER, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.ender_pearl)}));
+                 Aspects.TRAVEL, 8).addAll(Aspects.WATER, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.ender_pearl)}));
       }
 
       ConfigResearch.recipes.put("ElementalAxe", InfusionRecipe.addInfusionCraftingRecipe("ELEMENTALAXE", new ItemStack(ConfigItems.itemAxeElemental), 1, (new LinkedHashAspectList<>()).addAll(
@@ -625,7 +625,7 @@ public class ConfigRecipes {
               Aspects.HARVEST, 8).addAll(Aspects.PLANT, 8).addAll(
               Aspects.EARTH, 8), new ItemStack(ConfigItems.itemHoeThaumium), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 4), new ItemStack(ConfigItems.itemShard, 1, 5), new ItemStack(Items.diamond), new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0)}));
       ConfigResearch.recipes.put("BootsTraveller", InfusionRecipe.addInfusionCraftingRecipe("BOOTSTRAVELLER", new ItemStack(ConfigItems.itemBootsTraveller), 1, (new LinkedHashAspectList<>()).addAll(
-              Aspects.FLIGHT, 25).addAll(Aspects.TRAVEL, 25), new ItemStack(Items.leather_boots), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.feather), new ItemStack(Items.fish, 1, 32767)}));
+              Aspects.FLIGHT, 25).addAll(Aspects.TRAVEL, 25), new ItemStack(Items.leather_boots), new ItemStack[]{new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.feather), new ItemStack(Items.fish, 1, 32767)}));
       ConfigResearch.recipes.put("CoreAlchemy", InfusionRecipe.addInfusionCraftingRecipe("COREALCHEMY", new ItemStack(ConfigItems.itemGolemCore, 1, 6), 2, (new LinkedHashAspectList<>()).addAll(
               Aspects.MAGIC, 15).addAll(
               Aspects.WATER, 15).addAll(Aspects.MOTION, 15), new ItemStack(ConfigItems.itemGolemCore, 1, 5), new ItemStack[]{new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(Items.potionitem), new ItemStack(Items.potionitem), new ItemStack(Items.potionitem)}));
@@ -649,21 +649,21 @@ public class ConfigRecipes {
               Aspects.BEAST, 16).addAll(
               Aspects.LIFE, 16).addAll(Aspects.LIGHT, 8), new ItemStack(ConfigBlocks.blockMetalDevice, 1, 7), new ItemStack[]{new ItemStack(Items.gold_ingot), new ItemStack(Items.wheat), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(Items.gold_ingot), new ItemStack(Items.carrot), new ItemStack(ConfigItems.itemShard, 1, 1)}));
       ConfigResearch.recipes.put("ThaumiumFortressHelm", InfusionRecipe.addInfusionCraftingRecipe("ARMORFORTRESS", new ItemStack(ConfigItems.itemHelmetFortress), 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.METAL, 24).addAll(Aspects.ARMOR, 16).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemHelmetThaumium), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.emerald)}));
+              Aspects.METAL, 24).addAll(Aspects.ARMOR, 16).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemHelmetThaumium), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), new ItemStack(Items.emerald)}));
       ConfigResearch.recipes.put("ThaumiumFortressChest", InfusionRecipe.addInfusionCraftingRecipe("ARMORFORTRESS", new ItemStack(ConfigItems.itemChestFortress), 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.METAL, 24).addAll(Aspects.ARMOR, 24).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemChestThaumium), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.leather)}));
+              Aspects.METAL, 24).addAll(Aspects.ARMOR, 24).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemChestThaumium), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.leather)}));
       ConfigResearch.recipes.put("ThaumiumFortressLegs", InfusionRecipe.addInfusionCraftingRecipe("ARMORFORTRESS", new ItemStack(ConfigItems.itemLegsFortress), 3, (new LinkedHashAspectList<>()).addAll(
-              Aspects.METAL, 24).addAll(Aspects.ARMOR, 20).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemLegsThaumium), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.leather)}));
+              Aspects.METAL, 24).addAll(Aspects.ARMOR, 20).addAll(Aspects.MAGIC, 16), new ItemStack(ConfigItems.itemLegsThaumium), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(Items.gold_ingot), new ItemStack(Items.leather)}));
       ConfigResearch.recipes.put("VoidRobeHelm", InfusionRecipe.addInfusionCraftingRecipe("ARMORVOIDFORTRESS", new ItemStack(ConfigItems.itemHelmetVoidRobe), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.METAL, 16).addAll(Aspects.SENSES, 16).addAll(Aspects.ARMOR, 16).addAll(Aspects.CLOTH, 16).addAll(
               Aspects.MAGIC, 16).addAll(
-              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 16), new ItemStack(ConfigItems.itemHelmetVoid), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC())}));
+              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 16), new ItemStack(ConfigItems.itemHelmetVoid), new ItemStack[]{new ItemStack(ConfigItems.itemGoggles), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC())}));
       ConfigResearch.recipes.put("VoidRobeChest", InfusionRecipe.addInfusionCraftingRecipe("ARMORVOIDFORTRESS", new ItemStack(ConfigItems.itemChestVoidRobe), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.METAL, 24).addAll(Aspects.ARMOR, 24).addAll(Aspects.CLOTH, 24).addAll(Aspects.MAGIC, 16).addAll(
-              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 24), new ItemStack(ConfigItems.itemChestVoid), new ItemStack[]{new ItemStack(ConfigItems.itemChestRobe), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.leather)}));
+              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 24), new ItemStack(ConfigItems.itemChestVoid), new ItemStack[]{new ItemStack(ConfigItems.itemChestRobe), new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.leather)}));
       ConfigResearch.recipes.put("VoidRobeLegs", InfusionRecipe.addInfusionCraftingRecipe("ARMORVOIDFORTRESS", new ItemStack(ConfigItems.itemLegsVoidRobe), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.METAL, 20).addAll(Aspects.ARMOR, 20).addAll(Aspects.CLOTH, 20).addAll(Aspects.MAGIC, 16).addAll(
-              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 20), new ItemStack(ConfigItems.itemLegsVoid), new ItemStack[]{new ItemStack(ConfigItems.itemLegsRobe), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.leather)}));
+              Aspects.ELDRITCH, 16).addAll(Aspects.VOID, 20), new ItemStack(ConfigItems.itemLegsVoid), new ItemStack[]{new ItemStack(ConfigItems.itemLegsRobe), new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), new ItemStack(ThaumcraftItemInstances.ENCHANTED_FABRIC()), new ItemStack(Items.leather)}));
       GameRegistry.addRecipe(new RecipesVoidRobeArmorDyes());
       ConfigResearch.recipes.put("HelmGoggles", InfusionRecipe.addInfusionCraftingRecipe("HELMGOGGLES", new Object[]{"goggles", new NBTTagByte((byte)1)}, 5, (new LinkedHashAspectList<>()).addAll(
               Aspects.SENSES, 32).addAll(Aspects.AURA, 16).addAll(Aspects.ARMOR, 16), new ItemStack(ConfigItems.itemHelmetFortress, 1, 32767), new ItemStack[]{new ItemStack(Items.slime_ball), new ItemStack(ConfigItems.itemGoggles, 1, 32767)}));
@@ -677,29 +677,29 @@ public class ConfigRecipes {
               Aspects.LIFE, 64).addAll(Aspects.ARMOR, 16), new ItemStack(ConfigItems.itemHelmetFortress, 1, 32767), new ItemStack[]{new ItemStack(Items.dye, 1, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.leather), new ItemStack(Items.ghast_tear), new ItemStack(Items.milk_bucket), new ItemStack(Items.iron_ingot)}));
       ConfigResearch.recipes.put("SanityCheck", InfusionRecipe.addInfusionCraftingRecipe("SANITYCHECK", new ItemStack(ConfigItems.itemSanityChecker), 4, (new LinkedHashAspectList<>()).addAll(
               Aspects.MIND, 24).addAll(Aspects.SENSES, 24).addAll(
-              Aspects.ELDRITCH, 8), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMOMETER()), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(Items.diamond)}));
+              Aspects.ELDRITCH, 8), new ItemStack(ThaumcraftItemInstances.THAUMOMETER()), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.MIRRORED_GLASS(), 1), new ItemStack(ConfigItems.itemZombieBrain), new ItemStack(Items.diamond)}));
       ConfigResearch.recipes.put("EssentiaReservoir", InfusionRecipe.addInfusionCraftingRecipe("ESSENTIARESERVOIR", new ItemStack(ConfigBlocks.blockEssentiaReservoir), 6, (new LinkedHashAspectList<>()).addAll(
-              Aspects.WATER, 8).addAll(Aspects.VOID, 8).addAll(Aspects.MAGIC, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ConfigBlocks.blockTube, 1, 4), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ConfigBlocks.blockJar, 1, 0)}));
+              Aspects.WATER, 8).addAll(Aspects.VOID, 8).addAll(Aspects.MAGIC, 8).addAll(Aspects.EXCHANGE, 8), new ItemStack(ConfigBlocks.blockTube, 1, 4), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new ItemStack(ConfigBlocks.blockJar, 1, 0), new ItemStack(ConfigBlocks.blockJar, 1, 0)}));
       ConfigResearch.recipes.put("SinStone", InfusionRecipe.addInfusionCraftingRecipe("SINSTONE", new ItemStack(ConfigItems.itemCompassStone), 5, (new LinkedHashAspectList<>()).addAll(
               Aspects.SENSES, 8).addAll(
-              Aspects.DARKNESS, 8).addAll(Aspects.ELDRITCH, 8).addAll(Aspects.AURA, 8), new ItemStack(Items.flint), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemShard, 1, 4), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), new ItemStack(ConfigItems.itemShard, 1, 5)}));
+              Aspects.DARKNESS, 8).addAll(Aspects.ELDRITCH, 8).addAll(Aspects.AURA, 8), new ItemStack(Items.flint), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.NITOR()), new ItemStack(ConfigItems.itemShard, 1, 4), new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), new ItemStack(ConfigItems.itemShard, 1, 5)}));
       ConfigResearch.recipes.put("PrimalCrusher", InfusionRecipe.addInfusionCraftingRecipe("PRIMALCRUSHER", new ItemStack(ConfigItems.itemPrimalCrusher), 6, (new LinkedHashAspectList<>()).addAll(
               Aspects.MINE, 24).addAll(Aspects.TOOL, 24).addAll(
               Aspects.ENTROPY, 16).addAll(Aspects.VOID, 16).addAll(Aspects.WEAPON, 16).addAll(Aspects.ELDRITCH, 16).addAll(
-              Aspects.GREED, 16), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL()), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemPickVoid, 1, 32767), new ItemStack(ConfigItems.itemShovelVoid, 1, 32767), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemPickElemental, 1, 32767), new ItemStack(ConfigItems.itemShovelElemental, 1, 32767)}));
-      ConfigResearch.recipes.put("EldritchEye", InfusionRecipe.addInfusionCraftingRecipe("OCULUS", new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE()), 5, (new LinkedHashAspectList<>()).addAll(
-              Aspects.ELDRITCH, 64).addAll(Aspects.VOID, 16).addAll(Aspects.DARKNESS, 16).addAll(Aspects.TRAVEL, 16), new ItemStack(Items.ender_eye), new ItemStack[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED(), 1), new ItemStack(Items.gold_ingot)}));
+              Aspects.GREED, 16), new ItemStack(ThaumcraftItemInstances.PRIME_PEARL()), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemPickVoid, 1, 32767), new ItemStack(ConfigItems.itemShovelVoid, 1, 32767), new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1), new ItemStack(ConfigItems.itemPickElemental, 1, 32767), new ItemStack(ConfigItems.itemShovelElemental, 1, 32767)}));
+      ConfigResearch.recipes.put("EldritchEye", InfusionRecipe.addInfusionCraftingRecipe("OCULUS", new ItemStack(ThaumcraftItemInstances.ELDRITCH_EYE()), 5, (new LinkedHashAspectList<>()).addAll(
+              Aspects.ELDRITCH, 64).addAll(Aspects.VOID, 16).addAll(Aspects.DARKNESS, 16).addAll(Aspects.TRAVEL, 16), new ItemStack(Items.ender_eye), new ItemStack[]{new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), new ItemStack(Items.gold_ingot)}));
    }
 
    private static void initializeNormalRecipes() {
       CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 0), "#", '#', Items.iron_ingot);
-      CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 6), "#", '#', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()));
-      CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 7), "#", '#', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1));
+      CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 6), "#", '#', new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()));
+      CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 7), "#", '#', new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1));
       oreDictRecipe(new ItemStack(Items.iron_ingot), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 0)});
-      oreDictRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT()), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 6)});
+      oreDictRecipe(new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT()), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 6)});
       oreDictRecipe(new ItemStack(QUICK_SILVER), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 5)});
       CraftingManager.getInstance().addRecipe(new ItemStack(ConfigItems.itemNugget, 9, 5), "#", '#', new ItemStack(QUICK_SILVER));
-      oreDictRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_INGOT(),1), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 7)});
+      oreDictRecipe(new ItemStack(ThaumcraftItemInstances.VOID_INGOT(),1), new Object[]{"###", "###", "###", '#', new ItemStack(ConfigItems.itemNugget, 1, 7)});
       ConfigResearch.recipes.put("MundaneAmulet", oreDictRecipe(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 0), new Object[]{" S ", "S S", " I ", 'S', new ItemStack(Items.string), 'I', new ItemStack(Items.gold_ingot)}));
       ConfigResearch.recipes.put("MundaneRing", oreDictRecipe(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 1), new Object[]{" N ", "N N", " N ", 'N', new ItemStack(Items.gold_nugget)}));
       ConfigResearch.recipes.put("MundaneBelt", oreDictRecipe(new ItemStack(ConfigItems.itemBaubleBlanks, 1, 2), new Object[]{" L ", "L L", " I ", 'L', new ItemStack(Items.leather), 'I', new ItemStack(Items.gold_ingot)}));
@@ -709,24 +709,24 @@ public class ConfigRecipes {
       shapelessOreDictRecipe(new ItemStack(ConfigItems.itemTripleMeatTreat), new Object[]{Items.sugar, ConfigItems.itemNuggetFish, ConfigItems.itemNuggetChicken, ConfigItems.itemNuggetPork});
       CraftingManager.getInstance().addRecipe(new ItemStack(QUICK_SILVER), "#", '#', new ItemStack(ConfigBlocks.blockCustomPlant, 1, 2));
       CraftingManager.getInstance().addRecipe(new ItemStack(Items.blaze_powder), "#", '#', new ItemStack(ConfigBlocks.blockCustomPlant, 1, 3));
-      ConfigResearch.recipes.put("JarLabel", shapelessOreDictRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL(), 4), new Object[]{"dyeBlack", Items.slime_ball, Items.paper, Items.paper, Items.paper, Items.paper}));
+      ConfigResearch.recipes.put("JarLabel", shapelessOreDictRecipe(new ItemStack(ThaumcraftItemInstances.JAR_LABEL(), 4), new Object[]{"dyeBlack", Items.slime_ball, Items.paper, Items.paper, Items.paper, Items.paper}));
       int count = 0;
 
       for(Aspect aspect : Aspects.ALL_ASPECTS.values()) {
          ItemStack essence = new ItemStack(ConfigItems.itemEssence, 1, 1);
          ((IEssentiaContainerItem) essence.getItem()).setAspects(essence, (new LinkedHashAspectList<>()).addAll(aspect, 8));
-         ItemStack output = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL(), 1);
+         ItemStack output = new ItemStack(ThaumcraftItemInstances.JAR_LABEL(), 1);
          ((IEssentiaContainerItem) output.getItem()).setAspects(output, (new LinkedHashAspectList<>()).addAll(aspect, 0));
-         ConfigResearch.recipes.put("JarLabel" + count, shapelessNBTOreRecipe(output, new Object[]{new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL(), 1), essence}));
+         ConfigResearch.recipes.put("JarLabel" + count, shapelessNBTOreRecipe(output, new Object[]{new ItemStack(ThaumcraftItemInstances.JAR_LABEL(), 1), essence}));
          ++count;
       }
 
-      ItemStack input = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL(), 1);
+      ItemStack input = new ItemStack(ThaumcraftItemInstances.JAR_LABEL(), 1);
       ((IEssentiaContainerItem) input.getItem()).setAspects(input, (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 1));
-      ConfigResearch.recipes.put("JarLabelNull", shapelessOreDictRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.JAR_LABEL(), 1), new Object[]{input}));
+      ConfigResearch.recipes.put("JarLabelNull", shapelessOreDictRecipe(new ItemStack(ThaumcraftItemInstances.JAR_LABEL(), 1), new Object[]{input}));
       ConfigResearch.recipes.put("WandBasic", oreDictRecipe(basicWand, new Object[]{"  I", " S ", "I  ", 'I', new ItemStack(ConfigItems.itemWandCap, 1, 0), 'S', "stickWood"}));
       ConfigResearch.recipes.put("WandCapIron", oreDictRecipe(new ItemStack(ConfigItems.itemWandCap, 1, 0), new Object[]{"NNN", "N N", 'N', "nuggetIron"}));
-      ConfigResearch.recipes.put("KnowFrag", GameRegistry.addShapedRecipe(new ItemStack(ConfigItems.itemResearchNotes, 1, 42), "KKK", "KKK", "KKK", 'K', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+      ConfigResearch.recipes.put("KnowFrag", GameRegistry.addShapedRecipe(new ItemStack(ConfigItems.itemResearchNotes, 1, 42), "KKK", "KKK", "KKK", 'K', new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
       ConfigResearch.recipes.put("PlankGreatwood", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockWoodenDevice, 4, 6), "W", 'W', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 0)));
       ConfigResearch.recipes.put("PlankSilverwood", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockWoodenDevice, 4, 7), "W", 'W', new ItemStack(ConfigBlocks.blockMagicalLog, 1, 1)));
       GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockStairsGreatwood, 4, 0), "K  ", "KK ", "KKK", 'K', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 6));
@@ -735,27 +735,27 @@ public class ConfigRecipes {
       GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockSlabWood, 6, 1), "KKK", 'K', new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 7));
       ConfigResearch.recipes.put("BlockFlesh", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockTaint, 1, 2), "KKK", "KKK", "KKK", 'K', Items.rotten_flesh));
       ConfigResearch.recipes.put("BlockThaumium", oreDictRecipe(new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4), new Object[]{"KKK", "KKK", "KKK", 'K', "ingotThaumium"}));
-      GameRegistry.addShapedRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_INGOT(), 9), "K", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4));
-      ConfigResearch.recipes.put("BlockTallow", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), "KKK", "KKK", "KKK", 'K', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MAGIC_TALLOW())));
-      GameRegistry.addShapedRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MAGIC_TALLOW(), 9), "K", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5));
+      GameRegistry.addShapedRecipe(new ItemStack(ThaumcraftItemInstances.THAUMIUM_INGOT(), 9), "K", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4));
+      ConfigResearch.recipes.put("BlockTallow", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5), "KKK", "KKK", "KKK", 'K', new ItemStack(ThaumcraftItemInstances.MAGIC_TALLOW())));
+      GameRegistry.addShapedRecipe(new ItemStack(ThaumcraftItemInstances.MAGIC_TALLOW(), 9), "K", 'K', new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 5));
 
       for(int a = 0; a < 6; ++a) {
          ConfigResearch.recipes.put("Clusters" + a, shapelessOreDictRecipe(new ItemStack(ConfigBlocks.blockCrystal, 1, a), new Object[]{new ItemStack(ConfigItems.itemShard, 1, a), new ItemStack(ConfigItems.itemShard, 1, a), new ItemStack(ConfigItems.itemShard, 1, a), new ItemStack(ConfigItems.itemShard, 1, a), new ItemStack(ConfigItems.itemShard, 1, a), new ItemStack(ConfigItems.itemShard, 1, a)}));
       }
 
       ConfigResearch.recipes.put("Clusters6", shapelessOreDictRecipe(new ItemStack(ConfigBlocks.blockCrystal, 1, 6), new Object[]{new ItemStack(ConfigItems.itemShard, 1, 0), new ItemStack(ConfigItems.itemShard, 1, 1), new ItemStack(ConfigItems.itemShard, 1, 2), new ItemStack(ConfigItems.itemShard, 1, 3), new ItemStack(ConfigItems.itemShard, 1, 4), new ItemStack(ConfigItems.itemShard, 1, 5)}));
-      GameRegistry.addRecipe(new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0), "##", "##", '#', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()));
+      GameRegistry.addRecipe(new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0), "##", "##", '#', new ItemStack(ThaumcraftItemInstances.AMBER_GEM()));
       GameRegistry.addRecipe(new ItemStack(ConfigBlocks.blockCosmeticOpaque, 4, 1), "##", "##", '#', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0));
       GameRegistry.addRecipe(new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 1), "##", "##", '#', Blocks.obsidian);
-      GameRegistry.addRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM(),4), "#", '#', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0));
-      GameRegistry.addRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM(),4), "#", '#', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 1));
+      GameRegistry.addRecipe(new ItemStack(ThaumcraftItemInstances.AMBER_GEM(),4), "#", '#', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0));
+      GameRegistry.addRecipe(new ItemStack(ThaumcraftItemInstances.AMBER_GEM(),4), "#", '#', new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 1));
       ConfigResearch.recipes.put("Grate", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockMetalDevice, 1, 5), "#", "T", '#', new ItemStack(Blocks.iron_bars), 'T', new ItemStack(Blocks.trapdoor)));
       ConfigResearch.recipes.put("Phial", GameRegistry.addShapedRecipe(new ItemStack(ConfigItems.itemEssence, 8, 0), " C ", "G G", " G ", 'G', Blocks.glass, 'C', Items.clay_ball));
       ConfigResearch.recipes.put("Table", oreDictRecipe(new ItemStack(ConfigBlocks.blockTable, 1, 0), new Object[]{"SSS", "W W", 'S', "slabWood", 'W', "plankWood"}));
       ConfigResearch.recipes.put("Scribe1", shapelessOreDictRecipe(new ItemStack(ConfigItems.itemInkwell), new Object[]{new ItemStack(ConfigItems.itemEssence, 1, 0), Items.feather, "dyeBlack"}));
       ConfigResearch.recipes.put("Scribe2", shapelessOreDictRecipe(new ItemStack(ConfigItems.itemInkwell), new Object[]{Items.glass_bottle, Items.feather, "dyeBlack"}));
       ConfigResearch.recipes.put("Scribe3", shapelessOreDictRecipe(new ItemStack(ConfigItems.itemInkwell), new Object[]{new ItemStack(ConfigItems.itemInkwell, 1, 32767), "dyeBlack"}));
-      ConfigResearch.recipes.put("Thaumometer", oreDictRecipe(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.THAUMOMETER()), new Object[]{" 1 ", "IGI", " 1 ", 'I', Items.gold_ingot, 'G', Blocks.glass, '1', new ItemStack(ConfigItems.itemShard, 1, 32767)}));
+      ConfigResearch.recipes.put("Thaumometer", oreDictRecipe(new ItemStack(ThaumcraftItemInstances.THAUMOMETER()), new Object[]{" 1 ", "IGI", " 1 ", 'I', Items.gold_ingot, 'G', Blocks.glass, '1', new ItemStack(ConfigItems.itemShard, 1, 32767)}));
       ConfigResearch.recipes.put("ThaumiumHelm", oreDictRecipe(new ItemStack(ConfigItems.itemHelmetThaumium, 1), new Object[]{"III", "I I", 'I', "ingotThaumium"}));
       ConfigResearch.recipes.put("ThaumiumChest", oreDictRecipe(new ItemStack(ConfigItems.itemChestThaumium, 1), new Object[]{"I I", "III", "III", 'I', "ingotThaumium"}));
       ConfigResearch.recipes.put("ThaumiumLegs", oreDictRecipe(new ItemStack(ConfigItems.itemLegsThaumium, 1), new Object[]{"III", "I I", "I I", 'I', "ingotThaumium"}));
@@ -774,7 +774,7 @@ public class ConfigRecipes {
       ConfigResearch.recipes.put("VoidAxe", oreDictRecipe(new ItemStack(ConfigItems.itemAxeVoid, 1), new Object[]{"II", "SI", "S ", 'I', "ingotVoid", 'S', "stickWood"}));
       ConfigResearch.recipes.put("VoidHoe", oreDictRecipe(new ItemStack(ConfigItems.itemHoeVoid, 1), new Object[]{"II", "S ", "S ", 'I', "ingotVoid", 'S', "stickWood"}));
       ConfigResearch.recipes.put("VoidSword", oreDictRecipe(new ItemStack(ConfigItems.itemSwordVoid, 1), new Object[]{"I", "I", "S", 'I', "ingotVoid", 'S', "stickWood"}));
-      ConfigResearch.recipes.put("TallowCandle", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockCandle, 3, 0), " S ", " T ", " T ", 'S', Items.string, 'T', new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MAGIC_TALLOW())));
+      ConfigResearch.recipes.put("TallowCandle", GameRegistry.addShapedRecipe(new ItemStack(ConfigBlocks.blockCandle, 3, 0), " S ", " T ", " T ", 'S', Items.string, 'T', new ItemStack(ThaumcraftItemInstances.MAGIC_TALLOW())));
 
       for(int a = 1; a < 16; ++a) {
          shapelessOreDictRecipe(new ItemStack(ConfigBlocks.blockCandle, 1, a), new Object[]{ConfigAspects.dyes[15 - a], new ItemStack(ConfigBlocks.blockCandle, 1, 0)});
@@ -785,13 +785,13 @@ public class ConfigRecipes {
 
    private static void initializeSmelting() {
       FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigBlocks.blockCustomOre, 1, 0), new ItemStack(QUICK_SILVER), 1.0F);
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigBlocks.blockCustomOre, 1, 7), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), 1.0F);
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigBlocks.blockCustomOre, 1, 7), new ItemStack(ThaumcraftItemInstances.AMBER_GEM()), 1.0F);
       GameRegistry.addSmelting(ConfigBlocks.blockMagicalLog, new ItemStack(Items.coal, 1, 1), 0.5F);
       FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemNugget, 1, 16), new ItemStack(Items.iron_ingot, 2, 0), 1.0F);
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemNugget, 1, 21), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.QUICK_SILVER(),2), 1.0F);
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemNugget, 1, 21), new ItemStack(ThaumcraftItemInstances.QUICK_SILVER(),2), 1.0F);
       FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemNugget, 1, 31), new ItemStack(Items.gold_ingot, 2, 0), 1.0F);
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), 1.0F);
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN()), new ItemStack(Items.gold_nugget), 0.0F);
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ConfigItems.itemShard, 1, 6), new ItemStack(ThaumcraftItemInstances.SALIS_MUNDUS(), 1), 1.0F);
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()), new ItemStack(Items.gold_nugget), 0.0F);
       InfernalFurnaceLavaBlock.addInfernalFurnaceSmeltingBonus("oreGold", new ItemStack(Items.gold_nugget, 0, 0));
       InfernalFurnaceLavaBlock.addInfernalFurnaceSmeltingBonus("oreIron", new ItemStack(ConfigItems.itemNugget, 0, 0));
       InfernalFurnaceLavaBlock.addInfernalFurnaceSmeltingBonus("oreCinnabar", new ItemStack(ConfigItems.itemNugget, 0, 5));

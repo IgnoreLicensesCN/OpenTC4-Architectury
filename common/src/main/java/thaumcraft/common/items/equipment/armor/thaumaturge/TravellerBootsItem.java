@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
@@ -25,7 +25,7 @@ public class TravellerBootsItem extends ArmorItem implements IAugmentationRunicS
         super(armorMaterial, type, properties);
     }
     public TravellerBootsItem() {
-        this(ThaumcraftItems.ToolAndArmorMaterial.SPECIAL, Type.BOOTS, new Properties().stacksTo(1).durability(350).rarity(Rarity.RARE));
+        this(ThaumcraftToolAndArmorMaterial.SPECIAL, Type.BOOTS, new Properties().stacksTo(1).durability(350).rarity(Rarity.RARE));
     }
 
     private static final UUID TRAVELLER_STEP_BOOST_UUID = UUID.fromString("b2688e00-3eca-46b9-b774-52bd632e5939");

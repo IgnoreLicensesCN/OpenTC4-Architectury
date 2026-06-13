@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.items.abstracts.IDowsingTool;
 import thaumcraft.common.items.abstracts.IDropFollowingUserTool;
 
@@ -41,7 +41,7 @@ public class PrimalCrusherItem extends SwordItem implements IWarpingGear, IDowsi
         this(
                 3.5F,
                 -2.4F,
-                ThaumcraftItems.ToolAndArmorMaterial.PRIMAL_VOID,
+                ThaumcraftToolAndArmorMaterial.PRIMAL_VOID,
                 new Properties().stacksTo(1).rarity(Rarity.EPIC)
         );
     }

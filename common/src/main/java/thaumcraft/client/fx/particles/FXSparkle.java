@@ -163,8 +163,8 @@ public class FXSparkle /*extends EntityFX*/ {
 //
 //   }
 //
-//   public void setGravity(float rightInt) {
-//      this.particleGravity = rightInt;
+//   public void setGravity(float value) {
+//      this.particleGravity = value;
 //   }
 //
 //   protected boolean pushOutOfBlocks(double par1, double par3, double par5) {

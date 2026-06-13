@@ -196,7 +196,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 //        TagKey<Item> tagKey = TagKey.create(Registries.ITEM, ResourceLocation.tryParse(tagStr));
 //        Optional<HolderSet.Named<Item>> optTag = itemRegistry.getTag(tagKey);
 //
-//        return optTag.isPresent() && optTag.get().stream().map(Holder::rightInt).anyMatch(i -> i == item);
+//        return optTag.isPresent() && optTag.get().stream().map(Holder::value).anyMatch(i -> i == item);
 //    }
 
     @Override

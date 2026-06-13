@@ -10,7 +10,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class VoidSwordItem extends SwordItem implements IWarpingGear {
         super(tier, i, f, properties);
     }
     public VoidSwordItem() {
-        this(ThaumcraftItems.ToolAndArmorMaterial.TOOL_VOID,
+        this(ThaumcraftToolAndArmorMaterial.TOOL_VOID,
                 0,
                 -2.4F,
                 new Properties().rarity(Rarity.UNCOMMON).stacksTo(1)

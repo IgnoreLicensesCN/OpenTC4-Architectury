@@ -3,13 +3,16 @@ package com.linearity.opentc4.mixin;
 import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,13 +26,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
+import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
+import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
@@ -126,7 +134,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         var living = (LivingEntity)(Object)this;
         var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
         if (unnaturalHungerInstance != null){
-            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItems.ThaumcraftItemInstances.ZOMBIE_BRAIN()){
+            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItemInstances.ZOMBIE_BRAIN()){
                 int amp = unnaturalHungerInstance.getAmplifier() - 1;
                 int duration = unnaturalHungerInstance.getDuration() - 600;
                 living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
@@ -135,10 +143,16 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                 }
 
                 if (living instanceof ServerPlayer serverPlayer){
-                    serverPlayer.sendSystemMessage(Component.literal("§2§o" + Component.translatable("warp.text.hunger.2")));
+                    serverPlayer.sendSystemMessage((Component.translatable("warp.text.hunger.2")
+                            .withStyle(ChatFormatting.ITALIC)
+                            .withStyle(ChatFormatting.DARK_GREEN)));
                 }
             }else if (item.getFoodProperties() != null && living instanceof ServerPlayer serverPlayer) {
-                serverPlayer.sendSystemMessage(Component.literal("§4§o" + Component.translatable("warp.text.hunger.1")));
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("warp.text.hunger.1")
+                                .withStyle(ChatFormatting.ITALIC)
+                                .withStyle(ChatFormatting.DARK_RED)
+                );
             }
         }
     }
@@ -154,6 +168,82 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                 .add(HARNESS_FLYING_SPEED_ADD_PERCENT())
                 .add(HARNESS_FUEL_DURATION_ADD_PERCENT());
         return builder;
+    }
+
+    @ModifyReturnValue(
+            method = "getDamageAfterArmorAbsorb",
+            at = @At("RETURN")
+    )
+    private float opentc4$getDamageAfterArmorAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
+        var living = (LivingEntity)(Object)this;
+        AtomicReference<Float> modifiedOut = new AtomicReference<>(originalOut);
+        living.getArmorSlots().forEach(stack -> {
+            if (stack.getItem() instanceof ISpecialDamageCalculationEquipmentItem equipment) {
+                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
+
+            }
+        });
+        if (living instanceof Player player){
+            forEachBauble(player, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
+                    modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
+                    return false;
+            }));
+        }
+        return modifiedOut.get();
+    }
+    @ModifyReturnValue(
+            method = "getDamageAfterMagicAbsorb",
+            at = @At("RETURN")
+    )
+    private float opentc4$getDamageAfterMagicAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
+        var living = (LivingEntity)(Object)this;
+        AtomicReference<Float> modifiedOut = new AtomicReference<>(originalOut);
+        living.getArmorSlots().forEach(stack -> {
+            if (stack.getItem() instanceof ISpecialDamageCalculationEquipmentItem equipment) {
+                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
+
+            }
+        });
+        if (living instanceof Player player){
+            forEachBauble(player, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
+                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
+                return false;
+            }));
+        }
+        return modifiedOut.get();
+    }
+
+    @Inject(
+            method = "actuallyHurt",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V",shift = At.Shift.AFTER)
+    )
+    private void opentc4$onBeingDamaged(DamageSource damageSource, float f, CallbackInfo ci) {
+        var self = (LivingEntity)(Object)this;
+        var entityCausedDamage = damageSource.getEntity();
+        if (entityCausedDamage != null) {
+
+            for (var stack : entityCausedDamage.getArmorSlots()) {
+                if (stack.getItem() instanceof IAttackOthersListenerArmor armor) {
+                    armor.onAttackOtherEntity(
+                            stack,
+                            entityCausedDamage,
+                            self,
+                            damageSource,
+                            f
+                    );
+                }
+            }
+        }
+        for (var stack:self.getArmorSlots()) {
+            if (stack.getItem() instanceof IBeingAttackedListenerArmor armor) {
+                armor.onBeingAttackedByOtherEntity(
+                        stack,
+                        self,
+                        damageSource,
+                        f
+                );
+            }
+        }
     }
 }
 

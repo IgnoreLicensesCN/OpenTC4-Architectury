@@ -1,7 +1,7 @@
 package thaumcraft.api.listeners.wandconsumption.consts;
 
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;
@@ -48,7 +48,7 @@ public enum CalculateWandConsumptionListenerEnum {
             var user = context.user;
             if (user instanceof Player player) {
                 forEachBauble(player,(slot, baubleStack, item) -> {
-                    var discountGear = IVisDiscountGear.getDiscountGearHandlerForItem(item);
+                    var discountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(item);
                     if (discountGear != null) {
                         context.currentConsumption -= (discountGear.getVisCostPercentDecrease(baubleStack, player, context.aspect)/100F);
                     }
@@ -56,7 +56,7 @@ public enum CalculateWandConsumptionListenerEnum {
                 });
 
                 for (var equipStack : player.getArmorSlots()) {
-                    IVisDiscountGear visDiscountGear = IVisDiscountGear.getDiscountGearHandlerForItem(equipStack.getItem());
+                    IVisDiscountGearItem visDiscountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(equipStack.getItem());
                     if (visDiscountGear != null) {
                         context.currentConsumption -= (visDiscountGear.getVisCostPercentDecrease(equipStack, player, context.aspect)/100F);
                     }

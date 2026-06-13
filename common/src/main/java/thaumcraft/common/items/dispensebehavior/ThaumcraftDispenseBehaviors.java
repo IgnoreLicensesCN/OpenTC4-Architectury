@@ -1,13 +1,13 @@
 package thaumcraft.common.items.dispensebehavior;
 
 import net.minecraft.world.level.block.DispenserBlock;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 public class ThaumcraftDispenseBehaviors {
 
     public static void init(){
         DispenserBlock.registerBehavior(
-                ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM(),
+                ThaumcraftItemInstances.ALUMENTUM(),
                 new BehaviorDispenseAlumentum());
 
     }

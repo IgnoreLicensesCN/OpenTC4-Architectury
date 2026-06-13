@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.entityrender.ShieldRunesFXGetter;
 import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 public class EntityCultist extends EntityMob implements ShieldRunesFXGetter {
    public EntityCultist(World p_i1745_1_) {
@@ -47,18 +47,18 @@ public class EntityCultist extends EntityMob implements ShieldRunesFXGetter {
    protected void dropFewItems(boolean flag, int i) {
       int r = this.rand.nextInt(10);
       if (r == 0) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
       } else if (r == 1) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED(), 1), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), 1.5F);
       } else if (r <= 3 + i) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
       }
 
       super.dropFewItems(flag, i);
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.CRIMSON_RITES()), 1.0F);
+      this.entityDropItem(new ItemStack(ThaumcraftItemInstances.CRIMSON_RITES()), 1.0F);
    }
 
    protected void addRandomArmor() {

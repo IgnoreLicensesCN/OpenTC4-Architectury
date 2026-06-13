@@ -2,9 +2,9 @@ package thaumcraft.common.aspects;
 
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import static thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration.registerItemBasicAspects;
-import static thaumcraft.common.items.ThaumcraftItems.*;
 
 public class ThaumcraftItemAspects {
 

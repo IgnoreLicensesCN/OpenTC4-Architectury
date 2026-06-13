@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.AugmentationRunicShieldTagAccessors.RUNIC_AUGMENTATION_LEVEL;
 
@@ -60,12 +61,14 @@ public interface IAugmentationRunicShieldProviderItem extends IRunicShieldProvid
         if (augmentation == 0){
             return Object2IntMaps.emptyMap();
         }
-        return ChargeCache.chargeCache.computeIfAbsent(
+        var result = ChargeCache.chargeCache.computeIfAbsent(
                 augmentation,
                 aug -> new Object2IntOpenHashMap<>() {{
                     put(ThaumcraftRunicShieldTypes.COMMON, aug);
                 }}
         );
+        CACHED_SUM.computeIfAbsent(result,_ignored -> new MapMaker().weakKeys().makeMap());
+        return result;
     }
 
 

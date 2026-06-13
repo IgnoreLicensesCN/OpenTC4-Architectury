@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
@@ -30,7 +30,7 @@ public class NodeJarBlock extends JarBlock implements
     }
 
     public NodeJarBlockItem getNodeJarItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.NODE_JAR();
+        return ThaumcraftItemInstances.NODE_JAR();
     }
 
     @Override

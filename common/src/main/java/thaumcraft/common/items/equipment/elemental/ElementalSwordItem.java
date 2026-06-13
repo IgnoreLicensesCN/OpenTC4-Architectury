@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.lib.utils.Utils;
 
 public class ElementalSwordItem extends SwordItem {
@@ -27,7 +27,7 @@ public class ElementalSwordItem extends SwordItem {
 
     public ElementalSwordItem() {
         this(
-                ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
+                ThaumcraftToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
                 3, -2.4F, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)
         );
     }

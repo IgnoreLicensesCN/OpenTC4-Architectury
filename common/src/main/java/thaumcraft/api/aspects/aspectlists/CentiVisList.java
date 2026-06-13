@@ -36,8 +36,8 @@ public interface CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//jus
 //    public CentiVisList(int capacity, float loadFactor) {
 //        super(capacity, loadFactor);
 //    }
-//    public CentiVisList(Asp aspect,int rightInt){
-//        super(aspect,rightInt);
+//    public CentiVisList(Asp aspect,int value){
+//        super(aspect,value);
 //    }
 
 

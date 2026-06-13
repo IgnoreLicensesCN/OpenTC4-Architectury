@@ -26,7 +26,7 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AILongRangeAttack;
 import thaumcraft.common.entities.projectile.EntityEldritchOrb;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.junkbox.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXSonic;
@@ -172,7 +172,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.dropItem(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE());
+      this.dropItem(ThaumcraftItemInstances.ELDRITCH_EYE());
    }
 
    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {

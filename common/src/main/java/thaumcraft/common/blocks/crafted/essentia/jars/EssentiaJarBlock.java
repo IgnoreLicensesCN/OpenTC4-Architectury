@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
@@ -27,7 +27,7 @@ public class EssentiaJarBlock extends AbstractEssentiaJarBlock
 
     @Override
     public EssentiaJarBlockItem getEssentiaJarItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.ESSENTIA_JAR();
+        return ThaumcraftItemInstances.ESSENTIA_JAR();
     }
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

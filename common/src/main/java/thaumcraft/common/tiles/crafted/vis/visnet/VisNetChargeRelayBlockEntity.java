@@ -22,7 +22,7 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity {
     }
     public static final int CHARGE_RATE_CENTIVIS = 5;
     public int getCentiVisChargeRate(){
-        return CHARGE_RATE_CENTIVIS;//call someone to create a new charger with higher rightInt
+        return CHARGE_RATE_CENTIVIS;//call someone to create a new charger with higher value
     }
 
     @Override

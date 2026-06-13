@@ -13,7 +13,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IWarpingGear;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class CrimsonSwordItem extends SwordItem implements IWarpingGear {
         super(tier, i, f, properties);
     }
     public CrimsonSwordItem() {
-        this(ThaumcraftItems.ToolAndArmorMaterial.CRIMSON_VOID,
+        this(ThaumcraftToolAndArmorMaterial.CRIMSON_VOID,
                 3,
                 -2.4F,
                 new Properties().stacksTo(1)

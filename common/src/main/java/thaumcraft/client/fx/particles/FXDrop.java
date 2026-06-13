@@ -193,8 +193,8 @@ public class FXDrop /*extends EntityFX*/ {
 //               par1 = 0.0F;
 //            }
 //
-//             for (Object rightInt : list) {
-//                 par1 = ((AxisAlignedBB) rightInt).calculateXOffset(this.boundingBox, par1);
+//             for (Object value : list) {
+//                 par1 = ((AxisAlignedBB) value).calculateXOffset(this.boundingBox, par1);
 //             }
 //
 //            this.boundingBox.offset(par1, 0.0F, 0.0F);

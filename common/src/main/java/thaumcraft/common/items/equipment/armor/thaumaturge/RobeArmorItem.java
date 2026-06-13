@@ -13,21 +13,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
 import java.util.List;
 
 import static net.minecraft.world.level.block.LayeredCauldronBlock.LEVEL;
 
-public class RobeArmorItem extends DyeableArmorItem implements IAugmentationRunicShieldProviderItem, IVisDiscountGear {
+public class RobeArmorItem extends DyeableArmorItem implements IAugmentationRunicShieldProviderItem, IVisDiscountGearItem {
     public RobeArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
         super(armorMaterial, type, properties);
     }
     public RobeArmorItem(Type type){
-        this(ThaumcraftItems.ToolAndArmorMaterial.ROBE,
+        this(ThaumcraftToolAndArmorMaterial.ROBE,
                 type,
                 new Properties().stacksTo(1)
         );

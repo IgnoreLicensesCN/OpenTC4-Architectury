@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
@@ -96,7 +96,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
 
     @Override
     public @NotNull Item asItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.SILVERWOOD_LOG();
+        return ThaumcraftItemInstances.SILVERWOOD_LOG();
     }
 
 

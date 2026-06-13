@@ -100,7 +100,7 @@ public class FXBlockWard /*extends EntityFX*/ {
 //      this.posZ += this.motionZ;
 //   }
 //
-//   public void setGravity(float rightInt) {
-//      this.particleGravity = rightInt;
+//   public void setGravity(float value) {
+//      this.particleGravity = value;
 //   }
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.menu.menu.ArcaneSpaMenu;
 import thaumcraft.common.tiles.IThaumcraftBEWithMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -100,7 +100,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
                 return true;
             }else if (fluid == Fluids.WATER) {
                 var item = getItem(0);
-                return !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS();
+                return !item.isEmpty() && item.getItem() == ThaumcraftItemInstances.BATH_SALTS();
             }
         }
         return false;
@@ -113,7 +113,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
                 return true;
             }else if (fluid == Fluids.WATER) {
                 var item = getItem(0);
-                if( !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS()){
+                if( !item.isEmpty() && item.getItem() == ThaumcraftItemInstances.BATH_SALTS()){
                     decreaseFluid(getFluidCost());
                     item.shrink(1);
                     return true;

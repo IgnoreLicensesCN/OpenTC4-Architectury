@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.VoidJarBlockEntity;
@@ -22,7 +22,7 @@ public class VoidJarBlock extends AbstractEssentiaJarBlock {
 
     @Override
     public EssentiaJarBlockItem getEssentiaJarItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.VOID_JAR();
+        return ThaumcraftItemInstances.VOID_JAR();
     }
 
     public VoidJarBlock() {

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
@@ -84,7 +84,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
 
     @Override
     public Item asItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.OBSIDIAN_TOTEM();
+        return ThaumcraftItemInstances.OBSIDIAN_TOTEM();
     }
 
 

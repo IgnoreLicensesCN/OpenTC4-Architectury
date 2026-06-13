@@ -11,7 +11,7 @@ import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 
-import static thaumcraft.common.items.ThaumcraftItems.ThaumcraftItemInstances.WISP_ESSENCE;
+import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
 
 
 @UtilityLikeAbstraction

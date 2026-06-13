@@ -13,7 +13,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 import static thaumcraft.api.listeners.elementalhoe.apply.ElementalHoeAffectManager.affectPlant;
 import static thaumcraft.api.listeners.elementalhoe.check.ElementalHoeAffectiveManager.isAffectivePlant;
@@ -23,7 +23,7 @@ public class ElementalHoeItem extends HoeItem {
         super(tier, i, f, properties);
     }
     public ElementalHoeItem() {
-        this(ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
+        this(ThaumcraftToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
                 -3,
                 0.0F,
                 new Item.Properties().stacksTo(1).rarity(Rarity.RARE)

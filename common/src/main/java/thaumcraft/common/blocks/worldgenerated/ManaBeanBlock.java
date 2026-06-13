@@ -31,7 +31,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IManaBeanAspectCombineProviderBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.tiles.generated.ManaBeanBlockEntity;
@@ -114,18 +114,18 @@ public class ManaBeanBlock extends SuppressedWarningBlock
                     }
                     dropCount *= 1 + random.nextInt(fortuneLevel+1);
                 }
-                int stackSize = ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().getMaxStackSize();
+                int stackSize = ThaumcraftItemInstances.MANA_BEAN().getMaxStackSize();
                 List<ItemStack> drops = new ArrayList<>((dropCount / stackSize)+1);
                 while ((dropCount / stackSize) > 0) {
                     dropCount -= stackSize;
-                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN(),stackSize);
-                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItemInstances.MANA_BEAN(),stackSize);
+                    ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 int remaining = dropCount % stackSize;
                 if (remaining > 0) {
-                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN(),remaining);
-                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItemInstances.MANA_BEAN(),remaining);
+                    ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 return drops;

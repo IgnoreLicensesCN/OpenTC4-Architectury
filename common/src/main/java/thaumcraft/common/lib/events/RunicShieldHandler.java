@@ -10,6 +10,8 @@ import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
+import java.util.Comparator;
+
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 
 public class RunicShieldHandler {
@@ -43,7 +45,7 @@ public class RunicShieldHandler {
 
             var capacityMapOld = new Object2IntOpenHashMap<>(shieldInfo.shieldCapacity);
             capacityMap.clear();
-            var capacityMapCache = new Object2IntRBTreeMap<>(AbstractRunicShieldType::compareTo);//i want its order
+            var capacityMapCache = new Object2IntRBTreeMap<AbstractRunicShieldType<?>>(Comparator.naturalOrder());//i want its order
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     ItemStack stack = player.getItemBySlot(slot);

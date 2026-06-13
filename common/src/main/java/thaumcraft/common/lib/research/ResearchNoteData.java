@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.aspect.IResearchConnectableToOtherAspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.lib.utils.HexCoordUtils;
@@ -36,7 +36,7 @@ public class ResearchNoteData {
         if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
         }
-        var stack = ThaumcraftItems.ThaumcraftItemInstances.RESEARCH_NOTE().getDefaultInstance();
+        var stack = ThaumcraftItemInstances.RESEARCH_NOTE().getDefaultInstance();
         var researchKey = researchItem.key;
         Aspect researchThemedAspect = Aspects.EMPTY;
         if (researchItem instanceof IThemedAspectOwner themedAspectOwner){

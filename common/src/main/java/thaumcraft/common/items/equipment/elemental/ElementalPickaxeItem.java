@@ -10,7 +10,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.items.abstracts.IDowsingTool;
 
 public class ElementalPickaxeItem extends PickaxeItem implements IDowsingTool {
@@ -19,7 +19,7 @@ public class ElementalPickaxeItem extends PickaxeItem implements IDowsingTool {
     }
     public ElementalPickaxeItem() {
         this(
-                ThaumcraftItems.ToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
+                ThaumcraftToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL,
                 1, -2.8F,
                 new Properties().stacksTo(1).rarity(Rarity.RARE)
         );
