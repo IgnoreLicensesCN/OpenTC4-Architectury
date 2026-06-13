@@ -17,8 +17,7 @@ import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 
 import static thaumcraft.api.listeners.warp.consts.AfterPickEventListeners.SPAWN_GUARD_IF_NO_EVENT;
 import static thaumcraft.api.listeners.warp.consts.AfterWarpEventListeners.*;
-import static thaumcraft.api.listeners.warp.consts.BeforePickEventListeners.CALCULATE_WARP_AND_COUNTER;
-import static thaumcraft.api.listeners.warp.consts.BeforePickEventListeners.THAUMIC_FORTRESS_MASK_DISCOUNT;
+import static thaumcraft.api.listeners.warp.consts.BeforePickEventListeners.*;
 import static thaumcraft.api.listeners.warp.consts.WarpConditions.NO_WARP_WARD;
 import static thaumcraft.api.listeners.warp.consts.WarpConditions.WARP_AND_COUNTER;
 import static thaumcraft.api.listeners.warp.consts.WarpEvents.*;
@@ -40,7 +39,7 @@ public class WarpEventManager {
         for (var eventEnum : WarpEventsEnum.values()) {
             warpEventManager.registerListener(eventEnum.event);
         }
-        pickWarpEventListenerBeforeManager.registerListener(THAUMIC_FORTRESS_MASK_DISCOUNT);
+//        pickWarpEventListenerBeforeManager.registerListener(THAUMIC_FORTRESS_MASK_DISCOUNT);
         pickWarpEventListenerBeforeManager.registerListener(CALCULATE_WARP_AND_COUNTER);
         pickWarpEventListenerAfterManager.registerListener(SPAWN_GUARD_IF_NO_EVENT);
 

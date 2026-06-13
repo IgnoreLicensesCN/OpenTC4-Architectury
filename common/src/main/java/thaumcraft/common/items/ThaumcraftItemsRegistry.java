@@ -24,6 +24,9 @@ import thaumcraft.common.items.equipment.armor.voidarmor.VoidArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeHelmetItem;
 import thaumcraft.common.items.equipment.elemental.*;
+import thaumcraft.common.items.equipment.masks.AngryGhostMask;
+import thaumcraft.common.items.equipment.masks.GrinningDevilMask;
+import thaumcraft.common.items.equipment.masks.SippingFiendMask;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
@@ -1003,5 +1006,16 @@ public class ThaumcraftItemsRegistry {
             "thaumium_fortress_leggings",
             () -> new ThaumiumFortressArmorItem(ArmorItem.Type.LEGGINGS)
     );
-
+    public static final RegistrySupplier<AngryGhostMask> SUPPLIER_ANGRY_GHOST_MASK = ITEMS.register(
+            "angry_ghost_mask",
+            AngryGhostMask::new
+    );
+    public static final RegistrySupplier<GrinningDevilMask> SUPPLIER_GRINNING_DEVIL_MASK = ITEMS.register(
+            "grinning_devil_mask",
+            GrinningDevilMask::new
+    );
+    public static final RegistrySupplier<SippingFiendMask> SUPPLIER_SIPPING_FIEND_MASK = ITEMS.register(
+            "sipping_fiend_mask",
+            SippingFiendMask::new
+    );
 }

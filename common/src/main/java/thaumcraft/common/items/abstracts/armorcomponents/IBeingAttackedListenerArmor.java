@@ -10,6 +10,6 @@ public interface IBeingAttackedListenerArmor {
             @Unmodifiable/*i dont promise this part*/ ItemStack selfStack,
             LivingEntity user,
             DamageSource damageSource,
-            float damageFinalCaused
+            float damageCausedNoArmorReduce
     );
 }

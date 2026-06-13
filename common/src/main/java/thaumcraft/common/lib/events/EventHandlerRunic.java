@@ -30,15 +30,15 @@ import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble
 //TODO
 @Deprecated(forRemoval = true)
 public class EventHandlerRunic {
-   public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
-   public static Map<Player,Integer> lastCharge = new MapMaker().weakKeys().makeMap();
-   public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
-   public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
-   //int-arr based runicInfo go fuck yourself
-   @Deprecated(forRemoval = true)
-   public static Map<Player,int[]> runicInfo = new MapMaker().weakKeys().makeMap();
-   public static boolean isDirty = true;
-   public static int rechargeDelay = 0;
+//   public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
+//   public static Map<Player,Integer> lastCharge = new MapMaker().weakKeys().makeMap();
+//   public static Map<Player,Long> nextCycle = new MapMaker().weakKeys().makeMap();
+//   public static Map<Player,Long> upgradeCooldown = new MapMaker().weakKeys().makeMap();
+//   //int-arr based runicInfo go fuck yourself
+//   @Deprecated(forRemoval = true)
+//   public static Map<Player,int[]> runicInfo = new MapMaker().weakKeys().makeMap();
+//   public static boolean isDirty = true;
+//   public static int rechargeDelay = 0;
 
 //   @SubscribeEvent
 //   public void livingTick(LivingEvent.LivingUpdateEvent event) {
@@ -135,27 +135,32 @@ public class EventHandlerRunic {
 
    @SubscribeEvent
    public void entityHurt(LivingHurtEvent event) {
-      if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof Player) {
-         Player leecher = (Player)event.source.getSourceOfDamage();
-         ItemStack helm = leecher.inventory.armorInventory[3];
-         if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 2 && leecher.getRandom().nextFloat() < event.ammount / 12.0F) {
-            leecher.heal(1.0F);
-         }
-      }
+//      if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof Player) {
+//         Player leecher = (Player)event.source.getSourceOfDamage();
+//         ItemStack helm = leecher.inventory.armorInventory[3];
+//         if (helm != null
+//                 && helm.getItem() instanceof ItemFortressArmor
+//                 && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask")
+//                 && helm.stackTagCompound.getInteger("mask") == 2
+//                 && leecher.getRandom().nextFloat() < event.ammount / 12.0F) {
+//            leecher.heal(1.0F);
+//         }
+//      }
 
-      if (event.entity instanceof Player) {
-         long time = System.currentTimeMillis();
-         Player player = (Player)event.entity;
-         if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
-            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
-            ItemStack helm = player.inventory.armorInventory[3];
-            if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask") && helm.stackTagCompound.getInteger("mask") == 1 && player.getRandom().nextFloat() < event.ammount / 10.0F) {
-               try {
-                  attacker.addEffect(new MobEffectInstance(Potion.wither.getId(), 80));
-               } catch (Exception ignored) {
-               }
-            }
-         }
+//      if (event.entity instanceof Player) {
+//         long time = System.currentTimeMillis();
+//         Player player = (Player)event.entity;
+//         if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
+//            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
+//            ItemStack helm = player.inventory.armorInventory[3];
+//            if (helm != null && helm.getItem() instanceof ItemFortressArmor && helm.hasTagCompound() && helm.stackTagCompound.hasKey("mask")
+//                    && helm.stackTagCompound.getInteger("mask") == 1 && player.getRandom().nextFloat() < event.ammount / 10.0F) {
+//               try {
+//                  attacker.addEffect(new MobEffectInstance(Potion.wither.getId(), 80));
+//               } catch (Exception ignored) {
+//               }
+//            }
+//         }
 
 //         if (
 //                 event.source == DamageSource.drown
@@ -235,7 +240,8 @@ public class EventHandlerRunic {
 //            this.runicCharge.put(player.getEntityId(), charge);
 //            PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
 //         }
-      } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
+//      } else
+         if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
          EntityMob mob = (EntityMob)event.entity;
          int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
          if ((t == 5 || event.entity instanceof IEldritchMob) && mob.getAbsorptionAmount() > 0.0F) {
@@ -282,32 +288,32 @@ public class EventHandlerRunic {
 //      }
 //
 //   }
-
-   @Deprecated(forRemoval = true)
-   public static int getFinalCharge(ItemStack stack) {
-      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
-         return 0;
-      } else {
-         IRunicShieldProviderItem armor = (IRunicShieldProviderItem)stack.getItem();
-         int base = armor.getRunicCharge(stack);
-         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
-            base += stack.stackTagCompound.getByte("RS.HARDEN");
-         }
-         return base;
-      }
-   }
-
-   public static int getHardening(ItemStack stack) {
-      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
-         return 0;
-      } else {
-         int base = 0;
-         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
-            base += stack.stackTagCompound.getByte("RS.HARDEN");
-         }
-
-         return base;
-      }
-   }
+//
+//   @Deprecated(forRemoval = true)
+//   public static int getFinalCharge(ItemStack stack) {
+//      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
+//         return 0;
+//      } else {
+//         IRunicShieldProviderItem armor = (IRunicShieldProviderItem)stack.getItem();
+//         int base = armor.getRunicCharge(stack);
+//         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
+//            base += stack.stackTagCompound.getByte("RS.HARDEN");
+//         }
+//         return base;
+//      }
+//   }
+//
+//   public static int getHardening(ItemStack stack) {
+//      if (!(stack.getItem() instanceof IRunicShieldProviderItem)) {
+//         return 0;
+//      } else {
+//         int base = 0;
+//         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("RS.HARDEN")) {
+//            base += stack.stackTagCompound.getByte("RS.HARDEN");
+//         }
+//
+//         return base;
+//      }
+//   }
 
 }

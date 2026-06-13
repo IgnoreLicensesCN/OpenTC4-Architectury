@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.IGoggles;
+import thaumcraft.common.items.abstracts.IGoggles;
 import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 
 public class VoidRobeHelmetItem extends VoidRobeArmorItem implements IGoggles {

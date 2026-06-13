@@ -29,7 +29,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.IArchitectDisplayItem;
-import thaumcraft.api.IGoggles;
+import thaumcraft.common.items.abstracts.IGoggles;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;

@@ -12,6 +12,6 @@ public interface IAttackOthersListenerArmor {
             Entity user,
             LivingEntity beingAttacked,
             DamageSource damageSource,
-            float damageFinalCaused
+            float damageCausedNoArmorReduce
     );
 }

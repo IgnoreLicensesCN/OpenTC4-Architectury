@@ -217,7 +217,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
             method = "actuallyHurt",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V",shift = At.Shift.AFTER)
     )
-    private void opentc4$onBeingDamaged(DamageSource damageSource, float f, CallbackInfo ci) {
+    private void opentc4$onBeingDamaged(DamageSource damageSource, float damageCausedNoArmorReduce, CallbackInfo ci) {
         var self = (LivingEntity)(Object)this;
         var entityCausedDamage = damageSource.getEntity();
         if (entityCausedDamage != null) {
@@ -229,7 +229,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                             entityCausedDamage,
                             self,
                             damageSource,
-                            f
+                            damageCausedNoArmorReduce
                     );
                 }
             }
@@ -240,7 +240,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                         stack,
                         self,
                         damageSource,
-                        f
+                        damageCausedNoArmorReduce
                 );
             }
         }

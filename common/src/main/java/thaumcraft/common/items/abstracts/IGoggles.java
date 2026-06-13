@@ -1,4 +1,4 @@
-package thaumcraft.api;
+package thaumcraft.common.items.abstracts;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;

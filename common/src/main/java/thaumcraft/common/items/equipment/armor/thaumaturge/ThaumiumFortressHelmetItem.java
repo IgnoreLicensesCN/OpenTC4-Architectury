@@ -12,8 +12,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
-import thaumcraft.api.IGoggles;
+import thaumcraft.common.items.abstracts.IGoggles;
 import thaumcraft.api.IVisDiscountGearItem;
+import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.items.abstracts.armorcomponents.*;
@@ -33,9 +34,9 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
         IVisDiscountGearItem ,
         IGoggles,
         IAttackOthersListenerArmor,
-        IBeingAttackedListenerArmor
+        IBeingAttackedListenerArmor,
+        IWarpingGear
 {
-
     public ThaumiumFortressHelmetItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
         super(armorMaterial, type, properties);
     }
@@ -45,9 +46,15 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, list, tooltipFlag);
-        for (var stack:getArmorComponents(itemStack)) {
+        var components = getArmorComponents(itemStack);
+        for (var stack:components) {
             list.add(stack.getDisplayName().copy().withStyle(style ->  style.withColor(stack.getRarity().color)));
             stack.getItem().appendHoverText(stack, level, list, tooltipFlag);
+        }
+        for (var stack:components) {
+            if (stack.getItem() instanceof IWarpingGear warpingGear) {
+                warpingGear.addWarpTooltip(itemStack,level,list,tooltipFlag);
+            }
         }
     }
 
@@ -118,20 +125,31 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
     }
 
     @Override
-    public void onAttackOtherEntity(ItemStack selfStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageFinalCaused) {
+    public void onAttackOtherEntity(ItemStack selfStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageCausedNoArmorReduce) {
         for (var stack:getArmorComponents(selfStack)) {
             if (stack.getItem() instanceof IArmorAttackOthersListenerComponentItem componentItem){
-                componentItem.onAttackOtherEntity(stack,selfStack,user,beingAttacked,damageSource,damageFinalCaused);
+                componentItem.onAttackOtherEntity(stack,selfStack,user,beingAttacked,damageSource, damageCausedNoArmorReduce);
             }
         }
     }
 
     @Override
-    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack selfStack, LivingEntity user, DamageSource damageSource, float damageFinalCaused) {
+    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack selfStack, LivingEntity user, DamageSource damageSource, float damageCausedNoArmorReduce) {
         for (var stack:getArmorComponents(selfStack)) {
             if (stack.getItem() instanceof IArmorBeingAttackedListenerComponentItem componentItem){
-                componentItem.onBeingAttackedByOtherEntity(stack,selfStack,user,damageSource,damageFinalCaused);
+                componentItem.onBeingAttackedByOtherEntity(stack,selfStack,user,damageSource, damageCausedNoArmorReduce);
             }
         }
+    }
+
+    @Override
+    public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
+        int totalWarps = 0;
+        for (var stack:getArmorComponents(itemstack)) {
+            if (stack.getItem() instanceof IWarpingGear componentItem) {
+                totalWarps += componentItem.getWarp(itemstack,entityEquipped);
+            }
+        }
+        return totalWarps;
     }
 }
