@@ -89,7 +89,7 @@ public class GenKeyRoom extends GenCommon {
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
       world.setBlock(x + 8, y + 2, z + 8, ConfigBlocks.blockEldritch, 3, 3);
-      EntityPermanentItem entityitem = new EntityPermanentItem(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET));
+      EntityPermanentItem entityitem = new EntityPermanentItem(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET()));
       entityitem.motionY = 0.0F;
       entityitem.motionX = 0.0F;
       entityitem.motionZ = 0.0F;

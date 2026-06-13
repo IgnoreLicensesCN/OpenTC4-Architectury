@@ -149,6 +149,6 @@ public class ArcaneSceptreRecipe extends AbstractArcaneRecipe {
     }
 
     protected Item getItemOfResult(){
-        return ThaumcraftItems.ThaumcraftItemInstances.SCEPTRE_CASTING;
+        return ThaumcraftItems.ThaumcraftItemInstances.SCEPTRE_CASTING();
     }
 }

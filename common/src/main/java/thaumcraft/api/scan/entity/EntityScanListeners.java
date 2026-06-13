@@ -67,7 +67,7 @@ public enum EntityScanListeners {
             }
             var entityBasicAspects = EntityBasicAspectGetters.getBasicAspectsForEntityType(entityType);
             if (ScanManager.CommonScanManager.onMeetAspectsToScan(player,entityBasicAspects)){
-                info.addScannedForType(ENTITY,entityID);
+                info.addScannedForTypeAndSyncToPlayer(player,ENTITY,entityID);
                 return true;
             }
         }
@@ -82,7 +82,7 @@ public enum EntityScanListeners {
         }
         var playerBeingScannedAspects = EntityBasicAspectGetters.getAspectsForPlayer(playerBeingScanned);
         if (ScanManager.CommonScanManager.onMeetAspectsToScan(player,playerBeingScannedAspects)){
-            info.addScannedForType(PLAYER,resLoc);
+            info.addScannedForTypeAndSyncToPlayer(player,PLAYER,resLoc);
             return true;
         }
         return false;

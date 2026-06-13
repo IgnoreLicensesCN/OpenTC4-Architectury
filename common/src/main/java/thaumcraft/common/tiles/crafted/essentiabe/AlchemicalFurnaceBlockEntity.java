@@ -42,7 +42,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
         super(blockEntityType, blockPos, blockState,AlchemicalFurnaceMenu::new);
     }
     public AlchemicalFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ALCHEMICAL_FURNACE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ALCHEMICAL_FURNACE(), blockPos, blockState);
     }
     public static final int ASPECT_GIVEN_ITEM_SLOT = 0;
     public static final int FUEL_SLOT = 1;

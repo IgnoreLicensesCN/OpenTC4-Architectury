@@ -13,7 +13,7 @@ public class FocalManipulatorMenu extends AbstractThaumcraftMenu<FocalManipulato
     public FocalManipulatorMenu(int containerID,
                             Inventory inventory,
                                 FocalManipulatorBlockEntity be) {
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.FOCAL_MANIPULATOR,containerID,inventory,be);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.FOCAL_MANIPULATOR(),containerID,inventory,be);
     }
     public FocalManipulatorMenu(
             MenuType<?> menuType,

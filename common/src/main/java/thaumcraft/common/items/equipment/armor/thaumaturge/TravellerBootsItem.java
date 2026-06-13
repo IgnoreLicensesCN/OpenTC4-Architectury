@@ -36,14 +36,14 @@ public class TravellerBootsItem extends ArmorItem implements IAugmentationRunicS
         Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
 
         if (slot == this.getType().getSlot()) {
-            modifiers.put(EntityUtils.ThaumcraftAttributeInstances.STEP_HEIGHT_ADDITION_NOT_SNEAKING, new AttributeModifier(
+            modifiers.put(EntityUtils.ThaumcraftAttributeCategoryInstances.STEP_HEIGHT_ADDITION_NOT_SNEAKING(), new AttributeModifier(
                     TRAVELLER_STEP_BOOST_UUID,
                     "Traveller boots step boost",
                     0.5,
                     AttributeModifier.Operation.ADDITION
             ));
             modifiers.put(
-                    EntityUtils.ThaumcraftAttributeInstances.FLYING_SPEED_CONTROL_OVERRIDE,new AttributeModifier(
+                    EntityUtils.ThaumcraftAttributeCategoryInstances.FLYING_SPEED_CONTROL_OVERRIDE(),new AttributeModifier(
                             TRAVELLER_FLYING_SPEED_CONTROL,
                             "Traveller boots flying horizontal speed control",
                             0.05,

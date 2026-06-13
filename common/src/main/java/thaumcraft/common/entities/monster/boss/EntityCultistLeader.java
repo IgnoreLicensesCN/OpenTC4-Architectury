@@ -53,7 +53,7 @@ public class EntityCultistLeader extends EntityThaumcraftBoss implements IRanged
    }
 
    public void generateName() {
-      int t = (int)this.getEntityAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
+      int t = (int)this.getEntityAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
       if (t >= 0) {
          this.setCustomNameTag(String.format(Component.translatable("entity.Thaumcraft.CultistLeader.name"), this.getTitle(), ChampionModifier.mods[t].getModNameLocalized()));
       }

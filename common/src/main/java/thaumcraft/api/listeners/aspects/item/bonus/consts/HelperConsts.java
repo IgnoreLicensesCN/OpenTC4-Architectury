@@ -59,8 +59,8 @@ public class HelperConsts {
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.PIERCING,UnmodifiableAspectList.of(Aspects.WEAPON, Aspects.ENTROPY));//added
         ENCHANTMENT_ASPECT_MAP.put(Enchantments.MENDING,UnmodifiableAspectList.of(Aspects.MAGIC, Aspects.CRAFT));//added
 
-        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.HASTE, UnmodifiableAspectList.of(Aspects.MOTION));
-        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.REPAIR, UnmodifiableAspectList.of(Aspects.TOOL));
+        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), UnmodifiableAspectList.of(Aspects.MOTION));
+        ENCHANTMENT_ASPECT_MAP.put(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(), UnmodifiableAspectList.of(Aspects.TOOL));
 
     }
 

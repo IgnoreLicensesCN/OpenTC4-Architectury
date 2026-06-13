@@ -1,6 +1,6 @@
 package com.linearity.opentc4.forge;
 
-import com.linearity.opentc4.IAttackBlockListenerItem;
+import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;

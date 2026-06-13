@@ -12,11 +12,25 @@ public class ThaumcraftFluids {
 
     public static class ThaumcraftFluidInstances {
 
-        public static final FluxGooFluid FLUX_GOO_FLUID = Registry.SUPPLIER_FLUX_GOO_FLUID.get();
-        public static final FluxGasFluid FLUX_GAS_FLUID = Registry.SUPPLIER_FLUX_GAS_FLUID.get();
-        public static final DeathFluid DEATH_FLUID = Registry.SUPPLIER_DEATH_FLUID.get();
-        public static final PureFluid.PureFluidSource PURE_FLUID_SOURCE = Registry.SUPPLIER_PURE_FLUID_SOURCE.get();
-        public static final PureFluid.PureFluidFlowing PURE_FLUID_FLOWING = Registry.SUPPLIER_PURE_FLUID_FLOWING.get();
+        public static FluxGooFluid FLUX_GOO_FLUID() {
+            return Registry.SUPPLIER_FLUX_GOO_FLUID.get();
+        }
+
+        public static FluxGasFluid FLUX_GAS_FLUID() {
+            return Registry.SUPPLIER_FLUX_GAS_FLUID.get();
+        }
+
+        public static DeathFluid DEATH_FLUID() {
+            return Registry.SUPPLIER_DEATH_FLUID.get();
+        }
+
+        public static PureFluid.PureFluidSource PURE_FLUID_SOURCE() {
+            return Registry.SUPPLIER_PURE_FLUID_SOURCE.get();
+        }
+
+        public static PureFluid.PureFluidFlowing PURE_FLUID_FLOWING() {
+            return Registry.SUPPLIER_PURE_FLUID_FLOWING.get();
+        }
     }
 
     public static class Registry {

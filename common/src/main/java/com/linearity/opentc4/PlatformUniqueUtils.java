@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 
 import java.util.List;
 import java.util.Optional;

@@ -149,13 +149,13 @@ public class EntityThaumcraftBoss extends Monster implements IBossDisplayData {
             IAttributeInstance iattributeinstance2 = this.getEntityAttribute(SharedMonsterAttributes.attackDamage);
 
             for(int a = 0; a < 5; ++a) {
-               iattributeinstance2.removeModifier(EntityUtils.ThaumcraftAttributeInstances.DMGBUFF[a]);
-               iattributeinstance.removeModifier(EntityUtils.ThaumcraftAttributeInstances.HPBUFF[a]);
+               iattributeinstance2.removeModifier(EntityUtils.ThaumcraftAttributeCategoryInstances.DMGBUFF[a]);
+               iattributeinstance.removeModifier(EntityUtils.ThaumcraftAttributeCategoryInstances.HPBUFF[a]);
             }
 
             for(int a = 0; a < Math.min(5, players - 1); ++a) {
-               iattributeinstance.applyModifier(EntityUtils.ThaumcraftAttributeInstances.HPBUFF[a]);
-               iattributeinstance2.applyModifier(EntityUtils.ThaumcraftAttributeInstances.DMGBUFF[a]);
+               iattributeinstance.applyModifier(EntityUtils.ThaumcraftAttributeCategoryInstances.HPBUFF[a]);
+               iattributeinstance2.applyModifier(EntityUtils.ThaumcraftAttributeCategoryInstances.DMGBUFF[a]);
             }
 
             double mm = this.getMaxHealth() / om;

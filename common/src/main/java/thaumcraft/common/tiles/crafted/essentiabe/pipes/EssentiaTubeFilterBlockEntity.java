@@ -25,7 +25,7 @@ public class EssentiaTubeFilterBlockEntity
     }
 
     public EssentiaTubeFilterBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_FILTER,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_FILTER(),blockPos, blockState);
     }
 
     @Override

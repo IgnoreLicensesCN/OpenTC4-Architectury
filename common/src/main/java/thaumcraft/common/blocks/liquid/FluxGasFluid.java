@@ -25,7 +25,7 @@ public class FluxGasFluid extends FiniteFlowingFluid {
 
     @Override
     protected @NotNull BlockState createLegacyBlock(FluidState fluidState) {
-        return FLUX_GAS.defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
+        return FLUX_GAS().defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
     }
 
 }

@@ -45,7 +45,7 @@ public class AncientLockEmptyBlock extends SuppressedWarningBlock {
         if (state.getBlock() != this){return;}
         level.setBlock(
                 pos,
-                ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_INSERTED.defaultBlockState().setValue(FACING,state.getValue(FACING)),
+                ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_INSERTED().defaultBlockState().setValue(FACING,state.getValue(FACING)),
                 3
         );
     }

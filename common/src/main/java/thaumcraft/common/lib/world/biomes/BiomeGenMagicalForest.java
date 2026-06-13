@@ -128,11 +128,11 @@ public class BiomeGenMagicalForest /*extends BiomeGenBase*/ {
 
    private static @NotNull PlacedFeature getPlaceRandomTreeFeature() {
       Holder<ConfiguredFeature<?, ?>> silverTreeHolder = Holder.direct(
-              ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_GENERATED_CONFIGURED);
+              ThaumcraftWorldGenConfiguredFeatures.Configureds.SILVERWOOD_GENERATED_CONFIGURED());
       PlacedFeature silverTreePlaced = new PlacedFeature(
               silverTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
       Holder<ConfiguredFeature<?, ?>> greatTreeHolder = Holder.direct(
-              ThaumcraftWorldGenConfiguredFeatures.Configureds.GREATWOOD_GENERATED_CONFIGURED);
+              ThaumcraftWorldGenConfiguredFeatures.Configureds.GREATWOOD_GENERATED_CONFIGURED());
       PlacedFeature greatTreePlaced = new PlacedFeature(
               greatTreeHolder, List.of(RarityFilter.onAverageOnceEvery(1)));
 

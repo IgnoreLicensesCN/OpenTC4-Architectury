@@ -16,7 +16,7 @@ import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.ThaumcraftFluidIn
 public class FluxGooBlock extends FiniteLiquidBlock {
     public FluxGooBlock() {
         super(
-                FLUX_GOO_FLUID,
+                FLUX_GOO_FLUID(),
                 Properties.of()
                         .mapColor(MapColor.COLOR_PURPLE)
                         .strength(-1.0F, 3600000.0F)
@@ -27,7 +27,7 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         );
     }
     public static BlockState fullOfGoo(){
-        var blockInstance = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO;
+        var blockInstance = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO();
         return blockInstance.defaultBlockState().setValue(
                 blockInstance.finiteFluid.liquidLevel,
                 blockInstance.finiteFluid.maxLevel
@@ -55,7 +55,7 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         if (entity instanceof LivingEntity living) {
             MobEffectInstance eff =
                     new MobEffectInstance(
-                            ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST,
+                            ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST(),
                             600,
                             lvl / 3,
                             true, false);

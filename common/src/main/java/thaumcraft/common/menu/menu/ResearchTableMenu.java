@@ -18,7 +18,7 @@ public class ResearchTableMenu extends AbstractThaumcraftMenu<ResearchTableBlock
             int containerID,
             Inventory inventory,
             ResearchTableBlockEntity table){
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.RESEARCH_TABLE,containerID,inventory,table);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.RESEARCH_TABLE(),containerID,inventory,table);
     }
 
     public ResearchTableMenu(

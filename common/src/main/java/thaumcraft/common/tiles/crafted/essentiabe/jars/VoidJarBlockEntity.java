@@ -15,7 +15,7 @@ public class VoidJarBlockEntity extends EssentiaJarBlockEntity {
     }
 
     public VoidJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.VOID_JAR,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.VOID_JAR(),blockPos, blockState);
     }
 
     @Override

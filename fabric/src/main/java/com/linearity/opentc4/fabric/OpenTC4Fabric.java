@@ -1,7 +1,6 @@
 package com.linearity.opentc4.fabric;
 
 import com.linearity.opentc4.OpenTC4;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 

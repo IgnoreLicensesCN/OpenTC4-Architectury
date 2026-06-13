@@ -42,7 +42,7 @@ public class AdvancedAlchemicalFurnaceBaseCornerBlock extends AbstractAdvancedAl
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
-            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_CONSTRUCT.defaultBlockState(), 3);
+            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_CONSTRUCT().defaultBlockState(), 3);
         }
     }
 }

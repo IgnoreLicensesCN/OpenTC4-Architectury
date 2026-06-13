@@ -32,7 +32,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         super(blockEntityType, blockPos, blockState);
     }
     public FertilityArcaneLampBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.FERTILITY_ARCANE_LAMP, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.FERTILITY_ARCANE_LAMP(), blockPos, blockState);
     }
 
     public static final int CHARGES_PER_ESSENTIA = 1;

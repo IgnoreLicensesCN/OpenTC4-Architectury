@@ -69,7 +69,7 @@ public class AlchemicalFurnaceBlock extends AbstractExtendedMenuProviderContaine
         if (
                 level != null
                 && blockState.getBlock() == this
-                        && blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ALCHEMICAL_FURNACE
+                        && blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ALCHEMICAL_FURNACE()
         ) {
             if ((!level.isClientSide)){
                 return (level1, blockPos, blockState2, blockEntity) ->{

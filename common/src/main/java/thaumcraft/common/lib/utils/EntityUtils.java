@@ -2,11 +2,9 @@ package thaumcraft.common.lib.utils;
 
 import com.linearity.opentc4.mixin.LivingEntityAccessor;
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -103,14 +101,33 @@ public class EntityUtils {
     public static AttributeModifier getNewMightyBuffModifier(){
         return new AttributeModifier(MIGHTY_BUFF_MODIFIER_UUID, "Mighty damage boost", 3.0F, MULTIPLY_TOTAL);
     }
-    public static class ThaumcraftAttributeInstances {
+    public static class ChampionModifierBaseValues {
 
         public static final double CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED = -2.;
         public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED = -1.;
         public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED = 0.;
-        public static final Attribute CHAMPION_MOD = Registry.SUPPLIER_CHAMPION_MOD.get();
-        public static final Attribute STEP_HEIGHT_ADDITION_NOT_SNEAKING = Registry.SUPPLIER_STEP_HEIGHT_ADDITION_NOT_SNEAKING.get();
-        public static final Attribute FLYING_SPEED_CONTROL_OVERRIDE = Registry.SUPPLIER_FLYING_SPEED_CONTROL_OVERRIDE.get();
+    }
+    public static class ThaumcraftAttributeCategoryInstances {
+
+        public static Attribute CHAMPION_MOD() {
+            return Registry.SUPPLIER_CHAMPION_MOD.get();
+        }
+
+        public static Attribute STEP_HEIGHT_ADDITION_NOT_SNEAKING() {
+            return Registry.SUPPLIER_STEP_HEIGHT_ADDITION_NOT_SNEAKING.get();
+        }
+
+        public static Attribute FLYING_SPEED_CONTROL_OVERRIDE() {
+            return Registry.SUPPLIER_FLYING_SPEED_CONTROL_OVERRIDE.get();
+        }
+
+        public static Attribute HARNESS_FLYING_SPEED_ADD_PERCENT() {
+            return Registry.SUPPLIER_HARNESS_FLYING_SPEED_ADD_PERCENT.get();
+        }
+
+        public static Attribute HARNESS_FUEL_DURATION_ADD_PERCENT() {
+            return Registry.SUPPLIER_HARNESS_FUEL_DURATION_ADD_PERCENT.get();
+        }
 //        public static final Attribute FORWARD_IMPULSE_NOT_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER.get();
 //        public static final Attribute FORWARD_IMPULSE_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_IN_WATER.get();
 //        public static final AttributeModifierTweaked CHAMPION_HEALTH = new AttributeModifierTweaked(
@@ -148,7 +165,7 @@ public class EntityUtils {
         public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ATTRIBUTE);
         public static final RegistrySupplier<Attribute> SUPPLIER_CHAMPION_MOD = ATTRIBUTES.register(
                 "champion_modifier_applied_state",
-                () -> new RangedAttribute("tc.mobmod", -2.0F, -2.0F, 100.0F).setSyncable(true)
+                () -> new RangedAttribute("tc.mobmod", ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED, ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED, 100.0F).setSyncable(true)
         );
         public static final RegistrySupplier<Attribute> SUPPLIER_STEP_HEIGHT_ADDITION_NOT_SNEAKING = ATTRIBUTES.register(
                 "attributes." + Thaumcraft.MOD_ID + ".step_height_addition_not_sneaking",
@@ -157,6 +174,14 @@ public class EntityUtils {
         public static final RegistrySupplier<Attribute> SUPPLIER_FLYING_SPEED_CONTROL_OVERRIDE = ATTRIBUTES.register(
                 "attributes." + Thaumcraft.MOD_ID + ".flying_speed_control_override",
                 () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".flying_speed_control_override", 0, 0, 100.0F).setSyncable(true)
+        );
+        public static final RegistrySupplier<Attribute> SUPPLIER_HARNESS_FLYING_SPEED_ADD_PERCENT = ATTRIBUTES.register(
+                "attributes." + Thaumcraft.MOD_ID + ".harness_flying_speed_add_percent",
+                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".harness_flying_speed_add_percent", 0, -100, 100.0F).setSyncable(true)
+        );
+        public static final RegistrySupplier<Attribute> SUPPLIER_HARNESS_FUEL_DURATION_ADD_PERCENT = ATTRIBUTES.register(
+                "attributes." + Thaumcraft.MOD_ID + ".harness_fuel_duration_add_percent",
+                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".harness_fuel_duration_add_percent", 0, -100, 100.0F).setSyncable(true)
         );
 //        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER = ATTRIBUTES.register(
 //                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",
@@ -402,11 +427,11 @@ public class EntityUtils {
                     .nextInt(ChampionModifier.mods.length);
         }
 
-        AttributeInstance modai = entity.getAttribute(ThaumcraftAttributeInstances.CHAMPION_MOD);
+        AttributeInstance modai = entity.getAttribute(ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
         if (modai == null) {
             return;
         }
-        modai.setBaseValue(ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
+        modai.setBaseValue(ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
 //      modai.removeModifier(ChampionModifier.mods[type].attributeMod);
 //      modai.applyModifier(ChampionModifier.mods[type].attributeMod);
         if (!(entity instanceof EntityThaumcraftBoss)) {

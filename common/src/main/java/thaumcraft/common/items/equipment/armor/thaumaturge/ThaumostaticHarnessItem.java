@@ -36,7 +36,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.utils.equip.EquipmentSlotSlotAccess.CHESTPLATE_ACCESS;
-import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FLYING_SPEED_ADD_PERCENT;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FUEL_DURATION_ADD_PERCENT;
 
 public class ThaumostaticHarnessItem extends ArmorItem implements
         IVisDiscountGear,
@@ -182,29 +183,16 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     protected void multiplySpeed(ItemStack harnessStack,Player player){
-        int haste = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.HASTE, harnessStack);
-        final float[] flyingSpeedModifier = {0.7F + 0.075F * (float) haste};
-        forEachBaubleAndArmor(
-                player,stack -> {
-                    if (stack.getItem() instanceof IHarnessFlyingSpeedModifier speedModifier) {
-                        flyingSpeedModifier[0] += speedModifier.getHarnessSpeedMultiplier(stack);
-                    }
-                }
-        );
+        int haste = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), harnessStack);
+        double flyingSpeedModifier = (0.7F + 0.075F * (float) haste) * (1+player.getAttributeValue(HARNESS_FUEL_DURATION_ADD_PERCENT()));
         var speed = player.getDeltaMovement();
-        player.setDeltaMovement(speed.x * flyingSpeedModifier[0], speed.y, speed.z * flyingSpeedModifier[0]);
+        player.setDeltaMovement(speed.x * flyingSpeedModifier, speed.y, speed.z * flyingSpeedModifier);
     }
     protected void checkAndConsumeFuel(ItemStack itemStack, Player p) {
         var costAtomic = PLAYER_NEXT_COST_ASPECT_TICK.computeIfAbsent(p, _ignored -> new AtomicInteger());
         if (costAtomic.decrementAndGet() <= 0) {
             if (consumeFuel(itemStack)){
-                float[] fuelMultiplier = {1};
-                forEachBaubleAndArmor(p, stack -> {
-                    if (stack.getItem() instanceof IHarnessFuelDurationMultiplier fuelDurationMultiplier) {
-                        fuelMultiplier[0] *= fuelDurationMultiplier.getHarnessFuelDurationMultiplier(stack);
-                    }
-                });
-                costAtomic.addAndGet((int) (DEFAULT_COST_TICK_DURATION * fuelMultiplier[0]));
+                costAtomic.addAndGet((int) (DEFAULT_COST_TICK_DURATION * (1 + p.getAttributeValue(HARNESS_FLYING_SPEED_ADD_PERCENT()))));
             }
         }
     }

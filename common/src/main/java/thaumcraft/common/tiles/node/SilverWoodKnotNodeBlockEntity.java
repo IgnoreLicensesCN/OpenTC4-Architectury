@@ -10,7 +10,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class SilverWoodKnotNodeBlockEntity extends AbstractNodeBlockEntity {
     public SilverWoodKnotNodeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.SILVERWOOD_KNOT_NODE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.SILVERWOOD_KNOT_NODE(), blockPos, blockState);
     }
 
     public SilverWoodKnotNodeBlockEntity(BlockEntityType<? extends SilverWoodKnotNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -27,7 +27,7 @@ public class SilverWoodKnotNodeBlockEntity extends AbstractNodeBlockEntity {
     @Override
     public void removeNode() {
         if (this.level != null) {
-            this.level.setBlock(this.getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG.defaultBlockState(), Block.UPDATE_ALL);
+            this.level.setBlock(this.getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 

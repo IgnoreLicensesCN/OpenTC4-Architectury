@@ -177,7 +177,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
         if (level0.isClientSide()) {
             return null;
         }
-        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.INFERNAL_FURNACE) {
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.INFERNAL_FURNACE()) {
             return null;
         }
         return ((level, blockPos, blockState, blockEntity) -> {

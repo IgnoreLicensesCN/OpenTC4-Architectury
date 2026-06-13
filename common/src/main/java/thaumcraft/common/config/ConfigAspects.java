@@ -673,15 +673,15 @@ public class ConfigAspects {
               Aspects.POISON, 1).addAll(Aspects.EXCHANGE, 2));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigItems.itemZombieBrain), (new LinkedHashAspectList<>()).addAll(Aspects.FLESH, 2).addAll(
               Aspects.MIND, 4).addAll(Aspects.UNDEAD, 2));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM), (new LinkedHashAspectList<>()).addAll(Aspects.TRAP, 2).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.AMBER_GEM()), (new LinkedHashAspectList<>()).addAll(Aspects.TRAP, 2).addAll(
               Aspects.CRYSTAL, 2));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT), (new LinkedHashAspectList<>()).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), (new LinkedHashAspectList<>()).addAll(
               Aspects.MIND, 8));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.TAINTED_GOO,1), (new LinkedHashAspectList<>()).addAll(Aspects.TAINT, 3).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.TAINTED_GOO(),1), (new LinkedHashAspectList<>()).addAll(Aspects.TAINT, 3).addAll(
               Aspects.SLIME, 1));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.TAINT_TENDRIL,1), (new LinkedHashAspectList<>()).addAll(Aspects.TAINT, 2).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.TAINT_TENDRIL(),1), (new LinkedHashAspectList<>()).addAll(Aspects.TAINT, 2).addAll(
               Aspects.GREED, 1).addAll(Aspects.HUNGER, 1));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN), (new LinkedHashAspectList<>()).addAll(Aspects.GREED, 1));
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN()), (new LinkedHashAspectList<>()).addAll(Aspects.GREED, 1));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigItems.itemLootbag, 1, 0), (new LinkedHashAspectList<>()).addAll(Aspects.GREED, 8));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigItems.itemLootbag, 1, 1), (new LinkedHashAspectList<>()).addAll(Aspects.GREED, 16));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigItems.itemLootbag, 1, 2), (new LinkedHashAspectList<>()).addAll(Aspects.GREED, 32));
@@ -707,7 +707,7 @@ public class ConfigAspects {
               Aspects.ORDER, 2).addAll(Aspects.CRYSTAL, 1));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigItems.itemShard, 1, 5), (new LinkedHashAspectList<>()).addAll(Aspects.MAGIC, 1).addAll(
               Aspects.ENTROPY, 2).addAll(Aspects.CRYSTAL, 1));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS, 1), (new AspectList(new ItemStack(ConfigItems.itemShard, 1, 6))).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.SALIS_MUNDUS(), 1), (new AspectList(new ItemStack(ConfigItems.itemShard, 1, 6))).addAll(
               Aspects.MAGIC, 2).remove(
               Aspects.CRYSTAL));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigBlocks.blockMetalDevice), (new AspectList(new ItemStack(Items.cauldron, 1, 32767))).addAll(
@@ -758,15 +758,15 @@ public class ConfigAspects {
               Aspects.METAL, 4).addAll(Aspects.ELDRITCH, 1));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigBlocks.blockWoodenDevice, 1, 8), (new LinkedHashAspectList<>()).addAll(
               Aspects.ELDRITCH, 1).addAll(Aspects.TREE, 2).addAll(Aspects.CLOTH, 3));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE), (new LinkedHashAspectList<>()).addAll(Aspects.ELDRITCH, 5).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE()), (new LinkedHashAspectList<>()).addAll(Aspects.ELDRITCH, 5).addAll(
               Aspects.AURA, 3).addAll(Aspects.MAGIC, 3).addAll(Aspects.SENSES, 3).addAll(
               Aspects.SOUL, 3));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.CRIMSON_RITES), (new LinkedHashAspectList<>()).addAll(Aspects.MIND, 5).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.CRIMSON_RITES()), (new LinkedHashAspectList<>()).addAll(Aspects.MIND, 5).addAll(
               Aspects.MAGIC, 3).addAll(
               Aspects.ELDRITCH, 3).addAll(Aspects.SOUL, 3));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET), (new LinkedHashAspectList<>()).addAll(Aspects.TRAP, 4).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET()), (new LinkedHashAspectList<>()).addAll(Aspects.TRAP, 4).addAll(
               Aspects.MIND, 4).addAll(Aspects.MECHANISM, 4));
-      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL), (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 16).addAll(
+      ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.PRIME_PEARL()), (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 16).addAll(
               Aspects.EARTH, 16).addAll(Aspects.FIRE, 16).addAll(Aspects.WATER, 16).addAll(Aspects.ORDER, 16).addAll(
               Aspects.ENTROPY, 16));
       ItemBasicAspectRegistration.registerItemBasicAspects(new ItemStack(ConfigBlocks.blockEldritch, 1, 32767), (new LinkedHashAspectList<>()).addAll(

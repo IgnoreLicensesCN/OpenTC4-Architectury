@@ -2,7 +2,7 @@ package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
 import com.google.common.util.concurrent.AtomicDouble;
-import com.linearity.opentc4.IAttackBlockListenerItem;
+import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

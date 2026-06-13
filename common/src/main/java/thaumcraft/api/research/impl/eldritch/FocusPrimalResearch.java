@@ -1,5 +1,6 @@
 package thaumcraft.api.research.impl.eldritch;
 
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.research.implexample.ResearchNoteUnlockedResearchWithParents;
 import thaumcraft.api.research.interfaces.*;
 import thaumcraft.common.Thaumcraft;
@@ -16,5 +17,10 @@ public class FocusPrimalResearch
     @Override
     public ClueResourceLocation getNeededClue() {
         return CLUE;
+    }
+
+    @Override
+    public boolean canPlayerCreateResearchNote(Player player) {
+        return super.canPlayerCreateResearchNote(player) || playerHasClue(player);
     }
 }

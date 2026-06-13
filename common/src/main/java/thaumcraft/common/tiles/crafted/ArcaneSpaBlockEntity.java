@@ -30,7 +30,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public ArcaneSpaBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_SPA, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_SPA(), blockPos, blockState);
     }
     protected final NonNullList<ItemStack> items = NonNullList.withSize(1,ItemStack.EMPTY);
 
@@ -81,7 +81,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
                 for (int zOffset = -2;zOffset <= 2;zOffset++){
                     if (canPlaceAtLocation(selfPos.offset(xOffset,1,zOffset))
                     && costEnoughMaterial()){
-                        this.level.setBlockAndUpdate(selfPos, ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING.defaultFluidState().createLegacyBlock());
+                        this.level.setBlockAndUpdate(selfPos, ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING().defaultFluidState().createLegacyBlock());
                     }
                 }
             }
@@ -90,17 +90,17 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
 
     @Override
     public boolean canAcceptFluid(@NotNull Fluid fluid) {
-        return fluid.isSame(ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE) || fluid.isSame(Fluids.WATER);
+        return fluid.isSame(ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE()) || fluid.isSame(Fluids.WATER);
     }
 
     public boolean hasEnoughMaterial(){
         if (getFluidAmount() >= getFluidCost()){
             var fluid = getFluidStack().getFluid();
-            if (fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE) {
+            if (fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE()) {
                 return true;
             }else if (fluid == Fluids.WATER) {
                 var item = getItem(0);
-                return !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS;
+                return !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS();
             }
         }
         return false;
@@ -108,12 +108,12 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
     public boolean costEnoughMaterial(){
         if (getFluidAmount() >= getFluidCost()){
             var fluid = getFluidStack().getFluid();
-            if (fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE) {
+            if (fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE()) {
                 decreaseFluid(getFluidCost());
                 return true;
             }else if (fluid == Fluids.WATER) {
                 var item = getItem(0);
-                if( !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS){
+                if( !item.isEmpty() && item.getItem() == ThaumcraftItems.ThaumcraftItemInstances.BATH_SALTS()){
                     decreaseFluid(getFluidCost());
                     item.shrink(1);
                     return true;
@@ -135,7 +135,7 @@ public class ArcaneSpaBlockEntity extends SingleFluidContainerBlockEntity
         if (bstate.is(Blocks.WATER)) {
             return true;
         }
-        else return fstate.is(ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING) && !fstate.isSource();
+        else return fstate.is(ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING()) && !fstate.isSource();
     }
 
     @Override

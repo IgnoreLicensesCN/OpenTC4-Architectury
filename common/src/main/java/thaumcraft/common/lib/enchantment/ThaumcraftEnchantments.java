@@ -3,7 +3,6 @@ package thaumcraft.common.lib.enchantment;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import thaumcraft.common.Thaumcraft;
 
@@ -16,11 +15,21 @@ public class ThaumcraftEnchantments {
         public static final RegistrySupplier<EnchantmentDowsing> SUPPLIER_DOWSING = ENCHANTMENTS.register("dowsing", EnchantmentDowsing::new);
     }
 
-    public static final ResourceKey<EnchantmentHaste> HASTE_KEY = Registry.SUPPLIER_HASTE.getKey();
-    public static final ResourceKey<EnchantmentRepair> REPAIR_KEY = Registry.SUPPLIER_REPAIR.getKey();
-    public static final EnchantmentHaste HASTE = Registry.SUPPLIER_HASTE.get();
-    public static final EnchantmentRepair REPAIR = Registry.SUPPLIER_REPAIR.get();
-    public static final EnchantmentDowsing DOWSING = Registry.SUPPLIER_DOWSING.get();
+    public static class ThaumcraftEnchantmentInstances {
+
+        public static EnchantmentHaste HASTE() {
+            return Registry.SUPPLIER_HASTE.get();
+        }
+
+        public static EnchantmentRepair REPAIR() {
+            return Registry.SUPPLIER_REPAIR.get();
+        }
+
+        public static EnchantmentDowsing DOWSING() {
+            return Registry.SUPPLIER_DOWSING.get();
+        }
+    }
+
     public static void init(){
         Registry.ENCHANTMENTS.register();
     }

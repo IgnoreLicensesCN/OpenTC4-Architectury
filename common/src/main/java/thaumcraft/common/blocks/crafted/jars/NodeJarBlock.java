@@ -30,7 +30,7 @@ public class NodeJarBlock extends JarBlock implements
     }
 
     public NodeJarBlockItem getNodeJarItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.NODE_JAR;
+        return ThaumcraftItems.ThaumcraftItemInstances.NODE_JAR();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NodeJarBlock extends JarBlock implements
             var pos = useOnContext.getClickedPos();
             if (level.getBlockEntity(pos) instanceof NodeJarBlockEntity jar) {
                 var nodeInfo = jar.nodeInfo;
-                level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE.defaultBlockState());
+                level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE().defaultBlockState());
                 NodeBlockEntity nodeBlockEntity = (NodeBlockEntity) level.getBlockEntity(pos);
                 if (nodeBlockEntity != null) {
                     nodeBlockEntity.readNodeInfo(nodeInfo);

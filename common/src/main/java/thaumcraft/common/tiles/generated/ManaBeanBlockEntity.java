@@ -25,7 +25,7 @@ public class ManaBeanBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public ManaBeanBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.MANA_BEAN, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.MANA_BEAN(), blockPos, blockState);
     }
     private @NotNull Aspect aspectOwning = Aspects.EMPTY;
     private final AspectList<Aspect> aspectListViewOfSingle = new UnmodifiableSingleAspectListFromSupplier<>(

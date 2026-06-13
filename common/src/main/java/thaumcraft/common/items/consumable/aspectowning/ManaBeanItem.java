@@ -20,7 +20,7 @@ import static com.linearity.opentc4.Consts.ManaBeanBlockEntityOrItemStackTagAcce
 
 public class ManaBeanItem extends BlockItem implements IBonusAspectOwnerItem<Aspect>, IAspectDisplayItem<Aspect> {
     public ManaBeanItem(Properties properties) {
-        super(ThaumcraftBlocks.ThaumcraftBlockInstances.MANA_BEAN,properties);
+        super(ThaumcraftBlocks.ThaumcraftBlockInstances.MANA_BEAN(),properties);
     }
     public ManaBeanItem() {
         this(

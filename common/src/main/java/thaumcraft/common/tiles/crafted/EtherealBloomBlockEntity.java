@@ -29,7 +29,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         super(blockEntityType, blockPos, blockState);
     }
     public EtherealBloomBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ETHEREAL_BLOOM, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ETHEREAL_BLOOM(), blockPos, blockState);
     }
 
 

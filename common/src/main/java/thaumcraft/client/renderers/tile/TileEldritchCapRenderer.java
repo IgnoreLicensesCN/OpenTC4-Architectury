@@ -60,7 +60,7 @@ public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
          GL11.glPushMatrix();
          GL11.glTranslatef((float)x + 0.5F, (float)y + 0.0F, (float)z + 0.5F);
          if (this.entityitem == null || this.eye == null) {
-            this.eye = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE);
+            this.eye = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.ELDRITCH_EYE());
             this.entityitem = new EntityItem(te.getLevel(), 0.0F, 0.0F, 0.0F, this.eye);
             this.entityitem.hoverStart = 0.0F;
          }

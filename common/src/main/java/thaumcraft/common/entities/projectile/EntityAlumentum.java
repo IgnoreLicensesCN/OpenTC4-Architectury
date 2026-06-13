@@ -18,20 +18,20 @@ public class EntityAlumentum extends ThrowableItemProjectile {
    public static EntityType<EntityAlumentum> entityAlumentumType;
 
    public EntityAlumentum(Level par1World){
-      this(ThaumcraftEntities.ALUMENTUM,par1World);
+      this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par1World);
    }
    public EntityAlumentum(EntityType<EntityAlumentum> type,Level par1World) {
       super(type,par1World);
    }
    public EntityAlumentum(LivingEntity par2EntityLiving, Level par1World){
-      this(ThaumcraftEntities.ALUMENTUM,par2EntityLiving,par1World);
+      this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par2EntityLiving,par1World);
    }
    public EntityAlumentum(EntityType<EntityAlumentum> type, LivingEntity par2EntityLiving,Level par1World) {
       super(type,par2EntityLiving,par1World);
    }
 
    public EntityAlumentum(Level par1World, double par2, double par4, double par6) {
-      this(ThaumcraftEntities.ALUMENTUM,par6, par2, par4, par1World);
+      this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par6, par2, par4, par1World);
    }
    public EntityAlumentum(EntityType<EntityAlumentum> type, double par2, double par4, double par6,Level par1World) {
       super(type,par6, par2, par4, par1World);
@@ -44,7 +44,7 @@ public class EntityAlumentum extends ThrowableItemProjectile {
 
    @Override
    protected @NotNull Item getDefaultItem() {
-      return ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM;
+      return ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM();
    }
    @Override
    public void tick() {

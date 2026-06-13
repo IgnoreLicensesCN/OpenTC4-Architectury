@@ -40,7 +40,7 @@ public class MatureSporeStalkBlock extends AbstractTaintFibreBlock{
         List<EntityTaintSpore> sporesNearby = world.getEntitiesOfClass(EntityTaintSpore.class, box);
 
         if (sporesNearby.isEmpty()) {
-            world.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK.defaultBlockState());
+            world.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK().defaultBlockState());
         }
     }
 }

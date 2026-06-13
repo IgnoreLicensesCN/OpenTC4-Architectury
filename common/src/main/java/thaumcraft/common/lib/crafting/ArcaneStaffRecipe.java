@@ -149,6 +149,6 @@ public class ArcaneStaffRecipe extends AbstractArcaneRecipe {
     }
 
     protected Item getItemOfResult(){
-        return ThaumcraftItems.ThaumcraftItemInstances.STAFF_CASTING;
+        return ThaumcraftItems.ThaumcraftItemInstances.STAFF_CASTING();
     }
 }

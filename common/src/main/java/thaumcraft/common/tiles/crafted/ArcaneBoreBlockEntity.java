@@ -91,7 +91,7 @@ public class ArcaneBoreBlockEntity
         super(blockEntityType, blockPos, blockState, menuFactory);
     }
     public ArcaneBoreBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_BORE, blockPos, blockState, ArcaneBoreMenu::new);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_BORE(), blockPos, blockState, ArcaneBoreMenu::new);
     }
     public @NotNull BlockPos getDrillPos(){
         var pos = this.getBlockPos();
@@ -439,7 +439,7 @@ public class ArcaneBoreBlockEntity
     }
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     private void doRepair(ItemStack is) {
-        int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
+        int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),0);
         if (enchantmentRepairLevel > 0) {
             CentiVisList<PrimalAspect> repairCostForStack = null;
             if (is.getItem() instanceof IRepairable repairable){

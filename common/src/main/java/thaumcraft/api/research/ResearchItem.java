@@ -169,4 +169,8 @@ public abstract class ResearchItem
     public ResearchItemResourceLocation getKey() {
         return key;
     }
+
+    public static void onDatapackReload() {
+        researchItems.clear();
+    }
 }

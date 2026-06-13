@@ -49,6 +49,7 @@ public class PacketHandler {
         PacketPlayerCreateResearchNoteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCreateResearchNoteC2S.ID,PacketPlayerCreateResearchNoteC2S::decode);
         PacketPlayerCompleteResearchWithAspectC2S.messageType = INSTANCE.registerC2S(PacketPlayerCompleteResearchWithAspectC2S.ID,PacketPlayerCompleteResearchWithAspectC2S::decode);
         PacketUpdateAspectS2C.messageType = INSTANCE.registerS2C(PacketUpdateAspectS2C.ID, PacketUpdateAspectS2C::decode);
+        PacketUpdateScannedS2C.messageType = INSTANCE.registerS2C(PacketUpdateScannedS2C.ID, PacketUpdateScannedS2C::read);
         PacketAspectPlaceC2S.messageType = INSTANCE.registerC2S(PacketAspectPlaceC2S.ID, PacketAspectPlaceC2S::decode);
         PacketAspectDiscoveryS2C.messageType = INSTANCE.registerS2C(PacketAspectDiscoveryS2C.ID, PacketAspectDiscoveryS2C::decode);
         PacketAspectCombinationC2S.messageType = INSTANCE.registerC2S(PacketAspectCombinationC2S.ID,PacketAspectCombinationC2S::decode);

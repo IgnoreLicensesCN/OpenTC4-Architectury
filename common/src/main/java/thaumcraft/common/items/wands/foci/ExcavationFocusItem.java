@@ -54,7 +54,7 @@ import java.util.function.Consumer;
 
 import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
-import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.DOWSING;
+import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING;
 
 public class ExcavationFocusItem extends BasicFocusItem {
     public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
@@ -336,7 +336,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
         if (fortune != 0){
             enchantments.put(Enchantments.BLOCK_FORTUNE, fortune);
             enchantments.put(Enchantments.SILK_TOUCH, silk);
-            enchantments.put(DOWSING, dowsing);
+            enchantments.put(DOWSING(), dowsing);
         }
         return enchantments;
     }

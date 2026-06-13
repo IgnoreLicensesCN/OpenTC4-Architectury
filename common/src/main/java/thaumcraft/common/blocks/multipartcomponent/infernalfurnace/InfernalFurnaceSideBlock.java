@@ -120,7 +120,7 @@ public class InfernalFurnaceSideBlock extends AbstractInfernalFurnaceComponent i
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide() || blockEntityType != INFERNAL_FURNACE_NOZZLE){
+        if (level.isClientSide() || blockEntityType != INFERNAL_FURNACE_NOZZLE()){
             return null;
         }
         return (level1, blockPos, blockState1, blockEntity) -> {

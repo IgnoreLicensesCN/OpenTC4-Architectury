@@ -8,6 +8,6 @@ import static thaumcraft.common.lib.effects.ThaumcraftEffects.ThaumcraftEffectTy
 public class BlurredVisionShaderHandler extends AbstractShaderHandler {
     public static final BlurredVisionShaderHandler INSTANCE = new BlurredVisionShaderHandler();
     public BlurredVisionShaderHandler() {
-        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/blurtc.json"), BLURRED_VISION);
+        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/blurtc.json"), BLURRED_VISION());
     }
 }

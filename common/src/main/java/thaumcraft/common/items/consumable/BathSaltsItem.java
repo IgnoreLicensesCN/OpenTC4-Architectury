@@ -22,7 +22,7 @@ public class BathSaltsItem extends Item implements ILiquidListenableItem {
     public void whenInFluid(ItemEntity itemEntity, ItemStack stack, BlockPos pos, FluidState fluidState) {
         if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
             stack.shrink(1);
-            itemEntity.level().setBlockAndUpdate(pos, ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE.defaultFluidState().createLegacyBlock());
+            itemEntity.level().setBlockAndUpdate(pos, ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE().defaultFluidState().createLegacyBlock());
         }
     }
 

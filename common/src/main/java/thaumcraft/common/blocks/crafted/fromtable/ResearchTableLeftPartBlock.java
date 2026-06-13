@@ -63,11 +63,11 @@ public class ResearchTableLeftPartBlock extends AbstractExtendedMenuProviderCont
         super.tick(blockState, level, blockPos, randomSource);
         var facing = blockState.getValue(FACING);
         var probablyRightPartBlockState = level.getBlockState(getRightPartPos(facing,blockPos));
-        if (!probablyRightPartBlockState.is(ThaumcraftBlocks.ThaumcraftBlockInstances.RESEARCH_TABLE_RIGHT_PART)
+        if (!probablyRightPartBlockState.is(ThaumcraftBlocks.ThaumcraftBlockInstances.RESEARCH_TABLE_RIGHT_PART())
                 || !Objects.equals(probablyRightPartBlockState.getValue(ResearchTableRightPartBlock.FACING)
                 .getOpposite(),facing)
         ) {
-            level.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TABLE.defaultBlockState().setValue(TableBlock.AXIS, facing.getAxis()));
+            level.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TABLE().defaultBlockState().setValue(TableBlock.AXIS, facing.getAxis()));
         }
     }
 

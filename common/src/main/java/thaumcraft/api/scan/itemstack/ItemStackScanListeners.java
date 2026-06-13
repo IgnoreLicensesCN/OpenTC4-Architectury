@@ -34,7 +34,7 @@ public enum ItemStackScanListeners {
         }
         var basicAspects = ItemBasicAspectGetter.getBasicAspectsServer(item);
         if (ScanManager.CommonScanManager.onMeetAspectsToScan(player, basicAspects)){
-            info.addScannedForType(ITEM,itemID);
+            info.addScannedForTypeAndSyncToPlayer(player,ITEM,itemID);
             return true;
         }
         return false;

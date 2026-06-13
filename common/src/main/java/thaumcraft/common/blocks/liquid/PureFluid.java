@@ -26,7 +26,7 @@ import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances
 public abstract class PureFluid extends FlowingFluid {
 
     public @NotNull Item getBucket() {
-        return ThaumcraftItems.ThaumcraftItemInstances.PURE_FLUID_BUCKET;
+        return ThaumcraftItems.ThaumcraftItemInstances.PURE_FLUID_BUCKET();
     }
 
     @Override
@@ -36,7 +36,7 @@ public abstract class PureFluid extends FlowingFluid {
 
     @Override
     protected @NotNull BlockState createLegacyBlock(FluidState fluidState) {
-        return PURE_FLUID.defaultBlockState().setValue(LEVEL, fluidState.getValue(LEVEL));
+        return PURE_FLUID().defaultBlockState().setValue(LEVEL, fluidState.getValue(LEVEL));
     }
 
     @Override
@@ -81,12 +81,12 @@ public abstract class PureFluid extends FlowingFluid {
 
     @Override
     public @NotNull Fluid getFlowing() {
-        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING;
+        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING();
     }
 
     @Override
     public @NotNull Fluid getSource() {
-        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE;
+        return ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE();
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class PureFluid extends FlowingFluid {
     }
     @Override
     public boolean isSame(Fluid fluid) {
-        return fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE || fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING;
+        return fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_SOURCE() || fluid == ThaumcraftFluids.ThaumcraftFluidInstances.PURE_FLUID_FLOWING();
     }
 
     @Override

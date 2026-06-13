@@ -19,7 +19,7 @@ public class ThaumarhiaEffect extends MobEffect implements IPreventMilkRemoveEff
             var pos = target.blockPosition();
             var level = target.level();
             if (level.getBlockState(target.blockPosition()).isAir()) {
-                var gooState = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO.defaultBlockState();
+                var gooState = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState();
                 var stateOne = gooState.setValue(FiniteLiquidBlock.LEVEL,1);
                 level.setBlock(pos, stateOne, FiniteLiquidBlock.UPDATE_ALL);
             }

@@ -113,7 +113,7 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
         var pickBlockState = serverLevel.getBlockState(pickBlockPos);
         if (pickBlockState.isAir() && !(pickBlockState.is(GLIMMER_OF_LIGHT_WONT_OVERRIDE))
         ) {
-            serverLevel.setBlockAndUpdate(pickBlockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT.defaultBlockState());
+            serverLevel.setBlockAndUpdate(pickBlockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT().defaultBlockState());
         }
     }
 
@@ -133,7 +133,7 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
             for (int zOffset = -lightRadius; zOffset <= lightRadius; zOffset++) {
                 for (int yOffset = -lightRadius; yOffset <= lightRadius; yOffset++) {
                     var pickPos = blockPos.offset(xOffset, yOffset, zOffset);
-                    if (level.getBlockState(pickPos).is(ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT)) {
+                    if (level.getBlockState(pickPos).is(ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT())) {
                         level.setBlockAndUpdate(pickPos, Blocks.AIR.defaultBlockState());
                     }
                 }

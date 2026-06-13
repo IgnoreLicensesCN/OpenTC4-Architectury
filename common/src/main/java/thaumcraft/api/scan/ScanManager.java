@@ -59,7 +59,7 @@ public class ScanManager {
             }
             var aspectToAdd = getNodeScanAspectsForNodeInfo(nodeInfo);
             if (CommonScanManager.onMeetAspectsToScan(player, aspectToAdd)) {
-                info.addScannedForType(VIS_NODE,nodeID);
+                info.addScannedForTypeAndSyncToPlayer(player,VIS_NODE,nodeID);
                 return true;
             }
             return true;

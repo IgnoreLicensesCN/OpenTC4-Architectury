@@ -71,7 +71,7 @@ public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements En
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_CHARGE_RELAY && blockState.getBlock() == this && level != null) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_CHARGE_RELAY() && blockState.getBlock() == this && level != null) {
             if (!level.isClientSide) {
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof VisNetChargeRelayBlockEntity relay) {

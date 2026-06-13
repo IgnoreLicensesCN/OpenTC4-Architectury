@@ -28,7 +28,7 @@ public abstract class LivingEntityClientMixin {
     public void opentc4$renderChampionMob(Monster monster) {
         if (opentc4$checkedNoEffect){return;}
         if (!monster.isDeadOrDying()) {
-            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
+            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
             int t = (int) championModInstance.getBaseValue();
             if (t >= 0) {
                 ChampionModifier.mods[t].effect.showFX(monster);

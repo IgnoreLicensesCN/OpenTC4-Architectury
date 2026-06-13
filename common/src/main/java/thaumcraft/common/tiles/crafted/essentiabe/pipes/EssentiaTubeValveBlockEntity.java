@@ -19,7 +19,7 @@ public class EssentiaTubeValveBlockEntity extends EssentiaTubeBlockEntity {
     }
 
     public EssentiaTubeValveBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_VALVE,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_VALVE(),blockPos, blockState);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class EssentiaTubeValveBlockEntity extends EssentiaTubeBlockEntity {
                 useOnContext.getPlayer() instanceof ServerPlayer serverPlayer
                         && serverPlayer.isShiftKeyDown()) {
             setBlockStateAndUpdate(
-                    ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_TUBE_VALVE.changeStateForDirection(
+                    ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_TUBE_VALVE().changeStateForDirection(
                             getBlockState(),
                             useOnContext.getClickedFace().getOpposite()
                     )

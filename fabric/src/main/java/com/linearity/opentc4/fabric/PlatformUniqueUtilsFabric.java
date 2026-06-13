@@ -1,6 +1,6 @@
 package com.linearity.opentc4.fabric;
 
-import com.linearity.opentc4.IAttackBlockListenerItem;
+import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.fabric.client.ThaumcraftModelProvider;
@@ -413,7 +413,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
                         return 0;
                     }
                 },
-                ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE, ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_SPA
+                ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_SPA()
         );
     }
 }

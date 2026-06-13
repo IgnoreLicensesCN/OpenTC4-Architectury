@@ -38,7 +38,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
             int containerID,
             Inventory inventory,
             ArcaneWorkbenchBlockEntity workbench){
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_WORKBENCH,containerID,inventory,workbench);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_WORKBENCH(),containerID,inventory,workbench);
     }
 
     public ArcaneWorkbenchMenu(

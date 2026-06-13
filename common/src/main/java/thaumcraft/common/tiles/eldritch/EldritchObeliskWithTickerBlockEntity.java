@@ -20,7 +20,7 @@ public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchObeliskWithTickerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK_WITH_TICKER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK_WITH_TICKER(), blockPos, blockState);
     }
     public void serverTick() {
         if (this.level == null) {

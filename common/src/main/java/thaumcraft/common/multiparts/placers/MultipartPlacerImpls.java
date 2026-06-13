@@ -23,7 +23,7 @@ public class MultipartPlacerImpls {
         @Contract(pure = true)
         public static @NotNull IBlockPlacer getCornerPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_CORNER.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_CORNER().defaultBlockState().setValue(
                         CORNER_TYPE, stateValue);
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
@@ -32,7 +32,7 @@ public class MultipartPlacerImpls {
         @Contract(pure = true)
         public static @NotNull IBlockPlacer getXAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_X_AXIS.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_X_AXIS().defaultBlockState().setValue(
                         EDGE_TYPE_X_AXIS, stateValue);
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
@@ -41,7 +41,7 @@ public class MultipartPlacerImpls {
         @Contract(pure = true)
         public static @NotNull IBlockPlacer getYAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_Y_AXIS.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_Y_AXIS().defaultBlockState().setValue(
                         EDGE_TYPE_Y_AXIS, stateValue);
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
@@ -50,7 +50,7 @@ public class MultipartPlacerImpls {
         @Contract(pure = true)
         public static @NotNull IBlockPlacer getZAxisPlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_Z_AXIS.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_Z_AXIS().defaultBlockState().setValue(
                         EDGE_TYPE_Z_AXIS, stateValue);
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
@@ -59,7 +59,7 @@ public class MultipartPlacerImpls {
         @Contract(pure = true)
         public static @NotNull IBlockPlacer  getSidePlacerWithState(int stateValue) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE().defaultBlockState().setValue(
                         SIDE_TYPE, stateValue);
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
@@ -71,13 +71,13 @@ public class MultipartPlacerImpls {
 //            level.setBlockAndUpdate(pos, state);
 //        });
         public static final IBlockPlacer LAVA_PLACER = ((level, pos, multipartMatchInfo) -> {
-            BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_LAVA.defaultBlockState();
+            BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_LAVA().defaultBlockState();
             state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
             level.setBlockAndUpdate(pos, state);
         });
         public static final IBlockPlacer BAR_PLACER =
             ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_BAR.defaultBlockState();
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_BAR().defaultBlockState();
                 state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
                 level.setBlockAndUpdate(pos, state);
             });
@@ -103,34 +103,34 @@ public class MultipartPlacerImpls {
     public static class AdvancedAlchemicalPlacerImpls {
         public static IBlockPlacer getCornerPlacer(int cornerType) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_BASE_CORNER().defaultBlockState().setValue(
                         AdvancedAlchemicalFurnaceBaseCornerBlock.AT_CORNER, cornerType);
                 level.setBlockAndUpdate(pos, state);
             });
         }
         public static IBlockPlacer getAlembicPlacer(int cornerType) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_ALEMBIC().defaultBlockState().setValue(
                         AdvancedAlchemicalFurnaceAlembicBlock.AT_CORNER, cornerType);
                 level.setBlockAndUpdate(pos, state);
             });
         }
         public static IBlockPlacer getFencePlacer(Direction direction) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_UPPER_FENCE().defaultBlockState().setValue(
                         AdvancedAlchemicalFurnaceUpperFenceBlock.FACING, direction);
                 level.setBlockAndUpdate(pos, state);
             });
         }
         public static IBlockPlacer getNozzlePlacer(Direction direction) {
             return ((level, pos, multipartMatchInfo) -> {
-                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE.defaultBlockState().setValue(
+                BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE().defaultBlockState().setValue(
                         AdvancedAlchemicalFurnaceNozzleBlock.FACING, direction);
                 level.setBlockAndUpdate(pos, state);
             });
         }
         public static final IBlockPlacer BASE_PLACER = (level, pos, multipartMatchInfo) -> {
-            BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_BASE.defaultBlockState();
+            BlockState state = ThaumcraftBlocks.ThaumcraftBlockInstances.ADVANCED_ALCHEMICAL_FURNACE_BASE().defaultBlockState();
             state = AbstractInfernalFurnaceComponent.setRotation(state, multipartMatchInfo.usingRotation());
             level.setBlockAndUpdate(pos, state);
         };

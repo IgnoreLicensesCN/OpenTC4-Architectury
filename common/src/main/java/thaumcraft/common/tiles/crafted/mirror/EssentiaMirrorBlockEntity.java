@@ -19,7 +19,7 @@ public class EssentiaMirrorBlockEntity extends AbstractMirrorBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaMirrorBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_MIRROR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_MIRROR(), blockPos, blockState);
     }
 
     @Override

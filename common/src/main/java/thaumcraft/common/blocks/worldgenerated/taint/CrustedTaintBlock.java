@@ -48,7 +48,7 @@ public class CrustedTaintBlock extends AbstractTaintBlock {
     @Override
     public void onBlockOutOfTaintBiome(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (random.nextInt(20) == 0) {
-            world.setBlock(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO.defaultBlockState(), 3);
+            world.setBlock(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState(), 3);
         }
     }
 

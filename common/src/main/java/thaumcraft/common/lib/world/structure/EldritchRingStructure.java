@@ -124,7 +124,7 @@ public class EldritchRingStructure extends Structure {
 
     @Override
     public @NotNull StructureType<?> type() {
-        return ThaumcraftStructures.ELDRITCH_RING_STRUCTURE_TYPE;
+        return ThaumcraftStructures.ThaumcraftStructureTypeInstances.ELDRITCH_RING_STRUCTURE_TYPE();
     }
 
     private static final Set<Block> VALID_SPAWN_BLOCKS = new HashSet<>(){
@@ -240,14 +240,14 @@ public class EldritchRingStructure extends Structure {
                             if (random.nextInt(4) == 0) {
                                 level.setBlock(solidPos, Blocks.OBSIDIAN.defaultBlockState(), 3);
                             } else {
-                                level.setBlock(solidPos, ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE.defaultBlockState(), 3);
+                                level.setBlock(solidPos, ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
                             }
                         }
 
                         //center pillar
                         if (xOffset==0 && zOffset==0) {
                             world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);//TODO:Meta->Block
-                            level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE.defaultBlockState(), 3);
+                            level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
                             int r = random.nextInt(10);
                             BlockEntity te = level.getBlockEntity(blockPos.offset(xOffset,1,zOffset));
                             if (te instanceof TileEldritchAltar) {
@@ -304,7 +304,7 @@ public class EldritchRingStructure extends Structure {
                             ) {
                                 level.setBlock(
                                         blockPos.offset(xOffset, 0, zOffset),
-                                        ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE.defaultBlockState(), 3
+                                        ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3
                                 );
                                 world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
                             }

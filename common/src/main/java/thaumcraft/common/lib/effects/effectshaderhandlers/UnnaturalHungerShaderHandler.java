@@ -8,6 +8,6 @@ public class UnnaturalHungerShaderHandler extends AbstractShaderHandler{
     public static final UnnaturalHungerShaderHandler INSTANCE = new UnnaturalHungerShaderHandler();
 
     public UnnaturalHungerShaderHandler() {
-        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/hunger.json"), ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER);
+        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/hunger.json"), ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
     }
 }

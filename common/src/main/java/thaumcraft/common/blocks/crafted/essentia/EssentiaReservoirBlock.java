@@ -119,7 +119,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_RESERVOIR) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_RESERVOIR()) {
             if (level.isClientSide()) {
                 return (level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof EssentiaReservoirBlockEntity reservoir) {

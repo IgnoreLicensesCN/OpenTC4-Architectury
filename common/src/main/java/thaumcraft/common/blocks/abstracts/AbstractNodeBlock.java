@@ -47,7 +47,7 @@ public abstract class AbstractNodeBlock extends SuppressedWarningBlock implement
                                         var x = pos.getX();
                                         var y = pos.getY();
                                         var z = pos.getZ();
-                                        var toDrop = WISP_ESSENCE.ofAspect(aspect);
+                                        var toDrop = WISP_ESSENCE().ofAspect(aspect);
                                         toDrop.setCount(dropCount);
                                         Containers.dropItemStack(
                                                 level,

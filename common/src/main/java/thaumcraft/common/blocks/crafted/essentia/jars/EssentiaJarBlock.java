@@ -27,7 +27,7 @@ public class EssentiaJarBlock extends AbstractEssentiaJarBlock
 
     @Override
     public EssentiaJarBlockItem getEssentiaJarItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.ESSENTIA_JAR;
+        return ThaumcraftItems.ThaumcraftItemInstances.ESSENTIA_JAR();
     }
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

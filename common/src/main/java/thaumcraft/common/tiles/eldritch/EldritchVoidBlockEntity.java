@@ -12,6 +12,6 @@ public class EldritchVoidBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchVoidBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_VOID, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_VOID(), blockPos, blockState);
     }
 }

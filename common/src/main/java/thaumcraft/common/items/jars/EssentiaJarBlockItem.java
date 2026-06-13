@@ -34,7 +34,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
     }
 
     public EssentiaJarBlockItem() {
-        this(ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_JAR, new Properties().stacksTo(1));
+        this(ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_JAR(), new Properties().stacksTo(1));
     }
 
     public void setAspectAndAmount(ItemStack stack, Aspect aspect, int amount) {

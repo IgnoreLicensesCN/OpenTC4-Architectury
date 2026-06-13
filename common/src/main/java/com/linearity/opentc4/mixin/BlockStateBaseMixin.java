@@ -27,7 +27,7 @@ public class BlockStateBaseMixin {
         if (toolStack == null) {
             return drops;
         }
-        var dowsingLevel = EnchantmentHelper.getEnchantments(toolStack).get(ThaumcraftEnchantments.DOWSING);
+        var dowsingLevel = EnchantmentHelper.getEnchantments(toolStack).get(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING());
         if (!(toolStack.getItem() instanceof IDowsingTool || dowsingLevel > 0)) {
             return drops;
         }

@@ -104,7 +104,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
 
         if (bState.isAir()) {
             return true;
-        } else if (block == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO
+        } else if (block == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()
                 && (bState.getValue(FiniteLiquidBlock.LEVEL) >= 4)
         ) {
             return false;
@@ -168,9 +168,9 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
                     )
             ) {
                 if (living instanceof ServerPlayer && level.random.nextInt(100) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,80,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),80,0));
                 }else if(!(living instanceof ServerPlayer) && level.random.nextInt(20) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,160,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),160,0));
                 }
 
             }

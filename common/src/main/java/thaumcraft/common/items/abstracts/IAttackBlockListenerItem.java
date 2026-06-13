@@ -1,4 +1,4 @@
-package com.linearity.opentc4;
+package thaumcraft.common.items.abstracts;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

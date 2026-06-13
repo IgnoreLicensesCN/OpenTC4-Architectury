@@ -235,9 +235,9 @@ public class EventHandlerRunic {
 //            this.runicCharge.put(player.getEntityId(), charge);
 //            PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
 //         }
-      } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
+      } else if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
          EntityMob mob = (EntityMob)event.entity;
-         int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
+         int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
          if ((t == 5 || event.entity instanceof IEldritchMob) && mob.getAbsorptionAmount() > 0.0F) {
             int target = -1;
             if (event.source.getEntity() != null) {
@@ -260,9 +260,9 @@ public class EventHandlerRunic {
          }
       }
 
-      if (event.ammount > 0.0F && event.source.getSourceOfDamage() != null && event.entity instanceof LivingEntity && event.source.getSourceOfDamage() instanceof EntityMob && ((EntityMob)event.source.getSourceOfDamage()).getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
+      if (event.ammount > 0.0F && event.source.getSourceOfDamage() != null && event.entity instanceof LivingEntity && event.source.getSourceOfDamage() instanceof EntityMob && ((EntityMob)event.source.getSourceOfDamage()).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F) {
          EntityMob mob = (EntityMob)event.source.getSourceOfDamage();
-         int t = (int)mob.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue();
+         int t = (int)mob.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
          if (ChampionModifier.mods[t].type == 1) {
             event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (LivingEntity)event.entity, event.source, event.ammount);
          }

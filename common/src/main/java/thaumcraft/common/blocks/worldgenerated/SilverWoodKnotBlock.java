@@ -96,7 +96,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
 
     @Override
     public @NotNull Item asItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.SILVERWOOD_LOG;
+        return ThaumcraftItems.ThaumcraftItemInstances.SILVERWOOD_LOG();
     }
 
 
@@ -108,7 +108,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.SILVERWOOD_KNOT_NODE) {
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.SILVERWOOD_KNOT_NODE()) {
             return null;
         }
         if (level.isClientSide){

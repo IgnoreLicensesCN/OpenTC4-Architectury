@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +30,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.FLYING_SPEED_CONTROL_OVERRIDE;
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.STEP_HEIGHT_ADDITION_NOT_SNEAKING;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
 public abstract class LivingEntityMixin implements InMilkContextAccessor {
@@ -44,7 +44,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         if (living.isShiftKeyDown()) {
             return prev;
         }
-        return (float) (prev + living.getAttributeValue(STEP_HEIGHT_ADDITION_NOT_SNEAKING));
+        return (float) (prev + living.getAttributeValue(STEP_HEIGHT_ADDITION_NOT_SNEAKING()));
     }
 
     @Unique
@@ -72,7 +72,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     )
     private float opentc4$overrideFlyingSpeed(float prev){
         var entity = (LivingEntity)(Object)this;
-        var speedOverride = entity.getAttributeValue(FLYING_SPEED_CONTROL_OVERRIDE);
+        var speedOverride = entity.getAttributeValue(FLYING_SPEED_CONTROL_OVERRIDE());
         if (speedOverride > 10E-4){
             return (float) speedOverride;
         }
@@ -83,7 +83,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     public void opentc4$performChampionMobEffect(Monster monster) {
         if (opentc4$checkedNoEffect){return;}
         if (!monster.isDeadOrDying()) {
-            var instance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
+            var instance = monster.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
             if (instance == null) {
                 opentc4$checkedNoEffect = true;
                 return;
@@ -124,14 +124,14 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         //idk if it's suitable to make a interface for item so i didn't
         Item item = itemStack.getItem();
         var living = (LivingEntity)(Object)this;
-        var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER);
+        var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
         if (unnaturalHungerInstance != null){
-            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItems.ThaumcraftItemInstances.ZOMBIE_BRAIN){
+            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItems.ThaumcraftItemInstances.ZOMBIE_BRAIN()){
                 int amp = unnaturalHungerInstance.getAmplifier() - 1;
                 int duration = unnaturalHungerInstance.getDuration() - 600;
-                living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER);
+                living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
                 if (duration > 0 && amp >= 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER, duration, amp, true,true));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER(), duration, amp, true,true));
                 }
 
                 if (living instanceof ServerPlayer serverPlayer){
@@ -141,6 +141,19 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                 serverPlayer.sendSystemMessage(Component.literal("§4§o" + Component.translatable("warp.text.hunger.1")));
             }
         }
+    }
+
+    @ModifyReturnValue(
+            method = "createLivingAttributes",
+            at = @At("RETURN")
+    )
+    private static AttributeSupplier.Builder opentc4$injectAttributes(AttributeSupplier.Builder builder) {
+        builder
+                .add(STEP_HEIGHT_ADDITION_NOT_SNEAKING())
+                .add(FLYING_SPEED_CONTROL_OVERRIDE())
+                .add(HARNESS_FLYING_SPEED_ADD_PERCENT())
+                .add(HARNESS_FUEL_DURATION_ADD_PERCENT());
+        return builder;
     }
 }
 

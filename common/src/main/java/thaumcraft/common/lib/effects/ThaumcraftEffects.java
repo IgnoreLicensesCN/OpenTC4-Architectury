@@ -10,15 +10,41 @@ public class ThaumcraftEffects {
 
     public static class ThaumcraftEffectTypeInstances {
 
-        public static final DeathGazeEffect DEATH_GAZE = Registry.SUPPLIER_DEATH_GAZE.get();
-        public static final BlurredVisionEffect BLURRED_VISION = Registry.SUPPLIER_BLURRED_VISION.get();
-        public static final SunScornedEffect SUN_SCORNED = Registry.SUPPLIER_SUN_SCORNED.get();
-        public static final VisExhaustEffect VIS_EXHAUST = Registry.SUPPLIER_VIS_EXHAUST.get();
-        public static final InfectiousVisExhaustEffect INFECTIOUS_VIS_EXHAUST = Registry.SUPPLIER_INFECTIOUS_VIS_EXHAUST_EFFECT.get();
-        public static final FluxTaintEffect FLUX_TAINT = Registry.SUPPLIER_FLUX_TAINT.get();
-        public static final ThaumarhiaEffect THAUMARHIA = Registry.SUPPLIER_THAUMARHIA.get();
-        public static final WarpWardEffect WARP_WARD = Registry.SUPPLIER_WARP_WARD.get();
-        public static final UnnaturalHungerEffect UNNATURAL_HUNGER = Registry.SUPPLIER_UNNATURAL_HUNGER.get();
+        public static DeathGazeEffect DEATH_GAZE() {
+            return Registry.SUPPLIER_DEATH_GAZE.get();
+        }
+
+         public static BlurredVisionEffect BLURRED_VISION() {
+            return Registry.SUPPLIER_BLURRED_VISION.get();
+        }
+
+         public static SunScornedEffect SUN_SCORNED() {
+            return Registry.SUPPLIER_SUN_SCORNED.get();
+        }
+
+         public static VisExhaustEffect VIS_EXHAUST() {
+            return Registry.SUPPLIER_VIS_EXHAUST.get();
+        }
+
+         public static InfectiousVisExhaustEffect INFECTIOUS_VIS_EXHAUST() {
+            return Registry.SUPPLIER_INFECTIOUS_VIS_EXHAUST_EFFECT.get();
+        }
+
+         public static FluxTaintEffect FLUX_TAINT() {
+            return Registry.SUPPLIER_FLUX_TAINT.get();
+        }
+
+         public static ThaumarhiaEffect THAUMARHIA() {
+            return Registry.SUPPLIER_THAUMARHIA.get();
+        }
+
+         public static WarpWardEffect WARP_WARD() {
+            return Registry.SUPPLIER_WARP_WARD.get();
+        }
+
+         public static UnnaturalHungerEffect UNNATURAL_HUNGER() {
+            return Registry.SUPPLIER_UNNATURAL_HUNGER.get();
+        }
     }
 
     public static class Registry{

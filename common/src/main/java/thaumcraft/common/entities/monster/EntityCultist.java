@@ -47,18 +47,18 @@ public class EntityCultist extends EntityMob implements ShieldRunesFXGetter {
    protected void dropFewItems(boolean flag, int i) {
       int r = this.rand.nextInt(10);
       if (r == 0) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
       } else if (r == 1) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED, 1), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.VOID_SEED(), 1), 1.5F);
       } else if (r <= 3 + i) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
       }
 
       super.dropFewItems(flag, i);
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.CRIMSON_RITES), 1.0F);
+      this.entityDropItem(new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.CRIMSON_RITES()), 1.0F);
    }
 
    protected void addRandomArmor() {

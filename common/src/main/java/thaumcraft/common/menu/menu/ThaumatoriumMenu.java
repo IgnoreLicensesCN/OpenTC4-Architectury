@@ -12,7 +12,7 @@ public class ThaumatoriumMenu extends AbstractThaumcraftMenu<ThaumatoriumBlockEn
     public ThaumatoriumMenu(int containerID,
                             Inventory inventory,
                             ThaumatoriumBlockEntity thaumatoriumBlockEntity) {
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.THAUMATORIUM,containerID,inventory,thaumatoriumBlockEntity);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.THAUMATORIUM(),containerID,inventory,thaumatoriumBlockEntity);
     }
     public ThaumatoriumMenu(
             MenuType<?> menuType,

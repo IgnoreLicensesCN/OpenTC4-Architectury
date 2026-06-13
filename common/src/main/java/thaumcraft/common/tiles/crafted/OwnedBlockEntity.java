@@ -19,7 +19,7 @@ public class OwnedBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public OwnedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.OWNED, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.OWNED(), blockPos, blockState);
     }
     private final Set<String> owners = ConcurrentHashMap.newKeySet();
 

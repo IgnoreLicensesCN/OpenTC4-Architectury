@@ -12,7 +12,7 @@ public class EssentiaTubeRestrictBlockEntity extends EssentiaTubeBlockEntity{
     }
 
     public EssentiaTubeRestrictBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_RESTRICT, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE_RESTRICT(), blockPos, blockState);
     }
 
     @Override

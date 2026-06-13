@@ -56,7 +56,7 @@ public class InfusionMatrixBlock extends SuppressedWarningBlock implements Entit
     public static final List<SimplePair<BlockPos,BlockState>> OFFSET_AND_STATE_TO_CHECK;
     static {
         List<SimplePair<BlockPos,BlockState>> list = new ArrayList<>(8);
-        var pillarDefaultState = ThaumcraftBlocks.ThaumcraftBlockInstances.INFUSION_PILLAR.defaultBlockState();
+        var pillarDefaultState = ThaumcraftBlocks.ThaumcraftBlockInstances.INFUSION_PILLAR().defaultBlockState();
         for (var dir: Direction.Plane.HORIZONTAL) {
             var dirRotated90 = dir.getClockWise();
             list.add(new SimplePair<>(

@@ -27,7 +27,7 @@ public class EldritchObeliskBlock extends SuppressedWarningBlock implements Enti
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK) {
+        if (blockState.getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK()) {
             return new EldritchObeliskBlockEntity(blockPos, blockState);
         }
         return null;

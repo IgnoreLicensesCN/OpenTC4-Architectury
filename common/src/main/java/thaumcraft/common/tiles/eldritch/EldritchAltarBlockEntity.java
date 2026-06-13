@@ -20,7 +20,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_ALTAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_ALTAR(), blockPos, blockState);
     }
 
     protected int tickCount = System.identityHashCode(this) & 63;

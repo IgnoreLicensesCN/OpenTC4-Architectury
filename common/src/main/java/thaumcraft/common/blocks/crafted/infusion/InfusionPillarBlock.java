@@ -80,7 +80,7 @@ public class InfusionPillarBlock extends SuppressedWarningBlock {
         ) {
             if (!checkExpectedNeighbourState(prevState,neighborState)){
                 tickInfusionMatrix(levelAccessor,prevState,selfPos);
-                return isAbove? ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_STONE_BLOCK.defaultBlockState(): ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_STONE_BRICKS.defaultBlockState();
+                return isAbove? ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_STONE_BLOCK().defaultBlockState(): ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_STONE_BRICKS().defaultBlockState();
             }
         }
         return super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);

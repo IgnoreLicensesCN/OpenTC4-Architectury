@@ -27,7 +27,7 @@ public class FluxGooFluid extends FiniteFlowingFluid {
 
     @Override
     protected @NotNull BlockState createLegacyBlock(FluidState fluidState) {
-        return FLUX_GOO.defaultBlockState().setValue(liquidLevel, getAmount(fluidState));
+        return FLUX_GOO().defaultBlockState().setValue(liquidLevel, getAmount(fluidState));
     }
 
     @Override

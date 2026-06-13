@@ -15,7 +15,7 @@ public class ArcaneBoreMenu extends AbstractThaumcraftMenu<ArcaneBoreBlockEntity
     public ArcaneBoreMenu(int containerID,
                             Inventory inventory,
                           ArcaneBoreBlockEntity blockEntity) {
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_BORE,containerID,blockEntity,blockEntity.getContainerSize());
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_BORE(),containerID,blockEntity,blockEntity.getContainerSize());
 //        addSlot(new Slot(thaumatoriumBlockEntity,ThaumatoriumBlockEntity.INPUT_SLOT, 84, 25));
         addPlayerInventorySlots(inventory);
     }

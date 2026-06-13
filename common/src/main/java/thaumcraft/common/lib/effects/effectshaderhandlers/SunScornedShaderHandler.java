@@ -7,6 +7,6 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 public class SunScornedShaderHandler extends AbstractShaderHandler {
     public static final SunScornedShaderHandler INSTANCE = new SunScornedShaderHandler();
     public SunScornedShaderHandler() {
-        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/sunscorned.json"), ThaumcraftEffects.ThaumcraftEffectTypeInstances.SUN_SCORNED);
+        super(new ResourceLocation(Thaumcraft.MOD_ID,"shaders/post/sunscorned.json"), ThaumcraftEffects.ThaumcraftEffectTypeInstances.SUN_SCORNED());
     }
 }

@@ -49,12 +49,12 @@ public class EldritchObeliskPlacerItem extends Item {
                     return InteractionResult.FAIL;
                 }
             }
-            world.setBlock(clickedPos.above(1), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_ALTAR.defaultBlockState(),Block.UPDATE_CLIENTS);
-            world.setBlock(clickedPos.above(3), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK_WITH_TICKER.defaultBlockState(), Block.UPDATE_CLIENTS);
-            world.setBlock(clickedPos.above(4), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
-            world.setBlock(clickedPos.above(5), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
-            world.setBlock(clickedPos.above(6), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
-            world.setBlock(clickedPos.above(7), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(1), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_ALTAR().defaultBlockState(),Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(3), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(4), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(5), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(6), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(7), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(useOnContext);

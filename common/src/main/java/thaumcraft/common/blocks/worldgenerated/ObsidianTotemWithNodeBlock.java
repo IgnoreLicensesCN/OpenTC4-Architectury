@@ -84,7 +84,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
 
     @Override
     public Item asItem() {
-        return ThaumcraftItems.ThaumcraftItemInstances.OBSIDIAN_TOTEM;
+        return ThaumcraftItems.ThaumcraftItemInstances.OBSIDIAN_TOTEM();
     }
 
 
@@ -96,7 +96,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.OBSIDIAN_TOTEM_NODE){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.OBSIDIAN_TOTEM_NODE()){
             return null;
         }
         if (level.isClientSide){

@@ -121,7 +121,7 @@ public class InfusionMatrixBlockEntity
         super(type, pos, state);
     }
     public InfusionMatrixBlockEntity(BlockPos pos, BlockState state) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.INFUSION_MATRIX, pos, state);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.INFUSION_MATRIX(), pos, state);
     }
 
     public void serverTick() {

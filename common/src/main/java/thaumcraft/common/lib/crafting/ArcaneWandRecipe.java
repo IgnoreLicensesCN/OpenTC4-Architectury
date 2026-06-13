@@ -149,6 +149,6 @@ public class ArcaneWandRecipe extends AbstractArcaneRecipe {
     }
 
     protected Item getItemOfResult(){
-        return ThaumcraftItems.ThaumcraftItemInstances.WAND_CASTING;
+        return ThaumcraftItems.ThaumcraftItemInstances.WAND_CASTING();
     }
 }

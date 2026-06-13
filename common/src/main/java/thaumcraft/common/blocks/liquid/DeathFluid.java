@@ -29,7 +29,7 @@ public class DeathFluid extends FiniteFlowingFluid {
     }
 
     public @NotNull Item getBucket() {
-        return ThaumcraftItems.ThaumcraftItemInstances.DEATH_FLUID_BUCKET;
+        return ThaumcraftItems.ThaumcraftItemInstances.DEATH_FLUID_BUCKET();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DeathFluid extends FiniteFlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState fluidState) {
-        return DEATH_FLUID.defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
+        return DEATH_FLUID().defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
     }
 
     @Override

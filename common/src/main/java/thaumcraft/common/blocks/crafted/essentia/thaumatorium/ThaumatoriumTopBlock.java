@@ -49,21 +49,21 @@ public class ThaumatoriumTopBlock extends SuppressedWarningBlock {
         return Direction.DOWN;
     }
     public Block getCheckBlock() {
-        return ThaumcraftBlocks.ThaumcraftBlockInstances.THAUMATORIUM_BOTTOM;
+        return ThaumcraftBlocks.ThaumcraftBlockInstances.THAUMATORIUM_BOTTOM();
     }
 
     @Override
     public void tick(BlockState blockState, ServerLevel level, BlockPos selfPos, RandomSource randomSource) {
         super.tick(blockState, level, selfPos, randomSource);
         if (level.getBlockState(selfPos.relative(getCheckDirection())).getBlock() != this.getCheckBlock()){
-            level.setBlockAndUpdate(selfPos, ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_CONSTRUCT.defaultBlockState());
+            level.setBlockAndUpdate(selfPos, ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_CONSTRUCT().defaultBlockState());
         }
     }
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         var bottomPos = blockPos.relative(getCheckDirection());
-        return ThaumcraftBlocks.ThaumcraftBlockInstances.THAUMATORIUM_BOTTOM.use(level.getBlockState(bottomPos), level, bottomPos, player, interactionHand, blockHitResult);
+        return ThaumcraftBlocks.ThaumcraftBlockInstances.THAUMATORIUM_BOTTOM().use(level.getBlockState(bottomPos), level, bottomPos, player, interactionHand, blockHitResult);
     }
 
     @Override

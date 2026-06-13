@@ -39,7 +39,7 @@ public class EldritchObeliskWithTickerBlock extends EldritchObeliskBlock {
         if (blockState.getBlock() != this){
             return null;
         }
-        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK_WITH_TICKER){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK_WITH_TICKER()){
             return null;
         }
         if (level0.isClientSide()){

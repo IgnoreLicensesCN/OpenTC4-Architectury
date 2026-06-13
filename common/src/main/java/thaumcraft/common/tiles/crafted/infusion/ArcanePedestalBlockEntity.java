@@ -26,7 +26,7 @@ public class ArcanePedestalBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public ArcanePedestalBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_PEDESTAL,blockPos,blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_PEDESTAL(),blockPos,blockState);
     }
 
     @Override

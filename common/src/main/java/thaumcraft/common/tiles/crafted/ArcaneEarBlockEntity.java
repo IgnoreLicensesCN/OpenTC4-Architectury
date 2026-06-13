@@ -48,7 +48,7 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
     }
 
     public ArcaneEarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_EAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_EAR(), blockPos, blockState);
     }
 
     @Override

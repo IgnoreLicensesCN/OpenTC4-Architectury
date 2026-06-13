@@ -38,7 +38,7 @@ public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
       double var10004 = te.zCoord;
       this.inrange = Minecraft.getMinecraft().renderViewEntity.getDistanceSq(var10002, var10003, var10004 + (double)0.5F) < (double)512.0F;
       if (this.is == null) {
-         this.is = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET);
+         this.is = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.RUNED_TABLET());
       }
 
       float bob = 0.0F;

@@ -50,7 +50,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
     }
 
     public HungryChestBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST(),blockPos, blockState);
     }
 
     static void playSound(Level level, BlockPos blockPos, BlockState blockState, SoundEvent soundEvent) {

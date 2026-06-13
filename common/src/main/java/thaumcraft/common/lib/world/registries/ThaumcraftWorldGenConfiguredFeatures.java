@@ -33,22 +33,37 @@ import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
 
 public class ThaumcraftWorldGenConfiguredFeatures {
     public static class Features {
-        public static final Feature<TreeConfiguration> SILVERWOOD_PLAYER_PLANTED_FEATURE =
-                FeaturesRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANTED_FEATURE.get();
-        public static final ResourceKey<Feature<TreeConfiguration>> SILVERWOOD_PLAYER_PLANTED_FEATURE_KEY =
-                FeaturesRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANTED_FEATURE.getKey();
-        public static final Feature<TreeConfiguration> SILVERWOOD_GENERATED_FEATURE =
-                FeaturesRegistry.SUPPLIER_SILVERWOOD_GENERATED_FEATURE.get();
-        public static final ResourceKey<Feature<TreeConfiguration>> SILVERWOOD_GENERATED_FEATURE_KEY =
-                FeaturesRegistry.SUPPLIER_SILVERWOOD_GENERATED_FEATURE.getKey();
-        public static final Feature<TreeConfiguration> GREATWOOD_PLAYER_PLANTED_FEATURE =
-                FeaturesRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANTED_FEATURE.get();
-        public static final ResourceKey<Feature<TreeConfiguration>> GREATWOOD_PLAYER_PLANTED_FEATURE_KEY =
-                FeaturesRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANTED_FEATURE.getKey();
-        public static final Feature<TreeConfiguration> GREATWOOD_GENERATED_FEATURE =
-                FeaturesRegistry.SUPPLIER_GREATWOOD_GENERATED_FEATURE.get();
-        public static final ResourceKey<Feature<TreeConfiguration>> GREATWOOD_GENERATED_FEATURE_KEY =
-                FeaturesRegistry.SUPPLIER_GREATWOOD_GENERATED_FEATURE.getKey();
+        public static Feature<TreeConfiguration> SILVERWOOD_PLAYER_PLANTED_FEATURE() {
+            return FeaturesRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANTED_FEATURE.get();
+        }
+
+        public static ResourceKey<Feature<TreeConfiguration>> SILVERWOOD_PLAYER_PLANTED_FEATURE_KEY() {
+            return FeaturesRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANTED_FEATURE.getKey();
+        }
+
+        public static Feature<TreeConfiguration> SILVERWOOD_GENERATED_FEATURE() {
+            return FeaturesRegistry.SUPPLIER_SILVERWOOD_GENERATED_FEATURE.get();
+        }
+
+        public static ResourceKey<Feature<TreeConfiguration>> SILVERWOOD_GENERATED_FEATURE_KEY() {
+            return FeaturesRegistry.SUPPLIER_SILVERWOOD_GENERATED_FEATURE.getKey();
+        }
+
+        public static Feature<TreeConfiguration> GREATWOOD_PLAYER_PLANTED_FEATURE() {
+            return FeaturesRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANTED_FEATURE.get();
+        }
+
+        public static ResourceKey<Feature<TreeConfiguration>> GREATWOOD_PLAYER_PLANTED_FEATURE_KEY() {
+            return FeaturesRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANTED_FEATURE.getKey();
+        }
+
+        public static Feature<TreeConfiguration> GREATWOOD_GENERATED_FEATURE() {
+            return FeaturesRegistry.SUPPLIER_GREATWOOD_GENERATED_FEATURE.get();
+        }
+
+        public static ResourceKey<Feature<TreeConfiguration>> GREATWOOD_GENERATED_FEATURE_KEY() {
+            return FeaturesRegistry.SUPPLIER_GREATWOOD_GENERATED_FEATURE.getKey();
+        }
     }
 
     public static class FeaturesRegistry {
@@ -73,27 +88,52 @@ public class ThaumcraftWorldGenConfiguredFeatures {
     }
 
     public static class Configureds {
-        public static final ConfiguredFeature<TreeConfiguration, ?> SILVERWOOD_PLANTED_CONFIGURED =
-                ConfiguredRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANT_CONFIGURED.get();
-        public static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> SILVERWOOD_PLANTED_CONFIGURED_KEY =
-                ConfiguredRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANT_CONFIGURED.getKey();
-        public static final ConfiguredFeature<TreeConfiguration, ?> SILVERWOOD_GENERATED_CONFIGURED =
-                ConfiguredRegistry.SUPPLIER_SILVERWOOD_GENERATED_CONFIGURED.get();
-        public static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> SILVERWOOD_GENERATED_CONFIGURED_KEY =
-                ConfiguredRegistry.SUPPLIER_SILVERWOOD_GENERATED_CONFIGURED.getKey();
-        public static final ConfiguredFeature<TreeConfiguration, ?> GREATWOOD_PLANTED_CONFIGURED =
-                ConfiguredRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANT_CONFIGURED.get();
-        public static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_PLANTED_CONFIGURED_KEY =
+        private static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_PLANTED_CONFIGURED_KEY =
                 ConfiguredRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANT_CONFIGURED.getKey();
-        public static final ConfiguredFeature<TreeConfiguration, ?> GREATWOOD_GENERATED_CONFIGURED =
+        private static final ConfiguredFeature<TreeConfiguration, ?> GREATWOOD_GENERATED_CONFIGURED =
                 ConfiguredRegistry.SUPPLIER_GREATWOOD_GENERATED_CONFIGURED.get();
-        public static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_GENERATED_CONFIGURED_KEY =
+        private static final ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_GENERATED_CONFIGURED_KEY =
                 ConfiguredRegistry.SUPPLIER_GREATWOOD_GENERATED_CONFIGURED.getKey();
-        public static final ConfiguredFeature<RandomPatchConfiguration,?> CINDER_PEARL_PATCH_CONFIGURED =
+        private static final ConfiguredFeature<RandomPatchConfiguration,?> CINDER_PEARL_PATCH_CONFIGURED =
                 ConfiguredRegistry.SUPPLIER_CINDER_PEARL_GENERATED_CONFIGURED.get();
         public static final ResourceKey<ConfiguredFeature<RandomPatchConfiguration,?>> CINDER_PEARL_PATCH_CONFIGURED_KEY =
                 ConfiguredRegistry.SUPPLIER_CINDER_PEARL_GENERATED_CONFIGURED.getKey();
 
+        public static ConfiguredFeature<TreeConfiguration, ?> SILVERWOOD_PLANTED_CONFIGURED() {
+            return ConfiguredRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANT_CONFIGURED.get();
+        }
+
+        public static ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> SILVERWOOD_PLANTED_CONFIGURED_KEY() {
+            return ConfiguredRegistry.SUPPLIER_SILVERWOOD_PLAYER_PLANT_CONFIGURED.getKey();
+        }
+
+        public static ConfiguredFeature<TreeConfiguration, ?> SILVERWOOD_GENERATED_CONFIGURED() {
+            return ConfiguredRegistry.SUPPLIER_SILVERWOOD_GENERATED_CONFIGURED.get();
+        }
+
+        public static ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> SILVERWOOD_GENERATED_CONFIGURED_KEY() {
+            return ConfiguredRegistry.SUPPLIER_SILVERWOOD_GENERATED_CONFIGURED.getKey();
+        }
+
+        public static ConfiguredFeature<TreeConfiguration, ?> GREATWOOD_PLANTED_CONFIGURED() {
+            return ConfiguredRegistry.SUPPLIER_GREATWOOD_PLAYER_PLANT_CONFIGURED.get();
+        }
+
+        public static ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_PLANTED_CONFIGURED_KEY() {
+            return GREATWOOD_PLANTED_CONFIGURED_KEY;
+        }
+
+        public static ConfiguredFeature<TreeConfiguration, ?> GREATWOOD_GENERATED_CONFIGURED() {
+            return GREATWOOD_GENERATED_CONFIGURED;
+        }
+
+        public static ResourceKey<ConfiguredFeature<TreeConfiguration, ?>> GREATWOOD_GENERATED_CONFIGURED_KEY() {
+            return GREATWOOD_GENERATED_CONFIGURED_KEY;
+        }
+
+        public static ConfiguredFeature<RandomPatchConfiguration, ?> CINDER_PEARL_PATCH_CONFIGURED() {
+            return CINDER_PEARL_PATCH_CONFIGURED;
+        }
     }
 
     public static class ConfiguredRegistry {
@@ -104,11 +144,11 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         public static final RegistrySupplier<ConfiguredFeature<TreeConfiguration, ?>> SUPPLIER_SILVERWOOD_PLAYER_PLANT_CONFIGURED
                 = WORLD_GEN_CONFIGURED_FEATURES.register(
                 "silverwood_planted_configured", () -> new ConfiguredFeature<>(
-                        Features.SILVERWOOD_PLAYER_PLANTED_FEATURE,
+                        Features.SILVERWOOD_PLAYER_PLANTED_FEATURE(),
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG()),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES()),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -117,11 +157,11 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         public static final RegistrySupplier<ConfiguredFeature<TreeConfiguration, ?>> SUPPLIER_SILVERWOOD_GENERATED_CONFIGURED
                 = WORLD_GEN_CONFIGURED_FEATURES.register(
                 "silverwood_generated_configured", () -> new ConfiguredFeature<>(
-                        Features.SILVERWOOD_GENERATED_FEATURE,
+                        Features.SILVERWOOD_GENERATED_FEATURE(),
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LOG()),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.SILVERWOOD_LEAVES()),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -130,11 +170,11 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         public static final RegistrySupplier<ConfiguredFeature<TreeConfiguration, ?>> SUPPLIER_GREATWOOD_PLAYER_PLANT_CONFIGURED
                 = WORLD_GEN_CONFIGURED_FEATURES.register(
                 "greatwood_planted_configured", () -> new ConfiguredFeature<>(
-                        Features.GREATWOOD_PLAYER_PLANTED_FEATURE,
+                        Features.GREATWOOD_PLAYER_PLANTED_FEATURE(),
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG()),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES()),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -143,11 +183,11 @@ public class ThaumcraftWorldGenConfiguredFeatures {
         public static final RegistrySupplier<ConfiguredFeature<TreeConfiguration, ?>> SUPPLIER_GREATWOOD_GENERATED_CONFIGURED
                 = WORLD_GEN_CONFIGURED_FEATURES.register(
                 "greatwood_generated_configured", () -> new ConfiguredFeature<>(
-                        Features.GREATWOOD_GENERATED_FEATURE,
+                        Features.GREATWOOD_GENERATED_FEATURE(),
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG()),
                                 new StraightTrunkPlacer(7, 2, 0),
-                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES),
+                                BlockStateProvider.simple(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES()),
                                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
                                 new TwoLayersFeatureSize(1, 0, 1)
                         ).build()
@@ -166,7 +206,7 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                                                         Feature.SIMPLE_BLOCK,
                                                         new SimpleBlockConfiguration(
                                                                 BlockStateProvider.simple(
-                                                                        ThaumcraftBlocks.ThaumcraftBlockInstances.CINDER_PEARL
+                                                                        ThaumcraftBlocks.ThaumcraftBlockInstances.CINDER_PEARL()
                                                                 )
                                                         ),
                                                         new BlockPredicate() {

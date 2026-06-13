@@ -68,9 +68,9 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                     )
             ) {
                 if (living instanceof ServerPlayer && level.random.nextInt(1000) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,80,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),80,0));
                 }else if(!(living instanceof ServerPlayer) && level.random.nextInt(500) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT,160,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),160,0));
                 }
 
             }
@@ -142,8 +142,8 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                             || pickState.is(Blocks.CARVED_PUMPKIN)
                             || pickState.is(Blocks.JACK_O_LANTERN)
                             || pickState.is(Blocks.CACTUS))) {
-                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT.defaultBlockState(), 0, 3);
-                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT, 1, 0);
+                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState(), 0, 3);
+                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT(), 1, 0);
                     }
 
                     if (adjacentTaint >= 3 && !pickState.isAir()
@@ -155,8 +155,8 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                                             || pickState.is(Blocks.CLAY)
                     )
                     ) {
-                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL.defaultBlockState(), 0, 3);
-                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL, 1, 0);
+                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL().defaultBlockState(), 0, 3);
+                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL(), 1, 0);
                     }
                     onSpreadFibresFailed(blockState, world, blockPos, random);
                 }
@@ -184,17 +184,17 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                     && world.getBlockState(blockPos.below()).isFaceSturdy(world,blockPos.below(), Direction.UP)
             ) {
                 if (world.getRandom().nextInt(10) < 9) {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS;
+                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS();
                     world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3);
                 } else if (world.getRandom().nextInt(12) < 10) {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_PLANT;
+                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_PLANT();
                     world.setBlock(blockPos, blockForEvent.defaultBlockState(), 2, 3);
                 } else {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK;
+                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK();
                     world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3, 3);
                 }
             } else {
-                blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT;
+                blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT();
                 world.setBlock(blockPos, blockForEvent.defaultBlockState(), 0, 3);
             }
             world.blockEvent(blockPos, blockForEvent, 1, 0);

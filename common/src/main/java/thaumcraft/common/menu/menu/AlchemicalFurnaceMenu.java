@@ -20,7 +20,7 @@ public class AlchemicalFurnaceMenu extends AbstractThaumcraftMenu<AlchemicalFurn
             int containerID,
             Inventory inventory,
             AlchemicalFurnaceBlockEntity alchemicalFurnace){
-        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ALCHEMICAL_FURNACE,containerID,inventory,alchemicalFurnace);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ALCHEMICAL_FURNACE(),containerID,inventory,alchemicalFurnace);
     }
     public AlchemicalFurnaceMenu(
             @Nullable MenuType<? extends AlchemicalFurnaceMenu> menuType,

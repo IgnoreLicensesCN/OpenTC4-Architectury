@@ -10,27 +10,45 @@ import thaumcraft.api.research.impl.thaumaturgy.BasicThaumaturgyResearch;
 
 
 public class ThaumcraftResearches {
-    public static final AspectDisplayingResearch ASPECTS = new AspectDisplayingResearch();
-    public static final ResearchBasicResearch RESEARCH_BASIC = new ResearchBasicResearch();
-    public static final ResearchExpertiseResearch RESEARCH_EXPERTISE = new ResearchExpertiseResearch();
-    public static final ResearchMasteryResearch RESEARCH_MASTERY = new ResearchMasteryResearch();
+    public static AspectDisplayingResearch ASPECTS;
+    public static ResearchBasicResearch RESEARCH_BASIC;
+    public static ResearchExpertiseResearch RESEARCH_EXPERTISE;
+    public static ResearchMasteryResearch RESEARCH_MASTERY;
+    public static ResearchItem CRIMSON;
 
-    public static final ResearchItem CRIMSON = new CrimsonResearch();
+    public static ResearchItem NODE_PRESERVE;
+    public static ResearchItem NODE_TAKE_IT_ALL;
+    public static ResearchItem MASTER_NODE_TRAPPING;
 
-    public static final ResearchItem NODE_PRESERVE = ;
-    public static final ResearchItem NODE_TAKE_IT_ALL = ;
-    public static final ResearchItem MASTER_NODE_TRAPPING = ;
-    public static final FocusPrimalResearch FOCUS_PRIMAL = new FocusPrimalResearch();
+    public static FocusPrimalResearch FOCUS_PRIMAL;
+    public static ResearchItem ENTER_OUTER;
+    public static ResearchItem PRIME_PEARL_NODE_CONTROL;
 
-    public static final ResearchItem ENTER_OUTER = ;
-    public static final ResearchItem PRIME_PEARL_NODE_CONTROL = ;
-    public static final ResearchItem FOCAL_MANIPULATION = ;
+    public static ResearchItem FOCAL_MANIPULATION;
+    public static ResearchItem SCEPTRE_CRAFTING;
+    public static BasicThaumaturgyResearch BASIC_THAUMATURGY;
+    public static ResearchItem STAFF_CRAFTING;
 
-    public static final ResearchItem SCEPTRE_CRAFTING = ;
-    public static final BasicThaumaturgyResearch BASIC_THAUMATURGY = new BasicThaumaturgyResearch();
-    public static final ResearchItem STAFF_CRAFTING = ;
+    public static void onDatapackReloaded() {
+        ResearchItem.onDatapackReload();
+        ASPECTS = new AspectDisplayingResearch();
+        RESEARCH_BASIC = new ResearchBasicResearch();
+        RESEARCH_EXPERTISE = new ResearchExpertiseResearch();
+        RESEARCH_MASTERY = new ResearchMasteryResearch();
+        CRIMSON = new CrimsonResearch();
 
-    public static void init(){
+        NODE_PRESERVE = ;
+        NODE_TAKE_IT_ALL = ;
+        MASTER_NODE_TRAPPING = ;
+
+        FOCUS_PRIMAL = new FocusPrimalResearch();
+        ENTER_OUTER = ;
+        PRIME_PEARL_NODE_CONTROL = ;
+
+        FOCAL_MANIPULATION = ;
+        SCEPTRE_CRAFTING = ;
+        BASIC_THAUMATURGY = new BasicThaumaturgyResearch();
+        STAFF_CRAFTING = ;
 
     }
 }

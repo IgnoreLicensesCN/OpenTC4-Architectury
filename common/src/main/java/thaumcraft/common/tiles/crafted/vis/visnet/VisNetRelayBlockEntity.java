@@ -38,7 +38,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity implements IWa
         super(blockEntityType, blockPos, blockState);
     }
     public VisNetRelayBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_RELAY, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_RELAY(), blockPos, blockState);
     }
 
     @Override

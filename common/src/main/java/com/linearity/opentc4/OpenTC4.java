@@ -4,6 +4,7 @@ import com.linearity.opentc4.chatcomponent.ComponentRendering;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import thaumcraft.api.IRepairable;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
@@ -33,8 +34,6 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import static thaumcraft.api.IRepairable.repairCostCache;
-
 public final class OpenTC4 {
     public static boolean DEBUG_FLAG = false;
     public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;
@@ -53,7 +52,6 @@ public final class OpenTC4 {
 
     public static void onInitialize() {
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
-        ThaumcraftResearches.init();//at least i dont think things like Item or Block would appear here now
 
         ThaumcraftRunicShieldTypes.init();
         ThaumcraftEnchantments.init();
@@ -102,8 +100,11 @@ public final class OpenTC4 {
         ItemBasicAspectCalculator.onDatapackReload();
         ItemBasicAspectGetter.onDatapackReload();
         HolderCache.onDatapackReload();
-        repairCostCache.clear();
+        IRepairable.onDatapackReload();
 
+        //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
+        //but i wont provide a Json2ResearchItem parser,you have to make it yourself
+        ThaumcraftResearches.onDatapackReloaded();
         //TODO:Recipes init here
     }
 }

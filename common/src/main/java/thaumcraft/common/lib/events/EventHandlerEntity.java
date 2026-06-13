@@ -169,7 +169,7 @@ public class EventHandlerEntity {
                if (serverPlayer.tickCount % 40 == 0) {
                   Consumer<ItemStack> repairItemStack = stack -> {
                      if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairable
-                             || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.REPAIR,stack) > 0) && !serverPlayer.isCreative()
+                             || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),stack) > 0) && !serverPlayer.isCreative()
                      ) {
                         doRepair(stack, serverPlayer);
                      }
@@ -276,7 +276,7 @@ public class EventHandlerEntity {
    public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProviderItem provider) && provider.canProvideVisForRepair(itemStack);
    public static void doRepair(ItemStack is, ServerPlayer player) {
 
-      int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
+      int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),0);
       var item = is.getItem();
       if (item instanceof IRepairable repairable){
          repairable.doRepair(is,player,level);
@@ -317,7 +317,7 @@ public class EventHandlerEntity {
          if (!player.getAbilities().flying
                  && player.inventory.armorItemInSlot(0) != null
                  && player.moveForward > 0.0F) {
-            int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.HASTE.effectId, player.inventory.armorItemInSlot(0));
+            int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE().effectId, player.inventory.armorItemInSlot(0));
             if (haste > 0) {
                float bonus = (float)haste * 0.015F;
                if (player.isAirBorne) {
@@ -398,7 +398,7 @@ public class EventHandlerEntity {
                }
             }
          } else if (event.entity instanceof LivingEntity mob) {
-            AttributeInstance championMobInstance = mob.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
+            AttributeInstance championMobInstance = mob.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
             if (championMobInstance == null) {return;}
          }
       }
@@ -431,7 +431,7 @@ public class EventHandlerEntity {
               && !fakePlayerFlag
               && event.entity instanceof EntityMob
               && !(event.entity instanceof EntityThaumcraftBoss)
-              && ((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD).getAttributeValue() >= (double)0.0F) {
+              && ((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F) {
          int i = 5 + event.entity.getRandom().nextInt(3);
 
          while(i > 0) {
@@ -478,7 +478,7 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void livingTick(LivingDeathEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT)) {
+      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())) {
          Entity entity = null;
          if (event.entityLiving instanceof EntityCreeper) {
             entity = new EntityTaintCreeper(event.entityLiving.level());

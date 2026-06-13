@@ -41,7 +41,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaCrystallizerBlockEntity( BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_CRYSTALLIZER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_CRYSTALLIZER(), blockPos, blockState);
     }
     protected @NotNull("null -> empty") Aspect crystallizingAspect = Aspects.EMPTY;
 
@@ -121,7 +121,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         var pos = getBlockPos();
         var selfOutputFacing = getOutFacing();
         var outToPos = pos.relative(selfOutputFacing);
-        var outStack = CRYSTAL_ESSENCE.ofAspect(crystallizingAspect);
+        var outStack = CRYSTAL_ESSENCE().ofAspect(crystallizingAspect);
         if (this.level.getBlockEntity(outToPos) instanceof Container container) {
             outStack = InventoryUtils.placeItemStackIntoInventory(
                     outStack,
@@ -178,7 +178,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
                 stack);
         ie2.setDeltaMovement(offsetVec.getX()*0.04F,offsetVec.getY()*0.04F,offsetVec.getZ()*0.04F);
 
-        this.level.blockEvent(bpos, ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_CRYSTALLIZER, 0, 0);
+        this.level.blockEvent(bpos, ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_CRYSTALLIZER(), 0, 0);
         return this.level.addFreshEntity(ie2);
     }
 

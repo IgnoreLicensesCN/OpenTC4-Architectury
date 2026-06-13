@@ -42,7 +42,7 @@ public class AdvancedAlchemicalFurnaceAlembicBlock extends AbstractAdvancedAlche
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel){
-            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_ALEMBIC.defaultBlockState(), 3);
+            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_ALEMBIC().defaultBlockState(), 3);
         }
     }
 }

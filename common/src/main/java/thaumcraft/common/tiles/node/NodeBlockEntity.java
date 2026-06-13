@@ -8,7 +8,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class NodeBlockEntity extends AbstractNodeBlockEntity {
     public NodeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.AURA_NODE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.AURA_NODE(), blockPos, blockState);
     }
 
     public NodeBlockEntity(BlockEntityType<? extends NodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {

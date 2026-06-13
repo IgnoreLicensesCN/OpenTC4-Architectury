@@ -10,9 +10,17 @@ import net.minecraft.world.entity.MobCategory;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityAlumentum;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
+
 public class ThaumcraftEntities {
 
-    public static EntityType<EntityAlumentum> ALUMENTUM = Registry.SUPPLIER_ALUMENTUM.get();
+    public static class ThaumcraftEntityTypeInstances {
+
+        public static EntityType<EntityAlumentum> ALUMENTUM() {
+            return Registry.SUPPLIER_ALUMENTUM.get();
+        }
+
+    }
 
     public static class Registry {
         public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
@@ -25,9 +33,6 @@ public class ThaumcraftEntities {
                         .updateInterval(1)
                         .build("alumentum")
         );
-        static {
-            ENTITIES.register();
-        }
     }
 
     public static class EntityTags {
@@ -37,6 +42,6 @@ public class ThaumcraftEntities {
     }
 
     public static void init(){
-
+        ENTITIES.register();
     }
 }

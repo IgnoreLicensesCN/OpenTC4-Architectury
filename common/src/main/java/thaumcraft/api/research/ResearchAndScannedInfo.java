@@ -15,6 +15,7 @@ import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncAllScann
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchAspectsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncResearchCompletedS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateScannedS2C;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
@@ -26,7 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //i have to say this one is misunderstanding.
 //It just like "Oh i need some string to record something"
-// not all research need this,I can just say "you've picked PrimePearl >= 1(MC statics or whatever)"(or i may lookup items scanned for resource location) so research is unlocked
+// not all research need this,I can just say "you've picked PrimePearl >= 1(MC statics or whatever)"
+// (or i may lookup items scanned for resource location) so research is unlocked
 // (or some advancement?like twilight forest)
 public class ResearchAndScannedInfo {
     public boolean playerScanning = false;
@@ -84,6 +86,10 @@ public class ResearchAndScannedInfo {
     }
     public void addScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsScanned){
         scannedThings.computeIfAbsent(scannedType,k -> ConcurrentHashMap.newKeySet()).add(thingsScanned);
+    }
+    public void addScannedForTypeAndSyncToPlayer(ServerPlayer serverPlayer,ScannedTypeResourceLocation scannedType,ResourceLocation thingsScanned){
+        addScannedForType(scannedType,thingsScanned);
+        new PacketUpdateScannedS2C(scannedType,thingsScanned).sendTo(serverPlayer);
     }
     public boolean hasScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsToKnowIfScanned){
         var scannedSet = scannedThings.get(scannedType);

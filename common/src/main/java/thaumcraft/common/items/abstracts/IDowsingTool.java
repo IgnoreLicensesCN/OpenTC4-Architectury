@@ -63,7 +63,7 @@ public interface IDowsingTool {
 
         if (toPair != null) {
             float toolDowsingChance = 0;
-            int dowsingLevel = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.DOWSING, dowsingStack);
+            int dowsingLevel = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING(), dowsingStack);
             if (dowsingLevel > 0){
                 toolDowsingChance += toPair.rightFloat() * (
                         0.2F + dowsingLevel * 0.075F);

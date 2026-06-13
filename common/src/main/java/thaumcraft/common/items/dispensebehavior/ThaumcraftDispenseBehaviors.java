@@ -7,7 +7,7 @@ public class ThaumcraftDispenseBehaviors {
 
     public static void init(){
         DispenserBlock.registerBehavior(
-                ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM,
+                ThaumcraftItems.ThaumcraftItemInstances.ALUMENTUM(),
                 new BehaviorDispenseAlumentum());
 
     }

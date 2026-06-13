@@ -69,7 +69,7 @@ public class ItemSanitySoap extends Item {
          --stack.stackSize;
          if (Platform.getEnvironment() != Env.CLIENT) {
             float chance = 0.33F;
-            if (player.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD)) {
+            if (player.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD())) {
                chance += 0.25F;
             }
 

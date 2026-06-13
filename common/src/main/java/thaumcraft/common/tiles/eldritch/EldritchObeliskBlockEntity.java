@@ -12,6 +12,6 @@ public class EldritchObeliskBlockEntity extends BlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchObeliskBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK(), blockPos, blockState);
     }
 }

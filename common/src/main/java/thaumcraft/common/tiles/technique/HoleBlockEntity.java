@@ -20,7 +20,7 @@ public class HoleBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public HoleBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HOLE,blockPos,blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HOLE(),blockPos,blockState);
     }
     private int tickRemaining = 20;
     private @NotNull BlockState storingState = Blocks.AIR.defaultBlockState();
@@ -108,7 +108,7 @@ public class HoleBlockEntity extends TileThaumcraft {
         var relatedBE = this.level.getBlockEntity(pos);
         if (relatedBE == null) {
             var stateToStore = this.level.getBlockState(pos);
-            this.level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.HOLE.defaultBlockState());
+            this.level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.HOLE().defaultBlockState());
             if (this.level.getBlockEntity(pos) instanceof HoleBlockEntity hole){
                 hole.setSpreadDirection(spreadDirection);
                 hole.mergeSpreadDistanceWithMax(spreadDistance-1);

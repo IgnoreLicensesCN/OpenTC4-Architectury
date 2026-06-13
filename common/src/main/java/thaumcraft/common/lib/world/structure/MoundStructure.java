@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
-import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.MOUND_STRUCTURE_TYPE;
+import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MOUND_STRUCTURE_TYPE;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
 public class MoundStructure extends Structure {
@@ -118,7 +118,7 @@ public class MoundStructure extends Structure {
 
     @Override
     public @NotNull StructureType<?> type() {
-        return MOUND_STRUCTURE_TYPE;
+        return MOUND_STRUCTURE_TYPE();
     }
 
     private static final Set<Block> VALID_SPAWN_BLOCKS = Set.of(

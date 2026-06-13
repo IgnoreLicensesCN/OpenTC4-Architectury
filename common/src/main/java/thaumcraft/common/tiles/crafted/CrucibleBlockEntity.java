@@ -60,7 +60,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.CRUCIBLE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.CRUCIBLE(), blockPos, blockState);
     }
     protected int tempCalculatedCapacity = getInitialAspectCapacity();
     protected int getInitialAspectCapacity() {
@@ -257,12 +257,12 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
             var blockAbove = stateAbove.getBlock();
             if (stateAbove.isAir()) {
                 if (this.level.random.nextBoolean()) {
-                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS.defaultBlockState());
+                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS().defaultBlockState());
                 } else {
-                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO.defaultBlockState());
+                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState());
                 }
             } else {
-                if (blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS || blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO) {
+                if (blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS() || blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()) {
                     if (blockAbove instanceof FiniteLiquidBlock finiteLiquidBlock){
                         //stacking flux
                         int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
@@ -280,13 +280,13 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
                     if (pickState.isAir()){
                         //TODO:[maybe wont finished]set gas or goo(or more things such as tainted junks if you like) api
                         if (this.level.random.nextBoolean()) {
-                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS.defaultBlockState());
+                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS().defaultBlockState());
                         } else {
-                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO.defaultBlockState());
+                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState());
                         }
                     }
                     //i added this part.just think it's obviously reasonable
-                    else if (pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO) {
+                    else if (pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS() || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()) {
                         //also stacking flux
                         if (pickBlock instanceof FiniteLiquidBlock finiteLiquidBlock){
                             int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
@@ -312,7 +312,7 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 
             this.owningAspects.clear();
             if (this.level != null) {
-                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE, 2, 5);
+                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 5);
             }
         }
 
@@ -430,12 +430,12 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
         if (bubble) {
             this.level.playSound(null,getBlockPos(), ThaumcraftSounds.BUBBLE,SoundSource.BLOCKS, 0.2F, 1.0F + this.level.random.nextFloat() * 0.4F);
             markDirtyAndUpdateSelf();
-            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE, 2, 1);
+            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 1);
         }
 
         if (event) {
             markDirtyAndUpdateSelf();
-            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE, 2, 5);
+            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 5);
         }
 
         if (stack.isEmpty()) {

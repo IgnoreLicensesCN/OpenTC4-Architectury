@@ -14,6 +14,7 @@ import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisLi
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.items.wands.WandManager;
+import thaumcraft.common.lib.world.HolderCache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,9 +72,9 @@ public interface IRepairable {
 			var reduced = IAspectReducibleToPrimal.reduceToPrimals(basic);
 			CentiVisList<PrimalAspect> cost = new LinkedHashCentiVisList<>();
 			reduced.forEach(
-					(aspect, amount) -> cost.mergeWithHighest(
+					(aspect, amount) -> cost.addAll(
 							aspect,
-							repairCentiVisAmountForPrimalAspectDefault(is,aspect,amount,repairLevel)
+							Math.max(repairCentiVisAmountForPrimalAspectDefault(is,aspect,amount,repairLevel),amount)
 					)
 			);
 
@@ -81,11 +82,12 @@ public interface IRepairable {
 		});
 	}
 
-	default int repairCentiVisAmountForPrimalAspect(ItemStack is, PrimalAspect aspect,int amount,int repairLevel) {
-		return repairCentiVisAmountForPrimalAspectDefault(is,aspect,amount,repairLevel);
-	}
 	static int repairCentiVisAmountForPrimalAspectDefault(ItemStack is, PrimalAspect aspect,int amount,int repairLevel) {
 		return (int)Math.sqrt(amount * 2) * repairLevel;
+	}
+
+	static void  onDatapackReload(){
+		repairCostCache.clear();
 	}
 
 }

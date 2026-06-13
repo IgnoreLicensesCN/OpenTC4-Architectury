@@ -114,18 +114,18 @@ public class ManaBeanBlock extends SuppressedWarningBlock
                     }
                     dropCount *= 1 + random.nextInt(fortuneLevel+1);
                 }
-                int stackSize = ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN.getMaxStackSize();
+                int stackSize = ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().getMaxStackSize();
                 List<ItemStack> drops = new ArrayList<>((dropCount / stackSize)+1);
                 while ((dropCount / stackSize) > 0) {
                     dropCount -= stackSize;
-                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN,stackSize);
-                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN.writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN(),stackSize);
+                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 int remaining = dropCount % stackSize;
                 if (remaining > 0) {
-                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN,remaining);
-                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN.writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN(),remaining);
+                    ThaumcraftItems.ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 return drops;

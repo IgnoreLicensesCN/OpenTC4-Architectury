@@ -88,7 +88,7 @@ public class ArcaneBoreBaseBlock extends AbstractExtendedMenuProviderContainerBl
             var selfFacing = state.getValue(FACING_TO_DRILL);
             if (fromPos.equals(pos.relative(selfFacing))) {
                 var probablyDrillState = level.getBlockState(fromPos);
-                if (probablyDrillState.getBlock() != ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_BORE_DRILL) {
+                if (probablyDrillState.getBlock() != ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_BORE_DRILL()) {
                     level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     return;
                 } else if (probablyDrillState.getValue(FACING_TO_BASE)
@@ -108,7 +108,7 @@ public class ArcaneBoreBaseBlock extends AbstractExtendedMenuProviderContainerBl
             var selfFacing = state.getValue(FACING_TO_DRILL);
             if (fromPos.equals(pos.relative(selfFacing))) {
                 var probablyDrillState = level.getBlockState(fromPos);
-                if (probablyDrillState.getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_BORE_DRILL
+                if (probablyDrillState.getBlock() == ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_BORE_DRILL()
                         && probablyDrillState.getValue(FACING_TO_BASE)
                         .getOpposite() == selfFacing
                 ) {

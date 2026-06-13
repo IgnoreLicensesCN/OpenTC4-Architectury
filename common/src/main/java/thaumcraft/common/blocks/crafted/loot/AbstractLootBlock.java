@@ -147,45 +147,45 @@ public abstract class AbstractLootBlock extends SuppressedWarningBlock {
                 else if (quality == 1) return Items.GOLDEN_HELMET;
                 else if (quality == 2) return Items.CHAINMAIL_HELMET;
                 else if (quality == 3) return Items.IRON_HELMET;
-                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_HELMET;
+                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_HELMET();
                 else if (quality == 5) return Items.DIAMOND_HELMET;
-                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_HELMET;
+                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_HELMET();
                 break;
             case 3: // 胸甲
                 if (quality == 0) return Items.LEATHER_CHESTPLATE;
                 else if (quality == 1) return Items.GOLDEN_CHESTPLATE;
                 else if (quality == 2) return Items.CHAINMAIL_CHESTPLATE;
                 else if (quality == 3) return Items.IRON_CHESTPLATE;
-                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_CHESTPLATE;
+                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_CHESTPLATE();
                 else if (quality == 5) return Items.DIAMOND_CHESTPLATE;
-                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_CHESTPLATE;
+                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_CHESTPLATE();
                 break;
             case 2: // 护腿
                 if (quality == 0) return Items.LEATHER_LEGGINGS;
                 else if (quality == 1) return Items.GOLDEN_LEGGINGS;
                 else if (quality == 2) return Items.CHAINMAIL_LEGGINGS;
                 else if (quality == 3) return Items.IRON_LEGGINGS;
-                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_LEGGINGS;
+                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_LEGGINGS();
                 else if (quality == 5) return Items.DIAMOND_LEGGINGS;
-                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_LEGGINGS;
+                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_LEGGINGS();
                 break;
             case 1:
                 if (quality == 0) return Items.LEATHER_BOOTS;
                 else if (quality == 1) return Items.GOLDEN_BOOTS;
                 else if (quality == 2) return Items.CHAINMAIL_BOOTS;
                 else if (quality == 3) return Items.IRON_BOOTS;
-                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_BOOTS;
+                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_BOOTS();
                 else if (quality == 5) return Items.DIAMOND_BOOTS;
-                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_BOOTS;
+                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_BOOTS();
                 break;
             case 0:
                 if (quality == 0) return Items.IRON_AXE;
                 else if (quality == 1) return Items.IRON_SWORD;
                 else if (quality == 2) return Items.GOLDEN_AXE;
                 else if (quality == 3) return Items.GOLDEN_SWORD;
-                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_SWORD;
+                else if (quality == 4) return ThaumcraftItems.ThaumcraftItemInstances.THAUMIUM_SWORD();
                 else if (quality == 5) return Items.DIAMOND_SWORD;
-                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_SWORD;
+                else if (quality == 6) return ThaumcraftItems.ThaumcraftItemInstances.VOID_SWORD();
                 break;
             default:
                 return null;

@@ -2,6 +2,7 @@ package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.utils.vanilla1710.BiomeType;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -33,8 +35,9 @@ import thaumcraft.common.lib.world.dim.MazeHandler;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED;
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED;
+import static thaumcraft.common.lib.utils.EntityUtils.ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED;
+import static thaumcraft.common.lib.utils.EntityUtils.ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD;
 
 @Mixin(Mob.class)
 public class MobMixin {
@@ -53,7 +56,7 @@ public class MobMixin {
             var level = serverLevelAccessor.getLevel();
             var dim = level.dimension();
             var pos = monster.blockPosition();
-            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeInstances.CHAMPION_MOD);
+            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
             if (championModInstance != null) {
                 if (championModInstance.getBaseValue() == CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED) {
                     int championChance = random.nextInt(100);
@@ -106,6 +109,7 @@ public class MobMixin {
                             && maxHealthAttr != null
                             && maxHealthAttr.getBaseValue() >= (double) 10.0F
                     ) {
+                        championModInstance.setBaseValue(EntityUtils.ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
                         EntityUtils.makeChampion(monster, false);
                     } else {
                         championModInstance.setBaseValue(CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED);
@@ -125,5 +129,15 @@ public class MobMixin {
         }
 
         return false;
+    }
+
+    @ModifyReturnValue(
+            method = "createMobAttributes",
+            at = @At("RETURN")
+    )
+    private static AttributeSupplier.Builder opentc4$injectAttributes(AttributeSupplier.Builder builder){
+        builder
+                .add(CHAMPION_MOD());
+        return builder;
     }
 }
