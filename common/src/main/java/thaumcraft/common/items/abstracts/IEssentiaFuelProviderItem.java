@@ -2,9 +2,9 @@ package thaumcraft.common.items.abstracts;
 
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 
-public interface IEssentiaFuelProviderItem extends IAspectContainerItem<Aspect> {
+public interface IEssentiaFuelProviderItem extends IEssentiaContainerItem<Aspect> {
     int getFuelEssentiaAmount(ItemStack itemStack,Aspect aspect);
     int getMaxFuelEssentiaAmount(ItemStack itemStack,Aspect aspect);
     //return consumed

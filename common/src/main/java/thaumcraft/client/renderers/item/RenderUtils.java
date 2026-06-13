@@ -1,13 +1,16 @@
 package thaumcraft.client.renderers.item;
 
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static thaumcraft.common.items.ThaumcraftItemInstances.COMPASS_STONE;
 import static thaumcraft.common.items.ThaumcraftItemInstances.THAUMOMETER;
 
 public class RenderUtils {

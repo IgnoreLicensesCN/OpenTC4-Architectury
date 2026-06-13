@@ -44,7 +44,7 @@ public class PrimalCharmItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int i, boolean bl) {
 
-        if (Platform.getEnvironment() != Env.CLIENT) {
+        if (!world.isClientSide) {
             int r = world.getRandom().nextInt(20000);
 
             if (r < 20) {

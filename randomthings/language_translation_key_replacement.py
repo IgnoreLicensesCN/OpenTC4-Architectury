@@ -160,6 +160,13 @@ block_with_item_names = [
     ['item.ItemHelmetFortress.name','thaumium_fortress_helmet'],
     ['item.ItemChestplateFortress.name','thaumium_fortress_chestplate'],
     ['item.ItemLeggingsFortress.name','thaumium_fortress_leggings'],
+
+    ['item.HelmetFortress.mask.0','grinning_devil_mask'],
+    ['item.HelmetFortress.mask.1','angry_ghost_mask'],
+    ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
+    ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
+    ['item.ItemEssence.1.name','essentia_phial'],
+    ['item.ItemCompassStone.name','compass_stone']
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

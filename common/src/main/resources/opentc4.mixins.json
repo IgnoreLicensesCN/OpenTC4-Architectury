@@ -6,10 +6,10 @@
   "client": [
     "ClientChunkCacheMixin",
     "ClientChunkCacheStorageMixin",
-    "client.LivingEntityClientMixin",
     "SheetsMixin",
     "client.ClientPacketListenerMixin",
     "client.FontRendererMixin",
+    "client.LivingEntityClientMixin",
     "client.StringSplitterMixin",
     "client.clientbe.ArcaneBoreBlockEntityClientMixin",
     "client.clientbe.BrainJarBlockEntityClientMixin",
@@ -19,7 +19,8 @@
     "client.clientbe.EssentiaReservoirBlockEntityClientMixin",
     "client.clientbe.InfusionMatrixBlockEntityClientMixin",
     "client.clientbe.VisNetRelayBlockEntityClientMixin",
-    "client.render.ItemRendererMixin"
+    "client.render.ItemRendererMixin",
+    "client.render.ModelPredicateProviderRegistryAccessor"
   ],
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",

@@ -173,7 +173,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
 
     public boolean canFillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
         return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
@@ -182,7 +182,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     @Override
     public boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level == null){
@@ -193,7 +193,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
             return false;
         }
         var amountBefore = aspectAmountCurrent;
-        aspectAmountCurrent = itemToFill.storeAspect(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
+        aspectAmountCurrent = itemToFill.storeEssentia(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
         if (aspectAmountCurrent == 0) {
             aspectCurrent = Aspects.EMPTY;
         }

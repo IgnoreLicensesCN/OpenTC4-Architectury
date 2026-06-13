@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
 import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 
@@ -28,19 +28,13 @@ import java.util.List;
 
 import static com.linearity.opentc4.Consts.EssentiaJarTagAccessors.*;
 
-public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProviderItem,IAspectContainerItem<Aspect>,IAspectDisplayItem<Aspect> {
+public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProviderItem, IEssentiaContainerItem<Aspect>,IAspectDisplayItem<Aspect> {
     public EssentiaJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
 
     public EssentiaJarBlockItem() {
         this(ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_JAR(), new Properties().stacksTo(1));
-    }
-
-    public void setAspectAndAmount(ItemStack stack, Aspect aspect, int amount) {
-        var tag = stack.getOrCreateTag();
-        ASPECT.writeToCompoundTag(tag, aspect);
-        AMOUNT.writeIntToCompoundTag(tag, amount);
     }
 
     @Override
@@ -50,15 +44,15 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
         var pos = useOnContext.getClickedPos();
         var state = level.getBlockState(pos);
         var stack = useOnContext.getItemInHand();
-        if (state.getBlock() instanceof IAspectContainerItemFillerBlock<? extends Aspect> fillerNotCasted) {
-            var filler = (IAspectContainerItemFillerBlock<Aspect>) fillerNotCasted;
-            if (filler.canFillAspectContainerItem(
+        if (state.getBlock() instanceof IEssentiaContainerItemFillerBlock<? extends Aspect> fillerNotCasted) {
+            var filler = (IEssentiaContainerItemFillerBlock<Aspect>) fillerNotCasted;
+            if (filler.canFillEssentiaContainerItem(
                     level, pos, state, stack, this, ASPECT_FILTER.readFromCompoundTag(stack.getOrCreateTag())
             )) {
                 if (level.isClientSide()) {
                     return InteractionResult.SUCCESS;
                 }
-                boolean fillResult = filler.fillAspectContainerItem(
+                boolean fillResult = filler.fillEssentiaContainerItem(
                         level, pos, state, stack, this, 1
                 );
                 if (fillResult) {
@@ -83,7 +77,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
     }
 
     @Override
-    public void setAspects(ItemStack itemstack, AspectList<Aspect> aspects) {
+    public void setEssentiaOwning(ItemStack itemstack, AspectList<Aspect> aspects) {
         if (aspects.size() > 1) {
             throw new IllegalArgumentException("More than one aspect to set");
         }
@@ -96,7 +90,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
 
 
     @Override
-    public int storeAspect(@NotNull Level level, @NotNull BlockPos pos, @NotNull ItemStack itemstack, @NotNull("null -> empty") Aspect aspect, int amountCanFill) {
+    public int storeEssentia(@NotNull Level level, @NotNull BlockPos pos, @NotNull ItemStack itemstack, @NotNull("null -> empty") Aspect aspect, int amountCanFill) {
         var remaining = amountCanFill;
         var jarInfo = getJarInfo(itemstack);
         var aspCurrent = jarInfo.aspect();
@@ -207,7 +201,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
         }
     }
 
-    public void setAspectAmdAmount(ItemStack stack, Aspect aspect, int amount) {
+    public void setAspectAndAmount(ItemStack stack, Aspect aspect, int amount) {
         if (!stack.isEmpty()) {
             var tag = stack.getOrCreateTag();
             ASPECT.writeToCompoundTag(tag, aspect);
@@ -222,7 +216,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
         if (tag == null) return EssentiaJarInfo.EMPTY;
         var aspect = ASPECT.readFromCompoundTag(tag);
         var amount =  AMOUNT.readIntFromCompoundTag(tag);
-        var filter = ASPECT.readFromCompoundTag(tag);
+        var filter = ASPECT_FILTER.readFromCompoundTag(tag);
         if (aspect.isEmpty()){
             amount = 0;
         }
@@ -237,7 +231,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
     }
 
     @Override
-    public @NotNull AspectList<Aspect> getAspects(ItemStack itemstack) {
+    public @NotNull AspectList<Aspect> getEssentiaOwning(ItemStack itemstack) {
         var tag = itemstack.getTag();
         if (tag == null) {
             return UnmodifiableAspectList.EMPTY;
@@ -293,7 +287,7 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
         int maxSize = getAspectMaxVisSize(itemStack);
         if (jarInfo.amount == maxSize) return 0;
         int afterAdded = Math.min(jarInfo.amount + toAdd, maxSize);
-        setAspectAmdAmount(itemStack, aspect, afterAdded);
+        setAspectAndAmount(itemStack, aspect, afterAdded);
         return afterAdded - jarInfo.amount;
     }
 

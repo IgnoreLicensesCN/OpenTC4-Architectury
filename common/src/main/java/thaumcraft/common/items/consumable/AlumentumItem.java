@@ -37,7 +37,7 @@ public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel
                 0.3F,
                 0.4F / (world.random.nextFloat() * 0.4F + 0.8F)
         );
-        if (Platform.getEnvironment() != Env.CLIENT) {
+        if (!world.isClientSide) {
             world.addFreshEntity(new EntityAlumentum(player, world));
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());

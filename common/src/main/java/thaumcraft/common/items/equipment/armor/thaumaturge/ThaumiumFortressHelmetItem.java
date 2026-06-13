@@ -44,16 +44,16 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
         this(ThaumcraftToolAndArmorMaterial.THAUMIUM_FORTRESS, Type.HELMET, new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, level, list, tooltipFlag);
-        var components = getArmorComponents(itemStack);
+    public void appendHoverText(ItemStack helmetStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+        super.appendHoverText(helmetStack, level, list, tooltipFlag);
+        var components = getArmorComponents(helmetStack);
         for (var stack:components) {
             list.add(stack.getDisplayName().copy().withStyle(style ->  style.withColor(stack.getRarity().color)));
             stack.getItem().appendHoverText(stack, level, list, tooltipFlag);
         }
         for (var stack:components) {
-            if (stack.getItem() instanceof IWarpingGear warpingGear) {
-                warpingGear.addWarpTooltip(itemStack,level,list,tooltipFlag);
+            if (stack.getItem() instanceof IWarpingGearComponent warpingGear) {
+                warpingGear.addWarpTooltipAsComponent(stack,helmetStack,level,list,tooltipFlag);
             }
         }
     }
@@ -112,42 +112,42 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
 
 
     @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        super.inventoryTick(itemStack, level, entity, i, bl);
+    public void inventoryTick(ItemStack helmetStack, Level level, Entity entity, int i, boolean bl) {
+        super.inventoryTick(helmetStack, level, entity, i, bl);
         if (i != (36 + type.getSlot().getIndex()) || !(entity instanceof LivingEntity livingEntity)) {
             return;
         }
-        for (var stack:getArmorComponents(itemStack)) {
+        for (var stack:getArmorComponents(helmetStack)) {
             if (stack.getItem() instanceof IArmorTickableComponentItem tickableComponentItem) {
-                tickableComponentItem.tickAsComponent(stack,itemStack,livingEntity);
+                tickableComponentItem.tickAsComponent(stack,helmetStack,livingEntity);
             }
         }
     }
 
     @Override
-    public void onAttackOtherEntity(ItemStack selfStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageCausedNoArmorReduce) {
-        for (var stack:getArmorComponents(selfStack)) {
+    public void onAttackOtherEntity(ItemStack helmetStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageCausedNoArmorReduce) {
+        for (var stack:getArmorComponents(helmetStack)) {
             if (stack.getItem() instanceof IArmorAttackOthersListenerComponentItem componentItem){
-                componentItem.onAttackOtherEntity(stack,selfStack,user,beingAttacked,damageSource, damageCausedNoArmorReduce);
+                componentItem.onAttackOtherEntity(stack,helmetStack,user,beingAttacked,damageSource, damageCausedNoArmorReduce);
             }
         }
     }
 
     @Override
-    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack selfStack, LivingEntity user, DamageSource damageSource, float damageCausedNoArmorReduce) {
-        for (var stack:getArmorComponents(selfStack)) {
+    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack helmetStack, LivingEntity user, DamageSource damageSource, float damageCausedNoArmorReduce) {
+        for (var stack:getArmorComponents(helmetStack)) {
             if (stack.getItem() instanceof IArmorBeingAttackedListenerComponentItem componentItem){
-                componentItem.onBeingAttackedByOtherEntity(stack,selfStack,user,damageSource, damageCausedNoArmorReduce);
+                componentItem.onBeingAttackedByOtherEntity(stack,helmetStack,user,damageSource, damageCausedNoArmorReduce);
             }
         }
     }
 
     @Override
-    public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
+    public int getWarp(ItemStack helmetStack, @Nullable Entity entityEquipped) {
         int totalWarps = 0;
-        for (var stack:getArmorComponents(itemstack)) {
-            if (stack.getItem() instanceof IWarpingGear componentItem) {
-                totalWarps += componentItem.getWarp(itemstack,entityEquipped);
+        for (var stack:getArmorComponents(helmetStack)) {
+            if (stack.getItem() instanceof IWarpingGearComponent componentItem) {
+                totalWarps += componentItem.getWarpAsComponent(stack,helmetStack,entityEquipped);
             }
         }
         return totalWarps;

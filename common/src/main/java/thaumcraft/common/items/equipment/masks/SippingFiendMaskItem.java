@@ -1,8 +1,6 @@
 package thaumcraft.common.items.equipment.masks;
 
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -11,11 +9,11 @@ import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.items.abstracts.armorcomponents.IArmorAttackOthersListenerComponentItem;
 
-public class SippingFiendMask extends Item implements IArmorAttackOthersListenerComponentItem {
-    public SippingFiendMask(Properties properties) {
+public class SippingFiendMaskItem extends Item implements IArmorAttackOthersListenerComponentItem {
+    public SippingFiendMaskItem(Properties properties) {
         super(properties);
     }
-    public SippingFiendMask() {
+    public SippingFiendMaskItem() {
         this(new Properties().rarity(Rarity.UNCOMMON));
     }
 

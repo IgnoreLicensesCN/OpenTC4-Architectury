@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
@@ -29,7 +29,7 @@ import thaumcraft.common.tiles.crafted.essentiabe.EssentiaReservoirBlockEntity;
 
 //TODO:Smaller bound
 public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
-        IAspectContainerItemFillerBlock<Aspect>,
+        IEssentiaContainerItemFillerBlock<Aspect>,
         IWandInteractableBlockOrBlockEntity,
         EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -58,12 +58,12 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
 
     @Override
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull("empty -> any") Aspect aspect) {
         if (level.getBlockEntity(blockPos) instanceof EssentiaReservoirBlockEntity reservoir) {
             return reservoir.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
@@ -73,12 +73,12 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
     @Override
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level.isClientSide()) {return false;}

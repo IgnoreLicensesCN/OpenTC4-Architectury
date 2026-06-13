@@ -10,11 +10,13 @@ import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.items.abstracts.armorcomponents.IArmorBeingAttackedListenerComponentItem;
 
-public class AngryGhostMask extends Item implements IArmorBeingAttackedListenerComponentItem {
-    public AngryGhostMask(Properties properties) {
+//i have a strong feeling that someone would unload this mask and replace other masks (in recipe?)
+//at least we have it's item form now.
+public class AngryGhostMaskItem extends Item implements IArmorBeingAttackedListenerComponentItem {
+    public AngryGhostMaskItem(Properties properties) {
         super(properties);
     }
-    public AngryGhostMask() {
+    public AngryGhostMaskItem() {
         this(new Properties().rarity(Rarity.UNCOMMON));
     }
 

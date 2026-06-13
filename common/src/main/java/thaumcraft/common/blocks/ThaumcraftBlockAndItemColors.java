@@ -1,12 +1,22 @@
 package thaumcraft.common.blocks;
 
+import com.linearity.opentc4.mixin.client.render.ModelPredicateProviderRegistryAccessor;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GrassColor;
+import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.abstracts.IGoggles;
+import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static thaumcraft.common.items.ThaumcraftItemInstances.COMPASS_STONE;
+import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
 
 public class ThaumcraftBlockAndItemColors {
 
@@ -204,5 +214,53 @@ public class ThaumcraftBlockAndItemColors {
                 ThaumcraftBlocks.ThaumcraftBlockInstances.CRUSTED_TAINT(),
                 ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS()
         );
+
+        //TODO:[maybe wont finished]rotate the compass stone like compass(wtf)
+        ModelPredicateProviderRegistryAccessor.register(
+                COMPASS_STONE(),
+                new ResourceLocation("near_node"), (itemStack, clientLevel, livingEntity, i) -> {
+                    if (livingEntity == null) {
+                        return 0.0F;
+                    }
+                    AtomicBoolean foundNode = new AtomicBoolean(false);
+
+                    var hasGoggles = false;
+                    for (var stack:livingEntity.getArmorSlots()){
+                        if (stack.getItem() instanceof IGoggles goggles && goggles.showAsWearingGogglesOfRevealing(
+                                stack,livingEntity
+                        )) {
+                            hasGoggles = true;
+                            break;
+                        }
+                    }
+                    boolean finalHasGoggles = hasGoggles;
+                    ALL_NODES.get(clientLevel).forItemsNearPosWithBreakWithRange(
+                            livingEntity.blockPosition(),
+                            nodeBE -> {
+                                if (nodeBE.getNodeType() == NodeType.DARK){
+                                    var nodePos = nodeBE.getBlockPos();
+
+                                    if (finalHasGoggles //added to avoid players' anger
+                                            || EntityUtils.isVisibleTo(
+                                            0.66F,
+                                            livingEntity,
+                                            nodePos.getX() + 0.5F,
+                                            nodePos.getY() + 0.5F,
+                                            nodePos.getZ() + 0.5F,
+                                            256.0F
+                                    )
+                                    ){
+                                        foundNode.set(true);//TODO:[maybe wont finished]"vote in democracy" to remove this "isVisible" condition needed
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            },256
+                            );
+                    if (foundNode.get()) {
+                        return 1.0F;
+                    }
+                    return 0.0F;
+                });
     }
 }

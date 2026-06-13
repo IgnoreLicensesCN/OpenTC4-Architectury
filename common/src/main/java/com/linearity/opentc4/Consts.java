@@ -213,6 +213,9 @@ public class Consts {
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
         public static final IntTagAccessor AMOUNT = new IntTagAccessor("amount");
     }
+    public static class EssentiaPhialTagAccessors {
+        public static final AspectAccessor ASPECT = new AspectAccessor("aspect");
+    }
     public static class BrainJarTagAccessors {
         public static final IntTagAccessor EXP = new IntTagAccessor("exp");
     }

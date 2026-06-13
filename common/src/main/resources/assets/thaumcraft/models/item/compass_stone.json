@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "item/compass_stone"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "near_node": 1
+            },
+            "model": "item/compass_stone_found"
+        }
+    ]
+}

@@ -103,7 +103,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.ENTROPY, 4);
         }
     };
-    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft:dark"),1.f){
+    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft","dark"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);

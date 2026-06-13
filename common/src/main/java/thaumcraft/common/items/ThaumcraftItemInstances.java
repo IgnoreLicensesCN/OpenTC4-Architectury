@@ -18,9 +18,9 @@ import thaumcraft.common.items.equipment.armor.voidarmor.VoidArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeHelmetItem;
 import thaumcraft.common.items.equipment.elemental.*;
-import thaumcraft.common.items.equipment.masks.AngryGhostMask;
-import thaumcraft.common.items.equipment.masks.GrinningDevilMask;
-import thaumcraft.common.items.equipment.masks.SippingFiendMask;
+import thaumcraft.common.items.equipment.masks.AngryGhostMaskItem;
+import thaumcraft.common.items.equipment.masks.GrinningDevilMaskItem;
+import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
@@ -28,6 +28,7 @@ import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.items.jars.VoidJarBlockItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
+import thaumcraft.common.items.misc.CompassStoneItem;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.MirrorBlockItem;
@@ -81,7 +82,7 @@ public class ThaumcraftItemInstances {
 
     public static Item TAINTED_GOO() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINTED_GOO.get();
-    }//itemResource:11
+    }//itemResource:11 //TODO:new class
 
     public static Item TAINT_TENDRIL() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINT_TENDRIL.get();
@@ -1065,13 +1066,19 @@ public class ThaumcraftItemInstances {
     public static ThaumiumFortressArmorItem THAUMIUM_FORTRESS_LEGGINGS() {
         return ThaumcraftItemsRegistry.SUPPLIER_THAUMIUM_FORTRESS_LEGGINGS.get();
     }
-    public static AngryGhostMask ANGRY_GHOST_MASK() {
+    public static AngryGhostMaskItem ANGRY_GHOST_MASK() {
         return ThaumcraftItemsRegistry.SUPPLIER_ANGRY_GHOST_MASK.get();
     }
-    public static GrinningDevilMask GRINNING_DEVILS_MASK() {
+    public static GrinningDevilMaskItem GRINNING_DEVILS_MASK() {
         return ThaumcraftItemsRegistry.SUPPLIER_GRINNING_DEVIL_MASK.get();
     }
-    public static SippingFiendMask SIPPING_FIEND_MASK() {
+    public static SippingFiendMaskItem SIPPING_FIEND_MASK() {
         return ThaumcraftItemsRegistry.SUPPLIER_SIPPING_FIEND_MASK.get();
+    }
+    public static EssentiaPhialItem ESSENTIA_PHIAL() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ESSENTIA_PHIAL.get();
+    }
+    public static CompassStoneItem COMPASS_STONE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_COMPASS_STONE.get();
     }
 }

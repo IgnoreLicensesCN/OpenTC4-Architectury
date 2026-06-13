@@ -1,39 +1,24 @@
 package thaumcraft.api.aspects;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
 
-/**
- * 
- * @author azanor
- * 
- * Used by wispy essences and essentia phials to hold their aspects. 
- * Useful for similar item containers that store their aspect information in nbt form so TC
- * automatically picks up the aspects they contain
- *
- */
-@Deprecated(forRemoval = true,since = "getting confused with NodeJar aspects(which shouldn't been change by Alembic) and fillable-jar aspects,use IAspectContainerItem instead")
-public interface IEssentiaContainerItem {
-	AspectList<Aspect> getAspects(ItemStack itemstack);
-
-	void setAspects(ItemStack itemstack, AspectList<Aspect> aspects);
+//(dont impl for empty jar)(oh there's no special "empty jar" now)
+public interface IEssentiaContainerItem<Asp extends Aspect> extends IBonusAspectOwnerItem<Asp> {
+    @NotNull AspectList<Asp> getEssentiaOwning(ItemStack itemstack);
+    default @NotNull AspectList<Asp> getOwningBonusAspects(ItemStack stack){
+        return getEssentiaOwning(stack);
+    }
+    int getAspectTypeSize(ItemStack itemstack);//for example 1 for jar and Integer.MAX_VALUE for ESSENTIA_RESERVOIR
+    // (but ESSENTIA_RESERVOIR shouldn't impl this since it's designed to work as a block)
+    int getAspectMaxVisSize(ItemStack itemstack);//for example 64 for jar and 256 for ESSENTIA_RESERVOIR
+    //force set AspectList(not recommended,should throw exception if invalid visSize or typeSize
+    void setEssentiaOwning(ItemStack itemstack, AspectList<Asp> aspects);
+    //return:remaining
+    //you may want to create new itemstack here
+    int storeEssentia(@NotNull Level level, @NotNull BlockPos pos, @NotNull ItemStack itemstack, @NotNull("null -> empty") Asp aspect, int amountCanFill);
 }
-
-//Example implementation
-/*  
-	@Override
-	public AspectList<Aspect>getAspects(ItemStack itemstack) {
-		if (itemstack.hasTagCompound()) {
-			AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
-			aspects.load(itemstack.getTagCompound());
-			return aspects.size()>0?aspects:null;
-		}
-		return null;
-	}
-	
-	@Override
-	public void setAspectsWithBase(ItemStack itemstack, AspectList<Aspect>aspects) {
-		if (!itemstack.hasTagCompound()) itemstack.setTagCompound(new CompoundTag());
-		aspects.saveAdditional(itemstack.getTagCompound());
-	}
-*/

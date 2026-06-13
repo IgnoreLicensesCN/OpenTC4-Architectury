@@ -161,6 +161,9 @@ public class EntityUtils {
 //                new AttributeModifierTweaked(
 //                        UUID.fromString("3cfab9da-2701-43d8-ac07-885f16fa4117"), "DAMAGE BUFF 5", 0.5F, ADDITION)};
     }
+    //TODO:If this way failed to register for LivingEntity because of lifecycle,use static field init instead
+    // (since it should ask me for instance,i can pass anything if there's no recursive dependency needed.)
+    //TODO:If this way failed again,we start modify/replace that map.
     public static class Registry {
         public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ATTRIBUTE);
         public static final RegistrySupplier<Attribute> SUPPLIER_CHAMPION_MOD = ATTRIBUTES.register(

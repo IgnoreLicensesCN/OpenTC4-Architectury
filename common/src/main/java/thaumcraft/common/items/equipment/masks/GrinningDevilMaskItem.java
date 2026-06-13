@@ -10,26 +10,25 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IWarpingGear;
+import thaumcraft.common.items.abstracts.armorcomponents.IWarpingGearComponent;
 
 import java.util.List;
 
-//used for THAUMIC_FORTRESS_MASK_DISCOUNT
-public class GrinningDevilMask extends Item implements IWarpingGear {
-    public GrinningDevilMask(Properties properties) {
+public class GrinningDevilMaskItem extends Item implements IWarpingGearComponent {
+    public GrinningDevilMaskItem(Properties properties) {
         super(properties);
     }
-    public GrinningDevilMask() {
+    public GrinningDevilMaskItem() {
         this(new Properties().rarity(Rarity.UNCOMMON));
     }
 
     @Override
-    public int getWarp(ItemStack itemstack, @Nullable Entity entityEquipped) {
+    public int getWarpAsComponent(ItemStack itemstack,ItemStack parentStack, @Nullable Entity entityEquipped) {
         return 2 + (entityEquipped != null?entityEquipped.level().random: RandomSource.createNewThreadLocalInstance()).nextInt(4);
     }
 
     @Override
-    public void addWarpTooltip(ItemStack itemStack, Level level, List<Component> list, TooltipFlag tooltipFlag) {
+    public void addWarpTooltipAsComponent(ItemStack itemStack,ItemStack parentStack, Level level, List<Component> list, TooltipFlag tooltipFlag) {
         list.add(Component.translatable("item.warping").withStyle(ChatFormatting.DARK_PURPLE)
                 .append(Component.literal(" -5~-2").withStyle(ChatFormatting.DARK_PURPLE)));
     }

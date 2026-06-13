@@ -93,7 +93,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
         if (!stacksInside.isEmpty()) {
             for (var stackInside : stacksInside) {
                 if (stackInside.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
-                    owningAspects.addAll(fuelProviderItem.getAspects(stackInside));
+                    owningAspects.addAll(fuelProviderItem.getEssentiaOwning(stackInside));
                 }
             }
         }

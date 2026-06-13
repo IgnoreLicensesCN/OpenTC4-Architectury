@@ -24,9 +24,9 @@ import thaumcraft.common.items.equipment.armor.voidarmor.VoidArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeArmorItem;
 import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeHelmetItem;
 import thaumcraft.common.items.equipment.elemental.*;
-import thaumcraft.common.items.equipment.masks.AngryGhostMask;
-import thaumcraft.common.items.equipment.masks.GrinningDevilMask;
-import thaumcraft.common.items.equipment.masks.SippingFiendMask;
+import thaumcraft.common.items.equipment.masks.AngryGhostMaskItem;
+import thaumcraft.common.items.equipment.masks.GrinningDevilMaskItem;
+import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
@@ -34,6 +34,7 @@ import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.items.jars.VoidJarBlockItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
+import thaumcraft.common.items.misc.CompassStoneItem;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.MirrorBlockItem;
@@ -1006,16 +1007,24 @@ public class ThaumcraftItemsRegistry {
             "thaumium_fortress_leggings",
             () -> new ThaumiumFortressArmorItem(ArmorItem.Type.LEGGINGS)
     );
-    public static final RegistrySupplier<AngryGhostMask> SUPPLIER_ANGRY_GHOST_MASK = ITEMS.register(
+    public static final RegistrySupplier<AngryGhostMaskItem> SUPPLIER_ANGRY_GHOST_MASK = ITEMS.register(
             "angry_ghost_mask",
-            AngryGhostMask::new
+            AngryGhostMaskItem::new
     );
-    public static final RegistrySupplier<GrinningDevilMask> SUPPLIER_GRINNING_DEVIL_MASK = ITEMS.register(
+    public static final RegistrySupplier<GrinningDevilMaskItem> SUPPLIER_GRINNING_DEVIL_MASK = ITEMS.register(
             "grinning_devil_mask",
-            GrinningDevilMask::new
+            GrinningDevilMaskItem::new
     );
-    public static final RegistrySupplier<SippingFiendMask> SUPPLIER_SIPPING_FIEND_MASK = ITEMS.register(
+    public static final RegistrySupplier<SippingFiendMaskItem> SUPPLIER_SIPPING_FIEND_MASK = ITEMS.register(
             "sipping_fiend_mask",
-            SippingFiendMask::new
+            SippingFiendMaskItem::new
+    );
+    public static final RegistrySupplier<EssentiaPhialItem> SUPPLIER_ESSENTIA_PHIAL = ITEMS.register(
+            "essentia_phial",
+            EssentiaPhialItem::new
+    );
+    public static final RegistrySupplier<CompassStoneItem> SUPPLIER_COMPASS_STONE = ITEMS.register(
+            "compass_stone",
+            CompassStoneItem::new
     );
 }

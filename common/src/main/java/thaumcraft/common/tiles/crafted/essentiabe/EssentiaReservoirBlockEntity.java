@@ -214,7 +214,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
     }
     public boolean canFillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
         return owningAspects.get(aspect) != 0;
@@ -222,7 +222,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
     public boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (this.level == null){
@@ -231,7 +231,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         return owningAspects.forEachWithBreak(
                 (aspect,amountBefore) -> {
                     if (amountBefore >= minAmount) {
-                        int remaining = itemToFill.storeAspect(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
+                        int remaining = itemToFill.storeEssentia(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
                         setAspectAmount(aspect,remaining);
 
                         if (remaining != amountBefore) {

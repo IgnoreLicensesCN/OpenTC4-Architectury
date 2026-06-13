@@ -23,7 +23,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
@@ -101,12 +100,12 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 
    @SideOnly(Side.CLIENT)
    public IIcon getIcon(ItemStack stack, int pass) {
-      return pass != 0 && this.getAspects(stack) != null ? this.iconOverlay : this.getIconFromDamage(stack.getItemDamage());
+      return pass != 0 && this.getEssentiaOwning(stack) != null ? this.iconOverlay : this.getIconFromDamage(stack.getItemDamage());
    }
 
    @SideOnly(Side.CLIENT)
    public int getColorFromItemStack(ItemStack stack, int par2) {
-      return par2 == 1 && stack.getItemDamage() == 13 && this.getAspects(stack) != null ? this.getAspects(stack).getAspects()[0].getColor() : 16777215;
+      return par2 == 1 && stack.getItemDamage() == 13 && this.getEssentiaOwning(stack) != null ? this.getEssentiaOwning(stack).getAspects()[0].getColor() : 16777215;
    }
 
    @SideOnly(Side.CLIENT)
@@ -271,7 +270,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 //   }
 
    public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      AspectList<Aspect>aspects = this.getAspects(stack);
+      AspectList<Aspect>aspects = this.getEssentiaOwning(stack);
       addAspectDescriptionToList(aspects,player,list);
 
 //      if (stack.getItemDamage() == 15) {
@@ -285,7 +284,7 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
       super.addInformation(stack, player, list, par4);
    }
 
-   public AspectList<Aspect>getAspects(ItemStack itemstack) {
+   public AspectList<Aspect> getEssentiaOwning(ItemStack itemstack) {
       if (itemstack.hasTagCompound()) {
          AspectList<Aspect>aspects = new LinkedHashAspectList<>();
          aspects.readFromNBT(itemstack.getTagCompound());

@@ -20,7 +20,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.crafting.infusion.InfusionRecipe;

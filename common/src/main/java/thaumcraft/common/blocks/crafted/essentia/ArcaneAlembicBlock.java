@@ -26,10 +26,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.ArcaneAlembicBlockEntity;
@@ -38,7 +38,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
         implements EntityBlock,
         IWandInteractableBlockOrBlockEntity,
         IAspectLabelAttachableBlock,
-        IAspectContainerItemFillerBlock<Aspect>
+        IEssentiaContainerItemFillerBlock<Aspect>
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneAlembicBlock(Properties properties) {
@@ -124,12 +124,12 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     }
 
     @Override
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull Aspect aspect) {
         if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
@@ -138,12 +138,12 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     }
 
     @Override
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {

@@ -24,8 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillableBlock;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.crafted.jars.JarBlock;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
@@ -34,7 +35,8 @@ import thaumcraft.common.tiles.crafted.essentiabe.jars.EssentiaJarBlockEntity;
 public abstract class AbstractEssentiaJarBlock extends JarBlock
         implements EntityBlock,
         IAspectLabelAttachableBlock,
-        IAspectContainerItemFillerBlock<Aspect>
+        IEssentiaContainerItemFillerBlock<Aspect>,
+        IEssentiaContainerItemFillableBlock<Aspect>
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public AbstractEssentiaJarBlock(Properties properties) {
@@ -78,32 +80,58 @@ public abstract class AbstractEssentiaJarBlock extends JarBlock
     }
 
     @Override
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull("empty -> any") Aspect aspect) {
         if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
-            return essentiaJar.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
+            return essentiaJar.canFillEssentiaContainerItem(stackToFill, itemToFill, aspect);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canBeFilledWithEssentiaContainerItem(Level level, BlockPos blockPos, BlockState blockState, ItemStack stackFiller, IEssentiaContainerItem<Aspect> itemFiller, @NotNull("not empty") Aspect aspect) {
+        if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
+            return essentiaJar.canBeFilledWithEssentiaContainerItem(stackFiller, itemFiller, aspect);
         }
         return false;
     }
 
     @Override
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level.isClientSide()) {return false;}
         if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
-            return essentiaJar.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
+            return essentiaJar.fillEssentiaContainerItem(stackToFill, itemToFill,minAmount);
+        }
+        return false;
+    }
+
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
+    @Override
+    public boolean fillWithEssentiaContainerItem(
+            Level level,
+            BlockPos blockPos,
+            BlockState blockState,
+            ItemStack stackToFill,
+            IEssentiaContainerItem<Aspect> itemFiller,
+            Aspect aspectToFill,
+            int exactAmount
+    ) {
+        if (level.isClientSide()) {return false;}
+        if (level.getBlockEntity(blockPos) instanceof EssentiaJarBlockEntity essentiaJar) {
+            return essentiaJar.fillWithEssentiaContainerItem(stackToFill, itemFiller,aspectToFill ,exactAmount);
         }
         return false;
     }

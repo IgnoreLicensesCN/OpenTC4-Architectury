@@ -6,27 +6,27 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 import net.minecraft.world.level.Level;
 
-public interface IAspectContainerItemFillerBlock<Asp extends Aspect> {
-    boolean canFillAspectContainerItem(
+public interface IEssentiaContainerItemFillerBlock<Asp extends Aspect> {
+    boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Asp> itemToFill,
+            IEssentiaContainerItem<Asp> itemToFill,
             @NotNull("empty -> any") Asp aspect
     );
     //usually called when jar right-click block with this(maybe golem will also call this one day):
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
-    boolean fillAspectContainerItem(
+    boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Asp> itemToFill,
+            IEssentiaContainerItem<Asp> itemToFill,
             int minAmount
     );
 }

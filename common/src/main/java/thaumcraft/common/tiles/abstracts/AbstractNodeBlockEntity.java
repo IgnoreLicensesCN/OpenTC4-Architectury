@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.resourcelocations.NodeIDResourceLocation;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
@@ -34,7 +33,6 @@ import thaumcraft.api.nodes.*;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandComponentsOwnerItem;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.items.misc.ItemCompassStone;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
@@ -162,9 +160,6 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         ++this.tickCount;
         this.checkLock();
 
-        if (this.getNodeType() == NodeType.DARK && this.tickCount % 50 == 0) {
-            ItemCompassStone.sinisterNodes.put(new WorldCoordinates(this), System.currentTimeMillis());
-        }
     }
 
 
