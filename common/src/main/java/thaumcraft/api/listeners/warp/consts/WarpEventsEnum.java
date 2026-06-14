@@ -20,7 +20,7 @@ public enum WarpEventsEnum {
     GRANT_RESEARCH_LOW(new WarpEvent(4, 4) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            grantResearch(player, 1);
+            grantResearchAspect(player, 1);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.3")), true);
         }
@@ -197,7 +197,7 @@ public enum WarpEventsEnum {
     GRANT_RESEARCH_HIGH(new WarpEvent(4, 84) {
         @Override
         public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
-            grantResearch(player, warpContext.warp / 10);
+            grantResearchAspect(player, warpContext.warp / 10);
             player.displayClientMessage(
                     Component.literal("§5§o" + Component.translatable("warp.text.3")), true);
         }

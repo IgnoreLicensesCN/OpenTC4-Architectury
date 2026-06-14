@@ -1,0 +1,6 @@
+{
+    "parent": "item/sanity_checker",
+    "textures": {
+        "layer0": f"item/sanity_checker_states/sanity_checker_{i}"
+    }
+}

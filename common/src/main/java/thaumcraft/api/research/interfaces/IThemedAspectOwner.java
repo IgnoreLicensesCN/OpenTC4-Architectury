@@ -5,5 +5,4 @@ import thaumcraft.api.aspects.Aspect;
 
 public interface IThemedAspectOwner {
     @NotNull("null->empty") Aspect getResearchThemedAspect();
-
 }

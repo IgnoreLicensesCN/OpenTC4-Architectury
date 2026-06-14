@@ -1,21 +1,27 @@
 package thaumcraft.common.blocks;
 
+import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixin.client.render.ModelPredicateProviderRegistryAccessor;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GrassColor;
 import thaumcraft.api.nodes.NodeType;
+import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.abstracts.IGoggles;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static thaumcraft.common.items.ThaumcraftItemInstances.COMPASS_STONE;
+import static thaumcraft.common.items.ThaumcraftItemInstances.SANITY_CHECKER;
 import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
 
 public class ThaumcraftBlockAndItemColors {
@@ -262,5 +268,72 @@ public class ThaumcraftBlockAndItemColors {
                     }
                     return 0.0F;
                 });
+        ModelPredicateProviderRegistryAccessor.register(
+                SANITY_CHECKER(),
+                new ResourceLocation("warp_index"),
+                (itemStack, clientLevel, livingEntity, i) -> calculateWarpProgressKindStateForLiving(livingEntity)
+        );
+    }
+
+    private static final Map<LivingEntity,Integer> mappingCache = new MapMaker().weakKeys().makeMap();
+    public static int calculateWarpProgressKindStateForLiving(LivingEntity livingEntity) {
+        if (!(livingEntity instanceof Player player)){
+            return 0;
+        }
+        if (mappingCache.containsKey(player) && player.tickCount%20 != 0){
+            return mappingCache.get(player);
+        }
+        var info = WarpInfo.getFromPlayer(player);
+        int[] infoNotScaled = new int[4];
+        infoNotScaled[0] = info.getPermWarp();
+        infoNotScaled[1] = info.getStickyWarp();
+        infoNotScaled[2] = info.getTempWarp();
+        infoNotScaled[3] = Math.clamp(100-infoNotScaled[0]-infoNotScaled[1]-infoNotScaled[2],0,100);
+        int total = infoNotScaled[0]+infoNotScaled[1]+infoNotScaled[2]+infoNotScaled[3];
+        double[] allScaledDouble = {infoNotScaled[0]*8./total,infoNotScaled[1]*8./total,infoNotScaled[2]*8./total,infoNotScaled[3]*8./total};
+
+        int[] totalScaled = new int[4];
+        double maxReminder = -1;
+        int maxReminderIndex = -1;
+        for(int i=0;i<4;i++){
+            totalScaled[i] = (int)allScaledDouble[i];
+            double remaining = allScaledDouble[i]-totalScaled[i];
+            if(remaining > maxReminder){
+                maxReminder = remaining;
+                maxReminderIndex = i;
+            }
+        }
+        if (maxReminderIndex != -1){
+            totalScaled[maxReminderIndex] += 1;
+        }
+        int resultIndex = arrayTo165Index(totalScaled);
+        mappingCache.put(player,resultIndex);
+        return resultIndex;
+    }
+    private static int arrayTo165Index(int[] arr) {
+        // 假设 arr 长度为 4 且总和为 8
+        int a = arr[0];
+        int b = arr[1];
+        int c = arr[2];
+
+        int index = 0;
+
+        // 1. 处理第一个数 a 带来的偏移量
+        if (a > 0) {
+            // 相当于执行了对 C(8-v+2, 2) 的求和化简
+            index += (a * (a * a - 27 * a + 242)) / 6;
+        }
+
+        // 2. 处理第二个数 b 带来的偏移量
+        if (b > 0) {
+            int rem1 = 8 - a;
+            // 相当于执行了对 (rem1 - v + 1) 的求sum化简
+            index += b * (2 * rem1 - b + 3) / 2;
+        }
+
+        // 3. 处理第三个数 c 带来的偏移量
+        index += c;
+
+        return index;
     }
 }

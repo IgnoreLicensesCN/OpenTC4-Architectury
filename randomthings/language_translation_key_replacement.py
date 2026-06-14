@@ -181,6 +181,9 @@ block_with_item_names = [
     ['item.ItemNugget.20.name','lead_cluster'],
     ['item.ItemNugget.21.name','cinnabar_cluster'],
     ['item.ItemNugget.31.name','gold_cluster'],
+    ['tile.blockCosmeticSolid.9.name','golem_fetter'],
+    ['tile.blockCosmeticSolid.13.name','ancient_stone'],
+    ['item.ItemSanityChecker.name','sanity_checker'],
 
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],

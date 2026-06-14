@@ -12,7 +12,6 @@ import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.api.research.client.ThaumcraftResearchCategories;
 import thaumcraft.api.research.ThaumcraftResearches;
 
 import java.util.List;
@@ -20,11 +19,11 @@ import java.util.List;
 public class ResearchExpertiseResearch
         extends ResearchNoteUnlockedResearchWithParents
         implements IThemedAspectOwner , IResearchNoteCopyable {
+    public static final ResearchItemResourceLocation ID = ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "research_expertise");
     public ResearchExpertiseResearch(){
         super(
-                ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "research_expertise"),
-                ThaumcraftResearchCategories.BASICS.categoryKey,
-                1, List.of(ThaumcraftResearches.RESEARCH_BASIC.key)
+                ID,
+                1, List.of(ResearchBasicResearch.ID)
         );
     }
 

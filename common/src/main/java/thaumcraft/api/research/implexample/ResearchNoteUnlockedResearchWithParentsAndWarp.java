@@ -1,29 +1,33 @@
 package thaumcraft.api.research.implexample;
 
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
-import thaumcraft.api.research.interfaces.IResearchParentsOwner;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
-import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.List;
 
+import static thaumcraft.api.listeners.warp.WarpEventManager.addResearchWarpToPlayer;
+
 public abstract class ResearchNoteUnlockedResearchWithParentsAndWarp
-        extends ResearchNoteUnlockedResearchWithParents
-        implements IResearchWarpOwner {
+        extends ResearchNoteUnlockedResearchWithParents {
     private final int warp;
     public ResearchNoteUnlockedResearchWithParentsAndWarp(
             ResearchItemResourceLocation key,
-            ResearchCategoryResourceLocation category,
             @Range(from = 1, to = 3) int complexity,
             List<ResearchItemResourceLocation> parents,
             int warp) {
-        super(key, category, complexity, parents);
+        super(key, complexity, parents);
         this.warp = warp;
     }
 
-    @Override
     public int getWarp() {
         return warp;
+    }
+
+    @Override
+    public void completeResearchFor(Player player) {
+        super.completeResearchFor(player);
+        addResearchWarpToPlayer(player,getWarp());
     }
 }

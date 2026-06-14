@@ -342,6 +342,25 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
         map.put(aspect6,value6);
         return new UnmodifiableAspectList<>(map);
     }
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> of(
+            Asp aspect,int value,
+            Asp aspect2,int value2,
+            Asp aspect3,int value3,
+            Asp aspect4,int value4,
+            Asp aspect5,int value5,
+            Asp aspect6,int value6,
+            Asp aspect7,int value7
+    ){
+        var map = new Object2IntLinkedOpenHashMap<Asp>();
+        map.put(aspect,value);
+        map.put(aspect2,value2);
+        map.put(aspect3,value3);
+        map.put(aspect4,value4);
+        map.put(aspect5,value5);
+        map.put(aspect6,value6);
+        map.put(aspect7,value7);
+        return new UnmodifiableAspectList<>(map);
+    }
 
 
 }

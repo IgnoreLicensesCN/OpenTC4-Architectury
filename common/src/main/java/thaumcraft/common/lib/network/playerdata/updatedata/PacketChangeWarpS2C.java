@@ -58,7 +58,7 @@ public class PacketChangeWarpS2C extends ThaumcraftBaseS2CMessage {
             Component text;
             int change = data;
 
-            if (type == 0) { // NORMAL WARP
+            if (type == 0) { // PERM WARP
                 text = change < 0 ?
                         Component.translatable("tc.removewarp") :
                         Component.translatable("tc.addwarp");

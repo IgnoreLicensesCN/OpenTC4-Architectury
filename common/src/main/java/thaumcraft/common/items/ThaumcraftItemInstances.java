@@ -32,6 +32,7 @@ import thaumcraft.common.items.mateiral.DegradableTaintedMaterialItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
 import thaumcraft.common.items.misc.CompassStoneItem;
+import thaumcraft.common.items.misc.SanityCheckerItem;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.HandMirrorItem;
@@ -1102,5 +1103,8 @@ public class ThaumcraftItemInstances {
     }
     public static HandMirrorItem HAND_MIRROR() {
         return ThaumcraftItemsRegistry.SUPPLIER_HAND_MIRROR.get();
+    }
+    public static SanityCheckerItem SANITY_CHECKER() {
+        return ThaumcraftItemsRegistry.SUPPLIER_SANITY_CHECKER.get();
     }
 }

@@ -24,36 +24,9 @@ public class Thaumcraft {
     public static final Thaumcraft instance = new Thaumcraft();
     public static ResearchManager researchManager;
     public static ThaumcraftWorldGenerator worldGen;
-//    public EventHandlerLevel worldEventHandler;
-//    public EventHandlerNetwork networkEventHandler;
-//    public ServerTickEventsFML serverTickEvents;
-//    public EventHandlerEntity entityEventHandler;
     public EventHandlerRunic runicEventHandler;
-//    public RenderEventHandler renderEventHandler;
 
     public static PlayerKnowledge playerKnowledge;
-    public static final WandManager wandManager = new WandManager();
-
-
-    public static Map<String, List<ResearchItemResourceLocation>> getCompletedResearch(){
-        return playerKnowledge.researchCompleted;
-    }
-    public static Map<String, Set<ClueResourceLocation>> getCompletedClue(){
-        return playerKnowledge.clueCompleted;
-    }
-    public static Map<String, List<String>> getScannedObjects(){
-        return playerKnowledge.objectsScanned;
-    }
-    public static Map<String, List<String>> getScannedEntities(){
-        return playerKnowledge.entitiesScanned;
-    }
-    public static Map<String, List<String>> getScannedPhenomena(){
-        return playerKnowledge.phenomenaScanned;
-    }
-    public static Map<String, AspectList<Aspect>> getKnownAspects() {
-        return playerKnowledge.aspectsDiscovered;
-    }
-
     @Deprecated(forRemoval = true)
     public static void addWarpToPlayer(Player _player, int amount, boolean temporary) {
 //        if (_player instanceof FakeThaumcraftPlayer) {return;}

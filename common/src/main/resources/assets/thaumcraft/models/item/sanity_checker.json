@@ -1,0 +1,998 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/sanity_checker"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "warp_index": "0"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_0"
+    },
+    {
+      "predicate": {
+        "warp_index": "1"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_1"
+    },
+    {
+      "predicate": {
+        "warp_index": "2"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_2"
+    },
+    {
+      "predicate": {
+        "warp_index": "3"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_3"
+    },
+    {
+      "predicate": {
+        "warp_index": "4"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_4"
+    },
+    {
+      "predicate": {
+        "warp_index": "5"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_5"
+    },
+    {
+      "predicate": {
+        "warp_index": "6"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_6"
+    },
+    {
+      "predicate": {
+        "warp_index": "7"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_7"
+    },
+    {
+      "predicate": {
+        "warp_index": "8"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_8"
+    },
+    {
+      "predicate": {
+        "warp_index": "9"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_9"
+    },
+    {
+      "predicate": {
+        "warp_index": "10"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_10"
+    },
+    {
+      "predicate": {
+        "warp_index": "11"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_11"
+    },
+    {
+      "predicate": {
+        "warp_index": "12"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_12"
+    },
+    {
+      "predicate": {
+        "warp_index": "13"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_13"
+    },
+    {
+      "predicate": {
+        "warp_index": "14"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_14"
+    },
+    {
+      "predicate": {
+        "warp_index": "15"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_15"
+    },
+    {
+      "predicate": {
+        "warp_index": "16"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_16"
+    },
+    {
+      "predicate": {
+        "warp_index": "17"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_17"
+    },
+    {
+      "predicate": {
+        "warp_index": "18"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_18"
+    },
+    {
+      "predicate": {
+        "warp_index": "19"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_19"
+    },
+    {
+      "predicate": {
+        "warp_index": "20"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_20"
+    },
+    {
+      "predicate": {
+        "warp_index": "21"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_21"
+    },
+    {
+      "predicate": {
+        "warp_index": "22"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_22"
+    },
+    {
+      "predicate": {
+        "warp_index": "23"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_23"
+    },
+    {
+      "predicate": {
+        "warp_index": "24"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_24"
+    },
+    {
+      "predicate": {
+        "warp_index": "25"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_25"
+    },
+    {
+      "predicate": {
+        "warp_index": "26"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_26"
+    },
+    {
+      "predicate": {
+        "warp_index": "27"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_27"
+    },
+    {
+      "predicate": {
+        "warp_index": "28"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_28"
+    },
+    {
+      "predicate": {
+        "warp_index": "29"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_29"
+    },
+    {
+      "predicate": {
+        "warp_index": "30"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_30"
+    },
+    {
+      "predicate": {
+        "warp_index": "31"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_31"
+    },
+    {
+      "predicate": {
+        "warp_index": "32"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_32"
+    },
+    {
+      "predicate": {
+        "warp_index": "33"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_33"
+    },
+    {
+      "predicate": {
+        "warp_index": "34"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_34"
+    },
+    {
+      "predicate": {
+        "warp_index": "35"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_35"
+    },
+    {
+      "predicate": {
+        "warp_index": "36"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_36"
+    },
+    {
+      "predicate": {
+        "warp_index": "37"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_37"
+    },
+    {
+      "predicate": {
+        "warp_index": "38"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_38"
+    },
+    {
+      "predicate": {
+        "warp_index": "39"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_39"
+    },
+    {
+      "predicate": {
+        "warp_index": "40"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_40"
+    },
+    {
+      "predicate": {
+        "warp_index": "41"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_41"
+    },
+    {
+      "predicate": {
+        "warp_index": "42"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_42"
+    },
+    {
+      "predicate": {
+        "warp_index": "43"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_43"
+    },
+    {
+      "predicate": {
+        "warp_index": "44"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_44"
+    },
+    {
+      "predicate": {
+        "warp_index": "45"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_45"
+    },
+    {
+      "predicate": {
+        "warp_index": "46"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_46"
+    },
+    {
+      "predicate": {
+        "warp_index": "47"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_47"
+    },
+    {
+      "predicate": {
+        "warp_index": "48"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_48"
+    },
+    {
+      "predicate": {
+        "warp_index": "49"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_49"
+    },
+    {
+      "predicate": {
+        "warp_index": "50"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_50"
+    },
+    {
+      "predicate": {
+        "warp_index": "51"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_51"
+    },
+    {
+      "predicate": {
+        "warp_index": "52"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_52"
+    },
+    {
+      "predicate": {
+        "warp_index": "53"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_53"
+    },
+    {
+      "predicate": {
+        "warp_index": "54"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_54"
+    },
+    {
+      "predicate": {
+        "warp_index": "55"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_55"
+    },
+    {
+      "predicate": {
+        "warp_index": "56"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_56"
+    },
+    {
+      "predicate": {
+        "warp_index": "57"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_57"
+    },
+    {
+      "predicate": {
+        "warp_index": "58"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_58"
+    },
+    {
+      "predicate": {
+        "warp_index": "59"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_59"
+    },
+    {
+      "predicate": {
+        "warp_index": "60"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_60"
+    },
+    {
+      "predicate": {
+        "warp_index": "61"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_61"
+    },
+    {
+      "predicate": {
+        "warp_index": "62"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_62"
+    },
+    {
+      "predicate": {
+        "warp_index": "63"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_63"
+    },
+    {
+      "predicate": {
+        "warp_index": "64"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_64"
+    },
+    {
+      "predicate": {
+        "warp_index": "65"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_65"
+    },
+    {
+      "predicate": {
+        "warp_index": "66"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_66"
+    },
+    {
+      "predicate": {
+        "warp_index": "67"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_67"
+    },
+    {
+      "predicate": {
+        "warp_index": "68"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_68"
+    },
+    {
+      "predicate": {
+        "warp_index": "69"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_69"
+    },
+    {
+      "predicate": {
+        "warp_index": "70"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_70"
+    },
+    {
+      "predicate": {
+        "warp_index": "71"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_71"
+    },
+    {
+      "predicate": {
+        "warp_index": "72"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_72"
+    },
+    {
+      "predicate": {
+        "warp_index": "73"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_73"
+    },
+    {
+      "predicate": {
+        "warp_index": "74"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_74"
+    },
+    {
+      "predicate": {
+        "warp_index": "75"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_75"
+    },
+    {
+      "predicate": {
+        "warp_index": "76"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_76"
+    },
+    {
+      "predicate": {
+        "warp_index": "77"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_77"
+    },
+    {
+      "predicate": {
+        "warp_index": "78"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_78"
+    },
+    {
+      "predicate": {
+        "warp_index": "79"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_79"
+    },
+    {
+      "predicate": {
+        "warp_index": "80"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_80"
+    },
+    {
+      "predicate": {
+        "warp_index": "81"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_81"
+    },
+    {
+      "predicate": {
+        "warp_index": "82"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_82"
+    },
+    {
+      "predicate": {
+        "warp_index": "83"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_83"
+    },
+    {
+      "predicate": {
+        "warp_index": "84"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_84"
+    },
+    {
+      "predicate": {
+        "warp_index": "85"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_85"
+    },
+    {
+      "predicate": {
+        "warp_index": "86"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_86"
+    },
+    {
+      "predicate": {
+        "warp_index": "87"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_87"
+    },
+    {
+      "predicate": {
+        "warp_index": "88"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_88"
+    },
+    {
+      "predicate": {
+        "warp_index": "89"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_89"
+    },
+    {
+      "predicate": {
+        "warp_index": "90"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_90"
+    },
+    {
+      "predicate": {
+        "warp_index": "91"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_91"
+    },
+    {
+      "predicate": {
+        "warp_index": "92"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_92"
+    },
+    {
+      "predicate": {
+        "warp_index": "93"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_93"
+    },
+    {
+      "predicate": {
+        "warp_index": "94"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_94"
+    },
+    {
+      "predicate": {
+        "warp_index": "95"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_95"
+    },
+    {
+      "predicate": {
+        "warp_index": "96"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_96"
+    },
+    {
+      "predicate": {
+        "warp_index": "97"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_97"
+    },
+    {
+      "predicate": {
+        "warp_index": "98"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_98"
+    },
+    {
+      "predicate": {
+        "warp_index": "99"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_99"
+    },
+    {
+      "predicate": {
+        "warp_index": "100"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_100"
+    },
+    {
+      "predicate": {
+        "warp_index": "101"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_101"
+    },
+    {
+      "predicate": {
+        "warp_index": "102"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_102"
+    },
+    {
+      "predicate": {
+        "warp_index": "103"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_103"
+    },
+    {
+      "predicate": {
+        "warp_index": "104"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_104"
+    },
+    {
+      "predicate": {
+        "warp_index": "105"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_105"
+    },
+    {
+      "predicate": {
+        "warp_index": "106"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_106"
+    },
+    {
+      "predicate": {
+        "warp_index": "107"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_107"
+    },
+    {
+      "predicate": {
+        "warp_index": "108"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_108"
+    },
+    {
+      "predicate": {
+        "warp_index": "109"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_109"
+    },
+    {
+      "predicate": {
+        "warp_index": "110"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_110"
+    },
+    {
+      "predicate": {
+        "warp_index": "111"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_111"
+    },
+    {
+      "predicate": {
+        "warp_index": "112"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_112"
+    },
+    {
+      "predicate": {
+        "warp_index": "113"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_113"
+    },
+    {
+      "predicate": {
+        "warp_index": "114"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_114"
+    },
+    {
+      "predicate": {
+        "warp_index": "115"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_115"
+    },
+    {
+      "predicate": {
+        "warp_index": "116"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_116"
+    },
+    {
+      "predicate": {
+        "warp_index": "117"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_117"
+    },
+    {
+      "predicate": {
+        "warp_index": "118"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_118"
+    },
+    {
+      "predicate": {
+        "warp_index": "119"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_119"
+    },
+    {
+      "predicate": {
+        "warp_index": "120"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_120"
+    },
+    {
+      "predicate": {
+        "warp_index": "121"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_121"
+    },
+    {
+      "predicate": {
+        "warp_index": "122"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_122"
+    },
+    {
+      "predicate": {
+        "warp_index": "123"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_123"
+    },
+    {
+      "predicate": {
+        "warp_index": "124"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_124"
+    },
+    {
+      "predicate": {
+        "warp_index": "125"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_125"
+    },
+    {
+      "predicate": {
+        "warp_index": "126"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_126"
+    },
+    {
+      "predicate": {
+        "warp_index": "127"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_127"
+    },
+    {
+      "predicate": {
+        "warp_index": "128"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_128"
+    },
+    {
+      "predicate": {
+        "warp_index": "129"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_129"
+    },
+    {
+      "predicate": {
+        "warp_index": "130"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_130"
+    },
+    {
+      "predicate": {
+        "warp_index": "131"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_131"
+    },
+    {
+      "predicate": {
+        "warp_index": "132"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_132"
+    },
+    {
+      "predicate": {
+        "warp_index": "133"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_133"
+    },
+    {
+      "predicate": {
+        "warp_index": "134"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_134"
+    },
+    {
+      "predicate": {
+        "warp_index": "135"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_135"
+    },
+    {
+      "predicate": {
+        "warp_index": "136"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_136"
+    },
+    {
+      "predicate": {
+        "warp_index": "137"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_137"
+    },
+    {
+      "predicate": {
+        "warp_index": "138"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_138"
+    },
+    {
+      "predicate": {
+        "warp_index": "139"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_139"
+    },
+    {
+      "predicate": {
+        "warp_index": "140"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_140"
+    },
+    {
+      "predicate": {
+        "warp_index": "141"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_141"
+    },
+    {
+      "predicate": {
+        "warp_index": "142"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_142"
+    },
+    {
+      "predicate": {
+        "warp_index": "143"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_143"
+    },
+    {
+      "predicate": {
+        "warp_index": "144"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_144"
+    },
+    {
+      "predicate": {
+        "warp_index": "145"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_145"
+    },
+    {
+      "predicate": {
+        "warp_index": "146"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_146"
+    },
+    {
+      "predicate": {
+        "warp_index": "147"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_147"
+    },
+    {
+      "predicate": {
+        "warp_index": "148"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_148"
+    },
+    {
+      "predicate": {
+        "warp_index": "149"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_149"
+    },
+    {
+      "predicate": {
+        "warp_index": "150"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_150"
+    },
+    {
+      "predicate": {
+        "warp_index": "151"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_151"
+    },
+    {
+      "predicate": {
+        "warp_index": "152"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_152"
+    },
+    {
+      "predicate": {
+        "warp_index": "153"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_153"
+    },
+    {
+      "predicate": {
+        "warp_index": "154"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_154"
+    },
+    {
+      "predicate": {
+        "warp_index": "155"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_155"
+    },
+    {
+      "predicate": {
+        "warp_index": "156"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_156"
+    },
+    {
+      "predicate": {
+        "warp_index": "157"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_157"
+    },
+    {
+      "predicate": {
+        "warp_index": "158"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_158"
+    },
+    {
+      "predicate": {
+        "warp_index": "159"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_159"
+    },
+    {
+      "predicate": {
+        "warp_index": "160"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_160"
+    },
+    {
+      "predicate": {
+        "warp_index": "161"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_161"
+    },
+    {
+      "predicate": {
+        "warp_index": "162"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_162"
+    },
+    {
+      "predicate": {
+        "warp_index": "163"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_163"
+    },
+    {
+      "predicate": {
+        "warp_index": "164"
+      },
+      "model": "item/sanity_checker_states/sanity_checker_164"
+    }
+  ]
+}

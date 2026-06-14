@@ -70,6 +70,9 @@ public final class OpenTC4 {
     public static void onCommonSetup(){
 
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
+        //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
+        //but i wont provide a Json2ResearchItem parser,you have to make it yourself
+        ThaumcraftResearches.init();
 
         ThaumcraftRunicShieldTypes.init();
         ThaumcraftEnchantments.init();
@@ -103,9 +106,7 @@ public final class OpenTC4 {
         HolderCache.onDatapackReload();
         IRepairable.onDatapackReload();
 
-        //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
-        //but i wont provide a Json2ResearchItem parser,you have to make it yourself
-        ThaumcraftResearches.onDatapackReloaded();
+
         ThaumcraftItemsRegistry.onDatapackReloaded();
         //TODO:Recipes init here
     }

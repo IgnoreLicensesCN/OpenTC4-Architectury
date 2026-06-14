@@ -19,6 +19,7 @@ package thaumcraft.common.items.misc;
 //item.ItemResource.15.name=元始魔力
 //item.ItemResource.16.name=虚空锭
 //item.ItemResource.17.name=虚空种子
+@Deprecated(forRemoval = true)
 public class ItemResource /*extends Item implements IEssentiaContainerItem*/ {
 //   public IIcon[] icon = new IIcon[19];
 //   public IIcon iconOverlay;

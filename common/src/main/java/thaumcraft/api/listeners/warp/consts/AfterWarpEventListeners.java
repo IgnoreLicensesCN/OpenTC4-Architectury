@@ -1,51 +1,55 @@
 package thaumcraft.api.listeners.warp.consts;
 
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 import thaumcraft.api.listeners.warp.listeners.WarpEvent;
 import thaumcraft.api.listeners.warp.listeners.WarpEventListenerAfter;
+import thaumcraft.api.research.impl.eldritch.EldritchMajorResearch;
+import thaumcraft.api.research.impl.eldritch.EldritchMinorResearch;
 import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
 
 
-import static thaumcraft.api.listeners.warp.consts.WarpEvents.grantResearch;
+import static thaumcraft.api.listeners.warp.consts.WarpEvents.grantResearchAspect;
+import static thaumcraft.api.research.ThaumcraftResearches.*;
 
 public class AfterWarpEventListeners {
     public static final WarpEventListenerAfter CHECK_RESEARCH = new WarpEventListenerAfter(0) {
         @Override
         public void onWarpEvent(@NotNull PickWarpEventContext warpContext, @NotNull WarpEvent e, @NotNull Player player) {
             if (warpContext.actualWarp > 10
-                    && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "BATHSALTS")
-                    && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "@BATHSALTS")) {
-                player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.8")),false);
+                    && !BATH_SALTS.playerHasClue(player)) {
                 if (player instanceof ServerPlayer serverPlayer) {
-                    new PacketResearchCompleteS2C("@BATHSALTS").sendTo(serverPlayer);
+                    serverPlayer.sendSystemMessage(Component.translatable("warp.text.8")
+                            .withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC),false);
+                    BATH_SALTS.giveClueToPlayer(player);
+                    new PacketClueCompleteS2C(BATH_SALTS.getNeededClue()).sendTo(serverPlayer);
                 }
-                Thaumcraft.researchManager.completeResearch(player, "@BATHSALTS");
             }
 
             if (warpContext.actualWarp > 25
-                    && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMINOR")) {
-                grantResearch(player, 10);
+                    && !ELDRITCH_MINOR.isPlayerCompletedResearch(player)) {
+
                 if (player instanceof ServerPlayer serverPlayer) {
-                    new PacketResearchCompleteS2C("ELDRITCHMINOR").sendTo(serverPlayer);
+                    grantResearchAspect(serverPlayer, 10);
+                    ELDRITCH_MINOR.completeResearchFor(serverPlayer);
+                    new PacketResearchCompleteS2C(EldritchMinorResearch.ID).sendTo(serverPlayer);
                 }
-                Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMINOR");
             }
 
             if (warpContext.actualWarp > 50
-                    && !ThaumcraftApiHelper.isResearchComplete(player.getGameProfile().getName(), "ELDRITCHMAJOR")) {
-                grantResearch(player, 20);
+                    && !ELDRITCH_MAJOR.isPlayerCompletedResearch(player)) {
                 if (player instanceof ServerPlayer serverPlayer) {
-                    new PacketResearchCompleteS2C("ELDRITCHMAJOR").sendTo(serverPlayer);
+                    grantResearchAspect(serverPlayer, 20);
+                    ELDRITCH_MAJOR.completeResearchFor(serverPlayer);
+                    new PacketResearchCompleteS2C(EldritchMajorResearch.ID).sendTo(serverPlayer);
                 }
-                Thaumcraft.researchManager.completeResearch(player, "ELDRITCHMAJOR");
             }
         }
     };

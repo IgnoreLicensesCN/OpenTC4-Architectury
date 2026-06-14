@@ -12,21 +12,21 @@ import thaumcraft.api.research.interfaces.IResearchNoteCopyable;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-import thaumcraft.api.research.client.ThaumcraftResearchCategories;
 
 import java.util.List;
 
-import static thaumcraft.api.research.ThaumcraftResearches.RESEARCH_EXPERTISE;
+import static thaumcraft.api.listeners.warp.WarpEventManager.addResearchWarpToPlayer;
 
 public class ResearchMasteryResearch
         extends ResearchNoteUnlockedResearchWithParentsAndWarp
     implements IThemedAspectOwner, IResearchNoteCopyable
 {
+    public static final ResearchItemResourceLocation ID = ResearchItemResourceLocation.of(Thaumcraft.MOD_ID, "research_mastery");
+
     public ResearchMasteryResearch() {
-        super(ResearchItemResourceLocation.of(Thaumcraft.MOD_ID,"research_mastery"),
-                ThaumcraftResearchCategories.BASICS.categoryKey,
+        super(ID,
                 2,
-                List.of(RESEARCH_EXPERTISE.key),
+                List.of(ResearchExpertiseResearch.ID),
                 1);
     }
     private final AspectList<Aspect> aspects =
@@ -57,4 +57,5 @@ public class ResearchMasteryResearch
     public @UnmodifiableView AspectList<Aspect> getCopyResearchBaseAspects() {
         return aspects;
     }
+
 }

@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
@@ -40,11 +39,11 @@ public class WarpEvents {
       player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.6")),true);
    }
 
-   public static void grantResearch(ServerPlayer player, int times) {
+   public static void grantResearchAspect(ServerPlayer player, int times) {
       int amt = 1 + player.getRandom().nextInt(times);
       var info = ResearchAndScannedInfo.getFromPlayer(player);
+      var aspectTypes = new ArrayList<>(Aspects.getPrimalAspects());
       for(int a = 0; a < amt; ++a) {
-         var aspectTypes = new ArrayList<PrimalAspect>(Aspects.getPrimalAspects());
          var aspect = aspectTypes.get(player.getRandom().nextInt(aspectTypes.size()));
          info.addResearchAspectAndSyncToPlayer(aspect,1,player);
       }

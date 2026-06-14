@@ -170,7 +170,4 @@ public abstract class ResearchItem
         return key;
     }
 
-    public static void onDatapackReload() {
-        researchItems.clear();
-    }
 }
