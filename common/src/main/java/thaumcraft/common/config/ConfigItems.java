@@ -328,8 +328,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemNuggetPork, "ItemNuggetPork", "Thaumcraft");
 //      itemNuggetFish = (new ItemNuggetEdible("nuggetfish")).setUnlocalizedName("ItemNuggetFish");
 //      GameRegistry.registerItem(itemNuggetFish, "ItemNuggetFish", "Thaumcraft");
-      itemTripleMeatTreat = (new ItemTripleMeatTreat()).setUnlocalizedName("TripleMeatTreat");
-      GameRegistry.registerItem(itemTripleMeatTreat, "TripleMeatTreat", "Thaumcraft");
+//      itemTripleMeatTreat = (new ItemTripleMeatTreat()).setUnlocalizedName("TripleMeatTreat");
+//      GameRegistry.registerItem(itemTripleMeatTreat, "TripleMeatTreat", "Thaumcraft");
 //      itemSwordElemental = (new ItemElementalSword(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemSwordElemental");
 //      GameRegistry.registerItem(itemSwordElemental, "ItemSwordElemental", "Thaumcraft");
 //      itemShovelElemental = (new ElementalShovelItem(ThaumcraftApi.toolMatElemental)).setUnlocalizedName("ItemShovelElemental");

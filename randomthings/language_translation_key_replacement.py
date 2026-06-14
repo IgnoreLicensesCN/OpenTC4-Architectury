@@ -167,11 +167,14 @@ block_with_item_names = [
     ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
     ['item.ItemEssence.1.name','essentia_phial'],
     ['item.ItemCompassStone.name','compass_stone'],
+
     ['item.ItemNuggetChicken.name','chicken_nugget'],
     ['item.ItemNuggetBeef.name','beef_nugget'],
     ['item.ItemNuggetPork.name','pork_nugget'],
     ['item.ItemNuggetFish.name','cod_nugget'],
     ['item.TripleMeatTreat.name','triple_meat'],
+
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -196,8 +199,12 @@ def key_sorter(key_string):
     parts = key_string.split('.')
 
     part_count = len(parts)
+    partsCopy = parts.copy()
+    for i in range(len(partsCopy)):
+        if partsCopy[i].isdigit():
+            partsCopy[i] = "%04d" % int(partsCopy[i])
 
-    return (parts[0],part_count, parts[1],special_key_sort_weight(parts),parts)
+    return (parts[0],part_count, parts[1],special_key_sort_weight(parts),partsCopy)
 
 for fileName in os.listdir(language_file_folder):
     if fileName.endswith('.json'):

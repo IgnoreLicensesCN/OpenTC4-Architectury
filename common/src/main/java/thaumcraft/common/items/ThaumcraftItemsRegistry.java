@@ -1050,5 +1050,4 @@ public class ThaumcraftItemsRegistry {
             "triple_meat",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).effect(new MobEffectInstance(MobEffects.REGENERATION,5,0),0.66F).build()))
     );
-
 }
