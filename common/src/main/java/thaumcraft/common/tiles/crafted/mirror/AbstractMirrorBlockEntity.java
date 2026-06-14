@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.mirror;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +17,7 @@ import thaumcraft.common.tiles.TileThaumcraft;
 
 import static com.linearity.opentc4.Consts.AbstractMirrorBlockEntityTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 
 public class AbstractMirrorBlockEntity extends TileThaumcraft {
@@ -97,7 +99,7 @@ public class AbstractMirrorBlockEntity extends TileThaumcraft {
         if (linkedToLevel == null) {
             return null;
         }
-        if (!(linkedToLevel.getBlockEntity(this.linkedPos) instanceof AbstractMirrorBlockEntity mirror)) {
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(linkedToLevel, this.linkedPos) instanceof AbstractMirrorBlockEntity mirror)) {
             return null;
         }
         return mirror;

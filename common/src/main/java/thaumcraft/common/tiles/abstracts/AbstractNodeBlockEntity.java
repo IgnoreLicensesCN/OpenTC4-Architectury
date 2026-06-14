@@ -2,6 +2,7 @@ package thaumcraft.common.tiles.abstracts;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -45,6 +46,7 @@ import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*
 
 import com.linearity.opentc4.Color;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.research.ThaumcraftResearches.*;
 
@@ -452,7 +454,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         var pos2 = new BlockPos(pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset);
-        BlockEntity probablyAnotherNode = this.level.getBlockEntity(pos2);
+        BlockEntity probablyAnotherNode = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos2);
         if (probablyAnotherNode instanceof INodeBlockEntity anotherNode
                 && this.level.getBlockState(pos2).getBlock() instanceof INodeBlock nodeBlock
                 && !nodeBlock.preventAttackFromAnotherNode()

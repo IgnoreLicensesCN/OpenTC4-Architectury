@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.toserveraction;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -16,6 +17,8 @@ import thaumcraft.common.lib.network.playerdata.updatedata.PacketAspectDiscovery
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_combination";
@@ -68,7 +71,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       var server = serverPlayer.getServer();
       if (server == null) return;
       Level world = serverPlayer.level();
-      BlockEntity be = world.getBlockEntity(tablePos);
+       BlockEntity be = LevelBlockEntityAccessing.getExistingBlockEntity(world, tablePos);
       if (!(be instanceof IResearchAspectProviderBlockEntity aspectProviderBE)) return;
       if (!sanityCheckAspectCombination0(this, serverPlayer, aspectProviderBE)) return;
       Aspect combinationResult = CompoundAspect.getCombinationResult(aspect1, aspect2);

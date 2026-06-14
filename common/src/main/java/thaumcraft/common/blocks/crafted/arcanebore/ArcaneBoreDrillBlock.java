@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.arcanebore;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,6 +27,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.ArcaneBoreBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock.FACING_TO_DRILL;
 
@@ -84,7 +86,7 @@ public class ArcaneBoreDrillBlock extends SuppressedWarningBlock implements IWan
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (level.getBlockEntity(blockPos.relative(blockState.getValue(FACING_TO_BASE))) instanceof ArcaneBoreBlockEntity arcaneBore) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos.relative(blockState.getValue(FACING_TO_BASE))) instanceof ArcaneBoreBlockEntity arcaneBore) {
                 openExtendedMenu(serverPlayer,arcaneBore);
                 return InteractionResult.SUCCESS;
             }
@@ -100,7 +102,7 @@ public class ArcaneBoreDrillBlock extends SuppressedWarningBlock implements IWan
         var pos = useOnContext.getClickedPos();
         var drillState = level.getBlockState(pos);
         level.setBlockAndUpdate(pos, drillState.setValue(DRILL_FACING,useOnContext.getClickedFace()));
-        if (level.getBlockEntity(pos.relative(drillState.getValue(FACING_TO_BASE))) instanceof ArcaneBoreBlockEntity arcaneBore) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos.relative(drillState.getValue(FACING_TO_BASE))) instanceof ArcaneBoreBlockEntity arcaneBore) {
             arcaneBore.clearRotation();
         }
         level.playSound(

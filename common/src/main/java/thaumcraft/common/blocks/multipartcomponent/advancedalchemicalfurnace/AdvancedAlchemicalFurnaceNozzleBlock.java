@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,7 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBaseBlock.SELF_POS_1_0_1;
 
 public class AdvancedAlchemicalFurnaceNozzleBlock extends AbstractAdvancedAlchemicalFurnaceComponent implements EntityBlock {
@@ -57,7 +59,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlock extends AbstractAdvancedAlchem
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+        return !(LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
 

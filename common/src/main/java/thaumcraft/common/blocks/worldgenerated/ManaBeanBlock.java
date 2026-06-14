@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -38,6 +39,8 @@ import thaumcraft.common.tiles.generated.ManaBeanBlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ManaBeanBlock extends SuppressedWarningBlock
         implements
@@ -152,7 +155,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
     @Override
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         super.randomTick(blockState, serverLevel, blockPos, randomSource);
-        if (serverLevel.getBlockEntity(blockPos) instanceof ManaBeanBlockEntity manaBean) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(serverLevel, blockPos) instanceof ManaBeanBlockEntity manaBean) {
             manaBean.randomTick();
         }
     }
@@ -188,7 +191,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
         if (itemStack.getItem() instanceof ManaBeanItem beanItem){
             var owningAspect = beanItem.getContainingAspectFromStack(itemStack);
             if (!owningAspect.isEmpty()){
-                if (level.getBlockEntity(blockPos) instanceof ManaBeanBlockEntity manaBean){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ManaBeanBlockEntity manaBean){
                     manaBean.setAspectOwning(owningAspect);
                 }
             }
@@ -197,7 +200,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
 
     @Override
     public @NotNull Aspect getAspectCanProvide(Level level, BlockPos selfPos, BlockState selfState) {
-        if (level.getBlockEntity(selfPos) instanceof ManaBeanBlockEntity manaBean){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, selfPos) instanceof ManaBeanBlockEntity manaBean){
             return manaBean.getAspectOwning();
         }
         return Aspects.EMPTY;

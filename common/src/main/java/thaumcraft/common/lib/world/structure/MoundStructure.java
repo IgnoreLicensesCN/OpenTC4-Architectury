@@ -38,6 +38,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MOUND_STRUCTURE_TYPE;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
@@ -246,7 +247,7 @@ public class MoundStructure extends Structure {
                 }
 
                 level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
-                var blockEntity = level.getBlockEntity(chestPos);
+                var blockEntity = getExistingBlockEntity(level, chestPos);
                 if (blockEntity instanceof ChestBlockEntity chest) {
                     ResourceLocation lootTable = BuiltInLootTables.SIMPLE_DUNGEON; // 或你自己的
                     chest.setLootTable(lootTable, randomSource.nextLong());
@@ -257,7 +258,7 @@ public class MoundStructure extends Structure {
             {
                 var skeletonSpawnerPos = startPos.offset(4, 5, 4);
                 level.setBlock(skeletonSpawnerPos, Blocks.SPAWNER.defaultBlockState(), 3);
-                var skeletonSpawnerBlockEntity = level.getBlockEntity(skeletonSpawnerPos);
+                var skeletonSpawnerBlockEntity = getExistingBlockEntity(level, skeletonSpawnerPos);
                 if (skeletonSpawnerBlockEntity instanceof SpawnerBlockEntity spawner) {
                     spawner.setEntityId(EntityType.SKELETON, randomSource);
                 }
@@ -265,7 +266,7 @@ public class MoundStructure extends Structure {
             {
                 var zombieSpawnerPos = startPos.offset(4, 5, 14);
                 level.setBlock(zombieSpawnerPos, Blocks.SPAWNER.defaultBlockState(), 3);
-                var zombieSpawnerBlockEntity = level.getBlockEntity(zombieSpawnerPos);
+                var zombieSpawnerBlockEntity = getExistingBlockEntity(level, zombieSpawnerPos);
                 if (zombieSpawnerBlockEntity instanceof SpawnerBlockEntity spawner) {
                     spawner.setEntityId(EntityType.ZOMBIE, randomSource);
                 }

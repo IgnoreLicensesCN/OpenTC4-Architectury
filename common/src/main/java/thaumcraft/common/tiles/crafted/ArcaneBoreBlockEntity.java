@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -52,6 +53,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock.*;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.DRILL_FACING;
@@ -371,7 +373,7 @@ public class ArcaneBoreBlockEntity
 //                        }
                         var outDir = getOutputDirection();
                         var outPos = pos.relative(outDir);
-                        if (this.level.getBlockEntity(outPos) instanceof WorldlyContainer container) {
+                        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, outPos) instanceof WorldlyContainer container) {
                             dropped = InventoryUtils.placeItemStackIntoInventory(
                                     dropped, container, outDir.getOpposite(), true);
                         }
@@ -493,7 +495,7 @@ public class ArcaneBoreBlockEntity
             var selfPos = getBlockPos();
             for (var dir:Direction.values()){
                 var pickPos = selfPos.relative(dir);
-                if (level.getBlockEntity(pickPos) instanceof IEssentiaTransportOutBlockEntity outBE){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pickPos) instanceof IEssentiaTransportOutBlockEntity outBE){
                     aspectAmount += outBE.takeEssentiaWithSuction(getSuctionAmount(dir),requiredAspect,1,dir.getOpposite());
                 }
             }

@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +22,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.tiles.abstracts.AbstractPedestalBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 @UtilityLikeAbstraction(reason = "lazy to write #use everywhere")
 public abstract class AbstractPedestalBlock extends SuppressedWarningBlock implements EntityBlock {
     public AbstractPedestalBlock(BlockBehaviour.Properties properties) {
@@ -30,7 +33,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (level.getBlockEntity(pos) instanceof Container container){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof Container container){
             Containers.dropContents(level,pos,container);
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -39,7 +42,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide) {
-            if (level.getBlockEntity(blockPos) instanceof AbstractPedestalBlockEntity pedestal) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof AbstractPedestalBlockEntity pedestal) {
                 if (!pedestal.isEmpty()){
                     var centerPos = blockPos.above().getCenter();
                     pedestal.getInventory().forEach(stack -> dropItemStack(level,centerPos.x,centerPos.y,centerPos.z,stack));
@@ -90,7 +93,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        if (level.getBlockEntity(blockPos) instanceof Container container){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof Container container){
             return AbstractContainerMenu.getRedstoneSignalFromContainer(container);
         }
         return 0;

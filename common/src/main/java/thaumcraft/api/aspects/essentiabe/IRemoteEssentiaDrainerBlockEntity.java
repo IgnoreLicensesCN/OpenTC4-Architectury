@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.levelledRemoteDrainables;
 
 //Infusion Matrix/Overchanting Table/Essentia Mirror
@@ -27,7 +29,7 @@ public interface IRemoteEssentiaDrainerBlockEntity {
             return false;
         }
         metDrainers.add(this);
-        var toDrainBE = level.getBlockEntity(pos);
+        var toDrainBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
         return toDrainBE instanceof IRemoteDrainableEssentiaSourceBlockEntity
                 && !(toDrainBE instanceof IRemoteEssentiaDrainerBlockEntity drainer && metDrainers.contains(drainer));
     }

@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.vis.visnet;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.NodeTransducerBlockEntityTagAccessors.TRANSDUCER_STATUS_CODE;
 import static com.linearity.opentc4.Consts.NodeTransducerBlockEntityTagAccessors.TRANSDUCER_TICK_COUNT;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class NodeTransducerBlockEntity extends TileThaumcraft {
     public NodeTransducerBlockEntity(BlockEntityType<? extends NodeTransducerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -54,14 +56,14 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
         if (this.statusCode == STATUS_CODE_SETTING_UP 
                 && !this.level.isClientSide 
                 && this.tickCount >= 1000) {
-            var probablyNodeBE = level.getBlockEntity(getNodePos());
+            var probablyNodeBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, getNodePos());
             if (probablyNodeBE instanceof INodeBlockEntity auraNode) {
                 AspectList<Aspect> base = auraNode.getAspectsBase();
                 NodeType type = auraNode.getNodeType();
                 NodeModifier mod = auraNode.getNodeModifier();
                 var id = auraNode.getId();
                 this.level.setBlockAndUpdate(getNodePos(), ThaumcraftBlocks.ThaumcraftBlockInstances.ENERGIZED_NODE().defaultBlockState());
-                var be = this.level.getBlockEntity(getNodePos());
+                var be = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, getNodePos());
                 if (be instanceof EnergizedAuraNodeBlockEntity energizedNode) {
                     energizedNode.setAuraBase(base.copy());
                     energizedNode.nodeType = type;
@@ -78,13 +80,13 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
         if (this.statusCode == STATUS_CODE_ON
                 && !this.level.isClientSide
                 && this.tickCount <= 50) {
-            var be = this.level.getBlockEntity(getNodePos());
+            var be = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, getNodePos());
             if (be instanceof EnergizedAuraNodeBlockEntity energizedNode) {
                 var base = energizedNode.auraBase;
                 var type = energizedNode.nodeType;
                 var modifier = energizedNode.nodeModifier;
                 this.level.setBlockAndUpdate(getNodePos(), ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE().defaultBlockState());
-                var nodeBE = this.level.getBlockEntity(getNodePos());
+                var nodeBE = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, getNodePos());
                 if (nodeBE instanceof INodeBlockEntity nodeBlockEntity){
                     nodeBlockEntity.setNodeType(type);
                     nodeBlockEntity.setNodeModifier(modifier);
@@ -102,7 +104,7 @@ public class NodeTransducerBlockEntity extends TileThaumcraft {
                 ++this.tickCount;
                 if (!this.level.isClientSide) {
                     var nodePos = getNodePos();
-                    var probablyNodeBE = level.getBlockEntity(nodePos);
+                    var probablyNodeBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, nodePos);
                     if (probablyNodeBE instanceof INodeBlockEntity auraNode) {
                         var aspectsCurrent = auraNode.getAspects();
                         if (!aspectsCurrent.isEmpty()) {

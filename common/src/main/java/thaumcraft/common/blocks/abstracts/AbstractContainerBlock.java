@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -8,6 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 @UtilityLikeAbstraction(reason = "still lazy to dropContents")
 public abstract class AbstractContainerBlock extends SuppressedWarningBlock implements EntityBlock {
@@ -18,7 +21,7 @@ public abstract class AbstractContainerBlock extends SuppressedWarningBlock impl
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock()) && !level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
+            BlockEntity blockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
             if (blockEntity instanceof Container container) {
                 Containers.dropContents(level, pos, container);
                 level.updateNeighbourForOutputSignal(pos, this);

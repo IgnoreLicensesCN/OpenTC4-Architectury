@@ -1,15 +1,11 @@
 package thaumcraft.api;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -17,12 +13,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
-
-import java.util.HashMap;
-import java.util.Objects;
 
 
 public class ThaumcraftApiHelper {
@@ -100,23 +90,23 @@ public class ThaumcraftApiHelper {
 //        }
 //        return true;
 //    }
-@Deprecated(forRemoval = true,since = "RecipeItemMatcher")
-    public static boolean areItemStackTagsEqualForCrafting(ItemStack slotItem, ItemStack recipeItem) {
-        if (recipeItem == null || slotItem == null) return false;
-
-        CompoundTag recipeTag = recipeItem.getTag();
-        CompoundTag slotTag = slotItem.getTag();
-
-        if (recipeTag != null && slotTag == null) return false;
-        if (recipeTag == null) return true;
-
-        for (String key : recipeTag.getAllKeys()) {
-            if (!slotTag.contains(key)) return false;
-            if (!Objects.equals(slotTag.get(key),recipeTag.get(key))) return false;
-        }
-
-        return true;
-    }
+//@Deprecated(forRemoval = true,since = "RecipeItemMatcher")
+//    public static boolean areItemStackTagsEqualForCrafting(ItemStack slotItem, ItemStack recipeItem) {
+//        if (recipeItem == null || slotItem == null) return false;
+//
+//        CompoundTag recipeTag = recipeItem.getTag();
+//        CompoundTag slotTag = slotItem.getTag();
+//
+//        if (recipeTag != null && slotTag == null) return false;
+//        if (recipeTag == null) return true;
+//
+//        for (String key : recipeTag.getAllKeys()) {
+//            if (!slotTag.contains(key)) return false;
+//            if (!Objects.equals(slotTag.get(key),recipeTag.get(key))) return false;
+//        }
+//
+//        return true;
+//    }
 
 //    public static boolean itemMatches(ItemStack target, ItemStack input, boolean strict) {
 //        if (input == null && target != null || input != null && target == null) {return false;}
@@ -134,43 +124,43 @@ public class ThaumcraftApiHelper {
 //            return null;
 //    }
 
-    @Deprecated(forRemoval = true)//TODO:Migrate to IEssentiaTransportBlockEntity
-    public static BlockEntity getConnectableTile(BlockGetter world, int x, int y, int z, Direction face) {
-        BlockEntity te = world.getBlockEntity(new BlockPos(x + face.getStepX(), y + face.getStepY(), z + face.getStepZ()));
-        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity) te).isConnectable(face.getOpposite()))
-            return te;
-        else
-            return null;
-    }
+//    @Deprecated(forRemoval = true)//TODO:Migrate to IEssentiaTransportBlockEntity
+//    public static BlockEntity getConnectableTile(BlockGetter world, int x, int y, int z, Direction face) {
+//        BlockEntity te = world.getBlockEntity(new BlockPos(x + face.getStepX(), y + face.getStepY(), z + face.getStepZ()));
+//        if (te instanceof IEssentiaTransportBlockEntity && ((IEssentiaTransportBlockEntity) te).isConnectable(face.getOpposite()))
+//            return te;
+//        else
+//            return null;
+//    }
 
-    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
-    private static final HashMap<Integer, AspectList<Aspect>> allAspects = new HashMap<>();
-    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
-    private static final HashMap<Integer, AspectList<CompoundAspect>> allCompoundAspects = new HashMap<>();
+//    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
+//    private static final HashMap<Integer, AspectList<Aspect>> allAspects = new HashMap<>();
+//    @Deprecated(forRemoval = true,since = "migrated to Aspects.class")
+//    private static final HashMap<Integer, AspectList<CompoundAspect>> allCompoundAspects = new HashMap<>();
 
-    @Deprecated(forRemoval = true)
-    public static AspectList<Aspect> getAllAspectsWithAmount(int amount) {
-        if (allAspects.get(amount) == null) {
-            AspectList<Aspect> al = new LinkedHashAspectList<>();
-            for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-                al.addAll(aspect, amount);
-            }
-            allAspects.put(amount, al);
-        }
-        return allAspects.get(amount);
-    }
-
-    @Deprecated(forRemoval = true)
-    public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
-        if (allCompoundAspects.get(amount) == null) {
-            AspectList<CompoundAspect> al = new LinkedHashAspectList<>();
-            for (var aspect : Aspects.getCompoundAspects()) {
-                al.addAll(aspect, amount);
-            }
-            allCompoundAspects.put(amount, al);
-        }
-        return allCompoundAspects.get(amount);
-    }
+//    @Deprecated(forRemoval = true)
+//    public static AspectList<Aspect> getAllAspectsWithAmount(int amount) {
+//        if (allAspects.get(amount) == null) {
+//            AspectList<Aspect> al = new LinkedHashAspectList<>();
+//            for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
+//                al.addAll(aspect, amount);
+//            }
+//            allAspects.put(amount, al);
+//        }
+//        return allAspects.get(amount);
+//    }
+//
+//    @Deprecated(forRemoval = true)
+//    public static AspectList<CompoundAspect> getAllCompoundAspectsWithAmount(int amount) {
+//        if (allCompoundAspects.get(amount) == null) {
+//            AspectList<CompoundAspect> al = new LinkedHashAspectList<>();
+//            for (var aspect : Aspects.getCompoundAspects()) {
+//                al.addAll(aspect, amount);
+//            }
+//            allCompoundAspects.put(amount, al);
+//        }
+//        return allCompoundAspects.get(amount);
+//    }
 
 
 //    /**

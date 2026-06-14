@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
 import com.google.common.collect.HashMultimap;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static thaumcraft.api.listeners.lamp.fertility.apply.FertilityLampAffectManager.affectEntity;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
@@ -102,7 +104,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         }
         var facing = getFacing();
         var facingOpposite = facing.getOpposite();
-        if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
             if (!outBE.canOutputTo(facingOpposite)) {return 0;}
             if (outBE.getMinimumSuctionToDrainOut() > this.getSuctionAmount(facing)){
                 return 0;

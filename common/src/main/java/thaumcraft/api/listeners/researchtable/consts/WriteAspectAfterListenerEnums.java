@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.researchtable.consts;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import thaumcraft.api.listeners.researchtable.WriteAspectContext;
@@ -9,6 +10,8 @@ import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.ResearchTableBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public enum WriteAspectAfterListenerEnums {
     RESEARCH_MASTERY(new WriteAspectAfterListener(10) {
@@ -34,7 +37,7 @@ public enum WriteAspectAfterListenerEnums {
         @Override
         public void onEventTriggered(WriteAspectContext context) {
             if (context.doDrainAspect){
-                var probablyTable = context.atLevel.getBlockEntity(context.tablePos);
+                var probablyTable = LevelBlockEntityAccessing.getExistingBlockEntity(context.atLevel, context.tablePos);
                 if (probablyTable instanceof ResearchTableBlockEntity table){
                     var usingAspect = context.aspectToWrite;
                     if (usingAspect.isEmpty()){
@@ -63,7 +66,7 @@ public enum WriteAspectAfterListenerEnums {
         public void onEventTriggered(WriteAspectContext context) {
             if (context.noteData.completed){
                 context.atLevel.playSound(context.player,context.tablePos, ThaumcraftSounds.LEARN,SoundSource.BLOCKS, 1.0F, 1.0F);
-                if (context.atLevel.getBlockEntity(context.tablePos) instanceof TileThaumcraft tile){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(context.atLevel, context.tablePos) instanceof TileThaumcraft tile){
                     tile.markDirtyAndUpdateSelf();
                 };
             }

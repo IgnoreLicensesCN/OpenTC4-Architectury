@@ -2,6 +2,7 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.forvalue.DegreeValue;
 import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCentrifugeBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +23,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAccessors.ASPECT_IN;
 import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAccessors.ASPECT_OUT;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaCentrifugeBlockEntity extends TileThaumcraft 
         implements
@@ -125,7 +127,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
         var selfPos = getBlockPos();
         var inPos = selfPos.relative(INPUT_DIRECTION);
         var outDirForOutBE = INPUT_DIRECTION.getOpposite();
-        if (this.level.getBlockEntity(inPos) instanceof IEssentiaTransportOutBlockEntity outBE 
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, inPos) instanceof IEssentiaTransportOutBlockEntity outBE
                 && outBE.canOutputTo(outDirForOutBE)
         ) {
             Aspect ta = outBE.getEssentiaType(outDirForOutBE);

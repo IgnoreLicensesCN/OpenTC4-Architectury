@@ -26,8 +26,6 @@ import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
 import thaumcraft.common.items.abstracts.IBundleLikeItem;
 import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
 import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
-import thaumcraft.common.items.abstracts.harness.IHarnessFlyingSpeedModifier;
-import thaumcraft.common.items.abstracts.harness.IHarnessFuelDurationMultiplier;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 

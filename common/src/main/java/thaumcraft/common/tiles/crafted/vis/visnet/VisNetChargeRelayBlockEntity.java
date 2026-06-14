@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.vis.visnet;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -7,6 +8,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
 import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity {
     public VisNetChargeRelayBlockEntity(BlockEntityType<? extends VisNetChargeRelayBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -30,7 +33,7 @@ public class VisNetChargeRelayBlockEntity extends VisNetRelayBlockEntity {
         super.tick();
         if (this.level == null) {return;}
         if (!this.level.isClientSide) {
-            var be = level.getBlockEntity(getPosBeingCharged());
+            var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, getPosBeingCharged());
             if (be instanceof IVisNetChargeRelayChargeableContainer chargeableContainer) {
                 var stackToCharge = chargeableContainer.getStackToCharge();
                 if (!stackToCharge.isEmpty()) {

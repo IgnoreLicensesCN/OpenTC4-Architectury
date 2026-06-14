@@ -1,6 +1,7 @@
 package thaumcraft.api.wands;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 @UtilityLikeAbstraction(reason = "it's harmful to write the same logic in every place but it's also not suitable to make it static")
 public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlockEntity, EntityBlock {
     @Override
@@ -27,7 +30,7 @@ public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlo
         var level = useOnContext.getLevel();
         if (!level.isClientSide()) {
             var clickedPos = useOnContext.getClickedPos();
-            var blockEntity = level.getBlockEntity(clickedPos);
+            var blockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, clickedPos);
             if (blockEntity instanceof OwnedBlockEntity owned){
                 var player = useOnContext.getPlayer();
                 if (player == null) return InteractionResult.PASS;
@@ -72,7 +75,7 @@ public interface IWandInteractableOwnedBlock extends IWandInteractableBlockOrBlo
         if (!level.isClientSide()) {
             var player = (livingEntity instanceof Player player0) ? player0 : null;
             if (player != null) {
-                var ownedBlockEntity = level.getBlockEntity(pos);
+                var ownedBlockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
                 if (ownedBlockEntity instanceof OwnedBlockEntity owned){
                     owned.addOwner(player);
                 }else if (ownedBlockEntity == null){

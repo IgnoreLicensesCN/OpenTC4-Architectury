@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.ownedblock;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -28,6 +29,7 @@ import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 
 public class ArcanePressurePlateBlock extends PressurePlateBlock
@@ -64,7 +66,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     @Override
     protected int getSignalStrength(Level level, BlockPos blockPos) {
         int settings = level.getBlockState(blockPos.below()).getValue(SETTING);
-        if (!(level.getBlockEntity(blockPos) instanceof OwnedBlockEntity ownedBlockEntity)){
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof OwnedBlockEntity ownedBlockEntity)){
             return 0;
         }
         return hasValidEntity(level, TOUCH_AABB.move(blockPos), settings,ownedBlockEntity)? 15 : 0;
@@ -104,7 +106,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()){
-            if (level.getBlockEntity(blockPos) instanceof OwnedBlockEntity ownedBlockEntity){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof OwnedBlockEntity ownedBlockEntity){
                 int setting = blockState.getValue(SETTING);
                 setting = (setting+1)%3;
                 if (player != null){

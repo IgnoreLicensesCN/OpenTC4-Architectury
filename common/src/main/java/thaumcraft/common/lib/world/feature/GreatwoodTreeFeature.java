@@ -26,6 +26,8 @@ import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.Arrays;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 //okay i'm lack of algorithm so WTF is this azanor?--ignoreLicensesCN
 public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
     private static final BlockState logFaceY = ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
@@ -456,7 +458,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
 
                 //idk what does 0 and 3 use
                 worldGenLevel.setBlock(spawnerBlockPos, Blocks.SPAWNER.defaultBlockState(), 3);
-                BlockEntity var14 = worldGenLevel.getBlockEntity(spawnerBlockPos);
+                BlockEntity var14 = getExistingBlockEntity(worldGenLevel, spawnerBlockPos);
                 if (var14 instanceof SpawnerBlockEntity spawner) {
                     spawner.setEntityId(EntityType.CAVE_SPIDER,trueLevel.random);
 //                    var14.func_145881_a().setEntityName("CaveSpider");
@@ -477,7 +479,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
                     }
 
                     worldGenLevel.setBlock(lootChestBlockPos, Blocks.CHEST.defaultBlockState(), 3);
-                    BlockEntity var16 = worldGenLevel.getBlockEntity(lootChestBlockPos);
+                    BlockEntity var16 = getExistingBlockEntity(worldGenLevel, lootChestBlockPos);
                     if (var16 instanceof ChestBlockEntity chest) {
                         ResourceLocation lootTable = BuiltInLootTables.SIMPLE_DUNGEON; // 或你自己的
                         chest.setLootTable(lootTable, random.nextLong());

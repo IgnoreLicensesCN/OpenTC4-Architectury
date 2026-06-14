@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.mirror;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.tiles.crafted.mirror.MirrorBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class MirrorBlock extends AbstractMirrorBlock implements EntityBlock {
     @Override
@@ -56,7 +59,7 @@ public class MirrorBlock extends AbstractMirrorBlock implements EntityBlock {
     @Override
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         super.entityInside(blockState, level, blockPos, entity);
-        if (!level.isClientSide && entity instanceof ItemEntity itemEntity && level.getBlockEntity(blockPos) instanceof MirrorBlockEntity mirror) {
+        if (!level.isClientSide && entity instanceof ItemEntity itemEntity && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof MirrorBlockEntity mirror) {
             mirror.transportItemEntity(itemEntity);
         }
     }

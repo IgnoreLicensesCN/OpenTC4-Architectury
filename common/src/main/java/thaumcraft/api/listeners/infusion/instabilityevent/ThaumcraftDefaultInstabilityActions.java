@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.infusion.instabilityevent;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.consts.EntityTypeTests;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +22,8 @@ import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ThaumcraftDefaultInstabilityActions {
 
@@ -65,7 +68,7 @@ public class ThaumcraftDefaultInstabilityActions {
             var containerPosOffsets = be.getComponentProviderPosOffsets();
             for (var posOffset : containerPosOffsets) {
                 var containerPos = posOffset.offset(bePos);
-                var containerBE = level.getBlockEntity(containerPos);
+                var containerBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, containerPos);
                 if (containerBE instanceof IInfusionComponentStackProvider componentProviderBE && !componentProviderBE.isEmpty()){
                     containerAction.accept(level,componentProviderBE);
                     placeFluxFluidAction.accept(level,componentProviderBE);

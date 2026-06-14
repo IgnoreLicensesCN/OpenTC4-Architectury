@@ -3,6 +3,7 @@ package thaumcraft.common.items.wands.foci;
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -52,6 +53,7 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
 import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING;
@@ -369,7 +371,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
             Consumer<ItemStack> resourceConsumer
     ) {
         if (level instanceof ServerLevel serverLevel) {
-            var drops = getDrops(state, serverLevel, pos, serverLevel.getBlockEntity(pos), null, pickaxeStack);
+            var drops = getDrops(state, serverLevel, pos, LevelBlockEntityAccessing.getExistingBlockEntity(serverLevel, pos), null, pickaxeStack);
             drops.forEach(resourceConsumer);
 
             var block = state.getBlock();

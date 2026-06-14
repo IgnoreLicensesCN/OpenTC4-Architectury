@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.visdevice;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,6 +28,7 @@ import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerB
 import thaumcraft.api.research.ThaumcraftResearches;
 import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
 public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainerBlock implements EntityBlock {
@@ -61,7 +63,7 @@ public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainer
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (level.getBlockEntity(blockPos) instanceof ExtendedMenuProvider menuProvider) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ExtendedMenuProvider menuProvider) {
                 if (ThaumcraftResearches.FOCAL_MANIPULATION.isPlayerCompletedResearch(serverPlayer)) {
                     openExtendedMenu(serverPlayer,menuProvider);
                 }else {
@@ -75,7 +77,7 @@ public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainer
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!level.isClientSide){
-            if (level.getBlockEntity(pos) instanceof Container container) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof Container container) {
                 Containers.dropContents(level, pos, container);
             }
         }
@@ -88,7 +90,7 @@ public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainer
         if (!level.isClientSide){
             return;
         }
-        if ((level instanceof ClientLevel clientLevel && level.getBlockEntity(blockPos) instanceof FocalManipulatorBlockEntity be)) {
+        if ((level instanceof ClientLevel clientLevel && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof FocalManipulatorBlockEntity be)) {
             if (!be.centiVisListView.isEmpty()) {
                 var pos = be.getBlockPos().getCenter();
                 ClientFXUtils.drawGenericParticles(

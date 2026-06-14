@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.ownedblock;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -20,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableOwnedBlock;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ArcaneDoorBlock extends DoorBlock
         implements
@@ -42,7 +45,7 @@ public class ArcaneDoorBlock extends DoorBlock
 
     @Override
     public InteractionResult use(BlockState arg, Level level, BlockPos pos, Player player, InteractionHand arg5, BlockHitResult arg6) {
-        var ownedBlockEntity = level.getBlockEntity(pos);
+        var ownedBlockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
         if (ownedBlockEntity instanceof OwnedBlockEntity owned){
 
             if (owned.playerOwnThis(player)){

@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,6 +42,7 @@ import java.util.List;
 
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.OWNING_ASPECTS;
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.RECIPES;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock.FACING;
 
 public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<ThaumatoriumMenu,ThaumatoriumBlockEntity> implements
@@ -109,7 +111,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (this.level == null) {
             return false;
         }
-        if (level.getBlockEntity(getBlockPos().below()) instanceof CrucibleBlockEntity crucible) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().below()) instanceof CrucibleBlockEntity crucible) {
             return crucible.isHeating();
         }
         return false;
@@ -184,7 +186,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
             var outResult = checkAndCompleteRecipe();
             if (outResult != null) {
                 var facing = getFacing();
-                if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof Container container){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof Container container){
                     outResult = InventoryUtils.placeItemStackIntoInventory(outResult, container, facing.getOpposite(), true);
                 }
                 if (!outResult.isEmpty()) {

@@ -1,6 +1,7 @@
 package thaumcraft.common.items.equipment.elemental;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -26,6 +27,7 @@ import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 
 import java.util.*;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftToolAndArmorMaterial.TOOL_THAUMIUM_ELEMENTAL;
 import static thaumcraft.common.items.equipment.specialtool.PrimalCrusherItem.blockPosOffsetsOfDirection;
 
@@ -64,7 +66,7 @@ public class ElementalShovelItem extends ShovelItem implements IDropFollowingUse
 
         boolean didPlace = false;
 
-        if (!isCrouching && world.getBlockEntity(pos) == null) {
+        if (!isCrouching && LevelBlockEntityAccessing.getExistingBlockEntity(world, pos) == null) {
             BlockState clickedState = world.getBlockState(pos);
             Block clickedBlock = clickedState.getBlock();
             var item = clickedBlock.asItem();
@@ -214,7 +216,7 @@ public class ElementalShovelItem extends ShovelItem implements IDropFollowingUse
         BlockState st = world.getBlockState(pos);
         if (st.getDestroySpeed(world, pos) >= 0 && !st.isAir()) {
             if (world.destroyBlock(pos, false, living)){
-                BlockEntity blockEntity = st.hasBlockEntity() ? world.getBlockEntity(pos) : null;
+                BlockEntity blockEntity = st.hasBlockEntity() ? LevelBlockEntityAccessing.getExistingBlockEntity(world, pos) : null;
                 Block.dropResources(st, world, pos, blockEntity, living, shovelStack);
             }
         }

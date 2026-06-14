@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted.vis.visnet;
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.mixinaccessors.clientbe.VisNetRelayBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.equip.bauble.BaubleUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
 
@@ -111,7 +113,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity implements IWa
                     ){
                         return;
                     }
-                    if (level.getBlockEntity(parentPos) instanceof VisNetNodeBlockEntity node) {
+                    if (LevelBlockEntityAccessing.getExistingBlockEntity(level, parentPos) instanceof VisNetNodeBlockEntity node) {
                         visNetRelayBlockEntity.setParent(node);
                     }
                 }

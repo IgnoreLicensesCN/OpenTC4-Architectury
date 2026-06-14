@@ -1,6 +1,6 @@
 package thaumcraft.common.items.misc;
 
-
+@Deprecated(forRemoval = true)
 public class ItemNugget /*extends Item*/ {
 //   public IIcon[] icon = new IIcon[64];
 //

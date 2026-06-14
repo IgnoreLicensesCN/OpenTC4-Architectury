@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
 import com.google.common.util.concurrent.AtomicDouble;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.client.Minecraft;
@@ -33,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
@@ -294,7 +296,7 @@ public class WandCastingItem extends Item
                     entityUsingBlockMapping.put(useOnContext.getPlayer(), useOnContext.getClickedPos());
                 }
             }
-            if (player.level().getBlockEntity(useOnContext.getClickedPos())
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(player.level(), useOnContext.getClickedPos())
                     instanceof IWandInteractableBlockOrBlockEntity interactableBlock) {
                 if (interactableBlock.useOnWandInteractable(useOnContext) == InteractionResult.CONSUME) {
                     result = InteractionResult.CONSUME;
@@ -311,7 +313,7 @@ public class WandCastingItem extends Item
         var usingBlockPos = entityUsingBlockMapping.getOrDefault(livingEntity, null);
         if (usingBlockPos != null) {
             var blockState = level.getBlockState(usingBlockPos);
-            var blockEntity = level.getBlockEntity(usingBlockPos);
+            var blockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, usingBlockPos);
             var interacting = false;
             if (blockState.getBlock() instanceof IWandInteractableBlockOrBlockEntity wandInteractableBlock) {
                 wandInteractableBlock.interactOnWandInteractable(level, livingEntity, usingWand, useRemainingCount);

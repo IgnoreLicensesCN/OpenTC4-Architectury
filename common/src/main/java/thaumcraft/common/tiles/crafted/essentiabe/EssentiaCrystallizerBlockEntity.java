@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCrystallizerBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,6 +31,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 
 import static com.linearity.opentc4.Consts.EssentiaCrystallizerBlockEntityTagAccessors.ASPECT_CRYSTALLIZING;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
@@ -122,7 +124,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         var selfOutputFacing = getOutFacing();
         var outToPos = pos.relative(selfOutputFacing);
         var outStack = CRYSTAL_ESSENCE().ofAspect(crystallizingAspect);
-        if (this.level.getBlockEntity(outToPos) instanceof Container container) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, outToPos) instanceof Container container) {
             outStack = InventoryUtils.placeItemStackIntoInventory(
                     outStack,
                     container,

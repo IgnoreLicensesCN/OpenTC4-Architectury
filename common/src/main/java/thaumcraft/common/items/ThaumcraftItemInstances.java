@@ -1,6 +1,8 @@
 package thaumcraft.common.items;
 
 import net.minecraft.world.item.*;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
@@ -26,11 +28,13 @@ import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.items.jars.VoidJarBlockItem;
+import thaumcraft.common.items.mateiral.DegradableTaintedMaterialItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
 import thaumcraft.common.items.misc.CompassStoneItem;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
+import thaumcraft.common.items.transport.HandMirrorItem;
 import thaumcraft.common.items.transport.MirrorBlockItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
@@ -80,11 +84,11 @@ public class ThaumcraftItemInstances {
         return ThaumcraftItemsRegistry.SUPPLIER_MIRRORED_GLASS.get();
     }//itemResource:10
 
-    public static Item TAINTED_GOO() {
+    public static DegradableTaintedMaterialItem TAINTED_GOO() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINTED_GOO.get();
     }//itemResource:11 //TODO:new class
 
-    public static Item TAINT_TENDRIL() {
+    public static DegradableTaintedMaterialItem TAINT_TENDRIL() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINT_TENDRIL.get();
     }//itemResource:12 //TODO:new class
 
@@ -1093,8 +1097,10 @@ public class ThaumcraftItemInstances {
     public static Item COD_NUGGET(){
         return ThaumcraftItemsRegistry.SUPPLIER_COD_NUGGET.get();
     }
-    public static Item TRIPLE_MEAT(){
+    public static Item TRIPLE_MEAT() {
         return ThaumcraftItemsRegistry.SUPPLIER_TRIPLE_MEAT.get();
     }
-
+    public static HandMirrorItem HAND_MIRROR() {
+        return ThaumcraftItemsRegistry.SUPPLIER_HAND_MIRROR.get();
+    }
 }

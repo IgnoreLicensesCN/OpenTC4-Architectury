@@ -4,6 +4,7 @@ import com.linearity.opentc4.recipeclean.itemmatch.ItemAndDamageMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.ItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
 import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -40,6 +41,8 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {
 
@@ -196,7 +199,7 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
         if (itemStack != null) {
             if (entity.onGround() && !level.isClientSide){
 
-                var bEntity = level.getBlockEntity(blockPos);
+                var bEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
                 if (bEntity instanceof InfernalFurnaceBlockEntity infernalFurnace){
                     itemStack = infernalFurnace.insertItemStack(itemStack);
                     if (itemStack.isEmpty()) {

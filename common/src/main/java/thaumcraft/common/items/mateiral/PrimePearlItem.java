@@ -1,7 +1,6 @@
 package thaumcraft.common.items.mateiral;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -24,6 +23,7 @@ import thaumcraft.api.nodes.NodeModifier;
 
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.liquid.FluxGasBlock.fullOfGas;
 import static thaumcraft.common.blocks.liquid.FluxGooBlock.fullOfGoo;
 import static thaumcraft.api.research.ThaumcraftResearches.PRIME_PEARL_NODE_CONTROL;
@@ -65,7 +65,7 @@ public class PrimePearlItem extends Item {
         if (player == null) {return InteractionResult.sidedSuccess(world.isClientSide());}
         var pos = useOnContext.getClickedPos();
 
-        BlockEntity te = world.getBlockEntity(pos);
+        BlockEntity te = LevelBlockEntityAccessing.getExistingBlockEntity(world, pos);
         if (te instanceof INodeBlockEntity node) {
             player.swing(useOnContext.getHand(), true);
             var itemstack = useOnContext.getItemInHand();

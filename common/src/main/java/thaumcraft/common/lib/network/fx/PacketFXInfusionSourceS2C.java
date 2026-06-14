@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import dev.architectury.networking.NetworkManager;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
 import thaumcraft.common.tiles.crafted.infusion.InfusionMatrixBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
 
@@ -75,12 +78,12 @@ public class PacketFXInfusionSourceS2C extends ThaumcraftBaseS2CMessage {
 
       ObjectIntPair<BlockPos> key = new ObjectIntPair<>(new BlockPos(tx,ty,tz),color);
 
-      BlockEntity be = level.getBlockEntity(new BlockPos(x, y, z));
+       BlockEntity be = LevelBlockEntityAccessing.getExistingBlockEntity(level, new BlockPos(x, y, z));
       if (!(be instanceof InfusionMatrixBlockEntity matrix)) return;
 
       int count = 15;
 
-      BlockEntity srcTile = level.getBlockEntity(new BlockPos(tx, ty, tz));
+       BlockEntity srcTile = LevelBlockEntityAccessing.getExistingBlockEntity(level, new BlockPos(tx, ty, tz));
       if (srcTile instanceof IInfusionComponentStackProvider) {
          count = 60;
       }

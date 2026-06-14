@@ -3,7 +3,6 @@ package thaumcraft.common.items;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,42 +15,25 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
-import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
-import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
-import thaumcraft.common.items.consumable.aspectowning.WispEssenceItem;
-import thaumcraft.common.items.eldritch.CrimsonRitesItem;
-import thaumcraft.common.items.eldritch.EldritchEyeItem;
-import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
+import thaumcraft.common.items.consumable.aspectowning.*;
+import thaumcraft.common.items.eldritch.*;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
-import thaumcraft.common.items.equipment.armor.cultist.CultistBootsItem;
-import thaumcraft.common.items.equipment.armor.cultist.CultistLeaderPlateArmorItem;
-import thaumcraft.common.items.equipment.armor.cultist.CultistPlateArmorItem;
-import thaumcraft.common.items.equipment.armor.cultist.CultistRobeArmorItem;
+import thaumcraft.common.items.equipment.armor.cultist.*;
 import thaumcraft.common.items.equipment.armor.thaumaturge.*;
-import thaumcraft.common.items.equipment.armor.voidarmor.VoidArmorItem;
-import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeArmorItem;
-import thaumcraft.common.items.equipment.armor.voidarmor.VoidRobeHelmetItem;
+import thaumcraft.common.items.equipment.armor.voidarmor.*;
 import thaumcraft.common.items.equipment.elemental.*;
-import thaumcraft.common.items.equipment.masks.AngryGhostMaskItem;
-import thaumcraft.common.items.equipment.masks.GrinningDevilMaskItem;
-import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
+import thaumcraft.common.items.equipment.masks.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
-import thaumcraft.common.items.jars.EssentiaJarBlockItem;
-import thaumcraft.common.items.jars.NodeJarBlockItem;
-import thaumcraft.common.items.jars.VoidJarBlockItem;
-import thaumcraft.common.items.mateiral.PrimalCharmItem;
-import thaumcraft.common.items.mateiral.PrimePearlItem;
-import thaumcraft.common.items.misc.CompassStoneItem;
-import thaumcraft.common.items.research.InkWellItem;
-import thaumcraft.common.items.research.ThaumometerItem;
-import thaumcraft.common.items.transport.MirrorBlockItem;
+import thaumcraft.common.items.jars.*;
+import thaumcraft.common.items.mateiral.*;
+import thaumcraft.common.items.misc.*;
+import thaumcraft.common.items.research.*;
+import thaumcraft.common.items.transport.*;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
-import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
-import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
+import thaumcraft.common.items.wands.wandtypes.*;
 
 import java.util.*;
 
@@ -83,10 +65,10 @@ public class ThaumcraftItemsRegistry {
             "knowledge_fragment", KnowledgeFragmentItem::new);
     public static final RegistrySupplier<Item> SUPPLIER_MIRRORED_GLASS = ITEMS.register(
             "mirrored_glass", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> SUPPLIER_TAINTED_GOO = ITEMS.register(
-            "tainted_goo", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> SUPPLIER_TAINT_TENDRIL = ITEMS.register(
-            "taint_tendril", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<DegradableTaintedMaterialItem> SUPPLIER_TAINTED_GOO = ITEMS.register(
+            "tainted_goo", DegradableTaintedMaterialItem::new);
+    public static final RegistrySupplier<DegradableTaintedMaterialItem> SUPPLIER_TAINT_TENDRIL = ITEMS.register(
+            "taint_tendril", DegradableTaintedMaterialItem::new);
     public static final RegistrySupplier<JarLabelItem> SUPPLIER_JAR_LABEL = ITEMS.register(
             "jar_label", JarLabelItem::new);
     public static final RegistrySupplier<Item> SUPPLIER_SALIS_MUNDUS = ITEMS.register(
@@ -1061,6 +1043,10 @@ public class ThaumcraftItemsRegistry {
             "triple_meat",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).effect(new MobEffectInstance(MobEffects.REGENERATION,5,0),0.66F).build()))
     );
+    public static final RegistrySupplier<HandMirrorItem> SUPPLIER_HAND_MIRROR = ITEMS.register(
+            "hand_mirror",
+            HandMirrorItem::new
+    );
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){
@@ -1075,7 +1061,7 @@ public class ThaumcraftItemsRegistry {
     }
     static {
         for (String prefix : new String[]{//TODO:[maybe wont finished]More of ore tags
-                "iron","gold","copper","silver","osmium","tin","uranium"
+                "iron","gold","copper","silver","osmium","tin","uranium","lead"
         }) {
             new ClusterRegistrationArgs(
                     prefix,

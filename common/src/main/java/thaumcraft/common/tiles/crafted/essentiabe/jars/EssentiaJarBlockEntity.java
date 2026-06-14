@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe.jars;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
@@ -284,7 +286,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         tickCount+=1;
         if (tickCount % 5 == 0){
             var posAbove = getBlockPos().above();
-            var be = level.getBlockEntity(posAbove);
+            var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, posAbove);
             if (be instanceof IEssentiaTransportOutBlockEntity outBE){
                 var selfInDir = getConnectableDirection();
                 var beOutToDir = selfInDir.getOpposite();

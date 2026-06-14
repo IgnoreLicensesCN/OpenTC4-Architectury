@@ -1,9 +1,12 @@
 package thaumcraft.api.scan.block;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.world.item.Items;
 import thaumcraft.api.nodes.INodeInfoProviderBlockEntity;
 import thaumcraft.api.scan.ScanManager;
 import thaumcraft.api.scan.itemstack.ItemStackScanListeners;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public enum BlockPosScanListeners {
     BLOCK_ITEM_SCAN(
@@ -23,7 +26,7 @@ public enum BlockPosScanListeners {
         @Override
         public void onBlockScan(BlockPosScanContext context) {
             var level = context.playerScanning.level();
-            if (level.getBlockEntity(context.pos) instanceof INodeInfoProviderBlockEntity nodeInfoProvider){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, context.pos) instanceof INodeInfoProviderBlockEntity nodeInfoProvider){
                 if (ScanManager.NodeScanManager.onScanVisNode(context.playerScanning,nodeInfoProvider.getNodeInfo())){
                     context.shouldBreak = true;
                 }

@@ -2,6 +2,7 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaReservoirBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
@@ -195,7 +197,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         if (tickCount % 5 == 0 && !capacityFullForAddEssentia()) {
             var facing = getConnectableDirection();
             var drainFromPos = getBlockPos().relative(facing);
-            var drainFromBE = level.getBlockEntity(drainFromPos);
+            var drainFromBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, drainFromPos);
             if (drainFromBE instanceof IEssentiaTransportOutBlockEntity outBE){
                 var beOutToDir = facing.getOpposite();
                 var outAspect = outBE.getEssentiaType(beOutToDir);

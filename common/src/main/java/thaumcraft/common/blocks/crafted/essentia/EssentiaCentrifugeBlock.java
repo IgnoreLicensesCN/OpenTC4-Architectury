@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.EssentiaCentrifugeBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaCentrifugeBlock
         extends SuppressedWarningBlock
@@ -84,7 +87,7 @@ public class EssentiaCentrifugeBlock
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+        return !(LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
 }

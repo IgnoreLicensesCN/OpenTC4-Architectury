@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.infusion;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.AbstractPedestalBlock;
 import thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ArcanePedestalBlock extends AbstractPedestalBlock implements EntityBlock {
     public ArcanePedestalBlock(Properties properties) {
@@ -53,7 +56,7 @@ public class ArcanePedestalBlock extends AbstractPedestalBlock implements Entity
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (level.getBlockEntity(pos) instanceof Container container){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof Container container){
             Containers.dropContents(level,pos,container);
         }
         super.onRemove(state, level, pos, newState, isMoving);

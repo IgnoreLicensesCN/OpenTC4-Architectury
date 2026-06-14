@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted.arcanebore;
 
 import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,6 +23,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerBlock;
 import thaumcraft.common.tiles.crafted.ArcaneBoreBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.DRILL_FACING;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.FACING_TO_BASE;
 
@@ -100,7 +102,7 @@ public class ArcaneBoreBaseBlock extends AbstractExtendedMenuProviderContainerBl
             boolean receivedSignal = level.hasNeighborSignal(pos);
             if (receivedSignal != state.getValue(POWERED)) {
                 var newState = state.setValue(POWERED, receivedSignal);
-                if (level.getBlockEntity(pos) instanceof ArcaneBoreBlockEntity arcaneBore) {
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof ArcaneBoreBlockEntity arcaneBore) {
                     arcaneBore.setBlockStateAndUpdate(newState);
                 }
             }
@@ -112,7 +114,7 @@ public class ArcaneBoreBaseBlock extends AbstractExtendedMenuProviderContainerBl
                         && probablyDrillState.getValue(FACING_TO_BASE)
                         .getOpposite() == selfFacing
                 ) {
-                    if (level.getBlockEntity(pos) instanceof ArcaneBoreBlockEntity arcaneBore) {
+                    if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof ArcaneBoreBlockEntity arcaneBore) {
                         ((ArcaneBoreBlockEntityClientAccessor) arcaneBore).opentc4$getClientTickContext()
                                 .updateRotationForDigDirection(probablyDrillState.getValue(DRILL_FACING));
                     }

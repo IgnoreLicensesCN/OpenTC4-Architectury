@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 @UtilityLikeAbstraction
 //TODO:[maybe wont finished]anyone help me connect with pipe
@@ -26,7 +28,7 @@ public abstract class AbstractLiquidFillInBlock extends SuppressedWarningBlock
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide && level.getBlockEntity(blockPos) instanceof SingleFluidContainerBlockEntity spaBE) {
+        if (!level.isClientSide && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof SingleFluidContainerBlockEntity spaBE) {
             var stack = player.getItemInHand(interactionHand);
             var fluidStack = platformUtils.copyFluidStackFromItemStack(stack);
             if (fluidStack != null && !fluidStack.isEmpty()) {
@@ -49,7 +51,7 @@ public abstract class AbstractLiquidFillInBlock extends SuppressedWarningBlock
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        if (level.getBlockEntity(blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
             return provider.getComparatorSignal();
         }
         return 0;

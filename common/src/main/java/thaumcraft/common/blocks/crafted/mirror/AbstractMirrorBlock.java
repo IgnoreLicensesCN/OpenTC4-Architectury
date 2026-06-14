@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted.mirror;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +32,7 @@ import thaumcraft.common.tiles.crafted.mirror.AbstractMirrorBlockEntity;
 import java.util.List;
 import java.util.Map;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.jars.JarBlock.JAR_SOUND;
 
 @UtilityLikeAbstraction(reason = "lazy writing")
@@ -95,7 +97,7 @@ public abstract class AbstractMirrorBlock extends SuppressedWarningBlock impleme
     public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
         if (!level.isClientSide()) {
-            if (level.getBlockEntity(blockPos) instanceof AbstractMirrorBlockEntity mirror && itemStack.hasTag()) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof AbstractMirrorBlockEntity mirror && itemStack.hasTag()) {
                 var tag = itemStack.getTag();
                 if (tag != null) {
                     mirror.readLinkedFromTag(tag);
@@ -124,7 +126,7 @@ public abstract class AbstractMirrorBlock extends SuppressedWarningBlock impleme
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractMirrorBlockEntity mirror) {
+        if (!level.isClientSide && LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof AbstractMirrorBlockEntity mirror) {
             mirror.blockOnRemoved();
         }
         super.onRemove(state, level, pos, newState, isMoving);

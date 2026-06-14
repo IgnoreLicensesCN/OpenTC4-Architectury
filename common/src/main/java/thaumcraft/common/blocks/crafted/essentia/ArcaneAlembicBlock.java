@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,6 +34,8 @@ import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.ArcaneAlembicBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ArcaneAlembicBlock extends SuppressedWarningBlock
         implements EntityBlock,
@@ -73,7 +76,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide){
-            if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isCrouching() && player.getItemInHand(interactionHand).isEmpty()) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isCrouching() && player.getItemInHand(interactionHand).isEmpty()) {
                 var stackInHand = player.getItemInHand(interactionHand);
                 if (!player.isCrouching()) {
                     if (stackInHand.isEmpty()) {
@@ -131,7 +134,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
             ItemStack stackToFill,
             IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull Aspect aspect) {
-        if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }
         return false;
@@ -146,7 +149,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
             IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
-        if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
         }
         return false;

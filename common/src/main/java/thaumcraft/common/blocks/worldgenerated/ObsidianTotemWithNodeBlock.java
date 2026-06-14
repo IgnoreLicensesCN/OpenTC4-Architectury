@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -23,6 +24,7 @@ import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.ObsidianTotemNodeBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.abstracts.AbstractNodeBlock.nodeBlockOnRemove;
 
 public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements EntityBlock, INodeBlock {
@@ -57,7 +59,7 @@ public class ObsidianTotemWithNodeBlock extends ObsidianTotemBlock implements En
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = level.getBlockEntity(blockPos);
+        var bEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
         if (bEntity instanceof ObsidianTotemNodeBlockEntity node){
             node.clientAnimateTickByBlockHandle();
         }

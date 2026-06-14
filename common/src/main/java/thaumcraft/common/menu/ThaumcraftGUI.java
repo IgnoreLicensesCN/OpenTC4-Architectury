@@ -1,6 +1,7 @@
 package thaumcraft.common.menu;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -16,6 +17,8 @@ import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
 import thaumcraft.common.tiles.crafted.vis.FocalManipulatorBlockEntity;
 
 import java.util.function.Supplier;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ThaumcraftGUI {
     public static class ThaumcraftMenuTypeInstances {
@@ -101,7 +104,7 @@ public class ThaumcraftGUI {
         return () -> MenuRegistry.ofExtended(((id, inventory, buf) -> {
             var bPos = buf.readBlockPos();
             var level = inventory.player.level();
-            var be = level.getBlockEntity(bPos);
+            var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, bPos);
             if (blockEntityClass.isInstance(be)){
                 return factory.createMenu(id,inventory, (BE) be);
             }

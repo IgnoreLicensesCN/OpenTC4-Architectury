@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.utils;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -29,6 +30,8 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class InventoryUtils {
    public static @NotNull("null -> empty") ItemStack placeItemStackIntoInventory(ItemStack stack, Container inventory, Direction side, boolean doit) {
@@ -182,7 +185,7 @@ public class InventoryUtils {
 
    public static void dropItems(Level world, BlockPos pos) {
       Random rand = new Random();
-      BlockEntity BlockEntity = world.getBlockEntity(pos);
+       BlockEntity BlockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(world, pos);
 
       if (BlockEntity instanceof RandomizableContainerBlockEntity container) {
          int size = container.getContainerSize();
@@ -218,7 +221,7 @@ public class InventoryUtils {
    }
 
    public static void dropItemsAtEntity(Level world, BlockPos pos, Entity entity) {
-      BlockEntity BlockEntity = world.getBlockEntity(pos);
+       BlockEntity BlockEntity = LevelBlockEntityAccessing.getExistingBlockEntity(world, pos);
 
       if (BlockEntity instanceof RandomizableContainerBlockEntity container) {
          int size = container.getContainerSize();
@@ -359,7 +362,7 @@ public class InventoryUtils {
          default -> pos;
       };
 
-      if (world.getBlockEntity(otherPos) instanceof ChestBlockEntity otherChest) {
+      if (LevelBlockEntityAccessing.getExistingBlockEntity(world, otherPos) instanceof ChestBlockEntity otherChest) {
          return otherChest;
       }
       return null;

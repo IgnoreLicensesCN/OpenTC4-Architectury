@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
@@ -11,6 +12,7 @@ import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
 
 
@@ -37,7 +39,7 @@ public abstract class AbstractNodeBlock extends SuppressedWarningBlock implement
             }
         } else {
             if (newState.isAir()) {
-                if (level.getBlockEntity(pos) instanceof INodeBlockEntity nodeBE) {
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof INodeBlockEntity nodeBE) {
                     var aspectsOwning = nodeBE.getAspects();
                     if (!aspectsOwning.isEmpty()) {
                         aspectsOwning.forEach(

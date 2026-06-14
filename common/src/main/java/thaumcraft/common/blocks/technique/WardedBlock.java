@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.technique;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +25,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.technique.WardedBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 
 public class WardedBlock extends SuppressedWarningBlock implements IWandInteractableOwnedBlock {
@@ -38,7 +40,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
     public void onOwnerClicked(UseOnContext useOnContext) {
         var pos = useOnContext.getClickedPos();
         var level = useOnContext.getLevel();
-        if (level.getBlockEntity(pos) instanceof WardedBlockEntity warded) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof WardedBlockEntity warded) {
             level.setBlockAndUpdate(pos,warded.getStoringState());
         }
     }
@@ -77,7 +79,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull VoxelShape getBlockSupportShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getBlockSupportShape(blockGetter, blockPos);
         }
         return super.getBlockSupportShape(blockState, blockGetter, blockPos);
@@ -86,7 +88,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
     @Override
     public @NotNull VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
 
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getVisualShape(blockGetter, blockPos,collisionContext);
         }
         return super.getVisualShape(blockState, blockGetter, blockPos, collisionContext);
@@ -94,7 +96,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getShape(blockGetter, blockPos,collisionContext);
         }
         return super.getShape(blockState, blockGetter, blockPos, collisionContext);
@@ -102,7 +104,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getCollisionShape(blockGetter, blockPos,collisionContext);
         }
         return super.getCollisionShape(blockState, blockGetter, blockPos, collisionContext);
@@ -110,7 +112,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull VoxelShape getOcclusionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getOcclusionShape(blockGetter, blockPos);
         }
         return super.getOcclusionShape(blockState, blockGetter, blockPos);
@@ -118,7 +120,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos) {
-        if (levelAccessor.getBlockEntity(selfPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(levelAccessor, selfPos) instanceof WardedBlockEntity warded) {
             var newState = warded.getStoringState().updateShape(changeFromDirection, neighborState,levelAccessor, selfPos,
                     changedPos
             );
@@ -135,7 +137,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public @NotNull VoxelShape getInteractionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getInteractionShape(blockGetter,blockPos);
         }
         return super.getInteractionShape(blockState, blockGetter, blockPos);
@@ -143,7 +145,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public boolean isCollisionShapeFullBlock(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().isCollisionShapeFullBlock(blockGetter,blockPos);
         }
         return super.isCollisionShapeFullBlock(blockState, blockGetter, blockPos);
@@ -151,7 +153,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public boolean isOcclusionShapeFullBlock(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             var state = warded.getStoringState();
             return warded.getStoringState().getBlock().isOcclusionShapeFullBlock(state,blockGetter,blockPos);
         }
@@ -160,7 +162,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public void updateIndirectNeighbourShapes(BlockState blockState, LevelAccessor levelAccessor, BlockPos blockPos, int i, int j) {
-        if (levelAccessor.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(levelAccessor, blockPos) instanceof WardedBlockEntity warded) {
             warded.getStoringState().updateIndirectNeighbourShapes(levelAccessor, blockPos, i, j);
         }else {
             super.updateIndirectNeighbourShapes(blockState, levelAccessor, blockPos, i, j);
@@ -169,7 +171,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
-        if (level.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().triggerEvent(level,blockPos,i,j);
         }
         return super.triggerEvent(blockState, level, blockPos, i, j);
@@ -177,7 +179,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
-        if (level.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof WardedBlockEntity warded) {
             warded.getStoringState().entityInside(level,blockPos,entity);
         }else {
             super.entityInside(blockState, level, blockPos, entity);
@@ -186,7 +188,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public int getSignal(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, Direction direction) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             return warded.getStoringState().getSignal(blockGetter, blockPos,direction);
         }
         return super.getSignal(blockState, blockGetter, blockPos, direction);
@@ -199,7 +201,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        if (level.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof WardedBlockEntity warded) {
             var storingState = warded.getStoringState();
             if (!storingState.hasAnalogOutputSignal()) {
                 return 0;
@@ -216,7 +218,7 @@ public class WardedBlock extends SuppressedWarningBlock implements IWandInteract
 
     @Override
     public int getDirectSignal(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, Direction direction) {
-        if (blockGetter.getBlockEntity(blockPos) instanceof WardedBlockEntity warded) {
+        if (getExistingBlockEntity(blockGetter, blockPos) instanceof WardedBlockEntity warded) {
             var storingState = warded.getStoringState();
             return storingState.getDirectSignal(blockGetter, blockPos,direction);
         }

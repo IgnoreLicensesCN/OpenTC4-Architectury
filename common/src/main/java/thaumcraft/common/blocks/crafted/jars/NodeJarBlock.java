@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.jars;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +19,8 @@ import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.tiles.crafted.jars.NodeJarBlockEntity;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class NodeJarBlock extends JarBlock implements
         EntityBlock,
@@ -38,7 +41,7 @@ public class NodeJarBlock extends JarBlock implements
         super.setPlacedBy(level, pos, blockState, livingEntity, itemStack);
         if (level.isClientSide) return;
 
-        if (level.getBlockEntity(pos) instanceof NodeJarBlockEntity jar && itemStack.getItem() instanceof NodeJarBlockItem jarItem) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof NodeJarBlockEntity jar && itemStack.getItem() instanceof NodeJarBlockItem jarItem) {
             jar.nodeInfo = jarItem.getNodeInfo(itemStack);
             jar.markDirtyAndUpdateSelf();
         }
@@ -59,10 +62,10 @@ public class NodeJarBlock extends JarBlock implements
         var level = useOnContext.getLevel();
         if (!level.isClientSide()) {
             var pos = useOnContext.getClickedPos();
-            if (level.getBlockEntity(pos) instanceof NodeJarBlockEntity jar) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof NodeJarBlockEntity jar) {
                 var nodeInfo = jar.nodeInfo;
                 level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.AURA_NODE().defaultBlockState());
-                NodeBlockEntity nodeBlockEntity = (NodeBlockEntity) level.getBlockEntity(pos);
+                NodeBlockEntity nodeBlockEntity = (NodeBlockEntity) LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
                 if (nodeBlockEntity != null) {
                     nodeBlockEntity.readNodeInfo(nodeInfo);
                 }
@@ -73,7 +76,7 @@ public class NodeJarBlock extends JarBlock implements
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (level.getBlockEntity(pos) instanceof NodeJarBlockEntity jar) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof NodeJarBlockEntity jar) {
             var nodeInfo = jar.nodeInfo;
             var jarItem = getNodeJarItem();
             var stackToDrop = new ItemStack(jarItem);

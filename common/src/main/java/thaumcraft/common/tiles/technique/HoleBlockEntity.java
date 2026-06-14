@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.technique;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +15,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.HoleBlockEntityTagAccessors.*;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class HoleBlockEntity extends TileThaumcraft {
     public HoleBlockEntity(BlockEntityType<? extends HoleBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -105,11 +107,11 @@ public class HoleBlockEntity extends TileThaumcraft {
     }
     public void spreadHoleOnBlockPos(BlockPos pos,Direction spreadDirection,int spreadDistance,int tickRemaining){
         if (this.level == null){return;}
-        var relatedBE = this.level.getBlockEntity(pos);
+        var relatedBE = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos);
         if (relatedBE == null) {
             var stateToStore = this.level.getBlockState(pos);
             this.level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.HOLE().defaultBlockState());
-            if (this.level.getBlockEntity(pos) instanceof HoleBlockEntity hole){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos) instanceof HoleBlockEntity hole){
                 hole.setSpreadDirection(spreadDirection);
                 hole.mergeSpreadDistanceWithMax(spreadDistance-1);
                 hole.mergeTickRemainingWithMax(tickRemaining+1);

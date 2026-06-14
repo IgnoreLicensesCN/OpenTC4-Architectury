@@ -1,5 +1,6 @@
 package thaumcraft.common.menu.menu.abstracts;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public abstract class AbstractThaumcraftMenu<BE extends BlockEntity> extends AbstractContainerMenu {
     protected final BE blockEntity;
@@ -90,7 +93,7 @@ public abstract class AbstractThaumcraftMenu<BE extends BlockEntity> extends Abs
             return true;
         }
         var level = blockEntity.getLevel();
-        return level != null && level.getBlockEntity(blockPos) == blockEntity;
+        return level != null && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) == blockEntity;
     }
 
 

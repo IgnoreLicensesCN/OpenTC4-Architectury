@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.toserveraction;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -13,6 +14,8 @@ import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.abstracts.IResearchAspectPlaceableBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 //ResearchTableBlockEntity only packet
 public class PacketAspectPlaceC2S extends BaseC2SMessage {
@@ -55,7 +58,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
       if (server == null) return;
       var world = serverPlayer.level();
 
-      BlockEntity tile = world.getBlockEntity(placeAspectToPos);
+       BlockEntity tile = LevelBlockEntityAccessing.getExistingBlockEntity(world, placeAspectToPos);
       if (tile instanceof IResearchAspectPlaceableBlockEntity researchAspectPlaceable) {
          researchAspectPlaceable.placeAspect(new HexCoord(q, r), aspect, serverPlayer);
       }

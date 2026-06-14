@@ -1,6 +1,7 @@
 package thaumcraft.api.visnet;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.PARENT_POS_ACCESSOR;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.visnet.VisNetHandler.visNetNodeLookups;
 
 public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements ICubeChunkBasedWeakLookupOwner<VisNetNodeBlockEntity> {
@@ -96,7 +98,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
     public VisNetNodeBlockEntity getParent() {
         if (this.level == null) return null;
         if (this.parentPos == null) return null;
-        if (!(this.level.getBlockEntity(this.parentPos) instanceof VisNetNodeBlockEntity visNetNodeBlockEntity)) return null;
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(this.level, this.parentPos) instanceof VisNetNodeBlockEntity visNetNodeBlockEntity)) return null;
         return visNetNodeBlockEntity;
     }
 
@@ -123,7 +125,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
             var parentPosBefore = this.parentPos;
             //check for changes
             if (parentPos != null) {
-                if (level.getBlockEntity(parentPos) instanceof VisNetNodeBlockEntity parentNodeBE) {
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, parentPos) instanceof VisNetNodeBlockEntity parentNodeBE) {
                     if (!VisNetHandler.canNodeBeSeen(this, parentNodeBE)) {
                         this.parentPos = null;
                     }

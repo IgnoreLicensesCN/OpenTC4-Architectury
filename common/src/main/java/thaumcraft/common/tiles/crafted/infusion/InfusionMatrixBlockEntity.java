@@ -6,6 +6,7 @@ import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -57,6 +58,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.InfusionMatrixBlockEntityTagAccessors.*;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.crafting.infusion.InfusionRecipe.*;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionMatrixBlock.LIT;
 import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity.INFUSION_COMPONENT_PROVIDERS;
@@ -214,7 +216,7 @@ public class InfusionMatrixBlockEntity
         boolean consumed = false;
         for (var offset : getComponentProviderPosOffsets()){
             var realProviderPos = offset.offset(getBlockPos());
-            if (this.level.getBlockEntity(realProviderPos) instanceof IInfusionComponentStackProvider provider){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, realProviderPos) instanceof IInfusionComponentStackProvider provider){
                 for (int i=0; i<provider.getContainerSize(); i++){
                     var providingStack = provider.getItem(i);
                     if (ItemStack.isSameItemSameTags(providingStack,consumingStack)){//can consume
@@ -410,7 +412,7 @@ public class InfusionMatrixBlockEntity
                             }
                         }
                     } else {
-                        if (clientLevel.getBlockEntity(fx.loc) instanceof IInfusionComponentStackProvider provider) {
+                        if (LevelBlockEntityAccessing.getExistingBlockEntity(clientLevel, fx.loc) instanceof IInfusionComponentStackProvider provider) {
                             ItemStack is = provider.getItem(0);
                             if (!is.isEmpty()) {
                                 if (clientLevel.random.nextInt(3) == 0) {
@@ -551,7 +553,7 @@ public class InfusionMatrixBlockEntity
     }
     public void finishCrafting(InfusionRecipe recipe,ItemStack infusionCenterStack){
         if (this.level != null){
-            if (level.getBlockEntity(getCenterPedestalPos()) instanceof IInfusionCenterItemStackProvider centerItemStackProvider){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getCenterPedestalPos()) instanceof IInfusionCenterItemStackProvider centerItemStackProvider){
                 if (!this.infusionResult.isEmpty()){
                     centerItemStackProvider.setCenterStack(this.infusionResult);
                 }else {
@@ -580,7 +582,7 @@ public class InfusionMatrixBlockEntity
             return ItemStack.EMPTY;
         }
         var pedestalPos = getCenterPedestalPos();
-        if (level.getBlockEntity(pedestalPos) instanceof IInfusionCenterItemStackProvider centerProvider){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pedestalPos) instanceof IInfusionCenterItemStackProvider centerProvider){
             return centerProvider.getCenterStack();
 
         }
@@ -624,7 +626,7 @@ public class InfusionMatrixBlockEntity
                     infusionComponentStackProviderPositionOffsets.add(posOffset);
 
                     var posOffsetTransformed = new BlockPos(-posOffset.getX(), posOffset.getY(), -posOffset.getZ());
-                    var beInTransformedPos = level.getBlockEntity(posOffsetTransformed.offset(matrixPos));
+                    var beInTransformedPos = LevelBlockEntityAccessing.getExistingBlockEntity(level, posOffsetTransformed.offset(matrixPos));
 
                     int instabilityChange = 20;
 

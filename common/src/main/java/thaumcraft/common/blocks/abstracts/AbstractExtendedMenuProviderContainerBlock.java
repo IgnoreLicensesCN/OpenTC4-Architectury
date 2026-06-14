@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
 @UtilityLikeAbstraction
@@ -23,7 +25,7 @@ public abstract class AbstractExtendedMenuProviderContainerBlock extends Abstrac
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (level.getBlockEntity(blockPos) instanceof ExtendedMenuProvider menuProvider) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ExtendedMenuProvider menuProvider) {
                 openExtendedMenu(serverPlayer,menuProvider);
             }
         }

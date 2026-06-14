@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.infusion;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,6 +29,7 @@ import thaumcraft.common.tiles.crafted.infusion.InfusionMatrixBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionPillarBlock.ABOVE;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionPillarBlock.FACING;
 
@@ -82,7 +84,7 @@ public class InfusionMatrixBlock extends SuppressedWarningBlock implements Entit
         super.tick(blockState, serverLevel, blockPos, randomSource);
         if (!checkPillar(serverLevel, blockPos, blockState)) {
             if (!serverLevel.isClientSide
-                    && serverLevel.getBlockEntity(blockPos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
+                    && LevelBlockEntityAccessing.getExistingBlockEntity(serverLevel, blockPos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
                 infusionMatrixBlockEntity.cancelCrafting();
             }
             serverLevel.setBlockAndUpdate(blockPos, blockState.setValue(LIT, false));
@@ -92,7 +94,7 @@ public class InfusionMatrixBlock extends SuppressedWarningBlock implements Entit
     @Override
     public @NotNull BlockState updateShape(BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor level, BlockPos selfPos, BlockPos changedPos) {
         if (!checkPillar(level, selfPos, prevState)) {
-            if (!level.isClientSide() && level.getBlockEntity(selfPos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
+            if (!level.isClientSide() && getExistingBlockEntity(level, selfPos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
                 infusionMatrixBlockEntity.cancelCrafting();
             }
             return prevState.setValue(LIT, false);
@@ -123,7 +125,7 @@ public class InfusionMatrixBlock extends SuppressedWarningBlock implements Entit
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
+        if (!level.isClientSide && LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof InfusionMatrixBlockEntity infusionMatrixBlockEntity) {
             infusionMatrixBlockEntity.cancelCrafting();
             if (infusionMatrixBlockEntity.isCrafting()){
                 var center = pos.getCenter();

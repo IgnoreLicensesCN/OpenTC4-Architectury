@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.infernalfurnace;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +15,7 @@ import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock.SELF_POS_1_1_1;
 
 public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements IEssentiaTransportInBlockEntity {
@@ -86,7 +88,7 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
         var state = this.getBlockState();
         var selfPosRelated = ThaumcraftBlocks.ThaumcraftBlockInstances.INFERNAL_FURNACE_SIDE().findSelfPosRelatedInMultipart(this.level,state,pos);
         var furnaceCorePos = pos.offset(selfPosRelated.multiply(-1)).offset(SELF_POS_1_1_1);
-        if (level.getBlockEntity(furnaceCorePos) instanceof InfernalFurnaceBlockEntity furnaceCore) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, furnaceCorePos) instanceof InfernalFurnaceBlockEntity furnaceCore) {
             return furnaceCore;
         }
         return null;

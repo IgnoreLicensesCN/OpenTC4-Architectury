@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia.pipes;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportConnectableBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class AbstractEssentiaTubeBlock
         extends SuppressedWarningBlock{
@@ -83,13 +86,13 @@ public class AbstractEssentiaTubeBlock
     protected boolean canDirectionConnect(BlockGetter atLevel, BlockPos selfBlockPos, Direction dir) {
         var tryConnectToPos = selfBlockPos.relative(dir);
         boolean canConnectTo =
-                atLevel.getBlockEntity(tryConnectToPos) instanceof
+                getExistingBlockEntity(atLevel, tryConnectToPos) instanceof
                         IEssentiaTransportConnectableBlockEntity connectable
                 && connectable.isConnectable(dir.getOpposite());
         if (!canConnectTo) {
             return false;
         }
-        return atLevel.getBlockEntity(selfBlockPos) instanceof
+        return getExistingBlockEntity(atLevel, selfBlockPos) instanceof
                 IEssentiaTransportConnectableBlockEntity connectable
                 && connectable.isConnectable(dir);
     }
@@ -106,7 +109,7 @@ public class AbstractEssentiaTubeBlock
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+        return !(LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
 

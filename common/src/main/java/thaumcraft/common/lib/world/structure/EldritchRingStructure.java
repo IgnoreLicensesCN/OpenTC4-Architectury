@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
 import static thaumcraft.common.lib.world.structure.MoundStructure.couldGenMountStructureViaCoords;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
@@ -249,7 +250,7 @@ public class EldritchRingStructure extends Structure {
                             world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);//TODO:Meta->Block
                             level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
                             int r = random.nextInt(10);
-                            BlockEntity te = level.getBlockEntity(blockPos.offset(xOffset,1,zOffset));
+                            BlockEntity te = getExistingBlockEntity(level, blockPos.offset(xOffset, 1, zOffset));
                             if (te instanceof TileEldritchAltar) {
                                 TileEldritchAltar altar = (TileEldritchAltar) te;
                                 switch (r) {

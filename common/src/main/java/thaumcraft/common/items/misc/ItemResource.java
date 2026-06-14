@@ -1,39 +1,6 @@
 package thaumcraft.common.items.misc;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
-import thaumcraft.common.lib.network.playerdata.PacketResearchComplete;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
-import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.utils.InventoryUtils;
-
-import java.util.List;
-
-import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescriptionToList;
 //item.ItemResource.0.name=源动之焰
 //item.ItemResource.1.name=闪耀之光
 //item.ItemResource.2.name=神秘锭
@@ -52,129 +19,128 @@ import static thaumcraft.api.aspects.aspectlists.AspectList.addAspectDescription
 //item.ItemResource.15.name=元始魔力
 //item.ItemResource.16.name=虚空锭
 //item.ItemResource.17.name=虚空种子
-//TODO:Migrate logic
-public class ItemResource extends Item implements IEssentiaContainerItem {
-   public IIcon[] icon = new IIcon[19];
-   public IIcon iconOverlay;
+public class ItemResource /*extends Item implements IEssentiaContainerItem*/ {
+//   public IIcon[] icon = new IIcon[19];
+//   public IIcon iconOverlay;
+//
+//   public ItemResource() {
+//      this.setMaxStackSize(64);
+//      this.setHasSubtypes(true);
+//      this.setMaxDamage(0);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerIcons(IIconRegister ir) {
+//      this.icon[0] = ir.registerIcon("thaumcraft:alumentum");
+//      this.icon[1] = ir.registerIcon("thaumcraft:nitor");
+//      this.icon[2] = ir.registerIcon("thaumcraft:thaumiumingot");
+//      this.icon[3] = ir.registerIcon("thaumcraft:quicksilver");
+//      this.icon[4] = ir.registerIcon("thaumcraft:tallow");
+//      this.icon[5] = ir.registerIcon("thaumcraft:brain");
+//      this.icon[6] = ir.registerIcon("thaumcraft:amber");
+//      this.icon[7] = ir.registerIcon("thaumcraft:cloth");
+//      this.icon[8] = ir.registerIcon("thaumcraft:filter");
+//      this.icon[9] = ir.registerIcon("thaumcraft:knowledgefragment");
+//      this.icon[10] = ir.registerIcon("thaumcraft:mirrorglass");
+//      this.icon[11] = ir.registerIcon("thaumcraft:taint_slime");
+//      this.icon[12] = ir.registerIcon("thaumcraft:taint_tendril");
+//      this.icon[13] = ir.registerIcon("thaumcraft:label");
+//      this.iconOverlay = ir.registerIcon("thaumcraft:label_over");
+//      this.icon[14] = ir.registerIcon("thaumcraft:dust");
+//      this.icon[15] = ir.registerIcon("thaumcraft:charm");
+//      this.icon[16] = ir.registerIcon("thaumcraft:voidingot");
+//      this.icon[17] = ir.registerIcon("thaumcraft:voidseed");
+//      this.icon[18] = ir.registerIcon("thaumcraft:coin");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIconFromDamage(int par1) {
+//      return this.icon[par1];
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public int getRenderPasses(int metadata) {
+//      return metadata == 13 ? 2 : 1;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIcon(ItemStack stack, int pass) {
+//      return pass != 0 && this.getEssentiaOwning(stack) != null ? this.iconOverlay : this.getIconFromDamage(stack.getItemDamage());
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public int getColorFromItemStack(ItemStack stack, int par2) {
+//      return par2 == 1 && stack.getItemDamage() == 13 && this.getEssentiaOwning(stack) != null ? this.getEssentiaOwning(stack).getAspects()[0].getColor() : 16777215;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public boolean requiresMultipleRenderPasses() {
+//      return true;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      for(int a = 0; a <= 18; ++a) {
+//         if (a != 5) {
+//            par3List.add(new ItemStack(this, 1, a));
+//         }
+//      }
+//
+//   }
 
-   public ItemResource() {
-      this.setMaxStackSize(64);
-      this.setHasSubtypes(true);
-      this.setMaxDamage(0);
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister ir) {
-      this.icon[0] = ir.registerIcon("thaumcraft:alumentum");
-      this.icon[1] = ir.registerIcon("thaumcraft:nitor");
-      this.icon[2] = ir.registerIcon("thaumcraft:thaumiumingot");
-      this.icon[3] = ir.registerIcon("thaumcraft:quicksilver");
-      this.icon[4] = ir.registerIcon("thaumcraft:tallow");
-      this.icon[5] = ir.registerIcon("thaumcraft:brain");
-      this.icon[6] = ir.registerIcon("thaumcraft:amber");
-      this.icon[7] = ir.registerIcon("thaumcraft:cloth");
-      this.icon[8] = ir.registerIcon("thaumcraft:filter");
-      this.icon[9] = ir.registerIcon("thaumcraft:knowledgefragment");
-      this.icon[10] = ir.registerIcon("thaumcraft:mirrorglass");
-      this.icon[11] = ir.registerIcon("thaumcraft:taint_slime");
-      this.icon[12] = ir.registerIcon("thaumcraft:taint_tendril");
-      this.icon[13] = ir.registerIcon("thaumcraft:label");
-      this.iconOverlay = ir.registerIcon("thaumcraft:label_over");
-      this.icon[14] = ir.registerIcon("thaumcraft:dust");
-      this.icon[15] = ir.registerIcon("thaumcraft:charm");
-      this.icon[16] = ir.registerIcon("thaumcraft:voidingot");
-      this.icon[17] = ir.registerIcon("thaumcraft:voidseed");
-      this.icon[18] = ir.registerIcon("thaumcraft:coin");
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIconFromDamage(int par1) {
-      return this.icon[par1];
-   }
-
-   @SideOnly(Side.CLIENT)
-   public int getRenderPasses(int metadata) {
-      return metadata == 13 ? 2 : 1;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(ItemStack stack, int pass) {
-      return pass != 0 && this.getEssentiaOwning(stack) != null ? this.iconOverlay : this.getIconFromDamage(stack.getItemDamage());
-   }
-
-   @SideOnly(Side.CLIENT)
-   public int getColorFromItemStack(ItemStack stack, int par2) {
-      return par2 == 1 && stack.getItemDamage() == 13 && this.getEssentiaOwning(stack) != null ? this.getEssentiaOwning(stack).getAspects()[0].getColor() : 16777215;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public boolean requiresMultipleRenderPasses() {
-      return true;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      for(int a = 0; a <= 18; ++a) {
-         if (a != 5) {
-            par3List.add(new ItemStack(this, 1, a));
-         }
-      }
-
-   }
-
-   public String getUnlocalizedName(ItemStack par1ItemStack) {
-      return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
-   }
-
-   public void onUpdate(ItemStack stack, Level world, Entity entity, int par4, boolean par5) {
-      super.onUpdate(stack, world, entity, par4, par5);
-      if (Platform.getEnvironment() != Env.CLIENT
-              && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
-              && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()
-              && !((EntityLivingBase)entity).isPotionActive(ThaumcraftEffects.FLUX_TAINT) && world.getRandom().nextInt(4321) <= stack.stackSize) {
-         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 120, 0, false));
-         if (entity instanceof Player) {
-            String s = Component.translatable("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
-            ((Player)entity).addChatMessage(new ChatComponentTranslation(s));
-            InventoryUtils.consumeInventoryItem((Player)entity, stack.getItem(), stack.getItemDamage());
-         }
-      } else if (Platform.getEnvironment() != Env.CLIENT
-              && stack.getItemDamage() == 15) {
-         int r = world.getRandom().nextInt(20000);
-         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("blurb")) {
-            stack.stackTagCompound.removeTag("blurb");
-         }
-
-         if (r < 20) {
-            Aspect aspect = switch (world.getRandom()
-                    .nextInt(6)) {
-                case 0 -> Aspects.AIR;
-                case 1 -> Aspects.EARTH;
-                case 2 -> Aspects.FIRE;
-                case 3 -> Aspects.WATER;
-                case 4 -> Aspects.ORDER;
-                case 5 -> Aspects.ENTROPY;
-                default -> null;
-            };
-
-             if (aspect != null) {
-               EntityAspectOrb orb = new EntityAspectOrb(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
-               world.addFreshEntity(orb);
-            }
-         } else if (r == 42
-                 && entity instanceof ServerPlayer player
-                 && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "FOCUSPRIMAL")
-                 && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "@FOCUSPRIMAL")
-         ) {
-            player.sendSystemMessage(
-                    Component.literal("§5§o" + Component.translatable("tc.primalcharm.trigger")));
-            new PacketResearchCompleteS2C("@FOCUSPRIMAL").sendTo(player);
-            Thaumcraft.researchManager.completeResearch(player, "@FOCUSPRIMAL");
-         }
-      }
-
-   }
+//   public String getUnlocalizedName(ItemStack par1ItemStack) {
+//      return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
+//   }
+//
+//   public void onUpdate(ItemStack stack, Level world, Entity entity, int par4, boolean par5) {
+//      super.onUpdate(stack, world, entity, par4, par5);
+//      if (Platform.getEnvironment() != Env.CLIENT
+//              && (stack.getItemDamage() == 11 || stack.getItemDamage() == 12)
+//              && entity instanceof EntityLivingBase && !((EntityLivingBase)entity).isEntityUndead()
+//              && !((EntityLivingBase)entity).isPotionActive(ThaumcraftEffects.FLUX_TAINT) && world.getRandom().nextInt(4321) <= stack.stackSize) {
+//         ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ThaumcraftEffects.FLUX_TAINT, 120, 0, false));
+//         if (entity instanceof Player) {
+//            String s = Component.translatable("tc.taint_item_poison").replace("%s", "§5§o" + stack.getDisplayName() + "§r");
+//            ((Player)entity).addChatMessage(new ChatComponentTranslation(s));
+//            InventoryUtils.consumeInventoryItem((Player)entity, stack.getItem(), stack.getItemDamage());
+//         }
+//      } else if (Platform.getEnvironment() != Env.CLIENT
+//              && stack.getItemDamage() == 15) {
+//         int r = world.getRandom().nextInt(20000);
+//         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("blurb")) {
+//            stack.stackTagCompound.removeTag("blurb");
+//         }
+//
+//         if (r < 20) {
+//            Aspect aspect = switch (world.getRandom()
+//                    .nextInt(6)) {
+//                case 0 -> Aspects.AIR;
+//                case 1 -> Aspects.EARTH;
+//                case 2 -> Aspects.FIRE;
+//                case 3 -> Aspects.WATER;
+//                case 4 -> Aspects.ORDER;
+//                case 5 -> Aspects.ENTROPY;
+//                default -> null;
+//            };
+//
+//             if (aspect != null) {
+//               EntityAspectOrb orb = new EntityAspectOrb(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
+//               world.addFreshEntity(orb);
+//            }
+//         } else if (r == 42
+//                 && entity instanceof ServerPlayer player
+//                 && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "FOCUSPRIMAL")
+//                 && !ResearchManager.isResearchComplete(player.getGameProfile().getName(), "@FOCUSPRIMAL")
+//         ) {
+//            player.sendSystemMessage(
+//                    Component.literal("§5§o" + Component.translatable("tc.primalcharm.trigger")));
+//            new PacketResearchCompleteS2C("@FOCUSPRIMAL").sendTo(player);
+//            Thaumcraft.researchManager.completeResearch(player, "@FOCUSPRIMAL");
+//         }
+//      }
+//
+//   }
 
 //   public boolean onItemUse(ItemStack itemstack, Player player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
 //      if (itemstack.getItemDamage() != 1) {
@@ -269,10 +235,10 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 //      return itemstack;
 //   }
 
-   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      AspectList<Aspect>aspects = this.getEssentiaOwning(stack);
-      addAspectDescriptionToList(aspects,player,list);
-
+//   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
+//      AspectList<Aspect>aspects = this.getEssentiaOwning(stack);
+//      addAspectDescriptionToList(aspects,player,list);
+//
 //      if (stack.getItemDamage() == 15) {
 //         Random rand = new Random(stack.hashCode() + player.ticksExisted / 120);
 //         int r = rand.nextInt(200);
@@ -280,29 +246,29 @@ public class ItemResource extends Item implements IEssentiaContainerItem {
 //            list.add("§6" + Component.translatable("tc.primalcharm." + rand.nextInt(5)));
 //         }
 //      }
-
-      super.addInformation(stack, player, list, par4);
-   }
-
-   public AspectList<Aspect> getEssentiaOwning(ItemStack itemstack) {
-      if (itemstack.hasTagCompound()) {
-         AspectList<Aspect>aspects = new LinkedHashAspectList<>();
-         aspects.readFromNBT(itemstack.getTagCompound());
-         return aspects.size() > 0 ? aspects : null;
-      } else {
-         return null;
-      }
-   }
-
-   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
-      if (!itemstack.hasTagCompound()) {
-         itemstack.setTagCompound(new NBTTagCompound());
-      }
-
-      aspects.writeToNBT(itemstack.getTagCompound());
-   }
-
-   public int getItemStackLimit(ItemStack stack) {
-      return stack.getItemDamage() == 15 ? 1 : super.getItemStackLimit(stack);
-   }
+//
+//      super.addInformation(stack, player, list, par4);
+//   }
+//
+//   public AspectList<Aspect> getEssentiaOwning(ItemStack itemstack) {
+//      if (itemstack.hasTagCompound()) {
+//         AspectList<Aspect>aspects = new LinkedHashAspectList<>();
+//         aspects.readFromNBT(itemstack.getTagCompound());
+//         return aspects.size() > 0 ? aspects : null;
+//      } else {
+//         return null;
+//      }
+//   }
+//
+//   public void setAspects(ItemStack itemstack, AspectList<Aspect>aspects) {
+//      if (!itemstack.hasTagCompound()) {
+//         itemstack.setTagCompound(new NBTTagCompound());
+//      }
+//
+//      aspects.writeToNBT(itemstack.getTagCompound());
+//   }
+//
+//   public int getItemStackLimit(ItemStack stack) {
+//      return stack.getItemDamage() == 15 ? 1 : super.getItemStackLimit(stack);
+//   }
 }

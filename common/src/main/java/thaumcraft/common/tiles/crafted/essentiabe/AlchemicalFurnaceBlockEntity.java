@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,6 +31,7 @@ import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 
 import static com.linearity.opentc4.Consts.AlchemicalFurnaceBlockEntityTagAccessors.*;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsClient;
 import static thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter.getBasicAspectsServer;
 
@@ -109,7 +111,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                 AspectList<Aspect> exlude = new LinkedHashAspectList<>();
                 for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
-                    var tile = this.level.getBlockEntity(probablyAlembicPos);
+                    var tile = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, probablyAlembicPos);
                     if (!(tile instanceof IAlembic alembic)) {
                         break;
                     }
@@ -129,7 +131,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                 }
                 for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
-                    var tile = this.level.getBlockEntity(probablyAlembicPos);
+                    var tile = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, probablyAlembicPos);
                     if (!(tile instanceof IAlembic alembic)) {
                         break;
                     }

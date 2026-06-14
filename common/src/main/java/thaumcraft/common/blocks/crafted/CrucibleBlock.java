@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -25,6 +26,8 @@ import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.AbstractLiquidFillInBlock;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class CrucibleBlock
         extends AbstractLiquidFillInBlock
@@ -80,7 +83,7 @@ public class CrucibleBlock
     @Override
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         super.entityInside(blockState, level, blockPos, entity);
-        if (!level.isClientSide && level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible) {
+        if (!level.isClientSide && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof CrucibleBlockEntity crucible) {
             crucible.entityInside(entity);
         }
     }
@@ -97,7 +100,7 @@ public class CrucibleBlock
         }
         var level = useOnContext.getLevel();
         var pos = useOnContext.getClickedPos();
-        if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof CrucibleBlockEntity crucible) {
             crucible.spillRemnants();
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
@@ -106,7 +109,7 @@ public class CrucibleBlock
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
         if (randomSource.nextInt(10) == 0) {
-            if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof CrucibleBlockEntity crucible
                     && crucible.getFluidAmount() > 0
                     && crucible.boiled()) {
                 level.playSound(
@@ -142,7 +145,7 @@ public class CrucibleBlock
                             blockPos.getZ()
                     );
 
-                    if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucible) {
+                    if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof CrucibleBlockEntity crucible) {
                         for(int q = 0; q < 10; ++q) {
                             ClientFXUtils.crucibleBoil(clientLevel,
                                     blockPos.getX(),
@@ -163,7 +166,7 @@ public class CrucibleBlock
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!level.isClientSide) {
-            if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof CrucibleBlockEntity crucible) {
                 crucible.spillRemnants();
             }
         }

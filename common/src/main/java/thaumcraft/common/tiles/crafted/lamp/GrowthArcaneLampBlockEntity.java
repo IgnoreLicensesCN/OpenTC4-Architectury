@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +14,7 @@ import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.GrowthArcaneLampTagAccessors.CHARGE;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.lamp.growth.apply.GrowthLampAffectManager.affectPlant;
 import static thaumcraft.api.listeners.lamp.growth.check.GrowthLampAffectiveManager.isAffectivePlant;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
@@ -93,7 +95,7 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
         }
         var facing = getFacing();
         var facingOpposite = facing.getOpposite();
-        if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
             return outBE.takeEssentiaWithSuction(
                     getSuctionAmount(facingOpposite),
                     Aspects.PLANT,

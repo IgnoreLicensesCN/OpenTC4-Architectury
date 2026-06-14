@@ -173,6 +173,14 @@ block_with_item_names = [
     ['item.ItemNuggetPork.name','pork_nugget'],
     ['item.ItemNuggetFish.name','cod_nugget'],
     ['item.TripleMeatTreat.name','triple_meat'],
+    ['item.HandMirror.name','hand_mirror'],
+    ['item.ItemNugget.16.name','iron_cluster'],
+    ['item.ItemNugget.17.name','copper_cluster'],
+    ['item.ItemNugget.18.name','tin_cluster'],
+    ['item.ItemNugget.19.name','silver_cluster'],
+    ['item.ItemNugget.20.name','lead_cluster'],
+    ['item.ItemNugget.21.name','cinnabar_cluster'],
+    ['item.ItemNugget.31.name','gold_cluster'],
 
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],

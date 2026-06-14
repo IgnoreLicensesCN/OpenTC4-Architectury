@@ -1,5 +1,6 @@
 package thaumcraft.common.items.misc;
 
+@Deprecated(forRemoval = true)
 public class ItemTripleMeatTreat /*extends ItemFood*/ {
 //   public IIcon icon;
 //

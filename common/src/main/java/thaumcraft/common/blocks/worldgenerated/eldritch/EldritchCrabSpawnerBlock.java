@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.worldgenerated.eldritch;
 
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -23,6 +24,8 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.eldritch.EldritchCrabSpawnerBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 //TODO:Render(facing model)
 public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements EntityBlock {
@@ -94,7 +97,7 @@ public class EldritchCrabSpawnerBlock extends DropExperienceBlock implements Ent
     @Override
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
         if (i == 1 && level.isClientSide()) {
-            var bEntity = level.getBlockEntity(blockPos);
+            var bEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
             if (bEntity instanceof EldritchCrabSpawnerBlockEntity crabSpawner) {
                 crabSpawner.venting = 20;
                 return true;
