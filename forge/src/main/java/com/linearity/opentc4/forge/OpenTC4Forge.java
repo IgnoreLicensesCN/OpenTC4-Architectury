@@ -2,29 +2,12 @@ package com.linearity.opentc4.forge;
 
 import com.linearity.opentc4.OpenTC4;
 import dev.architectury.platform.forge.EventBuses;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
-import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -45,7 +28,6 @@ public final class OpenTC4Forge {
         // Run our common setup.
         OpenTC4.init(platformUniqueUtilsForge);
         OpenTC4.onInitialize();
-        //TODO:Baubles
     }
 
     @SubscribeEvent
@@ -65,12 +47,12 @@ public final class OpenTC4Forge {
         ;
     }
     @SubscribeEvent
-    public static void onServerStarting(FMLCommonSetupEvent event) {
-        OpenTC4.onServerStarting();
+    public static void onCommonSetup(FMLCommonSetupEvent event) {
+        OpenTC4.onCommonSetup();
     }
     @SubscribeEvent
-    public static void onClientStarting(FMLClientSetupEvent event) {
-        OpenTC4.onClientStarting();
+    public static void onSetupClient(FMLClientSetupEvent event) {
+        OpenTC4.onInitializeClient();
     }
 //    @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 //    public static class ForgeCapabilityEvents {

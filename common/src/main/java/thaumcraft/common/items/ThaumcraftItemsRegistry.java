@@ -3,6 +3,9 @@ package thaumcraft.common.items;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -1027,4 +1030,25 @@ public class ThaumcraftItemsRegistry {
             "compass_stone",
             CompassStoneItem::new
     );
+    public static final RegistrySupplier<Item> SUPPLIER_CHICKEN_NUGGET = ITEMS.register(
+            "chicken_nugget",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.3F).fast().build()))
+    );
+    public static final RegistrySupplier<Item> SUPPLIER_BEEF_NUGGET = ITEMS.register(
+            "beef_nugget",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.3F).fast().build()))
+    );
+    public static final RegistrySupplier<Item> SUPPLIER_PORK_NUGGET = ITEMS.register(
+            "pork_nugget",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.3F).fast().build()))
+    );
+    public static final RegistrySupplier<Item> SUPPLIER_COD_NUGGET = ITEMS.register(
+            "cod_nugget",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.3F).fast().build()))
+    );
+    public static final RegistrySupplier<Item> SUPPLIER_TRIPLE_MEAT = ITEMS.register(
+            "triple_meat",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).effect(new MobEffectInstance(MobEffects.REGENERATION,5,0),0.66F).build()))
+    );
+
 }

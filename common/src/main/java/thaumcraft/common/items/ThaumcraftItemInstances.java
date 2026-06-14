@@ -1081,4 +1081,20 @@ public class ThaumcraftItemInstances {
     public static CompassStoneItem COMPASS_STONE() {
         return ThaumcraftItemsRegistry.SUPPLIER_COMPASS_STONE.get();
     }
+    public static Item CHICKEN_NUGGET(){
+        return ThaumcraftItemsRegistry.SUPPLIER_CHICKEN_NUGGET.get();
+    }
+    public static Item BEEF_NUGGET(){
+        return ThaumcraftItemsRegistry.SUPPLIER_BEEF_NUGGET.get();
+    }
+    public static Item PORK_NUGGET(){
+        return ThaumcraftItemsRegistry.SUPPLIER_PORK_NUGGET.get();
+    }
+    public static Item COD_NUGGET(){
+        return ThaumcraftItemsRegistry.SUPPLIER_COD_NUGGET.get();
+    }
+    public static Item TRIPLE_MEAT(){
+        return ThaumcraftItemsRegistry.SUPPLIER_TRIPLE_MEAT.get();
+    }
+
 }

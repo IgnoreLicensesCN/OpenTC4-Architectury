@@ -166,7 +166,12 @@ block_with_item_names = [
     ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
     ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
     ['item.ItemEssence.1.name','essentia_phial'],
-    ['item.ItemCompassStone.name','compass_stone']
+    ['item.ItemCompassStone.name','compass_stone'],
+    ['item.ItemNuggetChicken.name','chicken_nugget'],
+    ['item.ItemNuggetBeef.name','beef_nugget'],
+    ['item.ItemNuggetPork.name','pork_nugget'],
+    ['item.ItemNuggetFish.name','cod_nugget'],
+    ['item.TripleMeatTreat.name','triple_meat'],
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

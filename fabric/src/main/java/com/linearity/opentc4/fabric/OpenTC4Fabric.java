@@ -7,8 +7,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 public final class OpenTC4Fabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        OpenTC4.onInitialize();
         PlatformUniqueUtilsFabric platformUniqueUtilsFabric = new PlatformUniqueUtilsFabric();
+        OpenTC4.onInitialize();
+        OpenTC4.onCommonSetup();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> platformUniqueUtilsFabric.server = server);
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((minecraftServer, closeableResourceManager, b) -> {
             OpenTC4.onDatapackReload();
@@ -19,6 +20,5 @@ public final class OpenTC4Fabric implements ModInitializer {
 
         // Run our common setup.
         OpenTC4.init(platformUniqueUtilsFabric);
-        //TODO:Baubles
     }
 }

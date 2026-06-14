@@ -51,6 +51,23 @@ public final class OpenTC4 {
     }
 
     public static void onInitialize() {
+
+
+        platformUtils.init();
+    }
+    public static void onInitializeClient() {
+
+        Particles.init();
+        OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
+        RenderUtils.init();
+        ThaumcraftBlockAndItemColors.init();
+        ThaumcraftRenderers.init();
+        ComponentRendering.init();
+
+    }
+
+    public static void onCommonSetup(){
+
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
 
         ThaumcraftRunicShieldTypes.init();
@@ -74,26 +91,9 @@ public final class OpenTC4 {
         EventListeners.init();
         ThaumcraftItemAspects.init();
         EntityBasicAspectGetters.init();
-
-
-        platformUtils.init();
-
-    }
-    public static void onInitializeClient() {
-
-        Particles.init();
-        OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
-        RenderUtils.init();
-        ThaumcraftBlockAndItemColors.init();
-        ThaumcraftRenderers.init();
-        ComponentRendering.init();
-
     }
 
-    public static void onServerStarting(){
-    }
-
-    public static void onClientStarting() {
+    public static void onClientStarted() {
     }
 
     public static void onDatapackReload(){
