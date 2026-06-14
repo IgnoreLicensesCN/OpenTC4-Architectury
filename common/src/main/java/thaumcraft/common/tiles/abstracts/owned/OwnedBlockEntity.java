@@ -1,6 +1,7 @@
-package thaumcraft.common.tiles.crafted;
+package thaumcraft.common.tiles.abstracts.owned;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.OwnedBlockEntityTagAccessors.OWNERS_ACCESSOR;
 
-public class OwnedBlockEntity extends TileThaumcraft {
+public class OwnedBlockEntity extends TileThaumcraft implements IOwnedBlockEntity {
     public OwnedBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -33,6 +34,7 @@ public class OwnedBlockEntity extends TileThaumcraft {
         OWNERS_ACCESSOR.writeToCompoundTag(compoundTag, owners);
     }
 
+    @Override
     public boolean playerOwnThis(Player player){
         if (player == null) {
             return false;
@@ -48,6 +50,7 @@ public class OwnedBlockEntity extends TileThaumcraft {
         return owners.contains(player.getUUID().toString());
     }
 
+    @Override
     public void addOwner(Player player){
         owners.add(player.getUUID().toString());
     }

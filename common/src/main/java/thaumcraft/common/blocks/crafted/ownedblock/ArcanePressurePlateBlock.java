@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -24,12 +25,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.wands.IWandInteractableOwnedBlock;
-import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
+import thaumcraft.common.tiles.abstracts.owned.KeyableOwnedBlockEntity;
+import thaumcraft.common.tiles.abstracts.owned.OwnedBlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 
 public class ArcanePressurePlateBlock extends PressurePlateBlock
@@ -131,5 +132,10 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
         setPlacedOwnedBlockBy(level, blockPos, blockState, livingEntity, itemStack);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new KeyableOwnedBlockEntity(blockPos, blockState);
     }
 }

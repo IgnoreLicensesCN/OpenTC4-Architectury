@@ -20,13 +20,12 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.Modi
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
-
-import java.util.List;
 
 public class Consts {
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
@@ -145,10 +144,12 @@ public class Consts {
     }
 
     public static class OwnedBlockEntityTagAccessors {
-        private static final String OWNERS = "owners";
-        public static final ModifiableStringSetTagAccessor OWNERS_ACCESSOR = new ModifiableStringSetTagAccessor(OWNERS);
+        public static final ModifiableStringSetTagAccessor OWNERS_ACCESSOR = new ModifiableStringSetTagAccessor("owners");
     }
 
+    public static class ArcaneDoorBlockEntityTagAccessors {
+        public static final ModifiableStringSetTagAccessor USERS = new ModifiableStringSetTagAccessor("users");
+    }
     public static class InfernalFurnaceBlockEntityTagAccessors {
         private static final String PROCESSED_TICKS = "processed_ticks";
         public static final IntTagAccessor PROCESSED_TICKS_ACCESSOR = new IntTagAccessor(PROCESSED_TICKS);
@@ -334,5 +335,9 @@ public class Consts {
     public static class ThaumiumFortressHelmetItemTagAccessors {
         public static final ItemStackTagAccessor GOGGLES = new ItemStackTagAccessor("goggles");
         public static final ItemStackTagAccessor MASK = new ItemStackTagAccessor("mask");
+    }
+    public static class KeyTagAccessors {
+        public static final StringTagAccessor KEY_TYPE = new StringTagAccessor("key_type");
+        public static final BlockPosAccessor KEY_POS = new BlockPosAccessor("key_pos");
     }
 }

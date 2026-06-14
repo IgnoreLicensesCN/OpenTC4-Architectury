@@ -259,23 +259,6 @@ public class InventoryUtils {
       return -1;
    }
 
-   public static final int OFFHAND_INDEX = Integer.MAX_VALUE;
-   public static int isWandInHotbarOrOffhandWithRoom(Aspect aspect, int amount, Player player) {
-      // 先复用热键检查
-      int hotbarIndex = isWandInHotbarWithRoom(aspect, amount, player);
-      if (hotbarIndex != -1) return hotbarIndex;
-
-      // 检查副手
-      ItemStack offhand = player.getInventory().offhand.get(0);
-      if (!offhand.isEmpty() && offhand.getItem() instanceof WandCastingItem wand) {
-         if (wand.addCentiVis(offhand, aspect, amount, false) < amount) {
-            return OFFHAND_INDEX; // 自定义副手返回值
-         }
-      }
-
-      return -1;
-   }
-
    public static int isPlayerCarrying(Player player, ItemStack stack) {
       // 遍历主背包
       for (int i = 0; i < player.getInventory().items.size(); i++) {

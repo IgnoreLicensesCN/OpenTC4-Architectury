@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
+import thaumcraft.common.tiles.abstracts.owned.OwnedBlockEntity;
 
 import static com.linearity.opentc4.Consts.WardedBlockTagAccessors.STORING_BLOCK_STATE;
 

@@ -6,6 +6,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.tiles.abstracts.owned.KeyableOwnedBlockEntity;
+import thaumcraft.common.tiles.abstracts.owned.OwnedBlockEntity;
 import thaumcraft.common.tiles.crafted.*;
 import thaumcraft.common.tiles.crafted.essentiabe.*;
 import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.*;
@@ -270,6 +272,9 @@ public class ThaumcraftBlockEntities {
         public static BlockEntityType<FluxScrubberBlockEntity> FLUX_SCRUBBER() {
             return Registry.SUPPLIER_FLUX_SCRUBBER.get();
         }
+        public static BlockEntityType<KeyableOwnedBlockEntity> KEYABLE_OWNED() {
+            return Registry.SUPPLIER_KEYABLE_OWNED.get();
+        }
     }
 
     public static class Registry{
@@ -306,9 +311,7 @@ public class ThaumcraftBlockEntities {
                 "owned",
                 () -> BlockEntityType.Builder.of(
                         OwnedBlockEntity::new,
-                        ThaumcraftBlocks.ThaumcraftBlockInstances.WARDED_GLASS(),
-                        ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_DOOR(),
-                        ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_PRESSURE_PLATE()
+                        ThaumcraftBlocks.ThaumcraftBlockInstances.WARDED_GLASS()
                 ).build(null)
         );
 
@@ -705,6 +708,15 @@ public class ThaumcraftBlockEntities {
                         () -> BlockEntityType.Builder.of(
                                 FluxScrubberBlockEntity::new,
                                 ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_SCRUBBER()
+                        ).build(null)
+                );
+        public static final RegistrySupplier<BlockEntityType<KeyableOwnedBlockEntity>> SUPPLIER_KEYABLE_OWNED =
+                BLOCK_ENTITIES.register(
+                        "keyable_owned",
+                        () -> BlockEntityType.Builder.of(
+                                KeyableOwnedBlockEntity::new,
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_DOOR(),
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_PRESSURE_PLATE()
                         ).build(null)
                 );
 

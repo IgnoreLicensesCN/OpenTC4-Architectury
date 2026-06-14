@@ -40,6 +40,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_WAND_FAIL = new ResourceLocation(Thaumcraft.MOD_ID,"wandfail");
         public static final ResourceLocation RES_SWING = new ResourceLocation(Thaumcraft.MOD_ID,"swing");
         public static final ResourceLocation RES_WIND = new ResourceLocation(Thaumcraft.MOD_ID,"wind");
+        public static final ResourceLocation RES_KEY = new ResourceLocation(Thaumcraft.MOD_ID,"key");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -77,4 +78,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent WAND_FAIL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WAND_FAIL);
     public static final SoundEvent SWING = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWING);
     public static final SoundEvent WIND = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WIND);
+    public static final SoundEvent KEY = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_KEY);
 }

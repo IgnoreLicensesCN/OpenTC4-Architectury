@@ -1,32 +1,5 @@
 package thaumcraft.common.lib.events;
 
-import com.google.common.collect.MapMaker;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.EntityMob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import thaumcraft.common.runicshield.IRunicShieldProviderItem;
-import thaumcraft.api.entities.IEldritchMob;
-import thaumcraft.common.entities.monster.mods.ChampionModifier;
-import thaumcraft.common.items.equipment.armor.ItemFortressArmor;
-import thaumcraft.common.lib.network.PacketHandler;
-import thaumcraft.common.lib.network.fx.PacketFXShieldS2C;
-import thaumcraft.common.lib.network.playerdata.PacketRunicCharge;
-import thaumcraft.common.lib.utils.EntityUtils;
-
-import java.util.Map;
-
-import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
-
 //TODO
 @Deprecated(forRemoval = true)
 public class EventHandlerRunic {
@@ -266,7 +239,14 @@ public class EventHandlerRunic {
          }
       }
 
-      if (event.ammount > 0.0F && event.source.getSourceOfDamage() != null && event.entity instanceof LivingEntity && event.source.getSourceOfDamage() instanceof EntityMob && ((EntityMob)event.source.getSourceOfDamage()).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F) {
+      if (event.ammount > 0.0F
+              && event.source.getSourceOfDamage() != null
+              && event.entity instanceof LivingEntity
+              && event.source.getSourceOfDamage() instanceof EntityMob
+              && ((EntityMob)event.source.getSourceOfDamage())
+              .getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD())
+              .getAttributeValue() >= (double)0.0F
+      ) {
          EntityMob mob = (EntityMob)event.source.getSourceOfDamage();
          int t = (int)mob.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
          if (ChampionModifier.mods[t].type == 1) {

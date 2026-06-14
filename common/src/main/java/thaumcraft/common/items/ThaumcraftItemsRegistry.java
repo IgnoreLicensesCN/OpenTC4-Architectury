@@ -1051,6 +1051,18 @@ public class ThaumcraftItemsRegistry {
             "sanity_checker",
             SanityCheckerItem::new
     );
+    public static final RegistrySupplier<SanitySoapItem> SUPPLIER_SANITY_SOAP = ITEMS.register(
+            "sanity_soap",
+            SanitySoapItem::new
+    );
+    public static final RegistrySupplier<IronKeyItem> SUPPLIER_IRON_KEY = ITEMS.register(
+            "iron_key",
+            IronKeyItem::new
+    );
+    public static final RegistrySupplier<GoldKeyItem> SUPPLIER_GOLD_KEY = ITEMS.register(
+            "gold_key",
+            GoldKeyItem::new
+    );
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){

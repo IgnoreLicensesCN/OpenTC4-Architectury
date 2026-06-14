@@ -184,6 +184,9 @@ block_with_item_names = [
     ['tile.blockCosmeticSolid.9.name','golem_fetter'],
     ['tile.blockCosmeticSolid.13.name','ancient_stone'],
     ['item.ItemSanityChecker.name','sanity_checker'],
+    ['item.ItemSanitySoap.name','sanity_soap'],
+    ['item.ArcaneDoorKey.0.name','iron_key'],
+    ['item.ArcaneDoorKey.1.name','gold_key'],
 
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],

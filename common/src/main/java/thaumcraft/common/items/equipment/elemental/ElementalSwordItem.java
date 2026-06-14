@@ -69,7 +69,7 @@ public class ElementalSwordItem extends SwordItem {
 
     @Override
     public int getUseDuration(ItemStack itemStack) {
-        return Integer.MAX_VALUE;
+        return 72000;
     }
 
     @Override

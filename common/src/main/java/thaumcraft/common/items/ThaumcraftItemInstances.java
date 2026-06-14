@@ -31,8 +31,7 @@ import thaumcraft.common.items.jars.VoidJarBlockItem;
 import thaumcraft.common.items.mateiral.DegradableTaintedMaterialItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
-import thaumcraft.common.items.misc.CompassStoneItem;
-import thaumcraft.common.items.misc.SanityCheckerItem;
+import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.HandMirrorItem;
@@ -1079,6 +1078,15 @@ public class ThaumcraftItemInstances {
     }
     public static SippingFiendMaskItem SIPPING_FIEND_MASK() {
         return ThaumcraftItemsRegistry.SUPPLIER_SIPPING_FIEND_MASK.get();
+    }
+    public static SanitySoapItem SANITY_SOAP() {
+        return ThaumcraftItemsRegistry.SUPPLIER_SANITY_SOAP.get();
+    }
+    public static IronKeyItem IRON_KEY() {
+        return ThaumcraftItemsRegistry.SUPPLIER_IRON_KEY.get();
+    }
+    public static GoldKeyItem GOLD_KEY() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLD_KEY.get();
     }
     public static EssentiaPhialItem ESSENTIA_PHIAL() {
         return ThaumcraftItemsRegistry.SUPPLIER_ESSENTIA_PHIAL.get();

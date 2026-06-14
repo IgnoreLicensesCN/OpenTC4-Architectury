@@ -152,6 +152,6 @@ public class ThaumometerItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return Integer.MAX_VALUE;
+        return 72000;
     }
 }

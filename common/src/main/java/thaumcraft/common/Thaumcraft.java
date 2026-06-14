@@ -22,7 +22,6 @@ public class Thaumcraft {
     public static final String MOD_ID = "thaumcraft";
 
     public static final Thaumcraft instance = new Thaumcraft();
-    public static ResearchManager researchManager;
     public static ThaumcraftWorldGenerator worldGen;
     public EventHandlerRunic runicEventHandler;
 
@@ -48,24 +47,6 @@ public class Thaumcraft {
                         new PacketChangeWarpS2C((byte)0, amount).sendTo(player);
                     }
 
-                    playerKnowledge.setWarpCounter(player, playerKnowledge.getWarpTotal(player));
-                }
-            }
-        }
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void addStickyWarpToPlayer(Player _player, int amount) {
-//        if (_player instanceof FakeThaumcraftPlayer) {
-//            return;
-//        }
-        if (!(_player instanceof ServerPlayer player)) {return;}
-        if (playerKnowledge != null) {
-            if (amount != 0) {
-                if (amount >= 0 || playerKnowledge.getWarpSticky(player) > 0) {
-                    playerKnowledge.addWarpSticky(player, amount);
-                    new PacketSyncWarpS2C(player, (byte)1).sendTo(player);
-                    new PacketChangeWarpS2C((byte)1, amount).sendTo(player);
                     playerKnowledge.setWarpCounter(player, playerKnowledge.getWarpTotal(player));
                 }
             }
