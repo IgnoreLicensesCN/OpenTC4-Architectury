@@ -3,13 +3,18 @@ package thaumcraft.common.items;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
@@ -47,6 +52,12 @@ import thaumcraft.common.items.wands.wandcaps.*;
 import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
 import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
+
+import java.util.*;
+
+import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.RecipeManagerModifier.addRecipesServer;
+import static thaumcraft.common.items.ThaumcraftItems.ItemTags.CINNABAR_ORES;
 
 public class ThaumcraftItemsRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.ITEM);
@@ -1050,4 +1061,70 @@ public class ThaumcraftItemsRegistry {
             "triple_meat",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).effect(new MobEffectInstance(MobEffects.REGENERATION,5,0),0.66F).build()))
     );
+    public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
+    public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
+        public void registerToClusterItems(DeferredRegister<Item> items){
+            var supplier = items.register(
+                    orePrefix + "_cluster",
+                    () -> new ClusterItem(tagsToRegister, burnIntoTag)
+            );
+            for (var tag : tagsToRegister){
+                CLUSTER_ITEMS.put(tag,supplier);
+            }
+        }
+    }
+    static {
+        for (String prefix : new String[]{//TODO:[maybe wont finished]More of ore tags
+                "iron","gold","copper","silver","osmium","tin","uranium"
+        }) {
+            new ClusterRegistrationArgs(
+                    prefix,
+                    Set.of(
+                            TagKey.create(Registries.ITEM, new ResourceLocation("c", "raw_"+prefix+"_ores")),
+                            TagKey.create(Registries.ITEM, new ResourceLocation("forge", "raw_materials/"+prefix))
+                    ),
+                    TagKey.create(Registries.ITEM, new ResourceLocation("c", prefix+"_ingots"))
+            ).registerToClusterItems(ITEMS);
+        }
+        var cinnabarRegistrySupplier = ITEMS.register(
+
+                "cinnabar_cluster",
+                () -> new ClusterItem(Set.of(
+                        CINNABAR_ORES
+                ), () -> new ItemStack(SUPPLIER_CINNABAR_ORE.get()))
+        );
+        CLUSTER_ITEMS.put(CINNABAR_ORES,cinnabarRegistrySupplier);
+    }
+    public static void onDatapackReloaded(){
+        CLUSTER_ITEMS.values().forEach(supplier -> supplier.get().registerDowsing());
+        Collection<Recipe<?>> recipesToAdd = new ArrayList<>();
+        for (var clusterSupplier : CLUSTER_ITEMS.values()){
+            var clusterItem = clusterSupplier.get();
+            var clusterResult = clusterItem.willBurnInto.get();
+            if (!clusterResult.isEmpty()){
+                Set<Item> itemsForTags = new HashSet<>();
+                clusterItem.forTags.forEach(
+                        tag -> itemsForTags.addAll(platformUtils.getItemsFromTag(tag))
+                );
+
+                recipesToAdd.add(new SmeltingRecipe(
+                        new ResourceLocation(Thaumcraft.MOD_ID,clusterItem.arch$registryName().getPath() + "_smelting"),
+                        "thaumcraft_ore_clusters",
+                        CookingBookCategory.BLOCKS,
+                        Ingredient.of(itemsForTags.toArray(new Item[0])),
+                        clusterResult,
+                        1.4F,200
+                        ));
+                recipesToAdd.add(new BlastingRecipe(
+                        new ResourceLocation(Thaumcraft.MOD_ID,clusterItem.arch$registryName().getPath() + "_smelting_blast"),
+                        "thaumcraft_ore_clusters_blast",
+                        CookingBookCategory.BLOCKS,
+                        Ingredient.of(itemsForTags.toArray(new Item[0])),
+                        clusterResult,
+                        1.4F,100
+                ));
+            }
+        }
+        addRecipesServer(recipesToAdd);
+    }
 }

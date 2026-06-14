@@ -19,6 +19,7 @@ import thaumcraft.common.aspects.ThaumcraftItemAspects;
 import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
+import thaumcraft.common.items.ThaumcraftItemsRegistry;
 import thaumcraft.common.lib.world.HolderCache;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.menu.ThaumcraftGUI;
@@ -105,6 +106,7 @@ public final class OpenTC4 {
         //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
         //but i wont provide a Json2ResearchItem parser,you have to make it yourself
         ThaumcraftResearches.onDatapackReloaded();
+        ThaumcraftItemsRegistry.onDatapackReloaded();
         //TODO:Recipes init here
     }
 }

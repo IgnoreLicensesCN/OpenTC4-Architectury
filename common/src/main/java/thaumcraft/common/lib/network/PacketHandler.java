@@ -44,6 +44,8 @@ public class PacketHandler {
         PacketUpdateRunicChargeS2C.messageType = INSTANCE.registerS2C(PacketUpdateRunicChargeS2C.ID, PacketUpdateRunicChargeS2C::decode);
         PacketUpdateRunicCapacityS2C.messageType = INSTANCE.registerS2C(PacketUpdateRunicCapacityS2C.ID, PacketUpdateRunicCapacityS2C::decode);
 
+        PacketAddRecipesS2C.messageType = INSTANCE.registerS2C(PacketAddRecipesS2C.ID,PacketAddRecipesS2C::read);
+
         PacketResearchCompleteS2C.messageType = INSTANCE.registerS2C(PacketResearchCompleteS2C.ID, PacketResearchCompleteS2C::decode);
         PacketClueCompleteS2C.messageType = INSTANCE.registerS2C(PacketClueCompleteS2C.ID, PacketClueCompleteS2C::decode);
         PacketPlayerCreateResearchNoteC2S.messageType = INSTANCE.registerC2S(PacketPlayerCreateResearchNoteC2S.ID,PacketPlayerCreateResearchNoteC2S::decode);

@@ -36,6 +36,9 @@
     {
       "id": "#c:quartz_ores",
       "required": false
+    },{
+      "id": "#c:cinnabar_ores",
+      "required": false
     }
   ]
 }

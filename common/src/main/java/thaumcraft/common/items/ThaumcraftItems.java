@@ -50,6 +50,9 @@ public class ThaumcraftItems {
         public static final TagKey<Item> RECHARGE_PEDESTAL_CANNOT_APPLY = TagKey.create(
                 Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "recharge_pedestal_cannot_apply")
         );
+        public static final TagKey<Item> CINNABAR_ORES = TagKey.create(Registries.ITEM,
+                new ResourceLocation("c", "cinnabar_ores")
+        );
     }
 
     public static class BannerPatternTags {

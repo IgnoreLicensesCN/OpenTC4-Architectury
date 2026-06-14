@@ -46,6 +46,7 @@
     "NoteBlockMixin",
     "PlayerListMixin",
     "PlayerMixin",
+    "RecipeManagerMixin",
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerGameModeMixin",

@@ -177,10 +177,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
         List<Item> items = new ArrayList<>();
         Registry<Item> itemRegistry = registryAccess.registryOrThrow(Registries.ITEM);
         Optional<HolderSet.Named<Item>> optHolders = itemRegistry.getTag(tagKey);
-        if (optHolders.isPresent()) {
-            HolderSet.Named<Item> holders = optHolders.get();
-            holders.stream().forEach(holder -> items.add(holder.value()));
-        }
+        optHolders.ifPresent(holders -> holders.stream().forEach(holder -> items.add(holder.value())));
 
         return items;
     }

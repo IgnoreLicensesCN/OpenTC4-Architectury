@@ -1,7 +1,7 @@
 package thaumcraft.common.items.misc;
 
 @Deprecated(forRemoval = true)
-public class ItemNuggetEdible extends ItemFood {
+public class ItemNuggetEdible /*extends ItemFood*/ {
 //   public final int itemUseDuration = 10;
 //   public final String iconName;
 //   public IIcon icon;
