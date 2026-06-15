@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.linearity.opentc4.utils.equip.EquipmentSlotSlotAccess.CHESTPLATE_ACCESS;
+import static com.linearity.opentc4.utils.equip.ArmorSlotAccess.CHESTPLATE_ACCESS;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FLYING_SPEED_ADD_PERCENT;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FUEL_DURATION_ADD_PERCENT;
 

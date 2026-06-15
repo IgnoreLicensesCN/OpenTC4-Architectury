@@ -1,240 +1,211 @@
 package thaumcraft.common.items.baubles;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EnumRarity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+@Deprecated(forRemoval = true)
+public class ItemAmuletVis /*extends Item implements IBauble, IRunicShieldProviderItem*/ {
+//   public IIcon[] icon = new IIcon[2];
+//   DecimalFormat myFormatter = new DecimalFormat("#######.##");
 
-import thaumcraft.common.runicshield.IRunicShieldProviderItem;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.junkbox.TileVisRelay;
+//   public ItemAmuletVis() {
+//      this.maxStackSize = 1;
+//      this.canRepair = false;
+//      this.setMaxDamage(0);
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//      this.setHasSubtypes(true);
+//   }
 
-import java.lang.ref.WeakReference;
-import java.text.DecimalFormat;
-import java.util.List;
+//   @SideOnly(Side.CLIENT)
+//   public void registerIcons(IIconRegister ir) {
+//      this.icon[0] = ir.registerIcon("thaumcraft:vis_amulet_lesser");
+//      this.icon[1] = ir.registerIcon("thaumcraft:vis_amulet");
+//   }
 
-//TODO:impl IVisNetNodeDetectableItem
-public class ItemAmuletVis extends Item implements IBauble, IRunicShieldProviderItem {
-   public IIcon[] icon = new IIcon[2];
-   DecimalFormat myFormatter = new DecimalFormat("#######.##");
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIconFromDamage(int par1) {
+//      return par1 >= this.icon.length ? this.icon[0] : this.icon[par1];
+//   }
 
-   public ItemAmuletVis() {
-      this.maxStackSize = 1;
-      this.canRepair = false;
-      this.setMaxDamage(0);
-      this.setCreativeTab(Thaumcraft.tabTC);
-      this.setHasSubtypes(true);
-   }
+//   public EnumRarity getRarity(ItemStack itemstack) {
+//      return itemstack.getItemDamage() == 0 ? EnumRarity.uncommon : EnumRarity.rare;
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister ir) {
-      this.icon[0] = ir.registerIcon("thaumcraft:vis_amulet_lesser");
-      this.icon[1] = ir.registerIcon("thaumcraft:vis_amulet");
-   }
+//   public String getUnlocalizedName(ItemStack stack) {
+//      return super.getUnlocalizedName() + "." + stack.getItemDamage();
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public IIcon getIconFromDamage(int par1) {
-      return par1 >= this.icon.length ? this.icon[0] : this.icon[par1];
-   }
+//   @SideOnly(Side.CLIENT)
+//   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+//      par3List.add(new ItemStack(this, 1, 0));
+//      par3List.add(new ItemStack(this, 1, 1));
+//   }
 
-   public EnumRarity getRarity(ItemStack itemstack) {
-      return itemstack.getItemDamage() == 0 ? EnumRarity.uncommon : EnumRarity.rare;
-   }
+//   public BaubleType getBaubleType(ItemStack itemstack) {
+//      return BaubleType.AMULET;
+//   }
 
-   public String getUnlocalizedName(ItemStack stack) {
-      return super.getUnlocalizedName() + "." + stack.getItemDamage();
-   }
+//   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+//      if (Platform.getEnvironment() != Env.CLIENT && player.ticksExisted % 5 == 0) {
+//         if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof WandCastingItem) {
+//            WandCastingItem wand = (WandCastingItem)player.getHeldItem().getItem();
+//            AspectList<Aspect>al = wand.getAspectsWithRoomRemaining(player.getHeldItem());
+//
+//            for(Aspect aspect : al.getAspects()) {
+//               if (aspect != null && this.getVis(itemstack, aspect) > 0) {
+//                  int amt = Math.min(5, wand.getMaxVis(player.getHeldItem()) - wand.getVis(player.getHeldItem(), aspect));
+//                  amt = Math.min(amt, this.getVis(itemstack, aspect));
+//                  this.storeVis(itemstack, aspect, this.getVis(itemstack, aspect) - amt);
+//                  wand.storeVis(player.getHeldItem(), aspect, this.getVis(player.getHeldItem(), aspect) + amt);
+//               }
+//            }
+//         }
+//
+//         if (TileVisRelay.nearbyPlayers.containsKey(player.getEntityId())) {
+//            if (((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get() != null
+//                    && ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < (double)26.0F
+//            ) {
+//               AspectList<Aspect>al = this.getAspectsWithRoom(itemstack);
+//
+//               for(Aspect aspect : al.getAspects()) {
+//                  if (aspect != null) {
+//                     int amt = ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get())
+//                             .consumeVis(aspect, Math.min(5, this.getMaxVis(itemstack) - this.getVis(itemstack, aspect)));
+//                     if (amt > 0) {
+//                        this.addRealVis(itemstack, aspect, amt, true);//add CentiVis
+//                        ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).triggerConsumeEffect(aspect);
+//                     }
+//                  }
+//               }
+//            } else {
+//               TileVisRelay.nearbyPlayers.remove(player.getEntityId());
+//            }
+//         }
+//      }
+//
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-      par3List.add(new ItemStack(this, 1, 0));
-      par3List.add(new ItemStack(this, 1, 1));
-   }
+//   public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+//   }
+//
+//   public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+//   }
 
-   public BaubleType getBaubleType(ItemStack itemstack) {
-      return BaubleType.AMULET;
-   }
+//   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
+//      if (stack.getItemDamage() == 0) {
+//         list.add(EnumChatFormatting.AQUA + Component.translatable("item.ItemAmuletVis.text"));
+//      }
+//
+//      list.add(EnumChatFormatting.GOLD + Component.translatable("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
+//      if (stack.hasTagCompound()) {
+//         for(Aspect aspect : Aspects.getPrimalAspects()) {
+//            if (stack.stackTagCompound.hasKey(aspect.getAspectKey())) {
+//               String amount = this.myFormatter.format((float)stack.stackTagCompound.getInteger(aspect.getAspectKey()) / 100.0F);
+//               list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount);
+//            }
+//         }
+//      }
+//
+//   }
 
-   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-      if (Platform.getEnvironment() != Env.CLIENT && player.ticksExisted % 5 == 0) {
-         if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof WandCastingItem) {
-            WandCastingItem wand = (WandCastingItem)player.getHeldItem().getItem();
-            AspectList<Aspect>al = wand.getAspectsWithRoomRemaining(player.getHeldItem());
+//   public int getMaxVis(ItemStack stack) {
+//      return stack.getItemDamage() == 1 ? 25000 : 2500;
+//   }
 
-            for(Aspect aspect : al.getAspects()) {
-               if (aspect != null && this.getVis(itemstack, aspect) > 0) {
-                  int amt = Math.min(5, wand.getMaxVis(player.getHeldItem()) - wand.getVis(player.getHeldItem(), aspect));
-                  amt = Math.min(amt, this.getVis(itemstack, aspect));
-                  this.storeVis(itemstack, aspect, this.getVis(itemstack, aspect) - amt);
-                  wand.storeVis(player.getHeldItem(), aspect, this.getVis(player.getHeldItem(), aspect) + amt);
-               }
-            }
-         }
-
-         if (TileVisRelay.nearbyPlayers.containsKey(player.getEntityId())) {
-            if (((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get() != null
-                    && ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).getDistanceFrom(player.posX, player.posY, player.posZ) < (double)26.0F
-            ) {
-               AspectList<Aspect>al = this.getAspectsWithRoom(itemstack);
-
-               for(Aspect aspect : al.getAspects()) {
-                  if (aspect != null) {
-                     int amt = ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get())
-                             .consumeVis(aspect, Math.min(5, this.getMaxVis(itemstack) - this.getVis(itemstack, aspect)));
-                     if (amt > 0) {
-                        this.addRealVis(itemstack, aspect, amt, true);//add CentiVis
-                        ((TileVisRelay)((WeakReference)TileVisRelay.nearbyPlayers.get(player.getEntityId())).get()).triggerConsumeEffect(aspect);
-                     }
-                  }
-               }
-            } else {
-               TileVisRelay.nearbyPlayers.remove(player.getEntityId());
-            }
-         }
-      }
-
-   }
-
-   public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-   }
-
-   public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-   }
-
-   public void addInformation(ItemStack stack, Player player, List list, boolean par4) {
-      if (stack.getItemDamage() == 0) {
-         list.add(EnumChatFormatting.AQUA + Component.translatable("item.ItemAmuletVis.text"));
-      }
-
-      list.add(EnumChatFormatting.GOLD + Component.translatable("item.capacity.text") + " " + this.getMaxVis(stack) / 100);
-      if (stack.hasTagCompound()) {
-         for(Aspect aspect : Aspects.getPrimalAspects()) {
-            if (stack.stackTagCompound.hasKey(aspect.getAspectKey())) {
-               String amount = this.myFormatter.format((float)stack.stackTagCompound.getInteger(aspect.getAspectKey()) / 100.0F);
-               list.add(" §" + aspect.getChatcolor() + aspect.getName() + "§r x " + amount);
-            }
-         }
-      }
-
-   }
-
-   public int getMaxVis(ItemStack stack) {
-      return stack.getItemDamage() == 1 ? 25000 : 2500;
-   }
-
-   public int getVis(ItemStack is, Aspect aspect) {
-      int out = 0;
-      if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
-         out = is.stackTagCompound.getInteger(aspect.getAspectKey());
-      }
-
-      return out;
-   }
-
-   public void storeVis(ItemStack is, Aspect aspect, int amount) {
-      is.setTagInfo(aspect.getAspectKey(), new NBTTagInt(amount));
-   }
-
-   public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
-      AspectList<Aspect>out = new LinkedHashAspectList<>();
-      AspectList<Aspect>cur = this.getAllVis(wandstack);
-
-      for(Aspect aspect : cur.getAspects()) {
-         if (cur.get(aspect) < this.getMaxVis(wandstack)) {
-            out.addAll(aspect, 1);
-         }
-      }
-
-      return out;
-   }
-
-   public AspectList<Aspect>getAllVis(ItemStack is) {
-      AspectList<Aspect>out = new LinkedHashAspectList<>();
-
-      for(Aspect aspect : Aspects.getPrimalAspects()) {
-         if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
-            out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getAspectKey()));
-         } else {
-            out.mergeWithHighest(aspect, 0);
-         }
-      }
-
-      return out;
-   }
-
-   public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
-      if (aspects != null && aspects.size() != 0) {
-         for(Aspect aspect : aspects.getAspects()) {
-            if (this.getVis(is, aspect) < aspects.get(aspect)) {
-               return false;
-            }
-         }
-
-         if (doit) {
-            for(Aspect aspect : aspects.getAspects()) {
-               this.storeVis(is, aspect, this.getVis(is, aspect) - aspects.get(aspect));
-            }
-         }
-
-         return true;
-      } else {
-         return false;
-      }
-   }
-
-   public int addVis(ItemStack is, Aspect aspect, int amount, boolean doit) {
-      if (!aspect.isPrimal()) {
-         return 0;
-      } else {
-         int storeAmount = this.getVis(is, aspect) + amount * 100;
-         int leftover = Math.max(storeAmount - this.getMaxVis(is), 0);
-         if (doit) {
-            this.storeVis(is, aspect, Math.min(storeAmount, this.getMaxVis(is)));
-         }
-
-         return leftover / 100;
-      }
-   }
-
-   public int addRealVis(ItemStack is, Aspect aspect, int amount, boolean doit) {
-      if (!aspect.isPrimal()) {
-         return 0;
-      } else {
-         int storeAmount = this.getVis(is, aspect) + amount;
-         int leftover = Math.max(storeAmount - this.getMaxVis(is), 0);
-         if (doit) {
-            this.storeVis(is, aspect, Math.min(storeAmount, this.getMaxVis(is)));
-         }
-
-         return leftover;
-      }
-   }
-
-   public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-      return itemstack.getItemDamage() != 1 || ResearchManager.isResearchComplete(player.getCommandSenderName(), "VISAMULET");
-   }
-
-   public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
-      return true;
-   }
-
-   public int getRunicCharge(ItemStack itemstack) {
-      return 0;
-   }
+//   public int getVis(ItemStack is, Aspect aspect) {
+//      int out = 0;
+//      if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
+//         out = is.stackTagCompound.getInteger(aspect.getAspectKey());
+//      }
+//
+//      return out;
+//   }
+//
+//   public void storeVis(ItemStack is, Aspect aspect, int amount) {
+//      is.setTagInfo(aspect.getAspectKey(), new NBTTagInt(amount));
+//   }
+//
+//   public AspectList<Aspect>getAspectsWithRoom(ItemStack wandstack) {
+//      AspectList<Aspect>out = new LinkedHashAspectList<>();
+//      AspectList<Aspect>cur = this.getAllVis(wandstack);
+//
+//      for(Aspect aspect : cur.getAspects()) {
+//         if (cur.get(aspect) < this.getMaxVis(wandstack)) {
+//            out.addAll(aspect, 1);
+//         }
+//      }
+//
+//      return out;
+//   }
+//
+//   public AspectList<Aspect>getAllVis(ItemStack is) {
+//      AspectList<Aspect>out = new LinkedHashAspectList<>();
+//
+//      for(Aspect aspect : Aspects.getPrimalAspects()) {
+//         if (is.hasTagCompound() && is.stackTagCompound.hasKey(aspect.getAspectKey())) {
+//            out.mergeWithHighest(aspect, is.stackTagCompound.getInteger(aspect.getAspectKey()));
+//         } else {
+//            out.mergeWithHighest(aspect, 0);
+//         }
+//      }
+//
+//      return out;
+//   }
+//
+//   public boolean consumeAllCentiVis(ItemStack is, Player player, AspectList<Aspect>aspects, boolean doit, boolean crafting) {
+//      if (aspects != null && aspects.size() != 0) {
+//         for(Aspect aspect : aspects.getAspects()) {
+//            if (this.getVis(is, aspect) < aspects.get(aspect)) {
+//               return false;
+//            }
+//         }
+//
+//         if (doit) {
+//            for(Aspect aspect : aspects.getAspects()) {
+//               this.storeVis(is, aspect, this.getVis(is, aspect) - aspects.get(aspect));
+//            }
+//         }
+//
+//         return true;
+//      } else {
+//         return false;
+//      }
+//   }
+//
+//   public int addVis(ItemStack is, Aspect aspect, int amount, boolean doit) {
+//      if (!aspect.isPrimal()) {
+//         return 0;
+//      } else {
+//         int storeAmount = this.getVis(is, aspect) + amount * 100;
+//         int leftover = Math.max(storeAmount - this.getMaxVis(is), 0);
+//         if (doit) {
+//            this.storeVis(is, aspect, Math.min(storeAmount, this.getMaxVis(is)));
+//         }
+//
+//         return leftover / 100;
+//      }
+//   }
+//
+//   public int addRealVis(ItemStack is, Aspect aspect, int amount, boolean doit) {
+//      if (!aspect.isPrimal()) {
+//         return 0;
+//      } else {
+//         int storeAmount = this.getVis(is, aspect) + amount;
+//         int leftover = Math.max(storeAmount - this.getMaxVis(is), 0);
+//         if (doit) {
+//            this.storeVis(is, aspect, Math.min(storeAmount, this.getMaxVis(is)));
+//         }
+//
+//         return leftover;
+//      }
+//   }
+//
+//   public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+//      return itemstack.getItemDamage() != 1 || ResearchManager.isResearchComplete(player.getCommandSenderName(), "VISAMULET");
+//   }
+//
+//   public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+//      return true;
+//   }
+//
+//   public int getRunicCharge(ItemStack itemstack) {
+//      return 0;
+//   }
 }

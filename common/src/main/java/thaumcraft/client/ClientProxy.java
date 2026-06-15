@@ -181,7 +181,7 @@ public class ClientProxy extends CommonProxy {
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemBobber.class, new RenderGolemBobber());
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemBase.class, new RenderGolemBase(new ModelGolem(false)));
       RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, new RenderWisp());
-      RenderingRegistry.registerEntityRenderingHandler(EntityAlumentum.class, new RenderAlumentum());
+      RenderingRegistry.registerEntityRenderingHandler(AlumentumEntity.class, new RenderAlumentum());
       RenderingRegistry.registerEntityRenderingHandler(EntityPrimalOrb.class, new RenderPrimalOrb());
       RenderingRegistry.registerEntityRenderingHandler(EntityEldritchOrb.class, new RenderEldritchOrb());
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemOrb.class, new RenderElectricOrb());

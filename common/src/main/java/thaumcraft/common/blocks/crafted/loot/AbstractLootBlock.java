@@ -18,12 +18,11 @@ import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
+import thaumcraft.common.lootbag.ThaumcraftLootBags;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import static thaumcraft.api.internal.WeightedRandomCollection.*;
 
 public abstract class AbstractLootBlock extends SuppressedWarningBlock {
     public AbstractLootBlock(Properties properties) {
@@ -52,9 +51,9 @@ public abstract class AbstractLootBlock extends SuppressedWarningBlock {
 
     public static final Int2ObjectMap<WeightedRandomCollection<Function<RandomSource, ItemStack>>> lootMapping = new Int2ObjectOpenHashMap<>();
     static {
-        lootMapping.put(Rarity.COMMON.ordinal(), lootBagCommon);
-        lootMapping.put(Rarity.UNCOMMON.ordinal(), lootBagUncommon);
-        lootMapping.put(Rarity.RARE.ordinal(), lootBagRare);
+        lootMapping.put(Rarity.COMMON.ordinal(), ThaumcraftLootBags.LOOT_BAG_COMMON_DROPS);
+        lootMapping.put(Rarity.UNCOMMON.ordinal(), ThaumcraftLootBags.LOOT_BAG_UNCOMMON_DROPS);
+        lootMapping.put(Rarity.RARE.ordinal(), ThaumcraftLootBags.LOOT_BAG_RARE_DROPS);
     }
 
     public static ItemStack mutateGeneratedLoot(ItemStack stack, RandomSource random) {

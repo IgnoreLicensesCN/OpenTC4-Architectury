@@ -188,6 +188,8 @@ block_with_item_names = [
     ['item.ArcaneDoorKey.0.name','iron_key'],
     ['item.ArcaneDoorKey.1.name','gold_key'],
 
+    ['item.ItemAmuletVis.0.name','vis_amulet'],
+    ['item.ItemAmuletVis.1.name','reinforced_vis_amulet'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],

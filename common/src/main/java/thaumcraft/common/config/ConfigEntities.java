@@ -32,7 +32,7 @@ public class ConfigEntities {
       EntityRegistry.registerModEntity(EntityFollowingItem.class, "FollowItem", id++, Thaumcraft.instance, 64, 20, false);
       EntityRegistry.registerModEntity(EntityAspectOrb.class, "AspectOrb", id++, Thaumcraft.instance, 120, 20, true);
       EntityRegistry.registerModEntity(EntityFallingTaint.class, "FallingTaint", id++, Thaumcraft.instance, 64, 3, true);
-      EntityRegistry.registerModEntity(EntityAlumentum.class, "Alumentum", id++, Thaumcraft.instance, 64, 20, true);
+      EntityRegistry.registerModEntity(AlumentumEntity.class, "Alumentum", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityPrimalOrb.class, "PrimalOrb", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityFrostShard.class, "FrostShard", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityDart.class, "Dart", id++, Thaumcraft.instance, 64, 20, false);

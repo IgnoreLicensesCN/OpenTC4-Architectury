@@ -66,7 +66,7 @@ public class WandUtils {
         return LinkedHashCentiVisList.of(aspect,value);
     }
 
-    public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
+    public static final DecimalFormat CENTIVIS_DECIMAL_FORMAT = new DecimalFormat("#######.##");
     public static void appendWandHoverText(Item wandItem, ItemStack wandStack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
         int pos = list.size();
         String tt2 = "";
@@ -118,7 +118,7 @@ public class WandUtils {
                 livingEntity,
                 aspect,
                 false);
-        String consumptionString = decimalFormat.format(mod * 100.0F);
+        String consumptionString = CENTIVIS_DECIMAL_FORMAT.format(mod * 100.0F);
         var focusConsumptionComponent = Component.empty();
         if (wandItem instanceof IWandFocusEngineItem engine && engine.canApplyFocus()) {
             var focusStack = engine.getFocusItemStack(wandStack);
@@ -128,7 +128,7 @@ public class WandUtils {
                 int amt = wandFocusItem.getCentiVisCost(focusStack, wandStack).get(aspect);
                 if (amt > 0) {
                     focusConsumptionComponent =
-                            Component.literal(", "+decimalFormat.format((float) amt * mod / 100.0F) + " ")
+                            Component.literal(", "+ CENTIVIS_DECIMAL_FORMAT.format((float) amt * mod / 100.0F) + " ")
                                     .append(Component.translatable(wandFocusItem.isCentiVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
                     ;
                 }

@@ -14,26 +14,25 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
-public class EntityAlumentum extends ThrowableItemProjectile {
-   public static EntityType<EntityAlumentum> entityAlumentumType;
+public class AlumentumEntity extends ThrowableItemProjectile {
 
-   public EntityAlumentum(Level par1World){
+   public AlumentumEntity(Level par1World){
       this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par1World);
    }
-   public EntityAlumentum(EntityType<EntityAlumentum> type,Level par1World) {
+   public AlumentumEntity(EntityType<AlumentumEntity> type, Level par1World) {
       super(type,par1World);
    }
-   public EntityAlumentum(LivingEntity par2EntityLiving, Level par1World){
+   public AlumentumEntity(LivingEntity par2EntityLiving, Level par1World){
       this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par2EntityLiving,par1World);
    }
-   public EntityAlumentum(EntityType<EntityAlumentum> type, LivingEntity par2EntityLiving,Level par1World) {
+   public AlumentumEntity(EntityType<AlumentumEntity> type, LivingEntity par2EntityLiving, Level par1World) {
       super(type,par2EntityLiving,par1World);
    }
 
-   public EntityAlumentum(Level par1World, double par2, double par4, double par6) {
+   public AlumentumEntity(Level par1World, double par2, double par4, double par6) {
       this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par6, par2, par4, par1World);
    }
-   public EntityAlumentum(EntityType<EntityAlumentum> type, double par2, double par4, double par6,Level par1World) {
+   public AlumentumEntity(EntityType<AlumentumEntity> type, double par2, double par4, double par6, Level par1World) {
       super(type,par6, par2, par4, par1World);
    }
 

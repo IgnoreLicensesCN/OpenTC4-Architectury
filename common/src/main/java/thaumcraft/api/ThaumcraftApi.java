@@ -9,13 +9,13 @@ import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
-import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.api.research.*;
 import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.client.ResearchPage;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.lootbag.ThaumcraftLootBags;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -295,18 +295,18 @@ public class ThaumcraftApi {
     @Deprecated(forRemoval = true,since = "add directly to lootBagCommon/lootBagUncommon/lootBagRare")
     public static void addLootBagItem(Function<RandomSource,ItemStack> item, int weight, int... bagTypes) {
         if (bagTypes == null || bagTypes.length == 0)
-            WeightedRandomCollection.lootBagCommon.add(item, weight);
+            ThaumcraftLootBags.LOOT_BAG_COMMON_DROPS.add(item, weight);
         else {
             for (int rarity : bagTypes) {
                 switch (rarity) {
                     case 0:
-                        WeightedRandomCollection.lootBagCommon.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_COMMON_DROPS.add(item, weight);
                         break;
                     case 1:
-                        WeightedRandomCollection.lootBagUncommon.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_UNCOMMON_DROPS.add(item, weight);
                         break;
                     case 2:
-                        WeightedRandomCollection.lootBagRare.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_RARE_DROPS.add(item, weight);
                         break;
                 }
             }

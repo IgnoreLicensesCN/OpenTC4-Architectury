@@ -41,8 +41,6 @@ import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.items.junkbox.ItemBathSalts;
 import thaumcraft.common.items.junkbox.ItemCrystalEssence;
-import thaumcraft.common.items.equipment.armor.Hover;
-import thaumcraft.common.items.equipment.armor.ItemHoverHarness;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.api.listeners.warp.consts.WarpEvents;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;

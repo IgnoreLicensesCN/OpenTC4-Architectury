@@ -20,7 +20,6 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.Modi
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
@@ -119,14 +118,13 @@ public class Consts {
     }
 
     public static class WandCastingCompoundTagAccessors {
-        private static final String WAND_CAP = "cap";
-        private static final String WAND_ROD = "rod";
-        private static final String WAND_FOCUS = "focus";
-        private static final String WAND_OWING_VIS = "owningVis";
-        public static final ItemStackTagAccessor WAND_CAP_ACCESSOR = new ItemStackTagAccessor(WAND_CAP);
-        public static final ItemStackTagAccessor WAND_ROD_ACCESSOR = new ItemStackTagAccessor(WAND_ROD);
-        public static final ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new ItemStackTagAccessor(WAND_FOCUS);
-        public static final CentiVisListAccessor WAND_OWING_VIS_ACCESSOR = new CentiVisListAccessor(WAND_OWING_VIS);
+        public static final ItemStackTagAccessor WAND_CAP_ACCESSOR = new ItemStackTagAccessor("cap");
+        public static final ItemStackTagAccessor WAND_ROD_ACCESSOR = new ItemStackTagAccessor("rod");
+        public static final ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new ItemStackTagAccessor("focus");
+        public static final CentiVisListAccessor WAND_OWING_VIS_ACCESSOR = new CentiVisListAccessor("owning_vis");
+    }
+    public static class VisAmuletCompoundTagAccessors {
+        public static final CentiVisListAccessor VIS_AMULET_OWING_VIS = new CentiVisListAccessor("owning_vis");
     }
 
     public static class FocusUpgradeCompoundTagAccessors {

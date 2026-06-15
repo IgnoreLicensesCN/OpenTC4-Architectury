@@ -9,14 +9,14 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.projectile.EntityAlumentum;
+import thaumcraft.common.entities.projectile.AlumentumEntity;
 
 public class BehaviorDispenseAlumentum extends AbstractProjectileDispenseBehavior {
 
 
    @Override
    protected @NotNull Projectile getProjectile(Level level, Position pos, ItemStack itemStack) {
-      return new EntityAlumentum(level, pos.x(), pos.y(), pos.z());
+      return new AlumentumEntity(level, pos.x(), pos.y(), pos.z());
    }
 
    @Override

@@ -1,7 +1,5 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
-import com.linearity.opentc4.utils.equip.bauble.EquippedBaubleSlot;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;
@@ -15,7 +13,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -23,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 
 import java.util.List;
-import java.util.Optional;
 
 //a impl for fabric and one for forge
 public abstract class PlatformUniqueUtils {
@@ -43,36 +39,6 @@ public abstract class PlatformUniqueUtils {
     public abstract void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem);
     public abstract BakedModel getModel(ResourceLocation modelLocation);
     public void registerModel(ResourceLocation modelLocation){};
-    public abstract Optional<ItemStack> getEquippedItem(
-            Player player,
-            EquippedBaubleSlot slotKey
-    );
-
-    public abstract List<EquippedBaubleSlot> listEquippedSlots(Player player);
-    public abstract boolean forEachBauble(
-            Player player,
-            BaubleConsumer<Item> consumer
-    );
-
-    public abstract <T> boolean forEachBauble(
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    );
-    public abstract boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            BaubleConsumer<Item> consumer
-    );
-
-    public abstract <T> boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    );
-
-    public abstract String[] listBaubleTypes(LivingEntity livingEntity);
 
     public abstract @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack);
     public abstract long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);

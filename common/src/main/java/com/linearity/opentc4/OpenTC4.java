@@ -101,13 +101,17 @@ public final class OpenTC4 {
     }
 
     public static void onDatapackReload(){
-        ItemBasicAspectCalculator.onDatapackReload();
-        ItemBasicAspectGetter.onDatapackReload();
-        HolderCache.onDatapackReload();
-        IRepairable.onDatapackReload();
+        //caches
+        {
+            ItemBasicAspectCalculator.onDatapackReload();
+            ItemBasicAspectGetter.onDatapackReload();
+            HolderCache.onDatapackReload();
+            IRepairable.onDatapackReload();
+        }
 
 
         ThaumcraftItemsRegistry.onDatapackReloaded();
+
         //TODO:Recipes init here
     }
 }

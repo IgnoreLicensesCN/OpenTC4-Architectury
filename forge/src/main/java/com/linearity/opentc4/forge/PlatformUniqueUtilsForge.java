@@ -3,8 +3,6 @@ package com.linearity.opentc4.forge;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
-import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
-import com.linearity.opentc4.utils.equip.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
@@ -22,7 +20,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -39,11 +36,8 @@ import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     public MinecraftServer server;
@@ -177,107 +171,6 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
                 ));
     }
     @Override
-    public List<EquippedBaubleSlot> listEquippedSlots(Player player) {
-        List<EquippedBaubleSlot> result = new ArrayList<>();
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            handler.getCurios().forEach((slotType, stacksHandler) -> {
-                var stacks = stacksHandler.getStacks();
-                for (int i = 0; i < stacks.getSlots(); i++) {
-                    result.add(new EquippedBaubleSlot(slotType, i));
-                }
-            });
-        });
-
-        return result;
-    }
-    @Override
-    public boolean forEachBauble(
-            Player player,
-            BaubleConsumer<Item> consumer
-    ) {
-        return CuriosApi.getCuriosInventory(player).map(handler -> {
-            for (var entry : handler.getCurios().entrySet()) {
-                var slots = entry.getValue().getStacks();
-                for (int i = 0; i < slots.getSlots(); i++) {
-                    ItemStack stack = slots.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        if (consumer.accept(new EquippedBaubleSlot(entry.getKey(),i), stack, stack.getItem())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }).orElse(false);
-    }
-    @Override
-    public <T> boolean forEachBauble(
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    ) {
-        return forEachBauble(player, (slot, stack, item) -> {
-            if (stack == null || item == null || stack.isEmpty()) return false;
-            if (expectedItemType.isAssignableFrom(item.getClass())) {
-                return consumer.accept(slot, stack, (T) item);
-            }
-            return false;
-        });
-    }
-
-    @Override
-    public boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            BaubleConsumer<Item> consumer
-    ) {
-        AtomicBoolean result = new AtomicBoolean(false);
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            var curiosMap = handler.getCurios();
-            var stacksHandler = curiosMap.get(baubleType);
-            if (stacksHandler != null) {
-                var stacks = stacksHandler.getStacks();
-                for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                    ItemStack stack = stacks.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        if (consumer.accept(new EquippedBaubleSlot(baubleType,i), stack, stack.getItem())) {
-                            result.set(true);
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-        return result.get();
-    }
-    @Override
-    public <T> boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    ) {
-        return forEachBaubleWithType(baubleType,player, (slot, stack, item) -> {
-            if (stack == null || item == null || stack.isEmpty()) return false;
-            if (expectedItemType.isAssignableFrom(item.getClass())) {
-                return consumer.accept(slot, stack, (T) item);
-            }
-            return false;
-        });
-    }
-
-    @Override
-    public String[] listBaubleTypes(LivingEntity livingEntity) {
-        Set<String> slotTypes = new HashSet<>();
-
-        CuriosApi.getCuriosInventory(livingEntity).ifPresent(handler -> {
-            slotTypes.addAll(handler.getCurios().keySet());
-        });
-        return slotTypes.toArray(new String[0]);
-
-    }
-
-    @Override
     public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack stack) {
         LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
         var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null);
@@ -335,24 +228,6 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public Optional<ItemStack> getEquippedItem(Player player, EquippedBaubleSlot key) {
-        var inv = CuriosApi.getCuriosInventory(player);
-        if (!inv.isPresent()) {
-            return Optional.empty();
-        }
-        AtomicReference<ItemStack> resultAtomic = new AtomicReference<>();
-        inv.ifPresent(handler -> handler.findCurio(key.slotType(),key.index())
-                .ifPresent(result -> {
-            resultAtomic.set(result.stack());
-        }));
-        ItemStack result = resultAtomic.get();
-        if (result == null) {
-            return Optional.empty();
-        }
-        return Optional.of(result);
     }
 
 }

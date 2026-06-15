@@ -1,7 +1,5 @@
 package thaumcraft.common.items.consumable;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.projectile.EntityAlumentum;
+import thaumcraft.common.entities.projectile.AlumentumEntity;
 import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;
 
 public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel {
@@ -38,7 +36,7 @@ public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel
                 0.4F / (world.random.nextFloat() * 0.4F + 0.8F)
         );
         if (!world.isClientSide) {
-            world.addFreshEntity(new EntityAlumentum(player, world));
+            world.addFreshEntity(new AlumentumEntity(player, world));
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
     }

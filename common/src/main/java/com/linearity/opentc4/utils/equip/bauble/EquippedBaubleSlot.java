@@ -1,7 +1,8 @@
 package com.linearity.opentc4.utils.equip.bauble;
 
-import com.linearity.opentc4.utils.equip.IPlayerEquippedSlotAccess;
-import net.minecraft.world.entity.player.Player;
+import com.linearity.opentc4.utils.equip.ILivingEntityEquippedSlotAccess;
+import io.wispforest.accessories.api.AccessoriesCapability;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ import static com.linearity.opentc4.OpenTC4.platformUtils;
 public record EquippedBaubleSlot(
         String slotType,
         int index
-)implements IPlayerEquippedSlotAccess {
+)implements ILivingEntityEquippedSlotAccess {
 
     @Override
     public @NotNull String toString() {
@@ -31,8 +32,19 @@ public record EquippedBaubleSlot(
     }
 
     @Override
-    public ItemStack getEquippedStack(Player player) {
-        return platformUtils.getEquippedItem(player,this).orElse(ItemStack.EMPTY);
+    public ItemStack getEquippedStack(LivingEntity living) {
+        var capability = AccessoriesCapability.get(living);
+        if (capability != null) {
+            var container = capability.getContainers().get(slotType);
+            if (container == null){
+                return ItemStack.EMPTY;
+            }
+            if (container.getSize() <= index){
+                return ItemStack.EMPTY;
+            }
+            return container.getAccessories().getItem(index);
+        }
+        return ItemStack.EMPTY;
     }
 }
 

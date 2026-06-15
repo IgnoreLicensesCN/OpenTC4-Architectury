@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.equip.IPlayerEquippedSlotAccess;
+import com.linearity.opentc4.utils.equip.ILivingEntityEquippedSlotAccess;
 import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface IFlyingAbilityProviderWearing {
     class FlyingAbilityProviderCheck{
 
-        public static final Map<Player, Set<IPlayerEquippedSlotAccess>> flyingEnabledPlayers = new MapMaker().weakKeys().makeMap();
+        public static final Map<Player, Set<ILivingEntityEquippedSlotAccess>> flyingEnabledPlayers = new MapMaker().weakKeys().makeMap();
 
         public static void letPlayerDown(Player player) {
             if (!player.isCreative() && !player.isSpectator()) {
@@ -35,7 +35,7 @@ public interface IFlyingAbilityProviderWearing {
             }
         }
 
-        public static void unregisterFlyingProviderForPlayer(Player player, IPlayerEquippedSlotAccess slotAccess) {
+        public static void unregisterFlyingProviderForPlayer(Player player, ILivingEntityEquippedSlotAccess slotAccess) {
             var slotaccesses = flyingEnabledPlayers.get(player);
             if (slotaccesses == null) {return;}
             slotaccesses.remove(slotAccess);
@@ -44,7 +44,7 @@ public interface IFlyingAbilityProviderWearing {
             }
         }
 
-        public static void registerFlyingProviderForPlayer(Player player, IPlayerEquippedSlotAccess slotAccess) {
+        public static void registerFlyingProviderForPlayer(Player player, ILivingEntityEquippedSlotAccess slotAccess) {
             var providers = flyingEnabledPlayers.computeIfAbsent(player, k -> ConcurrentHashMap.newKeySet());
             providers.add(slotAccess);
             flyPlayer(player);
@@ -54,7 +54,7 @@ public interface IFlyingAbilityProviderWearing {
             var flyingProviderAtSlots = flyingEnabledPlayers.get(player);
             if (flyingProviderAtSlots != null && !flyingProviderAtSlots.isEmpty()) {
                 boolean[] canFlyWithFlyingProvider = new boolean[]{false};
-                List<IPlayerEquippedSlotAccess> accessesToRemove = new ArrayList<>(flyingProviderAtSlots.size());
+                List<ILivingEntityEquippedSlotAccess> accessesToRemove = new ArrayList<>(flyingProviderAtSlots.size());
                 for (var slotAccess : flyingProviderAtSlots) {
                     var stack = slotAccess.getEquippedStack(player);
                     if (stack.isEmpty() || !(stack.getItem() instanceof IFlyingAbilityProviderWearing flyingAbilityProvider)) {

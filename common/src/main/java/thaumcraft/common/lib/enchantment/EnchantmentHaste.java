@@ -5,7 +5,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.items.equipment.armor.ItemHoverHarness;
+import thaumcraft.common.items.equipment.armor.thaumaturge.ThaumostaticHarnessItem;
 
 import java.util.Objects;
 
@@ -53,17 +53,9 @@ public class EnchantmentHaste extends Enchantment {
 //   }
    @Override
    public boolean canEnchant(ItemStack stack) {
-   // 允许胸甲
       if (stack.getItem() instanceof ArmorItem armor && Objects.equals(armor.getEquipmentSlot(),EquipmentSlot.CHEST)) {
          return true;
-      }
-
-      // 允许 Hover Harness（你自己的物品）
-      if (stack.getItem() instanceof ItemHoverHarness) {
-         return true;
-      }
-
-      // 允许书
+      }//TODO:tag this
       return stack.isEnchantable();
    }
 }

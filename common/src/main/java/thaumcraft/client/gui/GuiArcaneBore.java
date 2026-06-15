@@ -11,7 +11,6 @@ import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerArcaneBore;
-import thaumcraft.common.items.wands.foci.ItemFocusExcavation;
 import thaumcraft.common.tiles.junkbox.TileArcaneBore;
 
 @SideOnly(Side.CLIENT)

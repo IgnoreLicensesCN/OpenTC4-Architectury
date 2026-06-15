@@ -5,7 +5,7 @@ import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import thaumcraft.common.items.equipment.armor.ItemHoverHarness;
+import thaumcraft.common.items.equipment.armor.thaumaturge.ThaumostaticHarnessItem;
 
 public class EnchantmentDowsing extends Enchantment {
     public EnchantmentDowsing() {
@@ -32,9 +32,9 @@ public class EnchantmentDowsing extends Enchantment {
             return true;
         }
 
-        if (stack.getItem() instanceof ItemHoverHarness) {
+        if (stack.getItem() instanceof ThaumostaticHarnessItem) {
             return true;
-        }
+        }//TODO:tag this
 
         return stack.isEnchantable();
     }

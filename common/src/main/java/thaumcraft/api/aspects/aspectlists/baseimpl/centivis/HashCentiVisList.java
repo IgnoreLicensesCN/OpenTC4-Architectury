@@ -43,7 +43,7 @@ public class HashCentiVisList<Asp extends Aspect>
         return out;
     }
 
-    public static <Asp extends Aspect> HashCentiVisList<Asp> viewOf(Object2IntLinkedOpenHashMap<Asp> aspects) {
+    public static <Asp extends Aspect> HashCentiVisList<Asp> viewOf(Object2IntOpenHashMap<Asp> aspects) {
         return new HashCentiVisList<>(aspects);
     }
 

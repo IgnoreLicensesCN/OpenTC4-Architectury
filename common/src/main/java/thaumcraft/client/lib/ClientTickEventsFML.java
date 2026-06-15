@@ -38,7 +38,6 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.relics.ItemSanityChecker;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;

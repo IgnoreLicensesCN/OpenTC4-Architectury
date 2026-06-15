@@ -1,6 +1,7 @@
 package thaumcraft.api.wands;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.ModifiableCopy;
 import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
      * @param stack which owns vis
      * @return a map showing owing vis but may not thread-safe
      */
+    @ModifiableCopy
     CentiVisList<Asp> getAllCentiVisOwning(ItemStack stack);
     default int getCentiVisOwning(ItemStack stack, Asp aspect) {
         return this.getAllCentiVisOwning(stack).getOrDefault(aspect,0);

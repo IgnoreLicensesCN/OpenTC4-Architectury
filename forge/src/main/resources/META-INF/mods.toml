@@ -35,8 +35,8 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.opentc4]]
-modId="curios"
-mandatory=true
-versionRange="[5.0,)"
-ordering="NONE"
-side="BOTH"
+modId = "accessories"
+type = "required"
+versionRange = "[1.0.0,)"
+ordering = "AFTER"
+side = "BOTH"

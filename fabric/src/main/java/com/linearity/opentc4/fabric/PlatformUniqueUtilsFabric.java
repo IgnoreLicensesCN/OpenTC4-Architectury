@@ -6,12 +6,9 @@ import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.fabric.client.ThaumcraftModelProvider;
 import com.linearity.opentc4.fabric.mixinaccessor.AttributeSupplierAccessor;
 import com.linearity.opentc4.mixin.DefaultAttributesAccessor;
-import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
-import com.linearity.opentc4.utils.equip.bauble.EquippedBaubleSlot;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
-import dev.emi.trinkets.api.TrinketsApi;
 import dev.felnull.specialmodelloader.api.data.SpecialModelDataGenHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -43,7 +40,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -53,7 +49,6 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
@@ -195,139 +190,6 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 //
 //        return optTag.isPresent() && optTag.get().stream().map(Holder::value).anyMatch(i -> i == item);
 //    }
-
-    @Override
-    public List<EquippedBaubleSlot> listEquippedSlots(Player player) {
-        List<EquippedBaubleSlot> result = new ArrayList<>();
-
-        TrinketsApi.getTrinketComponent(player).ifPresent(comp -> {
-            comp.getInventory().forEach((groupId, group) -> {
-                group.forEach((slotType, slots) -> {
-                    for (int i = 0; i < slots.getContainerSize(); i++) {
-                        result.add(
-                                new EquippedBaubleSlot(slotType, i)
-                        );
-                    }
-                });
-            });
-        });
-
-        return result;
-    }
-    @Override
-    public Optional<ItemStack> getEquippedItem(Player player, EquippedBaubleSlot key) {
-        AtomicReference<ItemStack> result = new AtomicReference<>();
-        TrinketsApi.getTrinketComponent(player).ifPresent(comp -> {
-            comp.getInventory().forEach((groupId, group) -> {
-                var slotsInType = group.get(key.slotType());
-                if (slotsInType != null) {
-                    var itemIn = slotsInType.getItem(key.index());
-                    if (!itemIn.isEmpty()) {
-                        result.set(itemIn);
-                    }
-                }
-            });
-        });
-        if (result.get() != null) {
-            return Optional.of(result.get());
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean forEachBauble(
-            Player player,
-            BaubleConsumer<Item> consumer
-    ) {
-        var comp = TrinketsApi.getTrinketComponent(player);
-        if (comp.isEmpty()) return false;
-
-        for (var group : comp.get().getInventory().values()) {
-            for (var slotTypeEntry:group.entrySet()){
-                var slotType = slotTypeEntry.getKey();
-                var slots = slotTypeEntry.getValue();
-                for (int i = 0; i < slots.getContainerSize(); i++) {
-                    ItemStack stack = slots.getItem(i);
-                    if (!stack.isEmpty()) {
-                        var item = stack.getItem();
-                        if (consumer.accept(new EquippedBaubleSlot(slotType,i), stack, item)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public <T> boolean forEachBauble(
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    ) {
-        return forEachBauble(player, (slot, stack, item) -> {
-            if (stack == null || item == null || stack.isEmpty()) return false;
-            if (expectedItemType.isAssignableFrom(item.getClass())) {
-                return consumer.accept(slot, stack, (T) item);
-            }
-            return false;
-        });
-    }
-
-    @Override
-    public String[] listBaubleTypes(LivingEntity livingEntity) {
-        Set<String> slotTypes = new HashSet<>();
-
-        TrinketsApi.getTrinketComponent(livingEntity).ifPresent(comp -> comp.getInventory().forEach(
-                (groupId, group) ->
-                group.keySet().forEach(
-                        slotId -> slotTypes.add(groupId + "/" + slotId)
-                )
-        ));
-        return slotTypes.toArray(new String[0]);
-    }
-
-
-    @Override
-    public boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            BaubleConsumer<Item> consumer
-    ) {
-        var comp = TrinketsApi.getTrinketComponent(player);
-        if (comp.isEmpty()) return false;
-        for (var group : comp.get().getInventory().values()) {
-            var baublesInSlotType = group.get(baubleType);
-            if (baublesInSlotType != null) {
-                for (int i=0; i<baublesInSlotType.getContainerSize(); i++) {
-                    var stack = baublesInSlotType.getItem(i);
-                    if (!stack.isEmpty()) {
-                        if (consumer.accept(new EquippedBaubleSlot(baubleType,i), stack, stack.getItem())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public <T> boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    ) {
-        return forEachBaubleWithType(baubleType,player, (slot, stack, item) -> {
-            if (stack == null || item == null || stack.isEmpty()) return false;
-            if (expectedItemType.isAssignableFrom(item.getClass())) {
-                return consumer.accept(slot, stack, (T) item);
-            }
-            return false;
-        });
-    }
 
     @Override
     @SuppressWarnings({"removal", "UnstableApiUsage"})

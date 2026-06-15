@@ -4,14 +4,12 @@ import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.mixinaccessors.clientbe.VisNetRelayBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
-import com.linearity.opentc4.utils.equip.bauble.BaubleUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +17,6 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.visnet.IVisNetNodeDetectableItem;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
@@ -30,7 +27,6 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
 
@@ -226,31 +222,6 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity implements IWa
                     Player.class,
                     box
             );
-            //since itemAmulet ticks(when wearing) and this ticks and both detects range,why not finish it here?
-            players.forEach(player -> {
-                //hands
-                for (ItemStack stack : List.of(player.getMainHandItem(), player.getOffhandItem())) {
-                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNetNodeDetectableItem detectable) {
-                        detectable.onVisNodeNearby(this, stack);
-                    }
-                }
-                //equipped(vanilla)
-                for (ItemStack stack : player.getArmorSlots()) {
-                    if (!stack.isEmpty() && stack.getItem() instanceof IVisNetNodeDetectableItem detectable) {
-                        detectable.onVisNodeNearby(this, stack);
-                    }
-                }
-                //equipped(bauble slots)
-                BaubleUtils.forEachBauble(
-                        player,
-                        IVisNetNodeDetectableItem.class,
-                        (slot, stack, item)
-                                -> {
-                            item.onVisNodeNearby(this,stack);
-                            return false;
-                        }
-                );
-            });
         }
     }
     public void clientTick() {

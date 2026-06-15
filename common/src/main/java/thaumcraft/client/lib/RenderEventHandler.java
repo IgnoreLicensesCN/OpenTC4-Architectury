@@ -41,8 +41,6 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.ItemGolemBell;
 import thaumcraft.common.entities.golems.ItemGolemPlacer;
-import thaumcraft.common.items.equipment.armor.ItemFortressArmor;
-import thaumcraft.common.items.equipment.armor.ItemVoidRobeArmor;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.junkbox.TileSensor;

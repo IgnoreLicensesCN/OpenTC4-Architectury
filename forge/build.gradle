@@ -46,7 +46,7 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 
-    modImplementation ("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api")
+//    modImplementation ("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1:api")
 //    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${version}")
     implementation fileTree(dir: 'libs/implementation', include: ['*.jar'])
 }

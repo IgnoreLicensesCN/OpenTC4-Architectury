@@ -13,6 +13,8 @@ import net.minecraft.world.item.crafting.*;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.items.baubles.ReinforcedVisAmuletItem;
+import thaumcraft.common.items.baubles.VisAmuletItem;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
@@ -1063,6 +1065,15 @@ public class ThaumcraftItemsRegistry {
             "gold_key",
             GoldKeyItem::new
     );
+    public static final RegistrySupplier<VisAmuletItem> SUPPLIER_VIS_AMULET = ITEMS.register(
+            "vis_amulet",
+            VisAmuletItem::new
+    );
+    public static final RegistrySupplier<ReinforcedVisAmuletItem> SUPPLIER_REINFORCED_VIS_AMULET = ITEMS.register(
+            "reinforced_vis_amulet",
+            ReinforcedVisAmuletItem::new
+    );
+
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){
