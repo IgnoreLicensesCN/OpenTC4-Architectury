@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles.runicring;
+package thaumcraft.common.items.baubles.ring.runicring;
 
 import io.wispforest.accessories.api.AccessoryItem;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;

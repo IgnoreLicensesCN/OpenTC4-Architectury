@@ -53,6 +53,9 @@ public class ThaumcraftItems {
         public static final TagKey<Item> CINNABAR_ORES = TagKey.create(Registries.ITEM,
                 new ResourceLocation("c", "cinnabar_ores")
         );
+        public static final TagKey<Item> UNNATURAL_HUNGER_NEEDED = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "unnatural_hunger_needed")
+        );
     }
 
     public static class BannerPatternTags {

@@ -1,15 +1,16 @@
 package thaumcraft.common.items;
 import net.minecraft.world.item.*;
+import thaumcraft.common.items.baubles.HoverGirdleItem;
 import thaumcraft.common.items.baubles.visamulet.ReinforcedVisAmuletItem;
 import thaumcraft.common.items.baubles.visamulet.VisAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
 import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
-import thaumcraft.common.items.baubles.AbstractApprenticesRingItem;
-import thaumcraft.common.items.baubles.runicring.ChargedRunicShieldRingItem;
-import thaumcraft.common.items.baubles.runicring.ProtectionRingItem;
-import thaumcraft.common.items.baubles.runicring.RevitalizingRunicShieldRingItem;
-import thaumcraft.common.items.baubles.runicring.RunicShieldRingItem;
+import thaumcraft.common.items.baubles.ring.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.ring.runicring.ChargedRunicShieldRingItem;
+import thaumcraft.common.items.baubles.ring.runicring.ProtectionRingItem;
+import thaumcraft.common.items.baubles.ring.runicring.RevitalizingRunicShieldRingItem;
+import thaumcraft.common.items.baubles.ring.runicring.RunicShieldRingItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
@@ -922,6 +923,9 @@ public class ThaumcraftItemInstances {
     }
     public static RareLootBagItem RARE_LOOT_BAG() {
         return ThaumcraftItemsRegistry.SUPPLIER_RARE_LOOT_BAG.get();
+    }
+    public static HoverGirdleItem HOVER_GIRDLE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_HOVER_GIRDLE.get();
     }
 
 

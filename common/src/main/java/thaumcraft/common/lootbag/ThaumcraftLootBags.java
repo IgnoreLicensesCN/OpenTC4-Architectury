@@ -66,14 +66,12 @@ public class ThaumcraftLootBags {
         LOOT_BAG_COMMON_DROPS.add((random) -> Items.EXPERIENCE_BOTTLE.getDefaultInstance(), 5);
         LOOT_BAG_COMMON_DROPS.add((random) -> Items.GOLDEN_APPLE.getDefaultInstance(), 3);
 
-        potions.forEach((potion) -> {
-            LOOT_BAG_COMMON_DROPS.add(random -> {
-                var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
-                PotionUtils.setPotion(stack, potion);
+        potions.forEach((potion) -> LOOT_BAG_COMMON_DROPS.add(random -> {
+            var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
+            PotionUtils.setPotion(stack, potion);
 
-                return stack;
-            },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum());
-        });
+            return stack;
+        },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum()));
         LOOT_BAG_COMMON_DROPS.add((random) -> Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), 1);
 
         LOOT_BAG_COMMON_DROPS.sort();
@@ -110,14 +108,12 @@ public class ThaumcraftLootBags {
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> PROTECTION_RING().getDefaultInstance(), 5);
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), 2);
 
-        potions.forEach((potion) -> {
-            LOOT_BAG_UNCOMMON_DROPS.add(random -> {
-                var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
-                PotionUtils.setPotion(stack, potion);
+        potions.forEach((potion) -> LOOT_BAG_UNCOMMON_DROPS.add(random -> {
+            var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
+            PotionUtils.setPotion(stack, potion);
 
-                return stack;
-            },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum());
-        });
+            return stack;
+        },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum()));
 
         LOOT_BAG_UNCOMMON_DROPS.sort();
     }

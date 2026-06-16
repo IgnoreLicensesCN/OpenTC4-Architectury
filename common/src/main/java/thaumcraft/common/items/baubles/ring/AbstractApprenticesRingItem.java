@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles;
+package thaumcraft.common.items.baubles.ring;
 
 import io.wispforest.accessories.api.AccessoryItem;
 import net.minecraft.network.chat.Component;

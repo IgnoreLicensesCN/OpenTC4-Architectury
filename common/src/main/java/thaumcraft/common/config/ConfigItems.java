@@ -384,8 +384,8 @@ public class ConfigItems {
       GameRegistry.registerItem(itemGirdleRunic, "ItemGirdleRunic", "Thaumcraft");
 //      itemAmuletVis = (new ItemAmuletVis()).setUnlocalizedName("ItemAmuletVis");
 //      GameRegistry.registerItem(itemAmuletVis, "ItemAmuletVis", "Thaumcraft");
-      itemGirdleHover = (new ItemGirdleHover()).setUnlocalizedName("ItemGirdleHover");
-      GameRegistry.registerItem(itemGirdleHover, "ItemGirdleHover", "Thaumcraft");
+//      itemGirdleHover = (new ItemGirdleHover()).setUnlocalizedName("ItemGirdleHover");
+//      GameRegistry.registerItem(itemGirdleHover, "ItemGirdleHover", "Thaumcraft");
       itemSpawnerEgg = (new ItemSpawnerEgg()).setUnlocalizedName("ItemSpawnerEgg");
       GameRegistry.registerItem(itemSpawnerEgg, "ItemSpawnerEgg", "Thaumcraft");
 //      itemZombieBrain = (new ItemZombieBrain()).setUnlocalizedName("ItemZombieBrain");

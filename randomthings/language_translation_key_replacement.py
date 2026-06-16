@@ -212,6 +212,8 @@ block_with_item_names = [
     ['item.ItemLootBag.1.name','uncommon_loot_bag'],
     ['item.ItemLootBag.2.name','rare_loot_bag'],
 
+    ['item.ItemGirdleHover.name','hover_girdle'],
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

@@ -14,10 +14,11 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
+import thaumcraft.common.items.baubles.HoverGirdleItem;
 import thaumcraft.common.items.baubles.visamulet.*;
 import thaumcraft.common.items.baubles.mundane.*;
-import thaumcraft.common.items.baubles.AbstractApprenticesRingItem;
-import thaumcraft.common.items.baubles.runicring.*;
+import thaumcraft.common.items.baubles.ring.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.ring.runicring.*;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
@@ -1140,6 +1141,10 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<RareLootBagItem> SUPPLIER_RARE_LOOT_BAG = ITEMS.register(
             "rare_loot_bag",
             RareLootBagItem::new
+    );
+    public static final RegistrySupplier<HoverGirdleItem> SUPPLIER_HOVER_GIRDLE = ITEMS.register(
+            "hover_girdle",
+            HoverGirdleItem::new
     );
 
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();

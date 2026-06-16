@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles.runicring;
+package thaumcraft.common.items.baubles.ring.runicring;
 
 import io.wispforest.accessories.api.AccessoryItem;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
@@ -13,18 +13,17 @@ import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import static thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem.ChargeCache.getAdditionalCommonAddedForDefault;
 
-public class ChargedRunicShieldRingItem extends AccessoryItem implements IAugmentationRunicShieldProviderItem {
-    public ChargedRunicShieldRingItem(Properties properties) {
+public class ProtectionRingItem extends AccessoryItem implements IAugmentationRunicShieldProviderItem {
+    public ProtectionRingItem(Properties properties) {
         super(properties);
     }
-    public ChargedRunicShieldRingItem() {
-        this(new Properties().stacksTo(1).rarity(Rarity.RARE));
+    public ProtectionRingItem() {
+        this(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     }
 
     private static final Object2IntMap<AbstractRunicShieldType<?>> BASIC_SHIELDS = Object2IntMaps.unmodifiable(
             new Object2IntArrayMap<>(){{
-                put(ThaumcraftRunicShieldTypes.COMMON,3);
-                put(ThaumcraftRunicShieldTypes.CHARGED,1);
+                put(ThaumcraftRunicShieldTypes.COMMON,1);
             }}
     );
     @Override

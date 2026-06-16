@@ -4,8 +4,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +28,7 @@ public abstract class AbstractLootBlock extends SuppressedWarningBlock {
         var dropCount = rarity + 1 + random.nextInt(3);
         var result = new ArrayList<ItemStack>(dropCount);
         for (int i = 0; i < dropCount; i++) {
-            result.add(generateLoot(rarity, random));
+            result.add(lootMapping.get(rarity).getRandom(random).apply(random));
         }
         return result;
     }
@@ -39,7 +37,7 @@ public abstract class AbstractLootBlock extends SuppressedWarningBlock {
 
     //dont be too serious for "this is not extendable" since this part is just "TC4 Internal"
     public enum Rarity {
-        COMMON, UNCOMMON, RARE;
+        COMMON, UNCOMMON, RARE
     }
 
     public static final Int2ObjectMap<WeightedRandomCollection<Function<RandomSource, ItemStack>>> lootMapping = new Int2ObjectOpenHashMap<>();
@@ -49,13 +47,5 @@ public abstract class AbstractLootBlock extends SuppressedWarningBlock {
         lootMapping.put(Rarity.UNCOMMON.ordinal(), ThaumcraftLootBags.LOOT_BAG_UNCOMMON_DROPS);
         lootMapping.put(Rarity.RARE.ordinal(), ThaumcraftLootBags.LOOT_BAG_RARE_DROPS);
     }
-
-
-    public static ItemStack generateLoot(int rarity, RandomSource rand) {
-        //if no rarity just throw
-        var isFunction = lootMapping.get(rarity).getRandom(rand);
-        return isFunction.apply(rand);
-    }
-
 
 }

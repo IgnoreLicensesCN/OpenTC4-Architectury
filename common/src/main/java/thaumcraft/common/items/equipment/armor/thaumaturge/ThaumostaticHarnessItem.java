@@ -34,8 +34,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.utils.equip.ArmorSlotAccess.CHESTPLATE_ACCESS;
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FLYING_SPEED_ADD_PERCENT;
-import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HARNESS_FUEL_DURATION_ADD_PERCENT;
+import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 public class ThaumostaticHarnessItem extends ArmorItem implements
         IVisDiscountGearItem,
@@ -182,7 +181,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
 
     protected void multiplySpeed(ItemStack harnessStack,Player player){
         int haste = EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), harnessStack);
-        double flyingSpeedModifier = (0.7F + 0.075F * (float) haste) * (1+player.getAttributeValue(HARNESS_FUEL_DURATION_ADD_PERCENT()));
+        double flyingSpeedModifier = (0.7F + 0.075F * (float) haste) * (1+player.getAttributeValue(FLYING_SPEED_CONTROL_OVERRIDE()));
         var speed = player.getDeltaMovement();
         player.setDeltaMovement(speed.x * flyingSpeedModifier, speed.y, speed.z * flyingSpeedModifier);
     }
@@ -190,7 +189,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
         var costAtomic = PLAYER_NEXT_COST_ASPECT_TICK.computeIfAbsent(p, _ignored -> new AtomicInteger());
         if (costAtomic.decrementAndGet() <= 0) {
             if (consumeFuel(itemStack)){
-                costAtomic.addAndGet((int) (DEFAULT_COST_TICK_DURATION * (1 + p.getAttributeValue(HARNESS_FLYING_SPEED_ADD_PERCENT()))));
+                costAtomic.addAndGet((int) (DEFAULT_COST_TICK_DURATION * (1 + p.getAttributeValue(HARNESS_FUEL_DURATION_ADD_PERCENT()))));
             }
         }
     }

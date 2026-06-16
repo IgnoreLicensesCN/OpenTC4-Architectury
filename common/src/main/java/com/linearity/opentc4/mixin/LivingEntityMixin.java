@@ -38,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.common.items.ThaumcraftItems.ItemTags.UNNATURAL_HUNGER_NEEDED;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
@@ -56,7 +57,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     }
     @ModifyReturnValue(
             method = "getJumpPower",
-            at = @At("RETURN0")
+            at = @At("RETURN")
     )
     private float opentc4$getJumpPower(float prev){
         var living = (LivingEntity)(Object)this;
@@ -91,7 +92,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     )
     private float opentc4$overrideFlyingSpeed(float prev){
         var entity = (LivingEntity)(Object)this;
-        var speedOverride = entity.getAttributeValue(FLYING_SPEED_CONTROL_OVERRIDE());
+        var speedOverride = entity.getAttributeValue(HARNESS_FLYING_SPEED_ADD_PERCENT());
         if (speedOverride > 10E-4){
             return (float) speedOverride;
         }
@@ -145,7 +146,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         var living = (LivingEntity)(Object)this;
         var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
         if (unnaturalHungerInstance != null){
-            if (item == Items.ROTTEN_FLESH || item == ThaumcraftItemInstances.ZOMBIE_BRAIN()){
+            if (itemStack.is(UNNATURAL_HUNGER_NEEDED)){
                 int amp = unnaturalHungerInstance.getAmplifier() - 1;
                 int duration = unnaturalHungerInstance.getDuration() - 600;
                 living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
@@ -158,7 +159,8 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                             .withStyle(ChatFormatting.ITALIC)
                             .withStyle(ChatFormatting.DARK_GREEN)));
                 }
-            }else if (item.getFoodProperties() != null && living instanceof ServerPlayer serverPlayer) {
+            }
+            else if (item.getFoodProperties() != null && living instanceof ServerPlayer serverPlayer) {
                 serverPlayer.sendSystemMessage(
                         Component.translatable("warp.text.hunger.1")
                                 .withStyle(ChatFormatting.ITALIC)
