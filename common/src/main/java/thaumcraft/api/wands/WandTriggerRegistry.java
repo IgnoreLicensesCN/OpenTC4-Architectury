@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * crucible from a cauldron
  * 
  * @author azanor
- *
+ * <p></p>
  * However if you can i prefer something like WandInteractableBlock and write logic there
  * --IgnoreLicensesCN
  */

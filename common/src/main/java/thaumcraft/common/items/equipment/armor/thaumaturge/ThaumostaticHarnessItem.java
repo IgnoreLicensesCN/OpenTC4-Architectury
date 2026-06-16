@@ -74,19 +74,19 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     @Override
-    public int getMaxItemCount(ItemStack bundleStack) {
+    public int getBundleMaxItemCount(ItemStack bundleStack) {
         return 1;
     }
 
     @Override
-    public boolean canInsertStack(ItemStack bundleStack, ItemStack stackToInsert) {
+    public boolean canInsertStackToBundle(ItemStack bundleStack, ItemStack stackToInsert) {
         return stackToInsert.getItem() instanceof IEssentiaFuelProviderItem;
     }
 
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack itemStack) {
         AspectList<Aspect> owningAspects = new HashAspectList<>();
-        var stacksInside = getStacksInside(itemStack);
+        var stacksInside = getStacksInsideBundle(itemStack);
         if (!stacksInside.isEmpty()) {
             for (var stackInside : stacksInside) {
                 if (stackInside.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
@@ -102,11 +102,11 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     protected boolean consumeFuel(ItemStack harnessStack){
-        var stacks = getStacksInside(harnessStack);
+        var stacks = getStacksInsideBundle(harnessStack);
         for (var stack : stacks) {
             if (stack.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
                 if (fuelProviderItem.consumeFuelEssentiaAmount(stack,getRequiringAspect(),1) > 0){
-                    setStacksInside(harnessStack,stacks);
+                    setStacksInsideBundle(harnessStack,stacks);
                     return true;
                 }
             }
@@ -118,7 +118,7 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     protected IntIntPair getFuelProgressAndMaxProgress(ItemStack harnessStack) {
         AtomicInteger capacity = new AtomicInteger(0);
         AtomicInteger progress = new AtomicInteger(0);
-        var stacksInside = getStacksInside(harnessStack);
+        var stacksInside = getStacksInsideBundle(harnessStack);
         var requiringAspect = getRequiringAspect();
         stacksInside.forEach(stack -> {
             if (stack.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {

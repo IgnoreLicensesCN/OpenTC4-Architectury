@@ -219,6 +219,7 @@ block_with_item_names = [
 
     ['item.ItemGirdleRunic.0.name','runic_girdle'],
     ['item.ItemGirdleRunic.1.name','kinetic_runic_girdle'],
+    ['item.FocusPouch.name','focus_pouch'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],

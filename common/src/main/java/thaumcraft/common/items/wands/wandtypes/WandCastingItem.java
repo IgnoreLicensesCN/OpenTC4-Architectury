@@ -262,7 +262,7 @@ public class WandCastingItem extends Item
 
     @Override
     public int getUseDuration(ItemStack itemStack) {
-        return Integer.MAX_VALUE;
+        return 1728000;
     }
 
     public static Map<LivingEntity, BlockPos> entityUsingBlockMapping = new MapMaker().weakKeys()
@@ -312,9 +312,7 @@ public class WandCastingItem extends Item
             if (!interacting) {
                 entityUsingBlockMapping.remove(livingEntity);
             }
-        }
-
-        if (canApplyFocus()) {
+        } else if (canApplyFocus()) {
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();

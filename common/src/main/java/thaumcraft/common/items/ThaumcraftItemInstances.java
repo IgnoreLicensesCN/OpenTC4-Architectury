@@ -51,6 +51,7 @@ import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.HandMirrorItem;
 import thaumcraft.common.items.transport.MirrorBlockItem;
+import thaumcraft.common.items.wands.FocusPouchItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -942,6 +943,9 @@ public class ThaumcraftItemInstances {
     }
     public static KineticRunicGirdleItem KINETIC_RUNIC_GIRDLE() {
         return ThaumcraftItemsRegistry.SUPPLIER_KINETIC_RUNIC_GIRDLE.get();
+    }
+    public static FocusPouchItem FOCUS_POUCH() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FOCUS_POUCH.get();
     }
 
 

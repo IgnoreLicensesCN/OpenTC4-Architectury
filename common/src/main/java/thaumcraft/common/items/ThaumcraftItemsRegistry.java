@@ -42,6 +42,7 @@ import thaumcraft.common.items.mateiral.*;
 import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.research.*;
 import thaumcraft.common.items.transport.*;
+import thaumcraft.common.items.wands.FocusPouchItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -1166,6 +1167,10 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<KineticRunicGirdleItem> SUPPLIER_KINETIC_RUNIC_GIRDLE = ITEMS.register(
             "kinetic_runic_girdle",
             KineticRunicGirdleItem::new
+    );
+    public static final RegistrySupplier<FocusPouchItem> SUPPLIER_FOCUS_POUCH = ITEMS.register(
+            "focus_pouch",
+            FocusPouchItem::new
     );
     
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();

@@ -12,7 +12,6 @@ import thaumcraft.common.entities.projectile.EntityBottleTaint;
 
 public class ItemBottleTaint
         extends Item
-        //wait what????
 {
    @SideOnly(Side.CLIENT)
    public IIcon icon;
