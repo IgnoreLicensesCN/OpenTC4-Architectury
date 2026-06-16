@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
@@ -19,10 +20,11 @@ public class BlazeStaffRodItem extends ThaumcraftAspectRegenStaffRodItem
         super(new Properties(), getAspectsCentiVisListWithValue(List.of(Aspects.FIRE),17 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = getAspectsCentiVisListWithValue(Aspects.getPrimalAspectsCasted(),175 * CENTIVIS_MULTIPLIER);
+    private final CalcCacheableCentiVisList<Aspect> capacity =
+            new CalcCacheableCentiVisList<>(getAspectsCentiVisListWithValue(Aspects.getPrimalAspectsCasted(),175 * CENTIVIS_MULTIPLIER),true);
     @Override
     @UnmodifiableView
-    public CentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
     private static final CentiVisList<Aspect> cost = WandUtils.getAspectsCentiVisListWithValue(Aspects.getPrimalAspectsCasted(),14 * CENTIVIS_MULTIPLIER);

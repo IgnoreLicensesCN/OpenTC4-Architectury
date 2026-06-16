@@ -1,9 +1,11 @@
 package thaumcraft.common.runicshield;
 
 import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableObject2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -13,6 +15,7 @@ import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * 
@@ -24,35 +27,16 @@ import java.util.Map;
  */
 //the only way(in interface)to add runicShield capacity
 public interface IRunicShieldProviderItem {
-	Map<Object2IntMap<AbstractRunicShieldType<?>>,
-			Map<
-					Object2IntMap<AbstractRunicShieldType<?>>,
-					Object2IntMap<AbstractRunicShieldType<?>>>
-	>
-	CACHED_SUM = new MapMaker().weakKeys().makeMap();
-	//so in many situations if you cache your map you can get better performance.
-	//suitable for most cases
-	static Object2IntMap<AbstractRunicShieldType<?>>
-	calculateShieldSumAndCache(Object2IntMap<AbstractRunicShieldType<?>> a,Object2IntMap<AbstractRunicShieldType<?>> b){
-		return CACHED_SUM.computeIfAbsent(a,_ignored -> new MapMaker().weakKeys().makeMap())
-				.computeIfAbsent(b,toAdd -> {
-					var result = new Object2IntLinkedOpenHashMap<>(toAdd);
-					a.forEach((k,v)->{
-						result.mergeInt(k,v,Integer::sum);
-					});
-					return result;
-				});
-	}
-	
+	Supplier<Object2IntMap<AbstractRunicShieldType<?>>> SORTED_SHIELD_MAP_PROVIDER = () -> new Object2IntRBTreeMap<>(AbstractRunicShieldType::compareTo);
 	/**
 	 * returns how much charge this item can provide. This is the base shielding value
 	 */
 	@Unmodifiable
-    Object2IntMap<AbstractRunicShieldType<?>> getRunicCharge(ItemStack itemstack);
+    CalcCacheableObject2IntMap<AbstractRunicShieldType<?>> getRunicCharge(ItemStack itemstack);
 
 	default void addShieldToolTip(ItemStack itemStack, Level level, List<Component> list, TooltipFlag tooltipFlag){
 		var providingShield = this.getRunicCharge(itemStack);
-		providingShield.forEach(
+		providingShield.wrapped.forEach(
 				(shieldType,shieldAmount) -> {
 					var style = shieldType.getShieldName().getStyle();
 					var sign = "+";

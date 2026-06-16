@@ -1,6 +1,6 @@
 package thaumcraft.common.items.equipment.armor.thaumaturge;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableObject2IntMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -70,11 +70,11 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
     }
 
     @Override
-    public @Unmodifiable Object2IntMap<AbstractRunicShieldType<?>> getRunicCharge(ItemStack helmetStack) {
-        Object2IntMap<AbstractRunicShieldType<?>> finalMap = super.getRunicCharge(helmetStack);
+    public @Unmodifiable CalcCacheableObject2IntMap<AbstractRunicShieldType<?>> getRunicCharge(ItemStack helmetStack) {
+        var finalMap = super.getRunicCharge(helmetStack);
         for (var stack:getArmorComponents(helmetStack)){
             if (stack.getItem() instanceof IRunicShieldProviderItem shieldProviderItem) {
-                finalMap = IRunicShieldProviderItem.calculateShieldSumAndCache(finalMap,shieldProviderItem.getRunicCharge(stack));
+                finalMap = finalMap.add(shieldProviderItem.getRunicCharge(stack), SORTED_SHIELD_MAP_PROVIDER);
             }
         }
         return finalMap;

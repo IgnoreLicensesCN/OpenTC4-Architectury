@@ -35,6 +35,9 @@ public class UnmodifiableAspectList<A extends Aspect> implements AspectListUnmod
             return true;
         }
     };
+    public static <Asp extends Aspect> UnmodifiableAspectList<Asp> empty(){
+        return (UnmodifiableAspectList<Asp>) EMPTY;
+    }
     public static final UnmodifiableAspectList<PrimalAspect> EMPTY_PRIMAL = new UnmodifiableAspectList<>(new LinkedHashAspectList<>()){
         @Override
         public boolean isEmpty() {

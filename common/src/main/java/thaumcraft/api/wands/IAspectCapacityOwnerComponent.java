@@ -1,10 +1,10 @@
 package thaumcraft.api.wands;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.CentiVisList;
 
 public interface IAspectCapacityOwnerComponent<Asp extends Aspect> {
 
-    CentiVisList<Asp> getCentiVisCapacity();
+    CalcCacheableCentiVisList<Asp> getCentiVisCapacity();
     boolean tryCastAspectClass(Class<? extends Aspect> aspClass);
 }

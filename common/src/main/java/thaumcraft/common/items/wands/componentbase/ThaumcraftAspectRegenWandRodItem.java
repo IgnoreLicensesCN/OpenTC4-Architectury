@@ -28,6 +28,10 @@ public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRod
 
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean parentSelected) {
+        regenCentiVisAsComponent(usingWand, owner,canRegenCentiVisAndValue);
+    }
+
+    public static void regenCentiVisAsComponent(@NotNull ItemStack usingWand, Entity owner,CentiVisList<Aspect> canRegenCentiVisAndValue) {
         var wandStackItem = usingWand.getItem();
         if (wandStackItem instanceof ICentiVisContainerItem<?> containerNotCasted && containerNotCasted.tryCastAspectClass(Aspect.class)) {
             var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;

@@ -3,6 +3,8 @@ package thaumcraft.common.items.wands.wandtypes;
 import com.google.common.collect.MapMaker;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.ArrayCentiVisList;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.client.Minecraft;
@@ -24,17 +26,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.api.wands.focus.IWandFocusItem;
 import thaumcraft.common.items.wands.WandManager;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
@@ -218,34 +217,18 @@ public class WandCastingItem extends Item
         WAND_OWING_VIS_ACCESSOR.writeToCompoundTag(tag, aspects);
     }
 
-    private static final Map<ItemStack,CentiVisList<Aspect>> calculatedCacheForImmutable = new MapMaker().weakKeys().makeMap();
     //costs high and maybe should be cached
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        var cached = calculatedCacheForImmutable.get(usingWand);
-        if (cached != null) {
-            return cached;
-        }
-        var result = new LinkedHashCentiVisList<>();
-        AtomicBoolean canCache = new AtomicBoolean(true);
-
+        final CalcCacheableCentiVisList<Aspect>[] result = new CalcCacheableCentiVisList[]{CalcCacheableCentiVisList.emptySingleton()};
         wandComponentsForEach(usingWand,component -> {
             var componentItem = component.getItem();
             if (componentItem instanceof IAspectCapacityOwnerComponent<? extends Aspect> owner) {
-                owner.getCentiVisCapacity()
-                        .forEach(
-                                result::addAll
-                        );
-            }
-            if (!(componentItem instanceof IImmutableAspectCapacityOwnerComponent<? extends Aspect>)) {
-                canCache.set(false);
+                result[0] = result[0].add((CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(), ArrayCentiVisList::new);
             }
         });
 
-        if (canCache.get()) {
-            calculatedCacheForImmutable.put(usingWand, result);
-        }
-        return result;
+        return result[0].wrapped;
     }
 
 

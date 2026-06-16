@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -25,10 +26,14 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implem
         super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(250 * CENTIVIS_MULTIPLIER);
+    private final CalcCacheableCentiVisList<Aspect> capacity =
+            new CalcCacheableCentiVisList<>(
+                    getPrimalAspectCentiVisListWithValueCastedUnmodifiable(250 * CENTIVIS_MULTIPLIER),
+                    true
+            );
     @Override
     @UnmodifiableView
-    public CentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 

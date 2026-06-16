@@ -7,13 +7,12 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IInventoryTickableComponentItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem.regenCentiVisAsComponent;
 
 public abstract class ThaumcraftAspectRegenStaffRodItem extends ThaumcraftStaffRodItem implements IInventoryTickableComponentItem {
     public ThaumcraftAspectRegenStaffRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {
@@ -28,24 +27,6 @@ public abstract class ThaumcraftAspectRegenStaffRodItem extends ThaumcraftStaffR
 
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean parentSelected) {
-        var wandStackItem = usingWand.getItem();
-        if (wandStackItem instanceof ICentiVisContainerItem<?> containerNotCasted && containerNotCasted.tryCastAspectClass(Aspect.class)) {
-            var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
-            if (owner.tickCount % 200 == 0){
-                var owningVis = container.getAllCentiVisOwning(usingWand);
-                canRegenCentiVisAndValue.forEach(
-                        ((aspect, upperBound) -> {
-                            var owningAspectValue = owningVis.getOrDefault(aspect,0);
-                            if (owningAspectValue < upperBound) {
-                                owningVis.merge(aspect,
-                                        CENTIVIS_MULTIPLIER,
-                                        (oldValue, newValue) ->
-                                                Math.min(oldValue + newValue, upperBound));
-                            }
-                        })
-                );
-                container.storeCentiVisOwning(usingWand, owningVis);
-            }
-        }
+        regenCentiVisAsComponent(usingWand,owner,canRegenCentiVisAndValue);
     }
 }

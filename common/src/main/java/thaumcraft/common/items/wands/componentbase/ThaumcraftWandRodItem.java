@@ -1,15 +1,13 @@
 package thaumcraft.common.items.wands.componentbase;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
-import thaumcraft.api.wands.IImmutableAspectCapacityOwnerComponent;
 import thaumcraft.api.wands.IWandComponentNameOwnerItem;
 import thaumcraft.api.wands.IWandRodPropertiesOwnerComponent;
 
-public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwnerComponent<Aspect>, IWandComponentNameOwnerItem, IImmutableAspectCapacityOwnerComponent<Aspect> {
+public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwnerComponent<Aspect>, IWandComponentNameOwnerItem {
     public ThaumcraftWandRodItem(Properties properties) {
         super(properties);
     }
@@ -17,8 +15,8 @@ public abstract class ThaumcraftWandRodItem extends Item implements IWandRodProp
 
     @Override
     @UnmodifiableView
-    public CentiVisList<Aspect> getCentiVisCapacity() {
-        return UnmodifiableCentiVisList.EMPTY;
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
+        return CalcCacheableCentiVisList.emptySingleton();
     }
 
     @Override

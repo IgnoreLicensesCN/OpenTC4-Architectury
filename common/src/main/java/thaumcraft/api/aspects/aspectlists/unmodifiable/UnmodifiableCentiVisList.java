@@ -26,6 +26,9 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends UnmodifiableAs
             return true;
         }
     };
+    public static <Asp extends Aspect> UnmodifiableCentiVisList<Asp> empty(){
+        return (UnmodifiableCentiVisList<Asp>) EMPTY;
+    }
     public static final UnmodifiableCentiVisList<PrimalAspect> EMPTY_PRIMAL = new UnmodifiableCentiVisList<>(new Object2IntLinkedOpenHashMap<>()){
         @Override
         public boolean isEmpty() {

@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.events;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableObject2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -9,8 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.runicshield.IRunicShieldProviderItem;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
-
-import java.util.Comparator;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 
@@ -41,11 +39,8 @@ public class RunicShieldHandler {
     public static void updateRunicShieldCapacityForPlayer(Entity entity,EntityRunicShieldInfo shieldInfo) {
 
         if (entity instanceof ServerPlayer player) {
-            var capacityMap = shieldInfo.shieldCapacity;
-
             var capacityMapOld = new Object2IntOpenHashMap<>(shieldInfo.shieldCapacity);
-            capacityMap.clear();
-            var capacityMapCache = new Object2IntRBTreeMap<AbstractRunicShieldType<?>>(Comparator.naturalOrder());//i want its order
+            final CalcCacheableObject2IntMap<AbstractRunicShieldType<?>>[] calcCacheable = new CalcCacheableObject2IntMap[]{CalcCacheableObject2IntMap.EMPTY};
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     ItemStack stack = player.getItemBySlot(slot);
@@ -53,7 +48,7 @@ public class RunicShieldHandler {
                         continue;
                     }
                     if (stack.getItem() instanceof IRunicShieldProviderItem shieldProvider) {
-                        capacityMapCache.putAll(shieldProvider.getRunicCharge(stack));
+                        calcCacheable[0] = calcCacheable[0].add(shieldProvider.getRunicCharge(stack),IRunicShieldProviderItem.SORTED_SHIELD_MAP_PROVIDER);
                     }
                 }
             }
@@ -63,18 +58,16 @@ public class RunicShieldHandler {
                     return false;
                 }
                 if (stack.getItem() instanceof IRunicShieldProviderItem shieldProvider) {
-                    capacityMapCache.putAll(shieldProvider.getRunicCharge(stack));
+                    calcCacheable[0] = calcCacheable[0].add(shieldProvider.getRunicCharge(stack),IRunicShieldProviderItem.SORTED_SHIELD_MAP_PROVIDER);
                 }
                 return false;
             });
-            capacityMap.putAll(capacityMapCache);
 
-
-            if (capacityMap.size() != capacityMapOld.size()) {
+            if (calcCacheable[0].wrapped.size() != capacityMapOld.size()) {
                 shieldInfo.syncCapacitySendPacket(player);
                 return;
             }
-            for (var entry : capacityMap.object2IntEntrySet()) {
+            for (var entry : calcCacheable[0].wrapped.object2IntEntrySet()) {
                 var type = entry.getKey();
                 var capacity = entry.getIntValue();
                 if (capacityMapOld.getInt(type) != capacity) {
