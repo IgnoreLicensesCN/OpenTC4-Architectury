@@ -11,13 +11,12 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityFrostShard;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
-public class ItemFocusFrost extends ItemFocusBasic {
+public class ItemFocusFrost {
    private static final AspectList<Aspect>costBase;
    private static final AspectList<Aspect>costScatter;
    private static final AspectList<Aspect>costBoulder;

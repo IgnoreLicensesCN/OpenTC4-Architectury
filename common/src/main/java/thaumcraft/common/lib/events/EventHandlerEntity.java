@@ -8,8 +8,6 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,8 +19,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import thaumcraft.api.IRepairable;
+import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -31,7 +28,6 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.wands.IEnchantmentRepairVisProviderItem;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
@@ -43,15 +39,12 @@ import thaumcraft.common.items.junkbox.ItemBathSalts;
 import thaumcraft.common.items.junkbox.ItemCrystalEssence;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.api.listeners.warp.consts.WarpEvents;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.effects.effectshaderhandlers.BlurredVisionShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.DeathGazeShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.SunScornedShaderHandler;
 import thaumcraft.common.lib.effects.effectshaderhandlers.UnnaturalHungerShaderHandler;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
-import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.EntityUtils;
 
@@ -61,13 +54,14 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.linearity.opentc4.OpenTC4.LOGGER;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static thaumcraft.api.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
+import static thaumcraft.common.items.abstracts.IRepairableItem.getRepairCostDefault;
+import static thaumcraft.common.items.equipment.armor.thaumaturge.TravellerBootsItem.inputVecForward;
 
 
 //TODO
 public class EventHandlerEntity {
-   public static HashMap<String,Float> prevStep = new HashMap<>();
    public static HashMap<String,ArrayList<WeakReference<Entity>>> linkedEntities = new HashMap<>();
 
    public static File getThaumcraftPlayersDirectory(MinecraftServer server) {
@@ -78,7 +72,8 @@ public class EventHandlerEntity {
       }
       return thaumcraftPlayerDir;
    }
-   public static final Map<ItemEntity,Player> itemDropByPlayer = new MapMaker().weakKeys().weakValues().concurrencyLevel(2).makeMap();
+   public static final Map<ItemEntity,Player> itemDropByPlayer =
+           new MapMaker().weakKeys().weakValues().concurrencyLevel(2).makeMap();
    public static void init() {
       {
          //wdym we have architectury
@@ -88,40 +83,6 @@ public class EventHandlerEntity {
             }
             return EventResult.pass();
          }));
-         PlayerEvent.PLAYER_JOIN.register(serverPlayer -> {
-            new PacketSyncItemAspectsS2C().sendTo(serverPlayer);
-            File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-             Thaumcraft.playerKnowledge.wipePlayerKnowledge(serverPlayer);
-            File playerThaumFile = getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName());
-            boolean legacy = false;
-            if (!playerThaumFile.exists()) {
-               try {
-                  playerThaumFile.createNewFile();
-               }catch (Exception e) {
-                  LOGGER.error(e);
-                  throw new RuntimeException(e);
-               }
-            }
-
-            ResearchManager.loadPlayerData(serverPlayer, playerThaumFile, getPlayerFile("thaumback", thaumcraftPlayerDir,
-                    serverPlayer.getGameProfile().getName()), legacy);
-
-            //since research unlock check migrated to ResearchItem,this is not needed
-//            for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {
-//               for(ResearchItem ri : cat.researches.values()) {
-//                  if (ri.isAutoUnlock()) {
-//                     Thaumcraft.researchManager.completeResearch(serverPlayer, ri.key);
-//                  }
-//               }
-//            }
-         });
-         PlayerEvent.PLAYER_QUIT.register(serverPlayer -> {
-            File thaumcraftPlayerDir = getThaumcraftPlayersDirectory(serverPlayer.server);
-            ResearchManager.savePlayerData(serverPlayer,
-                    getPlayerFile("thaum", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()),
-                    getPlayerFile("thaumback", thaumcraftPlayerDir, serverPlayer.getGameProfile().getName()));
-         });
-
          ClientTickEvent.CLIENT_POST.register(mc -> {
             var player = mc.player;
             if (player == null){return;}
@@ -132,41 +93,13 @@ public class EventHandlerEntity {
          });
 
          TickEvent.PLAYER_PRE.register(player -> {
-            var world = player.level();
-            var playerName = player.getGameProfile().getName();
-            boolean hoverFlag = Hover.getHover(playerName);
-            if (world.dimension() == Config.dimensionOuter
-                    && !player.isCreative()
-                    && player.tickCount % 20 == 0
-                    && (player.getAbilities().flying || hoverFlag)
-            ) {
-               player.getAbilities().flying = false;
-               player.onUpdateAbilities();
-               Hover.setHover(playerName, false);
-               player.sendSystemMessage(Component.literal("tc.break.fly").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-            }
-            ItemStack chestArmor = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (hoverFlag && !(chestArmor.getItem() instanceof ItemHoverHarness)
-            ) {
-               Hover.setHover(playerName, false);
-               player.getAbilities().flying = false;
-               player.onUpdateAbilities();
-            }
-
             if (player instanceof ServerPlayer serverPlayer) {
                if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(serverPlayer) == 0) {
                   WarpEvents.checkWarpEvent(serverPlayer);
                }
-               //migrated to DeathGazeEffect#applyEffectTick
-//               if (player.tickCount % 10 == 0 && player.hasEffect(
-//                       Config.potionDeathGaze
-//               )) {
-//                  WarpEvents.checkDeathGaze(serverPlayer);
-//               }
-
                if (serverPlayer.tickCount % 40 == 0) {
                   Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairable
+                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairableItem
                              || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),stack) > 0) && !serverPlayer.isCreative()
                      ) {
                         doRepair(stack, serverPlayer);
@@ -175,18 +108,14 @@ public class EventHandlerEntity {
                   serverPlayer.getInventory().items.forEach(repairItemStack);
                   serverPlayer.getInventory().offhand.forEach(repairItemStack);
                   serverPlayer.getInventory().armor.forEach(repairItemStack);
+                  forEachBauble(serverPlayer,(slot, stack, item) -> {
+                     repairItemStack.accept(stack);
+                     return false;
+                  });
                }
             }
 
-            updateSpeed(player);
-            ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
-            if (
-                    world.isClientSide() && (player.isCrouching()
-                            || feet.getItem() != ConfigItems.itemBootsTraveller
-                    ) && prevStep.containsKey(playerName)) {//TODO:Attribute or whatever or others' impl(Tinker's?Artifacts?)
-               player.setMaxUpStep(prevStep.get(playerName));
-               prevStep.remove(playerName);
-            }
+            updateSpeedForHasteEnchantment(player);
          });
 //         EntityEvent.ADD.register((entity, world) -> {
 //            if (entity instanceof LivingEntity livingEntity
@@ -263,84 +192,49 @@ public class EventHandlerEntity {
    }
 
 
-   public static File getPlayerFile(String suffix, File playerDirectory, String playername) {
-      if ("dat".equals(suffix)) {
-         throw new IllegalArgumentException("The suffix 'dat' is reserved");
-      } else {
-         return new File(playerDirectory, playername + "." + suffix);
-      }
-   }
-
    public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProviderItem provider) && provider.canProvideVisForRepair(itemStack);
    public static void doRepair(ItemStack is, ServerPlayer player) {
 
       int level = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),0);
       var item = is.getItem();
-      if (item instanceof IRepairable repairable){
+      if (item instanceof IRepairableItem repairable){
          repairable.doRepair(is,player,level);
          return;
       }
       if (level > 0) {
-         AspectList<Aspect>cost = ThaumcraftCraftingManager.getObjectTags(is);
-         if (cost != null && !cost.isEmpty()) {
-            cost = IAspectReducibleToPrimal.reduceToPrimalsAndCast(cost);
-            CentiVisList<Aspect> finalCost = new CentiVisList<>();
-
-            for(Aspect a : cost.keySet()) {
-               if (a != null) {
-                  finalCost.mergeWithHighest(a, (int)Math.sqrt(cost.get(a) * 2) * level);
-               }
-            }
-            boolean doRepair = WandManager.consumeCentiVisFromInventory(player, finalCost, checkIfCanConsumeForRepair);
-             if (doRepair) {
-               is.hurtAndBreak(-level,player,(p) -> {});
+         var cost = getRepairCostDefault(is,level);
+         if (!cost.isEmpty()) {
+            boolean doRepair = WandManager.consumeCentiVisFromInventory(
+                    player, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair
+            );
+            if (doRepair) {
+                is.hurtAndBreak(-level, player, (p) -> {});
             }
          }
       }
    }
-
-//   @SubscribeEvent
-//   public void livingTick(LivingEvent.LivingUpdateEvent event) {
-//      if (event.entity instanceof EntityMob && !event.entity.isDead) {
-//         EntityMob mob = (EntityMob)event.entity;
-//         int t = (int)mob.getAttribute(EntityUtils.CHAMPION_MOD).getAttributeValue();
-//         if (t >= 0 && ChampionModifier.mods[t].type == 0) {
-//            ChampionModifier.mods[t].effect.performEffect(mob, null, null, 0.0F);
-//         }
-//      }
-//   }
-
-   private static void updateSpeed(Player player) {
-      try {
-         if (!player.getAbilities().flying
-                 && player.inventory.armorItemInSlot(0) != null
-                 && player.moveForward > 0.0F) {
-            int haste = EnchantmentHelper.getEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE().effectId, player.inventory.armorItemInSlot(0));
-            if (haste > 0) {
-               float bonus = (float)haste * 0.015F;
-               if (player.isAirBorne) {
-                  bonus /= 2.0F;
-               }
-
-               if (player.isInWater()) {
-                  bonus /= 2.0F;
-               }
-
-               player.moveFlying(0.0F, 1.0F, bonus);
+   private static void updateSpeedForHasteEnchantment(Player player) {
+      var armorStack = player.getItemBySlot(EquipmentSlot.CHEST);
+      if (armorStack.isEmpty()) return;
+      if (!player.getAbilities().flying
+              && !armorStack.isEmpty()
+              && player.getForward().dot(player.getDeltaMovement()) > 0.0F) {
+         int haste = EnchantmentHelper.getItemEnchantmentLevel(
+                 ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(),
+                 armorStack
+         );
+         if (haste > 0) {
+            float bonus = (float)haste * 0.015F;
+            if (!player.onGround()) {//isAirBorne replaced
+               bonus /= 2.0F;
             }
-         }
-      } catch (Exception ignored) {
-      }
-   }
 
-   @SubscribeEvent
-   public void playerJumps(LivingEvent.LivingJumpEvent event) {
-      if (event.entity instanceof Player
-              && ((Player)event.entity).inventory.armorItemInSlot(0) != null
-              && ((Player)event.entity).inventory.armorItemInSlot(0).getItem() == ConfigItems.itemBootsTraveller
-      ) {
-         LivingEntity var10000 = event.entityLiving;
-         var10000.motionY += 0.275F;
+            if (player.isInWater()) {
+               bonus /= 2.0F;
+            }
+
+            player.moveRelative(bonus,inputVecForward);
+         }
       }
    }
 
@@ -362,28 +256,29 @@ public class EventHandlerEntity {
    @SubscribeEvent
    public void entitySpawns(EntityJoinWorldEvent event) {
       if (Platform.getEnvironment() != Env.CLIENT) {
-         if (event.entity instanceof EntityEnderPearl) {
-            int x = MathHelper.floor_double(event.entity.posX);
-            int y = MathHelper.floor_double(event.entity.posY);
-            int z = MathHelper.floor_double(event.entity.posZ);
-
-            label138:
-            for(int xx = -5; xx <= 5; ++xx) {
-               for(int yy = -5; yy <= 5; ++yy) {
-                  for(int zz = -5; zz <= 5; ++zz) {
-                     BlockEntity tile = event.world.getBlockEntity(x + xx, y + yy, z + zz);
-                     if (tile instanceof TileOwned) {
-                        if (((EntityEnderPearl)event.entity).getThrower() instanceof Player) {
-                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic of a nearby warded object destroys the ender pearl."));
-                        }
-
-                        event.entity.setDead();
-                        break label138;
-                     }
-                  }
-               }
-            }
-         }
+//         remove this feature
+//         if (event.entity instanceof EntityEnderPearl) {
+//            int x = MathHelper.floor_double(event.entity.posX);
+//            int y = MathHelper.floor_double(event.entity.posY);
+//            int z = MathHelper.floor_double(event.entity.posZ);
+//
+//            label138:
+//            for(int xx = -5; xx <= 5; ++xx) {
+//               for(int yy = -5; yy <= 5; ++yy) {
+//                  for(int zz = -5; zz <= 5; ++zz) {
+//                     BlockEntity tile = event.world.getBlockEntity(x + xx, y + yy, z + zz);
+//                     if (tile instanceof TileOwned) {
+//                        if (((EntityEnderPearl)event.entity).getThrower() instanceof Player) {
+//                           ((Player)((EntityEnderPearl)event.entity).getThrower()).displayClientMessage(Component.literal("§5§oThe magic of a nearby warded object destroys the ender pearl."));
+//                        }
+//
+//                        event.entity.setDead();
+//                        break label138;
+//                     }
+//                  }
+//               }
+//            }
+//         }
 
          if (event.entity instanceof Player) {
             ArrayList<WeakReference<Entity>> dudes = linkedEntities.get(event.entity.getName().getString());

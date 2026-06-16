@@ -11,7 +11,6 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.gear.ModelWand;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;

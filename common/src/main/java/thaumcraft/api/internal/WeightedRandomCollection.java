@@ -16,8 +16,6 @@ public class WeightedRandomCollection<Obj>{
     protected @NotNull List<ObjectIntPair<Obj>> internalContainer = new ArrayList<>();
     protected boolean sorted = false;
     protected int totalWeight = 0;
-
-
     public void add(Obj obj, int weight) {
         internalContainer.add(new ObjectIntPair<>(obj,weight));
         sorted = false;
@@ -33,7 +31,7 @@ public class WeightedRandomCollection<Obj>{
         int pickValue = rand.nextInt(totalWeight);
         for (var item : internalContainer) {
             pickValue -= item.rightInt();
-            if (pickValue < 0) {
+            if (pickValue <= 0) {
                 return item.left();
             }
         }
@@ -42,7 +40,6 @@ public class WeightedRandomCollection<Obj>{
     public void clear(){
         internalContainer.clear();
     }
-
     public int getTotalWeight() {
         return totalWeight;
     }

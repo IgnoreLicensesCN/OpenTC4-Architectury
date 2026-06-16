@@ -21,14 +21,13 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
+import thaumcraft.api.wands.ICentiVisContainerItem;
 import thaumcraft.api.wands.IWandTriggerManager;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.IWandFocusEngineItem;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
-import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
@@ -53,39 +52,18 @@ public class WandManager implements IWandTriggerManager {
         return consumeCentiVisFromInventory(entityToCost, cost, ignore -> true);
     }
     //do some mixin?
-    public static boolean consumeCentiVisFromInventory(Entity entity, CentiVisList<Aspect>cost, Function<ItemStack,Boolean> checkCondition) {
+    public static boolean consumeCentiVisFromInventory(Entity entity, CentiVisList<Aspect> cost, Function<ItemStack,Boolean> checkCondition) {
         if (entity instanceof Player player){
-            BaubleConsumer<ItemAmuletVis> amuletVisBaubleConsumer = (slot, stack, itemAmuletVis)
-                    -> {
-                if (!checkCondition.apply(stack)) {
-                    return false;
-                }
-                return itemAmuletVis.consumeAllCentiVis(stack, player, cost, true, false);
-            };
-            if (forEachBauble(player, ItemAmuletVis.class, amuletVisBaubleConsumer)) {
-                return true;
-            }
-
-
-            BaubleConsumer<WandCastingItem> wandCastingBaubleConsumer = (slot, stack, wandCastingItem) ->
+            BaubleConsumer<ICentiVisContainerItem> centiVisContainerConsumer = (slot, stack, centiVisContainerItem) ->
             {
                 if (!checkCondition.apply(stack)) {
                     return false;
                 }
-                return wandCastingItem.consumeAllCentiVis(stack, player, cost, true, false, !player.level().isClientSide);
+                return centiVisContainerItem.consumeAllCentiVis(stack, player, cost, true, false, !player.level().isClientSide);
             };
-            return forEachBauble(player, WandCastingItem.class, wandCastingBaubleConsumer);
+            return forEachBauble(player, ICentiVisContainerItem.class, centiVisContainerConsumer);
         }
         return false;
-//      for(int a = player.inventory.mainInventory.length - 1; a >= 0; --a) {
-//         ItemStack item = player.inventory.mainInventory[a];
-//         if (item != null && item.getItem() instanceof WandCastingItem) {
-//            boolean done = ((WandCastingItem)item.getItem()).consumeAllCentiVis(item, player, cost, true, true);
-//            if (done) {
-//               return true;
-//            }
-//         }
-//      }
     }
 
     public static boolean createCrucible(ItemStack is, Player player, Level world, int x, int y, int z) {

@@ -4,7 +4,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.wands.ItemFocusBasic;
 
 public class InventoryFocusPouch implements IInventory {
    public ItemStack[] stackList = new ItemStack[18];

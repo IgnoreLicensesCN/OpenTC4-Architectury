@@ -1,4 +1,4 @@
-package thaumcraft.api;
+package thaumcraft.common.items.abstracts;
 
 import com.linearity.opentc4.annotations.forvalue.PercentageIntValue;
 import net.minecraft.ChatFormatting;

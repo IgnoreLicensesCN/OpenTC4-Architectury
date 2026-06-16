@@ -13,14 +13,13 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.monster.EntityFireBat;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.EntityUtils;
 
-public class ItemFocusHellbat extends ItemFocusBasic {
+public class ItemFocusHellbat {
    public IIcon iconOrnament;
    private static final AspectList<Aspect>costBase;
    private static final AspectList<Aspect>costBomb;

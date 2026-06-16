@@ -12,7 +12,6 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityPrimalOrb;
@@ -20,7 +19,7 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import java.util.Random;
 
-public class ItemFocusPrimal extends ItemFocusBasic {
+public class ItemFocusPrimal {
    IIcon depthIcon = null;
    public static FocusUpgradeType seeker;
 

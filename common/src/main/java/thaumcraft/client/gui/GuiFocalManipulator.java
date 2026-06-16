@@ -16,7 +16,6 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerFocalManipulator;
 import thaumcraft.common.tiles.junkbox.TileFocalManipulator;

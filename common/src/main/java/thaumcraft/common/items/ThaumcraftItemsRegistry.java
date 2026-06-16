@@ -10,11 +10,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
 import thaumcraft.common.items.baubles.ReinforcedVisAmuletItem;
 import thaumcraft.common.items.baubles.VisAmuletItem;
+import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
+import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
+import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
+import thaumcraft.common.items.baubles.primalring.AbstractApprenticesRingItem;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
@@ -1072,6 +1077,42 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<ReinforcedVisAmuletItem> SUPPLIER_REINFORCED_VIS_AMULET = ITEMS.register(
             "reinforced_vis_amulet",
             ReinforcedVisAmuletItem::new
+    );
+    public static final RegistrySupplier<MundaneBeltItem> SUPPLIER_MUNDANE_BELT = ITEMS.register(
+            "mundane_belt",
+            MundaneBeltItem::new
+    );
+    public static final RegistrySupplier<MundaneAmuletItem> SUPPLIER_MUNDANE_AMULET = ITEMS.register(
+            "mundane_amulet",
+            MundaneAmuletItem::new
+    );
+    public static final RegistrySupplier<MundaneRingItem> SUPPLIER_MUNDANE_RING = ITEMS.register(
+            "mundane_ring",
+            MundaneRingItem::new
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_AIR_APPRENTICES_RING = ITEMS.register(
+            "air_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.AIR)
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_WATER_APPRENTICES_RING = ITEMS.register(
+            "water_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.WATER)
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_FIRE_APPRENTICES_RING = ITEMS.register(
+            "fire_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.FIRE)
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_EARTH_APPRENTICES_RING = ITEMS.register(
+            "earth_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.EARTH)
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_ORDER_APPRENTICES_RING = ITEMS.register(
+            "order_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.ORDER)
+    );
+    public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_ENTROPY_APPRENTICES_RING = ITEMS.register(
+            "entropy_apprentices_ring",
+            () -> new AbstractApprenticesRingItem(Aspects.ENTROPY)
     );
 
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();

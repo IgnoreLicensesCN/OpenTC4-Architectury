@@ -23,7 +23,6 @@ import org.lwjgl.opengl.GL11;
 import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitectDisplayItem;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.blocks.junkbox.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemFocusPouch;

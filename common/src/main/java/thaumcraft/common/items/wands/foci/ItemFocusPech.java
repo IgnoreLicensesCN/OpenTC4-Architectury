@@ -12,13 +12,12 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
-public class ItemFocusPech extends ItemFocusBasic {
+public class ItemFocusPech {
    IIcon depthIcon = null;
    private static final AspectList<Aspect>cost;
    private static final AspectList<Aspect>costAll;

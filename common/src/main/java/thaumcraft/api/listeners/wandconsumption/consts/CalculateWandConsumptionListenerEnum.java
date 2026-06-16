@@ -1,7 +1,7 @@
 package thaumcraft.api.listeners.wandconsumption.consts;
 
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.IVisDiscountGearItem;
+import thaumcraft.common.items.abstracts.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;

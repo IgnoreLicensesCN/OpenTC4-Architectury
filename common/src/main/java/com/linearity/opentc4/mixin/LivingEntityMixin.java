@@ -54,6 +54,17 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
         }
         return (float) (prev + living.getAttributeValue(STEP_HEIGHT_ADDITION_NOT_SNEAKING()));
     }
+    @ModifyReturnValue(
+            method = "getJumpPower",
+            at = @At("RETURN0")
+    )
+    private float opentc4$getJumpPower(float prev){
+        var living = (LivingEntity)(Object)this;
+        if (living.isShiftKeyDown()) {
+            return prev;
+        }
+        return (float) (prev + living.getAttributeValue(JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING()));
+    }
 
     @Unique
     private final ThreadLocal<Boolean> opentc4$isInMilkContext = new ThreadLocal<>();
@@ -163,6 +174,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     )
     private static AttributeSupplier.Builder opentc4$injectAttributes(AttributeSupplier.Builder builder) {
         builder
+                .add(JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING())
                 .add(STEP_HEIGHT_ADDITION_NOT_SNEAKING())
                 .add(FLYING_SPEED_CONTROL_OVERRIDE())
                 .add(HARNESS_FLYING_SPEED_ADD_PERCENT())

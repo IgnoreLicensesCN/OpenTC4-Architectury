@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.api.research.ResearchAndScannedInfo;
+import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 //Oh i will hard code things here
@@ -47,6 +48,8 @@ public class AdditionalPlayerDataManager {
     }
 
     public static void syncDataForJoinedPlayer(ServerPlayer player) {
+        new PacketSyncItemAspectsS2C().sendTo(player);
+
         var shieldInfo = EntityRunicShieldInfo.getFromPlayer(player);
         shieldInfo.syncChargeSendPacket(player);
         shieldInfo.syncCapacitySendPacket(player);
@@ -56,6 +59,7 @@ public class AdditionalPlayerDataManager {
 
         var researchInfo = ResearchAndScannedInfo.getFromPlayer(player);
         researchInfo.syncAllSendPacket(player);
+
     }
 
     public static void syncDataFromBeingClonedToCloningClient(Player beingCloned,Player cloningInto) {

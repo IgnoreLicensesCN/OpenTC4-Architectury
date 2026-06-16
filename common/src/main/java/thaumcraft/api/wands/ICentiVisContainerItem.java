@@ -144,20 +144,15 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
 
     default boolean consumeAllCentiVisWithoutModifier(@NotNull ItemStack is, @NotNull CentiVisList<Asp> aspectsToConsume, boolean doit,boolean serverLevel) {
         if (!aspectsToConsume.isEmpty()) {
-            if (aspectsToConsume.forEachWithBreak(
-                    (aspect,amountRequired) ->
-                    getCentiVisOwning(is, aspect) < amountRequired)
-            ){
+            var allCentiVis = getAllCentiVisOwning(is);//it's a copy so do it
+            boolean notEnoughCentiVis = aspectsToConsume.forEachWithBreak(((asp, i) -> !allCentiVis.tryReduce(asp,i)));
+
+            if (notEnoughCentiVis){
                 return false;
             }
 
             if (doit && serverLevel) {
-                aspectsToConsume.forEach((aspect, amount) ->
-                                storeCentiVisOwning(
-                                        is,
-                                        aspect,
-                                        getCentiVisOwning(is, aspect) - amount
-                        ));
+                storeCentiVisOwning(is,allCentiVis);
             }
             return true;
         } else {
@@ -175,25 +170,16 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
             @NotNull CentiVisList<Asp> aspects,
             boolean doit, boolean crafting,boolean serverSide) {
         if (!aspects.isEmpty()) {
-            CentiVisList<Asp> nl = new LinkedHashCentiVisList<>();
-
-            aspects.forEach((aspect,cost) -> {
-
+            var allCentiVis = getAllCentiVisOwning(is);
+            boolean notEnoughCentiVis = aspects.forEachWithBreak((aspect,cost) -> {
                 cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
-                nl.addAll(aspect, cost);
+                return !allCentiVis.tryReduce(aspect, cost);
             });
-            if (nl.forEachWithBreak((aspect,amountRequired) -> getCentiVisOwning(is, aspect) < amountRequired)){
+            if (notEnoughCentiVis) {
                 return false;
             }
             if (doit && serverSide) {
-
-                nl
-                        .forEach((aspect, amount) ->
-                                storeCentiVisOwning(
-                                        is,
-                                        aspect,
-                                        getCentiVisOwning(is, aspect) - amount
-                                ));
+                storeCentiVisOwning(is,allCentiVis);
             }
             return true;
         } else {

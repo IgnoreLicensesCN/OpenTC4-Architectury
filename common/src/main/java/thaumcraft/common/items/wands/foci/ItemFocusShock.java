@@ -14,7 +14,6 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.common.Thaumcraft;
@@ -28,7 +27,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.ArrayList;
 
-public class ItemFocusShock extends ItemFocusBasic {
+public class ItemFocusShock {
    private static final AspectList<Aspect>costBase;
    private static final AspectList<Aspect>costChain;
    private static final AspectList<Aspect>costGround;

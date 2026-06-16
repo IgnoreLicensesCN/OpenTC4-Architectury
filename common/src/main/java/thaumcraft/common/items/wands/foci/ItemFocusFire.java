@@ -11,7 +11,6 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityEmber;
@@ -19,7 +18,7 @@ import thaumcraft.common.entities.projectile.EntityExplosiveOrb;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 
-public class ItemFocusFire extends ItemFocusBasic {
+public class ItemFocusFire {
    private static final AspectList<Aspect>costBase;
    private static final AspectList<Aspect>costBeam;
    private static final AspectList<Aspect>costBall;

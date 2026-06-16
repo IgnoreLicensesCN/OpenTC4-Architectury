@@ -191,6 +191,18 @@ block_with_item_names = [
     ['item.ItemAmuletVis.0.name','vis_amulet'],
     ['item.ItemAmuletVis.1.name','reinforced_vis_amulet'],
 
+    ['item.ItemBaubleBlanks.0.name',"mundane_amulet"],
+    ['item.ItemBaubleBlanks.1.name',"mundane_ring"],
+    ['item.ItemBaubleBlanks.2.name',"mundane_belt"],
+    ['item.ItemBaubleBlanks.3.name',[
+        ["air_apprentices_ring",["%TYPE","Aer"]],
+        ["water_apprentices_ring",["%TYPE","Aqua"]],
+        ["fire_apprentices_ring",["%TYPE","Ignis"]],
+        ["earth_apprentices_ring",["%TYPE","Earth"]],
+        ["order_apprentices_ring",["%TYPE","Order"]],
+        ["entropy_apprentices_ring",["%TYPE","Entropy"]]
+    ]],
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -248,6 +260,15 @@ for fileName in os.listdir(language_file_folder):
                 # if key is not None:
                 language_dict.pop(key)
                 for remappedKeyItem in remappedKey:
+                    if (isinstance(remappedKeyItem,list)
+                        and len(remappedKeyItem) == 2
+                        and isinstance(remappedKeyItem[0],str)
+                        and isinstance(remappedKeyItem[1],list)
+                        and len(remappedKeyItem[1]) == 2
+                        and isinstance(remappedKeyItem[1][0],str)
+                        and isinstance(remappedKeyItem[1][1],str)
+                        ):
+                        value.replace(remappedKeyItem[1][0], remappedKeyItem[1][1])
                     language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value
                     language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:

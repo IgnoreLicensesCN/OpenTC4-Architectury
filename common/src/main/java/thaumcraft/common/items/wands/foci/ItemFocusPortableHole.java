@@ -16,7 +16,6 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -24,7 +23,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.tiles.junkbox.TileHole;
 
-public class ItemFocusPortableHole extends ItemFocusBasic {
+public class ItemFocusPortableHole {
    IIcon depthIcon = null;
    private static final AspectList<Aspect>cost;
 

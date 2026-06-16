@@ -128,6 +128,9 @@ public class EntityUtils {
         public static Attribute HARNESS_FUEL_DURATION_ADD_PERCENT() {
             return Registry.SUPPLIER_HARNESS_FUEL_DURATION_ADD_PERCENT.get();
         }
+        public static Attribute JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING() {
+            return Registry.SUPPLIER_JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING.get();
+        }
 //        public static final Attribute FORWARD_IMPULSE_NOT_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER.get();
 //        public static final Attribute FORWARD_IMPULSE_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_IN_WATER.get();
 //        public static final AttributeModifierTweaked CHAMPION_HEALTH = new AttributeModifierTweaked(
@@ -185,6 +188,10 @@ public class EntityUtils {
         public static final RegistrySupplier<Attribute> SUPPLIER_HARNESS_FUEL_DURATION_ADD_PERCENT = ATTRIBUTES.register(
                 "attributes." + Thaumcraft.MOD_ID + ".harness_fuel_duration_add_percent",
                 () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".harness_fuel_duration_add_percent", 0, -100, 100.0F).setSyncable(true)
+        );
+        public static final RegistrySupplier<Attribute> SUPPLIER_JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING = ATTRIBUTES.register(
+                "attributes." + Thaumcraft.MOD_ID + ".jump_y_velocity_addition_not_sneaking",
+                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".jump_y_velocity_addition_not_sneaking", 0, 0, 100.0F).setSyncable(true)
         );
 //        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER = ATTRIBUTES.register(
 //                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",

@@ -2,6 +2,10 @@ package thaumcraft.common.items;
 import net.minecraft.world.item.*;
 import thaumcraft.common.items.baubles.ReinforcedVisAmuletItem;
 import thaumcraft.common.items.baubles.VisAmuletItem;
+import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
+import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
+import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
+import thaumcraft.common.items.baubles.primalring.AbstractApprenticesRingItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
@@ -864,4 +868,32 @@ public class ThaumcraftItemInstances {
     public static ReinforcedVisAmuletItem REINFORCED_VIS_AMULET() {
         return ThaumcraftItemsRegistry.SUPPLIER_REINFORCED_VIS_AMULET.get();
     }
+    public static MundaneAmuletItem MUNDANE_AMULET() {
+        return ThaumcraftItemsRegistry.SUPPLIER_MUNDANE_AMULET.get();
+    }
+    public static MundaneBeltItem MUNDANE_BELT() {
+        return ThaumcraftItemsRegistry.SUPPLIER_MUNDANE_BELT.get();
+    }
+    public static MundaneRingItem MUNDANE_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_MUNDANE_RING.get();
+    }
+    public static AbstractApprenticesRingItem AIR_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_AIR_APPRENTICES_RING.get();
+    }
+    public static AbstractApprenticesRingItem WATER_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_WATER_APPRENTICES_RING.get();
+    }
+    public static AbstractApprenticesRingItem FIRE_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FIRE_APPRENTICES_RING.get();
+    }
+    public static AbstractApprenticesRingItem EARTH_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_EARTH_APPRENTICES_RING.get();
+    }
+    public static AbstractApprenticesRingItem ORDER_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ORDER_APPRENTICES_RING.get();
+    }
+    public static AbstractApprenticesRingItem ENTROPY_APPRENTICES_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ENTROPY_APPRENTICES_RING.get();
+    }
+
 }

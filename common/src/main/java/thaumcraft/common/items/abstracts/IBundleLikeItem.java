@@ -1,6 +1,7 @@
 package thaumcraft.common.items.abstracts;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.ModifiableCopy;
 import com.linearity.opentc4.annotations.StoleFrom;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -9,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,10 @@ import static com.linearity.opentc4.Consts.BundleLikeItemTagAccessors.BUNDLE_STA
 @StoleFrom({"minecraft","BundleItem"})
 public interface IBundleLikeItem {
     int getMaxItemCount(ItemStack bundleStack);
-    default @Unmodifiable/*do not hope to modify this list to modify the actual data for item*/
-    List< @Modifiable ItemStack /*just a copy*/> getStacksInside(ItemStack bundleStack){
+    default @ModifiableCopy List<ItemStack> getStacksInside(ItemStack bundleStack){
         var tag = bundleStack.getTag();
         if(tag == null){
-            return List.of();
+            return new ArrayList<>();
         }
         return BUNDLE_STACKS.readFromCompoundTag(tag);
     };
@@ -95,7 +94,7 @@ public interface IBundleLikeItem {
         return true;
     }
     default @Modifiable ItemStack extractStackAtLast(ItemStack bundleStack){
-        var stacks = new ArrayList<>(getStacksInside(bundleStack));
+        var stacks = getStacksInside(bundleStack);
         if (stacks.isEmpty()) {
             return ItemStack.EMPTY;
         }

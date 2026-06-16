@@ -5,7 +5,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.tiles.junkbox.TileFocalManipulator;
 
 public class ContainerFocalManipulator extends Container {

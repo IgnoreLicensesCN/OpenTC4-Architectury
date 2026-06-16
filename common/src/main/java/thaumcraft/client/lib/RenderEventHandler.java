@@ -34,7 +34,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectContainerBlockEntity;
 import thaumcraft.api.research.scan.ScanResult;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;

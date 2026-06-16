@@ -25,7 +25,6 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -37,7 +36,7 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemFocusTrade extends ItemFocusBasic implements IArchitectDisplayItem {
+public class ItemFocusTrade implements IArchitectDisplayItem {
    public IIcon iconOrnament;
    private static final AspectList<Aspect>cost;
    private static AspectList<Aspect>cost2;

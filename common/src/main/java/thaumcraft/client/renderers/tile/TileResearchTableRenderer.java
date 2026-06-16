@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.IScribeTools;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelResearchTable;
 import thaumcraft.common.blocks.junkbox.BlockTable;

@@ -7,13 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.IScribeTools;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.EntityBottleTaint;
 
-public class ItemBottleTaint extends Item
-        implements IScribeTools//wait what????
+public class ItemBottleTaint
+        extends Item
+        //wait what????
 {
    @SideOnly(Side.CLIENT)
    public IIcon icon;

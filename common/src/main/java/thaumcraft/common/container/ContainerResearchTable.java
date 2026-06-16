@@ -5,7 +5,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.IScribeTools;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.items.junkbox.ItemResearchNotes;
 import thaumcraft.common.tiles.junkbox.TileResearchTable;

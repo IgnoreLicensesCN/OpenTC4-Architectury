@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IRepairable;
+import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
@@ -444,10 +444,10 @@ public class ArcaneBoreBlockEntity
         int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),0);
         if (enchantmentRepairLevel > 0) {
             CentiVisList<PrimalAspect> repairCostForStack = null;
-            if (is.getItem() instanceof IRepairable repairable){
+            if (is.getItem() instanceof IRepairableItem repairable){
                 repairCostForStack = repairable.getRepairCost(is,enchantmentRepairLevel);
             }else {
-                repairCostForStack = IRepairable.getRepairCostDefault(is,enchantmentRepairLevel);
+                repairCostForStack = IRepairableItem.getRepairCostDefault(is,enchantmentRepairLevel);
             }
 
             if (!repairCostForStack.isEmpty()) {

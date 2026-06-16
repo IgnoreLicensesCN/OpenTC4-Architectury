@@ -1,4 +1,4 @@
-package thaumcraft.api;
+package thaumcraft.common.items.abstracts;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,6 @@ import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisLi
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.items.wands.WandManager;
-import thaumcraft.common.lib.world.HolderCache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,13 +23,13 @@ import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeF
 
 /**
  * <p>IRepairable(pre) -> IRepairEnchantable(after)</p>
- * <p>IRepairableExtended(pre) -> IRepairable(after)</p>
+ * <p>IRepairableExtended(pre) -> IRepairableItem(after)</p>
  * <p>no extend now</p>
  * @author Azanor
  * ThaumcraftItems, armor and tools with this interface can receive the Repair enchantment.
  * Repairs 1 point of durability every 10 seconds (2 for repair II)
  */
-public interface IRepairable {
+public interface IRepairableItem {
 
 	//true if repaired
 	default boolean doRepair(ItemStack is, @Nullable Player player, int enchantlevel){

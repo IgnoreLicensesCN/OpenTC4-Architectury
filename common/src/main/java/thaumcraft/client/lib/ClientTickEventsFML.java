@@ -30,7 +30,6 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
