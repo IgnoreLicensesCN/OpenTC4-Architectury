@@ -203,6 +203,11 @@ block_with_item_names = [
         ["entropy_apprentices_ring",["%TYPE","Perditio"]]
     ]],
 
+    ['item.ItemRingRunic.0.name','protection_ring'],
+    ['item.ItemRingRunic.1.name','runic_shield_ring'],
+    ['item.ItemRingRunic.2.name','charged_runic_shield_ring'],
+    ['item.ItemRingRunic.3.name','revitalizing_runic_shield_ring'],
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],

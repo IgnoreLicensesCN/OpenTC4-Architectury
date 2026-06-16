@@ -378,8 +378,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemBaubleBlanks, "ItemBaubleBlanks", "Thaumcraft");
       itemAmuletRunic = (new ItemAmuletRunic()).setUnlocalizedName("ItemAmuletRunic");
       GameRegistry.registerItem(itemAmuletRunic, "ItemAmuletRunic", "Thaumcraft");
-      itemRingRunic = (new ItemRingRunic()).setUnlocalizedName("ItemRingRunic");
-      GameRegistry.registerItem(itemRingRunic, "ItemRingRunic", "Thaumcraft");
+//      itemRingRunic = (new ItemRingRunic()).setUnlocalizedName("ItemRingRunic");
+//      GameRegistry.registerItem(itemRingRunic, "ItemRingRunic", "Thaumcraft");
       itemGirdleRunic = (new ItemGirdleRunic()).setUnlocalizedName("ItemGirdleRunic");
       GameRegistry.registerItem(itemGirdleRunic, "ItemGirdleRunic", "Thaumcraft");
 //      itemAmuletVis = (new ItemAmuletVis()).setUnlocalizedName("ItemAmuletVis");

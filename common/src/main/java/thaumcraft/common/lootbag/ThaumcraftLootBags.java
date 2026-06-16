@@ -10,13 +10,11 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.ArrayCentiVisList;
 import thaumcraft.api.internal.WeightedRandomCollection;
-import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import java.util.List;
@@ -109,7 +107,7 @@ public class ThaumcraftLootBags {
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> EARTH_APPRENTICES_RING().getDefaultInstance(), 5);
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> ORDER_APPRENTICES_RING().getDefaultInstance(), 5);
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> ENTROPY_APPRENTICES_RING().getDefaultInstance(), 5);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemRingRunic, 1, 0), 5, 1, 2);
+        LOOT_BAG_UNCOMMON_DROPS.add((random) -> PROTECTION_RING().getDefaultInstance(), 5);
         LOOT_BAG_UNCOMMON_DROPS.add((random) -> Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), 2);
 
         potions.forEach((potion) -> {
@@ -152,7 +150,7 @@ public class ThaumcraftLootBags {
         LOOT_BAG_RARE_DROPS.add((random) -> ORDER_APPRENTICES_RING().getDefaultInstance(), 7);
         LOOT_BAG_RARE_DROPS.add((random) -> ENTROPY_APPRENTICES_RING().getDefaultInstance(), 7);
         LOOT_BAG_RARE_DROPS.add(ThaumcraftLootBags::getVisAmulet, 6);
-        ThaumcraftApi.addLootBagItem(new ItemStack(ConfigItems.itemRingRunic, 1, 0), 5, 1, 2);
+        LOOT_BAG_RARE_DROPS.add((random) -> PROTECTION_RING().getDefaultInstance(), 5);
         LOOT_BAG_RARE_DROPS.add((random) -> Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), 3);
 
         potions.forEach((potion) -> {

@@ -19,7 +19,11 @@ import thaumcraft.common.items.baubles.VisAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
 import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
-import thaumcraft.common.items.baubles.primalring.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.runicring.ChargedRunicShieldRingItem;
+import thaumcraft.common.items.baubles.runicring.ProtectionRingItem;
+import thaumcraft.common.items.baubles.runicring.RevitalizingRunicShieldRingItem;
+import thaumcraft.common.items.baubles.runicring.RunicShieldRingItem;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
@@ -1113,6 +1117,22 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<AbstractApprenticesRingItem> SUPPLIER_ENTROPY_APPRENTICES_RING = ITEMS.register(
             "entropy_apprentices_ring",
             () -> new AbstractApprenticesRingItem(Aspects.ENTROPY)
+    );
+    public static final RegistrySupplier<ProtectionRingItem> SUPPLIER_PROTECTION_RING = ITEMS.register(
+            "protection_ring",
+            ProtectionRingItem::new
+    );
+    public static final RegistrySupplier<RunicShieldRingItem> SUPPLIER_RUNIC_SHIELD_RING = ITEMS.register(
+            "runic_shield_ring",
+            RunicShieldRingItem::new
+    );
+    public static final RegistrySupplier<ChargedRunicShieldRingItem> SUPPLIER_CHARGED_RUNIC_SHIELD_RING = ITEMS.register(
+            "charged_runic_shield_ring",
+            ChargedRunicShieldRingItem::new
+    );
+    public static final RegistrySupplier<RevitalizingRunicShieldRingItem> SUPPLIER_REVITALIZING_RUNIC_SHIELD_RING = ITEMS.register(
+            "revitalizing_runic_shield_ring",
+            RevitalizingRunicShieldRingItem::new
     );
 
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();

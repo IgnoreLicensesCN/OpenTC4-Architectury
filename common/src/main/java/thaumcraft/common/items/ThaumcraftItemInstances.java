@@ -5,7 +5,11 @@ import thaumcraft.common.items.baubles.VisAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
 import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
-import thaumcraft.common.items.baubles.primalring.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.AbstractApprenticesRingItem;
+import thaumcraft.common.items.baubles.runicring.ChargedRunicShieldRingItem;
+import thaumcraft.common.items.baubles.runicring.ProtectionRingItem;
+import thaumcraft.common.items.baubles.runicring.RevitalizingRunicShieldRingItem;
+import thaumcraft.common.items.baubles.runicring.RunicShieldRingItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
@@ -894,6 +898,18 @@ public class ThaumcraftItemInstances {
     }
     public static AbstractApprenticesRingItem ENTROPY_APPRENTICES_RING() {
         return ThaumcraftItemsRegistry.SUPPLIER_ENTROPY_APPRENTICES_RING.get();
+    }
+    public static ProtectionRingItem PROTECTION_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_PROTECTION_RING.get();
+    }
+    public static RunicShieldRingItem RUNE_SHIELD_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_RUNIC_SHIELD_RING.get();
+    }
+    public static ChargedRunicShieldRingItem CHARGED_RUNE_SHIELD_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_CHARGED_RUNIC_SHIELD_RING.get();
+    }
+    public static RevitalizingRunicShieldRingItem REVITALIZING_RUNE_SHIELD_RING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_REVITALIZING_RUNIC_SHIELD_RING.get();
     }
 
 }
