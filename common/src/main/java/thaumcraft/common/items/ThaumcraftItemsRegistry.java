@@ -14,19 +14,14 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.items.baubles.ReinforcedVisAmuletItem;
-import thaumcraft.common.items.baubles.VisAmuletItem;
-import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
-import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
-import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
+import thaumcraft.common.items.baubles.visamulet.*;
+import thaumcraft.common.items.baubles.mundane.*;
 import thaumcraft.common.items.baubles.AbstractApprenticesRingItem;
-import thaumcraft.common.items.baubles.runicring.ChargedRunicShieldRingItem;
-import thaumcraft.common.items.baubles.runicring.ProtectionRingItem;
-import thaumcraft.common.items.baubles.runicring.RevitalizingRunicShieldRingItem;
-import thaumcraft.common.items.baubles.runicring.RunicShieldRingItem;
+import thaumcraft.common.items.baubles.runicring.*;
 import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
+import thaumcraft.common.items.consumable.lootbag.*;
 import thaumcraft.common.items.eldritch.*;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.equipment.armor.cultist.*;
@@ -1133,6 +1128,18 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<RevitalizingRunicShieldRingItem> SUPPLIER_REVITALIZING_RUNIC_SHIELD_RING = ITEMS.register(
             "revitalizing_runic_shield_ring",
             RevitalizingRunicShieldRingItem::new
+    );
+    public static final RegistrySupplier<CommonLootBagItem> SUPPLIER_COMMON_LOOT_BAG = ITEMS.register(
+            "common_loot_bag",
+            CommonLootBagItem::new
+    );
+    public static final RegistrySupplier<UncommonLootBagItem> SUPPLIER_UNCOMMON_LOOT_BAG = ITEMS.register(
+            "uncommon_loot_bag",
+            UncommonLootBagItem::new
+    );
+    public static final RegistrySupplier<RareLootBagItem> SUPPLIER_RARE_LOOT_BAG = ITEMS.register(
+            "rare_loot_bag",
+            RareLootBagItem::new
     );
 
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();

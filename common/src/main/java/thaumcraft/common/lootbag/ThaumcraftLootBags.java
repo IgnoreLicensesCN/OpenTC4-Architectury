@@ -153,17 +153,15 @@ public class ThaumcraftLootBags {
         LOOT_BAG_RARE_DROPS.add((random) -> PROTECTION_RING().getDefaultInstance(), 5);
         LOOT_BAG_RARE_DROPS.add((random) -> Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), 3);
 
-        potions.forEach((potion) -> {
-            LOOT_BAG_RARE_DROPS.add(random -> {
-                var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
-                PotionUtils.setPotion(stack, potion);
+        potions.forEach((potion) -> LOOT_BAG_RARE_DROPS.add(random -> {
+            var stack = random.nextBoolean() ? new ItemStack(Items.POTION) : new ItemStack(Items.SPLASH_POTION);
+            PotionUtils.setPotion(stack, potion);
 
-                return stack;
-            },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum());
-        });
+            return stack;
+        },potion.getEffects().stream().mapToInt(effectInstance -> effectInstance.getAmplifier()+1).sum()));
 
         LOOT_BAG_RARE_DROPS.add((random) -> Items.NETHER_STAR.getDefaultInstance(), 1);
-        LOOT_BAG_RARE_DROPS.add((random) -> PRIME_PEARL().getDefaultInstance(), 1);
+        LOOT_BAG_RARE_DROPS.add((random) -> PRIME_PEARL().getDefaultInstance(), 1);//yes you can get pearl at home.
 
         LOOT_BAG_RARE_DROPS.sort();
     }
@@ -186,7 +184,6 @@ public class ThaumcraftLootBags {
         VIS_AMULET().storeCentiVisOwning(
                 result, centiVisOwning
         );
-
         return result;
     }
 
@@ -233,7 +230,6 @@ public class ThaumcraftLootBags {
         } else {
             return ItemStack.EMPTY;
         }
-
     }
 
     private static Item getGearItemForSlot(int slot, int quality) {

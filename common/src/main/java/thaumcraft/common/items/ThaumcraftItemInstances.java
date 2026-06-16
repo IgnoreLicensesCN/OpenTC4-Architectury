@@ -1,7 +1,7 @@
 package thaumcraft.common.items;
 import net.minecraft.world.item.*;
-import thaumcraft.common.items.baubles.ReinforcedVisAmuletItem;
-import thaumcraft.common.items.baubles.VisAmuletItem;
+import thaumcraft.common.items.baubles.visamulet.ReinforcedVisAmuletItem;
+import thaumcraft.common.items.baubles.visamulet.VisAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
 import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
@@ -14,6 +14,9 @@ import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.CrystalEssenceItem;
 import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
 import thaumcraft.common.items.consumable.aspectowning.WispEssenceItem;
+import thaumcraft.common.items.consumable.lootbag.CommonLootBagItem;
+import thaumcraft.common.items.consumable.lootbag.RareLootBagItem;
+import thaumcraft.common.items.consumable.lootbag.UncommonLootBagItem;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
@@ -911,5 +914,15 @@ public class ThaumcraftItemInstances {
     public static RevitalizingRunicShieldRingItem REVITALIZING_RUNE_SHIELD_RING() {
         return ThaumcraftItemsRegistry.SUPPLIER_REVITALIZING_RUNIC_SHIELD_RING.get();
     }
+    public static CommonLootBagItem COMMON_LOOT_BAG() {
+        return ThaumcraftItemsRegistry.SUPPLIER_COMMON_LOOT_BAG.get();
+    }
+    public static UncommonLootBagItem UNCOMMON_LOOT_BAG() {
+        return ThaumcraftItemsRegistry.SUPPLIER_UNCOMMON_LOOT_BAG.get();
+    }
+    public static RareLootBagItem RARE_LOOT_BAG() {
+        return ThaumcraftItemsRegistry.SUPPLIER_RARE_LOOT_BAG.get();
+    }
+
 
 }

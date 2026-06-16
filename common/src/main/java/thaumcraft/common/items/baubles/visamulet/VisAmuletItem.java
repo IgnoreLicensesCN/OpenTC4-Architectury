@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles;
+package thaumcraft.common.items.baubles.visamulet;
 
 import com.linearity.opentc4.annotations.ModifiableCopy;
 import io.wispforest.accessories.api.AccessoryItem;
@@ -58,7 +58,7 @@ public class VisAmuletItem extends AccessoryItem implements
         VIS_AMULET_OWING_VIS.writeToCompoundTag(itemStack.getOrCreateTag(), aspects);
     }
 
-    private static final @Unmodifiable CentiVisList<Aspect> CAPACITY_CACHE = UnmodifiableCentiVisList.of(
+    private static final @Unmodifiable CentiVisList<Aspect> CAPACITY = UnmodifiableCentiVisList.of(
             Aspects.AIR,2500,
             Aspects.WATER,2500,
             Aspects.FIRE,2500,
@@ -68,7 +68,7 @@ public class VisAmuletItem extends AccessoryItem implements
     );
     @Override
     public @UnmodifiableView CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack stack) {
-        return CAPACITY_CACHE;
+        return CAPACITY;
     }
 
     @Override

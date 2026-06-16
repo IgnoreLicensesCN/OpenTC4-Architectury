@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles;
+package thaumcraft.common.items.baubles.visamulet;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -18,7 +18,7 @@ public class ReinforcedVisAmuletItem extends VisAmuletItem {
     }
 
 
-    private static final @Unmodifiable CentiVisList<Aspect> CAPACITY_CACHE = UnmodifiableCentiVisList.of(
+    private static final @Unmodifiable CentiVisList<Aspect> CAPACITY = UnmodifiableCentiVisList.of(
             Aspects.AIR,25000,
             Aspects.WATER,25000,
             Aspects.FIRE,25000,
@@ -28,6 +28,6 @@ public class ReinforcedVisAmuletItem extends VisAmuletItem {
     );
     @Override
     public @UnmodifiableView CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack stack) {
-        return CAPACITY_CACHE;
+        return CAPACITY;
     }
 }

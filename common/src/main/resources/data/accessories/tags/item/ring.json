@@ -1,5 +1,16 @@
 {
   "replace": false,
   "values": [
+    "mundane_ring",
+    "air_apprentices_ring",
+    "water_apprentices_ring",
+    "fire_apprentices_ring",
+    "earth_apprentices_ring",
+    "order_apprentices_ring",
+    "entropy_apprentices_ring",
+    "protection_ring",
+    "runic_shield_ring",
+    "charged_runic_shield_ring",
+    "revitalizing_runic_shield_ring"
   ]
 }

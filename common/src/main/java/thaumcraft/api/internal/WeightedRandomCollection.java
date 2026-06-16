@@ -28,7 +28,7 @@ public class WeightedRandomCollection<Obj>{
         if (!sorted){
             sort();
         }
-        int pickValue = rand.nextInt(totalWeight);
+        int pickValue = rand.nextInt(totalWeight + 1);
         for (var item : internalContainer) {
             pickValue -= item.rightInt();
             if (pickValue <= 0) {
@@ -39,6 +39,7 @@ public class WeightedRandomCollection<Obj>{
     }
     public void clear(){
         internalContainer.clear();
+        totalWeight = 0;
     }
     public int getTotalWeight() {
         return totalWeight;

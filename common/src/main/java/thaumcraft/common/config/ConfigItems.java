@@ -458,8 +458,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemLegsCultistLeaderPlate, "ItemLeggingsCultistLeaderPlate", "Thaumcraft");
 //      itemSwordCrimson = (new ItemCrimsonSword()).setUnlocalizedName("ItemSwordCrimson");
 //      GameRegistry.registerItem(itemSwordCrimson, "ItemSwordCrimson", "Thaumcraft");
-      itemLootbag = (new ItemLootBag()).setUnlocalizedName("ItemLootBag");
-      GameRegistry.registerItem(itemLootbag, "ItemLootBag", "Thaumcraft");
+//      itemLootbag = (new ItemLootBag()).setUnlocalizedName("ItemLootBag");
+//      GameRegistry.registerItem(itemLootbag, "ItemLootBag", "Thaumcraft");
 //      itemCompassStone = (new ItemCompassStone()).setUnlocalizedName("ItemCompassStone");
 //      GameRegistry.registerItem(itemCompassStone, "ItemCompassStone", "Thaumcraft");
 //      itemPrimalCrusher = (new ItemPrimalCrusher(ItemPrimalCrusher.material)).setUnlocalizedName("ItemPrimalCrusher");
