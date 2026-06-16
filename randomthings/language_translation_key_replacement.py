@@ -213,6 +213,12 @@ block_with_item_names = [
     ['item.ItemLootBag.2.name','rare_loot_bag'],
 
     ['item.ItemGirdleHover.name','hover_girdle'],
+    
+    ['item.ItemAmuletRunic.0.name','runic_amulet'],
+    ['item.ItemAmuletRunic.1.name','emergency_runic_amulet'],
+
+    ['item.ItemGirdleRunic.0.name','runic_girdle'],
+    ['item.ItemGirdleRunic.1.name','kinetic_runic_girdle'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
@@ -230,12 +236,21 @@ force_add_keys = {
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
 
 def special_key_sort_weight(parts:list[str]):
+    if parts[-1].startswith("mundane_"):
+        return 7
+
     if parts[-1].endswith("_arrow"):
         return 1
     if parts[-1].endswith("_apprentices_ring"):
         return 2
     if parts[-1].endswith("_candle"):
         return 3
+    if parts[-1].endswith("_girdle"):
+        return 4
+    if parts[-1].endswith("_amulet"):
+        return 5
+    if parts[-1].endswith("_ring"):
+        return 6
     return 0
 
 def key_sorter(key_string):

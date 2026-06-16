@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles.visamulet;
+package thaumcraft.common.items.baubles.amulet.visamulet;
 
 import com.linearity.opentc4.annotations.ModifiableCopy;
 import io.wispforest.accessories.api.AccessoryItem;

@@ -1,4 +1,4 @@
-package thaumcraft.common.items.baubles.visamulet;
+package thaumcraft.common.items.baubles.amulet.visamulet;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;

@@ -1,11 +1,13 @@
 package thaumcraft.api.listeners.warp.consts;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
@@ -16,13 +18,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
-import static thaumcraft.api.listeners.warp.WarpEventManager.getFinalWarp;
-import static thaumcraft.api.listeners.warp.WarpEventManager.tryTriggerRandomWarpEvent;
+import static thaumcraft.api.listeners.warp.WarpEventManager.*;
 
 public class WarpEvents {
 
    public static void checkWarpEvent(ServerPlayer player) {
-      tryTriggerRandomWarpEvent(player);
+
+      if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(player) == 0) {
+         tryTriggerRandomWarpEvent(player);
+      }
 
    }
 
@@ -110,7 +114,7 @@ public class WarpEvents {
          }
       }
 
-      player.displayClientMessage(Component.literal("§5§o" + Component.translatable("warp.text.7")));
+      player.displayClientMessage(Component.translatable("warp.text.7").withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC), true);
    }
 
    public static int getWarpFromGear(Player player) {

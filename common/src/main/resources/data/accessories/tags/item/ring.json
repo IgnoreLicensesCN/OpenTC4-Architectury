@@ -1,16 +1,16 @@
 {
   "replace": false,
   "values": [
-    "mundane_ring",
-    "air_apprentices_ring",
-    "water_apprentices_ring",
-    "fire_apprentices_ring",
-    "earth_apprentices_ring",
-    "order_apprentices_ring",
-    "entropy_apprentices_ring",
-    "protection_ring",
-    "runic_shield_ring",
-    "charged_runic_shield_ring",
-    "revitalizing_runic_shield_ring"
+    "thaumcraft:mundane_ring",
+    "thaumcraft:air_apprentices_ring",
+    "thaumcraft:water_apprentices_ring",
+    "thaumcraft:fire_apprentices_ring",
+    "thaumcraft:earth_apprentices_ring",
+    "thaumcraft:order_apprentices_ring",
+    "thaumcraft:entropy_apprentices_ring",
+    "thaumcraft:protection_ring",
+    "thaumcraft:runic_shield_ring",
+    "thaumcraft:charged_runic_shield_ring",
+    "thaumcraft:revitalizing_runic_shield_ring"
   ]
 }

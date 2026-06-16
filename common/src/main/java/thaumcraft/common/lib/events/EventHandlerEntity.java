@@ -92,31 +92,6 @@ public class EventHandlerEntity {
             UnnaturalHungerShaderHandler.INSTANCE.tick(player);
          });
 
-         TickEvent.PLAYER_PRE.register(player -> {
-            if (player instanceof ServerPlayer serverPlayer) {
-               if (!Config.wuss && player.tickCount > 0 && player.tickCount % getWarpEventDelayForPlayer(serverPlayer) == 0) {
-                  WarpEvents.checkWarpEvent(serverPlayer);
-               }
-               if (serverPlayer.tickCount % 40 == 0) {
-                  Consumer<ItemStack> repairItemStack = stack -> {
-                     if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairableItem
-                             || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),stack) > 0) && !serverPlayer.isCreative()
-                     ) {
-                        doRepair(stack, serverPlayer);
-                     }
-                  };
-                  serverPlayer.getInventory().items.forEach(repairItemStack);
-                  serverPlayer.getInventory().offhand.forEach(repairItemStack);
-                  serverPlayer.getInventory().armor.forEach(repairItemStack);
-                  forEachBauble(serverPlayer,(slot, stack, item) -> {
-                     repairItemStack.accept(stack);
-                     return false;
-                  });
-               }
-            }
-
-            updateSpeedForHasteEnchantment(player);
-         });
 //         EntityEvent.ADD.register((entity, world) -> {
 //            if (entity instanceof LivingEntity livingEntity
 //                    && !livingEntity.isDeadOrDying()
@@ -191,6 +166,25 @@ public class EventHandlerEntity {
 
    }
 
+   public static void repairInventoryItemsForPlayer(ServerPlayer serverPlayer) {
+      if (serverPlayer.tickCount % 40 == 0) {
+         Consumer<ItemStack> repairItemStack = stack -> {
+            if (stack.getDamageValue() > 0 && (stack.getItem() instanceof IRepairableItem
+                    || EnchantmentHelper.getItemEnchantmentLevel(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),stack) > 0) && !serverPlayer.isCreative()
+            ) {
+               doRepair(stack, serverPlayer);
+            }
+         };
+         serverPlayer.getInventory().items.forEach(repairItemStack);
+         serverPlayer.getInventory().offhand.forEach(repairItemStack);
+         serverPlayer.getInventory().armor.forEach(repairItemStack);
+         forEachBauble(serverPlayer,(slot, stack, item) -> {
+            repairItemStack.accept(stack);
+            return false;
+         });
+      }
+   }
+
 
    public static final Function<ItemStack,Boolean> checkIfCanConsumeForRepair = itemStack -> (itemStack.getItem() instanceof IEnchantmentRepairVisProviderItem provider) && provider.canProvideVisForRepair(itemStack);
    public static void doRepair(ItemStack is, ServerPlayer player) {
@@ -213,7 +207,7 @@ public class EventHandlerEntity {
          }
       }
    }
-   private static void updateSpeedForHasteEnchantment(Player player) {
+   public static void updateSpeedForHasteEnchantment(Player player) {
       var armorStack = player.getItemBySlot(EquipmentSlot.CHEST);
       if (armorStack.isEmpty()) return;
       if (!player.getAbilities().flying

@@ -14,8 +14,13 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.items.baubles.HoverGirdleItem;
-import thaumcraft.common.items.baubles.visamulet.*;
+import thaumcraft.common.items.baubles.belt.HoverGirdleItem;
+import thaumcraft.common.items.baubles.amulet.EmergencyRunicAmuletItem;
+import thaumcraft.common.items.baubles.amulet.RunicAmuletItem;
+import thaumcraft.common.items.baubles.amulet.visamulet.ReinforcedVisAmuletItem;
+import thaumcraft.common.items.baubles.amulet.visamulet.VisAmuletItem;
+import thaumcraft.common.items.baubles.belt.KineticRunicGirdleItem;
+import thaumcraft.common.items.baubles.belt.RunicGirdleItem;
 import thaumcraft.common.items.baubles.mundane.*;
 import thaumcraft.common.items.baubles.ring.AbstractApprenticesRingItem;
 import thaumcraft.common.items.baubles.ring.runicring.*;
@@ -1146,7 +1151,23 @@ public class ThaumcraftItemsRegistry {
             "hover_girdle",
             HoverGirdleItem::new
     );
-
+    public static final RegistrySupplier<RunicAmuletItem> SUPPLIER_RUNIC_AMULET = ITEMS.register(
+            "runic_amulet",
+            RunicAmuletItem::new
+    );
+    public static final RegistrySupplier<EmergencyRunicAmuletItem> SUPPLIER_EMERGENCY_RUNIC_AMULET = ITEMS.register(
+            "emergency_runic_amulet",
+            EmergencyRunicAmuletItem::new
+    );
+    public static final RegistrySupplier<RunicGirdleItem> SUPPLIER_RUNIC_GIRDLE = ITEMS.register(
+            "runic_girdle",
+            RunicGirdleItem::new
+    );
+    public static final RegistrySupplier<KineticRunicGirdleItem> SUPPLIER_KINETIC_RUNIC_GIRDLE = ITEMS.register(
+            "kinetic_runic_girdle",
+            KineticRunicGirdleItem::new
+    );
+    
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){

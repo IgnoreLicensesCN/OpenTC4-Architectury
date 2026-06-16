@@ -24,6 +24,8 @@ import thaumcraft.common.runicshield.EntityRunicShieldInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static thaumcraft.common.lib.events.EventHandlerEntity.updateSpeedForHasteEnchantment;
+
 @Mixin(value = Player.class,priority = 900)
 public class PlayerMixin
         implements
@@ -115,6 +117,8 @@ public class PlayerMixin
             at = @At("HEAD")
     )
     private void opentc4$playerTick(CallbackInfo ci){
-        IFlyingAbilityProviderWearing.FlyingAbilityProviderCheck.checkFlyingProviderForPlayer((Player)(Object)this);
+        var player = (Player)(Object)this;
+        IFlyingAbilityProviderWearing.FlyingAbilityProviderCheck.checkFlyingProviderForPlayer(player);
+        updateSpeedForHasteEnchantment(player);
     }
 }

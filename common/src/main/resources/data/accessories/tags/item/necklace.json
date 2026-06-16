@@ -3,6 +3,8 @@
   "values": [
     "thaumcraft:vis_amulet",
     "thaumcraft:reinforced_vis_amulet",
-    "mundane_amulet"
+    "thaumcraft:mundane_amulet",
+    "thaumcraft:runic_amulet",
+    "thaumcraft:emergency_runic_amulet"
   ]
 }

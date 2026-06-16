@@ -1,39 +1,25 @@
 package thaumcraft.api.wands;
 
-import org.jetbrains.annotations.UnmodifiableView;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.WandSpellEventTypeResourceLocation;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 //i wanted enum but maybe other mods wants its type
 public class WandSpellEventType {
-    public static final WandSpellEventType ON_BLOCK = new WandSpellEventType("ON_BLOCK");
-    public static final WandSpellEventType WAND_FOCUS = new WandSpellEventType("WAND_FOCUS");
-    public static final WandSpellEventType CRAFTING = new WandSpellEventType("CRAFTING");
+    public static final WandSpellEventType ON_BLOCK = new WandSpellEventType(WandSpellEventTypeResourceLocation.of(Thaumcraft.MOD_ID,"on_block"));
+    public static final WandSpellEventType WAND_FOCUS = new WandSpellEventType(WandSpellEventTypeResourceLocation.of(Thaumcraft.MOD_ID,"wand_focus"));
+    public static final WandSpellEventType CRAFTING = new WandSpellEventType(WandSpellEventTypeResourceLocation.of(Thaumcraft.MOD_ID,"crafting"));
 
-    //don't match this so i set to private,maybe other mods want its own type not called other.
-    private static final WandSpellEventType OTHER = new WandSpellEventType("OTHER");
-
-
-    public final String name;
-    public WandSpellEventType(String name) {
+    public final WandSpellEventTypeResourceLocation name;
+    public WandSpellEventType(WandSpellEventTypeResourceLocation name) {
         this.name = name;
-        addType(this);
+        SPELL_TYPES.put(this.name,this);
     }
 
-
-
-    private final List<WandSpellEventType> TYPES = new CopyOnWriteArrayList<>();
-    private final List<WandSpellEventType> TYPES_VIEW = Collections.unmodifiableList(TYPES);
-
-    @UnmodifiableView
-    public List<WandSpellEventType> values() {
-        return TYPES_VIEW;
-    }
-
-    private void addType(WandSpellEventType type) {
-        TYPES.add(type);
-    }
+    private final Map<WandSpellEventTypeResourceLocation,WandSpellEventType> SPELL_TYPES = new ConcurrentHashMap<>();
+    private final Map<WandSpellEventTypeResourceLocation,WandSpellEventType> SPELL_TYPES_VIEW = Collections.unmodifiableMap(SPELL_TYPES);
 }

@@ -224,7 +224,10 @@ public class WandCastingItem extends Item
         wandComponentsForEach(usingWand,component -> {
             var componentItem = component.getItem();
             if (componentItem instanceof IAspectCapacityOwnerComponent<? extends Aspect> owner) {
-                result[0] = result[0].add((CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(), ArrayCentiVisList::new);
+                result[0] = result[0].add(
+                        (CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(),
+                        ArrayCentiVisList::new
+                );
             }
         });
 

@@ -1,8 +1,12 @@
 package thaumcraft.common.items;
 import net.minecraft.world.item.*;
-import thaumcraft.common.items.baubles.HoverGirdleItem;
-import thaumcraft.common.items.baubles.visamulet.ReinforcedVisAmuletItem;
-import thaumcraft.common.items.baubles.visamulet.VisAmuletItem;
+import thaumcraft.common.items.baubles.belt.HoverGirdleItem;
+import thaumcraft.common.items.baubles.amulet.EmergencyRunicAmuletItem;
+import thaumcraft.common.items.baubles.amulet.RunicAmuletItem;
+import thaumcraft.common.items.baubles.amulet.visamulet.ReinforcedVisAmuletItem;
+import thaumcraft.common.items.baubles.amulet.visamulet.VisAmuletItem;
+import thaumcraft.common.items.baubles.belt.KineticRunicGirdleItem;
+import thaumcraft.common.items.baubles.belt.RunicGirdleItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
 import thaumcraft.common.items.baubles.mundane.MundaneBeltItem;
 import thaumcraft.common.items.baubles.mundane.MundaneRingItem;
@@ -926,6 +930,18 @@ public class ThaumcraftItemInstances {
     }
     public static HoverGirdleItem HOVER_GIRDLE() {
         return ThaumcraftItemsRegistry.SUPPLIER_HOVER_GIRDLE.get();
+    }
+    public static RunicAmuletItem RUNIC_AMULET() {
+        return ThaumcraftItemsRegistry.SUPPLIER_RUNIC_AMULET.get();
+    }
+    public static EmergencyRunicAmuletItem EMERGENCY_RUNIC_AMULET() {
+        return ThaumcraftItemsRegistry.SUPPLIER_EMERGENCY_RUNIC_AMULET.get();
+    }
+    public static RunicGirdleItem RUNIC_GIRDLE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_RUNIC_GIRDLE.get();
+    }
+    public static KineticRunicGirdleItem KINETIC_RUNIC_GIRDLE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_KINETIC_RUNIC_GIRDLE.get();
     }
 
 
