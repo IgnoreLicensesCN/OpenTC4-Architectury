@@ -198,9 +198,9 @@ block_with_item_names = [
         ["air_apprentices_ring",["%TYPE","Aer"]],
         ["water_apprentices_ring",["%TYPE","Aqua"]],
         ["fire_apprentices_ring",["%TYPE","Ignis"]],
-        ["earth_apprentices_ring",["%TYPE","Earth"]],
-        ["order_apprentices_ring",["%TYPE","Order"]],
-        ["entropy_apprentices_ring",["%TYPE","Entropy"]]
+        ["earth_apprentices_ring",["%TYPE","Terra"]],
+        ["order_apprentices_ring",["%TYPE","Ordo"]],
+        ["entropy_apprentices_ring",["%TYPE","Perditio"]]
     ]],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
@@ -219,8 +219,12 @@ force_add_keys = {
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
 
 def special_key_sort_weight(parts:list[str]):
-    if parts[-1].endswith("_arrow") or parts[-1].endswith("_candle"):
+    if parts[-1].endswith("_arrow"):
         return 1
+    if parts[-1].endswith("_apprentices_ring"):
+        return 2
+    if parts[-1].endswith("_candle"):
+        return 3
     return 0
 
 def key_sorter(key_string):
@@ -268,9 +272,12 @@ for fileName in os.listdir(language_file_folder):
                         and isinstance(remappedKeyItem[1][0],str)
                         and isinstance(remappedKeyItem[1][1],str)
                         ):
-                        value.replace(remappedKeyItem[1][0], remappedKeyItem[1][1])
-                    language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value
-                    language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
+                        replacedValue = value.replace(remappedKeyItem[1][0], remappedKeyItem[1][1])
+                        language_dict[f'block.thaumcraft.{remappedKeyItem[0]}'] = replacedValue
+                        language_dict[f'item.thaumcraft.{remappedKeyItem[0]}'] = replacedValue
+                    else:
+                        language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value
+                        language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:
                 raise Exception(str(block_with_item_name_pair))
         sorted_keys = (sorted(list(language_dict.keys()), key=key_sorter))
