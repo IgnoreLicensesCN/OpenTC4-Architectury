@@ -46,20 +46,22 @@ public enum CalculateWandConsumptionListenerEnum {
         public void onCalculation(ConsumptionModifierCalculationContext context) {
             var casting = context.casting;
             var user = context.user;
-            if (user instanceof Player player) {
-                forEachBauble(player,(slot, baubleStack, item) -> {
-                    var discountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(item);
-                    if (discountGear != null) {
-                        context.currentConsumption -= (discountGear.getVisCostPercentDecrease(baubleStack, player, context.aspect)/100F);
-                    }
-                    return false;
-                });
+            if (user == null) {
+                return;
+            }
 
-                for (var equipStack : player.getArmorSlots()) {
-                    IVisDiscountGearItem visDiscountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(equipStack.getItem());
-                    if (visDiscountGear != null) {
-                        context.currentConsumption -= (visDiscountGear.getVisCostPercentDecrease(equipStack, player, context.aspect)/100F);
-                    }
+            forEachBauble(user,(slot, baubleStack, item) -> {
+                var discountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(item);
+                if (discountGear != null) {
+                    context.currentConsumption -= (discountGear.getVisCostPercentDecrease(baubleStack, user, context.aspect)/100F);
+                }
+                return false;
+            });
+
+            for (var equipStack : user.getArmorSlots()) {
+                IVisDiscountGearItem visDiscountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(equipStack.getItem());
+                if (visDiscountGear != null) {
+                    context.currentConsumption -= (visDiscountGear.getVisCostPercentDecrease(equipStack, user, context.aspect)/100F);
                 }
             }
         }

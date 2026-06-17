@@ -53,16 +53,21 @@ public class WandManager implements IWandTriggerManager {
         return consumeCentiVisFromInventory(entityToCost, cost, ignore -> true);
     }
     //do some mixin?
-    public static boolean consumeCentiVisFromInventory(Entity entity, CentiVisList<Aspect> cost, Function<ItemStack,Boolean> checkCondition) {
-        if (entity instanceof Player player){
+    public static boolean consumeCentiVisFromInventory(
+            Entity entity,
+            CentiVisList<Aspect> cost,
+            Function<ItemStack,Boolean> checkCondition
+    ) {
+        if (entity instanceof LivingEntity living){
             BaubleConsumer<ICentiVisContainerItem> centiVisContainerConsumer = (slot, stack, centiVisContainerItem) ->
             {
                 if (!checkCondition.apply(stack)) {
                     return false;
                 }
-                return centiVisContainerItem.consumeAllCentiVis(stack, player, cost, true, false, !player.level().isClientSide);
+                return centiVisContainerItem.consumeAllCentiVis(
+                        stack, living, cost, true, false, !living.level().isClientSide);
             };
-            return forEachBauble(player, ICentiVisContainerItem.class, centiVisContainerConsumer);
+            return forEachBauble(living, ICentiVisContainerItem.class, centiVisContainerConsumer);
         }
         return false;
     }

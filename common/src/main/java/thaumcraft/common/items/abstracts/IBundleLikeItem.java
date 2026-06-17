@@ -3,6 +3,7 @@ package thaumcraft.common.items.abstracts;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.ModifiableCopy;
 import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
@@ -91,7 +92,7 @@ public interface IBundleLikeItem {
     }
     //does not check size
     default boolean canInsertStackToBundle(ItemStack bundleStack, ItemStack stackToInsert){
-        return true;
+        return bundleStack.getItem().canFitInsideContainerItems();
     }
     default @Modifiable ItemStack extractStackAtLastOfBundle(ItemStack bundleStack){
         var stacks = getStacksInsideBundle(bundleStack);
@@ -124,27 +125,23 @@ public interface IBundleLikeItem {
         entity.playSound(SoundEvents.BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
     }
 
-    default boolean bundleOverrideStackedOnOther(ItemStack harnessStack, Slot slot, ClickAction clickAction, Player player) {
+    default boolean bundleOverrideStackedOnOther(ItemStack bundleStack, Slot slot, ClickAction clickAction, Player player) {
         if (clickAction != ClickAction.SECONDARY) {
             return false;
         }
         ItemStack stackInSlot = slot.getItem();
         if (stackInSlot.isEmpty()) {
-            var extracted = extractStackAtLastOfBundle(harnessStack);
+            var extracted = extractStackAtLastOfBundle(bundleStack);
             if (!extracted.isEmpty()) {
                 this.playRemoveOneFromBundleSound(player);
                 slot.safeInsert(extracted);
             }
-        } else if (stackInSlot.getItem().canFitInsideContainerItems()) {
-            int countBeforeInsert = stackInSlot.getCount();
-            insertStackToBundle(harnessStack, stackInSlot);
-            if (stackInSlot.getCount() != countBeforeInsert){
-                this.playInsertToBundleSound(player);
-            }
+        } else if (canInsertStackToBundle(bundleStack, stackInSlot)) {
+            insertToBundleAndPlaySound(bundleStack, stackInSlot, player);
         }
         return true;
     }
-    default boolean bundleOverrideOtherStackedOnMe(ItemStack harnessStack, ItemStack stackInSlot, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
+    default boolean bundleOverrideOtherStackedOnMe(ItemStack bundleStack, ItemStack stackInSlot, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
         if (clickAction != ClickAction.SECONDARY){
             return false;
         }
@@ -153,19 +150,28 @@ public interface IBundleLikeItem {
         }
 
         if (stackInSlot.isEmpty()) {
-            var extracted = extractStackAtLastOfBundle(harnessStack);
+            var extracted = extractStackAtLastOfBundle(bundleStack);
             if (!extracted.isEmpty()){
                 this.playRemoveOneFromBundleSound(player);
                 slotAccess.set(extracted);
             }
         } else {
-            int countBeforeInsert = stackInSlot.getCount();
-            insertStackToBundle(harnessStack, stackInSlot);
-            if (stackInSlot.getCount() != countBeforeInsert){
-                this.playInsertToBundleSound(player);
-            }
+            bundleOverrideNotEmptyOnSelf(bundleStack, stackInSlot, slot, clickAction, player, slotAccess);
         }
 
         return true;
+    }
+
+    default void bundleOverrideNotEmptyOnSelf(ItemStack bundleStack, ItemStack stackInSlot, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
+        insertToBundleAndPlaySound(bundleStack, stackInSlot, player);
+    }
+
+    @UtilityLikeAbstraction
+    default void insertToBundleAndPlaySound(ItemStack bundleStack, ItemStack stackInSlot, Player player) {
+        int countBeforeInsert = stackInSlot.getCount();
+        insertStackToBundle(bundleStack, stackInSlot);
+        if (stackInSlot.getCount() != countBeforeInsert){
+            this.playInsertToBundleSound(player);
+        }
     }
 }

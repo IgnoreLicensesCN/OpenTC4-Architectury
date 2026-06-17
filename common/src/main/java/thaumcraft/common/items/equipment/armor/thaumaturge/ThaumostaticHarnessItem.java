@@ -61,6 +61,21 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     @Override
+    public void bundleOverrideNotEmptyOnSelf(ItemStack bundleStack, ItemStack stackInSlot, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
+        if (canInsertStackToBundle(bundleStack,stackInSlot)){
+            var extracted = extractStackAtLastOfBundle(bundleStack);
+            if (!extracted.isEmpty()){
+                slotAccess.set(extracted);
+            }
+            insertStackToBundle(bundleStack,stackInSlot);
+            this.playInsertToBundleSound(player);
+            if (!stackInSlot.isEmpty()) {
+                player.addItem(stackInSlot);
+            }
+        }
+    }
+
+    @Override
     public int getVisCostPercentDecrease(ItemStack stack, @Nullable LivingEntity living, @Nullable Aspect aspect) {
         return aspect == Aspects.AIR?5:2;
     }

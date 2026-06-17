@@ -20,6 +20,7 @@ public class WandCooldownManager {
 
     @ApiStatus.Internal
     public int cooldownUntilNextTick = 0;
+
     public boolean isOnCooldown(LivingEntity living){
         return living.tickCount < cooldownUntilNextTick;
     }

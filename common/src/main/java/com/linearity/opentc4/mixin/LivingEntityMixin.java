@@ -154,14 +154,12 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
                     living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER(), duration, amp, true,true));
                 }
 
-                if (living instanceof ServerPlayer serverPlayer){
-                    serverPlayer.sendSystemMessage((Component.translatable("warp.text.hunger.2")
-                            .withStyle(ChatFormatting.ITALIC)
-                            .withStyle(ChatFormatting.DARK_GREEN)));
-                }
+                living.sendSystemMessage((Component.translatable("warp.text.hunger.2")
+                        .withStyle(ChatFormatting.ITALIC)
+                        .withStyle(ChatFormatting.DARK_GREEN)));
             }
-            else if (item.getFoodProperties() != null && living instanceof ServerPlayer serverPlayer) {
-                serverPlayer.sendSystemMessage(
+            else if (item.getFoodProperties() != null) {
+                living.sendSystemMessage(
                         Component.translatable("warp.text.hunger.1")
                                 .withStyle(ChatFormatting.ITALIC)
                                 .withStyle(ChatFormatting.DARK_RED)
@@ -197,12 +195,10 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
 
             }
         });
-        if (living instanceof Player player){
-            forEachBauble(player, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
-                    modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
-                    return false;
-            }));
-        }
+        forEachBauble(living, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
+            modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
+            return false;
+        }));
         return modifiedOut.get();
     }
     @ModifyReturnValue(
@@ -218,12 +214,10 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
 
             }
         });
-        if (living instanceof Player player){
-            forEachBauble(player, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
-                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
-                return false;
-            }));
-        }
+        forEachBauble(living, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
+            modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
+            return false;
+        }));
         return modifiedOut.get();
     }
 

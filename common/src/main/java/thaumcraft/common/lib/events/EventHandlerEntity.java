@@ -302,13 +302,13 @@ public class EventHandlerEntity {
 //
 //   }
 
-   @SubscribeEvent
-   public void itemPickup(EntityItemPickupEvent event) {
-      if (event.Player.getGameProfile().getName().startsWith("FakeThaumcraft")) {
-         event.setCanceled(true);
-      }
-
-   }
+//   @SubscribeEvent
+//   public void itemPickup(EntityItemPickupEvent event) {
+//      if (event.Player.getGameProfile().getName().startsWith("FakeThaumcraft")) {
+//         event.setCanceled(true);
+//      }
+//
+//   }
 
    @SubscribeEvent
    public void livingDrops(LivingDropsEvent event) {
@@ -365,7 +365,10 @@ public class EventHandlerEntity {
 
    @SubscribeEvent
    public void livingTick(LivingDeathEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT && !(event.entityLiving instanceof ITaintedMob) && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())) {
+      if (Platform.getEnvironment() != Env.CLIENT
+              && !(event.entityLiving instanceof ITaintedMob)
+              && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())
+      ) {
          Entity entity = null;
          if (event.entityLiving instanceof EntityCreeper) {
             entity = new EntityTaintCreeper(event.entityLiving.level());
@@ -518,26 +521,26 @@ public class EventHandlerEntity {
 //      }
 //
 //   }
+//
+//   @SubscribeEvent
+//   public void itemExpire(ItemExpireEvent event) {
+//      if (event.entityItem.getEntityItem() != null
+//              && event.entityItem.getEntityItem().getItem() != null
+//              && event.entityItem.getEntityItem().getItem() instanceof ItemBathSalts
+//      ) {
+//         int x = MathHelper.floor_double(event.entityItem.posX);
+//         int y = MathHelper.floor_double(event.entityItem.posY);
+//         int z = MathHelper.floor_double(event.entityItem.posZ);
+//         if (event.entityItem.level().getBlock(x, y, z) == Blocks.water && event.entityItem.level().getBlockMetadata(x, y, z) == 0) {
+//            event.entityItem.level().setBlock(x, y, z, ConfigBlocks.blockFluidPure);
+//         }
+//      }
+//   }
 
-   @SubscribeEvent
-   public void itemExpire(ItemExpireEvent event) {
-      if (event.entityItem.getEntityItem() != null
-              && event.entityItem.getEntityItem().getItem() != null
-              && event.entityItem.getEntityItem().getItem() instanceof ItemBathSalts
-      ) {
-         int x = MathHelper.floor_double(event.entityItem.posX);
-         int y = MathHelper.floor_double(event.entityItem.posY);
-         int z = MathHelper.floor_double(event.entityItem.posZ);
-         if (event.entityItem.level().getBlock(x, y, z) == Blocks.water && event.entityItem.level().getBlockMetadata(x, y, z) == 0) {
-            event.entityItem.level().setBlock(x, y, z, ConfigBlocks.blockFluidPure);
-         }
-      }
-   }
-
-   @SubscribeEvent
-   public void breakSpeedEvent(PlayerEvent.BreakSpeed event) {
-      if (!event.Player.onGround && Hover.getHover(event.Player.getEntityId())) {
-         event.newSpeed = event.originalSpeed * 5.0F;
-      }
-   }
+//   @SubscribeEvent
+//   public void breakSpeedEvent(PlayerEvent.BreakSpeed event) {
+//      if (!event.Player.onGround && Hover.getHover(event.Player.getEntityId())) {
+//         event.newSpeed = event.originalSpeed * 5.0F;
+//      }
+//   }
 }

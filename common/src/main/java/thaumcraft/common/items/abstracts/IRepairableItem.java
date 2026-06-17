@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -32,17 +32,17 @@ import static thaumcraft.common.lib.events.EventHandlerEntity.checkIfCanConsumeF
 public interface IRepairableItem {
 
 	//true if repaired
-	default boolean doRepair(ItemStack is, @Nullable Player player, int enchantlevel){
+	default boolean doRepair(ItemStack is, @Nullable LivingEntity living, int enchantlevel){
 		int level = enchantlevel + 1;
 		if (level > 0) {
 			var cost = getRepairCost(is,enchantlevel);
 			if (!cost.isEmpty()) {
 				boolean doRepair = WandManager.consumeCentiVisFromInventory(
-                        player, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair
+						living, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair
 				);
                 if (doRepair) {
-					if (player != null) {
-						is.hurtAndBreak(-level,player,(p) -> {});
+					if (living != null) {
+						is.hurtAndBreak(-level, living,(p) -> {});
 					} else {
 						is.setDamageValue(is.getDamageValue() - level);
 					}
