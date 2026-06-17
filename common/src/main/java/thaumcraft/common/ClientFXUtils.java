@@ -1106,21 +1106,23 @@ public class ClientFXUtils {
         float f2 = MathHelper.sin(f) * 2.0F * 0.5F * f1;
         float f3 = MathHelper.cos(f) * 2.0F * 0.5F * f1;
         if (e.level().isClientSide()) {
-            FXBreaking fx = new FXBreaking(
-                    (ClientLevel) e.level(),
-                    e.getX() + (double) f2,
-                    (e.getBoundingBox().minY + e.getBoundingBox().maxY) / (double) 2.0F,
-                    e.getZ() + (double) f3,
-                    Items.SLIME_BALL
-            );
-            fx.setRBGColorF(
-                    0.1F,
-                    0.0F,
-                    0.1F
-            );
-            fx.setAlphaF(0.4F);
-            fx.setParticleMaxAge((int) (66.0F / (e.level().getRandom().nextFloat() * 0.9F + 0.1F)));
-            Minecraft.getInstance().particleEngine.add(fx);
+            if (e.level() instanceof ClientLevel clientLevel){
+                FXBreaking fx = new FXBreaking(
+                        clientLevel,
+                        e.getX() + (double) f2,
+                        (e.getBoundingBox().minY + e.getBoundingBox().maxY) / (double) 2.0F,
+                        e.getZ() + (double) f3,
+                        Items.SLIME_BALL
+                );
+                fx.setRBGColorF(
+                        0.1F,
+                        0.0F,
+                        0.1F
+                );
+                fx.setAlphaF(0.4F);
+                fx.setParticleMaxAge((int) (66.0F / (e.level().getRandom().nextFloat() * 0.9F + 0.1F)));
+                Minecraft.getInstance().particleEngine.add(fx);
+            }
         }
 
     }

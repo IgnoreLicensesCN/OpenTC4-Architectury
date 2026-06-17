@@ -98,7 +98,7 @@ public enum CalculateWandConsumptionListenerEnum {
                     var focusStack = focusEngine.getFocusItemStack(context.wandStack);
                     if (!focusStack.isEmpty() && !context.crafting && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
                         context.currentConsumption -= (float) wandFocusItem
-                                .getWandUpgradesWithWandModifiers(focusStack,context.wandStack)
+                                .getFocusUpgradesWithWandModifiers(focusStack,context.wandStack)
                                 .getOrDefault(ThaumcraftFocusUpgradeTypes.FRUGAL,0) / 10.0F;
                     }
                 }

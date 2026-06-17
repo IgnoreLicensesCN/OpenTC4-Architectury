@@ -40,11 +40,11 @@ public class TaintBottleEntity extends ThrowableItemProjectile {
     }
 
     public TaintBottleEntity(Level par1World, double par2, double par4, double par6) {
-        this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINT_BOTTLE(), par6, par2, par4, par1World);
+        this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINT_BOTTLE(), par2, par4, par6, par1World);
     }
 
     public TaintBottleEntity(EntityType<TaintBottleEntity> type, double par2, double par4, double par6, Level par1World) {
-        super(type, par6, par2, par4, par1World);
+        super(type, par2, par4, par6, par1World);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package thaumcraft.common.items.wands.foci;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -28,10 +26,10 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
     }
 
     public void addFocusInformation(ItemStack focusstack, List<Component> list) {
-        for (var entry: this.getAppliedWandUpgrades(focusstack).object2IntEntrySet()) {
+        for (var entry: this.getAppliedFocusUpgrades(focusstack).object2IntEntrySet()) {
             var upgradeType = FocusUpgradeType.getType(entry.getKey().id());
             list.add(
-                    upgradeType.getLocalizedName().copy()
+                    upgradeType.name().copy()
                             .append(" ")
                             .append("enchantment.level." + entry.getIntValue())
                                     .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
@@ -40,7 +38,7 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
     }
 
     @Override
-    public List<FocusUpgradeType> getAppliedWandUpgradesWithOrder(ItemStack focusStack) {
+    public List<FocusUpgradeType> getAppliedFocusUpgradesWithOrder(ItemStack focusStack) {
         var tag = focusStack.getOrCreateTag();
         if (!FOCUS_UPGRADE_ACCESSOR.compoundTagHasKey(tag)){
             FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,List.of());
@@ -54,24 +52,14 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
     }
 
     @Override
-    public Object2IntMap<FocusUpgradeType> getAppliedWandUpgrades(ItemStack focusStack) {
-        var upgrades = getAppliedWandUpgradesWithOrder(focusStack);
-        var map = new Object2IntOpenHashMap<FocusUpgradeType>();
-        for (var upgrade:upgrades){
-            map.merge(upgrade, 1,Integer::sum);
-        }
-        return map;
-    }
-
-    @Override
-    public void storeWandUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades) {
+    public void storeFocusUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades) {
         var tag = stack.getOrCreateTag();
         FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,wandUpgrades.stream().map(FocusUpgradeType::id).collect(Collectors.toList()));
     }
 
 
     @Override
-    public void addWandUpgrade(ItemStack stack, FocusUpgradeType type) {
+    public void addFocusUpgrade(ItemStack stack, FocusUpgradeType type) {
         var tag = stack.getOrCreateTag();
         var upgrades = FOCUS_UPGRADE_ACCESSOR.readFromCompoundTag(tag);
         upgrades.add(type.id());
@@ -82,7 +70,7 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
     public void appendHoverText(ItemStack focusStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         AspectList<Aspect>al = this.getCentiVisCost(focusStack,null);
         if (al!=null && !al.isEmpty()) {
-            list.add(Component.translatable(isCentiVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
+            list.add(Component.translatable(isCentiVisCostPerTick(focusStack,null)?"item.Focus.cost2":"item.Focus.cost1"));
             for (var aspect:al.getAspectsSorted()) {
                 DecimalFormat myFormatter = new DecimalFormat("#####.##");
                 String amount = myFormatter.format(al.get(aspect)/100f);

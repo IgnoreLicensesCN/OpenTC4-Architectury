@@ -129,7 +129,7 @@ public class WandUtils {
                 if (amt > 0) {
                     focusConsumptionComponent =
                             Component.literal(", "+ CENTIVIS_DECIMAL_FORMAT.format((float) amt * mod / 100.0F) + " ")
-                                    .append(Component.translatable(wandFocusItem.isCentiVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
+                                    .append(Component.translatable(wandFocusItem.isCentiVisCostPerTick(focusStack,wandStack) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
                     ;
                 }
             }
@@ -157,13 +157,13 @@ public class WandUtils {
     }
 
     public static void addFocusInformation(IWandFocusItem<? extends Aspect> focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
-		for (var entry:focus.getAppliedWandUpgrades(focusstack).object2IntEntrySet()) {
+		for (var entry:focus.getAppliedFocusUpgrades(focusstack).object2IntEntrySet()) {
             FocusUpgradeType type = entry.getKey();
             var id = type.id();
             var lvl = entry.getIntValue();
             var lvlComponent = (lvl>1?Component.literal(" ").append(Component.translatable("enchantment.level." + lvl)):Component.empty());
             list.add(
-                    type.getLocalizedName().copy()
+                    type.name().copy()
                             .append(lvlComponent)
                             .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
             );

@@ -338,4 +338,8 @@ public class Consts {
         public static final StringTagAccessor KEY_TYPE = new StringTagAccessor("key_type");
         public static final BlockPosAccessor KEY_POS = new BlockPosAccessor("key_pos");
     }
+    public static class ExplosiveOrbEntityTagAccessors {
+        public static final IntTagAccessor STRENGTH = new IntTagAccessor("strength");
+        public static final BooleanTagAccessor ON_FIRE = new BooleanTagAccessor("on_fire");
+    }
 }

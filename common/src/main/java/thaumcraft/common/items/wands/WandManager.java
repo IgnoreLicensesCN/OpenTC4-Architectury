@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands;
 
+import com.google.common.collect.MapMaker;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.world.level.block.Block;
@@ -44,8 +45,8 @@ import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
 public class WandManager implements IWandTriggerManager {
-    static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
-    static Map<Entity, Long> cooldownClient = new WeakHashMap<>();
+    static Map<Entity, Long> cooldownServer = new MapMaker().weakKeys().makeMap();
+    static Map<Entity, Long> cooldownClient = new MapMaker().weakKeys().makeMap();
 
 
     public static boolean consumeCentiVisFromInventory(Entity entityToCost, CentiVisList<Aspect> cost){
@@ -788,7 +789,6 @@ public class WandManager implements IWandTriggerManager {
         } else {
             cooldownServer.put(entityLiving, System.currentTimeMillis() + (long) cd);
         }
-
     }
 
 

@@ -54,6 +54,8 @@ import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.HandMirrorItem;
 import thaumcraft.common.items.transport.MirrorBlockItem;
 import thaumcraft.common.items.wands.FocusPouchItem;
+import thaumcraft.common.items.wands.foci.ExcavationFocusItem;
+import thaumcraft.common.items.wands.foci.FireFocusItem;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -957,6 +959,12 @@ public class ThaumcraftItemInstances {
     }
     public static TaintBottleItem TAINT_BOTTLE() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINT_BOTTLE.get();
+    }
+    public static ExcavationFocusItem EXCAVATION_FOCUS() {
+        return ThaumcraftItemsRegistry.SUPPLIER_EXCAVATION_FOCUS.get();
+    }
+    public static FireFocusItem FIRE_FOCUS() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FIRE_FOCUS.get();
     }
 
 

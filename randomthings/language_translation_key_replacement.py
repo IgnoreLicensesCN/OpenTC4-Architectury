@@ -223,6 +223,8 @@ block_with_item_names = [
 
     ['item.ItemResonator.name','essentia_resonator'],
     ['item.ItemBottleTaint.name','taint_bottle'],
+    ['item.FocusExcavation.name','excavation_focus'],
+    ['item.FocusFire.name','fire_focus'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
@@ -255,6 +257,8 @@ def special_key_sort_weight(parts:list[str]):
         return 5
     if parts[-1].endswith("_ring"):
         return 6
+    if parts[-1].endswith("_focus") and len(parts[-1].split("_")) == 2:
+        return 8
     return 0
 
 def key_sorter(key_string):

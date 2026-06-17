@@ -324,6 +324,7 @@ public class WandCastingItem extends Item
         }
     }
 
+    //hope you can replace player with LivingEntity (TLM again?)
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
@@ -359,7 +360,7 @@ public class WandCastingItem extends Item
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
                 if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
-                    focus.onPlayerStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
+                    focus.onStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
                 }
             }
         }

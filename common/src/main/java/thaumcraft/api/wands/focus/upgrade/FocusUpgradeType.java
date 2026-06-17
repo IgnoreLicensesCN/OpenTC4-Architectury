@@ -57,22 +57,14 @@ public class FocusUpgradeType {
 
     public FocusUpgradeType(
             FocusUpgradeTypeResourceLocation id,
-            ResourceLocation icon,
-            String name,
-            String text,
-            AspectList<Aspect> aspects) {
+            AspectList<Aspect> aspects){
         this.id = id;
-        this.icon = icon;
-        this.name = name;
-        this.text = text;
         this.aspects = aspects;
-
         var upgradeType = types.put(id, this);
         if (upgradeType != null) {
             throw new IllegalStateException("Duplicate id " + upgradeType + " " + this);
         }
     }
-
 	public boolean canApplyTo(ItemStack focusStack, IWandFocusItem<? extends Aspect> focusItem) {
 		return true;
 	}
@@ -96,27 +88,31 @@ public class FocusUpgradeType {
         return false;
     }
 
-    public Component getLocalizedName() {
-        return Component.translatable(name);
-    }
-
-    public Component getLocalizedText() {
-        return Component.translatable(text);
-    }
-
     public FocusUpgradeTypeResourceLocation id() {
         return id;
     }
 
+    protected ResourceLocation icon;
+    protected Component name;
+    protected Component text;
     public ResourceLocation icon() {
+        if (icon == null) {
+            icon = new ResourceLocation(id.getNamespace(), "textures/foci/" + id.getPath() + ".png");
+        }
         return icon;
     }
 
-    public String name() {
+    public Component name() {
+        if (name == null) {
+            name = Component.translatable("focus_upgrade." + id.getNamespace() + "." + id.getPath() + ".name");
+        }
         return name;
     }
 
-    public String text() {
+    public Component text() {
+        if (text == null) {
+            text = Component.translatable("focus_upgrade." + id.getNamespace() + "." + id.getPath() + ".text");
+        }
         return text;
     }
 
@@ -126,14 +122,11 @@ public class FocusUpgradeType {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, icon, name, text, aspects);
+        return id.hashCode();
     }
 
 
     private final FocusUpgradeTypeResourceLocation id;
-    private final ResourceLocation icon;
-    private final String name;
-    private final String text;
     private final AspectList<Aspect> aspects;
 
     private final Int2ObjectMap<CentiVisList<Aspect>> costCache = new Int2ObjectOpenHashMap<>();

@@ -30,10 +30,10 @@ public class AlumentumEntity extends ThrowableItemProjectile {
    }
 
    public AlumentumEntity(Level par1World, double par2, double par4, double par6) {
-      this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par6, par2, par4, par1World);
+      this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.ALUMENTUM(),par2, par4, par6, par1World);
    }
    public AlumentumEntity(EntityType<AlumentumEntity> type, double par2, double par4, double par6, Level par1World) {
-      super(type,par6, par2, par4, par1World);
+      super(type,par2, par4, par6, par1World);
    }
 
    @Override

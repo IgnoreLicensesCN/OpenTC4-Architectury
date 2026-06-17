@@ -94,7 +94,7 @@ public class FocalManipulatorBlockEntity
             if (this.centiVisRequiring.isEmpty()){//finish upgrading
                 FocusUpgradeType upgrade = FocusUpgradeType.getType(upgradeToApply);
                 if (upgrade != null) {
-                    focus.addWandUpgrade(stack, upgrade);
+                    focus.addFocusUpgrade(stack, upgrade);
                     this.centiVisRequiring.clear();
                     this.upgradeToApply = FocusUpgradeTypeResourceLocation.EMPTY;
                     this.level.playSound(null,getBlockPos(), ThaumcraftSounds.WAND,SoundSource.BLOCKS, 1.0F, 1.0F);

@@ -173,7 +173,7 @@ public class ClientProxy extends CommonProxy {
    }
 
    private void setupEntityRenderers() {
-      RenderingRegistry.registerEntityRenderingHandler(EntityItemGrate.class, new RenderItem());
+//      RenderingRegistry.registerEntityRenderingHandler(EntityItemGrate.class, new RenderItem());
       RenderingRegistry.registerEntityRenderingHandler(EntitySpecialItem.class, new RenderSpecialItem());
       RenderingRegistry.registerEntityRenderingHandler(EntityFollowingItem.class, new RenderFollowingItem());
       RenderingRegistry.registerEntityRenderingHandler(EntityPermanentItem.class, new RenderSpecialItem());

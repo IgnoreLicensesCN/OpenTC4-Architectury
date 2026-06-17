@@ -35,7 +35,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.ICrucibleAttachmentBlock;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.entities.EntitySpecialItem;
+import thaumcraft.common.entities.SpecialItemEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
@@ -466,7 +466,9 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 
     public void ejectItem(ItemStack stack) {
         boolean first = true;
-
+        if (level == null){
+            return;
+        }
         do {
             ItemStack spitout = stack.copy();
             if (spitout.getCount() > spitout.getMaxStackSize()) {
@@ -475,11 +477,14 @@ public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
             stack.setCount(stack.getCount() - spitout.getCount());
 
             //TODO:SpecialItemEntity
-            EntitySpecialItem entityitem = new EntitySpecialItem(this.level(), (float)this.xCoord + 0.5F, (float)this.yCoord + 0.71F, (float)this.zCoord + 0.5F, spitout);
-            entityitem.motionY = 0.1F;
-            entityitem.motionX = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
-            entityitem.motionZ = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
-            this.level.spawnEntityInWorld(entityitem);
+            var bpos = getBlockPos();
+            var entityitem = new SpecialItemEntity(this.level, bpos.getX() + 0.5F, bpos.getY() + 0.71F, bpos.getZ() + 0.5F, spitout);
+            var movement = new Vec3(
+                    first ? (double)0.0F : (double)((this.level.random.nextFloat()) * 0.02F - 0.01F),
+                    0.1F,
+                    first ? (double)0.0F : (double)((this.level.random.nextFloat()) * 0.02F - 0.01F));
+            entityitem.setDeltaMovement(movement);
+            this.level.addFreshEntity(entityitem);
             first = false;
         } while(!stack.isEmpty());
 

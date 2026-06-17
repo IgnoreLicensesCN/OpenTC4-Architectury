@@ -134,7 +134,7 @@ public class ArcaneBoreBlockEntity
         int result = 0;
         var focusStack = getFocus();
         if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
-            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
+            var upgrades = excavationFocusItem.getFocusUpgradesWithWandModifiers(focusStack,null);
             result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.ENLARGE);
         }
         return result;
@@ -143,7 +143,7 @@ public class ArcaneBoreBlockEntity
         int result = 0;
         var focusStack = getFocus();
         if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
-            var upgrades = excavationFocusItem.getWandUpgradesWithWandModifiers(focusStack,null);
+            var upgrades = excavationFocusItem.getFocusUpgradesWithWandModifiers(focusStack,null);
             result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.POTENCY);
         }
         var pickaxeStack = getPickaxe();

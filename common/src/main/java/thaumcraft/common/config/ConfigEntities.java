@@ -42,7 +42,7 @@ public class ConfigEntities {
       EntityRegistry.registerModEntity(EntityBottleTaint.class, "BottleTaint", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityGolemOrb.class, "GolemOrb", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityShockOrb.class, "ShockOrb", id++, Thaumcraft.instance, 64, 20, true);
-      EntityRegistry.registerModEntity(EntityExplosiveOrb.class, "ExplosiveOrb", id++, Thaumcraft.instance, 64, 20, true);
+//      EntityRegistry.registerModEntity(EntityExplosiveOrb.class, "ExplosiveOrb", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityEmber.class, "Ember", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityGolemBase.class, "Golem", id++, Thaumcraft.instance, 64, 3, true);
       EntityRegistry.registerModEntity(EntityTravelingTrunk.class, "TravelingTrunk", id++, Thaumcraft.instance, 64, 3, true);
@@ -104,7 +104,7 @@ public class ConfigEntities {
       ItemSpawnerEgg.addMapping("TaintedVillager", 16761087, 65535);
       EntityRegistry.registerModEntity(EntityTaintacleGiant.class, "TaintacleGiant", id++, Thaumcraft.instance, 64, 3, false);
       ItemSpawnerEgg.addMapping("TaintacleGiant", 16761087, 8421504);
-      EntityRegistry.registerModEntity(EntityItemGrate.class, "SpecialItemGrate", id++, Thaumcraft.instance, 64, 20, true);
+//      EntityRegistry.registerModEntity(EntityItemGrate.class, "SpecialItemGrate", id++, Thaumcraft.instance, 64, 20, true);
       EntityRegistry.registerModEntity(EntityGolemBobber.class, "GolemBobber", id++, Thaumcraft.instance, 64, 64, false);
    }
 
