@@ -19,7 +19,6 @@ public abstract class CalculationOperation {
     public abstract <ObjCollection,S extends CalcCacheableCollection<ObjCollection,S>> S calculateWithCache(
             S a,
             S b,
-            Supplier<ObjCollection> newMapSupplier,
-            TriFunction<ObjCollection, ObjCollection, Supplier<ObjCollection> ,ObjCollection> calculateInnerMapAsNew
+            Supplier<ObjCollection> newMapSupplier
     );
 }

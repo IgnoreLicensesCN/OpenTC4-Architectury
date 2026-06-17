@@ -14,6 +14,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.ArrayAspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
@@ -126,8 +127,8 @@ public class EssentiaBufferBlockEntity
         lastFillIndex = 0;
     }
 
-    private final AspectList<Aspect> aspects = new LinkedHashAspectList<>();
-    private final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
+    private final AspectList<Aspect> aspects = new ArrayAspectList<>();
+    public final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
 
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay() {

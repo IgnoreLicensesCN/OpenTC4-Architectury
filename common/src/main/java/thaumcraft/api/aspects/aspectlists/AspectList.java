@@ -91,7 +91,7 @@ public interface AspectList<Asp extends Aspect>{
 	 *
 	 */
 
-	void remove(Asp key);
+	int remove(Asp key);
 
 	void removeIf(Predicate<Object2IntMap.Entry<Asp>> filter);
 

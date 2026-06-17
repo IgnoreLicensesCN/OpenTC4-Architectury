@@ -41,17 +41,5 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
      * @return the amount
      */
     int getMinimumSuctionToDrainOut();
-    /**
-     * What type of essentia this contains
-     * @param face self face
-     * @return essentia contains
-     */
-    @NotNull("null -> empty")
-    Aspect getEssentiaType(@NotNull Direction face);
-    /**
-     * @param face self face
-     * @return How much essentia this block contains
-     */
-    int getEssentiaAmount(@NotNull Direction face);
 
 }

@@ -18,7 +18,7 @@ public interface AspectListUnmodifiableDefault<Asp extends Aspect> extends Aspec
     }
 
     @Override
-    default void remove(Asp key){
+    default int remove(Asp key){
         throw new UnsupportedOperationException("Unmodifiable!");
     }
 

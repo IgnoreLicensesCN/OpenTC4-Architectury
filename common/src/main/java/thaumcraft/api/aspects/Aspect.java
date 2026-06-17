@@ -59,6 +59,11 @@ public abstract class Aspect {
 		public boolean isEmpty() {
 			return true;
 		}
+
+		@Override
+		public Component getName() {
+			return Component.translatable("aspect.thaumcraft.empty");
+		}
 	};
 	public static final Aspect UNKNOWN = new Aspect(
 			AspectResourceLocation.of(Thaumcraft.MOD_ID,"_unknown"),

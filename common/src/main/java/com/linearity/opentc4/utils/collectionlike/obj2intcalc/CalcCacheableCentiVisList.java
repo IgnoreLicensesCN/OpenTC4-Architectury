@@ -26,7 +26,7 @@ public class CalcCacheableCentiVisList<Asp extends Aspect> extends
     }
 
     @Override
-    protected CentiVisList<Asp> getEmptyInnerCollection() {
+    protected CentiVisList<Asp> getEmptyInnerCollectionUnmodifiable() {
         return UnmodifiableCentiVisList.of();
     }
 

@@ -3,7 +3,9 @@ package thaumcraft.common.items.wands;
 import thaumcraft.api.wands.IWandTriggerManager;
 
 import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_CONSTRUCT_MATCHER;
+import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
+//TODO:ListenerManager(and one of them is Block(instance) map matchers(get another listenerManager))
 public class ThaumcraftWandTriggers {
     public static final IWandTriggerManager INFERNAL_FURNACE_WAND_TRIGGER = (level,usingWand,player,pos,side) ->
     {
@@ -11,6 +13,7 @@ public class ThaumcraftWandTriggers {
         if (matchInfo != null) {
             //TODO:Place and return true if works
 
+            INFERNAL_FURNACE_PLACER.place(level,pos,matchInfo);
         }
         return false;
     };

@@ -1172,6 +1172,10 @@ public class ThaumcraftItemsRegistry {
             "focus_pouch",
             FocusPouchItem::new
     );
+    public static final RegistrySupplier<EssentiaResonatorItem> SUPPLIER_ESSENTIA_RESONATOR = ITEMS.register(
+            "essentia_resonator",
+            EssentiaResonatorItem::new
+    );
     
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
@@ -1186,8 +1190,8 @@ public class ThaumcraftItemsRegistry {
         }
     }
     static {
-        for (String prefix : new String[]{//TODO:[maybe wont finished]More of ore tags
-                "iron","gold","copper","silver","osmium","tin","uranium","lead"
+        for (String prefix : new String[]{//TODO:[maybe wont finished]More ore tags
+                "iron","gold","copper","silver","osmium","tin","uranium","lead","nickel"
         }) {
             new ClusterRegistrationArgs(
                     prefix,

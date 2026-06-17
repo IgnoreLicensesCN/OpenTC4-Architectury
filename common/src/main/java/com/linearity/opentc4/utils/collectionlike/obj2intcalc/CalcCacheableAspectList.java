@@ -26,7 +26,7 @@ public class CalcCacheableAspectList<Asp extends Aspect> extends
     }
 
     @Override
-    protected AspectList<Asp> getEmptyInnerCollection() {
+    protected AspectList<Asp> getEmptyInnerCollectionUnmodifiable() {
         return UnmodifiableAspectList.of();
     }
 

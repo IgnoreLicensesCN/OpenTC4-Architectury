@@ -2,9 +2,7 @@ package thaumcraft.api.aspects.aspectlists.baseimpl;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -174,8 +172,10 @@ public abstract class AbstractAspectList<Asp extends Aspect,MapClass extends Obj
      *
      */
 
-    public void remove(Asp key) {
-        this.visSize -= aspects.removeInt(key);
+    public int remove(Asp key) {
+        var result = aspects.removeInt(key);
+        this.visSize -= result;
+        return result;
     }
 
     public void removeIf(Predicate<Object2IntMap.Entry<Asp>> filter) {

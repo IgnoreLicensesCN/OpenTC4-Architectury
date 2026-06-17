@@ -28,25 +28,11 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
      * @return
      * 		a return type of aspect, <s>null</s> empty indicates the suction is untyped and the first thing available will be drawn
      */
-    @NotNull Aspect getSuctionType(@NotNull Direction face);
+    @NotNull("empty -> any") Aspect getSuctionType(@NotNull Direction face);
 
     /**
      * add the specified amount of essentia to this transport tile
      * @return how much was actually added
      */
     int addEssentia(@NotNull Aspect aspect, int amount,@NotNull Direction fromDirection);
-    /**
-     * What type of essentia this contains
-     * @param face
-     * @return essentia contains
-     */
-    @NotNull
-    Aspect getEssentiaType(@NotNull Direction face);
-
-
-    /**
-     * @param face
-     * @return How much essentia this block contains
-     */
-    int getEssentiaAmount(@NotNull Direction face);//TODO:Check if we need this
 }

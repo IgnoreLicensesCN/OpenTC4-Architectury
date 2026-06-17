@@ -1,4 +1,4 @@
-package thaumcraft.common.items.relics;
+package thaumcraft.common.items.misc;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +22,7 @@ import thaumcraft.common.lib.network.playerdata.PacketSyncResearch;
 import thaumcraft.common.lib.research.ResearchManager;
 
 import java.util.List;
-
+//TODO:GUI
 public class ItemThaumonomicon extends Item {
    @SideOnly(Side.CLIENT)
    public IIcon icon;

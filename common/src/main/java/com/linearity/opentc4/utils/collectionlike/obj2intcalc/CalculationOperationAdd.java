@@ -21,8 +21,7 @@ public class CalculationOperationAdd extends CalculationOperation {
     public <O,S extends CalcCacheableCollection<O,S>> S calculateWithCache(
             S a,
             S b,
-            Supplier<O> newMapSupplier,
-            TriFunction<O, O, Supplier<O> ,O> calculateInnerMapAsNew
+            Supplier<O> newMapSupplier
     ){
         //in multiplication there might not be so fine as we did here
         //in that case we may have to (aSingleton + aNotSingleton) * (bSingleton + bNotSingleton)
@@ -42,10 +41,11 @@ public class CalculationOperationAdd extends CalculationOperation {
                             calculationResults).computeIfAbsent(
                     cacheKey,
                     cachedKey -> a.newForCalculatedResult(
-                            calculateInnerMapAsNew.apply(
+                            a.operateEachValue(
                                     cachedKey.a.getWrapped(),
                                     cachedKey.b.getWrapped(),
-                                    newMapSupplier
+                                    newMapSupplier,
+                                    Integer::sum
                             ),
                             true
                     )
@@ -53,11 +53,11 @@ public class CalculationOperationAdd extends CalculationOperation {
         }
         S singletonPart;
         if (a.getInputIsSingleton()){
-            singletonPart = calculateWithCache(a,b.getSingletonPart(),newMapSupplier,calculateInnerMapAsNew);
+            singletonPart = calculateWithCache(a,b.getSingletonPart(),newMapSupplier);
         } else if (b.getInputIsSingleton()){
-            singletonPart = calculateWithCache(a.getSingletonPart(),b,newMapSupplier,calculateInnerMapAsNew);
+            singletonPart = calculateWithCache(a.getSingletonPart(),b,newMapSupplier);
         } else {
-            singletonPart = calculateWithCache(a,b,newMapSupplier,calculateInnerMapAsNew);
+            singletonPart = calculateWithCache(a,b,newMapSupplier);
         }
         O notSingletonPart;
         if (a.getInputIsSingleton()){
@@ -65,14 +65,14 @@ public class CalculationOperationAdd extends CalculationOperation {
         }else if (b.getInputIsSingleton()){
             notSingletonPart = a.getConsideredNotSingletonPart();
         }else  {
-            notSingletonPart = calculateInnerMapAsNew.apply(
-                    a.getConsideredNotSingletonPart(),b.getConsideredNotSingletonPart(),newMapSupplier
+            notSingletonPart = a.operateEachValue(
+                    a.getConsideredNotSingletonPart(),b.getConsideredNotSingletonPart(),newMapSupplier,Integer::sum
             );
         }
         if (a.isCollectionEmpty(notSingletonPart)){
             return singletonPart;
         }
-        O wrapped = calculateInnerMapAsNew.apply(singletonPart.getWrapped(),notSingletonPart, newMapSupplier);
+        O wrapped = a.operateEachValue(singletonPart.getWrapped(),notSingletonPart, newMapSupplier,Integer::sum);
         return a.newForCalculatedResult(
                 wrapped,
                 singletonPart,

@@ -947,6 +947,9 @@ public class ThaumcraftItemInstances {
     public static FocusPouchItem FOCUS_POUCH() {
         return ThaumcraftItemsRegistry.SUPPLIER_FOCUS_POUCH.get();
     }
+    public static EssentiaResonatorItem ESSENTIA_RESONATOR() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ESSENTIA_RESONATOR.get();
+    }
 
 
 }

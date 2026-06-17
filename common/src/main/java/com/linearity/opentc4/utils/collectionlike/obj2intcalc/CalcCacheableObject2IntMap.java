@@ -2,9 +2,11 @@ package com.linearity.opentc4.utils.collectionlike.obj2intcalc;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.function.IntBinaryOperator;
 import java.util.function.Supplier;
 
 //if we always create new map for #add we will get lots of maps
@@ -43,6 +45,7 @@ public class CalcCacheableObject2IntMap<Obj>
 
     @Override
     public @NotNull CalcCacheableObject2IntMap<Obj> getSingletonPart() {
+        if (inputIsSingleton) {return this;}
         return singletonPart;
     }
 
@@ -58,8 +61,8 @@ public class CalcCacheableObject2IntMap<Obj>
     ) {
         this.wrapped = wrapped;
         this.inputIsSingleton = inputIsSingleton;
-        if (this.inputIsSingleton) {
-            consideredNotSingletonPart = Object2IntMaps.unmodifiable(wrapped);
+        if (!this.inputIsSingleton) {
+            consideredNotSingletonPart = wrapped;
         }
     }
 
@@ -87,7 +90,7 @@ public class CalcCacheableObject2IntMap<Obj>
         this.consideredNotSingletonPart = consideredModifiablePart;
     }
     public CalcCacheableObject2IntMap<Obj> add(CalcCacheableObject2IntMap<Obj> another, Supplier<Object2IntMap<Obj>> newMapSupplier){
-        return CalculationOperationAdd.INSTANCE.calculateWithCache(this,another,newMapSupplier,CalcCacheableObject2IntMap::addObject2IntMapAsNew);
+        return CalculationOperationAdd.INSTANCE.calculateWithCache(this,another,newMapSupplier);
     }
     public static <Obj> Object2IntMap<Obj> addObject2IntMapAsNew(
             Object2IntMap<Obj> a,
@@ -108,5 +111,18 @@ public class CalcCacheableObject2IntMap<Obj>
     @Override
     public CalcCacheableObject2IntMap<Obj> newForCalculatedResult(Object2IntMap<Obj> wrapped, boolean isSingleton) {
         return new CalcCacheableObject2IntMap<>(wrapped, isSingleton);
+    }
+
+    @Override
+    public Object2IntMap<Obj> operateEachValue(Object2IntMap<Obj> a,Object2IntMap<Obj> b, Supplier<Object2IntMap<Obj>> newMapSupplier, IntBinaryOperator oper) {
+        var newMap = newMapSupplier.get();
+        var bClone = new Object2IntOpenHashMap<>(b);
+        a.forEach((k,v) -> {
+            newMap.put(k,oper.applyAsInt(v,bClone.removeInt(k)));
+        });
+        bClone.forEach((k,v) -> {
+            newMap.put(k,oper.applyAsInt(0,v));
+        });
+        return Object2IntMaps.unmodifiable(newMap);
     }
 }

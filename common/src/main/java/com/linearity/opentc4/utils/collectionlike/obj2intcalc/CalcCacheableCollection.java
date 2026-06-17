@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.function.IntBinaryOperator;
 import java.util.function.Supplier;
 
 public abstract class CalcCacheableCollection<ObjCollection,SelfClass extends CalcCacheableCollection<ObjCollection,SelfClass>> {
@@ -17,8 +18,6 @@ public abstract class CalcCacheableCollection<ObjCollection,SelfClass extends Ca
     @Contract(pure = true)
     protected abstract @Unmodifiable @NotNull ObjCollection getConsideredNotSingletonPart();
     @Contract(pure = true)
-    public abstract SelfClass add(SelfClass another, Supplier<ObjCollection> newMapSupplier);
-    @Contract(pure = true)
     public abstract SelfClass newForCalculatedResult(
             ObjCollection wrapped,
             SelfClass singletonPart,
@@ -31,4 +30,6 @@ public abstract class CalcCacheableCollection<ObjCollection,SelfClass extends Ca
     );
     @Contract(pure = true)
     public abstract boolean isCollectionEmpty(ObjCollection collection);
+    @Contract(pure = true)
+    public abstract ObjCollection operateEachValue(ObjCollection a,ObjCollection b, Supplier<ObjCollection> newMapSupplier, IntBinaryOperator oper);
 }

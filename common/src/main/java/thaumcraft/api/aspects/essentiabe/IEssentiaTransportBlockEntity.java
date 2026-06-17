@@ -1,6 +1,8 @@
 package thaumcraft.api.aspects.essentiabe;
 
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+
 /**
  * @author Azanor
  * This interface is used by tiles that use or transport vis. 
@@ -9,6 +11,7 @@ package thaumcraft.api.aspects.essentiabe;
  * <p>--IgnoreLicensesCN</p>
  */
 //TODO:[maybe wont finished] IEssentiaTransportBlock
+    @UtilityLikeAbstraction(reason = "useless now")
 public interface IEssentiaTransportBlockEntity extends IEssentiaTransportOutBlockEntity, IEssentiaTransportInBlockEntity {
 
 

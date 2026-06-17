@@ -1,29 +1,19 @@
 package thaumcraft.common.config;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemArmor.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.wands.StaffRod;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
-import thaumcraft.common.blocks.junkbox.ItemArcaneDoor;
-import thaumcraft.common.blocks.junkbox.ItemJarFilled;
-import thaumcraft.common.blocks.junkbox.ItemJarNode;
 import thaumcraft.common.entities.ItemSpawnerEgg;
 import thaumcraft.common.entities.golems.*;
-import thaumcraft.common.items.baubles.*;
-import thaumcraft.common.items.equipment.*;
-import thaumcraft.common.items.equipment.armor.*;
 import thaumcraft.common.items.junkbox.*;
 import thaumcraft.common.items.misc.*;
-import thaumcraft.common.items.relics.*;
-import thaumcraft.common.items.wands.*;
 import thaumcraft.common.items.wands.foci.*;
 
 public class ConfigItems {
@@ -372,8 +362,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemBowBone, "ItemBowBone", "Thaumcraft");
 //      itemPrimalArrow = (new ItemPrimalArrow()).setUnlocalizedName("ItemPrimalArrow");
 //      GameRegistry.registerItem(itemPrimalArrow, "PrimalArrow", "Thaumcraft");
-      itemResonator = (new ItemResonator()).setUnlocalizedName("ItemResonator");
-      GameRegistry.registerItem(itemResonator, "ItemResonator", "Thaumcraft");
+//      itemResonator = (new ItemResonator()).setUnlocalizedName("ItemResonator");
+//      GameRegistry.registerItem(itemResonator, "ItemResonator", "Thaumcraft");
 //      itemBaubleBlanks = (new ItemBaubleBlanks()).setUnlocalizedName("ItemBaubleBlanks");
 //      GameRegistry.registerItem(itemBaubleBlanks, "ItemBaubleBlanks", "Thaumcraft");
 //      itemAmuletRunic = (new ItemAmuletRunic()).setUnlocalizedName("ItemAmuletRunic");

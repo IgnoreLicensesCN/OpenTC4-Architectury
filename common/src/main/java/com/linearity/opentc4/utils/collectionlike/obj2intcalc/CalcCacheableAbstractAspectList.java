@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 
+import java.util.function.IntBinaryOperator;
 import java.util.function.Supplier;
 
 //if we always create new map for #add we will get lots of maps
@@ -22,7 +23,7 @@ public abstract class CalcCacheableAbstractAspectList<
     public final boolean inputIsSingleton;//the value in could be modified,determine how we cache the result
 
     protected @NotNull SelfClass singletonPart = emptyOuterSingleton();
-    protected @Unmodifiable @NotNull L consideredNotSingletonPart = getEmptyInnerCollection();
+    protected @Unmodifiable @NotNull L consideredNotSingletonPart = getEmptyInnerCollectionUnmodifiable();
 
     @Override
     public @Unmodifiable @NotNull L getWrapped() {
@@ -36,6 +37,9 @@ public abstract class CalcCacheableAbstractAspectList<
 
     @Override
     public @NotNull SelfClass getSingletonPart() {
+        if (inputIsSingleton) {
+            return (SelfClass)this;
+        }
         return singletonPart;
     }
 
@@ -53,7 +57,7 @@ public abstract class CalcCacheableAbstractAspectList<
         this.wrapped = wrapped;
         this.inputIsSingleton = inputIsSingleton;
         if (!this.inputIsSingleton) {
-            consideredNotSingletonPart = wrapAsUnmodifiable(getConsideredNotSingletonPart());
+            consideredNotSingletonPart = wrapped;
         }
     }
 
@@ -72,8 +76,7 @@ public abstract class CalcCacheableAbstractAspectList<
         return CalculationOperationAdd.INSTANCE.calculateWithCache(
                 (SelfClass)this,
                 another,
-                newMapSupplier,
-                this::addObject2IntMapAsNew
+                newMapSupplier
         );
     }
 
@@ -93,7 +96,21 @@ public abstract class CalcCacheableAbstractAspectList<
         return collection.isEmpty();
     }
 
-    protected abstract L getEmptyInnerCollection();
+    protected abstract L getEmptyInnerCollectionUnmodifiable();
     protected abstract SelfClass emptyOuterSingleton();
     protected abstract L wrapAsUnmodifiable(L asps);
+
+    @Override
+    public L operateEachValue(L a, L b, Supplier<L> newMapSupplier, IntBinaryOperator oper) {
+        var newMap = newMapSupplier.get();
+        var bClone = newMapSupplier.get();
+        bClone.addAll(b);
+        a.forEach((k, v) -> {
+            newMap.addAll(k,oper.applyAsInt(v,bClone.remove(k)));
+        });
+        b.forEach((k, v) -> {
+            newMap.addAll(k,oper.applyAsInt(0,v));
+        });
+        return wrapAsUnmodifiable(newMap);
+    }
 }
