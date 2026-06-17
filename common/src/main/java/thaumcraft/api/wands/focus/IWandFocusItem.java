@@ -81,7 +81,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
     /**
      * This returns how many milliseconds must pass before the focus can be activated again.
      */
-    int getActivationCooldown(ItemStack focusStack);
+    int getActivationCooldownTicks(ItemStack focusStack);
 
     /**
      * What upgrades can be applied to this focus for ranks 1 to 5

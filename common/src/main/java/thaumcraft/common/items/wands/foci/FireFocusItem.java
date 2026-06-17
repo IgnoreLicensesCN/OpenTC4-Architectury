@@ -21,7 +21,7 @@ import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
-import thaumcraft.common.items.wands.WandManager;
+import thaumcraft.common.items.wands.WandCooldownManager;
 import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnimation;
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
 
@@ -106,23 +106,27 @@ public class FireFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public int getActivationCooldown(ItemStack focusStack) {
+    public int getActivationCooldownTicks(ItemStack focusStack) {
         var upgrades = getAppliedFocusUpgradesWithOrder(focusStack);
         if (upgrades.contains(ThaumcraftFocusUpgradeTypes.FIREBALL)) {
-            return 1000;
+            return 20;
         }
         return 0;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> onFocusRightClick(ItemStack wandStack, ItemStack focusStack, Level level, LivingEntity user, InteractionHand interactionHand) {
+        var cooldownManager = WandCooldownManager.getFromLiving(user);
+        if (cooldownManager == null) {
+            return InteractionResultHolder.pass(wandStack);
+        }
         var wandItem = wandStack.getItem();
         if (wandItem instanceof ICentiVisContainerItem<?> centiVisContainerItemNotCasted) {
             ICentiVisContainerItem<Aspect> centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerItemNotCasted;
             var upgradeMap = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
             if (upgradeMap.getInt(ThaumcraftFocusUpgradeTypes.FIREBALL) <= 0) {
                 user.startUsingItem(interactionHand);
-                WandManager.setCooldown(user, -1);
+                cooldownManager.setCooldown(user,-1);
                 return InteractionResultHolder.sidedSuccess(wandStack,level.isClientSide);
             }
             if (centiVisContainer.consumeAllCentiVis(

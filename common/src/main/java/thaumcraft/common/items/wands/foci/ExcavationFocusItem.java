@@ -90,7 +90,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
     }
 
     @Override
-    public int getActivationCooldown(ItemStack focusStack) {
+    public int getActivationCooldownTicks(ItemStack focusStack) {
         return 0;
     }
 

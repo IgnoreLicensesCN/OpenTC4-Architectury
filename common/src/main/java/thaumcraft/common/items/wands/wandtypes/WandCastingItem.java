@@ -28,7 +28,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.*;
 import thaumcraft.api.wands.focus.IWandFocusItem;
-import thaumcraft.common.items.wands.WandManager;
+import thaumcraft.common.items.wands.WandCooldownManager;
 
 import java.util.*;
 
@@ -316,8 +316,9 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(
-                        livingEntity)) {
+                var cooldownManager = WandCooldownManager.getFromLiving(livingEntity);
+                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(livingEntity));
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
                     focus.onUsingFocusTick(usingWand, focusStack, livingEntity, useRemainingCount);
                 }
             }
@@ -333,7 +334,11 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(player)) {
+
+                var cooldownManager = WandCooldownManager.getFromLiving(player);
+                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(player));
+
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
                     return focus.onFocusRightClick(usingWand, focusStack, level, player, interactionHand);
                 }
             }
@@ -359,7 +364,9 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
+                var cooldownManager = WandCooldownManager.getFromLiving(user);
+                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(user));
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
                     focus.onStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
                 }
             }
@@ -373,7 +380,9 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && !WandManager.isOnCooldown(user)) {
+                var cooldownManager = WandCooldownManager.getFromLiving(user);
+                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(user));
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
                     focus.onLeftClickBlock(usingWand, focusStack, user, interactionHand);
                 }
             }

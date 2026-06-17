@@ -761,6 +761,7 @@ public class WandManager implements IWandTriggerManager {
 
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean isOnCooldown(LivingEntity entityLiving) {
         if (entityLiving.level().isClientSide() && cooldownClient.containsKey(entityLiving.getId())) {
             return cooldownClient.get(entityLiving.getId()) > System.currentTimeMillis();
@@ -773,6 +774,7 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     public static float getCooldown(LivingEntity entityLiving) {
         if (entityLiving.level().isClientSide()) {
             return 0.f;
@@ -780,6 +782,7 @@ public class WandManager implements IWandTriggerManager {
         return (float) (cooldownClient.getOrDefault(entityLiving,System.currentTimeMillis()) - System.currentTimeMillis()) / 1000.0F;
     }
 
+    @Deprecated(forRemoval = true)
     public static void setCooldown(LivingEntity entityLiving, int cd) {
         if (cd == 0) {
             cooldownClient.remove(entityLiving);
