@@ -2,11 +2,13 @@ package thaumcraft.common.lib.world.biomes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintBlock;
 import thaumcraft.common.config.Config;
@@ -33,6 +35,13 @@ public class BiomeUtils {
              }
           }
        }
+    }
+    public static void setPosTaint(ServerLevel world, BlockPos pos, Holder<Biome> taintHolder) {
+        for (int yOffset = 0; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
+            var afffectPos = pos.above(yOffset);
+            Utils.setBiomeAt(world, pos.above(yOffset), taintHolder);
+            world.blockEvent(afffectPos,world.getBlockState(afffectPos).getBlock(),1,0);
+        }
     }
 
     public static int getAdjacentTaint(BlockGetter world, int x, int y, int z) {

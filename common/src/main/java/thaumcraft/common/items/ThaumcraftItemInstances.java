@@ -22,6 +22,8 @@ import thaumcraft.common.items.consumable.aspectowning.WispEssenceItem;
 import thaumcraft.common.items.consumable.lootbag.CommonLootBagItem;
 import thaumcraft.common.items.consumable.lootbag.RareLootBagItem;
 import thaumcraft.common.items.consumable.lootbag.UncommonLootBagItem;
+import thaumcraft.common.items.consumable.throwable.AlumentumItem;
+import thaumcraft.common.items.consumable.throwable.TaintBottleItem;
 import thaumcraft.common.items.eldritch.CrimsonRitesItem;
 import thaumcraft.common.items.eldritch.EldritchEyeItem;
 import thaumcraft.common.items.eldritch.EldritchObeliskPlacerItem;
@@ -91,10 +93,10 @@ public class ThaumcraftItemInstances {
     }//itemResource:10
     public static DegradableTaintedMaterialItem TAINTED_GOO() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINTED_GOO.get();
-    }//itemResource:11 //TODO:new class
+    }//itemResource:11
     public static DegradableTaintedMaterialItem TAINT_TENDRIL() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINT_TENDRIL.get();
-    }//itemResource:12 //TODO:new class
+    }//itemResource:12
     public static Item JAR_LABEL() {
         return ThaumcraftItemsRegistry.SUPPLIER_JAR_LABEL.get();
     }//itemResource:13
@@ -949,6 +951,12 @@ public class ThaumcraftItemInstances {
     }
     public static EssentiaResonatorItem ESSENTIA_RESONATOR() {
         return ThaumcraftItemsRegistry.SUPPLIER_ESSENTIA_RESONATOR.get();
+    }
+    public static ThaumonomiconItem THAUMONOMICON() {
+        return ThaumcraftItemsRegistry.SUPPLIER_THAUMONOMICON.get();
+    }
+    public static TaintBottleItem TAINT_BOTTLE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_TAINT_BOTTLE.get();
     }
 
 

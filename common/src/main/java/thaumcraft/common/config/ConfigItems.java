@@ -280,8 +280,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemResearchNotes, "ItemResearchNotes", "Thaumcraft");
 //      itemInkwell = (new ItemInkwell()).setUnlocalizedName("ItemInkwell");
 //      GameRegistry.registerItem(itemInkwell, "ItemInkwell", "Thaumcraft");
-      itemThaumonomicon = (new ItemThaumonomicon()).setUnlocalizedName("ItemThaumonomicon");
-      GameRegistry.registerItem(itemThaumonomicon, "ItemThaumonomicon", "Thaumcraft");
+//      itemThaumonomicon = (new ItemThaumonomicon()).setUnlocalizedName("ItemThaumonomicon");
+//      GameRegistry.registerItem(itemThaumonomicon, "ItemThaumonomicon", "Thaumcraft");
 //      itemThaumometer = (new ThaumometerItem()).setUnlocalizedName("ThaumometerItem");
 //      GameRegistry.registerItem(itemThaumometer, "ThaumometerItem", "Thaumcraft");
 //      itemGoggles = (new ItemGoggles(ThaumcraftApi.armorMatSpecial, 4, 0)).setUnlocalizedName("ItemGoggles");
@@ -424,8 +424,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemSanitySoap, "ItemSanitySoap", "Thaumcraft");
 //      itemSanityChecker = (new ItemSanityChecker()).setUnlocalizedName("ItemSanityChecker");
 //      GameRegistry.registerItem(itemSanityChecker, "ItemSanityChecker", "Thaumcraft");
-      itemBottleTaint = (new ItemBottleTaint()).setUnlocalizedName("ItemBottleTaint");
-      GameRegistry.registerItem(itemBottleTaint, "ItemBottleTaint", "Thaumcraft");
+//      itemBottleTaint = (new ItemBottleTaint()).setUnlocalizedName("ItemBottleTaint");
+//      GameRegistry.registerItem(itemBottleTaint, "ItemBottleTaint", "Thaumcraft");
 //      itemHelmetCultistRobe = (new ItemCultistRobeArmor(ArmorMaterial.IRON, 4, 0)).setUnlocalizedName("ItemHelmetCultistRobe");
 //      GameRegistry.registerItem(itemHelmetCultistRobe, "ItemHelmetCultistRobe", "Thaumcraft");
 //      itemChestCultistRobe = (new ItemCultistRobeArmor(ArmorMaterial.IRON, 4, 1)).setUnlocalizedName("ItemChestplateCultistRobe");

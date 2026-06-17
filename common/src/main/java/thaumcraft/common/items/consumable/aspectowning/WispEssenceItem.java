@@ -21,25 +21,18 @@ public class WispEssenceItem  extends Item implements IBonusAspectOwnerItem<Aspe
     public WispEssenceItem() {
         this(new Properties());
     }
+
     public ItemStack ofAspect(Aspect aspect) {
         var result = new ItemStack(this);
-        var tag = result.getOrCreateTag();
-        OWNING_ASPECT.writeToCompoundTag(tag, aspect);
+        setOwningAspect(result,aspect);
         return result;
     }
 
     @Override
     public @Unmodifiable @NotNull AspectList<Aspect> getOwningBonusAspects(ItemStack stack) {
-        if (!stack.hasTag()){
-            return UnmodifiableAspectList.EMPTY;
-        }
-        var tag = stack.getTag();
-        if (tag == null){
-            return UnmodifiableAspectList.EMPTY;
-        }
-        var aspect = OWNING_ASPECT.readFromCompoundTag(tag);
+        var aspect = getOwningAspect(stack);
         if (aspect.isEmpty()){
-            return UnmodifiableAspectList.EMPTY;
+            return UnmodifiableAspectList.of();
         }
         return UnmodifiableAspectList.of(aspect,2);
     }

@@ -846,15 +846,15 @@ public class ClientProxy extends CommonProxy {
       return GuiScreen.isShiftKeyDown();
    }
 
-   public void bottleTaintBreak(World world, double x, double y, double z) {
-      String s = "iconcrack_" + BuiltInRegistries.ITEM.getKey(ConfigItems.itemBottleTaint) + "_" + 0;
-
-      for(int k1 = 0; k1 < 8; ++k1) {
-         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);
-      }
-
-      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F, false);
-   }
+//   public void bottleTaintBreak(World world, double x, double y, double z) {
+//      String s = "iconcrack_" + BuiltInRegistries.ITEM.getKey(ConfigItems.itemBottleTaint) + "_" + 0;
+//
+//      for(int k1 = 0; k1 < 8; ++k1) {
+//         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);
+//      }
+//
+//      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F, false);
+//   }
 
    public void arcLightning(World world, double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
       FXSparkle ef2 = new FXSparkle(world, tx, ty, tz, tx, ty, tz, 3.0F, 6, 2);

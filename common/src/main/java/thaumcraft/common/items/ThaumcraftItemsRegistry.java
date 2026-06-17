@@ -28,6 +28,8 @@ import thaumcraft.common.items.clusters.ClusterItem;
 import thaumcraft.common.items.consumable.*;
 import thaumcraft.common.items.consumable.aspectowning.*;
 import thaumcraft.common.items.consumable.lootbag.*;
+import thaumcraft.common.items.consumable.throwable.AlumentumItem;
+import thaumcraft.common.items.consumable.throwable.TaintBottleItem;
 import thaumcraft.common.items.eldritch.*;
 import thaumcraft.common.items.eldritch.RunedTabletItem;
 import thaumcraft.common.items.equipment.armor.cultist.*;
@@ -1176,6 +1178,14 @@ public class ThaumcraftItemsRegistry {
             "essentia_resonator",
             EssentiaResonatorItem::new
     );
+    public static final RegistrySupplier<ThaumonomiconItem> SUPPLIER_THAUMONOMICON = ITEMS.register(
+            "thaumonomicon",
+            ThaumonomiconItem::new
+    );
+    public static final RegistrySupplier<TaintBottleItem> SUPPLIER_TAINT_BOTTLE = ITEMS.register(
+            "taint_bottle",
+            TaintBottleItem::new
+    );
     
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
@@ -1214,6 +1224,7 @@ public class ThaumcraftItemsRegistry {
     public static void onDatapackReloaded(){
         CLUSTER_ITEMS.values().forEach(supplier -> supplier.get().registerDowsing());
         Collection<Recipe<?>> recipesToAdd = new ArrayList<>();
+        final Item[] emptyItemArr = new Item[0];
         for (var clusterSupplier : CLUSTER_ITEMS.values()){
             var clusterItem = clusterSupplier.get();
             var clusterResult = clusterItem.willBurnInto.get();
@@ -1227,7 +1238,7 @@ public class ThaumcraftItemsRegistry {
                         new ResourceLocation(Thaumcraft.MOD_ID,clusterItem.arch$registryName().getPath() + "_smelting"),
                         "thaumcraft_ore_clusters",
                         CookingBookCategory.BLOCKS,
-                        Ingredient.of(itemsForTags.toArray(new Item[0])),
+                        Ingredient.of(itemsForTags.toArray(emptyItemArr)),
                         clusterResult,
                         1.4F,200
                         ));
@@ -1235,7 +1246,7 @@ public class ThaumcraftItemsRegistry {
                         new ResourceLocation(Thaumcraft.MOD_ID,clusterItem.arch$registryName().getPath() + "_smelting_blast"),
                         "thaumcraft_ore_clusters_blast",
                         CookingBookCategory.BLOCKS,
-                        Ingredient.of(itemsForTags.toArray(new Item[0])),
+                        Ingredient.of(itemsForTags.toArray(emptyItemArr)),
                         clusterResult,
                         1.4F,100
                 ));

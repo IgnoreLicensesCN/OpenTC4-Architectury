@@ -37,28 +37,24 @@ public class AlumentumEntity extends ThrowableItemProjectile {
    }
 
    @Override
-   public void shoot(double d, double e, double f, float g, float h) {
-      super.shoot(d, e, f, g * 0.75F, h);
-   }
-
-   @Override
    protected @NotNull Item getDefaultItem() {
       return ThaumcraftItemInstances.ALUMENTUM();
    }
    @Override
    public void tick() {
       super.tick();
-      if (this.level() instanceof ClientLevel clientLevel) {
-         for(int a = 0; a < 3; ++a) {
-            ClientFXUtils.wispFX2(clientLevel, this.getX() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), this.getY() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), this.getZ() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), 0.3F, 5, true, true, 0.02F);
-            double x2 = (this.getX() + this.xOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
-            double y2 = (this.getY() + this.yOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
-            double z2 = (this.getZ() + this.zOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
-            ClientFXUtils.wispFX2(clientLevel, x2, y2, z2, 0.3F, 5, true, true, 0.02F);
-            ClientFXUtils.sparkle((float)this.getX() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, (float)this.getY() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, (float)this.getZ() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, 6);
+      if (level().isClientSide()) {
+         if (this.level() instanceof ClientLevel clientLevel) {
+            for(int a = 0; a < 3; ++a) {
+               ClientFXUtils.wispFX2(clientLevel, this.getX() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), this.getY() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), this.getZ() + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F), 0.3F, 5, true, true, 0.02F);
+               double x2 = (this.getX() + this.xOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
+               double y2 = (this.getY() + this.yOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
+               double z2 = (this.getZ() + this.zOld) / (double)2.0F + (double)((clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.3F);
+               ClientFXUtils.wispFX2(clientLevel, x2, y2, z2, 0.3F, 5, true, true, 0.02F);
+               ClientFXUtils.sparkle((float)this.getX() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, (float)this.getY() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, (float)this.getZ() + (clientLevel.random.nextFloat() - clientLevel.random.nextFloat()) * 0.1F, 6);
+            }
          }
       }
-
    }
 
    @Override

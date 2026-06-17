@@ -1,4 +1,4 @@
-package thaumcraft.common.items.consumable;
+package thaumcraft.common.items.consumable.throwable;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -9,14 +9,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.projectile.AlumentumEntity;
-import thaumcraft.common.items.abstracts.IAlchemicalFurnaceSpeederFuel;
+import thaumcraft.common.entities.projectile.TaintBottleEntity;
 
-public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel {
-    public AlumentumItem() {
+public class TaintBottleItem extends Item {
+    public TaintBottleItem() {
         this(new Properties());
     }
-    public AlumentumItem(Properties properties) {
+    public TaintBottleItem(Properties properties) {
         super(properties);
     }
 
@@ -36,7 +35,9 @@ public class AlumentumItem extends Item implements IAlchemicalFurnaceSpeederFuel
                 0.4F / (world.random.nextFloat() * 0.4F + 0.8F)
         );
         if (!world.isClientSide) {
-            world.addFreshEntity(new AlumentumEntity(player, world));
+            var toThrow = new TaintBottleEntity(player, world);
+            toThrow.shootFromRotation(player, player.getXRot()-20, player.getYRot(), 0.0F, 0.5F, 1.0F);
+            world.addFreshEntity(toThrow);
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
     }
