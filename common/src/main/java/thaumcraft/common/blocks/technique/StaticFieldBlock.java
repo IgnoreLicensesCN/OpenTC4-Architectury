@@ -21,8 +21,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.entities.projectile.EntityShockOrb;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+import thaumcraft.common.entities.projectile.shockfocus.ShockOrbEntity;
+
 //tile.blockAiry.10
 public class StaticFieldBlock extends SuppressedWarningBlock {
     public StaticFieldBlock(Properties properties) {
@@ -88,7 +89,7 @@ public class StaticFieldBlock extends SuppressedWarningBlock {
         if (Platform.getEnvironment() != Env.SERVER){
             return;
         }
-        if (entity instanceof LivingEntity living && EntityShockOrb.canEarthShockHurt(living)) {
+        if (entity instanceof LivingEntity living && ShockOrbEntity.canEarthShockHurt(living)) {
             living.hurt(level.damageSources().magic(),1 + level.random.nextInt(2));
             var currentVelocity = living.getDeltaMovement();
             living.setDeltaMovement(currentVelocity.x * 0.8,currentVelocity.y,currentVelocity.z * 0.8);
